@@ -3,3 +3,8 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CreateGeneratorCommandValidator'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateGeneratorCommandValidator'

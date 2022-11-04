@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
@@ -87,9 +88,23 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->delimiter()->shouldBeLike(Delimiter::fromString('-'));
     }
 
+    public function it_sets_a_delimiter()
+    {
+        $this->delimiter()->asString()->shouldBeLike('-');
+        $this->setDelimiter(Delimiter::fromString('='));
+        $this->delimiter()->asString()->shouldBeLike('=');
+    }
+
     public function it_returns_a_target()
     {
         $this->target()->shouldBeLike(Target::fromString('sku'));
+    }
+
+    public function it_sets_a_target()
+    {
+        $this->target()->asString()->shouldBeLike('sku');
+        $this->setTarget(Target::fromString('gtin'));
+        $this->target()->asString()->shouldBeLike('gtin');
     }
 
     public function it_returns_a_conditions()
@@ -102,9 +117,35 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
     }
 
+    public function it_sets_a_structure()
+    {
+        $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
+        $this->setStructure(Structure::fromArray([
+            FreeText::fromString('cba'),
+            AutoNumber::fromValues(3,2),
+        ]));
+        $this->structure()->shouldBeLike(Structure::fromArray([
+            FreeText::fromString('cba'),
+            AutoNumber::fromValues(3,2),
+        ]));
+    }
+
     public function it_returns_a_labels_collection()
     {
         $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
+    }
+
+    public function it_sets_a_labels_collection()
+    {
+        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
+        $this->setLabelCollection(LabelCollection::fromNormalized([
+            'fr' => 'Générateur',
+            'en' => 'generator',
+        ]));
+        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized([
+            'fr' => 'Générateur',
+            'en' => 'generator',
+        ]));
     }
 
     public function it_can_be_normalized()

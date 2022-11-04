@@ -33,6 +33,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated',
 
             'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\Uuid',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain'),
 
@@ -64,6 +65,7 @@ $rules = [
             // Exceptions
             'Akeneo\Connectivity\Connection\Domain\ValueObject',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode',
+            'Ramsey\Uuid\Uuid'
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\ErrorManagement'),
 
@@ -159,6 +161,8 @@ $rules = [
 
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
+
+            'Ramsey\Uuid\Uuid',
 
             'Akeneo\Catalogs\ServiceAPI\Model\Catalog',
         ]
@@ -304,6 +308,8 @@ $rules = [
 
             'Psr\Log\LoggerInterface',
             'Psr\Http\Message\ResponseInterface',
+
+            'Ramsey\Uuid\Uuid',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
 
