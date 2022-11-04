@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Query;
 
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -20,4 +22,6 @@ interface GetAttribute
      * @param AttributeUuid[] $attributeUuids
      */
     public function byUuids(array $attributeUuids): AttributeCollection;
+
+    public function byCode(AttributeCode $attributeCode): Attribute;
 }
