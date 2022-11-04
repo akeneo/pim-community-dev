@@ -332,7 +332,7 @@ functions.http('requestPortal', (req, res) => {
   const dispatchActions = async () => {
     token = await refreshAccessToken(branchName);
     logger.info('Dispatch action to provisioning cloud functions');
-    await Promise.allSettled([tenantsToDelete()]);
+    await Promise.allSettled([tenantsToCreate(), tenantsToDelete()]);
   }
 
   dispatchActions(res)
