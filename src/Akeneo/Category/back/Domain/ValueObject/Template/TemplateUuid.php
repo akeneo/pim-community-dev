@@ -38,7 +38,7 @@ class TemplateUuid
 
     public function getValue(): string
     {
-        return (string) $this->uuid;
+        return $this->__toString();
     }
 
     public function toBytes(): string

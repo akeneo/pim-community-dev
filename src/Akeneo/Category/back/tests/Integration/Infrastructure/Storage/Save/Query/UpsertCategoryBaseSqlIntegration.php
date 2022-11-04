@@ -42,6 +42,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $category = new Category(
             id: null,
             code: new Code($categoryCode),
+            templateUuid: null,
             attributes: ValueCollection::fromArray($expectedData),
         );
         $upsertCategoryBaseQuery->execute($category);
@@ -86,6 +87,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $categoryToUpdate = new Category(
             id: $categoryInserted->getId(),
             code: $categoryInserted->getCode(),
+            templateUuid: null,
             parentId: $expectedParentId,
             attributes: ValueCollection::fromArray($expectedData)
         );

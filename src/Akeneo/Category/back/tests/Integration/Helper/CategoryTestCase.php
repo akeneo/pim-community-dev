@@ -11,6 +11,9 @@ namespace Akeneo\Category\back\tests\Integration\Helper;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
@@ -56,6 +59,7 @@ class CategoryTestCase extends TestCase
         $categoryModelToCreate = new Category(
             id: $categoryId,
             code: new Code($code),
+            templateUuid: null,
             labels: LabelCollection::fromArray($labels),
             parentId: $parentId,
         );
@@ -71,10 +75,11 @@ class CategoryTestCase extends TestCase
                 : new CategoryId($categoryBase->getParentId()->getValue());
 
         $categoryModelWithId = new Category(
-            new CategoryId($categoryBase->getId()->getValue()),
-            new Code((string) $categoryBase->getCode()),
-            $categoryModelToCreate->getLabels(),
-            $parentId,
+            id: new CategoryId($categoryBase->getId()->getValue()),
+            code: new Code((string) $categoryBase->getCode()),
+            templateUuid: null,
+            labels: $categoryModelToCreate->getLabels(),
+            parentId: $parentId,
         );
         $this->get(UpsertCategoryTranslations::class)->execute($categoryModelWithId);
 
@@ -87,10 +92,11 @@ class CategoryTestCase extends TestCase
 
         // Instantiates a new Category model based on data fetched in database
         return new Category(
-            new CategoryId($categoryBase->getId()->getValue()),
-            new Code((string) $categoryBase->getCode()),
-            LabelCollection::fromArray($categoryTranslations),
-            $createdParentId,
+            id: new CategoryId($categoryBase->getId()->getValue()),
+            code: new Code((string) $categoryBase->getCode()),
+            templateUuid: null,
+            labels: LabelCollection::fromArray($categoryTranslations),
+            parentId: $createdParentId,
         );
     }
 
@@ -102,6 +108,7 @@ class CategoryTestCase extends TestCase
         $category = new Category(
             id: null,
             code: $code,
+            templateUuid: null,
         );
         $this->get(UpsertCategoryBase::class)->execute($category);
 
@@ -276,6 +283,22 @@ class CategoryTestCase extends TestCase
                 AttributeAdditionalProperties::fromArray([]),
             ),
         ]);
+    }
+
+    protected function useTemplateFunctionalCatalog(string $templateUuid, string $productCode): void
+    {
+        $category = $this->createOrUpdateCategory(
+            code: $productCode,
+            labels: ['en_US' => 'socks'],
+        );
+
+        $template = $this->givenTemplate($templateUuid, $category->getId());
+        $this->get(CategoryTemplateSaver::class)->insert($template);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($template);
+        $this->get(CategoryTemplateAttributeSaver::class)->insert(
+            $template->getUuid(),
+            $template->getAttributeCollection(),
+        );
     }
 
     protected function getConfiguration()
