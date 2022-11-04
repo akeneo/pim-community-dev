@@ -5,6 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourcePlaceholder} from './components/SourcePlaceholder';
 import {useTargetsQuery} from './hooks/useTargetsQuery';
 import {Target} from './models/Target';
+import {TargetPlaceholder} from './components/TargetPlaceholder';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -65,8 +66,8 @@ export const ProductMapping: FC<Props> = ({id}) => {
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {!Array.isArray(targets) && <p>no targets @todo</p>}
-                        {Array.isArray(targets) &&
+                        {(undefined === targets || 0 === targets.length) && <TargetPlaceholder />}
+                        {undefined !== targets &&
                             targets.map(target => {
                                 return (
                                     <Table.Row

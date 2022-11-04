@@ -30,9 +30,9 @@ test('it returns the product mapping schema existence in a given catalog', async
 });
 
 test('it returns false if the product mapping schema does not exist in a given catalog', async () => {
-    fetchMock.mockResponseOnce(
-        JSON.stringify(null)
-    );
+    fetchMock.mockResponseOnce('', {
+        status: 204,
+    });
 
     const {result, waitForNextUpdate} = renderHook(
         () => useProductMappingSchemaExist('123e4567-e89b-12d3-a456-426614174000'),

@@ -29,10 +29,8 @@ final class GetTargetsAction
 
         $targets = $this->getTargetsQuery->execute($catalogId);
 
-        if (null === $targets) {
-            return new Response(null, Response::HTTP_NO_CONTENT);
-        }
+        $statusCode = null === $targets ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
 
-        return new JsonResponse($targets);
+        return new JsonResponse($targets, $statusCode);
     }
 }

@@ -120,10 +120,6 @@ class GetTargetsActionTest extends IntegrationTestCase
 
         $response = $client->getResponse();
         Assert::assertEquals(204, $response->getStatusCode());
-//        $targets = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-//
-//        $expectedTargets = [];
-//        Assert::assertEquals($expectedTargets, $targets);
     }
 
     private function getValidSchemaData(): string
