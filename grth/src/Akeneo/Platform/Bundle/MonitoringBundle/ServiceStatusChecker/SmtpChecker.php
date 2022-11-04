@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Transport\Dsn;
-use Symfony\Component\Mailer\Transport\TransportFactoryInterface;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
 
 final class SmtpChecker
 {
     public function __construct(
-        private TransportFactoryInterface $transportFactory,
+        private EsmtpTransportFactory $transportFactory,
         private string $mailerDsn,
         private LoggerInterface $logger,
     ) {
@@ -29,7 +31,13 @@ final class SmtpChecker
     public function status(): ServiceStatus
     {
         try {
-            $transport = $this->transportFactory->create(Dsn::fromString($this->mailerDsn));
+            $dsn = Dsn::fromString($this->mailerDsn);
+            /**
+             * @var EsmtpTransport $transport
+             */
+            $transport = $this->transportFactory->create($dsn);
+            //TODO: Replace this workaround by $transport->start() when we'll be on symfony/mailer:^6.1 (https://github.com/symfony/symfony/pull/45388)
+            $transport->getStream()->initialize();
             $transport->executeCommand("NOOP\r\n", [250]);
         } catch (\Throwable $e) {
             $this->logger->error("Smtp ServiceCheck error", ['exception' => $e]);

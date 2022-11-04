@@ -31,7 +31,7 @@ services:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker'
         arguments:
             - '@mailer.transport_factory.smtp'
-            - '%env(MAILER_DSN)'
+            - '%env(MAILER_DSN)%'
             - '@logger'
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller:
