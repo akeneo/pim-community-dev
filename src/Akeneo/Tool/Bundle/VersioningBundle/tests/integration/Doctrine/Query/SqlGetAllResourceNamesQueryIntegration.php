@@ -58,7 +58,7 @@ class SqlGetAllResourceNamesQueryIntegration extends TestCase
 
         foreach ($resourceNames as $resourceName) {
             for ($versionNumber = 1; $versionNumber < 3; $versionNumber++) {
-                $version = new Version($resourceName, 42, null, 'system');
+                $version = new Version($resourceName, 12142, null, 'system');
                 $version->setVersion($versionNumber);
                 $entityManager->persist($version);
             }

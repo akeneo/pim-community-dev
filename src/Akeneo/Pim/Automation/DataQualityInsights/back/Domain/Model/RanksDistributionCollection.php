@@ -47,7 +47,7 @@ final class RanksDistributionCollection implements \IteratorAggregate
         }, $channelLocaleRanksDistributions);
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->channelLocaleRanksDistributions);
     }

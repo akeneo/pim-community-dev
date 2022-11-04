@@ -57,7 +57,6 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
         $stepExecution,
         ProductModelInterface $productModel,
         AssociationInterface $association,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters,
         QuantifiedAssociationCollection $quantifiedAssociations
     ) {
@@ -100,6 +99,7 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
 
         $productModel->getAssociations()->willReturn([$association]);
         $productModel->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
+        $violationList = new ConstraintViolationList();
         $productValidator
             ->validate($association)
             ->willReturn($violationList);

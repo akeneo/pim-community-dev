@@ -5,6 +5,7 @@ default:
                 - '%paths.base%/features'
             contexts:
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\CreateIdentifierGeneratorContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext
             filters:
                 tags: '@acceptance-back'
     extensions:
