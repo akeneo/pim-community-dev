@@ -25,7 +25,7 @@ class ExternalApiCategory
     public function __construct(
         private string $code,
         private ?int $parentId = null,
-        private ?string $parentCode= null,
+        private ?string $parentCode = null,
         private ?string $updated = null,
         private ?array $labels = null,
         private ?int $position = null,
@@ -122,7 +122,7 @@ class ExternalApiCategory
             'labels' => $this->getLabels(),
             'position' => $this->getPosition(),
             'template' => $this->getTemplateCode(),
-            'values' => $this->getValues()
+            'values' => $this->getValues(),
         ];
     }
 }
