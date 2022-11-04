@@ -2,15 +2,8 @@ import React, {useMemo, FC} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {
-  Channel,
-  MicroFrontendDependenciesProvider,
-  Routes,
-  Translations,
-  useRouter,
-} from '@akeneo-pim-community/shared';
+import {Channel, MicroFrontendDependenciesProvider, Routes, useRouter} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
-import translations from './translations.json';
 import {FakePIM} from './FakePIM';
 import {AssetFamily, AssociationType, Attribute, FetcherContext, MeasurementFamily} from './feature';
 const baseFetcher = async (route: string) => {
@@ -86,7 +79,7 @@ const FetcherProvider: FC = ({children}) => {
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
+      <MicroFrontendDependenciesProvider routes={routes as Routes}>
         <FetcherProvider>
           <FakePIM />
         </FetcherProvider>
