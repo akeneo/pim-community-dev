@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,6 +41,8 @@ class CreateIdentifierGeneratorController
             ($this->createGeneratorHandler)($command);
         } catch (ViolationsException $exception) {
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
+        } catch (UnableToSaveIdentifierGeneratorException $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         $identifierGenerator = $this->identifierGeneratorRepository->get($content['code']);

@@ -19,6 +19,14 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                     allowExtraFields: true
         code:
             - NotBlank: ~
+            - Length:
+                max: 100
+        labels:
+            - Count:
+                  min: 1
+            - All:
+                - Length:
+                      max: 255
 
 Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand:
     properties:
