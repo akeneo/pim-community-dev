@@ -15,7 +15,9 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobInterruptedException;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
@@ -25,9 +27,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
 {
-    function let(StepExecution $stepExecution, JobRepositoryInterface $jobRepository)
+    function let(StepExecution $stepExecution, JobRepositoryInterface $jobRepository, JobStopper $jobStopper)
     {
-        $this->beConstructedWith($stepExecution, $jobRepository);
+        $this->beConstructedWith($stepExecution, $jobRepository, $jobStopper);
     }
 
     function it_is_initializable()
@@ -79,13 +81,34 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         $this->postExecute(new GenericEvent(new RuleDefinition()));
     }
 
-    function it_updates_step_execution_summary_after_saving_rule_subjects(StepExecution $stepExecution, JobRepositoryInterface $jobRepository)
-    {
+    function it_updates_step_execution_summary_after_saving_rule_subjects(
+        StepExecution $stepExecution,
+        JobRepositoryInterface $jobRepository,
+        JobStopper $jobStopper,
+    ) {
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $stepExecution->incrementSummaryInfo('updated_entities', 2)->shouldBeCalled();
         $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->postSave(new SavedSubjectsEvent(new RuleDefinition(), [new Product(), new ProductModel()]));
+    }
+
+    function it_throws_a_job_interrupted_exception_after_saving_when_job_is_stopping(
+        StepExecution $stepExecution,
+        JobRepositoryInterface $jobRepository,
+        JobStopper $jobStopper,
+    ) {
+        $jobStopper->isStopping($stepExecution)->willReturn(true);
+
+        $stepExecution->incrementSummaryInfo('updated_entities', 2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
+
+        $this->shouldThrow(JobInterruptedException::class)->during('postSave', [
+            new SavedSubjectsEvent(new RuleDefinition(), [new Product(), new ProductModel()]),
+        ]);
     }
 
     function it_adds_warnings_for_an_invalid_product(
