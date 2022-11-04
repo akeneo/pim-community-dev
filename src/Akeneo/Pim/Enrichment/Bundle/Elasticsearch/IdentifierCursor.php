@@ -29,7 +29,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         if (null === $this->items) {
             $this->rewind();
@@ -41,7 +41,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): mixed
     {
         if (null === $this->items) {
             $this->rewind();
@@ -53,7 +53,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         if (null === $this->items) {
             $this->rewind();
@@ -65,7 +65,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         if (null === $this->items) {
             $this->rewind();
@@ -77,7 +77,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->items = $this->getNextIdentifiers($this->esQuery)->all();
@@ -88,7 +88,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->searchAfter = [];
         $this->items = $this->getNextIdentifiers($this->esQuery)->all();
@@ -109,7 +109,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
             return $identifiers;
         }
 
-        $sort = ['_id' => 'asc'];
+        $sort = ['id' => 'asc'];
         if (isset($esQuery['sort'])) {
             $sort = \array_merge($esQuery['sort'], $sort);
         }

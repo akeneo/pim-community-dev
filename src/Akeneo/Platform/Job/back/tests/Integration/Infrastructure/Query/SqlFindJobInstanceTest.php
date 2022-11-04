@@ -28,8 +28,6 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
     public function it_returns_job_instances(): void
     {
         $query = new JobInstanceQuery();
-        $queryPagination = new JobInstanceQueryPagination();
-        $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
             new JobInstance('a_product_import', 'A product import'),
@@ -47,11 +45,7 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
      */
     public function it_returns_job_instances_filtered_on_job_name(): void
     {
-        $expectedJobInstances = [];
         $query = new JobInstanceQuery();
-        $queryPagination = new JobInstanceQueryPagination();
-
-        $query->pagination = $queryPagination;
         $query->jobNames = ['a_product_import'];
 
         $expectedJobInstances = [
@@ -68,9 +62,6 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
     public function it_returns_searched_job_instances(): void
     {
         $query = new JobInstanceQuery();
-        $queryPagination = new JobInstanceQueryPagination();
-
-        $query->pagination = $queryPagination;
         $query->search = 'a_product_import';
 
         $expectedJobInstances = [
@@ -97,7 +88,6 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
-        $expectedJobInstances = [];
 
         $queryPagination->page = 2;
         $queryPagination->limit = 2;

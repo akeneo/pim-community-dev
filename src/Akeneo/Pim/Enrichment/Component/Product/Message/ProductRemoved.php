@@ -24,7 +24,7 @@ class ProductRemoved extends Event
         Assert::keyExists($data, 'identifier');
         Assert::nullOrString($data['identifier']);
         Assert::keyExists($data, 'uuid');
-        Assert::true(Uuid::isValid($data['uuid']));
+        Assert::isInstanceOf($data['uuid'], UuidInterface::class);
 
         Assert::keyExists($data, 'category_codes');
         Assert::allStringNotEmpty($data['category_codes']);

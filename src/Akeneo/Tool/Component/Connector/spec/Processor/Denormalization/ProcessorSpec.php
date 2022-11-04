@@ -47,7 +47,6 @@ class ProcessorSpec extends ObjectBehavior
         $updater,
         $validator,
         ChannelInterface $channel,
-        ConstraintViolationListInterface $violationList
     ) {
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier('mycode')->willReturn($channel);
@@ -62,7 +61,7 @@ class ProcessorSpec extends ObjectBehavior
 
         $validator
             ->validate($channel)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($values)
@@ -74,7 +73,6 @@ class ProcessorSpec extends ObjectBehavior
         $updater,
         $validator,
         ChannelInterface $channel,
-        ConstraintViolationListInterface $violationList
     ) {
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier(Argument::any())->willReturn($channel);
@@ -89,7 +87,7 @@ class ProcessorSpec extends ObjectBehavior
 
         $validator
             ->validate($channel)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($values)
@@ -146,7 +144,6 @@ class ProcessorSpec extends ObjectBehavior
         $factory,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
-        ConstraintViolationListInterface $violationList,
         ChannelInterface $channel
     ) {
         $this->setStepExecution($stepExecution);
@@ -172,7 +169,7 @@ class ProcessorSpec extends ObjectBehavior
 
         $validator
             ->validate($channel)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($firstChannelValues)
@@ -187,7 +184,7 @@ class ProcessorSpec extends ObjectBehavior
 
         $validator
             ->validate($channel)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($secondChannelValues)
