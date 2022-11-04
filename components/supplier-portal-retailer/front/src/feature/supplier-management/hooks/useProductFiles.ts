@@ -33,6 +33,7 @@ const useProductFiles = (supplierIdentifier: string, page: number): [ProductFile
                 identifier: item.identifier,
                 uploadedAt: item.uploadedAt,
                 contributor: item.uploadedByContributor,
+                hasUnreadComments: item.hasUnreadComments,
             };
         });
         setProductFiles(productFiles);
