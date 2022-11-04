@@ -65,11 +65,15 @@ class AuthenticationContext implements Context
     {
         $connectedAppFactory = $this->container->get(ConnectedAppFactory::class);
 
-        return $connectedAppFactory->createFakeConnectedAppWithValidToken(
+        $connectedApp = $connectedAppFactory->createFakeConnectedAppWithValidToken(
             '11231759-a867-44b6-a36d-3ed7aeead51a',
             'shopifi',
             $scopes,
         );
+
+        $this->addAllPermissionsUserGroup('app_shopifi');
+
+        return $connectedApp;
     }
 
     public function createAuthenticatedClient(ConnectedAppWithValidToken $connectedApp): KernelBrowser
@@ -86,5 +90,62 @@ class AuthenticationContext implements Context
         $user = $this->container->get('pim_user.repository.user')->findOneByIdentifier($username);
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->container->get('security.token_storage')->setToken($token);
+    }
+
+    private function addAllPermissionsUserGroup(string $group): void
+    {
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
+            group: $group,
+            permissions: [
+                'own' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+    }
+
+    private function callPermissionsSaver(string $service, string $group, array $permissions): void
+    {
+        if ($this->container->has($service)) {
+            $this->container->get($service)->save($group, $permissions);
+        }
     }
 }
