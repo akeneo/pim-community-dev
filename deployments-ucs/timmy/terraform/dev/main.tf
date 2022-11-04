@@ -50,13 +50,13 @@ module "timmy_request_portal" {
     FUNCTION_URL_TIMMY_DELETE_TENANT = module.timmy_delete_tenant.uri
     GCP_PROJECT_ID                   = var.project_id
     // TODO: switch to https when PH-202 is released
-    HTTP_SCHEMA                      = "http"
-    LOG_LEVEL                        = "info"
+    HTTP_SCHEMA                      = "https"
+    LOG_LEVEL                        = "debug"
     NODE_ENV                         = "production"
     // TODO: replace portal hostnames with the private entry once PH-202 is released
-    PORTAL_HOSTNAME                  = local.portal_hostname
-    PORTAL_LOGIN_HOSTNAME            = local.portal_hostname
-    TENANT_CONTINENT                 = "europe"
+    PORTAL_HOSTNAME                  = "portal-dev3-sandbox.ip.akeneo.com"
+    PORTAL_LOGIN_HOSTNAME            = "connect-sandbox.ip.akeneo.com"
+    TENANT_CONTINENT                 = "europe-west3"
     TENANT_EDITION_FLAGS             = "serenity_instance"
     TENANT_ENVIRONMENT               = "sandbox"
   }

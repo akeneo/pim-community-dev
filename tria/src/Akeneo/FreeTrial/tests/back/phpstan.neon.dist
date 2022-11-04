@@ -5,3 +5,5 @@ parameters:
     paths:
         - %rootDir%/../../../src/Akeneo/FreeTrial/back
     treatPhpDocTypesAsCertain: false
+    excludePaths:
+        - %rootDir%/../../../src/Akeneo/FreeTrial/back/Infrastructure/Install/Installer/ViewInstaller.php

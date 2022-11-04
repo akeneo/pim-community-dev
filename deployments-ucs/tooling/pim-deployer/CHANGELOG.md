@@ -1,3 +1,10 @@
+# 1.2.0
+## Update helm version
+
+| Tools            | Previous Version | New Version          |
+|------------------|------------------|----------------------|
+| helm             | 3.8.2            | 3.10.1               |
+
 # 1.1.0
 ## Update sdk-cloud version
 ## Add gke-gcloud-auth-plugin

@@ -61,8 +61,8 @@ $rules = [
             // Supplier Portal Supplier coupling
 
             // PIM coupling
-            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler',
-            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler',
+            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface',
+            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface',
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
             'Akeneo\Tool\Component\Batch\Event\InvalidItemEvent',
             'Akeneo\Tool\Component\Batch\Item\FileInvalidItem',
@@ -86,6 +86,9 @@ $rules = [
             'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
             'Akeneo\UserManagement\Component\Model\User',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery',
 
             // External dependencies coupling
             'OpenSpout\Common\Entity\Row',
@@ -140,22 +143,29 @@ $rules = [
             // PIM coupling
             'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
             'Akeneo\Platform\Bundle\NotificationBundle\Notifier',
+            'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             'Akeneo\Test\Acceptance\User\InMemoryUserRepository',
             'Akeneo\UserManagement\Component\Model\User',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance',
 
             // External dependencies coupling
             'League\Flysystem\Filesystem',
             'League\Flysystem\UnableToCheckFileExistence',
             'League\Flysystem\UnableToCreateDirectory',
             'League\Flysystem\UnableToReadFile',
+            'League\Flysystem\UnableToDeleteFile',
             'League\Flysystem\UnableToWriteFile',
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
             'Psr\Log\Test\TestLogger',
             'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\Validator',
             'Symfony\Component\EventDispatcher\EventDispatcher',
+            'Symfony\Component\HttpFoundation\File\UploadedFile',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],
@@ -174,6 +184,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplier',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryFindAllProductFileImportConfigurations',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
 

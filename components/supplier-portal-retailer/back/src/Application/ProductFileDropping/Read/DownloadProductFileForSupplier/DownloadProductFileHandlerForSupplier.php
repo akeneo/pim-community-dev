@@ -12,7 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\Product
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Exception\SupplierDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 
-final class DownloadProductFileHandlerForSupplier
+class DownloadProductFileHandlerForSupplier
 {
     public function __construct(
         private GetProductFilePathAndFileNameForSupplier $getProductFilePathAndFileName,
