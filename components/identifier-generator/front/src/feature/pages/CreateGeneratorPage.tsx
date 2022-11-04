@@ -40,6 +40,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
 
   return (
     <CreateOrEditGeneratorPage
+      isMainButtonDisabled={false}
       initialGenerator={initialGenerator}
       mainButtonCallback={onSave}
       validationErrors={validationErrors}

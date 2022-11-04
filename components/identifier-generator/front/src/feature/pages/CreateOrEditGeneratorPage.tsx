@@ -15,6 +15,7 @@ enum Tabs {
 }
 
 type CreateOrEditGeneratorProps = {
+  isMainButtonDisabled: boolean
   initialGenerator: IdentifierGenerator;
   mainButtonCallback: (identifierGenerator: IdentifierGenerator) => void;
   validationErrors: Violation[];
@@ -23,6 +24,7 @@ type CreateOrEditGeneratorProps = {
 
 const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   initialGenerator,
+  isMainButtonDisabled,
   mainButtonCallback,
   validationErrors,
   isNew,
