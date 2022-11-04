@@ -5,6 +5,7 @@ import {useQuery} from 'react-query';
 type Response = {
   data?: IdentifierGenerator[];
   isLoading: boolean;
+  error: Error | null;
 };
 
 const useGetGenerators = (): Response => {
@@ -15,17 +16,21 @@ const useGetGenerators = (): Response => {
       method: 'GET',
       headers: [['X-Requested-With', 'XMLHttpRequest']],
     }).then(res => {
-      if (!res.ok) throw new Error(res.statusText);
-      return res.json();
+      return res.json().then(data => {
+        if (!res.ok) {
+          return Promise.reject(data);
+        }
+        return data;
+      });
     });
   };
 
-  const {data, isLoading} = useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>(
+  const {data, isLoading, error} = useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>(
     'getGeneratorList',
     getGeneratorList
   );
 
-  return {data, isLoading};
+  return {data, isLoading, error};
 };
 
 export {useGetGenerators};

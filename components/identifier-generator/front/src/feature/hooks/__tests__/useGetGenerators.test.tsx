@@ -28,4 +28,20 @@ describe('useGetGenerators', () => {
     expect(result.current.data).toBeDefined();
     expect(result.current.data).toEqual(list);
   });
+
+  test('it fails and retrieves no data', async () => {
+    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      ok: false,
+      json: () => Promise.resolve('error message'),
+    } as Response);
+
+    const {result, waitFor} = renderHook(() => useGetGenerators(), {wrapper: createWrapper()});
+
+    await waitFor(() => !!result.current.error);
+
+    expect(result.current.error).toBeDefined();
+    expect(result.current.error).toEqual('error message');
+    mockedConsole.mockRestore();
+  });
 });

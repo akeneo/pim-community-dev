@@ -1,17 +1,20 @@
 import React, {useCallback, useMemo} from 'react';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {PageContent, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributesIllustration, Button, Helper, Placeholder, Table} from 'akeneo-design-system';
 import {useGetGenerators} from '../hooks';
 import {LabelCollection} from '../models';
 import {Styled} from './styles/ListPageStyled';
 import {ListSkeleton} from '../components/ListSkeleton';
 import {Header} from '../components/Header';
+import {useHistory} from 'react-router-dom';
+import {upperCase} from 'lodash';
 
 type ListPageProps = {
   onCreate: () => void;
 };
 
 const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
+  const history = useHistory();
   const translate = useTranslate();
   const {data: generators = [], isLoading} = useGetGenerators();
   const locale = useUserContext().get('catalogLocale');
@@ -21,6 +24,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
     [locale]
   );
+  const goToEditPage = (code: string) => () => history.push(`/${code}`);
   const helpCenterUrl = 'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html';
 
   return (
@@ -30,7 +34,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
           {translate('pim_common.create')}
         </Button>
       </Header>
-      <Styled.Container>
+      <PageContent>
         <Table>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
@@ -67,18 +71,18 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                   </td>
                 </tr>
                 {generators?.map(({labels, code, target}) => (
-                  <Table.Row key={code}>
+                  <Table.Row key={code} onClick={goToEditPage(code)}>
                     <Table.Cell>
                       <Styled.Label>{getCurrentLabel(labels, code)}</Styled.Label>
                     </Table.Cell>
-                    <Table.Cell>{target}</Table.Cell>
+                    <Table.Cell colSpan={2}>{upperCase(target)}</Table.Cell>
                   </Table.Row>
                 ))}
               </>
             )}
           </Table.Body>
         </Table>
-      </Styled.Container>
+      </PageContent>
     </>
   );
 };

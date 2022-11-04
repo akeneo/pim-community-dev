@@ -7,10 +7,6 @@ const HelpCenterLink = styled.a`
   margin-top: 5px;
 `;
 
-const Container = styled.div`
-  margin: 40px 20px;
-`;
-
 const Label = styled.label`
   font-style: italic;
   color: ${getColor('brand', 100)};
@@ -18,7 +14,6 @@ const Label = styled.label`
 
 const Styled = {
   HelpCenterLink,
-  Container,
   Label,
 };
 

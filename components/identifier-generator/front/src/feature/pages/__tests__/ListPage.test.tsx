@@ -4,9 +4,19 @@ import {ListPage} from '../ListPage';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 import {useGetGenerators} from '../../hooks/useGetGenerators';
 import {mocked} from 'ts-jest/utils';
+import {fireEvent} from '@testing-library/react';
 
 jest.mock('../../hooks/useGetGenerators', () => ({
   useGetGenerators: jest.fn(),
+}));
+
+const mockHistoryPush = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useHistory: () => ({
+    push: mockHistoryPush,
+  }),
 }));
 
 const mockedList: IdentifierGenerator[] = [
@@ -48,5 +58,27 @@ describe('ListPage', () => {
     expect(screen.queryByText('pim_identifier_generator.list.first_generator')).not.toBeInTheDocument();
 
     expect(screen.getByText('[test]')).toBeVisible();
+  });
+
+  it('should redirect to edit page on list item click', async () => {
+    mocked(useGetGenerators).mockReturnValue({
+      data: mockedList,
+      isLoading: false,
+    });
+
+    render(<ListPage onCreate={jest.fn()} />);
+
+    await waitFor(() => {
+      expect(screen.queryByText('pim_identifier_generator.list.create_info')).toBeVisible();
+    });
+
+    const rows = screen.getAllByRole('row');
+    expect(rows.length).toBe(3);
+
+    fireEvent.click(rows[2]);
+    await waitFor(() => {
+      expect(mockHistoryPush).toHaveBeenCalledTimes(1);
+      expect(mockHistoryPush).toHaveBeenCalledWith('/test');
+    });
   });
 });
