@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use PHPUnit\Framework\Assert;
@@ -135,7 +136,7 @@ class GetProductActionTest extends IntegrationTestCase
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
-    public function testItReturnsAnErrorhenCatalogIsDisabled(): void
+    public function testItReturnsAnErrorWhenCatalogIsDisabled(): void
     {
         $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
@@ -160,5 +161,53 @@ class GetProductActionTest extends IntegrationTestCase
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertArrayHasKey('error', $result);
         Assert::assertIsString($result['error']);
+    }
+
+    public function testItReturnsAnErrorWhenCatalogIsInvalid(): void
+    {
+        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $this->createCatalog($catalogId, 'Store US', 'shopifi');
+        $this->enableCatalog($catalogId);
+
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_multiselect',
+            'options' => ['red', 'blue'],
+        ]);
+        $this->setCatalogProductSelection($catalogId, [
+            [
+                'field' => 'color',
+                'operator' => Operator::IN_LIST,
+                'value' => ['red'],
+                'scope' => null,
+                'locale' => null,
+            ],
+        ]);
+
+        $product = $this->createProduct('blue', [
+            new SetEnabled(true),
+        ]);
+        $productUuid = (string) $product->getUuid();
+
+        $this->removeAttributeOption('color.red');
+
+        $this->client->request(
+            'GET',
+            "/api/rest/v1/catalogs/$catalogId/products/$productUuid",
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertArrayHasKey('error', $result);
+        Assert::assertIsString($result['error']);
+        Assert::assertFalse($this->getCatalog($catalogId)->isEnabled());
     }
 }
