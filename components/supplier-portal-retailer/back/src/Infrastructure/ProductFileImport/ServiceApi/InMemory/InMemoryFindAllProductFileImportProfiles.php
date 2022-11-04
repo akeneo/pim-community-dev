@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImport;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImport;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemoryFindAllProductFileImportProfiles;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryFindAllProductFileImportProfiles;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
