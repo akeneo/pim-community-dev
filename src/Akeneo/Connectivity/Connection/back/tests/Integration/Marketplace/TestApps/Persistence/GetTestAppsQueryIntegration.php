@@ -55,7 +55,7 @@ class GetTestAppsQueryIntegration extends TestCase
         $this->assertEmpty($results);
     }
 
-    public function test_it_returns__only_test_apps_for_the_requested_user(): void
+    public function test_it_returns_only_test_apps_for_the_requested_user(): void
     {
         $userA = $this->userLoader->createUser('userA', ['userGroupA'], ['ROLE_APP_A']);
         $userB = $this->userLoader->createUser('userB', ['userGroupB'], ['ROLE_APP_B']);
