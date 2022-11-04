@@ -46,7 +46,7 @@ const FIRESTORE_STATUS = {
 let firestoreCollection = null;
 let logger = null;
 
-function initializeLogger(branchName, instanceName) {
+function initializeLogger(branchName, pfid) {
   logger = createLogger({
     level: process.env.LOG_LEVEL,
     defaultMeta: {
@@ -56,7 +56,7 @@ function initializeLogger(branchName, instanceName) {
       gcpProjectId: process.env.GCP_PROJECT_ID,
       gcpProjectFirestoreId: process.env.GCP_FIRESTORE_PROJECT_ID,
       branchName: branchName,
-      tenant: instanceName
+      tenant: pfid
     },
     format: format.combine(
       format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
@@ -486,14 +486,16 @@ functions.http('createTenant', (req, res) => {
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
     const instanceName = body.instanceName;
+    const extraLabelType = 'srnt';
+    const pfid = `${extraLabelType}-${instanceName}`;
     const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE + "-" + branchName.toLowerCase());
 
     firestoreCollection = `${process.env.REGION}/${pimNamespace}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
-    initializeLogger(branchName, instanceName);
+    initializeLogger(branchName, pfid);
 
     // Ensure the json object in the http request body respects the expected schema
-    logger.info('Validation of the JSON schema of the request body');
+    logger.debug('Validation of the JSON schema of the request body');
     logger.debug(`HTTP request JSON body: ${JSON.stringify(req.body)}`);
 
     const schemaCheck = v.validate(body, schema);
@@ -507,8 +509,6 @@ functions.http('createTenant', (req, res) => {
 
     const dnsCloudDomain = body.dnsCloudDomain;
     const pim_edition = body.pim_edition;
-    const extraLabelType = 'srnt';
-    const pfid = `${extraLabelType}-${instanceName}`;
     const pimMasterDomain = `${instanceName}.${dnsCloudDomain}`;
 
     logger.debug('Initialize the firestore client');
@@ -555,7 +555,7 @@ functions.http('createTenant', (req, res) => {
             pimMasterDomain: pimMasterDomain,
             dnsCloudDomain: dnsCloudDomain,
             workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
-            tenantContext: firestoreCollection ,
+            tenantContext: firestoreCollection,
           },
           elasticsearch: {
             client: {
@@ -668,7 +668,7 @@ functions.http('createTenant', (req, res) => {
 
     const createTenant = async () => {
       const parameters = await prepareTenantCreation();
-      await updateFirestoreDoc(firestore, instanceName, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
+      await updateFirestoreDoc(firestore, pfid, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
         AKENEO_PIM_URL: `https://${instanceName}.${parameters.pim.dnsCloudDomain}`,
         APP_DATABASE_HOST: `pim-mysql.${pfid}.svc.cluster.local`,
         APP_DATABASE_PASSWORD: parameters.mysql.mysql.userPassword,
@@ -689,30 +689,30 @@ functions.http('createTenant', (req, res) => {
       const payload = castYamlToJson(manifest);
       const token = await getArgoCdToken();
       await createArgoCdApp(token, payload);
-      await ensureArgoCdAppIsHealthy(token, instanceName);
-      await ensureArgoCdAppIsSynced(token, instanceName);
+      await ensureArgoCdAppIsHealthy(token, pfid);
+      await ensureArgoCdAppIsSynced(token, pfid);
     }
 
     createTenant(res)
       .then(async () => {
-        await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.CREATED);
+        await updateFirestoreDocStatus(firestore, pfid, FIRESTORE_STATUS.CREATED);
 
         logger.info('Tenant is created');
 
         // TODO : notify the portal with 'activated' status
         res.status(200).json({
           status_code: 200,
-          message: `Successfully created the tenant ${instanceName}`
+          message: `Successfully created the tenant ${pfid}`
         })
       })
       .catch(async (error) => {
         logger.error(error);
         // TODO: only update status field when decryption is released (PH-247)
-        await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.CREATION_FAILED);
+        await updateFirestoreDocStatus(firestore, pfid, FIRESTORE_STATUS.CREATION_FAILED);
 
         res.status(500).json({
           status_code: 500,
-          message: `Failed to create the tenant ${instanceName}: ${error}`
+          message: `Failed to create the tenant ${pfid}: ${error}`
         })
       });
   }

@@ -18,15 +18,16 @@ const path = require('path');
 const loggingWinston = new LoggingWinston();
 
 let logger = null;
+let token = null;
 
 const NODE_ENV_DEVELOPMENT = 'development';
-
 const DEFAULT_BRANCH_NAME = 'master';
 const DEFAULT_PIM_NAMESPACE = 'pim';
 
 const TENANT_STATUS = {
   ACTIVATED: 'activated',
-  PENDING_CREATION: 'pending_creation',
+  DELETED: 'deleted',
+  PENDING_ACTIVATION: 'pending_activation',
   PENDING_DELETION: 'pending_deletion'
 }
 
@@ -87,8 +88,7 @@ function initializeLogger(branchName) {
 }
 
 function prefixUrlWithBranchName(url, branchName) {
-
-  return (branchName === DEFAULT_BRANCH_NAME ? url : url+'/' + branchName + '/');
+  return (branchName === DEFAULT_BRANCH_NAME ? url : url + '/' + branchName + '/');
 }
 
 async function refreshAccessToken(branchName) {
@@ -103,7 +103,7 @@ async function refreshAccessToken(branchName) {
       }
     });
     const response = await instance.post('auth/realms/connect/protocol/openid-connect/token', payload);
-    const token = response.data.access_token;
+    token = response.data.access_token;
     if (!token) {
       return Promise.reject('Received access token from the portal is undefined!');
     }
@@ -115,10 +115,9 @@ async function refreshAccessToken(branchName) {
   }
 }
 
-async function requestTenantsFromPortal(branchName, status, filters) {
-  const token = await refreshAccessToken(branchName);
+async function requestTenantsFromPortal(branchName, status, filter) {
   const instance = axios.create({
-    baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME,  branchName) + '/api/v2/',
+    baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME, branchName) + '/api/v2/',
     timeout: 10000,
     headers: {
       'Authorization': 'Bearer ' + token,
@@ -133,17 +132,23 @@ async function requestTenantsFromPortal(branchName, status, filters) {
 
     if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const accessToken = await refreshAccessToken(branchName);
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+      token = await refreshAccessToken(branchName);
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
       return instance(originalRequest);
     }
 
     return Promise.reject(error);
   });
 
-  const response = await instance.get(`console/requests/${status}?${filters}`);
-
-  //logger.debug('response: ' + response);
+  // Remove keys with empty values from the filter
+  Object.keys(filter).forEach(key => {
+    if (!filter[key]) {
+      delete filter[key];
+    }
+  });
+  const url = `console/requests/${status}?${new URLSearchParams(filter)}`;
+  logger.debug(`GET - ${url}`)
+  const response = await instance.get(`console/requests/${status}?${new URLSearchParams(filter)}`);
   return Promise.resolve(response.data);
 }
 
@@ -177,18 +182,15 @@ async function requestCloudFunction(url, method, data = null) {
 
 /**
  * Update an instance status in the portal with a status and an optional status message
+ * @param branchName
  * @param instanceName
  * @param instanceId
  * @param status
- * @param statusMessage
  * @returns {Promise<AxiosResponse<any>>}
  */
-async function updateInstanceStatusInPortal(instanceName, instanceId, status, statusMessage = "") {
-  try {
-    const token = await refreshAccessToken();
-
+async function updateInstanceStatusInPortal(branchName, instanceName, instanceId, status) {
     const instance = axios.create({
-      baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME) + '/api/v2/',
+      baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME, branchName) + '/api/v2/',
       timeout: 10000,
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -203,8 +205,8 @@ async function updateInstanceStatusInPortal(instanceName, instanceId, status, st
 
       if (error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true;
-        const accessToken = await refreshAccessToken();
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+        token = await refreshAccessToken(branchName);
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         return instance(originalRequest);
       }
 
@@ -212,12 +214,7 @@ async function updateInstanceStatusInPortal(instanceName, instanceId, status, st
     });
 
     logger.info(`Update the \`${instanceName}\` instance (id=${instanceId}) in the portal with \`${status}\` status`);
-
-    return instance.patch(`console/instances/${instanceId}/status/${status}/${encodeURIComponent(statusMessage)}`);
-  } catch (error) {
-    logger.error(`Failed to update ${instanceName} instance (id=${instanceId}) in the portal with \`${status}\` status: ${error}`);
-    return Promise.reject(error);
-  }
+    return await instance.patch(`console/instances/${instanceId}/status/${status}`);
 }
 
 functions.http('requestPortal', (req, res) => {
@@ -244,32 +241,34 @@ functions.http('requestPortal', (req, res) => {
   logger.info('Recovery of the tenants from the portal');
 
   const tenantsToCreate = async () => {
-    const tenants = await requestTenantsFromPortal(branchName, TENANT_STATUS.PENDING_CREATION, new URLSearchParams({
+    const tenants = await requestTenantsFromPortal(branchName, TENANT_STATUS.PENDING_ACTIVATION, {
       subject_type: process.env.TENANT_EDITION_FLAGS,
       continent: process.env.TENANT_CONTINENT,
       environment: process.env.TENANT_ENVIRONMENT
-    }));
+    });
+
+    logger.debug(`Recovered tenants from the portal: ${JSON.stringify(tenants)}`);
 
     await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
-      const cloudInstance = subject['cloud_instance'];
-      const instanceId = cloudInstance['id'];
+      const instanceId = subject['id'];
       const instanceName = subject['instance_fqdn']['prefix'];
-      const dnsCloudDomain = subject['instance_fqdn']['suffix'];
-      const administrator = cloudInstance['administrator'];
+      const administrator = subject['administrator'];
+
+      logger.debug(`Prepare creation of the  \`${instanceName}\` tenant (id=${instanceId})`);
 
       const payload = {
         branchName: branchName,
-        instanceName: instanceName,
+        instanceName: subject['instance_fqdn']['prefix'],
         pim_edition: process.env.TENANT_EDITION_FLAGS,
-        dnsCloudDomain: dnsCloudDomain,
+        dnsCloudDomain: subject['instance_fqdn']['suffix'],
         pim: {
           defaultAdminUser: {
             login: administrator['email'],
             firstName: administrator['first_name'],
             lastName: administrator['last_name'],
             email: administrator['email'],
-            uiLocale: cloudInstance['locale']
+            uiLocale: subject['locale']
           },
           api: {
             namespace: pimNamespace
@@ -279,50 +278,61 @@ functions.http('requestPortal', (req, res) => {
           }
         }
       };
-      logger.debug("Prepared payload to send for tenant creation: " + JSON.stringify(payload));
+      logger.debug(`Prepared payload to send for the \`${instanceName}\` (id=${instanceId}) tenant creation: ${JSON.stringify(payload)}`);
 
-      logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant`);
       try {
-        await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", payload)
-          .then((response) => {
-            logger.info(`Tenant ${instanceName} is created: ${response.data}`);
-            updateInstanceStatusInPortal(instanceName, instanceId, TENANT_STATUS.ACTIVATED);
-          })
+        logger.info(`Call the cloud function ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant \`${instanceName}\` (id=${instanceId})`);
+        await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", payload);
+        logger.info(`Successfully created tenant \`${instanceName}\` (id=${instanceId})`);
+
+        try {
+          await updateInstanceStatusInPortal(branchName, instanceName, instanceId, TENANT_STATUS.ACTIVATED);
+        } catch(error) {
+          logger.error(`Failed to update tenant \`${instanceName}\` (id=${instanceId}) status to ${TENANT_STATUS.ACTIVATED} in the portal: ${JSON.stringify(error)}`);
+        }
 
       } catch (error) {
-        logger.error(`Failed to call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant: ${JSON.stringify(error)}`);
+        logger.error(`Failed to call the cloud function ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant: ${JSON.stringify(error)}`);
       }
     }));
   }
 
   const tenantsToDelete = async () => {
-    const tenants = await requestTenantsFromPortal(branchName, TENANT_STATUS.PENDING_DELETION, new URLSearchParams({
+    const tenants = await requestTenantsFromPortal(branchName, TENANT_STATUS.PENDING_DELETION, {
       subject_type: process.env.TENANT_EDITION_FLAGS,
       continent: process.env.TENANT_CONTINENT,
       environment: process.env.TENANT_ENVIRONMENT
-    }));
+    });
 
     await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
       const instanceName = subject['instance_fqdn']['prefix'];
+      const instanceId = subject['id'];
 
       try {
-        logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant`);
-        const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_DELETE_TENANT, "POST", {
+        logger.info(`Call the cloud function ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant \`${instanceName}\` (id=${instanceId})`)
+        await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_DELETE_TENANT, "POST", {
           instanceName: instanceName,
           branchName: branchName
         });
+        logger.info(`Successfully deleted the tenant \`${instanceName}\` (id=${instanceId})`);
 
-        logger.info(`Tenant ${instanceName} is deleted: ${response.data}`);
+        try {
+          await updateInstanceStatusInPortal(branchName, instanceName, instanceId, TENANT_STATUS.DELETED);
+        } catch(error) {
+          logger.error(`Failed to update tenant \`${instanceName}\` (id=${instanceId}) status to ${TENANT_STATUS.DELETED} in the portal: ${JSON.stringify(error)}`);
+        }
+
       } catch (error) {
-        logger.error(`Failed to call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant: ${JSON.stringify(error)}`);
+        logger.error(`Failed to call the cloud function ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant: ${JSON.stringify(error)}`);
       }
     }));
   }
 
   const dispatchActions = async () => {
+    token = await refreshAccessToken(branchName);
     logger.info('Dispatch action to provisioning cloud functions');
-    await Promise.all([tenantsToCreate(), tenantsToDelete()]);
+    await Promise.allSettled([tenantsToDelete()]);
   }
 
   dispatchActions(res)
