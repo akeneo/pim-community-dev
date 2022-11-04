@@ -1,8 +1,8 @@
 import React from 'react';
-import {Breadcrumb, Button, ImportXlsxIllustration, TabBar, useTabBar} from 'akeneo-design-system';
+import {Breadcrumb, ImportXlsxIllustration, TabBar, useTabBar} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {useHistory, useParams} from 'react-router';
-import {Discussion} from './components';
+import {Discussion, ProductFileImportConfigurationsModal} from './components';
 import {useProductFile} from './hooks/useProductFile';
 import styled from 'styled-components';
 
@@ -49,11 +49,7 @@ const ShowProductFile = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
-                    <Button level={'primary'}>
-                        {translate(
-                            'supplier_portal.product_file_dropping.supplier_files.discussion.import_file_button_label'
-                        )}
-                    </Button>
+                    <ProductFileImportConfigurationsModal />
                 </PageHeader.Actions>
                 <PageHeader.Title>{productFile.originalFilename}</PageHeader.Title>
                 <PageHeader.Content>

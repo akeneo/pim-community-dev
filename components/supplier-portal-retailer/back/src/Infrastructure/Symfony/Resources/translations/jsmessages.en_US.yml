@@ -107,6 +107,16 @@ supplier_portal:
                 max_comment_length_reached: The comment should not exceed 255 characters.
                 max_number_of_comments_reached: You've reached the comment limit.
                 product_file_does_not_exist_anymore: Sorry this product file has been automatically deleted after 90 days and cannot be accessed anymore.
+            product_files_modal:
+                title: Product file
+                subtitle: Select the tailored import profile
+                import_field_label: Import
+                select_import_placeholder: Select a tailored import
+                import_button_label: Import now
+                error_loading_product_import_profiles:
+                    title: We are not able to display the tailored import profiles.
+                    content: Sorry about this inconvenience, please try again in a few moments.
+
         pim_notification:
             button_label: See the product files
 
