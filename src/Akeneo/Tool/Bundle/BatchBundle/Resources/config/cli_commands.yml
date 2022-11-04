@@ -5,8 +5,8 @@ services:
             - '@akeneo_batch.job_repository'
             - '@validator'
             - '@akeneo_batch.mail_notifier'
-            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
-            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
         tags:
             - { name: console.command }
 

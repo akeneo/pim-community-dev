@@ -15,10 +15,10 @@ use Doctrine\ORM\EntityManagerInterface;
  * Execute a JobExecution with the provided ID
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/MIT MIT
  */
-class ExecuteJobExecutionHandler
+class ExecuteJobExecutionHandler implements ExecuteJobExecutionHandlerInterface
 {
     public function __construct(
         private BatchLogHandler $batchLogHandler,
