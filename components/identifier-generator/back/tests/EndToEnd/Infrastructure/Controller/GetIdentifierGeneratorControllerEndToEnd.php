@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndTestCase
+final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndTestCase
 {
     /** @test */
     public function it_should_redirect_on_non_xhr_request(): void
