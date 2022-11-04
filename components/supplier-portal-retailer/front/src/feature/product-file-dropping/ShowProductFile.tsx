@@ -2,7 +2,7 @@ import React from 'react';
 import {Breadcrumb, ImportXlsxIllustration, TabBar, useTabBar} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {useHistory, useParams} from 'react-router';
-import {Discussion, ProductImportProfilesModal} from './components';
+import {Discussion, ProductFileImportConfigurationsModal} from './components';
 import {useProductFile} from './hooks/useProductFile';
 import styled from 'styled-components';
 
@@ -49,7 +49,7 @@ const ShowProductFile = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
-                    <ProductImportProfilesModal />
+                    <ProductFileImportConfigurationsModal />
                 </PageHeader.Actions>
                 <PageHeader.Title>{productFile.originalFilename}</PageHeader.Title>
                 <PageHeader.Content>

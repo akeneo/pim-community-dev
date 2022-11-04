@@ -1,15 +1,19 @@
 import {useCallback, useEffect, useState} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {ProductImportProfile} from '../models/read/ProductImportProfile';
+import {ProductFileImportConfiguration} from '../models/read/ProductFileImportConfiguration';
 
 const useProductFileImports = (isModalOpen: boolean) => {
     const notify = useNotify();
     const translate = useTranslate();
-    const listProductFileImportsRoute = useRoute('supplier_portal_retailer_list_product_file_imports');
-    const [productFiles, setProductFiles] = useState<ProductImportProfile[]>([]);
+    const listProductFileImportConfigurationsRoute = useRoute(
+        'supplier_portal_retailer_list_product_file_import_configurations'
+    );
+    const [productFileImportConfigurations, setProductFileImportConfigurations] = useState<
+        ProductFileImportConfiguration[]
+    >([]);
 
-    const loadProductFileImports = useCallback(async () => {
-        const response = await fetch(listProductFileImportsRoute, {method: 'GET'});
+    const loadProductFileImportConfigurations = useCallback(async () => {
+        const response = await fetch(listProductFileImportConfigurationsRoute, {method: 'GET'});
 
         if (!response.ok) {
             notify(
@@ -25,18 +29,18 @@ const useProductFileImports = (isModalOpen: boolean) => {
         }
 
         const responseBody = await response.json();
-        setProductFiles(responseBody);
-    }, [listProductFileImportsRoute, notify, translate]);
+        setProductFileImportConfigurations(responseBody);
+    }, [listProductFileImportConfigurationsRoute, notify, translate]);
 
     useEffect(() => {
         (async () => {
             if (isModalOpen) {
-                await loadProductFileImports();
+                await loadProductFileImportConfigurations();
             }
         })();
-    }, [isModalOpen, loadProductFileImports]);
+    }, [isModalOpen, loadProductFileImportConfigurations]);
 
-    return {productFiles};
+    return {productFileImportConfigurations};
 };
 
 export {useProductFileImports};

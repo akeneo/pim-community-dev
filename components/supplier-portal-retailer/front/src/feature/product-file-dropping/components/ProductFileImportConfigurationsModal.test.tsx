@@ -2,17 +2,17 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {mockedDependencies, NotificationLevel, renderWithProviders} from '@akeneo-pim-community/shared';
 import userEvent from '@testing-library/user-event';
-import {ProductImportProfilesModal} from './ProductImportProfilesModal';
+import {ProductFileImportConfigurationsModal} from './ProductFileImportConfigurationsModal';
 
 test('it renders only a button to open the modal', () => {
-    renderWithProviders(<ProductImportProfilesModal />);
+    renderWithProviders(<ProductFileImportConfigurationsModal />);
     expect(
         screen.getByText('supplier_portal.product_file_dropping.supplier_files.discussion.import_file_button_label')
     ).toBeInTheDocument();
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 
-test('it renders the modal with a list of product file imports when clicking on the import file button', async () => {
+test('it renders the modal with a list of product file import configurations when clicking on the import file button', async () => {
     global.fetch = jest.fn().mockImplementationOnce(async () => ({
         ok: true,
         json: async () => [
@@ -22,7 +22,7 @@ test('it renders the modal with a list of product file imports when clicking on 
     }));
 
     await act(async () => {
-        renderWithProviders(<ProductImportProfilesModal />);
+        renderWithProviders(<ProductFileImportConfigurationsModal />);
         openModal();
     });
 
@@ -44,14 +44,14 @@ test('it renders the modal with a list of product file imports when clicking on 
     expect(submitButton).toBeEnabled();
 });
 
-test('it warns the user if the product import profiles list cannot be retrieved', async () => {
+test('it warns the user if the product file import configurations list cannot be retrieved', async () => {
     global.fetch = jest.fn().mockImplementationOnce(async () => ({
         ok: false,
     }));
     const notify = jest.spyOn(mockedDependencies, 'notify');
 
     await act(async () => {
-        renderWithProviders(<ProductImportProfilesModal />);
+        renderWithProviders(<ProductFileImportConfigurationsModal />);
         openModal();
     });
 

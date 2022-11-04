@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {Button, Field, ImportXlsxIllustration, Modal, SelectInput, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useProductFileImports} from '../hooks';
-import {ProductImportProfile} from '../models/read/ProductImportProfile';
+import {ProductFileImportConfiguration} from '../models/read/ProductFileImportConfiguration';
 
-const ProductImportProfilesModal = () => {
+const ProductFileImportConfigurationsModal = () => {
     const translate = useTranslate();
     const [isModalOpen, openModal, closeModal] = useBooleanState(false);
     const [selectedProfile, setProfile] = useState<string | null>(null);
-    const {productFiles} = useProductFileImports(isModalOpen);
+    const {productFileImportConfigurations} = useProductFileImports(isModalOpen);
 
     const onClose = () => {
         setProfile(null);
@@ -42,15 +42,17 @@ const ProductImportProfilesModal = () => {
                             )}
                             openLabel=""
                         >
-                            {productFiles &&
-                                productFiles.map((productImportProfile: ProductImportProfile) => (
-                                    <SelectInput.Option
-                                        value={productImportProfile.code}
-                                        key={productImportProfile.code}
-                                    >
-                                        {productImportProfile.label}
-                                    </SelectInput.Option>
-                                ))}
+                            {productFileImportConfigurations &&
+                                productFileImportConfigurations.map(
+                                    (productFileImportConfiguration: ProductFileImportConfiguration) => (
+                                        <SelectInput.Option
+                                            value={productFileImportConfiguration.code}
+                                            key={productFileImportConfiguration.code}
+                                        >
+                                            {productFileImportConfiguration.label}
+                                        </SelectInput.Option>
+                                    )
+                                )}
                         </SelectInput>
                     </Field>
                     <Modal.BottomButtons>
@@ -69,4 +71,4 @@ const ProductImportProfilesModal = () => {
     );
 };
 
-export {ProductImportProfilesModal};
+export {ProductFileImportConfigurationsModal};
