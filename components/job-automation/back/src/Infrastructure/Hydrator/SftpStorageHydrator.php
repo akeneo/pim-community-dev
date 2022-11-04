@@ -27,6 +27,7 @@ final class SftpStorageHydrator implements StorageHydratorInterface
             $normalizedStorage['username'],
             $normalizedStorage['password'],
             $normalizedStorage['file_path'],
+            $normalizedStorage['fingerprint'] ?? null,
         );
     }
 

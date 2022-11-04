@@ -44,15 +44,16 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         $encryptionKey = $this->getEncryptionKey($storage);
 
         $connection = new SftpConnectionProvider(
-            $storage->getHost(),
-            $storage->getUsername(),
-            $this->encrypter->decrypt($storage->getPassword(), $encryptionKey),
-            null,
-            null,
-            $storage->getPort(),
-            self::USE_AGENT,
-            self::TIMEOUT,
-            self::MAX_RETRIES,
+            host: $storage->getHost(),
+            username: $storage->getUsername(),
+            password: $this->encrypter->decrypt($storage->getPassword(), $encryptionKey),
+            privateKey: null,
+            passphrase: null,
+            port: $storage->getPort(),
+            useAgent: self::USE_AGENT,
+            timeout: self::TIMEOUT,
+            maxTries: self::MAX_RETRIES,
+            hostFingerprint: $storage->getFingerprint(),
         );
 
         return new FileSystemStorageClient(new Filesystem(new SftpAdapter($connection, '')));
@@ -70,15 +71,16 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         }
 
         return new SftpConnectionProvider(
-            $storage->getHost(),
-            $storage->getUsername(),
-            $storage->getPassword(),
-            null,
-            null,
-            $storage->getPort(),
-            self::USE_AGENT,
-            self::TIMEOUT,
-            self::MAX_RETRIES,
+            host: $storage->getHost(),
+            username: $storage->getUsername(),
+            password: $storage->getPassword(),
+            privateKey: null,
+            passphrase: null,
+            port: $storage->getPort(),
+            useAgent: self::USE_AGENT,
+            timeout: self::TIMEOUT,
+            maxTries: self::MAX_RETRIES,
+            hostFingerprint: $storage->getFingerprint(),
         );
     }
 
