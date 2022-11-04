@@ -17,6 +17,12 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Pim\Enrichment\Bundle\Command\TmpAddUniqueData:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
     akeneo.pim.enrichment.command.index_product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand'
         arguments:
