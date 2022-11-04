@@ -4,7 +4,7 @@ import {buildNodesFromCategoryTree} from '../../helpers';
 
 type CategoryTreeState = {
   nodes: TreeNode<CategoryTreeModel>[];
-  setNodes:  React.Dispatch<React.SetStateAction<TreeNode<CategoryTreeModel>[]>>;
+  setNodes: React.Dispatch<React.SetStateAction<TreeNode<CategoryTreeModel>[]>>;
 };
 
 const CategoryTreeContext = createContext<CategoryTreeState>({

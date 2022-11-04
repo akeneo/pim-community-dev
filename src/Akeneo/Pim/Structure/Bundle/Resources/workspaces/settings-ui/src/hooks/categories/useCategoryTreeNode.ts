@@ -207,7 +207,7 @@ const useCategoryTreeNode = (id: number) => {
   // When a category is created inside the node, force reload children and open it.
   const onCreateCategory = useCallback(() => {
     if (node) {
-      setNodes((nodes) => {
+      setNodes(nodes => {
         const updatedNodes = update(nodes, {
           ...node,
           childrenStatus: 'to-reload',
@@ -235,8 +235,8 @@ const useCategoryTreeNode = (id: number) => {
       });
 
       return arrayUnique<TreeNode<CategoryTreeModel>>(
-          [...updatedNodes, ...newChildren],
-          (node, currentNode) => node.identifier === currentNode.identifier
+        [...updatedNodes, ...newChildren],
+        (node, currentNode) => node.identifier === currentNode.identifier
       );
     });
   }, [childrenData]);
