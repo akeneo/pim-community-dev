@@ -8,12 +8,15 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\Comment
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileForSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileHandlerForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailer;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
@@ -35,6 +38,7 @@ final class ProductFileDroppingContext implements Context
         private GetProductFileWithComments $getProductFileWithComments,
         private CommentProductFileHandlerForSupplier $commentProductFileHandlerForSupplier,
         private MarkCommentsAsReadBySupplierHandler $markCommentsAsReadBySupplierHandler,
+        private MarkCommentsAsReadByRetailerHandler $markCommentsAsReadByRetailerHandler,
     ) {
     }
 
@@ -72,9 +76,9 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
-     * @Given a product file with 50 comments
+     * @Given a product file with 50 retailer comments
      */
-    public function aProductFileWithFifyComments(): void
+    public function aProductFileWithFiftyRetailerComments(): void
     {
         $this->productFileIdentifier = '893e5eab-d85c-4c47-9c4f-3afc17d6b1eb';
 
@@ -97,11 +101,49 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
-     * @Given contributors have not read the comments yet
+     * @Given a product file with 50 supplier comments
      */
-    public function contributorsHaveNotReadTheCommentsYet(): void
+    public function aProductFileWithFiftySupplierComments(): void
     {
-        $productFile = $this->productFileRepository->findProductFileWithUnreadComments(Identifier::fromString($this->productFileIdentifier));
+        $this->productFileIdentifier = '893e5eab-d85c-4c47-9c4f-3afc17d6b1eb';
+
+        $productFile = (new ProductFileBuilder())
+            ->withIdentifier($this->productFileIdentifier)
+            ->uploadedBySupplier(
+                new Supplier(
+                    'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                    'supplier_code',
+                    'Supplier label',
+                ),
+            )
+            ->build();
+
+        for ($i = 0; 50 > $i; $i++) {
+            $productFile->addNewSupplierComment('foo', 'jimmy@supplier.com', new \DateTimeImmutable());
+        }
+
+        $this->productFileRepository->save($productFile);
+    }
+
+    /**
+     * @Given supplier contributors have not read the comments yet
+     */
+    public function supplierContributorsHaveNotReadTheCommentsYet(): void
+    {
+        $productFile = $this->productFileRepository->findProductFileWithUnreadCommentsFromRetailer(
+            Identifier::fromString($this->productFileIdentifier),
+        );
+        Assert::assertNull($productFile['commentslastReadDate']);
+    }
+
+    /**
+     * @Given retailers have not read the comments yet
+     */
+    public function retailersHaveNotReadTheCommentsYet(): void
+    {
+        $productFile = $this->productFileRepository->findProductFileWithUnreadCommentsFromSupplier(
+            Identifier::fromString($this->productFileIdentifier),
+        );
         Assert::assertNull($productFile['commentslastReadDate']);
     }
 
@@ -174,13 +216,59 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
-     * @When a contributor marks all comments of a product file as read
+     * @When a supplier contributor marks all comments of a product file as read
      */
-    public function aContributorMarksAllCommentsAsRead(): void
+    public function aSupplierContributorMarksAllCommentsAsRead(): void
     {
         ($this->markCommentsAsReadBySupplierHandler)(
             new MarkCommentsAsReadBySupplier($this->productFileIdentifier, new \DateTimeImmutable())
         );
+    }
+
+    /**
+     * @When a retailer marks all comments of a product file as read
+     */
+    public function aRetailerMarksAllCommentsAsRead(): void
+    {
+        ($this->markCommentsAsReadByRetailerHandler)(
+            new MarkCommentsAsReadByRetailer($this->productFileIdentifier, new \DateTimeImmutable())
+        );
+    }
+
+    /**
+     * @When a supplier contributor try to mark comments of an unknown product file as read
+     */
+    public function aSupplierContributorTryToMarkCommentsOfAnUnknownProductFileAsRead(): void
+    {
+        try {
+            ($this->markCommentsAsReadBySupplierHandler)(
+                new MarkCommentsAsReadBySupplier('f7555f61-2ea6-4b0e-88f2-737e504e7b95', new \DateTimeImmutable())
+            );
+        } catch (ProductFileDoesNotExist $e) {
+            $this->exception = $e;
+        }
+    }
+
+    /**
+     * @When a retailer try to mark comments of an unknown product file as read
+     */
+    public function aRetailerTryToMarkCommentsOfAnUnknownProductFileAsRead(): void
+    {
+        try {
+            ($this->markCommentsAsReadByRetailerHandler)(
+                new MarkCommentsAsReadByRetailer('f7555f61-2ea6-4b0e-88f2-737e504e7b95', new \DateTimeImmutable())
+            );
+        } catch (ProductFileDoesNotExist $e) {
+            $this->exception = $e;
+        }
+    }
+
+    /**
+     * @Then it should have throw an exception
+     */
+    public function itShouldHavethrowAProductFileDoesNotExistException(): void
+    {
+        Assert::assertInstanceOf(ProductFileDoesNotExist::class, $this->exception);
     }
 
     /**
@@ -230,11 +318,46 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
-     * @Then all comments should be marked as read for this product file
+     * @Then all retailer comments should be marked as read for this product file
      */
-    public function allCommentsShouldBeMarkedAsRead(): void
+    public function allRetailerCommentsShouldBeMarkedAsRead(): void
     {
-        $productFile = $this->productFileRepository->findProductFileWithUnreadComments(Identifier::fromString($this->productFileIdentifier));
+        $productFile = $this->productFileRepository->findProductFileWithUnreadCommentsFromRetailer(
+            Identifier::fromString($this->productFileIdentifier),
+        );
         Assert::assertInstanceOf(\DateTimeImmutable::class, $productFile['commentslastReadDate']);
+    }
+
+    /**
+     * @Then all supplier comments should be marked as read for this product file
+     */
+    public function allSupplierCommentsShouldBeMarkedAsRead(): void
+    {
+        $productFile = $this->productFileRepository->findProductFileWithUnreadCommentsFromSupplier(
+            Identifier::fromString($this->productFileIdentifier),
+        );
+        Assert::assertInstanceOf(\DateTimeImmutable::class, $productFile['commentslastReadDate']);
+    }
+
+    /**
+     * @Then retailer comments shouldn't be marked as read for this product file
+     */
+    public function retailerCommentsShouldNotBeMarkedAsRead(): void
+    {
+        $productFile = $this->productFileRepository->findProductFileWithUnreadCommentsFromRetailer(
+            Identifier::fromString($this->productFileIdentifier),
+        );
+        Assert::assertNull($productFile['commentslastReadDate']);
+    }
+
+    /**
+     * @Then supplier comments shouldn't be marked as read for this product file
+     */
+    public function supplierCommentsShouldNotBeMarkedAsRead(): void
+    {
+        $productFile = $this->productFileRepository->findProductFileWithUnreadCommentsFromSupplier(
+            Identifier::fromString($this->productFileIdentifier),
+        );
+        Assert::assertNull($productFile['commentslastReadDate']);
     }
 }
