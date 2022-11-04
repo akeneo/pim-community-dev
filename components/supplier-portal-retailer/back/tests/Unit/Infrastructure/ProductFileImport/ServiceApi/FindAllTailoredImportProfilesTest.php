@@ -6,8 +6,8 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileImp
 
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImport;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\FindAllTailoredImportProfiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImportConfiguration;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\FindAllTailoredImportConfigurations;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
 use PHPUnit\Framework\TestCase;
 
@@ -26,11 +26,11 @@ final class FindAllTailoredImportProfilesTest extends TestCase
                 new JobInstance('import2', 'Import 2'),
             ]);
 
-        $sut = new FindAllTailoredImportProfiles($findJobInstances);
+        $sut = new FindAllTailoredImportConfigurations($findJobInstances);
 
         $this->assertEquals([
-            new ProductFileImport('import1', 'Import 1'),
-            new ProductFileImport('import2', 'Import 2'),
+            new ProductFileImportConfiguration('import1', 'Import 1'),
+            new ProductFileImportConfiguration('import2', 'Import 2'),
         ], ($sut)());
     }
 }

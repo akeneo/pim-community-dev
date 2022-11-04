@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImport;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryFindAllProductFileImportProfiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImportConfiguration;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryFindAllProductFileImportConfigurations;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
@@ -14,36 +14,36 @@ final class ProductFileImportContext implements Context
     private array $productFileImports = [];
 
     public function __construct(
-        private InMemoryFindAllProductFileImportProfiles $findAllProductFileImportProfiles,
+        private InMemoryFindAllProductFileImportConfigurations $findAllProductFileImportProfiles,
     ) {
     }
 
     /**
-     * @Given there is no product file imports
+     * @Given there is no product file import configuration
      */
-    public function thereIsNoProductFileImports(): void
+    public function thereIsNoProductFileImportConfiguration(): void
     {
         Assert::assertEmpty(($this->findAllProductFileImportProfiles)());
     }
 
     /**
-     * @Given there is a product file import ":code"
+     * @Given there is a product file import configuration ":code"
      */
-    public function thereIsAProductFileImport(string $code): void
+    public function thereIsAProductFileImportConfiguration(string $code): void
     {
-        $this->findAllProductFileImportProfiles->add(new ProductFileImport($code, $code));
+        $this->findAllProductFileImportProfiles->add(new ProductFileImportConfiguration($code, $code));
     }
 
     /**
-     * @When I retrieve the product file imports
+     * @When I retrieve the product file import configurations
      */
-    public function iRetrieveTheProductFileImports(): void
+    public function iRetrieveTheProductFileImportConfigurations(): void
     {
         $this->productFileImports = ($this->findAllProductFileImportProfiles)();
     }
 
     /**
-     * @Then I should have an empty list
+     * @Then I should have an empty list of product file import configurations
      */
     public function iShouldHaveAnEmptyList(): void
     {
@@ -51,13 +51,13 @@ final class ProductFileImportContext implements Context
     }
 
     /**
-     * @Then I should have the product file imports :codes
+     * @Then I should have the product file import configurations :codes
      */
-    public function iShouldHaveTheProductFileImports(string $codes): void
+    public function iShouldHaveTheProductFileImportConfigurations(string $codes): void
     {
         $expectedCodes = array_map('trim', explode(',', $codes));
         $actualCodes = array_map(
-            fn (ProductFileImport $productImportProfile) => $productImportProfile->toArray()['code'],
+            fn (ProductFileImportConfiguration $productImportProfile) => $productImportProfile->toArray()['code'],
             $this->productFileImports,
         );
         Assert::assertSame($expectedCodes, $actualCodes);

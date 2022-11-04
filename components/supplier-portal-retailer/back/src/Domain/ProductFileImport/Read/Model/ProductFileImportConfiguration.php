@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model;
 
-final class ProductFileImport
+final class ProductFileImportConfiguration
 {
     public function __construct(private string $code, private string $label)
     {

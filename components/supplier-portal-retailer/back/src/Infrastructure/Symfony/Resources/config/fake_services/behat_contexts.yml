@@ -15,4 +15,4 @@ services:
         - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler'
 
     Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileImportContext:
-        - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports'
+        - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations'

@@ -1,16 +1,16 @@
 services:
-  Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports:
-    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\FindAllTailoredImportProfiles
+  Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations:
+    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\FindAllTailoredImportConfigurations
     arguments:
       - '@Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface'
 
   # Query/Handlers
-  Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportsHandler:
+  Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportConfigurationsHandler:
     arguments:
-      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports'
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations'
 
   # Controllers
-  Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ListProductFileImports:
+  Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ListProductFileImportConfigurations:
     public: true
     arguments:
-      - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportsHandler'
+      - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportConfigurationsHandler'

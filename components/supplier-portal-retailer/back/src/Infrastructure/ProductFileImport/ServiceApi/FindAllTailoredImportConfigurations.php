@@ -7,10 +7,10 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Servic
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImport;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImportConfiguration;
 
-final class FindAllTailoredImportProfiles implements FindAllProductFileImports
+final class FindAllTailoredImportConfigurations implements FindAllProductFileImportConfigurations
 {
     public function __construct(private FindJobInstanceInterface $findJobInstance)
     {
@@ -21,7 +21,7 @@ final class FindAllTailoredImportProfiles implements FindAllProductFileImports
         $jobInstances = $this->findJobInstance->fromQuery(new JobInstanceQuery(['xlsx_tailored_product_import']));
 
         return array_map(
-            fn (JobInstance $jobInstance) => new ProductFileImport($jobInstance->getCode(), $jobInstance->getLabel()),
+            fn (JobInstance $jobInstance) => new ProductFileImportConfiguration($jobInstance->getCode(), $jobInstance->getLabel()),
             $jobInstances,
         );
     }

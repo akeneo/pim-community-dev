@@ -1,4 +1,4 @@
-supplier_portal_retailer_list_product_file_imports:
+supplier_portal_retailer_list_product_file_import_configurations:
     path: /
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ListProductFileImports
