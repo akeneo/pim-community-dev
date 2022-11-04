@@ -86,6 +86,9 @@ $rules = [
             'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
             'Akeneo\UserManagement\Component\Model\User',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery',
 
             // External dependencies coupling
             'OpenSpout\Common\Entity\Row',
@@ -145,6 +148,9 @@ $rules = [
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             'Akeneo\Test\Acceptance\User\InMemoryUserRepository',
             'Akeneo\UserManagement\Component\Model\User',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance',
 
             // External dependencies coupling
             'League\Flysystem\Filesystem',
@@ -178,6 +184,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplier',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryFindAllProductFileImportConfigurations',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
 
