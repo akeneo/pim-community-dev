@@ -207,8 +207,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         size={'small'}
                         onClick={() => {
                           tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree);
-                          }
-                        }
+                        }}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
                         {translate(

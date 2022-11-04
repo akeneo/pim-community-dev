@@ -4,6 +4,8 @@ pim_error:
     unauthorized: "You cannot list attributes. Please contact your administrator to change your rights."
     general: "An error occurred during the display of this page. Please contact your administrator."
     unexpected: "Unexpected error occurred. Please contact system administrator."
+    404: 'A 404 error occured...'
+    identifier_generator_not_found: 'Identifier generator not found'
 pim_identifier_generator:
     create:
         form:

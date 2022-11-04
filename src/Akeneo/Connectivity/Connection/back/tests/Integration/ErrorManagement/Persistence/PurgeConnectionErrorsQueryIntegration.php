@@ -9,7 +9,11 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
+/**
+ * @covers \Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\PurgeConnectionErrorsQuery
+ */
 class PurgeConnectionErrorsQueryIntegration extends TestCase
 {
     private Client $esClient;
@@ -96,6 +100,7 @@ class PurgeConnectionErrorsQueryIntegration extends TestCase
             $datetime = new \DateTime('now');
             for ($i = 0 ; $i < $number ; $i++) {
                 $documents[] = [
+                    'id' => Uuid::uuid4()->toString(),
                     'connection_code' => $connectionCode,
                     'content' => $content,
                     'error_datetime' => $datetime->format(\DateTimeInterface::ATOM),

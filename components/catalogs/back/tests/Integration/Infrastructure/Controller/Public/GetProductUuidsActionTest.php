@@ -80,7 +80,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
             'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals($expectedMessage, $payload['message']);
+        Assert::assertEquals($expectedMessage, $payload['error']);
     }
 
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
@@ -182,7 +182,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
             'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals($expectedMessage, $payload['message']);
+        Assert::assertEquals($expectedMessage, $payload['error']);
         Assert::assertEquals(false, $this->getCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c')->isEnabled());
     }
 }
