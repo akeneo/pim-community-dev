@@ -188,7 +188,7 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier'
         tags:
-            - 'kernel.event_subscriber'
+            - { name: kernel.event_subscriber }
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\SuccessMetrics\Subscriber\LogOnContributorAdded:
         arguments:
@@ -200,6 +200,12 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier'
             - '@monolog.logger.supplier_portal'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\DeleteCommentsOnProductFileDeleted:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
         tags:
             - { name: kernel.event_subscriber }
 
