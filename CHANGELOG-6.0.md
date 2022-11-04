@@ -1,7 +1,8 @@
 # 6.0.x
 
 ## Bug fixes
-PIM-10664 Fix expand/collapse arrow disappearing after category creation
+
+- PIM-10664 Fix expand/collapse arrow disappearing after category creation
 
 # 6.0.51 (2022-11-03)
 
