@@ -4,6 +4,10 @@ import {LocalStorage, SftpStorage, Storage, StorageType, localStorageIsEnabled} 
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 
+type StorageLoginType = 'password' | 'private_key';
+
+const STORAGE_LOGIN_TYPES = ['password', 'private_key'];
+
 type StorageConfiguratorProps = {
   storage: Storage;
   onStorageChange: (storage: Storage) => void;
@@ -48,9 +52,10 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
     'host' in storage &&
     'port' in storage &&
     'username' in storage &&
-    'password' in storage
+    'password' in storage &&
+    'login_type' in storage
   );
 };
 
-export type {StorageConfiguratorProps};
-export {isLocalStorage, isSftpStorage, getStorageConfigurator};
+export type {StorageConfiguratorProps, StorageLoginType};
+export {isLocalStorage, isSftpStorage, getStorageConfigurator, STORAGE_LOGIN_TYPES};

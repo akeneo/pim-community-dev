@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {Field, Helper, NumberInput, Button, CheckIcon, getColor, SelectInput} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
-import {StorageConfiguratorProps, isSftpStorage} from './model';
+import {StorageConfiguratorProps, isSftpStorage, StorageLoginType, STORAGE_LOGIN_TYPES} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
 
 const CheckStorageForm = styled.div`
@@ -18,10 +18,6 @@ const CheckStorageConnection = styled.div`
   color: ${getColor('green', 100)};
 `;
 
-type StorageLoginType = 'password' | 'private_key';
-
-const STORAGE_LOGIN_TYPES = ['password', 'private_key'];
-
 const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: StorageConfiguratorProps) => {
   if (!isSftpStorage(storage)) {
     throw new Error(`Invalid storage type "${storage.type}" for sftp storage configurator`);
@@ -31,20 +27,33 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
   const portValidationErrors = filterErrors(validationErrors, '[port]');
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
 
+    const handleLoginTypeChange = (storageLoginType: string) => {
+        onStorageChange({...storage, login_type: storageLoginType as StorageLoginType});
+    }
+    const handleFilePathChange = (filePath: string) => {
+        onStorageChange({...storage, file_path: filePath});
+    }
+    const handleHostChange = (host: string) => {
+        onStorageChange({...storage, host: host});
+    }
+    const handlePortChange = (port: string) => {
+        onStorageChange({...storage, port: parseInt(port, 10)});
+    }
+
   return (
     <>
       <TextField
         required={true}
         value={storage.file_path}
         label={translate('pim_import_export.form.job_instance.storage_form.file_path.label')}
-        onChange={file_path => onStorageChange({...storage, file_path})}
+        onChange={handleFilePathChange}
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
         required={true}
         value={storage.host}
         label={translate('pim_import_export.form.job_instance.storage_form.host.label')}
-        onChange={host => onStorageChange({...storage, host})}
+        onChange={handleHostChange}
         errors={filterErrors(validationErrors, '[host]')}
       />
       <Field
@@ -55,7 +64,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         <NumberInput
           min={1}
           max={65535}
-          onChange={port => onStorageChange({...storage, port: parseInt(port, 10)})}
+          onChange={handlePortChange}
           invalid={0 < portValidationErrors.length}
           value={storage.port.toString()}
         />
