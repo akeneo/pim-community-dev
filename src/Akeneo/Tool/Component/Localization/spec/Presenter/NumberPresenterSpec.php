@@ -25,7 +25,7 @@ class NumberPresenterSpec extends ObjectBehavior
     ) {
         $numberFactory->create([])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12,000.34');
-        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
+        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(true);
         $this->present(12000.34)->shouldReturn('12,000.34');
     }
 
@@ -35,7 +35,7 @@ class NumberPresenterSpec extends ObjectBehavior
     ) {
         $numberFactory->create(['locale' => 'fr_FR'])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12 000,34');
-        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
+        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(true);
         $this->present(12000.34, ['locale' => 'fr_FR'])->shouldReturn('12 000,34');
     }
 
@@ -46,7 +46,7 @@ class NumberPresenterSpec extends ObjectBehavior
         $numberFactory->create(['disable_grouping_separator' => true])->willReturn($numberFormatter);
         $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '')->willReturn(null);
         $numberFormatter->format(12000.34)->willReturn('12000.34');
-        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
+        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(true);
         $this->present(12000.34, ['disable_grouping_separator' => true])->shouldReturn('12000.34');
     }
 
@@ -56,7 +56,7 @@ class NumberPresenterSpec extends ObjectBehavior
     ) {
         $numberFactory->create(['locale' => 'fr_FR'])->willReturn($numberFormatter);
         $numberFormatter->format(12000.3400887897676)->willReturn('12 000,3400887897676');
-        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
+        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(true);
         $this->present(12000.3400887897676, ['locale' => 'fr_FR'])->shouldReturn('12 000,3400887897676');
     }
 }

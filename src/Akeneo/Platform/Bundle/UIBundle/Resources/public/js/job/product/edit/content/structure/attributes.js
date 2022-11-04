@@ -19,6 +19,8 @@ define([
   'pim/user-context',
   'pim/job/product/edit/content/structure/attributes-selector',
   'pim/analytics',
+  'react',
+  'akeneo-design-system',
 ], function (
   $,
   _,
@@ -31,7 +33,9 @@ define([
   fetcherRegistry,
   UserContext,
   AttributeSelector,
-  analytics
+  analytics,
+  React,
+  {Helper, Link}
 ) {
   return BaseForm.extend({
     className: 'AknFieldContainer attributes',
@@ -120,6 +124,8 @@ define([
       modal.open();
       attributeSelector.setElement('.modal-body').render();
 
+      this.renderModalHelper(modal.$el.find('.header-helper').get(0));
+
       modal.on(
         'ok',
         function () {
@@ -135,6 +141,31 @@ define([
           analytics.track('export-profile:product:attribute-applied');
         }.bind(this)
       );
+    },
+
+    renderModalHelper: function (nodeElement) {
+      if (this.config.helper) {
+        const children = this.config.helper.link
+          ? [
+              __(this.config.helper.text),
+              ' ',
+              React.createElement(
+                Link,
+                {key: 'link', target: '_blank', href: this.config.helper.link.href},
+                __(this.config.helper.link.text)
+              ),
+            ]
+          : __(this.config.helper.text);
+
+        this.renderReact(
+          Helper,
+          {
+            style: {margin: '0 20px 20px'},
+            children,
+          },
+          nodeElement
+        );
+      }
     },
 
     /**

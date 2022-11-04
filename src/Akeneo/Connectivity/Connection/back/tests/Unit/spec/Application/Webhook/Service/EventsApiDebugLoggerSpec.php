@@ -15,6 +15,7 @@ use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -49,28 +50,33 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriptionSkippedOwnEventLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
-            [
-                'timestamp' => 1609459200,
-                'level' => 'info',
-                'message' => 'The API event request was sent.',
-                'connection_code' => 'erp_000',
-                'context' => [
-                    'event_subscription_url' => 'http://my-url.com',
-                    'status_code' => 200,
-                    'headers' => [],
-                    'events' => [
-                        [
-                            "action" => "my_event",
-                            "event_id" => "9979c367-595d-42ad-9070-05f62f31f49b",
-                            "event_datetime" => "1970-01-01T00:00:00+00:00",
-                            "author" => "julia",
-                            "author_type" => "ui",
+            Argument::that(function ($actual) {
+                if (!isset($actual['id']) || !\is_string($actual['id'])) {
+                    return false;
+                }
+                unset($actual['id']);
+                return $actual === [
+                        'timestamp' => 1609459200,
+                        'level' => 'info',
+                        'message' => 'The API event request was sent.',
+                        'connection_code' => 'erp_000',
+                        'context' => [
+                            'event_subscription_url' => 'http://my-url.com',
+                            'status_code' => 200,
+                            'headers' => [],
+                            'events' => [
+                                [
+                                    "action" => "my_event",
+                                    "event_id" => "9979c367-595d-42ad-9070-05f62f31f49b",
+                                    "event_datetime" => "1970-01-01T00:00:00+00:00",
+                                    "author" => "julia",
+                                    "author_type" => "ui",
+                                ],
+                            ],
                         ],
-                    ],
-                ],
-            ]
-        )
-            ->shouldBeCalled();
+                    ];
+            })
+        )->shouldBeCalled();
 
         $this->logEventsApiRequestSucceed(
             'erp_000',
@@ -93,23 +99,28 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriptionSkippedOwnEventLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
-            [
-                'timestamp' => 1609459200,
-                'level' => 'notice',
-                'message' => 'The event was not sent because it was raised by the same connection.',
-                'connection_code' => 'erp_000',
-                'context' => [
-                    'event' => [
-                        'action' => 'my_event',
-                        'event_id' => '9979c367-595d-42ad-9070-05f62f31f49b',
-                        'event_datetime' => '1970-01-01T00:00:00+00:00',
-                        'author' => 'julia',
-                        'author_type' => 'ui',
-                    ],
-                ],
-            ]
-        )
-            ->shouldBeCalled();
+            Argument::that(function ($actual) {
+                if (!isset($actual['id']) || !\is_string($actual['id'])) {
+                    return false;
+                }
+                unset($actual['id']);
+                return $actual === [
+                        'timestamp' => 1609459200,
+                        'level' => 'notice',
+                        'message' => 'The event was not sent because it was raised by the same connection.',
+                        'connection_code' => 'erp_000',
+                        'context' => [
+                            'event' => [
+                                'action' => 'my_event',
+                                'event_id' => '9979c367-595d-42ad-9070-05f62f31f49b',
+                                'event_datetime' => '1970-01-01T00:00:00+00:00',
+                                'author' => 'julia',
+                                'author_type' => 'ui',
+                            ],
+                        ],
+                    ];
+            })
+        )->shouldBeCalled();
 
         $this->logEventSubscriptionSkippedOwnEvent('erp_000', $this->createEvent());
     }
@@ -126,15 +137,20 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $this->shouldImplement(LimitOfEventsApiRequestsReachedLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
-            [
-                'timestamp' => 1609459200,
-                'level' => 'warning',
-                'message' => 'The maximum number of events sent per hour has been reached.',
-                'connection_code' => null,
-                'context' => [],
-            ]
-        )
-            ->shouldBeCalled();
+            Argument::that(function ($actual) {
+                if (!isset($actual['id']) || !\is_string($actual['id'])) {
+                    return false;
+                }
+                unset($actual['id']);
+                return $actual === [
+                        'timestamp' => 1609459200,
+                        'level' => 'warning',
+                        'message' => 'The maximum number of events sent per hour has been reached.',
+                        'connection_code' => null,
+                        'context' => [],
+                    ];
+            })
+        )->shouldBeCalled();
 
         $this->logLimitOfEventsApiRequestsReached();
     }
@@ -149,23 +165,28 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             1
         );
         $this->shouldImplement(ApiEventBuildErrorLoggerInterface::class);
-
         $eventsApiDebugRepository->persist(
-            [
-                'timestamp' => 1609459200,
-                'level' => 'notice',
-                'message' => 'The event was not sent because the product does not exists or the connection does not have the required permissions.',
-                'connection_code' => 'erp_000',
-                'context' => [
-                    'event' => [
-                        'action' => 'my_event',
-                        'event_id' => '9979c367-595d-42ad-9070-05f62f31f49b',
-                        'event_datetime' => '1970-01-01T00:00:00+00:00',
-                        'author' => 'julia',
-                        'author_type' => 'ui',
-                    ],
-                ],
-            ]
+            Argument::that(function ($actual) {
+                if (!isset($actual['id']) || !\is_string($actual['id'])) {
+                    return false;
+                }
+                unset($actual['id']);
+                return $actual === [
+                        'timestamp' => 1609459200,
+                        'level' => 'notice',
+                        'message' => 'The event was not sent because the product does not exists or the connection does not have the required permissions.',
+                        'connection_code' => 'erp_000',
+                        'context' => [
+                            'event' => [
+                                'action' => 'my_event',
+                                'event_id' => '9979c367-595d-42ad-9070-05f62f31f49b',
+                                'event_datetime' => '1970-01-01T00:00:00+00:00',
+                                'author' => 'julia',
+                                'author_type' => 'ui',
+                            ],
+                        ],
+                    ];
+            })
         )->shouldBeCalled();
 
         $this->logResourceNotFoundOrAccessDenied('erp_000', $this->createEvent());

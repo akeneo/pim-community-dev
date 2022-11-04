@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Elasticsearch\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,14 +22,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
 {
-    /** @var FamilyLoader */
-    private $familyLoader;
-
-    /** @var ProductLoader */
-    private $productLoader;
-
-    /** @var Client */
-    private $elasticsearch;
+    private ?FamilyLoader $familyLoader;
+    private ?ProductLoader $productLoader;
+    private ?Client $elasticsearch;
 
     protected function setUp(): void
     {
@@ -37,7 +32,6 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
 
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
         $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
-
         $this->elasticsearch = $this->get('akeneo_connectivity.client.connection_error');
     }
 
@@ -85,6 +79,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         $result = $this->elasticsearch->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
+        Assert::assertNotEmpty($result['hits']['hits'][0]['_source']['id']);
     }
 
     /**
@@ -127,6 +122,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         $result = $this->elasticsearch->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
+        Assert::assertNotEmpty($result['hits']['hits'][0]['_source']['id']);
     }
 
     /**
@@ -182,5 +178,6 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         $result = $this->elasticsearch->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
+        Assert::assertNotEmpty($result['hits']['hits'][0]['_source']['id']);
     }
 }
