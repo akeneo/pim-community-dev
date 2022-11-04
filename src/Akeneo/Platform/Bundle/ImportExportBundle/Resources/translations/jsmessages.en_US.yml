@@ -172,7 +172,7 @@ pim_import_export:
                 fingerprint:
                     label: Host fingerprint (optional)
                     placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
-                    helper: We require a SHA-512 hashed checksum with colon notation for the host fingerprint.
+                    helper: We require a SHA-512 or MD5 hashed checksum with colon notation for the host fingerprint.
                 port:
                     label: Port
                     placeholder: 22
@@ -188,7 +188,7 @@ pim_import_export:
                 file_path:
                     unsupported_extension: Unsupported file extension
                 fingerprint:
-                    invalid_encoding: Host fingerprint should be a valid SHA-512 checksum hash with colon notation.
+                    invalid_encoding: Host fingerprint should be a valid SHA-512 or MD5 checksum hash with colon notation.
             connection_checker:
                 label: Test connection settings
                 exception: Connection can't be established, please check your settings.
