@@ -20,3 +20,8 @@ services:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'

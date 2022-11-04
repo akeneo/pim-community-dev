@@ -103,6 +103,20 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         );
     }
 
+    protected function callGetRoute(
+        string $routeName,
+        string $code = '',
+        ?array $header = self::DEFAULT_HEADER
+    ): void {
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            ['code' => $code],
+            'GET',
+            $header
+        );
+    }
+
     private function getAuthenticated(): AuthenticatorHelper
     {
         /** @var AuthenticatorHelper $authenticatorHelper */

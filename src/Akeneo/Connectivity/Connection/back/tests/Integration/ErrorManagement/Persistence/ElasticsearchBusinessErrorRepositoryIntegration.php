@@ -43,18 +43,15 @@ class ElasticsearchBusinessErrorRepositoryIntegration extends TestCase
         $doc2 = $result['hits']['hits'][1]['_source'];
 
         Assert::assertCount(2, $result['hits']['hits']);
+        Assert::assertArrayHasKey('id', $doc1);
+        Assert::assertEquals('erp', $doc1['connection_code']);
+        Assert::assertEquals(['message' => 'First error!'], $doc1['content']);
+        Assert::assertEquals('2019-12-31T00:00:00+00:00', $doc1['error_datetime']);
 
-        Assert::assertEquals([
-            'connection_code' => 'erp',
-            'content' => ['message' => 'First error!'],
-            'error_datetime' => '2019-12-31T00:00:00+00:00',
-        ], $doc1);
-
-        Assert::assertEquals([
-            'connection_code' => 'erp',
-            'content' => ['message' => 'Second error!', 'property' => 'name'],
-            'error_datetime' => '2020-01-01T00:00:00+00:00'
-        ], $doc2);
+        Assert::assertArrayHasKey('id', $doc2);
+        Assert::assertEquals('erp', $doc2['connection_code']);
+        Assert::assertEquals(['message' => 'Second error!', 'property' => 'name'], $doc2['content']);
+        Assert::assertEquals('2020-01-01T00:00:00+00:00', $doc2['error_datetime']);
     }
 
     protected function getConfiguration(): Configuration
