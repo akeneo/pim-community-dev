@@ -37,51 +37,51 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
     public function execute(): void
     {
         $startTime = time();
-        $lastProductId = 0;
+        $lastProductUuidAsBytes = '';
 
         try {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $lastProductId = $jobParameters->get(RecomputeProductScoresParameters::LAST_PRODUCT_ID);
+            $lastProductUuidAsBytes = $jobParameters->get(RecomputeProductScoresParameters::LAST_PRODUCT_UUID);
 
             do {
-                $uuids = $this->getNextProductUuids($lastProductId);
+                $uuids = $this->getNextProductUuids($lastProductUuidAsBytes);
                 if (empty($uuids)) {
                     return;
                 }
 
                 $this->consolidateProductScores->consolidate(
-                    $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, $uuids))
+                    $this->idFactory->createCollection(array_map(fn ($uuid) => (string) $uuid, $uuids))
                 );
-                $lastProductId = end($uuids);
+                $lastProductUuidAsBytes = end($uuids);
             } while (false === $this->isTimeboxReached($startTime));
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
             $this->logger->error('Compute products scores failed', [
                 'step_execution_id' => $this->stepExecution->getId(),
-                'last_product_id' => $lastProductId,
+                'last_product_uuid' => $lastProductUuidAsBytes,
                 'message' => $exception->getMessage(),
             ]);
         }
 
-        $this->scheduleNextRecomputeProductsScoresJob($lastProductId);
+        $this->scheduleNextRecomputeProductsScoresJob($lastProductUuidAsBytes);
     }
 
     /**
-     * @return string[]
+     * @return string[] array of uuid
      */
-    private function getNextProductUuids($lastProductId): array
+    private function getNextProductUuids(string $lastProductUuid): array
     {
-        $stmt = $this->connection->executeQuery(
-            sprintf(
-                'SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE id > %d ORDER BY id LIMIT %d',
-                $lastProductId,
-                self::BULK_SIZE
-            )
-        );
+        $query = <<<SQL
+            SELECT BIN_TO_UUID(uuid) as uuid 
+            FROM pim_catalog_product 
+            WHERE uuid > :lastUuid ORDER BY uuid ASC LIMIT :limit
+        SQL;
 
-        return array_map(function ($resultRow) {
-            return (string) $resultRow['uuid'];
-        }, $stmt->fetchAllAssociative());
+        return $this->connection->executeQuery(
+            $query,
+            ['lastUuid' => $lastProductUuid, 'limit' => self::BULK_SIZE],
+            ['lastUuid' => \PDO::PARAM_STR, 'limit' => \PDO::PARAM_INT]
+        )->fetchFirstColumn();
     }
 
     private function isTimeboxReached(int $startTime): bool
@@ -100,7 +100,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
     {
         $jobInstance = $this->getJobInstance();
         $user = new User(UserInterface::SYSTEM_USER_NAME, null);
-        $jobParameters = [RecomputeProductScoresParameters::LAST_PRODUCT_ID => $lastProductId];
+        $jobParameters = [RecomputeProductScoresParameters::LAST_PRODUCT_UUID => $lastProductId];
         $this->queueJobLauncher->launch($jobInstance, $user, $jobParameters);
     }
 
