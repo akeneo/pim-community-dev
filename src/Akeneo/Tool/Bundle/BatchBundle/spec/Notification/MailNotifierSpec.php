@@ -21,7 +21,7 @@ class MailNotifierSpec extends ObjectBehavior
         MailNotifierInterface $mailer
     ): void {
         $twig->render(Argument::type('string'), Argument::type('array'))->willReturn('');
-        $this->beConstructedWith($logger, $tokenStorage, $twig, $mailer, 'null://localhost?encryption=tls&auth_mode=login&username=foo&password=bar&sender_address=no-reply@example.com');
+        $this->beConstructedWith($logger, $tokenStorage, $twig, $mailer, 'null://localhost?encryption=tls&auth_mode=login&username=foo&password=bar');
         $this->setRecipients(['test@akeneo.com']);
     }
 

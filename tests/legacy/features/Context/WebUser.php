@@ -3,7 +3,6 @@
 namespace Context;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Test\MailAsserter;
 use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
@@ -2339,24 +2338,6 @@ class WebUser extends PimContext
             $groupNode->hasClass('active'),
             sprintf('Expected to be on attribute group "%s"', $group)
         );
-    }
-
-    /**
-     * @param string $email
-     *
-     * @Given /^an email to "([^"]*)" should have been sent$/
-     */
-    public function anEmailToShouldHaveBeenSent($email)
-    {
-        $emailHasBeenSent = MailAsserter::assertEmailHasBeenSentToAddress($email);
-        if (!$emailHasBeenSent) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'No emails were sent to %s.',
-                    $email
-                )
-            );
-        }
     }
 
     /**
