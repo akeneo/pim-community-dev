@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductsCompletenessWereChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocaleCollection;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -42,9 +42,12 @@ class ComputeAndPersistProductCompletenesses
             $completenessCollections = $this->completenessCalculator->fromProductUuids($uuidsChunk);
             $this->saveProductCompletenesses->saveAll($completenessCollections);
 
-            $productsCompletenessCollectionsWereChanged = $this->buildEvent($completenessCollections, $previousCompletenessCollections);
-            if (null !== $productsCompletenessCollectionsWereChanged) {
-                $this->eventDispatcher->dispatch($productsCompletenessCollectionsWereChanged);
+            $productWasCompletedEventsCollection = $this->buildProductWasCompletedEventsCollection(
+                $completenessCollections,
+                $previousCompletenessCollections
+            );
+            if (null !== $productWasCompletedEventsCollection) {
+                $this->eventDispatcher->dispatch($productWasCompletedEventsCollection);
             }
         }
     }
@@ -53,23 +56,26 @@ class ComputeAndPersistProductCompletenesses
      * @param array<string, ProductCompletenessWithMissingAttributeCodesCollection> $newProductsCompletenessCollections
      * @param array<string, ProductCompletenessCollection> $previousProductsCompletenessCollections
      */
-    private function buildEvent(
+    private function buildProductWasCompletedEventsCollection(
         array $newProductsCompletenessCollections,
         array $previousProductsCompletenessCollections
-    ): ?ProductsCompletenessWereChanged {
-        $changedAt = $this->clock->now();
-        $changedProductsCompletenesses = [];
+    ): ?ProductWasCompletedOnChannelLocaleCollection {
+        $now = $this->clock->now();
+        $productCompletedOnChannelLocaleEvents = [];
         foreach ($newProductsCompletenessCollections as $uuid => $newProductCompletenessCollection) {
             $previousProductCompletenessCollection = $previousProductsCompletenessCollections[$uuid] ?? null;
 
-            $changedProductsCompletenesses = [
-                ...$changedProductsCompletenesses,
-                ...$newProductCompletenessCollection->buildProductCompletenessWasChangedEvents($changedAt, $previousProductCompletenessCollection)
+            $productCompletedOnChannelLocaleEvents = [
+                ...$productCompletedOnChannelLocaleEvents,
+                ...$newProductCompletenessCollection->buildProductWasCompletedOnChannelLocaleEvents(
+                    $now,
+                    $previousProductCompletenessCollection
+                )
             ];
         }
 
-        return [] !== $changedProductsCompletenesses
-            ? new ProductsCompletenessWereChanged($changedProductsCompletenesses)
+        return [] !== $productCompletedOnChannelLocaleEvents
+            ? new ProductWasCompletedOnChannelLocaleCollection($productCompletedOnChannelLocaleEvents)
             : null;
     }
 }

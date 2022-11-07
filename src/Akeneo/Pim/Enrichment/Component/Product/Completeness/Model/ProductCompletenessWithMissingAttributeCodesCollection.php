@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessWasChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocale;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 
 /**
@@ -51,10 +51,10 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
     }
 
     /**
-     * @return ProductCompletenessWasChanged[]
+     * @return ProductWasCompletedOnChannelLocale[]
      */
-    public function buildProductCompletenessWasChangedEvents(
-        \DateTimeImmutable $changedAt,
+    public function buildProductWasCompletedOnChannelLocaleEvents(
+        \DateTimeImmutable $completedAt,
         ?ProductCompletenessCollection $previousProductCompletenessCollection,
     ): array {
         $events = [];
@@ -65,18 +65,13 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
                 $newProductCompleteness->channelCode(),
                 $newProductCompleteness->localeCode()
             );
-            if (null === $previousProductCompleteness || $previousProductCompleteness->ratio() !== $newProductCompleteness->ratio()) {
-                $events[] = new ProductCompletenessWasChanged(
+            $previousRatio = $previousProductCompleteness?->ratio();
+            if (100 !== $previousRatio && 100 === $newProductCompleteness->ratio()) {
+                $events[] = new ProductWasCompletedOnChannelLocale(
                     $productUuid,
-                    $changedAt,
+                    $completedAt,
                     $newProductCompleteness->channelCode(),
-                    $newProductCompleteness->localeCode(),
-                    $previousProductCompleteness?->requiredCount(),
-                    $newProductCompleteness->requiredCount(),
-                    $previousProductCompleteness?->missingCount(),
-                    $newProductCompleteness->missingAttributesCount(),
-                    $previousProductCompleteness?->ratio(),
-                    $newProductCompleteness->ratio()
+                    $newProductCompleteness->localeCode()
                 );
             }
         }

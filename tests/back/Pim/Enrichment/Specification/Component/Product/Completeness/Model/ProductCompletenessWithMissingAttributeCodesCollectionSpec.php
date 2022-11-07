@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessWasChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocale;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
@@ -72,35 +72,35 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
         $this->getCompletenessForChannelAndLocale('other_channel', 'en_US')->shouldReturn(null);
     }
 
-    public function it_builds_product_completeness_was_changed_events()
+    public function it_builds_product_was_completed_events()
     {
         $uuid = Uuid::uuid4();
         $changedAt = new \DateTimeImmutable('2022-10-23 12:45:21');
 
         $this->beConstructedWith($uuid->toString(), [
             new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 10, []),
-            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, ['description']),
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, []),
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'de_DE', 10, []),
             new ProductCompletenessWithMissingAttributeCodes('mobile', 'en_US', 10, ['description', 'price']),
+            new ProductCompletenessWithMissingAttributeCodes('mobile', 'fr_FR', 10, ['description', 'price']),
         ]);
 
         $previousCompletenessCollection = new ProductCompletenessCollection($uuid, [
             new ProductCompleteness('ecommerce', 'fr_FR', 10, 0),
             new ProductCompleteness('ecommerce', 'en_US', 10, 2),
-            new ProductCompleteness('mobile', 'en_US', 10, 1),
+            new ProductCompleteness('mobile', 'en_US', 10, 0),
+            new ProductCompleteness('mobile', 'fr_FR', 10, 2),
         ]);
 
         $productUuid = ProductUuid::fromUuid($uuid);
-        $this->buildProductCompletenessWasChangedEvents($changedAt, $previousCompletenessCollection)->shouldBeLike([
-            new ProductCompletenessWasChanged(
-                $productUuid, $changedAt, 'ecommerce', 'en_US', 10, 10, 2, 1, 80, 90
-            ),
-            new ProductCompletenessWasChanged(
-                $productUuid, $changedAt, 'mobile', 'en_US', 10, 10, 1, 2, 90, 80
-            ),
-        ]);
+        $this->buildProductWasCompletedOnChannelLocaleEvents($changedAt, $previousCompletenessCollection)
+            ->shouldBeLike([
+                new ProductWasCompletedOnChannelLocale($productUuid, $changedAt, 'ecommerce', 'en_US'),
+                new ProductWasCompletedOnChannelLocale($productUuid, $changedAt, 'ecommerce', 'de_DE'),
+            ]);
     }
 
-    public function it_does_not_build_any_events_if_no_product_completeness_was_changed()
+    public function it_does_not_build_any_events_if_no_product_was_completed()
     {
         $uuid = Uuid::uuid4();
         $changedAt = new \DateTimeImmutable('2022-10-23 12:45:21');
@@ -115,27 +115,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
             new ProductCompleteness('mobile', 'en_US', 10, 2),
         ]);
 
-        $this->buildProductCompletenessWasChangedEvents($changedAt, $previousCompletenessCollection)->shouldReturn([]);
-    }
-
-    public function it_builds_an_event_for_each_completeness_when_there_were_no_previous_completeness()
-    {
-        $uuid = Uuid::uuid4();
-        $changedAt = new \DateTimeImmutable('2022-10-23 12:45:21');
-
-        $this->beConstructedWith($uuid->toString(), [
-            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, []),
-            new ProductCompletenessWithMissingAttributeCodes('mobile', 'en_US', 10, ['description', 'price']),
-        ]);
-
-        $productUuid = ProductUuid::fromUuid($uuid);
-        $this->buildProductCompletenessWasChangedEvents($changedAt, null)->shouldBeLike([
-            new ProductCompletenessWasChanged(
-                $productUuid, $changedAt, 'ecommerce', 'en_US', null, 10, null, 0, null, 100
-            ),
-            new ProductCompletenessWasChanged(
-                $productUuid, $changedAt, 'mobile', 'en_US', null, 10, null, 2, null, 80
-            ),
-        ]);
+        $this->buildProductWasCompletedOnChannelLocaleEvents($changedAt, $previousCompletenessCollection)
+            ->shouldReturn([]);
     }
 }
