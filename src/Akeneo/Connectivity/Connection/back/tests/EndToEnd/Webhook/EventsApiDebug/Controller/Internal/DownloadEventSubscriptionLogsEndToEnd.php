@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -35,6 +36,7 @@ class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
         $this->insertLogs(
             [
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $now - 2,
                     'level' => 'warning',
                     'message' => 'Foo bar',
@@ -42,6 +44,7 @@ class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
                     'context' => ['foo' => 'bar'],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $now - 1,
                     'level' => 'warning',
                     'message' => 'Foo bar 2',
