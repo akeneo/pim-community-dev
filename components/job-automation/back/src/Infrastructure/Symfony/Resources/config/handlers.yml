@@ -14,3 +14,7 @@ services:
     arguments:
       - '@Akeneo\Platform\JobAutomation\Infrastructure\AsymmetricKeysGenerator'
       - '@Akeneo\Platform\JobAutomation\Infrastructure\Query\SaveAsymmetricKeysQueryInterface'
+
+  Akeneo\Platform\JobAutomation\Application\GetAsymmetricKeys\GetAsymmetricKeysHandler:
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface'
