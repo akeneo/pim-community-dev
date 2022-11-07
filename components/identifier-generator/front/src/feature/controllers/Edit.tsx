@@ -10,7 +10,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 const Edit: React.FC<{}> = () => {
   const translate = useTranslate();
   const {identifierGeneratorCode} = useParams<{identifierGeneratorCode: string}>();
-  const {data, error} = useIdentifierGenerator(identifierGeneratorCode);
+  const {data: identifierGenerator, error} = useIdentifierGenerator(identifierGeneratorCode);
 
   if (error) {
     let title = translate('pim_error.general');
@@ -30,7 +30,7 @@ const Edit: React.FC<{}> = () => {
     );
   }
 
-  if (typeof data === 'undefined') {
+  if (typeof identifierGenerator === 'undefined') {
     return (
       <Styled.FullPageCenteredContent>
         <LoaderIcon data-testid={'loadingIcon'} />
@@ -38,7 +38,7 @@ const Edit: React.FC<{}> = () => {
     );
   }
 
-  return <EditGeneratorPage initialGenerator={data} />;
+  return <EditGeneratorPage initialGenerator={identifierGenerator} />;
 };
 
 export {Edit};

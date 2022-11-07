@@ -1,6 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {useGetGenerators} from '../useGetGenerators';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
+import {ServerError} from '../../errors';
 
 const list = [
   {
@@ -41,7 +42,7 @@ describe('useGetGenerators', () => {
     await waitFor(() => !!result.current.error);
 
     expect(result.current.error).toBeDefined();
-    expect(result.current.error).toEqual('error message');
+    expect(result.current.error).toBeInstanceOf(ServerError);
     mockedConsole.mockRestore();
   });
 });

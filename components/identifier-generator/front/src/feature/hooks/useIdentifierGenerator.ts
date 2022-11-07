@@ -1,37 +1,30 @@
 import {useQuery} from 'react-query';
 import {IdentifierGenerator, IdentifierGeneratorCode} from '../models';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {IdentifierGeneratorNotFound} from '../errors';
+import {IdentifierGeneratorNotFound, ServerError} from '../errors';
 
-const useIdentifierGenerator: (code: IdentifierGeneratorCode) => {
-  data?: IdentifierGenerator;
-  error: Error | null;
-  isSuccess: boolean;
-} = code => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const useIdentifierGenerator = (code: IdentifierGeneratorCode) => {
   const router = useRouter();
 
-  const getIdentifierGenerator = async () => {
-    return fetch(router.generate('akeneo_identifier_generator_rest_get', {code}), {
-      method: 'GET',
-      headers: [['X-Requested-With', 'XMLHttpRequest']],
-    }).then(res => {
-      if (!res.ok) {
-        if (res.status === 404) {
+  return useQuery<IdentifierGenerator, Error, IdentifierGenerator>(
+    'getIdentifierGenerator',
+    async () => {
+      const response = await fetch(router.generate('akeneo_identifier_generator_rest_get', {code}), {
+        method: 'GET',
+        headers: [['X-Requested-With', 'XMLHttpRequest']],
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
           throw new IdentifierGeneratorNotFound();
         }
-        throw new Error(res.statusText);
+        throw new ServerError();
       }
 
-      return res.json();
-    });
-  };
-
-  const {error, data, isSuccess} = useQuery<IdentifierGenerator, Error, IdentifierGenerator>(
-    'getIdentifierGenerator',
-    getIdentifierGenerator
+      return await response.json();
+    }
   );
-
-  return {data, error, isSuccess};
 };
 
 export {useIdentifierGenerator};

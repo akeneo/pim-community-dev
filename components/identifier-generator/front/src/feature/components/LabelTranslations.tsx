@@ -12,7 +12,7 @@ type LabelTranslationsProps = {
 
 const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, onLabelsChange}) => {
   const translate = useTranslate();
-  const {data: locales, error} = useUiLocales();
+  const {data: locales = [], error} = useUiLocales();
 
   const onLabelChange = useCallback(
     (locale: string) => (label: string) => {
@@ -30,13 +30,12 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
         </SectionTitle.Title>
       </SectionTitle>
       <Styled.FormContainer>
-        {!error?.message &&
-          (locales || []).map(locale => (
-            <Field label={locale.label} key={locale.code} locale={locale.code}>
-              <TextInput value={labelCollection[locale.code] || ''} onChange={onLabelChange(locale.code)} />
-            </Field>
-          ))}
-        {error?.message && <Helper level="error">{translate('pim_error.general')}</Helper>}
+        {error && <Helper level="error">{translate('pim_error.general')}</Helper>}
+        {locales.map(locale => (
+          <Field label={locale.label} key={locale.code} locale={locale.code}>
+            <TextInput value={labelCollection[locale.code] || ''} onChange={onLabelChange(locale.code)} />
+          </Field>
+        ))}
       </Styled.FormContainer>
     </>
   );

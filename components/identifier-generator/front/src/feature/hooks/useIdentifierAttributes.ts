@@ -1,29 +1,24 @@
 import {useQuery} from 'react-query';
 import {FlattenAttribute} from '../models';
 import {useRouter} from '@akeneo-pim-community/shared';
+import {ServerError} from '../errors';
 
-const useIdentifierAttributes: () => {
-  data?: FlattenAttribute[];
-  error: Error | null;
-} = () => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const useIdentifierAttributes = () => {
   const router = useRouter();
 
-  const getIdentifierAttributes = async () => {
-    return fetch(router.generate('akeneo_identifier_generator_get_identifier_attributes'), {
-      method: 'GET',
-      headers: [['X-Requested-With', 'XMLHttpRequest']],
-    }).then(res => {
-      if (!res.ok) throw new Error(res.statusText);
-      return res.json();
-    });
-  };
-
-  const {error, data} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
+  return useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
     'getIdentifierAttributes',
-    getIdentifierAttributes
-  );
+    async () => {
+      const response = await fetch(router.generate('akeneo_identifier_generator_get_identifier_attributes'), {
+        method: 'GET',
+        headers: [['X-Requested-With', 'XMLHttpRequest']],
+      });
+      if (!response.ok) throw new ServerError(response.statusText);
 
-  return {data, error};
+      return await response.json();
+    }
+  );
 };
 
 export {useIdentifierAttributes};

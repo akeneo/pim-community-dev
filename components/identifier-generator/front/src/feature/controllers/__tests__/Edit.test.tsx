@@ -43,7 +43,6 @@ describe('Edit', () => {
 
     render(<Edit />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
-    expect(screen.getByText('Fail')).toBeInTheDocument();
     mockedConsole.mockRestore();
   });
 
