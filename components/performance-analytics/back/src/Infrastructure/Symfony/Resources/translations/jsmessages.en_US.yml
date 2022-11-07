@@ -3,7 +3,32 @@ pim_title.pimee_performance_analytics_dashboard: Performance Analytics Dashboard
 akeneo.performance_analytics:
     title: Performance Analytics
     graph:
-        control_panel_button: Open control panel
         tooltip_day_to_enrich: days to enrich a product
         tooltip_compared_period: compared to the previous period
         tooltip_compared_period_same: Same compared to the previous period
+    control_panel:
+        title: Control panel
+        open_control_panel: Open control panel
+        close_control_panel: Close control panel
+        metric_title: What do we compare?
+        period_title: On which period?
+        grouped_by: grouped by
+        compare_title: Compared to what?
+        filtered_on_title: Filtered on?
+        select_input:
+            metrics:
+                time_to_enrich: Time to enrich
+            aggregations:
+                families: Families
+                categories: Categories
+            periods:
+                last_12_weeks: Last 12 weeks (quarter)
+                last_12_months: Last 12 months
+            comparisons:
+                same_period_last_year: Same period last year
+                same_period_just_before: Same period just before
+        multi_input:
+            all_families: All families
+            all_channels: All channels
+            all_locales: All locales
+
