@@ -3,7 +3,7 @@ extensions:
         module: pim/product-edit-form/product-and-product-model-picker
         config:
             datagridName: association-product-picker-grid
-            categoryTreeRoute: pim_enrich_categorytree
+            categoryTreeRoute: pim_enrich_product_grid_category_tree
             columnName: identifier
             fetcher: product
 
