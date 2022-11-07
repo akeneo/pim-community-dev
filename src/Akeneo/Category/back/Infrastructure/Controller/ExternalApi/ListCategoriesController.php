@@ -60,6 +60,9 @@ class ListCategoriesController extends AbstractController
         if (null === $searchFilters) {
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
+        if ($queryParameters['with_enriched_attributes']){
+
+        }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $order = ['root' => 'ASC', 'left' => 'ASC'];
