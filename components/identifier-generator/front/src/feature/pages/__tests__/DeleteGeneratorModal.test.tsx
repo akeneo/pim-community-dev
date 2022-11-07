@@ -1,7 +1,7 @@
 import React from 'react';
 import {DeleteGeneratorModal} from '../DeleteGeneratorModal';
 import {render, screen, fireEvent, act, waitFor} from '../../tests/test-utils';
-jest.mock('../../hooks/useGetGenerators');
+jest.mock('../../hooks/useGetIdentifierGenerators');
 
 describe('DeleteGeneratorModal', () => {
   it('should delete a generator', async () => {

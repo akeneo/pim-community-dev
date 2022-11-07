@@ -4,7 +4,7 @@ import {useQuery} from 'react-query';
 import {ServerError} from '../errors';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const useGetGenerators = () => {
+const useGetIdentifierGenerators = () => {
   const router = useRouter();
 
   return useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>(
@@ -21,4 +21,4 @@ const useGetGenerators = () => {
   );
 };
 
-export {useGetGenerators};
+export {useGetIdentifierGenerators};

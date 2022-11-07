@@ -18,7 +18,7 @@ type Response = {
   refetch: () => void;
 };
 
-const useGetGenerators = (): Response => {
+const useGetIdentifierGenerators = (): Response => {
   return {
     data: mockedList,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -28,4 +28,4 @@ const useGetGenerators = (): Response => {
   };
 };
 
-export {useGetGenerators};
+export {useGetIdentifierGenerators};

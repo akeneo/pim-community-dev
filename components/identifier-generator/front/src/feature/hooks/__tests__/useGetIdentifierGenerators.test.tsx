@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks';
-import {useGetGenerators} from '../useGetGenerators';
+import {useGetIdentifierGenerators} from '../useGetIdentifierGenerators';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {ServerError} from '../../errors';
 
@@ -15,14 +15,14 @@ const list = [
   },
 ];
 
-describe('useGetGenerators', () => {
+describe('useGetIdentifierGenerators', () => {
   test('it retrieves generators list', async () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
       json: () => Promise.resolve(list),
     } as Response);
 
-    const {result, waitFor} = renderHook(() => useGetGenerators(), {wrapper: createWrapper()});
+    const {result, waitFor} = renderHook(() => useGetIdentifierGenerators(), {wrapper: createWrapper()});
 
     await waitFor(() => !!result.current.data);
 
@@ -37,7 +37,7 @@ describe('useGetGenerators', () => {
       json: () => Promise.resolve('error message'),
     } as Response);
 
-    const {result, waitFor} = renderHook(() => useGetGenerators(), {wrapper: createWrapper()});
+    const {result, waitFor} = renderHook(() => useGetIdentifierGenerators(), {wrapper: createWrapper()});
 
     await waitFor(() => !!result.current.error);
 

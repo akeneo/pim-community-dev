@@ -4,7 +4,7 @@ import {useRouter} from '@akeneo-pim-community/shared';
 import {IdentifierGeneratorNotFound, ServerError} from '../errors';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const useIdentifierGenerator = (code: IdentifierGeneratorCode) => {
+const useGetIdentifierGenerator = (code: IdentifierGeneratorCode) => {
   const router = useRouter();
 
   return useQuery<IdentifierGenerator, Error, IdentifierGenerator>(
@@ -16,9 +16,7 @@ const useIdentifierGenerator = (code: IdentifierGeneratorCode) => {
       });
 
       if (!response.ok) {
-        if (response.status === 404) {
-          throw new IdentifierGeneratorNotFound();
-        }
+        if (response.status === 404) throw new IdentifierGeneratorNotFound();
         throw new ServerError();
       }
 
@@ -27,4 +25,4 @@ const useIdentifierGenerator = (code: IdentifierGeneratorCode) => {
   );
 };
 
-export {useIdentifierGenerator};
+export {useGetIdentifierGenerator};

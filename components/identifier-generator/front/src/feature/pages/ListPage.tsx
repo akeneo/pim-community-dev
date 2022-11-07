@@ -9,7 +9,7 @@ import {
   Table,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useGetGenerators, useIdentifierAttributes} from '../hooks';
+import {useGetIdentifierGenerators, useIdentifierAttributes} from '../hooks';
 import {LabelCollection, Target} from '../models';
 import {Styled} from './styles';
 import {Header, ListSkeleton} from '../components';
@@ -26,7 +26,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const history = useHistory();
   const translate = useTranslate();
 
-  const {data: generators = [], isLoading, error: errorOnGenerators} = useGetGenerators();
+  const {data: generators = [], isLoading, error: errorOnGenerators} = useGetIdentifierGenerators();
 
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
   const [generatorToDelete, setGeneratorToDelete] = useState<string>('');
