@@ -32,12 +32,4 @@ abstract class AbstractQuantifiedAssociationsTestCase extends InternalApiTestCas
     {
         return self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
-
-    protected function getProductUuid(string $identifier): ?string
-    {
-        return $this->get('database_connection')->executeQuery(
-                'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-                ['identifier' => $identifier]
-            )->fetchOne() ?: null;
-    }
 }

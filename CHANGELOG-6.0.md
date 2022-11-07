@@ -1,5 +1,18 @@
 # 6.0.x
 
+# 6.0.50 (2022-11-02)
+
+# 6.0.49 (2022-10-31)
+
+# 6.0.48 (2022-10-28)
+
+# 6.0.47 (2022-10-27)
+
+## Bug fixes
+
+- PIM-10677: [Backport PIM-10420 and PIM-10484] Fix job still shows under in progress when failed
+- PIM-10683: Fix performance regression in CSV and XLSX product and product model export
+
 # 6.0.46 (2022-10-20)
 
 ## Bug fixes
@@ -16,6 +29,7 @@ PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
 
 ## Bug fixes
 
+- PIM-10631: increase the FOS OAuth scope column to VARCHAR(1000)
 - PIM-10435: [Backport] Fix search_after requests with codes using uppercase accented characters
 
 # 6.0.43 (2022-09-20)

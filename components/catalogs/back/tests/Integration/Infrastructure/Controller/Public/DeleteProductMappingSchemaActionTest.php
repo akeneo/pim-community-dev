@@ -51,7 +51,7 @@ class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
         ));
         $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
             'name' => [
-                'attribute' => 'title',
+                'source' => 'title',
                 'scope' => 'ecommerce',
                 'locale' => 'en_US',
             ],

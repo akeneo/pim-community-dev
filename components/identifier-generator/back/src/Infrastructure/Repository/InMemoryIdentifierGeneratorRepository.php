@@ -26,12 +26,25 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
         $this->generators[$identifierGenerator->code()->asString()] = $identifierGenerator;
     }
 
+    public function update(IdentifierGenerator $identifierGenerator): void
+    {
+        $this->generators[$identifierGenerator->code()->asString()] = $identifierGenerator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator
     {
         return $this->generators[$identifierGeneratorCode] ?? null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAll(): array
+    {
+        return array_values($this->generators);
     }
 
     /**
@@ -45,5 +58,13 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     public function count(): int
     {
         return count($this->generators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(string $identifierGeneratorCode): void
+    {
+        unset($this->generators[$identifierGeneratorCode]);
     }
 }

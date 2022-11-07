@@ -1,5 +1,7 @@
 mappings:
     properties:
+        id:
+            type: 'keyword'
         connection_code:
             type: 'keyword'
         timestamp:

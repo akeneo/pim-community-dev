@@ -5,10 +5,6 @@ pim_title:
   akeneo_measurements_settings_any: Mesures
 measurements:
   label_translations: Traductions des libellés dans la locale de l'interface
-  helper:
-    title: Bienvenue dans la gestion des mesures !
-    text: Vous pouvez créer ici vos propres familles de mesure avec leur unités ou ajouter des unités aux familles de mesure existantes.
-    link: Vous voulez en savoir plus ? C'est parti !
   search:
     placeholder: Rechercher sur le libellé ou le code
   family:

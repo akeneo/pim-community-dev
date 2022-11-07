@@ -98,7 +98,7 @@ class GetAccessTokenIntegration extends ApiTestCase
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
@@ -124,7 +124,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('Parameter "grant_type", "username" or "password" is missing, empty or invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -153,7 +153,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('Parameter "grant_type", "username" or "password" is missing, empty or invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -182,7 +182,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('This grant type is not authorized for this client', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -211,7 +211,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('Parameter "client_id" is missing or does not match any client, or secret is invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -240,7 +240,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('Parameter "client_id" is missing or does not match any client, or secret is invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -268,7 +268,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('Parameter "grant_type", "username" or "password" is missing, empty or invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -296,7 +296,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('Parameter "grant_type", "username" or "password" is missing, empty or invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -325,7 +325,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('No user found for the given username and password', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -344,7 +344,7 @@ JSON;
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
         $this->assertSame('The access token provided is invalid.', $responseBody['message']);
     }
 
@@ -372,7 +372,7 @@ JSON;
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_REQUEST_ENTITY_TOO_LARGE, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 

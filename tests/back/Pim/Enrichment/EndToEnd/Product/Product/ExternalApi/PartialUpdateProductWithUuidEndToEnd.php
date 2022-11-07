@@ -17,7 +17,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductWithUuidEndToEnd extends AbstractProductTestCase
@@ -176,7 +175,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_family')->toString()
+            $this->getProductUuid('product_family')->toString()
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -190,7 +189,7 @@ JSON;
     public function skipTestUpdateProductWithSameUuid()
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->getProductUuidFromIdentifier('product_family');
+        $uuid = $this->getProductUuid('product_family');
         $uuidString = $uuid->toString();
 
         $data =
@@ -222,7 +221,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_family')->toString()
+            $this->getProductUuid('product_family')->toString()
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -230,7 +229,7 @@ JSON;
             'message' => sprintf(
                 'The uuid "%s" provided in the request body must match the uuid "%s" provided in the url.',
                 $newUuid->toString(),
-                $this->getProductUuidFromIdentifier('product_family')->toString()
+                $this->getProductUuid('product_family')->toString()
             ),
         ];
 
@@ -300,7 +299,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_family')->toString()
+            $this->getProductUuid('product_family')->toString()
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -334,7 +333,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('complete')->toString()
+            $this->getProductUuid('complete')->toString()
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -355,7 +354,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_family')->toString()
+            $this->getProductUuid('product_family')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -397,7 +396,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_family')->toString()
+            $this->getProductUuid('product_family')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -438,7 +437,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_groups')->toString()
+            $this->getProductUuid('product_groups')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -481,7 +480,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_groups')->toString()
+            $this->getProductUuid('product_groups')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -525,7 +524,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -569,7 +568,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -612,8 +611,8 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
 
-        $uuidProductCategories = $this->getProductUuidFromIdentifier('product_categories')->toString();
-        $uuidProductFamily = $this->getProductUuidFromIdentifier('product_family')->toString();
+        $uuidProductCategories = $this->getProductUuid('product_categories')->toString();
+        $uuidProductFamily = $this->getProductUuid('product_family')->toString();
 
         $data = <<<JSON
 {
@@ -632,7 +631,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_associations')->toString()
+            $this->getProductUuid('product_associations')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -653,22 +652,25 @@ JSON;
             'associations' => [
                 'PACK' => [
                     'groups' => ['groupA'],
-                    'products' => ['product_family', 'product_categories'],
+                    'product_uuids' => [
+                        $this->getProductUuid('product_family')->toString(),
+                        $this->getProductUuid('product_categories')->toString(),
+                    ],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => ['a_product_model']
                 ],
                 'UPSELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL' => [
                     'groups' => ['groupA'],
-                    'products' => ['product_categories'],
+                    'product_uuids' => [$this->getProductUuid('product_categories')->toString()],
                     'product_models' => [],
                 ],
             ],
@@ -702,7 +704,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_associations')->toString()
+            $this->getProductUuid('product_associations')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -721,10 +723,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => ['product_categories'], 'product_models' => []],
+                'PACK'         => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => [], 'product_uuids' => [$this->getProductUuid('product_categories')->toString()], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -759,7 +761,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_associations')->toString()
+            $this->getProductUuid('product_associations')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -778,10 +780,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'PACK'         => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -817,7 +819,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_associations')->toString()
+            $this->getProductUuid('product_associations')->toString()
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -850,7 +852,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -902,7 +904,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('localizable')->toString()
+            $this->getProductUuid('localizable')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -959,7 +961,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('localizable')->toString()
+            $this->getProductUuid('localizable')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -1012,7 +1014,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('localizable')->toString()
+            $this->getProductUuid('localizable')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -1134,7 +1136,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('complete')->toString()
+            $this->getProductUuid('complete')->toString()
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -1213,10 +1215,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
+                'PACK'         => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'product_uuids' => [$this->getProductUuid('product_categories')->toString()], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -1264,7 +1266,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -1300,7 +1302,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -1310,7 +1312,7 @@ JSON;
         $this->assertSame(
             sprintf(
                 'http://localhost/api/rest/v1/products-uuid/%s',
-                $this->getProductUuidFromIdentifier('foo')->toString()
+                $this->getProductUuid('foo')->toString()
             ),
             $response->headers->get('location')
         );
@@ -1330,7 +1332,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1356,7 +1358,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1377,7 +1379,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1404,7 +1406,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_categories')->toString()
+            $this->getProductUuid('product_categories')->toString()
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1446,7 +1448,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_family')->toString()
+            $this->getProductUuid('product_family')->toString()
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1477,7 +1479,7 @@ JSON;
 JSON;
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuidFromIdentifier('product_family')->toString()
+            $this->getProductUuid('product_family')->toString()
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1605,12 +1607,5 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
     }
 }

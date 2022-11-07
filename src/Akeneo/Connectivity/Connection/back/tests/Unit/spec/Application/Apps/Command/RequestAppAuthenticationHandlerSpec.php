@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -62,14 +63,13 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
 
     public function it_clears_consented_scopes_when_openid_is_not_requested(
         ValidatorInterface $validator,
-        ConstraintViolationListInterface $constraintViolationList,
         ClockInterface $clock,
         CreateUserConsentQueryInterface $createUserConsentQuery
     ): void {
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('a_scope'));
 
         $validator->validate($command)
-            ->willReturn($constraintViolationList);
+            ->willReturn(new ConstraintViolationList());
         $dateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-01-01T00:00:00Z');
         $clock->now()
             ->willReturn($dateTime);
@@ -82,7 +82,6 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
 
     public function it_removes_previously_consented_scopes_that_are_not_requested_anymore(
         ValidatorInterface $validator,
-        ConstraintViolationListInterface $constraintViolationList,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         ClockInterface $clock,
         CreateUserConsentQueryInterface $createUserConsentQuery
@@ -90,7 +89,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('openid a_scope'));
 
         $validator->validate($command)
-            ->willReturn($constraintViolationList);
+            ->willReturn(new ConstraintViolationList());
         $dateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-01-01T00:00:00Z');
         $clock->now()
             ->willReturn($dateTime);
@@ -106,7 +105,6 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
 
     public function it_consents_automatically_when_openid_is_the_only_scope_requested(
         ValidatorInterface $validator,
-        ConstraintViolationListInterface $constraintViolationList,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         ClockInterface $clock,
         CreateUserConsentQueryInterface $createUserConsentQuery
@@ -114,7 +112,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('openid'));
 
         $validator->validate($command)
-            ->willReturn($constraintViolationList);
+            ->willReturn(new ConstraintViolationList());
         $dateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-01-01T00:00:00Z');
         $clock->now()
             ->willReturn($dateTime);
@@ -130,14 +128,13 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
 
     public function it_throws_when_new_scopes_are_requiring_consent(
         ValidatorInterface $validator,
-        ConstraintViolationListInterface $constraintViolationList,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         ClockInterface $clock
     ): void {
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('openid a_new_scope'));
 
         $validator->validate($command)
-            ->willReturn($constraintViolationList);
+            ->willReturn(new ConstraintViolationList());
         $dateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-01-01T00:00:00Z');
         $clock->now()
             ->willReturn($dateTime);

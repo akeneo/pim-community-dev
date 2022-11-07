@@ -172,7 +172,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface
             && ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
@@ -184,7 +184,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
     }
 
     /**
-     * @param \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return array
      */

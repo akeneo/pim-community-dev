@@ -263,6 +263,9 @@ config:
         pim_enrich_categorytree_tree:
           module: pim/controller/categories/index
           aclResourceId: pim_enrich_product_category_list
+        pim_category_template_edit:
+          module: pim/controller/categories/index
+          aclResourceId: pim_enrich_product_category_template
         pim_enrich_channel_edit:
           module: pim/controller/channel/edit
           aclResourceId: pim_enrich_channel_edit
@@ -712,7 +715,6 @@ config:
     pim/product-edit-form/variant-navigation:                pimui/js/product/form/variant-navigation
     pim/product-edit-form/attributes/variant-axes:           pimui/js/product/form/attributes/variant-axes
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
-    pim/product-edit-form/legacy-product-and-product-model-picker:  pimui/js/product/form/legacy-product-and-product-model-picker
     pim/product-edit-form/attributes/read-only-parent-attributes: pimui/js/product/form/attributes/read-only-parent-attributes
     pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
     pim/product/product-grid-view-title-context:                   pimui/js/form/common/product/product-grid-view-title-context.ts

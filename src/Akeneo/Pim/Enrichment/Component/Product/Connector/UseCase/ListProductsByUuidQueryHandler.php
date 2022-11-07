@@ -108,8 +108,6 @@ final class ListProductsByUuidQueryHandler
         $pqbOptions = ['limit' => (int)$query->limit];
 
         if (null !== $query->searchAfter) {
-            // @see ListProductsQueryHandler comment
-            $pqbOptions['search_after_unique_key'] = 'product_z';
             $searchAfter = Uuid::isValid($query->searchAfter) ? Uuid::fromString($query->searchAfter)->toString() : $query->searchAfter;
             $pqbOptions['search_after'] = [sprintf('product_%s', $searchAfter)];
         }

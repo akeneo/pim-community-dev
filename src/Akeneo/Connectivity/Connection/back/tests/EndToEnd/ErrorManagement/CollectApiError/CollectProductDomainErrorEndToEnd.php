@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoade
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Elasticsearch\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,17 +21,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CollectProductDomainErrorEndToEnd extends ApiTestCase
 {
-    /** @var AttributeLoader */
-    private $attributeLoader;
-
-    /** @var FamilyLoader */
-    private $familyLoader;
-
-    /** @var ProductLoader */
-    private $productLoader;
-
-    /** @var Client */
-    private $elasticsearch;
+    private ?AttributeLoader $attributeLoader;
+    private ?FamilyLoader $familyLoader;
+    private ?ProductLoader $productLoader;
+    private ?Client $elasticsearch;
 
     protected function setUp(): void
     {
@@ -98,6 +91,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertNotEmpty($doc['id']);
 
         $expectedContent = [
             'type' => 'domain_error',
@@ -228,6 +222,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertNotEmpty($doc['id']);
 
         $this->assertReponsesEquals($expectedContent, $doc['content']);
     }
@@ -263,6 +258,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertNotEmpty($doc['id']);
 
         $expectedContent = [
             'type' => 'domain_error',
@@ -333,6 +329,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertNotEmpty($doc['id']);
 
         $expectedContent = [
             'type' => 'domain_error',

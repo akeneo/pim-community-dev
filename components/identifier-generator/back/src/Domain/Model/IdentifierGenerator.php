@@ -58,6 +58,26 @@ final class IdentifierGenerator
         return $this->delimiter;
     }
 
+    public function setStructure(Structure $structure): void
+    {
+        $this->structure = $structure;
+    }
+
+    public function setLabelCollection(LabelCollection $labelCollection): void
+    {
+        $this->labelCollection = $labelCollection;
+    }
+
+    public function setTarget(Target $target): void
+    {
+        $this->target = $target;
+    }
+
+    public function setDelimiter(?Delimiter $delimiter): void
+    {
+        $this->delimiter = $delimiter;
+    }
+
     /**
      * @return array{
      *     uuid: string,

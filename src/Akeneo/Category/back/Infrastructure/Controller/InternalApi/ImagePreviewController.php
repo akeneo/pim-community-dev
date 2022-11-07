@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Domain\Query\GetAttribute;
+use Akeneo\Category\Domain\Query\GetAttributeInMemory;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\CouldNotGeneratePreviewException;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorInterface;
-use Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +36,7 @@ class ImagePreviewController
     private const ROOT_FLAG = '__root__';
 
     public function __construct(
-        private GetAttribute $getAttribute,
+        private GetAttributeInMemory $getAttribute,
         private PreviewGeneratorInterface $previewGenerator,
         private LoaderInterface $imageLoader,
     ) {

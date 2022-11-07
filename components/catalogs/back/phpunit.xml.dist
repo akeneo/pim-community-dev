@@ -36,6 +36,9 @@
         <testsuite name="Catalogs_Integration">
             <directory suffix="Test.php">tests/Integration</directory>
         </testsuite>
+        <testsuite name="Catalogs_Performance">
+            <directory suffix="Performance.php">tests/Performance</directory>
+        </testsuite>
     </testsuites>
     <coverage>
         <include>

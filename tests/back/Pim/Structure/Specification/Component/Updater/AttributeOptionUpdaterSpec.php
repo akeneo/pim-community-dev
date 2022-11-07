@@ -31,7 +31,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute_option()
+    function it_throws_an_exception_when_trying_to_update_anything_else_than_an_attribute_option()
     {
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
@@ -178,5 +178,18 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
                 )
             )
             ->during('update', [$attributeOption, $values, []]);
+    }
+
+    function it_throws_an_exception_when_sort_order_id_not_an_int(AttributeOptionInterface $attributeOption)
+    {
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::integerExpected(
+                    'sort_order',
+                    AttributeOptionUpdater::class,
+                    '15'
+                )
+            )
+            ->during('update', [$attributeOption, ['sort_order' => '15'], []]);
     }
 }

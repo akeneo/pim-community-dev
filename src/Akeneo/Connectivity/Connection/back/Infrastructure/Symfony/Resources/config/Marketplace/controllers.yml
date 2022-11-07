@@ -75,3 +75,11 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppHandler'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\External\GetTestAppsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppsQuery'

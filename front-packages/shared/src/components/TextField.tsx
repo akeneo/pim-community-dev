@@ -3,7 +3,7 @@ import {FieldProps, TextInputProps, Field, TextInput, Helper} from 'akeneo-desig
 import {useTranslate} from '../hooks';
 import {ValidationError, formatParameters} from '../models';
 
-type TextFieldProps = Omit<FieldProps, 'children'> &
+type TextFieldProps = FieldProps &
   TextInputProps & {
     required?: boolean;
     errors?: ValidationError[];
@@ -11,7 +11,7 @@ type TextFieldProps = Omit<FieldProps, 'children'> &
 
 const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   (
-    {required = false, errors = [], label, incomplete, locale, channel, ...inputProps}: TextFieldProps,
+    {required = false, errors = [], label, incomplete, locale, channel, children, ...inputProps}: TextFieldProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
     const translate = useTranslate();
@@ -29,6 +29,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             {translate(error.messageTemplate, error.parameters, error.plural)}
           </Helper>
         ))}
+        {children}
       </Field>
     );
   }

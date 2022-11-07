@@ -621,8 +621,8 @@ JSON;
 
         $expectedProduct = [
             'identifier'    => 'product_variant_creation_associations',
-            'family'        => "familyA",
-            'parent'        => "amor",
+            'family'        => 'familyA',
+            'parent'        => 'amor',
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
@@ -633,62 +633,62 @@ JSON;
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
-                "a_price" => [
+                'a_price' => [
                     [
-                        "locale" => null,
-                        "scope"  => null,
-                        "data"   => [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
                             [
-                                "amount"   => "50.00",
-                                "currency" => "EUR",
+                                'amount'   => '50.00',
+                                'currency' => 'EUR',
                             ],
                         ],
                     ],
                 ],
-                "a_localized_and_scopable_text_area" => [
+                'a_localized_and_scopable_text_area' => [
                     [
-                        "locale" => "en_US",
-                        "scope"  => "ecommerce",
-                        "data"   => "my pink tshirt",
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'data'   => 'my pink tshirt',
                     ],
                 ],
-                "a_number_float" => [
+                'a_number_float' => [
                     [
-                        "locale" => null,
-                        "scope"  => null,
-                        "data"   => "12.5000",
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '12.5000',
                     ],
                 ],
-                "a_yes_no" => [
+                'a_yes_no' => [
                     [
-                        "locale" => null,
-                        "scope"  => null,
-                        "data"   => true,
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => true,
                     ],
                 ],
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                "PACK"         => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => [],
+                'PACK'         => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => [],
                 ],
-                "SUBSTITUTION" => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => [],
+                'SUBSTITUTION' => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => [],
                 ],
-                "UPSELL"       => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => ["amor"],
+                'UPSELL'       => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => ['amor'],
                 ],
-                "X_SELL"       => [
-                    "groups"   => ["groupA"],
-                    "products" => ["simple"],
-                    "product_models" => [],
+                'X_SELL'       => [
+                    'groups'   => ['groupA'],
+                    'product_uuids' => [$this->getProductUuid('simple')->toString()],
+                    'product_models' => [],
                 ],
             ],
             'quantified_associations' => [],

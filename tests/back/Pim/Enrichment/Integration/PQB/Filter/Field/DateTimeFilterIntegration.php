@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -230,8 +230,9 @@ SQL;
                 'updated_date' => $updatedDate,
             ],
             [
-                'updated_date' => Type::DATETIME
-            ]);
+                'updated_date' => Types::DATETIME_MUTABLE
+            ]
+        );
 
         $uuid = $this->getProductUuid($identifier);
         $this->getProductAndAncestorsIndexer()->indexFromProductUuids([$uuid]);
@@ -240,14 +241,5 @@ SQL;
     private function getProductAndAncestorsIndexer(): ProductAndAncestorsIndexer
     {
         return $this->get('akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors');
-    }
-
-    private function getProductUuid(string $productIdentifier): UuidInterface
-    {
-        $result = $this
-            ->get('database_connection')
-            ->fetchOne('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier=:identifier', ['identifier' => $productIdentifier]);
-
-        return Uuid::fromString($result);
     }
 }

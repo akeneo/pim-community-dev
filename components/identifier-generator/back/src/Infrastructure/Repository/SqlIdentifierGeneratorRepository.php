@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToDeleteIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToFetchIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToUpdateIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -59,6 +61,27 @@ SQL;
         }
     }
 
+    public function update(IdentifierGenerator $identifierGenerator): void
+    {
+        $query = <<<SQL
+UPDATE pim_catalog_identifier_generator SET target=:target, delimiter=:delimiter, labels=:labels, conditions=:conditions, structure=:structure
+WHERE code=:code;
+SQL;
+
+        try {
+            $this->connection->executeStatement($query, [
+                'code' => $identifierGenerator->code()->asString(),
+                'target' => $identifierGenerator->target()->asString(),
+                'delimiter' => $identifierGenerator->delimiter()?->asString(),
+                'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
+                'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
+                'structure' => json_encode($identifierGenerator->structure()->normalize()),
+            ]);
+        } catch (Exception $e) {
+            throw new UnableToUpdateIdentifierGeneratorException(sprintf('Cannot update the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -86,6 +109,34 @@ SQL;
             return null;
         }
 
+        return $this->fromDatabaseToModel($result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAll(): array
+    {
+        $sql = <<<SQL
+SELECT BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter
+FROM pim_catalog_identifier_generator
+SQL;
+        $stmt = $this->connection->prepare($sql);
+
+        try {
+            $result = $stmt->executeQuery()->fetchAllAssociative();
+        } catch (DriverException) {
+            throw new UnableToFetchIdentifierGeneratorException('Cannot fetch identifiers generators');
+        }
+
+        return array_map(fn ($data) => $this->fromDatabaseToModel($data), $result);
+    }
+
+    /**
+     * @param array<mixed> $result
+     */
+    private function fromDatabaseToModel(array $result): IdentifierGenerator
+    {
         Assert::string($result['uuid']);
         Assert::string($result['code']);
         Assert::string($result['conditions']);
@@ -119,5 +170,25 @@ SQL;
     public function count(): int
     {
         return \intval($this->connection->fetchOne('SELECT COUNT(1) FROM pim_catalog_identifier_generator'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(string $identifierGeneratorCode): void
+    {
+        $sql = <<<SQL
+DELETE FROM pim_catalog_identifier_generator
+WHERE code=:code
+LIMIT 1
+SQL;
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
+
+        try {
+            $stmt->executeQuery();
+        } catch (DriverException) {
+            throw new UnableToDeleteIdentifierGeneratorException(sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
+        }
     }
 }

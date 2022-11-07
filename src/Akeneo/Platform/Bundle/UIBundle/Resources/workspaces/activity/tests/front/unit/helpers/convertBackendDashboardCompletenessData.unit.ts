@@ -31,25 +31,43 @@ const data: BackendCompletenessData = {
       'French (France)': 88,
     },
   },
+  ecommerce: {
+    labels: {
+      de_DE: 'Ecommerce',
+      en_US: 'Ecommerce',
+      fr_FR: 'Ecommerce FR',
+    },
+    total: 2000,
+    complete: 1999,
+    locales: {
+      'French (France)': 1999,
+    },
+  },
 };
 
-test('', () => {
+test('It calculate the completeness by channels and by locales', () => {
   const result: ChannelsLocalesCompletenessRatios = convertBackendDashboardCompletenessData(data, 'en_US');
   expect(result).toEqual({
     Print: {
       channelRatio: 15,
       localesRatios: {
-        'English (United States)': 28,
-        'German (Germany)': 9,
+        'English (United States)': 27,
+        'German (Germany)': 8,
         'French (France)': 12,
       },
     },
     Mobile: {
       channelRatio: 11,
       localesRatios: {
-        'English (United States)': 21,
-        'German (Germany)': 6,
+        'English (United States)': 20,
+        'German (Germany)': 5,
         'French (France)': 7,
+      },
+    },
+    Ecommerce: {
+      channelRatio: 99,
+      localesRatios: {
+        'French (France)': 99,
       },
     },
   });

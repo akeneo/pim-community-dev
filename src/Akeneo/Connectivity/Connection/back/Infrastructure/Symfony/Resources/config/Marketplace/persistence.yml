@@ -22,6 +22,10 @@ services:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppsQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery:
         arguments:
             - '@database_connection'
