@@ -11,6 +11,7 @@ use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Webmozart\Assert\Assert;
 
 /**
@@ -85,8 +86,8 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
                 'raw_values' => [
                     'first_yes_no' => ['<all_channels>' => ['<all_locales>' => false]]
                 ],
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
             ],
             'sub_product_model_1_1' => [
                 'code' => 'sub_product_model_1_1',
@@ -97,8 +98,8 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
                     'first_yes_no' => ['<all_channels>' => ['<all_locales>' => false]],
                     'second_yes_no' => ['<all_channels>' => ['<all_locales>' => true]],
                 ],
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
             ],
             'root_product_model_2' => [
                 'code' => 'root_product_model_2',
@@ -108,8 +109,8 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
                 'raw_values' => [
                     'first_yes_no' => ['<all_channels>' => ['<all_locales>' => true]]
                 ],
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
             ],
             'sub_product_model_2_1' => [
                 'code' => 'sub_product_model_2_1',
@@ -120,8 +121,8 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
                     'first_yes_no' => ['<all_channels>' => ['<all_locales>' => true]],
                     'second_yes_no' => ['<all_channels>' => ['<all_locales>' => false]],
                 ],
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
             ],
 
         ];

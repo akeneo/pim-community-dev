@@ -26,73 +26,12 @@ class CategoryExtensionSpec extends ObjectBehavior
     function it_registers_category_functions()
     {
         $functions = $this->getFunctions();
-        $functions->shouldHaveCount(6);
+        $functions->shouldHaveCount(5);
         $functions[0]->getName()->shouldReturn('children_response');
         $functions[1]->getName()->shouldReturn('children_tree_response');
         $functions[2]->getName()->shouldReturn('list_categories_response');
-        $functions[3]->getName()->shouldReturn('list_trees_response');
-        $functions[4]->getName()->shouldReturn('exceeds_products_limit_for_removal');
-        $functions[5]->getName()->shouldReturn('get_products_limit_for_removal');
-    }
-
-    function it_formats_trees_with_products_count(
-        $registry,
-        CategoryItemsCounterInterface $categoryItemsCounter,
-        Category $tree1,
-        Category $tree2
-    ) {
-        $registry->get('product')->willReturn($categoryItemsCounter);
-        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
-
-        $tree1->getId()->willReturn(1);
-        $tree1->getCode()->willReturn('tree_1');
-        $tree1->getLabel()->willReturn('Selected tree');
-        $tree1->hasChildren()->willReturn(false);
-        $tree1->isRoot()->willReturn(true);
-
-        $tree2->getId()->willReturn(2);
-        $tree2->getCode()->willReturn('tree_2');
-        $tree2->getLabel()->willReturn('Master catalog');
-        $tree2->hasChildren()->willReturn(false);
-        $tree2->isRoot()->willReturn(true);
-
-        $expected = [
-            ['id' => 1, 'code' => 'tree_1', 'label' => 'Selected tree (5)', 'selected' => 'true'],
-            ['id' => 2, 'code' => 'tree_2', 'label' => 'Master catalog (5)', 'selected' => 'false']
-        ];
-
-        $this->listTreesResponse([$tree1, $tree2], 1)->shouldEqualUsingJSON($expected);
-    }
-
-    function it_formats_trees_without_products_count(
-        $registry,
-        CategoryItemsCounterInterface $categoryItemsCounter,
-        Category $tree1,
-        Category $tree2
-    ) {
-        $registry->get('product')->willReturn($categoryItemsCounter);
-        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
-
-        $tree1->getId()->willReturn(1);
-        $tree1->getCode()->willReturn('selected_tree');
-        $tree1->getLabel()->willReturn('Selected tree');
-        $tree1->getCode()->willReturn('tree_1');
-        $tree1->hasChildren()->willReturn(false);
-        $tree1->isRoot()->willReturn(true);
-
-        $tree2->getId()->willReturn(2);
-        $tree2->getCode()->willReturn('master');
-        $tree2->getLabel()->willReturn('Master catalog');
-        $tree2->getCode()->willReturn('tree_2');
-        $tree2->hasChildren()->willReturn(false);
-        $tree2->isRoot()->willReturn(true);
-
-        $expected = [
-            ['id' => 1, 'code' => 'tree_1', 'label' => 'Selected tree', 'selected' => 'true'],
-            ['id' => 2, 'code' => 'tree_2', 'label' => 'Master catalog', 'selected' => 'false']
-        ];
-
-        $this->listTreesResponse([$tree1, $tree2], 1, false)->shouldEqualUsingJSON($expected);
+        $functions[3]->getName()->shouldReturn('exceeds_products_limit_for_removal');
+        $functions[4]->getName()->shouldReturn('get_products_limit_for_removal');
     }
 
     function it_formats_a_list_of_categories_with_product_count(

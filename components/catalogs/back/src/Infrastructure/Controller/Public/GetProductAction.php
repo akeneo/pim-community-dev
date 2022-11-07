@@ -50,7 +50,7 @@ class GetProductAction
 
         if (!$catalog->isEnabled()) {
             return new JsonResponse([
-                'message' => \sprintf('No products to synchronize. The catalog "%s" has been disabled on PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.', $id),
+                'error' => \sprintf('No products to synchronize. The catalog "%s" has been disabled on PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.', $id),
             ]);
         }
 

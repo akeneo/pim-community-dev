@@ -48,7 +48,12 @@ const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStora
         ))}
       </Field>
       {null !== StorageConfigurator && (
-        <StorageConfigurator storage={storage} validationErrors={validationErrors} onStorageChange={onStorageChange} />
+        <StorageConfigurator
+          storage={storage}
+          fileExtension={fileExtension}
+          validationErrors={validationErrors}
+          onStorageChange={onStorageChange}
+        />
       )}
     </Section>
   );
