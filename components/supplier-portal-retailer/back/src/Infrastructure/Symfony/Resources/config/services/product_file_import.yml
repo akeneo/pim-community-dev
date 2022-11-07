@@ -14,6 +14,21 @@ services:
     arguments:
       - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations'
 
+  # Repositories
+  Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository:
+    public: true
+    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Repository\Sql\DatabaseRepository
+    arguments:
+      - '@database_connection'
+
+  #Command/Handlers
+  Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler:
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName'
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile'
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductFileImport'
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository'
+
   # Controllers
   Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ListProductFileImportConfigurations:
     public: true

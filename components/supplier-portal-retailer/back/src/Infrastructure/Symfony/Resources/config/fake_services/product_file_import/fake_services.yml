@@ -1,3 +1,9 @@
 services:
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryFindAllProductFileImportConfigurations
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Repository\InMemory\InMemoryRepository
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductFileImport:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryLaunchTailoredImport

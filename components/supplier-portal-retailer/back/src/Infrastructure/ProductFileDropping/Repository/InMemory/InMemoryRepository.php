@@ -36,6 +36,17 @@ final class InMemoryRepository implements ProductFileRepository
         return $this->productFiles[(string) $identifier] ?? null;
     }
 
+    public function findByName(string $fileName): ?ProductFile
+    {
+        foreach ($this->productFiles as $productFile) {
+            if ($productFile->originalFilename() === $fileName) {
+                return $productFile;
+            }
+        }
+
+        return null;
+    }
+
     public function updateProductFileLastReadAtDateForRetailer(Identifier $identifier, \DateTimeImmutable $date): void
     {
         $this->productFilesCommentsLastReadDateForRetailer[(string) $identifier] = $date;
