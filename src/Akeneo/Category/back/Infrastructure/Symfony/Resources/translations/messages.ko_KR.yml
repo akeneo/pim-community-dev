@@ -11,4 +11,3 @@ pim_enrich:
       history: 카테고리 기록 보기
       template: 카테고리 템플릿 관리
       edit_attributes: 카테고리 특성 편집
-      order_trees: 카테고리의 트리 정렬/다시 정렬

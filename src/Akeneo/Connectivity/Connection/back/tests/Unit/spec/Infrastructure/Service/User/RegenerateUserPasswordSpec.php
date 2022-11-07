@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Service\User\RegenerateUserPas
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection as DbalConnection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

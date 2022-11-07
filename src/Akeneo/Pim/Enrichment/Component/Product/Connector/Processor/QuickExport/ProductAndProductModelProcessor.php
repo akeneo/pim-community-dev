@@ -82,7 +82,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
-        $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
+        $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', array_merge($normalizerContext, ['with_association_uuids' => false]));
 
         if ($entityWithValues instanceof ProductInterface) {
             $productStandard = $this->fillMissingProductValues->fromStandardFormat($productStandard);

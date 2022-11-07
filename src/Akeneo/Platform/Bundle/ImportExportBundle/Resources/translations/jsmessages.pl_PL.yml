@@ -158,11 +158,8 @@ pim_import_export:
           local: Lokalny
           sftp: SFTP
           none: Nie skonfigurowano pamięci
-        file_path.label: Ścieżka do pliku
-        host.label: Host
-        port.label: Port
-        username.label: Zaloguj się
-        password.label: Hasło
+        file_path:
+          label: Ścieżka do pliku
       validation:
         storage:
           unavailable_type: 'Ta pamięć jest niedostępna, dostępne typy: {{ available_types }}.'

@@ -10,6 +10,7 @@ const STORAGE_LOGIN_TYPES = ['password', 'private_key'];
 
 type StorageConfiguratorProps = {
   storage: Storage;
+  fileExtension: string;
   onStorageChange: (storage: Storage) => void;
   validationErrors: ValidationError[];
 };

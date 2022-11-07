@@ -135,7 +135,7 @@ class GetProductActionTest extends IntegrationTestCase
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
-    public function testItReturnsAMessageWhenCatalogIsDisabled(): void
+    public function testItReturnsAnErrorhenCatalogIsDisabled(): void
     {
         $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
@@ -158,7 +158,7 @@ class GetProductActionTest extends IntegrationTestCase
         $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertArrayHasKey('message', $result);
-        Assert::assertIsString($result['message']);
+        Assert::assertArrayHasKey('error', $result);
+        Assert::assertIsString($result['error']);
     }
 }

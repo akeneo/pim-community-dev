@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids;
 use Ramsey\Uuid\UuidInterface;
 
 /**

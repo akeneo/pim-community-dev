@@ -158,11 +158,8 @@ pim_import_export:
           local: Lokaal
           sftp: SFTP
           none: Geen opslag geconfigureerd
-        file_path.label: Bestandspad
-        host.label: Host
-        port.label: Poort
-        username.label: Aanmelden
-        password.label: Wachtwoord
+        file_path:
+          label: Bestandspad
       validation:
         storage:
           unavailable_type: Deze opslag is niet beschikbaar, alleen {{ available_types }} zijn beschikbaar.

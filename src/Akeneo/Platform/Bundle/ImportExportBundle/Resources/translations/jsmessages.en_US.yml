@@ -163,20 +163,32 @@ pim_import_export:
                     local: Local
                     sftp: SFTP
                     none: No storage configured
-                file_path.label: File path
-                host.label: Host
-                port.label: Port
-                username.label: Login
-                password.label: Password
-                connection_type:
-                    password: Connection with login / password
-                    private_key: Connection with key
-                public_key.label: Public key
+                file_path:
+                    label: File path
+                    placeholder: myfile.{{ file_extension }}
+                host:
+                    label: Host
+                    placeholder: example.com
+                fingerprint:
+                    label: Host fingerprint (optional)
+                    placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+                    helper: We require a SHA-512 or MD5 hashed checksum with colon notation for the host fingerprint.
+                port:
+                    label: Port
+                    placeholder: 22
+                username:
+                    label: Login
+                    placeholder: Enter your login
+                password:
+                    label: Password
+                    placeholder: Enter your password
             validation:
                 storage:
                     unavailable_type: This storage is not available, only {{ available_types }} are available.
                 file_path:
                     unsupported_extension: Unsupported file extension
+                fingerprint:
+                    invalid_encoding: Host fingerprint should be a valid SHA-512 or MD5 checksum hash with colon notation.
             connection_checker:
                 label: Test connection settings
                 exception: Connection can't be established, please check your settings.

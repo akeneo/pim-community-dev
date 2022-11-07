@@ -158,11 +158,8 @@ pim_import_export:
           local: ローカル
           sftp: SFTP
           none: ストレージが構成されていません
-        file_path.label: ファイルパス
-        host.label: ホスト
-        port.label: ポート
-        username.label: ログイン
-        password.label: パスワード
+        file_path:
+          label: ファイルパス
       validation:
         storage:
           unavailable_type: このストレージは使用できません。{{ available_types }}のみを使用できます。
