@@ -131,6 +131,9 @@ final class ProductFile
         return $this->downloaded;
     }
 
+    /**
+     * @return object[]
+     */
     public function events(): array
     {
         $events = $this->events;

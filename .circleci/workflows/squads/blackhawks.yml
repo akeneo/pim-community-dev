@@ -43,7 +43,7 @@ workflows:
             - security-hunter/scan-docker-image:
                   name: "Scan docker image"
                   archive_name: "php-pim-image.tar"
-                  image_name: "akeneo/pim-dev/php:8.0"
+                  image_name: "akeneo/pim-dev/php:8.1"
                   requires:
                       - build_srnt_dev
             # End of security tests
