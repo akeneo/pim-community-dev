@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3879c068aaba9df2be0382f5cb76a97",
+    "content-hash": "fc360ddaa6751fdf70251dd7de19d4b3",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
@@ -18925,7 +18925,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "8.0.*",
+        "php": "8.1.*",
         "ext-apcu": "*",
         "ext-bcmath": "*",
         "ext-curl": ">=7.0",
