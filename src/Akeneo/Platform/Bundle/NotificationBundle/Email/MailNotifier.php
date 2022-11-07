@@ -29,6 +29,10 @@ class MailNotifier implements MailNotifierInterface
         string $htmlBody,
         array $options = []
     ): void {
+        if (empty($recipients)) {
+            return;
+        }
+
         $email = (new Email())
             ->subject($subject)
             ->text($txtBody)
