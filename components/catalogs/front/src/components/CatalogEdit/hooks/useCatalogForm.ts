@@ -1,4 +1,4 @@
-import {useCallback, useReducer, useState} from 'react';
+import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import {useCatalog} from './useCatalog';
 import {CatalogFormAction, CatalogFormActions, CatalogFormReducer} from '../reducers/CatalogFormReducer';
 import {indexify} from '../utils/indexify';
@@ -74,6 +74,25 @@ export const useCatalogForm = (id: string): Result => {
             },
         [setDirty]
     );
+
+    const prevValuesRef = useRef<CatalogFormValues>(values);
+
+    useEffect(() => {
+        const productSelectionCriteriaPreviousKeys = Object.keys(prevValuesRef.current?.product_selection_criteria);
+        const productSelectionCriteriaCurrentKeys = Object.keys(values?.product_selection_criteria);
+
+        if (productSelectionCriteriaPreviousKeys.length > productSelectionCriteriaCurrentKeys.length) {
+            productSelectionCriteriaPreviousKeys.forEach((value, index) => {
+                if (!productSelectionCriteriaCurrentKeys.includes(value)) {
+                    setErrors(errors.filter(error => {
+                        return !error.propertyPath.startsWith(`[product_selection_criteria][${index}]`);
+                    }));
+                    return false;
+                }
+            });
+        }
+        prevValuesRef.current = values;
+    }, [values, isFirstLoad]);
 
     if (catalog.isLoading) {
         return loading;
