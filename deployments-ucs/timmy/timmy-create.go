@@ -60,7 +60,7 @@ func main() {
             "APP_INDEX_HOSTS": "elasticsearch-client.` + pfid + `.svc.cluster.local",
             "APP_TENANT_ID": "` + pfid + `",
             "MAILER_PASSWORD": "` + email_password + `",
-            "MAILER_DSN": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com&password=` + email_password + `&sender_address=no-reply-` + pfid + `.pim-saas-dev.dev.cloud.akeneo.com",
+            "MAILER_DSN": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com&password=` + email_password + `",
             "MAILER_USER": "` + instance_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com",
             "MEMCACHED_SVC": "memcached.` + pfid + `.svc.cluster.local",
             "APP_DATABASE_PASSWORD": "` + mysql_password + `",

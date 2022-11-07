@@ -80,7 +80,7 @@ final class ControllerIntegration extends KernelTestCase
                 'smtp' => [
                     'ok' => false,
                     'optional' => true,
-                    'message' => 'Unable to ping the mailer transport: "Connection could not be established with host "ssl://foo.bar:465": stream_socket_client(): php_network_getaddresses: getaddrinfo failed: No address associated with hostname".',
+                    'message' => 'Unable to ping the mailer transport: "Connection could not be established with host "ssl://foo.bar:465": stream_socket_client(): php_network_getaddresses: getaddrinfo for foo.bar failed: No address associated with hostname".',
                 ],
                 'pub_sub' => [
                     'ok' => true,
@@ -120,7 +120,7 @@ final class ControllerIntegration extends KernelTestCase
                 'smtp' => [
                     'ok' => false,
                     'optional' => true,
-                    'message' => 'Unable to ping the mailer transport: "Connection could not be established with host "ssl://foo.bar:465": stream_socket_client(): php_network_getaddresses: getaddrinfo failed: No address associated with hostname".',
+                    'message' => 'Unable to ping the mailer transport: "Connection could not be established with host "ssl://foo.bar:465": stream_socket_client(): php_network_getaddresses: getaddrinfo for foo.bar failed: No address associated with hostname".',
                 ],
                 'pub_sub' => [
                     'ok' => true,

@@ -73,7 +73,7 @@ spec:
           value: ${MAILGUN_LOGIN}
         - name: mailer.password
           value: ${MAILGUN_PASSWORD}
-        - name: mailer.base_mailer_dsl
+        - name: mailer.base_mailer_dsn
           value: "smtp://${MAILGUN_HOST}:${MAILGUN_PORT}"
         - name: mailer.domain
           value: ${MAILGUN_DOMAIN}
