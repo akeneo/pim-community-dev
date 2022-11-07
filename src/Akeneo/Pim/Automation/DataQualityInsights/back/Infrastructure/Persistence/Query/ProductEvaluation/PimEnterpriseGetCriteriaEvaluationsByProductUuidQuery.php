@@ -73,7 +73,7 @@ SQL;
             $query,
             ['productUuid' => $productUuid->toBytes(), 'criterionCode' => EvaluateAttributeSpelling::CRITERION_CODE],
             ['productUuid' => \PDO::PARAM_STR]
-        )->fetchColumn();
+        )->fetchOne();
 
         if (empty($rawResult)) {
             return null;

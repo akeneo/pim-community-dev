@@ -9,6 +9,7 @@ const backendResponse = {
             uploadedAt: '2022-07-22 16:50:45',
             uploadedByContributor: 'a@a.a',
             uploadedBySupplier: 'test',
+            hasUnreadComments: true,
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
@@ -16,6 +17,7 @@ const backendResponse = {
             uploadedAt: '2022-06-15 10:08:11',
             uploadedByContributor: 'a@a.a',
             uploadedBySupplier: 'test',
+            hasUnreadComments: false,
         },
     ],
     total: 2,
@@ -40,12 +42,14 @@ test('it loads the product files', async () => {
             uploadedAt: '2022-07-22 16:50:45',
             contributor: 'a@a.a',
             supplier: 'test',
+            hasUnreadComments: true,
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
             uploadedAt: '2022-06-15 10:08:11',
             contributor: 'a@a.a',
             supplier: 'test',
+            hasUnreadComments: false,
         },
     ]);
     expect(result.current[1]).toBe(backendResponse.total);

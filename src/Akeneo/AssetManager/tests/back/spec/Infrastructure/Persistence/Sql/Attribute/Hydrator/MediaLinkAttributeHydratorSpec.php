@@ -5,14 +5,14 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydr
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\MediaLinkAttributeHydrator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 
 class MediaLinkAttributeHydratorSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $this->beConstructedWith($connection);
     }
 

@@ -25,6 +25,7 @@ final class SftpStorage implements StorageInterface
         private string $username,
         private string $password,
         private string $filePath,
+        private ?string $fingerprint = null,
     ) {
     }
 
@@ -51,5 +52,10 @@ final class SftpStorage implements StorageInterface
     public function getUsername(): string
     {
         return $this->username;
+    }
+
+    public function getFingerprint(): ?string
+    {
+        return $this->fingerprint;
     }
 }

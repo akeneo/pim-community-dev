@@ -17,7 +17,7 @@ Feature: Supplier Portal - Product File Dropping - A retailer comments a product
     Then I should have an error message telling that the comment should not exceed 255 characters
 
   Scenario: Validates that we cannot have more than 50 comments on the same product file
-    Given a product file with 50 comments
+    Given a product file with 50 retailer comments
     When a retailer comments it with "Another comment, again!"
     Then I should have an error message telling that the product file cannot have more than 50 comments
 

@@ -87,9 +87,17 @@ unit-back: unit-back-retailer unit-back-supplier #Doc: Run unit back tests for S
 unit-front-retailer: #Doc: Run unit front tests for the retailer part of Supplier Portal
 	$(YARN_RUN) run --cwd=components/supplier-portal-retailer/front test:unit:run
 
+.PHONY: unit-front-watch-retailer
+unit-front-watch-retailer: #Doc: Run unit front tests in watch mode for the retailer part of Supplier Portal
+	$(YARN_RUN) run --cwd=components/supplier-portal-retailer/front test:unit:watch
+
 .PHONY: unit-front-supplier
 unit-front-supplier: #Doc: Run unit front tests for the supplier part of Supplier Portal
 	$(NODE_RUN) /bin/sh -c "cd components/supplier-portal-supplier/front" && $(YARN_RUN) run --cwd=components/supplier-portal-supplier/front test:unit:run
+
+.PHONY: unit-front-watch-supplier
+unit-front-watch-supplier: #Doc: Run unit front tests in watch mode for the supplier part of Supplier Portal
+	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front test:unit:watch
 
 .PHONY: unit-front
 unit-front: unit-front-retailer unit-front-supplier #Doc: Run unit front tests for Supplier Portal

@@ -8,12 +8,14 @@ const backendResponse = {
             path: '/path/to/file.xlsx',
             uploadedAt: '2022-07-22 16:50:45',
             uploadedByContributor: 'a@a.a',
+            hasUnreadComments: false,
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
             path: '/path/to/file2.xlsx',
             uploadedAt: '2022-06-15 10:08:11',
             uploadedByContributor: 'a@a.a',
+            hasUnreadComments: true,
         },
     ],
     total: 2,
@@ -39,11 +41,13 @@ test('it loads the product files', async () => {
             identifier: 'cd2c0741-0b27-4484-a927-b5e53c8f715c',
             uploadedAt: '2022-07-22 16:50:45',
             contributor: 'a@a.a',
+            hasUnreadComments: false,
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
             uploadedAt: '2022-06-15 10:08:11',
             contributor: 'a@a.a',
+            hasUnreadComments: true,
         },
     ]);
     expect(result.current[1]).toBe(backendResponse.total);

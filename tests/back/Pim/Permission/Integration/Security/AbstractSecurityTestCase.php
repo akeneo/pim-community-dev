@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AbstractSecurityTestCase extends TestCase
@@ -147,11 +148,10 @@ INNER JOIN pim_catalog_category c ON c.id = cp.category_id
 WHERE identifier = :identifier
 SQL;
 
-        $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue('identifier', $identifier);
-        $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     /**
@@ -169,11 +169,10 @@ INNER JOIN pim_catalog_category c ON c.id = cpm.category_id
 WHERE pm.code = :code
 SQL;
 
-        $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue('code', $code);
-        $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     /**
@@ -194,11 +193,10 @@ WHERE p.identifier = :identifier
 ORDER BY t.code ASC, associated_product.identifier ASC
 SQL;
 
-        $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue('identifier', $identifier);
-        $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     /**
@@ -212,10 +210,14 @@ SQL;
 SELECT p.raw_values FROM pim_catalog_product p WHERE p.identifier = :identifier
 SQL;
 
-        $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue('identifier', $identifier);
-        $stmt->execute();
 
-        return $stmt->fetch();
+        return $stmt->executeQuery()->fetchAssociative();
+    }
+
+    private function getConnection(): Connection
+    {
+        return $this->get('doctrine.orm.entity_manager')->getConnection();
     }
 }

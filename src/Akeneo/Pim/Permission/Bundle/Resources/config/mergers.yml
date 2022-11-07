@@ -8,7 +8,6 @@ services:
     pimee_catalog.security.merger.not_granted_associated_product:
         class: 'Akeneo\Pim\Permission\Component\Merger\NotGrantedAssociatedProductMerger'
         arguments:
-            - '@security.authorization_checker'
             - '@pim_catalog.updater.association_field_without_permission'
             - '@pimee_security.query.product_category_access'
             - '@pimee_security.query.product_model_category_access'

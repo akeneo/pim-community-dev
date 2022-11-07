@@ -7,7 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Cont
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListSupplierProductFiles\ListSupplierProductFiles as ListSupplierProductFilesQuery;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListSupplierProductFiles\ListSupplierProductFilesHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles as ListProductFilesForSupplierPort;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileWithHasUnreadComments;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,7 +26,7 @@ final class ListSupplierProductFiles
 
         return new JsonResponse([
             'product_files' => array_map(
-                function (ProductFile $productFile) {
+                function (ProductFileWithHasUnreadComments $productFile) {
                     $productFile = $productFile->toArray();
                     $productFile['uploadedAt'] = (new \DateTimeImmutable($productFile['uploadedAt']))->format('c');
 

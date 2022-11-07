@@ -28,7 +28,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\Conn
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 

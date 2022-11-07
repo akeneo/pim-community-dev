@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetDetailsHydratorInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 
 class AssetDetailsHydratorSpec extends ObjectBehavior
@@ -28,7 +28,7 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator
     ) {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $this->beConstructedWith($connection, $findValueKeysByAttributeType, $valueHydrator);
     }
 
@@ -520,7 +520,7 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
                     'channel'   => null,
                     'locale'    => 'en_US',
                     'data'      => 'IMG_2222.jpg',
-            ],
+                ],
             ],
             'values'                             => [
                 [
@@ -541,5 +541,4 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
             ],
         ]);
     }
-
 }

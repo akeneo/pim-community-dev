@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository;
 
 final class InMemoryMarkCommentsAsReadBySupplier implements MarkCommentsAsReadBySupplier
 {
@@ -16,6 +16,6 @@ final class InMemoryMarkCommentsAsReadBySupplier implements MarkCommentsAsReadBy
 
     public function __invoke(string $productFileIdentifier, \DateTimeImmutable $readAt): void
     {
-        $this->productFileRepository->updateProductFileLastUnreadDate(Identifier::fromString($productFileIdentifier), $readAt);
+        $this->productFileRepository->updateProductFileLastReadAtDateForSupplier(Identifier::fromString($productFileIdentifier), $readAt);
     }
 }

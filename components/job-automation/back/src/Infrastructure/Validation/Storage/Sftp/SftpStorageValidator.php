@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Hostname;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -38,6 +39,7 @@ final class SftpStorageValidator extends ConstraintValidator
                 'type' => new EqualTo(SftpStorageModel::TYPE),
                 'file_path' => new FilePath($constraint->getFilePathSupportedFileExtensions()),
                 'host' => [new NotBlank(), new Hostname()],
+                'fingerprint' => new Optional(new Fingerprint()),
                 'port' => [new NotBlank(), new GreaterThanOrEqual(1), new LessThanOrEqual(65535)],
                 'username' => new NotBlank(),
                 'password' => new NotBlank(),

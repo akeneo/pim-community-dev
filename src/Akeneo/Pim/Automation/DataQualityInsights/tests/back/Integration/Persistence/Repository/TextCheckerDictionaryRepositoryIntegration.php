@@ -218,14 +218,15 @@ SELECT 1 FROM pimee_data_quality_insights_text_checker_dictionary
 WHERE locale_code = :locale AND BINARY word = :word AND enabled = 1;
 SQL;
 
-        $wordExists = $this->get('database_connection')->executeQuery($query, ['locale' => $locale, 'word' => $word])->fetchColumn();
+        $wordExists = $this->get('database_connection')->executeQuery($query, ['locale' => $locale, 'word' => $word])->fetchOne();
 
         $this->assertTrue(boolval($wordExists));
     }
 
     private function resetDictionary(): void
     {
-        $this->get('database_connection')->executeQuery(<<<SQL
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
 TRUNCATE TABLE pimee_data_quality_insights_text_checker_dictionary;
 SQL
         );

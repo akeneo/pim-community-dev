@@ -37,7 +37,7 @@ FROM pim_catalog_attribute_translation AS attribute_labels
 WHERE attribute.code = :attributeCode
 SQL;
 
-        $rawLabels = $this->dbConnection->executeQuery($query, ['attributeCode' => $attributeCode])->fetchColumn();
+        $rawLabels = $this->dbConnection->executeQuery($query, ['attributeCode' => $attributeCode])->fetchOne();
 
         return is_string($rawLabels) ? json_decode($rawLabels, true) : [];
     }

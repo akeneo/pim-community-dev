@@ -11,6 +11,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Doctrine\DBAL\Connection;
 
 final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTestCase
 {
@@ -201,5 +202,162 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
         static::assertSame('file1.xlsx', $productFiles[0]->originalFilename);
         static::assertSame('contributor@example.com', $productFiles[0]->uploadedByContributor);
         static::assertSame($file1Date->format('Y-m-d H:i:s'), $productFiles[0]->uploadedAt);
+    }
+
+    /** @test */
+    public function itReturnsHasUnreadCommentsProperty(): void
+    {
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->build(),
+        );
+        $supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
+        );
+        $productFileRepository = $this->get(ProductFileRepository::class);
+
+        $productFileWithUnreadComments = (new ProductFileBuilder())
+            ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+            ->uploadedBySupplier($supplier)
+            ->build();
+        $productFileWithUnreadComments->addNewSupplierComment(
+            'Here are the products I\'ve got for you.',
+            'jimmy@punchline.com',
+            new \DateTimeImmutable('2022-10-26 00:00:00'),
+        );
+        $productFileRepository->save($productFileWithUnreadComments);
+
+        $this->addLastReadAtByRetailer(
+            '5d001a43-a42d-4083-8673-b64bb4ecd26f',
+            new \DateTimeImmutable('2022-10-25 00:00:00'),
+        );
+
+        $productFileWithoutUnreadComments = (new ProductFileBuilder())
+            ->withIdentifier('a3aac0e2-9eb9-4203-8af2-5425b2062ad4')
+            ->uploadedBySupplier($supplier)
+            ->build();
+        $productFileWithoutUnreadComments->addNewSupplierComment(
+            'Here is a read comment',
+            'steve@job.com',
+            new \DateTimeImmutable('2022-10-26 00:00:00'),
+        );
+        $productFileRepository->save($productFileWithoutUnreadComments);
+
+        $this->addLastReadAtByRetailer(
+            'a3aac0e2-9eb9-4203-8af2-5425b2062ad4',
+            new \DateTimeImmutable('2022-10-27 00:00:00'),
+        );
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
+
+        static::assertCount(2, $productFiles);
+        static::assertTrue($productFiles[0]->hasUnreadComments);
+        static::assertFalse($productFiles[1]->hasUnreadComments);
+    }
+
+    /** @test */
+    public function itReturnsTrueForHasUnreadCommentsIfThereIsCommentsButNoLastReadAtDate(): void
+    {
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->build(),
+        );
+        $supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
+        );
+        $productFileRepository = $this->get(ProductFileRepository::class);
+
+        $productFileWithUnreadComments = (new ProductFileBuilder())
+            ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+            ->uploadedBySupplier($supplier)
+            ->build();
+        $productFileWithUnreadComments->addNewSupplierComment(
+            'Here are the products I\'ve got for you.',
+            'jimmy@punchline.com',
+            new \DateTimeImmutable('2022-10-26 00:00:00'),
+        );
+        $productFileRepository->save($productFileWithUnreadComments);
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
+
+        static::assertTrue($productFiles[0]->hasUnreadComments);
+    }
+
+    /** @test */
+    public function itReturnsFalseForHasUnreadCommentsIfThereIsNoCommentsButALastReadAtDate(): void
+    {
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->build(),
+        );
+        $supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
+        );
+        $productFileRepository = $this->get(ProductFileRepository::class);
+
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+                ->uploadedBySupplier($supplier)
+                ->build(),
+        );
+        $this->addLastReadAtByRetailer(
+            '5d001a43-a42d-4083-8673-b64bb4ecd26f',
+            new \DateTimeImmutable('2022-10-27 00:00:00'),
+        );
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
+
+        static::assertFalse($productFiles[0]->hasUnreadComments);
+    }
+
+    /** @test */
+    public function itReturnsFalseForHasUnreadCommentsIfThereIsNoCommentsNorLastReadAtDate(): void
+    {
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->build(),
+        );
+        $supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
+        );
+        ($this->get(ProductFileRepository::class))->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($supplier)
+                ->build(),
+        );
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
+
+        static::assertFalse($productFiles[0]->hasUnreadComments);
+    }
+
+    private function addLastReadAtByRetailer(string $productFileIdentifier, \DateTimeImmutable $lastReadAt): void
+    {
+        $sql = <<<SQL
+            INSERT INTO `akeneo_supplier_portal_product_file_comments_read_by_retailer` (
+                product_file_identifier, last_read_at                
+            ) VALUES (:productFileIdentifier, :lastReadAt);
+        SQL;
+
+        $this->get(Connection::class)->executeStatement(
+            $sql,
+            [
+                'productFileIdentifier' => $productFileIdentifier,
+                'lastReadAt' => $lastReadAt->format('Y-m-d H:i:s'),
+            ],
+        );
     }
 }

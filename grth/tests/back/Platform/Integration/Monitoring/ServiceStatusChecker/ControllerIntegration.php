@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Platform\Integration\Monitoring\ServiceStatusChecker;
@@ -9,7 +10,7 @@ use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChec
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;

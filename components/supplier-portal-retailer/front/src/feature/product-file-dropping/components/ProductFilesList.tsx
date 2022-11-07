@@ -1,5 +1,5 @@
 import React from 'react';
-import {DownloadIcon, getColor, IconButton, Pagination, Table} from 'akeneo-design-system';
+import {DownloadIcon, getColor, IconButton, Pagination, Pill, Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptyProductFilesList} from './EmptyProductFilesList';
@@ -15,19 +15,6 @@ type Props = {
     onChangePage: (pageNumber: number) => void;
     displaySupplierColumn?: boolean;
 };
-
-const StyledDownloadIcon = styled(DownloadIcon)`
-    color: ${getColor('grey100')};
-`;
-
-const StyledIconButton = styled(IconButton)`
-    color: ${getColor('grey100')};
-
-    &:hover:not([disabled]) {
-        background-color: transparent;
-        color: ${getColor('grey100')};
-    }
-`;
 
 const ProductFilesList = ({
     productFiles,
@@ -71,6 +58,7 @@ const ProductFilesList = ({
                                 </Table.HeaderCell>
                             )}
                             <Table.HeaderCell></Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
                         </Table.Header>
                         <Table.Body>
                             {productFiles.map((productFile: ProductFileRow) => {
@@ -93,6 +81,11 @@ const ProductFilesList = ({
                                                 {productFile.hasOwnProperty('supplier') && productFile.supplier}
                                             </Table.Cell>
                                         )}
+                                        <HasUnreadCommentsCell>
+                                            {productFile.hasUnreadComments && (
+                                                <StyledPill data-testid="unread-comments-pill" level="primary" />
+                                            )}
+                                        </HasUnreadCommentsCell>
                                         <DownloadCell>
                                             <StyledIconButton
                                                 data-testid="Download icon"
@@ -118,8 +111,30 @@ const ProductFilesList = ({
     );
 };
 
+const StyledDownloadIcon = styled(DownloadIcon)`
+    color: ${getColor('grey100')};
+`;
+
+const StyledIconButton = styled(IconButton)`
+    color: ${getColor('grey100')};
+
+    &:hover:not([disabled]) {
+        background-color: transparent;
+        color: ${getColor('grey100')};
+    }
+`;
+
 const DownloadCell = styled(Table.ActionCell)`
     width: 50px;
+`;
+
+const StyledPill = styled(Pill)`
+    background-color: ${getColor('blue100')};
+    flex-direction: row-reverse;
+`;
+
+const HasUnreadCommentsCell = styled(Table.Cell)`
+    width: 10px;
 `;
 
 export {ProductFilesList};

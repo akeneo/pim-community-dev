@@ -230,7 +230,6 @@ SQL;
             ['view_category', 'edit_category', 'own_category', 'category_without_right'],
             $categoryCodes
         );
-
     }
 
     public function testUpdateVariantProductAssociationWithNotViewableProduct()
@@ -526,9 +525,8 @@ JSON;
     protected function getDatabaseData(string $sql): array
     {
         $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
-        $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     /**
@@ -542,7 +540,8 @@ JSON;
     private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
     {
         return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?',
+            [$productIdentifier]
         ));
     }
 }

@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation\Storage;
 
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage;
@@ -7,6 +18,9 @@ use AkeneoTest\Platform\Acceptance\ImportExport\Infrastructure\Validation\Abstra
 
 class ValidateSftpStorageTest extends AbstractValidationTest
 {
+    private const VALID_SHA512_FINGERPRINT = '6f:0a:fc:c7:59:32:0d:7f:78:1b:76:24:a9:51:a4:f9:c3:35:4b:7c:e6:0d:28:d4:cd:5e:5d:62:51:85:e4:93:60:f4:ae:70:a1:ac:ba:1c:92:c7:f4:4a:55:3b:7e:ac:c3:14:0f:4f:d2:b7:e7:87:d7:4f:e2:6d:1e:ab:0c:92';
+    private const VALID_MD5_FINGERPRINT = '6f:0a:fc:c7:59:32:0d:7f:78:1b:76:24:a9:51:a4:f9';
+
     /**
      * @dataProvider validSftpStorage
      */
@@ -20,7 +34,7 @@ class ValidateSftpStorageTest extends AbstractValidationTest
     /**
      * @dataProvider invalidSftpStorage
      */
-    public function test_it_build_violations_when_sftp_storage_is_invalid(
+    public function test_it_builds_violations_when_sftp_storage_is_invalid(
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value,
@@ -48,6 +62,28 @@ class ValidateSftpStorageTest extends AbstractValidationTest
                     'type' => 'sftp',
                     'file_path' => '/tmp/products.xlsx',
                     'host' => '192.168.0.98',
+                    'port' => 22,
+                    'username' => 'ziggy',
+                    'password' => 'MySecretPassword',
+                ],
+            ],
+            'valid sftp storage with SHA-512 fingerprint' => [
+                [
+                    'type' => 'sftp',
+                    'file_path' => '/tmp/products.xlsx',
+                    'host' => '192.168.0.98',
+                    'fingerprint' => self::VALID_SHA512_FINGERPRINT,
+                    'port' => 22,
+                    'username' => 'ziggy',
+                    'password' => 'MySecretPassword',
+                ],
+            ],
+            'valid sftp storage with MD5 fingerprint' => [
+                [
+                    'type' => 'sftp',
+                    'file_path' => '/tmp/products.xlsx',
+                    'host' => '192.168.0.98',
+                    'fingerprint' => self::VALID_MD5_FINGERPRINT,
                     'port' => 22,
                     'username' => 'ziggy',
                     'password' => 'MySecretPassword',
@@ -112,6 +148,18 @@ class ValidateSftpStorageTest extends AbstractValidationTest
                     'type' => 'sftp',
                     'file_path' => '/tmp/products.xlsx',
                     'host' => 'invalid',
+                    'username' => 'ziggy',
+                    'password' => 'MySecretPassword',
+                ],
+            ],
+            'sftp storage with invalid fingerprint' => [
+                'pim_import_export.form.job_instance.validation.fingerprint.invalid_encoding',
+                '[fingerprint]',
+                [
+                    'type' => 'sftp',
+                    'file_path' => '/tmp/products.xlsx',
+                    'host' => 'test.com',
+                    'fingerprint' => 'invalid fingerprint',
                     'username' => 'ziggy',
                     'password' => 'MySecretPassword',
                 ],

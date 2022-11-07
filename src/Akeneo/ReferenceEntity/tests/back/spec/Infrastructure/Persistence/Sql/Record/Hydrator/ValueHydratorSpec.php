@@ -10,7 +10,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class ValueHydratorSpec extends ObjectBehavior

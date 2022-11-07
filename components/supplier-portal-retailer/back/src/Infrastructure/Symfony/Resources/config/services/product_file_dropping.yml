@@ -27,6 +27,11 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments'
 
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\MarkCommentsAsRead:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler'
+
     # GCS Bucket services
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket
@@ -81,6 +86,11 @@ services:
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadByRetailer'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
 
     # Query/Handlers
@@ -165,6 +175,11 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseMarkCommentsAsReadBySupplier
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadByRetailer:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseMarkCommentsAsReadByRetailer
         arguments:
             - '@database_connection'
 

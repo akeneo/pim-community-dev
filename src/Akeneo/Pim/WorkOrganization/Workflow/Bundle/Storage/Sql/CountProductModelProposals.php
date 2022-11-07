@@ -45,8 +45,6 @@ class CountProductModelProposals implements CountProductModelProposalsQuery
         WHERE draft.status = $proposalStatus
 SQL;
 
-        $count = $this->connection->query($sql)->fetchColumn(0);
-
-        return (int) $count;
+        return (int) $this->connection->fetchOne($sql);
     }
 }

@@ -183,6 +183,8 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileHandlerForSupplier',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplier',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailer',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryFindAllProductFileImportConfigurations',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',

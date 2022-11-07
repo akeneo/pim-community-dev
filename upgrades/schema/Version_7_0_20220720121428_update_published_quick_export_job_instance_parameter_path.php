@@ -50,9 +50,7 @@ WHERE job_name IN (
 AND type = 'quick_export'
 SQL;
 
-        $stmt = $connection->executeQuery($sql);
-
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $connection->executeQuery($sql)->fetchAllAssociative();
     }
 
     private function migrateRawParameters(array $rawParameters): array
