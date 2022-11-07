@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Command;
@@ -16,17 +17,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateOpenIdKeysCommand extends Command
 {
     protected static $defaultName = 'akeneo:connectivity-connection:openid-keys:create';
-    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
+    protected static $defaultDescription = 'Create or update a public/private key couple to be used to sign openid token and store it into database';
 
-    public function __construct(GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler)
+    public function __construct(private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler)
     {
         parent::__construct();
-        $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
-    }
-
-    protected function configure(): void
-    {
-        $this->setDescription('Create or update a public/private key couple to be used to sign openid token and store it into database');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
