@@ -16,7 +16,8 @@
         "uuid": { "$ref": "#/$defs/uuidProperty" }
       },
       "additionalProperties": { "$ref": "#/$defs/property" },
-      "default": {}
+      "default": {},
+      "required": ["uuid"]
     }
   },
   "$defs": {

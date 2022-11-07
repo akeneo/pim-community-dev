@@ -49,7 +49,8 @@ class ProductSchemaValidatorTest extends IntegrationTestCase
             new ProductSchema()
         );
 
-        $this->assertNotEmpty($violations);
+        $this->assertCount(1, $violations);
+        $this->assertEquals('You must provide a valid schema.', $violations->get(0)->getMessage());
     }
 
     public function validSchemaDataProvider(): array
@@ -102,28 +103,6 @@ JSON_WRAP,
 }
 JSON_WRAP,
             ],
-            '0.0.2 with valid schema without uuid' => [
-                'schema' => <<<'JSON_WRAP'
-{
-  "$id": "https://example.com/product",
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
-  "$comment": "My first schema !",
-  "title": "Product Mapping",
-  "description": "JSON Schema describing the structure of products expected by our application",
-  "type": "object",
-  "properties": {
-    "name": {
-      "type": "string"
-    },
-    "body_html": {
-      "title": "Description",
-      "description": "Product description in raw HTML",
-      "type": "string"
-    }
-  }
-}
-JSON_WRAP,
-            ]
         ];
     }
 
@@ -148,6 +127,18 @@ JSON_WRAP,
   "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
   "properties": {
     "price": {}
+  }
+}
+JSON_WRAP,
+            ],
+            '0.0.2 with missing uuid' => [
+                'schema' => <<<'JSON_WRAP'
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+  "properties": {
+    "name": {
+      "type": "string"
+    }
   }
 }
 JSON_WRAP,
