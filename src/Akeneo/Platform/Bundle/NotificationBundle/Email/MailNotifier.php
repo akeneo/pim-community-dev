@@ -26,7 +26,7 @@ class MailNotifier implements MailNotifierInterface
         array $recipients,
         string $subject,
         string $txtBody,
-        ?string $htmlBody = null,
+        string $htmlBody,
         array $options = []
     ): void {
         $email = (new Email())

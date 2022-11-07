@@ -17,7 +17,7 @@ interface MailNotifierInterface
         array $recipients,
         string $subject,
         string $txtBody,
-        ?string $htmlBody = null,
+        string $htmlBody,
         array $options = []
     ): void;
 }

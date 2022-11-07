@@ -16,7 +16,7 @@ class FakeMailNotifier implements MailNotifierInterface
 {
     private array $emailSent = [];
 
-    public function notify(array $recipients, string $subject, string $txtBody, ?string $htmlBody = null, array $options = []): void
+    public function notify(array $recipients, string $subject, string $txtBody, string $htmlBody, array $options = []): void
     {
         foreach ($recipients as $recipient) {
             $this->emailSent[$recipient][] = $subject;
