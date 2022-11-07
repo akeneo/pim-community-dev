@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileDro
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DownloadStoredProductFileFromGCSBucket;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StreamStoredProductFileFromGCSBucket;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\Storage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
@@ -15,14 +15,14 @@ use League\Flysystem\UnableToReadFile;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
 
-final class DownloadStoredProductFileFromGCSBucketTest extends TestCase
+final class StreamStoredProductFileFromGCSBucketTest extends TestCase
 {
     /** @test */
     public function itThrowsAProductFileDoesNotExistExceptionWhenTheFileDoesNotExist(): void
     {
         $filesystemProvider = $this->createMock(FilesystemProvider::class);
         $logger = new TestLogger();
-        $sut = new DownloadStoredProductFileFromGCSBucket($filesystemProvider, $logger);
+        $sut = new StreamStoredProductFileFromGCSBucket($filesystemProvider, $logger);
         try {
             ($sut)('path/to/file.xlsx');
         } catch (ProductFileDoesNotExist) {
@@ -53,7 +53,7 @@ final class DownloadStoredProductFileFromGCSBucketTest extends TestCase
             ->willThrowException(new UnableToCheckFileExistence('Service unavailable.'))
         ;
         $logger = new TestLogger();
-        $sut = new DownloadStoredProductFileFromGCSBucket($filesystemProvider, $logger);
+        $sut = new StreamStoredProductFileFromGCSBucket($filesystemProvider, $logger);
         try {
             ($sut)('path/to/file.xlsx');
         } catch (UnableToReadProductFile) {
@@ -89,7 +89,7 @@ final class DownloadStoredProductFileFromGCSBucketTest extends TestCase
             ->willThrowException(new UnableToReadFile('Service unavailable.'))
         ;
         $logger = new TestLogger();
-        $sut = new DownloadStoredProductFileFromGCSBucket($filesystemProvider, $logger);
+        $sut = new StreamStoredProductFileFromGCSBucket($filesystemProvider, $logger);
         try {
             ($sut)('path/to/file.xlsx');
         } catch (UnableToReadProductFile) {

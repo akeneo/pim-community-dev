@@ -7,7 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
 
-interface DownloadStoredProductFile
+interface StreamStoredProductFile
 {
     /**
      * @throws UnableToReadProductFile

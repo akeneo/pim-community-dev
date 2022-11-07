@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDroppi
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile\DownloadProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile\DownloadProductFileHandler;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
@@ -20,7 +20,7 @@ final class DownloadProductFileHandlerTest extends TestCase
     public function itDownloadsAProductFile(): void
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
-        $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $downloadStoredProductFileMock = $this->createMock(StreamStoredProductFile::class);
 
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
@@ -59,7 +59,7 @@ final class DownloadProductFileHandlerTest extends TestCase
     public function itThrowsAnExceptionIfTheFileDoesNotExistInTheDatabase(): void
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
-        $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $downloadStoredProductFileMock = $this->createMock(StreamStoredProductFile::class);
 
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
@@ -76,7 +76,7 @@ final class DownloadProductFileHandlerTest extends TestCase
     public function itThrowsAnExceptionIfTheFileCouldNotBeRetrieved(): void
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
-        $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $downloadStoredProductFileMock = $this->createMock(StreamStoredProductFile::class);
 
         $eventDispatcher = new StubEventDispatcher();
         $sut = new DownloadProductFileHandler(
