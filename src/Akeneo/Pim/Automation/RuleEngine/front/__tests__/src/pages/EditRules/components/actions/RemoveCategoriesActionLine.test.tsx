@@ -20,11 +20,9 @@ describe('RemoveCategoriesActionLine', () => {
 
   it('should display the remove categories action line, and switch tree', async () => {
     fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes(
-          'pimee_enrich_rule_definition_get_categories?%7B%22identifiers%22:[%22cat1%22,%22cat2%22,%22cat3%22]%7D'
-        )
-      ) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (request.url === 'pimee_enrich_rule_definition_get_categories' && request.body.toString() === '{"identifiers":["cat1","cat2","cat3"]}') {
         return Promise.resolve(
           JSON.stringify([
             createCategory('cat1', {root: 1}),
@@ -116,11 +114,9 @@ describe('RemoveCategoriesActionLine', () => {
 
   it('should display the unknown categories', async () => {
     fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes(
-          'pimee_enrich_rule_definition_get_categories?%7B%22identifiers%22:[%22cat1%22,%22unexistingCategory%22,%22cat3%22]%7D'
-        )
-      ) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (request.url === 'pimee_enrich_rule_definition_get_categories' && request.body.toString() === '{"identifiers":["cat1","unexistingCategory","cat3"]}') {
         return Promise.resolve(
           JSON.stringify([
             createCategory('cat1', {root: 1}),

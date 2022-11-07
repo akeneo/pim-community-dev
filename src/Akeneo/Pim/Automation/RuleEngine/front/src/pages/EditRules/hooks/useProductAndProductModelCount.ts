@@ -1,12 +1,13 @@
-import {useState, useEffect} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
-import {httpGet} from '../../../fetch';
+import {httpPost} from '../../../fetch';
 import {generateUrl} from '../../../dependenciesTools/utils';
 import {Router} from '../../../dependenciesTools';
 import {Status} from '../../../rules.constants';
 import {FormData} from '../edit-rules.types';
 import {Condition} from '../../../models';
 import {formatDateLocaleTimeConditionsToBackend} from '../components/conditions/DateConditionLines/dateConditionLines.utils';
+
 type CountFn = (x: CountError | CountPending | CountComplete) => void;
 
 type CountError = {
@@ -52,13 +53,19 @@ const debounceFn = (fn: any, delay: number) => {
   };
 };
 
-const getProductsCountUrl = async (url: string, fn: CountFn) => {
+const getProductsCountUrl = async (
+  url: string,
+  fn: CountFn,
+  conditions: any[]
+) => {
   if (!url.length) {
     fn(countError);
   }
   fn(countPending);
   try {
-    const response = await httpGet(url);
+    const response = await httpPost(url, {
+      body: {conditions: conditions},
+    });
     if (response.ok) {
       const result = await response.json();
       fn(
@@ -82,24 +89,14 @@ const isConditionValid = (condition: Condition) =>
   Object.entries(condition).length &&
   Object.values(condition).some(value => value);
 
-const createProductsCountUrl = (router: Router, form: FormData) => {
-  const filterConditions =
-    form?.content?.conditions?.filter(isConditionValid) || [];
-  const conditions = formatDateLocaleTimeConditionsToBackend(filterConditions);
-  return generateUrl(
-    router,
-    'pimee_enrich_rule_definition_get_impacted_product_count',
-    {
-      conditions: JSON.stringify(conditions),
-    }
-  );
-};
-
 const useProductAndProductModelCount = (
   router: Router,
   formValues: FormData
 ) => {
-  const url = createProductsCountUrl(router, formValues);
+  const url = generateUrl(
+    router,
+    'pimee_enrich_rule_definition_get_impacted_product_count'
+  );
   const {watch} = useFormContext();
   const [count, setCount] = useState<CountError | CountPending | CountComplete>(
     countPending
@@ -107,9 +104,19 @@ const useProductAndProductModelCount = (
   // Watch allows to subscribe input's change via event listener. We need that to trigger a new products count.
   watch(`content.conditions`);
 
+  const conditionsFormValues = formValues?.content?.conditions;
+  const conditions = useMemo(() => {
+    const filterConditions =
+      conditionsFormValues?.filter(isConditionValid) || [];
+    const formattedConditions = formatDateLocaleTimeConditionsToBackend(
+      filterConditions
+    );
+    return JSON.stringify(formattedConditions);
+  }, [conditionsFormValues]);
+
   useEffect(() => {
-    getProductsCountUrlWithDebounce(url, setCount);
-  }, [url]);
+    getProductsCountUrlWithDebounce(url, setCount, conditions);
+  }, [conditions, url]);
   return count;
 };
 

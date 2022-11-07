@@ -1,13 +1,13 @@
 import React from 'react';
 import {EditRulesContent} from '../../../../src/pages/EditRules/EditRulesContent';
 import userEvent from '@testing-library/user-event';
-import {wait} from '@testing-library/dom';
+import {waitFor} from '@testing-library/dom';
 import {render, act, screen} from '../../../../test-utils';
 import {IndexedScopes} from '../../../../src/repositories/ScopeRepository';
 import {Security} from '../../../../src/dependenciesTools';
 import {uiLocales} from '../../factories';
 
-const setIsDirty = (_isDirty: boolean) => {};
+const setIsDirty = jest.fn();
 
 describe('EditRulesContent', () => {
   it('should display an unsaved changes alert after user have changed an input', async () => {
@@ -139,7 +139,7 @@ describe('EditRulesContent', () => {
     )) as HTMLInputElement;
     await act(() => userEvent.type(usLabelInput, 'The new label'));
     // Then
-    await wait(() => expect(titleDiv).toHaveTextContent('The new label'));
+    await waitFor(() => expect(titleDiv).toHaveTextContent('The new label'));
   });
 
   it('does not display the "save and execute" button when user has not the permission', async () => {

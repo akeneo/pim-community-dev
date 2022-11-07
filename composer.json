@@ -127,6 +127,7 @@
         "friends-of-phpspec/phpspec-code-coverage": "^6.1.0",
         "friendsofphp/php-cs-fixer": "^3.0,<3.9.1",
         "instaclick/php-webdriver": "1.4.7",
+        "jfcherng/php-diff": "^6.10",
         "league/flysystem-aws-s3-v3": "^2.0",
         "liuggio/fastest": "1.8.*",
         "mcustiel/phiremock": "2.1.1",
