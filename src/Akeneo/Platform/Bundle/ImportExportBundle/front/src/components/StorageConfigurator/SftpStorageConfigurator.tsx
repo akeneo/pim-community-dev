@@ -4,6 +4,7 @@ import {Field, Helper, NumberInput, Button, CheckIcon, getColor, SelectInput} fr
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage, StorageLoginType, STORAGE_LOGIN_TYPES} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
+import {useGetPublicKey} from "../../hooks/useGetPublicKey";
 
 const CheckStorageForm = styled.div`
   display: flex;
@@ -31,6 +32,7 @@ const SftpStorageConfigurator = ({
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
+  const {publicKey} = useGetPublicKey(storage);
 
     const handleLoginTypeChange = (storageLoginType: string) => {
         onStorageChange({...storage, login_type: storageLoginType as StorageLoginType});
@@ -44,6 +46,8 @@ const SftpStorageConfigurator = ({
     const handlePortChange = (port: string) => {
         onStorageChange({...storage, port: parseInt(port, 10)});
     }
+
+    console.log(storage);
 
   return (
     <>
