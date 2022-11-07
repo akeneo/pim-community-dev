@@ -27,3 +27,13 @@ pim_identifier_generator:
         first_generator: 'Create your first identifier generator!'
         check_help_center: 'Check out our help center for more information.'
         create_info: 'It is only possible to create one Identifier Generator for the moment. You will soon be able to configure multiple generators matching all your usecases. '
+    structure:
+        title: 'Identifier Structure'
+        add_element: 'Add new property'
+        search: 'search'
+        search_placeholder: 'Search'
+        no_result: 'Sorry, there is no results'
+        property_type:
+            sections:
+                system: 'System'
+            freetext: 'Free text'

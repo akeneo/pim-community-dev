@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar} from 'akeneo-design-system';
 import {PageContent, PageHeader, useTranslate} from '@akeneo-pim-community/shared';
-import {GeneralPropertiesTab} from '../tabs';
+import {GeneralPropertiesTab, StructureTab} from '../tabs';
 import {IdentifierGenerator} from '../models';
 import {Violation} from '../validators/Violation';
 import {Header} from '../components/Header';
@@ -66,12 +66,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             <div>{JSON.stringify(generator.conditions)}</div>
           </>
         )}
-        {currentTab === Tabs.STRUCTURE && (
-          <>
-            <div>Not implemented YET</div>
-            <div>{JSON.stringify(generator.structure)}</div>
-          </>
-        )}
+        {currentTab === Tabs.STRUCTURE && <StructureTab />}
       </PageContent>
     </>
   );
