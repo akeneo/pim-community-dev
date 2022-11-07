@@ -2,7 +2,10 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
 import {CreateOrEditGeneratorPage} from '../';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
+import {createMemoryHistory} from 'history';
+import {Router} from 'react-router';
 
+jest.mock('../DeleteGeneratorModal');
 jest.mock('../../tabs/GeneralPropertiesTab');
 jest.mock('../../tabs/Structure');
 
@@ -25,6 +28,7 @@ describe('CreateOrEditGeneratorPage', () => {
         initialGenerator={initialGenerator}
         validationErrors={[]}
         mainButtonCallback={mainButtonCallback}
+        isNew={false}
       />
     );
 
@@ -48,6 +52,7 @@ describe('CreateOrEditGeneratorPage', () => {
         initialGenerator={initialGenerator}
         validationErrors={[]}
         mainButtonCallback={mainButtonCallback}
+        isNew={false}
       />
     );
 
@@ -62,6 +67,7 @@ describe('CreateOrEditGeneratorPage', () => {
         initialGenerator={initialGenerator}
         validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
         mainButtonCallback={mainButtonCallback}
+        isNew={false}
       />
     );
 
@@ -69,14 +75,17 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('another message')).toBeInTheDocument();
   });
 
-  it('should display delete modal', () => {
-    const mainButtonCallback = jest.fn();
+  it('should delete a generator', () => {
+    const history = createMemoryHistory();
     render(
-      <CreateOrEditGeneratorPage
-        initialGenerator={initialGenerator}
-        validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
-        mainButtonCallback={mainButtonCallback}
-      />
+      <Router history={history}>
+        <CreateOrEditGeneratorPage
+          initialGenerator={initialGenerator}
+          validationErrors={[]}
+          mainButtonCallback={jest.fn()}
+          isNew={false}
+        />
+      </Router>
     );
 
     expect(screen.queryByText('pim_identifier_generator.deletion.operations')).toBeNull();
@@ -84,6 +93,8 @@ describe('CreateOrEditGeneratorPage', () => {
     const otherActionButton = screen.getAllByRole('button')[0];
     fireEvent.click(otherActionButton);
     fireEvent.click(screen.getByText('pim_common.delete'));
-    expect(screen.queryByText('pim_identifier_generator.deletion.operations')).toBeVisible();
+    expect(screen.getByText('DeleteGeneratorModalMock')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Delete generator'));
+    expect(history.location.pathname).toBe('/configuration/identifier-generator/');
   });
 });

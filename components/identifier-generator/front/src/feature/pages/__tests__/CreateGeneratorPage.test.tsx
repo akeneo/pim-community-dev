@@ -38,7 +38,7 @@ describe('CreateGeneratorPage', () => {
     });
 
     await waitFor(() => history.length > 1);
-    expect(history.location.pathname).toBe('/initialCode');
+    expect(history.location.pathname).toBe('/configuration/identifier-generator/initialCode');
   });
 
   it('should display validation errors', async () => {

@@ -4,6 +4,7 @@ import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {Violation} from '../validators/Violation';
 import {useHistory} from 'react-router-dom';
+import {useGetGenerators} from '../hooks';
 
 type CreateGeneratorProps = {
   initialGenerator: IdentifierGenerator;
@@ -14,6 +15,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
   const notify = useNotify();
   const translate = useTranslate();
   const history = useHistory();
+  const {refetch} = useGetGenerators();
   const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
 
   const onSave = async (generator: IdentifierGenerator) => {
@@ -31,8 +33,12 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
       notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
       setValidationErrors(json);
     } else if (response.status === 201) {
-      notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success'));
-      history.push(`/${generator.code}`);
+      notify(
+        NotificationLevel.SUCCESS,
+        translate('pim_identifier_generator.flash.create.success', {code: generator.code})
+      );
+      refetch();
+      history.push(`/configuration/identifier-generator/${generator.code}`);
     } else {
       /* istanbul ignore next */
       notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));
@@ -44,6 +50,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
       initialGenerator={initialGenerator}
       mainButtonCallback={onSave}
       validationErrors={validationErrors}
+      isNew={true}
     />
   );
 };

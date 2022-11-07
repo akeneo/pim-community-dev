@@ -35,7 +35,7 @@ describe('CreateGeneratorModal', () => {
       code: 'new_code',
       conditions: [],
       delimiter: null,
-      labels: {uiLocale: 'Other label'},
+      labels: {en_US: 'Other label'},
       structure: [{type: 'free_text', string: 'AKN'}],
       target: 'sku',
     });

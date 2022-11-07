@@ -2,21 +2,15 @@ import React from 'react';
 import {fireEvent, render, screen, waitFor} from '../../tests/test-utils';
 import {ListPage} from '../ListPage';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
-import {useGetGenerators} from '../../hooks/useGetGenerators';
+import {useGetGenerators} from '../../hooks';
 import {mocked} from 'ts-jest/utils';
-import {fireEvent} from '@testing-library/react';
+import {Router} from 'react-router';
+import {createMemoryHistory} from 'history';
 
+jest.mock('../DeleteGeneratorModal');
+jest.mock('../../hooks/useIdentifierAttributes');
 jest.mock('../../hooks/useGetGenerators', () => ({
   useGetGenerators: jest.fn(),
-}));
-
-const mockHistoryPush = jest.fn();
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useHistory: () => ({
-    push: mockHistoryPush,
-  }),
 }));
 
 const mockedList: IdentifierGenerator[] = [
@@ -36,6 +30,7 @@ describe('ListPage', () => {
       data: [],
       isLoading: false,
       refetch: jest.fn(),
+      error: null,
     });
 
     render(<ListPage onCreate={jest.fn()} />);
@@ -50,6 +45,7 @@ describe('ListPage', () => {
       data: mockedList,
       isLoading: false,
       refetch: jest.fn(),
+      error: null,
     });
     render(<ListPage onCreate={jest.fn()} />);
 
@@ -59,16 +55,24 @@ describe('ListPage', () => {
     expect(screen.getByText('pim_common.create')).toBeDisabled();
     expect(screen.queryByText('pim_identifier_generator.list.first_generator')).not.toBeInTheDocument();
 
-    expect(screen.getByText('[test]')).toBeVisible();
+    expect(screen.getByText('Sku generator')).toBeVisible();
+    expect(await screen.findByText('Sku')).toBeVisible();
   });
 
   it('should redirect to edit page on list item click', async () => {
     mocked(useGetGenerators).mockReturnValue({
       data: mockedList,
       isLoading: false,
+      refetch: jest.fn(),
+      error: null,
     });
 
-    render(<ListPage onCreate={jest.fn()} />);
+    const history = createMemoryHistory();
+    render(
+      <Router history={history}>
+        <ListPage onCreate={jest.fn()} />
+      </Router>
+    );
 
     await waitFor(() => {
       expect(screen.queryByText('pim_identifier_generator.list.create_info')).toBeVisible();
@@ -78,22 +82,36 @@ describe('ListPage', () => {
     expect(rows.length).toBe(3);
 
     fireEvent.click(rows[2]);
-    await waitFor(() => {
-      expect(mockHistoryPush).toHaveBeenCalledTimes(1);
-      expect(mockHistoryPush).toHaveBeenCalledWith('/test');
-    });
+    expect(history.location.pathname).toEqual('/configuration/identifier-generator/test');
   });
 
-  it('should display delete modal', () => {
+  it('should delete a generator', () => {
     mocked(useGetGenerators).mockReturnValue({
       data: mockedList,
       isLoading: false,
       refetch: jest.fn(),
+      error: null,
     });
     render(<ListPage onCreate={jest.fn()} />);
 
-    expect(screen.queryByText('pim_identifier_generator.deletion.operations')).toBeNull();
     fireEvent.click(screen.getByText('pim_common.delete'));
-    expect(screen.queryByText('pim_identifier_generator.deletion.operations')).toBeVisible();
+    expect(screen.getByText('DeleteGeneratorModalMock')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Delete generator'));
+    expect(screen.queryByText('DeleteGeneratorModalMock')).not.toBeInTheDocument();
+  });
+
+  it('should cancel deletion of a generator', () => {
+    mocked(useGetGenerators).mockReturnValue({
+      data: mockedList,
+      isLoading: false,
+      refetch: jest.fn(),
+      error: null,
+    });
+    render(<ListPage onCreate={jest.fn()} />);
+
+    fireEvent.click(screen.getByText('pim_common.delete'));
+    expect(screen.getByText('DeleteGeneratorModalMock')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Close modal'));
+    expect(screen.queryByText('DeleteGeneratorModalMock')).not.toBeInTheDocument();
   });
 });
