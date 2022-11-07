@@ -10,10 +10,10 @@ final class GetAsymmetricKeysHandler implements GetAsymmetricKeysHandlerInterfac
     public function __construct(
         private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
     ) {
-
     }
 
-    public function handle(): AsymmetricKeys {
+    public function handle(): AsymmetricKeys
+    {
         return $this->getAsymmetricKeysQuery->execute();
     }
 }

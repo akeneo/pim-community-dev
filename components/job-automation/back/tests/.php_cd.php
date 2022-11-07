@@ -39,8 +39,8 @@ $rules = [
             'Symfony\Component',
             'Symfony\Contract',
             'Psr\Log\LoggerInterface',
-            'phpseclib\Crypt\RSA',
-            'phpseclib\File\X509',
+            'phpseclib3\Crypt\RSA',
+            'phpseclib3\File\X509',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
