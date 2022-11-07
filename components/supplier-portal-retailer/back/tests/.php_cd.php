@@ -89,6 +89,9 @@ $rules = [
             'Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface',
             'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance',
             'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\File',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceCommand',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceHandlerInterface',
 
             // External dependencies coupling
             'OpenSpout\Common\Entity\Row',

@@ -4,6 +4,11 @@ services:
     arguments:
       - '@Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface'
 
+  Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductFileImport:
+    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\LaunchTailoredImport
+    arguments:
+      - '@Akeneo\Platform\Job\Application\LaunchJobInstance\LaunchJobInstanceHandler'
+
   # Query/Handlers
   Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportConfigurationsHandler:
     arguments:
