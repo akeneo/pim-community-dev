@@ -30,10 +30,7 @@ pim_identifier_generator:
     structure:
         title: 'Identifier Structure'
         add_element: 'Add new property'
-        search: 'search'
-        search_placeholder: 'Search'
-        no_result: 'Sorry, there is no results'
         property_type:
             sections:
                 system: 'System'
-            freetext: 'Free text'
+            free_text: 'Free text'
