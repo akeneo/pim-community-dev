@@ -7,14 +7,14 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\H
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\RecordAttributeHydrator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 
 class RecordAttributeHydratorSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $this->beConstructedWith($connection);
     }
 

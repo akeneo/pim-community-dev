@@ -73,7 +73,7 @@ SQL;
             $query,
             ['job_execution_id' => $jobExecutionId]
         );
-        $jobCode = $stmt->fetchColumn();
+        $jobCode = $stmt->fetchOne();
         self::assertIsString($jobCode, 'Job code cannot be found.');
 
         return $jobCode;

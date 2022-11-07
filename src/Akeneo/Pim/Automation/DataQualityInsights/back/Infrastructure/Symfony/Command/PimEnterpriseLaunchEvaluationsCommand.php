@@ -86,8 +86,8 @@ class PimEnterpriseLaunchEvaluationsCommand extends Command
         SQL;
 
         return (bool) $this->connection->fetchOne($sql, [
-            ':code' => 'pim:product:migrate-to-uuid',
-            ':status' => 'started',
+            'code' => 'pim:product:migrate-to-uuid',
+            'status' => 'started',
         ]);
     }
 }

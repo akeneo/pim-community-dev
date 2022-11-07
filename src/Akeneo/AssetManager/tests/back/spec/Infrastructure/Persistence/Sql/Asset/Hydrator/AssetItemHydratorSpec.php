@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItemHydrator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 
 class AssetItemHydratorSpec extends ObjectBehavior
@@ -30,7 +30,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
         ValueHydratorInterface $valueHydrator,
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator
     ) {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $this->beConstructedWith(
             $connection,
             $findRequiredValueKeyCollectionForChannelAndLocales,

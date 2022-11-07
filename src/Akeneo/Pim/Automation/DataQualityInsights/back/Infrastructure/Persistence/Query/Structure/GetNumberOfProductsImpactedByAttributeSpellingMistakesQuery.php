@@ -33,14 +33,14 @@ class GetNumberOfProductsImpactedByAttributeSpellingMistakesQuery implements Get
 
         $stmt = $this->dbConnection->executeQuery($query, ['attributeCode' => $attributeCode]);
 
-        return intval($stmt->fetchColumn());
+        return intval($stmt->fetchOne());
     }
 
     public function forAllAttributes(): int
     {
         $stmt = $this->dbConnection->executeQuery($this->getMainQuery());
 
-        return intval($stmt->fetchColumn());
+        return intval($stmt->fetchOne());
     }
 
     private function getMainQuery(): string

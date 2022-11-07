@@ -158,7 +158,7 @@ SQL;
             'familyId' => $familyId,
         ]);
 
-        return intval($stmt->fetchColumn());
+        return intval($stmt->fetchOne());
     }
 
     private function updateFamilyVersionDate(int $familyId, \DateTimeImmutable $updatedAt, ?int $lastVersionId = null): void

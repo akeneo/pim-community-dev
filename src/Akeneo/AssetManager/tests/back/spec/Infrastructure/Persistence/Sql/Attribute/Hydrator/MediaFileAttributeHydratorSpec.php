@@ -6,14 +6,14 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\MediaFileAttributeHydrator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 
 class MediaFileAttributeHydratorSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $this->beConstructedWith($connection);
     }
 

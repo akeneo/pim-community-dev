@@ -98,7 +98,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $entityManager->getConnection()->willReturn($connection);
 
         $connection
-            ->fetchColumn(Argument::type('string'), [
+            ->fetchOne(Argument::type('string'), [
                 'product_uuid' => $productUuid->getBytes(),
                 'channel_id' => $projectChannelId,
                 'locale_id'  => $projectLocaleId,
@@ -138,7 +138,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $entityManager->getConnection()->willReturn($connection);
 
         $connection
-            ->fetchColumn(Argument::type('string'), [
+            ->fetchOne(Argument::type('string'), [
                 'product_uuid' => $productUuid->getBytes(),
                 'channel_id' => $projectChannelId,
                 'locale_id'  => $projectLocaleId,
@@ -177,7 +177,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $entityManager->getConnection()->willReturn($connection);
 
         $connection
-            ->fetchColumn(Argument::type('string'), [
+            ->fetchOne(Argument::type('string'), [
                 'product_uuid' => $productUuid->getBytes(),
                 'channel_id' => $projectChannelId,
                 'locale_id'  => $projectLocaleId,

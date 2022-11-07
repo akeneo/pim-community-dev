@@ -7,10 +7,9 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\PDOException;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Driver\PDO\Exception as PdoDriverException;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Exception\DeadlockException;
-use Doctrine\DBAL\Driver\DriverException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -38,13 +37,13 @@ class SqlSavePublishedProductCompletenessesSpec extends ObjectBehavior
             }
 
             $callCount++;
-            throw new DeadlockException('', new PDOException(new \PDOException()));
+            throw new DeadlockException(new PdoDriverException('', null, 0, new \PDOException()), null);
         })->shouldBeCalledTimes(3);
 
         $this->save($completenesses);
     }
 
-    function it_lock_all_the_completeness_table_after_5_retry(Connection $connection, ResultStatement $autoCommitStatement)
+    function it_lock_all_the_completeness_table_after_5_retry(Connection $connection, Result $autoCommitStatement)
     {
         $completenesses = new PublishedProductCompletenessCollection(
             42,
@@ -56,7 +55,7 @@ class SqlSavePublishedProductCompletenessesSpec extends ObjectBehavior
 
         $connection->transactional(Argument::type(\Closure::class))->willThrow(DeadlockException::class)->shouldBeCalledTimes(5);
         $connection->executeQuery('SELECT @@autocommit')->shouldBeCalled()->willReturn($autoCommitStatement);
-        $autoCommitStatement->fetch()->willReturn(['@@autocommit' => 1]);
+        $autoCommitStatement->fetchAssociative()->willReturn(['@@autocommit' => 1]);
         $connection->executeQuery('SET autocommit=0')->shouldBeCalledTimes(1);
         $connection->executeQuery('LOCK TABLES pimee_workflow_published_product_completeness WRITE')->shouldBeCalledTimes(1);
         $connection->executeQuery('COMMIT')->shouldBeCalledTimes(1);
@@ -73,12 +72,12 @@ class SqlSavePublishedProductCompletenessesSpec extends ObjectBehavior
             ["publishedProductId" => 42, "ratio" => 80, "missingCount" => 1, "requiredCount" => 5, "localeCode" => "en_US", "channelCode" => "ecommerce"]
         )->shouldBeCalledTimes(1);
         $connection->lastInsertId()->shouldBeCalled()->willReturn(1000, 1001);
-        $connection->executeUpdate(
+        $connection->executeStatement(
             "INSERT INTO pimee_workflow_published_product_completeness_missing_attribute(completeness_id, missing_attribute_id)\nSELECT :completenessId, attribute.id\nFROM pim_catalog_attribute attribute\nWHERE attribute.code IN (:attributeCodes)",
             ["completenessId" => 1000, "attributeCodes" => []],
             ["attributeCodes" => Connection::PARAM_STR_ARRAY]
         )->shouldBeCalledTimes(1);
-        $connection->executeUpdate(
+        $connection->executeStatement(
             "INSERT INTO pimee_workflow_published_product_completeness_missing_attribute(completeness_id, missing_attribute_id)\nSELECT :completenessId, attribute.id\nFROM pim_catalog_attribute attribute\nWHERE attribute.code IN (:attributeCodes)",
             ["completenessId" => 1001, "attributeCodes" => ["name"]],
             ["attributeCodes" => Connection::PARAM_STR_ARRAY]

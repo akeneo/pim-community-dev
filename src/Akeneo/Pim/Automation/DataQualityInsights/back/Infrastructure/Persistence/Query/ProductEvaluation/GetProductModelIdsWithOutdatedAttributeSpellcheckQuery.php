@@ -65,7 +65,7 @@ SQL;
         ]);
 
         $productModelIds = [];
-        while ($productModelId = $stmt->fetchColumn()) {
+        while ($productModelId = $stmt->fetchOne()) {
             $productModelIds[] = $productModelId;
 
             if (count($productModelIds) >= $bulkSize) {

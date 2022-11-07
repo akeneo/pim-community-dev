@@ -15,9 +15,9 @@ namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\SkipSystemCommandsConnectionFactory;
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -37,7 +37,7 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
     private ?SymfonyStyle $io = null;
 
     public function __construct(
-        private ConnectionFactory $connectionFactory,
+        private ConnectionFactory|SkipSystemCommandsConnectionFactory $connectionFactory,
         private Connection $writeConnection,
         private CountAssets $countAssets
     ) {
@@ -48,7 +48,7 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
     {
         if (null === $this->readConnection) {
             $this->readConnection = $this->connectionFactory->createConnection($this->writeConnection->getParams());
-            $this->readConnection->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+            $this->readConnection->getNativeConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
         }
         return $this->readConnection;
     }

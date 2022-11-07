@@ -162,14 +162,14 @@ SQL;
             );
         }
 
-        $totalNumberOfWords = $qb->execute()->fetchColumn();
+        $totalNumberOfWords = $qb->executeQuery()->fetchOne();
 
         $qb->select('id, word as label')
             ->orderBy('word', 'ASC')
-            ->setFirstResult(($page-1) * $itemsPerPage)
+            ->setFirstResult(($page - 1) * $itemsPerPage)
             ->setMaxResults($itemsPerPage);
 
-        $words = $qb->execute()->fetchAllAssociative();
+        $words = $qb->executeQuery()->fetchAllAssociative();
 
         return [
             'results' => $words,
@@ -196,7 +196,7 @@ WHERE locale_code = :locale AND enabled = 1
 LIMIT 1;
 SQL;
 
-        $localeHasAtLeastOneWord = $this->db->executeQuery($query, ['locale' => $localeCode])->fetchColumn();
+        $localeHasAtLeastOneWord = $this->db->executeQuery($query, ['locale' => $localeCode])->fetchOne();
 
         return !boolval($localeHasAtLeastOneWord);
     }

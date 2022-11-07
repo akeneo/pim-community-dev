@@ -225,7 +225,6 @@ SQL;
             ['view_category', 'edit_category', 'own_category', 'category_without_right'],
             $categoryCodes
         );
-
     }
 
     public function testUpdateVariantProductAssociationWithNotViewableProduct()
@@ -522,9 +521,8 @@ JSON;
     protected function getDatabaseData(string $sql): array
     {
         $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
-        $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     /**

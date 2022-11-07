@@ -65,7 +65,7 @@ SQL);
         // assert: the author should now be named 'Ian MurdockJoe'
         $this->assertEquals(
             'Ian MurdockJoe',
-            $this->get('database_connection')->fetchColumn('SELECT DISTINCT author FROM pimee_workflow_product_draft')
+            $this->get('database_connection')->fetchOne('SELECT DISTINCT author FROM pimee_workflow_product_draft')
         );
     }
 
