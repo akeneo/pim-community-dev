@@ -5,6 +5,12 @@ services:
         arguments:
             - '@Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationListQueryInterface'
 
+    pim_syndication.controller.catalog_list:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\GetCatalogListAction'
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Syndication\Domain\Query\Catalog\FindCatalogListQueryInterface'
+
     pim_syndication.connector.use_cases.handler.list_product_ids:
         class: Akeneo\Platform\Syndication\Infrastructure\UseCases\ListProductIdsQueryHandler
         arguments:
