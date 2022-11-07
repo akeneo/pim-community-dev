@@ -2,37 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Command;
+namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Job;
 
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\PurgeConnectionErrorsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\SelectAllAuditableConnectionCodeQuery;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * Purge connection errors over 100 and older than a week
+ *
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PurgeConnectionErrorsCommand extends Command
+class PurgeConnectionErrorsTasklet implements TaskletInterface
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'akeneo:connectivity-connection:purge-error';
-    protected static $defaultDescription = 'Purge connection errors over 100 and older than a week';
+    protected const JOB_CODE = 'purge_connection_error';
 
     public function __construct(
         private SelectAllAuditableConnectionCodeQuery $selectAllAuditableConnectionCodes,
         private PurgeConnectionErrorsQuery $purgeErrors,
         private LoggerInterface $logger,
     ) {
-        parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function setStepExecution(StepExecution $stepExecution): void
+    {
+    }
+
+    public function execute(): void
     {
         $this->logger->info('Start purge connection error');
 
@@ -40,7 +39,5 @@ class PurgeConnectionErrorsCommand extends Command
         $this->purgeErrors->execute($codes);
 
         $this->logger->info('End purge connection error');
-
-        return Command::SUCCESS;
     }
 }
