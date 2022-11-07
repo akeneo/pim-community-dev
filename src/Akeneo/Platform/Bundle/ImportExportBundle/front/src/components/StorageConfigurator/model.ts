@@ -52,7 +52,6 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
     'host' in storage &&
     'port' in storage &&
     'username' in storage &&
-    'password' in storage &&
     'login_type' in storage
   );
 };
