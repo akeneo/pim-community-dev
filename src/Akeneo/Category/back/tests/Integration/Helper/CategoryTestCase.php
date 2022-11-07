@@ -35,6 +35,7 @@ use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory;
 use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Exception;
@@ -162,7 +163,7 @@ class CategoryTestCase extends TestCase
         }
 
         if ($templateAttributes === null) {
-            $templateAttributes = $defaultTemplate->getAttributeCollection();
+            $templateAttributes = $this->get(GetAttributeInMemory::class)->byTemplateUuid($templateUuid);
         } else {
             $attributes = [];
             foreach ($templateAttributes as $attribute) {
@@ -211,7 +212,7 @@ class CategoryTestCase extends TestCase
         );
     }
 
-    protected function givenTemplate(string $templateUuidRaw, ?CategoryId $categoryId): Template
+    protected function givenTemplateWithAttributes(string $templateUuidRaw, ?CategoryId $categoryId): Template
     {
         $templateUuid = TemplateUuid::fromString($templateUuidRaw);
 
@@ -292,7 +293,7 @@ class CategoryTestCase extends TestCase
             labels: ['en_US' => 'socks'],
         );
 
-        $template = $this->givenTemplate($templateUuid, $category->getId());
+        $template = $this->givenTemplateWithAttributes($templateUuid, $category->getId());
         $this->get(CategoryTemplateSaver::class)->insert($template);
         $this->get(CategoryTreeTemplateSaver::class)->insert($template);
         $this->get(CategoryTemplateAttributeSaver::class)->insert(

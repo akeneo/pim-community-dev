@@ -29,8 +29,7 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\GetAttributeInMemory:
-    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemoryImpl
+  Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory:
     arguments:
       - '@database_connection'
 

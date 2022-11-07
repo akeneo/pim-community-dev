@@ -51,6 +51,7 @@ services:
             - '@Akeneo\Category\Application\Query\GetTemplate'
             - '@Akeneo\Category\Application\Query\GetAttribute'
             - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory'
+            - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory'
 
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:
