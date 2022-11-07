@@ -247,6 +247,52 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertCount(1, $productFile->retailerComments());
     }
 
+    /** @test */
+    public function itDeletesOldProductFiles(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+                ->build(),
+        );
+
+        $supplier = new Supplier(
+            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+            'supplier_code',
+            'Supplier label',
+        );
+
+        for ($i = 0; 3 > $i; $i++) {
+            $this->get(ProductFileRepository::class)->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($supplier)
+                    ->withOriginalFilename(sprintf('file%d.xlsx', $i + 1))
+                    ->uploadedAt(
+                        (new \DateTimeImmutable())->add(
+                            \DateInterval::createFromDateString(sprintf('-%d days', ($i + 1) * 40)),
+                        ),
+                    )
+                    ->build(),
+            );
+        }
+        $productFileRepository->deleteOldProductFiles();
+        $supplierProductFilenames = $this->get(Connection::class)
+            ->executeQuery(
+                <<<SQL
+                SELECT original_filename
+                FROM `akeneo_supplier_portal_supplier_product_file`
+            SQL
+            )
+            ->fetchAllAssociative()
+        ;
+
+        static::assertEqualsCanonicalizing([
+            ['original_filename' => 'file1.xlsx'],
+            ['original_filename' => 'file2.xlsx'],
+        ], $supplierProductFilenames);
+    }
+
     private function findProductFile(string $originalFilename): ?array
     {
         $sql = <<<SQL

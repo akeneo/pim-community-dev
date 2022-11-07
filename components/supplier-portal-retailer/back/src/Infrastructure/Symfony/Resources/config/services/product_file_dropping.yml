@@ -267,6 +267,7 @@ services:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\Sql\DatabaseRepository
         arguments:
             - '@database_connection'
+            - '@event_dispatcher'
 
     # Service APIs
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFile:

@@ -83,4 +83,9 @@ final class InMemoryRepository implements ProductFileRepository
     {
         // Not implemented yet
     }
+
+    public function deleteOldProductFiles(): void
+    {
+        // Not implemented yet
+    }
 }
