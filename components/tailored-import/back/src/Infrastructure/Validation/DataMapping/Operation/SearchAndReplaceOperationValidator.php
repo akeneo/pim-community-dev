@@ -60,7 +60,6 @@ final class SearchAndReplaceOperationValidator extends ConstraintValidator
                             ],
                             'with' => [
                                 new Type('string'),
-                                new NotBlank(),
                                 new Length([
                                     'max' => 255,
                                     'maxMessage' => OperationConstraint::MAX_LENGTH_REACHED,

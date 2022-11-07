@@ -25,7 +25,6 @@ final class SearchAndReplaceValue
     ) {
         Assert::uuid($uuid);
         Assert::stringNotEmpty($what);
-        Assert::stringNotEmpty($with);
     }
 
     public function getUuid(): string

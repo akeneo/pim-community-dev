@@ -59,9 +59,15 @@ class SearchAndReplaceOperationApplierSpec extends ObjectBehavior
                 'Nantais',
                 true,
             ),
+            new SearchAndReplaceValue(
+                '00000000-0000-0000-0000-000000000002',
+                '!!!',
+                '',
+                false,
+            ),
         ]);
 
-        $this->applyOperation($operation, new StringValue('Je sUis uN berlInois'))->shouldBeLike(new StringValue('Ich bin ein Nantais'));
+        $this->applyOperation($operation, new StringValue('Je sUis uN berlInois!!!'))->shouldBeLike(new StringValue('Ich bin ein Nantais'));
         $this->applyOperation($operation, new StringValue('berliner BERLINER'))->shouldBeLike(new StringValue('Nantais BERLINER'));
     }
 
