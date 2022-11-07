@@ -440,7 +440,7 @@ akeneo_supplier_portal_product_file_imported_by_job_execution | id | NO | bigint
 akeneo_supplier_portal_product_file_imported_by_job_execution | product_file_identifier | NO | char(36) | MUL
 akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_id | NO | int | UNI
 akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_result | YES | varchar(100) |
-akeneo_supplier_portal_product_file_imported_by_job_execution | finished_at | NO | datetime |
+akeneo_supplier_portal_product_file_imported_by_job_execution | finished_at | YES | datetime |
 akeneo_supplier_portal_product_file_retailer_comments | id | NO | bigint unsigned | PRI
 akeneo_supplier_portal_product_file_retailer_comments | author_email | NO | varchar(255) |
 akeneo_supplier_portal_product_file_retailer_comments | product_file_identifier | NO | char(36) | MUL
