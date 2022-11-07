@@ -22,6 +22,7 @@ class Category
         private ?LabelCollection $labels = null,
         private ?CategoryId $parentId = null,
         private ?CategoryId $rootId = null,
+        private ?\DateTimeImmutable $updated = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
     ) {
@@ -34,26 +35,28 @@ class Category
      *     translations: string|null,
      *     parent_id: int|null,
      *     root_id: int|null,
+     *     updated: string|null,
      *     value_collection: string|null,
      *     permissions: string|null
      * } $result
      */
     public static function fromDatabase(array $result): self
     {
-        $id = new CategoryId((int) $result['id']);
-        $code = new Code($result['code']);
-        $labelCollection = $result['translations'] ?
-            LabelCollection::fromArray(
-                json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR),
-            ) : null;
-        $parentId = $result['parent_id'] ? new CategoryId((int) $result['parent_id']) : null;
-        $rootId = $result['root_id'] ? new CategoryId((int) $result['root_id']) : null;
-        $attributes = $result['value_collection'] ?
-                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null;
-        $permissions = isset($result['permissions']) && $result['permissions'] ?
-            PermissionCollection::fromArray(json_decode($result['permissions'], true)) : null;
-
-        return new self($id, $code, $labelCollection, $parentId, $rootId, $attributes, $permissions);
+        return new self(
+            id: new CategoryId((int) $result['id']),
+            code: new Code($result['code']),
+            labels: $result['translations'] ?
+                LabelCollection::fromArray(
+                    json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR),
+                ) : null,
+            parentId: $result['parent_id'] ? new CategoryId((int) $result['parent_id']) : null,
+            rootId: $result['root_id'] ? new CategoryId((int) $result['root_id']) : null,
+            updated: $result['updated'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $result['updated']) : null,
+            attributes: $result['value_collection'] ?
+                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
+            permissions: isset($result['permissions']) && $result['permissions'] ?
+                PermissionCollection::fromArray(json_decode($result['permissions'], true)) : null,
+        );
     }
 
     public function getId(): ?CategoryId
@@ -79,6 +82,11 @@ class Category
     public function getRootId(): ?CategoryId
     {
         return $this->rootId;
+    }
+
+    public function getUpdated(): ?\DateTimeImmutable
+    {
+        return $this->updated;
     }
 
     public function isRoot(): bool
