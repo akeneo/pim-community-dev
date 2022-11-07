@@ -72,12 +72,13 @@ describe('CreateGeneratorModal', () => {
 
     const labelLengthLimit = 100;
     const codeLengthLimit = 255;
-    const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, ' +
-        'sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. ' +
-        'Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat ' +
-        'consequat sit amet ac ex. ';
+    const lorem =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, ' +
+      'sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. ' +
+      'Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat ' +
+      'consequat sit amet ac ex. ';
     const truncLabel = lorem.substring(0, labelLengthLimit);
-    const truncCode = lorem.replace(/[^a-zA-Z0-9]/g, '_').substring(0, codeLengthLimit);
+    const truncCode = truncLabel.replace(/[^a-zA-Z0-9]/g, '_').substring(0, codeLengthLimit);
     // user changes label and automatically changes code
     userEvent.type(labelInput, lorem);
     expect(labelInput).toHaveValue(truncLabel);
