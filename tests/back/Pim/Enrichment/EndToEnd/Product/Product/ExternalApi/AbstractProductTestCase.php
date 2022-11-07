@@ -151,15 +151,16 @@ abstract class AbstractProductTestCase extends ApiTestCase
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier identifier of the product that should be created
      */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
+    protected function assertSameProducts(array $expectedProduct, string $identifier): void
     {
         $this->getOrmCacheClearer()->clear();
         $product = $this->getProductRepository()->findOneByIdentifier($identifier);
 
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        if (!isset($expectedProduct['uuid'])) {
+            unset($standardizedProduct['uuid']);
+        }
 
-        // Not necessary to check uuid for now
-        unset($standardizedProduct['uuid']);
         NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);
 

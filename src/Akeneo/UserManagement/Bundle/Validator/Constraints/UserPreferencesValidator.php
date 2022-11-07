@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Validator\Constraints;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -17,7 +18,7 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate the user preferences
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      * @param Constraint                              $constraint
      */
     public function validate($user, Constraint $constraint)
@@ -30,7 +31,7 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate catalog locale
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      * @param Constraint                              $constraint
      */
     protected function validateCatalogLocale($user, Constraint $constraint)
@@ -50,7 +51,7 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate catalog Scope
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      * @param Constraint                              $constraint
      */
     protected function validateCatalogScope($user, Constraint $constraint)
@@ -66,7 +67,7 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate default tree
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      * @param Constraint                              $constraint
      */
     protected function validateDefaultTree($user, Constraint $constraint)

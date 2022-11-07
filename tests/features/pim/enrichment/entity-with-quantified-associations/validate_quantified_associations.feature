@@ -45,6 +45,12 @@ Feature: Validate the quantified associations of a product
     Then this product has a validation error about product do not exist
 
   @acceptance-back
+  Scenario: Cannot save a product with a quantified link with nonexistent product uuid
+    Given a product without quantified associations
+    When I associate a nonexistent product uuid to this product with a quantity
+    Then this product has a validation error about product do not exist
+
+  @acceptance-back
   Scenario: Cannot save a product with a quantified link with nonexistent product model
     Given a product without quantified associations
     When I associate a nonexistent product model to this product with a quantity

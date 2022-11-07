@@ -17,7 +17,7 @@ class IsRootCategory extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_is_root_category_validator';
     }

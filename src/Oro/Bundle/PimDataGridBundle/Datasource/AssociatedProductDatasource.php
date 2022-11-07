@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Persistence\ObjectManager;
@@ -225,6 +226,7 @@ class AssociatedProductDatasource extends ProductDatasource
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('id', Operators::IN_LIST, $associatedProductsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
+        $pqb->addSorter('id', Directions::ASCENDING);
 
         return $pqb->execute();
     }
@@ -248,6 +250,7 @@ class AssociatedProductDatasource extends ProductDatasource
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('id', Operators::IN_LIST, $associatedProductModelsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
+        $pqb->addSorter('id', Directions::ASCENDING);
 
         return $pqb->execute();
     }

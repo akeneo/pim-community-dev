@@ -33,7 +33,7 @@ class TextFilterTypeTest extends AbstractTypeTestCase
 
     public function testGetName()
     {
-        $this->assertEquals(TextFilterType::NAME, $this->type->getName());
+        $this->assertEquals(TextFilterType::NAME, $this->type->getBlockPrefix());
     }
 
     /**

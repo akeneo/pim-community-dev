@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\EndToEnd\ImportExport\InternalApi;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use AkeneoTest\Platform\EndToEnd\InternalApiTestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Tests the zip archive generation when an export job generates more than 1 file
@@ -15,6 +23,7 @@ use PHPUnit\Framework\Assert;
 class GenerateZipArchiveEndToEnd extends InternalApiTestCase
 {
     private ?string $tmpFile = null;
+    private int $adminId;
 
     /** @test */
     public function it_generates_a_zip_archive_when_an_export_job_generated_at_least_two_files()
@@ -24,12 +33,10 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
             'admin',
             []
         );
-        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('sku1');
-        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('sku2');
         Assert::assertSame(<<<CSV
             uuid;sku;categories;enabled;family;groups;an_image;a_file
-            {$product1->getUuid()->toString()};sku1;categoryA;1;familyA;;files/sku1/an_image/akeneo.png;files/sku1/a_file/akeneo.pdf
-            {$product2->getUuid()->toString()};sku2;categoryA;1;familyA;;files/sku2/an_image/akeneo.jpg;
+            4168a79a-65b7-418f-b713-ac25b0291131;sku1;categoryA;1;familyA;;files/4168a79a-65b7-418f-b713-ac25b0291131/an_image/akeneo.png;files/4168a79a-65b7-418f-b713-ac25b0291131/a_file/akeneo.pdf
+            9f987844-e0c9-4f89-80e0-bdedd597f888;sku2;categoryA;1;familyA;;files/9f987844-e0c9-4f89-80e0-bdedd597f888/an_image/akeneo.jpg;
             
             CSV,
             $csv
@@ -66,9 +73,9 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
         Assert::assertEqualsCanonicalizing(
             [
                 'export.csv',
-                'files/sku1/an_image/akeneo.png',
-                'files/sku1/a_file/akeneo.pdf',
-                'files/sku2/an_image/akeneo.jpg',
+                'files/4168a79a-65b7-418f-b713-ac25b0291131/an_image/akeneo.png',
+                'files/4168a79a-65b7-418f-b713-ac25b0291131/a_file/akeneo.pdf',
+                'files/9f987844-e0c9-4f89-80e0-bdedd597f888/an_image/akeneo.jpg',
             ],
             $actualFiles
         );
@@ -86,39 +93,24 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
         if (!\file_exists(\dirname($this->tmpFile))) {
             \mkdir(\dirname($this->tmpFile), 0777, true);
         }
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $this->adminId = (int)$this->get('database_connection')->fetchOne(
+            'SELECT id FROM oro_user WHERE username = :username',
+            ['username' => 'admin']
+        );
 
-        $this->createProduct('sku1', [
-            'family' => 'familyA',
-            'categories' => ['categoryA'],
-            'values' => [
-                'an_image' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.png')),
-                    ],
-                ],
-                'a_file' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.pdf')),
-                    ],
-                ],
-            ],
+        $this->createProduct('4168a79a-65b7-418f-b713-ac25b0291131', [
+            new SetIdentifierValue('sku', 'sku1'),
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA']),
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.png'))),
+            new SetFileValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.pdf'))),
         ]);
-        $this->createProduct('sku2', [
-            'family' => 'familyA',
-            'categories' => ['categoryA'],
-            'values' => [
-                'an_image' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
-                    ],
-                ],
-            ],
+        $this->createProduct('9f987844-e0c9-4f89-80e0-bdedd597f888', [
+            new SetIdentifierValue('sku', 'sku2'),
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA']),
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
         // export all products with media
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
@@ -141,14 +133,15 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
         }
     }
 
-    private function createProduct(string $identifier, array $data): void
+    private function createProduct(string $uuid, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(0, $violations, \sprintf('The product is not valid: %s', $violations));
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('pim_enrich.product.message_bus')->dispatch(
+            UpsertProductCommand::createWithUuid(
+                $this->adminId,
+                ProductUuid::fromUuid(Uuid::fromString($uuid)),
+                $userIntents
+            )
+        );
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 }

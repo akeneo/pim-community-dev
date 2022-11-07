@@ -22,7 +22,12 @@ define([
      * {@inheritdoc}
      */
     selectModel: function (model) {
-      this.addItem(`${model.attributes.document_type};${model.get(this.config.columnName)}`);
+      const item =
+        model.attributes.document_type === 'product_model'
+          ? `product_model;${model.get('identifier')}`
+          : `product;${model.get(this.config.columnName)}`;
+
+      this.addItem(item);
     },
 
     /**
@@ -36,21 +41,21 @@ define([
      * {@inheritdoc}
      */
     updateBasket: function () {
-      let productIds = [];
-      let productModelIds = [];
+      let productUuids = [];
+      let productModelCodes = [];
       this.getItems().forEach(item => {
         const matchProductModel = item.match(/^product_model;(.*)$/);
         if (matchProductModel) {
-          productModelIds.push(matchProductModel[1]);
+          productModelCodes.push(matchProductModel[1]);
         } else {
           const matchProduct = item.match(/^product;(.*)$/);
-          productIds.push(matchProduct[1]);
+          productUuids.push(matchProduct[1]);
         }
       });
 
       $.when(
-        FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(productModelIds),
-        FetcherRegistry.getFetcher('product').fetchByIdentifiers(productIds)
+        FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(productModelCodes),
+        FetcherRegistry.getFetcher('product').fetchByUuids(productUuids)
       ).then(
         function (productModels, products) {
           this.renderBasket(products.concat(productModels));

@@ -158,11 +158,8 @@ pim_import_export:
           local: Local
           sftp: SFTP
           none: No hay almacenamiento configurado
-        file_path.label: Camino del fichero
-        host.label: Host
-        port.label: Puerto
-        username.label: Iniciar sesión
-        password.label: Contraseña
+        file_path:
+          label: Camino del fichero
       validation:
         storage:
           unavailable_type: Este almacenamiento no está disponible, solo lo está {{ available_types }}.

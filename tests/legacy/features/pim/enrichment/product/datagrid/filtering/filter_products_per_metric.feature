@@ -17,7 +17,7 @@ Feature: Filter products per metric
       | metric_is_inferior_or_equals  | 0        | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | 0                | other |
     And the following family:
       | code       | attributes |
-      | family_foo | metric_is_empty,metric_is_not_empty,metric_is_superior,metric_is_inferior,metric_is_superior_or_equals,metric_is_inferior_or_equals |
+      | family_foo | sku,metric_is_empty,metric_is_not_empty,metric_is_superior,metric_is_inferior,metric_is_superior_or_equals,metric_is_inferior_or_equals |
     And the following products:
       | sku                             | family     | metric_is_empty | metric_is_not_empty | metric_is_superior | metric_is_inferior | metric_is_superior_or_equals | metric_is_inferior_or_equals |
       | ok_with_all_filters             | family_foo |                 |        120 GRAM     |    121 GRAM        |      122 GRAM      |          123 GRAM            |              124 GRAM        |

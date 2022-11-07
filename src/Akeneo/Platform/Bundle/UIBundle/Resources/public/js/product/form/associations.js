@@ -98,7 +98,9 @@ define([
             return _.findWhere(state.associationTypes, {code: associationType}).meta.id;
           }.bind(this),
           getModelIdentifier: function (model) {
-            return model.get('identifier');
+            return model.get('document_type') === 'product_model'
+              ? model.get('identifier')
+              : model.get('id').replace('product-', '');
           },
         },
         groups: {
@@ -333,15 +335,15 @@ define([
           this.getRoot().trigger('pim_enrich:form:entity:update_state');
         },
         onOpenPicker: () =>
-          this.launchProductPicker().then(identifiers =>
+          this.launchProductAndProductModelPicker().then(identifiers =>
             identifiers.map(item => {
               const matchProductModel = item.match(/^product_model;(.*)$/);
+              const quantifiedLink = matchProductModel
+                ? {identifier: matchProductModel[1], quantity: 1}
+                : {uuid: item.match(/^product;(.*)$/)[1], quantity: 1};
 
               return {
-                quantifiedLink: {
-                  identifier: matchProductModel ? matchProductModel[1] : item.match(/^product;(.*)$/)[1],
-                  quantity: 1,
-                },
+                quantifiedLink: quantifiedLink,
                 productType: matchProductModel ? 'product_model' : 'product',
                 errors: [],
                 product: null,
@@ -422,7 +424,12 @@ define([
       _.each(associationTypes, function (assocType) {
         const association = quantified_associations[assocType.code] || associations[assocType.code];
 
-        assocType.productCount = association && association.products ? association.products.length : 0;
+        assocType.productCount =
+          association && association.products
+            ? association.products.length
+            : association && association.product_uuids
+            ? association.product_uuids.length
+            : 0;
 
         assocType.productModelCount = association && association.product_models ? association.product_models.length : 0;
 
@@ -670,7 +677,7 @@ define([
       let assocSubTarget = assocTarget;
       if (assocTarget === 'products') {
         // We check from what association target we have to remove model (products or product_models)
-        assocSubTarget = model.attributes.document_type === 'product' ? 'products' : 'product_models';
+        assocSubTarget = model.attributes.document_type === 'product' ? 'product_uuids' : 'product_models';
       }
 
       const associationsField = this.getFormData().associations;
@@ -791,7 +798,7 @@ define([
      */
     addAssociations: function () {
       this.launchProductPicker().then(productAndProductModelIdentifiers => {
-        let productIds = [];
+        let productUuids = [];
         let productModelIds = [];
         productAndProductModelIdentifiers.forEach(item => {
           const matchProductModel = item.match(/^product_model;(.*)$/);
@@ -799,15 +806,15 @@ define([
             productModelIds.push(matchProductModel[1]);
           } else {
             const matchProduct = item.match(/^product;(.*)$/);
-            productIds.push(matchProduct[1]);
+            productUuids.push(matchProduct[1]);
           }
         });
 
         const assocType = this.getCurrentAssociationType();
-        const previousProductIds = this.getFormData().associations[assocType].products;
+        const previousProductUuids = this.getFormData().associations[assocType].product_uuids;
         const previousProductModelIds = this.getFormData().associations[assocType].product_models;
 
-        this.updateFormDataAssociations(previousProductIds.concat(productIds), assocType, 'products');
+        this.updateFormDataAssociations(previousProductUuids.concat(productUuids), assocType, 'product_uuids');
 
         this.updateFormDataAssociations(previousProductModelIds.concat(productModelIds), assocType, 'product_models');
 
@@ -816,6 +823,7 @@ define([
     },
 
     /**
+     * @TODO CPM-739: Do not use this function anymore
      * Launch the association product picker
      *
      * @return {Promise}
@@ -823,7 +831,7 @@ define([
     launchProductPicker: function () {
       const deferred = $.Deferred();
 
-      FormBuilder.build('pim-associations-product-picker-form').then(form => {
+      FormBuilder.build('pim-associations-product-and-product-model-picker-modal').then(form => {
         FetcherRegistry.getFetcher('association-type')
           .fetch(this.getCurrentAssociationType())
           .then(associationType => {
@@ -867,7 +875,50 @@ define([
 
       return deferred.promise();
     },
+    launchProductAndProductModelPicker: function () {
+      const deferred = $.Deferred();
 
+      FormBuilder.build('pim-associations-product-and-product-model-picker-modal').then(form => {
+        FetcherRegistry.getFetcher('association-type')
+          .fetch(this.getCurrentAssociationType())
+          .then(associationType => {
+            const formData = this.getFormData();
+            const locale = UserContext.get('catalogLocale');
+            const productLabel = getLabel(formData.meta.label, locale, formData.code || formData.identifier);
+
+            let modal = new Backbone.BootstrapModal({
+              modalOptions: {
+                backdrop: 'static',
+                keyboard: false,
+              },
+              okCloses: false,
+              title: __('pim_enrich.entity.product.module.associations.manage', {
+                associationType: getLabel(associationType.labels, locale, associationType.code),
+              }),
+              innerDescription: __('pim_enrich.entity.product.module.associations.manage_description', {productLabel}),
+              content: '',
+              okText: __('pim_common.confirm'),
+              template: this.modalTemplate,
+              innerClassName: 'AknFullPage--full',
+            });
+
+            modal.open();
+            form.setElement(modal.$('.modal-body')).render();
+
+            modal.on('cancel', deferred.reject);
+            modal.on('ok', () => {
+              const productsAndProductModels = form.getItems().sort((a, b) => {
+                return a.code < b.code;
+              });
+              modal.close();
+
+              deferred.resolve(productsAndProductModels);
+            });
+          });
+      });
+
+      return deferred.promise();
+    },
     getAssociationCount: function () {
       const {associations, quantified_associations} = this.getFormData();
 

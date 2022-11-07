@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQueryPagination;
 use Doctrine\DBAL\Connection;
@@ -29,7 +30,7 @@ class SqlFindJobInstance implements FindJobInstanceInterface
 
     private function buildSqlQuery(JobInstanceQuery $query): string
     {
-        $types = $query->types;
+        $jobNames = $query->jobNames;
         $search = $query->search;
         $pagination = $query->pagination;
 
@@ -42,18 +43,18 @@ class SqlFindJobInstance implements FindJobInstanceInterface
         %s
 SQL;
 
-        $sqlWherePart = $this->buildWherePart($types, $search);
-        $sqlPaginationPart = $this->buildPaginationPart($pagination);
+        $sqlWherePart = $this->buildWherePart($jobNames, $search);
+        $sqlPaginationPart = null !== $pagination ? $this->buildPaginationPart($pagination) : '';
 
         return sprintf($sql, $sqlWherePart, $sqlPaginationPart);
     }
 
-    private function buildWherePart(?array $types, ?string $search): string
+    private function buildWherePart(?array $jobNames, ?string $search): string
     {
         $sqlWhereParts = [];
 
-        if (null !== $types) {
-            $sqlWhereParts[] = 'job_instance.type IN (:types)';
+        if (null !== $jobNames) {
+            $sqlWhereParts[] = 'job_instance.job_name IN (:job_names)';
         }
 
         if (null !== $search) {
@@ -82,25 +83,49 @@ SQL;
 
     private function fetchJobInstances(string $sql, JobInstanceQuery $query): array
     {
-        $types = $query->types;
-        $search = $query->search;
-        $page = $query->pagination->page;
-        $limit = $query->pagination->limit;
+        $queryParametersAndTypes = $this->buildQueryParametersAndTypes($query);
+        $queryParameters = $queryParametersAndTypes['query_parameters'];
+        $queryTypes = $queryParametersAndTypes['query_types'];
 
-        return $this->connection->executeQuery(
+        $results = $this->connection->executeQuery(
             $sql,
-            [
-                'types' => $types,
-                'search' => $search,
-                'offset' => ($page - 1) * $limit,
-                'limit' => $limit,
-            ],
-            [
-                'types' => Connection::PARAM_STR_ARRAY,
-                'search' => \PDO::PARAM_STR,
+            $queryParameters,
+            $queryTypes,
+        )->fetchAllAssociative();
+
+        return array_map(
+            static fn (array $jobInstance) => new JobInstance($jobInstance['code'], $jobInstance['label']),
+            $results,
+        );
+    }
+
+    private function buildQueryParametersAndTypes(JobInstanceQuery $query): array
+    {
+        $queryParameters = [
+            'job_names' => $query->jobNames,
+            'search' => $query->search,
+        ];
+
+        $queryTypes = [
+            'job_names' => Connection::PARAM_STR_ARRAY,
+            'search' => \PDO::PARAM_STR,
+        ];
+
+        if (null !== $query->pagination) {
+            $queryParameters = array_merge($queryParameters, [
+                'offset' => ($query->pagination->page - 1) * $query->pagination->limit,
+                'limit' => $query->pagination->limit,
+            ]);
+
+            $queryTypes = array_merge($queryTypes, [
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
-            ],
-        )->fetchAllAssociative();
+            ]);
+        }
+
+        return [
+            'query_parameters' => $queryParameters,
+            'query_types' => $queryTypes,
+        ];
     }
 }

@@ -15,13 +15,13 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   const [code, setCode] = useState<string>('');
   const [isCodeDirty, setIsCodeDirty] = useState(false);
   const [target, setTarget] = useState<string | undefined>();
-  const identifierAttributesData = useIdentifierAttributes();
+  const {data} = useIdentifierAttributes();
 
   React.useEffect(() => {
-    if (identifierAttributesData?.data) {
-      setTarget(identifierAttributesData.data[0].code);
+    if (data) {
+      setTarget(data[0].code);
     }
-  }, [identifierAttributesData]);
+  }, [data]);
 
   const translate = useTranslate();
   const userContext = useUserContext();

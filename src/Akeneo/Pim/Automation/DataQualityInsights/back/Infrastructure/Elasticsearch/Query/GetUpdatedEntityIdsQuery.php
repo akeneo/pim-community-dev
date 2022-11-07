@@ -60,7 +60,7 @@ class GetUpdatedEntityIdsQuery implements GetUpdatedEntityIdsQueryInterface
         $searchQuery = [
             '_source' => ['id'],
             'size' => $bulkSize,
-            'sort' => ['identifier' => 'asc', '_id' => 'asc'],
+            'sort' => ['identifier' => 'asc', 'id' => 'asc'],
             'query' => $query
         ];
 

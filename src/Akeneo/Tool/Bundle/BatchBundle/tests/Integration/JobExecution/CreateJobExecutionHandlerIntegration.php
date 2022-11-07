@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchBundle\tests\Integration\JobExecution;
 
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 class CreateJobExecutionHandlerIntegration extends TestCase
@@ -38,9 +38,9 @@ class CreateJobExecutionHandlerIntegration extends TestCase
         $this->assertEquals($expectedResult['is_visible'], $result['is_visible']);
     }
 
-    private function getCreateJobExecutionHandler(): CreateJobExecutionHandler
+    private function getCreateJobExecutionHandler(): CreateJobExecutionHandlerInterface
     {
-        return $this->get(CreateJobExecutionHandler::class);
+        return $this->get(CreateJobExecutionHandlerInterface::class);
     }
 
     /**
@@ -56,9 +56,8 @@ class CreateJobExecutionHandlerIntegration extends TestCase
         $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
         $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution where id = :id');
         $stmt->bindParam('id', $id);
-        $stmt->execute();
 
-        return $stmt->fetch();
+        return $stmt->executeQuery()->fetchAssociative();
     }
 
     private function createJobInstance(string $jobName): JobInstance

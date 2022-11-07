@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
@@ -11,7 +12,7 @@ use Twig\TwigFilter;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StyleExtension extends \Twig\Extension\AbstractExtension
+class StyleExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}

@@ -68,22 +68,22 @@ class PartialUpdateVariantToSimpleEndToEnd extends AbstractProductTestCase
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
                 'PACK' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'SUBSTITUTION' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'UPSELL' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'X_SELL' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
@@ -160,22 +160,22 @@ class PartialUpdateVariantToSimpleEndToEnd extends AbstractProductTestCase
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
                 'PACK' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'SUBSTITUTION' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'UPSELL' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'X_SELL' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],

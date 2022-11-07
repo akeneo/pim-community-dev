@@ -76,7 +76,7 @@ function populateCategoryAttributes(
     fixedCategory.attributes = {};
   }
 
-  template.attributes.forEach((attribute: Attribute) => {
+  template?.attributes?.forEach((attribute: Attribute) => {
     const {code} = attribute;
     if (fixedCategory.attributes.hasOwnProperty(code)) return;
 

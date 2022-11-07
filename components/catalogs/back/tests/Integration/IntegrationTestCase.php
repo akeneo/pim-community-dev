@@ -7,6 +7,9 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
 use Akeneo\Catalogs\Test\Integration\Fakes\TimestampableSubscriber;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
@@ -23,6 +26,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -134,6 +138,11 @@ abstract class IntegrationTestCase extends WebTestCase
         parent::tearDown();
     }
 
+    protected function disableExperimentalTestDatabase(): void
+    {
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->disable();
+    }
+
     protected function logAs(string $username): TokenInterface
     {
         $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
@@ -152,6 +161,8 @@ abstract class IntegrationTestCase extends WebTestCase
             'shopifi',
             $scopes,
         );
+
+        $this->addAllPermissionsUserGroup('app_shopifi');
 
         /** @var KernelBrowser $client */
         $client = self::getContainer()->get(KernelBrowser::class);
@@ -180,6 +191,63 @@ abstract class IntegrationTestCase extends WebTestCase
         $client->getCookieJar()->set($cookie);
 
         return $client;
+    }
+
+    private function addAllPermissionsUserGroup(string $group): void
+    {
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
+            group: $group,
+            permissions: [
+                'own' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+    }
+
+    private function callPermissionsSaver(string $service, string $group, array $permissions): void
+    {
+        if (self::getContainer()->has($service)) {
+            self::getContainer()->get($service)->save($group, $permissions);
+        }
     }
 
     protected function assertViolationsListContains(
@@ -438,6 +506,22 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.category')->save($category);
     }
 
+    protected function createGroup(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $group = self::getContainer()->get('pim_catalog.factory.group')->create();
+        self::getContainer()->get('pim_catalog.updater.group')->update($group, $data);
+        self::getContainer()->get('pim_catalog.saver.group')->save($group);
+    }
+
+    protected function createGroupType(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $groupType = self::getContainer()->get('pim_catalog.factory.group_type')->create();
+        self::getContainer()->get('pim_catalog.updater.group_type')->update($groupType, $data);
+        self::getContainer()->get('pim_catalog.saver.group_type')->save($groupType);
+    }
+
     protected function enableCurrency(string $code): void
     {
         $currency = self::getContainer()->get('pim_catalog.repository.currency')->findOneByIdentifier($code);
@@ -446,5 +530,28 @@ abstract class IntegrationTestCase extends WebTestCase
             'enabled' => true,
         ]);
         self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
+    }
+
+    protected function getCatalog(string $id): Catalog
+    {
+        /** @var ?Catalog $catalog */
+        $catalog = self::getContainer()->get(QueryBus::class)->execute(new GetCatalogQuery($id));
+        $this->assertNotNull($catalog);
+
+        return $catalog;
+    }
+
+    protected function removeAttributeOption(string $code): void
+    {
+        $attributeOption = self::getContainer()->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier($code);
+
+        self::getContainer()->get('pim_catalog.remover.attribute_option')->remove($attributeOption);
+        $this->waitForQueuedJobs();
+    }
+
+    protected function waitForQueuedJobs(): void
+    {
+        self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
     }
 }

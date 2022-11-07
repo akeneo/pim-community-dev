@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 
@@ -133,6 +134,7 @@ JSON;
      */
     protected function assertSameProductModels(array $expectedProductModel, $code)
     {
+        $this->getOrmCacheClearer()->clear();
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier($code);
         $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
@@ -148,5 +150,10 @@ JSON;
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getOrmCacheClearer(): EntityManagerClearerInterface
+    {
+        return $this->get('pim_connector.doctrine.cache_clearer');
     }
 }

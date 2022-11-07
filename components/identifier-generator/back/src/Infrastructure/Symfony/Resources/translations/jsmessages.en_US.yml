@@ -1,9 +1,11 @@
 pim_title:
-    akeneo_identifier_generator_index: "Identifier generators"
+    akeneo_identifier_generator_index: "Identifier generator"
 pim_error:
     unauthorized: "You cannot list attributes. Please contact your administrator to change your rights."
     general: "An error occurred during the display of this page. Please contact your administrator."
     unexpected: "Unexpected error occurred. Please contact system administrator."
+    404: 'A 404 error occured...'
+    identifier_generator_not_found: 'Identifier generator not found'
 pim_identifier_generator:
     create:
         form:
@@ -20,3 +22,8 @@ pim_identifier_generator:
         create:
             success: 'The identifier generator "{{ code }}" was successfully created'
             error: 'The identifier generator could not be created'
+    list:
+        identifier: 'Identifier'
+        first_generator: 'Create your first identifier generator!'
+        check_help_center: 'Check out our help center for more information.'
+        create_info: 'It is only possible to create one Identifier Generator for the moment. You will soon be able to configure multiple generators matching all your usecases. '

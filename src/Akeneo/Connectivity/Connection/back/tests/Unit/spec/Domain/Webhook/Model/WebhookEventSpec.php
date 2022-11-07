@@ -19,7 +19,7 @@ class WebhookEventSpec extends ObjectBehavior
 {
     public function let(UserInterface $user): void
     {
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(false);

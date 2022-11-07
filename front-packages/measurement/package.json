@@ -32,11 +32,10 @@
   },
   "proxy": "http://localhost:8080",
   "scripts": {
-    "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
+    "app:start": "yarn route:build && yarn packages:build && react-scripts start",
     "test:unit:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
     "test:unit:watch": "react-scripts test --maxWorkers=3",
     "lib:build": "tsc -p ./tsconfig.build.json",
-    "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
     "packages:build": "yarn --cwd=../akeneo-design-system lib:build && yarn workspace @akeneo-pim-community/shared lib:build",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",

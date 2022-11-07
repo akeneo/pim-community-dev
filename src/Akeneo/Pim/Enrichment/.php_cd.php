@@ -131,6 +131,9 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
+        'Akeneo\Category\Domain\Model\Classification\CategoryTree',
+        'Akeneo\Category\Domain\Query\GetCategoryInterface',
+        'Akeneo\Category\Domain\Query\GetCategoryTreesInterface',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -268,7 +271,6 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
-
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

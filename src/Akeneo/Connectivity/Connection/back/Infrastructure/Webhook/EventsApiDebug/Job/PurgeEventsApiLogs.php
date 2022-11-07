@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persist
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Symfony\Bridge\Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -20,7 +20,7 @@ class PurgeEventsApiLogs implements TaskletInterface
     protected StepExecution $stepExecution;
 
     public function __construct(
-        private Logger $logger,
+        private LoggerInterface $logger,
         private PurgeEventsApiSuccessLogsQuery $purgeSuccessLogsQuery,
         private PurgeEventsApiErrorLogsQuery $purgeErrorLogsQuery
     ) {

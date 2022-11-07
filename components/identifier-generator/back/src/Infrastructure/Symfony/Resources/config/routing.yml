@@ -1,12 +1,36 @@
 akeneo_identifier_generator_index:
     path: '/configuration/identifier-generator'
 
+akeneo_identifier_generator_edit:
+    path: '/configuration/identifier-generator/{code}'
+    methods: [GET]
+
 akeneo_identifier_generator_get_identifier_attributes:
     path: '/identifier-generator/identifier-attributes'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierAttributesController
+    methods: [GET]
+
+akeneo_identifier_generator_rest_list:
+    path: '/rest/identifier-generator'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ListIdentifierGeneratorController
     methods: [GET]
 
 akeneo_identifier_generator_rest_create:
     path: '/rest/identifier-generator'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\CreateIdentifierGeneratorController
     methods: [POST]
+
+akeneo_identifier_generator_rest_delete:
+    path: '/rest/identifier-generator/{code}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\DeleteIdentifierGeneratorController
+    methods: [DELETE]
+
+akeneo_identifier_generator_rest_get:
+    path: '/rest/identifier-generator/{code}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierGeneratorController
+    methods: [GET]
+
+akeneo_identifier_generator_rest_update:
+    path: '/rest/identifier-generator/{code}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateIdentifierGeneratorController
+    methods: [PATCH]

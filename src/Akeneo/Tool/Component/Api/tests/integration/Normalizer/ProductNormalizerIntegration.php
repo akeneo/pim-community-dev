@@ -24,9 +24,8 @@ class ProductNormalizerIntegration extends TestCase
 
     public function testEmptyDisabledProduct()
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
         $expected = [
-            'uuid' => $product->getUuid()->toString(),
+            'uuid'                    => $this->getProductUuid('bar')->toString(),
             'identifier'              => 'bar',
             'family'                  => null,
             'parent'                  => null,
@@ -37,7 +36,7 @@ class ProductNormalizerIntegration extends TestCase
             'created'                 => '2016-06-14T13:12:50+02:00',
             'updated'                 => '2016-06-14T13:12:50+02:00',
             'associations'            => new \StdClass(),
-            'quantified_associations' => [],
+            'quantified_associations' => new \StdClass(),
         ];
 
         $this->assertProduct('bar', $expected, []);
@@ -45,9 +44,8 @@ class ProductNormalizerIntegration extends TestCase
 
     public function testEmptyEnabledProduct()
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz');
         $expected = [
-            'uuid' => $product->getUuid()->toString(),
+            'uuid'                    => $this->getProductUuid('baz')->toString(),
             'identifier'              => 'baz',
             'family'                  => null,
             'parent'                  => null,
@@ -58,7 +56,7 @@ class ProductNormalizerIntegration extends TestCase
             'created'                 => '2016-06-14T13:12:50+02:00',
             'updated'                 => '2016-06-14T13:12:50+02:00',
             'associations'            => new \StdClass(),
-            'quantified_associations' => [],
+            'quantified_associations' => new \StdClass(),
         ];
 
         $this->assertProduct('baz', $expected, []);
@@ -66,9 +64,8 @@ class ProductNormalizerIntegration extends TestCase
 
     public function testProductWithAllAttributes()
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $expected = [
-            'uuid' => $product->getUuid()->toString(),
+            'uuid'          => $this->getProductUuid('foo')->toString(),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -258,15 +255,20 @@ class ProductNormalizerIntegration extends TestCase
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
-                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'PACK'   => ['groups' => [], 'product_uuids' => [
+                    $this->getProductUuid('bar')->toString(),
+                    $this->getProductUuid('baz')->toString()
+                ], 'product_models' => []],
+                'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                    $this->getProductUuid('bar')->toString()
+                ], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [
                 "PRODUCT_SET" => [
                     "products" => [
-                        ["identifier" => 'bar', "quantity" => 3]
+                        ['identifier' => 'bar', "quantity" => 3]
                     ],
                     "product_models" => [
                         ["identifier" => 'baz', "quantity" => 2]
@@ -280,9 +282,8 @@ class ProductNormalizerIntegration extends TestCase
 
     public function testProductWithFilteredAttributes()
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $expected = [
-            'uuid' => $product->getUuid()->toString(),
+            'uuid'          => $this->getProductUuid('foo')->toString(),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -355,15 +356,20 @@ class ProductNormalizerIntegration extends TestCase
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
-                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'PACK'   => ['groups' => [], 'product_uuids' => [
+                    $this->getProductUuid('bar')->toString(),
+                    $this->getProductUuid('baz')->toString()
+                ], 'product_models' => []],
+                'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                    $this->getProductUuid('bar')
+                ], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [
                 "PRODUCT_SET" => [
                     "products" => [
-                        ["identifier" => 'bar', "quantity" => 3]
+                        ['identifier' => 'bar', "quantity" => 3]
                     ],
                     "product_models" => [
                         ["identifier" => 'baz', "quantity" => 2]

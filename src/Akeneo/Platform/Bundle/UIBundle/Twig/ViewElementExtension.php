@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use Twig\Environment;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
@@ -14,7 +15,7 @@ use Twig\TwigFunction;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ViewElementExtension extends \Twig\Extension\AbstractExtension
+class ViewElementExtension extends AbstractExtension
 {
     protected ViewElementRegistry $registry;
     protected Environment $templating;

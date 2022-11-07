@@ -118,7 +118,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ValueInterface && in_array($format, $this->supportedFormats);
     }

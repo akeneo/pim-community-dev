@@ -11,7 +11,7 @@ Feature: Export products according to metric attribute filter
       | width | pim_catalog_metric | Width        | other | Length        | CENTIMETER          | 0                | 0                |
     And the following family:
       | code    | requirements-mobile | attributes       |
-      | rangers | sku                 | length,width     |
+      | rangers | sku                 | sku,length,width     |
     And the following products:
       | uuid                                 | sku      | enabled | family  | categories        | length        | width         |
       | 2d45f137-edc5-4d5c-af94-f95e63fbdd12 | SNKRS-1B | 1       | rangers | summer_collection | 10 CENTIMETER | 15 CENTIMETER |

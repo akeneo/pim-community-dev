@@ -9,7 +9,7 @@ use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
-use Akeneo\Category\Domain\Query\GetAttribute;
+use Akeneo\Category\Domain\Query\GetAttributeInMemory;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
@@ -24,7 +24,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 final class ValueUserIntentFactory implements UserIntentFactory
 {
-    public function __construct(private GetAttribute $getAttribute)
+    public function __construct(private GetAttributeInMemory $getAttributeInMemory)
     {
     }
 
@@ -72,7 +72,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
     {
         $compositeKeys = $this->extractCompositeKeys(array_keys($attributes));
 
-        return $this->getAttribute->byIdentifiers($compositeKeys);
+        return $this->getAttributeInMemory->byIdentifiers($compositeKeys);
     }
 
     /**

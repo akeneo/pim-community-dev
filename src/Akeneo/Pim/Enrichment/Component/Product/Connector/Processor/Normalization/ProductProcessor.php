@@ -3,10 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -31,6 +30,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         protected IdentifiableObjectRepositoryInterface $channelRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected FillMissingValuesInterface $fillMissingProductModelValues,
+        private GetAttributes $getAttributes,
         private GetNormalizedQualityScoresInterface $getNormalizedQualityScores
     ) {
     }
@@ -44,7 +44,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
 
-        $productStandard = $this->normalizer->normalize($product, 'standard');
+        $productStandard = $this->normalizer->normalize($product, 'standard', ['with_association_uuids' => false]);
+        $jobLocales = $this->stepExecution->getJobParameters()->get('filters')['structure']['locales'];
 
         // not done for product as it fill missing product values at the end for performance purpose
         // not done yet for product model export so we have to do it
@@ -52,26 +53,17 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
         }
 
-        $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : [];
+        $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : array_keys($productStandard['values']);
+        $attributeCodes = $this->filterLocaleSpecificAttributeCodes($attributeCodes, $jobLocales);
+        if (!$parameters->has('with_media') || true !== $parameters->get('with_media')) {
+            $attributeCodes = array_diff($attributeCodes, $this->attributeRepository->findMediaAttributeCodes());
+        }
 
         $productStandard['values'] = FilterValues::create()
             ->filterByChannelCode($channel->getCode())
             ->filterByLocaleCodes(array_intersect($channel->getLocaleCodes(), $parameters->get('filters')['structure']['locales']))
             ->filterByAttributeCodes($attributeCodes)
             ->execute($productStandard['values']);
-
-        $productStandard['values'] = $this->filterLocaleSpecificAttributes($productStandard['values']);
-
-        if (!$parameters->has('with_media') || true !== $parameters->get('with_media')) {
-            $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
-            $productStandard['values'] = array_filter(
-                $productStandard['values'],
-                function ($attributeCode) use ($mediaAttributes) {
-                    return !in_array($attributeCode, $mediaAttributes);
-                },
-                ARRAY_FILTER_USE_KEY
-            );
-        }
 
         if ($this->hasFilterOnQualityScore($parameters)) {
             $productStandard['quality_scores'] = ($this->getNormalizedQualityScores)(
@@ -92,20 +84,27 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $this->stepExecution = $stepExecution;
     }
 
-    protected function filterLocaleSpecificAttributes(array $values): array
+    /**
+     * It's possible to have a value not localizable, but locale specific.
+     * In that case, it means the value is valid only for certain locales, but the locale is null.
+     * So, it is necessary in that case to remove the attribute where the specific locales do not match
+     * the configured job locales.
+     */
+    protected function filterLocaleSpecificAttributeCodes(array $attributeCodes, array $jobLocales): array
     {
-        $valuesToExport = [];
-        $jobLocales = $this->stepExecution->getJobParameters()->get('filters')['structure']['locales'];
-        foreach ($values as $code => $value) {
-            /** @var AttributeInterface $attribute */
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
-            if (!$attribute->isLocaleSpecific()
-                || !empty(array_intersect($jobLocales, $attribute->getAvailableLocaleCodes()))) {
-                $valuesToExport[$code] = $value;
-            }
-        }
+        return array_filter($attributeCodes, function (string $attributeCode) use ($jobLocales) {
+            $attribute = $this->getAttributes->forCode($attributeCode);
 
-        return $valuesToExport;
+            if (null === $attribute) {
+                return false;
+            }
+
+            if (!$attribute->isLocaleSpecific()) {
+                return true;
+            }
+
+            return !empty(array_intersect($jobLocales, $attribute->availableLocaleCodes()));
+        });
     }
 
     /**

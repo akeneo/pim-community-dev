@@ -12,7 +12,7 @@ Feature: Export product by attribute date
       | purchase_date | pim_catalog_date  | Purchase date | other |
     And the following family:
       | code | requirements-mobile | attributes                                    |
-      | CD   | sku                 | destocking_date,delivery_date,purchase_date   |
+      | CD   | sku                 | sku,destocking_date,delivery_date,purchase_date   |
     And the following products:
       | uuid                                 | sku              | enabled | family | categories      | destocking_date | delivery_date | purchase_date |
       | 6ca08df2-e796-45ae-8bc6-dbc3101b4a11 | CD-RATM          | 1       | CD     | 2014_collection | 2016-08-13      | 2015-09-17    |               |

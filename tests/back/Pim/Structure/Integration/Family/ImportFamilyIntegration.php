@@ -12,11 +12,10 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use OpenSpout\Common\Entity\Row;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use OpenSpout\Writer\Common\Creator\WriterFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -97,11 +96,11 @@ final class ImportFamilyIntegration extends TestCase
         self::assertNull($this->getFamily('tractors'));
 
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_family_import');
-        $writer = WriterFactory::createFromType('xlsx');
+        $writer = SpoutWriterFactory::create(SpoutWriterFactory::XLSX);
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             \array_map(
-                fn (array $data): Row => WriterEntityFactory::createRowFromArray($data),
+                static fn (array $data): Row => Row::fromValues($data),
                 [
                     [
                         'code',
@@ -137,7 +136,7 @@ final class ImportFamilyIntegration extends TestCase
         self::assertNotNull($tractorsFamily);
         self::assertSame('[tractors]', $tractorsFamily->getLabel());
         self::assertSame('[name]', $tractorsFamily->getAttributeAsLabel()->getLabel());
-        self::assertSame('manufacturer', $this->getRequirementAttributeCodes($tractorsFamily, 'mobile'));
+        self::assertSame('manufacturer,sku', $this->getRequirementAttributeCodes($tractorsFamily, 'mobile'));
         self::assertSame('sku', $this->getRequirementAttributeCodes($tractorsFamily, 'tablet'));
     }
 

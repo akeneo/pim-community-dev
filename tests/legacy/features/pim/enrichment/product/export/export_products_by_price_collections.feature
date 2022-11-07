@@ -11,7 +11,7 @@ Feature: Export products according to price attribute filter
       | provider_price | pim_catalog_price_collection | Provider price | other | 0                |
     And the following family:
       | code    | requirements-mobile | attributes           |
-      | rangers | sku                 | price,provider_price |
+      | rangers | sku                 | sku,price,provider_price |
     And the following products:
       | uuid                                 | sku      | enabled | family  | categories        | price          | provider_price |
       | 0b494030-cb7f-49e3-b703-5ca2d4c3e132 | SNKRS-1B | 1       | rangers | summer_collection | 20 EUR, 30 USD |                |

@@ -56,7 +56,7 @@ final class PriceCollectionSqlGetRequiredAttributesMasksIntegration extends Abst
             ],
             [
                 'code' => 'familyC',
-                'attribute_codes' => [],
+                'attribute_codes' => ['sku'],
             ],
         ]);
     }

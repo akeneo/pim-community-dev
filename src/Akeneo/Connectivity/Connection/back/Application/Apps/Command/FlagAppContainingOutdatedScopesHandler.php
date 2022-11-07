@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Notifier\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Security\ScopeMapperRegistryInterface;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 

@@ -9,7 +9,6 @@ parameters:
     akeneo_batch.set_job_execution_log_file_subscriber.class: Akeneo\Tool\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
     akeneo_batch.manager.job_execution.class:                 Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager
     akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher
-    akeneo_batch.entity_manager.persisted_connection_entity_manager.class: Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager
     akeneo_batch.connectors_config:                           ~
     akeneo_batch.jobs_config:                                 ~
 
@@ -91,11 +90,6 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '%kernel.project_dir%'
 
-    akeneo_batch.entity_manager.persisted_connection_entity_manager:
-        class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
     Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs:
         arguments:
             - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\GetJobExecutionIds'
@@ -123,13 +117,15 @@ services:
         tags:
           - { name: kernel.event_listener, event: console.command }
 
-    Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler:
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface:
+        class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler
         arguments:
             - '@akeneo_batch.logger.batch_log_handler'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job.job_registry'
 
-    Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler:
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface:
+        class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler
         arguments:
             - '@akeneo_batch.job_repository'
             - '@doctrine'
