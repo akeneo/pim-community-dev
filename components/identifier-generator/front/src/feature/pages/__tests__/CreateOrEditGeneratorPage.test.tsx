@@ -95,6 +95,6 @@ describe('CreateOrEditGeneratorPage', () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
     expect(screen.getByText('DeleteGeneratorModalMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete generator'));
-    expect(history.location.pathname).toBe('/configuration/identifier-generator/');
+    expect(history.location.pathname).toBe('/');
   });
 });

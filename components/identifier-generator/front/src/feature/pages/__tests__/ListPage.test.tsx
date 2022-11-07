@@ -82,7 +82,7 @@ describe('ListPage', () => {
     expect(rows.length).toBe(3);
 
     fireEvent.click(rows[2]);
-    expect(history.location.pathname).toEqual('/configuration/identifier-generator/test');
+    expect(history.location.pathname).toEqual('/test');
   });
 
   it('should delete a generator', () => {

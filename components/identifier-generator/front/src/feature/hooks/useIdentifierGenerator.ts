@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query';
 import {IdentifierGenerator, IdentifierGeneratorCode} from '../models';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {IdentifierGeneratorNotFound} from '../errors/IdentifierGeneratorNotFound';
+import {IdentifierGeneratorNotFound} from '../errors';
 
 const useIdentifierGenerator: (code: IdentifierGeneratorCode) => {
   data?: IdentifierGenerator;

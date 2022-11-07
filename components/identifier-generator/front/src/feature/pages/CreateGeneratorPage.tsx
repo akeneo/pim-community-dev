@@ -38,7 +38,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
         translate('pim_identifier_generator.flash.create.success', {code: generator.code})
       );
       refetch();
-      history.push(`/configuration/identifier-generator/${generator.code}`);
+      history.push(`/${generator.code}`);
     } else {
       /* istanbul ignore next */
       notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));

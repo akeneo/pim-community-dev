@@ -42,7 +42,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   };
   const redirectToList = (): void => {
     closeModal();
-    history.push('/configuration/identifier-generator/');
+    history.push('/');
   };
 
   return (

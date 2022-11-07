@@ -38,7 +38,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
     [locale]
   );
-  const goToEditPage = (code: string) => () => history.push(`/configuration/identifier-generator/${code}`);
+  const goToEditPage = (code: string) => () => history.push(`/${code}`);
   const closeModal = (): void => closeDeleteGeneratorModal();
 
   const {data: identifierAttributes} = useIdentifierAttributes();
