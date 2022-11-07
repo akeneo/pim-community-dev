@@ -249,7 +249,7 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteOldProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
             - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket'
             - '@monolog.logger.supplier_portal'
 
