@@ -20,7 +20,7 @@ class GenerateAsymmetricKeysHandler
 {
     public function __construct(
         private AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator,
-        private SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery
+        private SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery,
     ) {
     }
 

@@ -80,8 +80,19 @@ class SftpStorageHydratorSpec extends ObjectBehavior
             'password' => 'my_favorite_password',
             'file_path' => 'upload',
             'port' => 22,
+            'login_type' => 'password',
         ])->shouldBeLike(
-            new SftpStorage('my_host', 22, 'user', 'my_favorite_password', 'upload', self::VALID_SHA512_FINGERPRINT),
+            new SftpStorage(
+                'my_host',
+                22,
+                'password',
+                'user',
+                'my_favorite_password',
+                'upload',
+                'a_private_key',
+                'a_public_key',
+                self::VALID_SHA512_FINGERPRINT,
+            ),
         );
     }
 }

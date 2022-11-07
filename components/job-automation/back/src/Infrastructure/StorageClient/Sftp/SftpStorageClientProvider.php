@@ -104,11 +104,9 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         bool $useAgent,
         int $timeout,
         int $maxTries,
-        string $hostFingerprint,
+        ?string $hostFingerprint,
     ): SftpConnectionProvider {
         return match ($loginType) {
-            SftpStorage::LOGIN_TYPE_CREDENTIALS => $this->getConnectionWithPassword($host, $username, $password, $port),
-            SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->getConnectionWithPrivateKey($host, $username, $privateKey, $port),
             SftpStorage::LOGIN_TYPE_PASSWORD => $this->createConnectionProviderWithPassword($host, $username, $password, $port),
             SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->createConnectionProviderWithPrivateKey($host, $username, $privateKey, $port),
             default => throw new \LogicException(sprintf('Unsupported login type "%s"', $loginType)),
@@ -119,7 +117,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         string $host,
         string $username,
         string $password,
-        int $port
+        int $port,
     ): SftpConnectionProvider {
         return new SftpConnectionProvider(
             $host,
@@ -138,7 +136,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         string $host,
         string $username,
         string $privateKey,
-        int $port
+        int $port,
     ): SftpConnectionProvider {
         return new SftpConnectionProvider(
             $host,

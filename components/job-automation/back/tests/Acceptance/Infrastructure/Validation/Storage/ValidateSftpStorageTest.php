@@ -73,6 +73,7 @@ class ValidateSftpStorageTest extends AbstractValidationTest
                 [
                     'type' => 'sftp',
                     'file_path' => '/tmp/products.xlsx',
+                    'login_type' => 'password',
                     'host' => '192.168.0.98',
                     'fingerprint' => self::VALID_SHA512_FINGERPRINT,
                     'port' => 22,
@@ -84,6 +85,7 @@ class ValidateSftpStorageTest extends AbstractValidationTest
                 [
                     'type' => 'sftp',
                     'file_path' => '/tmp/products.xlsx',
+                    'login_type' => 'password',
                     'host' => '192.168.0.98',
                     'fingerprint' => self::VALID_MD5_FINGERPRINT,
                     'port' => 22,
@@ -177,6 +179,7 @@ class ValidateSftpStorageTest extends AbstractValidationTest
                     'file_path' => '/tmp/products.xlsx',
                     'host' => 'test.com',
                     'fingerprint' => 'invalid fingerprint',
+                    'login_type' => 'password',
                     'username' => 'ziggy',
                     'password' => 'MySecretPassword',
                 ],

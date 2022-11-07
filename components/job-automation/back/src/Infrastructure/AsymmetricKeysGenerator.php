@@ -15,34 +15,36 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure;
 
 use Akeneo\Platform\JobAutomation\Domain\AsymmetricKeysGeneratorInterface;
 use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
-use phpseclib\Crypt\RSA;
-use phpseclib\File\X509;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\File\X509;
 
 class AsymmetricKeysGenerator implements AsymmetricKeysGeneratorInterface
 {
+    public function __construct(private string $openSSLConfigPath)
+    {
+    }
+
     public function generate(): AsymmetricKeys
     {
-        $privKey = new RSA();
-        $keys = $privKey->createKey();
-        $privateKey = $keys['privatekey'];
-        $publicKey = $keys['publickey'];
-
-        $pubKey = new RSA();
-        $pubKey->loadKey($publicKey);
-        $pubKey->setPublicKey();
+        RSA::setOpenSSLConfigPath($this->openSSLConfigPath);
+        /** @var RSA\PrivateKey $privateKey */
+        $privateKey = RSA::createKey();
+        $privateKey = $privateKey->withPadding(RSA::SIGNATURE_PKCS1);
+        $publicKey = $privateKey->getPublicKey();
 
         $subject = new X509();
         $subject->setEndDate('99991231235959Z');
         $subject->setDNProp('id-at-organizationName', 'Akeneo');
-        $subject->setPublicKey($pubKey);
+        $subject->setPublicKey($publicKey);
 
         $issuer = new X509();
-        $issuer->setPrivateKey($privKey);
+        $issuer->setPrivateKey($privateKey);
         $issuer->setDn($subject->getDN());
 
         $x509 = new X509();
+        $x509->makeCA();
         $result = $x509->sign($issuer, $subject);
 
-        return AsymmetricKeys::create($x509->saveX509($result), $privateKey);
+        return AsymmetricKeys::create($x509->saveX509($result), $privateKey->toString('PKCS1'));
     }
 }
