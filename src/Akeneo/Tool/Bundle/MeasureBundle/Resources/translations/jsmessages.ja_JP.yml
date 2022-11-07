@@ -5,10 +5,6 @@ pim_title:
   akeneo_measurements_settings_any: 測定
 measurements:
   label_translations: UIロケールのラベル翻訳
-  helper:
-    title: 測定へようこそ！
-    text: ここでは、ユニットを利用したマイ測定の作成や既存の測定ファミリーへのユニット追加を行うことができます。
-    link: さらに詳しく説明していきましょう！
   search:
     placeholder: ラベルもしくはコードでの検索
   family:

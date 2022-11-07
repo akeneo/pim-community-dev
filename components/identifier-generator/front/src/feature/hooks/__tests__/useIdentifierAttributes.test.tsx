@@ -15,7 +15,6 @@ describe('useIdentifierAttributes', () => {
     const {result, waitFor} = renderHook<
       null,
       {
-        isSuccess: boolean;
         data?: FlattenAttribute[] | undefined;
         error: Error | null;
       }
@@ -23,7 +22,7 @@ describe('useIdentifierAttributes', () => {
       wrapper: createWrapper(),
     });
 
-    await waitFor(() => result.current.isSuccess);
+    await waitFor(() => !!result.current.data);
 
     expect(result.current.data).toBeDefined();
     expect(result.current.data).toEqual([{code: 'sku', label: 'Sku'}]);

@@ -13,21 +13,19 @@ const queryClient = new QueryClient({
   },
 });
 
-const IdentifierGeneratorApp: React.FC = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Router basename="/configuration/identifier-generator">
-        <Switch>
-          <Route path="/:identifierGeneratorCode">
-            <Edit />
-          </Route>
-          <Route path="/">
-            <List />
-          </Route>
-        </Switch>
-      </Router>
-    </QueryClientProvider>
-  );
-};
+const IdentifierGeneratorApp: React.FC = () => (
+  <QueryClientProvider client={queryClient}>
+    <Router basename="/configuration/identifier-generator">
+      <Switch>
+        <Route path="/:identifierGeneratorCode">
+          <Edit />
+        </Route>
+        <Route path="/">
+          <List />
+        </Route>
+      </Switch>
+    </Router>
+  </QueryClientProvider>
+);
 
 export {IdentifierGeneratorApp};
