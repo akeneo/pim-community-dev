@@ -4,6 +4,7 @@ import {CreateOrEditGeneratorPage} from '../';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 
 jest.mock('../../tabs/GeneralPropertiesTab');
+jest.mock('../../tabs/Structure');
 
 const initialGenerator: IdentifierGenerator = {
   code: 'initialCode',
@@ -34,8 +35,7 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('[]')).toBeInTheDocument(); // conditions
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
-    expect(screen.getByText('Not implemented YET')).toBeInTheDocument();
-    expect(screen.getByText('[{"type":"free_text","string":"AKN"}]')).toBeInTheDocument();
+    expect(screen.getByText('StructureMock')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.general'));
     expect(screen.getByText('GeneratorPropertiesMock')).toBeInTheDocument();

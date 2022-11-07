@@ -1,2 +1,2 @@
 export * from './GeneralPropertiesTab';
-export * from './StructureTab';
+export * from './Structure';
