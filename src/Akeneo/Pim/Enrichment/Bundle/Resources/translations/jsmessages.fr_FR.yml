@@ -41,6 +41,7 @@ pim_enrich.entity.product:
       title: Sélectionnez une action
       choose_family: Choisir une famille
       choose_family_variant: Sélectionnez une variante de famille
+      helper: "L'identifiant est désormais un champ facultatif. <a class=\"AknMessageBox-link\" href=\"{{ link }}\" target=\"_blank\">En savoir plus</a> sur ce changement et les conséquences possibles pour vos produits.\n"
     variant_navigation:
       common: Commun
     status:
