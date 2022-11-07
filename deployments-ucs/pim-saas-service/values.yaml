@@ -284,6 +284,11 @@ pim:
       pimJobName: "connectivity_create_openid_keys"
       pimJobOptions: ""
       schedule: "4 21 * * 0"
+    purge-connectivity-connection-error:
+      enabled: true
+      pimJobName: "purge_connection_error"
+      pimJobOptions: ""
+      schedule: "10 * * * *"
   supplier_portal:
     settings:
       enabled: false
