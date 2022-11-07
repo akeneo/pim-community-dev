@@ -3,12 +3,13 @@ locals {
   cloudscheduler_service_account_email = "timmy-deployment@${var.project_id}.iam.gserviceaccount.com"
   function_service_account_email       = "timmy-cloud-function@${var.project_id}.iam.gserviceaccount.com"
   portal_hostname                      = "wiremock-${var.region}.${var.domain}"
+  prefix_branch_name                   = "${var.branch_name}" == "master" ? "" : "-${var.branch_name}"
 }
 
 module "bucket" {
   source                      = "../modules/bucket"
   location                    = var.bucket_location
-  name                        = "${var.project_id}-timmy"
+  name                        = "${var.project_id}${local.prefix_branch_name}-timmy"
   project_id                  = var.project_id
   force_destroy               = true
   uniform_bucket_level_access = true
@@ -18,9 +19,9 @@ module "bucket" {
 module "timmy_request_portal" {
   source              = "../modules/cloudfunction"
   project_id          = var.project_id
-  name                = "${var.region_prefix}-timmy-request-portal"
+  name                = "${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal"
   description         = "Request the portal to tenants to create/delete/update"
-  available_memory    = "128Mi"
+  available_memory    = "256Mi"
   bucket_name         = module.bucket.bucket_name
   entry_point         = "requestPortal"
   source_dir          = abspath("../../cloud-functions/portal")
@@ -49,13 +50,13 @@ module "timmy_request_portal" {
     FUNCTION_URL_TIMMY_DELETE_TENANT = module.timmy_delete_tenant.uri
     GCP_PROJECT_ID                   = var.project_id
     // TODO: switch to https when PH-202 is released
-    HTTP_SCHEMA                      = "http"
-    LOG_LEVEL                        = "info"
+    HTTP_SCHEMA                      = "https"
+    LOG_LEVEL                        = "debug"
     NODE_ENV                         = "production"
     // TODO: replace portal hostnames with the private entry once PH-202 is released
-    PORTAL_HOSTNAME                  = local.portal_hostname
-    PORTAL_LOGIN_HOSTNAME            = local.portal_hostname
-    TENANT_CONTINENT                 = "europe"
+    PORTAL_HOSTNAME                  = "portal-dev3-sandbox.ip.akeneo.com"
+    PORTAL_LOGIN_HOSTNAME            = "connect-sandbox.ip.akeneo.com"
+    TENANT_CONTINENT                 = "europe-west3"
     TENANT_EDITION_FLAGS             = "serenity_instance"
     TENANT_ENVIRONMENT               = "sandbox"
   }
@@ -64,9 +65,9 @@ module "timmy_request_portal" {
 module "timmy_create_tenant" {
   source              = "../modules/cloudfunction"
   project_id          = var.project_id
-  name                = "${var.region_prefix}-timmy-create-tenant"
+  name                = "${var.region_prefix}${local.prefix_branch_name}-timmy-create-tenant"
   description         = "Create a new UCS tenant"
-  available_memory    = "128Mi"
+  available_memory    = "256Mi"
   bucket_name         = module.bucket.bucket_name
   entry_point         = "createTenant"
   source_dir          = abspath("../../cloud-functions/tenants/create")
@@ -124,9 +125,9 @@ module "timmy_create_tenant" {
 module "timmy_delete_tenant" {
   source                = "../modules/cloudfunction"
   project_id            = var.project_id
-  name                  = "${var.region_prefix}-timmy-delete-tenant"
+  name                  = "${var.region_prefix}${local.prefix_branch_name}-timmy-delete-tenant"
   description           = "Delete an UCS tenant"
-  available_memory      = "128Mi"
+  available_memory      = "256Mi"
   bucket_name           = module.bucket.bucket_name
   entry_point           = "deleteTenant"
   source_dir            = abspath("../../cloud-functions/tenants/delete")
@@ -159,7 +160,7 @@ module "timmy_delete_tenant" {
 module "timmy_create_fire_document" {
   source                = "../modules/cloudfunction"
   project_id            = var.project_id
-  name                  = "${var.region_prefix}-timmy-create-doc"
+  name                  = "${var.region_prefix}${local.prefix_branch_name}-timmy-create-doc"
   description           = "Create Firestore document in the tenantcontext DB"
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
@@ -188,7 +189,7 @@ module "timmy_create_fire_document" {
 module "timmy_delete_fire_document" {
   source                = "../modules/cloudfunction"
   project_id            = var.project_id
-  name                  = "${var.region_prefix}-timmy-delete-doc"
+  name                  = "${var.region_prefix}${local.prefix_branch_name}-timmy-delete-doc"
   description           = "Delete Firestore document in the tenantcontext DB"
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
@@ -208,7 +209,7 @@ module "timmy_cloudscheduler" {
   source                     = "../modules/cloudscheduler"
   project_id                 = var.project_id
   region                     = var.region
-  name                       = "${var.region_prefix}-timmy-request-portal"
+  name                       = "${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal"
   description                = "Trigger timmy-request-portal cloudfunction every 2 minutes"
   http_method                = "POST"
   http_target_uri            = module.timmy_request_portal.uri

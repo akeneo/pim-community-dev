@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception as DBALException;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
 use Oro\Bundle\PimDataGridBundle\Query\ListProductGridAvailableColumns as ListProductGridAvailableColumnsQuery;
@@ -24,7 +25,7 @@ use Oro\Bundle\PimDataGridBundle\Query\ListProductGridAvailableColumns as ListPr
 class ListProductGridAvailableColumns implements ListProductGridAvailableColumnsQuery
 {
     private Connection $connection;
-    private ConfigurationProviderInterface$configurationProvider;
+    private ConfigurationProviderInterface $configurationProvider;
     private string $gridName;
 
     public function __construct(
@@ -119,7 +120,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
      *
      * @return array
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function fetchAttributesAsColumn(string $locale, int $limit, int $offset, string $groupCode, string $searchOnLabel, int $userId): array
     {

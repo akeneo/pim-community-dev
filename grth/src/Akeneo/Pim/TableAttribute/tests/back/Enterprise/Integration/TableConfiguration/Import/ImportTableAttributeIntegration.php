@@ -21,8 +21,8 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use OpenSpout\Writer\Common\Creator\WriterFactory;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
+use OpenSpout\Common\Entity\Row;
 use PHPUnit\Framework\Assert;
 
 class ImportTableAttributeIntegration extends TestCase
@@ -60,12 +60,12 @@ CSV;
     public function it_imports_table_attributes_from_an_xlsx_file(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');
-        $writer = WriterFactory::createFromType('xlsx');
+        $writer = SpoutWriterFactory::create(SpoutWriterFactory::XLSX);
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             [
-                WriterEntityFactory::createRowFromArray(['code', 'type', 'localizable', 'scopable', 'group', 'unique', 'sort_order', 'table_configuration']),
-                WriterEntityFactory::createRowFromArray([
+                Row::fromValues(['code', 'type', 'localizable', 'scopable', 'group', 'unique', 'sort_order', 'table_configuration']),
+                Row::fromValues([
                     'nutrition',
                     'pim_catalog_table',
                     '0',

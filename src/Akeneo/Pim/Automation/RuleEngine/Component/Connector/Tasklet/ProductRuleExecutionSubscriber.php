@@ -23,28 +23,26 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobInterruptedException;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ProductRuleExecutionSubscriber implements EventSubscriberInterface
 {
-    /** @var StepExecution */
-    private $stepExecution;
-
     /** @var RuleDefinitionInterface */
     private $currentRule;
 
-    private JobRepositoryInterface $jobRepository;
-
-    public function __construct(StepExecution $stepExecution, JobRepositoryInterface $jobRepository)
-    {
-        $this->stepExecution = $stepExecution;
-        $this->jobRepository = $jobRepository;
+    public function __construct(
+        private StepExecution $stepExecution,
+        private JobRepositoryInterface $jobRepository,
+        private JobStopper $jobStopper,
+    ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RuleEvents::PRE_EXECUTE => 'preExecute',
@@ -90,6 +88,10 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         $this->stepExecution->incrementSummaryInfo('updated_entities', $updatedEntitiesCount);
         $this->stepExecution->incrementProcessedItems($updatedEntitiesCount);
         $this->jobRepository->updateStepExecution($this->stepExecution);
+
+        if ($this->jobStopper->isStopping($this->stepExecution)) {
+            throw new JobInterruptedException();
+        }
     }
 
     public function skipAction(SkippedActionForSubjectEvent $event): void

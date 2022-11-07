@@ -9,7 +9,7 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version_6_0_20210914161025_add_index_on_rule_definition_code extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $sql = <<<SQL
             SELECT COUNT(1) indexCount
@@ -19,7 +19,7 @@ final class Version_6_0_20210914161025_add_index_on_rule_definition_code extends
             AND index_name='akeneo_rule_engine_rule_definition_code__index';
         SQL;
 
-        $indexCount = $this->connection->executeQuery($sql)->fetchColumn();
+        $indexCount = $this->connection->executeQuery($sql)->fetchOne();
         $this->skipIf(1 <= (int)$indexCount, "The table akeneo_rule_engine_rule_definition already have an index on code");
 
         $this->addSql(
@@ -27,7 +27,7 @@ final class Version_6_0_20210914161025_add_index_on_rule_definition_code extends
         );
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

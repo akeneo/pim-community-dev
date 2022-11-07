@@ -4,7 +4,7 @@ editionFlag:
 nameOverride: ""
 global:
   extraLabels:
-    type: srnt
+    type: null # Generated with terraform template
     instanceName: null # Generated with terraform template
     pfid: null # Generated with terraform template
   monitoring:
@@ -46,7 +46,7 @@ common:
   - name: "PHP_CONF_DATE_TIMEZONE"
     value: "Etc/UTC"
   - name: "MAGICK_CONFIGURE_PATH"
-    value: "/etc/php/8.0/fpm/"
+    value: "/etc/php/8.1/fpm/"
 
   phpConfCLI:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
@@ -380,8 +380,6 @@ onboarder:
       enabled: true
     pushChannelToOnboarder:
       enabled: true
-    pushAssetAttributeMediaFileToOnboarder:
-      enabled: true
     pushCatalogToOnboarder:
       enabled: false
     importAdditionalOnboarderFixtures:
@@ -399,10 +397,6 @@ onboarder:
     requests:
       cpu: "1m"
       memory: "90Mi"
-
-# Free Trial
-free_trial:
-  enabled: false
 
 mysql:
   image:
@@ -532,3 +526,27 @@ elasticsearch:
     retention: 15
     repository: pim_gcs_repository
     folder: elasticsearch-snapshots
+# Free Trial
+free_trial:
+  enabled: false
+  akeneo_connect_saml_entity_id: null
+  akeneo_connect_saml_certificate: null
+  akeneo_connect_saml_signin_url: "https://connect.akeneo.com/auth/realms/trial/protocol/saml"
+  akeneo_connect_saml_logout_url: "https://connect.akeneo.com/auth/realms/trial/protocol/saml"
+  akeneo_connect_saml_sp_client_id: "https://trial-pim.akeneo.com"
+  akeneo_connect_saml_sp_certificate_base64: null
+  akeneo_connect_saml_sp_private_key_base64: null
+  ft_catalog_api_base_uri: "https://ft-catalog.cloud.akeneo.com/"
+  ft_catalog_api_client_id: null
+  ft_catalog_api_password: null
+  ft_catalog_api_secret: null
+  ft_catalog_api_username: "freetrialintances_4083"
+  akeneo_connect_api_client_id: "portal"
+  akeneo_connect_api_client_secret: null
+  akeneo_connect_api_client_password: null
+  akeneo_connect_api_client_username: "pim-trial@partners.akeneo.com"
+  akeneo_connect_api_client_base_uri: "https://connect.akeneo.com/"
+  akeneo_portal_api_client_base_uri: "https://portal.akeneo.com/"
+  hotjar_id: "2273004"
+  google_analytics_account_id: UA-35417741-13
+  heap_id: "3348469633"

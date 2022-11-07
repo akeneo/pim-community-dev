@@ -185,8 +185,6 @@ services:
 
     Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command\ProjectRecalculationCommand:
         arguments:
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pimee_teamwork_assistant.repository.project'
-            - '%pimee_teamwork_assistant.project_calculation.job_name%'
+            - '@Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\ProjectsRecalculationLauncher'
         tags:
             - { name: console.command }

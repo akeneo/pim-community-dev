@@ -27,7 +27,7 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EntityWithValuesDraftEvents::POST_REFUSE         => ['sendNotificationForRefusal', 10],

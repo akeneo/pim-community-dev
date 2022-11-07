@@ -73,7 +73,7 @@ final class JobContext implements Context
             throw new \RuntimeException(sprintf('The "%s" job instance is not found.', static::JOB_IDENTIFIER));
         }
 
-        $user = $this->userProvider->loadUserByUsername('admin');
+        $user = $this->userProvider->loadUserByIdentifier('admin');
         $this->jobExecution = $this->jobLauncher->launch($jobInstance, $user, []);
         $this->jobLauncherTest->launchConsumerOnce();
         $this->jobLauncherTest->waitCompleteJobExecution($this->jobExecution);

@@ -131,6 +131,9 @@ final class ProductFile
         return $this->downloaded;
     }
 
+    /**
+     * @return object[]
+     */
     public function events(): array
     {
         $events = $this->events;
@@ -185,5 +188,10 @@ final class ProductFile
         if (self::MAX_COMMENTS_PER_PRODUCT_FILE <= count($this->retailerComments + $this->supplierComments)) {
             throw new MaxCommentPerProductFileReached();
         }
+    }
+
+    public function hasComments(): bool
+    {
+        return 0 < count($this->retailerComments()) || 0 < count($this->supplierComments());
     }
 }

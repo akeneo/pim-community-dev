@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Merger;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
@@ -60,9 +59,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
-
     /** @var FieldSetterInterface */
     private $associationSetter;
 
@@ -76,20 +72,17 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
     private $tokenStorage;
 
     /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param FieldSetterInterface          $associationSetter
      * @param ItemCategoryAccessQuery       $productCategoryAccessQuery
      * @param ItemCategoryAccessQuery       $productModelCategoryAccessQuery
      * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
         FieldSetterInterface $associationSetter,
         ItemCategoryAccessQuery $productCategoryAccessQuery,
         ItemCategoryAccessQuery $productModelCategoryAccessQuery,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->authorizationChecker = $authorizationChecker;
         $this->associationSetter = $associationSetter;
         $this->productCategoryAccessQuery = $productCategoryAccessQuery;
         $this->productModelCategoryAccessQuery = $productModelCategoryAccessQuery;
@@ -120,18 +113,18 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
 
         foreach ($fullProduct->getAssociations() as $association) {
             $associationCodes[$association->getAssociationType()->getCode()] = [
-                'products' => [],
+                'product_uuids' => [],
                 'product_models' => [],
                 'groups' => [],
             ];
             $hasAssociations = true;
 
             $associatedProducts = $association->getProducts();
-            $grantedProductIds = \array_flip($this->productCategoryAccessQuery->getGrantedProductUuids($associatedProducts->toArray(), $user));
+            $grantedProductUuids = \array_flip($this->productCategoryAccessQuery->getGrantedProductUuids($associatedProducts->toArray(), $user));
 
             foreach ($associatedProducts as $associatedProduct) {
-                if (!isset($grantedProductIds[$associatedProduct->getUuid()->toString()])) {
-                    $associationCodes[$association->getAssociationType()->getCode()]['products'][] = $associatedProduct->getIdentifier();
+                if (!isset($grantedProductUuids[$associatedProduct->getUuid()->toString()])) {
+                    $associationCodes[$association->getAssociationType()->getCode()]['product_uuids'][] = $associatedProduct->getUuid()->toString();
                 }
             }
 
@@ -149,14 +142,14 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
             $hasAssociations = true;
             if (!isset($associationCodes[$association->getAssociationType()->getCode()])) {
                 $associationCodes[$association->getAssociationType()->getCode()] = [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ];
             }
 
             foreach ($association->getProducts() as $associatedProduct) {
-                $associationCodes[$association->getAssociationType()->getCode()]['products'][] = $associatedProduct->getIdentifier();
+                $associationCodes[$association->getAssociationType()->getCode()]['product_uuids'][] = $associatedProduct->getUuid()->toString();
             }
             foreach ($association->getProductModels() as $associatedProductModel) {
                 $associationCodes[$association->getAssociationType()->getCode()]['product_models'][] = $associatedProductModel->getCode();

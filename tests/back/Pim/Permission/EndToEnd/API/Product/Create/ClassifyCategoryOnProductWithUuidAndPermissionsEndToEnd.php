@@ -3,8 +3,6 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\Create;
 
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * +----------+-----------------------------------------------+
@@ -89,6 +87,7 @@ class ClassifyCategoryOnProductWithUuidAndPermissionsEndToEnd extends AbstractPr
     private function assertProduct($identifier, array $categories)
     {
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier($identifier)->toString(),
             'identifier'    => $identifier,
             'family'        => null,
             'parent'        => null,

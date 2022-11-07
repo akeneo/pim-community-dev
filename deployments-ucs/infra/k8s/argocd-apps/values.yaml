@@ -17,6 +17,6 @@ argocd:
   publicDomain: null #To be overrided
 gateways:
   externalHttp:
-    gatewayClassName: contour
+    gatewayClassName: gke-l7-gxlb
   internalHttp:
     gatewayClassName: gke-l7-rilb

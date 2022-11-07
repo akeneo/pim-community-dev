@@ -49,6 +49,8 @@ final class CreateProductProposalByUuidController
             throw new AccessDeniedHttpException('Access forbidden. You are not allowed to create or update products.');
         }
 
+        $uuid = Uuid::fromString($uuid)->toString();
+
         try {
             $product = $this->productRepository->find($uuid);
         } catch (ResourceAccessDeniedException) {
@@ -75,7 +77,7 @@ final class CreateProductProposalByUuidController
             );
         }
 
-        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $user->getUsername());
+        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $user->getUserIdentifier());
         if (null === $productDraft) {
             throw new UnprocessableEntityHttpException('You should create a draft before submitting it for approval.');
         }

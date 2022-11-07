@@ -48,6 +48,6 @@ SQL;
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('userId', $userId, \PDO::PARAM_INT);
         $stmt->bindValue('groupAll', 'All', \PDO::PARAM_STR);
-        $stmt->execute();
+        $stmt->executeStatement();
     }
 }

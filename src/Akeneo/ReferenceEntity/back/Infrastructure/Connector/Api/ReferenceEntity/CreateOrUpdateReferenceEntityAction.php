@@ -116,7 +116,7 @@ class CreateOrUpdateReferenceEntityAction
 
         $responseStatusCode = $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
 
-        return Response::create('', $responseStatusCode, $headers);
+        return new Response('', $responseStatusCode, $headers);
     }
 
     private function getNormalizedReferenceEntity(string $content): array

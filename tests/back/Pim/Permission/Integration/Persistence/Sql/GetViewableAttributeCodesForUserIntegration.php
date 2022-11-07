@@ -17,7 +17,7 @@ class GetViewableAttributeCodesForUserIntegration extends TestCase
         $query = $this->getQuery();
 
         $userId = $this->get('database_connection')
-            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
+            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
 
         $filteredAttributes = $query->forAttributeCodes(['a_date', 'a_multi_select'], $userId);
 

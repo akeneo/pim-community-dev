@@ -76,8 +76,8 @@ class ProjectCreatedNotifierSpec extends ObjectBehavior
         $project->getCode()->willReturn('project-code');
         $project->getDueDate()->willReturn('01/12/2030');
 
-        $contributor->getUsername()->willReturn('boby');
-        $owner->getUsername()->willReturn('claude');
+        $contributor->getUserIdentifier()->willReturn('boby');
+        $owner->getUserIdentifier()->willReturn('claude');
         $project->getOwner()->willReturn($owner);
 
         $context = [

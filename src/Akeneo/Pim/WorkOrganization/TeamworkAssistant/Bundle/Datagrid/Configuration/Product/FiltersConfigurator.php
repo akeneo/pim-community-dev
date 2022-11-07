@@ -98,7 +98,7 @@ class FiltersConfigurator implements ConfiguratorInterface
 
         $this->isProject = true;
 
-        if ($this->tokenStorage->getToken()->getUsername() === $project->getOwner()->getUsername()) {
+        if ($this->tokenStorage->getToken()->getUserIdentifier() === $project->getOwner()->getUserIdentifier()) {
             $this->isProjectOwner = true;
         }
     }

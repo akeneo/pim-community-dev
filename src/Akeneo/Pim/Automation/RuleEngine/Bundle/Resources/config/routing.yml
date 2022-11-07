@@ -71,7 +71,7 @@ pimee_enrich_rule_definition_duplicate:
 pimee_enrich_rule_definition_get_impacted_product_count:
     path: /rest/rule_definition_impacted_product_count
     defaults: { _controller: pimee_enrich.controller.rule_definition.get_impacted_product_count }
-    methods: [GET]
+    methods: [POST]
 
 pimee_enrich_rule_definition_get_available_fields:
     path: /rest/rule_definition_available_fields
@@ -92,7 +92,7 @@ pimee_enrich_rule_definition_get_category_tree:
 pimee_enrich_rule_definition_get_categories:
     path: /rest/rule_definition_get_categories
     defaults: { _controller: pimee_enrich.controller.rule_definition.get_categories }
-    methods: [GET]
+    methods: [POST]
 
 pimee_enrich_rule_definition_search_products_and_product_models:
     path: /rest/rule_definition_get_products_and_product_models

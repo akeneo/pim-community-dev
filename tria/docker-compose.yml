@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   php:
-    image: 'akeneo/pim-dev/php:8.0'
+    image: 'akeneo/pim-dev/php:8.1'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
@@ -25,7 +25,7 @@ services:
       - 'pim'
 
   fpm:
-    image: 'akeneo/pim-dev/php:8.0'
+    image: 'akeneo/pim-dev/php:8.1'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
@@ -39,7 +39,7 @@ services:
     volumes:
       - './:/srv/pim'
       - '../components:/srv/pim/components'
-      - './docker/fpm.conf:/etc/php/8.0/fpm/pool.d/zzz-akeneo.conf'
+      - './docker/fpm.conf:/etc/php/8.1/fpm/pool.d/zzz-akeneo.conf'
       - '../grth:/srv/grth'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'

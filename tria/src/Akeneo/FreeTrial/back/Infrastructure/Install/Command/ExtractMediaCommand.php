@@ -69,7 +69,7 @@ final class ExtractMediaCommand extends Command
             ->setHidden(true);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureAuthenticationParametersAreDefined();
 

@@ -28,6 +28,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\Conn
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
@@ -50,7 +51,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function find(AssetFamilyIdentifier $identifier): ?AssetFamilyDetails
     {
@@ -106,7 +107,7 @@ SQL;
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function hydrateAssetFamilyDetails(
         string $identifier,

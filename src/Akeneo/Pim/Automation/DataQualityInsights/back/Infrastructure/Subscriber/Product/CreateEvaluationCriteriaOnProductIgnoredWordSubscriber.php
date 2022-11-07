@@ -20,7 +20,7 @@ final class CreateEvaluationCriteriaOnProductIgnoredWordSubscriber implements Ev
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ProductWordIgnoredEvent::class => 'onIgnoredWord',

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: "{{{global.extraLabels.instanceName}}}"
+  name: "{{{global.extraLabels.pfid}}}"
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -16,7 +16,7 @@ metadata:
 spec:
   project: default
   source:
-    repoUrl: "{{{source.repoUrl}}}"
+    repoURL: "{{{source.repoUrl}}}"
     path: "{{{source.path}}}"
     targetRevision: "{{{source.targetRevision}}}"
     helm:
@@ -43,8 +43,6 @@ spec:
           value: "{{{elasticsearch.client.resources.requests.cpu}}}"
         - name: elasticsearch.client.resources.requests.memory
           value: "{{{elasticsearch.client.resources.requests.memory}}}"
-        - name: elasticsearch.client.resources.limits.cpu
-          value: "{{{elasticsearch.client.resources.limits.cpu}}}"
         - name: elasticsearch.client.resources.limits.memory
           value: "{{{elasticsearch.client.resources.limits.memory}}}"
         - name: elasticsearch.master.heapSize
@@ -53,8 +51,6 @@ spec:
           value: "{{{elasticsearch.master.resources.requests.cpu}}}"
         - name: elasticsearch.master.resources.requests.memory
           value: "{{{elasticsearch.master.resources.requests.memory}}}"
-        - name: elasticsearch.master.resources.limits.cpu
-          value: "{{{elasticsearch.master.resources.limits.cpu}}}"
         - name: elasticsearch.master.resources.limits.memory
           value: "{{{elasticsearch.master.resources.limits.memory}}}"
         - name: elasticsearch.data.heapSize
@@ -63,12 +59,8 @@ spec:
           value: "{{{elasticsearch.data.resources.requests.cpu}}}"
         - name: elasticsearch.data.resources.requests.memory
           value: "{{{elasticsearch.data.resources.requests.memory}}}"
-        - name: elasticsearch.data.resources.limits.cpu
-          value: "{{{elasticsearch.data.resources.limits.cpu}}}"
         - name: elasticsearch.data.resources.limits.memory
           value: "{{{elasticsearch.data.resources.limits.memory}}}"
-        - name: memcached.resources.limits.cpu
-          value: "{{{memcached.resources.limits.cpu}}}"
         - name: memcached.resources.limits.memory
           value: "{{{memcached.resources.limits.memory}}}"
         - name: memcached.resources.requests.cpu
@@ -101,8 +93,6 @@ spec:
           value: "{{{common.dnsCloudDomain}}}"
         - name: common.workloadIdentityKSA
           value: "{{{common.workloadIdentityKSA}}}"
-        - name: common.workloadIdentityGSA
-          value: "{{{common.workloadIdentityGSA}}}"
         - name: pim.defaultAdminUser.login
           value: "{{{pim.defaultAdminUser.login}}}"
         - name: pim.defaultAdminUser.firstName
@@ -137,8 +127,6 @@ spec:
           value: "{{{mysql.mysql.resources.requests.cpu}}}"
         - name: mysql.mysql.resources.requests.memory
           value: "{{{mysql.mysql.resources.requests.memory}}}"
-        - name: mysql.mysql.resources.limits.cpu
-          value: "{{{mysql.mysql.resources.limits.cpu}}}"
         - name: mysql.mysql.resources.limits.memory
           value: "{{{mysql.mysql.resources.limits.memory}}}"
         - name: mysql.common.persistentDisks.0
@@ -156,3 +144,9 @@ spec:
       - CreateNamespace=true
       - PrunePropagationPolicy=foreground
       - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

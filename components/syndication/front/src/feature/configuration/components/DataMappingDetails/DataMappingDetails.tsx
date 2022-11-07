@@ -100,9 +100,9 @@ const DataMappingDetails = ({dataMapping, onDataMappingChange}: DataMappingDetai
     }
   };
 
-  const sourcesErrors = useValidationErrors(`[dataMappings][${dataMapping.uuid}][sources]`, true);
-  const validationErrors = useValidationErrors(`[dataMappings][${dataMapping.uuid}][sources]`, false);
-  const formatErrors = useValidationErrors(`[dataMappings][${dataMapping.uuid}][format]`, false);
+  const sourcesErrors = useValidationErrors(`[data_mappings][${dataMapping.uuid}][sources]`, true);
+  const validationErrors = useValidationErrors(`[data_mappings][${dataMapping.uuid}][sources]`, false);
+  const formatErrors = useValidationErrors(`[data_mappings][${dataMapping.uuid}][format]`, false);
   const requirement = useRequirement(dataMapping.target.name);
 
   useEffect(() => {

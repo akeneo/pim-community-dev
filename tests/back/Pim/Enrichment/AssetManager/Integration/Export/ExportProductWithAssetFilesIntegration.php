@@ -47,25 +47,25 @@ final class ExportProductWithAssetFilesIntegration extends AbstractExportWithAss
         self::assertArrayHasKey(0, $csv);
         self::assertSame('asset1,asset2', $csv[0]['asset_attribute'] ?? null);
         self::assertFilePaths($csv[0]['asset_attribute-file_path'] ?? '', [
-            'files/product_1/asset_attribute/file1.gif',
-            'files/product_1/asset_attribute/file2.gif'
+            'files/0890fee4-4fef-4584-a598-450cbf713381/asset_attribute/file1.gif',
+            'files/0890fee4-4fef-4584-a598-450cbf713381/asset_attribute/file2.gif'
         ]);
-        self::assertFileExistsInWorkingPath('files/product_1/asset_attribute/file1.gif');
-        self::assertFileExistsInWorkingPath('files/product_1/asset_attribute/file2.gif');
+        self::assertFileExistsInWorkingPath('files/0890fee4-4fef-4584-a598-450cbf713381/asset_attribute/file1.gif');
+        self::assertFileExistsInWorkingPath('files/0890fee4-4fef-4584-a598-450cbf713381/asset_attribute/file2.gif');
 
         self::assertArrayHasKey(1, $csv);
         self::assertSame('asset1,asset2', $csv[1]['localizable_asset_attribute-en_US'] ?? null);
         self::assertFilePaths($csv[1]['localizable_asset_attribute-en_US-file_path'] ?? '', [
-            'files/product_2/localizable_asset_attribute/en_US/file1.gif',
-            'files/product_2/localizable_asset_attribute/en_US/file2.gif'
+            'files/9106fa3e-8c70-4336-938e-caa7c79d062a/localizable_asset_attribute/en_US/file1.gif',
+            'files/9106fa3e-8c70-4336-938e-caa7c79d062a/localizable_asset_attribute/en_US/file2.gif'
         ]);
-        self::assertFileExistsInWorkingPath('files/product_2/localizable_asset_attribute/en_US/file1.gif');
-        self::assertFileExistsInWorkingPath('files/product_2/localizable_asset_attribute/fr_FR/file2.gif');
+        self::assertFileExistsInWorkingPath('files/9106fa3e-8c70-4336-938e-caa7c79d062a/localizable_asset_attribute/en_US/file1.gif');
+        self::assertFileExistsInWorkingPath('files/9106fa3e-8c70-4336-938e-caa7c79d062a/localizable_asset_attribute/fr_FR/file2.gif');
         self::assertSame('asset2', $csv[1]['localizable_asset_attribute-fr_FR'] ?? null);
         self::assertFilePaths($csv[1]['localizable_asset_attribute-fr_FR-file_path'] ?? '', [
-            'files/product_2/localizable_asset_attribute/fr_FR/file2.gif'
+            'files/9106fa3e-8c70-4336-938e-caa7c79d062a/localizable_asset_attribute/fr_FR/file2.gif'
         ]);
-        self::assertFileExistsInWorkingPath('files/product_2/localizable_asset_attribute/fr_FR/file2.gif');
+        self::assertFileExistsInWorkingPath('files/9106fa3e-8c70-4336-938e-caa7c79d062a/localizable_asset_attribute/fr_FR/file2.gif');
         self::assertArrayNotHasKey('localizable_asset_attribute-de_DE', $csv[1]);
     }
 

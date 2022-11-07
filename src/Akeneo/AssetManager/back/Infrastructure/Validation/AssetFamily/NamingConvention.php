@@ -40,12 +40,12 @@ class NamingConvention extends Constraint
         return $this->attributeAsMainMedia;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return NamingConventionValidator::class;
     }

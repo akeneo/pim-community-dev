@@ -187,7 +187,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function getUsername()
     {
-        return $this->tokenStorage->getToken()->getUser()->getUsername();
+        return $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
     }
 
     /**
@@ -197,7 +197,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     private function saveProductDraft(ProductInterface $filteredProduct, array $options): void
     {
         $fullProduct = $this->getFullProduct($filteredProduct);
-        $username = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $username = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
         $productDraft = $this->entityWithValuesDraftBuilder->build(
             $fullProduct,
             $this->draftSourceFactory->createFromUser($this->tokenStorage->getToken()->getUser())

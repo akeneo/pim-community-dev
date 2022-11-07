@@ -1,14 +1,19 @@
 services:
     Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\SupplierContext:
         - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
-        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier\CreateSupplierHandler'
         - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList'
-        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplierHandler'
-        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplier\DeleteSupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\UpdateSupplierHandler'
 
     Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileDroppingContext:
         - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
-        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFileHandler'
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments'
-        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandlerForSupplier'
+        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileHandlerForSupplier'
+        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler'
+
+    Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileImportContext:
+        - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations'

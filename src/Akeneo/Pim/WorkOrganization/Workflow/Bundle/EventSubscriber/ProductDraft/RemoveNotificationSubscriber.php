@@ -27,7 +27,7 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EntityWithValuesDraftEvents::POST_REMOVE => ['sendNotificationForRemoval', 10],

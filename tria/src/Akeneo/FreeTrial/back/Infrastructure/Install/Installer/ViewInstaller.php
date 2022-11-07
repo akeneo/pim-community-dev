@@ -120,7 +120,7 @@ SQL;
 SELECT id FROM pim_catalog_category WHERE code = :code;
 SQL;
 
-        $realCategoryId = $this->dbConnection->executeQuery($query, ['code' => $categoriesCodes[$filterCategoryId]])->fetchColumn();
+        $realCategoryId = $this->dbConnection->executeQuery($query, ['code' => $categoriesCodes[$filterCategoryId]])->fetchOne();
         if (!$realCategoryId) {
             throw new \Exception(sprintf('No id found for category "%s"', $categoriesCodes[$filterCategoryId]));
         }
@@ -134,7 +134,7 @@ SQL;
 SELECT 1 FROM oro_user WHERE id = 1
 SQL;
 
-        $userExists = $this->dbConnection->executeQuery($query)->fetchColumn();
+        $userExists = $this->dbConnection->executeQuery($query)->fetchOne();
 
         if (false === boolval($userExists)) {
             throw new \Exception('Installing views needs at least one user');

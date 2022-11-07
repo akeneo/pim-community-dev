@@ -136,7 +136,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         WriteValueCollection $values
     ) {
         $user->getId()->willReturn(null);
-        $user->getUsername()->willReturn(UserInterface::SYSTEM_USER_NAME);
+        $user->getUserIdentifier()->willReturn(UserInterface::SYSTEM_USER_NAME);
 
         $values->getIterator()->willReturn(new \ArrayIterator([]));
         $product = new Product();

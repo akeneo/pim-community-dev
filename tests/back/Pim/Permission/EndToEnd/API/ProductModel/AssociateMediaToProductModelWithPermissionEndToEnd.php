@@ -160,6 +160,7 @@ JSON;
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('family_permission');
         $this->get('pim_catalog.updater.family')->update($family, [
             'attributes'  => [
+                'sku',
                 'root_product_model_no_view_attribute',
                 'root_product_model_view_attribute',
                 'root_product_model_edit_attribute',

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\InvalidData;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplierHandler;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier\CreateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier\CreateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplier\DeleteSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplier\DeleteSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributorCount;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;

@@ -43,7 +43,7 @@ class ProductAndProductModelVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 

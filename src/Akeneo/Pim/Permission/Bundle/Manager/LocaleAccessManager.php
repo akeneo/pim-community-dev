@@ -149,7 +149,7 @@ class LocaleAccessManager
      * @param LocaleInterface $locale
      * @param GroupInterface  $group
      *
-     * @return \Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess
+     * @return LocaleAccess
      */
     protected function getLocaleAccess(LocaleInterface $locale, GroupInterface $group)
     {

@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionTy
 use Akeneo\Pim\Enrichment\AssetManager\Component\Processor\Normalization\EntityWithAssetMediaProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
@@ -40,13 +39,11 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
          GetAssetMainMediaValuesInterface $getAssetMainMediaValues,
          GetAttributes $getAttributes
      ) {
-         $getAttributes->forCode('text')->willReturn($this->buildAttribute('text', AttributeTypes::TEXT));
-         $getAttributes->forCode('asset_attr1')
-             ->willReturn($this->buildAttribute('asset_attr1', AssetCollectionType::ASSET_COLLECTION, 'asset_family1'));
-         $getAttributes->forCode('asset_attr2')
-             ->willReturn($this->buildAttribute('asset_attr2', AssetCollectionType::ASSET_COLLECTION, 'asset_family2'));
-         $getAttributes->forCode('asset_attr3')
-             ->willReturn($this->buildAttribute('asset_attr3', AssetCollectionType::ASSET_COLLECTION, 'asset_family3'));
+         $getAttributes->forType(AssetCollectionType::ASSET_COLLECTION)->willReturn([
+             'asset_attr1' => $this->buildAttribute('asset_attr1', AssetCollectionType::ASSET_COLLECTION, 'asset_family1'),
+             'asset_attr2' => $this->buildAttribute('asset_attr2', AssetCollectionType::ASSET_COLLECTION, 'asset_family2'),
+             'asset_attr3' => $this->buildAttribute('asset_attr3', AssetCollectionType::ASSET_COLLECTION, 'asset_family3')
+         ]);
 
          $this->beConstructedWith(
              $decoratedItemProcessor,

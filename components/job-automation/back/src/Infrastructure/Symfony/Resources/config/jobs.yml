@@ -1,0 +1,39 @@
+services:
+    Akeneo\Platform\JobAutomation\Infrastructure\Connector\Tasklet\PushScheduledJobsToQueueTasklet:
+        arguments:
+            - '@akeneo.job_automation.feature'
+            - '@akeneo.job_automation.query.find_scheduled_job_instances'
+            - '@akeneo.job_automation.handler.push_scheduled_jobs_to_queue_handler'
+        public: false
+
+    akeneo.job_automation.step.push_scheduled_jobs_to_queue:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'push_scheduled_jobs_to_queue'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Platform\JobAutomation\Infrastructure\Connector\Tasklet\PushScheduledJobsToQueueTasklet'
+        public: false
+
+    akeneo.job_automation.job.push_scheduled_jobs_to_queue:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'push_scheduled_jobs_to_queue'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@akeneo.job_automation.step.push_scheduled_jobs_to_queue'
+            - false
+            - false
+        public: false
+        tags:
+            - { name: akeneo_batch.job, connector: 'internal', type: 'scheduled_job' }
+
+    akeneo.job_automation.job.job_parameters.default_values_provider.push_scheduled_jobs_to_queue:
+        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+        arguments:
+            - 'push_scheduled_jobs_to_queue'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -23,7 +23,7 @@ class EditOptionCollectionValueCommand extends Constraint
 {
     public const OPTION_DOES_NOT_EXIST = 'pim_asset_manager.asset.validation.option_collection.codes_dont_exist';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

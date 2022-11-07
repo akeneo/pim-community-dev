@@ -79,6 +79,10 @@
 - PIM-10665: Fix error when updating product models through API with non existing attributes as numbers
 - PIM-10650: Fix white page when editing asset in a new tab
 - PIM-10678: Prevent concurrent thumbnail generation of big asset images to exhaust server resources
+- PIM-10628: Prevent importing values of readonly attributes in product draft import
+- PIM-10674: Add lazy loading image on the asset manager library view
+- PIM-10696: Fix BETWEEN operator in GET assets endpoint
+- PIM-10693: Improve the speed up of the process stop time on the rules
 
 ## Improvements
 

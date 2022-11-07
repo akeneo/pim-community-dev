@@ -26,6 +26,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,7 +46,7 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function create(AssetFamily $assetFamily): void
     {
@@ -81,7 +82,7 @@ SQL;
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function update(AssetFamily $assetFamily): void
     {

@@ -37,8 +37,7 @@ class IsUserOwnerOfProjectsQuery implements IsUserOwnerOfProjectsQueryInterface
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('userId', $userId, \PDO::PARAM_INT);
-        $stmt->execute();
 
-        return ((int) $stmt->fetchColumn(0)) > 0;
+        return ((int) $stmt->executeQuery()->fetchOne()) > 0;
     }
 }

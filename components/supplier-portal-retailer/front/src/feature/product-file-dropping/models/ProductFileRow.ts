@@ -3,4 +3,5 @@ export type ProductFileRow = {
     uploadedAt: string;
     contributor: string;
     supplier?: string;
+    hasUnreadComments: boolean;
 };

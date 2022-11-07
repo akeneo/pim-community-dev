@@ -1,0 +1,45 @@
+{{ if .Values.pim.hook.tests.enabled -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-test-pim-auth"
+  labels:
+    app.kubernetes.io/component: test-pim-auth
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "102"
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  initContainers:
+    - name: wait-dns
+      image:  {{ template "pim.imageNameAndTag" . }}
+      imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+      command: ["sh", "/scripts-dir/wait-dns.sh"]
+      volumeMounts:
+        - name: pim-scripts-configmap
+          mountPath: /scripts-dir
+      env:
+        - name: PFID
+          value: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+  containers:
+  - name: test-pim-auth
+    image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
+    env:
+      - name: TARGET
+        value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+      - name: LOGIN
+        value: {{ .Values.pim.defaultAdminUser.login }}
+      - name: PASSWORD
+        value: {{ .Values.pim.defaultAdminUser.password }}
+    command: ["sh", "/scripts-dir/test-pim-auth.sh"]
+    volumeMounts:
+    - name: pim-scripts-configmap
+      mountPath: /scripts-dir
+  restartPolicy: Never
+  volumes:
+  - name: pim-scripts-configmap
+    configMap:
+      name:  pim-scripts-configmap
+{{- end }}

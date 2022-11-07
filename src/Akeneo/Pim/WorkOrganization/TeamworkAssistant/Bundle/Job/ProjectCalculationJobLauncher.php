@@ -22,34 +22,14 @@ use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
  */
 class ProjectCalculationJobLauncher
 {
-    /** @var JobLauncherInterface */
-    protected $simpleJobLauncher;
-
-    /** @var JobInstanceRepository */
-    protected $jobInstanceRepository;
-
-    /** @var string */
-    protected $projectCalculationJobName;
-
-    /**
-     * @param JobLauncherInterface  $simpleJobLauncher
-     * @param JobInstanceRepository $jobInstanceRepository
-     * @param string                $projectCalculationJobName
-     */
     public function __construct(
-        JobLauncherInterface $simpleJobLauncher,
-        JobInstanceRepository $jobInstanceRepository,
-        $projectCalculationJobName
+        private JobLauncherInterface $simpleJobLauncher,
+        private JobInstanceRepository $jobInstanceRepository,
+        private string $projectCalculationJobName
     ) {
-        $this->simpleJobLauncher = $simpleJobLauncher;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->projectCalculationJobName = $projectCalculationJobName;
     }
 
-    /**
-     * @param ProjectInterface $project
-     */
-    public function launch(ProjectInterface $project)
+    public function launch(ProjectInterface $project): void
     {
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->projectCalculationJobName);
         if (null === $jobInstance) {
@@ -58,7 +38,7 @@ class ProjectCalculationJobLauncher
 
         $configuration = [
             'project_code' => $project->getCode(),
-            'users_to_notify' => [$project->getOwner()->getUsername()]
+            'users_to_notify' => [$project->getOwner()->getUserIdentifier()]
         ];
 
         $this->simpleJobLauncher->launch($jobInstance, $project->getOwner(), $configuration);

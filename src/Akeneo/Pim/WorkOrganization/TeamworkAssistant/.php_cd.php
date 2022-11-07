@@ -13,6 +13,7 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only([
         'Doctrine',
+        'Psr',
         'Symfony\Component',
         'Akeneo\Tool',
         'Sensio\Bundle\FrameworkExtraBundle',
@@ -66,9 +67,6 @@ $rules = [
 
         // TIP-976: TWA should not be linked to Workflow
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource',
-
-        // TIP-977: Move CommandExecutor to Tool
-        'Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor',
 
         // TIP-1023: CatalogContext should be dropped
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',

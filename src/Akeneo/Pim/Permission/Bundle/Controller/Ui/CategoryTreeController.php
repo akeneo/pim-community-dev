@@ -11,7 +11,10 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\Classification\CategoryTree;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController as BaseCategoryTreeController;
@@ -35,7 +38,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * Overridden category controller
@@ -70,8 +72,10 @@ class CategoryTreeController extends BaseCategoryTreeController
         private CategoryItemsCounterInterface $categoryItemsCounter,
         private CountTreesChildrenInterface $countTreesChildrenQuery,
         CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
-        array $rawConfiguration,
+        private GetCategoryInterface $getCategory,
+        private GetCategoryTreesInterface $getCategoryTrees,
         private FeatureFlags $featureFlags,
+        array $rawConfiguration,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
     ) {
@@ -89,8 +93,10 @@ class CategoryTreeController extends BaseCategoryTreeController
             $categoryItemsCounter,
             $countTreesChildrenQuery,
             $categoryFormViewNormalizer,
-            $rawConfiguration,
+            $getCategory,
+            $getCategoryTrees,
             $featureFlags,
+            $rawConfiguration,
         );
 
         $this->categoryAccessRepo = $categoryAccessRepo;
@@ -110,13 +116,12 @@ class CategoryTreeController extends BaseCategoryTreeController
         $context = $request->get('context', false);
 
         if (self::CONTEXT_MANAGE === $context) {
-            try {
-                $selectNode = $this->findCategory($selectNodeId);
-            } catch (NotFoundHttpException $e) {
-                Assert::isInstanceOf($this->userContext, UserContext::class);
+            $selectNode = $this->getCategory->byId($selectNodeId);
+            if (!$selectNode) {
                 $selectNode = $this->userContext->getDefaultTree();
             }
-            $grantedTrees = $this->categoryRepository->getTrees();
+
+            $grantedTrees = $this->getCategoryTrees->getAll();
         } else {
             try {
                 $selectNode = $this->findGrantedCategory($selectNodeId, $context);
@@ -127,19 +132,27 @@ class CategoryTreeController extends BaseCategoryTreeController
             }
 
             $grantedCategoryIds = $this->getGrantedCategories();
-            $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
+            $grantedTrees = $this->getCategoryTrees->byIds($grantedCategoryIds);
         }
 
-        return $this->render(
-            '@AkeneoPimEnrichment/CategoryTree/listTree.json.twig',
-            [
-            'trees'          => $grantedTrees,
-            'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
-            'include_sub'    => (bool) $request->get('include_sub', false),
-            'item_count'     => (bool) $request->get('with_items_count', true),
-            'related_entity' => $this->rawConfiguration['related_entity'],
-        ]
-        );
+        if ($selectNode instanceof CategoryTree) {
+            $selectedTreeId = $selectNode->getId()->getValue();
+        } else {
+            $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
+        }
+
+        $formatedTrees = array_map(function (CategoryTree $tree) use ($selectedTreeId) {
+            return [
+                'id' => $tree->getId()->getValue(),
+                'code' => (string) $tree->getCode(),
+                'label' => $tree->getLabel($this->userContext->getCurrentLocaleCode()),
+                'templateUuid' => (string) $tree->getCategoryTreeTemplate()?->getTemplateUuid(),
+                'templateLabel' => $tree->getCategoryTreeTemplate()?->getTemplateLabel($this->userContext->getCurrentLocaleCode()),
+                'selected' => $tree->getId()->getValue() === $selectedTreeId ? 'true' : 'false'
+            ];
+        }, $grantedTrees);
+
+        return new JsonResponse($formatedTrees);
     }
 
     /**
@@ -192,7 +205,7 @@ class CategoryTreeController extends BaseCategoryTreeController
      *
      * @throws AccessDeniedException
      *
-     * @return CategoryInterface
+     * @return Category
      */
     protected function findGrantedCategory($categoryId, $context)
     {
@@ -201,7 +214,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             throw new AccessDeniedException('You can not access this category');
         }
 
-        $category = $this->findCategory($categoryId);
+        $category = $this->getCategory->byId($categoryId);
 
         if (self::CONTEXT_MANAGE === $context) {
             if (!$this->securityFacade->isGranted($this->buildAclName('category_edit'))) {

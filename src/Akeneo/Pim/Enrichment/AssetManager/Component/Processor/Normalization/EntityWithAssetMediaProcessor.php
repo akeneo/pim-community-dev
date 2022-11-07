@@ -111,17 +111,16 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
 
     private function resolveAssetMainMedia(array $entityStandard, ?array $scopeCodes, ?array $localeCodes): array
     {
-        foreach ($entityStandard['values'] as $attributeCode => $values) {
-            foreach ($values as $valueKey => $value) {
+        $assetCollectionAttribute = $this->getAttributes->forType(AssetCollectionType::ASSET_COLLECTION);
+        $assetCollectionAttributeCodes = array_intersect_key($assetCollectionAttribute, $entityStandard['values']);
+
+        foreach ($assetCollectionAttributeCodes as $attributeCode => $attribute) {
+            foreach ($entityStandard['values'][$attributeCode] as $valueKey => $value) {
                 if (!$this->productValueSatisfiesLocaleAndScopeFilters($value, $scopeCodes, $localeCodes)) {
                     continue;
                 }
 
-                $attribute = $this->getAttributes->forCode((string) $attributeCode);
-                if (null === $attribute
-                    || $attribute->type() !== AssetCollectionType::ASSET_COLLECTION
-                    || empty($value['data'])
-                ) {
+                if (empty($value['data'])) {
                     continue;
                 }
 
@@ -135,11 +134,12 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
 
                 $filteredMainMedia = [];
                 foreach ($assetMainMediaValues as $assetMainMediaValue) {
-                    if ($this->assetValueSatisfiesLocaleAndScopeFilters(
-                        $assetMainMediaValue,
-                        $scopeCodesFilter,
-                        $localeCodesFilter
-                    )
+                    if (
+                        $this->assetValueSatisfiesLocaleAndScopeFilters(
+                            $assetMainMediaValue,
+                            $scopeCodesFilter,
+                            $localeCodesFilter
+                        )
                     ) {
                         $filteredMainMedia[] = $assetMainMediaValue;
                     }

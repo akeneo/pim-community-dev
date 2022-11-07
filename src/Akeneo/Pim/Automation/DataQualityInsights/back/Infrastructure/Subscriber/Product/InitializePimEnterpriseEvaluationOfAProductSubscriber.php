@@ -32,7 +32,7 @@ final class InitializePimEnterpriseEvaluationOfAProductSubscriber implements Eve
         $this->initializeEvaluationOfAProductSubscriberDecorated->onPostSave($event);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return InitializeEvaluationOfAProductSubscriber::getSubscribedEvents();
     }

@@ -17,7 +17,11 @@ class GetCatalogsAction
 
     public function listAction(string $platformConfigurationCode): JsonResponse
     {
-        $platformConfiguration = $this->findPlatformConfigurationQuery->execute($platformConfigurationCode);
+        try {
+            $platformConfiguration = $this->findPlatformConfigurationQuery->execute($platformConfigurationCode);
+        } catch (\InvalidArgumentException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], 404);
+        }
 
         return new JsonResponse($platformConfiguration->normalizeForExternalApi());
     }

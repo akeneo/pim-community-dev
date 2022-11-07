@@ -28,8 +28,8 @@ final class Factory implements SamlUserFactoryInterface
     {
         // TODO AOB-340: Create the user if the provisioning is enabled, else:
         throw new UnknownUserException(
-            $token->getUsername(),
-            sprintf('The user provisioning is disabled and the user "%s" does not exist.', $token->getUsername())
+            $token->getUserIdentifier(),
+            sprintf('The user provisioning is disabled and the user "%s" does not exist.', $token->getUserIdentifier())
         );
     }
 }

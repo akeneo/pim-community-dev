@@ -44,8 +44,7 @@ SQL;
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('userId', $userId, \PDO::PARAM_INT);
         $stmt->bindValue('groupAll', User::GROUP_DEFAULT, \PDO::PARAM_STR);
-        $stmt->execute();
 
-        return ((int) $stmt->fetchColumn(0)) > 0;
+        return ((int) $stmt->executeQuery()->fetchOne()) > 0;
     }
 }

@@ -7,14 +7,14 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\H
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionCollectionAttributeHydrator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 
 class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $this->beConstructedWith($connection);
     }
 
@@ -48,7 +48,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => true,
             'additional_properties' => json_encode([
-                'options' => [ ],
+                'options' => [],
             ]),
         ]);
         $optionAttribute->shouldBeAnInstanceOf(OptionCollectionAttribute::class);
@@ -62,7 +62,7 @@ class OptionCollectionAttributeHydratorSpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => true,
             'type' => 'option_collection',
-            'options' => [ ]
+            'options' => []
         ]);
     }
 

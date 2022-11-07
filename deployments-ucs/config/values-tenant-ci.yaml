@@ -1,0 +1,8 @@
+image:
+  pim:
+    repository: europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/dev/pim-enterprise-dev
+
+pim:
+  hook:
+    tests:
+      enabled: true

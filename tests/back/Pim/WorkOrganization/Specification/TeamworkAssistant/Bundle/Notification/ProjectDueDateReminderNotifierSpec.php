@@ -84,8 +84,8 @@ class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
         $project->getLabel()->willReturn('Project label');
         $project->getCode()->willReturn('project-code');
 
-        $contributor->getUsername()->willReturn('boby');
-        $owner->getUsername()->willReturn('claude');
+        $contributor->getUserIdentifier()->willReturn('boby');
+        $owner->getUserIdentifier()->willReturn('claude');
 
         $context = [
             'actionType'  => 'project_due_date',
@@ -130,8 +130,8 @@ class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
         $project->getLabel()->willReturn('Project label');
         $project->getCode()->willReturn('project-code');
 
-        $contributor->getUsername()->willReturn('boby');
-        $owner->getUsername()->willReturn('boby');
+        $contributor->getUserIdentifier()->willReturn('boby');
+        $owner->getUserIdentifier()->willReturn('boby');
 
         $context = [
             'actionType'  => 'project_due_date',

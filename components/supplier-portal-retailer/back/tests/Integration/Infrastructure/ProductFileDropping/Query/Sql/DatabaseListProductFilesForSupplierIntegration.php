@@ -12,6 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Doctrine\DBAL\Connection;
 
 final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegrationTestCase
 {
@@ -161,6 +162,20 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
         );
         ($this->get(ProductFileRepository::class))->save($productFile);
 
+        $sql = <<<SQL
+            INSERT INTO `akeneo_supplier_portal_product_file_comments_read_by_supplier` (
+                product_file_identifier, last_read_at                
+            ) VALUES (:productFileIdentifier, :lastReadAt);
+        SQL;
+
+        $this->get(Connection::class)->executeStatement(
+            $sql,
+            [
+                'productFileIdentifier' => '5d001a43-a42d-4083-8673-b64bb4ecd26f',
+                'lastReadAt' => (new \DateTimeImmutable('2022-09-07 00:00:00'))->format('Y-m-d H:i:s'),
+            ],
+        );
+
         $sut = $this->get(ListProductFilesForSupplier::class);
         /** @var ProductFile[] $productFiles */
         $productFiles = ($sut)('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7');
@@ -184,5 +199,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
             'author_email' => 'jimmy@punchline.com',
             'created_at' => '2022-09-07 00:00:01.000000',
         ]], $productFiles[0]->supplierComments);
+        static::assertNull($productFiles[0]->retailerLastReadAt);
+        static::assertSame('2022-09-07 00:00:00', $productFiles[0]->supplierLastReadAt);
     }
 }

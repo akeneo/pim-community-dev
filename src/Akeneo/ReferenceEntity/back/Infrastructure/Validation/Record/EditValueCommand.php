@@ -24,7 +24,7 @@ class EditValueCommand extends Constraint
 
     public const CHANNEL_AND_LOCALE_ARE_EXPECTED = 'pim_reference_entity.record.validation.channel_and_locale.are_expected';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

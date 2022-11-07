@@ -72,7 +72,7 @@ class UploadMediaFileAction
             'Location' => $downloadMediaFileUrl
         ];
 
-        return Response::create('', Response::HTTP_CREATED, $headers);
+        return new Response('', Response::HTTP_CREATED, $headers);
     }
 
     private function denyAccessUnlessAclIsGranted(): void

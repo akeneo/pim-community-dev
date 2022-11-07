@@ -45,6 +45,8 @@ GOOGLE_MANAGED_ZONE_DNS ?= ci.pim.akeneo.cloud
 GOOGLE_MANAGED_ZONE_NAME ?= ci-pim-akeneo-cloud
 STORAGE_LOCATION ?= EU
 CLUSTER_DNS_NAME ?= $(GOOGLE_CLUSTER_ZONE)-$(GOOGLE_PROJECT_ID).$(GOOGLE_MANAGED_ZONE_DNS).
+TENANT_CONTEXT_COLLECTION_NAME=tenant_contexts
+WORKLOAD_IDENTITY_KSA ?= $(INSTANCE_NAME)-ksa-workload-identity
 
 PIM_NS ?= pim-saas
 
@@ -75,6 +77,12 @@ MAILGUN_LOGIN ?= $(PFID)-$(GOOGLE_PROJECT_ID)@$(MAILGUN_DOMAIN)
 MAILGUN_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 16)')
 MAILGUN_HOST ?= smtp.mailgun.org
 MAILGUN_PORT ?= 2525
+
+PIM_ADMIN_USER_LOGIN = pim-ci
+PIM_ADMIN_USER_FIRSTNAME = test1
+PIM_ADMIN_USER_LASTNAME = test2
+PIM_ADMIN_USER_EMAIL = pim-ci@akeneo.fr
+PIM_ADMIN_USER_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 
 HEAP_SIZE_UNIT ?= m
 MEMORY_UNIT ?= Mi
@@ -142,8 +150,7 @@ push-pim-image-prod: #Doc: push docker image to docker hub
 
 ## Deploy tenants
 .PHONY: deploy_tenant
-# deploy_tenant: generate_deployment_files deploy_tenant_terraform deploy_tenant_helm deploy_tenant_go
-deploy_tenant: generate_deployment_files deploy_tenant_helm deploy_tenant_go
+deploy_tenant: generate_argocd_application deploy_tenant_argocd deploy_tenant_go
 	@echo "#######################################################################################"
 	@echo ""
 	@echo "This environment is available at https://$(FQDN) :)"
@@ -151,12 +158,15 @@ deploy_tenant: generate_deployment_files deploy_tenant_helm deploy_tenant_go
 	@echo "K9s direct access command line: k9s -n $(PFID) -c pods"
 	@echo ""
 	@echo "#######################################################################################"
-	PIM_USER=$(shell yq r "$(INSTANCE_DIR)/values.yaml" 'pim.defaultAdminUser.login'); \
-	PIM_EMAIL=$(shell yq r "$(INSTANCE_DIR)/values.yaml" 'pim.defaultAdminUser.email'); \
-	PIM_PASSWORD=$(shell yq r "$(INSTANCE_DIR)/values.yaml" 'pim.defaultAdminUser.password');
+	PIM_USER=$(shell yq r "$(INSTANCE_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.login).value'); \
+	PIM_EMAIL=$(shell yq r "$(INSTANCE_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.email).value'); \
+	PIM_PASSWORD=$(shell yq r "$(INSTANCE_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.password).value')
 
-.PHONY: generate_deployment_files
-generate_deployment_files: $(INSTANCE_DIR)
+$(INSTANCE_DIR):
+	mkdir -p $(INSTANCE_DIR)
+
+.PHONY: generate_argocd_application
+generate_argocd_application: $(INSTANCE_DIR)
 	@echo "=========================================================="
 	@echo "Deploy namespace : $(PFID)"
 	@echo " - with instance name prefix : $(INSTANCE_NAME_PREFIX)"
@@ -164,17 +174,13 @@ generate_deployment_files: $(INSTANCE_DIR)
 	@echo " - on cluster : $(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)"
 	@echo " - URL : $(FQDN)"
 	@echo "=========================================================="
-	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then \
-		cp $(DEPLOYMENT_DIR)/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml ;\
-	fi
-	cat $(DEPLOYMENT_DIR)/config/helm-tenant-values.yaml > $(INSTANCE_DIR)/helm-tenant-values.yaml.tmp
+	cat $(DEPLOYMENT_DIR)/config/tenant-application-templates.yaml > $(INSTANCE_DIR)/tenant-application.yaml.tmp
 	USE_EDITION_FLAG=$(USE_EDITION_FLAG) \
 	IMAGE_TAG=$(IMAGE_TAG) \
 	TYPE=$(TYPE) \
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
 	FQDN=$(FQDN) \
-	PIM_SECRET=${PIM_SECRET} \
 	PIM_NS=${PIM_NS} \
 	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
 	PRODUCT_REFERENCE_CODE=$(PRODUCT_REFERENCE_CODE) \
@@ -184,9 +190,16 @@ generate_deployment_files: $(INSTANCE_DIR)
 	FIRESTORE_PROJECT_ID=$(FIRESTORE_PROJECT_ID) \
 	GOOGLE_PROJECT_ID=$(GOOGLE_PROJECT_ID) \
 	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
+	TENANT_CONTEXT_COLLECTION_NAME=$(TENANT_CONTEXT_COLLECTION_NAME) \
 	STORAGE_LOCATION=$(STORAGE_LOCATION) \
 	MONITORING_AUTHENTICATION_TOKEN=$(MONITORING_AUTHENTICATION_TOKEN) \
 	MONITORING_AUTHENTICATION_TOKEN_TEST=$(MONITORING_AUTHENTICATION_TOKEN_TEST) \
+	PIM_ADMIN_USER_LOGIN=$(PIM_ADMIN_USER_LOGIN) \
+	PIM_ADMIN_USER_FIRSTNAME=$(PIM_ADMIN_USER_FIRSTNAME) \
+	PIM_ADMIN_USER_LASTNAME=$(PIM_ADMIN_USER_LASTNAME) \
+	PIM_ADMIN_USER_EMAIL=$(PIM_ADMIN_USER_EMAIL) \
+	PIM_ADMIN_USER_PASSWORD=$(PIM_ADMIN_USER_PASSWORD) \
+	PIM_SECRET=$(PIM_SECRET) \
 	MAILGUN_LOGIN=$(MAILGUN_LOGIN) \
 	MAILGUN_PASSWORD=$(MAILGUN_PASSWORD) \
 	MAILGUN_HOST=$(MAILGUN_HOST) \
@@ -218,21 +231,14 @@ generate_deployment_files: $(INSTANCE_DIR)
 	MEMCACHED_REQUESTS_CPU=$(MEMCACHED_REQUESTS_CPU) \
 	MEMCACHED_REQUESTS_MEMORY=$(MEMCACHED_REQUESTS_MEMORY) \
 	FIRESTORE_COLLECTION=$(FIRESTORE_COLLECTION) \
-	envsubst < $(INSTANCE_DIR)/helm-tenant-values.yaml.tmp > $(INSTANCE_DIR)/helm-tenant-values.yaml ;\
-	rm -rf $(INSTANCE_DIR)/helm-tenant-values.yaml.tmp
-	cat $(INSTANCE_DIR)/helm-tenant-values.yaml
+	WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} \
+	envsubst < $(INSTANCE_DIR)/tenant-application.yaml.tmp > $(INSTANCE_DIR)/tenant-application.yaml ;\
+	rm -rf $(INSTANCE_DIR)/tenant-application.yaml.tmp
+	cat $(INSTANCE_DIR)/tenant-application.yaml
 
-$(INSTANCE_DIR):
-	mkdir -p $(INSTANCE_DIR)
-
-.PHONY: deploy_tenant_helm
-deploy_tenant_helm:
-	yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml version 0.0.0-$(IMAGE_TAG)
-	yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml appVersion $(IMAGE_TAG)
-	helm3 repo add akeneo-charts gs://akeneo-pim-saas-charts-prod/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 dependencies update $(DEPLOYMENT_DIR)/tenant/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 10m --create-namespace --namespace $(PFID) $(PFID) $(DEPLOYMENT_DIR)/tenant/ -f $(INSTANCE_DIR)/helm-tenant-values.yaml -f $(INSTANCE_DIR)/values.yaml
+.PHONY: deploy_tenant_argocd
+deploy_tenant_argocd:
+	kubectl apply -f $(INSTANCE_DIR)/tenant-application.yaml -n argocd
 
 .PHONY: deploy_tenant_go
 deploy_tenant_go:
@@ -241,144 +247,6 @@ deploy_tenant_go:
 ## Cleanup tenants
 .PHONY: delete_tenant
 delete_tenant:
-	helm3 delete $(PFID) --namespace $(PFID)
+	kubectl delete app $(PFID) -n argocd
 	kubectl delete ns $(PFID)
 	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-remove.go $(PFID) $(FIRESTORE_COLLECTION)
-
-###################
-### infra				###
-###################
-## Plan terraform infrastructure
-.PHONY: plan_terraform
-plan_terraform:
-	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
-	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) plan
-
-## Deploy terraform infrastructure
-.PHONY: deploy_terraform
-deploy_terraform:
-	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
-	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) apply -auto-approve -input=false
-
-
-.PHONY: deploy_infra
-deploy_infra: deploy_storage_class deploy_traefik deploy_datadog deploy_argocd deploy_crossplane deploy_secretmngr_csi
-
-## Deploy storage class
-.PHONY: deploy_storage_class
-deploy_storage_class:
-	kubectl apply -f k8s/kubernetes/StorageClass/premium-rwo.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/ssd-csi.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/ssd-retain-csi.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/ssd-retain.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/ssd.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/standard-csi.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/standard-retain-csi.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/standard-retain.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/standard-rwo.yaml
-	kubectl apply -f k8s/kubernetes/StorageClass/standard.yaml
-
-## Cleanup storage class
-.PHONY: delete_storage_class
-delete_storage_class:
-	kubectl delete -f k8s/kubernetes/StorageClass/premium-rwo.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/ssd-csi.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/ssd-retain-csi.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/ssd-retain.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/ssd.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/standard-csi.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/standard-retain-csi.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/standard-retain.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/standard-rwo.yaml
-	kubectl delete -f k8s/kubernetes/StorageClass/standard.yaml
-
-## Deploy argocd
-.PHONY: deploy_argocd
-deploy_argocd:
-	helm3 repo add argo https://argoproj.github.io/argo-helm
-	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 upgrade --version 4.8.2 --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
-	kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
-
-## Cleanup argocd
-.PHONY: delete_argocd
-delete_argocd:
-	kubectl delete -f k8s/argocd/templates/argocd-cm.yaml
-	helm3 delete argocd --namespace argocd
-	kubectl delete ns argocd
-
-## Deploy crossplane
-.PHONY: deploy_crossplane
-deploy_crossplane:
-	helm3 repo add crossplane-stable https://charts.crossplane.io/stable
-	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace crossplane-system crossplane crossplane-stable/crossplane
-	kubectl apply -f k8s/crossplane/templates/gcp-authentication.yaml
-	kubectl apply -f k8s/crossplane/templates/provider-jet-gcp.yaml
-	kubectl apply -f k8s/crossplane/templates/provider-gcp.yaml
-	# Can take some time ...
-	kubectl apply -f k8s/crossplane/templates/provider-config-jet-gcp.yaml
-	kubectl apply -f k8s/crossplane/templates/provider-config-gcp.yaml
-
-.PHONY: deploy_datadog
-deploy_datadog:
-	helm3 repo add datadog https://helm.datadoghq.com
-	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace default datadog-agent datadog/datadog -f k8s/datadog/values.yaml
-
-.PHONY: deploy_secretmngr_csi
-deploy_secretmngr_csi:
-	helm3 repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
-	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --namespace kube-system csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --set-string enableSecretRotation=true --set-string secretObjects=true
-	kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp/release-1.1/deploy/provider-gcp-plugin.yaml
-
-###################
-### TEST				###
-###################
-.PHONY: test-prod
-test-prod:
-	export KUBECONFIG=$(INSTANCE_DIR)/.kubeconfig
-	FN_1=5;	FN_2=0;\
-	while ! host $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS); do \
-			TIME_TO_SLEEP=`expr $${FN_1} + $${FN_2}`; FN_1=$${FN_2}; FN_2=$${TIME_TO_SLEEP}; \
-			if [ $${TIME_TO_SLEEP} -gt $(MAX_DNS_TEST_TIMEOUT) ]; then echo 'DNS resolution issue on "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"';exit 1; fi; \
-		echo 'Waiting for DNS "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)" to be ready'; sleep $${TIME_TO_SLEEP} ; \
-	done
-	helm3 test ${PFID} -n ${PFID} --debug
-
-###################
-### Old UCS			###
-### To remove? 	###
-###################
-.PHONY: deploy_traefik
-deploy_traefik:
-	rm -Rf "./traefik-chart"
-	helm3 repo add traefik https://helm.traefik.io/traefik
-	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 pull traefik/traefik --version v10.13.0 --untar --untardir "old/traefik/traefik-chart"
-	kubectl apply -f "old/traefik/traefik-chart/traefik/crds"
-	rm -Rf "old/traefik/traefik-chart"
-	helm3 upgrade traefik-v2 traefik/traefik \
-		--debug \
-		--atomic \
-		--cleanup-on-fail \
-		--create-namespace \
-		--wait \
-		--timeout 10m \
-		--install \
-		--version=10.13.0 \
-		--namespace=traefik-v2 \
-		--values "old/traefik/static-configuration.yaml"
-
-.PHONY: delete_traefik
-delete_traefik:
-	rm -Rf "old/traefik/traefik-chart"
-	helm3 repo add traefik https://helm.traefik.io/traefik
-	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 pull traefik/traefik --version v10.13.0 --untar --untardir "old/traefik/traefik-chart"
-	helm3 uninstall traefik-v2 traefik/traefik \
-		--timeout 10m \
-		--namespace=traefik-v2
-	kubectl delete -f "old/traefik/traefik-chart/traefik/crds" || true
-	rm -Rf "old/traefik/traefik-chart"

@@ -47,6 +47,7 @@ class Duplicate extends BaseView {
 
   private openFormModal() {
     return FormBuilder.build(this.config.form).then((modal: any) => {
+      modal.setFamilyCode(this.getFormData().family);
       modal.setProductUuidToDuplicate(this.getFormData().meta.id);
       modal.setProductIdentifierToDuplicate(this.getFormData().identifier);
       modal.open();

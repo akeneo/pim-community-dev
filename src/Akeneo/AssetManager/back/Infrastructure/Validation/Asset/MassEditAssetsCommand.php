@@ -23,12 +23,12 @@ class MassEditAssetsCommand extends Constraint
     public string $emptyValueCommandMessage = 'pim_asset_manager.asset.validation.mass_edit.updater_cannot_be_empty';
     public string $duplicatedUpdater = 'pim_asset_manager.asset.validation.mass_edit.updater_must_be_unique';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.asset.mass_edit_command_validator';
     }

@@ -108,7 +108,7 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
 
         $decodedResponse = \json_decode($response->getContent(), true);
         $this->assertContains(

@@ -86,7 +86,7 @@ class SearchAttributesActionTest extends ControllerIntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
     /**

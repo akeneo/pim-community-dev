@@ -21,9 +21,12 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -41,53 +44,25 @@ use Webmozart\Assert\Assert;
  */
 class ProductDraftProcessor extends AbstractProcessor implements
     ItemProcessorInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    NonBlockingWarningAggregatorInterface
 {
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var EntityWithValuesDraftBuilderInterface */
-    protected $productDraftBuilder;
-
-    /** @var DraftApplierInterface */
-    protected $productDraftApplier;
-
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $productDraftRepo;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var MediaStorer */
-    private $mediaStorer;
-
-    /** @var PimUserDraftSourceFactory */
-    private $draftSourceFactory;
+    /** @var Warning[] */
+    private array $nonBlockingWarnings = [];
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        EntityWithValuesDraftBuilderInterface $productDraftBuilder,
-        DraftApplierInterface $productDraftApplier,
-        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
-        TokenStorageInterface $tokenStorage,
-        MediaStorer $mediaStorer,
-        PimUserDraftSourceFactory $draftSourceFactory
+        protected ObjectUpdaterInterface $updater,
+        protected ValidatorInterface $validator,
+        protected EntityWithValuesDraftBuilderInterface $productDraftBuilder,
+        protected DraftApplierInterface $productDraftApplier,
+        protected EntityWithValuesDraftRepositoryInterface $productDraftRepo,
+        protected TokenStorageInterface $tokenStorage,
+        private MediaStorer $mediaStorer,
+        private PimUserDraftSourceFactory $draftSourceFactory,
+        private CachedObjectRepositoryInterface $attributeRepository
     ) {
         parent::__construct($repository);
-
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->productDraftBuilder = $productDraftBuilder;
-        $this->productDraftApplier = $productDraftApplier;
-        $this->productDraftRepo = $productDraftRepo;
-        $this->tokenStorage = $tokenStorage;
-        $this->mediaStorer = $mediaStorer;
-        $this->draftSourceFactory = $draftSourceFactory;
     }
 
     /**
@@ -97,10 +72,13 @@ class ProductDraftProcessor extends AbstractProcessor implements
     {
         $identifier = $this->getIdentifier($item);
 
+        /** @var ProductInterface $product */
         $product = $this->repository->findOneByIdentifier($identifier);
         if (null === $product) {
             $this->skipItemWithMessage($item, sprintf('Product "%s" does not exist', $identifier));
         }
+
+        $item = $this->skipReadOnlyAttributes($item);
 
         $product = $this->applyDraftToProduct($product);
 
@@ -220,7 +198,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
      */
     protected function getUsername(): string
     {
-        return $this->tokenStorage->getToken()->getUsername();
+        return $this->tokenStorage->getToken()->getUserIdentifier();
     }
 
     /**
@@ -248,5 +226,45 @@ class ProductDraftProcessor extends AbstractProcessor implements
         $executionContext->put('processed_items_batch', $processedItemsBatch);
 
         return $productDraft;
+    }
+
+    /**
+     * Retrieve attributes in database to check is_read_only property.
+     * All read only values are removed from the item['values'] and a warning message is prepared to be displayed in UI.
+     * @param array $item
+     * @return array
+     */
+    private function skipReadOnlyAttributes(array $item): array
+    {
+        if (!isset($item['values'])) {
+            return $item;
+        }
+
+        $readOnlyAttributes = array_filter(array_keys($item['values']), function ($attributeCode) {
+            $attributeFromDatabase = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            return $attributeFromDatabase->getProperty('is_read_only') === true;
+        });
+        $valuesWithoutReadOnlyAttributes = array_diff_key($item['values'], array_fill_keys($readOnlyAttributes, null));
+        $item['values'] = $valuesWithoutReadOnlyAttributes;
+
+        foreach ($readOnlyAttributes as $attributeCode) {
+            $this->nonBlockingWarnings[] = new Warning(
+                $this->stepExecution,
+                'The field "%attribute_code%" is a read-only attribute. The product values cannot be replaced.',
+                ['%attribute_code%' => $attributeCode],
+                $item
+            );
+        }
+
+        return $item;
+    }
+
+    public function flushNonBlockingWarnings(): array
+    {
+        $nonBlockingWarnings = $this->nonBlockingWarnings;
+        $this->nonBlockingWarnings = [];
+
+        return $nonBlockingWarnings;
     }
 }

@@ -3,12 +3,11 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
 
 use Akeneo\Test\Integration\Configuration;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateVariantProductWithPermissionWithUuidEndToEnd extends ApiTestCase
@@ -27,7 +26,7 @@ class CreateVariantProductWithPermissionWithUuidEndToEnd extends ApiTestCase
     {
         $this->loader->loadProductsForAssociationPermissions();
         $uuid = Uuid::uuid4()->toString();
-        $productOwnUuid = $this->getProductUuidFromIdentifier('product_own')->toString();
+        $productOwnUuid = $this->getProductUuid('product_own')->toString();
         $data = <<<JSON
             {
                 "uuid": "{$uuid}",
@@ -49,6 +48,7 @@ JSON;
         $this->assertCreated($data);
 
         $expectedProduct = [
+            'uuid'         => $uuid,
             'identifier'   => 'variant_product_creation',
             'family'       => 'family_permission',
             'parent'       => 'sub_product_model',
@@ -74,22 +74,24 @@ JSON;
             'associations' => [
                 'PACK'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL'       => [
                     'groups'   => [],
-                    'products' => ['product_own'],
+                    'product_uuids' => [
+                        $this->getProductUuid('product_own')->toString()
+                    ],
                     'product_models' => [],
                 ],
             ],
@@ -122,7 +124,7 @@ JSON;
     {
         $this->loader->loadProductsForAssociationPermissions();
         $uuid = Uuid::uuid4()->toString();
-        $productNoViewUuid = $this->getProductUuidFromIdentifier('product_no_view')->toString();
+        $productNoViewUuid = $this->getProductUuid('product_no_view')->toString();
         $data = <<<JSON
             {
                 "uuid": "{$uuid}",
@@ -443,7 +445,6 @@ JSON;
         $this->get('doctrine')->getManager()->clear();
         $product = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-        unset($standardizedProduct['uuid']);
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);
@@ -477,12 +478,5 @@ JSON;
         $constraints = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $constraints);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
     }
 }

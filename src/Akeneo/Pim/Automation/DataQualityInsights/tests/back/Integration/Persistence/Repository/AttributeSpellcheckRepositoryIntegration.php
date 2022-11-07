@@ -93,7 +93,7 @@ class AttributeSpellcheckRepositoryIntegration extends TestCase
     {
         $stmt = $this->dbConnection->executeQuery('SELECT COUNT(*) FROM pimee_dqi_attribute_spellcheck;');
 
-        $this->assertSame($expectedCount, intval($stmt->fetchColumn()), sprintf('There should be %d attribute spellchecks', $expectedCount));
+        $this->assertSame($expectedCount, intval($stmt->fetchOne()), sprintf('There should be %d attribute spellchecks', $expectedCount));
     }
 
     private function assertAttributeSpellcheckEquals(AttributeSpellcheck $expectedAttributeSpellcheck, array $attributeSpellcheck): void

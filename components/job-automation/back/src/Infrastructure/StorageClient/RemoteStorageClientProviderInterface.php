@@ -15,7 +15,7 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\StorageClient;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
-use League\Flysystem\PhpseclibV2\ConnectionProvider;
+use League\Flysystem\PhpseclibV3\ConnectionProvider;
 
 interface RemoteStorageClientProviderInterface extends StorageClientProviderInterface
 {

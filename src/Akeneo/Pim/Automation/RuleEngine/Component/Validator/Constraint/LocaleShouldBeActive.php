@@ -27,7 +27,7 @@ final class LocaleShouldBeActive extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return LocaleShouldBeActiveValidator::class;
     }
@@ -35,7 +35,7 @@ final class LocaleShouldBeActive extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return static::PROPERTY_CONSTRAINT;
     }

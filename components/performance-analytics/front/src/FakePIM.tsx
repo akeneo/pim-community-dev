@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {AkeneoIcon, CommonStyle, getColor} from 'akeneo-design-system';
 import {TimeToEnrichDashboard} from './feature/TimeToEnrich/pages';
+import {userContext} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   display: flex;
@@ -27,6 +28,8 @@ const Page = styled.div`
 `;
 
 const FakePIM = () => {
+  userContext.set('catalogLocale', 'en_US', {});
+
   return (
     <Container>
       <Menu>

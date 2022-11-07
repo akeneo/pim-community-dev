@@ -3,6 +3,16 @@ import {screen, fireEvent} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
 
+type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
+beforeEach(() => {
+  const immediateIntersectionObserver = (callback: EntryCallback) => ({
+    observe: jest.fn(() => callback([{isIntersecting: true}])),
+    unobserve: jest.fn(),
+  });
+
+  window.IntersectionObserver = jest.fn().mockImplementation(immediateIntersectionObserver);
+});
+
 const context = {locale: 'en_US', channel: 'ecommerce'};
 const assetCollection = [
   {

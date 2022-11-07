@@ -89,6 +89,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('my_product')->toString(),
             'identifier'    => 'my_product',
             'family'        => null,
             'parent'        => null,
@@ -167,6 +168,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('my_product')->toString(),
             'identifier'    => 'my_product',
             'family'        => null,
             'parent'        => null,
@@ -205,6 +207,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $client->getResponse()->getStatusCode());
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('my_product')->toString(),
             'identifier'    => 'my_product',
             'family'        => null,
             'parent'        => null,

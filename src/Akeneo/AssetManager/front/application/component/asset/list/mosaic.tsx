@@ -66,6 +66,7 @@ const Mosaic = ({
               return (
                 <AssetCard
                   key={asset.code}
+                  containerRef={scrollContainerRef}
                   asset={asset}
                   context={context}
                   isSelected={isSelected}

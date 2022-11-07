@@ -10,7 +10,7 @@ security:
         saml_pim_user:
             id: akeneo_authentication.sso.user.provider
 
-    encoders:
+    password_hashers:
         Akeneo\UserManagement\Component\Model\User: sha512
         Symfony\Component\Security\Core\User\User: plaintext
 

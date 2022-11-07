@@ -15,6 +15,8 @@ final class ProductFile
         public ?string $uploadedAt,
         public array $retailerComments = [],
         public array $supplierComments = [],
+        public ?string $retailerLastReadAt = null,
+        public ?string $supplierLastReadAt = null,
     ) {
     }
 
@@ -29,6 +31,8 @@ final class ProductFile
             'uploadedAt' => $this->uploadedAt,
             'retailerComments' => $this->retailerComments,
             'supplierComments' => $this->supplierComments,
+            'retailerLastReadAt' => $this->retailerLastReadAt,
+            'supplierLastReadAt' => $this->supplierLastReadAt,
         ];
     }
 }

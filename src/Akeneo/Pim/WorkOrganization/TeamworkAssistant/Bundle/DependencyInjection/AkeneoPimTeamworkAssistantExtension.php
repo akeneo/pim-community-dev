@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\DependencyInjection;
 
-use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -31,6 +30,7 @@ class AkeneoPimTeamworkAssistantExtension extends Extension
 
         $loader->load('project.yml');
         $loader->load('jobs.yml');
+        $loader->load('scheduled_jobs.yml');
         $loader->load('services.yml');
         $loader->load('removers.yml');
     }

@@ -1,0 +1,6 @@
+supplier_portal_retailer_list_product_file_import_configurations:
+    path: /
+    defaults:
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ListProductFileImportConfigurations
+        _feature: supplier_portal_critical_path_collaborate
+    methods: GET

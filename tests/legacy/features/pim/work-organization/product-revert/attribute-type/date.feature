@@ -13,8 +13,8 @@ Feature: Revert product attributes to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | akeneo-jacket |
       | Family | Jackets       |
+      | SKU    | akeneo-jacket |
     And I press the "Save" button in the popin
     And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
@@ -34,8 +34,8 @@ Feature: Revert product attributes to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | akeneo-jacket |
       | Family | Jackets       |
+      | SKU    | akeneo-jacket |
     And I press the "Save" button in the popin
     And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
@@ -55,8 +55,8 @@ Feature: Revert product attributes to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | akeneo-jacket |
       | Family | Jackets       |
+      | SKU    | akeneo-jacket |
     And I press the "Save" button in the popin
     And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"

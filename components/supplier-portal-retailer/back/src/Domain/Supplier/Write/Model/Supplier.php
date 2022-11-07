@@ -95,6 +95,9 @@ final class Supplier
         return $this->contributors->toArray();
     }
 
+    /**
+     * @return object[]
+     */
     public function events(): array
     {
         $events = $this->events;

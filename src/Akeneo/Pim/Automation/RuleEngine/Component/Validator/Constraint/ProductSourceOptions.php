@@ -20,12 +20,12 @@ class ProductSourceOptions extends Constraint
 {
     public $message = 'pimee_catalog_rule.rule_definition.validation.actions.concatenate.unexpected_source_option';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return ProductSourceOptionsValidator::class;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

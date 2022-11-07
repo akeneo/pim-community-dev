@@ -17,7 +17,7 @@ class AttributeGroupAccessNormalizer implements NormalizerInterface, CacheableSu
     ) {
     }
 
-    public function supportsNormalization($data, string $format = null)
+    public function supportsNormalization($data, string $format = null): bool
     {
         return $this->attributeGroupNormalizer->supportsNormalization($data, $format);
     }

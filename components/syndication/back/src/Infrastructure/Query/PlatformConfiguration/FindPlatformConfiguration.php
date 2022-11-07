@@ -52,6 +52,10 @@ SQL;
         );
         $result = $statement->fetchAssociative();
 
+        if (!$result) {
+            throw new \InvalidArgumentException(sprintf('The platform configuration "%s" does not exist.', $platformConfigurationCode));
+        }
+
         $hydratedResults = $this->hydrate($result);
 
         return $hydratedResults;

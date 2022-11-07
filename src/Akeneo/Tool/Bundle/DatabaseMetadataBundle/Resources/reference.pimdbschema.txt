@@ -88,9 +88,12 @@ pim_catalog_attribute_option_value | BASE TABLE
 pim_catalog_attribute_requirement | BASE TABLE
 pim_catalog_attribute_translation | BASE TABLE
 pim_catalog_category | BASE TABLE
+pim_catalog_category_attribute | BASE TABLE
 pim_catalog_category_product | BASE TABLE
 pim_catalog_category_product_model | BASE TABLE
+pim_catalog_category_template | BASE TABLE
 pim_catalog_category_translation | BASE TABLE
+pim_catalog_category_tree_template | BASE TABLE
 pim_catalog_channel | BASE TABLE
 pim_catalog_channel_currency | BASE TABLE
 pim_catalog_channel_locale | BASE TABLE
@@ -437,7 +440,7 @@ akeneo_supplier_portal_product_file_imported_by_job_execution | id | NO | bigint
 akeneo_supplier_portal_product_file_imported_by_job_execution | product_file_identifier | NO | char(36) | MUL
 akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_id | NO | int | UNI
 akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_result | YES | varchar(100) |
-akeneo_supplier_portal_product_file_imported_by_job_execution | finished_at | NO | datetime |
+akeneo_supplier_portal_product_file_imported_by_job_execution | finished_at | YES | datetime |
 akeneo_supplier_portal_product_file_retailer_comments | id | NO | bigint unsigned | PRI
 akeneo_supplier_portal_product_file_retailer_comments | author_email | NO | varchar(255) |
 akeneo_supplier_portal_product_file_retailer_comments | product_file_identifier | NO | char(36) | MUL
@@ -663,14 +666,29 @@ pim_catalog_category | lvl | NO | int |
 pim_catalog_category | lft | NO | int | MUL
 pim_catalog_category | rgt | NO | int |
 pim_catalog_category | value_collection | YES | json |
+pim_catalog_category_attribute | uuid | NO | binary(16) | PRI
+pim_catalog_category_attribute | code | NO | varchar(100) |
+pim_catalog_category_attribute | category_template_uuid | NO | binary(16) | MUL
+pim_catalog_category_attribute | labels | NO | json |
+pim_catalog_category_attribute | attribute_type | NO | varchar(100) |
+pim_catalog_category_attribute | attribute_order | NO | int |
+pim_catalog_category_attribute | is_required | NO | tinyint(1) |
+pim_catalog_category_attribute | is_scopable | NO | tinyint(1) |
+pim_catalog_category_attribute | is_localizable | NO | tinyint(1) |
+pim_catalog_category_attribute | additional_properties | NO | json |
 pim_catalog_category_product | product_uuid | NO | binary(16) | PRI
 pim_catalog_category_product | category_id | NO | int | PRI
 pim_catalog_category_product_model | product_model_id | NO | int | PRI
 pim_catalog_category_product_model | category_id | NO | int | PRI
+pim_catalog_category_template | uuid | NO | binary(16) | PRI
+pim_catalog_category_template | code | NO | varchar(100) |
+pim_catalog_category_template | labels | NO | json |
 pim_catalog_category_translation | id | NO | int | PRI
 pim_catalog_category_translation | foreign_key | YES | int | MUL
 pim_catalog_category_translation | label | YES | varchar(100) |
 pim_catalog_category_translation | locale | NO | varchar(20) | MUL
+pim_catalog_category_tree_template | category_tree_id | NO | int | PRI
+pim_catalog_category_tree_template | category_template_uuid | NO | binary(16) | PRI
 pim_catalog_channel | id | NO | int | PRI
 pim_catalog_channel | category_id | YES | int | MUL
 pim_catalog_channel | code | NO | varchar(100) | UNI
@@ -1237,15 +1255,20 @@ INDEX | pim_catalog_category | left_idx | lft
 INDEX | pim_catalog_category | pim_category_code_uc | code
 INDEX | pim_catalog_category | PRIMARY | id
 INDEX | pim_catalog_category | updated_idx | updated
+INDEX | pim_catalog_category_attribute | FK_ATTRIBUTE_template_uiid | category_template_uuid
+INDEX | pim_catalog_category_attribute | PRIMARY | uuid
 INDEX | pim_catalog_category_product | IDX_512179C112469DE2 | category_id
 INDEX | pim_catalog_category_product | IDX_512179C15C977207 | product_uuid
 INDEX | pim_catalog_category_product | PRIMARY | product_uuid, category_id
 INDEX | pim_catalog_category_product_model | IDX_62B5D3612469DE2 | category_id
 INDEX | pim_catalog_category_product_model | IDX_62B5D36B2C5DD70 | product_model_id
 INDEX | pim_catalog_category_product_model | PRIMARY | product_model_id, category_id
+INDEX | pim_catalog_category_template | PRIMARY | uuid
 INDEX | pim_catalog_category_translation | IDX_1C0FA6B77E366551 | foreign_key
 INDEX | pim_catalog_category_translation | locale_foreign_key_idx | locale, foreign_key
 INDEX | pim_catalog_category_translation | PRIMARY | id
+INDEX | pim_catalog_category_tree_template | FK_TREE_TEMPLATE_template_uuid | category_template_uuid
+INDEX | pim_catalog_category_tree_template | PRIMARY | category_tree_id, category_template_uuid
 INDEX | pim_catalog_channel | IDX_E07E932A12469DE2 | category_id
 INDEX | pim_catalog_channel | PRIMARY | id
 INDEX | pim_catalog_channel | UNIQ_E07E932A77153098 | code
@@ -1557,11 +1580,14 @@ FOREIGN CONSTRAINT | FK_B494B917B6E62EFA | pim_catalog_attribute_requirement.att
 FOREIGN CONSTRAINT | FK_B494B917C35E566A | pim_catalog_attribute_requirement.family_id | pim_catalog_family.id
 FOREIGN CONSTRAINT | FK_DBC2A9287E366551 | pim_catalog_attribute_translation.foreign_key | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_350D8339727ACA70 | pim_catalog_category.parent_id | pim_catalog_category.id
+FOREIGN CONSTRAINT | FK_ATTRIBUTE_template_uiid | pim_catalog_category_attribute.category_template_uuid | pim_catalog_category_template.uuid
 FOREIGN CONSTRAINT | FK_512179C112469DE2 | pim_catalog_category_product.category_id | pim_catalog_category.id
 FOREIGN CONSTRAINT | FK_512179C15C977207 | pim_catalog_category_product.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_62B5D3612469DE2 | pim_catalog_category_product_model.category_id | pim_catalog_category.id
 FOREIGN CONSTRAINT | FK_62B5D36B2C5DD70 | pim_catalog_category_product_model.product_model_id | pim_catalog_product_model.id
 FOREIGN CONSTRAINT | FK_1C0FA6B77E366551 | pim_catalog_category_translation.foreign_key | pim_catalog_category.id
+FOREIGN CONSTRAINT | FK_TREE_TEMPLATE_template_uuid | pim_catalog_category_tree_template.category_template_uuid | pim_catalog_category_template.uuid
+FOREIGN CONSTRAINT | FK_TREE_TEMPLATE_tree_id | pim_catalog_category_tree_template.category_tree_id | pim_catalog_category.id
 FOREIGN CONSTRAINT | FK_E07E932A12469DE2 | pim_catalog_channel.category_id | pim_catalog_category.id
 FOREIGN CONSTRAINT | FK_5B55C68438248176 | pim_catalog_channel_currency.currency_id | pim_catalog_currency.id
 FOREIGN CONSTRAINT | FK_5B55C68472F5A1AA | pim_catalog_channel_currency.channel_id | pim_catalog_channel.id

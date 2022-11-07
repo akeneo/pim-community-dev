@@ -90,7 +90,7 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
     public function test_it_returns_a_bad_request_when_sheet_name_is_not_found(): void
@@ -108,7 +108,7 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
     private function storeFile(string $filePath): string

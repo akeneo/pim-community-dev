@@ -5,14 +5,14 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\H
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\NumberAttributeHydrator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 
 class NumberAttributeHydratorSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $this->beConstructedWith($connection);
     }
 
@@ -52,7 +52,8 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
             ])
         ]);
         $number->shouldBeAnInstanceOf(NumberAttribute::class);
-        $number->normalize()->shouldBe([
+        $number->normalize()->shouldBe(
+            [
                 'identifier'                  => 'area_city_fingerprint',
                 'reference_entity_identifier' => 'city',
                 'code'                        => 'area',

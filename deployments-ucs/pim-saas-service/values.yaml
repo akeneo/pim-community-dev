@@ -50,7 +50,7 @@ common:
   - name: "PHP_CONF_DATE_TIMEZONE"
     value: "Etc/UTC"
   - name: "MAGICK_CONFIGURE_PATH"
-    value: "/etc/php/8.0/fpm/"
+    value: "/etc/php/8.1/fpm/"
   phpConfCLI:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "0"
@@ -241,9 +241,54 @@ pim:
       schedule: "0 4 * * *"
     rule-engine-execute-rules:
       enabled: true
-      pimJobName: "rule_engine_execute_rules"
+      pimJobName: "rule_engine_execute_rules_scheduled"
       pimJobOptions: ""
       schedule: "0 5,11,17,23 * * *"
+    update-connectivity-audit-data:
+      enabled: true
+      pimJobName: "update_connectivity_audit_data"
+      pimJobOptions: ""
+      schedule: "1 * * * *"
+    job-automation-push-scheduled-jobs-to-queue:
+      enabled: true
+      pimJobName: 'push_scheduled_jobs_to_queue'
+      pimJobOptions: ""
+      schedule: "*/10 * * * *"
+    project-notify-before-due-date:
+      enabled: true
+      pimJobName: "project_notification_due_date"
+      pimJobOptions: ""
+      schedule: "0 2 * * *"
+    data-quality-insights-periodic-tasks:
+      enabled: true
+      pimJobName: "schedule_dqi_periodic_tasks"
+      pimJobOptions: ""
+      schedule: "15 0 * * *"
+    connectivity-audit-purge-error:
+      enabled: true
+      pimJobName: "connectivity_audit_purge_error"
+      pimJobOptions: ""
+      schedule: "40 12 * * *"
+    twa-projects-recalculate:
+      enabled: true
+      pimJobName: "twa_projects_recalculate"
+      pimJobOptions: ""
+      schedule: "20 0 * * *"
+    reference-entity-refresh-records:
+      enabled: true
+      pimJobName: "reference_entity_refresh_records"
+      pimJobOptions: ""
+      schedule: "0 23 * * *"
+    connectivity-create-openid-keys:
+      enabled: true
+      pimJobName: "connectivity_create_openid_keys"
+      pimJobOptions: ""
+      schedule: "4 21 * * 0"
+    purge-connectivity-connection-error:
+      enabled: true
+      pimJobName: "purge_connection_error"
+      pimJobOptions: ""
+      schedule: "10 * * * *"
   supplier_portal:
     settings:
       enabled: false

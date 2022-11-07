@@ -18,12 +18,12 @@ class TextPropertyUpdatesShouldBeCoherent extends Constraint
     public const CANNOT_UPDATE_REGULAR_EXPRESSION = 'pim_asset_manager.attribute.validation.cannot_update_the_regular_expression';
     public const REGULAR_EXPRESSION_SHOULD_NOT_BE_EMPTY =  'pim_asset_manager.attribute.validation.regular_expression.should_not_be_empty';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.attribute.text_property_updates_should_be_coherent_validator';
     }

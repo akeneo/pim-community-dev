@@ -25,6 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetai
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
@@ -44,7 +45,7 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function find(ReferenceEntityIdentifier $identifier): ?ReferenceEntityDetails
     {
@@ -95,7 +96,7 @@ SQL;
     }
 
     /**
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     private function hydrateReferenceEntityDetails(
         string $identifier,

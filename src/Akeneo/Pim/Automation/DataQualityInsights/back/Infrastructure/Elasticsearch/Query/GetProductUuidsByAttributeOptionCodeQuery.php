@@ -44,7 +44,7 @@ final class GetProductUuidsByAttributeOptionCodeQuery implements GetProductIdsBy
                     [
                         'query_string' => [
                             'default_field' => sprintf('values.%s-option*', $attributeOptionCode->getAttributeCode()),
-                            'query' => strval($attributeOptionCode)
+                            'query' => (string) $attributeOptionCode
                         ]
                     ],
                 ],
@@ -53,7 +53,7 @@ final class GetProductUuidsByAttributeOptionCodeQuery implements GetProductIdsBy
         $searchQuery = [
             '_source' => ['id'],
             'size' => $bulkSize,
-            'sort' => ['_id' => 'asc'],
+            'sort' => ['id' => 'asc'],
             'query' => $query,
         ];
 
@@ -93,6 +93,6 @@ final class GetProductUuidsByAttributeOptionCodeQuery implements GetProductIdsBy
             throw new \Exception('Failed to count the total number of products by attribute option');
         }
 
-        return intval($countResult['count']);
+        return (int) $countResult['count'];
     }
 }

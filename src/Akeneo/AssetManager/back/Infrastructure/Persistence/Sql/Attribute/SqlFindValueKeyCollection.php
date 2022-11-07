@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception as DBALException;
 
 class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 {
@@ -45,7 +46,7 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
     /**
      *
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier): ValueKeyCollection
     {

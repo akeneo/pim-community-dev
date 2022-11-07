@@ -39,7 +39,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testItCreatesAValidTableAttribute(): void
@@ -48,7 +48,7 @@ JSON;
 
         $this->createValidTableAttribute($client);
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
 
         $client = $this->createAuthenticatedClient();
         $client->request(Request::METHOD_GET, 'api/rest/v1/attributes/a_table_attribute', [

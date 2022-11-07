@@ -101,7 +101,7 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::implementsInterface($user, UserInterface::class);
         if (null === $user->getId()) {
-            if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
+            if (UserInterface::SYSTEM_USER_NAME === $user->getUserIdentifier()) {
                 return -1;
             }
             throw new \RuntimeException('Could not find any authenticated user');

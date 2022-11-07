@@ -67,7 +67,7 @@ class ExecuteMassActionHandler implements MassActionHandlerInterface
 
         $configuration = [
             'rule_codes' => $rules,
-            'users_to_notify' => [$user->getUsername()],
+            'users_to_notify' => [$user->getUserIdentifier()],
         ];
         $this->jobLauncher->launch($jobInstance, $user, $configuration);
 

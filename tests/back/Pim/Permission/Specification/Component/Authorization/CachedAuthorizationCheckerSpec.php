@@ -39,7 +39,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(3);
-        $user->getUsername()->willReturn('arthur_dent');
+        $user->getUserIdentifier()->willReturn('arthur_dent');
         $normalizer->normalize($resourceToCheck, 'authorization')->willThrow(NotNormalizableValueException::class);
 
         $authorizationChecker->isGranted(Attributes::EDIT, $resourceToCheck)
@@ -65,7 +65,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(3);
-        $user->getUsername()->willReturn('arthur_dent');
+        $user->getUserIdentifier()->willReturn('arthur_dent');
         $normalizer->normalize(Argument::any(), 'authorization')->shouldNotBeCalled();
 
         $authorizationChecker->isGranted(Attributes::VIEW, 2)
@@ -86,7 +86,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(null);
-        $user->getUsername()->willReturn('arthur_dent');
+        $user->getUserIdentifier()->willReturn('arthur_dent');
         $normalizer->normalize(Argument::any(), 'authorization')->shouldNotBeCalled();
 
         $authorizationChecker->isGranted(Attributes::VIEW, 2)
@@ -110,7 +110,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(3);
-        $user->getUsername()->willReturn('arthur_dent');
+        $user->getUserIdentifier()->willReturn('arthur_dent');
 
         $normalizer->normalize($resourceToCheck, 'authorization')->willReturn(['name' => 'gold']);
 

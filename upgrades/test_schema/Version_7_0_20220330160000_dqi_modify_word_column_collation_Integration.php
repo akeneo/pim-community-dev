@@ -39,7 +39,8 @@ class Version_7_0_20220330160000_dqi_modify_word_column_collation_Integration ex
         $this->assertTrue($this->wordExists('ètè', 'fr_FR'));
     }
 
-    private function resetColumn(): void {
+    private function resetColumn(): void
+    {
         $query = <<<SQL
 ALTER TABLE pimee_data_quality_insights_text_checker_dictionary 
 MODIFY COLUMN word VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
@@ -48,7 +49,8 @@ SQL;
         $this->getConnection()->executeQuery($query);
     }
 
-    private function insertWord(string $word, string $locale): void {
+    private function insertWord(string $word, string $locale): void
+    {
         $query = <<<SQL
 INSERT INTO pimee_data_quality_insights_text_checker_dictionary (word, locale_code)
 VALUES (:word, :locale_code);
@@ -57,13 +59,14 @@ SQL;
         $this->getConnection()->executeQuery($query, ['word' => $word, 'locale_code' => $locale]);
     }
 
-    private function wordExists(string $word, string $locale): bool {
+    private function wordExists(string $word, string $locale): bool
+    {
         $query = <<<SQL
 SELECT 1 FROM pimee_data_quality_insights_text_checker_dictionary
 WHERE locale_code = :locale_code AND BINARY word = :word;
 SQL;
 
-        $wordExists = $this->get('database_connection')->executeQuery($query, ['locale_code' => $locale, 'word' => $word])->fetchColumn();
+        $wordExists = $this->get('database_connection')->executeQuery($query, ['locale_code' => $locale, 'word' => $word])->fetchOne();
 
         return boolval($wordExists);
     }

@@ -77,7 +77,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $this->productNormalizer->supportsNormalization($data, $format);
     }
@@ -108,7 +108,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $canEdit = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
 
         if ($canEdit) {
-            $userName = $this->tokenStorage->getToken()->getUsername();
+            $userName = $this->tokenStorage->getToken()->getUserIdentifier();
             $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $userName);
 
             if (null === $productDraft) {

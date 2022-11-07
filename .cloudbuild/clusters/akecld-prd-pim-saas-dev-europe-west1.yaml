@@ -25,7 +25,7 @@ steps:
           done
         fi
   - id: Install prerequisite for the PIM
-    name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-deployer:1.1.0"
+    name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-deployer:1.2.0"
     dir: "deployments-ucs"
     entrypoint: 'bash'
     args:
@@ -75,7 +75,6 @@ steps:
           # Install prerequisite
           ## ArgoCD
           helm upgrade --version ${_ARGOCD_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f argocd/values.yaml
-          kubectl apply -f argocd/templates/argocd-cm.yaml
           helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f argocd-apps/values.yaml
         fi
     secretEnv: ['ARGOCD_GITHUB_TOKEN', 'DATADOG_API_KEY']
@@ -87,8 +86,8 @@ availableSecrets:
   - versionName: projects/${PROJECT_ID}/secrets/DATADOG_API_KEY/versions/latest
     env: 'DATADOG_API_KEY'
 substitutions:
-  _ARGOCD_HELM_VERSION: 5.4.2
-  _ARGOCD_APP_HELM_VERSION: 0.0.1
+  _ARGOCD_HELM_VERSION: 5.8.2
+  _ARGOCD_APP_HELM_VERSION: 0.0.3
   _CLUSTER_ENV: dev
   _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west1
   _GOOGLE_CLUSTER_REGION: europe-west1

@@ -33,7 +33,7 @@ class SetNullOnDefaultAttributesDeletionSubscriber implements EventSubscriberInt
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             BeforeAttributeDeletedEvent::class => 'beforeAttributeAsLabelOrImageIsDeleted',

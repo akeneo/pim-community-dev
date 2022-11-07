@@ -22,12 +22,12 @@ class OperandKeys extends Constraint
     public $onlyOneKeyExpectedKeyMessage = 'pimee_catalog_rule.rule_definition.validation.actions.calculate.only_one_key_expected';
     public $unexpectedKeyMessage = 'pimee_catalog_rule.rule_definition.validation.actions.calculate.unexpected_key';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return OperandKeysValidator::class;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

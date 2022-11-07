@@ -94,7 +94,7 @@ class ContentDenormalizer implements DenormalizerInterface, ChainedDenormalizerA
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($ruleContent, $type, $format = null)
+    public function supportsDenormalization($ruleContent, $type, $format = null): bool
     {
         return $this->ruleClass === $type &&
             $format === 'rule_content' &&

@@ -23,12 +23,12 @@ final class TargetAcceptsNewLine extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return TargetAcceptsNewLineValidator::class;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return [static::CLASS_CONSTRAINT];
     }

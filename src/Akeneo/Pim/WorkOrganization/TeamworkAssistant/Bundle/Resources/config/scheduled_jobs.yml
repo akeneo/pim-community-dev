@@ -1,0 +1,39 @@
+services:
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\ProjectsRecalculationTasklet:
+        arguments:
+            - '@Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\ProjectsRecalculationLauncher'
+        public: false
+
+    pimee_teamwork_assistant.step.projects_recalculation:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'twa_projects_recalculate'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\ProjectsRecalculationTasklet'
+        public: false
+
+    pimee_teamwork_assistant.job.projects_recalculation:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'twa_projects_recalculate'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_teamwork_assistant.step.projects_recalculation'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pimee_teamwork_assistant.job.projects_recalculation_parameter:
+        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+        arguments:
+            - 'connectivity_audit_purge_error'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

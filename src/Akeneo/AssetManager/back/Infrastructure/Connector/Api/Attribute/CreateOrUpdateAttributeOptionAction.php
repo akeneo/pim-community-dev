@@ -135,7 +135,7 @@ class CreateOrUpdateAttributeOptionAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        return Response::create('', Response::HTTP_NO_CONTENT, $headers);
+        return new Response('', Response::HTTP_NO_CONTENT, $headers);
     }
 
     public function createOption(
@@ -166,7 +166,7 @@ class CreateOrUpdateAttributeOptionAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        return Response::create('', Response::HTTP_CREATED, $headers);
+        return new Response('', Response::HTTP_CREATED, $headers);
     }
 
     public function isOptionExisting(

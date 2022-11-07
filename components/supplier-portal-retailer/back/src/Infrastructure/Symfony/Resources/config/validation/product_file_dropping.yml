@@ -1,4 +1,4 @@
-Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFile:
+Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFile\CreateProductFile:
   properties:
     originalFileName:
       - Length:

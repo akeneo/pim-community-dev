@@ -43,7 +43,7 @@ class SharedCatalogFixturesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getOption('force')) {
             throw new \InvalidArgumentException('Missing argument "--force"');
@@ -88,6 +88,7 @@ class SharedCatalogFixturesCommand extends Command
         ]);
 
         $this->createSharedCatalog();
+        return 0;
     }
 
     private function createUser(array $data, bool $isApiUser = false): UserInterface

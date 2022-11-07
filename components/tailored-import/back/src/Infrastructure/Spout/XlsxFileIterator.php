@@ -17,17 +17,16 @@ use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
-use OpenSpout\Reader\Common\Creator\ReaderFactory;
-use OpenSpout\Reader\IteratorInterface;
-use OpenSpout\Reader\ReaderInterface;
-use OpenSpout\Reader\SheetInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory;
 use OpenSpout\Reader\XLSX\Reader;
+use OpenSpout\Reader\XLSX\RowIterator;
+use OpenSpout\Reader\XLSX\Sheet;
 
 class XlsxFileIterator implements FileIteratorInterface
 {
-    private ReaderInterface $fileReader;
-    private SheetInterface $sheet;
-    private IteratorInterface $rows;
+    private Reader $fileReader;
+    private Sheet $sheet;
+    private RowIterator $rows;
     private FileHeaderCollection $headers;
 
     public function __construct(
@@ -55,7 +54,7 @@ class XlsxFileIterator implements FileIteratorInterface
     public function current(): ?array
     {
         $productRow = $this->rows->current();
-        if (!$this->valid() || null === $productRow || empty($productRow)) {
+        if (!$this->valid() || $productRow->isEmpty()) {
             $this->rewind();
 
             return null;
@@ -97,23 +96,24 @@ class XlsxFileIterator implements FileIteratorInterface
         return $this->headers;
     }
 
-    private function openFile(): ReaderInterface
+    private function openFile(): Reader
     {
         $fileInfo = new \SplFileInfo($this->filePath);
         if (!$fileInfo->isFile()) {
             throw new FileNotFoundException($this->filePath);
         }
 
-        /** @var Reader $fileReader */
-        $fileReader = ReaderFactory::createFromType('xlsx');
-        $fileReader->setShouldPreserveEmptyRows(true);
-        $fileReader->setShouldFormatDates(true);
+        $fileReader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX, [
+            'shouldFormatDates' => true,
+            'shouldPreserveEmptyRows' => true,
+        ]);
+
         $fileReader->open($this->filePath);
 
         return $fileReader;
     }
 
-    private function selectSheet(): SheetInterface
+    private function selectSheet(): Sheet
     {
         $sheetIterator = $this->fileReader->getSheetIterator();
         $sheetIterator->rewind();

@@ -23,12 +23,12 @@ class ChannelShouldExist extends Constraint
 {
     public const ERROR_MESSAGE = 'Channel "channel_identifier" does not exist.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::PROPERTY_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_referenceentity.validator.channel.channel_should_exist';
     }

@@ -10,6 +10,7 @@ pimee_enrich_category_edit_permissions:
     type: action
     label: pimee_enrich.acl.category.edit_permissions
     group_name: pim_enrich.acl_group.category
+    order: 9
     feature: permission
 
 # Attribute group

@@ -31,7 +31,7 @@ final class UpdateViewsOwnerSubscriber implements EventSubscriberInterface
         $this->dbConnection = $dbConnection;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_SAVE => 'checkIfUserCreation',
@@ -71,7 +71,7 @@ SQL;
         $query = <<<SQL
 SELECT COUNT(*) FROM oro_user WHERE user_type = :userType;
 SQL;
-        $usersCount = $this->dbConnection->executeQuery($query, ['userType' => User::TYPE_USER])->fetchColumn();
+        $usersCount = $this->dbConnection->executeQuery($query, ['userType' => User::TYPE_USER])->fetchOne();
 
         return 1 === intval($usersCount);
     }

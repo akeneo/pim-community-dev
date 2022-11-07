@@ -35,7 +35,7 @@ class AddAllPermissionToAppUserGroup implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AppUserGroupCreated::class => 'addAllPermissions'

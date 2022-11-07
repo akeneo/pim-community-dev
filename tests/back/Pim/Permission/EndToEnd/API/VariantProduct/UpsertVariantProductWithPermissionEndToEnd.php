@@ -68,28 +68,30 @@ JSON;
             'associations' => [
                 'PACK'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL'       => [
                     'groups'   => [],
-                    'products' => ['product_no_view', 'product_own'],
+                    'product_uuids' => [
+                        $this->getProductUuid('product_no_view')->toString(),
+                        $this->getProductUuid('product_own')->toString(),
+                     ],
                     'product_models' => [],
                 ],
             ],
             'quantified_associations' => [],
         ];
-
 
         $this->assertSameProductWithoutPermission($expectedProduct, 'variant_product');
     }
@@ -226,7 +228,6 @@ SQL;
             ['view_category', 'edit_category', 'own_category', 'category_without_right'],
             $categoryCodes
         );
-
     }
 
     public function testUpdateVariantProductAssociationWithNotViewableProduct()
@@ -522,9 +523,8 @@ JSON;
     protected function getDatabaseData(string $sql): array
     {
         $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
-        $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     /**

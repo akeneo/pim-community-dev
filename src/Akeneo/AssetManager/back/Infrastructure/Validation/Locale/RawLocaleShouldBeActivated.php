@@ -19,12 +19,12 @@ class RawLocaleShouldBeActivated extends Constraint
 {
     public const ERROR_MESSAGE_SINGULAR = 'Locale "locale_identifier" does not exist or is not activated.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::PROPERTY_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return RawLocaleShouldBeActivatedValidator::class;
     }

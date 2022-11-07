@@ -64,10 +64,10 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
         UserInterface $user,
         string $propertyPath
     ) {
-        $productIdentifiers = array_column($productQuantifiedLinks, 'identifier');
+        $productIdentifiers = array_filter(array_column($productQuantifiedLinks, 'identifier'));
         $productUuids = array_map(
             fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
-            array_column($productQuantifiedLinks, 'uuid')
+            array_filter(array_column($productQuantifiedLinks, 'uuid'))
         );
 
         $grantedProductIdentifiers = $this->productCategoryAccessQuery->getGrantedProductIdentifiers(

@@ -53,14 +53,14 @@ test('it displays validation errors', async () => {
             '{{ limit }}': 255,
           },
           message: 'akeneo.syndication.validation.data_mappings.target.max_length_reached',
-          propertyPath: '[dataMappings][1][target]',
+          propertyPath: '[data_mappings][1][target]',
           invalidValue: 'way too long',
         },
         {
           messageTemplate: 'akeneo.syndication.validation.data_mappings.max_data_mapping_count',
           parameters: {},
           message: 'akeneo.syndication.validation.data_mappings.max_data_mapping_count',
-          propertyPath: '[dataMappings]',
+          propertyPath: '[data_mappings]',
           invalidValue: '',
         },
       ]}

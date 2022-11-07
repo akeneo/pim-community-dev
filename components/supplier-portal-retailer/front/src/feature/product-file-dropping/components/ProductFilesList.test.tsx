@@ -11,30 +11,35 @@ const productFilesList: ProductFileRow[] = [
         identifier: 'file1',
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
+        hasUnreadComments: true,
     },
     {
         supplier: 'mega supplier',
         identifier: 'file2',
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
+        hasUnreadComments: false,
     },
     {
         supplier: 'mega supplier',
         identifier: 'file3',
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
+        hasUnreadComments: false,
     },
     {
         supplier: 'mega supplier',
         identifier: 'file4',
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
+        hasUnreadComments: false,
     },
     {
         supplier: 'mega supplier',
         identifier: 'file5',
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
+        hasUnreadComments: false,
     },
 ];
 
@@ -112,4 +117,16 @@ test('it renders a list of product files without supplier column', () => {
     expect(
         screen.queryByText('supplier_portal.product_file_dropping.supplier_files.columns.supplier')
     ).not.toBeInTheDocument();
+});
+
+test('it renders a list of product files with pills if there is unread comments from supplier', () => {
+    renderWithProviders(
+        <ProductFilesList
+            productFiles={productFilesList}
+            totalProductFiles={5}
+            currentPage={1}
+            onChangePage={() => {}}
+        />
+    );
+    expect(screen.queryByTestId('unread-comments-pill')).toBeInTheDocument();
 });

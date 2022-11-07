@@ -1,5 +1,23 @@
 # 6.0.x
 
+# 6.0.51 (2022-11-03)
+
+## Bug fixes
+
+- PIM-10691: Change method type for categories related method in rule engine to support very large number of categories
+
+# 6.0.50 (2022-11-02)
+
+# 6.0.49 (2022-10-31)
+
+# 6.0.48 (2022-10-28)
+
+## Bug fixes
+
+- PIM-10654: [Backport PIM-10473] Fix non-existing RE filter for PEF is not case-insensitive
+
+# 6.0.47 (2022-10-27)
+
 # 6.0.46 (2022-10-20)
 
 # 6.0.45 (2022-10-06)

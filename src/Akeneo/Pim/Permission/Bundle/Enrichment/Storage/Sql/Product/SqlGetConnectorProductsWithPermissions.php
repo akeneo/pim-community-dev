@@ -27,6 +27,7 @@ use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductUuid;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -151,16 +152,17 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
 
     private function filterNotGrantedAssociatedProducts(array $products, int $userId): array
     {
-        $productIdentifiers = [];
+        $productUuids = [];
         foreach ($products as $product) {
-            $productIdentifiers[] = $product->associatedProductIdentifiers();
+            $productUuids[] = $product->associatedProductUuids();
         }
 
-        $productIdentifiers = !empty($productIdentifiers) ? array_unique(array_merge(...$productIdentifiers)) : [];
-        $viewableAssociatedProductIdentifiers = $this->filterViewableProductIdentifiers($productIdentifiers, $userId);
+        $productUuids = !empty($productUuids) ? array_unique(array_merge(...$productUuids)) : [];
+        $productUuids = \array_map(fn ($uuid) => Uuid::fromString($uuid), $productUuids);
+        $viewableAssociatedProductUuids = $this->filterViewableProductUuids($productUuids, $userId);
 
-        return array_map(function (ConnectorProduct $product) use ($viewableAssociatedProductIdentifiers) {
-            return $product->filterAssociatedProductsByProductIdentifiers($viewableAssociatedProductIdentifiers);
+        return array_map(function (ConnectorProduct $product) use ($viewableAssociatedProductUuids) {
+            return $product->filterAssociatedProductsByProductUuids($viewableAssociatedProductUuids);
         }, $products);
     }
 

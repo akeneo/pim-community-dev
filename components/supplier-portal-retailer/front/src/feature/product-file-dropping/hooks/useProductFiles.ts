@@ -32,6 +32,7 @@ const useProductFiles = (page: number): [ProductFileRow[], number] => {
                 uploadedAt: item.uploadedAt,
                 contributor: item.uploadedByContributor,
                 supplier: item.uploadedBySupplier,
+                hasUnreadComments: item.hasUnreadComments,
             };
         });
         setProductFiles(productFiles);

@@ -116,6 +116,7 @@ mysql:
 %{ if pim.type == "tria" }
 free_trial:
   enabled: true
+  pim.defaultCatalog : src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
   akeneo_connect_saml_entity_id: ${ft_catalog.akeneo_connect.saml.entity_id}
   akeneo_connect_saml_certificate: ${ft_catalog.akeneo_connect.saml.certificate}
   akeneo_connect_saml_sp_certificate_base64: ${ft_catalog.akeneo_connect.saml.sp_certificate_base64}
@@ -125,4 +126,7 @@ free_trial:
   ft_catalog_api_client_id: ${ft_catalog.api_client_id}
   ft_catalog_api_password: ${ft_catalog.api_password}
   ft_catalog_api_secret: ${ft_catalog.api_secret}
+  # Disable ES Snashot for free_trial
+  elasticsearch.keystore: null
+  elasticsearch.cluster.plugins: null
 %{ endif }

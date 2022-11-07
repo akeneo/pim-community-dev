@@ -54,7 +54,7 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'oro_datagrid.datgrid.build.after.product-group-grid'              => 'filter',

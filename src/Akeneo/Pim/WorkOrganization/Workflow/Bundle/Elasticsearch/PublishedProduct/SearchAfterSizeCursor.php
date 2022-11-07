@@ -43,7 +43,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->fetchedItemsCount += count($this->items);
@@ -132,7 +132,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->searchAfter = $this->initialSearchAfter;
         if (null !== $this->searchAfterUniqueKey) {

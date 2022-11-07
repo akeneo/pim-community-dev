@@ -1,7 +1,6 @@
 import {
   getCronExpressionFromFrequencyOption,
   getFrequencyOptionFromCronExpression,
-  getTimeInUserTimezone,
   getWeekDayFromCronExpression,
   getWeeklyCronExpressionFromWeekDay,
 } from './Frequency';
@@ -51,11 +50,4 @@ test('it can get a weekly cron expression from a given week day number and an ex
   expect(getWeeklyCronExpressionFromWeekDay('wednesday', '0 0 * * *')).toBe('0 0 * * 3');
   expect(getWeeklyCronExpressionFromWeekDay('saturday', '4 8 * * *')).toBe('4 8 * * 6');
   expect(getWeeklyCronExpressionFromWeekDay('sunday', '41 8 * * *')).toBe('41 8 * * 0');
-});
-
-test('it can correctly display the time according to the user timezone', () => {
-  expect(getTimeInUserTimezone('30 12 * * *', 'fr-FR', 'Europe/Paris')).toBe('14:30');
-  expect(getTimeInUserTimezone('30 12 * * *', 'en-US', 'America/New_York')).toBe('8:30 AM');
-  expect(getTimeInUserTimezone('30 12 * * *', 'fi-FI', 'Europe/Helsinki')).toBe('15.30');
-  expect(getTimeInUserTimezone('30 12 * * *', 'ja-JP', 'Asia/Tokyo')).toBe('21:30');
 });

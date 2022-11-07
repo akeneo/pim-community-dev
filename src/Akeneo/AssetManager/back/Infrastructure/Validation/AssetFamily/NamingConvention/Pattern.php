@@ -21,12 +21,12 @@ use Symfony\Component\Validator\Constraint;
  */
 class Pattern extends Constraint
 {
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return PatternValidator::class;
     }

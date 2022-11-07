@@ -107,6 +107,28 @@ module "cloud_build_cluster_pim_saas_dev_europe_west1" {
   cloudbuild_service_account   = local.main_sa
 }
 
+module "cloud_build_timmy_pim_saas_dev_europe_west1" {
+  source                       = "../modules/cloudbuild"
+  project_id                   = local.project_id
+  trigger_name                 = "akecld-prd-pim-saas-dev-europe-west1-timmy"
+  cloudbuild_filename          = ".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml"
+  cloudbuild_included_files    = [".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml", "deployments-ucs/timmy/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
+  cloudbuild_service_account   = local.main_sa
+}
+
+module "cloud_build_timmy_pim_saas_dev_europe_west3" {
+  source                       = "../modules/cloudbuild"
+  project_id                   = local.project_id
+  trigger_name                 = "akecld-prd-pim-saas-dev-europe-west3-timmy"
+  cloudbuild_filename          = ".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml"
+  cloudbuild_included_files    = [".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml", "deployments-ucs/timmy/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
+  cloudbuild_service_account   = local.main_sa
+}
+
 module "cloud_build_cluster_pim_saas_dev_europe_west3" {
   source                       = "../modules/cloudbuild"
   project_id                   = local.project_id

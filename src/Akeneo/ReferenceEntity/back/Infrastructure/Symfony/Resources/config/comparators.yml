@@ -1,0 +1,7 @@
+services:
+  pim_catalog.comparator.attribute.records:
+    class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Product\Comparator\Attribute\RecordsComparator
+    arguments:
+      - [ 'akeneo_reference_entity_collection' ]
+    tags:
+      - { name: pim_catalog.attribute.comparator }

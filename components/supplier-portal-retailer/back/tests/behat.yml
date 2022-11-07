@@ -6,6 +6,7 @@ acceptance:
       contexts:
         - Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\SupplierContext
         - Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileDroppingContext
+        - Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileImportContext
 
   extensions:
     Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~

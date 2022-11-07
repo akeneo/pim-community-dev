@@ -53,7 +53,7 @@ class SqlSavePublishedProductCompletenesses implements SavePublishedProductCompl
                     ]
                 );
                 $completenessId = $this->connection->lastInsertId();
-                $this->connection->executeUpdate(
+                $this->connection->executeStatement(
                     $this->getInsertMissingAttributesQuery(),
                     [
                         'completenessId' => $completenessId,
@@ -116,7 +116,7 @@ class SqlSavePublishedProductCompletenesses implements SavePublishedProductCompl
             ]
         );
 
-        $value = $this->connection->executeQuery('SELECT @@autocommit')->fetch();
+        $value = $this->connection->executeQuery('SELECT @@autocommit')->fetchAssociative();
         if (!isset($value['@@autocommit']) && ((int) $value['@@autocommit'] !== 1 || (int) $value['@@autocommit'] !== 0)) {
             throw new \LogicException('Error when getting autocommit parameter from Mysql.');
         }

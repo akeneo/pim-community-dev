@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\InvalidData;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierDoesNotExist;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -57,7 +57,7 @@ final class Version_6_0_20211026142500_add_ref_entity_web_api_acl extends Abstra
 
     private function aclIsRegistered(string $acl): bool
     {
-        return (bool) $this->connection->fetchColumn(
+        return (bool) $this->connection->fetchOne(
             <<<SQL
 SELECT COUNT(*)
 FROM acl_classes
@@ -81,7 +81,7 @@ SQL,
             ]
         );
 
-        $aclClassId = (int) $this->connection->fetchColumn(
+        $aclClassId = (int) $this->connection->fetchOne(
             <<<SQL
 SELECT id
 FROM acl_classes
@@ -112,7 +112,7 @@ SQL,
             ]
         );
 
-        $aclObjectIdentityId = (int) $this->connection->fetchColumn(
+        $aclObjectIdentityId = (int) $this->connection->fetchOne(
             <<<SQL
 SELECT id
 FROM acl_object_identities
@@ -142,7 +142,7 @@ SQL,
 
     private function aclIsAlreadyDefinedForRole(string $role, string $acl): bool
     {
-        return (bool) $this->connection->fetchColumn(
+        return (bool) $this->connection->fetchOne(
             <<<SQL
 SELECT COUNT(*)
 FROM acl_entries
@@ -160,7 +160,7 @@ SQL,
 
     private function addAclToRole(string $role, string $acl, bool $granted): void
     {
-        $classId = (int) $this->connection->fetchColumn(
+        $classId = (int) $this->connection->fetchOne(
             <<<SQL
 SELECT id
 FROM acl_classes
@@ -171,7 +171,7 @@ SQL,
             ]
         );
 
-        $securityEntityId = (int) $this->connection->fetchColumn(
+        $securityEntityId = (int) $this->connection->fetchOne(
             <<<SQL
 SELECT id
 FROM acl_security_identities
@@ -252,7 +252,7 @@ SQL,
 
     private function roleIsGrantedEverythingByDefault(string $role): bool
     {
-        return (bool) $this->connection->fetchColumn(
+        return (bool) $this->connection->fetchOne(
             <<<SQL
 SELECT COUNT(*)
 FROM acl_entries
@@ -275,14 +275,12 @@ SQL,
      */
     private function getRoles(): array
     {
-        return array_map(function($row) {
-            return $row['identifier'];
-        }, $this->connection->fetchAll(
+        return $this->connection->fetchFirstColumn(
             <<<SQL
 SELECT identifier
 FROM acl_security_identities
 SQL
-        ));
+        );
     }
 
     /**

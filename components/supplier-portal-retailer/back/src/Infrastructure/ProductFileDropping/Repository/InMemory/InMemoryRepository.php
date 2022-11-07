@@ -12,6 +12,8 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\
 final class InMemoryRepository implements ProductFileRepository
 {
     private array $productFiles = [];
+    private array $productFilesCommentsLastReadDateForSupplier = [];
+    private array $productFilesCommentsLastReadDateForRetailer = [];
 
     public function save(ProductFile $productFile): void
     {
@@ -32,5 +34,43 @@ final class InMemoryRepository implements ProductFileRepository
     public function find(Identifier $identifier): ?ProductFile
     {
         return $this->productFiles[(string) $identifier] ?? null;
+    }
+
+    public function updateProductFileLastReadAtDateForRetailer(Identifier $identifier, \DateTimeImmutable $date): void
+    {
+        $this->productFilesCommentsLastReadDateForRetailer[(string) $identifier] = $date;
+    }
+
+    public function updateProductFileLastReadAtDateForSupplier(Identifier $identifier, \DateTimeImmutable $date): void
+    {
+        $this->productFilesCommentsLastReadDateForSupplier[(string) $identifier] = $date;
+    }
+
+    public function findProductFileWithUnreadCommentsFromRetailer(Identifier $identifier): ?array
+    {
+        foreach ($this->productFiles as $productFile) {
+            if ((string) $productFile->identifier() === (string) $identifier) {
+                return [
+                    'productFile' => $productFile,
+                    'commentslastReadDate' => $this->productFilesCommentsLastReadDateForSupplier[(string) $productFile->identifier()] ?? null,
+                ];
+            }
+        }
+
+        return null;
+    }
+
+    public function findProductFileWithUnreadCommentsFromSupplier(Identifier $identifier): ?array
+    {
+        foreach ($this->productFiles as $productFile) {
+            if ((string) $productFile->identifier() === (string) $identifier) {
+                return [
+                    'productFile' => $productFile,
+                    'commentslastReadDate' => $this->productFilesCommentsLastReadDateForRetailer[(string) $productFile->identifier()] ?? null,
+                ];
+            }
+        }
+
+        return null;
     }
 }

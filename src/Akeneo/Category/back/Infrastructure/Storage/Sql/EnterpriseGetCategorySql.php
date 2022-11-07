@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\PermissionCollection;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -77,7 +73,7 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
                 category.id, 
                 category.code, 
                 category.parent_id,
-                category.root,
+                category.root as root_id,
                 translation.translations,
                 category.value_collection,
                 JSON_OBJECT(
@@ -103,24 +99,6 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
             return null;
         }
 
-        return new Category(
-            new CategoryId((int)$result['id']),
-            new Code($result['code']),
-            $result['translations'] ?
-                LabelCollection::fromArray(
-                    json_decode(
-                        $result['translations'],
-                        true,
-                        512,
-                        JSON_THROW_ON_ERROR
-                    )
-                ) : null,
-            $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
-            $result['root'] ? new CategoryId((int)$result['root']) : null,
-            $result['value_collection'] ?
-                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
-            $result['permissions'] ?
-                PermissionCollection::fromArray(json_decode($result['permissions'], true)) : null
-        );
+        return Category::fromDatabase($result);
     }
 }

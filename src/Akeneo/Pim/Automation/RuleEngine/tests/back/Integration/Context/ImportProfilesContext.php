@@ -19,14 +19,13 @@ use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use OpenSpout\Common\Type;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use OpenSpout\Writer\Common\Creator\WriterFactory;
+use OpenSpout\Common\Entity\Row;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
@@ -91,8 +90,8 @@ final class ImportProfilesContext implements Context
         @rmdir(dirname($this->filenameToImport));
         @mkdir(dirname($this->filenameToImport), 0777, true);
 
-        if (Type::XLSX === $extension) {
-            $writer = WriterFactory::createFromType($extension);
+        if (SpoutWriterFactory::XLSX === $extension) {
+            $writer = SpoutWriterFactory::create($extension);
             $writer->openToFile($this->filenameToImport);
             foreach (explode(PHP_EOL, $string) as $row) {
                 $rowCells = explode(";", $row);
@@ -102,7 +101,7 @@ final class ImportProfilesContext implements Context
                     }
                 }
 
-                $writer->addRow(WriterEntityFactory::createRowFromArray($rowCells));
+                $writer->addRow(Row::fromValues($rowCells));
             }
             $writer->close();
         } else {
@@ -164,7 +163,7 @@ final class ImportProfilesContext implements Context
             throw new \RuntimeException(sprintf('The "%s" job instance is not found.', $jobIdentifier));
         }
 
-        $user = $this->userProvider->loadUserByUsername('admin');
+        $user = $this->userProvider->loadUserByIdentifier('admin');
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, []);
         $this->jobLauncherTest->launchConsumerOnce();
         $this->jobLauncherTest->waitCompleteJobExecution($jobExecution);

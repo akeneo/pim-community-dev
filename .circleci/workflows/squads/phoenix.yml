@@ -20,13 +20,16 @@ workflows:
           - deploy_ucs_pim:
                 requires:
                     - build_ucs
+          - build_timmy:
+                requires:
+                    - checkout
+          - build_timmy:
+                name: build_timmy_wb
+                requires:
+                    - checkout_wb
           - deploy_tenant:
                 requires:
                     - build_ucs
-          - test_ucs_deploy:
-                requires:
-                    - deploy_ucs_pim
-                    - deploy_tenant
           - delete_pim?:
                 type: approval
                 filters:
@@ -36,9 +39,19 @@ workflows:
                             - /PH-.*/
                 requires:
                     - deploy_ucs_pim
+          - delete_tenant:
+                requires:
+                    - delete_tenant?
           - delete_pim:
                 requires:
                     - delete_pim?
+          - delete_timmy:
+                requires:
+                    - deploy_tenant_timmy
+          - delete_timmy:
+                name: delete_timmy_wb
+                requires:
+                    - deploy_tenant_timmy_wb
           - delete_tenant?:
                 type: approval
                 filters:
@@ -47,10 +60,19 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
                 requires:
-                    - test_ucs_deploy
-          - delete_tenant:
+                    - deploy_tenant
+          - delete_tenant_timmy?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /PH-.*/
                 requires:
-                    - delete_tenant?
+                    - deploy_tenant_timmy
+          - delete_tenant_timmy:
+                requires:
+                    - delete_tenant_timmy?
           - ready_to_build_wb?:
                 type: approval
                 filters:
@@ -70,19 +92,20 @@ workflows:
                 name: deploy_ucs_pim_wb
                 requires:
                     - build_ucs_wb
-          - deploy_tenant_wb_timmy:
-                name: "deploy_tenant_wb_timmy"
+          - deploy_tenant_timmy:
+                name: "deploy_tenant_timmy_wb"
                 requires:
+                    - build_timmy_wb
                     - build_ucs_wb
+          - deploy_tenant_timmy:
+                name: "deploy_tenant_timmy"
+                requires:
+                    - build_timmy
+                    - build_ucs
           - deploy_tenant:
                 name: "deploy_tenant_wb"
                 requires:
                     - build_ucs_wb
-          - test_ucs_deploy:
-                name: "test_ucs_deploy_wb"
-                requires:
-                    - deploy_ucs_pim_wb
-                    - deploy_tenant_wb
           - delete_pim_wb?:
                 type: approval
                 filters:
@@ -104,7 +127,7 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
                 requires:
-                    - test_ucs_deploy_wb
+                    - deploy_tenant_wb
           - delete_tenant_wb_timmy?:
                 type: approval
                 filters:
@@ -113,7 +136,7 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
                 requires:
-                    - deploy_tenant_wb_timmy
+                    - deploy_tenant_timmy_wb
           - delete_tenant:
                 name: "delete_tenant_wb"
                 requires:

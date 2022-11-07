@@ -10,7 +10,6 @@ use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordInde
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use OpenSpout\Reader\IteratorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -44,7 +43,7 @@ class RecordIndexerSpec extends ObjectBehavior
     function it_index_records_by_reference_entity_identifier_and_by_batch(
         Client $recordEsCLient,
         RecordNormalizerInterface $recordNormalizer,
-        IteratorInterface $recordIterator
+        \Iterator $recordIterator
     ) {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordNormalizer->normalizeRecordsByReferenceEntity($referenceEntityIdentifier)->willReturn($recordIterator);

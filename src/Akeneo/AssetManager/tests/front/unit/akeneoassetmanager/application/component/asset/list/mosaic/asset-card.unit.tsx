@@ -27,6 +27,16 @@ jest.mock('@akeneo-pim-community/shared/lib/hooks/useRouter', () => ({
   },
 }));
 
+type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
+beforeEach(() => {
+  const immediateIntersectionObserver = (callback: EntryCallback) => ({
+    observe: jest.fn(() => callback([{isIntersecting: true}])),
+    unobserve: jest.fn(),
+  });
+
+  window.IntersectionObserver = jest.fn().mockImplementation(immediateIntersectionObserver);
+});
+
 loadImage.mockImplementation(
   () =>
     new Promise(resolve => {
@@ -42,6 +52,7 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={false}
         onSelectionChange={() => {}}
+        containerRef={{current: null}}
       />
     );
 
@@ -67,8 +78,7 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={isSelected}
         onSelectionChange={() => {}}
-        shouldGeneratePreview={true}
-        handlePreviewGenerated={jest.fn()}
+        containerRef={{current: null}}
       />
     );
 
@@ -95,6 +105,7 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={false}
         onSelectionChange={handleSelectionChange}
+        containerRef={{current: null}}
       />
     );
 
@@ -115,6 +126,7 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={false}
         onSelectionChange={handleSelectionChange}
+        containerRef={{current: null}}
       />
     );
 
@@ -137,6 +149,7 @@ describe('Test Asset create modal component', () => {
         isSelected={false}
         onClick={handleClick}
         onSelectionChange={handleSelectionChange}
+        containerRef={{current: null}}
       />
     );
 
@@ -163,6 +176,7 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={isSelected}
         onSelectionChange={() => {}}
+        containerRef={{current: null}}
       />
     );
 
