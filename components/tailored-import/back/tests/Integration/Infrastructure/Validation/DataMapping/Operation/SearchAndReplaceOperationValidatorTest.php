@@ -73,7 +73,7 @@ class SearchAndReplaceOperationValidatorTest extends AbstractValidationTest
         return [
             'too long "with" value' => [
                 'akeneo.tailored_import.validation.max_length_reached',
-                '[replacements][1][with]',
+                '[replacements][ad4e2d5c-2830-4ba8-bf83-07f9935063d8][with]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                     'type' => 'search_and_replace',
@@ -95,7 +95,7 @@ class SearchAndReplaceOperationValidatorTest extends AbstractValidationTest
             ],
             'empty "what" value' => [
                 'This value should not be blank.',
-                '[replacements][0][what]',
+                '[replacements][ad4e2d5c-2830-4ba8-bf83-07f9935063d7][what]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                     'type' => 'search_and_replace',

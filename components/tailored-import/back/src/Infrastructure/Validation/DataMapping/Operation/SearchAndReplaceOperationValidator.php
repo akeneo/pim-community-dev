@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\O
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SearchAndReplaceOperation;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SearchAndReplaceOperation as SearchAndReplaceOperationConstraint;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\EqualTo;
@@ -47,7 +46,20 @@ final class SearchAndReplaceOperationValidator extends ConstraintValidator
                         'max' => self::MAX_REPLACEMENTS,
                         'maxMessage' => SearchAndReplaceOperationConstraint::MAX_REPLACEMENTS_REACHED,
                     ]),
-                    new All(new Collection([
+                ],
+            ],
+        ]));
+
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
+
+        foreach ($operation['replacements'] as $replacement) {
+            $this->context->getValidator()->inContext($this->context)
+                ->atPath(sprintf('[replacements][%s]', $replacement['uuid']))
+                ->validate(
+                    $replacement,
+                    new Collection([
                         'fields' => [
                             'uuid' => [new Uuid(), new NotBlank()],
                             'what' => [
@@ -67,9 +79,8 @@ final class SearchAndReplaceOperationValidator extends ConstraintValidator
                             ],
                             'case_sensitive' => new Type('bool'),
                         ],
-                    ])),
-                ],
-            ],
-        ]));
+                    ]),
+                );
+        }
     }
 }
