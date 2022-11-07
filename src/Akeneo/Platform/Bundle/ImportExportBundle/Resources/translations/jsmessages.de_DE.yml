@@ -158,11 +158,8 @@ pim_import_export:
           local: Lokal
           sftp: SFTP
           none: Kein Speicher konfiguriert
-        file_path.label: Dateipfad
-        host.label: Host
-        port.label: Port
-        username.label: Login
-        password.label: Passwort
+        file_path:
+          label: Dateipfad
       validation:
         storage:
           unavailable_type: Dieser Speicher ist nicht verfügbar, nur {{ available_types }} sind verfügbar.

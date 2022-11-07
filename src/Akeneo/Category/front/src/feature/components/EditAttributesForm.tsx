@@ -129,7 +129,10 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       <SectionTitle>
         <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <LocaleSelector value={locale} values={Object.values(locales)} onChange={setLocale} />
+        <LocaleSelector value={locale} values={Object.values(locales)} onChange={(value) => {
+          setLocale(value);
+          userContext.set('catalogLocale', value, {});
+        }} />
       </SectionTitle>
       {attributeFields}
     </FormContainer>

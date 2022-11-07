@@ -11,4 +11,3 @@ pim_enrich:
       history: Ver historial de categoría
       template: Administrar plantilla de categoría
       edit_attributes: Editar atributos de categoría
-      order_trees: Ordenar/reordenar árboles en una categoría

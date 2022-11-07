@@ -5,10 +5,6 @@ pim_title:
   akeneo_measurements_settings_any: Misurazioni
 measurements:
   label_translations: Traduzioni etichette in impostazione locale IU
-  helper:
-    title: Ti diamo il benvenuto nelle unità di misura!
-    text: Qui potrai creare le tue famiglie di unità di misura o aggiungere unità alle famiglie di unità di misura esistenti.
-    link: Vuoi saperne di più? Ecco qui!
   search:
     placeholder: Cerca su etichetta o codice
   family:

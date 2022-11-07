@@ -158,11 +158,8 @@ pim_import_export:
           local: Local
           sftp: SFTP
           none: Aucun stockage configuré
-        file_path.label: Chemin du fichier
-        host.label: Hôte
-        port.label: Port
-        username.label: Identifiant
-        password.label: Mot de passe
+        file_path:
+          label: Chemin du fichier
       validation:
         storage:
           unavailable_type: 'Ce stockage n''est pas disponible, seuls les types suivants sont disponibles: {{ available_types }}.'

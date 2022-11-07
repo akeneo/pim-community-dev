@@ -5,7 +5,6 @@ import {useRouter} from '@akeneo-pim-community/shared';
 const useIdentifierAttributes: () => {
   data?: FlattenAttribute[];
   error: Error | null;
-  isSuccess: boolean;
 } = () => {
   const router = useRouter();
 
@@ -19,12 +18,12 @@ const useIdentifierAttributes: () => {
     });
   };
 
-  const {error, data, isSuccess} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
+  const {error, data} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
     'getIdentifierAttributes',
     getIdentifierAttributes
   );
 
-  return {data, error, isSuccess};
+  return {data, error};
 };
 
 export {useIdentifierAttributes};
