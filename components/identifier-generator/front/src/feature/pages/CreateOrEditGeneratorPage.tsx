@@ -44,6 +44,10 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     closeModal();
     history.push('/');
   };
+  const handleDeleteModal = (): void => {
+    setGeneratorCodeToDelete(generator.code);
+    openDeleteGeneratorModal();
+  };
 
   return (
     <>
@@ -51,12 +55,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         <PageHeader.Actions>
           {!isNew && (
             <SecondaryActions>
-              <SecondaryActions.Item
-                onClick={() => {
-                  setGeneratorCodeToDelete(generator.code);
-                  openDeleteGeneratorModal();
-                }}
-              >
+              <SecondaryActions.Item onClick={handleDeleteModal}>
                 {translate('pim_common.delete')}
               </SecondaryActions.Item>
             </SecondaryActions>

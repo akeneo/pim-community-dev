@@ -42,7 +42,7 @@ const DeleteGeneratorModal: FC<DeleteGeneratorModalProps> = ({generatorCode, onC
   };
 
   return (
-    <Modal closeTitle="Close" illustration={<DeleteIllustration />} onClose={onClose}>
+    <Modal closeTitle={translate('pim_common.close')} illustration={<DeleteIllustration />} onClose={onClose}>
       <Modal.SectionTitle color="brand">{translate('pim_identifier_generator.deletion.operations')}</Modal.SectionTitle>
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
       <div>{translate('pim_identifier_generator.deletion.confirmation')}</div>
