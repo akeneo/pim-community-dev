@@ -58,3 +58,7 @@ services:
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\RemoveWhitespaceOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SearchAndReplaceOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }

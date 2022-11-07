@@ -20,6 +20,8 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SearchAndReplaceOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SearchAndReplaceValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
 
@@ -115,7 +117,7 @@ final class HandleTextTest extends HandleDataMappingTestCase
                         OperationCollection::create([
                             new CleanHTMLOperation(
                                 '00000000-0000-0000-0000-000000000000',
-                                    [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]
+                                [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS],
                             ),
                         ]),
                         [],
@@ -172,6 +174,80 @@ final class HandleTextTest extends HandleDataMappingTestCase
                             new SetTextValue('name', null, null, 'i want the tags removed'),
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'i want the characters "decoded"'),
                             new SetTextValue('short_description', null, null, 'i want this "fully" cleaned'),
+                        ],
+                    ),
+                    [],
+                ),
+            ],
+            'it handles text attribute targets with Search and Replace operation' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '11111111-1111-1111-1111-111111111111' => 'case sensitive: THIS will be replaced with "that" but not this',
+                    '22222222-2222-2222-2222-222222222222' => 'case insensitive: ThIs and tHiS will be replaced with "that"',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
+                        AttributeTarget::create(
+                            'description',
+                            'pim_catalog_text',
+                            'ecommerce',
+                            'fr_FR',
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['11111111-1111-1111-1111-111111111111'],
+                        OperationCollection::create([
+                            new SearchAndReplaceOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [
+                                    new SearchAndReplaceValue(
+                                        '00000000-0000-0000-0000-000000000001',
+                                        'THIS',
+                                        'that',
+                                        true,
+                                    ),
+                                ],
+                            ),
+                        ]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fed',
+                        AttributeTarget::create(
+                            'short_description',
+                            'pim_catalog_text',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['22222222-2222-2222-2222-222222222222'],
+                        OperationCollection::create([
+                            new SearchAndReplaceOperation(
+                                '00000000-0000-0000-0001-000000000000',
+                                [
+                                    new SearchAndReplaceValue(
+                                        '00000000-0000-0000-0001-000000000001',
+                                        'this',
+                                        'that',
+                                        false,
+                                    ),
+                                ],
+                            ),
+                        ]),
+                        [],
+                    ),
+                ],
+                'expected' => new ExecuteDataMappingResult(
+                    $this->createUpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        userIntents: [
+                            new SetTextValue('description', 'ecommerce', 'fr_FR', 'case sensitive: that will be replaced with "that" but not this'),
+                            new SetTextValue('short_description', null, null, 'case insensitive: that and that will be replaced with "that"'),
                         ],
                     ),
                     [],
