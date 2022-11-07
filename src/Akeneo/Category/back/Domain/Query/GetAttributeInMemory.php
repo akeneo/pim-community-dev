@@ -12,7 +12,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
  *
  * @phpstan-type Identifier string
  */
-interface GetAttribute
+interface GetAttributeInMemory
 {
     /**
      * @param array<Identifier> $identifiers {example : [title|1234579-1354]}

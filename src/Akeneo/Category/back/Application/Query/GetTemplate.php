@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Query;
 
-use Akeneo\Category\Domain\Model\Template;
+use Akeneo\Category\Domain\Model\Enrichment\Template;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -12,5 +13,5 @@ use Akeneo\Category\Domain\Model\Template;
  */
 interface GetTemplate
 {
-    public function byUuid(string $templateId): ?Template;
+    public function byUuid(TemplateUuid $uuid): ?Template;
 }

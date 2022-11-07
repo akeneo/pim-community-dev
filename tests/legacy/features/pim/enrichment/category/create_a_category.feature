@@ -11,7 +11,7 @@ Feature: Create a category
   @critical
   Scenario: Create a category tree
     Given I am on the categories page
-    When I press the "Create" button
+    When I press the "Create tree" button
     And I create the category with code shoe
     Then I should see the text "[shoe]"
     And I should see the text "successfully created"

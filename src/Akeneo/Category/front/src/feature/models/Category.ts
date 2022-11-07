@@ -77,6 +77,8 @@ export type CategoryTreeModel = {
   isLeaf: boolean;
   children?: CategoryTreeModel[];
   productsNumber?: number;
+  templateLabel?: string;
+  templateUuid?: string;
 };
 
 export type FormField = {
