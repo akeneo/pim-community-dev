@@ -241,7 +241,7 @@ pim:
       schedule: "0 4 * * *"
     rule-engine-execute-rules:
       enabled: true
-      pimJobName: "rule_engine_execute_rules"
+      pimJobName: "rule_engine_execute_rules_scheduled"
       pimJobOptions: ""
       schedule: "0 5,11,17,23 * * *"
     update-connectivity-audit-data:

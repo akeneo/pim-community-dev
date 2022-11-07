@@ -343,3 +343,8 @@ jobs:
         alias:     connectivity_create_openid_keys
         label:     Create or update a public/private openId key couple
         type:      scheduled_job
+    rule_engine_execute_rules_scheduled:
+        connector: internal
+        alias:     rule_engine_execute_rules_scheduled
+        label:     'Execute rules as a scheduled job'
+        type:      scheduled_job
