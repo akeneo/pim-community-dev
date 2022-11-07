@@ -1,9 +1,10 @@
 import React, {FC, useEffect, useState} from 'react';
-import {AddingValueIllustration, Information} from 'akeneo-design-system';
+import {AddingValueIllustration, Information, SectionTitle, Button} from 'akeneo-design-system';
 import {TimeToEnrichChartLegend, TimeToEnrichControlPanel, TimeToEnrichHistoricalChart} from '../components';
 import {getEndDate, getStartDate, TimeToEnrich, TimeToEnrichFilters} from '../models';
 import {AkeneoSpinner, defaultFilters, useFetchers} from '../../Common';
 import styled from 'styled-components';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Container = styled.div<{isControlPanelOpen: boolean}>`
   margin-right: ${({isControlPanelOpen}) => (isControlPanelOpen ? '350px' : '0px')};
@@ -16,6 +17,7 @@ const TimeToEnrichDashboard: FC = () => {
   const [comparisonTimeToEnrichList, setComparisonTimeToEnrichList] = useState<TimeToEnrich[] | undefined>(undefined);
   const [filters, setFilters] = useState<TimeToEnrichFilters>(defaultFilters);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const translate = useTranslate();
 
   useEffect(() => {
     const fetchData = async (startDate: string, endDate: string, periodType: string): Promise<TimeToEnrich[]> => {
@@ -49,13 +51,16 @@ const TimeToEnrichDashboard: FC = () => {
         </p>
       </Information>
 
-      {filters && (
-        <TimeToEnrichChartLegend
-          filters={filters}
-          isControlPanelOpen={isControlPanelOpen}
-          onControlPanelClick={handleControlPanelClick}
-        />
-      )}
+      <SectionTitle>
+        <SectionTitle.Title level="secondary">
+          <TimeToEnrichChartLegend filters={filters} />
+        </SectionTitle.Title>
+        <SectionTitle.Spacer />
+        <Button ghost={true} size={'small'} level={'secondary'} onClick={handleControlPanelClick}>
+          {!isControlPanelOpen && <>{translate('akeneo.performance_analytics.control_panel.open_control_panel')}</>}
+          {isControlPanelOpen && <>{translate('akeneo.performance_analytics.control_panel.close_control_panel')}</>}
+        </Button>
+      </SectionTitle>
       {(!referenceTimeToEnrichList || !comparisonTimeToEnrichList || isLoading) && <AkeneoSpinner />}
       {referenceTimeToEnrichList && comparisonTimeToEnrichList && (
         <TimeToEnrichHistoricalChart

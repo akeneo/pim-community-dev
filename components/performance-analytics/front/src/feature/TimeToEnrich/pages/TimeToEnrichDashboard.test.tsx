@@ -59,4 +59,24 @@ describe('TimeToEnrichDashboard', () => {
       await screen.findByText('akeneo.performance_analytics.control_panel.open_control_panel')
     ).toBeInTheDocument();
   });
+
+  it('renders the dashboard with opened control panel', async () => {
+    await renderWithProviders(<TimeToEnrichDashboard />);
+
+    const openControlPanelButton = screen.getByText('akeneo.performance_analytics.control_panel.open_control_panel');
+    expect(openControlPanelButton).toBeInTheDocument();
+
+    expect(screen.queryByText('akeneo.performance_analytics.control_panel.title')).not.toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(openControlPanelButton);
+    });
+
+    expect(await screen.findByText('akeneo.performance_analytics.control_panel.title')).toBeInTheDocument();
+
+    expect(
+      await screen.findByText('akeneo.performance_analytics.control_panel.close_control_panel')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('akeneo.performance_analytics.control_panel.open_control_panel')).not.toBeInTheDocument();
+  });
 });

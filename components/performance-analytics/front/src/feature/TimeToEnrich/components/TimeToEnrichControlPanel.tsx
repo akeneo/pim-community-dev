@@ -21,9 +21,9 @@ import {
   SelectAggregationInput,
   SelectPeriodInput,
   SelectComparisonInput,
+  SelectMetricInput,
 } from '../../Common';
 import {TimeToEnrichFilters} from '../models';
-import {SelectMetricInput} from '../../Common/components/SelectMetricInput';
 
 const Container = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   width: ${({isOpen}) => (isOpen ? '350px' : '0px')};
