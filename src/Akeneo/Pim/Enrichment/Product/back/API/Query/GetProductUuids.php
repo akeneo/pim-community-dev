@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Domain\Query;
+namespace Akeneo\Pim\Enrichment\Product\API\Query;
 
 use Ramsey\Uuid\UuidInterface;
 

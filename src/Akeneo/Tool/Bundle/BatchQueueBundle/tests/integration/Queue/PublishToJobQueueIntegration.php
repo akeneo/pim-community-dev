@@ -9,7 +9,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Google\Cloud\PubSub\Message;
 use InvalidArgumentException;
 use RuntimeException;
@@ -183,9 +183,8 @@ class PublishToJobQueueIntegration extends TestCase
     {
         $connection = $this->getConnection();
         $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution');
-        $stmt->execute();
 
-        return $stmt->fetch();
+        return $stmt->executeQuery()->fetchAssociative();
     }
 
     private function createProduct(string $identifier, array $data = []): ProductInterface

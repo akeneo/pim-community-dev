@@ -5,10 +5,6 @@ pim_title:
   akeneo_measurements_settings_any: 측정
 measurements:
   label_translations: UI 로케일의 레이블 번역
-  helper:
-    title: 측정입니다!
-    text: 여기에서, 해당 단위로 고유한 측정 패밀리를 만들거나 기존 측정 패밀리에 단위를 추가할 수 있습니다.
-    link: 더 자세히 알고 싶으신가요? 다음을 살펴보십시오!
   search:
     placeholder: 레이블 또는 코드 검색
   family:

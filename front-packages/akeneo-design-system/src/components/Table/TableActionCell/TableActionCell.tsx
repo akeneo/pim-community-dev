@@ -14,6 +14,8 @@ const TableActionCellContainer = styled.td`
 
 const InnerTableActionCellContainer = styled.div`
   opacity: 0;
+  display: flex;
+  gap: 10px;
 `;
 
 type ActionCellProps = Override<

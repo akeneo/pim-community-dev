@@ -15,3 +15,10 @@ internal_api_enriched_category:
 internal_api_category_template:
     resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category_template.yml'
     prefix: /category/template
+
+# This was done to stay consistent with existing routes
+pim_category_template_edit:
+    path: /enrich/product-category-tree/{treeId}/template/{templateUuid}
+    requirements:
+        treeId: \d+
+        templateUuid: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'

@@ -186,6 +186,11 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
                 Operators::EQUALS,
                 ProductInterface::class
             )->shouldBeCalled();
+        $pqbAsso
+            ->addSorter(
+                'id',
+                Directions::ASCENDING
+            )->shouldBeCalled();
         $pqbAsso->execute()->willReturn($associatedProductCursor);
 
         $associatedProductCursor->rewind()->shouldBeCalled();
@@ -215,6 +220,11 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
                 'entity_type',
                 Operators::EQUALS,
                 ProductModelInterface::class
+            )->shouldBeCalled();
+        $pqbAssoProductModel
+            ->addSorter(
+                'id',
+                Directions::ASCENDING
             )->shouldBeCalled();
         $pqbAssoProductModel->execute()->willReturn($associatedProductModelCursor);
 
@@ -417,6 +427,11 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
                 'entity_type',
                 Operators::EQUALS,
                 ProductInterface::class
+            )->shouldBeCalled();
+        $pqbAsso
+            ->addSorter(
+                'id',
+                Directions::ASCENDING
             )->shouldBeCalled();
         $pqbAsso->execute()->willReturn($associatedProductCursor);
 

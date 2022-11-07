@@ -38,36 +38,9 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
             new TwigFunction('children_response', [$this, 'childrenResponse']),
             new TwigFunction('children_tree_response', [$this, 'childrenTreeResponse']),
             new TwigFunction('list_categories_response', [$this, 'listCategoriesResponse']),
-            new TwigFunction('list_trees_response', [$this, 'listTreesResponse']),
             new TwigFunction('exceeds_products_limit_for_removal', [$this, 'exceedsProductsLimitForRemoval']),
             new TwigFunction('get_products_limit_for_removal', [$this, 'getProductsLimitForRemoval']),
         ];
-    }
-
-    /**
-     * List root categories (trees) for jstree
-     *
-     * @param array  $trees
-     * @param int    $selectedTreeId
-     * @param bool   $withProductCount
-     * @param bool   $includeSub
-     * @param string $relatedEntity
-     *
-     * @return array
-     */
-    public function listTreesResponse(
-        array $trees,
-        $selectedTreeId = null,
-        $withProductCount = true,
-        $includeSub = false,
-        $relatedEntity = 'product'
-    ) {
-        $return = [];
-        foreach ($trees as $tree) {
-            $return[] = $this->formatTree($tree, $selectedTreeId, $withProductCount, $includeSub, $relatedEntity);
-        }
-
-        return $return;
     }
 
     /**
@@ -313,40 +286,6 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         }
 
         return $result;
-    }
-
-    /**
-     * Format a tree for jstree js plugin
-     * Returns an array formated as:
-     * array(
-     *     'id'       => int,    // the tree id
-     *     'label'    => string, // the tree label
-     *     'selected' => bool    // predicate to know if the tree is selected or not
-     * )
-     *
-     * @param CategoryInterface $tree
-     * @param int               $selectedTreeId
-     * @param bool              $withProductCount
-     * @param bool              $includeSub
-     * @param string            $relatedEntity
-     *
-     * @return array
-     */
-    protected function formatTree(
-        CategoryInterface $tree,
-        $selectedTreeId,
-        $withProductCount,
-        $includeSub,
-        $relatedEntity
-    ) {
-        $label = $this->getLabel($tree, $withProductCount, $includeSub, $relatedEntity);
-
-        return [
-            'id'       => $tree->getId(),
-            'code'     => $tree->getCode(),
-            'label'    => $label,
-            'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
-        ];
     }
 
     /**

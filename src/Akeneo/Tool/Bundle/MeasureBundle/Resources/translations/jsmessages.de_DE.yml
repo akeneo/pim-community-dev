@@ -5,10 +5,6 @@ pim_title:
   akeneo_measurements_settings_any: Maßeinheiten
 measurements:
   label_translations: Label-Übersetzungen in UI-Gebietsschema
-  helper:
-    title: Willkommen zu den Maßeinheiten!
-    text: Hier können Sie Ihre eigenen Messfamilien mit deren Einheiten erstellen oder die vorhandenen Messfamilien um Einheiten erweitern.
-    link: Möchten Sie mehr wissen? Hier geht's!
   search:
     placeholder: Auf Label oder Code suchen
   family:
