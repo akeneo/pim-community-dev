@@ -108,7 +108,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @Given I should not get any error
      */
-    public function iShouldNotGetAnyError()
+    public function iShouldNotGetAnyError(): void
     {
         Assert::null($this->violations);
     }
@@ -116,7 +116,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @Then I should get an exception with message ':message'
      */
-    public function iShouldGetAnExceptionWithMessage($message)
+    public function iShouldGetAnExceptionWithMessage($message): void
     {
         Assert::notNull($this->invalidArgumentException);
         Assert::contains($this->invalidArgumentException->getMessage(), $message);
@@ -202,7 +202,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with an unknown property
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAnUnknownProperty()
+    public function iTryToCreateAnIdentifierGeneratorWithAnUnknownProperty(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -221,7 +221,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with blank target
      */
-    public function iTryToCreateAnIdentifierGeneratorWithBlankTarget()
+    public function iTryToCreateAnIdentifierGeneratorWithBlankTarget(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -240,7 +240,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with blank structure
      */
-    public function iTryToCreateAnIdentifierGeneratorWithBlankStructure()
+    public function iTryToCreateAnIdentifierGeneratorWithBlankStructure(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -259,7 +259,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with blank code
      */
-    public function iTryToCreateAnIdentifierGeneratorWithBlankCode()
+    public function iTryToCreateAnIdentifierGeneratorWithBlankCode(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -278,7 +278,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator without label
      */
-    public function iTryToCreateAnIdentifierGeneratorWithoutLabel()
+    public function iTryToCreateAnIdentifierGeneratorWithoutLabel(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -314,7 +314,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with label ':fr' ':label'
+     * @When I try to create an identifier generator with ':lang' label ':label'
      */
     public function iTryToCreateAnIdentifierGeneratorWithLabel(string $lang, string $label): void
     {
