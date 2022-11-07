@@ -70,8 +70,8 @@ describe('CreateGeneratorModal', () => {
 
     expect(confirmButton).toBeDisabled();
 
-    const labelLengthLimit = 100;
-    const codeLengthLimit = 255;
+    const labelLengthLimit = 255;
+    const codeLengthLimit = 100;
     const lorem =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, ' +
       'sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. ' +

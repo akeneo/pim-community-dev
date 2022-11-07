@@ -26,8 +26,8 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   const translate = useTranslate();
   const userContext = useUserContext();
   const uiLocale = userContext.get('uiLocale');
-  const labelLengthLimit = 100;
-  const codeLengthLimit = 255;
+  const labelLengthLimit = 255;
+  const codeLengthLimit = 100;
 
   const onLabelChange = useCallback(
     (value: string) => {
