@@ -112,9 +112,7 @@ akeneo_catalogs:
                 source: Source
                 placeholder: Define a content source
             placeholder:
-                illustration_title: Click on a target in the right panel to configure your catalog mapping.
-                subtitle: Then you'll be able to match a PIM attribute with the selected target.
-                link: Check out our Help center for more information.
+                illustration_title: No catalog target available
         source:
             placeholder:
                 title: Select source

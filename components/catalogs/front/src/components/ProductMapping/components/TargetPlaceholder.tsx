@@ -13,10 +13,6 @@ const TableCell = styled(Table.Cell)`
     border-bottom: 0;
 `;
 
-const ActionButton = styled(Button)`
-    margin-top: 18px;
-`;
-
 export const TargetPlaceholder: FC = () => {
     const translate = useTranslate();
 
@@ -28,12 +24,7 @@ export const TargetPlaceholder: FC = () => {
                         illustration={<AttributesIllustration />}
                         title={translate('akeneo_catalogs.product_mapping.target.placeholder.illustration_title')}
                     >
-                        <div>{translate('akeneo_catalogs.product_mapping.target.placeholder.subtitle')}</div>
-                        <Link href={'https://help.akeneo.com/'} target='_blank'>
-                            {translate('akeneo_catalogs.product_mapping.target.placeholder.link')}
-                        </Link>
                     </Placeholder>
-                    <ActionButton level='primary'>Action Button</ActionButton>
                 </SectionContent>
             </TableCell>
         </Table.Row>

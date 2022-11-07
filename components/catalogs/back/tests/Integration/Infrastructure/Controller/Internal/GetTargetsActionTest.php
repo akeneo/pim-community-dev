@@ -98,7 +98,7 @@ class GetTargetsActionTest extends IntegrationTestCase
         Assert::assertEquals($expectedTargets, $targets);
     }
 
-    public function testItReturnsANullJsonEncodedWhenThereIsNoProductMappingSchemaInAGivenCatalog(): void
+    public function testItReturnsANoContentResponseWhenThereIsNoProductMappingSchemaInAGivenCatalog(): void
     {
         $client = $this->getAuthenticatedInternalApiClient();
 
