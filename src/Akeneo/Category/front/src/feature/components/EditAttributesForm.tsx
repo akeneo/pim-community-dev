@@ -29,6 +29,8 @@ interface Props {
     locale: string | null,
     attributeValue: CategoryAttributeValueData
   ) => void;
+  locale: string;
+  setLocale: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FormContainer = styled.div`
@@ -52,10 +54,8 @@ function mustChangeBeSkipped(
   );
 }
 
-export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange}: Props) => {
+export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange, locale, setLocale}: Props) => {
   const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
-  const [locale, setLocale] = useState(catalogLocale);
   const {locales} = useContext(EditCategoryContext);
   const translate = useTranslate();
 
@@ -129,10 +129,14 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       <SectionTitle>
         <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <LocaleSelector value={locale} values={Object.values(locales)} onChange={(value) => {
-          setLocale(value);
-          userContext.set('catalogLocale', value, {});
-        }} />
+        <LocaleSelector
+          value={locale}
+          values={Object.values(locales)}
+          onChange={value => {
+            setLocale(value);
+            userContext.set('catalogLocale', value, {});
+          }}
+        />
       </SectionTitle>
       {attributeFields}
     </FormContainer>

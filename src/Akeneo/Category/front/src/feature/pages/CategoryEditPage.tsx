@@ -30,7 +30,7 @@ import {CategoryToDelete, useCountProductsBeforeDeleteCategory, useDeleteCategor
 import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {EditAttributesForm, EditPermissionsForm, EditPropertiesForm} from '../components';
+import {EditAttributesForm, EditPermissionsForm, EditPropertiesForm, TemplateTitle} from '../components';
 
 type Params = {
   categoryId: string;
@@ -48,6 +48,10 @@ const CategoryEditPage: FC = () => {
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
+
+  // locales
+  const uiLocale = userContext.get('uiLocale');
+  const [catalogLocale, setCatalogLocale] = useState(userContext.get('catalogLocale'));
 
   // features
   const featureFlags = useFeatureFlags();
@@ -92,8 +96,6 @@ const CategoryEditPage: FC = () => {
   } = useEditCategoryForm(parseInt(categoryId));
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
-
-  const uiLocale = userContext.get('uiLocale');
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
@@ -179,6 +181,11 @@ const CategoryEditPage: FC = () => {
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
+        {template && (
+          <PageHeader.Content>
+            <TemplateTitle template={template} locale={catalogLocale} />
+          </PageHeader.Content>
+        )}
         <PageHeader.UserActions>
           <PimView
             viewName="pim-menu-user-navigation"
@@ -269,6 +276,8 @@ const CategoryEditPage: FC = () => {
               attributeValues={category.attributes}
               template={template}
               onAttributeValueChange={onChangeAttribute}
+              locale={catalogLocale}
+              setLocale={setCatalogLocale}
             />
           )}
         {isCurrent(Tabs.PROPERTY) && category && (
