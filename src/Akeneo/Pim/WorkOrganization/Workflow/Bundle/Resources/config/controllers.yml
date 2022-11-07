@@ -147,8 +147,10 @@ services:
             - '@pim_enrich.doctrine.counter.category_product'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
             - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
-            - { related_entity: published_product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Domain\Query\GetCategoryTreesInterface'
             - '@feature_flags'
+            - { related_entity: published_product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
         calls:

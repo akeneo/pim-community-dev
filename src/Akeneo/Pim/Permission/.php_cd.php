@@ -176,7 +176,12 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
-        'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
+        'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer',
+        'Akeneo\Category\Domain\Model\Classification\CategoryTree',
+        'Akeneo\Category\Domain\Model\Enrichment\Category',
+        'Akeneo\Category\Domain\Query\GetCategoryInterface',
+        'Akeneo\Category\Domain\Query\GetCategoryTreesInterface',
+
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
