@@ -433,14 +433,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    connectivity-openid-keys-regenerate:
-      enabled: true
-      pimCommand: "akeneo:connectivity-connection:openid-keys:create --no-interaction"
-      schedule: "4 21 * * 0"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     clean-case-sensitive-attribute-option-spellcheck:
       enabled: true
       pimCommand: "pimee:data-quality-insights:clean-case-sensitive-attribute-option-spellcheck --no-interaction"
