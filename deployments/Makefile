@@ -221,14 +221,14 @@ endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
 endif
-ifeq ($(TYPE),tria)
+ifeq ($(TYPE_LONG),pim_trial)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.addAdmin.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_entity_id "https://connect-sandbox.ip.akeneo.com/auth/realms/trial"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_signin_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_logout_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_api_client_base_uri "https://connect-sandbox.ip.akeneo.com/"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_portal_api_client_base_uri "https://portal-dev4-sandbox.ip.akeneo.com/"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.google_analytics_account_id "UA-113156045-4"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.addAdmin.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.hotjar_id "2672696"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.heap_id "2875170433"
 endif
@@ -237,7 +237,7 @@ ifeq ($(USE_EDITION_FLAG),true)
 ifeq ($(INSTANCE_NAME_PREFIX),pimci)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
 endif
-ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimup pimci-pr pimci-pr-ge pimci-pr-ft))
+ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimup pimci-pr pimci-pr-ge))
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 endif
@@ -280,7 +280,6 @@ endif
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
 	cat $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE).tpl.tf.json > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-
 	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
 	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
 	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \

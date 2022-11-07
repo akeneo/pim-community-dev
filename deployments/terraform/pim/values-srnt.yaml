@@ -1,7 +1,3 @@
-global:
-  extraLabels:
-    type: srnt
-
 pim:
   jobs:
     versioning-purge:
