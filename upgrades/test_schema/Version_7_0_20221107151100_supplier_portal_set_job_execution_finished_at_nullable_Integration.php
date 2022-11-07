@@ -15,7 +15,7 @@ final class Version_7_0_20221107151100_supplier_portal_set_job_execution_finishe
     private const MIGRATION_LABEL = '_7_0_20221107151100_supplier_portal_set_job_execution_finished_at_nullable';
 
     /** @test */
-    public function it_adds_the_consent_column(): void
+    public function it_set_the_column_as_nullable(): void
     {
         $query = <<<SQL
             ALTER TABLE akeneo_supplier_portal_product_file_imported_by_job_execution 
