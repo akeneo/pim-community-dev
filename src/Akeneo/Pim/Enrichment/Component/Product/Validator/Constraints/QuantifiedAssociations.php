@@ -24,7 +24,7 @@ class QuantifiedAssociations extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
@@ -32,7 +32,7 @@ class QuantifiedAssociations extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_connector.validator.constraints.quantified_associations_validator';
     }

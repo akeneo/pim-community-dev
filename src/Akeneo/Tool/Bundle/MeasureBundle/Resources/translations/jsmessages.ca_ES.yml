@@ -5,10 +5,6 @@ pim_title:
   akeneo_measurements_settings_any: Mesuraments
 measurements:
   label_translations: Etiquetar traduccions a la configuració regional de la IU
-  helper:
-    title: Benvingut a les mètriques!
-    text: Aquí podrà crear les seves propies famílies mètriques amb les seves unitats o afegir unitats a les famílies mètriques ja existents.
-    link: Vol saber més? Aquí tens!
   search:
     placeholder: Cercar a l'etiqueta o codi
   family:

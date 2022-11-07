@@ -44,7 +44,7 @@ class SqlFindJobInstance implements FindJobInstanceInterface
 SQL;
 
         $sqlWherePart = $this->buildWherePart($jobNames, $search);
-        $sqlPaginationPart = $this->buildPaginationPart($pagination);
+        $sqlPaginationPart = null !== $pagination ? $this->buildPaginationPart($pagination) : '';
 
         return sprintf($sql, $sqlWherePart, $sqlPaginationPart);
     }
@@ -83,30 +83,49 @@ SQL;
 
     private function fetchJobInstances(string $sql, JobInstanceQuery $query): array
     {
-        $jobNames = $query->jobNames;
-        $search = $query->search;
-        $page = $query->pagination->page;
-        $limit = $query->pagination->limit;
+        $queryParametersAndTypes = $this->buildQueryParametersAndTypes($query);
+        $queryParameters = $queryParametersAndTypes['query_parameters'];
+        $queryTypes = $queryParametersAndTypes['query_types'];
 
         $results = $this->connection->executeQuery(
             $sql,
-            [
-                'job_names' => $jobNames,
-                'search' => $search,
-                'offset' => ($page - 1) * $limit,
-                'limit' => $limit,
-            ],
-            [
-                'job_names' => Connection::PARAM_STR_ARRAY,
-                'search' => \PDO::PARAM_STR,
-                'offset' => \PDO::PARAM_INT,
-                'limit' => \PDO::PARAM_INT,
-            ],
+            $queryParameters,
+            $queryTypes,
         )->fetchAllAssociative();
 
         return array_map(
             static fn (array $jobInstance) => new JobInstance($jobInstance['code'], $jobInstance['label']),
             $results,
         );
+    }
+
+    private function buildQueryParametersAndTypes(JobInstanceQuery $query): array
+    {
+        $queryParameters = [
+            'job_names' => $query->jobNames,
+            'search' => $query->search,
+        ];
+
+        $queryTypes = [
+            'job_names' => Connection::PARAM_STR_ARRAY,
+            'search' => \PDO::PARAM_STR,
+        ];
+
+        if (null !== $query->pagination) {
+            $queryParameters = array_merge($queryParameters, [
+                'offset' => ($query->pagination->page - 1) * $query->pagination->limit,
+                'limit' => $query->pagination->limit,
+            ]);
+
+            $queryTypes = array_merge($queryTypes, [
+                'offset' => \PDO::PARAM_INT,
+                'limit' => \PDO::PARAM_INT,
+            ]);
+        }
+
+        return [
+            'query_parameters' => $queryParameters,
+            'query_types' => $queryTypes,
+        ];
     }
 }

@@ -28,7 +28,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // Priority greater than zero to ensure that the evaluation is done prior to the re-indexation of the product in ES

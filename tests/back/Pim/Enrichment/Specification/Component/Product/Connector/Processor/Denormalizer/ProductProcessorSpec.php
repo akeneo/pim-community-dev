@@ -80,7 +80,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -168,7 +167,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productValidator
             ->validate($product)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($convertedData)
@@ -187,7 +186,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -277,7 +275,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productValidator
             ->validate($product)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($convertedData)
@@ -295,7 +293,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -383,7 +380,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productValidator
             ->validate($product)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($convertedData)
@@ -767,7 +764,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -857,7 +853,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productValidator
             ->validate($product)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($convertedData)
@@ -875,7 +871,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -926,7 +921,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productValidator
             ->validate($product)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($convertedData)
@@ -946,7 +941,6 @@ class ProductProcessorSpec extends ObjectBehavior
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         ProductInterface $productInDB,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters,
         FamilyInterface $family
     ) {
@@ -1023,7 +1017,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productValidator
             ->validate($product)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $this
             ->process($originalItem)

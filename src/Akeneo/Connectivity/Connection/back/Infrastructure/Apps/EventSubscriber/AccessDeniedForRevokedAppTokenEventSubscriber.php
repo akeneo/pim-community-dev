@@ -23,7 +23,7 @@ class AccessDeniedForRevokedAppTokenEventSubscriber implements EventSubscriberIn
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [ApiAuthenticationFailedEvent::class => 'throwIfDeniedAccessTokenIsRevoked'];
     }

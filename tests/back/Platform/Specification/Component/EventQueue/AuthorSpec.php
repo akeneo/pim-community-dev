@@ -22,7 +22,7 @@ class AuthorSpec extends ObjectBehavior
 
     public function it_does_create_an_author_from_user(UserInterface $user): void
     {
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(false);
@@ -35,7 +35,7 @@ class AuthorSpec extends ObjectBehavior
 
     public function it_does_create_an_api_author_from_user(UserInterface $user): void
     {
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(true);

@@ -65,7 +65,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $violation->getMessageTemplate()->willReturn(null);
 
         $constraintViolations->getIterator()->willReturn($iterator);
-        $iterator->rewind()->willReturn($violation);
+        $iterator->rewind()->shouldBeCalled();
         $valueCount = 1;
         $iterator->valid()->will(
             function () use (&$valueCount) {
@@ -73,7 +73,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
             }
         );
         $iterator->current()->willReturn($violation);
-        $iterator->next()->willReturn(null);
+        $iterator->next()->shouldBeCalled();
 
         $exception->getViolations()->willReturn($constraintViolations);
         $exception->getStatusCode()->willReturn(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -121,7 +121,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $violationProductValue->getMessageTemplate()->willReturn('This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.');
 
         $constraintViolations->getIterator()->willReturn($iterator);
-        $iterator->rewind()->willReturn($violationProductValue);
+        $iterator->rewind()->shouldBeCalled();
         $valueCount = 1;
         $iterator->valid()->will(
             function () use (&$valueCount) {
@@ -187,7 +187,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $violationProductValue->getMessageTemplate()->willReturn(null);
 
         $constraintViolations->getIterator()->willReturn($iterator);
-        $iterator->rewind()->willReturn($violationIdentifier);
+        $iterator->rewind()->shouldBeCalled();
         $valueCount = 2;
         $iterator->valid()->will(
             function () use (&$valueCount) {
@@ -243,7 +243,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $violation->getMessageTemplate()->willReturn(null);
 
         $constraintViolations->getIterator()->willReturn($iterator);
-        $iterator->rewind()->willReturn($violation);
+        $iterator->rewind()->shouldBeCalled();
         $valueCount = 1;
         $iterator->valid()->will(
             function () use (&$valueCount) {
@@ -251,7 +251,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
             }
         );
         $iterator->current()->willReturn($violation);
-        $iterator->next()->willReturn(null);
+        $iterator->next()->shouldBeCalled();
 
         $exception->getViolations()->willReturn($constraintViolations);
         $exception->getStatusCode()->willReturn(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -287,7 +287,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $violation->getMessageTemplate()->willReturn(null);
 
         $constraintViolations->getIterator()->willReturn($iterator);
-        $iterator->rewind()->willReturn($violation);
+        $iterator->rewind()->shouldBeCalled();
         $valueCount = 1;
         $iterator->valid()->will(
             function () use (&$valueCount) {
@@ -295,7 +295,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
             }
         );
         $iterator->current()->willReturn($violation);
-        $iterator->next()->willReturn(null);
+        $iterator->next()->shouldBeCalled();
 
         $exception->getViolations()->willReturn($constraintViolations);
         $exception->getStatusCode()->willReturn(Response::HTTP_UNPROCESSABLE_ENTITY);

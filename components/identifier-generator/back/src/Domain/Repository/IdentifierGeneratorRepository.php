@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToDeleteIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToFetchIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToUpdateIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 
@@ -20,6 +21,11 @@ interface IdentifierGeneratorRepository
      * @throws UnableToSaveIdentifierGeneratorException
      */
     public function save(IdentifierGenerator $identifierGenerator): void;
+
+    /**
+     * @throws UnableToUpdateIdentifierGeneratorException
+     */
+    public function update(IdentifierGenerator $identifierGenerator): void;
 
     /**
      * @throws UnableToFetchIdentifierGeneratorException

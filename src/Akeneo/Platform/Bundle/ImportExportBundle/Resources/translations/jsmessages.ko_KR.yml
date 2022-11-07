@@ -158,11 +158,8 @@ pim_import_export:
           local: 로컬
           sftp: SFTP
           none: 구성된 스토리지가 없습니다
-        file_path.label: 파일 경로
-        host.label: 호스트
-        port.label: 포트
-        username.label: 로그인
-        password.label: 암호
+        file_path:
+          label: 파일 경로
       validation:
         storage:
           unavailable_type: 이 스토리지는 사용할 수 없습니다. {{ available_types }}만 사용 가능합니다.

@@ -90,7 +90,7 @@ class AclRoleType extends AbstractType
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $builder->add(
                 $fieldName,
-                new PrivilegeCollectionType(),
+                PrivilegeCollectionType::class,
                 [
                     'entry_type' => new AclPrivilegeType(),
                     'allow_add' => true,
@@ -144,7 +144,7 @@ class AclRoleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_user_role_form';
     }

@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Firewall\ExceptionListener as BaseExceptionListener;
 
@@ -21,11 +21,11 @@ class ExceptionListener extends BaseExceptionListener
     /**
      * Handles security related exceptions.
      *
-     * @param GetResponseForExceptionEvent $event An GetResponseForExceptionEvent instance
+     * @param ExceptionEvent $event An GetResponseForExceptionEvent instance
      */
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event)
     {
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
         $request = $event->getRequest();
         if (!$request->isXmlHttpRequest() || !($exception instanceof AuthenticationException)) {
             return parent::onKernelException($event);

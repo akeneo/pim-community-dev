@@ -10,6 +10,7 @@ use OAuth2\IOAuth2Storage;
 use OAuth2\Model\IOAuth2AccessToken;
 use OAuth2\OAuth2 as BaseOAuth2;
 use OAuth2\OAuth2AuthenticateException;
+use OAuth2\OAuth2ServerException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,7 +61,7 @@ class OAuth2 extends BaseOAuth2
      *
      * @return Response
      *
-     * @throws \OAuth2\OAuth2ServerException
+     * @throws OAuth2ServerException
      */
     public function grantAccessToken(Request $request = null): Response
     {

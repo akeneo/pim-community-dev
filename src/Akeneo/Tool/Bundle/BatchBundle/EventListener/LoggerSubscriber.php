@@ -40,7 +40,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             EventInterface::JOB_EXECUTION_CREATED => 'jobExecutionCreated',

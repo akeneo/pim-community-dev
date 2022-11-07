@@ -151,9 +151,6 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorEmpty()
     {
-        // @TODO CPM-632: Unskip test once identifiers are nullable in products, and move product creation to setUp()
-        $this->markTestSkipped("Run this test once product identifiers are no longer required");
-
         $this->createProduct(null, [
             new SetTextValue('a_text', null, null, 'no_identifier')
         ]);

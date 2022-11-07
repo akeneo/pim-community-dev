@@ -82,7 +82,7 @@ class InstallCommand extends Command
             $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
             $output->writeln('');
 
-            return $e->getCode();
+            return (int) $e->getCode();
         }
 
         $output->writeln('');

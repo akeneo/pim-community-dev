@@ -9,12 +9,12 @@ class Count extends Constraint
 {
     public const MAX_MESSAGE = 'pim_measurements.validation.measurement_family.should_contain_max_elements';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_measurement.validation.save_measurement_family.count';
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

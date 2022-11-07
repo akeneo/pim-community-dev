@@ -19,7 +19,7 @@ final class LabelCollection implements \IteratorAggregate
     private function __construct(private ?array $translatedLabels)
     {
         Assert::allString($translatedLabels);
-        Assert::allStringNotEmpty(\array_keys($translatedLabels));
+        Assert::allStringNotEmpty($translatedLabels);
     }
 
     /**

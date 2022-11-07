@@ -82,7 +82,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
-        $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
+        $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', array_merge($normalizerContext, ['with_association_uuids' => false]));
 
         if ($entityWithValues instanceof ProductInterface) {
             $productStandard = $this->fillMissingProductValues->fromStandardFormat($productStandard);
@@ -209,7 +209,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     protected function initSecurityContext(StepExecution $stepExecution)
     {
         $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userProvider->loadUserByUsername($username);
+        $user = $this->userProvider->loadUserByIdentifier($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);

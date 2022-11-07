@@ -86,6 +86,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.product_model.fill_missing_values'
+            - '@akeneo.pim.structure.query.get_attributes'
             - '@pim_connector.processor.normalization.get_normalized_product_quality_scores'
 
     pim_connector.processor.normalization.product_model:
@@ -95,6 +96,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.product_model.fill_missing_values'
+            - '@akeneo.pim.structure.query.get_attributes'
             - '@pim_connector.processor.normalization.get_normalized_product_model_quality_scores'
 
     pim_connector.processor.attribute_filter.product_model:

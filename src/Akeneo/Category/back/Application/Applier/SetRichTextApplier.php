@@ -6,7 +6,7 @@ namespace Akeneo\Category\Application\Applier;
 
 use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**

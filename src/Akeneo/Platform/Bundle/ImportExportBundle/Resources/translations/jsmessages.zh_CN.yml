@@ -158,11 +158,8 @@ pim_import_export:
           local: 本地
           sftp: SFTP
           none: 未配置存储
-        file_path.label: 文件路径
-        host.label: 主机
-        port.label: 端口
-        username.label: 登录
-        password.label: 密码
+        file_path:
+          label: 文件路径
       validation:
         storage:
           unavailable_type: 此存储不可用，仅 {{ available_types }} 可用。

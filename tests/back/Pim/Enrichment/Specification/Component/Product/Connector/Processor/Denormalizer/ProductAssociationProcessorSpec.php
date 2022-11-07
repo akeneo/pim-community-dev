@@ -57,7 +57,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $stepExecution,
         ProductInterface $product,
         AssociationInterface $association,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters,
         QuantifiedAssociationCollection $quantifiedAssociations
     ) {
@@ -107,6 +106,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $product->getAssociations()->willReturn([$association]);
         $product->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
+
+        $violationList = new ConstraintViolationList();
 
         $productValidator
             ->validate($association)
@@ -197,7 +198,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         JobParameters $jobParameters,
         QuantifiedAssociationCollection $quantifiedAssociations,
-        ConstraintViolationListInterface $quantifiedViolations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
@@ -251,7 +251,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->willReturn($violations);
         $productValidator
             ->validate($quantifiedAssociations)
-            ->willReturn($quantifiedViolations);
+            ->willReturn(new ConstraintViolationList());
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this->setStepExecution($stepExecution);

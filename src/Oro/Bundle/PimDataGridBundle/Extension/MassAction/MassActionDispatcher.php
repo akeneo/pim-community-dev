@@ -236,7 +236,7 @@ class MassActionDispatcher
      *
      * @throws \LogicException
      *
-     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
+     * @return MassActionInterface
      */
     protected function getMassActionByName($massActionName, DatagridInterface $datagrid)
     {
@@ -284,7 +284,7 @@ class MassActionDispatcher
      * @param string $actionName
      * @param string $datagridName
      *
-     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
+     * @return MassActionInterface
      *
      * TODO: Need some clean up and optimization
      */
