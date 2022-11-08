@@ -8,7 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\Produc
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class LogOnProductFileCommented implements EventSubscriberInterface
+final class LogOnProductFileCommentedBySupplier implements EventSubscriberInterface
 {
     public function __construct(private LoggerInterface $logger)
     {

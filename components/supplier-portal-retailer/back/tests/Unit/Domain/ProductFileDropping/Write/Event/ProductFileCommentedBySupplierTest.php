@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 final class ProductFileCommentedBySupplierTest extends TestCase
 {
     /** @test */
-    public function itExposesTheProductFileIdentifierAndTheCommentContent(): void
+    public function itExposesTheProductFileIdentifierTheCommentContentAndTheAuthorEmail(): void
     {
         $productFileCommentedBySupplier = new ProductFileCommentedBySupplier(
             '37c365eb-e18b-43b3-8a55-934bb4d2d7e7',

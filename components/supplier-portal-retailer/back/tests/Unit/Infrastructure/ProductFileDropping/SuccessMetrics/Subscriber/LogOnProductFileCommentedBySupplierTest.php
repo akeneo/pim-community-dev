@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileCommentedBySupplier;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileCommented;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileCommentedBySupplier;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
 
-final class LogOnProductFileCommentedTest extends TestCase
+final class LogOnProductFileCommentedBySupplierTest extends TestCase
 {
     /** @test */
     public function itLogsWhenAProductFileHasBeenCommentedByASupplier(): void
     {
         $logger = new TestLogger();
-        $sut = new LogOnProductFileCommented($logger);
+        $sut = new LogOnProductFileCommentedBySupplier($logger);
 
         $sut->logOnProductFileCommentedBySupplier(
             new ProductFileCommentedBySupplier(

@@ -204,7 +204,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileCommented:
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileCommentedBySupplier:
         arguments:
             - '@monolog.logger.supplier_portal'
         tags:
