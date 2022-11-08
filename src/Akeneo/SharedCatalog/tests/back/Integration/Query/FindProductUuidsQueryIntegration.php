@@ -6,6 +6,8 @@ use Akeneo\SharedCatalog\Model\SharedCatalog;
 use Akeneo\SharedCatalog\Query\FindProductUuidsQueryInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class FindProductUuidsQueryIntegration extends TestCase
 {
@@ -94,10 +96,27 @@ class FindProductUuidsQueryIntegration extends TestCase
             'limit' => 100,
         ]);
 
-        $uuids = $this->connection->executeQuery('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product')
-            ->fetchFirstColumn();
-        sort($uuids);
-        self::assertEquals(\array_slice($uuids, 0, 100), $results);
+        self::assertEquals(array_map(
+            fn (string $identifier): string => $this->getProductUuidFromIdentifier($identifier)->toString(),
+            [
+                '1111111225',
+                '1111111226',
+                '1111111227',
+                '1111111228',
+                '1111111244',
+                '1111111245',
+                '1111111246',
+                '1111111293',
+                '1111111294',
+                '1111111295',
+                '1111111296',
+                '1111111297',
+                '1111111298',
+                '1111111299',
+                '1111111300',
+                '1111111301',
+            ]
+        ), $results);
     }
 
     /** @test */
@@ -121,5 +140,13 @@ class FindProductUuidsQueryIntegration extends TestCase
         ]);
 
         self::assertEquals(\array_slice($uuids, 11, 2), $results);
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?',
+            [$productIdentifier]
+        ));
     }
 }
