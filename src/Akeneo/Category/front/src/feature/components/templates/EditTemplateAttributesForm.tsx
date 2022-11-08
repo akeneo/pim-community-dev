@@ -35,9 +35,7 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
         </Table.Header>
         <Table.Body>
           {attributes?.map((attribute: Attribute) => (
-            <Table.Row
-              key={attribute.uuid}
-            >
+            <Table.Row key={attribute.uuid}>
               <Table.Cell rowTitle>{getLabelFromAttribute(attribute, catalogLocale)}</Table.Cell>
               <Table.Cell>{attribute.code}</Table.Cell>
               <Table.Cell>{attribute.type}</Table.Cell>

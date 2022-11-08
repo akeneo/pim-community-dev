@@ -12,8 +12,8 @@ type Result = {
   error: any;
 };
 
-export const useTemplateByTemplateUuid = (uuid: string|null): Result => {
-  const router = useRouter() ;
+export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
+  const router = useRouter();
   const url = useMemo(() => {
     if (uuid === null) {
       return null;
@@ -34,7 +34,7 @@ export const useTemplateByTemplateUuid = (uuid: string|null): Result => {
   }, [uuid, url]);
 
   const options = {
-    enabled: (uuid !== null && url !== null),
+    enabled: uuid !== null && url !== null,
     staleTime: TEMPLATE_FETCH_STALE_TIME,
   };
 
