@@ -30,7 +30,7 @@ final class SqlCountSelectOptions implements CountSelectOptions
     {
         return (int) $this->connection->executeQuery(
             'SELECT COUNT(*) FROM pim_catalog_table_column_select_option'
-        )->fetchOne();
+        )->fetchColumn();
     }
 
     public function forAttributeAndColumn(string $attributeCode, ColumnCode $columnCode): int
@@ -47,6 +47,6 @@ final class SqlCountSelectOptions implements CountSelectOptions
         return (int) $this->connection->executeQuery(
             $sql,
             ['attribute_code' => $attributeCode, 'column_code' => $columnCode->asString()]
-        )->fetchOne();
+        )->fetchColumn();
     }
 }

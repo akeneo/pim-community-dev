@@ -145,7 +145,7 @@ FROM oro_user u
     CROSS JOIN oro_access_group oag
     LEFT JOIN oro_user_access_group ug ON ug.user_id = u.id AND oag.id = ug.group_id
 WHERE oag.name = 'All' AND ug.user_id IS NULL
-SQL)->fetchOne();
+SQL)->fetchColumn();
 
         return (int) $count;
     }
@@ -175,7 +175,7 @@ SQL;
             $sql,
             ['job_codes' => $this->jobCodes],
             ['job_codes' => Connection::PARAM_STR_ARRAY]
-        )->fetchOne();
+        )->fetchColumn();
 
         return (int) $count;
     }

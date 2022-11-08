@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
@@ -63,7 +62,7 @@ FROM oro_access_group
 WHERE name = :name
 SQL;
 
-        return (string)$this->getConnection()->fetchOne($sql, ['name' => 'Marketing']);
+        return (string)$this->getConnection()->fetchColumn($sql, ['name' => 'Marketing']);
     }
 
     private function getUserRoleId(): string
@@ -74,6 +73,6 @@ FROM oro_access_role
 WHERE role = :role
 SQL;
 
-        return (string)$this->getConnection()->fetchOne($sql, ['role' => 'ROLE_USER']);
+        return (string)$this->getConnection()->fetchColumn($sql, ['role' => 'ROLE_USER']);
     }
 }

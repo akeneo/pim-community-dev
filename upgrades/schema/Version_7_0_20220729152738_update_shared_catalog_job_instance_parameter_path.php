@@ -44,7 +44,9 @@ FROM akeneo_batch_job_instance
 WHERE connector = 'Akeneo Shared Catalogs'
 SQL;
 
-        return $connection->executeQuery($sql)->fetchAllAssociative();
+        $stmt = $connection->executeQuery($sql);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     private function migrateRawParameters(array $rawParameters): array

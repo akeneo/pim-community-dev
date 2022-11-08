@@ -229,7 +229,7 @@ class GetWorkflowStatusFromProductModelCodesIntegration extends TestCase
         $userId = $this->getUserIdFromName($userName);
 
         $actualStatuses = $this->get('pimee_workflow.query.get_workflow_status_from_product_model_codes')
-            ->fromProductModelCodes($productModelCodes, $userId);
+                        ->fromProductModelCodes($productModelCodes, $userId);
         Assert::assertEqualsCanonicalizing(
             $expectedStatuses,
             $actualStatuses
@@ -243,9 +243,10 @@ class GetWorkflowStatusFromProductModelCodesIntegration extends TestCase
      */
     private function getUserIdFromName(string $userName): int
     {
-        return (int)$this->get('database_connection')->fetchOne(
+        return (int)$this->get('database_connection')->fetchColumn(
             'SELECT id FROM oro_user WHERE username = ?',
-            [$userName]
+            [$userName],
+            0
         );
     }
 }

@@ -87,7 +87,7 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
 
     /**
      * @test
-     */
+    */
     public function it_returns_working_copy_status_for_editable_products_without_draft()
     {
         $this->createProduct('redactor_can_apply_draft_on_product', [
@@ -107,7 +107,7 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
 
     /**
      * @test
-     */
+    */
     public function it_returns_waiting_for_approval_status_for_editable_and_ready_products()
     {
         $product = $this->createProduct('redactor_can_apply_draft_on_product', [
@@ -237,7 +237,7 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
     private function getUserIdfromName(string $userName)
     {
         return $this->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = ?', [$userName]);
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = ?', [$userName], 0);
     }
 
     /**
@@ -253,7 +253,7 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
         ProductInterface $product,
         array $changes,
         bool $ready = false
-    ): EntityWithValuesDraftInterface {
+    ) : EntityWithValuesDraftInterface {
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->get('pim_catalog.updater.product')->update($product, $changes);
@@ -292,4 +292,5 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
     {
         return $this->get('pimee_workflow.query.get_workflow_status_from_product_identifiers');
     }
+
 }

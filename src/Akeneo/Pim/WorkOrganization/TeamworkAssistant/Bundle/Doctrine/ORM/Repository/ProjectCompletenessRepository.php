@@ -41,7 +41,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     {
         $query = $this->buildSqlQuery($username);
         $parameters = $this->buildQueryParameters($project, $username);
-        $completeness = $this->entityManager->getConnection()->fetchAssociative($query, $parameters);
+        $completeness = $this->entityManager->getConnection()->fetchAssoc($query, $parameters);
 
         return new ProjectCompleteness($completeness['todo'], $completeness['in_progress'], $completeness['done']);
     }

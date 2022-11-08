@@ -17,7 +17,7 @@ class GetAllViewableLocalesForUserIntegration extends TestCase
         $query = $this->getQuery();
 
         $userId =  $this->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         Assert::assertSame(['en_US', 'fr_FR', 'zh_CN'], $query->fetchAll($userId));
     }

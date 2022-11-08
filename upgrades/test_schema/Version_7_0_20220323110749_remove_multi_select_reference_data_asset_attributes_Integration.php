@@ -79,7 +79,7 @@ class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_attrib
             ) AS is_existing
         SQL;
 
-        $result = $connection->executeQuery($sql, ['code' => $attributeCode])->fetchOne();
+        $result = $connection->executeQuery($sql, ['code' => $attributeCode])->fetchColumn();
 
         return (bool) $result;
     }

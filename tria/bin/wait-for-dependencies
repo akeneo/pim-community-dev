@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require dirname(__DIR__) . '/config/bootstrap.php';
+require dirname(__DIR__).'/config/bootstrap.php';
 
 const MAX_ATTEMPTS = 30;
 
@@ -30,7 +30,7 @@ wait_for('mysql', function (): bool {
             'dbname' => getenv('APP_DATABASE_NAME'),
         ]);
         $query = $connection->getDriver()->getDatabasePlatform()->getDummySelectSQL();
-        $connection->fetchOne($query);
+        $connection->fetchColumn($query);
 
         return true;
     } catch (\Exception $e) {

@@ -21,7 +21,7 @@ final class Version_6_0_20210818141014_add_source_concatenation extends Abstract
         $this->container = $container;
     }
 
-    public function up(Schema $schema): void
+    public function up(Schema $schema) : void
     {
         $tailoredJobInstances = $this->getTailoredJobInstances();
         $this->skipIf(empty($tailoredJobInstances), 'No Tailored Export job instance to migrate.');
@@ -43,10 +43,12 @@ FROM akeneo_batch_job_instance
 WHERE job_name = 'xlsx_tailored_product_export'
 SQL;
 
-        return $connection->executeQuery($sql)->fetchAllAssociative();
+        $stmt = $connection->executeQuery($sql);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function down(Schema $schema): void
+    public function down(Schema $schema) : void
     {
         $this->throwIrreversibleMigrationException();
     }

@@ -35,7 +35,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $productRights = $fetchUserRightOnProduct->fetchByUuid(
             $this->getProductUuid('not_categorized_variant_product'),
@@ -57,7 +57,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $productRights = $fetchUserRightOnProduct->fetchByUuid(
             $this->getProductUuid('owned_variant_product'),
@@ -80,7 +80,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $productRights = $fetchUserRightOnProduct->fetchByUuid(
             $this->getProductUuid('editable_variant_product'),
@@ -103,7 +103,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $productRights = $fetchUserRightOnProduct->fetchByUuid(
             $this->getProductUuid('not_viewable_variant_product'),
@@ -126,7 +126,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $productRights = $fetchUserRightOnProduct->fetchByUuids(
             [
@@ -149,7 +149,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $fetchUserRightOnProduct->fetchByUuid(Uuid::uuid4(), $userId);
     }

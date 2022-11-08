@@ -53,13 +53,13 @@ SQL;
 
         /** @var UpdatedFamily $updatedFamily */
         foreach ($updatedFamilies as $updatedFamily) {
-            $result = $stmt->executeQuery([
+            $stmt->execute([
                 'criterionCode' => EvaluateAttributeSpelling::CRITERION_CODE,
                 'familyId' => $updatedFamily->getFamilyId(),
                 'updatedSince' => $updatedFamily->updatedAt()->format(Clock::TIME_FORMAT),
             ]);
 
-            while ($productUuid = $result->fetchOne()) {
+            while ($productUuid = $stmt->fetchColumn()) {
                 $productUuids[] = $productUuid;
 
                 if (count($productUuids) >= $bulkSize) {

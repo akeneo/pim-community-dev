@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /*
@@ -10,7 +9,6 @@ declare(strict_types=1);
  * for the full copyright and license information, please view the license
  * file that was distributed with this source code.
  */
-
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log;
 
 use Doctrine\DBAL\Connection;
@@ -61,7 +59,7 @@ final class CreateArchiveFromDbTable implements CreateArchive
 
         $results = $this->connection->executeQuery($query);
 
-        while ($logEntry = $results->fetchOne()) {
+        while ($logEntry = $results->fetchColumn(0)) {
             $logContent .= $logEntry;
         }
 

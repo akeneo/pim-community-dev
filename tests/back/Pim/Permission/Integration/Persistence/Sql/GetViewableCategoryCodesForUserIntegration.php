@@ -11,14 +11,14 @@ class GetViewableCategoryCodesForUserIntegration extends TestCase
 {
     /**
      * @test
-     */
+    */
     public function it_filters_a_list_of_category_codes_by_user_permission()
     {
         $query = $this->getQuery();
 
         $userId = $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $filteredCategoryCodes = $query->forCategoryCodes(['categoryC', 'categoryB', 'categoryA1', 'master'], $userId);
 

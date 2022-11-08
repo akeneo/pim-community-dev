@@ -100,7 +100,7 @@ WHERE user_group_id = :user_group_id
 AND attribute_group_id = :attribute_group_id
 SQL;
 
-        $permissions = $this->connection->fetchAssociative($query, [
+        $permissions = $this->connection->fetchAssoc($query, [
             'user_group_id' => $userGroupId,
             'attribute_group_id' => $attributeGroupId,
         ]);
@@ -109,7 +109,7 @@ SQL;
             return null;
         }
 
-        return array_map(fn ($v) => (bool) $v, $permissions);
+        return array_map(fn($v) => (bool) $v, $permissions);
     }
 
     private function createUserGroup(string $name, array $defaultPermissions): Group

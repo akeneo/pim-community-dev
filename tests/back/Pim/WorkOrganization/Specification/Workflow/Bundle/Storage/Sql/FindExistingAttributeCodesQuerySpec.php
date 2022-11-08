@@ -13,7 +13,9 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\FindExistingAttributeCodesQuery;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindExistingAttributeCodesQuery as QueryInterface;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

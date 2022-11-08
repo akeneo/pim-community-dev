@@ -121,11 +121,11 @@ INNER JOIN `pimee_teamwork_assistant_project_user_group` AS `project_user_group`
 WHERE `project_user_group`.`project_id` = :project_id
 SQL;
 
-        $userGroups = $this->getConnection()->fetchFirstColumn($sql, [
+        $userGroups = $this->getConnection()->fetchAll($sql, [
             'project_id' => $project->getId(),
         ]);
 
-        $diff = array_diff($userGroups, $expectedGroup);
+        $diff = array_diff(array_column($userGroups, 'name'), $expectedGroup);
 
         $this->assertCount(0, $diff);
     }
