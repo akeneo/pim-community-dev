@@ -66,33 +66,23 @@ export const useCatalogForm = (id: string): Result => {
                     case CatalogFormActions.INITIALIZE:
                         dispatch(action);
                         break;
+                    case CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA:
+                        if (Object.keys(values.product_selection_criteria).length > Object.keys(action.value).length) {
+                            setErrors([]);
+                        }
+                        setDirty(true);
+                        dispatch(action);
+                        break;
                     default:
                         setDirty(true);
                         dispatch(action);
                         break;
                 }
             },
-        [setDirty]
+        [setDirty, values, setErrors]
     );
 
     const prevValuesRef = useRef<CatalogFormValues>(values);
-
-    useEffect(() => {
-        const productSelectionCriteriaPreviousKeys = Object.keys(prevValuesRef.current?.product_selection_criteria);
-        const productSelectionCriteriaCurrentKeys = Object.keys(values?.product_selection_criteria);
-
-        if (productSelectionCriteriaPreviousKeys.length > productSelectionCriteriaCurrentKeys.length) {
-            productSelectionCriteriaPreviousKeys.forEach((value, index) => {
-                if (!productSelectionCriteriaCurrentKeys.includes(value)) {
-                    setErrors(errors.filter(error => {
-                        return !error.propertyPath.startsWith(`[product_selection_criteria][${index}]`);
-                    }));
-                    return false;
-                }
-            });
-        }
-        prevValuesRef.current = values;
-    }, [values, isFirstLoad]);
 
     if (catalog.isLoading) {
         return loading;
