@@ -29,6 +29,7 @@ final class LogOnProductFileCommented implements EventSubscriberInterface
                 'data' => [
                     'identifier' => $productFileCommentedBySupplier->productFileIdentifier(),
                     'content' => $productFileCommentedBySupplier->commentContent(),
+                    'author_email' => $productFileCommentedBySupplier->authorEmail(),
                     'metric_key' => 'contributor_product_file_commented',
                 ],
             ],

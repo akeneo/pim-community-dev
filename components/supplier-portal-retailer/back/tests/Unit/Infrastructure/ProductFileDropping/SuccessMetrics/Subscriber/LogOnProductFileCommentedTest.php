@@ -31,6 +31,7 @@ final class LogOnProductFileCommentedTest extends TestCase
                 'data' => [
                     'identifier' => 'e77c4413-a6d5-49e6-a102-8042cf5bd439',
                     'content' => 'Here is a comment',
+                    'author_email' => 'jimmy@supplier.com',
                     'metric_key' => 'contributor_product_file_commented',
                 ],
             ],
