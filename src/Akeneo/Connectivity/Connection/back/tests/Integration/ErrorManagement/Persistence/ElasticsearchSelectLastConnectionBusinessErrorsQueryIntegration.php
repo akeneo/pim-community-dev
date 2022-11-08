@@ -11,6 +11,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends TestCase
 {
@@ -28,34 +29,40 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends Te
         $this->esClient->bulkIndexes([
             // Ignored: error is too old (more than 7 days)
             [
+                'id' => Uuid::uuid4()->toString(),
                 'connection_code' => 'erp',
                 'error_datetime' => '2019-12-31T00:00:00+00:00',
                 'content' => ['message' => 'Error 1'],
             ],
             // Ignored: 3rd result (oldest) on a $limit of 2
             [
+                'id' => Uuid::uuid4()->toString(),
                 'connection_code' => 'erp',
                 'error_datetime' => '2020-01-01T00:00:00+00:00',
                 'content' => ['message' => 'Error 2'],
             ],
             // Ignored: wrong connection code
             [
+                'id' => Uuid::uuid4()->toString(),
                 'connection_code' => 'ecommerce',
                 'error_datetime' => '2020-01-05T00:00:00+00:00',
                 'content' => ['message' => 'Error 3'],
             ],
             [
+                'id' => Uuid::uuid4()->toString(),
                 'connection_code' => 'erp',
                 'error_datetime' => '2020-01-06T00:00:00+00:00',
                 'content' => ['message' => 'Error 4'],
             ],
             [
+                'id' => Uuid::uuid4()->toString(),
                 'connection_code' => 'erp',
                 'error_datetime' => '2020-01-07T00:00:00+00:00',
                 'content' => ['message' => 'Error 5'],
             ],
             // Ignored: error is newer than the $endDate param
             [
+                'id' => Uuid::uuid4()->toString(),
                 'connection_code' => 'erp',
                 'error_datetime' => '2020-01-09T00:00:00+00:00',
                 'content' => ['message' => 'Error 6'],

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Query\Cache;
 
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 use Ramsey\Uuid\Uuid;

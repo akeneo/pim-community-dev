@@ -17,6 +17,7 @@ interface EventsApiDebugRepositoryInterface
      * you need to call the flush method to effectively do it.
      *
      * @param array{
+     *  id: string,
      *  timestamp: int,
      *  level: string,
      *  message: string,

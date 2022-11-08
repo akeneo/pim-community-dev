@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -48,6 +49,7 @@ class EventsApiDebugLogger implements
         EventInterface $event
     ): void {
         $this->repository->persist([
+            'id' => Uuid::uuid4()->toString(),
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::NOTICE,
             'message' => 'The event was not sent because it was raised by the same connection.',
@@ -66,6 +68,7 @@ class EventsApiDebugLogger implements
         array $headers
     ): void {
         $this->repository->persist([
+            'id' => Uuid::uuid4()->toString(),
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::INFO,
             'message' => 'The API event request was sent.',
@@ -84,6 +87,7 @@ class EventsApiDebugLogger implements
     public function logLimitOfEventsApiRequestsReached(): void
     {
         $this->repository->persist([
+            'id' => Uuid::uuid4()->toString(),
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::WARNING,
             'message' => 'The maximum number of events sent per hour has been reached.',
@@ -97,6 +101,7 @@ class EventsApiDebugLogger implements
         EventInterface $event
     ): void {
         $this->repository->persist([
+            'id' => Uuid::uuid4()->toString(),
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::NOTICE,
             'message' => 'The event was not sent because the product does not exists or the connection does not have the required permissions.',
@@ -117,6 +122,7 @@ class EventsApiDebugLogger implements
     public function logEventsApiRequestFailed(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
     {
         $this->repository->persist([
+            'id' => Uuid::uuid4()->toString(),
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::ERROR,
             'message' => 'The endpoint returned an error.',
@@ -139,6 +145,7 @@ class EventsApiDebugLogger implements
         float $timeout
     ): void {
         $this->repository->persist([
+            'id' => Uuid::uuid4()->toString(),
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::ERROR,
             'message' => \sprintf('The endpoint failed to answer under %d ms.', \round($timeout * 1000, 0)),

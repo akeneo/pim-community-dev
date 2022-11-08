@@ -43,10 +43,9 @@ class DateValidatorSpec extends ObjectBehavior
 
     public function it_allows_null_value(
         ExecutionContextInterface $context,
-        ConstraintViolationListInterface $constraintViolationList
     ): void {
         $constraint = new Date(['attributeCode' => 'a_code']);
-        $context->getViolations()->willReturn($constraintViolationList);
+        $context->getViolations()->willReturn(new ConstraintViolationList());
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate(null, $constraint);

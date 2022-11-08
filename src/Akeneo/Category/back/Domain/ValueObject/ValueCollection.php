@@ -120,7 +120,7 @@ final class ValueCollection implements \IteratorAggregate, \Countable
         return new \ArrayIterator($this->values);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }

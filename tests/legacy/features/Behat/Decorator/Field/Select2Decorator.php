@@ -194,23 +194,24 @@ class Select2Decorator extends ElementDecorator
     {
         $widget = $this->getWidget();
 
-        $results = [];
+        $results = $this->spin(function () use ($widget) {
+            $results = [];
+            $resultElements = $widget->findAll('css', '.select2-result-label, .select2-no-results');
 
-        $resultElements = $this->spin(function () use ($widget) {
-            return $widget->findAll('css', '.select2-result-label, .select2-no-results');
+            // Maybe a "No matches found"
+            $firstResult = $resultElements[0];
+            $noMatchesFound = $firstResult->hasClass('select2-no-results');
+
+            if ($noMatchesFound) {
+                return ['results' => []];
+            }
+
+            foreach ($resultElements as $element) {
+                $results[] = $element->getText();
+            }
+
+            return ['results' => $results];
         }, 'Cannot find any .select2-result-label nor select2-no-results element.');
-
-        // Maybe a "No matches found"
-        $firstResult = $resultElements[0];
-        $noMatchesFound = $firstResult->hasClass('select2-no-results');
-
-        if ($noMatchesFound) {
-            return $results;
-        }
-
-        foreach ($resultElements as $element) {
-            $results[] = $element->getText();
-        }
 
         $this->spin(function () {
             $this->close();
@@ -218,7 +219,7 @@ class Select2Decorator extends ElementDecorator
             return true;
         }, 'Cannot close the select2 field');
 
-        return $results;
+        return $results['results'];
     }
 
     /**

@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoade
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Elasticsearch\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,14 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CollectProductValidationErrorEndToEnd extends ApiTestCase
 {
-    /** @var AttributeLoader */
-    private $attributeLoader;
-
-    /** @var FamilyLoader */
-    private $familyLoader;
-
-    /** @var Client */
-    private $elasticsearch;
+    private ?AttributeLoader $attributeLoader;
+    private ?FamilyLoader $familyLoader;
+    private ?Client $elasticsearch;
 
     protected function setUp(): void
     {
@@ -35,7 +30,6 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
 
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
-
         $this->elasticsearch = $this->get('akeneo_connectivity.client.connection_error');
     }
 
@@ -89,6 +83,7 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
 
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertNotEmpty($doc['id']);
 
         $uuid = $doc['content']['product']['uuid'];
         Assert::assertTrue(Uuid::isValid($uuid));
