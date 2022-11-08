@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogAction
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetProductMappingSchemaAction
  */
 class GetCatalogActionTest extends IntegrationTestCase
 {
