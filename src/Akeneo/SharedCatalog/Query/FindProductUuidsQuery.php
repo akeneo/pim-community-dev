@@ -12,8 +12,7 @@ class FindProductUuidsQuery implements FindProductUuidsQueryInterface
 {
     public function __construct(
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-    )
-    {
+    ) {
     }
 
     public function find(SharedCatalog $sharedCatalog, $options = []): array
