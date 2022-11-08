@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\Sql;
 
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileDeleted;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class DatabaseRepository implements ProductFileRepository
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private EventDispatcherInterface $eventDispatcher)
     {
     }
 
@@ -138,7 +140,10 @@ final class DatabaseRepository implements ProductFileRepository
             WHERE identifier = :identifier
         SQL;
 
-        $productFile = $this->connection->executeQuery($sql, ['identifier' => (string) $identifier])->fetchAssociative();
+        $productFile = $this->connection->executeQuery(
+            $sql,
+            ['identifier' => (string) $identifier],
+        )->fetchAssociative();
 
         if (false === $productFile) {
             return null;
@@ -166,13 +171,96 @@ final class DatabaseRepository implements ProductFileRepository
             $productFile['uploaded_at'],
             (bool) $productFile['downloaded'],
             array_map(
-                fn (array $comment) => Comment::hydrate($comment['content'], $comment['author_email'], new \DateTimeImmutable($comment['created_at'])),
+                fn (array $comment) => Comment::hydrate(
+                    $comment['content'],
+                    $comment['author_email'],
+                    new \DateTimeImmutable($comment['created_at']),
+                ),
                 $retailerComments,
             ),
             array_map(
-                fn (array $comment) => Comment::hydrate($comment['content'], $comment['author_email'], new \DateTimeImmutable($comment['created_at'])),
+                fn (array $comment) => Comment::hydrate(
+                    $comment['content'],
+                    $comment['author_email'],
+                    new \DateTimeImmutable($comment['created_at']),
+                ),
                 $supplierComments,
             ),
         );
+    }
+
+    public function deleteProductFileRetailerComments(string $productFileIdentifier): void
+    {
+        $sql = <<<SQL
+            DELETE FROM akeneo_supplier_portal_product_file_retailer_comments
+            WHERE product_file_identifier = :productFileIdentifier
+        SQL;
+
+        $this->connection->executeStatement(
+            $sql,
+            ['productFileIdentifier' => $productFileIdentifier],
+        );
+    }
+
+    public function deleteProductFileSupplierComments(string $productFileIdentifier): void
+    {
+        $sql = <<<SQL
+            DELETE FROM akeneo_supplier_portal_product_file_supplier_comments
+            WHERE product_file_identifier = :productFileIdentifier
+        SQL;
+
+        $this->connection->executeStatement(
+            $sql,
+            ['productFileIdentifier' => $productFileIdentifier],
+        );
+    }
+
+    public function deleteOldProductFiles(): void
+    {
+        $sql = <<<SQL
+            SELECT identifier
+            FROM akeneo_supplier_portal_supplier_product_file
+            WHERE uploaded_at < :retentionLimit;
+        SQL;
+
+        $productFileIdentifiers = array_map(
+            fn (array $productFile) => $productFile['identifier'],
+            $this->connection->executeQuery(
+                $sql,
+                [
+                    'retentionLimit' => (new \DateTimeImmutable())->add(
+                        \DateInterval::createFromDateString(
+                            sprintf(
+                                '-%d days',
+                                self::RETENTION_DURATION_IN_DAYS,
+                            ),
+                        ),
+                    )->format('Y-m-d H:i:s'),
+                ],
+            )->fetchAllAssociative(),
+        );
+
+        if (0 === \count($productFileIdentifiers)) {
+            return;
+        }
+
+        $sql = <<<SQL
+            DELETE FROM akeneo_supplier_portal_supplier_product_file
+            WHERE identifier IN (:productFileIdentifiers)
+        SQL;
+
+        $this->connection->executeStatement(
+            $sql,
+            [
+                'productFileIdentifiers' => $productFileIdentifiers,
+            ],
+            [
+                'productFileIdentifiers' => Connection::PARAM_STR_ARRAY,
+            ],
+        );
+
+        foreach ($productFileIdentifiers as $productFileIdentifier) {
+            $this->eventDispatcher->dispatch(new ProductFileDeleted($productFileIdentifier));
+        }
     }
 }

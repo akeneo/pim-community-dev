@@ -188,7 +188,7 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier'
         tags:
-            - 'kernel.event_subscriber'
+            - { name: kernel.event_subscriber }
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\SuccessMetrics\Subscriber\LogOnContributorAdded:
         arguments:
@@ -200,6 +200,12 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier'
             - '@monolog.logger.supplier_portal'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\DeleteCommentsOnProductFileDeleted:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -243,7 +249,7 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteOldProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
             - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket'
             - '@monolog.logger.supplier_portal'
 
@@ -261,6 +267,7 @@ services:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\Sql\DatabaseRepository
         arguments:
             - '@database_connection'
+            - '@event_dispatcher'
 
     # Service APIs
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFile:

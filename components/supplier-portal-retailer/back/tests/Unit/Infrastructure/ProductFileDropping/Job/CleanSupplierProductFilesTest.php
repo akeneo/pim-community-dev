@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileDropping\Job;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteOldProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Job\CleanSupplierProductFiles;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -23,7 +23,7 @@ final class CleanSupplierProductFilesTest extends TestCase
             GetProductFilePathsOfOldProductFiles::class,
         );
         $deleteProductFilesFromPaths = $this->createMock(DeleteProductFilesFromPaths::class);
-        $deleteOldProductFiles = $this->createMock(DeleteOldProductFiles::class);
+        $productFileRepository = $this->createMock(ProductFileRepository::class);
         $deleteUnknownSupplierDirectoriesInGCSBucket = $this->createMock(
             DeleteUnknownSupplierDirectoriesInGCSBucket::class,
         );
@@ -40,9 +40,9 @@ final class CleanSupplierProductFilesTest extends TestCase
             ->with(['path/to/product_file_1.xlsx', 'path/to/product_file_2.xlsx'])
         ;
 
-        $deleteOldProductFiles
+        $productFileRepository
             ->expects($this->once())
-            ->method('__invoke')
+            ->method('deleteOldProductFiles')
         ;
 
         $deleteUnknownSupplierDirectoriesInGCSBucket
@@ -53,7 +53,7 @@ final class CleanSupplierProductFilesTest extends TestCase
         $sut = new CleanSupplierProductFiles(
             $getProductFilePathsOfOldProductFiles,
             $deleteProductFilesFromPaths,
-            $deleteOldProductFiles,
+            $productFileRepository,
             $deleteUnknownSupplierDirectoriesInGCSBucket,
             new TestLogger(),
         );
@@ -70,7 +70,7 @@ final class CleanSupplierProductFilesTest extends TestCase
             GetProductFilePathsOfOldProductFiles::class,
         );
         $deleteProductFilesFromPaths = $this->createMock(DeleteProductFilesFromPaths::class);
-        $deleteOldProductFiles = $this->createMock(DeleteOldProductFiles::class);
+        $productFileRepository = $this->createMock(ProductFileRepository::class);
         $deleteUnknownSupplierDirectoriesInGCSBucket = $this->createMock(
             DeleteUnknownSupplierDirectoriesInGCSBucket::class,
         );
@@ -100,7 +100,7 @@ final class CleanSupplierProductFilesTest extends TestCase
         $sut = new CleanSupplierProductFiles(
             $getProductFilePathsOfOldProductFiles,
             $deleteProductFilesFromPaths,
-            $deleteOldProductFiles,
+            $productFileRepository,
             $deleteUnknownSupplierDirectoriesInGCSBucket,
             $logger,
         );
