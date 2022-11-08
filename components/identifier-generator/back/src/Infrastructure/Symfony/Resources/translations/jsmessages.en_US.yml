@@ -40,6 +40,14 @@ pim_identifier_generator:
             sections:
                 system: 'System'
             free_text: 'Free text'
+        settings:
+            free_text:
+                title: 'Free text settings'
+                string_label: 'Define your text'
+        empty:
+            title: 'Create your identifier structure'
+            text: 'Click on \'add new property\' on the top right.'
+            link_text: 'Check out our Help center for more information.'
     deletion:
         operations: 'Operations'
         confirmation: 'Are you sure you want to delete this identifier generator?'
