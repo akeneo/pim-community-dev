@@ -62,7 +62,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
               </SecondaryActions.Item>
             </SecondaryActions>
           )}
-          <Button onClick={onSave}>{translate('pim_common.save')}</Button>
+          <Button disabled={isMainButtonDisabled} onClick={onSave}>{translate('pim_common.save')}</Button>
         </PageHeader.Actions>
       </Header>
       <PageContent>

@@ -2,10 +2,15 @@ import {useMutation, useQueryClient} from 'react-query';
 import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {IdentifierGenerator} from '../models';
 
+type ErrorResponse = {
+  path: string,
+  message: string
+}[];
+
 type HookResponse = {
   isLoading: boolean,
   save: (generator: IdentifierGenerator) => void,
-  //error: never
+  error: ErrorResponse
 }
 
 const useSaveGenerator = (): HookResponse => {
@@ -14,25 +19,21 @@ const useSaveGenerator = (): HookResponse => {
   const notify = useNotify();
   const translate = useTranslate();
 
-  const callSave = (generator: IdentifierGenerator) => {
-    return fetch(router.generate('akeneo_identifier_generator_rest_update', {code: generator.code}), {
+  const callSave = async (generator: IdentifierGenerator) => {
+    const res = await fetch(router.generate('akeneo_identifier_generator_rest_update', {code: generator.code}), {
       method: 'PATCH',
       headers: [
         ['Content-type', 'application/json'],
         ['X-Requested-With', 'XMLHttpRequest'],
       ],
       body: JSON.stringify(generator)
-    }).then(res => {
-      return res.json().then(toto => {
-        if (!res.ok) {
-          return Promise.reject(toto);
-        }
-        return toto;
-      });
     });
+    const data = await res.json();
+
+    return res.ok ? data : Promise.reject(data);
   };
 
-  const {mutate, isLoading, error} = useMutation({mutationFn: callSave});
+  const {mutate, isLoading, error} = useMutation<IdentifierGenerator, ErrorResponse, IdentifierGenerator>(callSave);
 
   const save = (generator: IdentifierGenerator) => mutate(generator, {
     onError: () => {
@@ -40,15 +41,11 @@ const useSaveGenerator = (): HookResponse => {
     },
     onSuccess: () => {
       notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.update.success', {code: generator.code}));
-      queryClient.invalidateQueries({ queryKey: ['getIdentifierGenerator'] });
+      queryClient.invalidateQueries({queryKey: ['getIdentifierGenerator']});
     },
   });
 
-  // eslint-disable-next-line no-console
-  console.log({errorInRender: error});
-
-  // @ts-ignore
-  return {isLoading, save, error: error || []};
+  return {isLoading, save, error: error ?? [] };
 };
 
 export {useSaveGenerator};
