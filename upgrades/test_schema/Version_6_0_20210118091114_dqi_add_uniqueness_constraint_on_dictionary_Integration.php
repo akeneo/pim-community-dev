@@ -55,7 +55,7 @@ SQL;
 SELECT COUNT(*) FROM pimee_data_quality_insights_text_checker_dictionary;
 SQL;
 
-        $count = intval($this->get('database_connection')->executeQuery($countDictionaryWords)->fetchOne());
+        $count = intval($this->get('database_connection')->executeQuery($countDictionaryWords)->fetchColumn());
 
         $this->assertSame($expectedCount, $count);
     }

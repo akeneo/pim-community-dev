@@ -27,7 +27,7 @@ WHERE product.identifier = '1111111113'
 ORDER BY channel_code, locale_code;
 SQL;
 
-        $completenesses = $this->get('database_connection')->fetchAllAssociative($query);
+        $completenesses = $this->get('database_connection')->fetchAll($query);
 
         Assert::assertSame([
             ['channel_code' => 'ecommerce', 'locale_code' => 'de_DE', 'missing_count' => '6'],
@@ -47,7 +47,7 @@ amor;cotton
 TEXT;
         $jobLauncher->launchAuthenticatedImport('csv_product_model_import_with_rules', $content, 'admin');
 
-        $completenesses = $this->get('database_connection')->fetchAllAssociative($query, ['identifier' => '1111111113']);
+        $completenesses = $this->get('database_connection')->fetchAll($query, ['identifier' => '1111111113']);
 
         Assert:
         self::assertNotSame([

@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
@@ -38,7 +38,7 @@ class SqlReferenceEntityExists implements ReferenceEntityExistsInterface
         return $this->isIdentifierExisting($statement);
     }
 
-    private function executeQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): Result
+    private function executeQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): Statement
     {
         $query = <<<SQL
         SELECT EXISTS (
@@ -51,7 +51,7 @@ SQL;
         return $this->sqlConnection->executeQuery($query, ['identifier' => (string) $referenceEntityIdentifier]);
     }
 
-    private function isIdentifierExisting(Result $statement): bool
+    private function isIdentifierExisting(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();

@@ -214,7 +214,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         }
         $qb = $this->createQueryBuilder('ca');
         $qb->where($qb->expr()->in('ca.category', $categoryIds));
-        $qb->andWhere($qb->expr()->eq('ca.' . $this->getAccessField($accessLevel), true));
+        $qb->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true));
         $qb->leftJoin('ca.userGroup', 'ug');
         $qb->select('DISTINCT (ug.id) as id, ug.name');
 
@@ -245,7 +245,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
                 $qb->expr()->in('o.userGroup', ':groups')
             )
             ->setParameter('groups', $user->getGroups()->toArray())
-            ->andWhere($qb->expr()->eq('o.' . $this->getAccessField(Attributes::OWN_PRODUCTS), true))
+            ->andWhere($qb->expr()->eq('o.'.$this->getAccessField(Attributes::OWN_PRODUCTS), true))
             ->setMaxResults(1);
 
         $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SCALAR);
@@ -323,7 +323,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
 
         return $qb->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
             ->setParameter('groups', $user->getGroups()->toArray())
-            ->andWhere($qb->expr()->eq('ca.' . $this->getAccessField($accessLevel), true))
+            ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
             ->innerJoin('ca.category', 'c', 'c.id');
     }
 
@@ -435,7 +435,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
             ->select('DISTINCT c.id')
             ->innerJoin('ca.category', 'c', 'c.id')
             ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
-            ->andWhere($qb->expr()->eq('ca.' . $this->getAccessField($accessLevel), true))
+            ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->andX(

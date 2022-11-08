@@ -79,7 +79,7 @@ SELECT count(`completeness`.`product_uuid`)
 FROM `pimee_teamwork_assistant_completeness_per_attribute_group` AS `completeness`;
 SQL;
 
-        $preProcessingEntries = (int) $this->getConnection()->fetchOne($selectPreProcessing);
+        $preProcessingEntries = (int) $this->getConnection()->fetchColumn($selectPreProcessing);
         $this->assertSame(
             $preProcessingEntries,
             9,
@@ -93,7 +93,7 @@ SQL;
 SELECT DISTINCT(BIN_TO_UUID(completeness.product_uuid)) AS product_uuid
 FROM `pimee_teamwork_assistant_completeness_per_attribute_group` AS `completeness`;
 SQL;
-        $productsUuidPreProcessing = $this->getConnection()->fetchFirstColumn($selectProductsPreProcessing);
+        $productsUuidPreProcessing = $this->getConnection()->fetchAll($selectProductsPreProcessing);
         $clothingProductsUuid = $this->getFormattedClothingProductUuids();
 
         $this->assertCount(count($productsUuidPreProcessing), $clothingProductsUuid);
@@ -116,7 +116,7 @@ WHERE `project_product`.`project_id` = :project_id;
 SQL;
 
         $projectProductsResult = (int) $this->getConnection()
-            ->fetchOne($selectProducts, ['project_id' => $projectId]);
+            ->fetchColumn($selectProducts, ['project_id' => $projectId]);
 
         $this->assertSame(
             $projectProductsResult,
@@ -146,7 +146,7 @@ SQL;
         ]);
         $productsUuid = [];
         foreach ($pqb->execute() as $product) {
-            $productsUuid[] = $product->getUuid()->toString();
+            $productsUuid[] = ['product_uuid' => $product->getUuid()->toString()];
         }
 
         return $productsUuid;

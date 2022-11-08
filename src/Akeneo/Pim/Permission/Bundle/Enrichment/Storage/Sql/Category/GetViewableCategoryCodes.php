@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category;
@@ -47,11 +46,15 @@ WHERE EXISTS (
 
 SQL;
 
-        return $this->connection->fetchFirstColumn(
+        $results = $this->connection->fetchAll(
             $query,
             [$userId, $categoryCodes],
             [ParameterType::INTEGER, Connection::PARAM_STR_ARRAY]
         );
+
+        return array_map(function ($result) {
+            return $result['category_code'];
+        }, $results);
     }
 
     /**
@@ -74,6 +77,10 @@ FROM
 JOIN pim_catalog_category category ON category.id = viewable_category.category_id;
 SQL;
 
-        return $this->connection->fetchFirstColumn($query, [$groupIds], [Connection::PARAM_INT_ARRAY]);
+        $categoryCodes = $this->connection->fetchAllAssociative($query, [$groupIds], [Connection::PARAM_INT_ARRAY]);
+
+        return array_map(function ($categoryCode) : string {
+            return $categoryCode['category_code'];
+        }, $categoryCodes);
     }
 }

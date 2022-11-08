@@ -32,7 +32,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
-use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\DBALException;
 
 class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
 {

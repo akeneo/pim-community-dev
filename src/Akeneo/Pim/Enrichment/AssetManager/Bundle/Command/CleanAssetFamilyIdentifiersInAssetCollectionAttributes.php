@@ -57,10 +57,8 @@ class CleanAssetFamilyIdentifiersInAssetCollectionAttributes extends Command
             }
 
             $assetFamilyIdentifier = $this->findExactAssetFamilyIdentifier($attributeProperties['reference_data_name']);
-            if (
-                null === $assetFamilyIdentifier
-                || $assetFamilyIdentifier === $attributeProperties['reference_data_name']
-            ) {
+            if (null === $assetFamilyIdentifier
+                || $assetFamilyIdentifier === $attributeProperties['reference_data_name']) {
                 continue;
             }
 
@@ -94,7 +92,7 @@ SQL;
         $exactAssetFamilyIdentifier = $this->dbalConnection->executeQuery(
             $query,
             ['identifier' => $rawIdentifier]
-        )->fetchOne();
+        )->fetchColumn();
 
         return is_string($exactAssetFamilyIdentifier) ? $exactAssetFamilyIdentifier : null;
     }

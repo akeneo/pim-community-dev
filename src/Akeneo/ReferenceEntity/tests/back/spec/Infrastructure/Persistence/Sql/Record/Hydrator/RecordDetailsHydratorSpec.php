@@ -16,7 +16,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydratorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class RecordDetailsHydratorSpec extends ObjectBehavior
@@ -25,7 +25,7 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
         Connection $connection,
         ValueHydratorInterface $valueHydrator
     ) {
-        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
         $this->beConstructedWith($connection, $valueHydrator);
     }
 

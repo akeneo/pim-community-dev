@@ -38,7 +38,7 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery($query);
 
-        while ($attributeCode = $stmt->fetchOne()) {
+        while ($attributeCode = $stmt->fetchColumn()) {
             yield new AttributeCode($attributeCode);
         }
     }

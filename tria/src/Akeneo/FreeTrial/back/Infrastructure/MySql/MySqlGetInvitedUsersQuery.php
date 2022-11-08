@@ -34,7 +34,7 @@ SELECT email, status FROM akeneo_free_trial_invited_user ORDER BY created_at DES
 SQL;
         $stmt = $this->dbalConnection->executeQuery($query);
 
-        $invitedUsers = $stmt->fetchAllAssociative();
+        $invitedUsers = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         return array_map(function (array $invitedUser) {
             return new InvitedUser($invitedUser['email'], InvitedUserStatus::fromString($invitedUser['status']));

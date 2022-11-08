@@ -97,7 +97,7 @@ WHERE user_group_id = :user_group_id
 AND locale_id = :locale_id
 SQL;
 
-        $permissions = $this->connection->fetchAssociative($query, [
+        $permissions = $this->connection->fetchAssoc($query, [
             'user_group_id' => $userGroupId,
             'locale_id' => $localeId,
         ]);
@@ -106,7 +106,7 @@ SQL;
             return null;
         }
 
-        return array_map(fn ($v) => (bool) $v, $permissions);
+        return array_map(fn($v) => (bool) $v, $permissions);
     }
 
     private function createUserGroup(string $name, array $defaultPermissions): Group

@@ -9,7 +9,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\DataHydrat
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\DataHydratorRegistry;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydrator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class ValueHydratorSpec extends ObjectBehavior
@@ -18,7 +18,7 @@ class ValueHydratorSpec extends ObjectBehavior
         Connection $sqlConnection,
         DataHydratorRegistry $dataHydratorRegistry
     ) {
-        $sqlConnection->getDatabasePlatform()->willReturn(new MySQLPlatform());
+        $sqlConnection->getDatabasePlatform()->willReturn(new MySqlPlatform());
         $this->beConstructedWith($sqlConnection, $dataHydratorRegistry);
     }
 
