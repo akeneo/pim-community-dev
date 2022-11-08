@@ -91,7 +91,15 @@ final class Catalog
     }
 
     /**
-     * @return array{id: string, name: string, enabled: bool, owner_username: string, product_selection_criteria: array<ProductSelectionCriterion>, product_value_filters: ProductValueFilters}
+     * @return array{
+     *     id: string,
+     *     name: string,
+     *     enabled: bool,
+     *     owner_username: string,
+     *     product_selection_criteria: array<ProductSelectionCriterion>,
+     *     product_value_filters: ProductValueFilters,
+     *     product_mapping: ProductMapping
+     * }
      */
     public function normalize(): array
     {
