@@ -10,7 +10,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\Pr
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -32,6 +35,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         FillMissingValuesInterface $fillMissingProductModelValues,
+        GetAttributes $getAttributes,
         GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         StepExecution $stepExecution
     ) {
@@ -40,7 +44,8 @@ class ProductProcessorSpec extends ObjectBehavior
             $channelRepository,
             $attributeRepository,
             $fillMissingProductModelValues,
-            $getNormalizedProductQualityScores
+            $getAttributes,
+            $getNormalizedProductQualityScores,
         );
 
         $this->setStepExecution($stepExecution);
@@ -62,16 +67,16 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         StepExecution $stepExecution,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
-        JobParameters $jobParameters,
-        AttributeInterface $attribute
+        JobParameters $jobParameters
     ) {
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-        $attribute->isLocaleSpecific()->willReturn(false);
+        $getAttributes->forCode('picture')->willReturn($this->createAttribute('picture'));
+        $getAttributes->forCode('size')->willReturn($this->createAttribute('size'));
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('storage')->willReturn(true);
@@ -133,6 +138,7 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         StepExecution $stepExecution,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -144,9 +150,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ExecutionContext $executionContext,
         AttributeInterface $attribute
     ) {
-
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-        $attribute->isLocaleSpecific()->willReturn(false);
+        $getAttributes->forCode('picture')->willReturn($this->createAttribute('picture'));
+        $getAttributes->forCode('pdf_description')->willReturn($this->createAttribute('pdf_description'));
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('storage')->willReturn(true);
@@ -202,6 +207,7 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         StepExecution $stepExecution,
         ChannelInterface $channel,
@@ -212,9 +218,11 @@ class ProductProcessorSpec extends ObjectBehavior
     ) {
         $uuid = Uuid::uuid4();
         $product->getUuid()->willReturn($uuid);
+
+        $getAttributes->forCode('picture')->willReturn($this->createAttribute('picture'));
+        $getAttributes->forCode('size')->willReturn($this->createAttribute('size'));
+
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-        $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
@@ -277,5 +285,20 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($normalizedProductWithQualityScores['quality_scores']);
 
         $this->process($product)->shouldBeLike($normalizedProductWithQualityScores);
+    }
+
+    private function createAttribute(string $code): Attribute {
+        return new Attribute(
+            $code,
+            AttributeTypes::NUMBER,
+            [],
+            true,
+            true,
+            null,
+            null,
+            true,
+            'decimal',
+            []
+        );
     }
 }

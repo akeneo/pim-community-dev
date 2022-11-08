@@ -123,7 +123,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($family, $format = null)
+    public function supportsNormalization($family, $format = null): bool
     {
         return $family instanceof FamilyInterface &&
             in_array($format, $this->supportedFormats);

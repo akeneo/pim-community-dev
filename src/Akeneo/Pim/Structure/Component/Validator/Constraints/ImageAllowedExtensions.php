@@ -16,7 +16,7 @@ class ImageAllowedExtensions extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_image_allowed_extensions_validator';
     }
@@ -24,7 +24,7 @@ class ImageAllowedExtensions extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::PROPERTY_CONSTRAINT;
     }

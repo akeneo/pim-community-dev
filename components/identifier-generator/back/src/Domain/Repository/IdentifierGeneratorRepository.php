@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToDeleteIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToFetchIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToUpdateIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 
@@ -21,6 +23,11 @@ interface IdentifierGeneratorRepository
     public function save(IdentifierGenerator $identifierGenerator): void;
 
     /**
+     * @throws UnableToUpdateIdentifierGeneratorException
+     */
+    public function update(IdentifierGenerator $identifierGenerator): void;
+
+    /**
      * @throws UnableToFetchIdentifierGeneratorException
      */
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator;
@@ -34,4 +41,9 @@ interface IdentifierGeneratorRepository
     public function getNextId(): IdentifierGeneratorId;
 
     public function count(): int;
+
+    /**
+     * @throws UnableToDeleteIdentifierGeneratorException
+     */
+    public function delete(string $identifierGeneratorCode): void;
 }

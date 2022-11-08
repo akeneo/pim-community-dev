@@ -13,6 +13,7 @@ use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -125,7 +126,7 @@ class AclRoleHandler
     /**
      * Create form view for current form
      *
-     * @return \Symfony\Component\Form\FormView
+     * @return FormView
      */
     public function createView()
     {

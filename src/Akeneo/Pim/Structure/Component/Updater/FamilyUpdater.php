@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
@@ -21,7 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Updates a family.
@@ -32,20 +31,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class FamilyUpdater implements ObjectUpdaterInterface
 {
-    /** @var PropertyAccessor */
-    protected $accessor;
+    protected PropertyAccessorInterface $accessor;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface   $familyRepository
-     * @param AttributeRepositoryInterface            $attributeRepository
-     * @param ChannelRepositoryInterface              $channelRepository
-     * @param AttributeRequirementFactory             $attrRequiFactory
-     * @param AttributeRequirementRepositoryInterface $requirementRepo
-     * @param TranslatableUpdater                     $translatableUpdater
-     * @param IdentifiableObjectRepositoryInterface   $localeRepository
-     */
     public function __construct(
-        protected IdentifiableObjectRepositoryInterface $familyRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected ChannelRepositoryInterface $channelRepository,
         protected AttributeRequirementFactory $attrRequiFactory,
@@ -66,20 +54,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 ClassUtils::getClass($family),
                 FamilyInterface::class
             );
-        }
-
-        // For imports, sku are automatically added to the attribute_requirements and data is directly sent to this update
-        // to keep this "automatic" behavior, we add sku on new families
-        if (null === $family->getCreated()) {
-            $channels = $this->channelRepository->findAll();
-            $identifierCode = $this->attributeRepository->getIdentifierCode();
-            /** @var ChannelInterface $channel */
-            foreach ($channels as $channel) {
-                $channelCode = $channel->getCode();
-                $data['attribute_requirements'][$channelCode] = \array_values(
-                    \array_unique(\array_merge([$identifierCode], $data['attribute_requirements'][$channelCode] ?? []))
-                );
-            }
         }
 
         foreach ($data as $field => $value) {
@@ -249,11 +223,20 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function setAttributeRequirements(FamilyInterface $family, array $newRequirements)
     {
+        // when creating a family, the identifier attribute must be required
+        if (null === $family->getCreated()) {
+            $identifierCode = $this->attributeRepository->getIdentifierCode();
+            foreach ($newRequirements as $channelCode => $requirements) {
+                if (!\in_array($identifierCode, $requirements)) {
+                    $newRequirements[$channelCode][] = $identifierCode;
+                }
+            }
+        }
         foreach ($family->getAttributeRequirements() as $requirement) {
             $channelCode = $requirement->getChannelCode();
             if (array_key_exists($channelCode, $newRequirements)) {
-                $attribute = $requirement->getAttribute();
-                $key = array_search($attribute->getCode(), $newRequirements[$channelCode], true);
+                $attributeCode = $requirement->getAttributeCode();
+                $key = array_search($attributeCode, $newRequirements[$channelCode], true);
                 if (false === $key) {
                     $family->removeAttributeRequirement($requirement);
                 } elseif (true === $requirement->isRequired()) {
@@ -330,7 +313,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         ChannelInterface $channel
     ) {
         $requirement = $this->requirementRepo->findOneBy(
-            ['attribute' => $attribute->getId(), 'channel' => $channel->getId(), 'family' => $family->getId()]
+            ['attribute' => $attribute, 'channel' => $channel, 'family' => $family]
         );
 
         if (null === $requirement) {
@@ -348,6 +331,14 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function setAttributes(FamilyInterface $family, array $data)
     {
+        // when creating a family, we always want to include the identifier attribute
+        if (null === $family->getCreated()) {
+            $identifierCode = $this->attributeRepository->getIdentifierCode();
+            if (!\in_array($identifierCode, $data)) {
+                $data[] = $identifierCode;
+            }
+        }
+
         $newAttributes = [];
         foreach ($data as $attributeCode) {
             if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {

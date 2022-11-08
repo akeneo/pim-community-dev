@@ -62,6 +62,40 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         ]);
     }
 
+    public function it_can_update_identifier_generators(): void
+    {
+        $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
+            IdentifierGeneratorCode::fromString('abcdef'),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            Target::fromString('sku'),
+            Delimiter::fromString('-'),
+        );
+
+        $this->save($identifierGenerator);
+
+        $this->generators->shouldEqual([
+            'abcdef' => $identifierGenerator,
+        ]);
+
+        $identifierGenerator2 = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
+            IdentifierGeneratorCode::fromString('abcdef'),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc update')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur update']),
+            Target::fromString('sku'),
+            Delimiter::fromString('='),
+        );
+
+        $this->update($identifierGenerator2);
+        $this->generators->shouldEqual([
+            'abcdef' => $identifierGenerator2,
+        ]);
+    }
+
     public function it_can_retrieve_an_identifier_generator_with_its_code()
     {
         $identifierGenerator = new IdentifierGenerator(
@@ -101,6 +135,29 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->count()->shouldReturn(1);
     }
 
+    public function it_can_delete_an_identifier_generator()
+    {
+        $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
+            IdentifierGeneratorCode::fromString('aabbcc'),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            Target::fromString('sku'),
+            Delimiter::fromString('-'),
+        );
+        $this->save($identifierGenerator);
+
+        $this->count()->shouldReturn(1);
+
+        $this->delete('unknown_code');
+
+        $this->count()->shouldReturn(1);
+
+        $this->delete('aabbcc');
+
+        $this->count()->shouldReturn(0);
+    }
     public function it_can_retrieve_all_identifiers_generators()
     {
         $identifierGenerator = new IdentifierGenerator(

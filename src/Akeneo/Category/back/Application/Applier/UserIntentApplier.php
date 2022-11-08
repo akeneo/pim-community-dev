@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Applier;
 
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 
 /**
  * Interface meant for applying user intents on categories.

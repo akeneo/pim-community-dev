@@ -22,7 +22,7 @@ class ConversionUnits extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_conversion_units_validator';
     }

@@ -341,7 +341,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * {@inheritdoc}
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return $this->salt;
     }
@@ -349,7 +349,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * {@inheritdoc}
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }

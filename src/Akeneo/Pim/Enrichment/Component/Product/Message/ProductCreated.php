@@ -24,7 +24,7 @@ class ProductCreated extends Event
         Assert::keyExists($data, 'identifier');
         Assert::nullOrString($data['identifier']);
         Assert::keyExists($data, 'uuid');
-        Assert::true(Uuid::isValid($data['uuid']));
+        Assert::isInstanceOf($data['uuid'], UuidInterface::class);
 
         parent::__construct($author, $data, $timestamp, $uuid);
     }

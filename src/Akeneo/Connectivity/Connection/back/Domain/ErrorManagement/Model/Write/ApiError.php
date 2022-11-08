@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -13,8 +13,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
  */
 abstract class ApiError implements ApiErrorInterface
 {
+    private string $id;
     private string $content;
-
     private \DateTimeImmutable $dateTime;
 
     public function __construct(string $content, \DateTimeImmutable $dateTime = null)
@@ -38,8 +38,14 @@ abstract class ApiError implements ApiErrorInterface
             $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
         }
 
+        $this->id = Uuid::uuid4()->toString();
         $this->content = $content;
         $this->dateTime = $dateTime;
+    }
+
+    public function id(): string
+    {
+        return  $this->id;
     }
 
     public function content(): string
@@ -55,6 +61,7 @@ abstract class ApiError implements ApiErrorInterface
     public function normalize(): array
     {
         return [
+            'id' => $this->id(),
             'content' => \json_decode($this->content(), true, 512, JSON_THROW_ON_ERROR),
             'error_datetime' => $this->dateTime->format(\DateTimeInterface::ATOM),
         ];

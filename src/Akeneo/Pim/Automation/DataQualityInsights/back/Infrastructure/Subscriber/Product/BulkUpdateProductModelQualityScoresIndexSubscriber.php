@@ -18,7 +18,7 @@ final class BulkUpdateProductModelQualityScoresIndexSubscriber implements EventS
     {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ProductModelsEvaluated::class => 'bulkUpdateProductModelQualityScoresIndex',

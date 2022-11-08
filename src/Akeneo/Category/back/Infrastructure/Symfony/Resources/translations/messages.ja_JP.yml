@@ -11,4 +11,3 @@ pim_enrich:
       history: カテゴリの履歴を表示
       template: カテゴリテンプレートを管理
       edit_attributes: カテゴリ属性を編集
-      order_trees: カテゴリ内のツリーの並べ替え

@@ -8,6 +8,8 @@ use Akeneo\UserManagement\Bundle\Provider\CustomDaoAuthenticationProvider;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -22,9 +24,9 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
     const PROVIDER_KEY = "providerKey";
     const USERNAME = "username";
 
-    public function let(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, EncoderFactoryInterface $encoderFactory, UserManager $userManager)
+    public function let(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, PasswordHasherFactoryInterface $hasherFactory, UserManager $userManager)
     {
-        $this->beConstructedWith($userProvider, $userChecker, self::PROVIDER_KEY, $encoderFactory, $userManager, self::ACCOUNT_LOCK_DURATION, self::ALLOWED_FAILED_ATTEMPTS, false);
+        $this->beConstructedWith($userProvider, $userChecker, self::PROVIDER_KEY, $hasherFactory, $userManager, self::ACCOUNT_LOCK_DURATION, self::ALLOWED_FAILED_ATTEMPTS, false);
     }
 
     public function it_is_initializable()
@@ -71,8 +73,8 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         UserInterface $user,
         UserProviderInterface $userProvider,
         UsernamePasswordToken $usernamePasswordToken,
-        PasswordEncoderInterface $passwordEncoder,
-        EncoderFactoryInterface $encoderFactory
+        PasswordHasherInterface $passwordHasher,
+        PasswordHasherFactoryInterface $hasherFactory
     ) {
         $this->initUser(
             $user,
@@ -86,18 +88,18 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
 
         $this->initUsernamePasswordToken($usernamePasswordToken);
         $userProvider->loadUserByIdentifier(self::USERNAME)->shouldBeCalled()->willReturn($user);
-        $passwordEncoder->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
-        $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
+        $passwordHasher->verify(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
+        $hasherFactory->getPasswordHasher(Argument::any())->willReturn($passwordHasher);
 
         $this->shouldThrow(LockedAccountException::class)
             ->duringAuthenticate($usernamePasswordToken);
     }
 
     public function it_increase_failed_attempts_counter(
-        EncoderFactoryInterface $encoderFactory,
+        PasswordHasherFactoryInterface $hasherFactory,
         UserManager $userManager,
         UserProviderInterface $userProvider,
-        PasswordEncoderInterface $passwordEncoder,
+        PasswordHasherInterface $passwordHasher,
         UserInterface $user,
         UsernamePasswordToken $usernamePasswordToken
     ) {
@@ -109,15 +111,15 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
 
         $this->initUsernamePasswordToken($usernamePasswordToken);
         $userProvider->loadUserByIdentifier(self::USERNAME)->shouldBeCalled()->willReturn($user);
-        $passwordEncoder->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
-        $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
+        $passwordHasher->verify(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
+        $hasherFactory->getPasswordHasher(Argument::any())->willReturn($passwordHasher);
         $this->shouldThrow(BadCredentialsException::class)
             ->duringAuthenticate($usernamePasswordToken);
 
         $this->checkLockStateUpdated($userManager, $user, self::ALLOWED_FAILED_ATTEMPTS);
     }
 
-    public function it_initialize_failed_attempts_after_reset(UserManager $userManager, UserProviderInterface $userProvider, EncoderFactoryInterface $encoderFactory, PasswordEncoderInterface $passwordEncoder, UserInterface $user, UsernamePasswordToken $usernamePasswordToken)
+    public function it_initialize_failed_attempts_after_reset(UserManager $userManager, UserProviderInterface $userProvider, PasswordHasherFactoryInterface $hasherFactory, PasswordHasherInterface $passwordHasher, UserInterface $user, UsernamePasswordToken $usernamePasswordToken)
     {
         $this->initUser(
             $user,
@@ -127,7 +129,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         $user->getConsecutiveAuthenticationFailureCounter()->willReturn(0);
         $this->initUsernamePasswordToken($usernamePasswordToken);
         $userProvider->loadUserByIdentifier(self::USERNAME)->willReturn($user);
-        $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
+        $hasherFactory->getPasswordHasher(Argument::any())->willReturn($passwordHasher);
 
         $this->shouldThrow(BadCredentialsException::class)
             ->duringAuthenticate($usernamePasswordToken);

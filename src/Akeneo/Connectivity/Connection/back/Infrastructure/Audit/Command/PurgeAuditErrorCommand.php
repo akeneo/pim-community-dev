@@ -33,6 +33,6 @@ class PurgeAuditErrorCommand extends Command
 
         $this->purgeAuditErrorsQuery->execute($before);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

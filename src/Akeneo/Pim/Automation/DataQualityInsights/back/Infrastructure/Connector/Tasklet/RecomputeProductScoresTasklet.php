@@ -25,12 +25,12 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
     private const BULK_SIZE = 1000;
 
     public function __construct(
-        private ConsolidateProductScores $consolidateProductScores,
-        private Connection $connection,
-        private JobLauncherInterface $queueJobLauncher,
-        private JobInstanceRepository $jobInstanceRepository,
-        private LoggerInterface $logger,
-        private ProductEntityIdFactoryInterface $idFactory
+        private readonly ConsolidateProductScores $consolidateProductScores,
+        private readonly Connection $connection,
+        private readonly JobLauncherInterface $queueJobLauncher,
+        private readonly JobInstanceRepository $jobInstanceRepository,
+        private readonly LoggerInterface $logger,
+        private readonly ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
@@ -66,9 +66,6 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         $this->scheduleNextRecomputeProductsScoresJob($lastProductUuidAsBytes);
     }
 
-    /**
-     * @return string[] array of uuid
-     */
     private function getNextProductUuids(string $lastProductUuid): array
     {
         $query = <<<SQL
@@ -114,7 +111,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         return $jobInstance;
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }

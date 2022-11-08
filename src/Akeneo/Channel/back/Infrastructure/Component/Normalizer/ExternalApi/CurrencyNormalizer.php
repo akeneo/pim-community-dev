@@ -35,7 +35,7 @@ class CurrencyNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof CurrencyInterface && 'external_api' === $format;
     }

@@ -1,10 +1,10 @@
 import {useContext, useMemo} from 'react';
 import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
-import {EnrichCategory, Template} from '../models';
 import type {EditCategoryForm} from '../models';
+import {EnrichCategory, Template} from '../models';
 import {populateCategory} from '../helpers';
-import {useTemplate} from './useTemplate';
 import {EditCategoryContext} from '../components';
+import {useTemplateByTemplateUuidInMemory} from './useTemplateByTemplateUuidInMemory';
 
 interface UseCategoryResponseCommon {
   load: () => Promise<void>;
@@ -42,16 +42,15 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
     data: template,
     status: templateFetchingStatus,
     error: templateFetchingError,
-  } = useTemplate({
+  } = useTemplateByTemplateUuidInMemory({
     // TODO when available : use template uuid from category.template_id
     uuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
     enabled: categoryFetchingStatus === 'fetched',
   });
 
-  const populatedCategory = useMemo(
-    () => (category && template ? populateCategory(category, template, localeCodes) : null),
-    [category, template, localeCodes]
-  );
+  const populatedCategory = useMemo(() => {
+    return category && template ? populateCategory(category, template, localeCodes) : null;
+  }, [category, template, localeCodes]);
 
   if (categoryFetchingStatus === 'error') {
     return {load, status: 'error', error: categoryFetchingError!};

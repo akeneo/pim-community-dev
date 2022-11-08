@@ -20,7 +20,7 @@ class AttributeOptionNormalizer extends BaseNormalizer
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormats);
     }

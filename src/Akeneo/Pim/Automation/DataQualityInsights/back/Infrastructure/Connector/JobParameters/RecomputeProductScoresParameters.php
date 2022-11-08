@@ -15,7 +15,8 @@ use Symfony\Component\Validator\Constraints;
  */
 final class RecomputeProductScoresParameters implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
-    public const LAST_PRODUCT_UUID = 'lastProductUuId';
+    // Keep "lastProductId" value to stay compatible with the pending jobs in the queue
+    public const LAST_PRODUCT_UUID = 'lastProductId';
 
     public function getConstraintCollection(): Constraints\Collection
     {

@@ -3,6 +3,3 @@ akeneo_connectivity.connection:
   acl.manage_apps: 앱 관리
   acl.manage_test_apps: 테스트 앱 관리
   acl.open_apps: 앱 열기
-pim_notification:
-  connected_app_authorizations:
-    message: '<strong>%app_name%</strong> 앱에 권한 부여 업데이트가 필요합니다. 앱을 열어 진행해주십시오.'

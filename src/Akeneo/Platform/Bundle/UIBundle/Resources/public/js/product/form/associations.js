@@ -427,7 +427,7 @@ define([
         assocType.productCount =
           association && association.products
             ? association.products.length
-            : association.product_uuids
+            : association && association.product_uuids
             ? association.product_uuids.length
             : 0;
 

@@ -42,7 +42,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      *
-     * @param \Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
@@ -69,7 +69,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ChannelInterface && in_array($format, $this->supportedFormats);
     }

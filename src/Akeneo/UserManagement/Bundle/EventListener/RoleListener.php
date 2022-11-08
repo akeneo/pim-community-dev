@@ -10,7 +10,7 @@ use Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink;
 class RoleListener
 {
     /**
-     * @var \Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink
+     * @var ServiceLink
      */
     protected $aclSidManagerLink;
 

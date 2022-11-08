@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Storage\Save\Saver;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

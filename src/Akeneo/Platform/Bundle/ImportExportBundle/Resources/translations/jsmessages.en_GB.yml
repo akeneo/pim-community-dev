@@ -152,7 +152,8 @@ pim_import_export:
             help: Define the locale in which labels are displayed.
       file_path: File path
       storage_form:
-        file_path.label: File path
+        file_path:
+          label: File path
   batch_status:
     1: Completed
     2: Starting

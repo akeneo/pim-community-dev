@@ -124,7 +124,7 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-        $this->assertSame(Response::HTTP_REQUEST_ENTITY_TOO_LARGE, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
     }
 
     public function testPartialUpdateListWithInvalidAndTooLongLines(): void
@@ -262,7 +262,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 

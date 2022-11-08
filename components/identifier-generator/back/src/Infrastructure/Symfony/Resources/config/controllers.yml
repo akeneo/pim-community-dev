@@ -15,3 +15,19 @@ services:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\DeleteIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'

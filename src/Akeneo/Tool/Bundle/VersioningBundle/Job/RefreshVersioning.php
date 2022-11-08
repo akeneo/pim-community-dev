@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 /**
  * Refresh versioning data
@@ -22,7 +22,7 @@ class RefreshVersioning implements TaskletInterface
     private StepExecution $stepExecution;
 
     public function __construct(
-        private Logger $logger,
+        private LoggerInterface $logger,
         private VersionManager $versionManager,
         private BulkObjectDetacherInterface $bulkObjectDetacher,
         private EntityManagerInterface $entityManager

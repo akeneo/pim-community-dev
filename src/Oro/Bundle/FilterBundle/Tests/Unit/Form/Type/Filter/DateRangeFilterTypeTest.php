@@ -48,7 +48,7 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
 
     public function testGetName()
     {
-        $this->assertEquals(DateRangeFilterType::NAME, $this->type->getName());
+        $this->assertEquals(DateRangeFilterType::NAME, $this->type->getBlockPrefix());
     }
 
     /**

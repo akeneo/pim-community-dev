@@ -22,7 +22,11 @@ namespace Akeneo\Catalogs\Domain;
  *      currencies?: array<string>,
  * }
  *
- * @phpstan-type ProductMapping array<string, array<mixed>>
+ * @phpstan-type ProductMapping array<string, array{
+ *          source: string,
+ *          locale: string|null,
+ *          scope: string|null,
+ * }>
  */
 final class Catalog
 {

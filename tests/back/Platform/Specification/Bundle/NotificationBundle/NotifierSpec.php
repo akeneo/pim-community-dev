@@ -32,7 +32,7 @@ class NotifierSpec extends ObjectBehavior
         UserNotificationInterface $userNotification,
         UserInterface $user
     ) {
-        $userProvider->loadUserByUsername('author')->willReturn($user);
+        $userProvider->loadUserByIdentifier('author')->willReturn($user);
         $userNotifFactory->createUserNotification($notification, $user)->willReturn($userNotification);
 
         $notificationSaver->save($notification)->shouldBeCalled();
@@ -50,7 +50,7 @@ class NotifierSpec extends ObjectBehavior
         UserNotificationInterface $userNotification,
         UserInterface $user
     ) {
-        $userProvider->loadUserByUsername()->shouldNotBeCalled();
+        $userProvider->loadUserByIdentifier()->shouldNotBeCalled();
         $userNotifFactory->createUserNotification($notification, $user)->willReturn($userNotification);
 
         $notificationSaver->save($notification)->shouldBeCalled();
@@ -70,10 +70,10 @@ class NotifierSpec extends ObjectBehavior
         UserInterface $user,
         UserInterface $userAuthor
     ) {
-        $userProvider->loadUserByUsername('author')->willReturn($userAuthor);
+        $userProvider->loadUserByIdentifier('author')->willReturn($userAuthor);
         $userNotifFactory->createUserNotification($notification, $userAuthor)->willReturn($userNotificationAuthor);
 
-        $userProvider->loadUserByUsername($user)->shouldNotBeCalled();
+        $userProvider->loadUserByIdentifier($user)->shouldNotBeCalled();
         $userNotifFactory->createUserNotification($notification, $user)->willReturn($userNotification);
 
         $notificationSaver->save($notification)->shouldBeCalled();
@@ -89,7 +89,7 @@ class NotifierSpec extends ObjectBehavior
         NotificationInterface $notification,
         UserInterface $userSystem
     ) {
-        $userSystem->getUsername()->willReturn('system');
+        $userSystem->getUserIdentifier()->willReturn('system');
 
         $userNotifFactory->createUserNotification(Argument::cetera())->shouldNotBeCalled();
 
