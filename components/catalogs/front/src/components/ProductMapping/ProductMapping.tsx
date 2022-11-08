@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import styled from 'styled-components';
-import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
+import {getColor, Pill, SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourcePlaceholder} from './components/SourcePlaceholder';
 import {useTargetsQuery} from './hooks/useTargetsQuery';
@@ -22,17 +22,25 @@ const SourceContainer = styled.div`
 
 const TargetCell = styled(Table.Cell)`
     width: 215px;
-    color: #9452ba;
+    color: ${getColor('brand', 100)};
     font-style: italic;
-    font-weight: 400;
-    font-size: 13px;
 `;
 
 const PlaceholderCell = styled(Table.Cell)`
-    color: #a1a9b7;
+    color: ${getColor('grey', 100)};
     font-style: italic;
-    font-weight: 400;
-    font-size: 13px;
+`;
+
+const SourceCell = styled(Table.Cell)`
+    color: ${getColor('grey', 140)};
+`;
+
+const RequiredPill = styled(Pill)`
+    margin-left: 10px;
+;`;
+
+const DisabledRow = styled(Table.Row)`
+    cursor: not-allowed;
 `;
 
 type Props = {
@@ -67,9 +75,18 @@ export const ProductMapping: FC<Props> = ({id}) => {
                     </Table.Header>
                     <Table.Body>
                         {(undefined === targets || 0 === targets.length) && <TargetPlaceholder />}
-                        {undefined !== targets &&
+                        {undefined !== targets && (
+                            <DisabledRow>
+                                <TargetCell>UUID <RequiredPill level="warning" /></TargetCell>
+                                <SourceCell>UUID</SourceCell>
+                            </DisabledRow>
+                        )}
+                        {undefined !== targets && (
                             targets.map(target => {
-                                return (
+                                if ('uuid' === target.code) {
+                                    return false;
+                                }
+                                const row = (
                                     <Table.Row
                                         key={target.code}
                                         onClick={() => {
@@ -82,7 +99,8 @@ export const ProductMapping: FC<Props> = ({id}) => {
                                         </PlaceholderCell>
                                     </Table.Row>
                                 );
-                            })}
+                                return row;
+                          }))}
                     </Table.Body>
                 </Table>
             </TargetContainer>
