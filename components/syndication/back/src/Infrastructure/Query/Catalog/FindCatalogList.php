@@ -56,20 +56,28 @@ SQL;
 
     private function hydrate(array $rows): array
     {
-        return array_merge(...array_values(array_map(function ($row) {
-            $parameters = unserialize($row['raw_parameters']);
+        $allCatalogsGroupedByJobConfiguration = array_map(function ($row) {
+            return $this->getAllCatalogsForJobConfiguration($row['code'], unserialize($row['raw_parameters']));
+        }, $rows);
 
-            return array_filter(array_map(function ($catalog) {
-                if (!isset($catalog['uuid'])) {
-                    return null;
-                }
+        $flattenCatalogs = array_merge(...array_values($allCatalogsGroupedByJobConfiguration));
 
-                return new Catalog(
-                    $catalog['uuid'],
-                    $catalog['code'],
-                    $catalog['label'] ?? $catalog['code']
-                );
-            }, $parameters['catalogProjections']));
-        }, $rows)));
+        return $flattenCatalogs;
+    }
+
+    private function getAllCatalogsForJobConfiguration(string $jobCode, array $jobConfiguration): array
+    {
+        return array_filter(array_map(function ($catalog) use ($jobCode) {
+            if (!isset($catalog['uuid'])) {
+                return null;
+            }
+
+            return new Catalog(
+                $catalog['uuid'],
+                $catalog['code'],
+                $catalog['label'] ?? $catalog['code'],
+                $jobCode
+            );
+        }, $jobConfiguration['catalogProjections']));
     }
 }

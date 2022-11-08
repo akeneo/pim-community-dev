@@ -23,9 +23,9 @@ class PlatformConfiguration
 
     public function getCatalog(string $catalogCode): array
     {
-        $filteredCatalogs = array_filter($this->configuration, function ($configuration) use ($catalogCode) {
+        $filteredCatalogs = array_values(array_filter($this->configuration, function ($configuration) use ($catalogCode) {
             return $catalogCode === $configuration['code'];
-        });
+        }));
 
         if (0 === count($filteredCatalogs)) {
             throw new \InvalidArgumentException(sprintf('Catalog "%s" does not exist', $catalogCode));

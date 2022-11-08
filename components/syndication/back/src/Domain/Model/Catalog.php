@@ -7,7 +7,8 @@ class Catalog
     public function __construct(
         private string $uuid,
         private string $code,
-        private string $label
+        private string $label,
+        private string $platformCode
     ) {
     }
 
@@ -26,12 +27,18 @@ class Catalog
         return $this->label;
     }
 
+    public function getPlatformCode(): string
+    {
+        return $this->platformCode;
+    }
+
     public function normalize(): array
     {
         return [
             'uuid' => $this->uuid,
             'code' => $this->code,
-            'label' => $this->label
+            'label' => $this->label,
+            'platform_code' => $this->platformCode
         ];
     }
 }

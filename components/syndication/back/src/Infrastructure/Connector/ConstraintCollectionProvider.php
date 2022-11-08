@@ -59,7 +59,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
 
         $catalogProjectionConstraint = new Assert\Collection([
             'fields' => [
-                'uuid' => new Assert\Optional(new Uuid()), // MIG: should not be optional
+                'uuid' => new Assert\Optional(new Uuid()), // MIG SNK-4 : should not be optional
                 'code' => new Type('string'),
                 'label' => new Assert\Optional(new Type('string')),
                 'dataMappings' => new Columns(),
