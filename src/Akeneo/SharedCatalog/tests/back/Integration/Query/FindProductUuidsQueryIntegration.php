@@ -96,7 +96,41 @@ class FindProductUuidsQueryIntegration extends TestCase
             'limit' => 100,
         ]);
 
-        self::assertEqualsCanonicalizing(array_map(
+        self::assertEquals($this->getMachingUuids(), $results);
+    }
+
+    /** @test */
+    public function it_can_paginate_product_uuids_matching_a_shared_catalog()
+    {
+        $sharedCatalog = $this->getSharedCatalogForWomenShirts();
+
+        $uuids = $this->getMachingUuids();
+
+        $results = $this->findProductUuidsQuery->find($sharedCatalog, [
+            'limit' => 2,
+        ]);
+
+        self::assertEquals(\array_slice($uuids, 0, 2), $results);
+
+        $results = $this->findProductUuidsQuery->find($sharedCatalog, [
+            'limit' => 2,
+            'search_after' => $uuids[10],
+        ]);
+
+        self::assertEquals(\array_slice($uuids, 11, 2), $results);
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->connection->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?',
+            [$productIdentifier]
+        ));
+    }
+
+    private function getMachingUuids()
+    {
+        $matchingUuids = array_map(
             fn (string $identifier): string => $this->getProductUuidFromIdentifier($identifier)->toString(),
             [
                 '1111111225',
@@ -116,37 +150,9 @@ class FindProductUuidsQueryIntegration extends TestCase
                 '1111111300',
                 '1111111301',
             ]
-        ), $results);
-    }
+        );
+        \sort($matchingUuids);
 
-    /** @test */
-    public function it_can_paginate_product_uuids_matching_a_shared_catalog()
-    {
-        $sharedCatalog = $this->getSharedCatalogForWomenShirts();
-
-        $uuids = $this->connection->executeQuery('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product')
-            ->fetchFirstColumn();
-        sort($uuids);
-
-        $results = $this->findProductUuidsQuery->find($sharedCatalog, [
-            'limit' => 2,
-        ]);
-
-        self::assertEqualsC(\array_slice($uuids, 0, 2), $results);
-
-        $results = $this->findProductUuidsQuery->find($sharedCatalog, [
-            'limit' => 2,
-            'search_after' => $uuids[10],
-        ]);
-
-        self::assertEquals(\array_slice($uuids, 11, 2), $results);
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?',
-            [$productIdentifier]
-        ));
+        return $matchingUuids;
     }
 }

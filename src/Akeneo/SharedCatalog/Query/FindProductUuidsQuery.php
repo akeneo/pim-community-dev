@@ -29,7 +29,7 @@ class FindProductUuidsQuery implements FindProductUuidsQueryInterface
 
         if (null !== $searchAfterProductUuid) {
             $pqbOptions['search_after'] = [
-                'product_'.$searchAfterProductUuid->toString(),
+                'product_'.$searchAfterProductUuid,
             ];
         }
 
