@@ -2,44 +2,46 @@
 
 namespace Akeneo\SharedCatalog\Query;
 
-use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\SharedCatalog\Model\SharedCatalog;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Webmozart\Assert\Assert;
 
 class FindProductUuidsQuery implements FindProductUuidsQueryInterface
 {
-    public function __construct(private MessageBusInterface $messageBus)
-    {
+    public function __construct(
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+    ) {
     }
 
     public function find(SharedCatalog $sharedCatalog, $options = []): array
     {
         $options = $this->resolveOptions($options);
 
+        $pqbOptions = [
+            'default_scope' => $sharedCatalog->getDefaultScope(),
+            'filters' => $sharedCatalog->getPQBFilters(),
+            'limit' => $options['limit'],
+        ];
+
         $searchAfterProductUuid = $options['search_after'];
+
         if (null !== $searchAfterProductUuid) {
-            $searchAfterProductUuid = Uuid::fromString($searchAfterProductUuid);
-        }
-        $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery([], null, $searchAfterProductUuid));
-
-        $handledStamp = $envelope->last(HandledStamp::class);
-        Assert::notNull($handledStamp, 'The bus does not return any result');
-
-        $productUuidCursor = $handledStamp->getResult();
-
-        $productUuids = [];
-        foreach ($productUuidCursor as $productUuid) {
-            $productUuids[] = $productUuid->toString();
-            if (count($productUuids) >= $options['limit']) {
-                return $productUuids;
-            }
+            $pqbOptions['search_after'] = [
+                'product_'.$searchAfterProductUuid,
+            ];
         }
 
-        return $productUuids;
+        $pqb = $this->productQueryBuilderFactory->create($pqbOptions);
+        $pqb->addSorter('id', Directions::ASCENDING);
+
+        $results = $pqb->execute();
+
+        return array_map(
+            static fn (IdentifierResult $result) => preg_replace('/^product_/', '', $result->getId()),
+            iterator_to_array($results)
+        );
     }
 
     private function resolveOptions(array $options = []): array
