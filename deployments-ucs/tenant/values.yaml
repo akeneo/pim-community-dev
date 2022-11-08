@@ -369,14 +369,6 @@ pim:
     password: null # Fill me
     uiLocale: en_US  # Change me if needed
   jobs:
-    purge-connectivity-connection-error:
-      enabled: true
-      pimCommand: "akeneo:connectivity-connection:purge-error"
-      schedule: "10 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     project-notify-before-due-date:
       enabled: true
       pimCommand: "pimee:project:notify-before-due-date"
@@ -429,14 +421,6 @@ pim:
       enabled: true
       pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"
       schedule: "*/30 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
-    connectivity-openid-keys-regenerate:
-      enabled: true
-      pimCommand: "akeneo:connectivity-connection:openid-keys:create --no-interaction"
-      schedule: "4 21 * * 0"
       resources:
         requests:
           cpu: "10m"

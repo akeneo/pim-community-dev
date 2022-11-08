@@ -1,0 +1,33 @@
+services:
+    ## Rules execution
+    pimee_catalog_rule.job.execute_rules_scheduled:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'rule_engine_execute_rules_scheduled'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@pimee_catalog_rule.step.execute_rules'
+            - true
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: internal
+                type: scheduled_job
+
+    pimee_catalog_rule.job.job_parameters.constraint_collection_provider.execute_rules_scheduled:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ExecuteRules'
+        arguments:
+            -
+                - 'rule_engine_execute_rules_scheduled'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.execute_rules_scheduled:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Component\Connector\Job\JobParameters\DefaultValuesProvider\ExecuteRules'
+        arguments:
+            -
+                - 'rule_engine_execute_rules_scheduled'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

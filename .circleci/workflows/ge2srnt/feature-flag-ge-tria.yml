@@ -125,6 +125,7 @@ workflows:
                           only:
                               - /.*GE2EE.*/
                               - /SDO-.*/
+                              - /GRF-.*/
             - checkout:
                   requires:
                       - ready_to_build?

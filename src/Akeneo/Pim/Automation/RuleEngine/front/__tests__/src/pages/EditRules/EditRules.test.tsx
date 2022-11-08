@@ -66,7 +66,7 @@ const addConditionFieldsPayload = [
   },
 ];
 
-const setIsDirty = (_isDirty: boolean) => {};
+const setIsDirty = jest.fn();
 
 describe('EditRules', () => {
   afterEach(() => {

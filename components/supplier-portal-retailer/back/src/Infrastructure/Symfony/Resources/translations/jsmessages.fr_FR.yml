@@ -17,6 +17,7 @@ supplier_portal:
         title: Le supplier a été créé.
         content: Vous pouvez maintenant le modifier dans la section de gestion des fournisseurs.
       error:
+        unknown_error: Une erreur s'est produite lors de la création du fournisseur.
         supplier_already_exists: 'Un fournisseur avec le code "{{ supplierCode }}" existe déjà.'
     supplier_list:
       menu_item: Fournisseurs
@@ -42,6 +43,7 @@ supplier_portal:
         title: Fournisseur
         confirmation_question: Êtes-vous sûr de vouloir supprimer ce fournisseur ?
         warning: En supprimant ce fournisseur, tout enrichissement non sauvegardé sera perdu.
+        unknown_error: Une erreur s'est produite lors de la suppression du fournisseur.
     supplier_edit:
       tabs:
         configuration: Configuration
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: Nous n'avons pas pu ajouter ce contributeur.
             content: L'e-mail {{ emailAddress }} est déjà utilisé pour un autre fournisseur et nous ne supportons pas encore le même contributeur pour plusieurs fournisseurs. Désolé pour le désagrément.
+      loading_error: Une erreur est survenue lors du chargement du fournisseur.
       success_message: Le fournisseur a été mis à jour avec succès.
+      update_error: Une erreur est survenue lors de la mise à jour du fournisseur.
       delete_label: Supprimer ce fournisseur
   product_file_dropping:
     breadcrumb:
@@ -88,12 +92,36 @@ supplier_portal:
         error_loading_supplier_files:
           title: Nous ne sommes pas en mesure d'afficher le fichier de produits.
           content: Désolé pour ce désagrément, veuillez réessayer dans quelques instants.
+      tabs:
+        discussion: Discussion
+      discussion:
+        import_file_button_label: Importer un fichier
+        info: Envoyez des commentaires lorsque vous avez besoin d'échanger des informations avec vos fournisseurs.
+        comment_input_label: Envoyer un nouveau commentaire
+        discussion_title: Discussion
+        submit_button_label: Envoyer
+        loading_error: Une erreur s’est produite lors du chargement du fichier produit.
+        comment_submit_error: Une erreur est survenue lors de l'envoi de votre commentaire.
+        empty_content: Le commentaire ne doit pas être vide.
+        max_comment_length_reached: Le commentaire ne doit pas dépasser 255 caractères.
+        max_number_of_comments_reached: Vous avez atteint la limite de commentaires.
+        product_file_does_not_exist_anymore: Désolé, ce fichier produit a été automatiquement supprimé après 90 jours et n'est plus accessible.
+      product_files_modal:
+        title: Fichier produit
+        subtitle: Sélectionnez le profil d'import sur mesure
+        import_field_label: Importer
+        select_import_placeholder: Sélectionnez un import sur mesure
+        import_button_label: Importer maintenant
+        error_loading_product_import_profiles:
+          title: Nous ne sommes pas en mesure d'afficher les profils d'import sur mesure.
+          content: Désolé pour ce désagrément, veuillez réessayer dans quelques instants.
     pim_notification:
       button_label: Voir les fichiers produit
 pim_title:
   supplier_portal_retailer_supplier_list: Fournisseurs
   supplier_portal_retailer_supplier_edit: Modifier un fournisseur
   supplier_portal_retailer_product_files_list: Fichiers produits
+  supplier_portal_retailer_product_files_show: Fichier produit
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import des fournisseurs du Supplier Portal en XLSX
 pim_notification:
   supplier_portal:

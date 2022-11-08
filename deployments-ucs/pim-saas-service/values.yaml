@@ -241,7 +241,7 @@ pim:
       schedule: "0 4 * * *"
     rule-engine-execute-rules:
       enabled: true
-      pimJobName: "rule_engine_execute_rules"
+      pimJobName: "rule_engine_execute_rules_scheduled"
       pimJobOptions: ""
       schedule: "0 5,11,17,23 * * *"
     update-connectivity-audit-data:
@@ -279,6 +279,16 @@ pim:
       pimJobName: "reference_entity_refresh_records"
       pimJobOptions: ""
       schedule: "0 23 * * *"
+    connectivity-create-openid-keys:
+      enabled: true
+      pimJobName: "connectivity_create_openid_keys"
+      pimJobOptions: ""
+      schedule: "4 21 * * 0"
+    purge-connectivity-connection-error:
+      enabled: true
+      pimJobName: "purge_connection_error"
+      pimJobOptions: ""
+      schedule: "10 * * * *"
   supplier_portal:
     settings:
       enabled: false

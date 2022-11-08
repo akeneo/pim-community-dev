@@ -323,6 +323,11 @@ jobs:
         alias:     connectivity_audit_purge_error
         label:     Purge audit error table
         type:      scheduled_job
+    purge_connection_error:
+        connector: internal
+        alias:     purge_connection_error
+        label:     Purge connection errors
+        type:      scheduled_job
     twa_projects_recalculate:
         connector: internal
         alias:     twa_projects_recalculate
@@ -332,4 +337,14 @@ jobs:
         connector: internal
         alias:     reference_entity_refresh_records
         label:     'Refresh all records referencing a deleted record or a deleted attribute option.'
+        type:      scheduled_job
+    connectivity_create_openid_keys:
+        connector: internal
+        alias:     connectivity_create_openid_keys
+        label:     Create or update a public/private openId key couple
+        type:      scheduled_job
+    rule_engine_execute_rules_scheduled:
+        connector: internal
+        alias:     rule_engine_execute_rules_scheduled
+        label:     'Execute rules as a scheduled job'
         type:      scheduled_job
