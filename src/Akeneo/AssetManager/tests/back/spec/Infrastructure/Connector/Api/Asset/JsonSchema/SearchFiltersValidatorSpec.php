@@ -32,6 +32,82 @@ class SearchFiltersValidatorSpec extends ObjectBehavior
                 'channel' => 'mobile',
                 'locales' => ['en_US', 'fr_FR'],
             ],
+            'updated' => [
+                [
+                    'operator' => '<',
+                    'value' => '2020-01-01T10:00:00+00:00',
+                ],
+                [
+                    'operator' => '>',
+                    'value' => '2018-01-01T10:00:00+00:00',
+                ],
+            ],
+            'code' => [
+                [
+                    'operator' => 'IN',
+                    'value' => ['123'],
+                ],
+            ],
+        ];
+
+        $this->validate($searchFilters)->shouldReturn([]);
+    }
+
+    public function it_returns_an_empty_array_if_the_given_completeness_search_filters_are_valid()
+    {
+        $searchFilters = [
+            'complete' => [
+                'operator' => '=',
+                'value' => false,
+                'channel' => 'mobile',
+                'locales' => ['en_US'],
+            ],
+        ];
+
+        $this->validate($searchFilters)->shouldReturn([]);
+    }
+
+    public function it_returns_an_empty_array_if_the_given_updated_search_filters_are_valid()
+    {
+        $searchFilters = [
+            'updated' => [
+                [
+                    'operator' => '<',
+                    'value' => '2020-01-01T10:00:00+00:00',
+                ],
+                [
+                    'operator' => '>',
+                    'value' => '2018-01-01T10:00:00+00:00',
+                ],
+            ],
+        ];
+
+        $this->validate($searchFilters)->shouldReturn([]);
+    }
+
+    public function it_returns_an_empty_array_if_the_given_updated_between_search_filters_are_valid()
+    {
+        $searchFilters = [
+            'updated' => [
+                [
+                    'operator' => 'BETWEEN',
+                    'value' => ['2018-01-01T10:00:00+00:00', '2020-01-01T10:00:00+00:00'],
+                ],
+            ],
+        ];
+
+        $this->validate($searchFilters)->shouldReturn([]);
+    }
+
+    public function it_returns_an_empty_array_if_the_given_updated_since_search_filters_are_valid()
+    {
+        $searchFilters = [
+            'updated' => [
+                [
+                    'operator' => 'SINCE LAST N DAYS',
+                    'value' => 1,
+                ],
+            ],
         ];
 
         $this->validate($searchFilters)->shouldReturn([]);
