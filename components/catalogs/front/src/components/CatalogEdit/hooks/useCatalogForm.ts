@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
+import {useCallback, useReducer, useState} from 'react';
 import {useCatalog} from './useCatalog';
 import {CatalogFormAction, CatalogFormActions, CatalogFormReducer} from '../reducers/CatalogFormReducer';
 import {indexify} from '../utils/indexify';
@@ -81,8 +81,6 @@ export const useCatalogForm = (id: string): Result => {
             },
         [setDirty, values, setErrors]
     );
-
-    const prevValuesRef = useRef<CatalogFormValues>(values);
 
     if (catalog.isLoading) {
         return loading;
