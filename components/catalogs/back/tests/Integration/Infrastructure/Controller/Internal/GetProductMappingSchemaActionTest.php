@@ -117,6 +117,9 @@ class GetProductMappingSchemaActionTest extends IntegrationTestCase
           "description": "JSON Schema describing the structure of products expected by our application",
           "type": "object",
           "properties": {
+            "uuid": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
