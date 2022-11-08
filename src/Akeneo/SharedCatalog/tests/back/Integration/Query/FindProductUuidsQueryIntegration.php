@@ -96,7 +96,7 @@ class FindProductUuidsQueryIntegration extends TestCase
             'limit' => 100,
         ]);
 
-        self::assertEquals(array_map(
+        self::assertEqualsCanonicalizing(array_map(
             fn (string $identifier): string => $this->getProductUuidFromIdentifier($identifier)->toString(),
             [
                 '1111111225',
@@ -132,7 +132,7 @@ class FindProductUuidsQueryIntegration extends TestCase
             'limit' => 2,
         ]);
 
-        self::assertEquals(\array_slice($uuids, 0, 2), $results);
+        self::assertEqualsC(\array_slice($uuids, 0, 2), $results);
 
         $results = $this->findProductUuidsQuery->find($sharedCatalog, [
             'limit' => 2,
