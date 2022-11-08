@@ -2,8 +2,8 @@ import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
 import {SftpStorage} from '../components';
 
-const useGetPublicKey = (storage: SftpStorage) => {
-  const [publicKey, setPublicKey] = useState<boolean | undefined>(undefined);
+const useGetPublicKey = () => {
+  const [publicKey, setPublicKey] = useState<string | null>(null);
   const route = useRoute('pimee_job_automation_get_public_key');
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const useGetPublicKey = (storage: SftpStorage) => {
     };
 
     void getPublicKey();
-  }, [route, storage]);
+  }, [route]);
 
   return {publicKey};
 };

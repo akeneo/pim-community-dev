@@ -17,7 +17,6 @@ type SftpStorage = {
   login_type: StorageLoginType;
   username: string;
   password: string | null;
-  public_key: string | null;
 };
 
 type NoneStorage = {
@@ -68,7 +67,6 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
         login_type: 'password',
         username: '',
         password: '',
-        public_key: '',
       };
     case 'none':
       return {

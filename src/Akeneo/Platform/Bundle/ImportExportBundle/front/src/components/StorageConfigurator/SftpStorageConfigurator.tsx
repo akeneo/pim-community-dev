@@ -32,22 +32,20 @@ const SftpStorageConfigurator = ({
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
-  const {publicKey} = useGetPublicKey(storage);
+  const {publicKey} = useGetPublicKey();
 
-    const handleLoginTypeChange = (storageLoginType: string) => {
-        onStorageChange({...storage, login_type: storageLoginType as StorageLoginType});
-    }
-    const handleFilePathChange = (filePath: string) => {
-        onStorageChange({...storage, file_path: filePath});
-    }
-    const handleHostChange = (host: string) => {
-        onStorageChange({...storage, host: host});
-    }
-    const handlePortChange = (port: string) => {
-        onStorageChange({...storage, port: parseInt(port, 10)});
-    }
-
-    console.log(storage);
+  const handleLoginTypeChange = (storageLoginType: string) => {
+      onStorageChange({...storage, login_type: storageLoginType as StorageLoginType});
+  }
+  const handleFilePathChange = (filePath: string) => {
+      onStorageChange({...storage, file_path: filePath});
+  }
+  const handleHostChange = (host: string) => {
+      onStorageChange({...storage, host: host});
+  }
+  const handlePortChange = (port: string) => {
+      onStorageChange({...storage, port: parseInt(port, 10)});
+  }
 
   return (
     <>
@@ -66,7 +64,7 @@ const SftpStorageConfigurator = ({
         value={storage.host}
         label={translate('pim_import_export.form.job_instance.storage_form.host.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.host.placeholder')}
-        onChange={host => onStorageChange({...storage, host})}
+        onChange={handleHostChange}
         errors={filterErrors(validationErrors, '[host]')}
       />
       <TextField
@@ -142,7 +140,7 @@ const SftpStorageConfigurator = ({
         />
       ) : (
         <TextField
-          value={storage.public_key ?? ''}
+          value={publicKey ?? ''}
           readOnly
           label={translate('pim_import_export.form.job_instance.storage_form.public_key.label')}
         />
