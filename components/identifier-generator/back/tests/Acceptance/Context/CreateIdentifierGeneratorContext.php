@@ -314,16 +314,16 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with ':lang' label ':label'
+     * @When I try to create an identifier generator with ':locale' label ':label'
      */
-    public function iTryToCreateAnIdentifierGeneratorWithLabel(string $lang, string $label): void
+    public function iTryToCreateAnIdentifierGeneratorWithLabel(string $locale, string $label): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
                 'abcdef',
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                [$lang => $label],
+                [$locale => $label],
                 'sku',
                 '-'
             ));
