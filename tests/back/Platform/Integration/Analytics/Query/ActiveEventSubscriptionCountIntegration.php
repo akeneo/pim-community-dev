@@ -89,10 +89,11 @@ class ActiveEventSubscriptionCountIntegration extends TestCase
         $expectedResult = 3;
 
         Assert::assertEquals($expectedResult, $result);
+
     }
 
     /**
-     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\DBALException
      */
     private function createConnectionWithWebhookData(
         string $code,

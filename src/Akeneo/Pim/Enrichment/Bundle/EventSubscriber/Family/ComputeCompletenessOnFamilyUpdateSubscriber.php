@@ -95,7 +95,7 @@ final class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscrib
      *
      * @param GenericEvent $event
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function checkIfUpdateNeedsToRunBackgroundJob(GenericEvent $event): void
     {
@@ -190,7 +190,7 @@ final class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscrib
     /**
      * @param FamilyInterface $family
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\DBALException
      *
      * @return bool
      */
