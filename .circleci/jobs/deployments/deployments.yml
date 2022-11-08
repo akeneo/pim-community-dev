@@ -530,6 +530,9 @@ jobs:
 
     deploy_ucs_pim:
       parameters:
+        PIM_NAMESPACE_PREFIX:
+          type: string
+          default: "pim"
         PRODUCT_TYPE:
           type: string
           default: "srnt"
@@ -550,7 +553,7 @@ jobs:
             name: Prepare the variables
             command: |
               CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-              PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+              PIM_NAMESPACE=<< parameters.PIM_NAMESPACE_PREFIX >>-${CIRCLE_BRANCH_LOWER}
 
               TENANT_NAME_PREFIX=ucs
               TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
