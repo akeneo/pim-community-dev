@@ -45,14 +45,14 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'code: This value should not be blank.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator without label
+  Scenario: Can create an identifier generator without label
     When I try to create an identifier generator without label
-    Then I should get an error with message 'labels: This value should not be blank.'
-    And the identifier should not be created
+    Then The identifier generator is saved in the repository
+    And I should not get any error
 
   Scenario: Cannot create an identifier generator with code too long
     When I try to create an identifier generator with code 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat consequat sit amet ac ex. '
-    Then I should get an error with message 'code: This value is too long. It should have 255 characters or less.'
+    Then I should get an error with message 'code: This value is too long. It should have 100 characters or less.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with code bad format
@@ -62,5 +62,5 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with label too long
     When I try to create an identifier generator with 'fr' label 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat consequat sit amet ac ex. '
-    Then I should get an error with message 'labels[fr]: This value is too long. It should have 100 characters or less.'
+    Then I should get an error with message 'labels[fr]: This value is too long. It should have 255 characters or less.'
     And the identifier should not be created
