@@ -72,8 +72,8 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
     {
         $placeholders = \implode(
             ',',
-            \array_fill(0, \count($attributeUuids), 'UUID_TO_BIN(?)'
-        ));
+            \array_fill(0, \count($attributeUuids), 'UUID_TO_BIN(?)')
+        );
 
         $sql = <<< SQL
             SELECT BIN_TO_UUID(uuid) as uuid,
