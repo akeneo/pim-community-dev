@@ -20,7 +20,7 @@ final class SearchAndReplaceOperation implements OperationInterface
     public const TYPE = 'search_and_replace';
 
     /**
-     * @param SearchAndReplaceValue[] $replacements 
+     * @param SearchAndReplaceValue[] $replacements
      */
     public function __construct(
         private string $uuid,
@@ -35,7 +35,7 @@ final class SearchAndReplaceOperation implements OperationInterface
         return $this->uuid;
     }
 
-    /** 
+    /**
      * @return SearchAndReplaceValue[]
      */
     public function getReplacements(): array
