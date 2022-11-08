@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useGetIdentifierGenerators} from '../useGetIdentifierGenerators';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {ServerError} from '../../errors';
+import {mockResponse} from '../../tests/test-utils';
 
 const list = [
   {
@@ -17,10 +18,11 @@ const list = [
 
 describe('useGetIdentifierGenerators', () => {
   test('it retrieves generators list', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(list),
-    } as Response);
+    mockResponse(
+      'akeneo_identifier_generator_rest_list',
+      'GET',
+      {ok: true, json: list}
+    );
 
     const {result, waitFor} = renderHook(() => useGetIdentifierGenerators(), {wrapper: createWrapper()});
 
@@ -31,11 +33,11 @@ describe('useGetIdentifierGenerators', () => {
   });
 
   test('it fails and retrieves no data', async () => {
-    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: false,
-      json: () => Promise.resolve('error message'),
-    } as Response);
+    mockResponse(
+      'akeneo_identifier_generator_rest_list',
+      'GET',
+      {ok: false, json: {}}
+    );
 
     const {result, waitFor} = renderHook(() => useGetIdentifierGenerators(), {wrapper: createWrapper()});
 
@@ -43,6 +45,5 @@ describe('useGetIdentifierGenerators', () => {
 
     expect(result.current.error).toBeDefined();
     expect(result.current.error).toBeInstanceOf(ServerError);
-    mockedConsole.mockRestore();
   });
 });
