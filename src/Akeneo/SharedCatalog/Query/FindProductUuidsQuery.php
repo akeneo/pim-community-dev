@@ -11,7 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FindProductUuidsQuery implements FindProductUuidsQueryInterface
 {
     public function __construct(
-        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory)
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+    )
     {
     }
 
