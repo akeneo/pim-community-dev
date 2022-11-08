@@ -6,11 +6,7 @@ jest.mock('../../hooks/useGetIdentifierGenerators');
 
 describe('DeleteGeneratorModal', () => {
   it('should delete a generator', async () => {
-    const expectCall = mockResponse(
-      'akeneo_identifier_generator_rest_delete',
-      'DELETE',
-      {ok: true, json: {}}
-    );
+    const expectCall = mockResponse('akeneo_identifier_generator_rest_delete', 'DELETE', {ok: true, json: {}});
 
     const onDelete = jest.fn();
 
@@ -29,11 +25,7 @@ describe('DeleteGeneratorModal', () => {
   });
 
   it('should not delete when error occurred', async () => {
-    const expectCall = mockResponse(
-      'akeneo_identifier_generator_rest_delete',
-      'DELETE',
-      {ok: false, json: {}}
-    );
+    const expectCall = mockResponse('akeneo_identifier_generator_rest_delete', 'DELETE', {ok: false, json: {}});
 
     const onDelete = jest.fn();
     render(<DeleteGeneratorModal onDelete={onDelete} onClose={jest.fn()} generatorCode={'my_generator'} />);

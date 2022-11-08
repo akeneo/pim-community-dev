@@ -18,11 +18,7 @@ const list = [
 
 describe('useGetIdentifierGenerators', () => {
   test('it retrieves generators list', async () => {
-    mockResponse(
-      'akeneo_identifier_generator_rest_list',
-      'GET',
-      {ok: true, json: list}
-    );
+    mockResponse('akeneo_identifier_generator_rest_list', 'GET', {ok: true, json: list});
 
     const {result, waitFor} = renderHook(() => useGetIdentifierGenerators(), {wrapper: createWrapper()});
 
@@ -33,11 +29,7 @@ describe('useGetIdentifierGenerators', () => {
   });
 
   test('it fails and retrieves no data', async () => {
-    mockResponse(
-      'akeneo_identifier_generator_rest_list',
-      'GET',
-      {ok: false, json: {}}
-    );
+    mockResponse('akeneo_identifier_generator_rest_list', 'GET', {ok: false, json: {}});
 
     const {result, waitFor} = renderHook(() => useGetIdentifierGenerators(), {wrapper: createWrapper()});
 

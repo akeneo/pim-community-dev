@@ -17,7 +17,7 @@ const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
 
   return (
     <ThemeProvider theme={pimTheme}>
-      <DependenciesContext.Provider value={{translate: (k) => k}}>
+      <DependenciesContext.Provider value={{translate: k => k}}>
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </DependenciesContext.Provider>
     </ThemeProvider>
@@ -30,7 +30,11 @@ const customRender = (
   // @ts-ignore
 ): RenderResult => render(ui, {wrapper: AllTheProviders, ...options});
 
-const mockResponse = (url:string, method: string, response: {ok?: boolean, json?: unknown, statusText?: string, status?: number, body?: unknown}) => {
+const mockResponse: (
+  url: string,
+  method: string,
+  response: {ok?: boolean; json?: unknown; statusText?: string; status?: number; body?: unknown}
+) => () => void = (url, method, response) => {
   if (!response.ok) {
     jest.spyOn(console, 'error');
     // eslint-disable-next-line no-console
@@ -53,12 +57,14 @@ const mockResponse = (url:string, method: string, response: {ok?: boolean, json?
   return () => {
     if (method === 'POST') {
       expect(fetchImplementation).toBeCalledWith(url, {
-        'headers': {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json'}, 'body': JSON.stringify(response.body), method: 'POST'
+        headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json'},
+        body: JSON.stringify(response.body),
+        method: 'POST',
       });
     } else {
       expect(fetchImplementation).toBeCalledWith(url, {
-        'headers': [['X-Requested-With', 'XMLHttpRequest']],
-        'method': method
+        headers: [['X-Requested-With', 'XMLHttpRequest']],
+        method: method,
       });
     }
   };
@@ -66,4 +72,3 @@ const mockResponse = (url:string, method: string, response: {ok?: boolean, json?
 
 export * from '@testing-library/react';
 export {customRender as render, mockResponse};
-

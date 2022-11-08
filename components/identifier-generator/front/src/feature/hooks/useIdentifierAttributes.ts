@@ -7,18 +7,15 @@ import {ServerError} from '../errors';
 const useIdentifierAttributes = () => {
   const router = useRouter();
 
-  return useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
-    'getIdentifierAttributes',
-    async () => {
-      const response = await fetch(router.generate('akeneo_identifier_generator_get_identifier_attributes'), {
-        method: 'GET',
-        headers: [['X-Requested-With', 'XMLHttpRequest']],
-      });
-      if (!response.ok) throw new ServerError(response.statusText);
+  return useQuery<FlattenAttribute[], Error, FlattenAttribute[]>('getIdentifierAttributes', async () => {
+    const response = await fetch(router.generate('akeneo_identifier_generator_get_identifier_attributes'), {
+      method: 'GET',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+    });
+    if (!response.ok) throw new ServerError(response.statusText);
 
-      return await response.json();
-    }
-  );
+    return await response.json();
+  });
 };
 
 export {useIdentifierAttributes};

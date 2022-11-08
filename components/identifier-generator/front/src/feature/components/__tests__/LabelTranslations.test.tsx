@@ -33,11 +33,7 @@ const labelCollection = {
 
 describe('LabelTranslations', () => {
   it('should render the initial values', async () => {
-    mockResponse(
-      'pim_localization_locale_index',
-      'GET',
-      {json: defaultUiLocales}
-    );
+    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
 
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
@@ -53,11 +49,7 @@ describe('LabelTranslations', () => {
   });
 
   it('should update label', async () => {
-    mockResponse(
-      'pim_localization_locale_index',
-      'GET',
-      {json: defaultUiLocales}
-    );
+    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
 
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
@@ -72,11 +64,7 @@ describe('LabelTranslations', () => {
   });
 
   it('should display an error if impossible to fetch locales', async () => {
-    mockResponse(
-      'pim_localization_locale_index',
-      'GET',
-      {json: [], ok: false}
-    );
+    mockResponse('pim_localization_locale_index', 'GET', {json: [], ok: false});
 
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);

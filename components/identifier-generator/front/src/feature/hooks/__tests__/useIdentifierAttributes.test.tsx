@@ -6,11 +6,9 @@ import {mockResponse} from '../../tests/test-utils';
 
 describe('useIdentifierAttributes', () => {
   test('it retrieves identifier attribute list', async () => {
-    const expectCall = mockResponse(
-      'akeneo_identifier_generator_get_identifier_attributes',
-      'GET',
-      {json: [{code: 'sku', label: 'Sku'}]}
-    );
+    const expectCall = mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
 
     const {result, waitFor} = renderHook<
       null,

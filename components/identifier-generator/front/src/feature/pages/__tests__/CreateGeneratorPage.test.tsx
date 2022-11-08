@@ -21,11 +21,10 @@ const initialGenerator: IdentifierGenerator = {
 
 describe('CreateGeneratorPage', () => {
   it('should create a generator', async () => {
-    const expectCall = mockResponse(
-      'akeneo_identifier_generator_rest_create',
-      'POST',
-      {status: 201, body: initialGenerator}
-    );
+    const expectCall = mockResponse('akeneo_identifier_generator_rest_create', 'POST', {
+      status: 201,
+      body: initialGenerator,
+    });
 
     const history = createMemoryHistory();
     render(
@@ -47,11 +46,7 @@ describe('CreateGeneratorPage', () => {
   it('should display validation errors', async () => {
     const violationErrors = [{message: 'a message', path: 'a path'}, {message: 'another message'}];
 
-    mockResponse(
-      'akeneo_identifier_generator_rest_create',
-      'POST',
-      {json: violationErrors, status: 400}
-    );
+    mockResponse('akeneo_identifier_generator_rest_create', 'POST', {json: violationErrors, status: 400});
 
     render(<CreateGeneratorPage initialGenerator={initialGenerator} />);
     expect(screen.getByText('CreateOrEditGeneratorPage')).toBeInTheDocument();
@@ -65,11 +60,11 @@ describe('CreateGeneratorPage', () => {
   });
 
   it('should manage default errors', async () => {
-    const expectCall = mockResponse(
-      'akeneo_identifier_generator_rest_create',
-      'POST',
-      {ok: false, status: 500, body: initialGenerator}
-    );
+    const expectCall = mockResponse('akeneo_identifier_generator_rest_create', 'POST', {
+      ok: false,
+      status: 500,
+      body: initialGenerator,
+    });
 
     render(<CreateGeneratorPage initialGenerator={initialGenerator} />);
     expect(screen.getByText('CreateOrEditGeneratorPage')).toBeInTheDocument();

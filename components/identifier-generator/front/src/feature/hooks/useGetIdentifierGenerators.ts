@@ -7,18 +7,15 @@ import {ServerError} from '../errors';
 const useGetIdentifierGenerators = () => {
   const router = useRouter();
 
-  return useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>(
-    'getGeneratorList',
-    async () => {
-      const response = await fetch(router.generate('akeneo_identifier_generator_rest_list'), {
-        method: 'GET',
-        headers: [['X-Requested-With', 'XMLHttpRequest']],
-      });
-      if (!response.ok) throw new ServerError(response.statusText);
+  return useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>('getGeneratorList', async () => {
+    const response = await fetch(router.generate('akeneo_identifier_generator_rest_list'), {
+      method: 'GET',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+    });
+    if (!response.ok) throw new ServerError(response.statusText);
 
-      return await response.json();
-    }
-  );
+    return await response.json();
+  });
 };
 
 export {useGetIdentifierGenerators};

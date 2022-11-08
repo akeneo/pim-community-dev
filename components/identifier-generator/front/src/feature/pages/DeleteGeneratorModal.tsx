@@ -28,7 +28,7 @@ const DeleteGeneratorModal: FC<DeleteGeneratorModalProps> = ({generatorCode, onC
       },
       onError: () => {
         notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.delete.error'));
-      }
+      },
     });
   };
 

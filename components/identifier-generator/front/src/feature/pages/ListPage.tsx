@@ -86,13 +86,13 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                 </td>
               </tr>
             )}
-            {(null !== errorOnGenerators || null !== errorOnIdentifierAttributes) && <tr>
-              <td colSpan={3}>
-                <Helper level="error">
-                  {translate('pim_error.general')}
-                </Helper>
-              </td>
-            </tr>}
+            {(null !== errorOnGenerators || null !== errorOnIdentifierAttributes) && (
+              <tr>
+                <td colSpan={3}>
+                  <Helper level="error">{translate('pim_error.general')}</Helper>
+                </td>
+              </tr>
+            )}
             {isLoading && <ListSkeleton />}
             {!isGeneratorListEmpty && (
               <>

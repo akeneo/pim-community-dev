@@ -19,11 +19,7 @@ describe('Edit', () => {
   });
 
   it('should render a 404 on non existing generator', async () => {
-    mockResponse(
-      'akeneo_identifier_generator_rest_get',
-      'GET',
-      {status: 404, ok: false}
-    );
+    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {status: 404, ok: false});
 
     render(<Edit />);
     expect(await screen.findByText('pim_error.404')).toBeInTheDocument();
@@ -31,11 +27,7 @@ describe('Edit', () => {
   });
 
   it('should render a generic error', async () => {
-    mockResponse(
-      'akeneo_identifier_generator_rest_get',
-      'GET',
-      {status: 500, ok: false, statusText: 'Fail'}
-    );
+    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {status: 500, ok: false, statusText: 'Fail'});
 
     render(<Edit />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
@@ -53,11 +45,7 @@ describe('Edit', () => {
       target: 'sku',
     };
 
-    mockResponse(
-      'akeneo_identifier_generator_rest_get',
-      'GET',
-      {json: initialGenerator}
-    );
+    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {json: initialGenerator});
 
     render(<Edit />);
     expect(await screen.findByText('CreateOrEditGeneratorPage')).toBeInTheDocument();

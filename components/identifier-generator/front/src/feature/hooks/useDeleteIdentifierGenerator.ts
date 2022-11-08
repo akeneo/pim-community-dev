@@ -8,16 +8,19 @@ const useDeleteIdentifierGenerator = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  return useMutation(async (code: IdentifierGeneratorCode) => {
-    const response = await fetch(router.generate('akeneo_identifier_generator_rest_delete', {code}), {
-      method: 'DELETE',
-      headers: [['X-Requested-With', 'XMLHttpRequest']],
-    });
+  return useMutation(
+    async (code: IdentifierGeneratorCode) => {
+      const response = await fetch(router.generate('akeneo_identifier_generator_rest_delete', {code}), {
+        method: 'DELETE',
+        headers: [['X-Requested-With', 'XMLHttpRequest']],
+      });
 
-    if (!response.ok) throw new ServerError();
-  }, {
-    onSuccess: () => queryClient.invalidateQueries('getGeneratorList')
-  });
+      if (!response.ok) throw new ServerError();
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries('getGeneratorList'),
+    }
+  );
 };
 
 export {useDeleteIdentifierGenerator};

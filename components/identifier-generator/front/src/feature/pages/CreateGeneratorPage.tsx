@@ -34,7 +34,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
           translate('pim_identifier_generator.flash.create.success', {code: variables.code})
         );
         history.push(`/${variables.code}`);
-      }
+      },
     });
   };
 
