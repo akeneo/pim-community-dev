@@ -3,6 +3,4 @@ akeneo.category:
   edition_form:
     error:
       unhandled_attribute_type: Kan bouwer voor het attribuutveld voor attribuuttype "{{type}} " niet vinden
-    template:
-      fetching_failed: Er is een fout opgetreden tijdens het ophalen van het sjabloon.
     unsaved_changes: Als u deze pagina verlaat, worden de wijzigingen aan de categorie niet opgeslagen.
