@@ -3,6 +3,4 @@ akeneo.category:
   edition_form:
     error:
       unhandled_attribute_type: 属性タイプ "{{type}}" の属性フィールドビルダーが見つかりませんでした
-    template:
-      fetching_failed: テンプレートを取得中にエラーが発生しました
     unsaved_changes: このページから移動するとカテゴリに対する変更が失われます。

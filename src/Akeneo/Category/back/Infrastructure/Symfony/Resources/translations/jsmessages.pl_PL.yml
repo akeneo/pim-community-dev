@@ -3,6 +3,4 @@ akeneo.category:
   edition_form:
     error:
       unhandled_attribute_type: Nie znaleziono konstruktora pola atrybutu typu „{{type}}”
-    template:
-      fetching_failed: Podczas pobierania szablonu wystąpił błąd.
     unsaved_changes: Jeśli opuścisz stronę, stracisz zmiany wprowadzone w kategorii.

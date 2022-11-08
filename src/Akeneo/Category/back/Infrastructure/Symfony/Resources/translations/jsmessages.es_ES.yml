@@ -3,6 +3,4 @@ akeneo.category:
   edition_form:
     error:
       unhandled_attribute_type: No se pudo encontrar el constructor de campos de atributos para el tipo de atributo «{{type}}»
-    template:
-      fetching_failed: Se ha producido un error al recuperar la plantilla
     unsaved_changes: Perderá los cambios en la categoría si abandona la página.
