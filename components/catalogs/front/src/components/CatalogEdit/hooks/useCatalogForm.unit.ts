@@ -58,6 +58,9 @@ test('it returns the form values when catalog is loaded', () => {
                 },
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
+            owner_username: 'willy',
+            product_mapping: {},
+            has_product_mapping_schema: false
         },
         error: null,
     }));
@@ -109,6 +112,9 @@ test('it calls the API when save is called', async () => {
                 },
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
+            owner_username: 'willy',
+            product_mapping: {},
+            has_product_mapping_schema: false
         },
         error: null,
     }));
@@ -133,6 +139,7 @@ test('it calls the API when save is called', async () => {
         id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
         values: {
             enabled: true,
+            product_mapping: {},
             product_selection_criteria: [
                 {
                     field: 'enabled',
@@ -170,6 +177,9 @@ test('it returns validation errors if the API call failed', async () => {
                 },
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
+            owner_username: 'willy',
+            product_mapping: {},
+            has_product_mapping_schema: false
         },
         error: null,
     }));
@@ -216,6 +226,9 @@ test('it returns dirty at true after dispatching a change', () => {
                 },
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
+            owner_username: 'willy',
+            product_mapping: {},
+            has_product_mapping_schema: false
         },
         error: null,
     }));
@@ -257,6 +270,9 @@ test("it forwards the action to dispatch when it's a non-altering event", () => 
                 },
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
+            owner_username: 'willy',
+            product_mapping: {},
+            has_product_mapping_schema: false
         },
         error: null,
     }));
@@ -286,6 +302,7 @@ test("it forwards the action to dispatch when it's a non-altering event", () => 
                         },
                     },
                     product_value_filters: {channels: ['ecommerce', 'print']},
+                    product_mapping: {},
                 },
             });
     });
@@ -312,6 +329,9 @@ test('it validates the catalog on first load', () => {
                 },
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
+            owner_username: 'willy',
+            product_mapping: {},
+            has_product_mapping_schema: false
         },
         error: null,
     }));
@@ -405,5 +425,69 @@ test('it remove all errors when we delete a product selection criteria', () => {
         },
         expect.any(Function),
         true,
+    ]);
+});
+
+test('it returns the product mapping when catalog is loaded', () => {
+    mocked(useCatalog).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: {
+            id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
+            name: 'Store US',
+            enabled: true,
+            product_selection_criteria: [
+                {
+                    field: 'enabled',
+                    operator: Operator.EQUALS,
+                    value: true,
+                },
+            ],
+            product_value_filters: {},
+            owner_username: 'willy',
+            product_mapping: {
+                uuid: {
+                    source: 'uuid',
+                    locale: null,
+                    scope: null,
+                }
+            },
+            has_product_mapping_schema: true
+        },
+        error: null,
+    }));
+
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [],
+        error: null,
+    }));
+
+    const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
+
+    expect(result.current).toMatchObject([
+        {
+            values: {
+                enabled: true,
+                product_selection_criteria: {
+                    a: {
+                        field: 'enabled',
+                        operator: Operator.EQUALS,
+                        value: true,
+                    },
+                },
+                product_value_filters: {},
+                product_mapping: {
+                    uuid: {
+                        source: 'uuid',
+                        locale: null,
+                        scope: null,
+                    }
+                },
+            },
+        },
+        expect.any(Function),
+        false,
     ]);
 });
