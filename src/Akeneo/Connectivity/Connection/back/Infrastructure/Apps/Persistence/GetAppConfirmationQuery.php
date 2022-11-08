@@ -34,7 +34,7 @@ JOIN akeneo_connectivity_connected_app on akeneo_connectivity_connection.code = 
 WHERE pim_api_client.marketplace_public_app_id = :marketplace_public_app_id
 SQL;
 
-        $rows = $this->connection->fetchAllAssociative($query, [
+        $rows = $this->connection->fetchAll($query, [
             'marketplace_public_app_id' => $marketplaceAppId,
         ]);
 

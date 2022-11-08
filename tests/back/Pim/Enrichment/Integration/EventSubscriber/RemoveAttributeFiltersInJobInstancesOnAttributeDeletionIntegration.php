@@ -55,7 +55,8 @@ WHERE id = :jobId
 SQL;
         $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
         $stmt->bindValue('jobId', $jobInstance->getId());
-        $rawParameters = unserialize($stmt->executeQuery()->fetchOne());
+        $stmt->execute();
+        $rawParameters = unserialize($stmt->fetchColumn(0));
 
         return $rawParameters;
     }

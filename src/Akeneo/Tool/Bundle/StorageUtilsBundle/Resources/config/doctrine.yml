@@ -28,4 +28,3 @@ services:
             - '%akeneo_storage_utils.mapping_overrides%'
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
-

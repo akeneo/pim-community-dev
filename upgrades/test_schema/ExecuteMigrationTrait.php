@@ -40,7 +40,7 @@ trait ExecuteMigrationTrait
             $status
         );
 
-        Assert::assertNotEquals(0, $status, 'Migration should be irreversible.');
+        Assert::assertEquals(1, $status, 'Migration should be irreversible.');
 
         $output = [];
         exec(
