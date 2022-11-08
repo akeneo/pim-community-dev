@@ -204,6 +204,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileCommented:
+        arguments:
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\DeleteCommentsOnProductFileDeleted:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
