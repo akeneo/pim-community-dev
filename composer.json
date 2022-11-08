@@ -150,7 +150,7 @@
         "symfony/validator": "^5.4.0",
         "symfony/yaml": "^5.4.0",
         "twig/twig": "^3.3.3",
-        "webmozart/assert": "1.9.1"
+        "webmozart/assert": "1.11.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.8.1",
