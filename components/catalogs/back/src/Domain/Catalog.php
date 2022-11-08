@@ -102,6 +102,7 @@ final class Catalog
             'owner_username' => $this->getOwnerUsername(),
             'product_selection_criteria' => $this->getProductSelectionCriteria(),
             'product_value_filters' => $this->getProductValueFilters(),
+            'product_mapping' => $this->getProductMapping(),
         ];
     }
 }

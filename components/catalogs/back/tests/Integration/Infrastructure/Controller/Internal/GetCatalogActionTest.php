@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetCatalogActionTest extends IntegrationTestCase
 {
-    public ?object $tokenStorage;
     private ?CommandBus $commandBus;
 
     protected function setUp(): void
@@ -26,7 +25,6 @@ class GetCatalogActionTest extends IntegrationTestCase
         parent::setUp();
 
         $this->commandBus = self::getContainer()->get(CommandBus::class);
-        $this->tokenStorage = self::getContainer()->get(TokenStorageInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -43,6 +41,20 @@ class GetCatalogActionTest extends IntegrationTestCase
         $this->setCatalogProductValueFilters('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
             'channel' => ['print', 'ecommerce'],
         ]);
+
+        $productMapping = [
+            'uuid' => [
+                'source' => 'uuid',
+                'scope' => null,
+                'locale' => null,
+            ],
+            'name' => [
+                'source' => 'title',
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+        ];
+        $this->setCatalogProductMapping('ed30425c-d9cf-468b-8bc7-fa346f41dd07', $productMapping);
 
         $client->request(
             'GET',
@@ -73,6 +85,10 @@ class GetCatalogActionTest extends IntegrationTestCase
         Assert::assertSame([
             'channel' => ['print', 'ecommerce'],
         ], $payload['product_value_filters']);
+        Assert::assertJsonStringEqualsJsonString(
+            \json_encode($productMapping, JSON_THROW_ON_ERROR),
+            \json_encode($payload['product_mapping'], JSON_THROW_ON_ERROR)
+        );
     }
 
     public function testItGetsNotFoundResponseWithWrongId(): void
