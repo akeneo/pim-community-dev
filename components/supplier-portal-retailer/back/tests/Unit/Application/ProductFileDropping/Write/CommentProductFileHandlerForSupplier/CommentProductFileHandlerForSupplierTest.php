@@ -6,19 +6,20 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDroppi
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileForSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileHandlerForSupplier;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileCommentedBySupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\Test\TestLogger;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class CommentProductFileHandlerForSupplierTest extends TestCase
 {
     /** @test */
-    public function itLogsWhenAContributorCommentedAProductFile(): void
+    public function itDispatchesAProductFileCommentedBySupplierEventWhenAContributorCommentedAProductFile(): void
     {
-        $logger = new TestLogger();
         $productFileRepository = $this->createMock(ProductFileRepository::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $productFileRepository
             ->expects($this->once())
@@ -26,10 +27,17 @@ final class CommentProductFileHandlerForSupplierTest extends TestCase
             ->with(Identifier::fromString('13e9a59b-eecc-4f91-9833-6c649aac2d59'))
             ->willReturn(
                 (new ProductFileBuilder())->withIdentifier('13e9a59b-eecc-4f91-9833-6c649aac2d59')->build(),
-            )
-        ;
+            );
+        $eventDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(new ProductFileCommentedBySupplier(
+                '13e9a59b-eecc-4f91-9833-6c649aac2d59',
+                'Here is a comment',
+                'jimmy@supplier.com',
+            ));
 
-        $sut = new CommentProductFileHandlerForSupplier($productFileRepository, $logger);
+        $sut = new CommentProductFileHandlerForSupplier($productFileRepository, $eventDispatcher);
 
         ($sut)(new CommentProductFileForSupplier(
             '13e9a59b-eecc-4f91-9833-6c649aac2d59',
@@ -37,16 +45,5 @@ final class CommentProductFileHandlerForSupplierTest extends TestCase
             'Here is a comment',
             new \DateTimeImmutable(),
         ));
-
-        static::assertTrue($logger->hasInfo([
-            'message' => 'Contributor "jimmy@supplier.com" commented a product file.',
-            'context' => [
-                'data' => [
-                    'identifier' => '13e9a59b-eecc-4f91-9833-6c649aac2d59',
-                    'content' => 'Here is a comment',
-                    'metric_key' => 'contributor_product_file_commented',
-                ],
-            ],
-        ]));
     }
 }
