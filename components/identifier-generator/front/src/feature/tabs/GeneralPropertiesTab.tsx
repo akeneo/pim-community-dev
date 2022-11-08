@@ -1,7 +1,8 @@
 import React, {useCallback} from 'react';
 import {IdentifierGenerator, LabelCollection} from '../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
-import {IdentifierAttributeSelector, LabelTranslations, Styled} from '../components';
+import {IdentifierAttributeSelector, LabelTranslations} from '../components';
+import {Styled} from '../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type GeneralPropertiesProps = {
