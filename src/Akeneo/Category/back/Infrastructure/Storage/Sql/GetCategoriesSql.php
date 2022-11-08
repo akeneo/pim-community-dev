@@ -25,12 +25,18 @@ class GetCategoriesSql implements GetCategoriesInterface
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
      */
-    public function byCodes(array $categoryCodes): array
+    public function byCodes(array $categoryCodes, bool $isEnrichedAttributes): array
     {
         $condition['sqlWhere'] = 'category.code IN (:category_codes)';
         $condition['sqlGroupBy'] = 'GROUP BY category.code';
-        $condition['params'] = ['category_codes' => $categoryCodes];
-        $condition['types'] = ['category_codes' => Connection::PARAM_STR_ARRAY];
+        $condition['params'] = [
+            'category_codes' => $categoryCodes,
+            'with_enriched_attributes' => $isEnrichedAttributes ?: false
+            ];
+        $condition['types'] = [
+            'category_codes' => Connection::PARAM_STR_ARRAY,
+            'with_enriched_attributes' => \PDO::PARAM_BOOL
+            ];
 
         return $this->execute($condition);
     }
@@ -62,7 +68,7 @@ class GetCategoriesSql implements GetCategoriesInterface
                 category.root as root_id,
                 category.updated,
                 translation.translations,
-                category.value_collection
+                IF(:with_enriched_attributes, category.value_collection, '') as value_collection
             FROM 
                 pim_catalog_category category
                 LEFT JOIN translation ON translation.code = category.code

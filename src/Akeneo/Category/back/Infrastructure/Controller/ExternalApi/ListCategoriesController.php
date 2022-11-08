@@ -2,6 +2,8 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
+use Akeneo\Category\Application\Query\GetCategoriesInterface;
+use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
@@ -22,10 +24,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ListCategoriesController extends AbstractController
 {
     public function __construct(
-        private NormalizerInterface $normalizer,
         private PaginatorInterface $paginator,
         private ParameterValidatorInterface $parameterValidator,
         private FeatureFlags $featureFlags,
+        private GetCategoriesInterface $getCategories,
         private array $apiConfiguration
     ) {
     }
@@ -37,7 +39,7 @@ class ListCategoriesController extends AbstractController
      *
      * @AclAncestor("pim_api_category_list")
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse|Response
     {
         if (!$this->featureFlags->isEnabled('enriched_category')) {
             return $this->forward('pim_api.controller.category::listAction');
@@ -56,19 +58,18 @@ class ListCategoriesController extends AbstractController
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
-        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
+        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true, 512, JSON_THROW_ON_ERROR);
         if (null === $searchFilters) {
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
-        if ($queryParameters['with_enriched_attributes']){
-
-        }
-
+        //TODO: Take limit, offset & order into account. https://akeneo.atlassian.net/browse/GRF-538
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $order = ['root' => 'ASC', 'left' => 'ASC'];
         try {
-            // TODO: Get the list of categories by the new ServiceApi
-            $categories = [];
+            $categories = $this->getCategories->byCodes(
+                $searchFilters,
+                $request->query->getBoolean('with_enriched_attributes')
+            );
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
@@ -79,19 +80,19 @@ class ListCategoriesController extends AbstractController
             'item_route_name' => 'pim_api_category_get',
         ];
 
-        // TODO: Count the number of categories by the new ServiceApi
         $count = null;
         if ($request->query->getBoolean('with_count') === true) {
-            $count = 0;
+            // TODO: Adapt $count to match currently existing behavior. https://akeneo.atlassian.net/browse/GRF-538
+            $count = sizeof($categories);
+        }
+
+        $normalizedCategories = [];
+        foreach ($categories as $category){
+            $normalizedCategories[] = ExternalApiCategory::fromDomainModel($category)->normalize();
         }
 
         $paginatedCategories = $this->paginator->paginate(
-            // TODO: Adapt normalizer
-            $this->normalizer->normalize(
-                $categories,
-                'external_api',
-                ['with_position' => $request->query->getBoolean('with_position')]
-            ),
+            $normalizedCategories,
             $parameters,
             $count
         );
