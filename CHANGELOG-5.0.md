@@ -1,5 +1,11 @@
 # 5.0.x
 
+# 5.0.116 (2022-11-07)
+
+## Bug fixes
+
+- PIM-10671: Fix slowness on product association page with a lot of categories
+
 # 5.0.115 (2022-10-18)
 
 ## Bug fixes
