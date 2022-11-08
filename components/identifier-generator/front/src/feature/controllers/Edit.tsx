@@ -4,7 +4,7 @@ import {EditGeneratorPage} from '../pages/';
 import {useIdentifierGenerator} from '../hooks';
 import {LoaderIcon, Placeholder, ServerErrorIllustration} from 'akeneo-design-system';
 import {IdentifierGeneratorNotFound} from '../errors';
-import {Styled} from '../components';
+import {Styled} from '../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Edit: React.FC<{}> = () => {
