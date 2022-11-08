@@ -59,10 +59,9 @@ describe('CreateGeneratorModal', () => {
     expect(confirmButton).toBeEnabled();
   });
 
-  it('should limit label string length', async () => {
+  it('should limit label string length', () => {
     const onSave = jest.fn();
     render(<CreateGeneratorModal onClose={jest.fn()} onSave={onSave} />);
-    await waitFor(() => screen.getByText('pim_identifier_generator.create.form.title'));
 
     const confirmButton = screen.getByText('pim_common.confirm');
     const labelInput = screen.getByRole('textbox', {name: 'pim_common.label'});
