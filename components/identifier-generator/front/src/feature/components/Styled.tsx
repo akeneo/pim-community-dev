@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {SkeletonPlaceholder} from 'akeneo-design-system';
+import {SkeletonPlaceholder, SectionTitle} from 'akeneo-design-system';
 
 const FormContainer = styled.div`
   display: flex;
@@ -32,11 +32,18 @@ const SkeletonContainer = styled.div`
   width: 100%;
 `;
 
+const StructureSectionTitle = styled(SectionTitle)`
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-bottom: 10px;
+`;
+
 const Styled = {
   FormContainer,
   Skeleton,
   SkeletonContainer,
   FullPageCenteredContent,
+  StructureSectionTitle,
 };
 
 export {Styled};
