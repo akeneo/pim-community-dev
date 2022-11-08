@@ -10,6 +10,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             enabled: false,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         action: {
             type: CatalogFormActions.INITIALIZE,
@@ -17,12 +18,14 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
                 enabled: true,
                 product_selection_criteria: {},
                 product_value_filters: {},
+                product_mapping: {},
             },
         },
         result: {
             enabled: true,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
     },
     {
@@ -30,6 +33,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             enabled: false,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         action: {
             type: CatalogFormActions.SET_ENABLED,
@@ -39,6 +43,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             enabled: true,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
     },
     {
@@ -46,6 +51,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             enabled: false,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         action: {
             type: CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA,
@@ -67,6 +73,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
                 },
             },
             product_value_filters: {},
+            product_mapping: {},
         },
     },
     {
@@ -74,6 +81,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             enabled: false,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         action: {
             type: CatalogFormActions.SET_PRODUCT_VALUE_FILTERS,
@@ -91,6 +99,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
                 locales: ['en_US', 'fr_FR'],
                 currencies: ['USD', 'EUR'],
             },
+            product_mapping: {},
         },
     },
 ];

@@ -21,12 +21,13 @@ const openDropdown = (selector: string): void => {
 };
 
 test('it can enable a catalog', () => {
-    const dispatch = jest.fn();
+    const dispatch = jest.fn(() => ({'oto': 'ramel'}));
     const form = {
         values: {
             enabled: true,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         dispatch: dispatch,
         errors: [],
@@ -56,6 +57,7 @@ test('it can change criteria in the product selection', async () => {
             enabled: true,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         dispatch: dispatch,
         errors: [],
@@ -125,6 +127,7 @@ test('it can add a product value filter on the channel', async () => {
             enabled: true,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         dispatch: dispatch,
         errors: [],

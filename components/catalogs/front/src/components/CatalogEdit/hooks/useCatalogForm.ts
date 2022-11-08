@@ -38,6 +38,7 @@ export const useCatalogForm = (id: string): Result => {
         enabled: false,
         product_selection_criteria: {},
         product_value_filters: {},
+        product_mapping: {},
     });
 
     const save = async () => {
@@ -90,6 +91,7 @@ export const useCatalogForm = (id: string): Result => {
                 enabled: catalog.data.enabled,
                 product_selection_criteria: indexify(catalog.data.product_selection_criteria),
                 product_value_filters: catalog.data.product_value_filters,
+                product_mapping: catalog.data.product_mapping,
             },
         });
 
