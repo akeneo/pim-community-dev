@@ -50,6 +50,11 @@ class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
             \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
         ));
         $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            'uuid' => [
+                'source' => 'uuid',
+                'scope' => null,
+                'locale' => null,
+            ],
             'name' => [
                 'source' => 'title',
                 'scope' => 'ecommerce',
