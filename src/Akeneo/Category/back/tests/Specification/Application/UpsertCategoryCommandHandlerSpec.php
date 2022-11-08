@@ -63,10 +63,11 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
     ) {
         $command = new UpsertCategoryCommand('code');
         $category = new Category(
-            new CategoryId(1),
-            new Code('code'),
-            LabelCollection::fromArray([]),
-            null
+            id: new CategoryId(1),
+            code: new Code('code'),
+            templateUuid: null,
+            labels: LabelCollection::fromArray([]),
+            parentId: null
         );
         $event = new CategoryUpdatedEvent('code');
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
@@ -85,10 +86,11 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
     ) {
         $command = new UpsertCategoryCommand('code');
         $category = new Category(
-            new CategoryId(1),
-            new Code('code'),
-            LabelCollection::fromArray([]),
-            null
+            id: new CategoryId(1),
+            code: new Code('code'),
+            templateUuid: null,
+            labels: LabelCollection::fromArray([]),
+            parentId: null
         );
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $getCategory->byCode('code')->shouldBeCalledOnce()->willReturn(null);
@@ -130,10 +132,11 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         $setLabelUserIntent = new SetLabel('en_US', 'The label');
         $command = new UpsertCategoryCommand('code', [$setLabelUserIntent]);
         $category = new Category(
-            new CategoryId(1),
-            new Code('code'),
-            LabelCollection::fromArray([]),
-            null
+            id: new CategoryId(1),
+            code: new Code('code'),
+            templateUuid: null,
+            labels: LabelCollection::fromArray([]),
+            parentId: null
         );
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $getCategory->byCode('code')->shouldBeCalledOnce()->willReturn($category);

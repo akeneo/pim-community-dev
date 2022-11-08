@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Domain\Query\GetAttributeInMemory;
+use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\CouldNotGeneratePreviewException;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorInterface;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
@@ -36,7 +37,7 @@ class ImagePreviewController
     private const ROOT_FLAG = '__root__';
 
     public function __construct(
-        private GetAttributeInMemory $getAttribute,
+        private GetAttribute $getAttribute,
         private PreviewGeneratorInterface $previewGenerator,
         private LoaderInterface $imageLoader,
     ) {
@@ -56,8 +57,7 @@ class ImagePreviewController
         $regenerate = $request->isMethod('POST');
 
         try {
-            $attributeCollection = $this->getAttribute->byIdentifiers([]);
-            $attribute = $attributeCollection->getAttributeByCode($attributeCode);
+            $attribute = $this->getAttribute->byCode(new AttributeCode($attributeCode));
             if ($regenerate) {
                 $this->previewGenerator->remove($data, $attribute, $type);
             }

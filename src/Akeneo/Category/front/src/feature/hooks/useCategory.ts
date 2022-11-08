@@ -4,7 +4,7 @@ import type {EditCategoryForm} from '../models';
 import {EnrichCategory, Template} from '../models';
 import {populateCategory} from '../helpers';
 import {EditCategoryContext} from '../components';
-import {useTemplateByTemplateUuidInMemory} from './useTemplateByTemplateUuidInMemory';
+import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
 
 interface UseCategoryResponseCommon {
   load: () => Promise<void>;
@@ -42,11 +42,7 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
     data: template,
     status: templateFetchingStatus,
     error: templateFetchingError,
-  } = useTemplateByTemplateUuidInMemory({
-    // TODO when available : use template uuid from category.template_id
-    uuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
-    enabled: categoryFetchingStatus === 'fetched',
-  });
+  } = useTemplateByTemplateUuid(category?.template_uuid ?? null);
 
   const populatedCategory = useMemo(() => {
     return category && template ? populateCategory(category, template, localeCodes) : null;

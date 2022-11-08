@@ -51,6 +51,7 @@ services:
             - '@Akeneo\Category\Application\Query\GetTemplate'
             - '@Akeneo\Category\Application\Query\GetAttribute'
             - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory'
+            - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory'
 
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:
@@ -70,6 +71,6 @@ services:
     Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
         public: true
         arguments:
-            - '@Akeneo\Category\Domain\Query\GetAttributeInMemory'
+            - '@Akeneo\Category\Application\Query\GetAttribute'
             - '@pim_category.infrastructure.registry.preview_generator'
             - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
