@@ -3,6 +3,7 @@ import {useSaveGenerator} from '../useSaveGenerator';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
 import {act} from '@testing-library/react';
+import {mockResponse} from '../../tests/test-utils';
 
 const mockNotify = jest.fn();
 
@@ -19,24 +20,26 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   },
 }));
 
+const generator = {
+  code: 'code',
+  target: 'sku',
+  structure: [],
+  delimiter: '-',
+  labels: {'en_US': 'My Generator'},
+  conditions: []
+};
+
 describe('useSaveGenerator', () => {
   it('should save a generator without failure', async () => {
-    const generator = {
-      code: 'code',
-      target: 'sku',
-      structure: [],
-      delimiter: '-',
-      labels: {'en_US': 'My Generator'},
-      conditions: []
-    };
+    mockResponse('akeneo_identifier_generator_rest_update', 'PATCH', {
+      ok: true,
+      json: () => Promise.resolve(generator),
+    });
+
     const {result, waitFor} = renderHook(() => useSaveGenerator(), {wrapper: createWrapper()});
     await waitFor(() => {
       return !!result?.current?.save;
     });
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(generator),
-    } as Response);
 
     act(() => {
       result?.current?.save(generator);
@@ -54,28 +57,19 @@ describe('useSaveGenerator', () => {
   });
 
   it('should handle errors on save', async () => {
-    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-    const generator = {
-      code: 'code',
-      target: 'sku',
-      structure: [],
-      delimiter: '-',
-      labels: {'en_US': 'My Generator'},
-      conditions: []
-    };
-    const {result, waitFor} = renderHook(() => useSaveGenerator(), {wrapper: createWrapper()});
-    await waitFor(() => {
-      return !!result?.current?.save;
-    });
-    jest.spyOn(global, 'fetch').mockResolvedValue({
+    mockResponse('akeneo_identifier_generator_rest_update', 'PATCH', {
       ok: false,
-      json: () => Promise.resolve([
+      json: [
         {
           message: 'Association type code may contain only letters, numbers and underscores',
           path: 'code'
         }
-      ]),
-    } as Response);
+      ],
+    });
+    const {result, waitFor} = renderHook(() => useSaveGenerator(), {wrapper: createWrapper()});
+    await waitFor(() => {
+      return !!result?.current?.save;
+    });
 
     act(() => {
       result?.current?.save(generator);

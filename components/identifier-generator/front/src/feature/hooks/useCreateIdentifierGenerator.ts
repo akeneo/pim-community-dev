@@ -2,13 +2,24 @@ import {IdentifierGenerator} from '../models';
 import {InvalidIdentifierGenerator, ServerError} from '../errors';
 import {useMutation, useQueryClient} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
+import {Violation} from '../validators/Violation';
+import {UseMutateFunction} from 'react-query/types/react/types';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const useCreateIdentifierGenerator = () => {
+type ErrorResponse = {
+  violations?: Violation[]
+}
+
+type HookResponse = {
+  mutate:  UseMutateFunction<IdentifierGenerator, ErrorResponse, IdentifierGenerator, unknown>,
+  error: ErrorResponse,
+  isLoading: boolean
+}
+
+const useCreateIdentifierGenerator = (): HookResponse => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  return useMutation(
+  const {mutate, error, isLoading} = useMutation<IdentifierGenerator, ErrorResponse, IdentifierGenerator>(
     async (generator: IdentifierGenerator) => {
       const response = await fetch(router.generate('akeneo_identifier_generator_rest_create'), {
         method: 'POST',
@@ -24,11 +35,15 @@ const useCreateIdentifierGenerator = () => {
       if (response.status !== 201) {
         throw new ServerError();
       }
+
+      return await response.json();
     },
     {
       onSuccess: () => queryClient.invalidateQueries('getGeneratorList'),
     }
   );
+
+  return {mutate, error: error ?? {}, isLoading};
 };
 
 export {useCreateIdentifierGenerator};

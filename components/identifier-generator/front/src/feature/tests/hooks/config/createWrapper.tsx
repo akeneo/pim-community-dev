@@ -5,6 +5,7 @@ const createWrapper: () => ComponentType<null> | undefined = () => {
   // creates a new QueryClient for each test
   const queryClient = new QueryClient({
     defaultOptions: {
+      queries: {retry: false},
       mutations: {retry: false}
     }
   });

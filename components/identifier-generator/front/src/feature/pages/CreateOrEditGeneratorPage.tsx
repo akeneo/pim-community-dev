@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageContent, PageHeader, useTranslate, SecondaryActions, useRouter} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, Structure} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode} from '../models';
 import {Violation} from '../validators/Violation';
