@@ -75,16 +75,8 @@ const SftpStorageConfigurator = ({
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
   const publicKey = useGetPublicKey();
 
-  const handleFingerprintChange = (fingerprint: string) => {
-  }
-  const handleLoginTypeChange = (storageLoginType: string) => {
-  }
-  const handlePortChange = (port: string) => {
-      onStorageChange({...storage, port: parseInt(port, 10)});
-  }
-
   const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
-  const copyToClipboard = (text: string) => canCopyToClipboard() && navigator.clipboard.writeText(text);
+  const copyToClipboard = (publicKey: string) => canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
 
   return (
     <>

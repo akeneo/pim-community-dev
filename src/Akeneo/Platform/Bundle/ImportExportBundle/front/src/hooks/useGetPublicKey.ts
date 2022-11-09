@@ -24,7 +24,7 @@ const useGetPublicKey = () => {
     void getPublicKey();
   }, [route]);
 
-  return {publicKey};
+  return publicKey;
 };
 
 export {useGetPublicKey};
