@@ -210,6 +210,33 @@ test('it allows user to change login type', () => {
   });
 });
 
+test('it displays a disabled public key field', () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.com',
+    port: 22,
+    login_type: 'private_key',
+    username: '',
+    password: '',
+  };
+
+  const onStorageChange = jest.fn();
+
+  renderWithProviders(
+      <SftpStorageConfigurator
+          storage={storage}
+          fileExtension="xlsx"
+          validationErrors={[]}
+          onStorageChange={onStorageChange}
+      />
+  );
+
+  const publicKeyField = screen.getByLabelText('pim_import_export.form.job_instance.storage_form.public_key.label');
+
+  expect(publicKeyField).toBeDisabled();
+});
+
 test('it allows user to fill username field', () => {
   const storage: SftpStorage = {
     type: 'sftp',
