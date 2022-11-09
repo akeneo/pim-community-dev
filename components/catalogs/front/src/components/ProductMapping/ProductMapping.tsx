@@ -1,9 +1,10 @@
 import React, {FC, useState} from 'react';
 import styled from 'styled-components';
-import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
+import {getColor, SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourcePlaceholder} from './components/SourcePlaceholder';
 import {useCatalog} from './hooks/useCatalog';
+import {TargetPlaceholder} from './components/TargetPlaceholder';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -17,9 +18,14 @@ const TargetContainer = styled.div`
 const SourceContainer = styled.div`
     flex-basis: 50%;
 `;
-
 const TargetCell = styled(Table.Cell)`
     width: 215px;
+    color: ${getColor('brand', 100)};
+    font-style: italic;
+`;
+const PlaceholderCell = styled(Table.Cell)`
+    color: ${getColor('grey', 100)};
+    font-style: italic;
 `;
 
 type Props = {
@@ -31,6 +37,8 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
     const {data: catalog} = useCatalog(catalogId);
 
     const [selectedTarget, setSelectedTarget] = useState<string>();
+
+    const targets = Object.entries(catalog?.product_mapping ?? {});
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
@@ -52,19 +60,36 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {undefined !== catalog && Object.entries(catalog.product_mapping).map(([target, source]) => {
-                            return (
-                                <Table.Row
-                                    key={target}
-                                    onClick={() => {
-                                        setSelectedTarget(target);
-                                    }}
-                                >
-                                    <TargetCell>{target}</TargetCell>
-                                    <Table.Cell>{source.source}</Table.Cell>
-                                </Table.Row>
-                            );
-                        })}
+                        {targets.length === 0 && <TargetPlaceholder />}
+                        {targets.length > 0 && (
+                            <Table.Row>
+                                <TargetCell>UUID</TargetCell>
+                                <Table.Cell>UUID</Table.Cell>
+                            </Table.Row>
+                        )}
+                        {targets.length > 0 && (
+                            targets.map(([target, source]) => {
+                                if ('uuid' === target) {
+                                    return;
+                                }
+                                return (
+                                    <Table.Row
+                                        key={target}
+                                        onClick={() => {
+                                            setSelectedTarget(target);
+                                        }}
+                                    >
+                                        <TargetCell>{target}</TargetCell>
+                                        {null === source.source && (
+                                            <PlaceholderCell>
+                                                {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
+                                            </PlaceholderCell>
+                                        )}
+                                        {source.source && <Table.Cell>{source.source}</Table.Cell>}
+                                    </Table.Row>
+                                );
+                            })
+                        )}
                     </Table.Body>
                 </Table>
             </TargetContainer>
@@ -72,7 +97,7 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
                 {selectedTarget === undefined && <SourcePlaceholder />}
                 {selectedTarget && (
                     <SectionTitle>
-                        <SectionTitle.Title>Target Name</SectionTitle.Title>
+                        <SectionTitle.Title>{selectedTarget}</SectionTitle.Title>
                     </SectionTitle>
                 )}
             </SourceContainer>

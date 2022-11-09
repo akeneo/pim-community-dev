@@ -105,6 +105,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                 ],
+                'description' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ]
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
