@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -88,6 +88,8 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $productsCursor,
+        NotificationInterface $startNotification,
+        NotificationInterface $doneNotification
     ) {
         $uuid = Uuid::uuid4();
         $jobParameters->get('channel_code')->willReturn('unknown');
@@ -96,9 +98,19 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
 
         $jeanProduct = (new Product())->setIdentifier('jean');
 
-        $startNotification = new Notification();
-        $doneNotification = new Notification();
-        $notificationFactory->create()->willReturn($startNotification, $doneNotification);
+        $notificationFactory->create()->shouldBeCalledTimes(2)->willReturn($startNotification, $doneNotification);
+        $startNotification->setType('warning')->shouldBeCalled()->willReturn($startNotification);
+        $startNotification->setMessage('pim_enrich.notification.settings.remove_completeness_for_channel_and_locale.start')
+            ->shouldBeCalled()->willReturn($startNotification);
+        $startNotification->setContext(['actionType' => 'settings', 'showReportButton' => false])
+            ->shouldBeCalled()->willReturn($startNotification);
+
+        $doneNotification->setType('success')->shouldBeCalled()->willReturn($doneNotification);
+        $doneNotification->setMessage('pim_enrich.notification.settings.remove_completeness_for_channel_and_locale.done')
+                          ->shouldBeCalled()->willReturn($doneNotification);
+        $doneNotification->setContext(['actionType' => 'settings', 'showReportButton' => false])
+                          ->shouldBeCalled()->willReturn($doneNotification);
+
         $notifier->notify($startNotification, ['willypapa'])->shouldBeCalled();
         $notifier->notify($doneNotification, ['willypapa'])->shouldBeCalled();
 
@@ -128,7 +140,9 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         BulkSaverInterface $productBulkSaver,
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $pqb,
-        CursorInterface $productsCursor
+        CursorInterface $productsCursor,
+        NotificationInterface $startNotification,
+        NotificationInterface $doneNotification
     ): void {
         $jeanUuid = Uuid::uuid4();
         $shoeUuid = Uuid::uuid4();
@@ -142,9 +156,19 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         $jobParameters->get('locales_identifier')->willReturn(['de_DE', 'it_IT']);
         $jobParameters->get('username')->willReturn('willypapa');
 
-        $startNotification = new Notification();
-        $doneNotification = new Notification();
-        $notificationFactory->create()->willReturn($startNotification, $doneNotification);
+        $notificationFactory->create()->shouldBeCalledTimes(2)->willReturn($startNotification, $doneNotification);
+        $startNotification->setType('warning')->shouldBeCalled()->willReturn($startNotification);
+        $startNotification->setMessage('pim_enrich.notification.settings.remove_completeness_for_channel_and_locale.start')
+            ->shouldBeCalled()->willReturn($startNotification);
+        $startNotification->setContext(['actionType' => 'settings', 'showReportButton' => false])
+            ->shouldBeCalled()->willReturn($startNotification);
+
+        $doneNotification->setType('success')->shouldBeCalled()->willReturn($doneNotification);
+        $doneNotification->setMessage('pim_enrich.notification.settings.remove_completeness_for_channel_and_locale.done')
+            ->shouldBeCalled()->willReturn($doneNotification);
+        $doneNotification->setContext(['actionType' => 'settings', 'showReportButton' => false])
+            ->shouldBeCalled()->willReturn($doneNotification);
+
         $notifier->notify($startNotification, ['willypapa'])->shouldBeCalled();
         $notifier->notify($doneNotification, ['willypapa'])->shouldBeCalled();
 
