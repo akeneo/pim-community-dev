@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
-import {SftpStorage} from '../components';
 
 const useGetPublicKey = () => {
   const [publicKey, setPublicKey] = useState<string | undefined>(undefined);

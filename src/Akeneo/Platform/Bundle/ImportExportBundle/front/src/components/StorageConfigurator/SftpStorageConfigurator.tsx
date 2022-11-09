@@ -10,7 +10,6 @@ import {
   getFontSize,
   SelectInput,
   CopyIcon,
-  TextInput,
 } from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage, StorageLoginType, STORAGE_LOGIN_TYPES} from './model';
