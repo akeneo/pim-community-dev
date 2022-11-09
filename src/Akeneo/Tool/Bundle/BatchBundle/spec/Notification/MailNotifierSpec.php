@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Tool\Bundle\BatchBundle\Notification;
 
-use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier;
 use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -21,14 +21,19 @@ class MailNotifierSpec extends ObjectBehavior
         MailNotifierInterface $mailer
     ): void {
         $twig->render(Argument::type('string'), Argument::type('array'))->willReturn('');
-        $this->beConstructedWith($logger, $tokenStorage, $twig, $mailer, 'null://localhost?encryption=tls&auth_mode=login&username=foo&password=bar&sender_address=no-reply@example.com');
+        $this->beConstructedWith($logger, $tokenStorage, $twig, $mailer);
         $this->setRecipients(['test@akeneo.com']);
     }
 
-    public function it_notifies_success(JobExecution $jobExecution, $mailer): void
-    {
+    public function it_notifies_a_successful_job(
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        MailNotifierInterface $mailer,
+    ): void {
         $batchStatus = new BatchStatus(BatchStatus::COMPLETED);
         $jobExecution->getStatus()->willReturn($batchStatus);
+        $jobInstance->getType()->willReturn('export');
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
 
         $mailer->notify(
             ['test@akeneo.com'],
@@ -40,14 +45,19 @@ class MailNotifierSpec extends ObjectBehavior
         $this->notify($jobExecution);
     }
 
-    public function it_notifies_fail(JobExecution $jobExecution, $mailer): void
-    {
+    public function it_notifies_a_failed_job(
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        MailNotifierInterface $mailer,
+    ): void {
         $batchStatus = new BatchStatus(BatchStatus::UNKNOWN);
         $jobExecution->getStatus()->willReturn($batchStatus);
+        $jobInstance->getType()->willReturn('mass_edit');
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
 
         $mailer->notify(
             ['test@akeneo.com'],
-            'Akeneo completed your export: fail',
+            'Akeneo completed your mass_edit: fail',
             Argument::any(),
             Argument::any()
         )->shouldBeCalled();
@@ -55,10 +65,16 @@ class MailNotifierSpec extends ObjectBehavior
         $this->notify($jobExecution);
     }
 
-    public function it_should_log_error_if_notification_failed(JobExecution $jobExecution, $mailer, $logger): void
-    {
+    public function it_should_log_error_if_notification_failed(
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        MailNotifierInterface $mailer,
+        LoggerInterface $logger,
+    ): void {
         $batchStatus = new BatchStatus(BatchStatus::COMPLETED);
         $jobExecution->getStatus()->willReturn($batchStatus);
+        $jobInstance->getType()->willReturn('export');
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
 
         $mailer->notify(
             Argument::any(),

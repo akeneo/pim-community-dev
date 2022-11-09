@@ -61,7 +61,7 @@ class MailNotifier implements Notifier
             'jobExecution' => $jobExecution,
         ];
 
-        $subject = $jobExecution->getStatus()->isUnsuccessful() ? 'Akeneo completed your export: fail' : 'Akeneo completed your export: success';
+        $subject = $this->getSubject($jobExecution);
 
         try {
             $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);
@@ -73,5 +73,13 @@ class MailNotifier implements Notifier
                 ['Exception' => $exception]
             );
         }
+    }
+
+    private function getSubject(JobExecution $jobExecution): string
+    {
+        $jobType = $jobExecution->getJobInstance()->getType();
+        $status = $jobExecution->getStatus()->isUnsuccessful() ? 'fail' : 'success';
+
+        return sprintf('Akeneo completed your %s: %s', $jobType, $status);
     }
 }
