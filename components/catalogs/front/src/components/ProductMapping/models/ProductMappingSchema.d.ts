@@ -6,6 +6,10 @@ export type ProductMappingSchema = {
     description: string,
     type: string,
     properties: {
-        (key: string): any
+        [target: string]: {
+            title?: string,
+            description?: string,
+            type: string,
+        }
     }
 };
