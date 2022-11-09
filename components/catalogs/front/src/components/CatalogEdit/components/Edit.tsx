@@ -72,7 +72,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
                     errors={mapProductValueFiltersErrors(errors)}
                 />
             )}
-            {isCurrent(Tabs.PRODUCT_MAPPING) && <ProductMapping />}
+            {isCurrent(Tabs.PRODUCT_MAPPING) && <ProductMapping catalogId={id} />}
         </>
     );
 };

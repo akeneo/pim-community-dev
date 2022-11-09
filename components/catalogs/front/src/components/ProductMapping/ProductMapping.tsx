@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourcePlaceholder} from './components/SourcePlaceholder';
+import {useCatalog} from './hooks/useCatalog';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -21,19 +22,18 @@ const TargetCell = styled(Table.Cell)`
     width: 215px;
 `;
 
-type Props = {};
+type Props = {
+    catalogId: string;
+};
 
-export const ProductMapping: FC<Props> = () => {
+export const ProductMapping: FC<Props> = ({catalogId}) => {
     const translate = useTranslate();
-    const targets = [
-        {code: 'target1', name: 'Target One'},
-        {code: 'target2', name: 'Target Two'},
-    ];
+    const {data: catalog} = useCatalog(catalogId);
 
     const [selectedTarget, setSelectedTarget] = useState<string>();
 
     return (
-        <MappingContainer>
+        <MappingContainer data-testid={'product-mapping'}>
             <TargetContainer>
                 <SectionTitle>
                     <SectionTitle.Title>{translate('akeneo_catalogs.product_mapping.target.title')}</SectionTitle.Title>
@@ -52,16 +52,16 @@ export const ProductMapping: FC<Props> = () => {
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {targets.map(target => {
+                        {undefined !== catalog && Object.entries(catalog.product_mapping).map(([target, source]) => {
                             return (
                                 <Table.Row
-                                    key={target.code}
+                                    key={target}
                                     onClick={() => {
-                                        setSelectedTarget(target.code);
+                                        setSelectedTarget(target);
                                     }}
                                 >
-                                    <TargetCell>{target.name}</TargetCell>
-                                    <Table.Cell></Table.Cell>
+                                    <TargetCell>{target}</TargetCell>
+                                    <Table.Cell>{source.source}</Table.Cell>
                                 </Table.Row>
                             );
                         })}
