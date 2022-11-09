@@ -153,6 +153,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
   return {
     categoryFetchingStatus,
+    templateFetchingStatus,
     category: categoryEdited,
     template,
     applyPermissionsOnChildren,

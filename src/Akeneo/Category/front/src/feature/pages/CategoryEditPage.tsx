@@ -67,24 +67,13 @@ const CategoryEditPage: FC = () => {
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const [tree, setTree] = useState<EnrichCategory | null>(null);
 
-  // ui state
-  const [activeTab, setActiveTab] = useSessionStorageState<string>(
-    isGranted('pim_enrich_product_category_edit_attributes') ? Tabs.ATTRIBUTE : Tabs.PROPERTY,
-    'pim_category_activeTab'
-  );
-  const [isCurrent, switchTo] = useTabBar(activeTab);
-  const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
-  const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
 
-  const handleSwitchTo = useCallback((tab: string) => {
-    setActiveTab(tab);
-    switchTo(tab);
-  }, [setActiveTab, switchTo]);
 
   const {
     category,
     template,
     categoryFetchingStatus,
+    templateFetchingStatus,
     applyPermissionsOnChildren,
     onChangeCategoryLabel,
     onChangePermissions,
@@ -95,6 +84,19 @@ const CategoryEditPage: FC = () => {
     historyVersion,
   } = useEditCategoryForm(parseInt(categoryId));
 
+  // ui state
+  const [activeTab, setActiveTab] = useSessionStorageState<string>(
+      isGranted('pim_enrich_product_category_edit_attributes') ? Tabs.ATTRIBUTE : Tabs.PROPERTY,
+      'pim_category_activeTab'
+  );
+  const [isCurrent, switchTo] = useTabBar(activeTab);
+  const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
+  const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
+
+  const handleSwitchTo = useCallback((tab: string) => {
+    setActiveTab(tab);
+    switchTo(tab);
+  }, [setActiveTab, switchTo]);
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
@@ -149,10 +151,12 @@ const CategoryEditPage: FC = () => {
   }, [category, userContext]);
 
   useEffect(() => {
-    if (activeTab === Tabs.ATTRIBUTE && (!isGranted('pim_enrich_product_category_edit_attributes') && template)) {
+    if (templateFetchingStatus !== 'fetched') return;
+
+    if (activeTab === Tabs.ATTRIBUTE && (!isGranted('pim_enrich_product_category_edit_attributes') || !template)) {
       handleSwitchTo(Tabs.PROPERTY);
     }
-  }, [activeTab, handleSwitchTo, isGranted, template]);
+  }, [template, templateFetchingStatus]);
 
   if (categoryFetchingStatus === 'error') {
     return (
