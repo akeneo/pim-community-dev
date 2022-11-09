@@ -122,6 +122,7 @@ $rules = [
 
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+        'Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection',
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit
