@@ -650,7 +650,8 @@ functions.http('createTenant', (req, res) => {
           },
           pim: {
             storage: {
-              bucketName: tenant_id
+              bucketName: tenant_id,
+              location: (process.env.REGION).toUpperCase()
             },
             defaultAdminUser: {
               password: defaultAdminUserPassword
