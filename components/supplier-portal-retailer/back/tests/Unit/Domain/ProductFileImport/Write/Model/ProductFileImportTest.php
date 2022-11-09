@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\ProductFileImport\Writ
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use PHPUnit\Framework\TestCase;
 
 class ProductFileImportTest extends TestCase
@@ -13,7 +14,8 @@ class ProductFileImportTest extends TestCase
     /** @test */
     public function itCreateProductFileImportWithFileImportStatusInProgress(): void
     {
-        $productFileImport = ProductFileImport::start('44ce8069-8da1-4986-872f-311737f46f02', 666);
+        $productFile = (new ProductFileBuilder)->withIdentifier('44ce8069-8da1-4986-872f-311737f46f02')->build();
+        $productFileImport = ProductFileImport::start($productFile, 666);
 
         $this->assertSame(ProductFileImportStatus::IN_PROGRESS, $productFileImport->fileImportStatus());
         $this->assertSame('44ce8069-8da1-4986-872f-311737f46f02', $productFileImport->productFileIdentifier());

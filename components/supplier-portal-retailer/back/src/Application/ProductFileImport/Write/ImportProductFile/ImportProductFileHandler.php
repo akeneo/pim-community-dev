@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write;
@@ -14,7 +15,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write;
 final class ImportProductFileHandler
 {
     public function __construct(
-        private readonly GetProductFilePathAndFileName $getProductFilePathAndFileName,
+        private readonly ProductFileRepository $productFileRepository,
         private readonly StreamStoredProductFile $streamStoredProductFile,
         private readonly Write\LaunchProductFileImport $launchProductFileImport,
         private readonly ProductFileImportRepository $productFileImportRepository,
@@ -23,16 +24,16 @@ final class ImportProductFileHandler
 
     public function __invoke(ImportProductFile $importProductFile): string
     {
-        $productFilePathAndFileName = ($this->getProductFilePathAndFileName)($importProductFile->productFileIdentifier);
-        if (null === $productFilePathAndFileName) {
+        $productFile = $this->productFileRepository->find(Identifier::fromString($importProductFile->productFileIdentifier));
+        if (null === $productFile) {
             throw new ProductFileDoesNotExist();
         }
 
-        $productFileStream = ($this->streamStoredProductFile)($productFilePathAndFileName->path);
+        $productFileStream = ($this->streamStoredProductFile)($productFile->path());
 
-        $importResult = ($this->launchProductFileImport)($importProductFile->code, $productFilePathAndFileName->originalFilename, $productFileStream);
+        $importResult = ($this->launchProductFileImport)($importProductFile->code, $productFile->originalFilename(), $productFileStream);
 
-        $productFileImport = ProductFileImport::start($importProductFile->productFileIdentifier, $importResult->importExecutionId);
+        $productFileImport = ProductFileImport::start($productFile, $importResult->importExecutionId);
         $this->productFileImportRepository->save($productFileImport);
 
         return $importResult->importExecutionUrl;

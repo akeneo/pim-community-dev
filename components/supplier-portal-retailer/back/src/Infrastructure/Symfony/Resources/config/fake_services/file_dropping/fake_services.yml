@@ -18,10 +18,5 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory\InMemoryGetProductFilePathAndFileName
-        arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
-
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\InMemory\InMemoryStreamStoredProductFile

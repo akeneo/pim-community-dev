@@ -24,7 +24,7 @@ services:
   #Command/Handlers
   Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler:
     arguments:
-      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName'
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
       - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile'
       - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductFileImport'
       - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository'

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model;
 
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport\ImportExecutionId;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport\ProductFileIdentifier;
 
 final class ProductFileImport
 {
-    //Do we use the Product File Dropping's VO ?
     private readonly ProductFileIdentifier $productFileIdentifier;
     private readonly ImportExecutionId $importExecutionId;
 
@@ -20,9 +20,9 @@ final class ProductFileImport
         $this->importExecutionId = new ImportExecutionId($importExecutionId);
     }
 
-    public static function start(string $productFileIdentifier, int $importExecutionId): self
+    public static function start(ProductFile $productFile, int $importExecutionId): self
     {
-        return new self($productFileIdentifier, $importExecutionId, ProductFileImportStatus::IN_PROGRESS);
+        return new self($productFile->identifier(), $importExecutionId, ProductFileImportStatus::IN_PROGRESS);
     }
 
     public function productFileIdentifier(): string
