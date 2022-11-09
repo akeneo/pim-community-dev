@@ -51,7 +51,7 @@ AND `attribute_group_completeness`.`channel_id` = :channel_id
 AND `attribute_group_completeness`.`locale_id` = :locale_id
 SQL;
 
-        $calculatedAt = $connection->fetchOne($query, [
+        $calculatedAt = $connection->fetchColumn($query, [
             'product_uuid' => $product->getUuid()->getBytes(),
             'channel_id' => $project->getChannel()->getId(),
             'locale_id'  => $project->getLocale()->getId(),
@@ -82,7 +82,7 @@ WHERE product_uuid = :product_uuid
 SQL;
 
         $connection = $this->entityManager->getConnection();
-        $projects = $connection->fetchOne($query, ['product_uuid' => $product->getUuid()->getBytes()]);
+        $projects = $connection->fetchColumn($query, ['product_uuid' => $product->getUuid()->getBytes()]);
 
         return 0 < $projects;
     }

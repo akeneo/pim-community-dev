@@ -23,7 +23,6 @@ akeneo_feature_flag:
         - { feature: 'read_only_product_attribute', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'sso_configuration', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'job_automation_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
-        - { feature: 'supplier_portal_critical_path_collaborate', service: 'akeneo.supplier_portal_critical_path_collaborate.feature' }
         - { feature: 'job_automation', service: 'akeneo.job_automation.feature' }
         - { feature: 'enriched_category', service: 'akeneo.category.enriched.feature'}
         - { feature: 'performance_analytics', service: 'akeneo.performance_analytics.feature'}

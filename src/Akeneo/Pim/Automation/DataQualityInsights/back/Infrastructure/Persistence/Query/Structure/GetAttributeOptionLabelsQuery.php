@@ -40,7 +40,7 @@ SQL;
         $attributeOptionLabels = $this->dbConnection->executeQuery($query, [
             'attributeCode' => $attributeOptionCode->getAttributeCode(),
             'optionCode' => $attributeOptionCode
-        ])->fetchOne();
+        ])->fetchColumn();
 
         return is_string($attributeOptionLabels) ? json_decode($attributeOptionLabels, true) : [];
     }

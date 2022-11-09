@@ -40,27 +40,25 @@ final class ConsolidateAttributeQualityIntegration extends DataQualityInsightsTe
 
     private function getGlobalQuality(string $attributeCode): ?string
     {
-        $quality = $this->get('database_connection')->executeQuery(
-            <<<SQL
+        $quality = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT quality FROM pimee_dqi_attribute_quality
 WHERE attribute_code = :attributeCode;
 SQL,
             ['attributeCode' => $attributeCode]
-        )->fetchOne();
+        )->fetchColumn();
 
         return is_string($quality) ? $quality : null;
     }
 
     private function getLocalesQuality(string $attributeCode): array
     {
-        $localesQuality = $this->get('database_connection')->executeQuery(
-            <<<SQL
+        $localesQuality = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT JSON_OBJECTAGG(locale, quality)
 FROM pimee_dqi_attribute_locale_quality
 WHERE attribute_code = :attributeCode;
 SQL,
             ['attributeCode' => $attributeCode]
-        )->fetchOne();
+        )->fetchColumn();
 
         return $localesQuality ? json_decode($localesQuality, true) : [];
     }

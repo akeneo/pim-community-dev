@@ -16,25 +16,9 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["grth", "srnt"]
+                          PRODUCT_TYPE: ["srnt"]
                   requires:
                       - checkout
-            - test_clone_from_customer_db:
-                  name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          SOURCE_PFID: *client-to-clone-grth
-                  requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
-            - test_upgrade_from_customer_db:
-                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          SOURCE_PFID: *client-to-clone-grth
-                  requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
             - test_clone_from_customer_db:
                   name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
                   matrix:
@@ -191,57 +175,6 @@ workflows:
                   name: "[srnt] Build"
                   requires:
                       - "checkout"
-            - build_grth:
-                  name: "[grth] Build"
-                  requires:
-                      - "checkout"
-            - clone_and_upgrade?:
-                name: "[grth] Clone and upgrade << matrix.CLIENT >> ?"
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - "master"
-                matrix:
-                    parameters:
-                        CLIENT: *client-to-clone-grth
-                        PRODUCT_TYPE: ["grth"]
-            - test_clone_from_customer_db:
-                  name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          SOURCE_PFID: *client-to-clone-grth
-                          LONG_TTL_INSTANCE: [true]
-                  requires:
-                      - "[grth] Build"
-                      - "[grth] Clone and upgrade << matrix.SOURCE_PFID >> ?"
-            - test_upgrade_from_last_release:
-                  name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          INSTANCE_NAME: *client-to-clone-grth
-                          REMOVE_ENV: [false]
-                  requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.INSTANCE_NAME >>"
-            - delete_pr_environment?:
-                  name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
-                  type: approval
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          INSTANCE_NAME: *client-to-clone-grth
-                  requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
-            - delete_pr_environment:
-                  name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >>"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          INSTANCE_NAME: *client-to-clone-grth
-                  requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
             - clone_and_upgrade?:
                 name: "[srnt] Clone and upgrade << matrix.CLIENT >> ?"
                 type: approval

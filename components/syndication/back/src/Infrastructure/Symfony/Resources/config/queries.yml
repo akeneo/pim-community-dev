@@ -233,6 +233,11 @@ services:
         arguments:
             - '@database_connection'
             - '%akeneo.syndication.connector.product.code%'
+    Akeneo\Platform\Syndication\Domain\Query\Catalog\FindCatalogListQueryInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Catalog\FindCatalogList
+        arguments:
+            - '@database_connection'
+            - '%akeneo.syndication.connector.product.code%'
 
     Akeneo\Platform\Syndication\Domain\Query\Platform\HasAtLeastOnePlatformInterface:
         class: Akeneo\Platform\Syndication\Infrastructure\Query\Platform\HasAtLeastOnePlatform

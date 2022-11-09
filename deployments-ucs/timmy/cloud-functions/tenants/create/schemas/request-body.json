@@ -8,7 +8,7 @@
       "description": "The branch name",
       "type": "string"
     },
-    "instanceName": {
+    "tenant_name": {
       "description": "The tenant name",
       "type": "string"
     },
@@ -62,7 +62,7 @@
   },
   "required": [
     "branchName",
-    "instanceName",
+    "tenant_name",
     "pim"
   ]
 }

@@ -72,6 +72,16 @@ akeneo.tailored_import:
         comma: Comma (,)
         semicolon: Semicolon (;)
         pipe: Pipe (|)
+      search_and_replace:
+        title: Search and replace
+        helper: You can add up to 10 replacements.
+        what:
+          header: Search
+          placeholder: Search for the value to replace
+        with:
+          header: Replace by
+          placeholder: Define your replacement value
+        case_sensitive: Case sensitive
       simple_select_replacement:
         title: Simple select replacement
         option_labels: Option labels
@@ -237,6 +247,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: The operation type {{ operation_type }} is incompatible with your target type.
       missing_required_operations: "Required operation(s) are missing: {{ missing_required_operations }}"
+      max_replacements_reached: You can only add up to {{ limit }} replacements.
 
 pim_information:
   import:

@@ -46,7 +46,7 @@ final class MySqlInvitedUserRepositoryIntegration extends TestCase
         $invitedUser = new InvitedUser('test_save1@test.com', InvitedUserStatus::active());
         $this->get('Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository')->save($invitedUser);
 
-        $numberOfInvitedUsers = $this->get('database_connection')->executeQuery('SELECT COUNT(*) FROM akeneo_free_trial_invited_user')->fetchOne();
+        $numberOfInvitedUsers = $this->get('database_connection')->executeQuery('SELECT COUNT(*) FROM akeneo_free_trial_invited_user')->fetchColumn();
         $this->assertSame(1, (int) $numberOfInvitedUsers);
 
         $invitedUserTest = $this->findInvitedUserByEmail($invitedUser->getEmail());

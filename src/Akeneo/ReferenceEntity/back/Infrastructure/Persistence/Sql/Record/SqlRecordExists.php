@@ -18,7 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
@@ -67,7 +67,7 @@ SQL;
         return $this->isIdentifierExisting($statement);
     }
 
-    private function isIdentifierExisting(Result $statement): bool
+    private function isIdentifierExisting(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();

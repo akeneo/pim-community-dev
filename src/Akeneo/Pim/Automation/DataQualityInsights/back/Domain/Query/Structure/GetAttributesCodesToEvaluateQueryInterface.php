@@ -17,8 +17,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 
 interface GetAttributesCodesToEvaluateQueryInterface
 {
-    /**
-     * @return AttributeCode[]
-     */
+    /** @return AttributeCode[] */
     public function execute(): iterable;
+
+    /** @return AttributeCode[] */
+    public function toReevaluate(): iterable;
 }

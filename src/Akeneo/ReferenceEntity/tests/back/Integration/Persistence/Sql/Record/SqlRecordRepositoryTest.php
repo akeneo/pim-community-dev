@@ -36,6 +36,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
+use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 
 class SqlRecordRepositoryTest extends SqlIntegrationTestCase

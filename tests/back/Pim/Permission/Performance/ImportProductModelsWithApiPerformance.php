@@ -76,7 +76,13 @@ SELECT product_model.code AS code
 FROM pim_catalog_product_model product_model
 LIMIT ${limit}
 SQL;
-        return $this->get('database_connection')->executeQuery($sql)->fetchFirstColumn();
+        $productModelCodes = [];
+        $rows = $this->get('database_connection')->executeQuery($sql)->fetchAll();
+        foreach ($rows as $row) {
+            $productModelCodes[] = $row['code'];
+        }
+
+        return $productModelCodes;
     }
 
     private function getCategoryCodes(int $limit)
@@ -86,7 +92,13 @@ SELECT category.code AS code
 FROM pim_catalog_category category
 LIMIT ${limit}
 SQL;
-        return $this->get('database_connection')->executeQuery($sql)->fetchFirstColumn();
+        $categoryCodes = [];
+        $rows = $this->get('database_connection')->executeQuery($sql)->fetchAll();
+        foreach ($rows as $row) {
+            $categoryCodes[] = $row['code'];
+        }
+
+        return $categoryCodes;
     }
 
     private function getBody(): string

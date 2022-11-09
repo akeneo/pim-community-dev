@@ -13,6 +13,14 @@
     An override can only specify a more restrictive value than the default value.
 
     See MAGICK_CONFIGURE_PATH environment variable.
+
+    There was an attempt to specify a "time" limit also, in order to prevent to exhaust resources on the transformation of an image.
+    Indeed, ImageMagick transformation will not trigger a PHP timeout as the transformation is done in the function of an extension.
+    Unfortunately, the time limit is stateful between two requests. It means that if the time limit is 60 seconds, any call to Image magick library will
+    kill the process with an uncatchable error after the 60 seconds of life of the process.
+    This time limit can only work if there is a new PHP process per request, which is not the case with PHP FPM.
+
+    @see https://github.com/ImageMagick/ImageMagick/blob/27b0efa5d26143bdbbc5ac1e24932a1ad3d73501/MagickCore/cache.c#L1713
 -->
 <policymap>
     <!--
@@ -30,13 +38,4 @@
         That's why it is deactivated in for fpm process.
     -->
     <policy domain="resource" name="map" value="1MiB" />
-
-    <!--
-       Safeguard to not exhaust resources on the transformation of an image. Indeed, ImageMagick transformation will not trigger a PHP timeout
-       as the transformation is done in the function of an extension. As a consequence, it can take all the FPM child process and make the PIM unavailable.
-
-       Do note that the time is global per process, and not by ImageMagick operation.
-       That's why it is specified for FPM, but not in CLI where you can handle multiple images in a job.
-    -->
-    <policy domain="resource" name="time" value="60"/>
 </policymap>

@@ -16,7 +16,7 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
-use Doctrine\DBAL\Types\Types;
+use Doctrine\DBAL\Types\Type;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -56,8 +56,9 @@ class SqlRepositorySpec extends ObjectBehavior
         );
 
         $connection->prepare(Argument::type('string'))
-            ->willReturn($statement);
-        $statement->bindValue('code', 'authentication_sso', Types::STRING)->shouldBeCalled();
+            ->willReturn($statement)
+        ;
+        $statement->bindValue('code', 'authentication_sso', Type::STRING)->shouldBeCalled();
         $statement->bindValue('values', [
             'isEnabled'        => false,
             'identityProvider' => [
@@ -71,8 +72,8 @@ class SqlRepositorySpec extends ObjectBehavior
                 'certificate' => 'certificate',
                 'privateKey'  => 'private_key',
             ],
-        ], Types::JSON)->shouldBeCalled();
-        $statement->executeStatement()->shouldBeCalled();
+        ], Type::JSON_ARRAY)->shouldBeCalled();
+        $statement->execute()->shouldBeCalled();
 
         $this->save($config);
     }
@@ -81,7 +82,8 @@ class SqlRepositorySpec extends ObjectBehavior
     {
         $connection
             ->prepare(Argument::type('string'))
-            ->willReturn($statement);
+            ->willReturn($statement)
+        ;
         $statement->executeQuery(['code' => 'authentication_sso'])->shouldBeCalled()->willReturn($result);
         $result
             ->fetchAssociative()
@@ -90,7 +92,8 @@ class SqlRepositorySpec extends ObjectBehavior
                     'code'   => 'authentication_sso',
                     'values' => '{"isEnabled":true,"identityProvider":{"entityId":"https:\/\/idp.jambon.com","signOnUrl":"https:\/\/idp.jambon.com\/signon","logoutUrl":"https:\/\/idp.jambon.com\/logout","certificate":"certificate"},"serviceProvider":{"entityId":"https:\/\/sp.jambon.com","certificate":"certificate","privateKey":"private_key"}}'
                 ]
-            );
+            )
+        ;
 
         $expectedConfig = new Configuration(
             new Code('authentication_sso'),
@@ -110,24 +113,28 @@ class SqlRepositorySpec extends ObjectBehavior
 
         $this
             ->find('authentication_sso')
-            ->shouldBeLike($expectedConfig);
+            ->shouldBeLike($expectedConfig)
+        ;
     }
 
     function it_throws_an_exception_when_no_configuration_is_found(Connection $connection, Statement $statement, Result $result)
     {
         $connection
             ->prepare(Argument::type('string'))
-            ->willReturn($statement);
+            ->willReturn($statement)
+        ;
         $statement->executeQuery(['code' => 'authentication_sso'])->shouldBeCalled()->willReturn($result);
         $result
             ->fetchAssociative()
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $this
             ->shouldThrow(new ConfigurationNotFound(
                 'authentication_sso',
                 'No configuration found for code "authentication_sso".'
             ))
-            ->during('find', ['authentication_sso']);
+            ->during('find', ['authentication_sso'])
+        ;
     }
 }

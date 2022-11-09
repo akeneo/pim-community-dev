@@ -36,8 +36,7 @@ final class Version_6_0_20210191103602_dqi_init_default_dictionary_words_Integra
 
     private function resetDictionary(): void
     {
-        $this->get('database_connection')->executeQuery(
-            <<<SQL
+        $this->get('database_connection')->executeQuery(<<<SQL
 TRUNCATE TABLE pimee_data_quality_insights_text_checker_dictionary;
 SQL
         );
@@ -54,34 +53,29 @@ SQL;
 
     private function activateLocale(string $locale): void
     {
-        $this->get('database_connection')->executeQuery(
-            <<<SQL
+        $this->get('database_connection')->executeQuery(<<<SQL
 UPDATE pim_catalog_locale SET is_activated = 1 WHERE code = :code;
-SQL,
-            ['code' => $locale]
-        );
+SQL
+        , ['code' => $locale]);
     }
 
     private function assertCountDictionaryWords(int $expectedCount): void
     {
-        $count = $this->get('database_connection')->executeQuery(
-            <<<SQL
+        $count = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT COUNT(*) FROM pimee_data_quality_insights_text_checker_dictionary;
 SQL
-        )->fetchOne();
+        )->fetchColumn();
 
         $this->assertSame($expectedCount, intval($count));
     }
 
     private function assertDictionaryWordExists(string $locale, string $word): void
     {
-        $wordExists = $this->get('database_connection')->executeQuery(
-            <<<SQL
+        $wordExists = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT 1 FROM pimee_data_quality_insights_text_checker_dictionary
 WHERE locale_code = :locale AND word = :word;
-SQL,
-            ['locale' => $locale, 'word' => $word]
-        )->fetchOne();
+SQL
+        , ['locale' => $locale, 'word' => $word])->fetchColumn();
 
         $this->assertTrue(boolval($wordExists));
     }

@@ -18,7 +18,7 @@ final class SqlFindAllEditableLocalesForUserIntegration extends TestCase
         $query = $this->getQuery();
 
         $userId = $this->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $expectedLocales = [
             new Locale('en_US', true),
@@ -27,7 +27,7 @@ final class SqlFindAllEditableLocalesForUserIntegration extends TestCase
         Assert::assertEqualsCanonicalizing($expectedLocales, $query->findAll($userId));
 
         $userId = $this->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "julia"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "julia"', [], 0);
 
         $expectedLocales = [
             new Locale('en_US', true),

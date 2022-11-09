@@ -46,8 +46,8 @@ func main() {
 
     // Firestore
     clientFirestore := createClientFirestore(ctx, firestoreProjectID)
-    pfid := os.Args[1]
-    instance_name := os.Args[2]
+    tenant_id := os.Args[1]
+    tenant_name := os.Args[2]
     mysql_password := os.Args[3]
     email_password := os.Args[4]
     pim_secret := os.Args[5]
@@ -55,21 +55,21 @@ func main() {
     pim_edition := os.Args[7]
     data := map[string]interface{}{
         "values": `{
-            "AKENEO_PIM_URL": "https://` + instance_name + `.pim-saas-dev.dev.cloud.akeneo.com",
-            "APP_DATABASE_HOST": "pim-mysql.` + pfid + `.svc.cluster.local",
-            "APP_INDEX_HOSTS": "elasticsearch-client.` + pfid + `.svc.cluster.local",
-            "APP_TENANT_ID": "` + pfid + `",
+            "AKENEO_PIM_URL": "https://` + tenant_name + `.pim-saas-dev.dev.cloud.akeneo.com",
+            "APP_DATABASE_HOST": "pim-mysql.` + tenant_id + `.svc.cluster.local",
+            "APP_INDEX_HOSTS": "elasticsearch-client.` + tenant_id + `.svc.cluster.local",
+            "APP_TENANT_ID": "` + tenant_id + `",
             "MAILER_PASSWORD": "` + email_password + `",
-            "MAILER_URL": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com&password=` + email_password + `&sender_address=no-reply-` + pfid + `.pim-saas-dev.dev.cloud.akeneo.com",
-            "MAILER_USER": "` + instance_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com",
-            "MEMCACHED_SVC": "memcached.` + pfid + `.svc.cluster.local",
+            "MAILER_URL": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + tenant_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com&password=` + email_password + `&sender_address=no-reply-` + tenant_name + `.pim-saas-dev.dev.cloud.akeneo.com",
+            "MAILER_USER": "` + tenant_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com",
+            "MEMCACHED_SVC": "memcached.` + tenant_id + `.svc.cluster.local",
             "APP_DATABASE_PASSWORD": "` + mysql_password + `",
             "APP_SECRET": "` + pim_secret + `",
-            "PFID": "` + pfid + `",
+            "PFID": "` + tenant_id + `",
             "PIM_EDITION": "` + pim_edition + `",
-            "SRNT_GOOGLE_BUCKET_NAME": "` + pfid + `"
+            "SRNT_GOOGLE_BUCKET_NAME": "` + tenant_id + `"
           }`,
     }
-    setDocument(ctx, clientFirestore, collection, pfid, data)
+    setDocument(ctx, clientFirestore, collection, tenant_id, data)
     defer clientFirestore.Close()
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Job;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteOldProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -19,7 +19,7 @@ final class CleanSupplierProductFiles implements TaskletInterface
     public function __construct(
         private GetProductFilePathsOfOldProductFiles $getProductFilePathsOfOldProductFiles,
         private DeleteProductFilesFromPaths $deleteProductFilesFromPaths,
-        private DeleteOldProductFiles $deleteOldProductFilesInDatabase,
+        private ProductFileRepository $productFileRepository,
         private DeleteUnknownSupplierDirectoriesInGCSBucket $deleteUnknownSupplierDirectoriesInGCSBucket,
         private LoggerInterface $logger,
     ) {
@@ -35,7 +35,7 @@ final class CleanSupplierProductFiles implements TaskletInterface
         try {
             $this->deleteOldProductFilesInGCSBucket();
 
-            ($this->deleteOldProductFilesInDatabase)();
+            $this->productFileRepository->deleteOldProductFiles();
 
             ($this->deleteUnknownSupplierDirectoriesInGCSBucket)();
         } catch (\Exception $exception) {

@@ -45,10 +45,15 @@ class EvaluateUpdatedAttributesSpec extends ObjectBehavior
     ) {
         $name = new AttributeCode('name');
         $description = new AttributeCode('description');
+        $size = new AttributeCode('size');
 
         $getAttributesToEvaluateQuery->execute()->willReturn(new \ArrayIterator([
             $name,
             $description,
+        ]));
+
+        $getAttributesToEvaluateQuery->toReevaluate()->willReturn(new \ArrayIterator([
+            $size
         ]));
 
         $nameSpellcheck = new AttributeSpellcheck(
@@ -64,14 +69,23 @@ class EvaluateUpdatedAttributesSpec extends ObjectBehavior
             (new SpellcheckResultByLocaleCollection())
                 ->add(new LocaleCode('en_US'), SpellCheckResult::good())
         );
+        $sizeSpellcheck = new AttributeSpellcheck(
+            $name,
+            new \DateTimeImmutable(),
+            (new SpellcheckResultByLocaleCollection())
+                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
+                ->add(new LocaleCode('fr_FR'), SpellCheckResult::toImprove())
+        );
 
         $evaluateAttributeLabelsSpelling->evaluate($name)->willReturn($nameSpellcheck);
         $evaluateAttributeLabelsSpelling->evaluate($description)->willReturn($descriptionSpellcheck);
+        $evaluateAttributeLabelsSpelling->evaluate($size)->willReturn($sizeSpellcheck);
 
         $attributeSpellcheckRepository->save($nameSpellcheck)->shouldBeCalled();
         $attributeSpellcheckRepository->save($descriptionSpellcheck)->shouldBeCalled();
+        $attributeSpellcheckRepository->save($sizeSpellcheck)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::type(AttributeLabelsSpellingEvaluatedEvent::class))->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(AttributeLabelsSpellingEvaluatedEvent::class))->shouldBeCalledTimes(3);
 
         $attributeSpellcheckRepository->deleteUnknownAttributes()->shouldBeCalled();
 

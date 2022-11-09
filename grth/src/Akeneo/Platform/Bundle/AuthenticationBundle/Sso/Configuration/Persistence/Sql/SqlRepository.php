@@ -17,7 +17,7 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * SQL implementation for configuration repository.
@@ -37,10 +37,10 @@ final class SqlRepository implements Repository
     public function save(Configuration $config): void
     {
         $statement = $this->connection->prepare('INSERT INTO pim_configuration (`code`, `values`) VALUES(:code, :values) ON DUPLICATE KEY UPDATE `values` = :values;');
-        $statement->bindValue('code', (string) $config->code(), Types::STRING);
-        $statement->bindValue('values', $config->toArray(), Types::JSON);
+        $statement->bindValue('code', (string) $config->code(), Type::STRING);
+        $statement->bindValue('values', $config->toArray(), Type::JSON_ARRAY);
 
-        $statement->executeStatement();
+        $statement->execute();
     }
 
     public function find(string $code): Configuration

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query;
@@ -26,8 +25,8 @@ class GenericEntityMySQLIndexFinder implements GenericEntityIndexFinderInterface
     public function findAllByOrder(EntityIndexConfiguration $entityIndexConfiguration): Traversable
     {
         $request = $this->connection->createQueryBuilder()
-            ->select($entityIndexConfiguration->getColumnsName())
-            ->from($entityIndexConfiguration->getTableName());
+                    ->select($entityIndexConfiguration->getColumnsName())
+                    ->from($entityIndexConfiguration->getTableName());
 
         if ($entityIndexConfiguration->getFilterFieldName() !== null) {
             $request->where($entityIndexConfiguration->getFilterFieldName());
@@ -35,7 +34,7 @@ class GenericEntityMySQLIndexFinder implements GenericEntityIndexFinderInterface
 
         $request->orderBy($entityIndexConfiguration->getIdentifierFieldName(), 'ASC');
 
-        $results = $request->executeQuery()->iterateAssociative();
+        $results = $this->connection->executeQuery($request)->iterateAssociative();
 
         $resultsData = [];
         foreach ($results as $result) {

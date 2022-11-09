@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck;
@@ -8,7 +7,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\DictionaryS
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\LocaleCollection;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Driver\ResultStatement;
 use Webmozart\Assert\Assert;
 
 final class ProductValueInDatabaseDictionarySource implements DictionarySource
@@ -35,13 +34,12 @@ final class ProductValueInDatabaseDictionarySource implements DictionarySource
     {
         $keywords = [];
 
-        /** @var \PDO */
-        $wrappedConnection = $this->db->getNativeConnection();
+        $wrappedConnection = $this->db->getWrappedConnection();
         Assert::isInstanceOf($wrappedConnection, \PDO::class);
         $wrappedConnection->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
         $stmt = $this->getQuery($localeCollection);
 
-        while ($result = $stmt->fetchAssociative()) {
+        while ($result = $stmt->fetch()) {
             $explodedAggregatedValues = json_decode($result['explodedAggregatedValues']);
             foreach ($explodedAggregatedValues as $value) {
                 if (empty($value) || !is_string($value) || filter_var($value, FILTER_VALIDATE_INT)) {
@@ -86,7 +84,7 @@ final class ProductValueInDatabaseDictionarySource implements DictionarySource
         return array_keys($tab);
     }
 
-    private function getQuery(LocaleCollection $localeCollection): Result
+    private function getQuery(LocaleCollection $localeCollection): ResultStatement
     {
         $query = <<<SQL
 SELECT
@@ -99,7 +97,7 @@ SQL;
             $this->generateJsonExtractQueryPart($localeCollection)
         );
 
-        return $this->db->executeQuery($query);
+        return $this->db->query($query);
     }
 
     private function generateJsonExtractQueryPart(LocaleCollection $localeCollection)

@@ -16,7 +16,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProposalTracking;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\ProposalTrackingRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
+use Doctrine\DBAL\Types\Type;
 
 final class ProposalTrackingRepository implements ProposalTrackingRepositoryInterface
 {
@@ -41,8 +41,8 @@ final class ProposalTrackingRepository implements ProposalTrackingRepositoryInte
             [
                 'entity_type' => \PDO::PARAM_STR,
                 'entity_id' => \PDO::PARAM_INT,
-                'event_date' => Types::DATETIME_MUTABLE,
-                'payload' => Types::JSON,
+                'event_date' => Type::DATETIME,
+                'payload' => Type::JSON,
             ]
         );
     }

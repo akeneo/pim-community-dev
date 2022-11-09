@@ -7,41 +7,9 @@ suites:
     src_path: src/Akeneo/Platform
     spec_prefix: Specification
 
-  ## Table attribute context
-  TableAttribute:
-    namespace: Akeneo\Pim\TableAttribute
-    psr4_prefix: Akeneo\Pim\TableAttribute
-    spec_path: src/Akeneo/Pim/TableAttribute/tests/back
-    src_path: src/Akeneo/Pim/TableAttribute/back
-    spec_prefix: Specification
-
   TableAttributeAcceptanceTest:
     namespace: Akeneo\Test\Pim\TableAttribute\Acceptance
     psr4_prefix: Akeneo\Test\Pim\TableAttribute\Acceptance
     spec_path: src/Akeneo/Pim/TableAttribute/tests/back/Acceptance
     src_path: src/Akeneo/Pim/TableAttribute/tests/back/Acceptance
     spec_prefix: Specification
-
-  ## Tailored export context
-  TailoredExport:
-    namespace: Akeneo\Platform\TailoredExport
-    psr4_prefix: Akeneo\Platform\TailoredExport
-    spec_path: components/tailored-export/back/tests
-    src_path: components/tailored-export/back/src
-    spec_prefix: Specification
-
-  ## Tailored import context
-  TailoredImport:
-      namespace: Akeneo\Platform\TailoredImport
-      psr4_prefix: Akeneo\Platform\TailoredImport
-      spec_path: components/tailored-import/back/tests
-      src_path: components/tailored-import/back/src
-      spec_prefix: Specification
-
-  ## Job automation context
-  JobAutomation:
-      namespace: Akeneo\Platform\JobAutomation
-      psr4_prefix: Akeneo\Platform\JobAutomation
-      spec_path: components/job-automation/back/tests
-      src_path: components/job-automation/back/src
-      spec_prefix: Specification

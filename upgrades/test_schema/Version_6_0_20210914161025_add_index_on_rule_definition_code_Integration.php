@@ -47,7 +47,7 @@ final class Version_6_0_20210914161025_add_index_on_rule_definition_code_Integra
             AND table_name='akeneo_rule_engine_rule_definition';
 SQL;
 
-        $countIndexes = $this->getConnection()->executeQuery($countIndexesSQL)->fetchOne();
+        $countIndexes = $this->getConnection()->executeQuery($countIndexesSQL)->fetchColumn();
         // Primary key count as an index that's why there is always at least one index.
         $this->assertEquals($expected ? '2' : '1', $countIndexes, 'Expected count is wrong');
 
@@ -59,7 +59,7 @@ SQL;
             AND index_name = 'akeneo_rule_engine_rule_definition_code__index';
         SQL;
 
-        $isIndexHere = $this->getConnection()->executeQuery($isIndexHereSQL)->fetchOne();
+        $isIndexHere = $this->getConnection()->executeQuery($isIndexHereSQL)->fetchColumn();
         $this->assertEquals($expected ? '1' : '0', $isIndexHere, 'Expected index is wrong');
     }
 

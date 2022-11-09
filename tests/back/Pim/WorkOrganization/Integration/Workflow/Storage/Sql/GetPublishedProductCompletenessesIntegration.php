@@ -123,7 +123,7 @@ class GetPublishedProductCompletenessesIntegration extends TestCase
         $publishedProductId = $this->get('database_connection')->executeQuery(
             'SELECT id from pimee_workflow_published_product where identifier = :identifier',
             ['identifier' => $identifier]
-        )->fetchOne();
+        )->fetchColumn();
 
         return $publishedProductId ? (int)$publishedProductId : null;
     }
@@ -131,7 +131,7 @@ class GetPublishedProductCompletenessesIntegration extends TestCase
     private function getCompletenesses(int $publishedProductId): PublishedProductCompletenessCollection
     {
         return $this->get('pimee_workflow.query.get_published_product_completenesses')
-            ->fromPublishedProductId($publishedProductId);
+                    ->fromPublishedProductId($publishedProductId);
     }
 
     private function assertCompletenessContains(

@@ -1,16 +1,15 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeDisk
 metadata:
-  name: {{ .Values.global.extraLabels.pfid }}-mysql
+  name: {{ .Values.global.extraLabels.tenant_id }}-mysql
   labels:
-    pfid: {{ .Values.global.extraLabels.pfid }}-mysql
     app: mysql
+    tenant_id: {{ .Values.global.extraLabels.tenant_id }}
     type: {{ .Values.global.extraLabels.type }}
   annotations:
-    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/sync-wave: "-1"
 spec:
-  description: "Disk MySQL used for {{ .Values.global.extraLabels.pfid }}"
+  description: "Disk MySQL used for {{ .Values.global.extraLabels.tenant_id }}"
   size: {{ .Values.mysql.mysql.dataDiskSize}}
   type: pd-ssd
   location: {{ .Values.common.googleZone }}

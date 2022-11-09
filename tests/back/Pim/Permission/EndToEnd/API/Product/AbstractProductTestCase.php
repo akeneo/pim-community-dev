@@ -96,7 +96,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
         string $userName,
         ProductInterface $product,
         array $changes
-    ): EntityWithValuesDraftInterface {
+    ) : EntityWithValuesDraftInterface {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
         // @todo[DAPI-443] avoid the coupling with the bounded context Workflow
@@ -143,8 +143,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
     protected function getDatabaseData(string $sql): array
     {
         $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt->execute();
 
-        return $stmt->executeQuery()->fetchAllAssociative();
+        return $stmt->fetchAll();
     }
 
     /**
@@ -446,8 +447,7 @@ JSON;
     protected function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
     {
         return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?',
-            [$productIdentifier]
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
         ));
     }
 }

@@ -1,18 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: "{{{global.extraLabels.pfid}}}"
+  name: "{{{global.extraLabels.tenant_id}}}"
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    instanceName: "{{{global.extraLabels.instanceName}}}"
-    pfid: "{{{global.extraLabels.pfid}}}"
+    application_name: "{{{global.extraLabels.tenant_id}}}"
     instance_dns_record: "{{{global.extraLabels.instance_dns_record}}}"
     instance_dns_zone: "{{{global.extraLabels.instance_dns_zone}}}"
     papo_project_code: "{{{global.extraLabels.papo_project_code}}}"
-    papo_project_code_truncated: "{{{global.extraLabels.papo_project_code_truncated}}}"
     papo_project_code_hashed: "{{{global.extraLabels.papo_project_code_hashed}}}"
+    papo_project_code_truncated: "{{{global.extraLabels.papo_project_code_truncated}}}"
+    tenant_id: "{{{global.extraLabels.tenant_id}}}"
+    tenant_name: "{{{global.extraLabels.tenant_name}}}"
+    tenant_namespace: "{{{global.extraLabels.tenant_id}}}"
 spec:
   project: default
   source:
@@ -23,10 +25,10 @@ spec:
       parameters:
         - name: global.extraLabels.type
           value: "{{{global.extraLabels.type}}}"
-        - name: global.extraLabels.instanceName
-          value: "{{{global.extraLabels.instanceName}}}"
-        - name: global.extraLabels.pfid
-          value: "{{{global.extraLabels.pfid}}}"
+        - name: global.extraLabels.tenant_name
+          value: "{{{global.extraLabels.tenant_name}}}"
+        - name: global.extraLabels.tenant_id
+          value: "{{{global.extraLabels.tenant_id}}}"
         - name: global.extraLabels.instance_dns_record
           value: "{{{global.extraLabels.instance_dns_record}}}"
         - name: global.extraLabels.instance_dns_zone
@@ -71,12 +73,12 @@ spec:
           value: "{{{mailer.login}}}"
         - name: mailer.password
           value: "{{{mailer.password}}}"
-        - name: mailer.base_mailer_url
-          value: "{{{mailer.base_mailer_url}}}"
+        - name: mailer.baseMailerUrl
+          value: "{{{mailer.baseMailerUrl}}}"
         - name: mailer.domain
           value: "{{{mailer.domain}}}"
-        - name: mailer.api_key
-          value: "{{{mailer.api_key}}}"
+        - name: mailer.apiKey
+          value: "{{{mailer.apiKey}}}"
         - name: backup.enabled
           value: "{{{backup.enabled}}}"
         - name: common.gcpProjectID
@@ -87,8 +89,8 @@ spec:
           value: "{{{common.tenantContext}}}"
         - name: common.googleZone
           value: "{{{common.googleZone}}}"
-        - name: common.pimMasterDomain
-          value: "{{{common.pimMasterDomain}}}"
+        - name: common.fqdn
+          value: "{{{common.fqdn}}}"
         - name: common.dnsCloudDomain
           value: "{{{common.dnsCloudDomain}}}"
         - name: common.workloadIdentityKSA
@@ -115,6 +117,8 @@ spec:
           value: "{{{pim.secret}}}"
         - name: pim.storage.bucketName
           value: "{{{pim.storage.bucketName}}}"
+        - name: pim.storage.location
+          value: "{{{pim.storage.location}}}"
         - name: mysql.mysql.userPassword
           value: "{{{mysql.mysql.userPassword}}}"
         - name: mysql.mysql.rootPassword

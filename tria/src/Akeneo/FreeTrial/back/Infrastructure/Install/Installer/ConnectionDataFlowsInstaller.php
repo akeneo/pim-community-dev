@@ -16,6 +16,7 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 
 final class ConnectionDataFlowsInstaller implements FixtureInstaller
 {
@@ -50,18 +51,18 @@ SQL;
         $this->sourceConnections = $this->dbConnection->executeQuery(
             $selectConnections,
             ['flow_type' => FlowType::DATA_SOURCE]
-        )->fetchFirstColumn();
+        )->fetchAll(FetchMode::COLUMN);
 
         $this->destinationConnections = $this->dbConnection->executeQuery(
             $selectConnections,
             ['flow_type' => FlowType::DATA_DESTINATION]
-        )->fetchFirstColumn();
+        )->fetchAll(FetchMode::COLUMN);
     }
 
     private function dataFlowsDateTimes(\DateTimeImmutable $now): \Iterator
     {
         // 8 days before now
-        for ($day = 1; $day <= 8; $day++) {
+        for ($day = 1; $day <= 8 ; $day++) {
             yield $now
                 ->setTime(rand(1, 23), rand(0, 59), rand(0, 59))
                 ->modify("-$day days");
@@ -70,7 +71,7 @@ SQL;
         yield $now;
 
         // And 20 days after now
-        for ($day = 1; $day <= 20; $day++) {
+        for ($day = 1; $day <= 20 ; $day++) {
             yield $now
                 ->setTime(rand(1, 23), rand(0, 59), rand(0, 59))
                 ->modify("+$day days");

@@ -97,7 +97,7 @@ final class ConnectionInstaller implements FixtureInstaller
 
     private function uploadImage(string $file): FileInfoInterface
     {
-        $rawFile = new \SplFileInfo($this->getConnectionImageFixturesPath() . '/' . $file);
+        $rawFile = new \SplFileInfo($this->getConnectionImageFixturesPath(). '/' . $file);
 
         return $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
     }
@@ -107,7 +107,7 @@ final class ConnectionInstaller implements FixtureInstaller
         $query = <<<SQL
 SELECT id FROM oro_access_role WHERE role = 'ROLE_USER';
 SQL;
-        return strval($this->dbConnection->executeQuery($query)->fetchOne());
+        return strval($this->dbConnection->executeQuery($query)->fetchColumn());
     }
 
     private function retrieveDefaultUserGroupId(): string
@@ -115,7 +115,7 @@ SQL;
         $query = <<<SQL
 SELECT id FROM oro_access_group WHERE name = 'IT support';
 SQL;
-        return strval($this->dbConnection->executeQuery($query)->fetchOne());
+        return strval($this->dbConnection->executeQuery($query)->fetchColumn());
     }
 
     private function loadConnectionFixtures(): array

@@ -82,7 +82,10 @@
 - PIM-10628: Prevent importing values of readonly attributes in product draft import
 - PIM-10674: Add lazy loading image on the asset manager library view
 - PIM-10696: Fix BETWEEN operator in GET assets endpoint
+- PIM-10705: Revert Imagick time limit because it is stateful
+- PIM-10698: Fix PHP Warning: Undefined array key "locale" in Tailored Import
 - PIM-10693: Improve the speed up of the process stop time on the rules
+- PIM-10692: Fix wrong DQI assessments on select attribute
 
 ## Improvements
 

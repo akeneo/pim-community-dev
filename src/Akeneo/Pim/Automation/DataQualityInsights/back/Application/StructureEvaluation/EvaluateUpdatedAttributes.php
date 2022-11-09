@@ -53,6 +53,14 @@ class EvaluateUpdatedAttributes
             $this->evaluate($attributeCode);
         }
 
+        $attributesToReevaluate = $this->getAttributesToEvaluateQuery->toReevaluate();
+
+        foreach ($attributesToReevaluate as $attributeCode) {
+            if (!in_array($attributeCode, (array) $attributesToEvaluate)) {
+                $this->evaluate($attributeCode);
+            }
+        }
+
         $this->attributeSpellcheckRepository->deleteUnknownAttributes();
     }
 

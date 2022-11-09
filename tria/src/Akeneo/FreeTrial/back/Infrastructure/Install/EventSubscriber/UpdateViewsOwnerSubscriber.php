@@ -71,7 +71,7 @@ SQL;
         $query = <<<SQL
 SELECT COUNT(*) FROM oro_user WHERE user_type = :userType;
 SQL;
-        $usersCount = $this->dbConnection->executeQuery($query, ['userType' => User::TYPE_USER])->fetchOne();
+        $usersCount = $this->dbConnection->executeQuery($query, ['userType' => User::TYPE_USER])->fetchColumn();
 
         return 1 === intval($usersCount);
     }

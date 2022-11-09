@@ -38,21 +38,16 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            /* @phpstan-ignore-next-line */
             RecordsDeletedEvent::class => 'whenRecordsAreDeleted',
         ];
     }
 
-    /* @phpstan-ignore-next-line */
     public function whenRecordsAreDeleted(RecordsDeletedEvent $recordsDeletedEvent): void
     {
         $this->launchJobs(
-        /* @phpstan-ignore-next-line */
             $recordsDeletedEvent->getReferenceEntityIdentifier()->normalize(),
             array_map(
-            /* @phpstan-ignore-next-line */
                 static fn (RecordCode $recordCode): string => $recordCode->normalize(),
-                /* @phpstan-ignore-next-line */
                 $recordsDeletedEvent->getRecordCodes()
             )
         );

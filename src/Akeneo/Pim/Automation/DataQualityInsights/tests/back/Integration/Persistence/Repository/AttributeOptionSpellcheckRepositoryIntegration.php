@@ -134,7 +134,7 @@ SQL;
     {
         $stmt = $this->dbConnection->executeQuery('SELECT COUNT(*) FROM pimee_dqi_attribute_option_spellcheck;');
 
-        $this->assertSame($expectedCount, intval($stmt->fetchOne()), sprintf('There should be %d attribute option spellchecks', $expectedCount));
+        $this->assertSame($expectedCount, intval($stmt->fetchColumn()), sprintf('There should be %d attribute option spellchecks', $expectedCount));
     }
 
     private function assertAttributeOptionSpellcheckEquals(AttributeOptionSpellcheck $expectedAttributeSpellcheck, array $attributeOptionSpellcheck): void

@@ -523,8 +523,9 @@ JSON;
     protected function getDatabaseData(string $sql): array
     {
         $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt->execute();
 
-        return $stmt->executeQuery()->fetchAllAssociative();
+        return $stmt->fetchAll();
     }
 
     /**

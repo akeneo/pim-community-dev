@@ -4,15 +4,30 @@
 SHELL := /bin/bash
 
 USE_EDITION_FLAG ?= false
-TYPE ?= srnt
-INSTANCE_NAME_PREFIX ?= pimci
-INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
-PFID ?= $(TYPE)-$(INSTANCE_NAME)
-TYPE_LONG ?= serenity
 ENV_NAME ?= dev
-PIM_EDITION ?= serenity_instance
+TYPE ?= srnt
+TYPE_LONG ?= serenity
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
 PRODUCT_REFERENCE_CODE ?= $(TYPE_LONG)_$(ENV_NAME)
+
+GOOGLE_PROJECT_ID ?= akecld-prd-pim-saas-$(ENV_NAME)
+GOOGLE_PROJECT_ID_SHARED ?= akecld-prd-pim-saas-shared
+FIRESTORE_PROJECT_ID ?= akecld-prd-pim-fire-eur-$(ENV_NAME)
+GOOGLE_CLUSTER_REGION ?= europe-west1
+GOOGLE_CLUSTER_ZONE ?= europe-west1-b
+GOOGLE_COMPUTE_ZONE ?= $(GOOGLE_CLUSTER_ZONE)
+GOOGLE_CLUSTER_NAME ?= akecld-prd-pim-saas-dev-europe-west1
+GOOGLE_MANAGED_ZONE_DNS ?= ci.pim.akeneo.cloud
+GOOGLE_MANAGED_ZONE_NAME ?= ci-pim-akeneo-cloud
+STORAGE_LOCATION ?= EU
+
+TENANT_NAME_PREFIX ?= ucs
+TENANT_NAME ?=  $(TENANT_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
+TENANT_ID ?= $(TYPE)-$(TENANT_NAME)
+FQDN ?= $(TENANT_NAME).$(GOOGLE_MANAGED_ZONE_DNS)
+TENANT_CONTEXT_COLLECTION_NAME ?= tenant_contexts
+WORKLOAD_IDENTITY_KSA ?= $(TENANT_NAME)-ksa-workload-identity
+
 PRODUCT_REFERENCE_SIZE ?= S
 PRODUCT_REFERENCE_SIZE_INDEX :=
 ifeq ($(PRODUCT_REFERENCE_SIZE),S)
@@ -31,49 +46,27 @@ ifeq ($(PRODUCT_REFERENCE_SIZE_INDEX),)
 	XL_PRODUCT_REFERENCE_SIZE_INDEX := $(shell echo $$(echo $(PRODUCT_REFERENCE_SIZE)) | sed 's/XL//' )
 	PRODUCT_REFERENCE_SIZE_INDEX := $(shell echo $$(( $(XL_PRODUCT_REFERENCE_SIZE_INDEX) + 2)) )
 endif
-BUCKET ?= serenity-edition-dev
+
 IMAGE_TAG ?= latest
-
-GOOGLE_PROJECT_ID ?= akecld-prd-pim-saas-$(ENV_NAME)
-GOOGLE_PROJECT_ID_SHARED ?= akecld-prd-pim-saas-shared
-FIRESTORE_PROJECT_ID ?= akecld-prd-pim-fire-eur-$(ENV_NAME)
-GOOGLE_CLUSTER_REGION ?= europe-west1
-GOOGLE_COMPUTE_ZONE ?= europe-west1-b
-GOOGLE_CLUSTER_ZONE ?= $(GOOGLE_COMPUTE_ZONE)
-GOOGLE_CLUSTER_NAME ?= akecld-prd-pim-saas-dev-europe-west1
-GOOGLE_MANAGED_ZONE_DNS ?= ci.pim.akeneo.cloud
-GOOGLE_MANAGED_ZONE_NAME ?= ci-pim-akeneo-cloud
-STORAGE_LOCATION ?= EU
-CLUSTER_DNS_NAME ?= $(GOOGLE_CLUSTER_ZONE)-$(GOOGLE_PROJECT_ID).$(GOOGLE_MANAGED_ZONE_DNS).
-TENANT_CONTEXT_COLLECTION_NAME=tenant_contexts
-WORKLOAD_IDENTITY_KSA ?= $(INSTANCE_NAME)-ksa-workload-identity
-
-PIM_NS ?= pim-saas
-
-FIRESTORE_COLLECTION ?= tenant_contexts
-
-FQDN ?= $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)
-PORTAL_PROJECT_CODE ?= NOT_ON_PAPO_$(PFID)
-
+PIM_NAMESPACE ?= pim-saas
+PORTAL_PROJECT_CODE ?= NOT_ON_PAPO_$(TENANT_ID)
 DEPLOYMENT_DIR ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-PIM_SRC_PATH ?= $(realpath $(DEPLOYMENT_DIR)/..)
 PIM_ROOT_DIR ?= $(realpath $(DEPLOYMENT_DIR)/..)
 DEPLOYMENTS_INSTANCES_DIR ?= $(DEPLOYMENT_DIR)/instances
-INSTANCE_DIR := $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
-MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
+TENANT_DIR := $(DEPLOYMENTS_INSTANCES_DIR)/$(TENANT_ID)
 MYSQL_DISK_SIZE ?= 10
 MYSQL_DISK_DESCRIPTION ?=
 MYSQL_SOURCE_SNAPSHOT ?=
 MYSQL_DSIK_STORAGE_CLASS ?= ssd-retain-csi
-MYSQL_DSIK_NAME ?= projects/$(GOOGLE_PROJECT_ID)/zones/$(GOOGLE_CLUSTER_ZONE)/disks/$(PFID)-mysql
+MYSQL_DSIK_NAME ?= projects/$(GOOGLE_PROJECT_ID)/zones/$(GOOGLE_CLUSTER_ZONE)/disks/$(TENANT_ID)-mysql
+# MYSQL_DSIK_NAME ?= projects/$(GOOGLE_PROJECT_ID)/zones/$(GOOGLE_CLUSTER_ZONE)/disks/$(TENANT_NAME)-mysql ???
 MYSQL_USER_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MYSQL_ROOT_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MONITORING_AUTHENTICATION_TOKEN := $(shell bash -c 'echo $$(pwgen -sB 32)')
 PIM_SECRET := $(shell bash -c 'echo $$(pwgen -sB 32)')
 
-
 MAILGUN_DOMAIN ?= mg.cloud.akeneo.com
-MAILGUN_LOGIN ?= $(PFID)-$(GOOGLE_PROJECT_ID)@$(MAILGUN_DOMAIN)
+MAILGUN_LOGIN ?= $(TENANT_NAME)-$(GOOGLE_PROJECT_ID)@$(MAILGUN_DOMAIN)
 MAILGUN_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 16)')
 MAILGUN_HOST ?= smtp.mailgun.org
 MAILGUN_PORT ?= 2525
@@ -137,12 +130,11 @@ help: #Doc: display this help
 ###################
 ### UCS 				###
 ###################
-
 ## Build
 .PHONY: pim-image-prod
 pim-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag
-	echo "${RELEASE_NAME}" > "$(PIM_SRC_PATH)/version.txt"
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID_SHARED)/dev/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
+	echo "${RELEASE_NAME}" > "$(PIM_ROOT_DIR)/version.txt"
+	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID_SHARED)/dev/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_ROOT_DIR)/Dockerfile ${PIM_ROOT_DIR}
 
 .PHONY: push-pim-image-prod
 push-pim-image-prod: #Doc: push docker image to docker hub
@@ -155,33 +147,36 @@ deploy_tenant: generate_argocd_application deploy_tenant_argocd deploy_tenant_go
 	@echo ""
 	@echo "This environment is available at https://$(FQDN) :)"
 	@echo ""
-	@echo "K9s direct access command line: k9s -n $(PFID) -c pods"
+	@echo "K9s direct access command line for the pim: k9s -n $(PIM_NAMESPACE) -c pods"
+	@echo "K9s direct access command line for the tenant: k9s -n $(TENANT_ID) -c pods"
 	@echo ""
 	@echo "#######################################################################################"
-	PIM_USER=$(shell yq r "$(INSTANCE_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.login).value'); \
-	PIM_EMAIL=$(shell yq r "$(INSTANCE_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.email).value'); \
-	PIM_PASSWORD=$(shell yq r "$(INSTANCE_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.password).value')
+	PIM_USER=$(shell yq r "$(TENANT_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.login).value'); \
+	PIM_EMAIL=$(shell yq r "$(TENANT_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.email).value'); \
+	PIM_PASSWORD=$(shell yq r "$(TENANT_DIR)/tenant-application.yaml" 'spec.source.helm.parameters.(name==pim.defaultAdminUser.password).value')
 
-$(INSTANCE_DIR):
-	mkdir -p $(INSTANCE_DIR)
+$(TENANT_DIR):
+	mkdir -p $(TENANT_DIR)
 
 .PHONY: generate_argocd_application
-generate_argocd_application: $(INSTANCE_DIR)
+generate_argocd_application: $(TENANT_DIR)
 	@echo "=========================================================="
-	@echo "Deploy namespace : $(PFID)"
-	@echo " - with instance name prefix : $(INSTANCE_NAME_PREFIX)"
+	@echo "Deploy pim namespace : $(PIM_NAMESPACE)"
+	@echo "Deploy tenant namespace : $(TENANT_ID)"
+	@echo " - with instance name prefix : $(TENANT_NAME_PREFIX)"
+	@echo " - with instance name : $(TENANT_NAME)"
 	@echo " - with image tag : $(IMAGE_TAG)"
-	@echo " - on cluster : $(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)"
+	@echo " - on cluster : $(GOOGLE_CLUSTER_NAME)"
 	@echo " - URL : $(FQDN)"
 	@echo "=========================================================="
-	cat $(DEPLOYMENT_DIR)/config/tenant-application-templates.yaml > $(INSTANCE_DIR)/tenant-application.yaml.tmp
+	cat $(DEPLOYMENT_DIR)/config/tenant-application-templates.yaml > $(TENANT_DIR)/tenant-application.yaml.tmp
 	USE_EDITION_FLAG=$(USE_EDITION_FLAG) \
 	IMAGE_TAG=$(IMAGE_TAG) \
 	TYPE=$(TYPE) \
-	INSTANCE_NAME=$(INSTANCE_NAME) \
-	PFID=$(PFID) \
+	TENANT_NAME=$(TENANT_NAME) \
+	TENANT_ID=$(TENANT_ID) \
 	FQDN=$(FQDN) \
-	PIM_NS=${PIM_NS} \
+	PIM_NAMESPACE=${PIM_NAMESPACE} \
 	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
 	PRODUCT_REFERENCE_CODE=$(PRODUCT_REFERENCE_CODE) \
 	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) \
@@ -230,23 +225,22 @@ generate_argocd_application: $(INSTANCE_DIR)
 	MEMCACHED_LIMITS_MEMORY=$(MEMCACHED_LIMITS_MEMORY) \
 	MEMCACHED_REQUESTS_CPU=$(MEMCACHED_REQUESTS_CPU) \
 	MEMCACHED_REQUESTS_MEMORY=$(MEMCACHED_REQUESTS_MEMORY) \
-	FIRESTORE_COLLECTION=$(FIRESTORE_COLLECTION) \
 	WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} \
-	envsubst < $(INSTANCE_DIR)/tenant-application.yaml.tmp > $(INSTANCE_DIR)/tenant-application.yaml ;\
-	rm -rf $(INSTANCE_DIR)/tenant-application.yaml.tmp
-	cat $(INSTANCE_DIR)/tenant-application.yaml
+	envsubst < $(TENANT_DIR)/tenant-application.yaml.tmp > $(TENANT_DIR)/tenant-application.yaml ;\
+	rm -rf $(TENANT_DIR)/tenant-application.yaml.tmp
+	cat $(TENANT_DIR)/tenant-application.yaml
 
 .PHONY: deploy_tenant_argocd
 deploy_tenant_argocd:
-	kubectl apply -f $(INSTANCE_DIR)/tenant-application.yaml -n argocd
+	kubectl apply -f $(TENANT_DIR)/tenant-application.yaml -n argocd
 
 .PHONY: deploy_tenant_go
 deploy_tenant_go:
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(PIM_SECRET) $(FIRESTORE_COLLECTION) $(PIM_EDITION)
+	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(TENANT_ID) $(TENANT_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(PIM_SECRET) $(TENANT_CONTEXT_COLLECTION_NAME) $(PRODUCT_REFERENCE_TYPE)
 
 ## Cleanup tenants
 .PHONY: delete_tenant
 delete_tenant:
-	kubectl delete app $(PFID) -n argocd
-	kubectl delete ns $(PFID)
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-remove.go $(PFID) $(FIRESTORE_COLLECTION)
+	kubectl delete app $(TENANT_ID) -n argocd
+	kubectl delete ns $(TENANT_ID)
+	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-remove.go $(TENANT_ID) $(TENANT_CONTEXT_COLLECTION_NAME)

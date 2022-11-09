@@ -47,11 +47,11 @@ workflows:
                     - delete_pim?
           - delete_timmy:
                 requires:
-                    - deploy_tenant_timmy
+                    - delete_tenant_timmy
           - delete_timmy:
                 name: delete_timmy_wb
                 requires:
-                    - deploy_tenant_timmy_wb
+                    - delete_tenant_wb_timmy
           - delete_tenant?:
                 type: approval
                 filters:

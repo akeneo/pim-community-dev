@@ -30,7 +30,7 @@ spec:
           command: ["sh", "/scripts-dir/hook-mailgun-creation.sh"]
           env:
             - { name: MAILGUN_DOMAIN, value: {{ .Values.mailer.domain | quote }} }
-            - { name: MAILGUN_API_KEY, value: {{ .Values.mailer.api_key | quote }} }
+            - { name: MAILGUN_API_KEY, value: {{ .Values.mailer.apiKey | quote }} }
             - { name: MAILGUN_LOGIN, value: {{ .Values.mailer.login | quote }} }
             - { name: MAILGUN_PASSWORD, value: {{ .Values.mailer.password | quote }} }
           volumeMounts:

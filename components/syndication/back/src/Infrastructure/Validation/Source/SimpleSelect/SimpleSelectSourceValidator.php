@@ -15,6 +15,7 @@ namespace Akeneo\Platform\Syndication\Infrastructure\Validation\Source\SimpleSel
 
 use Akeneo\Platform\Syndication\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
 use Akeneo\Platform\Syndication\Infrastructure\Validation\Operation\ReplacementOperationConstraint;
+use Akeneo\Platform\Syndication\Infrastructure\Validation\Operation\String\ExtractOperationConstraint;
 use Akeneo\Platform\Syndication\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint;
 use Akeneo\Platform\Syndication\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
@@ -31,6 +32,7 @@ class SimpleSelectSourceValidator extends ConstraintValidator
         $sourceConstraintFields['selection'] = new CodeLabelSelectionConstraint();
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'replacement' => new Optional(new ReplacementOperationConstraint()),
+            'extract' => new Optional(new ExtractOperationConstraint()),
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
         ]]);
 

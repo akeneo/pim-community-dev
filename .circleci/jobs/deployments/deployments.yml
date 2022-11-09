@@ -550,16 +550,16 @@ jobs:
             name: Prepare the variables
             command: |
               CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-              PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
+              PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
 
-              INSTANCE_NAME_PREFIX=ucs
-              INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+              TENANT_NAME_PREFIX=ucs
+              TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
               GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_FIRESTORE_PROJECT_ID}
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
-              FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
+              TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
               GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
               LOCATION=EU
-              PIM_MASTER_DOMAIN="${INSTANCE_NAME}.${GOOGLE_DOMAIN}"
+              FQDN="${TENANT_NAME}.${GOOGLE_DOMAIN}"
               WORKLOAD_IDENTITY_KSA="${CIRCLE_BRANCH_LOWER}-ksa-workload-identity"
 
               TOPIC_BUSINESS_EVENT="srnt-business-event-${CIRCLE_BRANCH_LOWER}"
@@ -577,15 +577,15 @@ jobs:
               CLOUD_FUNCTION_BUCKET="${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-srnt-job-publisher-${IMAGE_TAG_DATE}"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
-              echo export PIM_NS=${PIM_NS} >> $BASH_ENV
-              echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-              echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+              echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
+              echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
+              echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
               echo export GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_CLOUD_FIRESTORE_PROJECT} >> $BASH_ENV
               echo export GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT} >> $BASH_ENV
-              echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION}  >> $BASH_ENV
+              echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME}  >> $BASH_ENV
               echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
               echo export LOCATION=${LOCATION} >> $BASH_ENV
-              echo export PIM_MASTER_DOMAIN=${PIM_MASTER_DOMAIN} >> $BASH_ENV
+              echo export FQDN=${FQDN} >> $BASH_ENV
               echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
               echo export TOPIC_BUSINESS_EVENT=${TOPIC_BUSINESS_EVENT} >> $BASH_ENV
               echo export TOPIC_JOB_QUEUE_UI=${TOPIC_JOB_QUEUE_UI} >> $BASH_ENV
@@ -616,27 +616,27 @@ jobs:
               ## Create the values.yaml (values.yaml overide by values-ci.yaml)
               cp /tmp/pim-enterprise-dev/deployments-ucs/config/values-pim-ci.yaml /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml
 
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml global.extraLabels.tenant_name "${TENANT_NAME}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.gcpFireStoreProjectID "${GOOGLE_CLOUD_FIRESTORE_PROJECT}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.googleZone "${GOOGLE_ZONE}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.location "${LOCATION}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.fqdn "${FQDN}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.region "${GOOGLE_CLUSTER_REGION}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.tenantContext  "${FIRESTORE_COLLECTION}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.tenantContext "${TENANT_CONTEXT_COLLECTION_NAME}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml image.pim.tag "${IMAGE_TAG}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_job_queue_ui "${TOPIC_JOB_QUEUE_UI}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_job_queue_import_export "${TOPIC_JOB_QUEUE_IMPORT_EXPORT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_job_queue_data_maintenance "${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_job_queue_scheduled_job "${TOPIC_JOB_QUEUE_SCHEDULED_JOB}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_webhook "${SUBSCRIPTION_WEBHOOK}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_queue_ui "${SUBSCRIPTION_JOB_QUEUE_UI}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_queue_scheduled_job "${SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topicBusinessEvent "${TOPIC_BUSINESS_EVENT}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topicJobQueueUI "${TOPIC_JOB_QUEUE_UI}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topicJobQueueImportExport "${TOPIC_JOB_QUEUE_IMPORT_EXPORT}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topicJobQueueDataMaintenance "${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topicJobQueueScheduledJob "${TOPIC_JOB_QUEUE_SCHEDULED_JOB}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscriptionWebhook "${SUBSCRIPTION_WEBHOOK}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscriptionJobQueueUI "${SUBSCRIPTION_JOB_QUEUE_UI}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscriptionJobQueueImportExport "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscriptionJobQueueDataMaintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscriptionJobQueueScheduledJob "${SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.jobsPrefix "${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-pim-job"
@@ -646,10 +646,12 @@ jobs:
 
               ## ArgoCD
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.destination.namespace ${PIM_NS}
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.name ${PIM_NS}
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.labels.name ${PIM_NS}
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.destination.namespace ${PIM_NAMESPACE}
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.name ${PIM_NAMESPACE}
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.labels.name ${PIM_NAMESPACE}
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.source.helm.valueFiles[+] values-ci.yaml
+              # Remove automated SYNC
+              yq d -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.syncPolicy.automated
 
               git add pim-saas-service
               git commit -m "Update release version"
@@ -665,10 +667,12 @@ jobs:
               # Login to argocd call k8s
               kubectl config set-context --current --namespace=argocd
               argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+
               # Stop operation in progress is exist
-              argocd app terminate-op ${PIM_NS} --core && argocd app wait --operation ${PIM_NS} --core || true
-              argocd app get ${PIM_NS} --hard-refresh --core
-              argocd app wait --sync --health --operation ${PIM_NS} --core
+              argocd app terminate-op ${PIM_NAMESPACE} --core && argocd app wait --operation ${PIM_NAMESPACE} --core || true
+              argocd app get ${PIM_NAMESPACE} --hard-refresh --core
+              argocd app sync ${PIM_NAMESPACE} --prune --core
+              argocd app wait --sync --health --operation ${PIM_NAMESPACE} --core
               echo "argocd app sync successfull"
 
               echo "============================"
@@ -685,12 +689,12 @@ jobs:
                   kubectl config set-context --current --namespace=argocd
                   argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
 
-                  echo "      argocd app terminate-op ${PIM_NS} --core || true"
-                  echo "      kubectl delete app ${PIM_NS} -n argocd || true"
-                  echo "      kubectl delete ${PIM_NS}"
-                  argocd app terminate-op ${PIM_NS} --core || true
-                  kubectl delete app ${PIM_NS} -n argocd || true
-                  kubectl delete ns ${PIM_NS}
+                  echo "      argocd app terminate-op ${PIM_NAMESPACE} --core || true"
+                  echo "      kubectl delete app ${PIM_NAMESPACE} -n argocd || true"
+                  echo "      kubectl delete ${PIM_NAMESPACE}"
+                  argocd app terminate-op ${PIM_NAMESPACE} --core || true
+                  kubectl delete app ${PIM_NAMESPACE} -n argocd || true
+                  kubectl delete ns ${PIM_NAMESPACE}
               when: on_fail
 
     deploy_tenant_timmy:
@@ -723,33 +727,28 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      INSTANCE_NAME_PREFIX=ucs
-                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      TENANT_NAME_PREFIX=ucs
+                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
-                      FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH}/tenant_contexts"
+                      PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+                      TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH}/tenant_contexts"
                       REGION_PREFIX="eur-w-1b"
-                      WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
+                      WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
                       echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
-                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
+                      echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
-                      echo export PIM_NS=${PIM_NS} >> $BASH_ENV
-                      echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION} >> $BASH_ENV
+                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
+                      echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
                       echo export REGION_PREFIX=${REGION_PREFIX} >> $BASH_ENV
                       echo export CIRCLE_BRANCH=${CIRCLE_BRANCH} >> $BASH_ENV
 
-                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Tenant name prefix: ${TENANT_NAME_PREFIX}"
+                      echo "Tenant name: ${TENANT_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
-            - run:
-                  name: Persist env vars for next jobs
-                  command: |
-                      echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
-                      echo export CIRCLE_BRANCH_LOWER="${CIRCLE_BRANCH_LOWER}" >> persisted_env_vars
             - run:
                   name: Deploy Tenant with Timmy
                   command: |
@@ -758,7 +757,7 @@ jobs:
                         FUNCTION_NAME=${REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
                       fi
                       TENANT_STATUS_CODE=0
-                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","instanceName":"'"${INSTANCE_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NS}"'"},"web":{"namespace":"'"${PIM_NS}"'"}}}'
+                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
                       JSON_BODY_STRING=${JSON_BODY_STRING:1}
 
                       FUNCTION_URL=$(gcloud beta functions describe ${FUNCTION_NAME} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
@@ -766,6 +765,11 @@ jobs:
                       echo ${JSON_BODY_STRING}
                       curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
                       exit ${TENANT_STATUS_CODE}
+            - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export TENANT_NAME="${TENANT_NAME}" >> persisted_env_vars
+                      echo export CIRCLE_BRANCH_LOWER="${CIRCLE_BRANCH_LOWER}" >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:
@@ -800,30 +804,30 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      INSTANCE_NAME_PREFIX=ucs
-                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                      TENANT_NS=${TYPE}-${INSTANCE_NAME}
+                      TENANT_NAME_PREFIX=ucs
+                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      TENANT_ID=${TYPE}-${TENANT_NAME}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
-                      FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
-                      WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
+                      PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+                      TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
+                      WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
-                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                      echo export TENANT_NS=${TENANT_NS} >> $BASH_ENV
+                      echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
+                      echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
+                      echo export TENANT_ID=${TENANT_ID} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
                       echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
-                      echo export PIM_NS=${PIM_NS} >> $BASH_ENV
-                      echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION} >> $BASH_ENV
+                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
+                      echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
 
-                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Tenant name prefix: ${TENANT_NAME_PREFIX}"
+                      echo "Tenant name: ${TENANT_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
             - run:
                   name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TENANT_NS}"
+                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TENANT_ID}"
             - run:
                 name: Get back the deployment branch
                 command: |
@@ -863,8 +867,8 @@ jobs:
                   # Login to argocd call k8s
                   kubectl config set-context --current --namespace=argocd
                   argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
-                  argocd app get ${TENANT_NS} --hard-refresh --core
-                  argocd app wait --sync --health --operation ${TENANT_NS} --core
+                  argocd app get ${TENANT_ID} --hard-refresh --core
+                  argocd app wait --sync --health --operation ${TENANT_ID} --core
                   echo "argocd app sync successfull"
 
                   echo "============================"
@@ -875,12 +879,12 @@ jobs:
             - run:
                   name: Persist env vars for next jobs
                   command: |
-                      echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+                      echo export TENANT_NAME="${TENANT_NAME}" >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:
                       - project/persisted_env_vars
-                      - project/deployments-ucs/instances/${TENANT_NS}/.kubeconfig
+                      - project/deployments-ucs/instances/${TENANT_ID}/.kubeconfig
             - run:
                   name: Display Deployment Errors
                   command: cat deployment.log
@@ -894,10 +898,10 @@ jobs:
                       kubectl config set-context --current --namespace=argocd
                       argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
 
-                      echo "      argocd app terminate-op ${TENANT_NS} --core || true"
-                      echo "      kubectl delete app ${TENANT_NS} -n argocd || true"
-                      echo "      kubectl delete ${TENANT_NS}"
-                      argocd app terminate-op ${TENANT_NS} --core || true
-                      kubectl delete app ${TENANT_NS} -n argocd || true
-                      kubectl delete ns ${TENANT_NS}
+                      echo "      argocd app terminate-op ${TENANT_ID} --core || true"
+                      echo "      kubectl delete app ${TENANT_ID} -n argocd || true"
+                      echo "      kubectl delete ${TENANT_ID}"
+                      argocd app terminate-op ${TENANT_ID} --core || true
+                      kubectl delete app ${TENANT_ID} -n argocd || true
+                      kubectl delete ns ${TENANT_ID}
                   when: on_fail

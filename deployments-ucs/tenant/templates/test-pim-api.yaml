@@ -1,6 +1,6 @@
 {{ if .Values.pim.hook.tests.enabled -}}
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: "{{ .Release.Name }}-test-pim-api"
   labels:
@@ -8,34 +8,42 @@ metadata:
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/sync-wave: "103"
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "103"
+    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
-  initContainers:
-    - name: wait-dns
-      image:  {{ template "pim.imageNameAndTag" . }}
-      imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-      command: ["sh", "/scripts-dir/wait-dns.sh"]
-      volumeMounts:
+  template:
+    metadata:
+      labels:
+        component: "test-pim-api" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "test-pim-api"
+        {{- include "pim.standardLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
+    spec:
+      initContainers:
+        - name: wait-dns
+          image:  {{ template "pim.imageNameAndTag" . }}
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          command: ["sh", "/scripts-dir/wait-dns.sh"]
+          volumeMounts:
+            - name: pim-scripts-configmap
+              mountPath: /scripts-dir
+          env:
+            - name: PFID
+              value: {{ required ".Values.common.fqdn" .Values.common.fqdn }}
+      containers:
+      - name: test-pim-api
+        image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
+        env:
+          - name: TARGET
+            value: https://{{ required ".Values.common.fqdn" .Values.common.fqdn }}
+        command: ["sh", "/scripts-dir/test-pim-api.sh"]
+        volumeMounts:
         - name: pim-scripts-configmap
           mountPath: /scripts-dir
-      env:
-        - name: PFID
-          value: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
-  containers:
-  - name: test-pim-api
-    image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
-    env:
-      - name: TARGET
-        value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
-    command: ["sh", "/scripts-dir/test-pim-api.sh"]
-    volumeMounts:
-    - name: pim-scripts-configmap
-      mountPath: /scripts-dir
-  restartPolicy: Never
-  volumes:
-  - name: pim-scripts-configmap
-    configMap:
-      name:  pim-scripts-configmap
+      restartPolicy: Never
+      volumes:
+      - name: pim-scripts-configmap
+        configMap:
+          name:  pim-scripts-configmap
 {{- end }}

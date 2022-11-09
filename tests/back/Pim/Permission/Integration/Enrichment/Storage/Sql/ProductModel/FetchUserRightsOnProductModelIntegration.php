@@ -32,7 +32,7 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $rootProductModelRights = $fetchUserRightOnProductModel->fetchByIdentifier('not_categorized_root_product_model', $userId);
         Assert::assertFalse($rootProductModelRights->canApplyDraftOnProductModel());
@@ -57,7 +57,7 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $ownedRootProductModel = $fetchUserRightOnProductModel->fetchByIdentifier('owned_categorized_root_product_model', $userId);
         Assert::assertFalse($ownedRootProductModel->canApplyDraftOnProductModel());
@@ -82,7 +82,7 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $editableProductModel = $fetchUserRightOnProductModel->fetchByIdentifier('editable_categorized_root_product_model', $userId);
         Assert::assertTrue($editableProductModel->canApplyDraftOnProductModel());
@@ -102,7 +102,7 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $nonViewableProductModel = $fetchUserRightOnProductModel->fetchByIdentifier('not_viewable_root_product_model', $userId);
         Assert::assertFalse($nonViewableProductModel->canApplyDraftOnProductModel());
@@ -121,7 +121,7 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
 
         $userId = (int) $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         $productModelRights = $fetchUserRightOnProductModels->fetchByIdentifiers(
             ['not_viewable_root_product_model', 'editable_categorized_root_product_model'],

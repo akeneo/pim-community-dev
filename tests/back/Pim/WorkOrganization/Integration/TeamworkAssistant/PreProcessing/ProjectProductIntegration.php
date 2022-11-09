@@ -93,7 +93,7 @@ FROM `pimee_teamwork_assistant_project_product`
 WHERE `project_id` = :project_id
 SQL;
 
-        $numberOfRow = (int) $this->getConnection()->fetchOne($sql, [
+        $numberOfRow = (int) $this->getConnection()->fetchColumn($sql, [
             'project_id' => $project->getId()
         ]);
 
