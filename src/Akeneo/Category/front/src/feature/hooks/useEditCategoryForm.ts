@@ -21,13 +21,15 @@ const useEditCategoryForm = (categoryId: number) => {
   const translate = useTranslate();
 
   const useCategoryResult = useCategory(categoryId);
-  const {status: categoryFetchingStatus, load: loadCategory} = useCategoryResult;
+  const {categoryStatus: categoryFetchingStatus, templateStatus: templateFetchingStatus, load: loadCategory} = useCategoryResult;
 
   let fetchedCategory: EnrichCategory | null = null;
   let template: Template | null = null;
-  if (useCategoryResult.status === 'fetched') {
+  if (useCategoryResult.categoryStatus === 'fetched') {
     fetchedCategory = useCategoryResult.category;
-    template = useCategoryResult.template;
+    if(useCategoryResult.templateStatus === 'fetched') {
+      template = useCategoryResult.template;
+    }
   }
 
   const [category, setCategory] = useState<EnrichCategory | null>(null);
@@ -39,7 +41,7 @@ const useEditCategoryForm = (categoryId: number) => {
   const {setCanLeavePage, locales} = useContext(EditCategoryContext);
 
   const isModified =
-    useCategoryResult.status === 'fetched' &&
+    useCategoryResult.categoryStatus === 'fetched' &&
     !!category &&
     !!categoryEdited &&
     !categoriesAreEqual(category, categoryEdited);
@@ -82,7 +84,7 @@ const useEditCategoryForm = (categoryId: number) => {
     const response = await saveEditCategoryForm(router, categoryEdited, {
       applyPermissionsOnChildren,
       populateResponseCategory: (category: EnrichCategory) =>
-        populateCategory(category, template!, Object.keys(locales)),
+        populateCategory(category, template, Object.keys(locales)),
     });
 
     if (response.success) {

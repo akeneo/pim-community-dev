@@ -8,24 +8,32 @@ import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
 
 interface UseCategoryResponseCommon {
   load: () => Promise<void>;
-  status: FetchStatus;
+  categoryStatus: FetchStatus;
+  templateStatus: FetchStatus;
 }
 export interface UseCategoryResponseOK extends UseCategoryResponseCommon {
   category: EnrichCategory;
   template: Template;
-  status: 'fetched';
+  categoryStatus: 'fetched';
+  templateStatus: 'fetched';
 }
 
 export interface UseCategoryResponsePending extends UseCategoryResponseCommon {
-  status: 'idle' | 'fetching';
+  categoryStatus: 'idle' | 'fetching';
+}
+
+export interface UseTemplateResponsePending extends UseCategoryResponseCommon {
+  category: EnrichCategory;
+  categoryStatus: 'fetched';
+  templateStatus: 'idle' | 'fetching';
 }
 
 export interface UseCategoryResponseKO extends UseCategoryResponseCommon {
-  status: 'error';
+  categoryStatus: 'error';
   error: string | Error;
 }
 
-export type UseCategoryResponse = UseCategoryResponsePending | UseCategoryResponseOK | UseCategoryResponseKO;
+export type UseCategoryResponse = UseCategoryResponsePending | UseCategoryResponseOK | UseCategoryResponseKO | UseTemplateResponsePending;
 
 const useCategory = (categoryId: number): UseCategoryResponse => {
   const {locales} = useContext(EditCategoryContext);
@@ -45,24 +53,24 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
   } = useTemplateByTemplateUuid(category?.template_uuid ?? null);
 
   const populatedCategory = useMemo(() => {
-    return category && template ? populateCategory(category, template, localeCodes) : null;
+    return category ? populateCategory(category, template, localeCodes) : null;
   }, [category, template, localeCodes]);
 
   if (categoryFetchingStatus === 'error') {
-    return {load, status: 'error', error: categoryFetchingError!};
+    return {load, categoryStatus: 'error', templateStatus: 'error', error: categoryFetchingError!};
   }
   if (templateFetchingStatus === 'error') {
-    return {load, status: 'error', error: templateFetchingError!};
+    return {load, categoryStatus: 'error', templateStatus: 'error', error: templateFetchingError!};
   }
 
   if (categoryFetchingStatus === 'fetched') {
     if (templateFetchingStatus === 'success') {
-      return {load, status: 'fetched', category: populatedCategory!, template: template!};
+      return {load, categoryStatus: 'fetched', templateStatus: 'fetched', category: populatedCategory!, template: template!};
     }
-    return {load, status: templateFetchingStatus === 'loading' ? 'fetching' : 'idle'};
+    return {load, categoryStatus: 'fetched', category: populatedCategory!, templateStatus: (templateFetchingStatus === 'loading') ? 'fetching' : 'idle'};
   }
 
-  return {load, status: categoryFetchingStatus};
+  return {load, categoryStatus: categoryFetchingStatus, templateStatus: 'fetching'};
 };
 
 export {useCategory};

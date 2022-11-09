@@ -67,7 +67,7 @@ export function getAttributeValue(
  */
 function populateCategoryAttributes(
   category: EnrichCategory,
-  template: Template,
+  template: Template | null | undefined,
   locales: LocaleCode[]
 ): EnrichCategory {
   const fixedCategory = clone(category);
@@ -120,7 +120,7 @@ function buildCategoryAttributeValues(attribute: Attribute, locales: LocaleCode[
 /**
  * Ensures no category field is null and ensures attributes values are populated.
  */
-export function populateCategory(category: EnrichCategory, template: Template, locales: LocaleCode[]): EnrichCategory {
+export function populateCategory(category: EnrichCategory, template: Template | null | undefined, locales: LocaleCode[]): EnrichCategory {
   let populated = cloneDeep(category);
   if (category.permissions === null) {
     populated.permissions = {view: [], edit: [], own: []};

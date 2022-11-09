@@ -21,7 +21,7 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
     return router.generate('pim_category_template_rest_get_by_template_uuid', {
       templateUuid: uuid,
     });
-  }, [uuid]);
+  }, [router, uuid]);
 
   const fetchTemplate = useCallback(async () => {
     if (url === null || uuid === null || uuid.length === 0) {

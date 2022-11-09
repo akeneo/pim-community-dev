@@ -79,7 +79,7 @@ const CategoryEditPage: FC = () => {
   const handleSwitchTo = useCallback((tab: string) => {
     setActiveTab(tab);
     switchTo(tab);
-  }, []);
+  }, [setActiveTab, switchTo]);
 
   const {
     category,
@@ -149,10 +149,10 @@ const CategoryEditPage: FC = () => {
   }, [category, userContext]);
 
   useEffect(() => {
-    if (activeTab === Tabs.ATTRIBUTE && !isGranted('pim_enrich_product_category_edit_attributes')) {
+    if (activeTab === Tabs.ATTRIBUTE && (!isGranted('pim_enrich_product_category_edit_attributes') && template)) {
       handleSwitchTo(Tabs.PROPERTY);
     }
-  }, [activeTab]);
+  }, [activeTab, handleSwitchTo, isGranted, template]);
 
   if (categoryFetchingStatus === 'error') {
     return (
@@ -245,7 +245,7 @@ const CategoryEditPage: FC = () => {
       </PageHeader>
       <PageContent>
         <TabBar moreButtonTitle={'More'}>
-          {isGranted('pim_enrich_product_category_edit_attributes') && (
+          {isGranted('pim_enrich_product_category_edit_attributes') && template && (
             <TabBar.Tab isActive={isCurrent(Tabs.ATTRIBUTE)} onClick={() => handleSwitchTo(Tabs.ATTRIBUTE)}>
               {translate('akeneo.category.attributes')}
             </TabBar.Tab>
