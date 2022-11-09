@@ -14,16 +14,23 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Structure;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributesCodesToEvaluateQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Webmozart\Assert\Assert;
 
-class GetAttributesCodesToEvaluateQueryIntegration extends TestCase
+class GetAttributesCodesToEvaluateQueryIntegration extends DataQualityInsightsTestCase
 {
     protected function getConfiguration()
     {
@@ -48,6 +55,53 @@ class GetAttributesCodesToEvaluateQueryIntegration extends TestCase
         $this->assertEqualsCanonicalizing($expectedAttributesCodes, $attributesToEvaluate);
     }
 
+    public function test_it_returns_the_codes_of_the_attributes_that_need_to_be_reevaluated()
+    {
+        $this->createChannel('ecommerce', ['locales' => ['en_US', 'fr_FR']]);
+
+        $size = $this->createAttribute('size', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
+        $this->createAttributeOptions('size', ['S', 'M', 'L']);
+
+        $this->updateAttribute($size, [
+            'labels' => [
+                'en_US' => 'Size',
+                'fr_FR' => 'Taille'
+            ]
+        ]);
+
+        $this->createAttributeOptionSpellcheck(
+            'size',
+            'S',
+            (new SpellcheckResultByLocaleCollection())
+                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
+                ->add(new LocaleCode('fr_FR'), SpellCheckResult::good())
+        );
+
+        $this->createAttributeOptionSpellcheck(
+            'size',
+            'M',
+            (new SpellcheckResultByLocaleCollection())
+                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
+                ->add(new LocaleCode('fr_FR'), SpellCheckResult::good())
+        );
+
+        $this->createAttributeOptionSpellcheck(
+            'size',
+            'L',
+            (new SpellcheckResultByLocaleCollection())
+                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
+                ->add(new LocaleCode('fr_FR'), SpellCheckResult::good())
+        );
+
+        $this->setGlobalQualityToImprove('size');
+        $this->setLocalesQualityToImprove('size');
+        $this->setOptionSpellcheckToGood('size', 's');
+
+        $attributesToEvaluate = iterator_to_array($this->get(GetAttributesCodesToEvaluateQuery::class)->toReevaluate());
+
+        $this->assertEqualsCanonicalizing(['size'], $attributesToEvaluate);
+    }
+
     private function givenAnAttributeThatHasAlreadyBeenEvaluated(string $code): void
     {
         $createdAt = new \DateTimeImmutable('2020-04-12 09:12:43');
@@ -69,19 +123,6 @@ class GetAttributesCodesToEvaluateQueryIntegration extends TestCase
         $this->attributeUpdatedAt($code, $createdAt->modify('+1 SECOND'));
     }
 
-    private function createAttribute(string $code): AttributeInterface
-    {
-        $attribute = $this->get('akeneo_integration_tests.base.attribute.builder')->build([
-            'code' => $code,
-            'type' => AttributeTypes::TEXT,
-            'group' => 'other',
-        ], true);
-
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
-
-        return $attribute;
-    }
-
     private function createAttributeEvaluation(string $attributeCode, \DateTimeImmutable $evaluatedAt): void
     {
         $this->get(AttributeSpellcheckRepository::class)->save(new AttributeSpellcheck(
@@ -101,5 +142,63 @@ SQL;
             'updatedAt' => $updatedAt->format(Clock::TIME_FORMAT),
             'attributeCode' => $attributeCode
         ]);
+    }
+
+    private function setGlobalQualityToImprove(string $attributeCode): void
+    {
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
+UPDATE pimee_dqi_attribute_quality
+SET quality = 'to_improve'
+WHERE attribute_code = :attributeCode;
+SQL,
+            ['attributeCode' => $attributeCode]
+        );
+    }
+
+    private function setLocalesQualityToImprove(string $attributeCode): void
+    {
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
+UPDATE pimee_dqi_attribute_locale_quality
+SET quality = 'to_improve'
+WHERE attribute_code = :attributeCode;
+SQL,
+            ['attributeCode' => $attributeCode]
+        );
+    }
+
+    private function setOptionSpellcheckToGood(string $attributeCode, string $optionCode): void
+    {
+        $query = <<<SQL
+UPDATE pimee_dqi_attribute_option_spellcheck
+SET to_improve = 0
+WHERE attribute_code = :attributeCode AND attribute_option_code = :attributeOptionCode;
+SQL;
+        $this->get('database_connection')->executeQuery($query, [
+            'attributeCode' => $attributeCode,
+            'attributeOptionCode' => $optionCode,
+        ]);
+    }
+
+    private function updateAttribute(AttributeInterface $attribute, array $data): void
+    {
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+
+        $errors = $this->get('validator')->validate($attribute);
+        Assert::count($errors, 0);
+
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    private function createAttributeOptionSpellcheck(string $attributeCode, string $optionCode, ?SpellcheckResultByLocaleCollection $result = null)
+    {
+        $attributeOptionSpellcheck = new AttributeOptionSpellcheck(
+            new AttributeOptionCode(new AttributeCode($attributeCode), $optionCode),
+            $this->get(SystemClock::class)->fromString('2020-05-12 11:23:45'),
+            $result ?? new SpellcheckResultByLocaleCollection()
+        );
+
+        $this->get(AttributeOptionSpellcheckRepository::class)->save($attributeOptionSpellcheck);
     }
 }
