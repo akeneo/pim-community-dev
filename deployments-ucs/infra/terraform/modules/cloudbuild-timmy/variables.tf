@@ -48,14 +48,6 @@ variable "cloudbuild_service_account" {
   description = "The service account used for all user-controlled operations including triggers.patch, triggers.run, builds.create, and builds.cancel."
 }
 
-variable "env" {
-  type = string
-}
-
-variable "region" {
-  type = string
-}
-
 variable "target_project_id" {
   type = string
 }
