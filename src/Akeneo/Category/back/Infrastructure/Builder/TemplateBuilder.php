@@ -56,7 +56,7 @@ class TemplateBuilder
             $this->generateTemplateLabelCollection($categoryTree->getLabels()),
             $categoryTree->getId(),
             AttributeCollection::fromArray([
-                AttributeRichText::create(
+                AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('description'),
                     AttributeOrder::fromInteger(1),
@@ -89,7 +89,7 @@ class TemplateBuilder
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([])
                 ),
-                AttributeTextArea::create(
+                AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_meta_description'),
                     AttributeOrder::fromInteger(4),
@@ -100,7 +100,7 @@ class TemplateBuilder
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([])
                 ),
-                AttributeTextArea::create(
+                AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_keywords'),
                     AttributeOrder::fromInteger(5),
