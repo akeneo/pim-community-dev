@@ -128,54 +128,6 @@ workflows:
                   requires:
                       - release-srnt
 
-    nightly_grth_release:
-        when:
-            and:
-                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "nightly_grth_release", << pipeline.schedule.name >> ]
-        jobs:
-            - checkout
-            - build_grth:
-                  <<: *slack-fail-post-step
-                  requires:
-                      - checkout
-            - test_cronjobs_existence:
-                  <<: *slack-fail-post-step
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                  requires:
-                      - build_grth
-            - test_deploy:
-                  <<: *slack-fail-post-step
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                  requires:
-                      - test_cronjobs_existence
-            - test_deploy_last_release:
-                  <<: *slack-fail-post-step
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                  requires:
-                      - test_cronjobs_existence
-            - test_upgrade_from_last_release:
-                  <<: *slack-fail-post-step
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                  requires:
-                      - test_deploy_last_release
-            - release:
-                  <<: *slack-post-step
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                  requires:
-                      - test_deploy
-                      - test_upgrade_from_last_release
-
     nightly_tria_release:
         when:
             and:
@@ -218,7 +170,7 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] Release ?"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   type: approval
                   filters:
                       branches:
@@ -228,7 +180,7 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] Checkout"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Release ?"
             - build_srnt_dev:
@@ -239,10 +191,6 @@ workflows:
                   name: "[srnt] Build prod"
                   requires:
                       - "[srnt] Checkout"
-            - build_grth:
-                  name: "[grth] Build prod"
-                  requires:
-                      - "[grth] Checkout"
             - build_tria:
                   name: "[tria] Build prod"
                   requires:
@@ -284,28 +232,28 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Build prod"
             - test_deploy:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt",  "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
             - test_deploy_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth"]
+                          PRODUCT_TYPE: ["srnt"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
             - test_upgrade_from_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth"]
+                          PRODUCT_TYPE: ["srnt"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
             - release:
@@ -329,14 +277,6 @@ workflows:
             - release_ucs:
                   requires:
                       - "[srnt] Release"
-            - release:
-                  name: "[<< matrix.PRODUCT_TYPE >>] Release"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                  requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
-                      - "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
             - release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Release"
                   matrix:
