@@ -22,17 +22,14 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
   const catalogLocale = userContext.get('catalogLocale');
   const translate = useTranslate();
 
-  const sortByOrder = useCallback(
-    (attribute1: Attribute, attribute2: Attribute): number => {
-      if (attribute1.order >= attribute2.order) {
-        return 1;
-      } else if (attribute1.order < attribute2.order) {
-        return -1;
-      }
-      return 0;
-    },
-    []
-  );
+  const sortByOrder = useCallback((attribute1: Attribute, attribute2: Attribute): number => {
+    if (attribute1.order >= attribute2.order) {
+      return 1;
+    } else if (attribute1.order < attribute2.order) {
+      return -1;
+    }
+    return 0;
+  }, []);
 
   return (
     <FormContainer>
