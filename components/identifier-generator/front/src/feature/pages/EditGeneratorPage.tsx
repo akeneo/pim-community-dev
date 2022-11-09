@@ -15,6 +15,7 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
         () => alert('not implemented')
       }
       validationErrors={[]}
+      isNew={false}
     />
   );
 };

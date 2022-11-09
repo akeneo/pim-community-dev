@@ -1,16 +1,16 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import {EditGeneratorPage} from '../pages/';
-import {useIdentifierGenerator} from '../hooks';
+import {useGetIdentifierGenerator} from '../hooks';
 import {LoaderIcon, Placeholder, ServerErrorIllustration} from 'akeneo-design-system';
 import {IdentifierGeneratorNotFound} from '../errors';
-import {Styled} from '../components';
+import {Styled} from '../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Edit: React.FC<{}> = () => {
   const translate = useTranslate();
   const {identifierGeneratorCode} = useParams<{identifierGeneratorCode: string}>();
-  const {data, error} = useIdentifierGenerator(identifierGeneratorCode);
+  const {data: identifierGenerator, error} = useGetIdentifierGenerator(identifierGeneratorCode);
 
   if (error) {
     let title = translate('pim_error.general');
@@ -30,7 +30,7 @@ const Edit: React.FC<{}> = () => {
     );
   }
 
-  if (typeof data === 'undefined') {
+  if (typeof identifierGenerator === 'undefined') {
     return (
       <Styled.FullPageCenteredContent>
         <LoaderIcon data-testid={'loadingIcon'} />
@@ -38,7 +38,7 @@ const Edit: React.FC<{}> = () => {
     );
   }
 
-  return <EditGeneratorPage initialGenerator={data} />;
+  return <EditGeneratorPage initialGenerator={identifierGenerator} />;
 };
 
 export {Edit};

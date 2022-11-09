@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
-use Doctrine\DBAL\Types\Types;
+use Doctrine\DBAL\Types\Type;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -230,9 +230,8 @@ SQL;
                 'updated_date' => $updatedDate,
             ],
             [
-                'updated_date' => Types::DATETIME_MUTABLE
-            ]
-        );
+                'updated_date' => Type::DATETIME
+            ]);
 
         $uuid = $this->getProductUuid($identifier);
         $this->getProductAndAncestorsIndexer()->indexFromProductUuids([$uuid]);

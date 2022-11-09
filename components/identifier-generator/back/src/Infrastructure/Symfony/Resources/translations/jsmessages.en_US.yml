@@ -22,8 +22,22 @@ pim_identifier_generator:
         create:
             success: 'The identifier generator "{{ code }}" was successfully created'
             error: 'The identifier generator could not be created'
+        delete:
+            success: 'The identifier generator "{{ code }}" was successfully deleted'
+            error: 'The identifier generator could not be deleted'
     list:
         identifier: 'Identifier'
         first_generator: 'Create your first identifier generator!'
         check_help_center: 'Check out our help center for more information.'
-        create_info: 'It is only possible to create one Identifier Generator for the moment. You will soon be able to configure multiple generators matching all your usecases. '
+        create_info: 'It is only possible to create one Identifier Generator for the moment. You will soon be able to configure multiple generators matching all your usecases.'
+    structure:
+        title: 'Identifier Structure'
+        add_element: 'Add new property'
+        property_type:
+            sections:
+                system: 'System'
+            free_text: 'Free text'
+    deletion:
+        operations: 'Operations'
+        confirmation: 'Are you sure you want to delete this identifier generator?'
+        type: 'Please type "{{ code }}"'

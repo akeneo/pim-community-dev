@@ -10,6 +10,7 @@ const HelpCenterLink = styled.a`
 const Label = styled.label`
   font-style: italic;
   color: ${getColor('brand', 100)};
+  cursor: pointer;
 `;
 
 const Styled = {

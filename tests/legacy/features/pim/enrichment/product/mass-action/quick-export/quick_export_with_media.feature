@@ -46,8 +46,8 @@ Feature: Quick export many products with media from datagrid
     And the names of the exported files of "xlsx_product_quick_export" should be "1_products_export_en_US_tablet.xlsx"
     And exported xlsx file of "xlsx_product_quick_export" should contain:
       | uuid                                 | sku      | 123 | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view                                                        | size | top_view | weather_conditions |
-      | d48adc7a-e3e5-470e-9393-32812cd23e5c | boots    | aaa | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        | files/bf9cfd30-f120-4e82-9173-cda3e899dfa2/side_view/akeneo.jpg  | 40   |          |                    |
-      | 9f7ef881-54a2-419f-804b-4bef1b5c0023 | sneakers | bbb | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        | files/13c5df68-646c-4177-a3aa-4141685621eb/side_view/akeneo2.jpg | 42   |          |                    |
+      | d48adc7a-e3e5-470e-9393-32812cd23e5c | boots    | aaa | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        | files/d48adc7a-e3e5-470e-9393-32812cd23e5c/side_view/akeneo.jpg  | 40   |          |                    |
+      | 9f7ef881-54a2-419f-804b-4bef1b5c0023 | sneakers | bbb | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        | files/9f7ef881-54a2-419f-804b-4bef1b5c0023/side_view/akeneo2.jpg | 42   |          |                    |
 
   Scenario: Successfully quick export products with media without selecting the attribute media in the grid
     Given I am on the products grid
