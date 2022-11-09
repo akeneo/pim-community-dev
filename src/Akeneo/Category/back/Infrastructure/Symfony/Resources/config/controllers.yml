@@ -77,7 +77,6 @@ services:
     Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
         public: true
         arguments:
-            - '@pim_external_api_serializer'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@feature_flags'
