@@ -199,4 +199,24 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
             ->shouldThrow(TwoWayAssociationWithTheSameProductException::class)
             ->during('createInversedAssociation', [$ownerAndAssociateProduct, 'xsell', $ownerAndAssociateProduct]);
     }
+
+    public function it_associates_a_product_without_identifier(
+        $missingAssociationAdder,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new Product();
+        $owner->setIdentifier(null);
+        $clonedOwner = new Product($owner->getUuid()->toString());
+        $clonedOwner->setIdentifier(null);
+
+        $associatedProduct->getIdentifier()->willReturn(null);
+        $associatedProduct->getUuid()->willReturn(Uuid::uuid4());
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->getAssociatedProducts('xsell')->willReturn(new ArrayCollection([$clonedOwner]));
+
+        $associatedProduct->removeAssociatedProduct($clonedOwner, 'xsell')->shouldBeCalled();
+        $associatedProduct->addAssociatedProduct($owner, 'xsell')->shouldBeCalled();
+
+        $this->createInversedAssociation($owner, 'xsell', $associatedProduct);
+    }
 }
