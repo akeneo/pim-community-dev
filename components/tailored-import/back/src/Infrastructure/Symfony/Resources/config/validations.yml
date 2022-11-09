@@ -31,6 +31,7 @@ parameters:
     remove_whitespace: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\RemoveWhitespaceOperation'
     simple_reference_entity_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
     multi_reference_entity_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
+    search_and_replace: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SearchAndReplaceOperation'
 
 services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:

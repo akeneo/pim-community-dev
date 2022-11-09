@@ -28,6 +28,8 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiReferenceEntityRe
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SearchAndReplaceOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SearchAndReplaceValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleReferenceEntityReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
@@ -77,10 +79,26 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
                 RemoveWhitespaceOperation::TYPE => new RemoveWhitespaceOperation($normalizedOperation['uuid'], $normalizedOperation['modes']),
                 SimpleReferenceEntityReplacementOperation::TYPE => new SimpleReferenceEntityReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 MultiReferenceEntityReplacementOperation::TYPE => new MultiReferenceEntityReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
+                SearchAndReplaceOperation::TYPE => self::hydrateSearchAndReplaceOperation($normalizedOperation),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,
         );
+    }
+
+    private static function hydrateSearchAndReplaceOperation(array $normalizedOperation): SearchAndReplaceOperation
+    {
+        $replacements = array_map(
+            static fn (array $replacement) => new SearchAndReplaceValue(
+                $replacement['uuid'],
+                $replacement['what'],
+                $replacement['with'],
+                (bool) $replacement['case_sensitive'],
+            ),
+            $normalizedOperation['replacements'],
+        );
+
+        return new SearchAndReplaceOperation($normalizedOperation['uuid'], $replacements);
     }
 
     private function getAttributeRequiredOperations(array $normalizedTarget): array
