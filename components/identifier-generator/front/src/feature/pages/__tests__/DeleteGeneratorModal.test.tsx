@@ -1,16 +1,15 @@
 import React from 'react';
 import {DeleteGeneratorModal} from '../DeleteGeneratorModal';
-import {render, screen, fireEvent, act, waitFor} from '../../tests/test-utils';
-jest.mock('../../hooks/useGetGenerators');
+import {act, fireEvent, mockResponse, render, screen, waitFor} from '../../tests/test-utils';
+
+jest.mock('../../hooks/useGetIdentifierGenerators');
 
 describe('DeleteGeneratorModal', () => {
   it('should delete a generator', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(),
-    } as Response);
+    const expectCall = mockResponse('akeneo_identifier_generator_rest_delete', 'DELETE', {ok: true, json: {}});
 
     const onDelete = jest.fn();
+
     render(<DeleteGeneratorModal onDelete={onDelete} onClose={jest.fn()} generatorCode={'my_generator'} />);
 
     expect(screen.getByText('pim_common.delete')).toBeDisabled();
@@ -21,14 +20,12 @@ describe('DeleteGeneratorModal', () => {
     await waitFor(() => {
       return expect(onDelete).toBeCalled();
     });
+
+    expectCall();
   });
 
-  it('should not delete when error occured', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: false,
-      statusText: 'An unknown error',
-      json: () => Promise.resolve(),
-    } as Response);
+  it('should not delete when error occurred', async () => {
+    const expectCall = mockResponse('akeneo_identifier_generator_rest_delete', 'DELETE', {ok: false, json: {}});
 
     const onDelete = jest.fn();
     render(<DeleteGeneratorModal onDelete={onDelete} onClose={jest.fn()} generatorCode={'my_generator'} />);
@@ -39,6 +36,8 @@ describe('DeleteGeneratorModal', () => {
     await waitFor(() => {
       expect(onDelete).not.toBeCalled();
     });
+
+    expectCall();
   });
 
   it('should close the modal', () => {

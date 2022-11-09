@@ -9,7 +9,7 @@ import {
   Table,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useGetGenerators, useIdentifierAttributes} from '../hooks';
+import {useGetIdentifierGenerators, useIdentifierAttributes} from '../hooks';
 import {LabelCollection, Target} from '../models';
 import {Styled} from './styles';
 import {Header, ListSkeleton} from '../components';
@@ -26,14 +26,14 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const history = useHistory();
   const translate = useTranslate();
 
-  const {data: generators = [], isLoading, refetch} = useGetGenerators();
+  const {data: generators = [], isLoading, error: errorOnGenerators} = useGetIdentifierGenerators();
 
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
   const [generatorToDelete, setGeneratorToDelete] = useState<string>('');
 
   const locale = useUserContext().get('catalogLocale');
-  const isCreateDisabled = useMemo(() => generators?.length >= 1, [generators]);
-  const isGeneratorListEmpty = useMemo(() => generators?.length === 0, [generators]);
+  const isCreateDisabled = useMemo(() => generators.length >= 1, [generators]);
+  const isGeneratorListEmpty = useMemo(() => generators.length === 0, [generators]);
   const getCurrentLabel = useCallback(
     (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
     [locale]
@@ -41,10 +41,9 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const goToEditPage = (code: string) => () => history.push(`/${code}`);
   const closeModal = (): void => closeDeleteGeneratorModal();
 
-  const {data: identifierAttributes} = useIdentifierAttributes();
+  const {data: identifierAttributes = [], error: errorOnIdentifierAttributes} = useIdentifierAttributes();
 
-  const refetchAndClose = (): void => {
-    refetch();
+  const handleDelete = (): void => {
     closeModal();
   };
 
@@ -54,7 +53,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   };
 
   const getTargetLabel: (target: Target) => string | undefined = target => {
-    return identifierAttributes?.find(attribute => attribute.code === target)?.label;
+    return identifierAttributes.find(attribute => attribute.code === target)?.label;
   };
 
   return (
@@ -72,7 +71,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
             <Table.HeaderCell />
           </Table.Header>
           <Table.Body>
-            {isGeneratorListEmpty && !isLoading && (
+            {isGeneratorListEmpty && !isLoading && !errorOnGenerators && !errorOnIdentifierAttributes && (
               <tr>
                 <td colSpan={3}>
                   <Placeholder
@@ -84,6 +83,13 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                       {translate('pim_identifier_generator.list.check_help_center')}
                     </Styled.HelpCenterLink>
                   </Placeholder>
+                </td>
+              </tr>
+            )}
+            {(null !== errorOnGenerators || null !== errorOnIdentifierAttributes) && (
+              <tr>
+                <td colSpan={3}>
+                  <Helper level="error">{translate('pim_error.general')}</Helper>
                 </td>
               </tr>
             )}
@@ -127,7 +133,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
         </Table>
       </PageContent>
       {isDeleteGeneratorModalOpen && generatorToDelete !== null && (
-        <DeleteGeneratorModal generatorCode={generatorToDelete} onClose={closeModal} onDelete={refetchAndClose} />
+        <DeleteGeneratorModal generatorCode={generatorToDelete} onClose={closeModal} onDelete={handleDelete} />
       )}
     </>
   );

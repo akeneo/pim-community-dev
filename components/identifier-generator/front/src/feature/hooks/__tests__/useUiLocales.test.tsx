@@ -3,6 +3,7 @@ import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {act} from 'react-dom/test-utils';
 import {UiLocale} from '../../models';
 import {useUiLocales} from '../useUiLocales';
+import {mockResponse} from '../../tests/test-utils';
 
 const uiLocales = [
   {
@@ -29,14 +30,9 @@ const uiLocales = [
 ];
 
 describe('useUiLocales', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(uiLocales),
-    } as Response);
-  });
-
   test('it retrieves ui locales list', async () => {
+    mockResponse('pim_localization_locale_index', 'GET', {ok: true, json: uiLocales});
+
     const {result, waitFor} = renderHook<
       null,
       {

@@ -1,14 +1,14 @@
-import {useQuery} from 'react-query';
-import {FlattenAttribute} from '../models';
+import {IdentifierGenerator} from '../models';
 import {useRouter} from '@akeneo-pim-community/shared';
+import {useQuery} from 'react-query';
 import {ServerError} from '../errors';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const useIdentifierAttributes = () => {
+const useGetIdentifierGenerators = () => {
   const router = useRouter();
 
-  return useQuery<FlattenAttribute[], Error, FlattenAttribute[]>('getIdentifierAttributes', async () => {
-    const response = await fetch(router.generate('akeneo_identifier_generator_get_identifier_attributes'), {
+  return useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>('getGeneratorList', async () => {
+    const response = await fetch(router.generate('akeneo_identifier_generator_rest_list'), {
       method: 'GET',
       headers: [['X-Requested-With', 'XMLHttpRequest']],
     });
@@ -18,4 +18,4 @@ const useIdentifierAttributes = () => {
   });
 };
 
-export {useIdentifierAttributes};
+export {useGetIdentifierGenerators};

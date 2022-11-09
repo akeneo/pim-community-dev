@@ -2,15 +2,15 @@ import React from 'react';
 import {fireEvent, render, screen, waitFor} from '../../tests/test-utils';
 import {ListPage} from '../ListPage';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
-import {useGetGenerators} from '../../hooks';
+import {useGetIdentifierGenerators} from '../../hooks';
 import {mocked} from 'ts-jest/utils';
 import {Router} from 'react-router';
 import {createMemoryHistory} from 'history';
 
 jest.mock('../DeleteGeneratorModal');
 jest.mock('../../hooks/useIdentifierAttributes');
-jest.mock('../../hooks/useGetGenerators', () => ({
-  useGetGenerators: jest.fn(),
+jest.mock('../../hooks/useGetIdentifierGenerators', () => ({
+  useGetIdentifierGenerators: jest.fn(),
 }));
 
 const mockedList: IdentifierGenerator[] = [
@@ -26,7 +26,7 @@ const mockedList: IdentifierGenerator[] = [
 
 describe('ListPage', () => {
   it('should display an informative message when there are no generators yet', () => {
-    mocked(useGetGenerators).mockReturnValue({
+    mocked(useGetIdentifierGenerators).mockReturnValue({
       data: [],
       isLoading: false,
       refetch: jest.fn(),
@@ -41,7 +41,7 @@ describe('ListPage', () => {
   });
 
   it('should display the generators list', async () => {
-    mocked(useGetGenerators).mockReturnValue({
+    mocked(useGetIdentifierGenerators).mockReturnValue({
       data: mockedList,
       isLoading: false,
       refetch: jest.fn(),
@@ -60,7 +60,7 @@ describe('ListPage', () => {
   });
 
   it('should redirect to edit page on list item click', async () => {
-    mocked(useGetGenerators).mockReturnValue({
+    mocked(useGetIdentifierGenerators).mockReturnValue({
       data: mockedList,
       isLoading: false,
       refetch: jest.fn(),
@@ -86,7 +86,7 @@ describe('ListPage', () => {
   });
 
   it('should delete a generator', () => {
-    mocked(useGetGenerators).mockReturnValue({
+    mocked(useGetIdentifierGenerators).mockReturnValue({
       data: mockedList,
       isLoading: false,
       refetch: jest.fn(),
@@ -101,7 +101,7 @@ describe('ListPage', () => {
   });
 
   it('should cancel deletion of a generator', () => {
-    mocked(useGetGenerators).mockReturnValue({
+    mocked(useGetIdentifierGenerators).mockReturnValue({
       data: mockedList,
       isLoading: false,
       refetch: jest.fn(),

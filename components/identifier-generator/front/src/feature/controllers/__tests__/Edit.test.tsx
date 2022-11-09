@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen} from '../../tests/test-utils';
+import {mockResponse, render, screen} from '../../tests/test-utils';
 import {Edit} from '../';
 import {IdentifierGenerator} from '../../models';
 
@@ -19,32 +19,18 @@ describe('Edit', () => {
   });
 
   it('should render a 404 on non existing generator', async () => {
-    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: false,
-      status: 404,
-      json: () => Promise.resolve({}),
-    } as Response);
+    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {status: 404, ok: false});
 
     render(<Edit />);
     expect(await screen.findByText('pim_error.404')).toBeInTheDocument();
     expect(screen.getByText('pim_error.identifier_generator_not_found')).toBeInTheDocument();
-    mockedConsole.mockRestore();
   });
 
   it('should render a generic error', async () => {
-    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: false,
-      status: 500,
-      statusText: 'Fail',
-      json: () => Promise.resolve({}),
-    } as Response);
+    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {status: 500, ok: false, statusText: 'Fail'});
 
     render(<Edit />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
-    expect(screen.getByText('Fail')).toBeInTheDocument();
-    mockedConsole.mockRestore();
   });
 
   it('should render the edit page', async () => {
@@ -59,10 +45,7 @@ describe('Edit', () => {
       target: 'sku',
     };
 
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(initialGenerator),
-    } as Response);
+    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {json: initialGenerator});
 
     render(<Edit />);
     expect(await screen.findByText('CreateOrEditGeneratorPage')).toBeInTheDocument();

@@ -1,8 +1,8 @@
 import React, {FC, useState} from 'react';
 import {Button, DeleteIllustration, Field, Modal, TextInput} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {IdentifierGeneratorCode} from '../models';
-import {useGetGenerators} from '../hooks';
+import {useDeleteIdentifierGenerator} from '../hooks/useDeleteIdentifierGenerator';
 
 type DeleteGeneratorModalProps = {
   generatorCode: IdentifierGeneratorCode;
@@ -12,33 +12,24 @@ type DeleteGeneratorModalProps = {
 
 const DeleteGeneratorModal: FC<DeleteGeneratorModalProps> = ({generatorCode, onClose, onDelete}) => {
   const translate = useTranslate();
-  const router = useRouter();
   const notify = useNotify();
-  const {refetch} = useGetGenerators();
   const [isLoading] = useState<boolean>(false);
   const [attributeCodeConfirm, setAttributeCodeConfirm] = useState<string>('');
 
-  const callDeleteGenerator = async (code: string): Promise<void> => {
-    return fetch(router.generate('akeneo_identifier_generator_rest_delete', {code}), {
-      method: 'DELETE',
-      headers: [['X-Requested-With', 'XMLHttpRequest']],
-    }).then(res => {
-      if (!res.ok) throw new Error(res.statusText);
+  const deleteIdentifierGenerator = useDeleteIdentifierGenerator();
+  const confirmDelete = () => {
+    deleteIdentifierGenerator.mutate(generatorCode, {
+      onSuccess: () => {
+        notify(
+          NotificationLevel.SUCCESS,
+          translate('pim_identifier_generator.flash.delete.success', {code: generatorCode})
+        );
+        onDelete();
+      },
+      onError: () => {
+        notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.delete.error'));
+      },
     });
-  };
-
-  const confirmDelete = async () => {
-    try {
-      await callDeleteGenerator(generatorCode);
-      notify(
-        NotificationLevel.SUCCESS,
-        translate('pim_identifier_generator.flash.delete.success', {code: generatorCode})
-      );
-      refetch();
-      onDelete();
-    } catch (error) {
-      notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.delete.error'));
-    }
   };
 
   return (
