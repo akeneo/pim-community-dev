@@ -1,16 +1,8 @@
 import {useCatalogQuery} from '../../../hooks/useCatalogQuery';
-import {AnyCriterionState} from '../../ProductSelection';
-import {ProductValueFiltersValues} from '../../ProductValueFilters';
-import {ProductMapping} from '../../ProductMapping/models/ProductMapping';
+import {ProductMapping} from '../models/ProductMapping';
 
 type Data = {
     id: string;
-    name: string;
-    enabled: boolean;
-    owner_username: string;
-    product_selection_criteria: AnyCriterionState[];
-    product_value_filters: ProductValueFiltersValues;
-    // TODO remove it
     product_mapping: ProductMapping;
     has_product_mapping_schema: boolean;
 };
