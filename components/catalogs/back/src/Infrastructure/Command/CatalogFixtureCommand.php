@@ -90,7 +90,7 @@ class CatalogFixtureCommand extends Command
 
             $this->commandBus->execute(new CreateCatalogCommand(
                 $catalogWithMappingId,
-                'Catalog with Mapping',
+                'Store with Mapping',
                 $user->getUserIdentifier(),
             ));
 
