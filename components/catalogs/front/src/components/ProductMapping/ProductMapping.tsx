@@ -5,6 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourcePlaceholder} from './components/SourcePlaceholder';
 import {useCatalog} from './hooks/useCatalog';
 import {TargetPlaceholder} from './components/TargetPlaceholder';
+import {useProductMappingSchema} from './hooks/useProductMappingSchema';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -35,6 +36,7 @@ type Props = {
 export const ProductMapping: FC<Props> = ({catalogId}) => {
     const translate = useTranslate();
     const {data: catalog} = useCatalog(catalogId);
+    const {data: productMappingSchema} = useProductMappingSchema(catalogId);
 
     const [selectedTarget, setSelectedTarget] = useState<string>();
 
@@ -60,35 +62,38 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {targets.length === 0 && <TargetPlaceholder />}
-                        {targets.length > 0 && (
-                            <Table.Row>
-                                <TargetCell>UUID</TargetCell>
-                                <Table.Cell>UUID</Table.Cell>
-                            </Table.Row>
-                        )}
-                        {targets.length > 0 && (
-                            targets.map(([target, source]) => {
-                                if ('uuid' === target) {
-                                    return;
-                                }
-                                return (
-                                    <Table.Row
-                                        key={target}
-                                        onClick={() => {
-                                            setSelectedTarget(target);
-                                        }}
-                                    >
-                                        <TargetCell>{target}</TargetCell>
-                                        {null === source.source && (
-                                            <PlaceholderCell>
-                                                {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
-                                            </PlaceholderCell>
-                                        )}
-                                        {source.source && <Table.Cell>{source.source}</Table.Cell>}
-                                    </Table.Row>
-                                );
-                            })
+                        {(targets.length === 0 || undefined === productMappingSchema) && <TargetPlaceholder />}
+                        {targets.length > 0 && undefined !== productMappingSchema && (
+                            <>
+                                <Table.Row>
+                                    <TargetCell>UUID</TargetCell>
+                                    <Table.Cell>UUID</Table.Cell>
+                                </Table.Row>
+                                {targets.map(([target, source]) => {
+                                    if ('uuid' === target) {
+                                        return;
+                                    }
+
+                                    return (
+                                        <Table.Row
+                                            key={target}
+                                            onClick={() => {
+                                                setSelectedTarget(target);
+                                            }}
+                                        >
+                                            <TargetCell>
+                                                {productMappingSchema.properties[target]?.title ?? target}
+                                            </TargetCell>
+                                            {null === source.source && (
+                                                <PlaceholderCell>
+                                                    {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
+                                                </PlaceholderCell>
+                                            )}
+                                            {source.source && <Table.Cell>{source.source}</Table.Cell>}
+                                        </Table.Row>
+                                    );
+                                })}
+                            </>
                         )}
                     </Table.Body>
                 </Table>
