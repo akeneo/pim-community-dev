@@ -8,12 +8,12 @@ table-attribute-coupling-back:
 
 .PHONY: table-attribute-static-back
 table-attribute-static-back:
-	$(DOCKER_COMPOSE) run --rm php sh -c "cd grth && php vendor/bin/phpstan analyse --configuration src/Akeneo/Pim/TableAttribute/tests/back/phpstan.domain.neon"
-	$(DOCKER_COMPOSE) run --rm php sh -c "cd grth && php vendor/bin/phpstan analyse --configuration src/Akeneo/Pim/TableAttribute/tests/back/phpstan.infra.neon"
+	$(DOCKER_COMPOSE) run --rm php sh -c "php vendor/bin/phpstan analyse --configuration grth/src/Akeneo/Pim/TableAttribute/tests/back/phpstan.domain.neon"
+	$(DOCKER_COMPOSE) run --rm php sh -c "php vendor/bin/phpstan analyse --configuration grth/src/Akeneo/Pim/TableAttribute/tests/back/phpstan.infra.neon"
 
 .PHONY: table-attribute-unit-back
 table-attribute-unit-back:
-	$(DOCKER_COMPOSE) run --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist $(O)"
+	$(DOCKER_COMPOSE) run --rm php sh -c "php ../vendor/bin/phpspec run --config=grth/src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist $(O)"
 
 .PHONY: table-attribute-acceptance-back
 table-attribute-acceptance-back: var/tests/behat/table-attribute

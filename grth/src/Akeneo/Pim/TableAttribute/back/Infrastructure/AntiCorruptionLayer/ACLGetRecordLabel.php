@@ -22,7 +22,6 @@ use Webmozart\Assert\Assert;
 
 class ACLGetRecordLabel implements GetRecordLabel
 {
-    /* @phpstan-ignore-next-line */
     public function __construct(private ?FindRecordLabelsByCodesInterface $findRecordLabelsByCodes)
     {
     }
@@ -32,14 +31,11 @@ class ACLGetRecordLabel implements GetRecordLabel
         Assert::notNull($this->findRecordLabelsByCodes);
 
         try {
-            /* @phpstan-ignore-next-line */
             $foreignReferenceEntityIdentifier = ForeignReferenceEntityIdentifier::fromString($referenceEntityIdentifier->asString());
-            /* @phpstan-ignore-next-line */
             $foreignRecordCode = RecordCode::fromString($recordCode);
         } catch (\InvalidArgumentException) {
             return null;
         }
-        /* @phpstan-ignore-next-line */
         $labels = $this->findRecordLabelsByCodes->find($foreignReferenceEntityIdentifier, [$foreignRecordCode]);
 
         return isset($labels[$recordCode]) ? $labels[$recordCode]->getLabel($localeCode) : null;

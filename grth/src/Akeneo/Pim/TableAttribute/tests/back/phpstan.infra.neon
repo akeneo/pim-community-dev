@@ -1,7 +1,7 @@
 parameters:
     level: 5
     paths:
-        - %rootDir%/../../../src/Akeneo/Pim/TableAttribute/back/Infrastructure
+        - %rootDir%/../../../grth/src/Akeneo/Pim/TableAttribute/back/Infrastructure
 includes:
     - %rootDir%/../../../vendor/phpstan/phpstan-symfony/extension.neon
     - %rootDir%/../../../vendor/phpstan/phpstan-webmozart-assert/extension.neon

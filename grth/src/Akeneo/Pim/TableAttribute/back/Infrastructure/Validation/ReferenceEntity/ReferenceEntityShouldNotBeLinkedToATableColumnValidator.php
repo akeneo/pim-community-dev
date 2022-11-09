@@ -27,10 +27,8 @@ final class ReferenceEntityShouldNotBeLinkedToATableColumnValidator extends Cons
     public function validate($deleteReferenceEntityCommand, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, ReferenceEntityShouldNotBeLinkedToATableColumn::class);
-        /** @phpstan-ignore-next-line */
         Assert::isInstanceOf($deleteReferenceEntityCommand, 'Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand');
 
-        /** @phpstan-ignore-next-line */
         $identifier = $deleteReferenceEntityCommand->identifier;
 
         if ($this->isLinkedToATableColumn->forIdentifier($identifier)) {
