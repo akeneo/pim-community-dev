@@ -13,7 +13,7 @@ const useCheckStorageConnection = (storage: SftpStorage) => {
     '' !== storage.file_path &&
     '' !== storage.host &&
     !isNaN(storage.port) &&
-    '' !== storage.username
+    '' !== storage.username;
 
   useEffect(() => {
     return () => {

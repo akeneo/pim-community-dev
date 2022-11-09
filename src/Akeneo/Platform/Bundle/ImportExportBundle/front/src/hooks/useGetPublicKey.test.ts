@@ -4,7 +4,7 @@ import {useGetPublicKey} from './useGetPublicKey';
 test('it returns a public key', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
-    json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----'
+    json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
   }));
 
   const {result, waitForNextUpdate} = renderHookWithProviders(() => useGetPublicKey());

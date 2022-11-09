@@ -193,16 +193,18 @@ test('it allows user to change login type', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-      <SftpStorageConfigurator
-          storage={storage}
-          fileExtension="xlsx"
-          validationErrors={[]}
-          onStorageChange={onStorageChange}
-      />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   userEvent.click(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.login_type.label'));
-  userEvent.click(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.connection_type.private_key'));
+  userEvent.click(
+    screen.getByLabelText('pim_import_export.form.job_instance.storage_form.connection_type.private_key')
+  );
 
   expect(onStorageChange).toHaveBeenLastCalledWith({
     ...storage,
@@ -224,12 +226,12 @@ test('it displays a disabled public key field', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-      <SftpStorageConfigurator
-          storage={storage}
-          fileExtension="xlsx"
-          validationErrors={[]}
-          onStorageChange={onStorageChange}
-      />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const publicKeyField = screen.getByLabelText('pim_import_export.form.job_instance.storage_form.public_key.label');

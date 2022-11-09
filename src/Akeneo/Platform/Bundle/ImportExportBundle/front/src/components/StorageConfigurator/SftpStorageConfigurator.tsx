@@ -1,10 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Field, Helper, NumberInput, Button, CheckIcon, getColor, getFontSize, SelectInput, CopyIcon, TextInput} from 'akeneo-design-system';
+import {
+  Field,
+  Helper,
+  NumberInput,
+  Button,
+  CheckIcon,
+  getColor,
+  getFontSize,
+  SelectInput,
+  CopyIcon,
+  TextInput,
+} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage, StorageLoginType, STORAGE_LOGIN_TYPES} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
-import {useGetPublicKey} from "../../hooks/useGetPublicKey";
+import {useGetPublicKey} from '../../hooks/useGetPublicKey';
 
 const CheckStorageForm = styled.div`
   display: flex;
@@ -38,7 +49,7 @@ const CopyableInput = styled.input`
   line-height: 40px;
   padding: 0 35px 0 15px;
   outline-style: none;
-  cursor: not-allowed;  
+  cursor: not-allowed;
   overflow: hidden;
   text-overflow: ellipsis;
   &:focus-within {
@@ -57,7 +68,7 @@ const CopyableIcon = styled(CopyIcon)`
   top: 0;
   margin: 12px;
   color: ${getColor('grey', 100)};
-  cursor: pointer;  
+  cursor: pointer;
 `;
 
 const SftpStorageConfigurator = ({
@@ -104,7 +115,7 @@ const SftpStorageConfigurator = ({
         label={translate('pim_import_export.form.job_instance.storage_form.fingerprint.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.fingerprint.placeholder')}
         onChange={(fingerprint: string) =>
-            onStorageChange({...storage, fingerprint: '' === fingerprint ? undefined : fingerprint})
+          onStorageChange({...storage, fingerprint: '' === fingerprint ? undefined : fingerprint})
         }
         errors={filterErrors(validationErrors, '[fingerprint]')}
       >
@@ -133,9 +144,7 @@ const SftpStorageConfigurator = ({
       <Field label={translate('pim_import_export.form.job_instance.storage_form.login_type.label')}>
         <SelectInput
           value={storage.login_type}
-          onChange={(loginType: string) =>
-            onStorageChange({...storage, login_type: loginType as StorageLoginType})
-          }
+          onChange={(loginType: string) => onStorageChange({...storage, login_type: loginType as StorageLoginType})}
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           clearable={false}
@@ -172,15 +181,13 @@ const SftpStorageConfigurator = ({
           errors={filterErrors(validationErrors, '[password]')}
         />
       ) : (
-          <Field label={translate('pim_import_export.form.job_instance.storage_form.public_key.label')}>
-              <CopyableInputContainer>
-                <CopyableInput value={publicKey} />
-                <CopyableIcon size={16} onClick={
-                    undefined !== publicKey ? copyToClipboard(publicKey) : undefined
-                }/>
-              </CopyableInputContainer>
-          </Field>
-          )}
+        <Field label={translate('pim_import_export.form.job_instance.storage_form.public_key.label')}>
+          <CopyableInputContainer>
+            <CopyableInput value={publicKey} />
+            <CopyableIcon size={16} onClick={undefined !== publicKey ? copyToClipboard(publicKey) : undefined} />
+          </CopyableInputContainer>
+        </Field>
+      )}
 
       <CheckStorageForm>
         <CheckStorageConnection>
