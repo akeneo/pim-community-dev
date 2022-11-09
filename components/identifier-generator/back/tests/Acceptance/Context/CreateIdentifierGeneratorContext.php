@@ -217,4 +217,45 @@ final class CreateIdentifierGeneratorContext implements Context
             $this->violations = $exception;
         }
     }
+
+    /**
+     * @When I try to create an identifier generator with too many properties in structure
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure()
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [
+                    ['type' => 'free_text', 'string' => 'abcdef1'],
+                    ['type' => 'free_text', 'string' => 'abcdef2'],
+                    ['type' => 'free_text', 'string' => 'abcdef3'],
+                    ['type' => 'free_text', 'string' => 'abcdef4'],
+                    ['type' => 'free_text', 'string' => 'abcdef5'],
+                    ['type' => 'free_text', 'string' => 'abcdef6'],
+                    ['type' => 'free_text', 'string' => 'abcdef7'],
+                    ['type' => 'free_text', 'string' => 'abcdef8'],
+                    ['type' => 'free_text', 'string' => 'abcdef9'],
+                    ['type' => 'free_text', 'string' => 'abcdef10'],
+                    ['type' => 'free_text', 'string' => 'abcdef11'],
+                    ['type' => 'free_text', 'string' => 'abcdef12'],
+                    ['type' => 'free_text', 'string' => 'abcdef13'],
+                    ['type' => 'free_text', 'string' => 'abcdef14'],
+                    ['type' => 'free_text', 'string' => 'abcdef15'],
+                    ['type' => 'free_text', 'string' => 'abcdef16'],
+                    ['type' => 'free_text', 'string' => 'abcdef17'],
+                    ['type' => 'free_text', 'string' => 'abcdef18'],
+                    ['type' => 'free_text', 'string' => 'abcdef19'],
+                    ['type' => 'free_text', 'string' => 'abcdef20'],
+                    ['type' => 'free_text', 'string' => 'abcdef21']
+                ],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
 }
