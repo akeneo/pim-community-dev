@@ -14,8 +14,6 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                   max: 20
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\StructureShouldNotContainMultipleAutoNumber: ~
             - All:
-                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextShouldBeValid: ~
-                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid: ~
                 - Collection:
                     fields:
                         type:

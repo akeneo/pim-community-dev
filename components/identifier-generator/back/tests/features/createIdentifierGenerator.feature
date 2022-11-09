@@ -124,3 +124,8 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with autoNumber digits min too big
     Then I should get an error with message 'structure[0][digitsMin]: This value should be less than 15.'
     And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator if structure contains more than 20 properties
+    When I try to create an identifier generator with too many properties in structure
+    Then I should get an error with message 'structure: This collection should contain 20 elements or less.'
+    And the identifier should not be created
