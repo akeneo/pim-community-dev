@@ -7,7 +7,6 @@ metadata:
     app: mysql
     type: {{ .Values.global.extraLabels.type }}
   annotations:
-    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   description: "Disk MySQL used for {{ .Values.global.extraLabels.pfid }}"

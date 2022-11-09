@@ -1,14 +1,14 @@
-{{ if .Values.pim.hook.installPim.enabled -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.common.workloadIdentityKSA }}
+  annotations:
+    iam.gke.io/gcp-service-account: {{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   name: {{ .Values.common.workloadIdentityKSA }}-pim-sa-iam-member
-  annotations:
-    # This is what defines this resource as a hook. Without this line, the
-    # job is considered part of the release.
-    "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "-99"
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   member: serviceAccount:{{ .Values.common.gcpProjectID }}.svc.id.goog[{{ .Release.Namespace }}/{{ .Values.common.workloadIdentityKSA }}]
   role: roles/iam.workloadIdentityUser
@@ -16,4 +16,3 @@ spec:
     apiVersion: iam.cnrm.cloud.google.com/v1beta1
     kind: IAMServiceAccount
     external: projects/{{ .Values.common.gcpProjectID }}/serviceAccounts/{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
-{{- end }}

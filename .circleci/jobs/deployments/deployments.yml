@@ -650,6 +650,8 @@ jobs:
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.name ${PIM_NS}
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.labels.name ${PIM_NS}
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.source.helm.valueFiles[+] values-ci.yaml
+              # Remove automated SYNC
+              yq d -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.syncPolicy.automated
 
               git add pim-saas-service
               git commit -m "Update release version"
@@ -668,6 +670,7 @@ jobs:
               # Stop operation in progress is exist
               argocd app terminate-op ${PIM_NS} --core && argocd app wait --operation ${PIM_NS} --core || true
               argocd app get ${PIM_NS} --hard-refresh --core
+              argocd app sync ${PIM_NS} --prune --core
               argocd app wait --sync --health --operation ${PIM_NS} --core
               echo "argocd app sync successfull"
 

@@ -369,22 +369,6 @@ pim:
     password: null # Fill me
     uiLocale: en_US  # Change me if needed
   jobs:
-    project-notify-before-due-date:
-      enabled: true
-      pimCommand: "pimee:project:notify-before-due-date"
-      schedule: "0 2 * * *"
-      resources:
-        requests:
-          cpu: "1m"
-          memory: "80Mi"
-    reference-entity-refresh-records:
-      enabled: true
-      pimCommand: "akeneo:reference-entity:refresh-records"
-      schedule: "0 23 * * *"
-      resources:
-        requests:
-          cpu: "200m"
-          memory: "128Mi"
     asset-manager-refresh-asset:
       enabled: true
       pimCommand: "akeneo:asset-manager:refresh-assets --all"
