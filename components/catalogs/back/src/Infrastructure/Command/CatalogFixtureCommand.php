@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppRemover;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -84,6 +85,29 @@ class CatalogFixtureCommand extends Command
                 $user->getUserIdentifier(),
             ));
 
+            $catalogWithMappingId = Uuid::uuid4()->toString();
+
+            $this->commandBus->execute(new CreateCatalogCommand(
+                $catalogWithMappingId,
+                'Store with Mapping',
+                $user->getUserIdentifier(),
+            ));
+
+            $productMapping = [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'name' => [
+                    'source' => 'title',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ],
+            ];
+
+            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
+
             $this->connection->commit();
 
             return self::SUCCESS;
@@ -94,5 +118,19 @@ class CatalogFixtureCommand extends Command
 
             return self::FAILURE;
         }
+    }
+
+    private function setCatalogProductMapping(string $id, array $productMapping): void
+    {
+        $this->connection->executeQuery(
+            'UPDATE akeneo_catalog SET product_mapping = :productMapping WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+                'productMapping' => $productMapping,
+            ],
+            [
+                'productMapping' => Types::JSON,
+            ]
+        );
     }
 }
