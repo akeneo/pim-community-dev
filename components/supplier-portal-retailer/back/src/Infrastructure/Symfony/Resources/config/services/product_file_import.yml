@@ -16,7 +16,6 @@ services:
 
   # Repositories
   Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository:
-    public: true
     class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Repository\Sql\DatabaseRepository
     arguments:
       - '@database_connection'

@@ -4,24 +4,31 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Repository\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseRepository implements ProductFileRepository
+final class DatabaseRepository implements ProductFileImportRepository
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
     }
 
-    public function save(ProductFile $productFile): void
+    public function save(ProductFileImport $productFileImport): void
     {
-        // TODO: Implement save() method.
-    }
+        $sql = <<<SQL
+            REPLACE INTO akeneo_supplier_portal_product_file_imported_by_job_execution (product_file_identifier, job_execution_id, import_status, finished_at)
+            VALUES (:productFileIdentifier, :jobExecutionId, :jobExecutionResult, :finishedAt)
+SQL;
 
-    public function find(Identifier $identifier): ?ProductFile
-    {
-        // TODO: Implement find() method.
+        $this->connection->executeStatement(
+            $sql,
+            [
+                'productFileIdentifier' => $productFileImport->productFileIdentifier(),
+                'jobExecutionId' => $productFileImport->importExecutionId(),
+                'jobExecutionResult' => $productFileImport->fileImportStatus()->value,
+                'finishedAt' => null,
+            ],
+        );
     }
 }

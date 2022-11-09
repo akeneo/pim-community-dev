@@ -9,6 +9,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductF
 
 final class InMemoryLaunchTailoredImport implements LaunchProductFileImport
 {
+    //@phpstan-ignore-next-line
     public function __invoke(string $productFileImportConfigurationCode, string $filename, $productFileResource): LaunchProductFileImportResult
     {
         return new LaunchProductFileImportResult(666, 'http://www.google.fr');

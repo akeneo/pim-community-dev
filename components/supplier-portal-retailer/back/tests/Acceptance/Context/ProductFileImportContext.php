@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository as ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImportConfiguration;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
@@ -106,7 +106,7 @@ final class ProductFileImportContext implements Context
     /**
      * @Then I should have a product file does not exist error
      */
-    public function iShouldHaveAProductFileDoesNotExistError()
+    public function iShouldHaveAProductFileDoesNotExistError(): void
     {
         Assert::assertInstanceOf(ProductFileDoesNotExist::class, $this->exception);
     }

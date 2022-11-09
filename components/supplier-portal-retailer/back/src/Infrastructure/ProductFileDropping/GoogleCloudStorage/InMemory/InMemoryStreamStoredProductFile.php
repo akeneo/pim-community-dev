@@ -8,6 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProduc
 
 final class InMemoryStreamStoredProductFile implements StreamStoredProductFile
 {
+    //@phpstan-ignore-next-line
     public function __invoke(string $productFilePath)
     {
         return fopen('php://memory', 'r');

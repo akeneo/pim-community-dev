@@ -16,6 +16,7 @@ final class LaunchTailoredImport implements LaunchProductFileImport
     {
     }
 
+    // @phpstan-ignore-next-line
     public function __invoke(string $productFileImportConfigurationCode, string $filename, $productFileResource): LaunchProductFileImportResult
     {
         $result = $this->launchJobInstanceHandler->handle(new LaunchJobInstanceCommand($productFileImportConfigurationCode, new File($filename, $productFileResource)));
