@@ -20,8 +20,8 @@ const openDropdown = (selector: string): void => {
     fireEvent.focus(input);
 };
 
-test('it can enable a catalog', () => {
-    const dispatch = jest.fn(() => ({'oto': 'ramel'}));
+test('it can enable a catalog', async () => {
+    const dispatch = jest.fn();
     const form = {
         values: {
             enabled: true,
@@ -43,8 +43,8 @@ test('it can enable a catalog', () => {
         </ThemeProvider>
     );
 
-    fireEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.settings'));
-    fireEvent.click(screen.getByText('akeneo_catalogs.settings.inputs.yes'));
+    fireEvent.click(await screen.findByText('akeneo_catalogs.catalog_edit.tabs.settings'));
+    fireEvent.click(await screen.findByText('akeneo_catalogs.settings.inputs.yes'));
     expect(dispatch).toHaveBeenCalledWith({type: CatalogFormActions.SET_ENABLED, value: true});
 });
 
