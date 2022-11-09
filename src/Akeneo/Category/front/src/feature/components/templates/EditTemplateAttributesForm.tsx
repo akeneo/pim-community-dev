@@ -50,7 +50,7 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
             <Table.Row key={attribute.uuid}>
               <Table.Cell rowTitle>{getLabelFromAttribute(attribute, catalogLocale)}</Table.Cell>
               <Table.Cell>{attribute.code}</Table.Cell>
-              <Table.Cell>{attribute.type}</Table.Cell>
+              <Table.Cell>{translate(`akeneo.category.template.attribute.type.${attribute.type}`)}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
