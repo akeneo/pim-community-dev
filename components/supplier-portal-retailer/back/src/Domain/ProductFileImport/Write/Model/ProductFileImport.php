@@ -13,7 +13,6 @@ final class ProductFileImport
     private readonly ProductFileIdentifier $productFileIdentifier;
     private readonly ImportExecutionId $importExecutionId;
 
-
     private function __construct(string $productFileIdentifier, int $importExecutionId, private ProductFileImportStatus $fileImportStatus)
     {
         $this->productFileIdentifier = ProductFileIdentifier::fromString($productFileIdentifier);

@@ -33,3 +33,8 @@ services:
     public: true
     arguments:
       - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportConfigurationsHandler'
+
+  Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ImportProductFile:
+    public: true
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler'
