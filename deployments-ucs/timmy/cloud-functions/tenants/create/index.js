@@ -46,7 +46,7 @@ const FIRESTORE_STATUS = {
 let firestoreCollection = null;
 let logger = null;
 
-function initializeLogger(branchName, pfid) {
+function initializeLogger(branchName, tenant_id) {
   logger = createLogger({
     level: process.env.LOG_LEVEL,
     defaultMeta: {
@@ -56,7 +56,7 @@ function initializeLogger(branchName, pfid) {
       gcpProjectId: process.env.GCP_PROJECT_ID,
       gcpProjectFirestoreId: process.env.GCP_FIRESTORE_PROJECT_ID,
       branchName: branchName,
-      tenant: pfid
+      tenant: tenant_id
     },
     format: format.combine(
       format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
@@ -485,14 +485,14 @@ functions.http('createTenant', (req, res) => {
     const body = req.body;
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
-    const instanceName = body.instanceName;
+    const tenant_name = body.tenant_name;
     const extraLabelType = 'srnt';
-    const pfid = `${extraLabelType}-${instanceName}`;
+    const tenant_id = `${extraLabelType}-${tenant_name}`;
     const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE + "-" + branchName.toLowerCase());
 
     firestoreCollection = `${process.env.REGION}/${pimNamespace}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
-    initializeLogger(branchName, pfid);
+    initializeLogger(branchName, tenant_id);
 
     // Ensure the json object in the http request body respects the expected schema
     logger.debug('Validation of the JSON schema of the request body');
@@ -509,7 +509,7 @@ functions.http('createTenant', (req, res) => {
 
     const dnsCloudDomain = body.dnsCloudDomain;
     const pim_edition = body.pim_edition;
-    const pimMasterDomain = `${instanceName}.${dnsCloudDomain}`;
+    const fqdn = `${tenant_name}.${dnsCloudDomain}`;
 
     logger.debug('Initialize the firestore client');
     const firestore = new Firestore({
@@ -519,7 +519,7 @@ functions.http('createTenant', (req, res) => {
 
 
     const prepareTenantCreation = async () => {
-        await createFirestoreDoc(firestore, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
+        await createFirestoreDoc(firestore, tenant_name, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
         logger.info('Generate tenant credentials');
         const mailerPassword = generatePassword();
         logger.debug(`mailerPassword: ${mailerPassword}`);
@@ -543,7 +543,7 @@ functions.http('createTenant', (req, res) => {
           },
           destination: {
             server: 'https://kubernetes.default.svc',
-            namespace: pfid
+            namespace: tenant_id
           },
           backup: {
             enabled: false
@@ -552,9 +552,9 @@ functions.http('createTenant', (req, res) => {
             gcpProjectID: process.env.GCP_PROJECT_ID,
             gcpFireStoreProjectID: process.env.GCP_FIRESTORE_PROJECT_ID,
             googleZone: process.env.GOOGLE_ZONE,
-            pimMasterDomain: pimMasterDomain,
+            fqdn: fqdn,
             dnsCloudDomain: dnsCloudDomain,
-            workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
+            workloadIdentityKSA: `${tenant_name}-ksa-workload-identity`,
             tenantContext: firestoreCollection,
           },
           elasticsearch: {
@@ -597,22 +597,22 @@ functions.http('createTenant', (req, res) => {
           },
           global: {
             extraLabels: {
-              instanceName: instanceName,
-              pfid: pfid,
+              instance_dns_record: fqdn,
               instance_dns_zone: dnsCloudDomain,
-              instance_dns_record: pimMasterDomain,
-              papo_project_code: instanceName,
-              papo_project_code_truncated: instanceName,
-              papo_project_code_hashed: instanceName,
+              papo_project_code: tenant_name,
+              papo_project_code_hashed: tenant_name,
+              papo_project_code_truncated: tenant_name,
+              tenant_id: tenant_id,
+              tenant_name: tenant_name,
               type: extraLabelType,
             }
           },
           mailer: {
-            login: `${instanceName}@${process.env.MAILER_DOMAIN}`,
+            login: `${tenant_name}@${process.env.MAILER_DOMAIN}`,
             password: mailerPassword,
-            base_mailer_url: process.env.MAILER_BASE_URL,
+            baseMailerUrl: process.env.MAILER_BASE_URL,
             domain: process.env.MAILER_DOMAIN,
-            api_key: process.env.MAILER_API_KEY,
+            apiKey: process.env.MAILER_API_KEY,
           },
           memcached: {
             resources: {
@@ -644,13 +644,13 @@ functions.http('createTenant', (req, res) => {
             common: {
               class: "ssd-retain-csi",
               persistentDisks: [
-                `projects/${process.env.GCP_PROJECT_ID}/zones/${process.env.GOOGLE_ZONE}/disks/${pfid}-mysql`
+                `projects/${process.env.GCP_PROJECT_ID}/zones/${process.env.GOOGLE_ZONE}/disks/${tenant_id}-mysql`
               ]
             }
           },
           pim: {
             storage: {
-              bucketName: pfid
+              bucketName: tenant_id
             },
             defaultAdminUser: {
               password: defaultAdminUserPassword
@@ -668,51 +668,51 @@ functions.http('createTenant', (req, res) => {
 
     const createTenant = async () => {
       const parameters = await prepareTenantCreation();
-      await updateFirestoreDoc(firestore, pfid, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
-        AKENEO_PIM_URL: `https://${instanceName}.${parameters.pim.dnsCloudDomain}`,
-        APP_DATABASE_HOST: `pim-mysql.${pfid}.svc.cluster.local`,
+      await updateFirestoreDoc(firestore, tenant_id, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
+        AKENEO_PIM_URL: `https://${tenant_name}.${parameters.pim.dnsCloudDomain}`,
+        APP_DATABASE_HOST: `pim-mysql.${tenant_id}.svc.cluster.local`,
         APP_DATABASE_PASSWORD: parameters.mysql.mysql.userPassword,
-        APP_INDEX_HOSTS: `elasticsearch-client.${pfid}.svc.cluster.local`,
+        APP_INDEX_HOSTS: `elasticsearch-client.${tenant_id}.svc.cluster.local`,
         APP_SECRET: parameters.pim.secret,
-        APP_TENANT_ID: pfid,
+        APP_TENANT_ID: tenant_id,
         DATABASE_ROOT_PASSWORD: parameters.mysql.mysql.rootPassword,
         MAILER_PASSWORD: parameters.mailer.password,
-        MAILER_URL: parameters.mailer.base_mailer_url,
-        MEMCACHED_SVC: `memcached.${pfid}.svc.cluster.local`,
+        MAILER_URL: parameters.mailer.baseMailerUrl,
+        MEMCACHED_SVC: `memcached.${tenant_id}.svc.cluster.local`,
         MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
-        PFID: pfid,
+        PFID: tenant_id,
         PIM_EDITION: pim_edition,
-        SRNT_GOOGLE_BUCKET_NAME: pfid
+        SRNT_GOOGLE_BUCKET_NAME: tenant_id
       });
 
       const manifest = templateArgoCdManifest(parameters);
       const payload = castYamlToJson(manifest);
       const token = await getArgoCdToken();
       await createArgoCdApp(token, payload);
-      await ensureArgoCdAppIsHealthy(token, pfid);
-      await ensureArgoCdAppIsSynced(token, pfid);
+      await ensureArgoCdAppIsHealthy(token, tenant_id);
+      await ensureArgoCdAppIsSynced(token, tenant_id);
     }
 
     createTenant(res)
       .then(async () => {
-        await updateFirestoreDocStatus(firestore, pfid, FIRESTORE_STATUS.CREATED);
+        await updateFirestoreDocStatus(firestore, tenant_id, FIRESTORE_STATUS.CREATED);
 
         logger.info('Tenant is created');
 
         // TODO : notify the portal with 'activated' status
         res.status(200).json({
           status_code: 200,
-          message: `Successfully created the tenant ${pfid}`
+          message: `Successfully created the tenant ${tenant_id}`
         })
       })
       .catch(async (error) => {
         logger.error(error);
         // TODO: only update status field when decryption is released (PH-247)
-        await updateFirestoreDocStatus(firestore, pfid, FIRESTORE_STATUS.CREATION_FAILED);
+        await updateFirestoreDocStatus(firestore, tenant_id, FIRESTORE_STATUS.CREATION_FAILED);
 
         res.status(500).json({
           status_code: 500,
-          message: `Failed to create the tenant ${pfid}: ${error}`
+          message: `Failed to create the tenant ${tenant_id}: ${error}`
         })
       });
   }

@@ -3,11 +3,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pim-daemon-{{ $daemonName }}
+  name: pim-daemon-{{ $daemonOptions.name }}
   labels:
-    component: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-    app.kubernetes.io/component: "pim-daemon-{{ $daemonName }}"
-    role: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    component: "pim-daemon-{{ $daemonOptions.name }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "pim-daemon-{{ $daemonOptions.name }}"
+    role: "pim-daemon-{{ $daemonOptions.name }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     {{- include "pim.standardLabels" $tplCtx | indent 4 }}
     {{- include "pim.extraLabels" $tplCtx | indent 4 }}
 spec:
@@ -15,7 +15,7 @@ spec:
   minReadySeconds: 30
   selector:
     matchLabels:
-      component: "pim-daemon-{{ $daemonName }}"
+      component: "pim-daemon-{{ $daemonOptions.name }}"
       release: "{{ $tplCtx.Release.Name }}"
   strategy:
 {{- if $daemonOptions.trapped }}
@@ -30,9 +30,9 @@ spec:
   template:
     metadata:
       labels:
-        component: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-        app.kubernetes.io/component: "pim-daemon-{{ $daemonName }}"
-        role: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        component: "pim-daemon-{{ $daemonOptions.name }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "pim-daemon-{{ $daemonOptions.name }}"
+        role: "pim-daemon-{{ $daemonOptions.name }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         {{- include "pim.standardLabels" $tplCtx | indent 8 }}
         {{- include "pim.extraLabels" $tplCtx | indent 8 }}
       annotations:
@@ -54,7 +54,7 @@ spec:
                 matchLabels:
                   app: "{{ template "pim.fullName" $tplCtx }}"
                   release: "{{ $tplCtx.Release.Name }}"
-                  role: pim-daemon-{{ $daemonName }}
+                  role: pim-daemon-{{ $daemonOptions.name }}
       initContainers:
         - name: workload-identity-initcontainer
           image: "{{ $tplCtx.Values.image.cloudsdk.repository }}:{{ $tplCtx.Values.image.cloudsdk.tag }}"
@@ -73,7 +73,7 @@ spec:
           command: ['sh', '-c', 'export HOME=/srv/pim && cd /srv/pim && su www-data -s /bin/bash -c "php bin/console --quiet {{ $daemonOptions.pimCommand }} || (sleep 15 && exit 1)"']
 {{- end }}
           resources:
-{{ toYaml (required ( printf "Missing daemon resources for %s" $daemonName ) $daemonOptions.resources) | indent 12 }}
+{{ toYaml (required ( printf "Missing daemon resources for %s" $daemonOptions.name ) $daemonOptions.resources) | indent 12 }}
           volumeMounts:
             {{- if $tplCtx.Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key

@@ -15,6 +15,5 @@ $ npm start
 
 Execute the test to delete the tenant:
 ```
-$ INSTANCE_NAME=test mocha tests/deleteTenant.system.http.test.js --timeout 10000
+$ TENANT_NAME=test mocha tests/deleteTenant.system.http.test.js --timeout 10000
 ```
-

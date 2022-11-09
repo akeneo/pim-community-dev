@@ -6,15 +6,16 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    instanceName: null
-    pfid: null
+    application_name: null
+    branch: null
     instance_dns_record: null
     instance_dns_zone: null
     papo_project_code: null
-    papo_project_code_truncated: null
     papo_project_code_hashed: null
-    name: null
-    branch: null
+    papo_project_code_truncated: null
+    tenant_id: null
+    tenant_name: null
+    tenant_namespace: null
 spec:
   project: default
   source:
@@ -25,9 +26,9 @@ spec:
       parameters:
         - name: global.extraLabels.type
           value: null
-        - name: global.extraLabels.instanceName
+        - name: global.extraLabels.tenant_name
           value: null
-        - name: global.extraLabels.pfid
+        - name: global.extraLabels.tenant_id
           value: null
         - name: global.extraLabels.instance_dns_record
           value: null
@@ -73,11 +74,11 @@ spec:
           value: null
         - name: mailer.password
           value: null
-        - name: mailer.base_mailer_url
+        - name: mailer.baseMailerUrl
           value: null
         - name: mailer.domain
           value: null
-        - name: mailer.api_key
+        - name: mailer.apiKey
           value: null
         - name: backup.enabled
           value: null
@@ -89,13 +90,11 @@ spec:
           value: null
         - name: common.googleZone
           value: null
-        - name: common.pimMasterDomain
+        - name: common.fqdn
           value: null
         - name: common.dnsCloudDomain
           value: null
         - name: common.workloadIdentityKSA
-          value: null
-        - name: common.workloadIdentityGSA
           value: null
         - name: pim.defaultAdminUser.login
           value: null

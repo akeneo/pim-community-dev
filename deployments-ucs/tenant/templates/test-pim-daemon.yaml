@@ -30,13 +30,13 @@ spec:
               mountPath: /scripts-dir
           env:
             - name: PFID
-              value: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+              value: {{ required ".Values.common.fqdn" .Values.common.fqdn }}
       containers:
       - name: test-pim-daemon
         image: {{ .Values.image.curljqzip.repository }}:{{ .Values.image.curljqzip.tag }}
         env:
           - name: TARGET
-            value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+            value: https://{{ required ".Values.common.fqdn" .Values.common.fqdn }}
           - name: LOGIN
             value: {{ .Values.pim.defaultAdminUser.login }}
           - name: PASSWORD

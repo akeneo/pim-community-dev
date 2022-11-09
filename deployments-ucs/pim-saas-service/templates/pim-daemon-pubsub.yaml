@@ -3,9 +3,9 @@ kind: PubSubTopic
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
-  name: {{ .Values.pim.pubsub.topic_business_event }}
+  name: {{ .Values.pim.pubsub.topicBusinessEvent }}
 spec:
-  resourceID: {{ .Values.pim.pubsub.topic_business_event }}
+  resourceID: {{ .Values.pim.pubsub.topicBusinessEvent }}
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
@@ -14,21 +14,21 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
     subscription_type: "pim_webhook"
-  name: {{ .Values.pim.pubsub.subscription_webhook }}
+  name: {{ .Values.pim.pubsub.subscriptionWebhook }}
 spec:
   ackDeadlineSeconds: 600
   topicRef:
-    name: {{ .Values.pim.pubsub.topic_business_event }}
-  resourceID: {{ .Values.pim.pubsub.subscription_webhook }}
+    name: {{ .Values.pim.pubsub.topicBusinessEvent }}
+  resourceID: {{ .Values.pim.pubsub.subscriptionWebhook }}
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
-  name: {{ .Values.pim.pubsub.topic_job_queue_ui }}
+  name: {{ .Values.pim.pubsub.topicJobQueueUI }}
 spec:
-  resourceID: {{ .Values.pim.pubsub.topic_job_queue_ui }}
+  resourceID: {{ .Values.pim.pubsub.topicJobQueueUI }}
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
@@ -37,21 +37,21 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
     subscription_type: "pim_job_ui"
-  name: {{ .Values.pim.pubsub.subscription_job_queue_ui }}
+  name: {{ .Values.pim.pubsub.subscriptionJobQueueUI }}
 spec:
   ackDeadlineSeconds: 600
   topicRef:
-    name: {{ .Values.pim.pubsub.topic_job_queue_ui }}
-  resourceID: {{ .Values.pim.pubsub.subscription_job_queue_ui }}
+    name: {{ .Values.pim.pubsub.topicJobQueueUI }}
+  resourceID: {{ .Values.pim.pubsub.subscriptionJobQueueUI }}
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
-  name: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
+  name: {{ .Values.pim.pubsub.topicJobQueueImportExport }}
 spec:
-  resourceID: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
+  resourceID: {{ .Values.pim.pubsub.topicJobQueueImportExport }}
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
@@ -60,21 +60,21 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
     subscription_type: "pim_webhook"
-  name: {{ .Values.pim.pubsub.subscription_job_queue_import_export }}
+  name: {{ .Values.pim.pubsub.subscriptionJobQueueImportExport }}
 spec:
   ackDeadlineSeconds: 600
   topicRef:
-    name: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
-  resourceID: {{ .Values.pim.pubsub.subscription_job_queue_import_export }}
+    name: {{ .Values.pim.pubsub.topicJobQueueImportExport }}
+  resourceID: {{ .Values.pim.pubsub.subscriptionJobQueueImportExport }}
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
-  name: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
+  name: {{ .Values.pim.pubsub.topicJobQueueDataMaintenance }}
 spec:
-  resourceID: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
+  resourceID: {{ .Values.pim.pubsub.topicJobQueueDataMaintenance }}
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
@@ -83,9 +83,9 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
     subscription_type: "pim_webhook"
-  name: {{ .Values.pim.pubsub.subscription_job_queue_data_maintenance }}
+  name: {{ .Values.pim.pubsub.subscriptionJobQueueDataMaintenance }}
 spec:
   ackDeadlineSeconds: 600
   topicRef:
-    name: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
-  resourceID: {{ .Values.pim.pubsub.subscription_job_queue_data_maintenance }}
+    name: {{ .Values.pim.pubsub.topicJobQueueDataMaintenance }}
+  resourceID: {{ .Values.pim.pubsub.subscriptionJobQueueDataMaintenance }}

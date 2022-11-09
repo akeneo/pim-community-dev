@@ -521,7 +521,7 @@ jobs:
             - add_ssh_keys:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-            -   run: 
+            -   run:
                     name: Check changes for Timmy
                     command: |
                         ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
@@ -529,13 +529,13 @@ jobs:
                         git config --global user.email "pim_ci@akeneo.com"
                         git config --global user.name "pim_ci_deployment"
                         git clone --depth 1 git@github.com:akeneo/pim-enterprise-dev.git /tmp/pim-enterprise-dev
-                        # The diff can send exit 1 
-                        if [ ${CIRCLE_BRANCH}="master" ]; then 
+                        # The diff can send exit 1
+                        if [ ${CIRCLE_BRANCH}="master" ]; then
                           echo ${CIRCLE_BRANCH}
-                          FILES_LIST="Timmy must be build for the master Branch" 
+                          FILES_LIST="Timmy must be build for the master Branch"
                         else
                           FILES_LIST=$(diff -qr /tmp/pim-enterprise-dev/deployments-ucs/timmy deployments-ucs/timmy) || true
-                        fi 
+                        fi
                         SKIP_DEPLOY_TIMMY=false
                         if [ -z "${FILES_LIST}" ]; then
                           SKIP_DEPLOY_TIMMY=true
@@ -547,43 +547,43 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      INSTANCE_NAME_PREFIX=ucs
-                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      TENANT_NAME_PREFIX=ucs
+                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NS="pim-${CIRCLE_BRANCH_LOWER}"
-                      FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
+                      PIM_NAMESPACE="pim-${CIRCLE_BRANCH_LOWER}"
+                      TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
                       REGION_PREFIX=${REGION_PREFIX}
-                      WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
+                      WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
                       TERRAFORM_PATH="deployments-ucs/timmy/terraform/${ENV_NAME}"
 
                       echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
-                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                      echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
                       echo export TERRAFORM_PATH=${TERRAFORM_PATH} >> $BASH_ENV
-                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
-                      echo export PIM_NS=pim-${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
-                      echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION} >> $BASH_ENV
+                      echo export PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+                      echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
 
-                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Instance name prefix: ${TENANT_NAME_PREFIX}"
+                      echo "Instance name: ${TENANT_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Path terraform: ${TERRAFORM_PATH}"
             - run:
                   name: Init and Plan terraform
                   command: |
-                    cd ${TERRAFORM_PATH} 
-                    terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure  
+                    cd ${TERRAFORM_PATH}
+                    terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure
                     terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
-                    terraform  plan -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER}
+                    terraform plan -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER}
             - run:
                   name: Init and Apply terraform
                   command: |
-                      cd ${TERRAFORM_PATH} 
-                      terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure  
+                      cd ${TERRAFORM_PATH}
+                      terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure
                       terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
-                      terraform  apply -auto-approve -input=false -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER}
+                      terraform apply -auto-approve -input=false -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER}
             - persist_to_workspace:
                   root: ~/
                   paths:

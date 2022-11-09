@@ -8,7 +8,7 @@ metadata:
     release: "{{ .Release.Name }}" # Ex: srnt-invivo
     heritage: "{{ .Release.Service }}" # Deprecated
 data:
-  AKENEO_PIM_URL: {{ printf "https://%s" .Values.common.pimMasterDomain  | quote }}
+  AKENEO_PIM_URL: {{ printf "https://%s" .Values.common.fqdn  | quote }}
   GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
   FIRESTORE_PROJECT_ID: {{ .Values.common.gcpFireStoreProjectID | quote }}
   APP_TENANT_CONTEXT_COLLECTION_NAME: {{ .Values.common.tenantContext | quote }}
@@ -36,44 +36,44 @@ data:
   {{- else }}
   FLAG_ONBOARDER_ENABLED: "0"
   {{- end }}
-  {{- if .Values.pim.comm_panel_api_url }}
-  COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
+  {{- if .Values.pim.commPanelApiUrl }}
+  COMM_PANEL_API_URL: {{ .Values.pim.commPanelApiUrl | quote }}
   {{- end }}
-  PUBSUB_SUBSCRIPTION_WEBHOOK: {{ .Values.pim.pubsub.subscription_webhook }}
-  PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI: {{ .Values.pim.pubsub.subscription_job_queue_ui }}
-  PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.subscription_job_queue_import_export }}
-  PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.subscription_job_queue_data_maintenance }}
-  PUBSUB_SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB: {{ .Values.pim.pubsub.subscription_job_queue_scheduled_job }}
-  PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topic_business_event }}
-  PUBSUB_TOPIC_JOB_QUEUE_UI: {{ .Values.pim.pubsub.topic_job_queue_ui }}
-  PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
-  PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
-  PUBSUB_TOPIC_JOB_QUEUE_SCHEDULED_JOB: "{{ .Values.pim.pubsub.topic_job_queue_scheduled_job }}-{{ .Values.common.region }}"
+  PUBSUB_SUBSCRIPTION_WEBHOOK: {{ .Values.pim.pubsub.subscriptionWebhook }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI: {{ .Values.pim.pubsub.subscriptionJobQueueUI }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.subscriptionJobQueueImportExport }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.subscriptionJobQueueDataMaintenance }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB: {{ .Values.pim.pubsub.subscriptionJobQueueScheduledJob }}
+  PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topicBusinessEvent }}
+  PUBSUB_TOPIC_JOB_QUEUE_UI: {{ .Values.pim.pubsub.topicJobQueueUI }}
+  PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.topicJobQueueImportExport }}
+  PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.topicJobQueueDataMaintenance }}
+  PUBSUB_TOPIC_JOB_QUEUE_SCHEDULED_JOB: "{{ .Values.pim.pubsub.topicJobQueueScheduledJob }}-{{ .Values.common.region }}"
 
-  LOGGING_LEVEL: {{ .Values.pim.logging_level }}
-  {{- if .Values.free_trial.enabled }}
+  LOGGING_LEVEL: {{ .Values.pim.loggingLevel }}
+  {{- if .Values.freeTrial.enabled }}
   FLAG_FREE_TRIAL_ENABLED: "1"
-  FT_CATALOG_API_BASE_URI: {{ required "Environment variable FT_CATALOG_API_BASE_URI is missing" .Values.free_trial.ft_catalog_api_base_uri | quote }}
-  FT_CATALOG_API_CLIENT_ID: {{ required "Environment variable FT_CATALOG_API_CLIENT_ID is missing" .Values.free_trial.ft_catalog_api_client_id | quote }}
-  FT_CATALOG_API_PASSWORD: {{ required "Environment variable FT_CATALOG_API_PASSWORD is missing" .Values.free_trial.ft_catalog_api_password | quote }}
-  FT_CATALOG_API_SECRET: {{ required "Environment variable FT_CATALOG_API_SECRET is missing" .Values.free_trial.ft_catalog_api_secret | quote }}
-  FT_CATALOG_API_USERNAME: {{ required "Environment variable FT_CATALOG_API_USERNAME is missing" .Values.free_trial.ft_catalog_api_username | quote }}
-  AKENEO_CONNECT_API_CLIENT_SECRET: {{ required "Environment variable AKENEO_CONNECT_API_CLIENT_SECRET is missing" .Values.free_trial.akeneo_connect_api_client_secret | quote }}
-  AKENEO_CONNECT_API_CLIENT_PASSWORD: {{ required "Environment variable AKENEO_CONNECT_API_CLIENT_PASSWORD is missing" .Values.free_trial.akeneo_connect_api_client_password | quote }}
-  AKENEO_CONNECT_SAML_ENTITY_ID: {{ required "Environment variable AKENEO_CONNECT_SAML_ENTITY_ID is missing" .Values.free_trial.akeneo_connect_saml_entity_id | quote }}
-  AKENEO_CONNECT_SAML_CERTIFICATE: {{ required "Environment variable AKENEO_CONNECT_SAML_CERTIFICATE is missing" .Values.free_trial.akeneo_connect_saml_certificate | quote }}
-  AKENEO_CONNECT_SAML_SP_CLIENT_ID: {{ required "Environment variable AKENEO_CONNECT_SAML_SP_CLIENT_ID is missing" .Values.free_trial.akeneo_connect_saml_sp_client_id | quote }}
-  AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64: {{ required "Environment variable AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64 is missing" .Values.free_trial.akeneo_connect_saml_sp_certificate_base64 | quote }}
-  AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64: {{ required "Environment variable AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64 is missing" .Values.free_trial.akeneo_connect_saml_sp_private_key_base64 | quote }}
-  AKENEO_CONNECT_SAML_SIGNIN_URL: {{ .Values.free_trial.akeneo_connect_saml_signin_url | quote }}
-  AKENEO_CONNECT_SAML_LOGOUT_URL: {{ .Values.free_trial.akeneo_connect_saml_logout_url | quote }}
-  AKENEO_CONNECT_API_CLIENT_ID: {{ .Values.free_trial.akeneo_connect_api_client_id | quote }}
-  AKENEO_CONNECT_API_CLIENT_USERNAME: {{ .Values.free_trial.akeneo_connect_api_client_username | quote }}
-  AKENEO_CONNECT_API_CLIENT_BASE_URI: {{ .Values.free_trial.akeneo_connect_api_client_base_uri | quote }}
-  AKENEO_PORTAL_API_CLIENT_BASE_URI: {{ .Values.free_trial.akeneo_portal_api_client_base_uri | quote }}
-  HOTJAR_ID: {{ .Values.free_trial.hotjar_id | quote }}
-  GOOGLE_ANALYTICS_ID: {{ .Values.free_trial.google_analytics_account_id | quote }}
-  HEAP_ID: {{ .Values.free_trial.heap_id | quote }}
+  FT_CATALOG_API_BASE_URI: {{ required "Environment variable FT_CATALOG_API_BASE_URI is missing" .Values.freeTrial.ftCatalogApiBaseUri | quote }}
+  FT_CATALOG_API_CLIENT_ID: {{ required "Environment variable FT_CATALOG_API_CLIENT_ID is missing" .Values.freeTrial.ftCatalogApiClientID | quote }}
+  FT_CATALOG_API_PASSWORD: {{ required "Environment variable FT_CATALOG_API_PASSWORD is missing" .Values.freeTrial.ftCatalogApiPassword | quote }}
+  FT_CATALOG_API_SECRET: {{ required "Environment variable FT_CATALOG_API_SECRET is missing" .Values.freeTrial.ftCatalogApiSecret | quote }}
+  FT_CATALOG_API_USERNAME: {{ required "Environment variable FT_CATALOG_API_USERNAME is missing" .Values.freeTrial.ftCatalogApiUsername | quote }}
+  AKENEO_CONNECT_API_CLIENT_SECRET: {{ required "Environment variable AKENEO_CONNECT_API_CLIENT_SECRET is missing" .Values.freeTrial.akeneoConnectApiClientSecret | quote }}
+  AKENEO_CONNECT_API_CLIENT_PASSWORD: {{ required "Environment variable AKENEO_CONNECT_API_CLIENT_PASSWORD is missing" .Values.freeTrial.akeneoConnectApiClientPassword | quote }}
+  AKENEO_CONNECT_SAML_ENTITY_ID: {{ required "Environment variable AKENEO_CONNECT_SAML_ENTITY_ID is missing" .Values.freeTrial.akeneoConnectSamlEntityID | quote }}
+  AKENEO_CONNECT_SAML_CERTIFICATE: {{ required "Environment variable AKENEO_CONNECT_SAML_CERTIFICATE is missing" .Values.freeTrial.akeneoConnectSamlCertificate | quote }}
+  AKENEO_CONNECT_SAML_SP_CLIENT_ID: {{ required "Environment variable AKENEO_CONNECT_SAML_SP_CLIENT_ID is missing" .Values.freeTrial.akeneoConnectSamlSpClientID | quote }}
+  AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64: {{ required "Environment variable AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64 is missing" .Values.freeTrial.akeneoConnectSamlSpCertificateBase64 | quote }}
+  AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64: {{ required "Environment variable AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64 is missing" .Values.freeTrial.akeneoConnectSamlSpPrivateKeyBase64 | quote }}
+  AKENEO_CONNECT_SAML_SIGNIN_URL: {{ .Values.freeTrial.akeneoConnectSamlSigninUrl | quote }}
+  AKENEO_CONNECT_SAML_LOGOUT_URL: {{ .Values.freeTrial.akeneoConnectSamlLogoutUrl | quote }}
+  AKENEO_CONNECT_API_CLIENT_ID: {{ .Values.freeTrial.akeneoConnectApiClientID | quote }}
+  AKENEO_CONNECT_API_CLIENT_USERNAME: {{ .Values.freeTrial.akeneoConnectApiClientUsername | quote }}
+  AKENEO_CONNECT_API_CLIENT_BASE_URI: {{ .Values.freeTrial.akeneoConnectApiClientBaseUri | quote }}
+  AKENEO_PORTAL_API_CLIENT_BASE_URI: {{ .Values.freeTrial.akeneoPortalApiClientBaseUri | quote }}
+  HOTJAR_ID: {{ .Values.freeTrial.hotjarID | quote }}
+  GOOGLE_ANALYTICS_ID: {{ .Values.freeTrial.googleAnalyticsAccountID | quote }}
+  HEAP_ID: {{ .Values.freeTrial.heapID | quote }}
   {{- else }}
   FLAG_FREE_TRIAL_ENABLED: "0"
   {{- end }}

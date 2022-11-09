@@ -5,8 +5,8 @@ metadata:
     cnrm.cloud.google.com/force-destroy: "true"
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
-    pfid: {{ .Values.global.extraLabels.pfid }}
-  name: {{ .Values.global.extraLabels.pfid }}
+    tenant_id: {{ .Values.global.extraLabels.tenant_id }}
+  name: {{ .Values.global.extraLabels.tenant_id }}
 spec:
   location: {{ .Values.pim.storage.location }}
   storageClass: STANDARD
@@ -16,11 +16,11 @@ apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucketAccessControl
 metadata:
   labels:
-    pfid: {{ .Values.global.extraLabels.pfid }}
-  name: {{ .Values.global.extraLabels.pfid }}
+    tenant_id: {{ .Values.global.extraLabels.tenant_id }}
+  name: {{ .Values.global.extraLabels.tenant_id }}
 spec:
   bucketRef:
-    name: {{ .Values.global.extraLabels.pfid }}
+    name: {{ .Values.global.extraLabels.tenant_id }}
   entity: user-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
   role: OWNER
 ---
@@ -32,8 +32,8 @@ metadata:
     cnrm.cloud.google.com/force-destroy: "true"
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
-    pfid: {{ .Values.global.extraLabels.pfid }}
-  name: {{ .Values.global.extraLabels.pfid }}-es
+    tenant_id: {{ .Values.global.extraLabels.tenant_id }}
+  name: {{ .Values.global.extraLabels.tenant_id }}-es
 spec:
   location: {{ .Values.pim.storage.location }}
   storageClass: STANDARD
@@ -43,10 +43,10 @@ apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucketAccessControl
 metadata:
   labels:
-    pfid: {{ .Values.global.extraLabels.pfid }}
-  name: {{ .Values.global.extraLabels.pfid }}-es
+    tenant_id: {{ .Values.global.extraLabels.tenant_id }}
+  name: {{ .Values.global.extraLabels.tenant_id }}-es
 spec:
   bucketRef:
-    name: {{ .Values.global.extraLabels.pfid }}-es
+    name: {{ .Values.global.extraLabels.tenant_id }}-es
   entity: user-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
   role: OWNER

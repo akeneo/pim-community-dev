@@ -30,13 +30,13 @@ spec:
               mountPath: /scripts-dir
           env:
             - name: PFID
-              value: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+              value: {{ required ".Values.common.fqdn" .Values.common.fqdn }}
       containers:
       - name: test-pim-svc
         image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
         env:
           - name: TARGET
-            value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}/monitoring/services_status
+            value: https://{{ required ".Values.common.fqdn" .Values.common.fqdn }}/monitoring/services_status
           - name: MONITORING_AUTHENTICATION_TOKEN
             value: "X-AUTH-TOKEN: {{ required ".Values.pim.monitoring.authenticationToken" .Values.pim.monitoring.authenticationToken}}"
         command: ["sh", "/scripts-dir/test-pim-svc.sh"]
