@@ -18,17 +18,13 @@ workflows:
           name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
           matrix:
             parameters:
-              PRODUCT_TYPE: [ "srnt", "grth", "tria" ]
+              PRODUCT_TYPE: [ "srnt", "tria" ]
           requires:
             - checkout
       - build_srnt_dev:
           name: "[srnt] Build"
           requires:
             - "[srnt] Test helm generated k8s files"
-      - build_grth:
-          name: "[grth] Build"
-          requires:
-            - "[grth] Test helm generated k8s files"
       - build_tria:
           name: "[tria] Build"
           requires:
@@ -64,7 +60,6 @@ workflows:
           requires:
             - "test_front_tailored_import"
             - "test_back_tailored_import"
-            - "[grth] Build"
             - "[tria] Build"
 
   raccoon_job_automation_pull_request:
@@ -86,17 +81,13 @@ workflows:
           name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
           matrix:
             parameters:
-              PRODUCT_TYPE: [ "srnt", "grth", "tria" ]
+              PRODUCT_TYPE: [ "srnt", "tria" ]
           requires:
             - checkout
       - build_srnt_dev:
           name: "[srnt] Build"
           requires:
             - "[srnt] Test helm generated k8s files"
-      - build_grth:
-          name: "[grth] Build"
-          requires:
-            - "[grth] Test helm generated k8s files"
       - build_tria:
           name: "[tria] Build"
           requires:
@@ -132,5 +123,4 @@ workflows:
           requires:
             - "test_front_job_automation"
             - "test_back_job_automation"
-            - "[grth] Build"
             - "[tria] Build"

@@ -26,7 +26,7 @@ common:
   gcpProjectID: null # Generated
   googleZone: null # Generated
   location: null # Generated example EU, US
-  pimMasterDomain: null # Generated
+  fqdn: null # Generated
   dnsCloudDomain: null # Generated
   region: null # Generated
   tenantContext: null # Generated
@@ -70,7 +70,7 @@ common:
     value: "Etc/UTC"
 
 # Free Trial
-free_trial:
+freeTrial:
   enabled: false
 
 image:
@@ -119,21 +119,21 @@ onboarder:
 
 # PIM
 pim:
-  comm_panel_api_url: null
-  logging_level: NOTICE
+  commPanelApiUrl: null
+  loggingLevel: NOTICE
   monitoring:
     authenticationToken: authenticationToken
   pubsub:
-    topic_business_event: null # Generated
-    topic_job_queue_ui: null # Generated
-    topic_job_queue_import_export: null # Generated
-    topic_job_queue_data_maintenance: null # Generated
-    topic_job_queue_scheduled_job: null # Generated
-    subscription_webhook: null # Generated
-    subscription_job_queue_ui: null # Generated
-    subscription_job_queue_import_export: null # Generated
-    subscription_job_queue_data_maintenance: null # Generated
-    subscription_job_queue_scheduled_job: null # Generated
+    topicBusinessEvent: null # Generated
+    topicJobQueueUI: null # Generated
+    topicJobQueueImportExport: null # Generated
+    topicJobQueueDataMaintenance: null # Generated
+    topicJobQueueScheduledJob: null # Generated
+    subscriptionWebhook: null # Generated
+    subscriptionJobQueueUI: null # Generated
+    subscriptionJobQueueImportExport: null # Generated
+    subscriptionJobQueueDataMaintenance: null # Generated
+    subscriptionJobQueueScheduledJob: null # Generated
   hook:
     addAdmin:
       enabled: true
@@ -145,7 +145,8 @@ pim:
   # `deployments/terraform/helm.tf` script to stop & restart daemons while a
   # migration is running.
   daemons:
-    job-consumer-process:
+    jobConsumerProcess:
+      name: job-consumer-process
       enabled: true
       pimCommand: "messenger:consume -vv ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
       replicas: 1
@@ -156,7 +157,8 @@ pim:
         requests:
           memory: "300Mi"
           cpu: "5m"
-    webhook-consumer-process:
+    webhookConsumerProcess:
+      name: webhook-consumer-process
       enabled: true
       pimCommand: "messenger:consume --quiet webhook --time-limit=3600 --memory-limit=384M"
       replicas: 1

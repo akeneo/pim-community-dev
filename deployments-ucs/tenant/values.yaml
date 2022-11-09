@@ -5,13 +5,13 @@ nameOverride: ""
 global:
   extraLabels:
     type: srnt
-    instanceName: null
-    pfid: null
     instance_dns_record: null
     instance_dns_zone: null
     papo_project_code: null
-    papo_project_code_truncated: null
     papo_project_code_hashed: null
+    papo_project_code_truncated: null
+    tenant_id: null
+    tenant_name: null
   monitoring:
     enabled: false
   externalGateway:
@@ -39,7 +39,7 @@ common:
   gcpProjectID: null
   tenantContext: null
   googleZone: null
-  pimMasterDomain: null
+  fqdn: null
   dnsCloudDomain: null
   workloadIdentityKSA: null
   workloadIdentityGSA: pim-saas-service
@@ -62,7 +62,6 @@ common:
     value: "Etc/UTC"
   - name: "MAGICK_CONFIGURE_PATH"
     value: "/etc/php/8.1/fpm/"
-
   phpConfCLI:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "0"
@@ -149,7 +148,7 @@ elasticsearch:
     folder: elasticsearch-snapshots
 
 # Free Trial
-free_trial:
+freeTrial:
   enabled: false
 
 image:
@@ -177,9 +176,9 @@ image:
 mailer:
   login: null
   password: null
-  base_mailer_dsn: null
+  baseMailerUrl: null
   domain: null
-  api_key: null
+  apiKey: null
 
 memcached:
   image:
@@ -269,8 +268,8 @@ onboarder:
 
 # PIM
 pim:
-  comm_panel_api_url: null
-  logging_level: NOTICE
+  commPanelApiUrl: null
+  loggingLevel: NOTICE
   monitoring:
     authenticationToken: null
   serviceAccountKey: null
@@ -290,10 +289,11 @@ pim:
   # `deployments/terraform/helm.tf` script to stop & restart daemons while a
   # migration is running.
   daemons:
-    job-consumer-process:
+    jobConsumerProcess:
+      name: job-consumer-process
       enabled: true
       pimCommand: "messenger:consume -vv ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
-      replicas: 2
+      replicas: 1
       trapped: true
       resources:
         limits:
@@ -301,10 +301,11 @@ pim:
         requests:
           memory: "300Mi"
           cpu: "5m"
-    webhook-consumer-process:
+    webhookConsumerProcess:
+      name: webhook-consumer-process
       enabled: true
-      pimCommand: "messenger:consume webhook --quiet --time-limit=3600 --memory-limit=384M"
-      replicas: 2
+      pimCommand: "messenger:consume --quiet webhook --time-limit=3600 --memory-limit=384M"
+      replicas: 1
       trapped: false
       resources:
         limits:
@@ -369,22 +370,6 @@ pim:
     password: null # Fill me
     uiLocale: en_US  # Change me if needed
   jobs:
-    project-notify-before-due-date:
-      enabled: true
-      pimCommand: "pimee:project:notify-before-due-date"
-      schedule: "0 2 * * *"
-      resources:
-        requests:
-          cpu: "1m"
-          memory: "80Mi"
-    reference-entity-refresh-records:
-      enabled: true
-      pimCommand: "akeneo:reference-entity:refresh-records"
-      schedule: "0 23 * * *"
-      resources:
-        requests:
-          cpu: "200m"
-          memory: "128Mi"
     asset-manager-refresh-asset:
       enabled: true
       pimCommand: "akeneo:asset-manager:refresh-assets --all"
@@ -457,6 +442,6 @@ pim:
         requests:
           cpu: "350m"
           memory: "350Mi"
-  supplier_portal:
+  supplierPortal:
     settings:
       enabled: false

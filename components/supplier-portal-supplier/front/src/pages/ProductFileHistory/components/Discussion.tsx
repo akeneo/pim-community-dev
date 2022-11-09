@@ -69,7 +69,10 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
                     );
                 }
             }
-            await queryClient.invalidateQueries('fetchProductFiles');
+
+            setTimeout(() => {
+                queryClient.invalidateQueries('fetchProductFiles');
+            }, 2000);
         })();
     }, [intl, notify, productFileIdentifier, queryClient]);
 

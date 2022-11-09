@@ -20,7 +20,6 @@ use Webmozart\Assert\Assert;
 
 final class ACLReferenceEntityExists implements ReferenceEntityExists
 {
-    /* @phpstan-ignore-next-line */
     public function __construct(private ?ReferenceEntityExistsInterface $referenceEntityExists)
     {
     }
@@ -29,13 +28,11 @@ final class ACLReferenceEntityExists implements ReferenceEntityExists
     {
         Assert::notNull($this->referenceEntityExists);
         try {
-            /* @phpstan-ignore-next-line */
             $identifier = ReferenceEntityIdentifier::fromString($identifier);
         } catch (\InvalidArgumentException) {
             return false;
         }
 
-        /* @phpstan-ignore-next-line */
         return $this->referenceEntityExists->withIdentifier($identifier);
     }
 }

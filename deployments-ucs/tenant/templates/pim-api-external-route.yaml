@@ -1,11 +1,11 @@
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
 metadata:
-  name: pim-api-route-external-{{ .Values.global.extraLabels.instanceName }}
+  name: pim-api-route-external-{{ .Values.global.extraLabels.tenant_name }}
   namespace: {{ .Values.pim.api.namespace }} # in pim ns HttpRoutes cross-namespace not implemented
   labels:
     app.kubernetes.io/component: "pim-api-ingress"
-    app.kubernetes.io/instance: "{{ .Values.global.extraLabels.instanceName }}"
+    app.kubernetes.io/instance: "{{ .Values.global.extraLabels.tenant_name }}"
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
 spec:
@@ -13,7 +13,7 @@ spec:
   - name: {{ .Values.global.externalGateway.name }}
     namespace: {{ .Values.global.externalGateway.namespace }}
   hostnames:
-  - {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain | quote }}
+  - {{ required ".Values.common.fqdn" .Values.common.fqdn | quote }}
   rules:
   - matches:
     - path:

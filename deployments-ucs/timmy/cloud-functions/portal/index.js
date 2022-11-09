@@ -183,12 +183,12 @@ async function requestCloudFunction(url, method, data = null) {
 /**
  * Update an instance status in the portal with a status and an optional status message
  * @param branchName
- * @param instanceName
+ * @param tenant_name
  * @param instanceId
  * @param status
  * @returns {Promise<AxiosResponse<any>>}
  */
-async function updateInstanceStatusInPortal(branchName, instanceName, instanceId, status) {
+async function updateInstanceStatusInPortal(branchName, tenant_name, instanceId, status) {
     const instance = axios.create({
       baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME, branchName) + '/api/v2/',
       timeout: 10000,
@@ -213,7 +213,7 @@ async function updateInstanceStatusInPortal(branchName, instanceName, instanceId
       return Promise.reject(error);
     });
 
-    logger.info(`Update the \`${instanceName}\` instance (id=${instanceId}) in the portal with \`${status}\` status`);
+    logger.info(`Update the \`${tenant_name}\` instance (id=${instanceId}) in the portal with \`${status}\` status`);
     return await instance.patch(`console/instances/${instanceId}/status/${status}`);
 }
 
@@ -252,14 +252,14 @@ functions.http('requestPortal', (req, res) => {
     await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
       const instanceId = subject['id'];
-      const instanceName = subject['instance_fqdn']['prefix'];
+      const tenant_name = subject['instance_fqdn']['prefix'];
       const administrator = subject['administrator'];
 
-      logger.debug(`Prepare creation of the  \`${instanceName}\` tenant (id=${instanceId})`);
+      logger.debug(`Prepare creation of the  \`${tenant_name}\` tenant (id=${instanceId})`);
 
       const payload = {
         branchName: branchName,
-        instanceName: subject['instance_fqdn']['prefix'],
+        tenant_name: subject['instance_fqdn']['prefix'],
         pim_edition: process.env.TENANT_EDITION_FLAGS,
         dnsCloudDomain: subject['instance_fqdn']['suffix'],
         pim: {
@@ -278,17 +278,17 @@ functions.http('requestPortal', (req, res) => {
           }
         }
       };
-      logger.debug(`Prepared payload to send for the \`${instanceName}\` (id=${instanceId}) tenant creation: ${JSON.stringify(payload)}`);
+      logger.debug(`Prepared payload to send for the \`${tenant_name}\` (id=${instanceId}) tenant creation: ${JSON.stringify(payload)}`);
 
       try {
-        logger.info(`Call the cloud function ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant \`${instanceName}\` (id=${instanceId})`);
+        logger.info(`Call the cloud function ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant \`${tenant_name}\` (id=${instanceId})`);
         await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", payload);
-        logger.info(`Successfully created tenant \`${instanceName}\` (id=${instanceId})`);
+        logger.info(`Successfully created tenant \`${tenant_name}\` (id=${instanceId})`);
 
         try {
-          await updateInstanceStatusInPortal(branchName, instanceName, instanceId, TENANT_STATUS.ACTIVATED);
+          await updateInstanceStatusInPortal(branchName, tenant_name, instanceId, TENANT_STATUS.ACTIVATED);
         } catch(error) {
-          logger.error(`Failed to update tenant \`${instanceName}\` (id=${instanceId}) status to ${TENANT_STATUS.ACTIVATED} in the portal: ${JSON.stringify(error)}`);
+          logger.error(`Failed to update tenant \`${tenant_name}\` (id=${instanceId}) status to ${TENANT_STATUS.ACTIVATED} in the portal: ${JSON.stringify(error)}`);
         }
 
       } catch (error) {
@@ -306,21 +306,21 @@ functions.http('requestPortal', (req, res) => {
 
     await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
-      const instanceName = subject['instance_fqdn']['prefix'];
+      const tenant_name = subject['instance_fqdn']['prefix'];
       const instanceId = subject['id'];
 
       try {
-        logger.info(`Call the cloud function ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant \`${instanceName}\` (id=${instanceId})`)
+        logger.info(`Call the cloud function ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant \`${tenant_name}\` (id=${instanceId})`)
         await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_DELETE_TENANT, "POST", {
-          instanceName: instanceName,
+          tenant_name: tenant_name,
           branchName: branchName
         });
-        logger.info(`Successfully deleted the tenant \`${instanceName}\` (id=${instanceId})`);
+        logger.info(`Successfully deleted the tenant \`${tenant_name}\` (id=${instanceId})`);
 
         try {
-          await updateInstanceStatusInPortal(branchName, instanceName, instanceId, TENANT_STATUS.DELETED);
+          await updateInstanceStatusInPortal(branchName, tenant_name, instanceId, TENANT_STATUS.DELETED);
         } catch(error) {
-          logger.error(`Failed to update tenant \`${instanceName}\` (id=${instanceId}) status to ${TENANT_STATUS.DELETED} in the portal: ${JSON.stringify(error)}`);
+          logger.error(`Failed to update tenant \`${tenant_name}\` (id=${instanceId}) status to ${TENANT_STATUS.DELETED} in the portal: ${JSON.stringify(error)}`);
         }
 
       } catch (error) {

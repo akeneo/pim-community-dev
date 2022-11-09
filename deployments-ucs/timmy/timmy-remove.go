@@ -46,8 +46,8 @@ func main() {
 
     // Firestore
     clientFirestore := createClientFirestore(ctx, firestoreProjectID)
+    tenant_id := os.Args[1]
     collection := os.Args[2]
-    pfid := os.Args[1]
-    deleteDocument(ctx, clientFirestore, collection, pfid)
+    deleteDocument(ctx, clientFirestore, collection, tenant_id)
     defer clientFirestore.Close()
 }

@@ -63,7 +63,7 @@ class CanEditTailoredImport
         $targetLocaleCodes = [];
         foreach ($dataMappings as $dataMapping) {
             if (
-                null !== $dataMapping['target']['locale']
+                isset($dataMapping['target']['locale'])
                 && !\in_array($dataMapping['target']['locale'], $targetLocaleCodes)
             ) {
                 $targetLocaleCodes[] = $dataMapping['target']['locale'];

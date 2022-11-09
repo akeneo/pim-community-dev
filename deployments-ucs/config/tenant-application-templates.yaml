@@ -1,20 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ${PFID}
+  name: ${TENANT_ID}
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    instanceName: ${INSTANCE_NAME}
-    pfid: ${PFID}
-    instance_dns_record: ${INSTANCE_NAME}
+    application_name: ${TENANT_ID}
+    branch: ${CIRCLE_BRANCH_LOWER}
+    instance_dns_record: ${FQDN}
     instance_dns_zone: ${GOOGLE_MANAGED_ZONE_DNS}
     papo_project_code: ${PORTAL_PROJECT_CODE}
-    papo_project_code_truncated: ${PORTAL_PROJECT_CODE}
     papo_project_code_hashed: ${PORTAL_PROJECT_CODE}
-    name: ${PFID}
-    branch: ${CIRCLE_BRANCH_LOWER}
+    papo_project_code_truncated: ${PORTAL_PROJECT_CODE}
+    tenant_id: ${TENANT_ID}
+    tenant_name: ${TENANT_NAME}
+    tenant_namespace: ${TENANT_ID}
 spec:
   project: default
   source:
@@ -25,12 +26,12 @@ spec:
       parameters:
         - name: global.extraLabels.type
           value: ${TYPE}
-        - name: global.extraLabels.instanceName
-          value: ${INSTANCE_NAME}
-        - name: global.extraLabels.pfid
-          value: ${PFID}
+        - name: global.extraLabels.tenant_name
+          value: ${TENANT_NAME}
+        - name: global.extraLabels.tenant_id
+          value: ${TENANT_ID}
         - name: global.extraLabels.instance_dns_record
-          value: ${GOOGLE_MANAGED_ZONE_DNS}
+          value: ${FQDN}
         - name: global.extraLabels.instance_dns_zone
           value: ${GOOGLE_MANAGED_ZONE_DNS}
         - name: global.extraLabels.papo_project_code
@@ -73,11 +74,11 @@ spec:
           value: ${MAILGUN_LOGIN}
         - name: mailer.password
           value: ${MAILGUN_PASSWORD}
-        - name: mailer.base_mailer_dsn
+        - name: mailer.baseMailerDsn
           value: "smtp://${MAILGUN_HOST}:${MAILGUN_PORT}"
         - name: mailer.domain
           value: ${MAILGUN_DOMAIN}
-        - name: mailer.api_key
+        - name: mailer.apiKey
           value: ${MAILGUN_API_KEY}
         - name: backup.enabled
           value: 'false'
@@ -89,7 +90,7 @@ spec:
           value: ${TENANT_CONTEXT_COLLECTION_NAME}
         - name: common.googleZone
           value: ${GOOGLE_CLUSTER_ZONE}
-        - name: common.pimMasterDomain
+        - name: common.fqdn
           value: ${FQDN}
         - name: common.dnsCloudDomain
           value: ${GOOGLE_MANAGED_ZONE_DNS}
@@ -110,13 +111,13 @@ spec:
         - name: pim.monitoring.authenticationToken
           value: ${MONITORING_AUTHENTICATION_TOKEN}
         - name: pim.api.namespace
-          value: ${PIM_NS}
+          value: ${PIM_NAMESPACE}
         - name: pim.web.namespace
-          value: ${PIM_NS}
+          value: ${PIM_NAMESPACE}
         - name: pim.secret
           value: ${PIM_SECRET}
         - name: pim.storage.bucketName
-          value: ${PFID}
+          value: ${TENANT_ID}
         - name: pim.storage.location
           value: ${STORAGE_LOCATION}
         - name: mysql.mysql.userPassword
@@ -139,7 +140,7 @@ spec:
           value: ${MYSQL_DSIK_STORAGE_CLASS}
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: ${PFID}
+    namespace: ${TENANT_ID}
   syncPolicy:
     automated:
       prune: true

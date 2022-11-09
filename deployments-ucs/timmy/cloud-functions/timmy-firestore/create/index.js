@@ -9,12 +9,12 @@ const firestore = new Firestore({
 exports.createDocument=(req, res) => {
 // parse application/json
 var  bodyjson=req.body;
-   pfid  = bodyjson.pfid;
-   instance_name =  bodyjson.instance_name;
+   tenant_id  = bodyjson.tenant_id;
+   tenant_name =  bodyjson.tenant_name;
    mysql_password = bodyjson.mysql_password;
    email_password = bodyjson.email_password;
    //check body params
-   if (!pfid ||  !instance_name  || !mysql_password || !email_password ){
+   if (!tenant_id ||  !tenant_name  || !mysql_password || !email_password ){
     res.status(402).send(" params empty, null or not exist  !!!");
    }
    //check envar
@@ -25,19 +25,19 @@ var  bodyjson=req.body;
       res.status(402).send(" env variable empty !!!");
      }
 
-   tenantContextData = JSON.stringify({instance_name :{
-       "AKENEO_PIM_URL": "https://" + instance_name +"."+ domain,
-       "APP_DATABASE_HOST": "pim-mysql." + pfid + ".svc.cluster.local",
-       "APP_INDEX_HOSTS": "elasticsearch-client." + pfid + ".svc.cluster.local",
-       "APP_TENANT_ID":   pfid ,
+   tenantContextData = JSON.stringify({tenant_name :{
+       "AKENEO_PIM_URL": "https://" + tenant_name +"."+ domain,
+       "APP_DATABASE_HOST": "pim-mysql." + tenant_id + ".svc.cluster.local",
+       "APP_INDEX_HOSTS": "elasticsearch-client." + tenant_id + ".svc.cluster.local",
+       "APP_TENANT_ID":   tenant_id ,
        "MAILER_PASSWORD":  email_password ,
-       "MAILER_DSN": mailerBaseDsn+"?encryption=tls&auth_mode=login&username=" + instance_name + "-"+ projectId+"@mg.cloud.akeneo.com&password=" + email_password,
-       "MAILER_FROM": "Akeneo PIM <no-reply%40" + pfid + "." + domain + ">",
-       "MAILER_USER": instance_name + "-"+projectId+"@mg.cloud.akeneo.com",
-       "MEMCACHED_SVC": "memcached." + pfid + ".svc.cluster.local",
+       "MAILER_DSN": mailerBaseDsn+"?encryption=tls&auth_mode=login&username=" + tenant_name + "-"+ projectId+"@mg.cloud.akeneo.com&password=" + email_password,
+       "MAILER_FROM": "Akeneo PIM <no-reply%40" + tenant_name + "." + domain + ">",
+       "MAILER_USER": tenant_name + "-"+projectId+"@mg.cloud.akeneo.com",
+       "MEMCACHED_SVC": "memcached." + tenant_id + ".svc.cluster.local",
        "APP_DATABASE_PASSWORD": mysql_password ,
-       "PFID":  pfid ,
-       "SRNT_GOOGLE_BUCKET_NAME":  pfid
+       "PFID":  tenant_id ,
+       "SRNT_GOOGLE_BUCKET_NAME":  tenant_id
      }
     });
 
@@ -55,7 +55,7 @@ var  bodyjson=req.body;
        }
     );
 
-      const docRef = firestore.collection(process.env.tenantContext).doc(instance_name).set(JSON.parse(data),{merge: true});
+      const docRef = firestore.collection(process.env.tenantContext).doc(tenant_name).set(JSON.parse(data),{merge: true});
 
   });
 

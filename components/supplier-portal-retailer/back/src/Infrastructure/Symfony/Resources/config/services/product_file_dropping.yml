@@ -77,6 +77,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileHandlerForSupplier:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+            - '@event_dispatcher'
 
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFileHandler:
         arguments:
@@ -199,6 +200,12 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileDownloaded:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier'
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileCommentedBySupplier:
+        arguments:
             - '@monolog.logger.supplier_portal'
         tags:
             - { name: kernel.event_subscriber }

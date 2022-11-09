@@ -1,7 +1,0 @@
-services:
-    # Feature flag
-    akeneo.supplier_portal_critical_path_collaborate.feature:
-        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-        arguments:
-            - '%env(bool:FLAG_SUPPLIER_PORTAL_CRITICAL_PATH_COLLABORATE_ENABLED)%'
-        public: true

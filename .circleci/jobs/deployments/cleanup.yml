@@ -65,7 +65,7 @@ jobs:
             PRODUCT_TYPE:
                 type: string
                 default: ""
-            INSTANCE_NAME:
+            TENANT_NAME:
                 type: string
                 default: ""
         environment:
@@ -80,19 +80,19 @@ jobs:
             - run:
                   name: Delete environments
                   command: |
-                      TENANT_NS=${TYPE}-${INSTANCE_NAME}
+                      TENANT_ID=${TYPE}-${TENANT_NAME}
                       ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
                       # Login to argocd call k8s
                       kubectl config set-context --current --namespace=argocd
                       argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
 
-                      echo "      argocd app terminate-op ${TENANT_NS} --core || true"
-                      echo "      kubectl delete app ${TENANT_NS} -n argocd"
-                      echo "      kubectl delete ${TENANT_NS}"
-                      argocd app terminate-op ${TENANT_NS} --core || true
-                      kubectl delete app ${TENANT_NS} -n argocd
-                      kubectl delete ns ${TENANT_NS}
+                      echo "      argocd app terminate-op ${TENANT_ID} --core || true"
+                      echo "      kubectl delete app ${TENANT_ID} -n argocd"
+                      echo "      kubectl delete ${TENANT_ID}"
+                      argocd app terminate-op ${TENANT_ID} --core || true
+                      kubectl delete app ${TENANT_ID} -n argocd
+                      kubectl delete ns ${TENANT_ID}
 
     delete_tenant_timmy:
         parameters:
@@ -112,7 +112,7 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      TENANT_ID="${INSTANCE_NAME}"
+                      TENANT_ID="${TENANT_NAME}"
                       REGION_PREFIX="eur-w-1b"
 
                       echo export TENANT_ID=${TENANT_ID} >> $BASH_ENV
@@ -128,7 +128,7 @@ jobs:
                       if [ ! -z "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
                         FUNCTION_NAME=${REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-delete-tenant
                       fi
-                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\",\"instanceName\":\"%s\"}\n" ${CIRCLE_BRANCH} ${TENANT_ID} )
+                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\",\"tenant_name\":\"%s\"}\n" ${CIRCLE_BRANCH} ${TENANT_ID} )
                       gcloud  config unset auth/impersonate_service_account
                       DELETE_TENANT_STATUS_CODE=0
                       gcloud  beta functions call ${FUNCTION_NAME} --region=${GOOGLE_CLUSTER_REGION}  --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
@@ -141,7 +141,7 @@ jobs:
             PRODUCT_TYPE:
                 type: string
                 default: ""
-            INSTANCE_NAME:
+            TENANT_NAME:
                 type: string
                 default: ""
         environment:
@@ -157,26 +157,26 @@ jobs:
                   name: Delete environments
                   command: |
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
+                      PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
                       ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
                       # Login to argocd call k8s
                       kubectl config set-context --current --namespace=argocd
                       argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
 
-                      echo "      argocd app terminate-op ${PIM_NS} --core || true"
-                      echo "      kubectl delete app ${PIM_NS} -n argocd"
-                      echo "      kubectl delete ${PIM_NS}"
-                      argocd app terminate-op ${PIM_NS} --core || true
-                      kubectl delete app ${PIM_NS} -n argocd
-                      kubectl delete ns ${PIM_NS}
+                      echo "      argocd app terminate-op ${PIM_NAMESPACE} --core || true"
+                      echo "      kubectl delete app ${PIM_NAMESPACE} -n argocd"
+                      echo "      kubectl delete ${PIM_NAMESPACE}"
+                      argocd app terminate-op ${PIM_NAMESPACE} --core || true
+                      kubectl delete app ${PIM_NAMESPACE} -n argocd
+                      kubectl delete ns ${PIM_NAMESPACE}
 
     delete_timmy:
         parameters:
             PRODUCT_TYPE:
                 type: string
                 default: ""
-            INSTANCE_NAME:
+            TENANT_NAME:
                 type: string
                 default: ""
         environment:

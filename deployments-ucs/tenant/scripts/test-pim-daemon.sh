@@ -4,12 +4,10 @@ set -ex
 export LOGIN_DATA=$(mktemp)
 export COOKIE_JAR=$(mktemp)
 
-# Workarround for self signed certificate
-CURL="curl -k --connect-timeout 10 --retry 5 --retry-delay 5 --retry-connrefused"
-# CURL="curl --connect-timeout 10 --retry 5 --retry-delay 5 --retry-connrefused"
+CURL="curl -k --connect-timeout 10 --retry 5 --retry-delay 5 --retry-connrefused --http1.1"
 
 echo "Testing ${TARGET}"
-timeout 500 curl --retry 300 --retry-delay 30 -k ${TARGET} > /dev/null
+timeout 500 curl --retry 300 --retry-delay 30 -k ${TARGET} --http1.1 > /dev/null
 echo -n "_target_path=&_username=${LOGIN}&_password=${PASSWORD}&_csrf_token=" > ${LOGIN_DATA}
 cat ${LOGIN_DATA}
 
@@ -20,7 +18,7 @@ ${CURL} ${TARGET}/job-instance/rest/export \
     -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
     --cookie ${COOKIE_JAR} --cookie-jar ${COOKIE_JAR} \
     --data-raw '{"code":"test_job","label":"test_job","alias":"csv_locale_export","connector":"Akeneo CSV Connector"}'
-JOBID=$(${CURL} -H 'x-requested-with: XMLHttpRequest' -XPOST --cookie ${COOKIE_JAR} --cookie-jar ${COOKIE_JAR} ${TARGET}/job-instance/rest/export/test_job/launch | cut -d '"' -f 4 | cut -d '/' -f 4)
+JOBID=$(${CURL} -H 'x-requested-with: XMLHttpRequest' -d '' -XPOST --cookie ${COOKIE_JAR} --cookie-jar ${COOKIE_JAR} ${TARGET}/job-instance/rest/export/test_job/launch | cut -d '"' -f 4 | cut -d '/' -f 4)
 RETRY=30
 while [ "$(${CURL} "${TARGET}/job-execution/rest/${JOBID}" --cookie ${COOKIE_JAR} --cookie-jar ${COOKIE_JAR} | jq '.status')" != '"Completed"' -a ${RETRY} -gt 0 ]; do
     let RETRY--

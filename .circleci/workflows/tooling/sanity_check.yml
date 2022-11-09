@@ -33,14 +33,6 @@ workflows:
                           PFID: ["srnt-c3po"]
                   requires:
                     - "Cypress install"
-            - cypress_e2e:
-                  name: "[grth] Execute e2e tests"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          PFID: ["grth-r2d2"]
-                  requires:
-                    - "Cypress install"
 
     on_demand_compliancy_checker:
         when:
@@ -57,7 +49,7 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>][top] Get ZDD compliancy files"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["grth", "srnt"]
+                          PRODUCT_TYPE: ["srnt"]
                           CHECK_AGAINST: ["top"]
                   requires:
                       - ready_to_build?
@@ -65,7 +57,7 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>][top][<< matrix.CONTEXT >>] Check ZDD compliancy"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["grth", "srnt"]
+                          PRODUCT_TYPE: ["srnt"]
                           CONTEXT: ["infra", "db"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>][top] Get ZDD compliancy files"
@@ -73,7 +65,7 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] Versions currently in production"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["grth", "srnt"]
+                          PRODUCT_TYPE: ["srnt"]
                   requires:
                       - ready_to_build?
             - execute_compliancy_check:
@@ -81,14 +73,14 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] Execute compliancy check on oldest version"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["grth", "srnt"]
+                          PRODUCT_TYPE: ["srnt"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Versions currently in production"
             - rolling_update_compliancy_diff:
                   name: "[<< matrix.PRODUCT_TYPE >>][<< matrix.CHECK_AGAINST >>] Get ZDD compliancy files"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["grth", "srnt"]
+                          PRODUCT_TYPE: ["srnt"]
                           CHECK_AGAINST: ["oldest"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Execute compliancy check on oldest version"
@@ -96,7 +88,7 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>][oldest][<< matrix.CONTEXT >>] Check ZDD compliancy"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["grth", "srnt"]
+                          PRODUCT_TYPE: ["srnt"]
                           CONTEXT: ["infra", "db"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>][oldest] Get ZDD compliancy files"
