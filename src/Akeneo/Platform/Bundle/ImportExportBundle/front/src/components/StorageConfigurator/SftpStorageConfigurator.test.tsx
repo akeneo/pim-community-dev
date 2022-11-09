@@ -12,6 +12,7 @@ test('it renders the sftp storage configurator', () => {
     host: 'example.com',
     fingerprint: 'c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e',
     port: 22,
+    login_type: 'password',
     username: 'root',
     password: 'root',
   };
@@ -30,6 +31,7 @@ test('it allows user to fill file_path field', () => {
     file_path: '/tmp/test.xls',
     host: '',
     port: 22,
+    login_type: 'password',
     username: '',
     password: '',
   };
@@ -59,6 +61,7 @@ test('it allows user to fill host field', () => {
     file_path: '',
     host: 'example.co',
     port: 22,
+    login_type: 'password',
     username: '',
     password: '',
   };
@@ -88,6 +91,7 @@ test('it allows user to fill fingerprint field', () => {
     file_path: '',
     host: 'example.com',
     port: 22,
+    login_type: 'password',
     username: '',
     password: '',
   };
@@ -121,6 +125,7 @@ test('it removes fingerprint from model when clearing input', () => {
     host: 'example.com',
     fingerprint: 'c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e',
     port: 22,
+    login_type: 'password',
     username: '',
     password: '',
   };
@@ -150,6 +155,7 @@ test('it allows user to fill port field', () => {
     file_path: '',
     host: '',
     port: 2,
+    login_type: 'password',
     username: '',
     password: '',
   };
@@ -173,12 +179,44 @@ test('it allows user to fill port field', () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, port: 22});
 });
 
+test('it allows user to change login type', () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.com',
+    port: 22,
+    login_type: 'password',
+    username: '',
+    password: '',
+  };
+
+  const onStorageChange = jest.fn();
+
+  renderWithProviders(
+      <SftpStorageConfigurator
+          storage={storage}
+          fileExtension="xlsx"
+          validationErrors={[]}
+          onStorageChange={onStorageChange}
+      />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.login_type.label'));
+  userEvent.click(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.connection_type.private_key'));
+
+  expect(onStorageChange).toHaveBeenLastCalledWith({
+    ...storage,
+    login_type: 'private_key',
+  });
+});
+
 test('it allows user to fill username field', () => {
   const storage: SftpStorage = {
     type: 'sftp',
     file_path: '',
     host: '',
     port: 22,
+    login_type: 'password',
     username: 'roo',
     password: '',
   };
@@ -208,6 +246,7 @@ test('it allows user to fill password field', () => {
     file_path: '',
     host: '',
     port: 22,
+    login_type: 'password',
     username: '',
     password: 'roo',
   };
@@ -260,6 +299,7 @@ test('it displays validation errors', () => {
     host: 'example.com',
     fingerprint: 'invalid',
     port: 22,
+    login_type: 'password',
     username: 'root',
     password: 'root',
   };
@@ -332,6 +372,7 @@ test('it can check connection', async () => {
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
     port: 22,
+    login_type: 'password',
     username: 'root',
     password: 'root',
   };
@@ -363,6 +404,7 @@ test('it can check connection, display message if error', async () => {
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
     port: 22,
+    login_type: 'password',
     username: 'root',
     password: 'root',
   };

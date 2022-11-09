@@ -114,6 +114,7 @@ test('it renders the storage form configurator if storage is sftp', () => {
     file_path: '',
     host: '',
     port: 22,
+    login_type: 'password',
     username: '',
     password: '',
   };

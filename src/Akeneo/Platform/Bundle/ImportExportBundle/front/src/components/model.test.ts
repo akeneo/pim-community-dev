@@ -36,6 +36,7 @@ test('it returns the default local storage', () => {
     type: 'sftp',
     file_path: 'myfile.csv',
     host: '',
+    login_type: 'password',
     port: 22,
     username: '',
     password: '',

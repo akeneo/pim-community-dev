@@ -1,56 +1,27 @@
 import {act} from '@testing-library/react-hooks';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
 import {SftpStorage} from '../components';
-import {useCheckStorageConnection} from './useCheckStorageConnection';
+import {useGetPublicKey} from './useGetPublicKey';
+import exp from "constants";
 
-test('connection healthy', async () => {
+test('it returns a public key', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
+    json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----'
   }));
 
-  const storage: SftpStorage = {
-    type: 'sftp',
-    file_path: 'test.xlsx',
-    host: '127.0.0.1',
-    port: 22,
-    username: 'sftp',
-    password: 'password',
-  };
-  const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
-  const [, , checkReliability] = result.current;
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useGetPublicKey());
 
-  await act(async () => {
-    await checkReliability();
+  await waitForNextUpdate();
+
+  const expectedPublicKey = '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----';
+  expect(result.current.publicKey).toEqual(expectedPublicKey);
+
+  expect(global.fetch).toBeCalledWith('pimee_job_automation_get_public_key', {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+    method: 'GET',
   });
-
-  const [isValid, canCheckConnection] = result.current;
-
-  expect(isValid).toEqual(true);
-  expect(canCheckConnection).toEqual(false);
-});
-
-test('connection not healthy returns false', async () => {
-  global.fetch = jest.fn().mockImplementation(async () => ({
-    ok: false,
-  }));
-
-  const storage: SftpStorage = {
-    type: 'sftp',
-    file_path: 'test.xlsx',
-    host: '127.0.0.1',
-    port: 22,
-    username: 'sftp',
-    password: 'password',
-  };
-  const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
-  const [, , checkReliability] = result.current;
-
-  await act(async () => {
-    await checkReliability();
-  });
-
-  const [isValid, canCheckConnection] = result.current;
-
-  expect(isValid).toEqual(false);
-  expect(canCheckConnection).toEqual(true);
 });

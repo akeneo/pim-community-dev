@@ -57,6 +57,7 @@ const CopyableIcon = styled(CopyIcon)`
   top: 0;
   margin: 12px;
   color: ${getColor('grey', 100)};
+  cursor: pointer;  
 `;
 
 const SftpStorageConfigurator = ({
@@ -72,7 +73,7 @@ const SftpStorageConfigurator = ({
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
-  const {publicKey} = useGetPublicKey();
+  const publicKey = useGetPublicKey();
 
   const handleFingerprintChange = (fingerprint: string) => {
   }

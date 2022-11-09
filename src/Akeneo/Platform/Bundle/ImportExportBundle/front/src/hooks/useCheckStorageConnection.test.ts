@@ -13,6 +13,7 @@ test('connection healthy', async () => {
     file_path: 'test.xlsx',
     host: '127.0.0.1',
     port: 22,
+    login_type: 'password',
     username: 'sftp',
     password: 'password',
   };
@@ -39,6 +40,7 @@ test('connection not healthy returns false', async () => {
     file_path: 'test.xlsx',
     host: '127.0.0.1',
     port: 22,
+    login_type: 'password',
     username: 'sftp',
     password: 'password',
   };
