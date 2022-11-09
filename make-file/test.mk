@@ -88,7 +88,7 @@ unit-back: var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit te
 	PIM_CONTEXT=channel $(MAKE) channel-unit-back
 	PIM_CONTEXT=performance-analytics $(MAKE) performance-analytics-unit-back
 	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-back
-	$(DOCKER_COMPOSE) run -T --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --format=junit --config phpspec-ee.yml > ../var/tests/phpspec/specs-ge.xml"
+	$(DOCKER_COMPOSE) run -T --rm php vendor/bin/phpspec run --format=junit --config grth/phpspec-ee.yml > var/tests/phpspec/specs-ge.xml
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
@@ -122,7 +122,6 @@ acceptance-back: var/tests/behat #Doc: launch Behat acceptance tests
 	PIM_CONTEXT=channel $(MAKE) channel-acceptance-back
 	PIM_CONTEXT=enrichment-product $(MAKE) enrichment-product-acceptance-back
 	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-acceptance-back
-	${PHP_RUN} vendor/bin/behat --config grth/src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --suite=acceptance_ee --no-interaction --format=progress --strict
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
 
