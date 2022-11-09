@@ -25,14 +25,14 @@ supplier_portal_retailer_comment_product_file:
     path: /{productFileIdentifier}/comment
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\CommentProductFile
-        _feature: supplier_portal_critical_path_collaborate
+        _feature: supplier_portal
     methods: POST
 
 supplier_portal_retailer_product_files_show:
     path: /{productFileIdentifier}
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\GetProductFile
-        _feature: supplier_portal_critical_path_collaborate
+        _feature: supplier_portal
     requirements:
         productFileIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: GET
@@ -41,7 +41,7 @@ supplier_portal_retailer_mark_comments_as_read:
     path: /{productFileIdentifier}/comments/read
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\MarkCommentsAsRead
-        _feature: supplier_portal_critical_path_collaborate
+        _feature: supplier_portal
     requirements:
         productFileIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: POST
