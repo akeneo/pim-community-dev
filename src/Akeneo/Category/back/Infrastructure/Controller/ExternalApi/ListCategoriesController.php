@@ -55,6 +55,7 @@ class ListCategoriesController extends AbstractController
             'page' => 1,
             'limit' => $this->apiConfiguration['pagination']['limit_by_default'],
             'with_count' => 'false',
+            'with_enriched_attributes' => false,
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
