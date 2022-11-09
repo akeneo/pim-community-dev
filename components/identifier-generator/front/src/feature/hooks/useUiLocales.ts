@@ -1,27 +1,21 @@
 import {useQuery} from 'react-query';
 import {UiLocale} from '../models';
 import {useRouter} from '@akeneo-pim-community/shared';
+import {ServerError} from '../errors';
 
-const useUiLocales: () => {
-  data?: UiLocale[];
-  error: Error | null;
-  isSuccess: boolean;
-} = () => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const useUiLocales = () => {
   const router = useRouter();
 
-  const getUiLocales = async () => {
-    return fetch(router.generate('pim_localization_locale_index'), {
+  return useQuery<UiLocale[], Error, UiLocale[]>('getUiLocales', async () => {
+    const response = await fetch(router.generate('pim_localization_locale_index'), {
       method: 'GET',
       headers: [['X-Requested-With', 'XMLHttpRequest']],
-    }).then(res => {
-      if (!res.ok) throw new Error(res.statusText);
-      return res.json();
     });
-  };
+    if (!response.ok) throw new ServerError();
 
-  const {error, data, isSuccess} = useQuery<UiLocale[], Error, UiLocale[]>('getUiLocales', getUiLocales);
-
-  return {data, error, isSuccess};
+    return await response.json();
+  });
 };
 
 export {useUiLocales};

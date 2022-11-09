@@ -15,14 +15,15 @@ use Symfony\Component\Validator\Constraints;
  */
 final class RecomputeProductScoresParameters implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
-    public const LAST_PRODUCT_ID = 'lastProductId';
+    // Keep "lastProductId" value to stay compatible with the pending jobs in the queue
+    public const LAST_PRODUCT_UUID = 'lastProductId';
 
     public function getConstraintCollection(): Constraints\Collection
     {
         return new Constraints\Collection(
             [
                 'fields' => [
-                    self::LAST_PRODUCT_ID => new Constraints\Type('integer'),
+                    self::LAST_PRODUCT_UUID => new Constraints\Type('string'),
                 ],
             ]
         );
@@ -31,7 +32,7 @@ final class RecomputeProductScoresParameters implements ConstraintCollectionProv
     public function getDefaultValues(): array
     {
         return [
-            self::LAST_PRODUCT_ID => 0,
+            self::LAST_PRODUCT_UUID => '',
         ];
     }
 

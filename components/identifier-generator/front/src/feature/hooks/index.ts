@@ -1,4 +1,5 @@
+export * from './useCreateIdentifierGenerator';
 export * from './useIdentifierAttributes';
-export * from './useIdentifierGenerator';
+export * from './useGetIdentifierGenerator';
 export * from './useUiLocales';
-export * from './useGetGenerators';
+export * from './useGetIdentifierGenerators';

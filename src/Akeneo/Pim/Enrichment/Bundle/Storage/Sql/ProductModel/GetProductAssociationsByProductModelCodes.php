@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel;
 
@@ -76,7 +76,7 @@ SQL;
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAllAssociative();
+        );
 
         $results = [];
 

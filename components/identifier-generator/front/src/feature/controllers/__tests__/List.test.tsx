@@ -4,8 +4,8 @@ import {List} from '../';
 
 jest.mock('../../pages/CreateGeneratorModal');
 jest.mock('../../pages/CreateGeneratorPage');
-jest.mock('../../hooks/useGetGenerators', () => ({
-  useGetGenerators: () => ({data: [], isLoading: false}),
+jest.mock('../../hooks/useGetIdentifierGenerators', () => ({
+  useGetIdentifierGenerators: () => ({data: [], isLoading: false}),
 }));
 
 describe('List', () => {
