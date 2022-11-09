@@ -86,7 +86,7 @@ final class ProductModelImagesFromCodes
      *
      * @param array $codes
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\DBALException
      * @return array
      *              [
      *                'image_in_current_or_parent_product_model' => ['product_model_1']
@@ -220,7 +220,7 @@ SQL;
      * @param string $channelCode
      * @param string $localeCode
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\DBALException
      * @return array
      */
     private function getImagesFromSubProductModel(array $codes, string $channelCode, string $localeCode): array
@@ -302,7 +302,7 @@ SQL;
      * @param string $channelCode
      * @param string $localeCode
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\DBALException
      * @return array
      */
     private function getImagesFromVariantProduct(array $codes, string $channelCode, string $localeCode): array

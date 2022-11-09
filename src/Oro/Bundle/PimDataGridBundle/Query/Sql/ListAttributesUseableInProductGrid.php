@@ -56,7 +56,8 @@ SQL;
         $stmt->bindValue('locale', $locale, Types::STRING);
         $stmt->bindValue('search', "%$searchOnLabel%", Types::STRING);
 
-        $attributes = $stmt->executeQuery()->fetchAllAssociative();
+        $stmt->execute();
+        $attributes = $stmt->fetchAllAssociative();
 
         $attributes = array_map(function ($attribute) {
             $attribute['order'] = (int) $attribute['order'];

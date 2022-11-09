@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, screen, waitFor} from '../../tests/test-utils';
+import {fireEvent, mockResponse, render, screen, waitFor} from '../../tests/test-utils';
 import {LabelTranslations} from '../LabelTranslations';
 
 const defaultUiLocales = [
@@ -33,18 +33,13 @@ const labelCollection = {
 
 describe('LabelTranslations', () => {
   it('should render the initial values', async () => {
-    // @ts-ignore
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(defaultUiLocales),
-    });
+    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
 
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
 
     expect(screen.getByText('pim_identifier_generator.general.label_translations_in_ui_locale')).toBeInTheDocument();
     await waitFor(() => screen.getByText('English (United States)'));
-    // expect(screen.getByText('English (United States)')).toBeInTheDocument();
     expect(screen.getByText('French (France)')).toBeInTheDocument();
     expect(screen.getByText('German (Germany)')).toBeInTheDocument();
 
@@ -54,11 +49,7 @@ describe('LabelTranslations', () => {
   });
 
   it('should update label', async () => {
-    // @ts-ignore
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(defaultUiLocales),
-    });
+    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
 
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
@@ -73,17 +64,10 @@ describe('LabelTranslations', () => {
   });
 
   it('should display an error if impossible to fetch locales', async () => {
-    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-    // @ts-ignore
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: false,
-      statusText: 'unexpected error',
-      json: () => Promise.resolve([]),
-    });
-    const onLabelsChange = jest.fn();
+    mockResponse('pim_localization_locale_index', 'GET', {json: [], ok: false});
 
+    const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
-    mockedConsole.mockRestore();
   });
 });

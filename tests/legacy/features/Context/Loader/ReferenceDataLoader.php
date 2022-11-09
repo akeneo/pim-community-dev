@@ -23,13 +23,13 @@ class ReferenceDataLoader
         $query = $manager->createQuery('SELECT COUNT(f) FROM \Acme\Bundle\AppBundle\Entity\Fabric f');
         if (0 === $query->getSingleScalarResult()) {
             $stmt = $manager->getConnection()->prepare($this->getFabricsSql());
-            $stmt->executeStatement();
+            $stmt->execute();
         }
 
         $query = $manager->createQuery('SELECT COUNT(c) FROM \Acme\Bundle\AppBundle\Entity\Color c');
         if (0 === $query->getSingleScalarResult()) {
             $stmt = $manager->getConnection()->prepare($this->getColorSql());
-            $stmt->executeStatement();
+            $stmt->execute();
         }
     }
 
