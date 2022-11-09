@@ -505,10 +505,10 @@ functions.http('createTenant', (req, res) => {
     const body = req.body;
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
-    const tenant_name = body.tenant_name;
+    const tenant_name = body.tenant_name.toLowerCase();
     const extraLabelType = 'srnt';
     const tenant_id = `${extraLabelType}-${tenant_name}`;
-    const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE + "-" + branchName.toLowerCase());
+    const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE + "-" + branchName.toLowerCase().substring(0, 63));
 
     firestoreCollection = `${process.env.REGION}/${pimNamespace}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 

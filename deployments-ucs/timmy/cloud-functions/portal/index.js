@@ -235,7 +235,7 @@ functions.http('requestPortal', (req, res) => {
 
   // Prefix url with branch name if present
   const branchName = (req.body.branchName || DEFAULT_BRANCH_NAME);
-  const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : `pim-${branchName}`).toLowerCase();
+  const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : `pim-${branchName}`).toLowerCase().substring(0, 63);
 
   initializeLogger(branchName);
   logger.info('Recovery of the tenants from the portal');
