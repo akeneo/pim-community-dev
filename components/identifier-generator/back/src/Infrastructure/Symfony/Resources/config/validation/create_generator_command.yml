@@ -9,6 +9,8 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
         structure:
             - NotBlank: ~
+            - Count:
+                  max: 20
             - All:
                 - Collection:
                     fields:

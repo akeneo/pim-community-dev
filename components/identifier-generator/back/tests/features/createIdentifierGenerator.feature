@@ -79,3 +79,8 @@ Feature: Create Identifier Generator
     When I create an identifier generator with delimiter null
     Then The identifier generator is saved in the repository
     And I should not get any error
+
+  Scenario: Cannot create an identifier generator if structure contains more than 20 properties
+    When I try to create an identifier generator with too many properties in structure
+    Then I should get an error with message 'structure: This collection should contain 20 elements or less.'
+    And the identifier should not be created
