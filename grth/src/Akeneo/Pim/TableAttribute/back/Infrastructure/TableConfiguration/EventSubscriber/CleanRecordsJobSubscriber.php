@@ -48,7 +48,7 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
             $recordsDeletedEvent->getReferenceEntityIdentifier()->normalize(),
             array_map(
                 static fn (RecordCode $recordCode): string => $recordCode->normalize(),
-                    $recordsDeletedEvent->getRecordCodes()
+                $recordsDeletedEvent->getRecordCodes()
             )
         );
     }

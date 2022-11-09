@@ -49,7 +49,7 @@ lint-back: #Doc: launch all PHP linter tests
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Permission --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Structure --level 8
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/WorkOrganization --level 2
-	$(MAKE) migration-lint-back
+	PIM_CONTEXT=test $(MAKE) migration-lint-back
 	PIM_CONTEXT=data-quality-insights $(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-lint-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
@@ -61,6 +61,7 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=job-automation $(MAKE) lint-back
 	PIM_CONTEXT=channel $(MAKE) channel-lint-back
 	PIM_CONTEXT=performance-analytics $(MAKE) performance-analytics-lint-back
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-lint-back
 
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
