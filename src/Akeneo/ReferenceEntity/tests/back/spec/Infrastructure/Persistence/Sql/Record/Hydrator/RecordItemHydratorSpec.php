@@ -16,7 +16,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ValueHydratorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItemHydratorInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class RecordItemHydratorSpec extends ObjectBehavior
@@ -27,7 +27,7 @@ class RecordItemHydratorSpec extends ObjectBehavior
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         ValueHydratorInterface $valueHydrator
     ) {
-        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
         $this->beConstructedWith(
             $connection,
             $findRequiredValueKeyCollectionForChannelAndLocales,

@@ -63,7 +63,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
         $pqb = $this->get('pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api')
-            ->create(['limit' => 10]);
+                    ->create(['limit' => 10]);
         $actualProductModelList = $this->getQuery()->fromProductQueryBuilder(
             $pqb,
             $this->getRedactorUserId(),
@@ -155,8 +155,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
     function it_applies_permissions_on_associations_while_retrieving_connector_product_models(): void
     {
         $this->loader->loadProductsForAssociationPermissions();
-        $this->updateProductModelAssociations(
-            'root_product_model',
+        $this->updateProductModelAssociations('root_product_model',
             [
                 'X_SELL' => [
                     'products' => ['product_no_view', 'product_own'],
@@ -164,8 +163,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                 ]
             ]
         );
-        $this->updateProductModelAssociations(
-            'sub_product_model',
+        $this->updateProductModelAssociations('sub_product_model',
             [
                 'X_SELL' => [
                     'products' => ['product_view'],
@@ -379,7 +377,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
     private function getRedactorUserId(): int
     {
         $redactorId = $this->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "mary"');
+                           ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         return (int)$redactorId;
     }
@@ -391,7 +389,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
 
     private function getIdAndDatesFromProductModelCode(string $productModelCode): array
     {
-        return $this->get('database_connection')->fetchAssociative(
+        return $this->get('database_connection')->fetchAssoc(
             'select id, created, updated from pim_catalog_product_model where code = :productModelCode',
             [
                 'productModelCode' => $productModelCode,
@@ -420,4 +418,5 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
+
 }

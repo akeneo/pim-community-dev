@@ -29,7 +29,8 @@ class SavePublishedProductCompletenessesIntegration extends TestCase
         $this->get('feature_flags')->enable('published_product');
     }
 
-    public function test_that_it_clears_existing_completenesses_and_missing_attributes_if_provided_completenesses_are_empty()
+    public function test_that_it_clears_existing_completenesses_and_missing_attributes_if_provided_completenesses_are_empty(
+    )
     {
         $publishedProductId = $this->createPublishedProduct('a_great_product');
         Assert::assertNotEmpty($this->getCompletenessesFromDB($publishedProductId));
@@ -44,10 +45,9 @@ class SavePublishedProductCompletenessesIntegration extends TestCase
     {
         $publishedProductId = $this->createPublishedProduct('a_great_product');
         $collection = new PublishedProductCompletenessCollection(
-            $publishedProductId,
-            [
-                new PublishedProductCompleteness('ecommerce', 'en_US', 5, [])
-            ]
+            $publishedProductId, [
+            new PublishedProductCompleteness('ecommerce', 'en_US', 5, [])
+        ]
         );
         $this->executeSave($collection);
 
@@ -70,23 +70,22 @@ class SavePublishedProductCompletenessesIntegration extends TestCase
         $publishedProductId = $this->createPublishedProduct('a_great_product');
 
         $collection = new PublishedProductCompletenessCollection(
-            $publishedProductId,
-            [
-                new PublishedProductCompleteness('ecommerce', 'en_US', 5, ['a_text']),
-                new PublishedProductCompleteness(
-                    'tablet',
-                    'fr_FR',
-                    10,
-                    [
-                        'a_localized_and_scopable_text_area',
-                        'a_yes_no',
-                        'a_multi_select',
-                        'a_file',
-                        'a_price',
-                        'a_number_float',
-                    ]
-                ),
-            ]
+            $publishedProductId, [
+            new PublishedProductCompleteness('ecommerce', 'en_US', 5, ['a_text']),
+            new PublishedProductCompleteness(
+                'tablet',
+                'fr_FR',
+                10,
+                [
+                    'a_localized_and_scopable_text_area',
+                    'a_yes_no',
+                    'a_multi_select',
+                    'a_file',
+                    'a_price',
+                    'a_number_float',
+                ]
+            ),
+        ]
         );
 
         $this->executeSave($collection);
@@ -160,7 +159,7 @@ FROM pimee_workflow_published_product_completeness completeness
 WHERE product_id = :publishedProductId
 SQL;
         $results = [];
-        $rows = $this->get('database_connection')->executeQuery($sql, ['publishedProductId' => $publishedProductId])->fetchAllAssociative();
+        $rows = $this->get('database_connection')->executeQuery($sql, ['publishedProductId' => $publishedProductId])->fetchAll();
         foreach ($rows as $row) {
             $key = sprintf('%s-%s', $row['channel_code'], $row['locale_code']);
             $results[$key] = $row;
@@ -181,7 +180,7 @@ FROM pimee_workflow_published_product_completeness completeness
 WHERE completeness.product_id = :publishedProductId
 SQL;
         $results = [];
-        $rows = $this->get('database_connection')->executeQuery($sql, ['publishedProductId' => $publishedProductId])->fetchAllAssociative();
+        $rows = $this->get('database_connection')->executeQuery($sql, ['publishedProductId' => $publishedProductId])->fetchAll();
 
         foreach ($rows as $row) {
             $key = sprintf('%s-%s', $row['channel_code'], $row['locale_code']);

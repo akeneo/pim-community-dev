@@ -13,7 +13,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
-use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 
 class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase

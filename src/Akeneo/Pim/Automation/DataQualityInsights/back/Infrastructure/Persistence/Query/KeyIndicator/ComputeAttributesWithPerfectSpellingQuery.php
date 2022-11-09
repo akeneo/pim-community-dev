@@ -64,7 +64,7 @@ SQL;
             [
                 'goodAndToImprove' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchOne();
+        )->fetchColumn();
 
         $result = (false !== $result && null !== $result) ? json_decode($result, true, 512, JSON_THROW_ON_ERROR) : [];
 
@@ -120,7 +120,7 @@ SQL;
                 'goodAndToImprove' => Connection::PARAM_STR_ARRAY,
                 'families' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchOne();
+        )->fetchColumn();
 
         $result = (false !== $result && null !== $result) ? json_decode($result, true, 512, JSON_THROW_ON_ERROR) : [];
 

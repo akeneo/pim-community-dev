@@ -60,7 +60,7 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQueryIntegration extends
 
         $productUuids = $this->get(GetProductIdsWithUpdatedFamilyAttributesListQuery::class)->updatedSince($now, 2);
         $productUuids = iterator_to_array($productUuids);
-        $productUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
+        $productUuids = array_map(fn(ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
 
         $this->assertCount(2, $productUuids);
         $this->assertCount(2, $productUuids[0]);
@@ -157,7 +157,7 @@ SQL;
             'familyId' => $familyId,
         ]);
 
-        return intval($stmt->fetchOne());
+        return intval($stmt->fetchColumn());
     }
 
     private function updateFamilyVersionDate(int $familyId, \DateTimeImmutable $updatedAt, ?int $lastVersionId = null): void

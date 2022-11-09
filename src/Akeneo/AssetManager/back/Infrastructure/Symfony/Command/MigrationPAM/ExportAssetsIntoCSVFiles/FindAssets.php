@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\ExportAssetsIntoCSVFiles;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -17,7 +17,7 @@ class FindAssets
 
     public function fetch(): \Iterator
     {
-        $this->connection->getNativeConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+        $this->connection->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
         $fetchAssetsQuery = <<<SQL
 SELECT 'code', 'categories', 'description', 'end_of_use', 'localized', 'tags'
 UNION ALL

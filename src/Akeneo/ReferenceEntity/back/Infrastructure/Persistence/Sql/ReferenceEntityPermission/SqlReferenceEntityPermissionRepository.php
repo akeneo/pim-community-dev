@@ -11,6 +11,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupPermission;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -40,7 +41,7 @@ class SqlReferenceEntityPermissionRepository implements ReferenceEntityPermissio
                 DELETE FROM akeneo_reference_entity_reference_entity_permissions
                 WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
-            $connection->executeStatement(
+            $connection->executeUpdate(
                 $deleteSql,
                 [
                     'reference_entity_identifier' => $referenceEntityIdentifier
@@ -54,7 +55,7 @@ SQL;
                     VALUES 
                         (:reference_entity_identifier, :user_group_identifier, :right_level);
 SQL;
-                $affectedRows = $this->sqlConnection->executeStatement(
+                $affectedRows = $this->sqlConnection->executeUpdate(
                     $insertSql,
                     $normalizedPermission
                 );

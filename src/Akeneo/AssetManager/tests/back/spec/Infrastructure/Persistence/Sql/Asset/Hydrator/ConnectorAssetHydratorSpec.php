@@ -23,7 +23,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ConnectorA
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\TextConnectorValueTransformer;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class ConnectorAssetHydratorSpec extends ObjectBehavior
@@ -35,7 +35,7 @@ class ConnectorAssetHydratorSpec extends ObjectBehavior
             new TextConnectorValueTransformer(),
         ]);
 
-        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
         $this->beConstructedWith($connection, $valueTransformerRegistry);
     }
 

@@ -1,18 +1,23 @@
 import {DataMapping} from './DataMapping';
 import {CompletenessFilterType, QualityScoreFilterType, CategoryFilterType, EnabledFilterType} from '../components';
+import {uuid} from 'akeneo-design-system';
 
 type Filter = CompletenessFilterType | QualityScoreFilterType | CategoryFilterType | EnabledFilterType;
 
 type CatalogProjectionCollection = CatalogProjection[];
 
 type CatalogProjection = {
+  uuid: string;
   code: string;
+  label: string;
   filters: Filter[];
   dataMappings: DataMapping[];
 };
 
 const getDefaultCatalogProjection = (code: string): CatalogProjection => ({
+  uuid: uuid(),
   code,
+  label: code,
   filters: [],
   dataMappings: [],
 });

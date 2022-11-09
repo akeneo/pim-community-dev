@@ -563,7 +563,7 @@ functions.http('createTenant', (req, res) => {
               resources: {
                 requests: {
                   cpu: "20m",
-                  memory: "1024Mi"
+                  memory: "160Mi"
                 },
                 limits: {
                   memory: "1024Mi"
@@ -571,7 +571,7 @@ functions.http('createTenant', (req, res) => {
               }
             },
             master: {
-              heapSize: "512m",
+              heapSize: "384m",
               resources: {
                 requests: {
                   cpu: "15m",
@@ -587,7 +587,7 @@ functions.http('createTenant', (req, res) => {
               resources: {
                 requests: {
                   cpu: "40m",
-                  memory: "1536Mi"
+                  memory: "768Mi"
                 },
                 limits: {
                   memory: "1740Mi"
@@ -620,7 +620,7 @@ functions.http('createTenant', (req, res) => {
                 memory: "32Mi"
               },
               requests: {
-                cpu: "25m",
+                cpu: "1m",
                 memory: "16Mi"
               }
             }
@@ -630,14 +630,14 @@ functions.http('createTenant', (req, res) => {
               userPassword: mysqlUserPassword,
               rootPassword: mysqlRootPassword,
               dataDiskSize: "10",
-              innodbBufferPoolSize: "2G",
+              innodbBufferPoolSize: "2048M",
               resources: {
                 limits: {
                   memory: "3584Mi"
                 },
                 requests: {
-                  cpu: "100m",
-                  memory: "3584Mi"
+                  cpu: "200m",
+                  memory: "768Mi"
                 }
               }
             },

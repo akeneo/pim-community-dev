@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Platform\Integration\Monitoring\ServiceStatusChecker;
@@ -8,7 +7,7 @@ use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ServiceStatus;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 
 final class MysqlCheckerIntegration extends TestCase

@@ -32,7 +32,7 @@ class ExtractOperationValidator extends ConstraintValidator
                 'regexp' => [
                     new Type('string'),
                     new Length([
-                        'max' => 255,
+                        'max' => 1000,
                         'maxMessage' => 'akeneo.syndication.validation.max_length_reached',
                     ])
                 ]

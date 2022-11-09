@@ -357,8 +357,8 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
                 ->findOneByIdentifier($group)
                 ->getId();
 
-            $actualCompleteness = $this->getConnection()->fetchAssociative(
-                <<<SQL
+            $actualCompleteness = $this->getConnection()->fetchAssoc(
+<<<SQL
 SELECT `cag`.`has_at_least_one_required_attribute_filled`, `cag`.`is_complete`
 FROM `pimee_teamwork_assistant_project` AS `p`
 INNER JOIN `pimee_teamwork_assistant_project_product` AS `pp`
@@ -368,7 +368,8 @@ INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `cag`
 WHERE `p`.`id` = :project_id
 AND `cag`.`attribute_group_id` = :attribute_group_id
 AND `cag`.`product_uuid` = :product_uuid
-SQL,
+SQL
+                ,
                 [
                     'attribute_group_id' => $attributeGroupId,
                     'project_id'         => $project->getId(),
@@ -397,8 +398,8 @@ SQL,
         ProjectInterface $project,
         $expectedCount
     ) {
-        $numberOfRow = (int) $this->getConnection()->fetchOne(
-            <<<SQL
+        $numberOfRow = (int) $this->getConnection()->fetchColumn(
+<<<SQL
 SELECT COUNT(*)
 FROM `pimee_teamwork_assistant_project` AS `p`
 INNER JOIN `pimee_teamwork_assistant_project_product` AS `pp`
@@ -406,7 +407,8 @@ INNER JOIN `pimee_teamwork_assistant_project_product` AS `pp`
 INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `cag`
 	ON `pp`.`product_uuid` = `cag`.`product_uuid` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
 WHERE `p`.`id` = :project_id
-SQL,
+SQL
+            ,
             [
                 'project_id' => $project->getId(),
             ]
@@ -431,7 +433,7 @@ SQL,
         $this->calculateProject($project);
         $sinceDate = $since->format('Y-m-d H:i:s');
 
-        $completenessUpdatedCount = $this->getConnection()->fetchOne(
+        $completenessUpdatedCount = $this->getConnection()->fetchColumn(
             <<<SQL
 SELECT count(*)
 FROM `pimee_teamwork_assistant_project` AS `p`
@@ -441,7 +443,8 @@ INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `cag`
 	ON `pp`.`product_uuid` = `cag`.`product_uuid` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
 WHERE `p`.`id` = :project_id
 AND calculated_at > :calculated_at
-SQL,
+SQL
+            ,
             [
                 'calculated_at' => $sinceDate,
                 'project_id'    => $project->getId(),

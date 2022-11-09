@@ -29,6 +29,11 @@ pimee_syndication_api_catalog_list:
     defaults: { _controller: pim_syndication.controller.platform_configuration.catalog:listAction, _format: json, _list_in_root_endpoint: false}
     methods: [GET]
 
+pimee_syndication_api_catalog_flat_list:
+    path: /api/rest/v1/syndication/catalog
+    defaults: { _controller: pim_syndication.controller.catalog_list, _format: json, _list_in_root_endpoint: false}
+    methods: [GET]
+
 pimee_syndication_api_catalog_product_identifiers:
     path: /api/rest/v1/syndication/platform_configuration/{platformConfigurationCode}/catalog/{catalogCode}/product_identifiers
     defaults: { _controller: pim_syndication.controller.platform_configuration.catalog.product_identifiers:listAction, _format: json, _list_in_root_endpoint: false}

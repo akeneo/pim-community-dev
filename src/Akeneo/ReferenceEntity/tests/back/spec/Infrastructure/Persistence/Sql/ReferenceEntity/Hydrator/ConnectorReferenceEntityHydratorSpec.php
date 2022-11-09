@@ -21,7 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorRefer
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
@@ -30,7 +30,7 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
         Connection $connection,
         FindActivatedLocalesInterface $findActivatedLocales
     ) {
-        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
         $findActivatedLocales->findAll()->willReturn(['en_US', 'fr_FR']);
         $this->beConstructedWith($connection, $findActivatedLocales);
     }
@@ -40,8 +40,7 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
         $this->shouldHaveType(ConnectorReferenceEntityHydrator::class);
     }
 
-    function it_hydrates_a_connector_reference_entity()
-    {
+    function it_hydrates_a_connector_reference_entity() {
         $row = [
             'identifier'                  => 'designer',
             'image_file_key'              => 'test/image_1.jpg',
@@ -69,8 +68,7 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
         $this->hydrate($row)->shouldBeLike($expectedReferenceEntity);
     }
 
-    function it_hydrates_a_reference_entity_without_image()
-    {
+    function it_hydrates_a_reference_entity_without_image() {
         $row = [
             'identifier'                  => 'designer',
             'image_file_key'              => null,
@@ -93,8 +91,7 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
         $this->hydrate($row)->shouldBeLike($expectedReferenceEntity);
     }
 
-    function it_hydrates_a_reference_entity_with_only_labels_from_activated_locales()
-    {
+    function it_hydrates_a_reference_entity_with_only_labels_from_activated_locales() {
         $row = [
             'identifier'                  => 'designer',
             'image_file_key'              => null,

@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductProposals;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Statement;
 use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductProposals;
 use Prophecy\Argument;
 
 class CountProductProposalsSpec extends ObjectBehavior
@@ -20,9 +20,10 @@ class CountProductProposalsSpec extends ObjectBehavior
         $this->shouldImplement(CountProductProposals::class);
     }
 
-    function it_counts_the_total_number_of_product_proposals($connection, Result $result)
+    function it_counts_the_total_number_of_product_proposals($connection, Statement $statement)
     {
-        $connection->fetchOne(Argument::type('string'))->willReturn('42');
+        $connection->query(Argument::type('string'))->willReturn($statement);
+        $statement->fetchColumn(0)->willReturn('42');
 
         $this->fetch()->shouldReturn(42);
     }

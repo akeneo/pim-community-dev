@@ -31,7 +31,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\ChainedRunner;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -190,8 +190,7 @@ final class ExecuteRuleContext implements Context
 
             /** @var ProductCompleteness $completeness */
             foreach ($completenessCollection as $completeness) {
-                if (
-                    $expected['channel'] === $completeness->channelCode()
+                if ($expected['channel'] === $completeness->channelCode()
                     && $expected['locale'] === $completeness->localeCode()
                 ) {
                     $foundCompleteness = $completeness;
@@ -334,7 +333,7 @@ final class ExecuteRuleContext implements Context
             // (it contains a timestamp)
             Assert::true(
                 null !== $productValue->getData() &&
-                    false !== strpos($productValue->getData()->getOriginalFilename(), $value)
+                false !== strpos($productValue->getData()->getOriginalFilename(), $value)
             );
         } elseif ('prices' === $backendType && null !== $priceCurrency) {
             // $priceCurrency can be null if we want to test all the currencies at the same time
@@ -373,8 +372,9 @@ final class ExecuteRuleContext implements Context
         $sql = "SELECT backend_type FROM pim_catalog_attribute WHERE code = :attribute_code";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue("attribute_code", $attributeCode);
+        $stmt->execute();
 
-        return $stmt->executeQuery()->fetchOne();
+        return $stmt->fetch()['backend_type'];
     }
 
     private function checkProductModelField(ProductModelInterface $productModel, string $propertyName, $value): void

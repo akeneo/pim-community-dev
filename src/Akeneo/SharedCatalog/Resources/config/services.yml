@@ -79,7 +79,7 @@ services:
     Akeneo\SharedCatalog\Query\FindProductUuidsQueryInterface:
         class: Akeneo\SharedCatalog\Query\FindProductUuidsQuery
         arguments:
-            - '@pim_enrich.product.query_message_bus'
+            - '@akeneo.shared_catalog.query.product_query_builder_factory'
 
     Akeneo\SharedCatalog\Controller\SharedCatalogListAction:
         arguments:
