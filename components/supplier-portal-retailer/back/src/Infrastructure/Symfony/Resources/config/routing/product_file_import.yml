@@ -9,5 +9,5 @@ supplier_portal_retailer_import_product_file:
     path: /import
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ImportProductFile
-        _feature: supplier_portal_critical_path_collaborate
+        _feature: supplier_portal
     methods: POST
