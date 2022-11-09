@@ -6,10 +6,10 @@ namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Contributors;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Label;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Code;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Contributors;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Label;
 
 final class Supplier
 {

@@ -3,7 +3,7 @@
 namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
 
 interface Repository
 {
