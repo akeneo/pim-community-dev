@@ -1,8 +1,9 @@
 import React from 'react';
-import {act, fireEvent, screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {act, fireEvent, screen, waitFor} from '@testing-library/react';
+import {mockedDependencies, NotificationLevel, renderWithProviders} from '@akeneo-pim-community/shared';
 import {Discussion} from './Discussion';
 import userEvent from '@testing-library/user-event';
+import 'jest-fetch-mock';
 
 const productFile = {
     identifier: '037455b4-24a3-4404-a721-aca6f06d6293',
@@ -13,6 +14,10 @@ const productFile = {
     retailerComments: [],
     supplierComments: [],
 };
+
+beforeEach(() => {
+    fetchMock.resetMocks();
+});
 
 test('it does not enable the send button if the comment textarea is not fulfilled', () => {
     renderWithProviders(
@@ -107,11 +112,6 @@ test('it enables the send button enabled if the comment textarea is fulfilled', 
 });
 
 test('it can save a comment', async () => {
-    global.fetch = jest.fn().mockImplementation(async () => ({
-        ok: true,
-        json: async () => {},
-    }));
-
     const saveComment = jest.fn();
 
     renderWithProviders(<Discussion productFile={productFile} saveComment={saveComment} validationError={null} />);
@@ -127,7 +127,7 @@ test('it can save a comment', async () => {
         );
     });
 
-    expect(saveComment).toHaveBeenCalledTimes(1);
+    expect(saveComment).toHaveBeenNthCalledWith(1, 'This file is outdated, please send 2022 version instead.', 'email');
 });
 
 test('it displays an error message', async () => {
@@ -138,11 +138,39 @@ test('it displays an error message', async () => {
 });
 
 test('it marks the discussion as read', async () => {
-    global.fetch = jest.fn().mockImplementationOnce(async () => ({
-        ok: true,
-    }));
+    let hasCalledMarkAsRead = false;
+    fetchMock.mockResponse((request: Request) => {
+        if (request.url.includes('supplier_portal_retailer_mark_comments_as_read')) {
+            hasCalledMarkAsRead = true;
+            return Promise.resolve({status: 200});
+        }
+
+        throw new Error(`The "${request.url}" url is not mocked.`);
+    });
 
     renderWithProviders(<Discussion productFile={productFile} saveComment={jest.fn()} validationError={null} />);
 
-    expect(global.fetch).toHaveBeenCalled();
+    expect(hasCalledMarkAsRead).toBeTruthy();
+    expect(fetchMock).toHaveBeenNthCalledWith(1, 'supplier_portal_retailer_mark_comments_as_read', {method: 'POST'});
+});
+
+test('it displays an error message if it failed to mark the discussion as read', async () => {
+    fetchMock.mockResponse((request: Request) => {
+        if (request.url.includes('supplier_portal_retailer_mark_comments_as_read')) {
+            return Promise.resolve({status: 404});
+        }
+
+        throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+    const notify = jest.spyOn(mockedDependencies, 'notify');
+
+    renderWithProviders(<Discussion productFile={productFile} saveComment={jest.fn()} validationError={null} />);
+
+    await waitFor(() => {
+        expect(notify).toHaveBeenNthCalledWith(
+            1,
+            NotificationLevel.ERROR,
+            'supplier_portal.product_file_dropping.supplier_files.discussion.product_file_does_not_exist_anymore'
+        );
+    });
 });
