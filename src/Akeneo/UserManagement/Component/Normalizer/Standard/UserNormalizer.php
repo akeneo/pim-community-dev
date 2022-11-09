@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Component\Normalizer\Standard;
 
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -45,9 +46,11 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'default_category_tree' => $user->getDefaultTree()->getCode(),
             'user_default_locale' => $user->getUiLocale()->getCode(),
             'timezone' => $user->getTimezone(),
-            'groups' => $user->getGroupNames(),
+            'groups' => array_filter($user->getGroupNames(), function (string $groupName) {
+                return $groupName !== User::GROUP_DEFAULT;
+            }),
             'roles' => $user->getRolesCollection()->map(
-                fn (RoleInterface $role): string => $role->getRole()
+                fn(RoleInterface $role): string => $role->getRole()
             )->getValues(),
             'product_grid_filters' => $user->getProductGridFilters(),
             'default_product_grid_view' => $user->getDefaultGridView('product-grid') ?

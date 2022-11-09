@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-10664 Fix expand/collapse arrow disappearing after category creation
+- PIM-10699: Fix "All" is exported allong with the user groups on the user export
 
 # 6.0.51 (2022-11-03)
 
