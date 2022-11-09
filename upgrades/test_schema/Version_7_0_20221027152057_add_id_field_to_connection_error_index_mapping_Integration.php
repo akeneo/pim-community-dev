@@ -37,10 +37,8 @@ class Version_7_0_20221027152057_add_id_field_to_connection_error_index_mapping_
         $this->connectionErrorClient = $this->get('akeneo_connectivity.client.connection_error');
     }
 
-    /** @test */
-    public function it_adds_the_entity_updated_property_to_the_mapping(): void
+    public function test_it_adds_the_id_property_to_the_mapping(): void
     {
-
         $this->recreateConnectionErrorIndexWithoutIdInTheMapping();
         $properties = $this->getMappingProperties();
         self::assertArrayNotHasKey('id', $properties);
@@ -50,6 +48,39 @@ class Version_7_0_20221027152057_add_id_field_to_connection_error_index_mapping_
         $properties = $this->getMappingProperties();
         self::assertArrayHasKey('id', $properties);
         self::assertSame(['type' => 'keyword'], $properties['id']);
+    }
+
+    public function test_it_changes_the_id_property_from_text_to_keyword(): void
+    {
+        $this->recreateConnectionErrorIndexWithoutIdInTheMapping();
+        self::assertArrayNotHasKey('id', $this->getMappingProperties());
+
+        $this->nativeClient->index([
+            'index' => self::getContainer()->getParameter('connection_error_index_name'),
+            'body' => [
+                'id' => 'aa63292c-a06c-4c50-afb9-c98c97dc8a13',
+                'connection_code' => 'foo',
+                'content' => [],
+                'error_datetime' => '2021-01-03T02:30:00+01:00',
+            ],
+        ]);
+        $this->nativeClient->indices()->refresh();
+        self::assertSame('text', $this->getMappingProperties()['id']['type']);
+
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+
+        $properties = $this->getMappingProperties();
+        self::assertSame('keyword', $properties['id']['type']);
+
+        $documents = $this->nativeClient->search([
+            'index' => self::getContainer()->getParameter('connection_error_index_name'),
+        ]);
+        self::assertSame([
+            'id' => 'aa63292c-a06c-4c50-afb9-c98c97dc8a13',
+            'connection_code' => 'foo',
+            'content' => [],
+            'error_datetime' => '2021-01-03T02:30:00+01:00',
+        ], $documents['hits']['hits'][0][('_source')]);
     }
 
     private function recreateConnectionErrorIndexWithoutIdInTheMapping(): void
