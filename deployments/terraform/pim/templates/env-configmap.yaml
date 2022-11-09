@@ -107,7 +107,6 @@ data:
   FLAG_MARKETPLACE_FAKE_APPS_ENABLED: "1"
   FLAG_APP_DEVELOPER_MODE_ENABLED: "1"
   FLAG_SUPPLIER_PORTAL_ENABLED: "1"
-  FLAG_SUPPLIER_PORTAL_CRITICAL_PATH_COLLABORATE_ENABLED: "1"
   {{- end }}
 
   {{- if eq ((index .Values.global.extraLabels "tags.akeneo.com/product_reference_code") | toString) "growth_edition_dev" }}
