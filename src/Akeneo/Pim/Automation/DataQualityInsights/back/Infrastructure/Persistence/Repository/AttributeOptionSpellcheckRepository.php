@@ -101,7 +101,7 @@ SQL
             $queryParameters['attributeOptionCode'] = $attributeOptionCode;
         }
 
-        $queryParts[] = 'AND attribute_option.id IS NULL OR attribute.id IS NULL';
+        $queryParts[] = 'AND (attribute_option.id IS NULL OR attribute.id IS NULL)';
 
         $query = join("\n", $queryParts);
 

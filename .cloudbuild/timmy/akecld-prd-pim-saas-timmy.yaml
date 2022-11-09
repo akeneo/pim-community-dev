@@ -1,0 +1,59 @@
+steps:
+  - name: aquasec/tfsec
+    args:
+      - '-c'
+      - |
+        if [ -d "deployments-ucs/timmy/terraform/${_CLUSTER_ENV}" ]; then
+          tfsec deployments-ucs/timmy/terraform/${_CLUSTER_ENV}/ \
+              -m MEDIUM
+        else
+          echo "No files for deployments-ucs/timmy/terraform/${_CLUSTER_ENV}. Exiting"
+        fi
+    id: tf sec
+    entrypoint: sh
+  - name: 'hashicorp/terraform:1.1.3'
+    env:
+      - TF_IN_AUTOMATION=true
+      - 'GOOGLE_IMPERSONATE_SERVICE_ACCOUNT=${_TARGET_IMPERSONATE}'
+    args:
+      - '-c'
+      - |
+        if [ -d "deployments-ucs/timmy/terraform/${_CLUSTER_ENV}/" ]; then
+          cd deployments-ucs/timmy/terraform/${_CLUSTER_ENV}
+          echo "*************** TERRAFORM PLAN ******************"
+          echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
+          echo "*************************************************"
+          terraform init -backend-config=./backends/${_GOOGLE_CLUSTER_REGION}.hcl -reconfigure  -no-color
+          terraform workspace select ${BRANCH_NAME} || terraform workspace new ${BRANCH_NAME}
+          terraform  plan -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME}
+        else
+          echo "No files for ${_GOOGLE_PROJECT_ID}. Exiting"
+        fi
+    id: tf plan
+    entrypoint: sh
+  - name: 'hashicorp/terraform:1.1.3'
+    env:
+      - TF_IN_AUTOMATION=true
+      - TF_LOG=debug
+      - 'GOOGLE_IMPERSONATE_SERVICE_ACCOUNT=${_TARGET_IMPERSONATE}'
+    args:
+      - '-c'
+      - |
+        if [ "${BRANCH_NAME}" != "master" ]; then
+          echo "Not on branch master. Leaving ..."
+        else
+          if [ -d "deployments-ucs/timmy/terraform/${_CLUSTER_ENV}/" ]; then
+            cd deployments-ucs/timmy/terraform/${_CLUSTER_ENV}
+            echo "*************** TERRAFORM APPLY ******************"
+            echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
+            echo "*************************************************"
+            terraform init -backend-config=./backends/${_GOOGLE_CLUSTER_REGION}.hcl -reconfigure  -no-color
+            terraform workspace select ${BRANCH_NAME} || terraform workspace new ${BRANCH_NAME}
+            terraform  apply -input=false -auto-approve  -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME} -no-color
+          else
+            echo "No files for ${_GOOGLE_PROJECT_ID}. Exiting"
+          fi
+        fi
+    id: tf apply
+    entrypoint: sh
+logsBucket: 'gs://${_GOOGLE_PROJECT_ID}-cloudbuild-logs'

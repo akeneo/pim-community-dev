@@ -54,5 +54,5 @@ variable "target_project_id" {
 
 variable "impersonate" {
   type    = string
-  default = "main_service_account"
+  default = "main-service-account"
 }
