@@ -20,6 +20,7 @@ locals {
   region                       = "europe-west1"
   multi_region                 = "EU"
   shared_dns_zone              = "pim.akeneo.cloud"
+  regions                      = [ "europe-west1", "europe-west3", "us-central1", "australia-southeast1" ]
 }
 
 module "secrets" {
@@ -133,6 +134,21 @@ module "cloud_build_timmy_pim_saas_dev_europe_west3" {
   target_project_id            = "akecld-prd-pim-saas-dev"
   env                          = "dev"
   region                       = "europe-west3"
+}
+
+module "cloud_build_timmy_pim_saas_demo" {
+  source                       = "../modules/cloudbuild-timmy"
+  for_each                     = toset(local.regions)
+  project_id                   = local.project_id
+  trigger_name                 = "akecld-prd-pim-saas-demo-${each.key}-timmy"
+  cloudbuild_filename          = ".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml"
+  cloudbuild_included_files    = [".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml", "deployments-ucs/timmy/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
+  cloudbuild_service_account   = local.main_sa
+  target_project_id            = "akecld-prd-pim-saas-demo"
+  env                          = "demo"
+  region                       = each.key
 }
 
 module "cloud_build_cluster_pim_saas_dev_europe_west3" {
