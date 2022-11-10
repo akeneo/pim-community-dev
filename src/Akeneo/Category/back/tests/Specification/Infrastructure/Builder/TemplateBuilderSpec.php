@@ -73,10 +73,10 @@ class TemplateBuilderSpec extends ObjectBehavior
         $descriptionAttribute->getOrder()->intValue()->shouldReturn(1);
         $descriptionAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Description');
 
-        $imageAttribute = $template->getAttributeCollection()->getAttributeByCode('banner_image');
+        $imageAttribute = $template->getAttributeCollection()->getAttributeByCode('hero_banner');
         $imageAttribute->getType()->__toString()->shouldReturn(AttributeType::IMAGE);
         $imageAttribute->getOrder()->intValue()->shouldReturn(2);
-        $imageAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Banner image');
+        $imageAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Hero Banner');
 
         $metaTitleAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_meta_title');
         $metaTitleAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXT);
