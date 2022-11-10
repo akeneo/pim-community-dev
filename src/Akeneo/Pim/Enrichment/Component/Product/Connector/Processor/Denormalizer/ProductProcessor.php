@@ -66,13 +66,13 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     {
         $itemHasStatus = isset($item['enabled']);
         if (!isset($item['enabled'])) {
-            $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');
+            $item['enabled'] = $this->stepExecution->getJobParameters()->get('enabled');
         }
 
         $identifier = $this->getIdentifier($item);
-
-        if (null === $identifier) {
-            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        $uuid = $this->getUuid($item);
+        if (null !== $uuid && !Uuid::isValid($uuid)) {
+            $this->skipItemWithMessage($item, 'The uuid must be valid');
         }
 
         $parentProductModelCode = $item['parent'] ?? '';
@@ -82,10 +82,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             unset($item['parent']);
         }
 
-        if (\key_exists('uuid', $item) && $item['uuid'] !== '' && !Uuid::isValid($item['uuid'])) {
-            $this->skipItemWithMessage($item, 'The uuid must be valid');
-        }
-
         try {
             $familyCode = $this->getFamilyCode($item);
             $item['family'] = $familyCode;
@@ -93,7 +89,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $item = $this->productAttributeFilter->filter($item);
             $filteredItem = $this->filterItemData($item);
 
-            $uuid = \key_exists('uuid', $item) ? $item['uuid'] !== '' ? $item['uuid'] : null : null;
             $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $uuid);
         } catch (AccessDeniedException $e) {
             throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
@@ -188,14 +183,18 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         return $this->productFilter->filter($product, $filteredItem);
     }
 
-    /**
-     * @param array $item
-     *
-     * @return string|null
-     */
-    protected function getIdentifier(array $item)
+    protected function getIdentifier(array $item): ?string
     {
-        return isset($item['identifier']) ? $item['identifier'] : null;
+        $identifier = $item['identifier'] ?? null;
+
+        return ('' !== $identifier) ? $identifier : null;
+    }
+
+    protected function getUuid(array $item): ?string
+    {
+        $uuid = $item['uuid'] ?? null;
+
+        return ('' !== $uuid) ? $uuid : null;
     }
 
     /**

@@ -29,7 +29,7 @@ class FindProductToImport
      * Find the product to import
      */
     public function fromFlatData(
-        string $productIdentifierCode,
+        ?string $productIdentifierCode,
         string $familyCode,
         ?string $uuid = null,
     ): ProductInterface {
@@ -37,9 +37,7 @@ class FindProductToImport
         if (null !== $uuid) {
             Assert::methodExists($this->productRepository, 'findOneByUuid');
             $product = $this->productRepository->findOneByUuid(Uuid::fromString($uuid));
-        }
-
-        if (null === $product) {
+        } elseif (null !== $productIdentifierCode) {
             $product = $this->productRepository->findOneByIdentifier($productIdentifierCode);
         }
 

@@ -388,6 +388,7 @@ class Product implements ArrayConverterInterface
     {
         $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
         $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+        $isProductUuidAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_UUID_ASSOCIATION_SUFFIX);
         $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
         $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
         $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
@@ -395,10 +396,11 @@ class Product implements ArrayConverterInterface
         foreach (array_keys($mappedItem) as $field) {
             $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
             $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
+            $isProductUuid = (1 === preg_match($isProductUuidAssociationPattern, $field));
             $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
             $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
             $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
-            if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
+            if ($isGroup || $isProduct || $isProductUuid || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
                 unset($mappedItem[$field]);
             }
         }

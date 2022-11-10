@@ -494,43 +494,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
-    function it_skips_a_product_when_identifier_is_empty($stepExecution, JobParameters $jobParameters)
-    {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enabledComparison')->willReturn(true);
-        $jobParameters->get('familyColumn')->willReturn('family');
-        $jobParameters->get('categoriesColumn')->willReturn('categories');
-        $jobParameters->get('groupsColumn')->willReturn('groups');
-        $jobParameters->get('enabled')->willReturn(true);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-        $jobParameters->get('convertVariantToSimple')->willReturn(false);
-
-        $convertedData = [
-            'identifier' => null,
-            'values'     => [
-                'sku' => [
-                    [
-                        'locale' => null,
-                        'scope' =>  null,
-                        'data' => null
-                    ],
-                ]
-            ],
-            'family' => 'Tshirt'
-        ];
-
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
-
-        $this
-            ->shouldThrow(InvalidItemException::class)
-            ->during(
-                'process',
-                [$convertedData]
-            );
-    }
-
     function it_skips_a_product_when_update_fails(
         $productToImport,
         $productUpdater,
