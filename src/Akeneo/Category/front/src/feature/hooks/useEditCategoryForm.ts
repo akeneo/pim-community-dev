@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
+import {useCallback, useContext, useEffect, useState} from 'react';
 import {set, cloneDeep} from 'lodash/fp';
 import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 

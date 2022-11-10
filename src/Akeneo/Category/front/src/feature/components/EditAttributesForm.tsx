@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useMemo, useContext} from 'react';
+import React, {useCallback, useMemo, useContext} from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Helper} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';

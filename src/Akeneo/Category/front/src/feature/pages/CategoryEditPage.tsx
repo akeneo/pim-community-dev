@@ -67,13 +67,10 @@ const CategoryEditPage: FC = () => {
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const [tree, setTree] = useState<EnrichCategory | null>(null);
 
-
-
   const {
     category,
     template,
     categoryFetchingStatus,
-    templateFetchingStatus,
     applyPermissionsOnChildren,
     onChangeCategoryLabel,
     onChangePermissions,
