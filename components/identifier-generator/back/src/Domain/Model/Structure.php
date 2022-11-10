@@ -71,12 +71,4 @@ final class Structure
     {
         return $this->properties;
     }
-
-    public function generate(?Delimiter $delimiter): string
-    {
-        return \implode(
-            $delimiter?->asString() ?? '',
-            array_map(fn (PropertyInterface $property): string => $property->generate(), $this->properties)
-        );
-    }
 }

@@ -2,8 +2,10 @@
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommandHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Product;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -12,6 +14,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class SetIdentifiersSubscriber implements EventSubscriberInterface
 {
     /** @var IdentifierGenerator[]|null */
@@ -19,12 +25,14 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private GenerateIdentifierCommandHandler $generateIdentifierCommandHandler,
         private ValidatorInterface $validator,
     ) {
     }
 
     public static function getSubscribedEvents(): array
     {
+        // TODO The subscriber is not called when product is not dirty
         return [
             StorageEvents::PRE_SAVE => 'setIdentifier',
             StorageEvents::PRE_SAVE_ALL => 'setIdentifiers',
@@ -53,13 +61,13 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function generateIdentifier(ProductInterface $originalProduct): void
+    private function generateIdentifier(ProductInterface $product): void
     {
-        $product = new Product($originalProduct->getIdentifier());
+        $productProjection = new ProductProjection($product->getIdentifier());
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
-            if ($identifierGenerator->match($product)) {
+            if ($identifierGenerator->match($productProjection)) {
                 try {
-                    $this->setGeneratedIdentifier($identifierGenerator, $originalProduct);
+                    $this->setGeneratedIdentifier($identifierGenerator, $product);
                 } catch (\Exception $e) {
                 }
             }
@@ -70,7 +78,9 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         IdentifierGenerator $identifierGenerator,
         ProductInterface $product
     ): void {
-        $newIdentifier = $identifierGenerator->generate();
+        $command = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
+        $newIdentifier = ($this->generateIdentifierCommandHandler)($command);
+
         $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);
         $product->addValue($value);
         // TODO This seems not working as I don't have an issue with duplicate identifiers.

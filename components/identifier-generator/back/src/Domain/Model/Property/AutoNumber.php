@@ -68,10 +68,4 @@ final class AutoNumber implements PropertyInterface
     {
         return $this->digitsMin;
     }
-
-    public function generate(): string
-    {
-        // TODO Use real generation
-        return '' . rand(0, 10000);
-    }
 }

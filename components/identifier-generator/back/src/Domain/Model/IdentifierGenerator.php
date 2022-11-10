@@ -102,15 +102,10 @@ final class IdentifierGenerator
         ];
     }
 
-    public function match(Product $product): bool
+    public function match(ProductProjection $productProjection): bool
     {
-        $identifierValue = $product->identifier();
+        $identifierValue = $productProjection->identifier();
 
         return (null === $identifierValue || '' === $identifierValue);
-    }
-
-    public function generate(): string
-    {
-        return $this->structure->generate($this->delimiter);
     }
 }
