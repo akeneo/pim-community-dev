@@ -348,8 +348,7 @@ test('it throws an exception when passing a non-sftp storage', async () => {
     file_path: '/tmp/file.xlsx',
   };
 
-  expect(async () =>
-      await act(async () => {
+  expect(() =>
         renderWithProviders(
             <SftpStorageConfigurator
                 storage={storage}
@@ -358,7 +357,6 @@ test('it throws an exception when passing a non-sftp storage', async () => {
                 onStorageChange={jest.fn()}
             />
         )
-      })
   ).toThrowError('Invalid storage type "local" for sftp storage configurator');
 
   mockedConsole.mockRestore();
@@ -440,7 +438,7 @@ test('it displays validation errors', async () => {
   expect(screen.getByText('error.key.a_password_error')).toBeInTheDocument();
 });
 
-test.only('it can check connection', async () => {
+test('it can check connection', async () => {
   const storage: SftpStorage = {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',

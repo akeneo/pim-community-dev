@@ -154,11 +154,6 @@ const SftpStorageConfigurator = ({
             </SelectInput.Option>
           ))}
         </SelectInput>
-        {filterErrors(validationErrors, '[login_type]').map((error, index) => (
-          <Helper key={index} inline={true} level="error">
-            {translate(error.messageTemplate, error.parameters)}
-          </Helper>
-        ))}
       </Field>
 
       <TextField
