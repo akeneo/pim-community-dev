@@ -2,9 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Category\Domain\Model\Classification\CategoryTree;
-use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
@@ -55,59 +52,12 @@ class CategoryTreeController extends AbstractController
         private CategoryItemsCounterInterface $categoryItemsCounter,
         private CountTreesChildrenInterface $countTreesChildrenQuery,
         private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
-        private GetCategoryInterface $getCategory,
-        private GetCategoryTreesInterface $getCategoryTrees,
-        private FeatureFlags $featureFlags,
         array $rawConfiguration,
+        private FeatureFlags $featureFlags,
     ) {
         $resolver = new OptionsResolver();
         $this->configure($resolver);
         $this->rawConfiguration = $resolver->resolve($rawConfiguration);
-    }
-
-    /**
-     * List category trees. The select_node_id request parameter
-     * allow to send back the tree where the node belongs with a selected  reef attribute
-     *
-     * @param Request $request
-     *
-     * @return Response
-     * @throws AccessDeniedException
-     *
-     */
-    public function listTreeAction(Request $request): Response
-    {
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
-            throw new AccessDeniedException();
-        }
-
-        $selectNodeId = $request->get('select_node_id', -1);
-
-        $selectNode = $this->getCategory->byId($selectNodeId);
-        if (!$selectNode) {
-            $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration['related_entity']);
-        }
-
-        $trees = $this->getCategoryTrees->getAll();
-
-        if ($selectNode instanceof CategoryTree) {
-            $selectedTreeId = $selectNode->getId()->getValue();
-        } else {
-            $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
-        }
-
-        $formatedTrees = array_map(function (CategoryTree $tree) use ($selectedTreeId) {
-            return [
-                'id' => $tree->getId()->getValue(),
-                'code' => (string) $tree->getCode(),
-                'label' => $tree->getLabel($this->userContext->getCurrentLocaleCode()),
-                'templateUuid' => (string) $tree->getCategoryTreeTemplate()?->getTemplateUuid(),
-                'templateLabel' => $tree->getCategoryTreeTemplate()?->getTemplateLabel($this->userContext->getCurrentLocaleCode()),
-                'selected' => $tree->getId()?->getValue() === $selectedTreeId ? 'true' : 'false'
-            ];
-        }, $trees);
-
-        return new JsonResponse($formatedTrees);
     }
 
     /**

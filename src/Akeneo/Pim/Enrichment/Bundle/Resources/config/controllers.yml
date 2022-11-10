@@ -10,6 +10,20 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_pdf_generator.renderer.registry'
 
+    pim_enrich.controller.category_tree.product:
+        public: true
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryTreeController'
+        arguments:
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Domain\Query\GetCategoryTreesInterface'
+            - '@feature_flags'
+            - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
     pim_comment.controller.comment:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CommentController'
@@ -347,7 +361,7 @@ services:
             - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
             - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
 
-    pim_enrich.controller.category_tree.product:
+    pim_enrich.controller.category_tree.product_legacy:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
@@ -364,10 +378,8 @@ services:
             - '@pim_enrich.doctrine.counter.category_product'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
             - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
-            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
-            - '@Akeneo\Category\Domain\Query\GetCategoryTreesInterface'
-            - '@feature_flags'
             - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - '@feature_flags'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
