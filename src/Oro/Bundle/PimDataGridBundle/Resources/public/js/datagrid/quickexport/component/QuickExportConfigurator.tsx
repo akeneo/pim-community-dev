@@ -8,6 +8,7 @@ import {FileXlsxIcon, FileCsvIcon, Modal, Button, useBooleanState} from 'akeneo-
 type QuickExportConfiguratorProps = {
   showWithLabelsSelect: boolean;
   showWithMediaSelect: boolean;
+  showWithUuidSelect: boolean;
   onActionLaunch: (formValue: FormValue) => void;
   getProductCount: () => number;
 };
@@ -15,6 +16,7 @@ type QuickExportConfiguratorProps = {
 const QuickExportConfigurator = ({
   showWithLabelsSelect,
   showWithMediaSelect,
+  showWithUuidSelect,
   onActionLaunch,
   getProductCount,
 }: QuickExportConfiguratorProps) => {
@@ -27,7 +29,8 @@ const QuickExportConfigurator = ({
     undefined !== formValue.type &&
     undefined !== formValue.context &&
     (undefined !== formValue.with_media || !showWithMediaSelect) &&
-    (undefined !== formValue['with-labels'] || !showWithLabelsSelect);
+    (undefined !== formValue['with-labels'] || !showWithLabelsSelect) &&
+    (undefined !== formValue.with_uuid || !showWithUuidSelect);
 
   return (
     <>
@@ -108,6 +111,19 @@ const QuickExportConfigurator = ({
                 </Option>
                 <Option value="true" title={translate('pim_datagrid.mass_action.quick_export.configurator.with_media')}>
                   {translate('pim_datagrid.mass_action.quick_export.configurator.with_media')}
+                </Option>
+              </Select>
+            )}
+            {showWithMediaSelect && (
+              <Select name="with_uuid">
+                <Option
+                  value="false"
+                  title={translate('pim_datagrid.mass_action.quick_export.configurator.without_uuid')}
+                >
+                  {translate('pim_datagrid.mass_action.quick_export.configurator.without_uuid')}
+                </Option>
+                <Option value="true" title={translate('pim_datagrid.mass_action.quick_export.configurator.with_uuid')}>
+                  {translate('pim_datagrid.mass_action.quick_export.configurator.with_uuid')}
                 </Option>
               </Select>
             )}

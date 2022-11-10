@@ -11,6 +11,7 @@ test('it displays a button and no modal initially', () => {
     <QuickExportConfigurator
       showWithLabelsSelect={true}
       showWithMediaSelect={true}
+      showWithUuidSelect={true}
       onActionLaunch={onActionLaunch}
       getProductCount={getProductCount}
     />
@@ -28,6 +29,7 @@ test('it does not call the action launch if an option is not set', () => {
     <QuickExportConfigurator
       showWithLabelsSelect={true}
       showWithMediaSelect={true}
+      showWithUuidSelect={true}
       onActionLaunch={onActionLaunch}
       getProductCount={getProductCount}
     />
@@ -50,6 +52,7 @@ test('it does call the action launch if every option is set', () => {
     <QuickExportConfigurator
       showWithLabelsSelect={true}
       showWithMediaSelect={true}
+      showWithUuidSelect={true}
       onActionLaunch={onActionLaunch}
       getProductCount={getProductCount}
     />
@@ -92,6 +95,7 @@ test('it does not display the with-labels select if specified', () => {
     <QuickExportConfigurator
       showWithLabelsSelect={false}
       showWithMediaSelect={true}
+      showWithUuidSelect={true}
       onActionLaunch={onActionLaunch}
       getProductCount={getProductCount}
     />
@@ -108,6 +112,7 @@ test('it does not display the with-media select if specified', () => {
     <QuickExportConfigurator
       showWithLabelsSelect={true}
       showWithMediaSelect={false}
+      showWithUuidSelect={true}
       onActionLaunch={onActionLaunch}
       getProductCount={getProductCount}
     />

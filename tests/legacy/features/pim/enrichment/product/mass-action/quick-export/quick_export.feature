@@ -33,6 +33,7 @@ Feature: Quick export many products from datagrid
     And I press the "Quick Export" button
     And I press the "CSV" button
     And I press the "All attributes" button
+    And I press the "With UUID" button
     And I press the "With codes" button
     And I press the "With media" button
     And I press the "Export" button
@@ -61,6 +62,7 @@ Feature: Quick export many products from datagrid
     And I press the "Quick Export" button
     And I press the "XLSX" button
     And I press the "All attributes" button
+    And I press the "With UUID" button
     And I press the "With codes" button
     And I press the "With media" button
     And I press the "Export" button

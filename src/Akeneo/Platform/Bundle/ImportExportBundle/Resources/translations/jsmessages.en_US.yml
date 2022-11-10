@@ -157,7 +157,10 @@ pim_import_export:
                         help: Define the locale in which labels are displayed
                     with_uuid:
                         title: With product UUID
-                        help: Export the product's UUID as the first column
+                        help: Export the product's and associated prodtucts UUID
+                    with_uuid_for_models:
+                        title: With product UUID
+                        help: Export associated product UUID instead of their identifier
             file_path: File path
             storage_form:
                 title: Storage

@@ -33,6 +33,7 @@ Feature: Quick export many products with localized attributes from datagrid
     And I press the "Export rapide" button
     And I press the "XLSX" button
     And I press the "Tous les attributs" button
+    And I press the "With UUID" button
     And I press the "Avec codes" button
     And I press the "Avec images" button
     And I press the "Export" button

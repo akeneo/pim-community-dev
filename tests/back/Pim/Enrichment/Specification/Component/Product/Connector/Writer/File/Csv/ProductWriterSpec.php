@@ -167,10 +167,10 @@ class ProductWriterSpec extends ObjectBehavior
                 'data' => 'a/b/c/123456_filename.jpg',
             ],
             [
-                'identifier' => '47617b09-f227-4ae5-b55d-287cd237cfe6',
+                'identifier' => 'jacket',
                 'code' => 'media',
             ]
-        )->shouldBeCalled()->willReturn('files/47617b09-f227-4ae5-b55d-287cd237cfe6/media/');
+        )->shouldBeCalled()->willReturn('files/jacket/media/');
 
         $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
         $catalogFilesystem->fileExists('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn(true);
@@ -183,7 +183,7 @@ class ProductWriterSpec extends ObjectBehavior
                         [
                             'locale' => null,
                             'scope' => null,
-                            'data' => 'files/47617b09-f227-4ae5-b55d-287cd237cfe6/media/the file name.jpg',
+                            'data' => 'files/jacket/media/the file name.jpg',
                         ],
                     ],
                 ],
@@ -213,7 +213,7 @@ class ProductWriterSpec extends ObjectBehavior
                 WrittenFileInfo::fromFileStorage(
                     'a/b/c/123456_filename.jpg',
                     'catalogStorage',
-                    'files/47617b09-f227-4ae5-b55d-287cd237cfe6/media/the file name.jpg'
+                    'files/jacket/media/the file name.jpg'
                 ),
             ]
         );
@@ -235,6 +235,7 @@ class ProductWriterSpec extends ObjectBehavior
                 'withHeader' => true,
                 'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'with_media' => true,
+                'with_uuid' => true,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
             ]
         );
@@ -243,16 +244,14 @@ class ProductWriterSpec extends ObjectBehavior
 
         $productStandard = [
             'uuid' => '93700f68-51ec-464a-8c47-ca9ac92d0b5c',
-            'identifier' => 'sku042',
+            'identifier' => null,
             'values' => [
-                'sku' => [['locale' => null, 'scope' => null, 'data' => 'sku042']],
                 'media' => [['locale' => null, 'scope' => null, 'data' => 'a/b/c/abc123_filename.png']],
             ],
         ];
-        $attributeRepository->getAttributeTypeByCodes(['sku', 'media'])
+        $attributeRepository->getAttributeTypeByCodes(['media'])
             ->shouldBeCalled()
             ->willReturn([
-                'sku' => 'pim_catalog_identifier',
                 'media' => 'pim_catalog_image',
             ]);
 
@@ -294,8 +293,8 @@ class ProductWriterSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         // product standard has not been updated with the generated file path
-        $arrayConverter->convert($productStandard, [])->shouldBeCalled()->willReturn([
-            'identifier' => 'sku042',
+        $arrayConverter->convert($productStandard, ['with_uuid' => true])->shouldBeCalled()->willReturn([
+            'uuid' => '93700f68-51ec-464a-8c47-ca9ac92d0b5c',
             'media' => 'a/b/c/abc123_filename.png',
         ]);
 
@@ -320,6 +319,7 @@ class ProductWriterSpec extends ObjectBehavior
                 'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'with_media' => false,
                 'with_label' => false,
+                'with_uuid' => false,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
             ]
         );
@@ -372,7 +372,7 @@ class ProductWriterSpec extends ObjectBehavior
             'media' => 'a/b/c/123456_filename.jpg',
         ];
 
-        $arrayConverter->convert($productStandard, [])->shouldBeCalled()->willReturn($flatProduct);
+        $arrayConverter->convert($productStandard, ['with_uuid' => false])->shouldBeCalled()->willReturn($flatProduct);
         $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"])->shouldBeCalled()
             ->willReturn([]);
 
