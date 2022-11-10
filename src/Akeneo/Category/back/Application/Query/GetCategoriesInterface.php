@@ -17,5 +17,5 @@ interface GetCategoriesInterface
      *
      * @return array<Category>
      */
-    public function byCodes(array $categoryCodes): array;
+    public function byCodes(array $categoryCodes, bool $isEnrichedAttributes): array;
 }
