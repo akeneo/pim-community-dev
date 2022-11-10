@@ -7,7 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Contro
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFile as ImportProductFileCommand;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Exception\ProductFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Exception\TailoredImportLaunchError;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\Exception\TailoredImportLaunchError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

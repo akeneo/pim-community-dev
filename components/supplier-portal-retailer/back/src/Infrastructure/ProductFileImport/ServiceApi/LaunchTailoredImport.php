@@ -7,9 +7,9 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Servic
 use Akeneo\Platform\Job\ServiceApi\JobInstance\File;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceHandlerInterface;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Exception\TailoredImportLaunchError;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductFileImport;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductFileImportResult;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\Exception\TailoredImportLaunchError;
 use Psr\Log\LoggerInterface;
 
 final class LaunchTailoredImport implements LaunchProductFileImport
