@@ -25,9 +25,10 @@ class GetCategoriesSql implements GetCategoriesInterface
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
      */
+    //TODO: To refactor when filtering service is created. https://akeneo.atlassian.net/browse/GRF-538
     public function byCodes(array $categoryCodes, bool $isEnrichedAttributes): array
     {
-        $condition['sqlWhere'] = 'category.code IN (:category_codes)';
+        $condition['sqlWhere'] = $this->searchFilter($categoryCodes);
         $condition['sqlGroupBy'] = 'GROUP BY category.code';
         $condition['params'] = [
             'category_codes' => $categoryCodes,
@@ -39,6 +40,16 @@ class GetCategoriesSql implements GetCategoriesInterface
             ];
 
         return $this->execute($condition);
+    }
+    //TODO: Will be replaced by filtering service. https://akeneo.atlassian.net/browse/GRF-538
+    public function searchFilter(array $searchParameter): string
+    {
+        if (empty($searchParameter)){
+            $sqlWhere = '1=1';
+        } else {
+            $sqlWhere = 'category.code IN (:category_codes)';
+        }
+        return $sqlWhere;
     }
 
     /**

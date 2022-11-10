@@ -67,6 +67,7 @@ class ListCategoriesController extends AbstractController
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $order = ['root' => 'ASC', 'left' => 'ASC'];
         try {
+            //TODO: Call Filtering service (to be created) instead. https://akeneo.atlassian.net/browse/GRF-538
             $categories = $this->getCategories->byCodes(
                 $searchFilters,
                 $request->query->getBoolean('with_enriched_attributes')
