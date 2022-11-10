@@ -69,12 +69,12 @@ class TemplateBuilder
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
-                    new AttributeCode('banner_image'),
+                    new AttributeCode('hero_banner'),
                     AttributeOrder::fromInteger(2),
                     AttributeIsRequired::fromBoolean(true),
                     AttributeIsScopable::fromBoolean(false),
                     AttributeIsLocalizable::fromBoolean(false),
-                    LabelCollection::fromArray(['en_US' => 'Banner image']),
+                    LabelCollection::fromArray(['en_US' => 'Hero Banner']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([])
                 ),
