@@ -80,6 +80,10 @@ services:
         arguments:
             - '@pim_enrich.repository.attribute.search'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Attribute\GetAttributeLabelsQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute.search'
+
     Akeneo\Catalogs\Infrastructure\Persistence\Attribute\SearchAttributeOptionsQuery:
         arguments:
             - '@pim_enrich.repository.attribute_option.search'
