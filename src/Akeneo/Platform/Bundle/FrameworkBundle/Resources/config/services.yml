@@ -14,3 +14,9 @@ services:
         class: Symfony\Component\Lock\LockFactory
         arguments:
             - '@pim_framework.lock.store'
+
+    pim_framework.dbal.resilient_deadlock_connection:
+        class: Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection
+        arguments:
+            - '@database_connection'
+            - '@logger'

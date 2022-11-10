@@ -3,9 +3,9 @@
 {% block emailMessage %}
     Dear {{ email }},
     {% if jobExecution.status.unsuccessful %}
-        Akeneo completed your {{ jobExecution.jobInstance.type }} with errors.
+        Akeneo completed your "{{ jobExecution.jobInstance.label }}" job with errors.
     {% else %}
-        Akeneo successfully completed your {{ jobExecution.jobInstance.type }}.
+        Akeneo successfully completed your "{{ jobExecution.jobInstance.label }}" job.
     {% endif %}
 
     Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s")  }}.

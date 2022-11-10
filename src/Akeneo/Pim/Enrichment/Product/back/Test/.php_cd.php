@@ -16,6 +16,7 @@ $rules = [
         'Symfony\Component\Messenger\Envelope',
         'Symfony\Component\Messenger\MessageBusInterface',
         'Symfony\Component\Messenger\Stamp\HandledStamp',
+        'Ramsey\Uuid\Uuid',
         'Ramsey\Uuid\UuidInterface',
         'Symfony\Component\Messenger\Stamp',
     ])->in('Akeneo\Pim\Enrichment\Product\API'),

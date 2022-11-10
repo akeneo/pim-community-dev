@@ -27,15 +27,12 @@ akeneo_catalogs:
       channel:
         label: 채널
         no_matches: 일치 항목을 찾을 수 없음
-        placeholder: 채널 선택
       locale:
         label: 로케일
         no_matches: 일치 항목을 찾을 수 없음
-        placeholder: 로케일 선택
       currency:
         label: 통화
         no_matches: 일치 항목을 찾을 수 없음
-        placeholder: 통화 선택
   product_selection:
     empty: 선택 조건을 추가하여 제품 선택 만들기
     more_information: 자세한 내용은 도움말 센터를 확인하십시오.
@@ -63,18 +60,15 @@ akeneo_catalogs:
       family:
         label: 패밀리
         no_matches: 일치 항목을 찾을 수 없음
-        placeholder: 패밀리 선택
       completeness:
         label: 완성도
       attribute_option:
         no_matches: 일치 항목을 찾을 수 없음
-        placeholder: 옵션 선택
       category:
         label: 카테고리
         remove: 카테고리 제거
         category_tree: 카테고리 트리
       measurement:
-        search: 단위 선택
         no_results: 일치 항목을 찾을 수 없음
       boolean:
         yes: Yes
