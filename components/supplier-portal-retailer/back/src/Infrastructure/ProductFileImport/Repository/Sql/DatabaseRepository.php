@@ -26,7 +26,7 @@ SQL;
             [
                 'productFileIdentifier' => $productFileImport->productFileIdentifier(),
                 'jobExecutionId' => $productFileImport->importExecutionId(),
-                'jobExecutionResult' => $productFileImport->fileImportStatus()->value,
+                'jobExecutionResult' => $productFileImport->fileImportStatus(),
                 'finishedAt' => null,
             ],
         );

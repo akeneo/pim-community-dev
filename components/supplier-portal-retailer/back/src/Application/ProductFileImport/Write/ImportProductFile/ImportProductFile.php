@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\Imp
 
 final class ImportProductFile
 {
-    public function __construct(public string $code, public string $productFileIdentifier)
+    public function __construct(public readonly string $importProductFileConfigurationCode, public readonly string $productFileIdentifier)
     {
     }
 }

@@ -34,8 +34,8 @@ final class ProductFileImport
         return $this->importExecutionId->getId();
     }
 
-    public function fileImportStatus(): ProductFileImportStatus
+    public function fileImportStatus(): string
     {
-        return $this->fileImportStatus;
+        return $this->fileImportStatus->value;
     }
 }

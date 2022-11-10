@@ -7,10 +7,10 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\Imp
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write;
 
 final class ImportProductFileHandler
 {
@@ -31,7 +31,7 @@ final class ImportProductFileHandler
 
         $productFileStream = ($this->streamStoredProductFile)($productFile->path());
 
-        $importResult = ($this->launchProductFileImport)($importProductFile->code, $productFile->originalFilename(), $productFileStream);
+        $importResult = ($this->launchProductFileImport)($importProductFile->importProductFileConfigurationCode, $productFile->originalFilename(), $productFileStream);
 
         $productFileImport = ProductFileImport::start($productFile, $importResult->importExecutionId);
         $this->productFileImportRepository->save($productFileImport);
