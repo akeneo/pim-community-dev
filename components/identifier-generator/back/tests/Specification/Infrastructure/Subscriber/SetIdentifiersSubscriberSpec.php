@@ -2,6 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommandHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -16,7 +19,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\SetIdent
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\DBAL\Schema\Identifier;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,7 +33,14 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         IdentifierGeneratorRepository $identifierGeneratorRepository,
         ValidatorInterface $validator,
     ) {
-        $this->beConstructedWith($identifierGeneratorRepository, $validator);
+        $this->beConstructedWith(
+            $identifierGeneratorRepository,
+            new GenerateIdentifierCommandHandler(
+                new GenerateAutoNumberHandler(),
+                new GenerateFreeTextHandler(),
+            ),
+            $validator
+        );
     }
 
     public function it_should_be_an_event_subscriber()
