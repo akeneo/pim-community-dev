@@ -36,6 +36,7 @@ $rules = [
         // TODO: dependencies related to the front end, remove twig screens
         'Twig',
         'Akeneo\Pim\Enrichment\Product\API',
+        'Akeneo\Pim\Enrichment\Product\Domain\Clock',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
@@ -122,6 +123,7 @@ $rules = [
 
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+        'Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection',
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit

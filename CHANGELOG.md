@@ -97,6 +97,7 @@
 - PIM-10673: Fix media URL port display for Events API
 - PIM-10686: Fix percentage of inaccurate completeness in the activity dashboard
 - PIM-10659: Fix associated products in grid are now sorted using their uuids
+- PIM-10718: Fix categories with empty labels throw 500 error
 
 ## Improvements
 
