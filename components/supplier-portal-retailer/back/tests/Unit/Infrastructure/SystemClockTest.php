@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Infrastructure;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure;
 
 use Akeneo\SupplierPortal\Supplier\Infrastructure\SystemClock;
 use PHPUnit\Framework\TestCase;
