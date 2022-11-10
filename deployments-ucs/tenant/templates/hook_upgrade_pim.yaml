@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: pim-upgrader-{{ .Values.image.pim.tag }}-
+  generateName: pim-upgrader-
   labels:
     component: "hook-upgrader"
     app.kubernetes.io/component: "hook-upgrader"
