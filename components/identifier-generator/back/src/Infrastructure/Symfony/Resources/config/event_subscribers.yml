@@ -4,3 +4,10 @@ services:
       - '@database_connection'
     tags:
       - { name: kernel.event_subscriber }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\SetIdentifiersSubscriber:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@validator'
+    tags:
+      - { name: kernel.event_subscriber }

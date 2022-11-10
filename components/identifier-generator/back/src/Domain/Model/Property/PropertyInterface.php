@@ -22,4 +22,6 @@ interface PropertyInterface
     public static function fromNormalized(array $fromNormalized): self;
 
     public static function type(): string;
+
+    public function generate(): string;
 }

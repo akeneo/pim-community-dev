@@ -101,4 +101,16 @@ final class IdentifierGenerator
             'delimiter' => $this->delimiter?->asString(),
         ];
     }
+
+    public function match(Product $product): bool
+    {
+        $identifierValue = $product->identifier();
+
+        return (null === $identifierValue || '' === $identifierValue);
+    }
+
+    public function generate(): string
+    {
+        return $this->structure->generate($this->delimiter);
+    }
 }

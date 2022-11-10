@@ -58,4 +58,9 @@ final class FreeText implements PropertyInterface
     {
         return $this->value;
     }
+
+    public function generate(): string
+    {
+        return $this->value;
+    }
 }
