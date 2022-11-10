@@ -41,7 +41,7 @@ final class Supplier
         );
     }
 
-    public function update(string $label, array $contributorEmails): void
+    public function update(string $label, array $contributorEmails, \DateTimeImmutable $updatedAt): void
     {
         $this->label = Label::fromString($label);
 
@@ -67,6 +67,7 @@ final class Supplier
                     Identifier::fromString($this->identifier()),
                     $createdContributorEmail,
                     $this->code(),
+                    $updatedAt,
                 ),
                 $newContributorEmails,
             ),

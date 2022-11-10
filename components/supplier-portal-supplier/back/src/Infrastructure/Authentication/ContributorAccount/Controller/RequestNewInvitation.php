@@ -24,7 +24,10 @@ final class RequestNewInvitation
         }
 
         try {
-            ($this->requestNewInvitationHandler)(new RequestNewInvitationCommand($request->get('email')));
+            ($this->requestNewInvitationHandler)(new RequestNewInvitationCommand(
+                $request->get('email'),
+                new \DateTimeImmutable(),
+            ));
         } catch (ContributorAccountDoesNotExist) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }

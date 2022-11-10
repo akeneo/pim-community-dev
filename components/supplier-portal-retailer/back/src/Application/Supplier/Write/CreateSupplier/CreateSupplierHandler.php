@@ -56,6 +56,7 @@ final class CreateSupplierHandler
                 Identifier::fromString($supplierIdentifier),
                 $contributorEmail,
                 $createSupplier->code,
+                $createSupplier->createdAt,
             ));
         }
 

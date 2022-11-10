@@ -10,6 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\Upd
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\SystemClock;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
@@ -102,6 +103,7 @@ final class ImportSupplierTasklet implements TaskletInterface
             $supplierData['supplier_code'],
             $supplierData['supplier_label'],
             $supplierData['contributor_emails'],
+            (new SystemClock())->now(),
         );
 
         $errors = $this->validator->validate($command);
@@ -119,6 +121,7 @@ final class ImportSupplierTasklet implements TaskletInterface
             ($this->getSupplierIdentifierFromSupplierCode)($supplierData['supplier_code']),
             $supplierData['supplier_label'],
             $supplierData['contributor_emails'],
+            (new SystemClock())->now(),
         );
 
         $errors = $this->validator->validate($command);

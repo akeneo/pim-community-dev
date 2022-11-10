@@ -17,6 +17,7 @@ final class ContributorAddedTest extends TestCase
             Identifier::fromString('5781bb4b-a3c6-4224-b6b3-eccd73f669b1'),
             'foo@foo.foo',
             'los_pollos_hermanos',
+            new \DateTimeImmutable(),
         );
 
         static::assertSame(

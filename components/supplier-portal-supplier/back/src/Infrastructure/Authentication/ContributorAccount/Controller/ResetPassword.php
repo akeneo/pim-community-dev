@@ -22,7 +22,10 @@ final class ResetPassword
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
-        ($this->resetPasswordHandler)(new ResetPasswordCommand($request->get('email')));
+        ($this->resetPasswordHandler)(new ResetPasswordCommand(
+            $request->get('email'),
+            new \DateTimeImmutable(),
+        ));
 
         return new JsonResponse();
     }

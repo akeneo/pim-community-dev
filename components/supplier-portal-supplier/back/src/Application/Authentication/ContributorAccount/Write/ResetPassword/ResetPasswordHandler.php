@@ -27,7 +27,7 @@ final class ResetPasswordHandler
             return;
         }
 
-        $contributorAccount->resetPassword();
+        $contributorAccount->resetPasswordAt($resetPassword->resetAt);
         $this->contributorAccountRepository->save($contributorAccount);
 
         $this->eventDispatcher->dispatch(

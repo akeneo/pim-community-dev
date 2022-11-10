@@ -34,7 +34,11 @@ final class SupplierTest extends TestCase
             ->build();
         $supplier->events();
 
-        $supplier->update('Supplier label', ['bar@bar.bar']);
+        $supplier->update(
+            'Supplier label',
+            ['bar@bar.bar'],
+            new \DateTimeImmutable(),
+        );
 
         $expectedEvents = $supplier->events();
 

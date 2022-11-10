@@ -23,7 +23,10 @@ class SendWelcomeEmailOnContributorAccountCreatedTest extends TestCase
     /** @test */
     public function itCallsTheSendWelcomeEmailService(): void
     {
-        $contributorAccount = ContributorAccount::fromEmail('jeanjacques@example.com');
+        $contributorAccount = ContributorAccount::createdAtFromEmail(
+            'jeanjacques@example.com',
+            new \DateTimeImmutable(),
+        );
         $event = new ContributorAccountCreated($contributorAccount);
 
         $sendWelcomeEmailSpy = $this->createMock(SendWelcomeEmail::class);

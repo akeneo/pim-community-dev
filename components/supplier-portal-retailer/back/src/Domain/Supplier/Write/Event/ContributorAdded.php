@@ -9,9 +9,10 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifi
 final class ContributorAdded
 {
     public function __construct(
-        private Identifier $supplierIdentifier,
-        private string $contributorEmail,
-        private string $supplierCode,
+        private readonly Identifier $supplierIdentifier,
+        private readonly string $contributorEmail,
+        private readonly string $supplierCode,
+        private \DateTimeImmutable $createdAt,
     ) {
     }
 
@@ -28,5 +29,10 @@ final class ContributorAdded
     public function supplierCode(): string
     {
         return $this->supplierCode;
+    }
+
+    public function createdAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }

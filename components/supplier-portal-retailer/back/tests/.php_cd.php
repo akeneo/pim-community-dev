@@ -141,6 +141,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application',
             'Akeneo\SupplierPortal\Retailer\Infrastructure',
+            'Akeneo\SupplierPortal\Supplier\Infrastructure\SystemClock',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
 
@@ -187,6 +188,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application\Supplier',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\SystemClock',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFile',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFileHandler',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileForSupplier',

@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 
 final class RequestNewInvitation
 {
-    public function __construct(public string $email)
+    public function __construct(public readonly string $email, public \DateTimeImmutable $requestedAt)
     {
     }
 }

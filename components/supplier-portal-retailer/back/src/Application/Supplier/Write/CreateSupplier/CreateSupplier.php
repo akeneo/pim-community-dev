@@ -7,9 +7,10 @@ namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSuppli
 final class CreateSupplier
 {
     public function __construct(
-        public string $code,
-        public string $label,
-        public array $contributorEmails,
+        public readonly string $code,
+        public readonly string $label,
+        public readonly array $contributorEmails,
+        public \DateTimeImmutable $createdAt,
     ) {
     }
 }

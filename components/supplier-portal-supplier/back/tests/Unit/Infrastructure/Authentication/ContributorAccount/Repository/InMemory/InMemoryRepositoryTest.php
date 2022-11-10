@@ -17,8 +17,14 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $contributorAccountRepository = new InMemoryRepository();
 
-        $contributorAccountRepository->save(ContributorAccount::fromEmail('momoss@example.com'));
-        $contributorAccountRepository->save(ContributorAccount::fromEmail('contributor@example.com'));
+        $contributorAccountRepository->save(ContributorAccount::createdAtFromEmail(
+            'momoss@example.com',
+            new \DateTimeImmutable(),
+        ));
+        $contributorAccountRepository->save(ContributorAccount::createdAtFromEmail(
+            'contributor@example.com',
+            new \DateTimeImmutable(),
+        ));
 
         $contributorAccount = $contributorAccountRepository->findByEmail(Email::fromString('momoss@example.com'));
 
@@ -30,7 +36,10 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $contributorAccountRepository = new InMemoryRepository();
 
-        $contributorAccountRepository->save(ContributorAccount::fromEmail('momoss@example.com'));
+        $contributorAccountRepository->save(ContributorAccount::createdAtFromEmail(
+            'momoss@example.com',
+            new \DateTimeImmutable(),
+        ));
 
         $this->assertNull($contributorAccountRepository->findByEmail(Email::fromString('yolo@example.com')));
     }
@@ -40,9 +49,15 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $contributorAccountRepository = new InMemoryRepository();
 
-        $testContributor = ContributorAccount::fromEmail('test@example.com');
+        $testContributor = ContributorAccount::createdAtFromEmail(
+            'test@example.com',
+            new \DateTimeImmutable(),
+        );
         $contributorAccountRepository->save($testContributor);
-        $contributorAccountRepository->save(ContributorAccount::fromEmail('contributor@example.com'));
+        $contributorAccountRepository->save(ContributorAccount::createdAtFromEmail(
+            'contributor@example.com',
+            new \DateTimeImmutable(),
+        ));
 
         $contributorAccount = $contributorAccountRepository->find(
             Identifier::fromString($testContributor->identifier()),
@@ -56,7 +71,10 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $contributorAccountRepository = new InMemoryRepository();
 
-        $testContributor = ContributorAccount::fromEmail('test@example.com');
+        $testContributor = ContributorAccount::createdAtFromEmail(
+            'test@example.com',
+            new \DateTimeImmutable(),
+        );
         $contributorAccountRepository->save($testContributor);
 
         $contributorAccount = $contributorAccountRepository->find(
@@ -70,14 +88,27 @@ final class InMemoryRepositoryTest extends TestCase
     public function itDeletesAContributorAccountByEmail(): void
     {
         $repository = new InMemoryRepository();
-        $repository->save(ContributorAccount::fromEmail('contributor1@example.com'));
-        $repository->save(ContributorAccount::fromEmail('contributor2@example.com'));
-        $repository->save(ContributorAccount::fromEmail('contributor3@example.com'));
+        $repository->save(ContributorAccount::createdAtFromEmail(
+            'contributor1@example.com',
+            new \DateTimeImmutable(),
+        ));
+        $repository->save(ContributorAccount::createdAtFromEmail(
+            'contributor2@example.com',
+            new \DateTimeImmutable(),
+        ));
+        $repository->save(ContributorAccount::createdAtFromEmail(
+            'contributor3@example.com',
+            new \DateTimeImmutable(),
+        ));
 
         $repository->deleteByEmail('contributor2@example.com');
 
         $this->assertNull($repository->findByEmail(Email::fromString('contributor2@example.com')));
-        $this->assertInstanceOf(ContributorAccount::class, $repository->findByEmail(Email::fromString('contributor1@example.com')));
-        $this->assertInstanceOf(ContributorAccount::class, $repository->findByEmail(Email::fromString('contributor3@example.com')));
+        $this->assertInstanceOf(ContributorAccount::class, $repository->findByEmail(
+            Email::fromString('contributor1@example.com'),
+        ));
+        $this->assertInstanceOf(ContributorAccount::class, $repository->findByEmail(
+            Email::fromString('contributor3@example.com'),
+        ));
     }
 }

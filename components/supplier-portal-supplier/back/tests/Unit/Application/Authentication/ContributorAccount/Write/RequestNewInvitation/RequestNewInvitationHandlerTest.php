@@ -42,7 +42,10 @@ final class RequestNewInvitationHandlerTest extends TestCase
         ;
 
         $sut = new RequestNewInvitationHandler($contributorAccountRepository, $mockSendWelcomeEmail);
-        ($sut)(new RequestNewInvitation($contributorEmail));
+        ($sut)(new RequestNewInvitation(
+            $contributorEmail,
+            new \DateTimeImmutable(),
+        ));
         $updatedContributorAccount = $contributorAccountRepository->findByEmail(Email::fromString($contributorEmail));
 
         static::assertNotSame($oldContributorAccountAccessToken, $updatedContributorAccount->accessToken());
@@ -60,6 +63,9 @@ final class RequestNewInvitationHandlerTest extends TestCase
         $sut = new RequestNewInvitationHandler($contributorAccountRepository, $mockSendWelcomeEmail);
 
         static::expectException(ContributorAccountDoesNotExist::class);
-        ($sut)(new RequestNewInvitation('unknown@example.com'));
+        ($sut)(new RequestNewInvitation(
+            'unknown@example.com',
+            new \DateTimeImmutable(),
+        ));
     }
 }

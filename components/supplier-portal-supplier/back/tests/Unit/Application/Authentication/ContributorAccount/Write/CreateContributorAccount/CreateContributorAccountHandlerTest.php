@@ -22,7 +22,10 @@ class CreateContributorAccountHandlerTest extends TestCase
         $repository = new InMemoryRepository();
         $sut = new CreateContributorAccountHandler($repository, $eventDispatcherStub);
 
-        ($sut)(new CreateContributorAccount('contributor@example.com'));
+        ($sut)(new CreateContributorAccount(
+            'contributor@example.com',
+            new \DateTimeImmutable(),
+        ));
 
         $createdContributorAccount = $repository->findByEmail(Email::fromString('contributor@example.com'));
         $this->assertInstanceOf(ContributorAccount::class, $createdContributorAccount);

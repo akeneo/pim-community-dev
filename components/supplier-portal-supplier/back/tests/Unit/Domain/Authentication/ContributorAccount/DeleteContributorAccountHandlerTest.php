@@ -22,7 +22,10 @@ class DeleteContributorAccountHandlerTest extends TestCase
         $repository = new InMemoryRepository();
         $sut = new DeleteContributorAccountHandler($repository, $eventDispatcherStub, new NullLogger());
 
-        $repository->save(WriteContributorAccount::fromEmail('contributor@example.com'));
+        $repository->save(WriteContributorAccount::createdAtFromEmail(
+            'contributor@example.com',
+            new \DateTimeImmutable(),
+        ));
 
         $this->assertInstanceOf(WriteContributorAccount::class, $repository->findByEmail(Email::fromString('contributor@example.com')));
 

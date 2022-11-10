@@ -23,17 +23,19 @@ class CreateContributorAccountOnContributorAddedTest extends TestCase
     /** @test */
     public function itCreatesAContributorAccountWhenSupplierPortalIsActivated(): void
     {
+        $contributorCreatedAt = new \DateTimeImmutable();
         $contributorAddedEvent = new ContributorAdded(
             Identifier::fromString('4ccdd6c6-a631-48fe-967c-269bcf04e8e0'),
             'contrib1@example.com',
             'los_pollos_hermanos',
+            $contributorCreatedAt,
         );
 
         $createContributorAccountHandlerSpy = $this->createMock(CreateContributorAccountHandler::class);
         $createContributorAccountHandlerSpy
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new CreateContributorAccount('contrib1@example.com'));
+            ->with(new CreateContributorAccount('contrib1@example.com', $contributorCreatedAt));
 
         $sut = new CreateContributorAccountOnContributorAdded($createContributorAccountHandlerSpy);
 

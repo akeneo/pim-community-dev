@@ -12,7 +12,10 @@ final class ContributorAccountTest extends TestCase
     /** @test */
     public function itCreatesAContributorAccount(): void
     {
-        $contributorAccount = ContributorAccount::fromEmail('contributor@example.com');
+        $contributorAccount = ContributorAccount::createdAtFromEmail(
+            'contributor@example.com',
+            new \DateTimeImmutable(),
+        );
         $this->assertEquals('contributor@example.com', $contributorAccount->email());
         $this->assertNull($contributorAccount->getPassword());
         $this->assertNull($contributorAccount->lastLoggedAt());
@@ -51,7 +54,10 @@ final class ContributorAccountTest extends TestCase
     /** @test */
     public function itUpdatesTheContributorAccountPassword(): void
     {
-        $contributorAccount = ContributorAccount::fromEmail('contributor@example.com');
+        $contributorAccount = ContributorAccount::createdAtFromEmail(
+            'contributor@example.com',
+            new \DateTimeImmutable(),
+        );
 
         $contributorAccount->setPassword('P@$$w0rdfoo');
 
@@ -74,7 +80,7 @@ final class ContributorAccountTest extends TestCase
             true,
         );
 
-        $contributorAccount->resetPassword();
+        $contributorAccount->resetPasswordAt(new \DateTimeImmutable());
 
         static::assertNull($contributorAccount->getPassword());
         static::assertSame(
@@ -98,7 +104,7 @@ final class ContributorAccountTest extends TestCase
             true,
         );
 
-        $contributorAccount->renewAccessToken();
+        $contributorAccount->renewAccessTokenAt(new \DateTimeImmutable());
 
         static::assertSame(
             (new \DateTimeImmutable())->format('d'),

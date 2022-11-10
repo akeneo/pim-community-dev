@@ -50,6 +50,7 @@ final class UpdateSupplierHandler
         $supplier->update(
             $updateSupplier->label,
             $updateSupplier->contributorEmails,
+            $updateSupplier->updatedAt,
         );
 
         $this->repository->save($supplier);

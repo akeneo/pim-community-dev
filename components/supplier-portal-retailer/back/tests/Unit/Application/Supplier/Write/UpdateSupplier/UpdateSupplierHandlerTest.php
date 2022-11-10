@@ -24,11 +24,13 @@ final class UpdateSupplierHandlerTest extends TestCase
     public function itUpdatesASupplierWithoutAnyError(): void
     {
         $identifier = Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
+        $updatedAt = new \DateTimeImmutable();
 
         $command = new UpdateSupplier(
             (string) $identifier,
             'Updated label',
             ['contributor1@example.com', 'contributor2@example.com'],
+            $updatedAt,
         );
 
         $validatorSpy = $this->getValidatorSpyWithNoError($command);
@@ -48,8 +50,22 @@ final class UpdateSupplierHandlerTest extends TestCase
             ->expects($this->exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [new ContributorAdded($identifier, 'contributor1@example.com', 'code')],
-                [new ContributorAdded($identifier, 'contributor2@example.com', 'code')],
+                [
+                    new ContributorAdded(
+                        $identifier,
+                        'contributor1@example.com',
+                        'code',
+                        $updatedAt,
+                    ),
+                ],
+                [
+                    new ContributorAdded(
+                        $identifier,
+                        'contributor2@example.com',
+                        'code',
+                        $updatedAt,
+                    ),
+                ],
             );
 
         $handler = new UpdateSupplierHandler(
@@ -77,6 +93,7 @@ final class UpdateSupplierHandlerTest extends TestCase
             (string) $identifier,
             str_repeat('a', 201),
             ['contributor1@example.com', 'invalidEmail', 'contributor2@example.com'],
+            new \DateTimeImmutable(),
         );
 
         $violationsSpy = $this->createMock(ConstraintViolationList::class);
@@ -106,6 +123,7 @@ final class UpdateSupplierHandlerTest extends TestCase
             (string) $identifier,
             'Updated label',
             ['contributor1@example.com', 'contributor2@example.com'],
+            new \DateTimeImmutable(),
         );
 
         $this->expectExceptionObject(new SupplierDoesNotExist());

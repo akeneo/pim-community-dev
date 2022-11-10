@@ -24,6 +24,7 @@ final class LogOnContributorAddedTest extends TestCase
                 $supplierIdentifier,
                 'contributor@example.com',
                 'los_pollos_hermanos',
+                new \DateTimeImmutable(),
             ),
         );
 

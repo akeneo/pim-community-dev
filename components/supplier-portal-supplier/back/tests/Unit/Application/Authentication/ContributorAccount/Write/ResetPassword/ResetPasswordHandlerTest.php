@@ -35,7 +35,10 @@ final class ResetPasswordHandlerTest extends TestCase
         $oldPassword = $contributorAccount->getPassword();
 
         $sut = new ResetPasswordHandler($contributorAccountRepository, $eventDispatcherStub);
-        ($sut)(new ResetPassword($contributorEmail));
+        ($sut)(new ResetPassword(
+            $contributorEmail,
+            new \DateTimeImmutable(),
+        ));
 
         $newContributorAccount = $contributorAccountRepository->findByEmail(Email::fromString($contributorEmail));
 
@@ -56,7 +59,10 @@ final class ResetPasswordHandlerTest extends TestCase
 
         $contributorAccountRepository->expects(self::never())->method('save')->withAnyParameters();
 
-        ($sut)(new ResetPassword('test@example.com'));
+        ($sut)(new ResetPassword(
+            'test@example.com',
+            new \DateTimeImmutable(),
+        ));
 
         static::assertCount(0, $dispatchedEvents);
     }
