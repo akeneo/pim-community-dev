@@ -32,12 +32,12 @@ class MailNotifierSpec extends ObjectBehavior
     ): void {
         $batchStatus = new BatchStatus(BatchStatus::COMPLETED);
         $jobExecution->getStatus()->willReturn($batchStatus);
-        $jobInstance->getType()->willReturn('export');
+        $jobInstance->getLabel()->willReturn('An export');
         $jobExecution->getJobInstance()->willReturn($jobInstance);
 
         $mailer->notify(
             ['test@akeneo.com'],
-            'Akeneo completed your export: success',
+            'Akeneo successfully completed your "An export" job',
             Argument::any(),
             Argument::any()
         )->shouldBeCalled();
@@ -52,12 +52,12 @@ class MailNotifierSpec extends ObjectBehavior
     ): void {
         $batchStatus = new BatchStatus(BatchStatus::UNKNOWN);
         $jobExecution->getStatus()->willReturn($batchStatus);
-        $jobInstance->getType()->willReturn('mass_edit');
+        $jobInstance->getLabel()->willReturn('Mass Edith');
         $jobExecution->getJobInstance()->willReturn($jobInstance);
 
         $mailer->notify(
             ['test@akeneo.com'],
-            'Akeneo completed your mass_edit: fail',
+            'Akeneo completed your "Mass Edith" job with errors',
             Argument::any(),
             Argument::any()
         )->shouldBeCalled();
@@ -73,7 +73,7 @@ class MailNotifierSpec extends ObjectBehavior
     ): void {
         $batchStatus = new BatchStatus(BatchStatus::COMPLETED);
         $jobExecution->getStatus()->willReturn($batchStatus);
-        $jobInstance->getType()->willReturn('export');
+        $jobInstance->getLabel()->willReturn('An export');
         $jobExecution->getJobInstance()->willReturn($jobInstance);
 
         $mailer->notify(

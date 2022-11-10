@@ -31,9 +31,9 @@
 {% block emailMessage %}
     <p style="margin: 0 0 30px 0; font-size: 20px; font-family: 'Lato', sans-serif">
         {% if jobExecution.status.unsuccessful %}
-            Akeneo completed your {{ jobExecution.jobInstance.type }} with errors.
+            Akeneo completed your "{{ jobExecution.jobInstance.label }}" job with errors.
         {% else %}
-            Akeneo successfully completed your {{ jobExecution.jobInstance.type }}.
+            Akeneo successfully completed your "{{ jobExecution.jobInstance.label }}" job.
         {% endif %}
     </p>
     <p style="margin: 0 0 20px 0; font-size: 12px;font-family: 'Lato', sans-serif">

@@ -19,6 +19,9 @@ use Twig\Environment;
  */
 class MailNotifier implements Notifier
 {
+    private const SUCCESS_SUBJECT_TEMPLATE = 'Akeneo successfully completed your "%s" job';
+    private const FAILURE_SUBJECT_TEMPLATE = 'Akeneo completed your "%s" job with errors';
+
     private array $recipientEmails = [];
 
     public function __construct(
@@ -77,9 +80,9 @@ class MailNotifier implements Notifier
 
     private function getSubject(JobExecution $jobExecution): string
     {
-        $jobType = $jobExecution->getJobInstance()->getType();
-        $status = $jobExecution->getStatus()->isUnsuccessful() ? 'fail' : 'success';
+        $subjectTemplate = $jobExecution->getStatus()->isUnsuccessful() ? self::FAILURE_SUBJECT_TEMPLATE : self::SUCCESS_SUBJECT_TEMPLATE;
+        $jobLabel = $jobExecution->getJobInstance()->getLabel();
 
-        return sprintf('Akeneo completed your %s: %s', $jobType, $status);
+        return sprintf($subjectTemplate, $jobLabel);
     }
 }
