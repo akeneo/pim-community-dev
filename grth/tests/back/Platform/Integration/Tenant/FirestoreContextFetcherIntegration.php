@@ -6,6 +6,7 @@ namespace AkeneoTestEnterprise\Platform\Integration\Tenant;
 
 use Akeneo\Platform\Component\Tenant\FirestoreContextFetcher;
 use Akeneo\Platform\Component\Tenant\TenantContextDecoder;
+use Akeneo\Platform\Component\Tenant\TenantContextDecoderException;
 use Google\Cloud\Firestore\CollectionReference;
 use Google\Cloud\Firestore\FirestoreClient;
 use PHPUnit\Framework\Assert;
@@ -22,7 +23,7 @@ final class FirestoreContextFetcherIntegration extends TestCase
     public function it_gets_the_tenant_context(): void
     {
         Assert::assertSame(
-            ['FOO' => 'bar', 'BAR' => 'baz'],
+            ['foo' => 'bar', 'bar' => 'baz'],
             $this->firestoreContextFetcher->getTenantContext('some_tenant_id')
         );
         Assert::assertSame(
@@ -35,8 +36,10 @@ final class FirestoreContextFetcherIntegration extends TestCase
     public function it_caches_the_context_for_subsequent_requests(): void
     {
         $initialContext = $this->firestoreContextFetcher->getTenantContext('some_tenant_id');
+
+        // clear values = '{"updated_context": "updated_value"}'
         $this->firestoreCollection()->document('some_tenant_id')->set(
-            ['values' => \json_encode(['updated_context' => 'updated_value'])]
+            ['values' => '{"data":"KLzn+p4OFTwWvyvYNscpvMdURRnVlzfDvTfxluNYv1CBDRSmfcRFqMYnRr+j1VnV","iv":"dfd0c5655a81118a268ddeb40660445d"}']
         );
 
         // get context from cache
@@ -72,40 +75,47 @@ final class FirestoreContextFetcherIntegration extends TestCase
     /** @test */
     public function it_throws_an_exception_if_the_values_are_not_valid_json(): void
     {
-        $this->expectException(\JsonException::class);
+        $this->expectException(TenantContextDecoderException::class);
 
         $this->firestoreContextFetcher->getTenantContext('tenant_id_with_invalid_values');
     }
 
+    /**
+     * Crypted values generated with grth/tests/back/Platform/resources/aes_encoder.js
+     */
     protected function setUp(): void
     {
+        $encryptionKey = 'NDyClnH/qM6JfUR7c8Yc0kKBhaqP554EpHha4HTHQ/Y=';
         $collection = $this->firestoreCollection();
+
+        /*
+         * clear values = {
+         *    'foo' => 'bar',
+         *    'bar' => 'baz',
+         * ]
+         */
         $collection->document('some_tenant_id')->create([
-            'values' => \json_encode(
-                [
-                    'FOO' => 'bar',
-                    'BAR' => 'baz',
-                ]
-            ),
+            'values' => '{"data":"qbbkq1rrnYyj1UkcJ6TR/qTA/ZEd7kPR7Ajyq2vgxUg=","iv":"90d68e58aa2918f137ea2de4c07463ac"}',
         ]);
+
+        /*
+         * clear values = {
+         *    'ONE' => 'two',
+         *    'TWO' => 'three',
+         * ]
+         */
         $collection->document('some_other_tenant_id')->create([
-            'values' => \json_encode(
-                [
-                    'ONE' => 'two',
-                    'TWO' => 'three',
-                ]
-            ),
+            'values' => '{"data":"q7Hc+qhe2XPZOp7tl+BNru5+ZVENLwxVg7/jDYCy6LY=","iv":"5724001ec68519d4fd2e8c1a76f1af2c"}'
         ]);
-        $collection->document('tenant_id_without_values')->create([
-            'foo' => 'bar',
-        ]);
+
+        // clear values = '{"foo": "bar",, "baz": "snafu"}'
         $collection->document('tenant_id_with_invalid_values')->create([
-            'values' => '{"invalid_json"'
+            'values' => '{"data":"VgvimYiLnlxArlu3RTMbG41dDANh9xne6d71p/AeCQI=","iv":"5f90664b2fca29dd597d1e741a6f8255"}',
         ]);
 
         $this->firestoreContextFetcher = new FirestoreContextFetcher(
             logger: new NullLogger(),
-            tenantContextDecoder: new TenantContextDecoder(),
+            tenantContextDecoder: new TenantContextDecoder($encryptionKey),
             googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT'],
             collection: self::TEST_COLLECTION,
             cacheTtl: 5,
@@ -124,7 +134,7 @@ final class FirestoreContextFetcherIntegration extends TestCase
     {
         return (new FirestoreClient(
             [
-                'projectId' => $_ENV['GOOGLE_CLOUD_PROJECT']
+                'projectId' => $_ENV['GOOGLE_CLOUD_PROJECT'],
             ]
         ))->collection(self::TEST_COLLECTION);
     }

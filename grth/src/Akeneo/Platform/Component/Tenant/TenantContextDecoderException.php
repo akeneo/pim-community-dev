@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\Tenant;
 
-interface TenantContextFetcherInterface
+final class TenantContextDecoderException extends \RuntimeException
 {
-    /**
-     * Fetch the tenant context for a specific tenant ID
-     * @retrun array<string, string>
-     */
-    public function getTenantContext(string $tenantId): array;
 }

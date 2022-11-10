@@ -15,7 +15,6 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const Mustache = require('mustache');
 const merge = require('deepmerge-json');
-const CryptoJS = require("crypto-js");
 
 const passwordGenerator = require('generate-password');
 const functions = require('@google-cloud/functions-framework');
@@ -368,7 +367,28 @@ function generatePassword(length = 16, numbers = true, lowercase = true, upperca
 async function encryptAES(text, key) {
   try {
     logger.debug(`Encrypt text with ${process.env.TENANT_CONTEXT_ENCRYPTION_KEY} key`);
-    return await CryptoJS.AES.encrypt(text, key).toString();
+
+    const algorithm = 'aes-256-cbc'
+    const initVector = crypto.randomBytes(16)
+    logger.debug(`iv = ${initVector}`)
+
+    const securityKey = Buffer.from(process.env.TENANT_CONTEXT_ENCRYPTION_KEY, 'base64')
+    logger.debug(`securityKey = ${securityKey}`)
+
+    const cipher = crypto.createCipheriv(algorithm, securityKey, initVector)
+
+    let encryptedData = cipher.update(text, "utf-8", "base64")
+    encryptedData += cipher.final("base64")
+
+    const encryptedPayload = JSON.stringify({
+      data: encryptedData,
+      iv: initVector.toString('hex'),
+    })
+
+    logger.debug('Context values encryption successful')
+    logger.debug(encryptedPayload)
+
+    return encryptedPayload
   } catch (error) {
     logger.debug(`Failed to encrypt text with ${key} key`);
     return Promise.reject(error);
