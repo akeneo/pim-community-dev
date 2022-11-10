@@ -81,6 +81,7 @@
 - PIM-10678: Prevent concurrent thumbnail generation of big asset images to exhaust server resources
 - PIM-10628: Prevent importing values of readonly attributes in product draft import
 - PIM-10674: Add lazy loading image on the asset manager library view
+- PIM-10715: Fix record import not handling properly duplicated code
 - PIM-10696: Fix BETWEEN operator in GET assets endpoint
 - PIM-10705: Revert Imagick time limit because it is stateful
 - PIM-10698: Fix PHP Warning: Undefined array key "locale" in Tailored Import
