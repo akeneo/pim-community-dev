@@ -72,7 +72,7 @@ jobs:
                       PIM_USER=$(yq r /root/project/deployments/instances/${TYPE}-${INSTANCE_NAME}/values.yaml pim.defaultAdminUser.email)
                       PIM_PASSWORD=$(yq r /root/project/deployments/instances/${TYPE}-${INSTANCE_NAME}/values.yaml pim.defaultAdminUser.password)
                       PIM_URL="https://${INSTANCE_NAME}.dev.cloud.akeneo.com"
-                      PIM_NAMESPACE=${TYPE}-${INSTANCE_NAME}
+                      PIM_NAMESPACE=$(echo "${TYPE}-${INSTANCE_NAME}" | cut -c -63)
 
                       echo ###########################################
                       echo #      Akeneo pim release deployed        #

@@ -552,8 +552,8 @@ jobs:
         - run:
             name: Prepare the variables
             command: |
-              CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-              PIM_NAMESPACE=<< parameters.PIM_NAMESPACE_PREFIX >>-${CIRCLE_BRANCH_LOWER}
+              CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0 )}')
+              PIM_NAMESPACE=$(echo << parameters.PIM_NAMESPACE_PREFIX >>-${CIRCLE_BRANCH_LOWER} | cut -c -63)
 
               TENANT_NAME_PREFIX=ucs
               TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
@@ -731,9 +731,9 @@ jobs:
                   name: Define value for next steps
                   command: |
                       TENANT_NAME_PREFIX=ucs
-                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+                      PIM_NAMESPACE=$(echo pim-${CIRCLE_BRANCH_LOWER} | cut -c -63)
                       TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH}/tenant_contexts"
                       REGION_PREFIX="eur-w-1b"
                       WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
@@ -823,10 +823,10 @@ jobs:
                   name: Define value for next steps
                   command: |
                       TENANT_NAME_PREFIX=ucs
-                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
                       TENANT_ID=${TYPE}-${TENANT_NAME}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+                      PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
                       TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
                       WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
