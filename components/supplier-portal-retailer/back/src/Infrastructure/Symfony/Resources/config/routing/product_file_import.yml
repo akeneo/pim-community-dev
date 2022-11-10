@@ -4,3 +4,10 @@ supplier_portal_retailer_list_product_file_import_configurations:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ListProductFileImportConfigurations
         _feature: supplier_portal
     methods: GET
+
+supplier_portal_retailer_import_product_file:
+    path: /import
+    defaults:
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ImportProductFile
+        _feature: supplier_portal
+    methods: POST

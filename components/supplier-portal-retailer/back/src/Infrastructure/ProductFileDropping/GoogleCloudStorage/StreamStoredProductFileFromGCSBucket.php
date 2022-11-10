@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemException;
 use Psr\Log\LoggerInterface;
 
-final class DownloadStoredProductFileFromGCSBucket implements DownloadStoredProductFile
+final class StreamStoredProductFileFromGCSBucket implements StreamStoredProductFile
 {
     public function __construct(private FilesystemProvider $filesystemProvider, private LoggerInterface $logger)
     {
