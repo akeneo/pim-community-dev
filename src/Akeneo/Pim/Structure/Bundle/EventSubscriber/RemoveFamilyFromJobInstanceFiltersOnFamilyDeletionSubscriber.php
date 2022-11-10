@@ -48,7 +48,11 @@ class RemoveFamilyFromJobInstanceFiltersOnFamilyDeletionSubscriber implements Ev
             return;
         }
 
-        $familyCode = $family->getCode();
+        /**
+         * PIM-10714: As job filters values are always stored in lowercase (even the original value is not lowercase),
+         * we need to lowercase the family code, or we are not able to remove deleted family code from filters.
+         */
+        $familyCode = mb_strtolower($family->getCode());
         $jobInstances = $this->jobInstanceRepository->findBy(['type' => JobInstance::TYPE_EXPORT]);
         $jobsToUpdate = [];
 
