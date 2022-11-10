@@ -1,16 +1,21 @@
 import {useQuery} from 'react-query';
 import {Template} from '../models';
-import {useRouter} from '@akeneo-pim-community/shared';
+import {FetchStatus, useRouter} from '@akeneo-pim-community/shared';
 import {useCallback, useMemo} from 'react';
-import {ResponseStatus} from '../models/ResponseStatus';
 
 const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
 type Result = {
-  status: ResponseStatus;
+  status: FetchStatus;
   data: Template | undefined;
   error: any;
 };
+
+const getFetchingStatus = (status: 'idle' | 'loading' | 'error' | 'success'): FetchStatus => {
+  if (status === 'loading') return 'fetching';
+  if (status === 'success') return 'fetched';
+  return status;
+}
 
 export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
   const router = useRouter();
@@ -38,5 +43,10 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
     staleTime: TEMPLATE_FETCH_STALE_TIME,
   };
 
-  return useQuery<Template, any>(['template'], fetchTemplate, options);
+  const response = useQuery<Template, any>(['template'], fetchTemplate, options);
+
+  return {
+    ...response,
+    status: getFetchingStatus(response.status)
+  }
 };

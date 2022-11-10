@@ -151,12 +151,12 @@ const CategoryEditPage: FC = () => {
   }, [category, userContext]);
 
   useEffect(() => {
-    if (templateFetchingStatus !== 'fetched') return;
+    if (category === null) return;
 
-    if (activeTab === Tabs.ATTRIBUTE && (!isGranted('pim_enrich_product_category_edit_attributes') || !template)) {
+    if (activeTab === Tabs.ATTRIBUTE && (!isGranted('pim_enrich_product_category_edit_attributes') || !category.template_uuid)) {
       handleSwitchTo(Tabs.PROPERTY);
     }
-  }, [template, templateFetchingStatus]);
+  }, [category, activeTab]);
 
   if (categoryFetchingStatus === 'error') {
     return (

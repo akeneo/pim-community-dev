@@ -75,7 +75,7 @@ const TemplatePage: FC = () => {
   }, [tree]);
 
   useEffect(() => {
-    if (templateFetchingStatus === 'success') {
+    if (templateFetchingStatus === 'fetched') {
       if (fetchedTemplate) {
         setTemplateEdited(cloneDeep(fetchedTemplate));
       }
