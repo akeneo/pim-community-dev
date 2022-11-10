@@ -26,24 +26,59 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'setIdentifier'
-            // TODO This should work with PRE_SAVE_ALL too.
+            StorageEvents::PRE_SAVE => 'setIdentifier',
+            StorageEvents::PRE_SAVE_ALL => 'setIdentifiers',
         ];
     }
 
-    public function setIdentifier(GenericEvent $event)
+    public function setIdentifier(GenericEvent $event): void
     {
         $object = $event->getSubject();
-        if (!$object instanceof ProductInterface) return;
+        if (!$object instanceof ProductInterface) {
+            return;
+        }
 
-        $product = new Product($object->getIdentifier());
+        $this->generateIdentifier($object);
+    }
+
+    public function setIdentifiers(GenericEvent $event): void
+    {
+        if (!\is_array($event->getSubject())) return;
+        foreach ($event->getSubject() as $subject) {
+            if (!$subject instanceof ProductInterface) return;
+        }
+
+        foreach ($event->getSubject() as $product) {
+            $this->generateIdentifier($product);
+        }
+    }
+
+    private function generateIdentifier(ProductInterface $originalProduct): void
+    {
+        $product = new Product($originalProduct->getIdentifier());
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
             if ($identifierGenerator->match($product)) {
                 try {
-                    $this->setGeneratedIdentifier($identifierGenerator, $object);
+                    $this->setGeneratedIdentifier($identifierGenerator, $originalProduct);
                 } catch (\Exception $e) {
                 }
             }
+        }
+    }
+
+    private function setGeneratedIdentifier(
+        IdentifierGenerator $identifierGenerator,
+        ProductInterface $product
+    ): void {
+        $newIdentifier = $identifierGenerator->generate();
+        $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);
+        $product->addValue($value);
+        // TODO This seems not working as I don't have an issue with duplicate identifiers.
+        $violations = $this->validator->validate($product);
+        if (count($violations) > 0) {
+            $product->removeValue($value);
+            // TODO Better exception
+            throw new \Exception();
         }
     }
 
@@ -57,21 +92,5 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         }
 
         return $this->identifierGenerators;
-    }
-
-    private function setGeneratedIdentifier(
-        IdentifierGenerator $identifierGenerator,
-        ProductInterface $product
-    ): void {
-        $newIdentifier = $identifierGenerator->generate();
-        $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);
-        $product->addValue($value);
-        // TODO This seems not working as I don't have an issue with duplicate identifiers.
-        $violations = $this->validator->validate($product);
-        if (count($violations) > 0) {
-            $product->setIdentifier(null);
-            // TODO Better exception
-            throw new \Exception();
-        }
     }
 }
