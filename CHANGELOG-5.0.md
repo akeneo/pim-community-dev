@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.117 (2022-11-10)
+
 ## Bug fixes
 
 - PIM-10711: Fix AbstractInvalidItemWriter does not pad empty values for trailing empty column
