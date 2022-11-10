@@ -85,7 +85,7 @@ const SftpStorageConfigurator = ({
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
   const publicKey = useGetPublicKey();
 
-  const canCopyToClipboard = (): boolean | undefined => 'clipboard' in navigator ? true : undefined;
+  const canCopyToClipboard = (): boolean | undefined => ('clipboard' in navigator ? true : undefined);
   const copyToClipboard = (publicKey: string) => canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
 
   return (

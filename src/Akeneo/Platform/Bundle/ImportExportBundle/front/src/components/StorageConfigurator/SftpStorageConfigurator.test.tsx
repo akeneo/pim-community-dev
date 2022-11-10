@@ -10,19 +10,19 @@ beforeEach(() => {
 });
 
 const mockFetch = jest.fn().mockImplementation(async (route: string) => {
-    switch (route) {
-      case 'pimee_job_automation_get_public_key':
-        return {
-          ok: true,
-          json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
-        }
-      case 'pimee_job_automation_get_storage_connection_check':
-        return {
-          ok: true
-        }
-      default:
-        throw new Error();
-    }
+  switch (route) {
+    case 'pimee_job_automation_get_public_key':
+      return {
+        ok: true,
+        json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
+      };
+    case 'pimee_job_automation_get_storage_connection_check':
+      return {
+        ok: true,
+      };
+    default:
+      throw new Error();
+  }
 });
 
 test('it renders the sftp storage configurator', async () => {
@@ -39,10 +39,14 @@ test('it renders the sftp storage configurator', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator storage={storage} fileExtension="xlsx" validationErrors={[]} onStorageChange={jest.fn()} />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
     );
-  })
-
+  });
 
   expect(screen.getByDisplayValue('/tmp/file.xlsx')).toBeInTheDocument();
   expect(screen.getByDisplayValue('c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e')).toBeInTheDocument();
@@ -63,12 +67,12 @@ test('it allows user to fill file_path field', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -95,12 +99,12 @@ test('it allows user to fill host field', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -127,12 +131,12 @@ test('it allows user to fill fingerprint field', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -163,12 +167,12 @@ test('it removes fingerprint from model when clearing input', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -195,12 +199,12 @@ test('it allows user to fill port field', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -227,19 +231,17 @@ test('it allows user to change login type', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
   userEvent.click(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.login_type.label'));
-  userEvent.click(
-    screen.getByText('pim_import_export.form.job_instance.storage_form.connection_type.private_key')
-  );
+  userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.connection_type.private_key'));
 
   expect(onStorageChange).toHaveBeenLastCalledWith({
     ...storage,
@@ -262,12 +264,12 @@ test('it displays a public key field', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -291,12 +293,12 @@ test('it allows user to fill username field', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -323,12 +325,12 @@ test('it allows user to fill password field', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -349,14 +351,14 @@ test('it throws an exception when passing a non-sftp storage', async () => {
   };
 
   expect(() =>
-        renderWithProviders(
-            <SftpStorageConfigurator
-                storage={storage}
-                fileExtension="xlsx"
-                validationErrors={[]}
-                onStorageChange={jest.fn()}
-            />
-        )
+    renderWithProviders(
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
+    )
   ).toThrowError('Invalid storage type "local" for sftp storage configurator');
 
   mockedConsole.mockRestore();
@@ -421,12 +423,12 @@ test('it displays validation errors', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <SftpStorageConfigurator
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={validationErrors}
-            onStorageChange={jest.fn()}
-        />
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={validationErrors}
+        onStorageChange={jest.fn()}
+      />
     );
   });
 
@@ -471,17 +473,17 @@ test('it can check connection', async () => {
 test('it can check connection, display message if error', async () => {
   mockFetch.mockImplementation((route: string) => {
     switch (route) {
-    case 'pimee_job_automation_get_public_key':
-      return {
-        ok: true,
-        json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
-      }
-    case 'pimee_job_automation_get_storage_connection_check':
-      return {
-        ok: false
-      }
-    default:
-      throw new Error();
+      case 'pimee_job_automation_get_public_key':
+        return {
+          ok: true,
+          json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
+        };
+      case 'pimee_job_automation_get_storage_connection_check':
+        return {
+          ok: false,
+        };
+      default:
+        throw new Error();
     }
   });
 
@@ -495,7 +497,7 @@ test('it can check connection, display message if error', async () => {
     password: 'root',
   };
 
-    const onStorageChange = jest.fn();
+  const onStorageChange = jest.fn();
 
   renderWithProviders(
     <SftpStorageConfigurator

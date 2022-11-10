@@ -22,7 +22,6 @@ beforeEach(() => {
   }));
 
   global.fetch = mockFetch;
-
 });
 
 const mockFetch = jest.fn().mockImplementation(async (route: string) => {
@@ -31,11 +30,11 @@ const mockFetch = jest.fn().mockImplementation(async (route: string) => {
       return {
         ok: true,
         json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
-      }
+      };
     case 'pimee_job_automation_get_storage_connection_check':
       return {
-        ok: true
-      }
+        ok: true,
+      };
     default:
       throw new Error();
   }
@@ -49,13 +48,13 @@ test('it renders the storage form', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <StorageForm
-            jobType="export"
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={jest.fn()}
-        />
+      <StorageForm
+        jobType="export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
     );
   });
 
@@ -72,13 +71,13 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
 
   await act(async () => {
     renderWithProviders(
-        <StorageForm
-            jobType="export"
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <StorageForm
+        jobType="export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -101,13 +100,13 @@ test('it does not render the storage form configurator if storage is none', asyn
 
   await act(async () => {
     renderWithProviders(
-        <StorageForm
-            jobType="export"
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={jest.fn()}
-        />
+      <StorageForm
+        jobType="export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
     );
   });
 
@@ -124,13 +123,13 @@ test('it renders the storage form configurator if storage is local', async () =>
 
   await act(async () => {
     renderWithProviders(
-        <StorageForm
-            jobType="export"
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={jest.fn()}
-        />
+      <StorageForm
+        jobType="export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
     );
   });
 
@@ -153,13 +152,13 @@ test('it renders the storage form configurator if storage is sftp', async () => 
 
   await act(async () => {
     renderWithProviders(
-        <StorageForm
-            jobType="export"
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={jest.fn()}
-        />
+      <StorageForm
+        jobType="export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
     );
   });
 
@@ -181,13 +180,13 @@ test('it can select a local storage', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <StorageForm
-            jobType="export"
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <StorageForm
+        jobType="export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -210,13 +209,13 @@ test('it can select a sftp storage', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <StorageForm
-            jobType="export"
-            storage={storage}
-            fileExtension="csv"
-            validationErrors={[]}
-            onStorageChange={onStorageChange}
-        />
+      <StorageForm
+        jobType="export"
+        storage={storage}
+        fileExtension="csv"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
     );
   });
 
@@ -259,13 +258,13 @@ test('it displays validation errors', async () => {
 
   await act(async () => {
     renderWithProviders(
-        <StorageForm
-            jobType="export"
-            storage={storage}
-            fileExtension="xlsx"
-            validationErrors={validationErrors}
-            onStorageChange={jest.fn()}
-        />
+      <StorageForm
+        jobType="export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={validationErrors}
+        onStorageChange={jest.fn()}
+      />
     );
   });
 
