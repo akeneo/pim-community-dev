@@ -2,15 +2,15 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ .Release.Name }}-test-pim-api"
+  name: "test-pim-api"
   labels:
     app.kubernetes.io/component: test-pim-api
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "103"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "100"
 spec:
   template:
     metadata:

@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node index.js"
   },
-"dependencies": {
-    "@google-cloud/firestore": "^4.0.0"
-  },
-  "devDependencies": {}
+  "dependencies": {
+    "@google-cloud/firestore": "^4.0.0",
+    "@google-cloud/functions-framework": "^3.1.2"
+  }
 }

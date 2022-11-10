@@ -25,12 +25,13 @@ if (isset($_ENV['APP_TENANT_ID']) && '' !== $_ENV['APP_TENANT_ID']) {
 
     $contextCollectionName = $_ENV['APP_TENANT_CONTEXT_COLLECTION_NAME'] ?? null;
 
+    $encryptionKey = trim(file_get_contents($_ENV['APP_TENANT_CONTEXT_ENCRYPTION_KEY_PATH']));
+
     $contextFetcher = new FirestoreContextFetcher(
         logger: new Logger('bootstrap', [$handler]),
-        tenantContextDecoder: new TenantContextDecoder(),
+        tenantContextDecoder: new TenantContextDecoder($encryptionKey),
         googleProjectId: $_ENV['FIRESTORE_PROJECT_ID'],
         collection: $contextCollectionName,
-
     );
     $dotenv->populate(
         values: $contextFetcher->getTenantContext($_ENV['APP_TENANT_ID']),

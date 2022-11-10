@@ -196,9 +196,10 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
                 `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
                 `product_file_identifier` char(36) NOT NULL,
                 `job_execution_id` int NOT NULL,
-                `job_execution_result` varchar(100) NULL,
+                `import_status` varchar(100) NOT NULL,
                 `finished_at` datetime NULL,
                 PRIMARY KEY (`id`),
+                INDEX akeneo_supplier_portal_product_file_imported_execution_id_index (job_execution_id),
                 CONSTRAINT `UC_product_file_imported_by_job_execution_job_execution_id` UNIQUE (`job_execution_id`),
                 CONSTRAINT `file_imported_by_job_execution_product_file_identifier_fk`
                     FOREIGN KEY (`product_file_identifier`)

@@ -425,12 +425,7 @@ jobs:
                         git config --global user.name "pim_ci_deployment"
                         git clone --depth 1 git@github.com:akeneo/pim-enterprise-dev.git /tmp/pim-enterprise-dev
                         # The diff can send exit 1
-                        if [ ${CIRCLE_BRANCH}="master" ]; then
-                          echo ${CIRCLE_BRANCH}
-                          FILES_LIST="Timmy must be build for the master Branch"
-                        else
-                          FILES_LIST=$(diff -qr /tmp/pim-enterprise-dev/deployments-ucs/timmy deployments-ucs/timmy) || true
-                        fi
+                        FILES_LIST=$(diff -qr /tmp/pim-enterprise-dev/deployments-ucs/timmy deployments-ucs/timmy) || true
                         SKIP_DEPLOY_TIMMY=false
                         if [ -z "${FILES_LIST}" ]; then
                           SKIP_DEPLOY_TIMMY=true
@@ -445,7 +440,7 @@ jobs:
                       TENANT_NAME_PREFIX=ucs
                       TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NAMESPACE="pim-${CIRCLE_BRANCH_LOWER}"
+                      PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
                       TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
                       REGION_PREFIX=${REGION_PREFIX}
                       WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
@@ -458,7 +453,7 @@ jobs:
                       echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
-                      echo export PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
                       echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
 
                       echo "Instance name prefix: ${TENANT_NAME_PREFIX}"

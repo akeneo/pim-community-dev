@@ -8,6 +8,7 @@ services:
             - '@database_connection'
             - '@event_dispatcher'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_framework.dbal.resilient_deadlock_connection'
 
     pim_catalog.product_values.remove_values_from_product_models:
         class: Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProductModels

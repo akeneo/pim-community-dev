@@ -138,6 +138,9 @@ jobs:
 
     delete_pim:
         parameters:
+            PIM_NAMESPACE_PREFIX:
+              type: string
+              default: "pim"
             PRODUCT_TYPE:
                 type: string
                 default: ""
@@ -157,7 +160,7 @@ jobs:
                   name: Delete environments
                   command: |
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+                      PIM_NAMESPACE=$(echo << parameters.PIM_NAMESPACE_PREFIX >>-${CIRCLE_BRANCH_LOWER} | cut -c -63)
                       ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
                       # Login to argocd call k8s

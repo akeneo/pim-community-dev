@@ -12,6 +12,7 @@ data:
   GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
   FIRESTORE_PROJECT_ID: {{ .Values.common.gcpFireStoreProjectID | quote }}
   APP_TENANT_CONTEXT_COLLECTION_NAME: {{ .Values.common.tenantContext | quote }}
+  APP_TENANT_CONTEXT_ENCRYPTION_KEY_PATH: "{{ .Values.pim.tenantContextEncryption.encryptionKeyMountPath }}/{{ .Values.pim.tenantContextEncryption.encryptionKeyFilename }}"
   GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
   LC_ALL: C.UTF-8

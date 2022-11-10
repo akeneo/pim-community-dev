@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDroppi
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileForSupplier\DownloadProductFileForSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileForSupplier\DownloadProductFileHandlerForSupplier;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
@@ -22,7 +22,7 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
     public function itDownloadsAProductFile(): void
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileNameForSupplier::class);
-        $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $downloadStoredProductFileMock = $this->createMock(StreamStoredProductFile::class);
         $getSupplierFromContributorEmail = $this->createMock(GetSupplierFromContributorEmail::class);
 
         $sut = new DownloadProductFileHandlerForSupplier(
@@ -75,7 +75,7 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
     public function itThrowsAnExceptionIfTheSupplierDoesNotExist(): void
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileNameForSupplier::class);
-        $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $downloadStoredProductFileMock = $this->createMock(StreamStoredProductFile::class);
         $getSupplierFromContributorEmail = $this->createMock(GetSupplierFromContributorEmail::class);
 
         $sut = new DownloadProductFileHandlerForSupplier(
@@ -102,7 +102,7 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
     public function itThrowsAnExceptionIfTheFileDoesNotExistInTheDatabase(): void
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileNameForSupplier::class);
-        $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $downloadStoredProductFileMock = $this->createMock(StreamStoredProductFile::class);
         $getSupplierFromContributorEmail = $this->createMock(GetSupplierFromContributorEmail::class);
 
         $sut = new DownloadProductFileHandlerForSupplier(
@@ -132,7 +132,7 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
     public function itThrowsAnExceptionIfTheFileCouldNotBeRetrieved(): void
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileNameForSupplier::class);
-        $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $downloadStoredProductFileMock = $this->createMock(StreamStoredProductFile::class);
         $getSupplierFromContributorEmail = $this->createMock(GetSupplierFromContributorEmail::class);
 
         $sut = new DownloadProductFileHandlerForSupplier(

@@ -11,7 +11,7 @@ if [[ ${GOOGLE_CLUSTER_REGION} == "" ]]; then
 fi
 
 TYPE=srnt
-NS_LIST=$(kubectl get ns | grep Active | grep "${TYPE}-ucs" | awk '{print $1}')
+NS_LIST=$(kubectl get ns | grep Active | grep "${TYPE}-ucs\|${TYPE}-auto-ucs" | awk '{print $1}')
 
 echo "${TYPE} Tenants list :"
 echo "${NS_LIST}"

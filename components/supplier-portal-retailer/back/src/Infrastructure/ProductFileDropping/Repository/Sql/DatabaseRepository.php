@@ -6,9 +6,9 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repo
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileDeleted;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Comment;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

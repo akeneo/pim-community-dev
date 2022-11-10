@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\Component\Tenant;
 
 use Google\Cloud\Core\Exception\GoogleException;
@@ -47,9 +56,9 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
     {
         $start = \microtime(true);
         $cacheKey = \sprintf('%s.%s', $this->collection, $tenantId);
-        $values = \apcu_fetch($cacheKey);
+        $contextValues = \apcu_fetch($cacheKey);
 
-        if (false === $values) {
+        if (false === $contextValues) {
             $db = new FirestoreClient(
                 [
                     'projectId' => $this->googleProjectId,
@@ -65,8 +74,8 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
                 );
             }
 
-            $values = $snapshot->data()['values'] ?? null;
-            if (!\is_string($values)) {
+            $contextValues = $snapshot->data()['context'] ?? null;
+            if (!\is_string($contextValues)) {
                 throw new \RuntimeException(
                     sprintf(
                         'Unable to fetch context for the "%s" tenant ID: the document has an incorrect format',
@@ -81,7 +90,7 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
                     \microtime(true) - $start
                 )
             );
-            \apcu_store($cacheKey, $values, $this->cacheTtl);
+            \apcu_store($cacheKey, $contextValues, $this->cacheTtl);
         }
 
         $this->logger->debug(
@@ -92,6 +101,6 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
             )
         );
 
-        return $values;
+        return $contextValues;
     }
 }

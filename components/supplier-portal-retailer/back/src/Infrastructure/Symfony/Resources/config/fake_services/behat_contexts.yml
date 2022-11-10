@@ -17,3 +17,6 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileImportContext:
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations'
+        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository'
+        - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'

@@ -439,7 +439,7 @@ akeneo_supplier_portal_product_file_comments_read_by_supplier | last_read_at | N
 akeneo_supplier_portal_product_file_imported_by_job_execution | id | NO | bigint unsigned | PRI
 akeneo_supplier_portal_product_file_imported_by_job_execution | product_file_identifier | NO | char(36) | MUL
 akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_id | NO | int | UNI
-akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_result | YES | varchar(100) |
+akeneo_supplier_portal_product_file_imported_by_job_execution | import_status | NO | varchar(100) |
 akeneo_supplier_portal_product_file_imported_by_job_execution | finished_at | YES | datetime |
 akeneo_supplier_portal_product_file_retailer_comments | id | NO | bigint unsigned | PRI
 akeneo_supplier_portal_product_file_retailer_comments | author_email | NO | varchar(255) |
@@ -1131,6 +1131,7 @@ INDEX | akeneo_supplier_portal_product_file_comments_read_by_retailer | PRIMARY 
 INDEX | akeneo_supplier_portal_product_file_comments_read_by_retailer | UC_comments_read_by_retailer_product_file_identifier | product_file_identifier
 INDEX | akeneo_supplier_portal_product_file_comments_read_by_supplier | PRIMARY | id
 INDEX | akeneo_supplier_portal_product_file_comments_read_by_supplier | UC_comments_read_by_supplier_product_file_identifier | product_file_identifier
+INDEX | akeneo_supplier_portal_product_file_imported_by_job_execution | akeneo_supplier_portal_product_file_imported_execution_id_index | job_execution_id
 INDEX | akeneo_supplier_portal_product_file_imported_by_job_execution | file_imported_by_job_execution_product_file_identifier_fk | product_file_identifier
 INDEX | akeneo_supplier_portal_product_file_imported_by_job_execution | PRIMARY | id
 INDEX | akeneo_supplier_portal_product_file_imported_by_job_execution | UC_product_file_imported_by_job_execution_job_execution_id | job_execution_id

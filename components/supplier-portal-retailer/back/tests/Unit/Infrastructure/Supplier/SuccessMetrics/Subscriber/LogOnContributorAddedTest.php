@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\SuccessMetrics\Subscriber;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\SuccessMetrics\Subscriber\LogOnContributorAdded;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;

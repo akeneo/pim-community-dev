@@ -64,10 +64,10 @@ class ExportUserIntegration extends TestCase
     {
         $expectedCsv = <<<CSV
 username;email;avatar;catalog_default_locale;catalog_default_scope;default_category_tree;default_product_grid_view;enabled;first_name;groups;last_name;middle_name;name_prefix;name_suffix;phone;product_grid_filters;proposals_state_notifications;proposals_to_review_notification;roles;timezone;user_default_locale
-admin;admin@example.com;;en_US;ecommerce;master;;1;John;"IT support,All";Doe;;;;;;1;1;ROLE_ADMINISTRATOR;UTC;en_US
-julia;julia@example.com;;en_US;ecommerce;master;;1;Julia;Manager,All;Stark;;;;;;1;1;ROLE_CATALOG_MANAGER;UTC;en_US
-mary;mary@example.com;;en_US;ecommerce;master;;1;Mary;Redactor,All;Smith;;;;;;1;1;ROLE_USER;UTC;en_US
-kevin;kevin@example.com;;en_US;ecommerce;master;;1;Kevin;Redactor,All;Michel;;;;;;1;1;ROLE_TRAINEE;UTC;en_US
+admin;admin@example.com;;en_US;ecommerce;master;;1;John;"IT support";Doe;;;;;;1;1;ROLE_ADMINISTRATOR;UTC;en_US
+julia;julia@example.com;;en_US;ecommerce;master;;1;Julia;Manager;Stark;;;;;;1;1;ROLE_CATALOG_MANAGER;UTC;en_US
+mary;mary@example.com;;en_US;ecommerce;master;;1;Mary;Redactor;Smith;;;;;;1;1;ROLE_USER;UTC;en_US
+kevin;kevin@example.com;;en_US;ecommerce;master;;1;Kevin;Redactor;Michel;;;;;;1;1;ROLE_TRAINEE;UTC;en_US
 
 CSV;
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, []);

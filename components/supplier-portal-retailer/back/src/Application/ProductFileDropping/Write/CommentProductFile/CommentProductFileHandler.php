@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 
 final class CommentProductFileHandler
 {

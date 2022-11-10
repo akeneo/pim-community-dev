@@ -4,13 +4,38 @@ services:
     arguments:
       - '@Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface'
 
+  Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductFileImport:
+    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\LaunchTailoredImport
+    arguments:
+      - '@Akeneo\Platform\Job\Application\LaunchJobInstance\LaunchJobInstanceHandler'
+      - '@logger'
+
   # Query/Handlers
   Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportConfigurationsHandler:
     arguments:
       - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations'
+
+  # Repositories
+  Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository:
+    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Repository\Sql\DatabaseRepository
+    arguments:
+      - '@database_connection'
+
+  #Command/Handlers
+  Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler:
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile'
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\LaunchProductFileImport'
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository'
 
   # Controllers
   Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ListProductFileImportConfigurations:
     public: true
     arguments:
       - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportConfigurationsHandler'
+
+  Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ImportProductFile:
+    public: true
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler'

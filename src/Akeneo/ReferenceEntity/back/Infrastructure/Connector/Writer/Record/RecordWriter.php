@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Writer\Record;
 use Akeneo\ReferenceEntity\Application\Record\CreateAndEditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -47,17 +48,21 @@ final class RecordWriter implements ItemWriterInterface, StepExecutionAwareInter
         foreach ($createAndEditRecordCommands as $createAndEditRecordCommand) {
             Assert::isInstanceOf($createAndEditRecordCommand, CreateAndEditRecordCommand::class);
 
-            if (null !== $this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo(
-                    $createAndEditRecordCommand->createRecordCommand ? 'create' : 'process'
-                );
-            }
+            $isCreateRecordCommand = null !== $createAndEditRecordCommand->createRecordCommand;
 
-            if ($createAndEditRecordCommand->createRecordCommand) {
-                ($this->createRecordHandler)($createAndEditRecordCommand->createRecordCommand);
+            if ($isCreateRecordCommand) {
+                try {
+                    ($this->createRecordHandler)($createAndEditRecordCommand->createRecordCommand);
+                } catch (RecordAlreadyExistsError) {
+                    $isCreateRecordCommand = false;
+                }
             }
 
             ($this->editRecordHandler)($createAndEditRecordCommand->editRecordCommand);
+
+            $this->stepExecution?->incrementSummaryInfo(
+                $isCreateRecordCommand ? 'create' : 'process'
+            );
         }
     }
 
