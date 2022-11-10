@@ -89,7 +89,8 @@ JSON_WRAP,
   "type": "object",
   "properties": {
     "uuid": {
-        "type": "string"
+      "title": "Product uuid",
+      "type": "string"
     },
     "name": {
       "type": "string"
@@ -149,7 +150,7 @@ JSON_WRAP,
   "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
   "properties": {
     "uuid": {
-        "type": "boolean"
+      "type": "boolean"
     }
   }
 }
@@ -161,8 +162,8 @@ JSON_WRAP,
   "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
   "properties": {
     "uuid": {
-        "type": "boolean",
-        "title": "Description"
+      "type": "boolean",
+      "title": "Description"
     }
   }
 }

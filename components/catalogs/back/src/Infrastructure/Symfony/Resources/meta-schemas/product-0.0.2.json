@@ -61,6 +61,8 @@
     "uuidProperty": {
       "type": "object",
       "properties": {
+        "title": { "$ref": "#/$defs/title" },
+        "description": { "$ref": "#/$defs/description" },
         "type": { "const": "string" }
       },
       "additionalProperties": false,
