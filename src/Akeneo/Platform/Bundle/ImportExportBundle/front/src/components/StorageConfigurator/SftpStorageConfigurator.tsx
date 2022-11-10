@@ -85,7 +85,7 @@ const SftpStorageConfigurator = ({
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
   const publicKey = useGetPublicKey();
 
-  const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
+  const canCopyToClipboard = (): boolean | undefined => 'clipboard' in navigator ? true : undefined;
   const copyToClipboard = (publicKey: string) => canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
 
   return (
@@ -182,7 +182,7 @@ const SftpStorageConfigurator = ({
       ) : (
         <Field label={translate('pim_import_export.form.job_instance.storage_form.public_key.label')}>
           <CopyableInputContainer>
-            <CopyableInput value={publicKey} />
+            <CopyableInput disabled value={publicKey ?? ''} />
             <CopyableIcon size={16} onClick={undefined !== publicKey ? copyToClipboard(publicKey) : undefined} />
           </CopyableInputContainer>
         </Field>
