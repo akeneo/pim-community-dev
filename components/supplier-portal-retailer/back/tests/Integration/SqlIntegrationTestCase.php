@@ -29,6 +29,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
             DELETE FROM `akeneo_supplier_portal_product_file_supplier_comments`;
             DELETE FROM `akeneo_supplier_portal_product_file_comments_read_by_retailer`;
             DELETE FROM `akeneo_supplier_portal_product_file_comments_read_by_supplier`;
+            DELETE FROM `akeneo_supplier_portal_product_file_imported_by_job_execution`;
             DELETE FROM `akeneo_batch_job_execution`;
         SQL);
 
