@@ -9,7 +9,7 @@ locals {
 module "bucket" {
   source                      = "../modules/bucket"
   location                    = var.bucket_location
-  name                        = "${var.project_id}${local.prefix_branch_name}-timmy"
+  name                        = "${var.project_id}-${var.region}${local.prefix_branch_name}-timmy"
   project_id                  = var.project_id
   force_destroy               = true
   uniform_bucket_level_access = true
