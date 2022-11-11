@@ -63,6 +63,7 @@ test('it does call the action launch if every option is set', () => {
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.grid_context'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_labels'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_media'));
+  fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_uuid'));
   fireEvent.click(getByTitle('pim_common.export'));
 
   expect(onActionLaunch).toHaveBeenCalledWith({
@@ -70,6 +71,7 @@ test('it does call the action launch if every option is set', () => {
     type: 'csv',
     'with-labels': 'with-labels',
     with_media: 'true',
+    with_uuid: 'true',
   });
 
   fireEvent.click(getByTitle('pim_datagrid.mass_action_group.quick_export.label'));
@@ -77,6 +79,7 @@ test('it does call the action launch if every option is set', () => {
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.all_attributes'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_codes'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.without_media'));
+  fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.without_uuid'));
   fireEvent.click(getByTitle('pim_common.export'));
 
   expect(onActionLaunch).toHaveBeenCalledWith({
@@ -84,6 +87,7 @@ test('it does call the action launch if every option is set', () => {
     type: 'xlsx',
     'with-labels': 'with-codes',
     with_media: 'false',
+    with_uuid: 'false',
   });
 });
 
@@ -119,4 +123,21 @@ test('it does not display the with-media select if specified', () => {
   );
 
   expect(queryByText('pim_datagrid.mass_action.quick_export.configurator.with_media')).not.toBeInTheDocument();
+});
+
+test('it does not display the with_uuid select if specified', () => {
+  const onActionLaunch = jest.fn();
+  const getProductCount = jest.fn(() => 3);
+
+  const {queryByText} = renderWithProviders(
+    <QuickExportConfigurator
+      showWithLabelsSelect={true}
+      showWithMediaSelect={true}
+      showWithUuidSelect={false}
+      onActionLaunch={onActionLaunch}
+      getProductCount={getProductCount}
+    />
+  );
+
+  expect(queryByText('pim_datagrid.mass_action.quick_export.configurator.with_uuid')).not.toBeInTheDocument();
 });
