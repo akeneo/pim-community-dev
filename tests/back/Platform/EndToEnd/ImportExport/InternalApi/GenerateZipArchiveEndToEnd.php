@@ -35,8 +35,8 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
         );
         Assert::assertSame(<<<CSV
             uuid;sku;categories;enabled;family;groups;an_image;a_file
-            4168a79a-65b7-418f-b713-ac25b0291131;sku1;categoryA;1;familyA;;files/4168a79a-65b7-418f-b713-ac25b0291131/an_image/akeneo.png;files/4168a79a-65b7-418f-b713-ac25b0291131/a_file/akeneo.pdf
-            9f987844-e0c9-4f89-80e0-bdedd597f888;sku2;categoryA;1;familyA;;files/9f987844-e0c9-4f89-80e0-bdedd597f888/an_image/akeneo.jpg;
+            4168a79a-65b7-418f-b713-ac25b0291131;sku1;categoryA;1;familyA;;files/sku1/an_image/akeneo.png;files/sku1/a_file/akeneo.pdf
+            9f987844-e0c9-4f89-80e0-bdedd597f888;sku2;categoryA;1;familyA;;files/sku2/an_image/akeneo.jpg;
             
             CSV,
             $csv
@@ -73,9 +73,9 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
         Assert::assertEqualsCanonicalizing(
             [
                 'export.csv',
-                'files/4168a79a-65b7-418f-b713-ac25b0291131/an_image/akeneo.png',
-                'files/4168a79a-65b7-418f-b713-ac25b0291131/a_file/akeneo.pdf',
-                'files/9f987844-e0c9-4f89-80e0-bdedd597f888/an_image/akeneo.jpg',
+                'files/sku1/an_image/akeneo.png',
+                'files/sku1/a_file/akeneo.pdf',
+                'files/sku2/an_image/akeneo.jpg',
             ],
             $actualFiles
         );

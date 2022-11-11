@@ -84,6 +84,7 @@ SQL;
             ['uuids' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
+        $labels = [];
         foreach ($results as $result) {
             $values = json_decode($result['raw_values'], true);
 

@@ -22,13 +22,17 @@ class ExportProductsByImagesIntegration extends AbstractExportTestCase
             new SetIdentifierValue('sku', 'product_2'),
             new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('ziggy.png')))
         ]);
+
+        $this->createProductWithUuid('7f754d14-2b31-4373-90d0-5d377ed93b57', [
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('ziggy.png')))
+        ]);
     }
 
     public function testProductExportWithFilterEqualsOnFileValue(): void
     {
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;an_image
-0bca8f20-be4c-4b9e-ba12-877cc29f6072;product_1;;1;;;files/0bca8f20-be4c-4b9e-ba12-877cc29f6072/an_image/akeneo.jpg
+0bca8f20-be4c-4b9e-ba12-877cc29f6072;product_1;;1;;;files/product_1/an_image/akeneo.jpg
 
 CSV;
 
@@ -56,7 +60,8 @@ CSV;
     {
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;an_image
-9c6d6019-c7fb-4304-a6be-2a725dc576a7;product_2;;1;;;files/9c6d6019-c7fb-4304-a6be-2a725dc576a7/an_image/ziggy.png
+9c6d6019-c7fb-4304-a6be-2a725dc576a7;product_2;;1;;;files/product_2/an_image/ziggy.png
+7f754d14-2b31-4373-90d0-5d377ed93b57;;;1;;;files/7f754d14-2b31-4373-90d0-5d377ed93b57/an_image/ziggy.png
 
 CSV;
 
