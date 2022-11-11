@@ -199,9 +199,6 @@ uuid;sku;a_text
 {$nonExistingUuidToFail};;FR text
 CSV;
 
-        $expectedWarning = [
-            'The identifier must be filled'
-        ];
-        $this->assertAuthenticatedImport($importCSV, 'admin', [], 0, 0, 1, $expectedWarning);
+        $this->assertAuthenticatedImport($importCSV, 'admin', [], 1, 0, 0);
     }
 }
