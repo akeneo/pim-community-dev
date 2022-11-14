@@ -57,19 +57,19 @@ Feature:
   Scenario: Get product's identifiers from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the product's identifiers using the API
-    Then the response should contain an empty list
+    Then the response should contain an error message
 
   @database
   Scenario: Get product's uuids from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the product's uuids using the API
-    Then the response should contain an empty list
+    Then the response should contain an error message
 
   @database
   Scenario: Get products from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the products using the API
-    Then the response should contain an empty list
+    Then the response should contain an error message
 
   @database
   Scenario: Get product mapping schema of a catalog
@@ -82,3 +82,15 @@ Feature:
     Given an existing catalog
     When the external application updates a catalog product mapping schema using the API
     Then the catalog product mapping schema should be updated in the PIM
+
+  @database
+  Scenario: Delete product mapping schema of a catalog
+    Given an existing catalog with a product mapping schema
+    When the external application deletes a catalog product mapping schema using the API
+    Then the catalog product mapping schema should be empty in the PIM
+
+  @database
+  Scenario: Get mapped products of a catalog
+    Given an existing catalog with a product mapping
+    When the external application gets mapped products using the API
+    Then the response should contain the mapped products

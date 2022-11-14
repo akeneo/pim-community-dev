@@ -1,0 +1,6 @@
+akeneo.category:
+  attributes: Atributi
+  edition_form:
+    error:
+      unhandled_attribute_type: Impossibile trovare il generatore del campo attributo per il tipo di attributo "{{type}}"
+    unsaved_changes: Se lasci la pagina, perderai le modifiche alla categoria.

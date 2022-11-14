@@ -43,8 +43,8 @@ services:
         arguments:
             - '@database_connection'
 
-    pim_catalog.query.get_associated_product_codes_by_product:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAssociatedProductCodesByProductFromDB'
+    pim_catalog.query.get_associated_product_uuids_by_product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAssociatedProductUuidsByProductFromDB'
         arguments:
             - '@database_connection'
 

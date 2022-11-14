@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -18,8 +18,8 @@ class RefreshVersioningSubscriber implements EventSubscriberInterface
     private const JOB_CODE = 'versioning_refresh';
 
     public function __construct(
-        private ExecuteJobExecutionHandler $jobExecutionRunner,
-        private CreateJobExecutionHandler $jobExecutionFactory,
+        private ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
+        private CreateJobExecutionHandlerInterface $jobExecutionFactory,
     ) {
     }
 

@@ -35,6 +35,8 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator:
         public: true
+        arguments:
+            - '%openssl_config_path%'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup:
         arguments:
@@ -47,7 +49,7 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AuthorizationRequestNotifier:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\AuthorizationRequestNotifier:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery'
             - '@pim_notification.notifier'
@@ -65,3 +67,9 @@ services:
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.saver.user'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\DisabledCatalogNotifier:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery'
+            - '@pim_notification.notifier'

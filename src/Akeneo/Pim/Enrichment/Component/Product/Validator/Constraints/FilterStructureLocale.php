@@ -20,7 +20,7 @@ class FilterStructureLocale extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'filter_structure_locale_validator';
     }

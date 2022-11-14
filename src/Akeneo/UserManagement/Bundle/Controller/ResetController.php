@@ -56,7 +56,7 @@ class ResetController extends AbstractController
                 'The password for this user has already been requested within the last 24 hours.'
             );
 
-            return $this->redirect($this->generateUrl('pim_user_reset_request'));
+            return $this->redirectToRoute('pim_user_reset_request');
         }
 
         if (null === $user->getConfirmationToken()) {
@@ -86,7 +86,7 @@ class ResetController extends AbstractController
 
         if (empty($email)) {
             // the user does not come from the sendEmail action
-            return $this->redirect($this->generateUrl('pim_user_reset_request'));
+            return $this->redirectToRoute('pim_user_reset_request');
         }
 
         return [
@@ -115,7 +115,7 @@ class ResetController extends AbstractController
                 'The password for this user has already been requested within the last 24 hours.'
             );
 
-            return $this->redirect($this->generateUrl('pim_user_reset_request'));
+            return $this->redirectToRoute('pim_user_reset_request');
         }
 
         if ($this->resetHandler->process($user)) {
@@ -125,7 +125,7 @@ class ResetController extends AbstractController
             $this->session->invalidate();
             $this->tokenStorage->setToken(null);
 
-            return $this->redirect($this->generateUrl('pim_user_security_login'));
+            return $this->redirectToRoute('pim_user_security_login');
         }
 
         return [
@@ -138,7 +138,7 @@ class ResetController extends AbstractController
      * Get the truncated email displayed when requesting the resetting.
      * The default implementation only keeps the part following @ in the address.
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      *
      * @return string
      */

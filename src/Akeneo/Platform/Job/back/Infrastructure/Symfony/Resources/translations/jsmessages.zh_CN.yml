@@ -13,6 +13,11 @@ akeneo_job:
     UNKNOWN: 未知
     IN_PROGRESS: 进行中
 akeneo_job_process_tracker:
+  last_operations:
+    title: 上次操作
+    view_all: 查看全部
+    details: 详细信息
+    no_result: 现在没有要显示的操作。
   last_executions:
     title: 上一次执行
   job_execution_list:
@@ -57,6 +62,7 @@ akeneo_job_process_tracker:
     all: 所有
     yes: Yes
     no: No
+    label: 自动化
   max_page_without_filter_helper: 为了向您展示最相关的结果，请改进您的搜索。
   tracking:
     completed: "花费的时间：{{ duration }}"

@@ -26,20 +26,22 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {CategoryToDelete, useDeleteCategory, useEditCategoryForm, useCountProductsBeforeDeleteCategory} from '../hooks';
+import {CategoryToDelete, useCountProductsBeforeDeleteCategory, useDeleteCategory, useEditCategoryForm} from '../hooks';
 import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {EditPermissionsForm, EditPropertiesForm, EditAttributesForm} from '../components';
+import {EditAttributesForm, EditPermissionsForm, EditPropertiesForm} from '../components';
 
 type Params = {
   categoryId: string;
 };
 
-const propertyTabName = '#pim_enrich-category-tab-property';
-const attributeTabName = '#pim_enrich-category-tab-attribute';
-const historyTabName = '#pim_enrich-category-tab-history';
-const permissionTabName = '#pim_enrich-category-tab-permission';
+enum Tabs {
+  ATTRIBUTE = '#pim_enrich-category-tab-attribute',
+  PROPERTY = '#pim_enrich-category-tab-property',
+  HISTORY = '#pim_enrich-category-tab-history',
+  PERMISSION = '#pim_enrich-category-tab-permission',
+}
 
 const CategoryEditPage: FC = () => {
   const {categoryId} = useParams<Params>();
@@ -62,10 +64,18 @@ const CategoryEditPage: FC = () => {
   const [tree, setTree] = useState<EnrichCategory | null>(null);
 
   // ui state
-  const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
+  const [activeTab, setActiveTab] = useSessionStorageState<string>(
+    isGranted('pim_enrich_product_category_edit_attributes') ? Tabs.ATTRIBUTE : Tabs.PROPERTY,
+    'pim_category_activeTab'
+  );
   const [isCurrent, switchTo] = useTabBar(activeTab);
   const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
   const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
+
+  const handleSwitchTo = useCallback((tab: string) => {
+    setActiveTab(tab);
+    switchTo(tab);
+  }, []);
 
   const {
     category,
@@ -135,6 +145,12 @@ const CategoryEditPage: FC = () => {
       );
     }
   }, [category, userContext]);
+
+  useEffect(() => {
+    if (activeTab === Tabs.ATTRIBUTE && !isGranted('pim_enrich_product_category_edit_attributes')) {
+      handleSwitchTo(Tabs.PROPERTY);
+    }
+  }, [activeTab]);
 
   if (categoryFetchingStatus === 'error') {
     return (
@@ -222,76 +238,55 @@ const CategoryEditPage: FC = () => {
       </PageHeader>
       <PageContent>
         <TabBar moreButtonTitle={'More'}>
-          <TabBar.Tab
-            isActive={isCurrent(propertyTabName)}
-            onClick={() => {
-              setActiveTab(propertyTabName);
-              switchTo(propertyTabName);
-            }}
-          >
-            {translate('pim_common.properties')}
-          </TabBar.Tab>
           {isGranted('pim_enrich_product_category_edit_attributes') && (
-            <TabBar.Tab
-              isActive={isCurrent(attributeTabName)}
-              onClick={() => {
-                setActiveTab(attributeTabName);
-                switchTo(attributeTabName);
-              }}
-            >
+            <TabBar.Tab isActive={isCurrent(Tabs.ATTRIBUTE)} onClick={() => handleSwitchTo(Tabs.ATTRIBUTE)}>
               {translate('akeneo.category.attributes')}
             </TabBar.Tab>
           )}
+          <TabBar.Tab isActive={isCurrent(Tabs.PROPERTY)} onClick={() => handleSwitchTo(Tabs.PROPERTY)}>
+            {translate('pim_common.properties')}
+          </TabBar.Tab>
           {category &&
             category.permissions &&
             permissionsAreEnabled &&
             isGranted('pimee_enrich_category_edit_permissions') && (
-              <TabBar.Tab
-                isActive={isCurrent(permissionTabName)}
-                onClick={() => {
-                  setActiveTab(permissionTabName);
-                  switchTo(permissionTabName);
-                }}
-              >
+              <TabBar.Tab isActive={isCurrent(Tabs.PERMISSION)} onClick={() => handleSwitchTo(Tabs.PERMISSION)}>
                 {translate('pim_common.permissions')}
               </TabBar.Tab>
             )}
           {isGranted('pim_enrich_product_category_history') && (
-            <TabBar.Tab
-              isActive={isCurrent(historyTabName)}
-              onClick={() => {
-                setActiveTab(historyTabName);
-                switchTo(historyTabName);
-              }}
-            >
+            <TabBar.Tab isActive={isCurrent(Tabs.HISTORY)} onClick={() => handleSwitchTo(Tabs.HISTORY)}>
               {translate('pim_common.history')}
             </TabBar.Tab>
           )}
         </TabBar>
 
-        {isCurrent(propertyTabName) && category && (
+        {isGranted('pim_enrich_product_category_edit_attributes') &&
+          isCurrent(Tabs.ATTRIBUTE) &&
+          category &&
+          template && (
+            <EditAttributesForm
+              attributeValues={category.attributes}
+              template={template}
+              onAttributeValueChange={onChangeAttribute}
+            />
+          )}
+        {isCurrent(Tabs.PROPERTY) && category && (
           <EditPropertiesForm category={category} onChangeLabel={onChangeCategoryLabel} />
         )}
-        {isCurrent(attributeTabName) && category && template && (
-          <EditAttributesForm
-            attributeValues={category.attributes}
-            template={template}
-            onAttributeValueChange={onChangeAttribute}
-          />
-        )}
-        {isCurrent(historyTabName) && (
-          <HistoryPimView
-            viewName="pim-category-edit-form-history"
-            onBuild={onBuildHistoryView}
-            version={historyVersion}
-          />
-        )}
-        {isCurrent(permissionTabName) && category && permissionsAreEnabled && (
+        {isCurrent(Tabs.PERMISSION) && category && permissionsAreEnabled && (
           <EditPermissionsForm
             category={category}
             applyPermissionsOnChildren={applyPermissionsOnChildren}
             onChangePermissions={onChangePermissions}
             onChangeApplyPermissionsOnChildren={onChangeApplyPermissionsOnChildren}
+          />
+        )}
+        {isCurrent(Tabs.HISTORY) && (
+          <HistoryPimView
+            viewName="pim-category-edit-form-history"
+            onBuild={onBuildHistoryView}
+            version={historyVersion}
           />
         )}
       </PageContent>

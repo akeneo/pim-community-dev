@@ -34,7 +34,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
     private function normalizeQuantifiedProductLinks(array $quantifiedProductLinks, string $associationTypeCode)
     {
         return [
-            sprintf('%s-products', $associationTypeCode) => implode(',', array_column($quantifiedProductLinks, 'identifier')),
+            sprintf('%s-products', $associationTypeCode) => implode(',', $this->identifierProducts($quantifiedProductLinks)),
             sprintf('%s-products-quantity', $associationTypeCode) => implode('|', array_column($quantifiedProductLinks, 'quantity')),
         ];
     }
@@ -42,15 +42,23 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
     private function normalizeQuantifiedProductModelLinks(array $quantifiedProductModelLinks, string $associationTypeCode)
     {
         return [
-            sprintf('%s-product_models', $associationTypeCode) => implode(',', array_column($quantifiedProductModelLinks, 'identifier')),
+            sprintf('%s-product_models', $associationTypeCode) => implode(',', $this->identifierProducts($quantifiedProductModelLinks)),
             sprintf('%s-product_models-quantity', $associationTypeCode) => implode('|', array_column($quantifiedProductModelLinks, 'quantity')),
         ];
+    }
+
+    public function identifierProducts(array $quantifiedProductLinks): array
+    {
+        return array_map(function (array $quantifiedProduct) {
+            $keyIdentifier = array_key_exists('uuid', $quantifiedProduct) ? 'uuid': 'identifier';
+            return $quantifiedProduct[$keyIdentifier];
+        }, $quantifiedProductLinks);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithQuantifiedAssociationsInterface && $format === 'flat';
     }

@@ -29,8 +29,8 @@ pim_api:
       remove: Poista tuotteita
     currency.list: Listaa valuutat
     association_type:
-      edit: Luo ja päivitä tuoteliitostyyppejä
-      list: Listaa tuoteliitostyypit
+      edit: Luo ja päivitä assosiaatiotyyppejä
+      list: Listaa assosiaatiotyypit
   acl_group:
     overall_access: Yleiset Web API-käyttöoikeudet
     attribute: Attribuutit
@@ -43,7 +43,7 @@ pim_api:
     locale: Lokaatiot
     product: Tuotteet
     currency: Valuutat
-    association_type: Tuoteliitostyypit
+    association_type: Assosiaatiotyypit
 pim_user:
   roles:
     tab:

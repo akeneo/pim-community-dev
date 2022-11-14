@@ -110,7 +110,6 @@ const Page: FC = () => {
             <Field>
               <Checkbox checked={configuration.acls.pim_enrich_product_categories_view}>View a category</Checkbox>
             </Field>
-
             <Field>
               <Checkbox
                 checked={configuration.acls.pim_enrich_product_category_create}
@@ -163,6 +162,20 @@ const Page: FC = () => {
 
             <Field>
               <Checkbox
+                checked={configuration.acls.pim_enrich_product_category_order_trees}
+                onClick={() =>
+                  changeAcl(
+                    'pim_enrich_product_category_order_trees',
+                    !configuration.acls.pim_enrich_product_category_order_trees
+                  )
+                }
+              >
+                Order/reorder trees in a category
+              </Checkbox>
+            </Field>
+
+            <Field>
+              <Checkbox
                 checked={configuration.acls.pim_enrich_product_category_remove}
                 onClick={() =>
                   changeAcl(
@@ -172,6 +185,20 @@ const Page: FC = () => {
                 }
               >
                 Remove a category
+              </Checkbox>
+            </Field>
+
+            <Field>
+              <Checkbox
+                checked={configuration.acls.pim_enrich_product_category_template}
+                onClick={() =>
+                  changeAcl(
+                    'pim_enrich_product_category_template',
+                    !configuration.acls.pim_enrich_product_category_template
+                  )
+                }
+              >
+                Manage category template
               </Checkbox>
             </Field>
 
@@ -200,32 +227,6 @@ const Page: FC = () => {
                 }
               >
                 Manage category permissions
-              </Checkbox>
-            </Field>
-            <Field>
-              <Checkbox
-                  checked={configuration.acls.pim_enrich_product_category_template}
-                  onClick={() =>
-                      changeAcl(
-                          'pim_enrich_product_category_template',
-                          !configuration.acls.pim_enrich_product_category_template
-                      )
-                  }
-              >
-                Manage category template
-              </Checkbox>
-            </Field>
-            <Field>
-              <Checkbox
-                  checked={configuration.acls.pim_enrich_product_category_order_trees}
-                  onClick={() =>
-                      changeAcl(
-                          'pim_enrich_product_category_order_trees',
-                          !configuration.acls.pim_enrich_product_category_order_trees
-                      )
-                  }
-              >
-                Order/reorder trees in a category
               </Checkbox>
             </Field>
           </Content>

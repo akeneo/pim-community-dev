@@ -36,6 +36,7 @@ $rules = [
         // TODO: dependencies related to the front end, remove twig screens
         'Twig',
         'Akeneo\Pim\Enrichment\Product\API',
+        'Akeneo\Pim\Enrichment\Product\Domain\Clock',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
@@ -121,6 +122,8 @@ $rules = [
         'ArPHP\I18N\Arabic',
 
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+        'Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection',
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit
@@ -130,6 +133,9 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
+        'Akeneo\Category\Domain\Model\Classification\CategoryTree',
+        'Akeneo\Category\Domain\Query\GetCategoryInterface',
+        'Akeneo\Category\Domain\Query\GetCategoryTreesInterface',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -267,7 +273,6 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
-
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

@@ -1,5 +1,48 @@
 # 6.0.x
 
+# 6.0.53 (2022-11-10)
+
+# 6.0.52 (2022-11-08)
+
+## Bug fixes
+
+- PIM-10664 Fix expand/collapse arrow disappearing after category creation
+- PIM-10699: Fix "All" is exported allong with the user groups on the user export
+
+# 6.0.51 (2022-11-03)
+
+# 6.0.50 (2022-11-02)
+
+# 6.0.49 (2022-10-31)
+
+# 6.0.48 (2022-10-28)
+
+# 6.0.47 (2022-10-27)
+
+## Bug fixes
+
+- PIM-10677: [Backport PIM-10420 and PIM-10484] Fix job still shows under in progress when failed
+- PIM-10683: Fix performance regression in CSV and XLSX product and product model export
+
+# 6.0.46 (2022-10-20)
+
+## Bug fixes
+PIM-10670: Fix memory leak on creating combinations for currencies
+PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
+
+# 6.0.45 (2022-10-06)
+
+## Bug fixes
+
+- PIM-10652: [Backport PIM-10646] Fix export with label from a select attribute containing uppercase in its code exports code and not labels
+
+# 6.0.44 (2022-09-23)
+
+## Bug fixes
+
+- PIM-10631: increase the FOS OAuth scope column to VARCHAR(1000)
+- PIM-10435: [Backport] Fix search_after requests with codes using uppercase accented characters
+
 # 6.0.43 (2022-09-20)
 
 ## Improvements

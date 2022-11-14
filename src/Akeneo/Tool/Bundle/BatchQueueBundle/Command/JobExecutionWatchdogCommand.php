@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -39,7 +40,8 @@ final class JobExecutionWatchdogCommand extends Command
         private JobExecutionManager $executionManager,
         private LoggerInterface $logger,
         private string $projectDir,
-        private CreateJobExecutionHandler $createJobExecutionHandler,
+        private CreateJobExecutionHandlerInterface $createJobExecutionHandler,
+        protected LockFactory $lockFactory,
     ) {
         parent::__construct();
     }
@@ -82,8 +84,8 @@ final class JobExecutionWatchdogCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $jobExecutionId = $input->getOption('job_execution_id') ? (int)$input->getOption('job_execution_id') : null;
-        $jobCode = $input->getOption('job_code') ? (string)$input->getOption('job_code') : null;
+        $jobExecutionId = $input->getOption('job_execution_id') ? (int) $input->getOption('job_execution_id') : null;
+        $jobCode = $input->getOption('job_code') ? (string) $input->getOption('job_code') : null;
 
         if (null === $jobExecutionId && null === $jobCode) {
             throw new \InvalidArgumentException('You must specify job_execution_id or job_code');
@@ -119,9 +121,10 @@ final class JobExecutionWatchdogCommand extends Command
             );
         } finally {
             // update status if the job execution failed due to an uncatchable error as a fatal error
-            if ($this->executionManager->getExitStatus((int)$jobExecutionId)?->isRunning()) {
+            if ($this->executionManager->getExitStatus((int) $jobExecutionId)?->isRunning()) {
                 $this->executionManager->markAsFailed($jobExecutionId);
             }
+            $this->releaseJobLock((int) $jobExecutionId);
         }
 
         $executionTimeInSec = time() - $startTime;
@@ -198,6 +201,16 @@ final class JobExecutionWatchdogCommand extends Command
         $errors = $process->getIncrementalErrorOutput();
         if ($errors) {
             $this->logger->error($errors);
+        }
+    }
+
+    private function releaseJobLock(int $jobExecutionId): void
+    {
+        $jobCode = $this->executionManager->jobCodeFromJobExecutionId($jobExecutionId);
+        $lockIdentifier = sprintf('scheduled-job-%s', $jobCode);
+        $lock = $this->lockFactory->createLock($lockIdentifier);
+        if ($lock->isAcquired()) {
+            $lock->release();
         }
     }
 }

@@ -81,6 +81,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
         $this->quantifiedAssociationCollection = QuantifiedAssociationCollection::createFromNormalized([]);
+        $this->dirty = true;
     }
 
     /**

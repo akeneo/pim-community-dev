@@ -158,11 +158,8 @@ pim_import_export:
           local: Local
           sftp: SFTP
           none: No s'ha configurat emmagatzematge
-        file_path.label: Ruta de l'arxiu
-        host.label: Host
-        port.label: Port
-        username.label: Iniciar Sessió
-        password.label: Contrasenya
+        file_path:
+          label: Ruta de l'arxiu
       validation:
         file_path:
           unsupported_extension: Extensió d'arxiu no admesa

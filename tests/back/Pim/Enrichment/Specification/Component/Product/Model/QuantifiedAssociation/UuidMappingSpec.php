@@ -40,10 +40,10 @@ class UuidMappingSpec extends ObjectBehavior
             'id' => 42
         ]]]);
 
-        $this->getIdentifier(Uuid::fromString($uuid))->shouldReturn($identifier);
+        $this->getIdentifier($uuid)->shouldReturn($identifier);
         $this->getUuidFromIdentifier($identifier)->equals($uuid)->shouldBe(true);
-        $this->hasUuid($identifier)->shouldReturn(true);
         $this->hasIdentifier($uuid)->shouldReturn(true);
+        $this->getUuidFromId(42)->shouldReturn($uuidAsStr);
         $this->hasUuid('nice')->shouldReturn(false);
         $this->hasIdentifier(Uuid::fromString('52254bba-a2c8-40bb-abe1-195e3970bd93'))->shouldReturn(false);
     }

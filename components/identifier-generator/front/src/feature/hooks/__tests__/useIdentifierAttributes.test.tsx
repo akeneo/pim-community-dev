@@ -1,29 +1,30 @@
-import {waitFor} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
-import {useIdentifierAttributes} from '../useIdentifierAttributes';
+import {useIdentifierAttributes} from '../';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
-import {act} from 'react-dom/test-utils';
+import {FlattenAttribute} from '../../models/';
+import {mockResponse} from '../../tests/test-utils';
 
 describe('useIdentifierAttributes', () => {
-  beforeEach(() => {
-    // @ts-ignore;
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve([{code: 'sku', label: 'Sku'}]),
-    });
-  });
-
   test('it retrieves identifier attribute list', async () => {
-    const {result} = renderHook(() => useIdentifierAttributes(), {
+    const expectCall = mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+
+    const {result, waitFor} = renderHook<
+      null,
+      {
+        data?: FlattenAttribute[] | undefined;
+        error: Error | null;
+      }
+    >(() => useIdentifierAttributes(), {
       wrapper: createWrapper(),
     });
 
-    // @ts-ignore
-    await waitFor(() => result.current.isSuccess);
+    await waitFor(() => !!result.current.data);
 
-    act(() => {
-      expect(result.current.data).toBeDefined();
-      expect(result.current.data).toEqual([{code: 'sku', label: 'Sku'}]);
-    });
+    expect(result.current.data).toBeDefined();
+    expect(result.current.data).toEqual([{code: 'sku', label: 'Sku'}]);
+
+    expectCall();
   });
 });

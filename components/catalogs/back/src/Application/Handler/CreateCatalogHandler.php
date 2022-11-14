@@ -35,7 +35,8 @@ final class CreateCatalogHandler
                         'value' => true,
                     ],
                 ],
-                []
+                [],
+                [],
             )
         );
     }

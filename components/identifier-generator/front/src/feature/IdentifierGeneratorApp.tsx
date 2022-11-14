@@ -1,42 +1,31 @@
 import React from 'react';
-import {Breadcrumb, Button, Helper} from 'akeneo-design-system';
-import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
+import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {Edit, List} from './controllers';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      staleTime: Infinity,
+    },
+  },
+});
 
-const IdentifierGeneratorApp = () => {
-  const translate = useTranslate();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <div>
-        <Helper level="error">
-          Under Construction: The Akeneo Product Team is hard at work developing new features for you. This feature will
-          launch soon, but is currently under development. Please do not attempt to use this feature as it could lead to
-          unexpected behaviors that impact your product data.
-        </Helper>
-        <PageHeader>
-          <PageHeader.Breadcrumb>
-            <Breadcrumb>
-              <Breadcrumb.Step href="#">{translate('pim_title.pim_settings_index')}</Breadcrumb.Step>
-              <Breadcrumb.Step href="#">{translate('pim_title.akeneo_identifier_generator_index')}</Breadcrumb.Step>
-            </Breadcrumb>
-          </PageHeader.Breadcrumb>
-          <PageHeader.UserActions>
-            <PimView
-              className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-              viewName="pim-identifier-generator-user-navigation"
-            />
-          </PageHeader.UserActions>
-          <PageHeader.Actions>
-            <Button onClick={() => null}>{translate('pim_common.create')}</Button>
-          </PageHeader.Actions>
-          <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
-        </PageHeader>
-      </div>
-    </QueryClientProvider>
-  );
-};
+const IdentifierGeneratorApp: React.FC = () => (
+  <QueryClientProvider client={queryClient}>
+    <Router basename="/configuration/identifier-generator">
+      <Switch>
+        <Route path="/:identifierGeneratorCode">
+          <Edit />
+        </Route>
+        <Route path="/">
+          <List />
+        </Route>
+      </Switch>
+    </Router>
+  </QueryClientProvider>
+);
 
 export {IdentifierGeneratorApp};

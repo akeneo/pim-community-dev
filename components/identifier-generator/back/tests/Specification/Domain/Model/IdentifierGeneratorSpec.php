@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
@@ -21,7 +22,7 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifierGeneratorSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $identifierGeneratorId = IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002');
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
@@ -45,12 +46,12 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         );
     }
 
-    function it_is_an_identifier_generator()
+    public function it_is_an_identifier_generator()
     {
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
 
-    function it_can_instantiated_without_delimiter()
+    public function it_can_instantiated_without_delimiter()
     {
         $identifierGeneratorId = IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002');
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
@@ -87,9 +88,23 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->delimiter()->shouldBeLike(Delimiter::fromString('-'));
     }
 
+    public function it_sets_a_delimiter()
+    {
+        $this->delimiter()->asString()->shouldBeLike('-');
+        $this->setDelimiter(Delimiter::fromString('='));
+        $this->delimiter()->asString()->shouldBeLike('=');
+    }
+
     public function it_returns_a_target()
     {
         $this->target()->shouldBeLike(Target::fromString('sku'));
+    }
+
+    public function it_sets_a_target()
+    {
+        $this->target()->asString()->shouldBeLike('sku');
+        $this->setTarget(Target::fromString('gtin'));
+        $this->target()->asString()->shouldBeLike('gtin');
     }
 
     public function it_returns_a_conditions()
@@ -102,8 +117,54 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
     }
 
+    public function it_sets_a_structure()
+    {
+        $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
+        $this->setStructure(Structure::fromArray([
+            FreeText::fromString('cba'),
+            AutoNumber::fromValues(3,2),
+        ]));
+        $this->structure()->shouldBeLike(Structure::fromArray([
+            FreeText::fromString('cba'),
+            AutoNumber::fromValues(3,2),
+        ]));
+    }
+
     public function it_returns_a_labels_collection()
     {
         $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
+    }
+
+    public function it_sets_a_labels_collection()
+    {
+        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
+        $this->setLabelCollection(LabelCollection::fromNormalized([
+            'fr' => 'Générateur',
+            'en' => 'generator',
+        ]));
+        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized([
+            'fr' => 'Générateur',
+            'en' => 'generator',
+        ]));
+    }
+
+    public function it_can_be_normalized()
+    {
+        $this->normalize()->shouldReturn([
+            'uuid' => '2038e1c9-68ff-4833-b06f-01e42d206002',
+            'code' => 'abcdef',
+            'conditions' => [],
+            'structure' => [
+                [
+                    'type' => 'free_text',
+                    'string' => 'abc',
+                ],
+            ],
+            'labels' => [
+                'fr' => 'Générateur',
+            ],
+            'target' => 'sku',
+            'delimiter' => '-',
+        ]);
     }
 }

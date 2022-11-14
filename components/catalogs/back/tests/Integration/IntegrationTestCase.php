@@ -7,6 +7,9 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
 use Akeneo\Catalogs\Test\Integration\Fakes\TimestampableSubscriber;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
@@ -23,9 +26,13 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
+use League\Flysystem\FileAttributes;
+use League\Flysystem\Filesystem;
+use League\Flysystem\StorageAttributes;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -86,14 +93,32 @@ abstract class IntegrationTestCase extends WebTestCase
 
     protected static function purgeData(): void
     {
+        self::resetCatalogMappingFilesystem();
         $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->purge();
+    }
+
+    protected static function resetCatalogMappingFilesystem(): void
+    {
+        /** @var Filesystem $catalogMappingFilesystem */
+        $catalogMappingFilesystem = self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem');
+
+        $paths = $catalogMappingFilesystem->listContents('/')->filter(
+            fn (StorageAttributes $attributes): bool => $attributes instanceof FileAttributes
+        )->map(
+            fn (FileAttributes $attributes): string => $attributes->path()
+        );
+
+        foreach ($paths as $path) {
+            $catalogMappingFilesystem->delete($path);
+        }
     }
 
     protected function purgeDataAndLoadMinimalCatalog(): void
     {
         $catalog = self::getContainer()->get('akeneo_integration_tests.catalogs');
         $configuration = $catalog->useMinimalCatalog();
+        self::resetCatalogMappingFilesystem();
         $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($configuration);
     }
@@ -111,6 +136,11 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->ensureKernelShutdown();
 
         parent::tearDown();
+    }
+
+    protected function disableExperimentalTestDatabase(): void
+    {
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->disable();
     }
 
     protected function logAs(string $username): TokenInterface
@@ -131,6 +161,8 @@ abstract class IntegrationTestCase extends WebTestCase
             'shopifi',
             $scopes,
         );
+
+        $this->addAllPermissionsUserGroup('app_shopifi');
 
         /** @var KernelBrowser $client */
         $client = self::getContainer()->get(KernelBrowser::class);
@@ -159,6 +191,63 @@ abstract class IntegrationTestCase extends WebTestCase
         $client->getCookieJar()->set($cookie);
 
         return $client;
+    }
+
+    private function addAllPermissionsUserGroup(string $group): void
+    {
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
+            group: $group,
+            permissions: [
+                'own' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+    }
+
+    private function callPermissionsSaver(string $service, string $group, array $permissions): void
+    {
+        if (self::getContainer()->has($service)) {
+            self::getContainer()->get($service)->save($group, $permissions);
+        }
     }
 
     protected function assertViolationsListContains(
@@ -312,6 +401,21 @@ abstract class IntegrationTestCase extends WebTestCase
         );
     }
 
+    protected function setCatalogProductMapping(string $id, array $productMapping)
+    {
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->executeQuery(
+            'UPDATE akeneo_catalog SET product_mapping = :productMapping WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+                'productMapping' => $productMapping,
+            ],
+            [
+                'productMapping' => Types::JSON,
+            ]
+        );
+    }
+
     /**
      * @param array{
      *     code: string,
@@ -402,6 +506,22 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.category')->save($category);
     }
 
+    protected function createGroup(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $group = self::getContainer()->get('pim_catalog.factory.group')->create();
+        self::getContainer()->get('pim_catalog.updater.group')->update($group, $data);
+        self::getContainer()->get('pim_catalog.saver.group')->save($group);
+    }
+
+    protected function createGroupType(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $groupType = self::getContainer()->get('pim_catalog.factory.group_type')->create();
+        self::getContainer()->get('pim_catalog.updater.group_type')->update($groupType, $data);
+        self::getContainer()->get('pim_catalog.saver.group_type')->save($groupType);
+    }
+
     protected function enableCurrency(string $code): void
     {
         $currency = self::getContainer()->get('pim_catalog.repository.currency')->findOneByIdentifier($code);
@@ -410,5 +530,28 @@ abstract class IntegrationTestCase extends WebTestCase
             'enabled' => true,
         ]);
         self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
+    }
+
+    protected function getCatalog(string $id): Catalog
+    {
+        /** @var ?Catalog $catalog */
+        $catalog = self::getContainer()->get(QueryBus::class)->execute(new GetCatalogQuery($id));
+        $this->assertNotNull($catalog);
+
+        return $catalog;
+    }
+
+    protected function removeAttributeOption(string $code): void
+    {
+        $attributeOption = self::getContainer()->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier($code);
+
+        self::getContainer()->get('pim_catalog.remover.attribute_option')->remove($attributeOption);
+        $this->waitForQueuedJobs();
+    }
+
+    protected function waitForQueuedJobs(): void
+    {
+        self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
     }
 }

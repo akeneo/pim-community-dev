@@ -42,7 +42,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->position += count($this->items);
@@ -54,7 +54,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->searchAfter = [];
         $this->items = $this->getNextItems($this->esQuery);
@@ -75,7 +75,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
             return $identifiers;
         }
 
-        $sort = ['_id' => 'asc'];
+        $sort = ['id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
             $sort = array_merge($esQuery['sort'], $sort);

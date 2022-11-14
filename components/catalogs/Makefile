@@ -89,6 +89,16 @@ catalogs-integration-back:
 catalogs-acceptance-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/behat --config $(CATALOGS_PATH)/back/behat.yml
 
+.PHONY: catalogs-performance-back
+catalogs-performance-back:
+	APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 \
+	$(PHP_RUN) vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
+		--testsuite Catalogs_Performance \
+		--order-by random \
+		--log-junit var/tests/phpunit/phpunit_catalogs_performance.xml
+
 .PHONY: catalogs-coverage-back
 catalogs-coverage-back:
 	XDEBUG_MODE=coverage APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 \

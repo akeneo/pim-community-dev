@@ -17,10 +17,14 @@ final class Conditions
      * @param ConditionInterface[] $conditions
      */
     private function __construct(
-        private array $conditions,
+        private array $conditions, // @phpstan-ignore-line
     ) {
     }
 
+    /**
+     * @param ConditionInterface[] $conditions
+     * @return static
+     */
     public static function fromArray(array $conditions): self
     {
         Assert::allIsInstanceOf($conditions, ConditionInterface::class);
@@ -28,6 +32,18 @@ final class Conditions
         return new self($conditions);
     }
 
+    /**
+     * @param array<mixed> $normalizedConditions
+     */
+    public static function fromNormalized(array $normalizedConditions): self
+    {
+        // TODO
+        return new self([]);
+    }
+
+    /**
+     * @return array<string, string>
+     */
     public function normalize(): array
     {
         return [];

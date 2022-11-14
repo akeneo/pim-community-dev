@@ -121,10 +121,12 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
             'association_type_id' => '1'
         ]);
 
+        $associatedProduct1Uuid = '57700274-9b48-4857-b17d-a7da106cd150';
         $associatedProduct1->getIdentifier()->willReturn('associated_product_1');
-        $associatedProduct1->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
+        $associatedProduct1->getUuid()->willReturn(Uuid::fromString($associatedProduct1Uuid));
+        $associatedProduct2Uuid = '0cc93a87-0b93-4246-939a-9d9d7a84302d';
         $associatedProduct2->getIdentifier()->willReturn('associated_product_2');
-        $associatedProduct2->getUuid()->willReturn(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'));
+        $associatedProduct2->getUuid()->willReturn(Uuid::fromString($associatedProduct2Uuid));
         $associatedProductModel->getCode()->willReturn('associated_product_model_1');
         $associatedProductModel->getId()->willReturn('2');
         $currentProduct->getAllAssociations()->willReturn($associationCollection);
@@ -178,9 +180,9 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
 
         $pqbAsso
             ->addFilter(
-                'identifier',
+                'id',
                 Operators::IN_LIST,
-                ['associated_product_1', 'associated_product_2']
+                ["product_${associatedProduct1Uuid}", "product_${associatedProduct2Uuid}"]
             )->shouldBeCalled();
         $pqbAsso
             ->addFilter(

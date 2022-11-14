@@ -1,0 +1,6 @@
+akeneo.category:
+  attributes: 属性
+  edition_form:
+    error:
+      unhandled_attribute_type: 属性タイプ "{{type}}" の属性フィールドビルダーが見つかりませんでした
+    unsaved_changes: このページから移動するとカテゴリに対する変更が失われます。

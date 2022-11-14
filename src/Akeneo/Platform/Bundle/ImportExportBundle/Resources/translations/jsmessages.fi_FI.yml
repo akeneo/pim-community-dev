@@ -151,11 +151,9 @@ pim_import_export:
             title: Tiedoston lokaali
             help: Määritä lokaali, jossa otsikot näytetään
       file_path: Tiedostopolku
-  widget:
-    last_operations:
-      empty: Ei ole näytettävää toimintoa toistaiseksi.
-      details: Lisätiedot
-      header.view_all: Näytä kaikki
+      storage_form:
+        file_path:
+          label: Tiedostopolku
   batch_status:
     1: Valmis
     2: Alkaa

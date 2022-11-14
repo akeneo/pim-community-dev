@@ -6,6 +6,7 @@ import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 
 type StorageConfiguratorProps = {
   storage: Storage;
+  fileExtension: string;
   onStorageChange: (storage: Storage) => void;
   validationErrors: ValidationError[];
 };

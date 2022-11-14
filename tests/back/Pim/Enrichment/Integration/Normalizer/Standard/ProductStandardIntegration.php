@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format
@@ -250,15 +252,20 @@ class ProductStandardIntegration extends TestCase
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
-                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                    'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
+                    'PACK'   => ['groups' => [], 'product_uuids' => [
+                        $this->getProductUuid('bar')->toString(),
+                        $this->getProductUuid('baz')->toString(),
+                    ], 'product_models' => []],
+                    'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                    'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                    'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                        $this->getProductUuid('bar')->toString()
+                    ], 'product_models' => []],
                 ],
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ["identifier" => 'bar', "quantity" => 3]
+                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar')->toString(), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -452,15 +459,20 @@ SQL;
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
-                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                    'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
+                    'PACK'   => ['groups' => [], 'product_uuids' => [
+                        $this->getProductUuid('bar')->toString(),
+                        $this->getProductUuid('baz')->toString()
+                    ], 'product_models' => []],
+                    'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                    'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                    'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                        $this->getProductUuid('bar')->toString()
+                    ], 'product_models' => []],
                 ],
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ["identifier" => 'bar', "quantity" => 3]
+                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar')->toString(), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -485,6 +497,9 @@ SQL;
 
         //TODO: why do we need that?
         $result = $this->sanitizeMediaAttributeData($result);
+        Assert::assertArrayHasKey('uuid', $result);
+        Assert::assertTrue(Uuid::isValid($result['uuid']));
+        unset($result['uuid']);
 
         //TODO: why do we need that?
         $expected = $this->sanitizeMediaAttributeData($expected);

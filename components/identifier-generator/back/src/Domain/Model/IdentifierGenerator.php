@@ -57,4 +57,48 @@ final class IdentifierGenerator
     {
         return $this->delimiter;
     }
+
+    public function setStructure(Structure $structure): void
+    {
+        $this->structure = $structure;
+    }
+
+    public function setLabelCollection(LabelCollection $labelCollection): void
+    {
+        $this->labelCollection = $labelCollection;
+    }
+
+    public function setTarget(Target $target): void
+    {
+        $this->target = $target;
+    }
+
+    public function setDelimiter(?Delimiter $delimiter): void
+    {
+        $this->delimiter = $delimiter;
+    }
+
+    /**
+     * @return array{
+     *     uuid: string,
+     *     code: string,
+     *     conditions: array<mixed>,
+     *     structure: array<mixed>,
+     *     labels: array<string, string>|\stdClass,
+     *     target: string,
+     *     delimiter: string | null,
+     * }
+     */
+    public function normalize(): array
+    {
+        return [
+            'uuid' => $this->id->asString(),
+            'code' => $this->code->asString(),
+            'conditions' => $this->conditions->normalize(),
+            'structure' => $this->structure->normalize(),
+            'labels' => $this->labelCollection->normalize(),
+            'target' => $this->target->asString(),
+            'delimiter' => $this->delimiter?->asString(),
+        ];
+    }
 }

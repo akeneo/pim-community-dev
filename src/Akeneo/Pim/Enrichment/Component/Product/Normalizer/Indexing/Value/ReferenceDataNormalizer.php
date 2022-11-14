@@ -17,7 +17,7 @@ class ReferenceDataNormalizer extends AbstractProductValueNormalizer implements 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ReferenceDataValue && (
             ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format

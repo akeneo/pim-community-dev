@@ -62,7 +62,7 @@ class OperationJobLauncher
         $user = $this->retrieveUser();
 
         $configuration = $operation->getBatchConfig();
-        $configuration['users_to_notify'][] = $user->getUsername();
+        $configuration['users_to_notify'][] = $user->getUserIdentifier();
 
         $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }

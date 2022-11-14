@@ -65,17 +65,17 @@ type FieldProps = {
   requiredLabel?: string;
 
   /**
-   * Should the field input take the full width of the parent container
+   * Should the field input take the full width of the parent container.
    */
   fullWidth?: boolean;
 
   /**
    * Children of the Field, can only be an Input or Helpers, other children will not be displayed.
    */
-  children: FieldChild;
+  children?: FieldChild;
 
   /**
-   * Adds actions for this field
+   * Adds actions for this field.
    */
   actions?: ReactNode;
 };

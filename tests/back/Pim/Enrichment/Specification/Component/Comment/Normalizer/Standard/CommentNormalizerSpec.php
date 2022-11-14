@@ -71,7 +71,7 @@ class CommentNormalizerSpec extends ObjectBehavior
                 'replies'      => [],
             ]);
 
-        $author->getUsername()->willReturn('julia');
+        $author->getUserIdentifier()->willReturn('julia');
         $author->getFirstName()->willReturn('Julia');
         $author->getLastName()->willReturn('Doe');
         $author->getImagePath()->willReturn('/path/to/image');

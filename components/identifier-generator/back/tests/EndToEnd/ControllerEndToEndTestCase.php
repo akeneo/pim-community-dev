@@ -76,6 +76,64 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         );
     }
 
+    protected function callUpdateRoute(
+        string $routeName,
+        array $routeArguments,
+        ?array $header = self::DEFAULT_HEADER,
+        string $content = ''
+    ): void {
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            $routeArguments,
+            'PATCH',
+            $header,
+            [],
+            $content
+        );
+    }
+
+    protected function callDeleteRoute(string $routeName, ?array $routeArguments = [], ?array $header = self::DEFAULT_HEADER): void
+    {
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            $routeArguments,
+            'DELETE',
+            $header
+        );
+    }
+
+    protected function callCreateRoute(
+        string $routeName,
+        ?array $header = self::DEFAULT_HEADER,
+        string $content = ''
+    ): void {
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            [],
+            'POST',
+            $header,
+            [],
+            $content
+        );
+    }
+
+    protected function callGetRoute(
+        string $routeName,
+        string $code = '',
+        ?array $header = self::DEFAULT_HEADER
+    ): void {
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            ['code' => $code],
+            'GET',
+            $header
+        );
+    }
+
     private function getAuthenticated(): AuthenticatorHelper
     {
         /** @var AuthenticatorHelper $authenticatorHelper */

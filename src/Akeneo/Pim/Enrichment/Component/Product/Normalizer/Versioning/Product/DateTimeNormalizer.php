@@ -32,7 +32,7 @@ class DateTimeNormalizer extends AbstractValueDataNormalizer implements Cacheabl
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof \DateTime && in_array($format, $this->supportedFormats);
     }

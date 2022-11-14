@@ -93,6 +93,11 @@
 - PIM-10667: Fix product import when measurement contains line break
 - PIM-10669: Fix the attribute list does not update if we don't scroll
 - PIM-10655: Fix format of empty completeness in API
+- PIM-10644: Fix identifier format check on multiple product update
+- PIM-10673: Fix media URL port display for Events API
+- PIM-10686: Fix percentage of inaccurate completeness in the activity dashboard
+- PIM-10659: Fix associated products in grid are now sorted using their uuids
+- PIM-10718: Fix categories with empty labels throw 500 error
 
 ## Improvements
 

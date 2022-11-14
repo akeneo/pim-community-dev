@@ -16,6 +16,7 @@ $rules = [
         'Symfony\Component\Messenger\Envelope',
         'Symfony\Component\Messenger\MessageBusInterface',
         'Symfony\Component\Messenger\Stamp\HandledStamp',
+        'Ramsey\Uuid\Uuid',
         'Ramsey\Uuid\UuidInterface',
         'Symfony\Component\Messenger\Stamp',
     ])->in('Akeneo\Pim\Enrichment\Product\API'),
@@ -25,6 +26,7 @@ $rules = [
 
         // Libs
         'Webmozart\Assert\Assert',
+        'Ramsey\Uuid\Uuid',
 
         // PIM
         'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -41,6 +43,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Product\Domain',
 
         // Libs
+        'Ramsey\Uuid',
         'Webmozart\Assert\Assert',
         'Symfony\Component\Validator',
         'Symfony\Component\EventDispatcher',
@@ -50,9 +53,6 @@ $rules = [
         'Akeneo\Tool\Component\StorageUtils\Exception\PropertyException',
         'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
         'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
-
-        // Public APIs
-        'Akeneo\Pim\Structure\Component\AttributeTypes',
 
         // TODO: remove when Upsert product does not use token interface
         'Akeneo\UserManagement\Component\Model\UserInterface',

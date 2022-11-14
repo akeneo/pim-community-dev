@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -74,23 +70,6 @@ class GetCategorySql implements GetCategoryInterface
             return null;
         }
 
-        return new Category(
-            new CategoryId((int)$result['id']),
-            new Code($result['code']),
-            $result['translations'] ?
-                LabelCollection::fromArray(
-                    json_decode(
-                        $result['translations'],
-                        true,
-                        512,
-                        JSON_THROW_ON_ERROR
-                    )
-                ) : null,
-            $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
-            $result['root_id'] ? new CategoryId((int)$result['root_id']) : null,
-            $result['value_collection'] ?
-                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
-            null
-        );
+        return Category::fromDatabase($result);
     }
 }

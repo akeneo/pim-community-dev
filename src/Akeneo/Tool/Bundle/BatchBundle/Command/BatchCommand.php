@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Notification\Notifier;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
@@ -45,8 +45,8 @@ class BatchCommand extends Command
         private JobRepositoryInterface $jobRepository,
         private ValidatorInterface $validator,
         private Notifier $notifier,
-        private ExecuteJobExecutionHandler $jobExecutionRunner,
-        private CreateJobExecutionHandler $jobExecutionFactory,
+        private ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
+        private CreateJobExecutionHandlerInterface $jobExecutionFactory,
     ) {
         parent::__construct();
     }
@@ -198,7 +198,7 @@ class BatchCommand extends Command
             $exitCode = self::EXIT_ERROR_CODE;
         }
 
-        return $exitCode;
+        return (int) $exitCode;
     }
 
     /**

@@ -17,3 +17,6 @@ services:
     Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CreateGeneratorCommandValidator:
         arguments:
             - '@validator'
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateGeneratorCommandValidator:
+        arguments:
+            - '@validator'

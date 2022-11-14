@@ -19,6 +19,9 @@ use Twig\Environment;
  */
 class MailNotifier implements Notifier
 {
+    private const SUCCESS_SUBJECT_TEMPLATE = 'Akeneo successfully completed your "%s" job';
+    private const FAILURE_SUBJECT_TEMPLATE = 'Akeneo completed your "%s" job with errors';
+
     private array $recipientEmails = [];
 
     public function __construct(
@@ -61,7 +64,7 @@ class MailNotifier implements Notifier
             'jobExecution' => $jobExecution,
         ];
 
-        $subject = $jobExecution->getStatus()->isUnsuccessful() ? 'Akeneo completed your export: fail' : 'Akeneo completed your export: success';
+        $subject = $this->getSubject($jobExecution);
 
         try {
             $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);
@@ -73,5 +76,13 @@ class MailNotifier implements Notifier
                 ['Exception' => $exception]
             );
         }
+    }
+
+    private function getSubject(JobExecution $jobExecution): string
+    {
+        $subjectTemplate = $jobExecution->getStatus()->isUnsuccessful() ? self::FAILURE_SUBJECT_TEMPLATE : self::SUCCESS_SUBJECT_TEMPLATE;
+        $jobLabel = $jobExecution->getJobInstance()->getLabel();
+
+        return sprintf($subjectTemplate, $jobLabel);
     }
 }

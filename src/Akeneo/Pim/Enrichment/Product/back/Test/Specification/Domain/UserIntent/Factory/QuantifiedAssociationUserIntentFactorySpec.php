@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductUuids;
 use Akeneo\Pim\Enrichment\Product\Domain\StandardFormat\Validator\QuantifiedAssociationsStructureValidator;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\QuantifiedAssociationUserIntentFactory;
 use PhpSpec\ObjectBehavior;
@@ -42,6 +43,14 @@ class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
                     ['identifier' => 'bar', 'quantity' => 5],
                 ],
             ],
+            'another' => [
+                'product_uuids' => [
+                    ['uuid' => 'b8f895c5-330a-4d6d-9a74-78db307633bd', 'quantity' => 2],
+                ],
+                'product_models' => [
+                    ['identifier' => 'bar', 'quantity' => 5],
+                ],
+            ]
         ])->shouldBeLike([
             new ReplaceAssociatedQuantifiedProducts('QUANTIFIED_ASS', [
                 new QuantifiedEntity('identifier1', 10),
@@ -55,6 +64,12 @@ class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
                 new QuantifiedEntity('foo', 2),
             ]),
             new ReplaceAssociatedQuantifiedProductModels('123', [
+                new QuantifiedEntity('bar', 5),
+            ]),
+            new ReplaceAssociatedQuantifiedProductUuids('another', [
+                new QuantifiedEntity('b8f895c5-330a-4d6d-9a74-78db307633bd', 2),
+            ]),
+            new ReplaceAssociatedQuantifiedProductModels('another', [
                 new QuantifiedEntity('bar', 5),
             ]),
         ]);

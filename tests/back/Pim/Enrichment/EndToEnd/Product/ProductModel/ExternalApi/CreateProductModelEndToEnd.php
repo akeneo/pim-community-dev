@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductModelEndToEnd extends AbstractProductModelTestCase
@@ -782,7 +781,7 @@ JSON;
             'values'  => [],
         ]);
 
-        $this->createProduct('simple', [new SetEnabled(false)]);
+        $simpleProduct = $this->createProduct('simple', [new SetEnabled(false)]);
 
         $client = $this->createAuthenticatedClient();
 
@@ -815,22 +814,22 @@ JSON;
             'associations'   => [
                 "PACK"         => [
                     "groups"   => [],
-                    "products" => [],
+                    "product_uuids" => [],
                     "product_models" => [],
                 ],
                 "SUBSTITUTION" => [
                     "groups"   => [],
-                    "products" => [],
+                    "product_uuids" => [],
                     "product_models" => [],
                 ],
                 "UPSELL"       => [
                     "groups"   => [],
-                    "products" => [],
+                    "product_uuids" => [],
                     "product_models" => ["a_product_model"],
                 ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
-                    "products" => ["simple"],
+                    "product_uuids" => [$simpleProduct->getUuid()->toString()],
                     "product_models" => [],
                 ],
             ],
@@ -930,7 +929,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Property \"associations\" expects a valid product identifier. The product does not exist, \"a_non_exiting_product\" given. Check the expected format on the API documentation.",
+    "message": "The “associations” property expects a valid product identifier. The a_non_exiting_product product does not exist or your connection does not have permission to access it. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
             "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"

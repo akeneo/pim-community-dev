@@ -197,6 +197,8 @@ pim_common:
   less_than: Mniej niż
   loading: Ładuję...
   media_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
+  media_uploading: Przesyłanie…
+  media_upload_error: Podczas przesyłania wystąpił błąd.
   more_actions: Więcej działań
   more_than: Więcej niż
   next: Następna

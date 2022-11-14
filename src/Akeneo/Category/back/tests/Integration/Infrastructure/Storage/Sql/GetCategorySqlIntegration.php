@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
@@ -80,13 +80,14 @@ class GetCategorySqlIntegration extends TestCase
 
     public function testDoNotGetCategoryById(): void
     {
-        $category = $this->get(GetCategoryInterface::class)->byId(999);
+        $nonExistingId = $this->getLastCategoryId() + 1;
+        $category = $this->get(GetCategoryInterface::class)->byId($nonExistingId);
         $this->assertNull($category);
     }
 
     public function testGetCategoryById(): void
     {
-        $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
+        $category = $this->get(GetCategoryInterface::class)->byId($this->category->getId());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('socks', (string)$category->getCode());
         $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
@@ -179,6 +180,16 @@ SQL;
             ], JSON_THROW_ON_ERROR),
             'code' => $code
         ]);
+    }
+
+    private function getLastCategoryId(): int
+    {
+        $query = <<<SQL
+SELECT id from pim_catalog_category ORDER BY id DESC
+LIMIT 1
+SQL;
+
+        return (int) $this->get('database_connection')->fetchOne('SELECT MAX(id) FROM pim_catalog_category');
     }
 
     protected function getConfiguration(): Configuration

@@ -106,7 +106,7 @@ class RefreshTokenIntegration extends ApiTestCase
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('Parameter "grant_type" or "refresh_token" is missing or empty', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
@@ -132,7 +132,7 @@ class RefreshTokenIntegration extends ApiTestCase
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('Refresh token is invalid or has expired', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);

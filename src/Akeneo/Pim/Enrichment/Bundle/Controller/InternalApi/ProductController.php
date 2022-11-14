@@ -16,12 +16,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -51,7 +51,6 @@ class ProductController
 {
     public function __construct(
         protected ProductRepositoryInterface $productRepository,
-        protected CursorableRepositoryInterface $cursorableRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected ObjectUpdaterInterface $productUpdater,
         protected SaverInterface $productSaver,
@@ -79,8 +78,9 @@ class ProductController
      */
     public function indexAction(Request $request): JsonResponse
     {
-        $productIdentifiers = explode(',', $request->get('identifiers'));
-        $products = $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers);
+        $productUuids = explode(',', $request->get('uuids'));
+
+        $products = $this->productRepository->getItemsFromUuids($productUuids);
 
         $normalizedProducts = $this->normalizer->normalize(
             $products,
@@ -233,13 +233,13 @@ class ProductController
             return new RedirectResponse('/');
         }
 
-        $productIdentifier = $this->findProductIdentifierOr404($uuid);
+        $product = $this->findProductOr404($uuid);
 
         try {
             $userId = $this->userContext->getUser()?->getId();
-            $command = UpsertProductCommand::createWithIdentifier(
+            $command = UpsertProductCommand::createWithUuid(
                 $userId,
-                ProductIdentifier::fromIdentifier($productIdentifier),
+                ProductUuid::fromUuid($product->getUuid()),
                 [new ConvertToSimpleProduct()]
             );
             $this->commandMessageBus->dispatch($command);
@@ -255,7 +255,6 @@ class ProductController
             if ($hasPermissionException) {
                 throw new AccessDeniedHttpException();
             }
-            $product = $this->findProductOr404($uuid);
             $normalizedViolations = $this->normalizeViolations($e->violations(), $product);
 
             return new JsonResponse($normalizedViolations, 400);
@@ -272,7 +271,7 @@ class ProductController
      * @return ProductInterface
      * @throws NotFoundHttpException
      */
-    protected function findProductOr404(string $uuid)
+    protected function findProductOr404(string $uuid): ProductInterface
     {
         $product = $this->productRepository->find($uuid);
 

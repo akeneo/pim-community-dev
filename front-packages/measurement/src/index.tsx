@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-pim-community/shared';
+import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
-import translations from './translations.json';
 import {MeasurementApp, ConfigContext, UnsavedChangesContext} from './feature';
 
 const unsavedChanges = {
@@ -15,7 +14,7 @@ const unsavedChanges = {
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
+      <MicroFrontendDependenciesProvider routes={routes as Routes}>
         <ConfigContext.Provider value={{families_max: 10, operations_max: 10, units_max: 10}}>
           <UnsavedChangesContext.Provider value={unsavedChanges}>
             <MeasurementApp />

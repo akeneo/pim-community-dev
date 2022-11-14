@@ -1,0 +1,6 @@
+akeneo.category:
+  attributes: Atrybuty
+  edition_form:
+    error:
+      unhandled_attribute_type: Nie znaleziono konstruktora pola atrybutu typu „{{type}}”
+    unsaved_changes: Jeśli opuścisz stronę, stracisz zmiany wprowadzone w kategorii.
