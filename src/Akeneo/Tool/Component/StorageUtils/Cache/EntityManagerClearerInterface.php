@@ -13,8 +13,6 @@ interface EntityManagerClearerInterface
 {
     /**
      * Clears the internal cache
-     *
-     * @return void
      */
-    public function clear();
+    public function clear(): void;
 }
