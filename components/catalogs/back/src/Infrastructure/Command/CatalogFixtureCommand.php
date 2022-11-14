@@ -119,6 +119,7 @@ class CatalogFixtureCommand extends Command
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
+            /** @var object $productMappingSchema */
             $productMappingSchema = \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR);
 
             $this->commandBus->execute(new UpdateProductMappingSchemaCommand(

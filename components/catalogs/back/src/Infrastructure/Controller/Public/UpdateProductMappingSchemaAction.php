@@ -47,7 +47,7 @@ final class UpdateProductMappingSchemaAction
         $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
 
         try {
-            /** @var array{properties: array<array-key, mixed>} $productMappingSchemaPayload */
+            /** @var object $productMappingSchemaPayload */
             $productMappingSchemaPayload = \json_decode((string) $request->getContent(), false, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException) {
             throw new BadRequestHttpException('Invalid json message received');
