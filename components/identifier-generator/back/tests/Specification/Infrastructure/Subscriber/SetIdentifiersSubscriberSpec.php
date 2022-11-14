@@ -62,10 +62,11 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductInterface $product,
     ) {
-        $product->getIdentifier()->shouldBeCalled()->willReturn(null);
+        $product->getValue('sku')->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
+        $product->setIdentifier('AKN')->shouldBeCalled();
         $validator->validate($product)->shouldBeCalled()->willReturn(new ConstraintViolationList());
 
         $this->setIdentifier(new GenericEvent($product->getWrappedObject()));
@@ -77,14 +78,16 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationInterface $constraintViolation,
     ) {
-        $product->getIdentifier()->shouldBeCalled()->willReturn(null);
+        $product->getValue('sku')->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
+        $product->setIdentifier('AKN')->shouldBeCalled();
         $validator->validate($product)->shouldBeCalled()->willReturn(new ConstraintViolationList([
             $constraintViolation->getWrappedObject()
         ]));
         $product->removeValue($value)->shouldBeCalled();
+        $product->setIdentifier(null)->shouldBeCalled();
 
         $this->setIdentifier(new GenericEvent($product->getWrappedObject()));
     }
@@ -94,15 +97,24 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductInterface $product1,
         ProductInterface $product2,
+        ConstraintViolationInterface $constraintViolation,
     ) {
-        $product1->getIdentifier()->shouldBeCalled()->willReturn(null);
-        $product2->getIdentifier()->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
+
+        $product1->getValue('sku')->shouldBeCalled()->willReturn(null);
         $product1->addValue($value)->shouldBeCalled();
-        $product2->addValue($value)->shouldBeCalled();
+        $product1->setIdentifier('AKN')->shouldBeCalled();
         $validator->validate($product1)->shouldBeCalled()->willReturn(new ConstraintViolationList());
-        $validator->validate($product2)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+
+        $product2->getValue('sku')->shouldBeCalled()->willReturn(null);
+        $product2->addValue($value)->shouldBeCalled();
+        $product2->setIdentifier('AKN')->shouldBeCalled();
+        $validator->validate($product2)->shouldBeCalled()->willReturn(new ConstraintViolationList([
+            $constraintViolation->getWrappedObject()
+        ]));
+        $product2->removeValue($value)->shouldBeCalled();
+        $product2->setIdentifier(null)->shouldBeCalled();
 
         $this->setIdentifiers(new GenericEvent([
             $product1->getWrappedObject(),

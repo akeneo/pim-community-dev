@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler;
@@ -25,6 +27,7 @@ final class GenerateIdentifierCommandHandler
     ): string {
         $delimiter = $command->getDelimiter();
         $properties = $command->getProperties();
+
         return \implode(
             $delimiter?->asString() ?? '',
             array_map(fn (PropertyInterface $property): string => $this->generateProperty($property), $properties)

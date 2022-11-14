@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
@@ -57,9 +59,13 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
     public function setIdentifiers(GenericEvent $event): void
     {
-        if (!\is_array($event->getSubject())) return;
+        if (!\is_array($event->getSubject())) {
+            return;
+        }
         foreach ($event->getSubject() as $subject) {
-            if (!$subject instanceof ProductInterface) return;
+            if (!$subject instanceof ProductInterface) {
+                return;
+            }
         }
 
         foreach ($event->getSubject() as $product) {
@@ -69,7 +75,6 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
     private function generateIdentifier(ProductInterface $product): void
     {
-
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
             $productProjection = new ProductProjection($product->getValue($identifierGenerator->target()->asString()));
             if ($identifierGenerator->match($productProjection)) {
@@ -98,6 +103,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         if (count($violations) > 0) {
             $product->removeValue($value);
             $product->setIdentifier(null);
+
             throw new UnableToSetIdentifierException();
         }
     }
