@@ -86,7 +86,7 @@ class GetProductMappingAttributesActionTest extends IntegrationTestCase
         $payload = $response->getContent();
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertSame([
+        Assert::assertSame(json_encode([
             'description' => [
                 'code' => 'description',
                 'label' => 'Description',
@@ -94,7 +94,7 @@ class GetProductMappingAttributesActionTest extends IntegrationTestCase
             'title' => [
                 'code' => 'title',
                 'label' => 'Title',
-            ],
-        ], \json_decode($payload, true, 512, JSON_THROW_ON_ERROR));
+            ]
+        ]), $payload);
     }
 }
