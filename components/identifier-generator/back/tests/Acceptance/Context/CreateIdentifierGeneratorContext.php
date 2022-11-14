@@ -331,4 +331,23 @@ final class CreateIdentifierGeneratorContext implements Context
             $this->violations = $exception;
         }
     }
+
+    /**
+     * @When I try to create an identifier generator with delimiter ':delimiter'
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'free_text', 'string' => 'abcdef']],
+                [],
+                'sku',
+                $delimiter
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
 }
