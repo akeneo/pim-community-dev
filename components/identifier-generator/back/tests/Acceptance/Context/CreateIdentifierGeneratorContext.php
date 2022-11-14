@@ -21,6 +21,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
+use InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -114,7 +115,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Then I should get an exception with message ':message'
+     * @Then /^I should get an exception with message '(?P<message>[^']*)'$/
      */
     public function iShouldGetAnExceptionWithMessage($message): void
     {
@@ -419,7 +420,7 @@ final class CreateIdentifierGeneratorContext implements Context
                     ['type' => 'free_text', 'string' => 'abcdef18'],
                     ['type' => 'free_text', 'string' => 'abcdef19'],
                     ['type' => 'free_text', 'string' => 'abcdef20'],
-                    ['type' => 'free_text', 'string' => 'abcdef21']
+                    ['type' => 'free_text', 'string' => 'abcdef21'],
                 ],
                 ['fr' => 'Générateur'],
                 'sku',
@@ -427,6 +428,27 @@ final class CreateIdentifierGeneratorContext implements Context
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with free text '(?P<freetextContent>[^']*)'$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithFreeText(string $freetextContent)
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'free_text', 'string' => $freetextContent]],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        } catch (InvalidArgumentException $exception) {
+            $this->invalidArgumentException = $exception;
         }
     }
 }
