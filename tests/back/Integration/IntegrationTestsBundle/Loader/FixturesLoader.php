@@ -455,7 +455,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $query = 'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product';
         $productUuids = array_map(
             fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
-            $this->dbConnection->executeQuery($query)->fetchFirstColumn()
+            $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0)
         );
         $this->productIndexer->indexFromProductUuids($productUuids);
     }
@@ -466,7 +466,7 @@ class FixturesLoader implements FixturesLoaderInterface
     protected function indexProductModels(): void
     {
         $query = 'SELECT code FROM pim_catalog_product_model';
-        $productModelCodes = $this->dbConnection->executeQuery($query)->fetchFirstColumn();
+        $productModelCodes = $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0);
         $this->productModelIndexer->indexFromProductModelCodes($productModelCodes);
     }
 

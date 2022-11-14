@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
@@ -39,7 +40,7 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
     ): void {
         if ($owner instanceof ProductInterface
             && $associatedEntity instanceof ProductInterface
-            && $owner->getIdentifier() === $associatedEntity->getIdentifier()) {
+            && $this->hasSameProductUuid($owner, $associatedEntity)) {
             throw new TwoWayAssociationWithTheSameProductException();
         }
 
@@ -48,8 +49,9 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         }
         if ($owner instanceof ProductInterface) {
             foreach ($associatedEntity->getAssociatedProducts($associationTypeCode) as $associatedProduct) {
-                if ($associatedProduct->getIdentifier() === $owner->getIdentifier() && $associatedProduct !== $owner) {
+                if ($this->hasSameProductUuid($associatedProduct, $owner) && $associatedProduct !== $owner) {
                     $associatedEntity->removeAssociatedProduct($associatedProduct, $associationTypeCode);
+
                     break;
                 }
             }
@@ -58,6 +60,7 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
             foreach ($associatedEntity->getAssociatedProductModels($associationTypeCode) as $associatedProductModel) {
                 if ($associatedProductModel->getCode() === $owner->getCode() && $associatedProductModel !== $owner) {
                     $associatedEntity->removeAssociatedProductModel($associatedProductModel, $associationTypeCode);
+
                     break;
                 }
             }
@@ -99,5 +102,10 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 
         $em = $this->registry->getManager();
         $em->persist($associatedEntity);
+    }
+
+    private function hasSameProductUuid(ProductInterface $product1, ProductInterface $product2): bool
+    {
+        return $product1->getUuid()->compareTo($product2->getUuid()) === 0;
     }
 }

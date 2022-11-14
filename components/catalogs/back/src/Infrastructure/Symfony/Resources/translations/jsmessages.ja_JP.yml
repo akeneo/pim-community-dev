@@ -27,15 +27,12 @@ akeneo_catalogs:
       channel:
         label: チャンネル
         no_matches: 一致するものが見つかりません
-        placeholder: チャンネルを選択
       locale:
         label: ロケール
         no_matches: 一致するものが見つかりません
-        placeholder: ロケールを選択
       currency:
         label: 通貨
         no_matches: 一致するものが見つかりません
-        placeholder: 通貨を選択
   product_selection:
     empty: 検索基準を追加して、商品選択を作成します
     more_information: 詳細についてはヘルプセンターをご確認ください。
@@ -63,18 +60,15 @@ akeneo_catalogs:
       family:
         label: ファミリー
         no_matches: 一致するものが見つかりません
-        placeholder: ファミリーを選択
       completeness:
         label: 完全性
       attribute_option:
         no_matches: 一致するものが見つかりません
-        placeholder: オプションを選択
       category:
         label: カテゴリ
         remove: カテゴリーを削除
         category_tree: カテゴリツリー
       measurement:
-        search: ユニットを選択
         no_results: 一致するものが見つかりません
       boolean:
         yes: Yes

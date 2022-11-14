@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Job;
 
+use Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -63,11 +64,12 @@ class DoctrineJobRepository implements JobRepositoryInterface
             $currentConn->getConfiguration()
         );
 
-        $this->jobManager = EntityManager::create(
+        $jobManager = EntityManager::create(
             $jobConn,
             $entityManager->getConfiguration()
         );
 
+        $this->jobManager = new PersistedConnectionEntityManager($jobManager);
         $this->jobExecutionClass = $jobExecutionClass;
 
         // ... there is an ugly fix related to PIM-5589...

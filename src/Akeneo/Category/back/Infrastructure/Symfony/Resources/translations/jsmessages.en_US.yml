@@ -20,6 +20,12 @@ akeneo.category:
         notification_error: Template could not be activated
         attribute:
             description_title: Description Settings
+            type:
+                text: Text
+                textarea: Text Area
+                richtext: Rich Text
+                image: Image
+
     template_list:
         columns:
             header: Header

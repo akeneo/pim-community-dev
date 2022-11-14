@@ -20,7 +20,9 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
 
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
-  useTranslate: () => (key: string) => key,
+  useTranslate: () => (i18nKey: string) => {
+    return i18nKey;
+  },
   useRouter: () => {
     return {
       generate: (key: string) => key,
@@ -28,5 +30,19 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   },
   useNotify: () => {
     return () => {};
+  },
+  useUserContext: () => {
+    return {
+      get: (k: string) => {
+        switch (k) {
+          case 'catalogLocale':
+            return 'en_US';
+          case 'uiLocale':
+            return 'en_US';
+          default:
+            throw new Error(`Unknown key ${k}`);
+        }
+      },
+    };
   },
 }));

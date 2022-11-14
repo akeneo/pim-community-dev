@@ -9,6 +9,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Elasticsearch\ClientBuilder;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
 
 /**
@@ -33,6 +34,11 @@ final class Version_7_0_20221027152057_add_id_field_to_connection_error_index_ma
             throw new \RuntimeException('Unable to retrieve existing mapping.');
         }
 
+        if ('text' === (current($existingMapping)['mappings']['properties']['id']['type'] ?? '')) {
+            $this->reindexWhenThereIsAlreadyAnId();
+            return;
+        }
+
         $client->putMapping([
             'index' => $connectionErrorIndexName,
             'body' => [
@@ -41,6 +47,79 @@ final class Version_7_0_20221027152057_add_id_field_to_connection_error_index_ma
                 ],
             ],
         ]);
+    }
+
+    private function reindexWhenThereIsAlreadyAnId(): void
+    {
+        $builder = $this->container->get('akeneo_elasticsearch.client_builder');
+        $builder->setHosts([$this->container->getParameter('index_hosts')]);
+        /** @var \Elasticsearch\Client $client */
+        $client = $builder->build();
+        $alias = $this->container->getParameter('connection_error_index_name');
+        $copy = sprintf('%s_copy', $alias);
+        $indice = array_keys($client->indices()->getAlias(['name' => $alias]))[0];
+
+        $mapping = $this->getMappingConfiguration();
+
+        $client->indices()->create([
+            'index' => $copy,
+            'body' => $mapping,
+        ]);
+
+        $client->reindex([
+            'refresh' => true,
+            'body' => [
+                'source' => [
+                    'index' => $indice,
+                ],
+                'dest' => [
+                    'index' => $copy,
+                ],
+            ],
+        ]);
+
+        $client->indices()->putAlias([
+            'name' => $alias,
+            'index' => $copy,
+        ]);
+
+        $client->indices()->delete([
+            'index' => $indice,
+        ]);
+
+        $client->indices()->create([
+            'index' => $indice,
+            'body' => $mapping,
+        ]);
+
+        $client->reindex([
+            'refresh' => true,
+            'body' => [
+                'source' => [
+                    'index' => $copy,
+                ],
+                'dest' => [
+                    'index' => $indice,
+                ],
+            ],
+        ]);
+
+        $client->indices()->putAlias([
+            'name' => $alias,
+            'index' => $indice,
+        ]);
+
+        $client->indices()->delete([
+            'index' => $copy,
+        ]);
+    }
+
+    private function getMappingConfiguration(): array
+    {
+        $ceDir = $this->container->getParameter('pim_ce_dev_src_folder_location');
+        $path = "{$ceDir}/src/Akeneo/Connectivity/Connection/back/Infrastructure/Symfony/Resources/elasticsearch/connection_error_mapping.yml";
+
+        return Yaml::parseFile($path);
     }
 
     public function down(Schema $schema) : void

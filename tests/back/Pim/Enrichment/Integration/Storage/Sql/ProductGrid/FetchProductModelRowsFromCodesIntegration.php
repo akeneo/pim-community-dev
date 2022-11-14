@@ -30,7 +30,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
     {
         $userId = $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "admin"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
 
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
         $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
@@ -83,7 +83,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
     {
         $userId = $this
             ->get('database_connection')
-            ->fetchOne('SELECT id FROM oro_user WHERE username = "admin"');
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
 
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
         $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));

@@ -3,6 +3,4 @@ akeneo.category:
   edition_form:
     error:
       unhandled_attribute_type: 找不到属性类型“{{type}}”的属性字段生成器
-    template:
-      fetching_failed: 获取模板时出错。
     unsaved_changes: 如果离开此页面，将会丢失对类别的更改。

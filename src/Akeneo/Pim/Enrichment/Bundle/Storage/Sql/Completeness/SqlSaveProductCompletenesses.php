@@ -96,12 +96,12 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                     $stmt->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
                     $stmt->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
                     $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId());
-                    $stmt->bindValue($placeholderIndex++, count($productCompleteness->missingAttributeCodes()), ParameterType::INTEGER);
+                    $stmt->bindValue($placeholderIndex++, $productCompleteness->missingAttributesCount(), ParameterType::INTEGER);
                     $stmt->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
                 }
             }
 
-            $stmt->executeStatement();
+            $stmt->execute();
         };
 
         try {

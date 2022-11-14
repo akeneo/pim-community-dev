@@ -29,7 +29,7 @@ FROM pim_catalog_attribute_group
 INNER JOIN pim_data_quality_insights_attribute_group_activation ON(pim_catalog_attribute_group.code = pim_data_quality_insights_attribute_group_activation.attribute_group_code);
 SQL;
 
-        $result = $this->dbConnection->executeQuery($query)->fetchAllAssociative();
+        $result = $this->dbConnection->executeQuery($query);
 
         $groups = [];
         foreach ($result as $row) {

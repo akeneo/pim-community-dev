@@ -1,5 +1,5 @@
 akeneo_identifier_generator_index:
-    path: '/configuration/identifier-generator'
+    path: '/configuration/identifier-generator/'
 
 akeneo_identifier_generator_edit:
     path: '/configuration/identifier-generator/{code}'

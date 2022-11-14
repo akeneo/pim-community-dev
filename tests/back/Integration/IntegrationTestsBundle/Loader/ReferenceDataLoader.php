@@ -64,13 +64,13 @@ final class ReferenceDataLoader
         $query = $this->entityManager->createQuery(sprintf('SELECT COUNT(f) FROM %s f', $this->fabricClassName));
         if (0 === (int) $query->getSingleScalarResult()) {
             $stmt = $this->entityManager->getConnection()->prepare($this->getFabricsSql());
-            $stmt->executeStatement();
+            $stmt->execute();
         }
 
         $query = $this->entityManager->createQuery(sprintf('SELECT COUNT(c) FROM %s c', $this->colorClassName));
         if (0 === (int) $query->getSingleScalarResult()) {
             $stmt = $this->entityManager->getConnection()->prepare($this->getColorSql());
-            $stmt->executeStatement();
+            $stmt->execute();
         }
     }
 

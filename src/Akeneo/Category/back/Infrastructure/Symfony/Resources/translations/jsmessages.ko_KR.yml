@@ -3,6 +3,4 @@ akeneo.category:
   edition_form:
     error:
       unhandled_attribute_type: 특성 유형 "{{type}}"에 대한 특성 필드 빌더를 찾을 수 없습니다.
-    template:
-      fetching_failed: 템플릿을 가져오는 동안 오류가 발생했습니다. 
     unsaved_changes: 이 페이지를 나가면 카테고리에 대한 변경 사항이 손실됩니다.

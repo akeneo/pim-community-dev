@@ -104,8 +104,8 @@ class AttributeRepository extends EntityRepository implements
             ->andWhere('a.type IN (:file_type, :image_type)')
             ->setParameters(
                 [
-                    'file_type'  => AttributeTypes::FILE,
-                    'image_type' => AttributeTypes::IMAGE,
+                    ':file_type'  => AttributeTypes::FILE,
+                    ':image_type' => AttributeTypes::IMAGE,
                 ]
             )
             ->getQuery()
