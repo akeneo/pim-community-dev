@@ -42,7 +42,7 @@ class GetCatalogProductsPerformance extends PerformanceTestCase
         echo $profile->getUrl() . PHP_EOL;
         echo \sprintf('Wall time: %.2fms', $cost->getWallTime() / 1000) . PHP_EOL;
         echo \sprintf('Peak memory: %.2fMB', $cost->getPeakMemoryUsage() / 1000000) . PHP_EOL;
-        echo \sprintf('SQL Queries: %d', \count($profile->getSqls())) . PHP_EOL;
-        echo \sprintf('HTTP Requests: %d', \count($profile->getHttpRequests())) . PHP_EOL;
+        echo \sprintf('SQL Queries: %d', \is_countable($profile->getSqls()) ? \count($profile->getSqls()) : 0) . PHP_EOL;
+        echo \sprintf('HTTP Requests: %d', \is_countable($profile->getHttpRequests()) ? \count($profile->getHttpRequests()) : 0) . PHP_EOL;
     }
 }

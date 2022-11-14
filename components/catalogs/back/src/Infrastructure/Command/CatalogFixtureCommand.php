@@ -114,9 +114,12 @@ class CatalogFixtureCommand extends Command
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
+            /** @var array{properties: array<array-key, mixed>} $productMappingSchema */
+            $productMappingSchema = \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR);
+
             $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
                 $catalogWithMappingId,
-                \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR),
+                $productMappingSchema,
             ));
 
             $this->connection->commit();
@@ -131,6 +134,10 @@ class CatalogFixtureCommand extends Command
         }
     }
 
+    /**
+     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null}> $productMapping
+     * @throws \Doctrine\DBAL\Exception
+     */
     private function setCatalogProductMapping(string $id, array $productMapping): void
     {
         $this->connection->executeQuery(
