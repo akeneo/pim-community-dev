@@ -23,8 +23,7 @@ export const TargetPlaceholder: FC = () => {
                     <Placeholder
                         illustration={<AttributesIllustration />}
                         title={translate('akeneo_catalogs.product_mapping.target.placeholder.illustration_title')}
-                    >
-                    </Placeholder>
+                    ></Placeholder>
                 </SectionContent>
             </TableCell>
         </Table.Row>

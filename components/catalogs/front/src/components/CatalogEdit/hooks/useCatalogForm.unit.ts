@@ -60,7 +60,7 @@ test('it returns the form values when catalog is loaded', () => {
             product_value_filters: {channels: ['ecommerce', 'print']},
             owner_username: 'willy',
             product_mapping: {},
-            has_product_mapping_schema: false
+            has_product_mapping_schema: false,
         },
         error: null,
     }));
@@ -114,7 +114,7 @@ test('it calls the API when save is called', async () => {
             product_value_filters: {channels: ['ecommerce', 'print']},
             owner_username: 'willy',
             product_mapping: {},
-            has_product_mapping_schema: false
+            has_product_mapping_schema: false,
         },
         error: null,
     }));
@@ -179,7 +179,7 @@ test('it returns validation errors if the API call failed', async () => {
             product_value_filters: {channels: ['ecommerce', 'print']},
             owner_username: 'willy',
             product_mapping: {},
-            has_product_mapping_schema: false
+            has_product_mapping_schema: false,
         },
         error: null,
     }));
@@ -228,7 +228,7 @@ test('it returns dirty at true after dispatching a change', () => {
             product_value_filters: {channels: ['ecommerce', 'print']},
             owner_username: 'willy',
             product_mapping: {},
-            has_product_mapping_schema: false
+            has_product_mapping_schema: false,
         },
         error: null,
     }));
@@ -272,7 +272,7 @@ test("it forwards the action to dispatch when it's a non-altering event", () => 
             product_value_filters: {channels: ['ecommerce', 'print']},
             owner_username: 'willy',
             product_mapping: {},
-            has_product_mapping_schema: false
+            has_product_mapping_schema: false,
         },
         error: null,
     }));
@@ -331,7 +331,7 @@ test('it validates the catalog on first load', () => {
             product_value_filters: {channels: ['ecommerce', 'print']},
             owner_username: 'willy',
             product_mapping: {},
-            has_product_mapping_schema: false
+            has_product_mapping_schema: false,
         },
         error: null,
     }));
@@ -450,9 +450,9 @@ test('it returns the product mapping when catalog is loaded', () => {
                     source: 'uuid',
                     locale: null,
                     scope: null,
-                }
+                },
             },
-            has_product_mapping_schema: true
+            has_product_mapping_schema: true,
         },
         error: null,
     }));
@@ -483,7 +483,7 @@ test('it returns the product mapping when catalog is loaded', () => {
                         source: 'uuid',
                         locale: null,
                         scope: null,
-                    }
+                    },
                 },
             },
         },

@@ -35,7 +35,7 @@ test('it displays an existing product mapping', async () => {
         {
             url: '/rest/catalogs/123e4567-e89b-12d3-a456-426614174000/mapping-schemas/product',
             json: {
-                '$id': 'https://example.com/product',
+                $id: 'https://example.com/product',
                 $schema: 'https://api.akeneo.com/mapping/product/0.0.1/schema',
                 $comment: 'My first schema !',
                 title: 'Product Mapping',
