@@ -24,7 +24,7 @@ class GetAttributeLabelsQuery implements GetAttributeLabelsQueryInterface
     {
         $attributes = $this->searchableAttributeRepository->findBySearch(options: ['identifiers' => $attributeCodes, 'locale' => null]);
 
-        $attributeLabels = \array_reduce(
+        return \array_reduce(
             $attributes,
             /**
              * @param array<array-key, array{code: string, label: string}> $normalized
@@ -40,7 +40,5 @@ class GetAttributeLabelsQuery implements GetAttributeLabelsQueryInterface
             },
             []
         );
-
-        return $attributeLabels;
     }
 }
