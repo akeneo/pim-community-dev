@@ -102,6 +102,47 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             product_mapping: {},
         },
     },
+
+    {
+        state: {
+            enabled: false,
+            product_selection_criteria: {},
+            product_value_filters: {},
+            product_mapping: {},
+        },
+        action: {
+            type: CatalogFormActions.SET_PRODUCT_MAPPING,
+            value: {
+                uuid: {
+                    source: 'uuid',
+                    locale: null,
+                    scope: null,
+                },
+                name: {
+                    source: 'title',
+                    locale: 'en_US',
+                    scope: 'ecommerce',
+                }
+            },
+        },
+        result: {
+            enabled: false,
+            product_selection_criteria: {},
+            product_value_filters: {},
+            product_mapping: {
+                uuid: {
+                    source: 'uuid',
+                    locale: null,
+                    scope: null,
+                },
+                name: {
+                    source: 'title',
+                    locale: 'en_US',
+                    scope: 'ecommerce',
+                }
+            },
+        },
+    },
 ];
 
 test.each(tests)('it updates the state using an action #%#', ({state, action, result}) => {

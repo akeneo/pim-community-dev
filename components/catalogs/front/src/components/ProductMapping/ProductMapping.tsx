@@ -6,6 +6,7 @@ import {SourcePlaceholder} from './components/SourcePlaceholder';
 import {useCatalog} from './hooks/useCatalog';
 import {TargetPlaceholder} from './components/TargetPlaceholder';
 import {useProductMappingSchema} from './hooks/useProductMappingSchema';
+import {useProductMappingAttributes} from './hooks/useProductMappingAttributes';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -37,6 +38,7 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
     const translate = useTranslate();
     const {data: catalog} = useCatalog(catalogId);
     const {data: productMappingSchema} = useProductMappingSchema(catalogId);
+    const {data: productMappingAttributes} = useProductMappingAttributes(catalogId);
 
     const [selectedTarget, setSelectedTarget] = useState<string>();
 
@@ -91,7 +93,12 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
                                                     )}
                                                 </PlaceholderCell>
                                             )}
-                                            {source.source && <Table.Cell>{source.source}</Table.Cell>}
+                                            {source.source && undefined !== productMappingAttributes && (
+                                                <Table.Cell>
+                                                    {productMappingAttributes[source.source]?.label ??
+                                                        `[${source.source}]`}
+                                                </Table.Cell>
+                                            )}
                                         </Table.Row>
                                     );
                                 })}
