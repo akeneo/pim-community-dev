@@ -31,10 +31,11 @@ final class ExportTableValueIntegration extends TestCase
     /** @test */
     public function it_exports_a_table_value_in_csv(): void
     {
-        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, []);
+        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, ['with_uuid' => true]);
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('toto');
         $expectedContent = <<<CSV
-sku;categories;enabled;family;groups;nutrition
-toto;master;1;;;"[{""ingredient"":""salt"",""is_allergenic"":false},{""ingredient"":""egg"",""quantity"":2},{""ingredient"":""butter"",""quantity"":25,""is_allergenic"":true}]"
+uuid;sku;categories;enabled;family;groups;nutrition
+{$product->getUuid()->toString()};toto;master;1;;;"[{""ingredient"":""salt"",""is_allergenic"":false},{""ingredient"":""egg"",""quantity"":2},{""ingredient"":""butter"",""quantity"":25,""is_allergenic"":true}]"
 
 CSV;
         Assert::assertSame($expectedContent, $csv);
@@ -43,7 +44,7 @@ CSV;
     /** @test */
     public function it_exports_a_table_attribute_in_xlsx(): void
     {
-        $bin = $this->jobLauncher->launchExport(self::XLSX_EXPORT_JOB_CODE, null, [], 'xlsx');
+        $bin = $this->jobLauncher->launchExport(self::XLSX_EXPORT_JOB_CODE, null, ['with_uuid' => true], 'xlsx');
         $tmpfile = \tempnam(\sys_get_temp_dir(), 'test_table');
         \file_put_contents($tmpfile, $bin);
 

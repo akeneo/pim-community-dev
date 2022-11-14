@@ -13,12 +13,16 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
  * file that was distributed with this source code.
  */
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * If according to user permissions, the product is only editable (so it means it's a draft),
@@ -28,40 +32,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class DelegatingProductRepository implements IdentifiableObjectRepositoryInterface
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    private $productDraftRepository;
-
-    /** @var DraftApplierInterface */
-    private $productDraftApplier;
-
-    /**
-     * @param TokenStorageInterface                    $tokenStorage
-     * @param AuthorizationCheckerInterface            $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface    $productRepository
-     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
-     * @param DraftApplierInterface                    $productDraftApplier
-     */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $productRepository,
-        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        DraftApplierInterface $productDraftApplier
+        private TokenStorageInterface $tokenStorage,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private IdentifiableObjectRepositoryInterface $productRepository,
+        private EntityWithValuesDraftRepositoryInterface $productDraftRepository,
+        private DraftApplierInterface $productDraftApplier
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->productRepository = $productRepository;
-        $this->productDraftApplier = $productDraftApplier;
-        $this->productDraftRepository = $productDraftRepository;
     }
 
     /**
@@ -87,6 +64,28 @@ class DelegatingProductRepository implements IdentifiableObjectRepositoryInterfa
 
         if ($canEdit && !$isOwner) {
             $username = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
+            $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $username);
+            if (null !== $productDraft) {
+                $this->productDraftApplier->applyAllChanges($product, $productDraft);
+            }
+        }
+
+        return $product;
+    }
+
+    public function findOneByUuid(UuidInterface $uuid): ?ProductInterface
+    {
+        Assert::methodExists($this->productRepository, 'findOneByUuid');
+        $product = $this->productRepository->findOneByUuid($uuid);
+        if (null === $product) {
+            return null;
+        }
+
+        $canEdit = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
+        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
+
+        if ($canEdit && !$isOwner) {
+            $username = $this->tokenStorage->getToken()->getUser()->getUsername();
             $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $username);
             if (null !== $productDraft) {
                 $this->productDraftApplier->applyAllChanges($product, $productDraft);

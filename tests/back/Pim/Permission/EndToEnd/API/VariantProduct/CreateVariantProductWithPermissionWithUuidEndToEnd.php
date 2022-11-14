@@ -8,7 +8,6 @@ use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateVariantProductWithPermissionWithUuidEndToEnd extends ApiTestCase
@@ -27,7 +26,7 @@ class CreateVariantProductWithPermissionWithUuidEndToEnd extends ApiTestCase
     {
         $this->loader->loadProductsForAssociationPermissions();
         $uuid = Uuid::uuid4()->toString();
-        $productOwnUuid = $this->getProductUuidFromIdentifier('product_own')->toString();
+        $productOwnUuid = $this->getProductUuid('product_own')->toString();
         $data = <<<JSON
             {
                 "uuid": "{$uuid}",
@@ -125,7 +124,7 @@ JSON;
     {
         $this->loader->loadProductsForAssociationPermissions();
         $uuid = Uuid::uuid4()->toString();
-        $productNoViewUuid = $this->getProductUuidFromIdentifier('product_no_view')->toString();
+        $productNoViewUuid = $this->getProductUuid('product_no_view')->toString();
         $data = <<<JSON
             {
                 "uuid": "{$uuid}",
@@ -479,12 +478,5 @@ JSON;
         $constraints = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $constraints);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
     }
 }

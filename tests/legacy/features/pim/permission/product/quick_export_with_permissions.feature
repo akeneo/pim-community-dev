@@ -9,9 +9,9 @@ Feature: Quick export products with user permissions applied
     Given a "clothing" catalog configuration
     And I am logged in as "Mary"
     And the following products:
-      | sku         | family  | name-en_US   | name-de_DE       | sleeve_color |
-      | blackhoodie | hoodies | Black hoodie | Schwarzer Hoodie | black        |
-      | greenhoodie | hoodies | Green hoodie | Grüner Hoodie    | yellow       |
+      | uuid                                 | sku         | family  | name-en_US   | name-de_DE       | sleeve_color |
+      | 8b475639-7f0d-4564-a29b-abc187bca7db | blackhoodie | hoodies | Black hoodie | Schwarzer Hoodie | black        |
+      | cdd76451-fe79-4882-8b0f-b5a37b02c103 | greenhoodie | hoodies | Green hoodie | Grüner Hoodie    | yellow       |
     And I am on the "de_DE" locale page
     And I visit the "Permissions" tab
     And I fill in the following information:
@@ -29,13 +29,14 @@ Feature: Quick export products with user permissions applied
     And I press the "All attributes" button
     And I press the "With codes" button
     And I press the "Without media" button
+    And I press the "With UUID" button
     And I press the "Export" button
     And I wait for the "csv_product_quick_export" quick export to finish
     And first exported file of "csv_product_quick_export" should contain:
     """
-    sku;categories;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;side_view;size;top_view
-    blackhoodie;;;;1;hoodies;;;"Black hoodie";;;;;;
-    greenhoodie;;;;1;hoodies;;;"Green hoodie";;;;;;
+    uuid;sku;categories;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;side_view;size;top_view
+    8b475639-7f0d-4564-a29b-abc187bca7db;blackhoodie;;;;1;hoodies;;;"Black hoodie";;;;;;
+    cdd76451-fe79-4882-8b0f-b5a37b02c103;greenhoodie;;;;1;hoodies;;;"Green hoodie";;;;;;
     """
 
   @critical @published-product-feature-enabled @permission-feature-enabled

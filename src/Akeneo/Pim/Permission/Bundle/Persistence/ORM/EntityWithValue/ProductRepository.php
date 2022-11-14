@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -124,6 +125,17 @@ class ProductRepository extends EntityRepository implements
     public function findOneByIdentifier($identifier)
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
+        if (null === $product) {
+            return null;
+        }
+
+        return $this->getFilteredProduct($product);
+    }
+
+    public function findOneByUuid(UuidInterface $uuid): ?ProductInterface
+    {
+        Assert::methodExists($this->productRepository, 'findOneByUuid');
+        $product = $this->productRepository->findOneByUuid($uuid);
         if (null === $product) {
             return null;
         }

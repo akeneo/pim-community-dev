@@ -40,7 +40,9 @@ JSON;
 
         $this->assertUpdated('variant_product', $data);
 
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('variant_product');
         $expectedProduct = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'   => 'variant_product',
             'family'       => 'family_permission',
             'parent'       => 'sub_product_model',
@@ -91,7 +93,6 @@ JSON;
             'quantified_associations' => [],
         ];
 
-
         $this->assertSameProductWithoutPermission($expectedProduct, 'variant_product');
     }
 
@@ -114,7 +115,9 @@ JSON;
 
         $this->assertUpdated('variant_product', $data);
 
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('variant_product');
         $expectedProduct = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'    => 'variant_product',
             'family'        => 'family_permission',
             'parent'        => 'sub_product_model',
@@ -506,7 +509,6 @@ JSON;
         $this->get('doctrine')->getManager()->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-        unset($standardizedProduct['uuid']);
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);
