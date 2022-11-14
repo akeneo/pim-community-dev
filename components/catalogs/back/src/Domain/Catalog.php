@@ -23,9 +23,9 @@ namespace Akeneo\Catalogs\Domain;
  * }
  *
  * @phpstan-type ProductMapping array<string, array{
- *          source: string,
- *          locale: string|null,
- *          scope: string|null,
+ *      source: string|null,
+ *      locale: string|null,
+ *      scope: string|null,
  * }>
  */
 final class Catalog

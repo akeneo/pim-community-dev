@@ -38,7 +38,7 @@ class GetProductMappingAttributesActionTest extends IntegrationTestCase
             'code' => 'description',
             'type' => 'pim_catalog_text',
             'labels' => [
-                'fr_FR' => 'trolol',
+                'fr_FR' => 'Description',
                 'en_US' => 'Description',
             ],
         ]);
@@ -95,6 +95,6 @@ class GetProductMappingAttributesActionTest extends IntegrationTestCase
                 'code' => 'title',
                 'label' => 'Title',
             ],
-        ], \json_decode($payload, true));
+        ], \json_decode($payload, true, 512, JSON_THROW_ON_ERROR));
     }
 }
