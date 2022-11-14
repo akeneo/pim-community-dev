@@ -8,6 +8,8 @@ const useProductFileImports = (isModalOpen: boolean) => {
     const listProductFileImportConfigurationsRoute = useRoute(
         'supplier_portal_retailer_list_product_file_import_configurations'
     );
+    const importProductFileRoute = useRoute('supplier_portal_retailer_import_product_file');
+
     const [productFileImportConfigurations, setProductFileImportConfigurations] = useState<
         ProductFileImportConfiguration[]
     >([]);
@@ -32,6 +34,42 @@ const useProductFileImports = (isModalOpen: boolean) => {
         setProductFileImportConfigurations(responseBody);
     }, [listProductFileImportConfigurationsRoute, notify, translate]);
 
+    const importProductFile = async (productFileImportConfigurationCode: string, productFileIdentifier: string) => {
+        const response = await fetch(importProductFileRoute, {
+            method: 'POST',
+            headers: [
+                ['Content-type', 'application/json'],
+                ['X-Requested-With', 'XMLHttpRequest'],
+            ],
+            body: JSON.stringify({productFileImportConfigurationCode, productFileIdentifier}),
+        });
+        if (!response.ok) {
+            switch (response.status) {
+                case 404:
+                    notify(
+                        NotificationLevel.ERROR,
+                        translate(
+                            'supplier_portal.product_file_dropping.supplier_files.product_files_modal.error_launching_product_import.missing_file'
+                        )
+                    );
+                    break;
+                case 500:
+                    notify(
+                        NotificationLevel.ERROR,
+                        translate(
+                            'supplier_portal.product_file_dropping.supplier_files.product_files_modal.error_launching_product_import.unknown_error.title'
+                        ),
+                        translate(
+                            'supplier_portal.product_file_dropping.supplier_files.product_files_modal.error_launching_product_import.unknown_error.content'
+                        )
+                    );
+                    break;
+            }
+            return;
+        }
+        window.location.href = await response.json();
+    };
+
     useEffect(() => {
         (async () => {
             if (isModalOpen) {
@@ -40,7 +78,7 @@ const useProductFileImports = (isModalOpen: boolean) => {
         })();
     }, [isModalOpen, loadProductFileImportConfigurations]);
 
-    return {productFileImportConfigurations};
+    return {productFileImportConfigurations, importProductFile};
 };
 
 export {useProductFileImports};

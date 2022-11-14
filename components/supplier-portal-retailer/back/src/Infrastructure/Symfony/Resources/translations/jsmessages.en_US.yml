@@ -116,6 +116,11 @@ supplier_portal:
                 error_loading_product_import_profiles:
                     title: We are not able to display the tailored import profiles.
                     content: Sorry about this inconvenience, please try again in a few moments.
+                error_launching_product_import:
+                    missing_file: This file does not exist anymore.
+                    unknown_error:
+                        title: An unexpected error happen on our side.
+                        content: Please retry later
 
         pim_notification:
             button_label: See the product files

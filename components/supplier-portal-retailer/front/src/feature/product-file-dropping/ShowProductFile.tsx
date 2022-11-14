@@ -49,7 +49,7 @@ const ShowProductFile = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
-                    <ProductFileImportConfigurationsModal />
+                    <ProductFileImportConfigurationsModal productFileIdentifier={productFile.identifier} />
                 </PageHeader.Actions>
                 <PageHeader.Title>{productFile.originalFilename}</PageHeader.Title>
                 <PageHeader.Content>
