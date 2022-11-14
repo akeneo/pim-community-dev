@@ -34,8 +34,14 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'setIdentifier',
-            StorageEvents::PRE_SAVE_ALL => 'setIdentifiers',
+            /**
+             * These events have to be executed
+             * - after AddDefaultValuesSubscriber (it adds default values from parent and may set values for the
+             *   computation of the match or the generation)
+             * - before ComputeEntityRawValuesSubscriber (it generates the raw_values)
+             */
+            StorageEvents::PRE_SAVE => ['setIdentifier', 90],
+            StorageEvents::PRE_SAVE_ALL => ['setIdentifiers', 90],
         ];
     }
 
@@ -63,8 +69,9 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
     private function generateIdentifier(ProductInterface $product): void
     {
-        $productProjection = new ProductProjection($product->getIdentifier());
+
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
+            $productProjection = new ProductProjection($product->getValue($identifierGenerator->target()->asString()));
             if ($identifierGenerator->match($productProjection)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $product);
@@ -86,7 +93,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);
         $product->addValue($value);
         $product->setIdentifier($newIdentifier);
-        // TODO This seems not working as I don't have an issue with duplicate identifiers.
+        // TODO CPM-809: We should only check if the new value changes the attribute validations (uniqueness/regexp/etc)
         $violations = $this->validator->validate($product);
         if (count($violations) > 0) {
             $product->removeValue($value);
