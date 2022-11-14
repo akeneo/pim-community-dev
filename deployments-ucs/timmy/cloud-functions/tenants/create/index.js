@@ -630,6 +630,7 @@ functions.http('createTenant', (req, res) => {
           mailer: {
             login: `${tenantName}@${process.env.MAILER_DOMAIN}`,
             password: mailerPassword,
+            from: `Akeneo <no-reply@${fqdn}>`,
             baseMailerDsn: process.env.MAILER_BASE_DSN,
             domain: process.env.MAILER_DOMAIN,
             apiKey: process.env.MAILER_API_KEY,
@@ -699,6 +700,7 @@ functions.http('createTenant', (req, res) => {
         DATABASE_ROOT_PASSWORD: parameters.mysql.mysql.rootPassword,
         MAILER_PASSWORD: parameters.mailer.password,
         MAILER_DSN: parameters.mailer.baseMailerDsn,
+        MAILER_FROM: parameters.mailer.from,
         MEMCACHED_SVC: `memcached.${tenantId}.svc.cluster.local`,
         MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
         PFID: tenantId,
