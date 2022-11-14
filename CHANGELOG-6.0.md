@@ -1,10 +1,15 @@
 # 6.0.x
 
+# 6.0.53 (2022-11-10)
+
+# 6.0.52 (2022-11-08)
+
 # 6.0.51 (2022-11-03)
 
 ## Bug fixes
 
 - PIM-10691: Change method type for categories related method in rule engine to support very large number of categories
+- PIM-10699: Fix "All" is exported allong with the user groups on the user export
 
 # 6.0.50 (2022-11-02)
 

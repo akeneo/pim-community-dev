@@ -7,7 +7,6 @@
     "@google-cloud/logging-winston": "^5.1.2",
     "@google-cloud/secret-manager": "^4.1.1",
     "axios": "^0.27.2",
-    "crypto-js": "^4.1.1",
     "deepmerge-json": "^1.5.0",
     "dotenv": "^16.0.2",
     "gaxios": "^4.3.3",

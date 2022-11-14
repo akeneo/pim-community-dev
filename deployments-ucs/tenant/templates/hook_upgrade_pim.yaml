@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: pim-upgrader-{{ .Values.image.pim.tag }}-
+  name: pim-upgrader
   labels:
     component: "hook-upgrader"
     app.kubernetes.io/component: "hook-upgrader"
@@ -9,8 +9,8 @@ metadata:
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/sync-wave: "50"
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "50"
 spec:
   template:
     metadata:

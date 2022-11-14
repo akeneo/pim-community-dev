@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 
 final class InMemoryGetSupplierWithContributors implements GetSupplierWithContributors

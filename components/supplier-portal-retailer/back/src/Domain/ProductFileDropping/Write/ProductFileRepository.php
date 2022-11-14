@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 
 interface ProductFileRepository
 {

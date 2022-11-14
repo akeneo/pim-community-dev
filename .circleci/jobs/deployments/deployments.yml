@@ -530,6 +530,9 @@ jobs:
 
     deploy_ucs_pim:
       parameters:
+        PIM_NAMESPACE_PREFIX:
+          type: string
+          default: "pim"
         PRODUCT_TYPE:
           type: string
           default: "srnt"
@@ -549,8 +552,8 @@ jobs:
         - run:
             name: Prepare the variables
             command: |
-              CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-              PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+              CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0 )}')
+              PIM_NAMESPACE=$(echo << parameters.PIM_NAMESPACE_PREFIX >>-${CIRCLE_BRANCH_LOWER} | cut -c -63)
 
               TENANT_NAME_PREFIX=ucs
               TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
@@ -728,9 +731,9 @@ jobs:
                   name: Define value for next steps
                   command: |
                       TENANT_NAME_PREFIX=ucs
-                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+                      PIM_NAMESPACE=$(echo pim-${CIRCLE_BRANCH_LOWER} | cut -c -63)
                       TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH}/tenant_contexts"
                       REGION_PREFIX="eur-w-1b"
                       WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
@@ -765,6 +768,21 @@ jobs:
                       echo ${JSON_BODY_STRING}
                       curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
                       exit ${TENANT_STATUS_CODE}
+
+                      # Wait PH-423
+                      # # Check if hook failed
+                      # STATUS_HEALTH=$(argocd app get ${TENANT_ID} | grep Failed | awk '{print $6}') || true
+                      # if [ -n "${STATUS_HEALTH}" ]; then
+                      #   echo "Error when deploying argocd app"
+                      #   exit 1
+                      # fi
+                      # echo "argocd app sync successfull"
+
+                      echo "============================"
+                      echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
+                      echo "user : admin"
+                      echo "password : ${ARGOCD_PASSWORD}"
+                      echo "============================"
             - run:
                   name: Persist env vars for next jobs
                   command: |
@@ -805,10 +823,10 @@ jobs:
                   name: Define value for next steps
                   command: |
                       TENANT_NAME_PREFIX=ucs
-                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
                       TENANT_ID=${TYPE}-${TENANT_NAME}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NAMESPACE=pim-${CIRCLE_BRANCH_LOWER}
+                      PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
                       TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
                       WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
@@ -869,6 +887,13 @@ jobs:
                   argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
                   argocd app get ${TENANT_ID} --hard-refresh --core
                   argocd app wait --sync --health --operation ${TENANT_ID} --core
+
+                  # Check if hook failed
+                  STATUS_HEALTH=$(argocd app get ${TENANT_ID} | grep Failed | awk '{print $6}') || true
+                  if [ -n "${STATUS_HEALTH}" ]; then
+                    echo "Error when deploying argocd app"
+                    exit 1
+                  fi
                   echo "argocd app sync successfull"
 
                   echo "============================"

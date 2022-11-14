@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\ContributorEmail;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 
 final class InMemoryRepository implements ProductFileRepository
 {
@@ -34,6 +34,17 @@ final class InMemoryRepository implements ProductFileRepository
     public function find(Identifier $identifier): ?ProductFile
     {
         return $this->productFiles[(string) $identifier] ?? null;
+    }
+
+    public function findByName(string $fileName): ?ProductFile
+    {
+        foreach ($this->productFiles as $productFile) {
+            if ($productFile->originalFilename() === $fileName) {
+                return $productFile;
+            }
+        }
+
+        return null;
     }
 
     public function updateProductFileLastReadAtDateForRetailer(Identifier $identifier, \DateTimeImmutable $date): void

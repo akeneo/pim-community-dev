@@ -17,19 +17,33 @@ workflows:
           - build_ucs:
                 requires:
                     - checkout
+          - deploy?:
+              type: approval
+              filters:
+                branches:
+                  only:
+                    - /BH-.*/
+                    - /PH-.*/
+              requires:
+                - build_ucs
           - deploy_ucs_pim:
                 requires:
                     - build_ucs
+          - deploy_ucs_pim:
+                name: deploy_ucs_auto_pim
+                PIM_NAMESPACE_PREFIX: "pim-auto"
+                requires:
+                  - build_ucs
           - build_timmy:
                 requires:
-                    - checkout
+                    - deploy?
           - build_timmy:
                 name: build_timmy_wb
                 requires:
-                    - checkout_wb
+                    - deploy_wb?
           - deploy_tenant:
                 requires:
-                    - build_ucs
+                    - deploy?
           - delete_pim?:
                 type: approval
                 filters:
@@ -45,6 +59,11 @@ workflows:
           - delete_pim:
                 requires:
                     - delete_pim?
+          - delete_pim:
+                name: delete_auto_pim
+                PIM_NAMESPACE_PREFIX: "pim-auto"
+                requires:
+                  - deploy_ucs_auto_pim
           - delete_timmy:
                 requires:
                     - delete_tenant_timmy
@@ -88,24 +107,36 @@ workflows:
                 name: build_ucs_wb
                 requires:
                     - checkout_wb
+          - deploy_wb?:
+              type: approval
+              filters:
+                branches:
+                  only:
+                    - /BH-.*/
+                    - /PH-.*/
+              requires:
+                - build_ucs_wb
           - deploy_ucs_pim:
                 name: deploy_ucs_pim_wb
                 requires:
                     - build_ucs_wb
+          - deploy_ucs_pim:
+                name: deploy_ucs_pim_auto_wb
+                PIM_NAMESPACE_PREFIX: "pim-auto"
+                requires:
+                  - build_ucs_wb
           - deploy_tenant_timmy:
                 name: "deploy_tenant_timmy_wb"
                 requires:
                     - build_timmy_wb
-                    - build_ucs_wb
           - deploy_tenant_timmy:
                 name: "deploy_tenant_timmy"
                 requires:
                     - build_timmy
-                    - build_ucs
           - deploy_tenant:
                 name: "deploy_tenant_wb"
                 requires:
-                    - build_ucs_wb
+                    - deploy_wb?
           - delete_pim_wb?:
                 type: approval
                 filters:
@@ -119,6 +150,11 @@ workflows:
                 name: "delete_pim_wb"
                 requires:
                     - delete_pim_wb?
+          - delete_pim:
+              name: "delete_pim_auto_wb"
+              PIM_NAMESPACE_PREFIX: "pim-auto"
+              requires:
+                - deploy_ucs_pim_auto_wb
           - delete_tenant_wb?:
                 type: approval
                 filters:
@@ -160,3 +196,53 @@ workflows:
                 name: build_ucs_infra
                 requires:
                     - ready_to_build_test_infra
+    ucs_pim_dev:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /PH-.*/
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - build_srnt_dev:
+                  requires:
+                      - checkout
+
+            # Security tests block
+            - security-hunter/detect-secrets-in-latest-commits:
+                  name: "Scan secrets in PR commits"
+                  requires:
+                      - ready_to_build?
+            - security-hunter/detect-secrets-in-directory:
+                  name: "Scan secrets in directory"
+                  requires:
+                      - checkout
+            - security-hunter/scan-iac-files:
+                  name: "Scan terraform files"
+                  exclude_rules: "google-storage-enable-ubla"
+                  requires:
+                      - checkout
+            - security-hunter/scan-docker-image:
+                  name: "Scan docker image"
+                  archive_name: "php-pim-image.tar"
+                  image_name: "akeneo/pim-dev/php:8.1"
+                  requires:
+                      - build_srnt_dev
+            # End of security tests
+
+            - test_back_static_and_acceptance:
+                  requires:
+                      - build_srnt_dev
+            - test_back_phpunit:
+                  requires:
+                      - build_srnt_dev
+            - pull_request_success:
+                  requires:
+                      - test_back_phpunit
+                      - test_back_static_and_acceptance

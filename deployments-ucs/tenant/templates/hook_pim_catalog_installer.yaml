@@ -9,11 +9,9 @@ metadata:
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
-    # This is what defines this resource as a hook. Without this line, the
-    # job is considered part of the release.
-    "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "0"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   template:
     metadata:

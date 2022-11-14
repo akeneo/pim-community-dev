@@ -6,8 +6,8 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\M
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier as MarkCommentsAsReadBySupplierQuery;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 
 class MarkCommentsAsReadBySupplierHandler
 {

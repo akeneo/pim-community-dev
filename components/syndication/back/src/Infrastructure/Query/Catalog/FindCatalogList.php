@@ -67,8 +67,8 @@ SQL;
 
     private function getAllCatalogsForJobConfiguration(string $jobCode, array $jobConfiguration): array
     {
-        return array_filter(array_map(function ($catalog) use ($jobCode) {
-            if (!isset($catalog['uuid'])) {
+        return array_filter(array_map(function ($catalog) use ($jobCode, $jobConfiguration) {
+            if (!isset($catalog['uuid']) || !isset($jobConfiguration['connection']['connectedChannelCode'])) {
                 return null;
             }
 
@@ -76,7 +76,8 @@ SQL;
                 $catalog['uuid'],
                 $catalog['code'],
                 $catalog['label'] ?? $catalog['code'],
-                $jobCode
+                $jobCode,
+                $jobConfiguration['connection']['connectedChannelCode']
             );
         }, $jobConfiguration['catalogProjections']));
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseRepository implements Repository

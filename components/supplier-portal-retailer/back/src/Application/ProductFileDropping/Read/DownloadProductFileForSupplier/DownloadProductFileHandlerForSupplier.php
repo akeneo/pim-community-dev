@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileForSupplier;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
@@ -16,7 +16,7 @@ class DownloadProductFileHandlerForSupplier
 {
     public function __construct(
         private GetProductFilePathAndFileNameForSupplier $getProductFilePathAndFileName,
-        private DownloadStoredProductFile $downloadStoredProductFile,
+        private StreamStoredProductFile $streamStoredProductFile,
         private GetSupplierFromContributorEmail $getSupplierFromContributorEmail,
     ) {
     }
@@ -39,7 +39,7 @@ class DownloadProductFileHandlerForSupplier
             throw new ProductFileDoesNotExist();
         }
 
-        $productFileStream = ($this->downloadStoredProductFile)($productFilePathAndFileName->path);
+        $productFileStream = ($this->streamStoredProductFile)($productFilePathAndFileName->path);
 
         return new ProductFileNameAndResourceFile($productFilePathAndFileName->originalFilename, $productFileStream);
     }

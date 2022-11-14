@@ -6,8 +6,8 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\C
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileCommentedBySupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommentProductFileHandlerForSupplier

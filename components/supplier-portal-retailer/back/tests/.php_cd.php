@@ -89,6 +89,9 @@ $rules = [
             'Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface',
             'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance',
             'Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\File',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceCommand',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceHandlerInterface',
 
             // External dependencies coupling
             'OpenSpout\Common\Entity\Row',
@@ -187,8 +190,12 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\InMemory\InMemoryFindAllProductFileImportConfigurations',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFile',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Repository\InMemory\InMemoryRepository',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
+            'Ramsey\Uuid\Uuid',
 
             // Supplier Portal Supplier coupling
 
@@ -201,6 +208,8 @@ $rules = [
     )->in('Akeneo\SupplierPortal\Retailer\Test\Acceptance'),
     $builder->forbids(['Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read'])->in('Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write'),
     $builder->forbids(['Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write'])->in('Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read'),
+    $builder->forbids(['Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read'])->in('Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write'),
+    $builder->forbids(['Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write'])->in('Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read'),
     $builder->forbids(['Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read'])->in('Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write'),
     $builder->forbids(['Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write'])->in('Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read'),
     $builder->forbids(['Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read', 'Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read'])->in('Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write'),

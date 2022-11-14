@@ -107,7 +107,5 @@ csi:
 
 {{- define "pim.tenantContextEncryption.encryptionKey.volumeMount" -}}
 name: tenant-context-encryption-keys
-mountPath: "/var/run/secrets/pim"
+mountPath: {{ .Values.pim.tenantContextEncryption.encryptionKeyMountPath | default "/var/run/secrets/pim" }}
 {{- end -}}
-
-

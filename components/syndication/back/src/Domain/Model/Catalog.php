@@ -8,7 +8,8 @@ class Catalog
         private string $uuid,
         private string $code,
         private string $label,
-        private string $platformCode
+        private string $platformCode,
+        private string $connectedChannelCode
     ) {
     }
 
@@ -32,13 +33,19 @@ class Catalog
         return $this->platformCode;
     }
 
+    public function getConnectedChannelCode(): string
+    {
+        return $this->connectedChannelCode;
+    }
+
     public function normalize(): array
     {
         return [
             'uuid' => $this->uuid,
             'code' => $this->code,
             'label' => $this->label,
-            'platform_code' => $this->platformCode
+            'platform_code' => $this->platformCode,
+            'connected_channel_code' => $this->connectedChannelCode
         ];
     }
 }

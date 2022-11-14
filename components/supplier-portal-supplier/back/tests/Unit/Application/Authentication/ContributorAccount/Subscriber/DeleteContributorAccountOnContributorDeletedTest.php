@@ -3,7 +3,7 @@
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\DeleteContributorAccountOnContributorDeleted;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\DeleteContributorAccountHandler;
 use PHPUnit\Framework\TestCase;

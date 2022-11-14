@@ -304,3 +304,5 @@ pim:
   tenantContextEncryption:
     enabled: true
     encryptionKeySecretName: TENANT_CONTEXT_ENCRYPTION_KEY
+    encryptionKeyMountPath: "/var/run/secrets/pim"
+    encryptionKeyFilename: "tenant_context_encryption_key_b64_latest"

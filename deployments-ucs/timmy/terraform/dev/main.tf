@@ -3,13 +3,13 @@ locals {
   cloudscheduler_service_account_email = "timmy-deployment@${var.project_id}.iam.gserviceaccount.com"
   function_service_account_email       = "timmy-cloud-function@${var.project_id}.iam.gserviceaccount.com"
   portal_hostname                      = "wiremock-${var.region}.${var.domain}"
-  prefix_branch_name                   = "${var.branch_name}" == "master" ? "" : "-${var.branch_name}"
+  prefix_branch_name                   = var.branch_name == "master" ? "" : "-${var.branch_name}"
 }
 
 module "bucket" {
   source                      = "../modules/bucket"
   location                    = var.bucket_location
-  name                        = "${var.project_id}${local.prefix_branch_name}-timmy"
+  name                        = "${var.project_id}-${var.region}${local.prefix_branch_name}-timmy"
   project_id                  = var.project_id
   force_destroy               = true
   uniform_bucket_level_access = true
@@ -19,7 +19,7 @@ module "bucket" {
 module "timmy_request_portal" {
   source              = "../modules/cloudfunction"
   project_id          = var.project_id
-  name                = "${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal"
+  name                = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal", 0, 63)
   description         = "Request the portal to tenants to create/delete/update"
   available_memory    = "256Mi"
   bucket_name         = module.bucket.bucket_name
@@ -65,7 +65,7 @@ module "timmy_request_portal" {
 module "timmy_create_tenant" {
   source              = "../modules/cloudfunction"
   project_id          = var.project_id
-  name                = "${var.region_prefix}${local.prefix_branch_name}-timmy-create-tenant"
+  name                = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-create-tenant", 0, 63)
   description         = "Create a new UCS tenant"
   available_memory    = "256Mi"
   bucket_name         = module.bucket.bucket_name
@@ -125,7 +125,7 @@ module "timmy_create_tenant" {
 module "timmy_delete_tenant" {
   source                = "../modules/cloudfunction"
   project_id            = var.project_id
-  name                  = "${var.region_prefix}${local.prefix_branch_name}-timmy-delete-tenant"
+  name                  = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-delete-tenant", 0, 63)
   description           = "Delete an UCS tenant"
   available_memory      = "256Mi"
   bucket_name           = module.bucket.bucket_name
@@ -160,7 +160,7 @@ module "timmy_delete_tenant" {
 module "timmy_create_fire_document" {
   source                = "../modules/cloudfunction"
   project_id            = var.project_id
-  name                  = "${var.region_prefix}${local.prefix_branch_name}-timmy-create-doc"
+  name                  = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-create-doc", 0, 63)
   description           = "Create Firestore document in the tenantcontext DB"
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
@@ -189,7 +189,7 @@ module "timmy_create_fire_document" {
 module "timmy_delete_fire_document" {
   source                = "../modules/cloudfunction"
   project_id            = var.project_id
-  name                  = "${var.region_prefix}${local.prefix_branch_name}-timmy-delete-doc"
+  name                  = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-delete-doc", 0, 63)
   description           = "Delete Firestore document in the tenantcontext DB"
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name

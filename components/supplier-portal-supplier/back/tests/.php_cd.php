@@ -91,8 +91,8 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
