@@ -122,7 +122,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
                     source: 'title',
                     locale: 'en_US',
                     scope: 'ecommerce',
-                }
+                },
             },
         },
         result: {
@@ -139,7 +139,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
                     source: 'title',
                     locale: 'en_US',
                     scope: 'ecommerce',
-                }
+                },
             },
         },
     },
