@@ -12,6 +12,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -38,6 +39,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         SaverInterface $productSaver,
         BulkSaverInterface $bulkProductSaver,
         SaverInterface $productDraftSaver,
+        CachedObjectRepositoryInterface $attributeRepository,
         TokenInterface $token
     ) {
         $tokenStorage->getToken()->willReturn($token);
@@ -54,7 +56,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             $draftSourceFactory,
             $productSaver,
             $bulkProductSaver,
-            $productDraftSaver
+            $productDraftSaver,
+            $attributeRepository
         );
     }
 

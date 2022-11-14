@@ -54,6 +54,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product'
             - '@pimee_workflow.saver.product_draft'
+            - '@pim_catalog.repository.cached_attribute'
 
     pimee_workflow.saver.product_model_delegating:
         class: '%pimee_workflow.saver.product_model_delegating.class%'
