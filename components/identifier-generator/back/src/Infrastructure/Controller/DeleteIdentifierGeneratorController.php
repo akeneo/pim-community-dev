@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToDeleteIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,7 +32,7 @@ final class DeleteIdentifierGeneratorController
         if (!$identifierGenerator) {
             throw new NotFoundHttpException(sprintf('%s identifier generator not found', $code));
         }
-        
+
         $this->identifierGeneratorRepository->delete($code);
 
         return new JsonResponse([], Response::HTTP_ACCEPTED);
