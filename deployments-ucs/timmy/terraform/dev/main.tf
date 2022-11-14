@@ -111,7 +111,6 @@ module "timmy_create_tenant" {
     GCP_PROJECT_ID                 = var.project_id
     GOOGLE_ZONE                    = var.google_zone
     LOG_LEVEL                      = "debug"
-    MAILER_BASE_URL                = "smtp://smtp.mailgun.org:2525"
     MAILER_DOMAIN                  = "mg.cloud.akeneo.com"
     NODE_ENV                       = "production"
     REGION                         = var.region

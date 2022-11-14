@@ -75,7 +75,7 @@ spec:
         - name: mailer.password
           value: ${MAILGUN_PASSWORD}
         - name: mailer.baseMailerDsn
-          value: "smtp://${MAILGUN_HOST}:${MAILGUN_PORT}"
+          value: "smtp://${MAILGUN_LOGIN}:${MAILGUN_PASSWORD}@${MAILGUN_HOST}:${MAILGUN_PORT}"
         - name: mailer.domain
           value: ${MAILGUN_DOMAIN}
         - name: mailer.apiKey

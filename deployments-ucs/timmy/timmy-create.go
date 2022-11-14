@@ -60,7 +60,7 @@ func main() {
             "APP_INDEX_HOSTS": "elasticsearch-client.` + tenant_id + `.svc.cluster.local",
             "APP_TENANT_ID": "` + tenant_id + `",
             "MAILER_PASSWORD": "` + email_password + `",
-            "MAILER_DSN": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&user=` + tenant_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com&pass=` + email_password + `",
+            "MAILER_DSN": "smtp://` + tenant_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com:` + email_password + `@smtp.mailgun.org:2525?encryption=tls&auth_mode=login",
             "MAILER_FROM": "Akeneo <no-reply-` + tenant_name + `.pim-saas-dev.dev.cloud.akeneo.com>",
             "MAILER_USER": "` + tenant_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com",
             "MEMCACHED_SVC": "memcached.` + tenant_id + `.svc.cluster.local",

@@ -36,7 +36,7 @@ functions.http('createDocument', (req, res) => {
       "APP_INDEX_HOSTS": "elasticsearch-client." + tenantId + ".svc.cluster.local",
       "APP_TENANT_ID": tenantId,
       "MAILER_PASSWORD": emailPassword,
-      "MAILER_DSN": mailerBaseDsn + "?encryption=tls&auth_mode=login&user=" + tenantName + "-" + projectId + "@mg.cloud.akeneo.com&pass=" + emailPassword,
+      "MAILER_DSN": mailerBaseDsn + "?encryption=tls&auth_mode=login",
       "MAILER_FROM": "Akeneo <no-reply@" + tenantName + "." + domain + ">",
       "MAILER_USER": tenantName + "-" + projectId + "@mg.cloud.akeneo.com",
       "MEMCACHED_SVC": "memcached." + tenantId + ".svc.cluster.local",
