@@ -24,7 +24,8 @@ class OrmFilterDatasourceAdapter extends OroOrmFilterDatasourceAdapter implement
      */
     public function __construct(DatasourceInterface $datasource)
     {
-        parent::__construct($datasource->getQueryBuilder());
+        $this->qb = $datasource->getQueryBuilder();
+        $this->expressionBuilder = null;
     }
 
     /**
