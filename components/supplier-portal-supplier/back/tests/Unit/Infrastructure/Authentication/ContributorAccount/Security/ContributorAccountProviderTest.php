@@ -24,7 +24,7 @@ final class ContributorAccountProviderTest extends TestCase
     {
         $contributorAccount = new ContributorAccount('burger@example.com', 'password');
         $query = $this->createMock(DatabaseGetContributorAccountByEmail::class);
-        $query->expects($this->exactly(2))->method('__invoke')->with('burger@example.com')->willReturn($contributorAccount);
+        $query->expects($this->exactly(1))->method('__invoke')->with('burger@example.com')->willReturn($contributorAccount);
         $provider = new ContributorAccountProvider($query);
 
         $this->assertEquals($contributorAccount, $provider->loadUserByIdentifier('burger@example.com'));
