@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GeneratePropertyHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -16,9 +14,11 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInte
  */
 final class GenerateIdentifierCommandHandler
 {
+    /**
+     * @param GeneratePropertyHandler[] $generateProperties
+     */
     public function __construct(
-        private GenerateAutoNumberHandler $generateAutoNumber,
-        private GenerateFreeTextHandler $generateFreeText,
+        private array $generateProperties,
     ) {
     }
 
@@ -27,20 +27,26 @@ final class GenerateIdentifierCommandHandler
     ): string {
         $delimiter = $command->getDelimiter();
         $properties = $command->getProperties();
+        $target = $command->getTarget();
 
-        return \implode(
-            $delimiter?->asString() ?? '',
-            array_map(fn (PropertyInterface $property): string => $this->generateProperty($property), $properties)
-        );
+        $result = '';
+        foreach ($properties as $property) {
+            if ($result !== '') {
+                $result .= $delimiter?->asString() ?? '';
+            }
+
+            $result .= $this->generateProperty($property, $target, $result);
+        }
+
+        return $result;
     }
 
-    private function generateProperty(PropertyInterface $property): string
+    private function generateProperty(PropertyInterface $property, Target $target, string $prefix): string
     {
-        if ($property instanceof AutoNumber) {
-            return ($this->generateAutoNumber)($property);
-        }
-        if ($property instanceof FreeText) {
-            return ($this->generateFreeText)($property);
+        foreach ($this->generateProperties as $generateProperty) {
+            if ($generateProperty->supports($property)) {
+                return ($generateProperty)($property, $target, $prefix);
+            }
         }
 
         throw new \InvalidArgumentException(\sprintf(

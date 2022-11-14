@@ -35,10 +35,9 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $identifierGeneratorRepository,
-            new GenerateIdentifierCommandHandler(
-                new GenerateAutoNumberHandler(),
+            new GenerateIdentifierCommandHandler([
                 new GenerateFreeTextHandler(),
-            ),
+            ]),
             $validator
         );
     }
