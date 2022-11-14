@@ -109,12 +109,16 @@ class CatalogFixtureCommand extends Command
                     'source' => null,
                     'scope' => null,
                     'locale' => null,
-                ]
+                ],
+                'erp_name' => [
+                    'source' => 'erp_name',
+                    'scope' => null,
+                    'locale' => 'en_US',
+                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
-            /** @var array{properties: array<array-key, mixed>} $productMappingSchema */
             $productMappingSchema = \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR);
 
             $this->commandBus->execute(new UpdateProductMappingSchemaCommand(

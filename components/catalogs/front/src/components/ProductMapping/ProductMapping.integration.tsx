@@ -28,6 +28,11 @@ test('it displays an existing product mapping', async () => {
                         locale: 'en_US',
                         scope: 'ecommerce',
                     },
+                    erp_name: {
+                        source: 'erp_name',
+                        locale: 'en_US',
+                        scope: null,
+                    },
                 },
                 has_product_mapping_schema: true,
             },
@@ -56,6 +61,15 @@ test('it displays an existing product mapping', async () => {
                 },
             },
         },
+        {
+            url: '/rest/catalogs/123e4567-e89b-12d3-a456-426614174000/mapping/product/attributes',
+            json: {
+                erp_name: {
+                    code: 'erp_name',
+                    label: 'ERP name',
+                },
+            },
+        },
     ]);
 
     render(
@@ -69,6 +83,7 @@ test('it displays an existing product mapping', async () => {
     expect(screen.queryByTestId('product-mapping')).toBeInTheDocument();
     expect(await screen.findAllByText('UUID')).toHaveLength(2);
     expect(await screen.findByText('name')).toBeInTheDocument();
-    expect(await screen.findByText('title')).toBeInTheDocument();
+    expect(await screen.findByText('[title]')).toBeInTheDocument();
     expect(await screen.findByText('Description')).toBeInTheDocument();
+    expect(await screen.findByText('ERP name')).toBeInTheDocument();
 });

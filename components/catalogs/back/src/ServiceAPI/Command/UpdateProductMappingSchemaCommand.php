@@ -15,16 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class UpdateProductMappingSchemaCommand implements CommandInterface
 {
-    /**
-     * @param array{properties: array<array-key, mixed>} $productMappingSchema
-     */
     public function __construct(
         #[Assert\NotBlank]
         #[Assert\Uuid]
         private string $catalogId,
         #[Assert\NotBlank]
         #[CatalogAssert\ProductSchema]
-        private array $productMappingSchema,
+        private object $productMappingSchema,
     ) {
     }
 
@@ -33,10 +30,7 @@ final class UpdateProductMappingSchemaCommand implements CommandInterface
         return $this->catalogId;
     }
 
-    /**
-     * @return array{properties: array<array-key, mixed>}
-     */
-    public function getProductMappingSchema(): array
+    public function getProductMappingSchema(): object
     {
         return $this->productMappingSchema;
     }
