@@ -30,8 +30,8 @@ class ProductWasCompletedOnChannelLocaleCollectionSpec extends ObjectBehavior
     public function it_returns_the_events()
     {
         $events = [
-            new ProductWasCompletedOnChannelLocale(ProductUuid::fromUuid(Uuid::uuid4()), new \DateTimeImmutable(), 'ecormmerce', 'en_US'),
-            new ProductWasCompletedOnChannelLocale(ProductUuid::fromUuid(Uuid::uuid4()), new \DateTimeImmutable(), 'ecormmerce', 'fr_FR'),
+            new ProductWasCompletedOnChannelLocale('1', ProductUuid::fromUuid(Uuid::uuid4()), new \DateTimeImmutable(), 'ecormmerce', 'en_US'),
+            new ProductWasCompletedOnChannelLocale(null, ProductUuid::fromUuid(Uuid::uuid4()), new \DateTimeImmutable(), 'ecormmerce', 'fr_FR'),
         ];
         $this->beConstructedWith($events);
 

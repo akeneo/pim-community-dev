@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\API\Event\Completeness;
 
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+use Akeneo\Pim\Enrichment\Product\back\API\ValueObject\UserId;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -13,11 +14,17 @@ use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 final class ProductWasCompletedOnChannelLocale
 {
     public function __construct(
+        private ?string $userId,
         private ProductUuid $productUuid,
         private \DateTimeImmutable $completedAt,
         private string $channelCode,
         private string $localeCode
     ) {
+    }
+
+    public function getUserId(): ?string
+    {
+        return $this->userId;
     }
 
     public function productUuid(): ProductUuid

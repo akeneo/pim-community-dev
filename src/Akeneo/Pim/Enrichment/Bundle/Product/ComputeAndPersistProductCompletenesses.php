@@ -10,9 +10,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocaleCollection;
+use Akeneo\Pim\Enrichment\Product\back\Domain\Query\GetUserId;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -22,6 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ComputeAndPersistProductCompletenesses
 {
     private const CHUNK_SIZE = 1000;
+    private ?string $userId;
 
     public function __construct(
         private CompletenessCalculator $completenessCalculator,
@@ -29,7 +32,9 @@ class ComputeAndPersistProductCompletenesses
         private GetProductCompletenesses $getProductCompletenesses,
         private EventDispatcherInterface $eventDispatcher,
         private Clock $clock,
+        private GetUserId $aclGetUserId,
     ) {
+        $this->userId = $this->aclGetUserId->getUserId()->id();
     }
 
     /**
@@ -68,6 +73,7 @@ class ComputeAndPersistProductCompletenesses
             $productCompletedOnChannelLocaleEvents = [
                 ...$productCompletedOnChannelLocaleEvents,
                 ...$newProductCompletenessCollection->buildProductWasCompletedOnChannelLocaleEvents(
+                    $this->userId,
                     $now,
                     $previousProductCompletenessCollection
                 )

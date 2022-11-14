@@ -3,3 +3,8 @@ services:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLGetAttributeTypes
         arguments:
             - '@pim_catalog.repository.attribute'
+    
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetUserId:
+        class: Akeneo\Pim\Enrichment\Product\back\Infrastructure\AntiCorruptionLayer\ACLGetUserId
+        arguments:
+            - '@pim_user.context.user'
