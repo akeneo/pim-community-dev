@@ -32,7 +32,7 @@ var  bodyjson=req.body;
        "APP_TENANT_ID":   tenant_id ,
        "MAILER_PASSWORD":  email_password ,
        "MAILER_DSN": mailerBaseDsn+"?encryption=tls&auth_mode=login&username=" + tenant_name + "-"+ projectId+"@mg.cloud.akeneo.com&password=" + email_password,
-       "MAILER_FROM": "Akeneo PIM <no-reply%40" + tenant_name + "." + domain + ">",
+       "MAILER_FROM": "Akeneo <no-reply%40" + tenant_name + "." + domain + ">",
        "MAILER_USER": tenant_name + "-"+projectId+"@mg.cloud.akeneo.com",
        "MEMCACHED_SVC": "memcached." + tenant_id + ".svc.cluster.local",
        "APP_DATABASE_PASSWORD": mysql_password ,

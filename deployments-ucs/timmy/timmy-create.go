@@ -61,7 +61,7 @@ func main() {
             "APP_TENANT_ID": "` + tenant_id + `",
             "MAILER_PASSWORD": "` + email_password + `",
             "MAILER_DSN": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + tenant_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com&password=` + email_password + `",
-            "MAILER_FROM": "Akeneo PIM <no-reply-` + tenant_name + `.pim-saas-dev.dev.cloud.akeneo.com>",
+            "MAILER_FROM": "Akeneo <no-reply-` + tenant_name + `.pim-saas-dev.dev.cloud.akeneo.com>",
             "MAILER_USER": "` + tenant_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com",
             "MEMCACHED_SVC": "memcached.` + tenant_id + `.svc.cluster.local",
             "APP_DATABASE_PASSWORD": "` + mysql_password + `",
