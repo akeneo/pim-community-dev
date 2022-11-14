@@ -1,3 +1,15 @@
+variable "enable_timmy_request_portal" {
+  description = "Deploy or not the timmy-request-portal function"
+  type        = bool
+  default     = true
+}
+
+variable "enable_timmy_cloudscheduler" {
+  description = "Deploy or not the cloud-scheduler for timmy"
+  type        = bool
+  default     = true
+}
+
 variable "region" {
   type = string
 }
@@ -46,5 +58,5 @@ variable "tenant_context_collection_name" {
 }
 
 variable "branch_name" {
-  type    = string
+  type = string
 }

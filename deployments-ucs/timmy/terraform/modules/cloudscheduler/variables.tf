@@ -1,3 +1,9 @@
+variable "enable" {
+  description = "Deploy or not the module"
+  type        = bool
+  default     = true
+}
+
 variable "project_id" {
   description = "The GCP project id for the cloudscheduler job"
   type        = string
