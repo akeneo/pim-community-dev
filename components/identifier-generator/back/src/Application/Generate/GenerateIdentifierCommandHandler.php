@@ -16,7 +16,7 @@ final class GenerateIdentifierCommandHandler
 {
     public function __construct(
         private GenerateAutoNumberHandler $generateAutoNumber,
-        private GenerateFreeTextHandler   $generateFreeText,
+        private GenerateFreeTextHandler $generateFreeText,
     ) {
     }
 

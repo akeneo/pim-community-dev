@@ -12,7 +12,7 @@ final class GenerateAutoNumberHandler
 {
     public function __invoke(AutoNumber $autoNumber): string
     {
-        // TODO
+        // TODO CPM-804: Get the next identifier to generate
         return '' . rand(0, 10000);
     }
 }

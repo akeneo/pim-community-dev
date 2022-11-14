@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommandHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
@@ -32,7 +33,6 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        // TODO The subscriber is not called when product is not dirty
         return [
             StorageEvents::PRE_SAVE => 'setIdentifier',
             StorageEvents::PRE_SAVE_ALL => 'setIdentifiers',
@@ -68,7 +68,9 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
             if ($identifierGenerator->match($productProjection)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $product);
-                } catch (\Exception $e) {
+                } catch (UnableToSetIdentifierException) {
+                    // TODO CPM-807: A warning should be displayed during the Import
+                    // TODO CPM-808: A warning should be displayed as flash message when saving from PEF
                 }
             }
         }
@@ -83,12 +85,13 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
         $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);
         $product->addValue($value);
+        $product->setIdentifier($newIdentifier);
         // TODO This seems not working as I don't have an issue with duplicate identifiers.
         $violations = $this->validator->validate($product);
         if (count($violations) > 0) {
             $product->removeValue($value);
-            // TODO Better exception
-            throw new \Exception();
+            $product->setIdentifier(null);
+            throw new UnableToSetIdentifierException();
         }
     }
 
