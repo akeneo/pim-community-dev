@@ -6,7 +6,7 @@ namespace Akeneo\Test\Integration\integration\BatchBundle\Command;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -178,7 +178,8 @@ class BatchCommandIntegration extends TestCase
     {
         $connection = $this->getConnection();
         $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution');
-        return $stmt->executeQuery()->fetchAssociative();
+        $stmt->execute();
+        return $stmt->fetch();
     }
 
     /**

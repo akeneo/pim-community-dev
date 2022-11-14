@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Repository\Sql;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Repository\Sql\AggregatedVolumeRepository;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
@@ -30,7 +30,7 @@ class AggregatedVolumeRepositorySpec extends ObjectBehavior
     }
 
     function it_adds_a_aggregated_volume(
-        Connection $connection,
+        $connection,
         AggregatedVolume $aggregatedVolume,
         Statement $statement
     ) {
@@ -41,7 +41,7 @@ class AggregatedVolumeRepositorySpec extends ObjectBehavior
         $aggregatedVolume->aggregatedAt()->willReturn(new \DateTime());
 
         $statement->bindValue(Argument::cetera())->shouldBeCalled();
-        $statement->executeStatement()->shouldBeCalled();
+        $statement->execute()->shouldBeCalled();
 
         $this->add($aggregatedVolume);
     }

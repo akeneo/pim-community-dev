@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Per
 
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUsers;

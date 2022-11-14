@@ -25,7 +25,7 @@ use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
 use Doctrine\Persistence\ObjectManager;
@@ -183,8 +183,9 @@ class FixturesContext extends PimContext
         $sql = "SELECT backend_type FROM pim_catalog_attribute WHERE code = :attribute_code";
         $stmt = $db->prepare($sql);
         $stmt->bindValue("attribute_code", $attributeCode);
+        $stmt->execute();
 
-        return $stmt->executeQuery()->fetchOne();
+        return $stmt->fetch()['backend_type'];
     }
 
     protected function assertProductDataValueEquals(

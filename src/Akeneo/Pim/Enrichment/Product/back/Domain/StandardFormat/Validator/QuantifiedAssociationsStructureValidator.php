@@ -76,7 +76,7 @@ class QuantifiedAssociationsStructureValidator
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
                         sprintf(
-                            'entity type in "%s" should should contain one of these value',
+                            'entity type in "%s" should contain one of these value',
                             implode(',', self::QUANTIFIED_LINK_TYPES)
                         ),
                         static::class,
@@ -88,7 +88,7 @@ class QuantifiedAssociationsStructureValidator
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
                         sprintf(
-                            'entity type in "%s" should should contain one of these value',
+                            'entity type in "%s" should contain one of these value',
                             implode(',', self::QUANTIFIED_LINK_TYPES)
                         ),
                         static::class,
