@@ -53,9 +53,10 @@ class GetCategorySqlIntegration extends TestCase
                 "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
             ],
             $category->getAttributes()->getValue(
-                'title',
-                '87939c45-1d85-4134-9579-d594fff65030',
-                'fr_FR'
+                attributeCode: 'title',
+                attributeUuid: '87939c45-1d85-4134-9579-d594fff65030',
+                localeCode: 'fr_FR',
+                channel: null
             )
         );
         $this->assertSame(
@@ -73,7 +74,8 @@ class GetCategorySqlIntegration extends TestCase
             $category->getAttributes()->getValue(
                 attributeCode: 'photo',
                 attributeUuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
-                localeCode: null
+                localeCode: null,
+                channel: null
             )
         );
     }
@@ -99,9 +101,10 @@ class GetCategorySqlIntegration extends TestCase
                 "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
             ],
             $category->getAttributes()->getValue(
-                'title',
-                '87939c45-1d85-4134-9579-d594fff65030',
-                'fr_FR'
+                attributeCode: 'title',
+                attributeUuid: '87939c45-1d85-4134-9579-d594fff65030',
+                localeCode: 'fr_FR',
+                channel: null
             )
         );
         $this->assertSame(
@@ -119,7 +122,8 @@ class GetCategorySqlIntegration extends TestCase
             $category->getAttributes()->getValue(
                 attributeCode: 'photo',
                 attributeUuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
-                localeCode: null
+                localeCode: null,
+                channel: null
             )
         );
     }

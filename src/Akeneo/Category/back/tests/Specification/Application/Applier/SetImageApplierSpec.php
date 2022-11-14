@@ -37,6 +37,7 @@ class SetImageApplierSpec extends ObjectBehavior
             'attribute_codes' => [$compositeKey],
             $localeCompositeKey => [
                 'data' => 'value',
+                'channel' => null,
                 'locale' => 'locale_code',
                 'attribute_code' => $compositeKey
             ]
@@ -72,6 +73,7 @@ class SetImageApplierSpec extends ObjectBehavior
                     'mime_type' => 'image/jpeg',
                     'original_filename' => 'shoes.jpg'
                 ],
+                'channel' => null,
                 'locale' => 'locale_code',
                 'attribute_code' => $compositeKey
             ]

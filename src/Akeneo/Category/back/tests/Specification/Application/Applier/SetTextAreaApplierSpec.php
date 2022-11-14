@@ -30,14 +30,15 @@ class SetTextAreaApplierSpec extends ObjectBehavior
     {
         $identifier = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
         $valueKey = 'attribute_code'
-            . ValueCollection::SEPARATOR . 'uuid' .
-            ValueCollection::SEPARATOR . 'locale_code';
+            . ValueCollection::SEPARATOR . 'uuid'
+            . ValueCollection::SEPARATOR . 'locale_code';
 
         $attributes = ValueCollection::fromArray(
             [
                 'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'value',
+                    'channel' => null,
                     'locale' => 'locale_code',
                     'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
                 ]
@@ -63,6 +64,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
                 'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'updated_value',
+                    'channel' => null,
                     'locale' => 'locale_code',
                     'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
                 ]

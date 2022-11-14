@@ -23,10 +23,11 @@ class SetImageApplier implements UserIntentApplier
 
         $attributes = $category->getAttributes() ?? ValueCollection::fromArray([]);
         $attributes->setValue(
-            $userIntent->attributeUuid(),
-            $userIntent->attributeCode(),
-            $userIntent->localeCode(),
-            $userIntent->value(),
+            attributeUuid: $userIntent->attributeUuid(),
+            attributeCode: $userIntent->attributeCode(),
+            localeCode: $userIntent->localeCode(),
+            channel: null,
+            value: $userIntent->value(),
         );
 
         $category->setAttributes($attributes);

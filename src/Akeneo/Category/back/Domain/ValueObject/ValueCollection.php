@@ -42,12 +42,13 @@ final class ValueCollection implements \IteratorAggregate, \Countable
      *
      * @return Value|null
      */
-    public function getValue(string $attributeCode, string $attributeUuid, ?string $localeCode): ?array
+    public function getValue(string $attributeCode, string $attributeUuid, ?string $localeCode, ?string $channel): ?array
     {
         $localCompositeKey = sprintf(
-            '%s%s%s',
+            '%s%s%s%s',
             $attributeCode,
             self::SEPARATOR.$attributeUuid,
+            isset($channel) ? self::SEPARATOR.$channel : '',
             isset($localeCode) ? self::SEPARATOR.$localeCode : '',
         );
 
@@ -79,14 +80,16 @@ final class ValueCollection implements \IteratorAggregate, \Countable
         string $attributeUuid,
         string $attributeCode,
         ?string $localeCode,
+        ?string $channel,
         array|string|null $value,
     ): ValueCollection {
         $compositeKey = $attributeCode.self::SEPARATOR.$attributeUuid;
 
         $localCompositeKey = sprintf(
-            '%s%s%s',
+            '%s%s%s%s',
             $attributeCode,
             self::SEPARATOR.$attributeUuid,
+            !empty($channel) ? self::SEPARATOR.$channel : '',
             !empty($localeCode) ? self::SEPARATOR.$localeCode : '',
         );
 
@@ -95,6 +98,7 @@ final class ValueCollection implements \IteratorAggregate, \Countable
 
         $this->values[$localCompositeKey] = [
             'data' => $value,
+            'channel' => $channel,
             'locale' => $localeCode,
             'attribute_code' => $attributeCode.self::SEPARATOR.$attributeUuid,
         ];

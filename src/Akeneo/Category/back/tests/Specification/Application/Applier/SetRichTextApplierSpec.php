@@ -38,6 +38,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
                 'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'value',
+                    'channel' => null,
                     'locale' => 'locale_code',
                     'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
                 ]
@@ -63,6 +64,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
                 'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'updated_value',
+                    'channel' => null,
                     'locale' => 'locale_code',
                     'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
                 ]
