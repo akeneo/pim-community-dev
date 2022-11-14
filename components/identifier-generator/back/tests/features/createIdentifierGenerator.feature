@@ -29,3 +29,35 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with an unknown property
     Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number"'
     And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with freeText too long
+    When I try to create an identifier generator with freeText too long
+    Then I should get an error with message 'structure[0][string]: This value is too long. It should have 100 characters or less.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with freeText too long
+    When I try to create an identifier generator with freeText too long
+    Then I should get an error with message 'structure[0][string]: This value is too long. It should have 100 characters or less.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with freeText empty
+    When I try to create an identifier generator with freeText empty
+    Then I should get an error with message 'structure[0][string]: This value should not be blank.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with freeText without string value
+    When I try to create an identifier generator with freeText without string value
+    Then I should get an error with message 'structure[0][string]: This value should not be blank.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with autoNumber number min negative
+    When I try to create an identifier generator with autoNumber number min negative
+    Then I should get an error with message 'structure[0][numberMin]: This value should be either positive or zero.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with autoNumber digits min negative
+    When I try to create an identifier generator with autoNumber digits min negative
+    Then I should get an error with message 'structure[0][digitsMin]: This value should be positive.'
+    And the identifier should not be created
+
+

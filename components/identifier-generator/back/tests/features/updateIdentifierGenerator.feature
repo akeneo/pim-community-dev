@@ -26,3 +26,11 @@ Feature: Update Identifier Generator
   Scenario: Cannot update an identifier generator if property does not exist
     When I try to update an identifier generator with an unknown property
     Then I should get an error message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number"'
+
+  Scenario: Cannot update an identifier generator with freeText too long
+    When I try to update an identifier generator with freeText too long
+    Then I should get an error message 'structure[0][string]: This value is too long. It should have 100 characters or less.'
+
+  Scenario: Cannot update an identifier generator with freeText empty
+    When I try to update an identifier generator with freeText empty
+    Then I should get an error message 'structure[0][string]: This value should not be blank.'

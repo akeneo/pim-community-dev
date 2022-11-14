@@ -167,4 +167,43 @@ final class UpdateIdentifierGeneratorContext implements Context
             $this->violations = $exception;
         }
     }
+
+    /**
+     * @When I try to update an identifier generator with freeText too long
+     */
+    public function iUpdateAnIdentifierGeneratorWithFreetextTooLong()
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                [],
+                [['type' => 'free_text', 'string' => 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz']],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to update an identifier generator with freeText empty
+     */
+    public function iUpdateAnIdentifierGeneratorWithFreetextEmpty()
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                [],
+                [['type' => 'free_text', 'string' => '']],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
 }

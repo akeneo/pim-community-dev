@@ -16,23 +16,17 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                             - Choice:
                                 choices: ['free_text', 'auto_number']
                                 message: 'Type {{ value }} can only be one of the following: {{ choices }}'
-                    allowExtraFields: true
+                            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextFieldsRequired: ~
+                        string:
+                            - Optional:
+                              - NotBlank: ~
+                              - Length:
+                                  max: 100
+                        numberMin:
+                            - Optional:
+                                  - PositiveOrZero: ~
+                        digitsMin:
+                            - Optional:
+                                  - Positive: ~
         code:
             - NotBlank: ~
-
-Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand:
-    properties:
-        target:
-            - NotBlank: ~
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
-        structure:
-            - NotBlank: ~
-            - All:
-                  - Collection:
-                        fields:
-                            type:
-                                - Choice:
-                                      choices: ['free_text', 'auto_number']
-                                      message: 'Type {{ value }} can only be one of the following: {{ choices }}'
-                        allowExtraFields: true

@@ -75,4 +75,13 @@ class FreeTextSpec extends ObjectBehavior
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    public function it_throws_an_exception_when_text_is_too_long()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'free_text',
+            'string' => 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }

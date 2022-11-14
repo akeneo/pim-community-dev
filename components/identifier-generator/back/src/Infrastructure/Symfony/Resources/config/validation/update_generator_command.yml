@@ -1,0 +1,19 @@
+Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand:
+    properties:
+        target:
+            - NotBlank: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
+        structure:
+          - NotBlank: ~
+          - All:
+              - Collection:
+                  fields:
+                    type:
+                      - Choice:
+                          choices: [ 'free_text', 'auto_number' ]
+                          message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                    string:
+                        - NotBlank: ~
+                        - Length:
+                            max: 100
