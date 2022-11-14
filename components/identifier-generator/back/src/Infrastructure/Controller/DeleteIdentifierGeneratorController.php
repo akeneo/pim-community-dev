@@ -33,12 +33,8 @@ final class DeleteIdentifierGeneratorController
         if (!$identifierGenerator) {
             throw new NotFoundHttpException(sprintf('%s identifier generator not found', $code));
         }
-
-        try {
-            $this->identifierGeneratorRepository->delete($code);
-        } catch (UnableToDeleteIdentifierGeneratorException $exception) {
-            return new JsonResponse($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        
+        $this->identifierGeneratorRepository->delete($code);
 
         return new JsonResponse([], Response::HTTP_ACCEPTED);
     }

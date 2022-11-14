@@ -59,41 +59,6 @@ final class DeleteIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
     }
 
     /** @test */
-    public function it_should_throw_error_if_unable_to_delete(): void
-    {
-        $this->loginAs('Julia');
-
-        $identifierRepositoryMock = $this->createMock(IdentifierGeneratorRepository::class);
-        $identifierRepositoryMock
-            ->method('get')
-            ->willReturn(new IdentifierGenerator(
-                IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
-                IdentifierGeneratorCode::fromString('aabbcc'),
-                Conditions::fromArray([]),
-                Structure::fromArray([FreeText::fromString('abc')]),
-                LabelCollection::fromNormalized(['fr' => 'Générateur']),
-                Target::fromString('sku'),
-                Delimiter::fromString('-'),
-            ));
-
-        $identifierRepositoryMock
-            ->method('delete')
-            ->willThrowException(new UnableToDeleteIdentifierGeneratorException('exception'));
-
-        self::getContainer()->set(IdentifierGeneratorRepository::class, $identifierRepositoryMock);
-
-        $this->callDeleteRoute(
-            'akeneo_identifier_generator_rest_delete',
-            [
-                'code' => 'my_new_generator',
-            ]
-        );
-        $response = $this->client->getResponse();
-        Assert::AssertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
-        Assert::assertEquals('"exception"', $response->getContent());
-    }
-
-    /** @test */
     public function it_should_return_accepted_if_identifier_generator_is_deleted(): void
     {
         $identifierRepository = $this->get(IdentifierGeneratorRepository::class);
