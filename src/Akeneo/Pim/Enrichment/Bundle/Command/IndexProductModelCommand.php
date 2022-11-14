@@ -157,6 +157,7 @@ class IndexProductModelCommand extends Command
         $indexedCount = 0;
 
         $progressBar->start();
+
         foreach ($chunkedCodes as $codes) {
             $treatedBachSize = $this->batchEsStateHandler->bulkExecute($codes, $codesEsHandler);
             $indexedCount+=$treatedBachSize;
@@ -268,6 +269,11 @@ SQL;
                 '_source' => false,
                 'size' => $batchSize
             ]);
+
+            if (count($results['hits']['hits']) === 0) {
+                yield array_column($rows, 'code');
+                break;
+            }
 
             $esIdentifiers = array_map(function ($doc) {
                 return $doc['_id'];
