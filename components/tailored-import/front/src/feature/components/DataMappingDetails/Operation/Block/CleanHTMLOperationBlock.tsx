@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
+import styled from 'styled-components';
 import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid, Checkbox} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {OperationBlockProps} from './OperationBlockProps';
 import {OperationPreviewData} from '../OperationPreviewData';
-import {Operation} from 'feature/models/Operation';
-import styled from 'styled-components';
+import {Operation} from '../../../../models/Operation';
 
 const SpacedCheckbox = styled(Checkbox)`
   margin: 0 0 20px;

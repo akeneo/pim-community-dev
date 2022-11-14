@@ -18,15 +18,18 @@ import {
   getDefaultMultiReferenceEntityReplacementOperation,
   getDefaultMultiSelectReplacementOperation,
   getDefaultRemoveWhitespaceOperation,
+  getDefaultSearchAndReplaceOperation,
+  getDefaultSimpleReferenceEntityReplacementOperation,
   getDefaultSimpleSelectReplacementOperation,
   getDefaultSplitOperation,
-  getDefaultSimpleReferenceEntityReplacementOperation,
   MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
-  MultiReferenceEntityReplacementOperation,
   MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
+  MultiReferenceEntityReplacementOperation,
   MultiSelectReplacementOperation,
   REMOVE_WHITESPACE_OPERATION_TYPE,
   RemoveWhitespaceOperation,
+  SEARCH_AND_REPLACE_OPERATION_TYPE,
+  SearchAndReplaceOperation,
   SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleReferenceEntityReplacementOperation,
@@ -48,6 +51,7 @@ type Operation =
   | SplitOperation
   | ChangeCaseOperation
   | RemoveWhitespaceOperation
+  | SearchAndReplaceOperation
   | SimpleReferenceEntityReplacementOperation;
 type OperationType = Operation['type'];
 
@@ -91,6 +95,8 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
       return getDefaultSimpleReferenceEntityReplacementOperation();
     case MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE:
       return getDefaultMultiReferenceEntityReplacementOperation();
+    case SEARCH_AND_REPLACE_OPERATION_TYPE:
+      return getDefaultSearchAndReplaceOperation();
     default:
       throw new Error(`Invalid operation type: "${operationType}"`);
   }
