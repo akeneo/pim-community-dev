@@ -1,0 +1,6 @@
+services:
+    Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnrichedHandler:
+        arguments:
+            - '@akeneo.performance_analytics.queue.enriched_products'
+            - '@Akeneo\PerformanceAnalytics\Domain\Product\GetProducts'
+            - '@logger'

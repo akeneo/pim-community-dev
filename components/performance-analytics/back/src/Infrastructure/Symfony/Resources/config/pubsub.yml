@@ -1,0 +1,17 @@
+services:
+    Akeneo\PerformanceAnalytics\Infrastructure\PubSub\Client:
+        arguments:
+            - !service
+                class: Google\Cloud\PubSub\PubSubClient
+                arguments:
+                    -   transport: 'rest'
+                        keyFilePath: '%env(string:default:defaultKeyFilePath:PERFORMANCE_ANALYTICS_GOOGLE_APPLICATION_CREDENTIALS)%'
+            - '%env(bool:PUBSUB_AUTO_SETUP_PERFORMANCE_ANALYTICS)%'
+
+    akeneo.performance_analytics.queue.enriched_products:
+        class: Akeneo\PerformanceAnalytics\Infrastructure\PubSub\PubSubMessageQueue
+        arguments:
+            - '@Akeneo\PerformanceAnalytics\Infrastructure\PubSub\Client'
+            - '@logger'
+            - '%env(default::string:APP_TENANT_ID)%'
+            - '%env(string:PUBSUB_TOPIC_PERFORMANCE_ANALYTICS)%'
