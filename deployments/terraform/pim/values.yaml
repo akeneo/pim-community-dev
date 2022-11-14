@@ -456,10 +456,10 @@ memcached:
     minAvailable: 0
 
 elasticsearch:
-  appVersion: 8.4.2
+  appVersion: 7.16.2
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch
-    tag: 8.4.2
+    tag: 7.16.2
   fullnameOverride: elasticsearch
   sysctlInitContainer:
     enabled: false
