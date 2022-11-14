@@ -6,8 +6,6 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\CommandInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -31,8 +29,9 @@ final class AutoNumberLimitPerStructureValidator extends ConstraintValidator
 
         $countAutonumber = 0;
         foreach ($structure as $property) {
-            Assert::isInstanceOf($property, PropertyInterface::class);
-            if (AutoNumber::type() === $property::type()) {
+            Assert::isArray($property);
+            Assert::keyExists($property, 'type');
+            if (AutoNumber::type() === $property['type']) {
                 ++$countAutonumber;
             }
         }

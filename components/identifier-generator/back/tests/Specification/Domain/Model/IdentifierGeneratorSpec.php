@@ -122,11 +122,11 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
         $this->setStructure(Structure::fromArray([
             FreeText::fromString('cba'),
-            AutoNumber::fromValues(3,2),
+            AutoNumber::fromValues(3, 2),
         ]));
         $this->structure()->shouldBeLike(Structure::fromArray([
             FreeText::fromString('cba'),
-            AutoNumber::fromValues(3,2),
+            AutoNumber::fromValues(3, 2),
         ]));
     }
 

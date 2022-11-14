@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation;
 
 use PhpSpec\ObjectBehavior;
@@ -19,7 +21,7 @@ class ErrorSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             'path' => 'a path',
-            'message' => 'a message'
+            'message' => 'a message',
         ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
@@ -20,11 +22,11 @@ class ErrorListSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             [
                 'path' => null,
-                'message' => 'message1'
+                'message' => 'message1',
             ],
             [
                 'path' => null,
-                'message' => 'message2'
+                'message' => 'message2',
             ],
         ]);
     }

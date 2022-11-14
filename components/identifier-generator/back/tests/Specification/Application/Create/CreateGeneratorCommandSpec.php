@@ -35,7 +35,7 @@ class CreateGeneratorCommandSpec extends ObjectBehavior
 
     public function it_should_not_create_a_command_if_key_is_missing(): void
     {
-        foreach(array_keys(self::VALID_IDENTIFIER) as $key) {
+        foreach (array_keys(self::VALID_IDENTIFIER) as $key) {
             $invalid_command = self::VALID_IDENTIFIER;
             unset($invalid_command[$key]);
             $this->beConstructedThrough('fromNormalized', [$invalid_command]);
