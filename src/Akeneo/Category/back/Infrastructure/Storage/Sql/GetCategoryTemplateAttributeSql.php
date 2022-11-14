@@ -43,7 +43,8 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
                 is_localizable, 
                 additional_properties
             FROM pim_catalog_category_attribute
-            WHERE category_template_uuid=:template_uuid;
+            WHERE category_template_uuid=:template_uuid
+            ORDER BY attribute_order
         SQL;
 
         $results = $this->connection->executeQuery(
