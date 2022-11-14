@@ -3,3 +3,4 @@ validation:
         target_attribute_does_not_exist: 'The "{{code}}" attribute code given as target does not exist'
         target_attribute_is_not_an_identifier: 'The "{{code}}" attribute code is "{{type}}" type and should be of type identifier'
         identifier_limit_reached: 'Limit of "{{limit}}" identifier generators is reached'
+        free_text_should_not_be_empty: 'The free text cannot be empty.'
