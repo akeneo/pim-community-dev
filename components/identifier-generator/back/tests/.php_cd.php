@@ -32,15 +32,20 @@ $rules = [
         [
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
 
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
+            'Akeneo\Tool\Component\StorageUtils\StorageEvents',
+
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
 
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\DependencyInjection\ContainerBuilder',
             'Symfony\Component\DependencyInjection\Loader\YamlFileLoader',
+            'Symfony\Component\EventDispatcher\GenericEvent',
             'Symfony\Component\HttpKernel\Bundle\Bundle',
             'Symfony\Component\HttpKernel\DependencyInjection\Extension',
             'Symfony\Component\HttpKernel\Exception\BadRequestHttpException',
