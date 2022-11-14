@@ -130,3 +130,8 @@ free_trial:
   elasticsearch.keystore: null
   elasticsearch.cluster.plugins: null
 %{ endif }
+
+performance_analytics:
+  service_account_key: ${performance_analytics.service_account_key}
+  pubsub:
+    topic_performance_analytics: ${performance_analytics.topic.name}
