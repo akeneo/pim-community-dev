@@ -11,6 +11,9 @@ services:
         arguments:
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@event_dispatcher'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Clock'
 
     pim_catalog.completeness.missing_required_attributes_calculator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator'

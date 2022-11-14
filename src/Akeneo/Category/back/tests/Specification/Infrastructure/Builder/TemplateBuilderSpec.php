@@ -69,14 +69,14 @@ class TemplateBuilderSpec extends ObjectBehavior
         $template->getLabelCollection()->getTranslation('en_US')->shouldReturn('Category code template');
 
         $descriptionAttribute = $template->getAttributeCollection()->getAttributeByCode('description');
-        $descriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::RICH_TEXT);
+        $descriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
         $descriptionAttribute->getOrder()->intValue()->shouldReturn(1);
         $descriptionAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Description');
 
-        $imageAttribute = $template->getAttributeCollection()->getAttributeByCode('banner_image');
+        $imageAttribute = $template->getAttributeCollection()->getAttributeByCode('hero_banner');
         $imageAttribute->getType()->__toString()->shouldReturn(AttributeType::IMAGE);
         $imageAttribute->getOrder()->intValue()->shouldReturn(2);
-        $imageAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Banner image');
+        $imageAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Hero Banner');
 
         $metaTitleAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_meta_title');
         $metaTitleAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXT);
@@ -84,12 +84,12 @@ class TemplateBuilderSpec extends ObjectBehavior
         $metaTitleAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Meta Title');
 
         $metaDescriptionAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_meta_description');
-        $metaDescriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
+        $metaDescriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXT);
         $metaDescriptionAttribute->getOrder()->intValue()->shouldReturn(4);
         $metaDescriptionAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Meta Description');
 
         $keywordsAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_keywords');
-        $keywordsAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
+        $keywordsAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXT);
         $keywordsAttribute->getOrder()->intValue()->shouldReturn(5);
         $keywordsAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Keywords');
     }
