@@ -132,5 +132,10 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator if structure contains empty free text
     When I try to create an identifier generator with free text ''
-    Then I should get an error with message 'structure[0]: The free text cannot be empty.'
+    Then I should get an exception with message 'Expected a different value than "".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator if structure contains too long free text
+    When I try to create an identifier generator with free text 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus placerat ante id dui ornare feugiat. Nulla egestas neque eu lectus interdum congue nec at diam. Phasellus ac magna lorem. Praesent non lectus sit amet lectus sollicitudin consectetur sed non.'
+    Then I should get an error with message 'Free text is too long. It should have 100 characters or less.'
     And the identifier should not be created
