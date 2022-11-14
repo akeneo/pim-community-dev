@@ -119,8 +119,8 @@ class ExternalApiCategory
             'code' => $this->getCode(),
             'parent' => $this->getParentCode(),
             'updated' => $this->getUpdated(),
-            'labels' => $this->getLabels(),
             'position' => $this->getPosition(),
+            'labels' => $this->getLabels(),
             'template' => $this->getTemplateCode(),
             'values' => $this->getValues(),
         ];
