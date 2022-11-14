@@ -84,7 +84,7 @@ class PurgeVersioningCommandIntegration extends TestCase
 
     private function initializeVersions(int $expectedOriginalVersionsCount): void
     {
-        $limitDate = new \DateTime('now');
+        $limitDate = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $this->givenFamilyVersionsOlderThan($limitDate, 8, 35);
         $this->givenFamilyVersionsOlderThan($limitDate, 12, 44);

@@ -55,6 +55,12 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
+        $constraintFields['with_uuid'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
         $constraintFields['header_with_label'] = new Type(
             [
                 'type'   => 'bool',

@@ -18,6 +18,7 @@ Feature: Export products and product models
     And I press the "Grid context" button
     And I press the "With codes" button
     And I press the "With media" button
+    And I press the "With UUID" button
     And I press the "Export" button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_grid_context_quick_export"
@@ -33,6 +34,7 @@ Feature: Export products and product models
     And I press the "Grid context" button
     And I press the "With codes" button
     And I press the "With media" button
+    And I press the "Without UUID" button
     And I press the "Export" button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_grid_context_quick_export"
@@ -51,6 +53,7 @@ Feature: Export products and product models
     And I press the "All attributes" button
     And I press the "With codes" button
     And I press the "Without media" button
+    And I press the "With UUID" button
     And I press the "Export" button
     And I wait for the "csv_product_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_quick_export"

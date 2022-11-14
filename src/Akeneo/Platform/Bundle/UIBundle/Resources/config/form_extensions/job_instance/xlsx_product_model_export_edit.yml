@@ -194,6 +194,17 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.file_locale.title
             tooltip: pim_import_export.form.job_instance.tab.properties.file_locale.help
 
+    pim-job-instance-xlsx-product-model-export-edit-properties-header-with-uuid:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-xlsx-product-model-export-edit-global
+        position: 220
+        targetZone: properties
+        config:
+            fieldCode: configuration.with_uuid
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.with_uuid_for_models.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_uuid_for_models.help
+
     pim-job-instance-xlsx-product-model-export-edit-content-structure:
         module: pim/job/product/edit/content/structure
         parent: pim-job-instance-xlsx-product-model-export-edit-content

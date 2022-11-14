@@ -43,12 +43,14 @@ class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
 
     }
 
-    public function testProductExportByFilteringOnOneOption()
+    public function testProductExportByFilteringOnOneOption(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_A');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_A_B');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_multi_select
-product_option_A;;1;a_family;;optionA
-product_option_A_B;;1;a_family;;optionA,optionB
+uuid;sku;categories;enabled;family;groups;a_multi_select
+{$product1->getUuid()->toString()};product_option_A;;1;a_family;;optionA
+{$product2->getUuid()->toString()};product_option_A_B;;1;a_family;;optionA,optionB
 
 CSV;
 
@@ -66,18 +68,22 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringOnTwoOptions()
+    public function testProductExportByFilteringOnTwoOptions(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_A');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_A_B');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_B');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_multi_select
-product_option_A;;1;a_family;;optionA
-product_option_A_B;;1;a_family;;optionA,optionB
-product_option_B;;1;a_family;;optionB
+uuid;sku;categories;enabled;family;groups;a_multi_select
+{$product1->getUuid()->toString()};product_option_A;;1;a_family;;optionA
+{$product2->getUuid()->toString()};product_option_A_B;;1;a_family;;optionA,optionB
+{$product3->getUuid()->toString()};product_option_B;;1;a_family;;optionB
 
 CSV;
 
@@ -95,17 +101,20 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithEmpty()
+    public function testProductExportByFilteringWithEmpty(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option_attribute');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_multi_select
-product_without_option;;1;a_family;;
-product_without_option_attribute;;1;a_family;;
+uuid;sku;categories;enabled;family;groups;a_multi_select
+{$product1->getUuid()->toString()};product_without_option;;1;a_family;;
+{$product2->getUuid()->toString()};product_without_option_attribute;;1;a_family;;
 
 CSV;
 
@@ -123,12 +132,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithAnEmptyList()
+    public function testProductExportByFilteringWithAnEmptyList(): void
     {
         $expectedCsv = '';
 
@@ -146,6 +156,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

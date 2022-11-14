@@ -19,7 +19,8 @@ Feature: Export products according to file media attribute
 
   Scenario: Successfully export products according to file value start
     Given the following job "ecommerce_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
+      | storage   | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
+      | with_uuid | yes                                                                       |
     And I am on the "ecommerce_product_export" export job edit page
     And I visit the "Content" tab
     When I add available attributes Attachment
@@ -32,7 +33,7 @@ Feature: Export products according to file media attribute
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;attachment;categories;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;image;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD
-    SNKRS-1C-s;files/4538ff80-9dbb-40e0-a899-8f1eaa89b849/attachment/akeneo.txt;2014_collection;;;;;1;rangers;;files/4538ff80-9dbb-40e0-a899-8f1eaa89b849/image/SNKRS-1C-s.png;;;;;;;
-    SNKRS-1C-t;files/166ff41b-76bf-4733-980c-f7366870bd8e/attachment/akeneo.txt;2014_collection;;;;;1;rangers;;files/166ff41b-76bf-4733-980c-f7366870bd8e/image/SNKRS-1C-t.png;;;;;;;
+    uuid;sku;attachment;categories;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;image;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD
+    4538ff80-9dbb-40e0-a899-8f1eaa89b849;SNKRS-1C-s;files/SNKRS-1C-s/attachment/akeneo.txt;2014_collection;;;;;1;rangers;;files/SNKRS-1C-s/image/SNKRS-1C-s.png;;;;;;;
+    166ff41b-76bf-4733-980c-f7366870bd8e;SNKRS-1C-t;files/SNKRS-1C-t/attachment/akeneo.txt;2014_collection;;;;;1;rangers;;files/SNKRS-1C-t/image/SNKRS-1C-t.png;;;;;;;
     """

@@ -1013,22 +1013,6 @@ JSON;
     }
 
     /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-        unset($standardizedProduct['uuid']);
-
-        NormalizedProductCleaner::clean($standardizedProduct);
-        NormalizedProductCleaner::clean($expectedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getConfiguration(): Configuration

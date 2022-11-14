@@ -23,7 +23,9 @@ use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
  */
 class ExportProductsWithLabelsIntegration extends AbstractExportTestCase
 {
-    public function testProductExportWithLabels()
+    private array $uuids = [];
+
+    public function testProductExportWithLabels(): void
     {
         $expectedCsvWithTranslations = <<<CSV
 [sku];Catégories;Activé;Famille;Parent;Groupes;Couleur;"Est-ce en vente ?";"Une métrique";"Une métrique (Unité)";"Nom (anglais États-Unis)";"Pack Groupes";"Pack Produits";"Pack Modèles de produits";"Association avec des quantitées Produits";"Association avec des quantitées Produits Quantité";"Association avec des quantitées Modèles de produits";"Association avec des quantitées Modèles de produits Quantité";Taille;"Remplacement Groupes";"Remplacement Produits";"Remplacement Modèles de produits";"Vente incitative Groupes";"Vente incitative Produits";"Vente incitative Modèles de produits";"Vente croisée Groupes";"Vente croisée Produits";"Vente croisée Modèles de produits"
@@ -37,17 +39,43 @@ CSV;
         );
     }
 
-    public function testProductExportWithMissingLabelsForTheLocale()
+    public function testProductExportWithLabelsAndUuid(): void
+    {
+        $expectedCsvWithTranslations = <<<CSV
+"Identifiant unique";[sku];Catégories;Activé;Famille;Parent;Groupes;Couleur;"Est-ce en vente ?";"Une métrique";"Une métrique (Unité)";"Nom (anglais États-Unis)";"Pack Groupes";"Pack Modèles de produits";"Pack Produits";"Association avec des quantitées Produits";"Association avec des quantitées Produits Quantité";"Association avec des quantitées Modèles de produits";"Association avec des quantitées Modèles de produits Quantité";Taille;"Remplacement Groupes";"Remplacement Modèles de produits";"Remplacement Produits";"Vente incitative Groupes";"Vente incitative Modèles de produits";"Vente incitative Produits";"Vente croisée Groupes";"Vente croisée Modèles de produits";"Vente croisée Produits"
+{$this->uuids['apollon_pink_m']};apollon_pink_m;T-shirt;Oui;Vêtements;"Tshirt Appolon";;Bleu,Rose;Oui;12;Kilogramme;;;;;;;;;"Taille M";;;;;;;;;
+{$this->uuids['summer_shirt']};summer_shirt;Été,T-shirt;Oui;Vêtements;;;Bleu,Rose;Non;12;Kilogramme;;;;;"Tshirt Appolon";12;"Tshirt Appolon";5;"Taille L";;;;;;;;"Tshirt Appolon";"Tshirt Appolon"
+
+CSV;
+        $this->assertProductExport(
+            $expectedCsvWithTranslations,
+            [
+                'header_with_label' => true,
+                'with_label' => true,
+                'withHeader' => true,
+                'file_locale' => 'fr_FR',
+                'with_uuid' => true,
+            ]
+        );
+    }
+
+    public function testProductExportWithMissingLabelsForTheLocale(): void
     {
         $expectedCsvWithNoTranslations = <<<CSV
-[sku];[categories];[enabled];[family];[parent];[groups];[color];[is_on_sale];[metric];"[metric] ([unit])";"[name] ([en_US])";"[PACK] [groups]";"[PACK] [products]";"[PACK] [product_models]";"[QUANTITY] [products]";"[QUANTITY] [products] [quantity]";"[QUANTITY] [product_models]";"[QUANTITY] [product_models] [quantity]";[size];"[SUBSTITUTION] [groups]";"[SUBSTITUTION] [products]";"[SUBSTITUTION] [product_models]";"[UPSELL] [groups]";"[UPSELL] [products]";"[UPSELL] [product_models]";"[X_SELL] [groups]";"[X_SELL] [products]";"[X_SELL] [product_models]"
-apollon_pink_m;[tshirt];[yes];[clothing];[apollon];;[blue],[pink];[yes];12;[KILOGRAM];;;;;;;;;[m];;;;;;;;;
-summer_shirt;[summer],[tshirt];[yes];[clothing];;;[blue],[pink];[no];12;[KILOGRAM];;;;;[apollon_pink_m];12;[apollon];5;[l];;;;;;;;[apollon_pink_m];[apollon]
+[uuid];[sku];[categories];[enabled];[family];[parent];[groups];[color];[is_on_sale];[metric];"[metric] ([unit])";"[name] ([en_US])";"[PACK] [groups]";"[PACK] [product_models]";"[PACK] [product_uuids]";"[QUANTITY] [products]";"[QUANTITY] [products] [quantity]";"[QUANTITY] [product_models]";"[QUANTITY] [product_models] [quantity]";[size];"[SUBSTITUTION] [groups]";"[SUBSTITUTION] [product_models]";"[SUBSTITUTION] [product_uuids]";"[UPSELL] [groups]";"[UPSELL] [product_models]";"[UPSELL] [product_uuids]";"[X_SELL] [groups]";"[X_SELL] [product_models]";"[X_SELL] [product_uuids]"
+{$this->uuids['apollon_pink_m']};apollon_pink_m;[tshirt];[yes];[clothing];[apollon];;[blue],[pink];[yes];12;[KILOGRAM];;;;;;;;;[m];;;;;;;;;
+{$this->uuids['summer_shirt']};summer_shirt;[summer],[tshirt];[yes];[clothing];;;[blue],[pink];[no];12;[KILOGRAM];;;;;[apollon_pink_m];12;[apollon];5;[l];;;;;;;;[apollon];[{$this->uuids['apollon_pink_m']}]
 
 CSV;
         $this->assertProductExport(
             $expectedCsvWithNoTranslations,
-            ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'unknown_locale']
+            [
+                'header_with_label' => true,
+                'with_label' => true,
+                'withHeader' => true,
+                'file_locale' => 'unknown_locale',
+                'with_uuid' => true,
+            ]
         );
     }
 
@@ -193,7 +221,7 @@ CSV;
                 ]
             ]
         );
-        $this->createProduct(
+        $this->uuids['apollon_pink_m'] = $this->createProduct(
             'apollon_pink_m',
             [
                 new SetFamily('clothing'),
@@ -202,9 +230,9 @@ CSV;
                 new SetSimpleSelectValue('size', null, null, 'm'),
                 new SetMultiSelectValue('color', null, null, ['pink','blue'])
             ]
-        );
+        )->getUuid()->toString();
 
-        $this->createProduct(
+        $this->uuids['summer_shirt'] = $this->createProduct(
             'summer_shirt',
             [
                 new SetFamily('clothing'),
@@ -223,6 +251,17 @@ CSV;
                     new QuantifiedEntity('apollon', 5)
                 ])
             ]
-        );
+        )->getUuid()->toString();
+
+        $frenchCatalogue = $this->get('translator')->getCatalogue('fr_FR');
+        $frenchCatalogue->set('pim_common.uuid', 'Identifiant unique');
+        $frenchCatalogue->set('pim_common.categories', 'Catégories');
+        $frenchCatalogue->set('pim_common.family', 'Famille');
+        $frenchCatalogue->set('pim_common.parent', 'Parent');
+        $frenchCatalogue->set('pim_common.enabled', 'Activé');
+        $frenchCatalogue->set('pim_common.groups', 'Groupes');
+        $frenchCatalogue->set('pim_common.products', 'Produits');
+        $frenchCatalogue->set('pim_common.product_uuids', 'Produits');
+        $frenchCatalogue->set('pim_common.product_models', 'Modèles de produits');
     }
 }
