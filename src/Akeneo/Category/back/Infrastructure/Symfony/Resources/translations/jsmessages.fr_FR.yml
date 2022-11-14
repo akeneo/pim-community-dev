@@ -2,3 +2,7 @@ akeneo.category:
   attributes: Attributs
   edition_form:
     unsaved_changes: Vous perdrez les modifications apportées à la catégorie si vous quittez la page.
+  template_list:
+    columns:
+      code: Code
+      type: Type
