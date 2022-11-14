@@ -14,7 +14,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberLimitPerStructure:
                   limit: 1
             - All:
-#                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextLengthLimit: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextLengthLimit: ~
                 - Collection:
                     fields:
                         type:
