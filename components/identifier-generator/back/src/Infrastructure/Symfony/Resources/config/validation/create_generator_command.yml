@@ -10,10 +10,13 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
         structure:
             - NotBlank: ~
+#            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberLimitPerStructure:
+#                  limit: 1
             - Count:
                   max: 20
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\StructureShouldNotContainMultipleAutoNumber: ~
             - All:
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextShouldNotBeEmpty: ~
                 - Collection:
                     fields:
                         type:

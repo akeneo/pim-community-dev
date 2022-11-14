@@ -129,3 +129,8 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with too many properties in structure
     Then I should get an error with message 'structure: This collection should contain 20 elements or less.'
     And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator if structure contains empty free text
+    When I try to create an identifier generator with free text ''
+    Then I should get an error with message 'structure[0]: The free text cannot be empty.'
+    And the identifier should not be created
