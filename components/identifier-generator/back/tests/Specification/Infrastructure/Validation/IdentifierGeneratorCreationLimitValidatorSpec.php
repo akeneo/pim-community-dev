@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimit;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimitValidator;
@@ -53,7 +52,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
         $command = new CreateGeneratorCommand(
             'generatorCode',
             [],
-            [FreeText::fromString('abcdef')],
+            [['type' => 'free_text', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
             'sku',
             '-'
@@ -82,7 +81,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
         $command = new CreateGeneratorCommand(
             'generatorCode',
             [],
-            [FreeText::fromString('abcdef')],
+            [['type' => 'free_text', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
             'sku',
             '-'
@@ -111,7 +110,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
         $command = new CreateGeneratorCommand(
             'generatorCode',
             [],
-            [FreeText::fromString('abcdef')],
+            [['type' => 'free_text', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
             'sku',
             '-'

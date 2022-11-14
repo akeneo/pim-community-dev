@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberLimitPerStructure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberLimitPerStructureValidator;
 use PhpSpec\ObjectBehavior;
@@ -46,9 +44,9 @@ class AutoNumberLimitPerStructureValidatorSpec extends ObjectBehavior
     public function it_should_build_violation_when_auto_number_already_exist(ExecutionContext $context): void
     {
         $structure = [
-            FreeText::fromString('abcdef'),
-            AutoNumber::fromValues(3, 2),
-            AutoNumber::fromValues(5, 4),
+            ['type' => 'free_text', 'string' => 'abcdef'],
+            ['type' => 'auto_number', 'numberMin' => 3, 'digitsMin' => 2],
+            ['type' => 'auto_number', 'numberMin' => 5, 'digitsMin' => 4],
         ];
         $command = new CreateGeneratorCommand(
             'generatorCode',
@@ -73,8 +71,8 @@ class AutoNumberLimitPerStructureValidatorSpec extends ObjectBehavior
     public function it_should_be_valid_when_auto_number_is_under_limit(ExecutionContext $context): void
     {
         $structure = [
-            FreeText::fromString('abcdef'),
-            AutoNumber::fromValues(3, 2),
+            ['type' => 'free_text', 'string' => 'abcdef'],
+            ['type' => 'auto_number', 'numberMin' => 3, 'digitsMin' => 2],
         ];
         $command = new CreateGeneratorCommand(
             'generatorCode',
