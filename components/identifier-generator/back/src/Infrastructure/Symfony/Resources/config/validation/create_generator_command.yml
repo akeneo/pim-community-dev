@@ -1,10 +1,12 @@
 Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand:
     constraints:
         - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimit:
-              limit: 1
+            limit: 1
     properties:
         target:
             - NotBlank: ~
+            - Length:
+                max: 100
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
         structure:
@@ -27,7 +29,10 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
         labels:
             - All:
                 - Length:
-                      max: 255
+                    max: 255
+        delimiter:
+            - Length:
+                max: 100
 
 Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand:
     properties:

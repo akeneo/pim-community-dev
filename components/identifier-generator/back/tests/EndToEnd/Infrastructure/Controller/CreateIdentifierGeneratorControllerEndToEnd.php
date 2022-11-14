@@ -110,26 +110,6 @@ final class CreateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
-    /** @test */
-    public function it_should_not_create_identifier_generator_on_repository_error()
-    {
-        $this->loginAs('Julia');
-        $tooLongDelimiterIdentifier = self::VALID_IDENTIFIER;
-        $tooLongDelimiterIdentifier['delimiter'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat consequat sit amet ac ex.';
-
-        $this->callCreateRoute(
-            'akeneo_identifier_generator_rest_create',
-            ['HTTP_X-Requested-With' => 'XMLHttpRequest'],
-            \json_encode($tooLongDelimiterIdentifier),
-        );
-        $response = $this->client->getResponse();
-        Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        Assert::assertSame(
-            '{"message":"Cannot save the identifier generator \u0022my_new_generator\u0022"}',
-            $response->getContent()
-        );
-    }
-
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
