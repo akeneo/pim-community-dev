@@ -86,7 +86,9 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
                                             </TargetCell>
                                             {null === source.source && (
                                                 <PlaceholderCell>
-                                                    {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
+                                                    {translate(
+                                                        'akeneo_catalogs.product_mapping.target.table.placeholder'
+                                                    )}
                                                 </PlaceholderCell>
                                             )}
                                             {source.source && <Table.Cell>{source.source}</Table.Cell>}

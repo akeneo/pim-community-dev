@@ -20,9 +20,12 @@ test('it fetches the API response', async () => {
         })
     );
 
-    const {result, waitForNextUpdate} = renderHook(() => useProductMappingAttributes('123e4567-e89b-12d3-a456-426614174000'), {
-        wrapper: ReactQueryWrapper,
-    });
+    const {result, waitForNextUpdate} = renderHook(
+        () => useProductMappingAttributes('123e4567-e89b-12d3-a456-426614174000'),
+        {
+            wrapper: ReactQueryWrapper,
+        }
+    );
 
     expect(result.current).toMatchObject({
         isLoading: true,
@@ -33,7 +36,10 @@ test('it fetches the API response', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/123e4567-e89b-12d3-a456-426614174000/mapping/product/attributes', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/123e4567-e89b-12d3-a456-426614174000/mapping/product/attributes',
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
