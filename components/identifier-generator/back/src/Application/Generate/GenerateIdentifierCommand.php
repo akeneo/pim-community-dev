@@ -19,7 +19,7 @@ final class GenerateIdentifierCommand
     ) {
     }
 
-    public static function fromIdentifierGenerator(IdentifierGenerator $identifierGenerator)
+    public static function fromIdentifierGenerator(IdentifierGenerator $identifierGenerator): self
     {
         return new self($identifierGenerator);
     }

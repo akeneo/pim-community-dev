@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -76,7 +77,14 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     private function generateIdentifier(ProductInterface $product): void
     {
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
-            $productProjection = new ProductProjection($product->getValue($identifierGenerator->target()->asString()));
+            $identifier = null;
+            $identifierValue = $product->getValue($identifierGenerator->target()->asString());
+            if (null !== $identifierValue) {
+                Assert::isInstanceOf($identifierValue, ScalarValue::class);
+                $identifier = $identifierValue->getData();
+                Assert::string($identifier);
+            }
+            $productProjection = new ProductProjection($identifier);
             if ($identifierGenerator->match($productProjection)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $product);
