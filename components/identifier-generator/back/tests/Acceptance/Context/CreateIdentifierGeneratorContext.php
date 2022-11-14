@@ -276,9 +276,9 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator without label
+     * @When I create an identifier generator without label
      */
-    public function iTryToCreateAnIdentifierGeneratorWithoutLabel(): void
+    public function iCreateAnIdentifierGeneratorWithoutLabel(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(

@@ -46,7 +46,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Can create an identifier generator without label
-    When I try to create an identifier generator without label
+    When I create an identifier generator without label
     Then The identifier generator is saved in the repository
     And I should not get any error
 
