@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {ProductMappingSchema} from '../models/ProductMappingSchema';
+import {ProductMappingSchema} from '../components/ProductMapping/models/ProductMappingSchema';
 
 type Data = ProductMappingSchema;
 type Error = string | null;

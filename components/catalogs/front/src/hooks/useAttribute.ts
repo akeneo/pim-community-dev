@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {Attribute} from '../models/Attribute';
+import {Attribute} from '../components/ProductSelection/models/Attribute';
 
 type Error = string | null;
 type Result = {

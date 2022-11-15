@@ -14,7 +14,7 @@ import {ProductValueFilters} from '../../ProductValueFilters';
 import {mapProductValueFiltersErrors} from '../utils/mapProductValueFiltersErrors';
 import {ProductMapping} from '../../ProductMapping';
 import {ProductMapping as ProductMappingType} from '../../ProductMapping/models/ProductMapping';
-import {useProductMappingSchema} from '../../ProductMapping/hooks/useProductMappingSchema';
+import {useProductMappingSchema} from '../../../hooks/useProductMappingSchema';
 
 type Props = {
     id: string;

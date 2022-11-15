@@ -1,6 +1,6 @@
 jest.unmock('./useAttribute');
 
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 import {renderHook} from '@testing-library/react-hooks';
 import {useAttribute} from './useAttribute';
 import fetchMock from 'jest-fetch-mock';

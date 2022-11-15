@@ -2,7 +2,7 @@ jest.unmock('./useProductMappingSchema');
 
 import fetchMock from 'jest-fetch-mock';
 import {renderHook} from '@testing-library/react-hooks';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 import {useProductMappingSchema} from './useProductMappingSchema';
 
 test('it returns a product mapping schema', async () => {
