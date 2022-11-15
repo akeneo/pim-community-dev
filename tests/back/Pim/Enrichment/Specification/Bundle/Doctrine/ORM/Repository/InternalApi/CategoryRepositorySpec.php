@@ -26,7 +26,7 @@ class CategoryRepositorySpec extends ObjectBehavior
 
         $userContext->getCurrentLocaleCode()->willReturn('en_US');
         $em->getEventManager()->willReturn($eventManager);
-        $eventManager->getListeners()->willReturn([[$treeListener]]);
+        $eventManager->getAllListeners()->willReturn([[$treeListener]]);
 
         $treeListener->getStrategy(Argument::cetera())->willReturn($strategy);
         $treeListener->getConfiguration(Argument::cetera())->willReturn([
