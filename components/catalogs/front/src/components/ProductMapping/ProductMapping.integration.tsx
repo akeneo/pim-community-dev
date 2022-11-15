@@ -69,7 +69,7 @@ test('it displays an existing product mapping', async () => {
             erp_name: {
                 title: 'ERP',
                 type: 'string',
-            }
+            },
         },
     };
 
