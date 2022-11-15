@@ -165,7 +165,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new \RuntimeException('Job instance "job_instance_code" running the job "job_name" with parameters "" is invalid because of "' . PHP_EOL .'  - error"')
+                new \RuntimeException('Job instance "job_instance_code" running the job "job_name" with parameters "[]" is invalid because of "' . PHP_EOL .'  - error"')
             )
             ->during('launch', [$jobInstance, $user, []]);
     }

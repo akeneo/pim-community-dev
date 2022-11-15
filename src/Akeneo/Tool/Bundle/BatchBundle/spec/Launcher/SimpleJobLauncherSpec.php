@@ -105,7 +105,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::type(JobExecutionEvent::class), EventInterface::JOB_EXECUTION_CREATED)->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(new \RuntimeException('Job instance "job_instance_code" running the job "job_name" with parameters "" is invalid because of "' . PHP_EOL .'  - error"'))
+            ->shouldThrow(new \RuntimeException('Job instance "job_instance_code" running the job "job_name" with parameters "[]" is invalid because of "' . PHP_EOL .'  - error"'))
             ->during('launch', [$jobInstance, $user, []]);
     }
 }

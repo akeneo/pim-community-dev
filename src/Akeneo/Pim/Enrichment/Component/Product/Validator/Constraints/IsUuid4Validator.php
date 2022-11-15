@@ -24,9 +24,9 @@ class IsUuid4Validator extends ConstraintValidator
 
         Assert::isInstanceOf($value, UuidInterface::class);
 
-        /** @var $value UuidInterface */
+        /** @var UuidInterface $value */
         $fields = $value->getFields();
-        if (!$fields instanceof FieldsInterface || $value->getVersion() !== 4) {
+        if (!$fields instanceof FieldsInterface || $fields->getVersion() !== 4) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ uuid }}', $value->toString())
                 ->setParameter('{{ version }}', $fields instanceof FieldsInterface ? strval($fields->getVersion()): null)
