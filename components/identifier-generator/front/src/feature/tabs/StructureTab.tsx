@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {AttributesIllustration, Helper, Link, SectionTitle, uuid} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton, Preview, PropertiesList, PropertyEdit} from './structure';
-import {Delimiter, Property, PropertyWithIdentifier, Structure as StructureType} from '../models';
+import {Delimiter, Property, Structure as StructureType} from '../models';
 import {Styled} from '../components/Styled';
 
 type StructureTabProps = {
@@ -11,7 +11,7 @@ type StructureTabProps = {
   onStructureChange: (structure: StructureType) => void;
 };
 
-type StructureWithIdentifiers = PropertyWithIdentifier[];
+type StructureWithIdentifiers = (Property & {id: string})[];
 
 const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter, onStructureChange}) => {
   const translate = useTranslate();

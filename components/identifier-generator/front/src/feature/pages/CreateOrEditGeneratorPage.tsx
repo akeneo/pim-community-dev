@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageContent, PageHeader, useTranslate, SecondaryActions} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, StructureTab} from '../tabs';
-import {IdentifierGenerator, IdentifierGeneratorCode, Structure as StructureType} from '../models';
+import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {Violation} from '../validators/Violation';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
@@ -35,7 +35,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const [generator, setGenerator] = useState<IdentifierGenerator>(initialGenerator);
   const changeTab = useCallback(tabName => () => setCurrentTab(tabName), []);
   const onSave = useCallback(() => mainButtonCallback(generator), [generator, mainButtonCallback]);
-  const onStructureChange = (structure: StructureType) => {
+  const onStructureChange = (structure: Structure) => {
     setGenerator({...generator, structure: structure});
   };
 
