@@ -16,10 +16,6 @@ use Webmozart\Assert\Assert;
  */
 final class AutoNumberLimitPerStructureValidator extends ConstraintValidator
 {
-    public function __construct()
-    {
-    }
-
     public function validate($structure, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, AutoNumberLimitPerStructure::class);
