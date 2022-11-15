@@ -121,6 +121,30 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_text',
                 'scopable' => false,
                 'localizable' => false,
+            ]
+        ], $result);
+    }
+
+    public function testItGetsAttributesByTypes(): void
+    {
+        $this->loadAttributes();
+
+        $result = $this->query->execute(null, 1, 100, ['text','simpleselect']);
+
+        $this->assertEquals([
+            [
+                'code' => 'name',
+                'label' => '[name]',
+                'type' => 'pim_catalog_text',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'clothing_size',
+                'label' => '[clothing_size]',
+                'type' => 'pim_catalog_simpleselect',
+                'scopable' => false,
+                'localizable' => false,
             ],
         ], $result);
     }

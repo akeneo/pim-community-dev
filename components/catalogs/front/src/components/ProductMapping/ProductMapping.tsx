@@ -9,6 +9,7 @@ import {ProductMappingSchema} from './models/ProductMappingSchema';
 import {TargetSourceAssociation} from './components/TargetSourceAssociation';
 import {SourceLabel} from './components/SourceLabel';
 import {ProductMappingErrors} from './models/ProductMappingErrors';
+import {SourcePanel} from './components/SourcePanel';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -113,6 +114,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                         </SectionTitle.Title>
                     </SectionTitle>
                 )}
+                <SourcePanel selectedTarget={selectedTarget}></SourcePanel>
             </SourceContainer>
         </MappingContainer>
     );
