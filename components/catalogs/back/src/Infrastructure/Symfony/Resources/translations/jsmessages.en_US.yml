@@ -114,6 +114,7 @@ akeneo_catalogs:
             placeholder:
                 illustration_title: No catalog target available
         source:
+            title: Select source
             placeholder:
                 title: Select source
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.
