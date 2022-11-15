@@ -10,7 +10,6 @@ type Data = {
     owner_username: string;
     product_selection_criteria: AnyCriterionState[];
     product_value_filters: ProductValueFiltersValues;
-    // TODO remove it
     product_mapping: ProductMapping;
     has_product_mapping_schema: boolean;
 };
