@@ -34,31 +34,16 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
     /**
      * @return array<array{code: string, label: string, type: string, scopable: bool, localizable: bool, measurement_family?: string, default_measurement_unit?: string}>
      */
-    public function execute(?string $search = null, int $page = 1, int $limit = 20, array $types = null): array
+    public function execute(?string $search = null, int $page = 1, int $limit = 20, array $types = []): array
     {
-        //$allowedTypes = array_filter(self::ALLOWED_TYPES, fn($type) => $types === null || in_array(str_replace('pim_catalog_','', $type), $types));
-
-//        $allowedTypes = null === $types ? self::ALLOWED_TYPES : array_map(fn($type) =>
-//            'pim_catalog_'.$type,
-//            array_filter($types, fn($type) => in_array('pim_catalog_'.$type, self::ALLOWED_TYPES)));
-
-        $allowedTypes = self::ALLOWED_TYPES;
-        if($types !== null ) {
-            $allowedTypes = [];
-            foreach ($types as $type) {
-                $type = \sprintf('pim_catalog_%s', $type);
-                if (in_array($type, self::ALLOWED_TYPES)) {
-                    $allowedTypes[] = $type;
-                }
-            }
-        }
+        $types = array_map(fn($type) => \sprintf('pim_catalog_%s', $type), $types);
 
         $attributes = $this->searchableAttributeRepository->findBySearch(
             $search,
             [
                 'limit' => $limit,
                 'page' => $page,
-                'types' => $allowedTypes,
+                'types' => !empty($types) ? $types : null,
             ],
         );
 
