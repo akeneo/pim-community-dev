@@ -161,7 +161,7 @@ async function requestTenantsFromPortal(branchName, status, filter) {
 
 async function requestCloudFunction(url, method, data = null) {
   logger.debug(`Cloud function url: ${url}`);
-  logger.debug(`Method: ${url}`);
+  logger.debug(`Method: ${method}`);
   logger.debug(`Payload: ${JSON.stringify(data)}`);
   try {
     if (process.env.NODE_ENV !== NODE_ENV_DEVELOPMENT) {

@@ -1,9 +1,14 @@
 locals {
-  argocd_password_secret_name          = "${upper(replace(var.region, "-", "_"))}_ARGOCD_PASSWORD"
-  argocd_url                           = "https://argocd-${var.region}.${var.domain}"
-  cloudscheduler_service_account_email = "timmy-deployment@${var.project_id}.iam.gserviceaccount.com"
-  function_service_account_email       = "timmy-cloud-function@${var.project_id}.iam.gserviceaccount.com"
-  prefix_branch_name                   = var.branch_name == "master" ? "" : "-${var.branch_name}"
+  argocd_password_secret_name    = "${upper(replace(var.region, "-", "_"))}_ARGOCD_PASSWORD"
+  argocd_url                     = "https://argocd-${var.region}.${var.domain}"
+  function_service_account_email = "timmy-cloud-function@${var.project_id}.iam.gserviceaccount.com"
+  prefix_branch_name             = var.branch_name == "master" ? "" : "-${var.branch_name}"
+  function_labels                = merge(var.function_labels, {
+    application = "timmy"
+    branch_name = var.branch_name
+    environment = "demo"
+    region      = var.region
+  })
 }
 
 module "bucket" {
@@ -17,11 +22,14 @@ module "bucket" {
 }
 
 module "timmy_request_portal" {
-  enable              = var.enable_timmy_request_portal
-  source              = "../modules/cloudfunction"
-  project_id          = var.project_id
-  name                = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal", 0, 63)
-  description         = "Request the portal to tenants to create/delete/update"
+  source      = "../modules/cloudfunction"
+  enable      = var.enable_timmy_request_portal
+  project_id  = var.project_id
+  name        = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal", 0, 63)
+  description = "Request the portal to tenants to create/delete/update"
+  labels      = merge(local.function_labels, {
+    name = "timmy-request-portal"
+  })
   available_memory    = "256Mi"
   bucket_name         = module.bucket.bucket_name
   entry_point         = "requestPortal"
@@ -50,24 +58,25 @@ module "timmy_request_portal" {
     FUNCTION_URL_TIMMY_CREATE_TENANT = module.timmy_create_tenant.uri
     FUNCTION_URL_TIMMY_DELETE_TENANT = module.timmy_delete_tenant.uri
     GCP_PROJECT_ID                   = var.project_id
-    // TODO: switch to https when PH-202 is released
     HTTP_SCHEMA                      = "https"
-    LOG_LEVEL                        = "debug"
+    LOG_LEVEL                        = var.log_level
     NODE_ENV                         = "production"
-    // TODO: replace portal hostnames with the private entry once PH-202 is released
     PORTAL_HOSTNAME                  = var.portal_hostname
     PORTAL_LOGIN_HOSTNAME            = var.portal_login_hostname
-    TENANT_CONTINENT                 = "europe-west3"
-    TENANT_EDITION_FLAGS             = "serenity_instance,growth_edition_instance"
-    TENANT_ENVIRONMENT               = "sandbox"
+    TENANT_CONTINENT                 = var.portal_tenant_continent
+    TENANT_EDITION_FLAGS             = var.portal_tenant_edition_flags
+    TENANT_ENVIRONMENT               = var.portal_tenant_environment
   }
 }
 
 module "timmy_create_tenant" {
-  source              = "../modules/cloudfunction"
-  project_id          = var.project_id
-  name                = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-create-tenant", 0, 63)
-  description         = "Create a new UCS tenant"
+  source      = "../modules/cloudfunction"
+  project_id  = var.project_id
+  name        = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-create-tenant", 0, 63)
+  description = "Create a new UCS tenant"
+  labels      = merge(local.function_labels, {
+    name = "timmy-create-tenant"
+  })
   available_memory    = "256Mi"
   bucket_name         = module.bucket.bucket_name
   entry_point         = "createTenant"
@@ -111,7 +120,8 @@ module "timmy_create_tenant" {
     GCP_FIRESTORE_PROJECT_ID       = var.firestore_project_id
     GCP_PROJECT_ID                 = var.project_id
     GOOGLE_ZONE                    = var.google_zone
-    LOG_LEVEL                      = "debug"
+    LOG_LEVEL                      = var.log_level
+    MAILER_BASE_URL                = "smtp://smtp.mailgun.org:2525"
     MAILER_DOMAIN                  = "mg.cloud.akeneo.com"
     NODE_ENV                       = "production"
     REGION                         = var.region
@@ -123,10 +133,13 @@ module "timmy_create_tenant" {
 }
 
 module "timmy_delete_tenant" {
-  source                = "../modules/cloudfunction"
-  project_id            = var.project_id
-  name                  = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-delete-tenant", 0, 63)
-  description           = "Delete an UCS tenant"
+  source      = "../modules/cloudfunction"
+  project_id  = var.project_id
+  name        = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-delete-tenant", 0, 63)
+  description = "Delete an UCS tenant"
+  labels      = merge(local.function_labels, {
+    name = "timmy-delete-tenant"
+  })
   available_memory      = "256Mi"
   bucket_name           = module.bucket.bucket_name
   entry_point           = "deleteTenant"
@@ -151,6 +164,7 @@ module "timmy_delete_tenant" {
     ARGOCD_USERNAME                = "admin"
     GCP_FIRESTORE_PROJECT_ID       = var.firestore_project_id
     GCP_PROJECT_ID                 = var.project_id
+    LOG_LEVEL                      = var.log_level
     NODE_ENV                       = "production"
     REGION                         = var.region
     TENANT_CONTEXT_COLLECTION_NAME = var.tenant_context_collection_name
@@ -158,10 +172,13 @@ module "timmy_delete_tenant" {
 }
 
 module "timmy_create_fire_document" {
-  source                = "../modules/cloudfunction"
-  project_id            = var.project_id
-  name                  = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-create-doc", 0, 63)
-  description           = "Create Firestore document in the tenantcontext DB"
+  source      = "../modules/cloudfunction"
+  project_id  = var.project_id
+  name        = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-create-doc", 0, 63)
+  description = "Create Firestore document in the tenant context DB"
+  labels      = merge(local.function_labels, {
+    name = "timmy-create-doc"
+  })
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
   entry_point           = "createDocument"
@@ -187,10 +204,13 @@ module "timmy_create_fire_document" {
 }
 
 module "timmy_delete_fire_document" {
-  source                = "../modules/cloudfunction"
-  project_id            = var.project_id
-  name                  = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-delete-doc", 0, 63)
-  description           = "Delete Firestore document in the tenantcontext DB"
+  source      = "../modules/cloudfunction"
+  project_id  = var.project_id
+  name        = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-delete-doc", 0, 63)
+  description = "Delete Firestore document in the tenant context DB"
+  labels      = merge(local.function_labels, {
+    name = "timmy-delete-doc"
+  })
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
   entry_point           = "deleteDocument"
@@ -210,15 +230,15 @@ module "timmy_cloudscheduler" {
   source                     = "../modules/cloudscheduler"
   project_id                 = var.project_id
   region                     = var.region
-  name                       = "${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal"
+  name                       = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal", 0, 63)
   description                = "Trigger timmy-request-portal cloudfunction every 2 minutes"
   http_method                = "POST"
   http_target_uri            = module.timmy_request_portal.uri
   attempt_deadline           = "30s"
   oidc_service_account_email = local.function_service_account_email
   oidc_token_audience        = module.timmy_request_portal.uri
-  schedule                   = "*/2 * * * *"
-  time_zone                  = "Europe/Paris"
+  schedule                   = var.schedule
+  time_zone                  = var.time_zone
 }
 
 terraform {

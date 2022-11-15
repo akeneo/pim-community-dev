@@ -21,6 +21,8 @@ resource "google_project_iam_custom_role" "timmy_cloud_function" {
   permissions = [
     "cloudfunctions.functions.call",
     "cloudfunctions.functions.invoke",
+    "run.jobs.run",
+    "run.routes.invoke"
   ]
 }
 
