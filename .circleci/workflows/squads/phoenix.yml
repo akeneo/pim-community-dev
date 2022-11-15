@@ -217,3 +217,59 @@ workflows:
                   requires:
                       - test_back_phpunit
                       - test_back_static_and_acceptance
+
+    ucs_load_tests:
+      when:
+          not:
+              equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+      jobs:
+          - ready_to_build?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /PH-.*/
+          - checkout:
+                requires:
+                    - ready_to_build?
+          - build_ucs_env_vars:
+                requires:
+                    - checkout
+          - test_deploy_ucs_pim:
+                requires:
+                    - build_ucs_env_vars
+          - test_deploy_timmy:
+                requires:
+                    - checkout
+          - test_deploy_ucs_tenant:
+                requires:
+                    - test_deploy_timmy
+                    - test_deploy_ucs_pim
+          - prepare_load_tests_ucs:
+                requires:
+                    - test_deploy_ucs_tenant
+          - execute_load_tests_ucs:
+                matrix:
+                    parameters:
+                        DURATION: ["5m"]
+                requires:
+                    - prepare_load_tests_ucs
+          - delete_ucs_tenant:
+                requires:
+                    - execute_load_tests_ucs
+          - delete_timmy:
+                requires:
+                    - delete_ucs_tenant
+          - delete_ucs_pim?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /PH-.*/
+                requires:
+                    - test_deploy_ucs_pim
+          - delete_ucs_pim:
+                requires:
+                    - delete_ucs_pim?

@@ -733,18 +733,20 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
+                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
                       TENANT_NAME_PREFIX=ucs
                       TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
                       TENANT_ID=${TYPE}-${TENANT_NAME}
-                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+                      FQDN="${TENANT_NAME}.${GOOGLE_DOMAIN}"
                       PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
                       TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
                       WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
 
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
                       echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
                       echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
                       echo export TENANT_ID=${TENANT_ID} >> $BASH_ENV
-                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+                      echo export FQDN=${FQDN} >> $BASH_ENV
                       echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
                       echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
@@ -817,6 +819,9 @@ jobs:
                   name: Persist env vars for next jobs
                   command: |
                       echo export TENANT_NAME="${TENANT_NAME}" >> persisted_env_vars
+                      echo export TENANT_ID="${TENANT_ID}" >> persisted_env_vars
+                      echo export FQDN="${FQDN}" >> persisted_env_vars
+                      echo export PIM_NAMESPACE="${PIM_NAMESPACE}" >> persisted_env_vars
                       echo export CIRCLE_BRANCH_LOWER="${CIRCLE_BRANCH_LOWER}" >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/

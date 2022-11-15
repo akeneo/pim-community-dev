@@ -2,19 +2,21 @@ import { sleep } from 'k6';
 import http from 'k6/http';
 import encoding from 'k6/encoding';
 
-export const options = {
-  duration: '1m',
-  vus: 10,
-  thresholds: {
-    http_req_failed: ['rate<0.01'],
-    http_req_duration: ['p(90)<500'],
-    http_req_waiting: ['p(90)<500'],
-  },
-};
-
 const url = `https://${__ENV.FQDN}`;
 const credentials = `${__ENV.API_CLIENT_ID}:${__ENV.API_SECRET}`;
 const encodedCredentials = encoding.b64encode(credentials);
+const k6_duration = `${__ENV.K6_DURATION}` || '10m';
+const k6_vus = `${__ENV.K6_VUS}` || 10;
+
+export const options = {
+  duration: `${k6_duration}`,
+  vus: `${k6_vus}`,
+  thresholds: {
+    http_req_failed: ['rate<0.01'],
+    http_req_duration: ['p(90)<5000'],
+    http_req_waiting: ['p(90)<5000'],
+  },
+};
 
 export function setup() {
   // Create authentication request and return access_token
