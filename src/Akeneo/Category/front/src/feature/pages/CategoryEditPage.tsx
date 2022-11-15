@@ -14,7 +14,6 @@ import {
 import {
   FullScreenError,
   getLabel,
-  PageContent,
   PageHeader,
   PimView,
   UnsavedChanges,
@@ -30,7 +29,7 @@ import {CategoryToDelete, useCountProductsBeforeDeleteCategory, useDeleteCategor
 import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {EditAttributesForm, EditPermissionsForm, EditPropertiesForm, TemplateTitle} from '../components';
+import {EditAttributesForm, EditPermissionsForm, EditPropertiesForm, TemplateTitle, CategoryPageContent} from '../components';
 
 type Params = {
   categoryId: string;
@@ -244,7 +243,7 @@ const CategoryEditPage: FC = () => {
         <PageHeader.Title>{categoryLabel ?? categoryId}</PageHeader.Title>
         <PageHeader.State>{thereAreUnsavedChanges && <UnsavedChanges />}</PageHeader.State>
       </PageHeader>
-      <PageContent>
+      <CategoryPageContent>
         <TabBar moreButtonTitle={'More'}>
           {isGranted('pim_enrich_product_category_edit_attributes') && template && (
             <TabBar.Tab isActive={isCurrent(Tabs.ATTRIBUTE)} onClick={() => handleSwitchTo(Tabs.ATTRIBUTE)}>
@@ -299,7 +298,7 @@ const CategoryEditPage: FC = () => {
             version={historyVersion}
           />
         )}
-      </PageContent>
+      </CategoryPageContent>
       {isDeleteCategoryModalOpen && categoryToDelete !== null && (
         <DeleteCategoryModal
           categoryLabel={categoryToDelete.label}
