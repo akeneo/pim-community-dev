@@ -101,6 +101,7 @@
 - PIM-10718: Fix categories with empty labels throw 500 error
 - PIM-10725: Fix get family variant case sensitive
 - PIM-10720: Fix price versioning normalizer to round numbers
+- PIM-10724: Fix textarea template so that first break line is not considered as break in html
 
 ## Improvements
 
