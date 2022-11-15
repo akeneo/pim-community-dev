@@ -25,11 +25,11 @@ use Psr\Log\LoggerInterface;
 final class ProjectsRecalculationLauncher
 {
     public function __construct(
-        private GetProjectCode $allProjectCodes,
-        private string $projectCalculationJobName,
-        private JobLauncherInterface $jobLauncher,
-        private JobInstanceRepository $jobInstanceRepository,
-        private LoggerInterface $logger,
+        private readonly GetProjectCode $allProjectCodes,
+        private readonly string $projectCalculationJobName,
+        private readonly JobLauncherInterface $jobLauncher,
+        private readonly JobInstanceRepository $jobInstanceRepository,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -37,12 +37,11 @@ final class ProjectsRecalculationLauncher
     {
         $this->logger->info('Start TWA projects recalculation');
 
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('akeneo:batch:job');
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->projectCalculationJobName);
 
         foreach ($this->allProjectCodes->fetchAll() as $projectCode) {
             $config = [
-                'code' => $this->projectCalculationJobName,
-                '-c' => sprintf('{"project_code":"%s"}', $projectCode),
+                'project_code' => $projectCode,
             ];
             $this->jobLauncher->launch($jobInstance, null, $config);
         }
