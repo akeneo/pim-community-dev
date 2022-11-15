@@ -45,7 +45,6 @@ class FetchSamplePercentageFromBucket implements FetchSamplePercentage
 
         $samplePercentage = $config[$this->googleProject];
         if (!is_int($samplePercentage)) {
-
             return 0;
         }
 
@@ -54,18 +53,5 @@ class FetchSamplePercentageFromBucket implements FetchSamplePercentage
         } else {
             return 0;
         }
-    }
-
-    private function getSamplePercentageFromApcu(): int
-    {
-        $samplePercentage = \apcu_fetch(self::APCU_KEY);
-        if (!is_int($samplePercentage)) {
-            $samplePercentageFromBucket = $this->getSamplePercentageFromBucket();
-            \apcu_store(self::APCU_KEY, $samplePercentageFromBucket, 300);
-
-            return $samplePercentageFromBucket;
-        }
-
-        return $samplePercentage;
     }
 }
