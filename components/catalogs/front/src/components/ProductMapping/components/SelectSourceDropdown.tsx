@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Button, Dropdown, Field, GroupsIllustration, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useInfiniteAttributeCriterion} from '../hooks/useInfiniteAttributeCritierion';
+import {useInfiniteAttributes} from '../hooks/useInfiniteAttributes';
 import {Attribute} from '../../models/Attribute';
 
 
@@ -10,7 +10,7 @@ export const SelectSourceDropdown: FC<{}> = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
     const [isInvalid, setIsInvalid] = useState<boolean>(false);
-    const {data: attributes, fetchNextPage} = useInfiniteAttributeCriterion({search, limit : 20, types : ['text']});
+    const {data: attributes, fetchNextPage} = useInfiniteAttributes({search});
     const [value, setValue] = useState<string>('');
 
     const handleAttributeSelection = useCallback(
@@ -34,12 +34,6 @@ export const SelectSourceDropdown: FC<{}> = () => {
         },
         []
     );
-    const handeChange = useCallback(
-        (e) => {
-            e.preventDefault();
-        },
-        []
-    );
 
     return (
         <>
@@ -49,7 +43,7 @@ export const SelectSourceDropdown: FC<{}> = () => {
                         emptyResultLabel=''
                         openLabel=''
                         value={value}
-                        onChange={handeChange}
+                        onChange={() => null}
                         clearable={false}
                         invalid={isInvalid}
                         data-testid='value'

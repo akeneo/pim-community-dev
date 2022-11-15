@@ -106,14 +106,14 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                 </Table>
             </TargetContainer>
             <SourceContainer>
-                {selectedTarget === undefined && <SourcePlaceholder />}
-                {selectedTarget && (
-                    <SectionTitle>
-                        <SectionTitle.Title>
-                            <SourceLabel sourceCode={selectedTarget} />
-                        </SectionTitle.Title>
-                    </SectionTitle>
-                )}
+                {/*{selectedTarget === undefined && <SourcePlaceholder />}*/}
+                {/*{selectedTarget && (*/}
+                {/*    <SectionTitle>*/}
+                {/*        <SectionTitle.Title>*/}
+                {/*            <SourceLabel sourceCode={selectedTarget} />*/}
+                {/*        </SectionTitle.Title>*/}
+                {/*    </SectionTitle>*/}
+                {/*)}*/}
                 <SourcePanel selectedTarget={selectedTarget}></SourcePanel>
             </SourceContainer>
         </MappingContainer>

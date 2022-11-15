@@ -28,7 +28,7 @@ const ALLOWED_ATTRIBUTE_TYPES = [
     'text',
 ];
 
-export const useInfiniteAttributeCriterion = ({search = '', limit = 20}: QueryParams = {}): Result => {
+export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {}): Result => {
 
     const fetchAttributes = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {

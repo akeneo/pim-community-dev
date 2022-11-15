@@ -26,6 +26,18 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
+const ALLOWED_ATTRIBUTE_TYPES = [
+    'identifier',
+    'text',
+    'textarea',
+    'simpleselect',
+    'multiselect',
+    'number',
+    'metric',
+    'boolean',
+    'date',
+];
+
 export const useInfiniteAttributeCriterionFactories = ({search = '', limit = 20}: QueryParams = {}): Result => {
     const findAttributeCriterionByType = useFindAttributeCriterionByType();
 
@@ -34,7 +46,7 @@ export const useInfiniteAttributeCriterionFactories = ({search = '', limit = 20}
             const _page = pageParam?.number || 1;
             const _search = search || pageParam?.search || '';
 
-            const response = await fetch(`/rest/catalogs/attributes?page=${_page}&limit=${limit}&search=${_search}`, {
+            const response = await fetch(`/rest/catalogs/attributes?page=${_page}&limit=${limit}&search=${_search}&types=${ALLOWED_ATTRIBUTE_TYPES.join(',')}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                 },
@@ -58,7 +70,7 @@ export const useInfiniteAttributeCriterionFactories = ({search = '', limit = 20}
         [search, limit, findAttributeCriterionByType]
     );
 
-    const query = useInfiniteQuery<Page, Error, Page>(['attributes', {search: search, limit: limit}], fetchAttributes, {
+    const query = useInfiniteQuery<Page, Error, Page>(['attributes', {search: search, limit: limit, types: ALLOWED_ATTRIBUTE_TYPES}], fetchAttributes, {
         keepPreviousData: true,
         getNextPageParam: last =>
             last.data.length >= limit
