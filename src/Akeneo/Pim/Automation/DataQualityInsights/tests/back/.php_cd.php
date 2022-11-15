@@ -134,7 +134,6 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',
 
-
             // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
