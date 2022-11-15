@@ -8,7 +8,7 @@ use Akeneo\Platform\Bundle\FrameworkBundle\AclCache\FetchSamplePercentageFromBuc
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-final class BucketFetchSamplePercentageIntegration extends TestCase
+final class FetchSamplePercentageFromBucketIntegration extends TestCase
 {
     public function test_it_gets_sample_values_from_bucket()
     {
