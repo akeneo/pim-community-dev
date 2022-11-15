@@ -61,7 +61,7 @@ class JSONFileBuffer implements BufferInterface
     /**
      * {@inheritdoc}
      */
-    public function current(): array
+    public function current(): mixed
     {
         $rawLine = $this->file->current();
 
