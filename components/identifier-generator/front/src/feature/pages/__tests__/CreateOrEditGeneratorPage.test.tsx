@@ -7,7 +7,7 @@ import {Router} from 'react-router';
 
 jest.mock('../DeleteGeneratorModal');
 jest.mock('../../tabs/GeneralPropertiesTab');
-jest.mock('../../tabs/Structure');
+jest.mock('../../tabs/StructureTab');
 
 const initialGenerator: IdentifierGenerator = {
   code: 'initialCode',
@@ -40,7 +40,7 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('[]')).toBeInTheDocument(); // conditions
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
-    expect(screen.getByText('StructureMock')).toBeInTheDocument();
+    expect(screen.getByText('StructureTabMock')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.general'));
     expect(screen.getByText('GeneratorPropertiesMock')).toBeInTheDocument();
@@ -99,5 +99,21 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('DeleteGeneratorModalMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete generator'));
     expect(history.location.pathname).toBe('/');
+  });
+
+  it('should update a generate on structure change', () => {
+    render(
+      <CreateOrEditGeneratorPage
+        initialGenerator={initialGenerator}
+        validationErrors={[]}
+        mainButtonCallback={jest.fn()}
+        isNew={false}
+      />);
+
+    fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
+    expect(screen.getByText('StructureTabMock')).toBeInTheDocument();
+    expect(screen.getByText('[{"type":"free_text","string":"AKN"}]')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Update Free Text'));
+    expect(screen.getByText('[{"type":"free_text","string":"Updated string"}]')).toBeInTheDocument();
   });
 });

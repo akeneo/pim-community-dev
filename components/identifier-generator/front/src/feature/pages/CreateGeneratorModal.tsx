@@ -47,9 +47,8 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
         target,
         labels: {[uiLocale]: label},
         conditions: [],
-        // Temporary
         structure: [],
-        delimiter: '-',
+        delimiter: null,
       });
     }
   }, [code, label, onSave, uiLocale, target]);

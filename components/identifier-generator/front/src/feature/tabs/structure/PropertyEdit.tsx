@@ -1,10 +1,10 @@
 import React from 'react';
-import {PROPERTY_NAMES, PropertyWithIdentifier} from '../../models';
+import {Property, PROPERTY_NAMES, PropertyWithIdentifier} from '../../models';
 import {FreeTextEdit} from './edit/FreeTextEdit';
 
 type PropertyEditProps = {
-  selectedProperty: PropertyWithIdentifier;
-  onChange: (propertyWithId: PropertyWithIdentifier) => void;
+  selectedProperty: Property;
+  onChange: (propertyWithId: Property) => void;
 };
 
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {

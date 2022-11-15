@@ -11,11 +11,11 @@ type PropertiesSelection = {
   }[];
 };
 
-type AddPropertyButtonType = {
+type AddPropertyButtonProps = {
   onAddProperty: (property: Property) => void;
 };
 
-const AddPropertyButton: React.FC<AddPropertyButtonType> = ({onAddProperty}) => {
+const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');

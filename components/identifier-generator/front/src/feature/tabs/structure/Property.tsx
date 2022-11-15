@@ -1,6 +1,6 @@
 import React from 'react';
 import {PropertyWithIdentifier} from '../../models';
-import {FreeText} from './FreeText';
+import {FreeTextLine} from './';
 import {PROPERTY_NAMES} from '../../models';
 
 type PropertyProps = {
@@ -8,7 +8,7 @@ type PropertyProps = {
 };
 
 const Property: React.FC<PropertyProps> = ({property}) => {
-  return <>{property.type === PROPERTY_NAMES.FREE_TEXT && <FreeText freeTextProperty={property} />}</>;
+  return <>{property.type === PROPERTY_NAMES.FREE_TEXT && <FreeTextLine freeTextProperty={property} />}</>;
 };
 
 export {Property};

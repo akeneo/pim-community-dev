@@ -5,13 +5,8 @@ import userEvent from '@testing-library/user-event';
 import {PROPERTY_NAMES} from '../../../models';
 
 describe('AddPropertyButton', () => {
-  it('opens the search bar', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({status: 200}),
-    });
-
-    render(<AddPropertyButton />);
+  it('allows search', async () => {
+    render(<AddPropertyButton onAddProperty={jest.fn()} />);
     const button = screen.getByRole('button');
     expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
     expect(button).toBeInTheDocument();
@@ -19,7 +14,7 @@ describe('AddPropertyButton', () => {
     fireEvent.click(button);
     await waitFor(() => {
       expect(
-        screen.getByText(`pim_identifier_generator.structure.property_type.${PROPERTY_NAMES.FREE_TEXT}`)
+        screen.getByText('pim_identifier_generator.structure.property_type.free_text')
       ).toBeInTheDocument();
     });
 
@@ -36,15 +31,36 @@ describe('AddPropertyButton', () => {
     userEvent.type(searchField, 'free');
     await waitFor(() => {
       expect(
-        screen.getByText(`pim_identifier_generator.structure.property_type.${PROPERTY_NAMES.FREE_TEXT}`)
+        screen.getByText('pim_identifier_generator.structure.property_type.free_text')
       ).toBeInTheDocument();
     });
 
     fireEvent.keyDown(searchField, {key: 'Escape', code: 'Escape'});
     await waitFor(() => {
       expect(
-        screen.queryByText(`pim_identifier_generator.structure.property_type.${PROPERTY_NAMES.FREE_TEXT}`)
+        screen.queryByText('pim_identifier_generator.structure.property_type.free_text')
       ).not.toBeInTheDocument();
+    });
+  });
+
+  it('adds a property', async () => {
+    const onAddProperty = jest.fn();
+    render(<AddPropertyButton onAddProperty={onAddProperty} />);
+    const button = screen.getByRole('button');
+    expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(
+        screen.getByText('pim_identifier_generator.structure.property_type.free_text')
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('pim_identifier_generator.structure.property_type.free_text'));
+    expect(onAddProperty).toBeCalledWith({
+      type: PROPERTY_NAMES.FREE_TEXT,
+      string: '',
     });
   });
 });

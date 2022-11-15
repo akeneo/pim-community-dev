@@ -1,11 +1,11 @@
 import React from 'react';
-import {FreeText, PROPERTY_NAMES, PropertyWithIdentifier} from '../../../models';
+import {FreeText, Property, PROPERTY_NAMES} from '../../../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type FreeTextEditProps = {
-  selectedProperty: PropertyWithIdentifier & FreeText;
-  onChange: (propertyWithId: PropertyWithIdentifier) => void;
+  selectedProperty: FreeText;
+  onChange: (propertyWithId: Property) => void;
 };
 
 const FreeTextEdit: React.FC<FreeTextEditProps> = ({selectedProperty, onChange}) => {
@@ -19,11 +19,11 @@ const FreeTextEdit: React.FC<FreeTextEditProps> = ({selectedProperty, onChange})
     <>
       <SectionTitle>
         <SectionTitle.Title level="secondary">
-          {translate(`pim_identifier_generator.structure.settings.${PROPERTY_NAMES.FREE_TEXT}.title`).toUpperCase()}
+          {translate(`pim_identifier_generator.structure.settings.${PROPERTY_NAMES.FREE_TEXT}.title`)}
         </SectionTitle.Title>
       </SectionTitle>
       <Field label={translate(`pim_identifier_generator.structure.settings.${PROPERTY_NAMES.FREE_TEXT}.string_label`)}>
-        <TextInput key={selectedProperty.id} value={selectedProperty.string} onChange={onTextChange} />
+        <TextInput value={selectedProperty.string} onChange={onTextChange} />
       </Field>
     </>
   );

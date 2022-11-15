@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageContent, PageHeader, useTranslate, SecondaryActions} from '@akeneo-pim-community/shared';
-import {GeneralPropertiesTab, Structure} from '../tabs';
+import {GeneralPropertiesTab, StructureTab} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode, Structure as StructureType} from '../models';
 import {Violation} from '../validators/Violation';
 import {Header} from '../components';
@@ -101,7 +101,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           </>
         )}
         {currentTab === Tabs.STRUCTURE && (
-          <Structure
+          <StructureTab
             initialStructure={generator.structure}
             delimiter={generator.delimiter}
             onStructureChange={onStructureChange}

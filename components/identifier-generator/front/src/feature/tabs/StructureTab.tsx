@@ -1,11 +1,8 @@
 import React, {useState} from 'react';
 import {AttributesIllustration, Helper, Link, SectionTitle, uuid} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
-import {AddPropertyButton} from './structure/AddPropertyButton';
+import {AddPropertyButton, Preview, PropertiesList, PropertyEdit} from './structure';
 import {Delimiter, Property, PropertyWithIdentifier, Structure as StructureType} from '../models';
-import {PropertiesList} from './structure/PropertiesList';
-import {Preview} from './structure/Preview';
-import {PropertyEdit} from './structure/PropertyEdit';
 import {Styled} from '../components/Styled';
 
 type StructureTabProps = {
@@ -16,7 +13,7 @@ type StructureTabProps = {
 
 type StructureWithIdentifiers = PropertyWithIdentifier[];
 
-const Structure: React.FC<StructureTabProps> = ({initialStructure, delimiter, onStructureChange}) => {
+const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter, onStructureChange}) => {
   const translate = useTranslate();
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
   const [structure, setStructure] = useState<StructureWithIdentifiers>(
@@ -32,11 +29,13 @@ const Structure: React.FC<StructureTabProps> = ({initialStructure, delimiter, on
     setSelectedPropertyId(id);
   };
 
-  const onPropertyChange = (propertyWithId: PropertyWithIdentifier) => {
-    const updatedPropertyIndex = structure.findIndex(p => propertyWithId.id === p.id);
-    structure[updatedPropertyIndex] = propertyWithId;
-    setStructure(structure);
-    onStructureChange(structure);
+  const onPropertyChange = (property: Property) => {
+    if (selectedProperty) {
+      const updatedPropertyIndex = structure.findIndex(p => selectedProperty.id === p.id);
+      structure[updatedPropertyIndex] = {...property, id: selectedProperty.id};
+      setStructure(structure);
+      onStructureChange(structure);
+    }
   };
 
   const onAddProperty = (property: Property) => {
@@ -78,7 +77,10 @@ const Structure: React.FC<StructureTabProps> = ({initialStructure, delimiter, on
         </div>
         {selectedProperty && (
           <div>
-            <PropertyEdit selectedProperty={selectedProperty} onChange={onPropertyChange} />
+            <PropertyEdit
+              selectedProperty={selectedProperty}
+              onChange={onPropertyChange}
+            />
           </div>
         )}
       </Styled.TwoColumns>
@@ -86,5 +88,5 @@ const Structure: React.FC<StructureTabProps> = ({initialStructure, delimiter, on
   );
 };
 
-export {Structure};
+export {StructureTab};
 export type {StructureWithIdentifiers};

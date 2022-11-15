@@ -1,9 +1,9 @@
 import React from 'react';
 import {PropertyWithIdentifier} from '../../models';
 import {Property} from './Property';
-import {StructureWithIdentifiers} from '../Structure';
 import {Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
+import {StructureWithIdentifiers} from '../StructureTab';
 
 type PropertiesListProps = {
   structure: StructureWithIdentifiers;
