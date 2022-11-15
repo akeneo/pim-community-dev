@@ -4,6 +4,17 @@ parameters:
 services:
     security.acl.cache.doctrine.cache_impl:
         public: false
+        class: 'Akeneo\Platform\Bundle\FrameworkBundle\AclCache\SampleRouterCache'
+        arguments:
+            - '@security.acl_cache_array'
+            - '@security.acl_cache_memcache'
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\AclCache\FetchSamplePercentageFromBucket'
+
+    security.acl_cache_array:
+        class: 'Doctrine\Common\Cache\ArrayCache'
+
+    security.acl_cache_memcache:
+        public: false
         class: '%oro_security.acl.cache.class%'
         calls:
             - method: setMemcached

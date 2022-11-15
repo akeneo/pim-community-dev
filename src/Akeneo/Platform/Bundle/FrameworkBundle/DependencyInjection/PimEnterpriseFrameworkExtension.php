@@ -28,5 +28,6 @@ class PimEnterpriseFrameworkExtension extends BasePimInstallerExtension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('bounded_contexts.yml');
+        $loader->load('acl_cache.yml');
     }
 }
