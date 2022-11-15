@@ -277,7 +277,6 @@ final class HandleTextTest extends HandleDataMappingTestCase
                         userIntents: [
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'case sensitive: that will be replaced with "that" but not this'),
                             new SetTextValue('short_description', null, null, 'case insensitive: that and that will be replaced with "that"'),
-                            new ClearValue('long_description', null, null),
                         ],
                     ),
                     [],

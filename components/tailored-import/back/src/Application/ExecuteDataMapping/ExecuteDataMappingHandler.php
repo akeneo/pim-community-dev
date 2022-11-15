@@ -54,16 +54,25 @@ class ExecuteDataMappingHandler
                 continue;
             }
 
-            $value = $this->applyOperations($row, $sources, $dataMapping->getOperations());
+            $value = $this->getFlattenValue($row, $sources);
 
-            if ($value instanceof NullValue && TargetInterface::IF_EMPTY_SKIP === $target->getActionIfEmpty()) {
-                continue;
-            }
+            if ($value instanceof NullValue) {
+                if (TargetInterface::IF_EMPTY_SKIP === $target->getActionIfEmpty()) {
+                    continue;
+                }
+            } else {
+                $value = $this->applyOperations($row, $sources, $dataMapping->getOperations());
 
-            if ($value instanceof InvalidValue) {
-                $invalidValues[] = $value;
+                // We ignore empty values if they are coming from the operations pipeline
+                if ($value instanceof NullValue) {
+                    continue;
+                }
 
-                continue;
+                if ($value instanceof InvalidValue) {
+                    $invalidValues[] = $value;
+
+                    continue;
+                }
             }
 
             $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target, $value);
@@ -82,6 +91,13 @@ class ExecuteDataMappingHandler
             ),
             $invalidValues,
         );
+    }
+
+    private function getFlattenValue(Row $row, array $sources): ValueInterface
+    {
+        $processedValues = array_map(static fn (string $source) => $row->getCellData($source), $sources);
+
+        return $this->flattenValues($processedValues);
     }
 
     private function applyOperations(Row $row, array $sources, OperationCollection $operations): ValueInterface
