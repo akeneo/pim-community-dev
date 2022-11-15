@@ -17,7 +17,20 @@ workflows:
           - build_ucs:
                 requires:
                     - checkout
-          - deploy?:
+          # - test_deploy_ucs_pim:
+          #       name: deploy_ucs_auto_pim
+          #       PIM_NAMESPACE_PREFIX: "pim-auto"
+          #       requires:
+          #         - build_ucs
+          # - delete_ucs_pim:
+          #       name: delete_auto_pim
+          #       PIM_NAMESPACE_PREFIX: "pim-auto"
+          #       requires:
+          #         - deploy_ucs_auto_pim
+          - test_deploy_ucs_pim:
+                requires:
+                    - build_ucs
+          - deploy_tenant?:
               type: approval
               filters:
                 branches:
@@ -25,26 +38,15 @@ workflows:
                     - /BH-.*/
                     - /PH-.*/
               requires:
-                - deploy_ucs_pim
-          - deploy_ucs_pim:
+                - test_deploy_ucs_pim
+          - test_deploy_timmy:
                 requires:
-                    - build_ucs
-          - deploy_ucs_pim:
-                name: deploy_ucs_auto_pim
-                PIM_NAMESPACE_PREFIX: "pim-auto"
+                    - deploy_tenant?
+          - test_deploy_ucs_tenant:
+                name: "test_deploy_ucs_tenant"
                 requires:
-                  - build_ucs
-          - build_timmy:
-                requires:
-                    - deploy?
-          - build_timmy:
-                name: build_timmy_wb
-                requires:
-                    - deploy_wb?
-          - deploy_tenant:
-                requires:
-                    - deploy?
-          - delete_pim?:
+                    - test_deploy_timmy
+          - delete_ucs_tenant?:
                 type: approval
                 filters:
                     branches:
@@ -52,26 +54,14 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
                 requires:
-                    - deploy_ucs_pim
-          - delete_tenant:
+                    - test_deploy_ucs_tenant
+          - delete_ucs_tenant:
                 requires:
-                    - delete_tenant?
-          - delete_pim:
-                requires:
-                    - delete_pim?
-          - delete_pim:
-                name: delete_auto_pim
-                PIM_NAMESPACE_PREFIX: "pim-auto"
-                requires:
-                  - deploy_ucs_auto_pim
+                    - delete_ucs_tenant?
           - delete_timmy:
                 requires:
-                    - delete_tenant_timmy
-          - delete_timmy:
-                name: delete_timmy_wb
-                requires:
-                    - delete_tenant_wb_timmy
-          - delete_tenant?:
+                    - delete_ucs_tenant
+          - delete_ucs_pim?:
                 type: approval
                 filters:
                     branches:
@@ -79,20 +69,12 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
                 requires:
-                    - deploy_tenant
-          - delete_tenant_timmy?:
-                type: approval
-                filters:
-                    branches:
-                        only:
-                            - /BH-.*/
-                            - /PH-.*/
+                    - test_deploy_ucs_pim
+          - delete_ucs_pim:
                 requires:
-                    - deploy_tenant_timmy
-          - delete_tenant_timmy:
-                requires:
-                    - delete_tenant_timmy?
-          - ready_to_build_wb?:
+                    - delete_ucs_pim?
+
+          - ready_to_build_without_build?:
                 type: approval
                 filters:
                     branches:
@@ -100,14 +82,28 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
           - checkout:
-                name: checkout_wb
+                name: checkout_without_build
                 requires:
-                    - ready_to_build_wb?
+                    - ready_to_build_without_build?
           - build_ucs_env_vars:
-                name: build_ucs_wb
+                name: build_ucs_without_build
                 requires:
-                    - checkout_wb
-          - deploy_wb?:
+                    - checkout_without_build
+          # - test_deploy_ucs_pim:
+          #       name: test_deploy_ucs_pim_auto_without_build
+          #       PIM_NAMESPACE_PREFIX: "pim-auto"
+          #       requires:
+          #         - build_ucs_without_build
+          # - delete_ucs_pim:
+          #     name: "delete_ucs_pim_auto_without_build"
+          #     PIM_NAMESPACE_PREFIX: "pim-auto"
+          #     requires:
+          #       - test_deploy_ucs_pim_auto_without_build
+          - test_deploy_ucs_pim:
+                name: test_deploy_ucs_pim_without_build
+                requires:
+                    - build_ucs_without_build
+          - deploy_tenant_without_build?:
               type: approval
               filters:
                 branches:
@@ -115,29 +111,16 @@ workflows:
                     - /BH-.*/
                     - /PH-.*/
               requires:
-                - deploy_ucs_pim_wb
-          - deploy_ucs_pim:
-                name: deploy_ucs_pim_wb
+                - test_deploy_ucs_pim_without_build
+          - test_deploy_timmy:
+                name: test_deploy_timmy_without_build
                 requires:
-                    - build_ucs_wb
-          - deploy_ucs_pim:
-                name: deploy_ucs_pim_auto_wb
-                PIM_NAMESPACE_PREFIX: "pim-auto"
+                    - deploy_tenant_without_build?
+          - test_deploy_ucs_tenant:
+                name: "test_deploy_ucs_tenant_without_build"
                 requires:
-                  - build_ucs_wb
-          - deploy_tenant_timmy:
-                name: "deploy_tenant_timmy_wb"
-                requires:
-                    - build_timmy_wb
-          - deploy_tenant_timmy:
-                name: "deploy_tenant_timmy"
-                requires:
-                    - build_timmy
-          - deploy_tenant:
-                name: "deploy_tenant_wb"
-                requires:
-                    - deploy_wb?
-          - delete_pim_wb?:
+                    - test_deploy_timmy_without_build
+          - delete_tenant_without_test_deploy_timmy?:
                 type: approval
                 filters:
                     branches:
@@ -145,17 +128,16 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
                 requires:
-                    - deploy_ucs_pim_wb
-          - delete_pim:
-                name: "delete_pim_wb"
+                    - test_deploy_ucs_tenant_without_build
+          - delete_ucs_tenant:
+                name: "delete_tenant_without_test_deploy_timmy"
                 requires:
-                    - delete_pim_wb?
-          - delete_pim:
-              name: "delete_pim_auto_wb"
-              PIM_NAMESPACE_PREFIX: "pim-auto"
-              requires:
-                - deploy_ucs_pim_auto_wb
-          - delete_tenant_wb?:
+                    - delete_tenant_without_test_deploy_timmy?
+          - delete_timmy:
+                name: delete_timmy_without_build
+                requires:
+                    - delete_tenant_without_test_deploy_timmy
+          - delete_ucs_pim_without_build?:
                 type: approval
                 filters:
                     branches:
@@ -163,24 +145,12 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
                 requires:
-                    - deploy_tenant_wb
-          - delete_tenant_wb_timmy?:
-                type: approval
-                filters:
-                    branches:
-                        only:
-                            - /BH-.*/
-                            - /PH-.*/
+                    - test_deploy_ucs_pim_without_build
+          - delete_ucs_pim:
+                name: "delete_ucs_pim_without_build"
                 requires:
-                    - deploy_tenant_timmy_wb
-          - delete_tenant:
-                name: "delete_tenant_wb"
-                requires:
-                    - delete_tenant_wb?
-          - delete_tenant_timmy:
-                name: "delete_tenant_wb_timmy"
-                requires:
-                    - delete_tenant_wb_timmy?
+                    - delete_ucs_pim_without_build?
+
           - ready_to_build_test_infra?:
                 type: approval
                 filters:
@@ -196,6 +166,7 @@ workflows:
                 name: build_ucs_infra
                 requires:
                     - ready_to_build_test_infra
+
     ucs_pim_dev:
         when:
             not:

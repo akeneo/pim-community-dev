@@ -22,15 +22,17 @@ envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
   ENV_NAME: "dev"
   GOOGLE_DOMAIN: "ci.pim.akeneo.cloud"
   GOOGLE_MANAGED_ZONE_DNS: "ci.pim.akeneo.cloud"
-  GOOGLE_FIRESTORE_PROJECT_ID: "akecld-prd-pim-fire-eur-dev"
-  GOOGLE_PROJECT_ID_SHARED: "akecld-prd-pim-saas-shared"
   GOOGLE_PROJECT_ID: "akecld-prd-pim-saas-dev"
+  GOOGLE_PROJECT_ID_SHARED: "akecld-prd-pim-saas-shared"
+  GOOGLE_PROJECT_ID_FIRESTORE: "akecld-prd-pim-fire-eur-dev"
+  CLUSTER_NAME: "akecld-prd-pim-saas-dev-europe-west1"
   GOOGLE_CLUSTER_REGION: "europe-west1"
   GOOGLE_COMPUTE_ZONE: "europe-west1-b"
-  CLUSTER_NAME: "akecld-prd-pim-saas-dev-europe-west1"
+  GOOGLE_ZONE_PREFIX: "eur-w-1b"
+  CLUSTER_NAME_NEXT: "akecld-prd-pim-saas-dev-europe-west3"
   GOOGLE_CLUSTER_REGION_NEXT: "europe-west3"
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
-  CLUSTER_NAME_NEXT: "akecld-prd-pim-saas-dev-europe-west3"
+  GOOGLE_ZONE_PREFIX_NEXT: "eur-w-3b"
 
 dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent # cloudDeployer version used in prod (used for lastest release deployement)
   docker:

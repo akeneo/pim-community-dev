@@ -528,7 +528,7 @@ jobs:
             - store_artifacts:
                   path: ~/artifacts/infra
 
-    deploy_ucs_pim:
+    test_deploy_ucs_pim:
       parameters:
         PIM_NAMESPACE_PREFIX:
           type: string
@@ -557,7 +557,7 @@ jobs:
 
               TENANT_NAME_PREFIX=ucs
               TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-              GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_FIRESTORE_PROJECT_ID}
+              GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_PROJECT_ID_FIRESTORE}
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
               TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
               GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
@@ -700,7 +700,7 @@ jobs:
                   kubectl delete ns ${PIM_NAMESPACE}
               when: on_fail
 
-    deploy_tenant_timmy:
+    test_deploy_ucs_tenant:
         parameters:
             PRODUCT_TYPE:
                 type: string
@@ -718,6 +718,9 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - add_ssh_keys:
+                fingerprints:
+                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - when:
                   condition:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
@@ -732,113 +735,19 @@ jobs:
                   command: |
                       TENANT_NAME_PREFIX=ucs
                       TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
-                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NAMESPACE=$(echo pim-${CIRCLE_BRANCH_LOWER} | cut -c -63)
-                      TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH}/tenant_contexts"
-                      REGION_PREFIX="eur-w-1b"
-                      WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
-                      GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
-
-                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
-                      echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
-                      echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
-                      echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
-                      echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
-                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
-                      echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
-                      echo export REGION_PREFIX=${REGION_PREFIX} >> $BASH_ENV
-                      echo export CIRCLE_BRANCH=${CIRCLE_BRANCH} >> $BASH_ENV
-
-                      echo "Tenant name prefix: ${TENANT_NAME_PREFIX}"
-                      echo "Tenant name: ${TENANT_NAME}"
-                      echo "Image tag: ${IMAGE_TAG}"
-            - run:
-                  name: Deploy Tenant with Timmy
-                  command: |
-                      FUNCTION_NAME=${REGION_PREFIX}-timmy-create-tenant
-                      if [ -n "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
-                        FUNCTION_NAME=${REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
-                      fi
-                      TENANT_STATUS_CODE=0
-                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
-                      JSON_BODY_STRING=${JSON_BODY_STRING:1}
-
-                      FUNCTION_URL=$(gcloud beta functions describe ${FUNCTION_NAME} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
-                      echo ${FUNCTION_URL}
-                      echo ${JSON_BODY_STRING}
-                      curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
-                      exit ${TENANT_STATUS_CODE}
-
-                      # Wait PH-423
-                      # # Check if hook failed
-                      # STATUS_HEALTH=$(argocd app get ${TENANT_ID} | grep Failed | awk '{print $6}') || true
-                      # if [ -n "${STATUS_HEALTH}" ]; then
-                      #   echo "Error when deploying argocd app"
-                      #   exit 1
-                      # fi
-                      # echo "argocd app sync successfull"
-
-                      echo "============================"
-                      echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
-                      echo "user : admin"
-                      echo "password : ${ARGOCD_PASSWORD}"
-                      echo "============================"
-            - run:
-                  name: Persist env vars for next jobs
-                  command: |
-                      echo export TENANT_NAME="${TENANT_NAME}" >> persisted_env_vars
-                      echo export CIRCLE_BRANCH_LOWER="${CIRCLE_BRANCH_LOWER}" >> persisted_env_vars
-            - persist_to_workspace:
-                  root: ~/
-                  paths:
-                      - project/persisted_env_vars
-
-    deploy_tenant:
-        parameters:
-            PRODUCT_TYPE:
-                type: string
-                default: "srnt"
-            CLUSTER_NEXT:
-                type: boolean
-                default: false
-        environment:
-            <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
-        resource_class: small
-        steps:
-            - attach_workspace:
-                  at: ~/
-            - add_ssh_keys:
-                fingerprints:
-                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-            - when:
-                  condition:
-                      equal: [true, << parameters.CLUSTER_NEXT >> ]
-                  steps:
-                      - modify_cluster
-            - set_gcloud_config_pim_saas_dev
-            - restore_persisted_env_vars
-            - install_yq_v3
-            - run:
-                  name: Define value for next steps
-                  command: |
-                      TENANT_NAME_PREFIX=ucs
-                      TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
                       TENANT_ID=${TYPE}-${TENANT_NAME}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
                       PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
                       TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
                       WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
-                      GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
                       echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
                       echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
                       echo export TENANT_ID=${TENANT_ID} >> $BASH_ENV
-                      echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
-                      echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
                       echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
                       echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
                       echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
+                      echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
 
                       echo "Tenant name prefix: ${TENANT_NAME_PREFIX}"
                       echo "Tenant name: ${TENANT_NAME}"
@@ -874,46 +783,45 @@ jobs:
                   git commit -m "Update tenant version" || true
                   git push --set-upstream origin ${CIRCLE_BRANCH} || true
             - run:
-                name: Deploy tenant with argocd
-                command: |
-                  # Modify the parameters
-                  make -C deployments-ucs/ deploy_tenant
+                  name: Deploy Tenant with Timmy
+                  command: |
+                      FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-timmy-create-tenant
+                      if [ -n "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
+                        FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
+                      fi
+                      TENANT_STATUS_CODE=0
+                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
+                      JSON_BODY_STRING=${JSON_BODY_STRING:1}
 
-                  # Better to store the password in CircleCI or other mecanisme
-                  ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+                      FUNCTION_URL=$(gcloud beta functions describe ${FUNCTION_NAME} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
+                      echo ${FUNCTION_URL}
+                      echo ${JSON_BODY_STRING}
+                      curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
+                      exit ${TENANT_STATUS_CODE}
 
-                  # Login to argocd call k8s
-                  kubectl config set-context --current --namespace=argocd
-                  argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
-                  argocd app get ${TENANT_ID} --hard-refresh --core
-                  argocd app wait --sync --health --operation ${TENANT_ID} --core
+                      # Wait PH-423
+                      # # Check if hook failed
+                      # STATUS_HEALTH=$(argocd app get ${TENANT_ID} | grep Failed | awk '{print $6}') || true
+                      # if [ -n "${STATUS_HEALTH}" ]; then
+                      #   echo "Error when deploying argocd app"
+                      #   exit 1
+                      # fi
+                      # echo "argocd app sync successfull"
 
-                  # Check if hook failed
-                  STATUS_HEALTH=$(argocd app get ${TENANT_ID} | grep Failed | awk '{print $6}') || true
-                  if [ -n "${STATUS_HEALTH}" ]; then
-                    echo "Error when deploying argocd app"
-                    exit 1
-                  fi
-                  echo "argocd app sync successfull"
-
-                  echo "============================"
-                  echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
-                  echo "user : admin"
-                  echo "password : ${ARGOCD_PASSWORD}"
-                  echo "============================"
+                      echo "============================"
+                      echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
+                      echo "user : admin"
+                      echo "password : ${ARGOCD_PASSWORD}"
+                      echo "============================"
             - run:
                   name: Persist env vars for next jobs
                   command: |
                       echo export TENANT_NAME="${TENANT_NAME}" >> persisted_env_vars
+                      echo export CIRCLE_BRANCH_LOWER="${CIRCLE_BRANCH_LOWER}" >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:
                       - project/persisted_env_vars
-                      - project/deployments-ucs/instances/${TENANT_ID}/.kubeconfig
-            - run:
-                  name: Display Deployment Errors
-                  command: cat deployment.log
-                  when: on_fail
             - run:
                   name: Remove env on kubernetes
                   command: |
@@ -930,3 +838,89 @@ jobs:
                       kubectl delete app ${TENANT_ID} -n argocd || true
                       kubectl delete ns ${TENANT_ID}
                   when: on_fail
+
+    test_deploy_timmy:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CLUSTER_NEXT:
+                type: boolean
+                default: false
+        environment:
+            <<: *envVarsDeployPIMSaaSDev
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - when:
+                  condition:
+                      equal: [true, << parameters.CLUSTER_NEXT >> ]
+                  steps:
+                      - modify_cluster
+            - set_gcloud_config_pim_saas_dev
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            -   run:
+                    name: Check changes for Timmy
+                    command: |
+                        ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                        export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                        git config --global user.email "pim_ci@akeneo.com"
+                        git config --global user.name "pim_ci_deployment"
+                        git clone --depth 1 git@github.com:akeneo/pim-enterprise-dev.git /tmp/pim-enterprise-dev
+                        # The diff can send exit 1
+                        FILES_LIST=$(diff -qr /tmp/pim-enterprise-dev/deployments-ucs/timmy deployments-ucs/timmy) || true
+                        SKIP_DEPLOY_TIMMY=false
+                        if [ -z "${FILES_LIST}" ]; then
+                          SKIP_DEPLOY_TIMMY=true
+                          circleci step halt
+                        fi
+                        echo export SKIP_DEPLOY_TIMMY=${SKIP_DEPLOY_TIMMY} >> persisted_timmy_env_vars
+                        echo "list change file : ${FILES_LIST}"
+            - install_terrafrom
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      TENANT_NAME_PREFIX=ucs
+                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+                      PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
+                      TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
+                      WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
+                      GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
+                      TERRAFORM_PATH="deployments-ucs/timmy/terraform/${ENV_NAME}"
+
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+                      echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
+                      echo export TERRAFORM_PATH=${TERRAFORM_PATH} >> $BASH_ENV
+                      echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
+                      echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
+                      echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
+                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
+                      echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
+
+                      echo "Instance name prefix: ${TENANT_NAME_PREFIX}"
+                      echo "Instance name: ${TENANT_NAME}"
+                      echo "Image tag: ${IMAGE_TAG}"
+                      echo "Path terraform: ${TERRAFORM_PATH}"
+            - run:
+                  name: Init and Plan terraform
+                  command: |
+                    cd ${TERRAFORM_PATH}
+                    terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure
+                    terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
+                    terraform plan -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER} -var enable_timmy_request_portal=false -var enable_timmy_cloudscheduler=false
+            - run:
+                  name: Init and Apply terraform
+                  command: |
+                      cd ${TERRAFORM_PATH}
+                      terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure
+                      terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
+                      terraform apply -auto-approve -input=false -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER} -var enable_timmy_request_portal=false -var enable_timmy_cloudscheduler=false
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_timmy_env_vars
