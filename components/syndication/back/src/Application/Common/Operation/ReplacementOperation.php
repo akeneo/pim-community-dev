@@ -29,16 +29,11 @@ class ReplacementOperation implements OperationInterface
 
     public function hasMappedValue(string $value): bool
     {
-        return array_key_exists($value, $this->mapping);
+        return array_key_exists(strtolower($value), array_change_key_case($this->mapping));
     }
 
     public function getMappedValue(string $value): ?string
     {
-        /** check after if we return null */
-        if (!$this->hasMappedValue($value)) {
-            return null;
-        }
-
-        return $this->mapping[$value];
+        return array_change_key_case($this->mapping)[strtolower($value)] ?? null;
     }
 }
