@@ -67,7 +67,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonType> = ({onAddProperty}) => 
 
   return (
     <Dropdown>
-      <Button active ghost level="secondary" onClick={addElement}>
+      <Button active ghost level="secondary" onClick={addElement} size="small">
         {translate('pim_identifier_generator.structure.add_element')}
       </Button>
       {isOpen && (

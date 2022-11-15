@@ -34,6 +34,7 @@ pim_identifier_generator:
         check_help_center: 'Check out our help center for more information.'
         create_info: 'It is only possible to create one Identifier Generator for the moment. You will soon be able to configure multiple generators matching all your usecases.'
     structure:
+        helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at <a href="https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html" target="_blank">this article</a>.'
         title: 'Identifier Structure'
         add_element: 'Add new property'
         property_type:
@@ -46,7 +47,7 @@ pim_identifier_generator:
                 string_label: 'Define your text'
         empty:
             title: 'Create your identifier structure'
-            text: 'Click on \'add new property\' on the top right.'
+            text: 'Click on "Add new property" on the top right'
             link_text: 'Check out our Help center for more information.'
     deletion:
         operations: 'Operations'

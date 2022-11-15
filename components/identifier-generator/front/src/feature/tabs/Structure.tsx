@@ -1,31 +1,12 @@
 import React, {useState} from 'react';
-import {AttributesIllustration, Link, SectionTitle, uuid} from 'akeneo-design-system';
+import {AttributesIllustration, Helper, Link, SectionTitle, uuid} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton} from './structure/AddPropertyButton';
 import {Delimiter, Property, PropertyWithIdentifier, Structure as StructureType} from '../models';
 import {PropertiesList} from './structure/PropertiesList';
 import {Preview} from './structure/Preview';
 import {PropertyEdit} from './structure/PropertyEdit';
-import styled from 'styled-components';
-
-const StructureSectionTitle = styled(SectionTitle)`
-  justify-content: space-between;
-  margin-top: 20px;
-  padding-bottom: 10px;
-`;
-const StructureContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const PropertiesSection = styled.div`
-  width: 100%;
-  height: 100vh;
-`;
-const FormSection = styled.div`
-  max-width: 30%;
-  height: 100vh;
-  margin-left: 40px;
-`;
+import {Styled} from '../components/Styled';
 
 type StructureTabProps = {
   initialStructure: StructureType;
@@ -70,15 +51,17 @@ const Structure: React.FC<StructureTabProps> = ({initialStructure, delimiter, on
 
   return (
     <>
-      <StructureSectionTitle>
-        <SectionTitle.Title>{translate('pim_identifier_generator.structure.title')}</SectionTitle.Title>
-        <AddPropertyButton onAddProperty={onAddProperty} />
-      </StructureSectionTitle>
-      <StructureContainer>
-        <PropertiesSection>
+      <Helper>{translate('pim_identifier_generator.structure.helper')}</Helper>
+      <Styled.TwoColumns>
+        <div>
+          <SectionTitle>
+            <SectionTitle.Title>{translate('pim_identifier_generator.structure.title')}</SectionTitle.Title>
+            <SectionTitle.Spacer />
+            <AddPropertyButton onAddProperty={onAddProperty} />
+          </SectionTitle>
           {structure.length > 0 && (
             <>
-              <Preview structure={structure} delimiter={delimiter}/>
+              <Preview structure={structure} delimiter={delimiter} />
               <PropertiesList structure={structure} onChange={onSelectedPropertyChange} />
             </>
           )}
@@ -92,11 +75,13 @@ const Structure: React.FC<StructureTabProps> = ({initialStructure, delimiter, on
               </NoDataText>
             </NoDataSection>
           )}
-        </PropertiesSection>
-        <FormSection>
-          {selectedProperty && <PropertyEdit selectedProperty={selectedProperty} onChange={onPropertyChange} />}
-        </FormSection>
-      </StructureContainer>
+        </div>
+        {selectedProperty && (
+          <div>
+            <PropertyEdit selectedProperty={selectedProperty} onChange={onPropertyChange} />
+          </div>
+        )}
+      </Styled.TwoColumns>
     </>
   );
 };

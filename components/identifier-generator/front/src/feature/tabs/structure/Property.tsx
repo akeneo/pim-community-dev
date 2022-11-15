@@ -5,13 +5,10 @@ import {PROPERTY_NAMES} from '../../models';
 
 type PropertyProps = {
   property: PropertyWithIdentifier;
-  onClick: (id: string) => void;
 };
 
-const Property: React.FC<PropertyProps> = ({property, onClick}) => {
-  return (
-    <>{property.type === PROPERTY_NAMES.FREE_TEXT && <FreeText freeTextProperty={property} onClick={onClick} />}</>
-  );
+const Property: React.FC<PropertyProps> = ({property}) => {
+  return <>{property.type === PROPERTY_NAMES.FREE_TEXT && <FreeText freeTextProperty={property} />}</>;
 };
 
 export {Property};
