@@ -9,7 +9,7 @@ describe('Preview', () => {
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: '42'},
     ];
-    render(<Preview structure={structure} delimiter={'-'}/>);
+    render(<Preview structure={structure} delimiter={'-'} />);
 
     expect(screen.getByText('AKN')).toBeInTheDocument();
     expect(screen.getByText('-')).toBeInTheDocument();

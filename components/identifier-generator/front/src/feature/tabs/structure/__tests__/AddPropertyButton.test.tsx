@@ -13,9 +13,7 @@ describe('AddPropertyButton', () => {
 
     fireEvent.click(button);
     await waitFor(() => {
-      expect(
-        screen.getByText('pim_identifier_generator.structure.property_type.free_text')
-      ).toBeInTheDocument();
+      expect(screen.getByText('pim_identifier_generator.structure.property_type.free_text')).toBeInTheDocument();
     });
 
     const searchField = screen.getByTitle('pim_common.search');
@@ -30,16 +28,12 @@ describe('AddPropertyButton', () => {
     userEvent.clear(searchField);
     userEvent.type(searchField, 'free');
     await waitFor(() => {
-      expect(
-        screen.getByText('pim_identifier_generator.structure.property_type.free_text')
-      ).toBeInTheDocument();
+      expect(screen.getByText('pim_identifier_generator.structure.property_type.free_text')).toBeInTheDocument();
     });
 
     fireEvent.keyDown(searchField, {key: 'Escape', code: 'Escape'});
     await waitFor(() => {
-      expect(
-        screen.queryByText('pim_identifier_generator.structure.property_type.free_text')
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText('pim_identifier_generator.structure.property_type.free_text')).not.toBeInTheDocument();
     });
   });
 
@@ -52,9 +46,7 @@ describe('AddPropertyButton', () => {
 
     fireEvent.click(button);
     await waitFor(() => {
-      expect(
-        screen.getByText('pim_identifier_generator.structure.property_type.free_text')
-      ).toBeInTheDocument();
+      expect(screen.getByText('pim_identifier_generator.structure.property_type.free_text')).toBeInTheDocument();
     });
 
     fireEvent.click(screen.getByText('pim_identifier_generator.structure.property_type.free_text'));

@@ -13,7 +13,7 @@ type PropertiesListProps = {
 const PropertiesList: React.FC<PropertiesListProps> = ({structure, onChange}) => {
   return (
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    <Table isDragAndDroppable={true} onReorder={() => {}}>
+    <Table isDragAndDroppable={true} onReorder={/* istanbul ignore next */ () => {}}>
       <Table.Body>
         {structure.map((item: PropertyWithIdentifier) => (
           <Table.Row key={item.id} onClick={() => onChange(item.id)}>

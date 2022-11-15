@@ -12,10 +12,12 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
       string: 'New property',
     });
   };
-  return <>
-    AddPropertyButtonMock
-    <button onClick={addProperty}>Add Property</button>
-  </>;
+  return (
+    <>
+      AddPropertyButtonMock
+      <button onClick={addProperty}>Add Property</button>
+    </>
+  );
 };
 
 export {AddPropertyButton};

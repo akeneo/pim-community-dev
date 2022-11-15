@@ -1,5 +1,5 @@
 import React from 'react';
-import {Property, PROPERTY_NAMES, PropertyWithIdentifier} from '../../models';
+import {Property, PROPERTY_NAMES} from '../../models';
 import {FreeTextEdit} from './edit/FreeTextEdit';
 
 type PropertyEditProps = {

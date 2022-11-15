@@ -108,7 +108,8 @@ describe('CreateOrEditGeneratorPage', () => {
         validationErrors={[]}
         mainButtonCallback={jest.fn()}
         isNew={false}
-      />);
+      />
+    );
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
     expect(screen.getByText('StructureTabMock')).toBeInTheDocument();

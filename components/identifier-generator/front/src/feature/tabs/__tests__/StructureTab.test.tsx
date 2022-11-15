@@ -11,13 +11,9 @@ describe('StructureTab', () => {
       {
         type: PROPERTY_NAMES.FREE_TEXT,
         string: 'AKN',
-      }
+      },
     ];
-    render(<StructureTab
-      initialStructure={structure}
-      delimiter={null}
-      onStructureChange={jest.fn()}
-    />);
+    render(<StructureTab initialStructure={structure} delimiter={null} onStructureChange={jest.fn()} />);
     expect(screen.getByText('pim_identifier_generator.structure.title')).toBeInTheDocument();
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
     expect(screen.getAllByText('AKN')).toHaveLength(2);
@@ -25,11 +21,7 @@ describe('StructureTab', () => {
 
   it('should add a new property', () => {
     const onStructureChange = jest.fn();
-    render(<StructureTab
-      initialStructure={[]}
-      delimiter={null}
-      onStructureChange={onStructureChange}
-    />);
+    render(<StructureTab initialStructure={[]} delimiter={null} onStructureChange={onStructureChange} />);
 
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Add Property'));
@@ -38,14 +30,18 @@ describe('StructureTab', () => {
 
   it('should update a property', () => {
     const onStructureChange = jest.fn();
-    render(<StructureTab
-      initialStructure={[{
-        type: PROPERTY_NAMES.FREE_TEXT,
-        string: 'original value',
-      }]}
-      delimiter={null}
-      onStructureChange={onStructureChange}
-    />);
+    render(
+      <StructureTab
+        initialStructure={[
+          {
+            type: PROPERTY_NAMES.FREE_TEXT,
+            string: 'original value',
+          },
+        ]}
+        delimiter={null}
+        onStructureChange={onStructureChange}
+      />
+    );
 
     expect(screen.getAllByText('original value')).toHaveLength(2); // Preview + Line
     fireEvent.click(screen.getAllByText('original value')[1]);

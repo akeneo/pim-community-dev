@@ -10,7 +10,7 @@ describe('FreeTextEdit', () => {
       string: 'initial string',
     };
     const onChange = jest.fn();
-    render(<FreeTextEdit selectedProperty={selectedProperty} onChange={onChange}/>);
+    render(<FreeTextEdit selectedProperty={selectedProperty} onChange={onChange} />);
 
     fireEvent.change(screen.getByTitle('initial string'), {target: {value: 'updated string'}});
     expect(onChange).toBeCalledWith({

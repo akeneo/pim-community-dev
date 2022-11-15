@@ -4,7 +4,7 @@ import {FreeText, Structure} from '../../models';
 type StructureTabProps = {
   onStructureChange: (structure: Structure) => void;
   initialStructure: Structure;
-}
+};
 
 const StructureTab: React.FC<StructureTabProps> = ({onStructureChange, initialStructure}) => {
   const updateFreeText = () => {
@@ -12,11 +12,13 @@ const StructureTab: React.FC<StructureTabProps> = ({onStructureChange, initialSt
     onStructureChange(initialStructure);
   };
 
-  return <>
-    StructureTabMock
-    <div>{JSON.stringify(initialStructure)}</div>
-    <button onClick={updateFreeText}>Update Free Text</button>
-  </>;
+  return (
+    <>
+      StructureTabMock
+      <div>{JSON.stringify(initialStructure)}</div>
+      <button onClick={updateFreeText}>Update Free Text</button>
+    </>
+  );
 };
 
 export {StructureTab};

@@ -77,10 +77,7 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
         </div>
         {selectedProperty && (
           <div>
-            <PropertyEdit
-              selectedProperty={selectedProperty}
-              onChange={onPropertyChange}
-            />
+            <PropertyEdit selectedProperty={selectedProperty} onChange={onPropertyChange} />
           </div>
         )}
       </Styled.TwoColumns>
