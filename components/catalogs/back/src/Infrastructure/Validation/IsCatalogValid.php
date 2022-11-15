@@ -27,6 +27,7 @@ final class IsCatalogValid implements IsCatalogValidInterface
                 'enabled' => $catalog->isEnabled(),
                 'product_selection_criteria' => $catalog->getProductSelectionCriteria(),
                 'product_value_filters' => $catalog->getProductValueFilters(),
+                'product_mapping' => $catalog->getProductMapping(),
             ],
             [
                 new CatalogUpdatePayload(),
