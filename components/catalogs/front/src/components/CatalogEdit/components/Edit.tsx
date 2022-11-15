@@ -13,11 +13,24 @@ import {getTabsValidationStatus} from '../utils/getTabsValidationStatus';
 import {ProductValueFilters} from '../../ProductValueFilters';
 import {mapProductValueFiltersErrors} from '../utils/mapProductValueFiltersErrors';
 import {ProductMapping} from '../../ProductMapping';
+import {ProductMapping as ProductMappingType} from '../../ProductMapping/models/ProductMapping';
+import {useProductMappingSchema} from '../../ProductMapping/hooks/useProductMappingSchema';
 
 type Props = {
     id: string;
     values: CatalogFormValues;
     errors: CatalogFormErrors;
+};
+
+const ProductMappingWrapper: FC<
+    PropsWithChildren<{
+        id: string;
+        productMapping: ProductMappingType;
+    }>
+> = ({id, productMapping}) => {
+    const {data: productMappingSchema} = useProductMappingSchema(id);
+
+    return <ProductMapping productMapping={productMapping} productMappingSchema={productMappingSchema} />;
 };
 
 const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
@@ -72,7 +85,9 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
                     errors={mapProductValueFiltersErrors(errors)}
                 />
             )}
-            {isCurrent(Tabs.PRODUCT_MAPPING) && <ProductMapping catalogId={id} />}
+            {isCurrent(Tabs.PRODUCT_MAPPING) && (
+                <ProductMappingWrapper id={id} productMapping={values.product_mapping} />
+            )}
         </>
     );
 };
