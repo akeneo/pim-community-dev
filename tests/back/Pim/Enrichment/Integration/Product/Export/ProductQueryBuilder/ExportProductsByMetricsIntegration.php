@@ -23,11 +23,12 @@ class ExportProductsByMetricsIntegration extends AbstractExportTestCase
         $this->createProduct('product_3');
     }
 
-    public function testProductExportByFilteringOnMetric()
+    public function testProductExportByFilteringOnMetric(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit
-product_1;;1;;;-10;CELSIUS
+uuid;sku;categories;enabled;family;groups;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit
+{$product1->getUuid()->toString()};product_1;;1;;;-10;CELSIUS
 
 CSV;
 
@@ -45,6 +46,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product repository
@@ -76,6 +77,11 @@ class ProductRepository extends EntityRepository implements
         }
 
         return $this->findOneBy(['identifier' => $identifier]);
+    }
+
+    public function findOneByUuid(UuidInterface $uuid): ?ProductInterface
+    {
+        return $this->find($uuid);
     }
 
     /**

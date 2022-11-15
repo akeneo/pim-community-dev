@@ -21,11 +21,12 @@ class ExportProductsByDateIntegration extends AbstractExportTestCase
         ]);
     }
 
-    public function testProductExportWithFilterSuperiorToADate()
+    public function testProductExportWithFilterSuperiorToADate(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_date
-product_1;;1;;;2025-12-31
+uuid;sku;categories;enabled;family;groups;a_date
+{$product1->getUuid()->toString()};product_1;;1;;;2025-12-31
 
 CSV;
 
@@ -43,16 +44,18 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithFilterInferiorToADate()
+    public function testProductExportWithFilterInferiorToADate(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_date
-product_2;;1;;;2016-06-15
+uuid;sku;categories;enabled;family;groups;a_date
+{$product1->getUuid()->toString()};product_2;;1;;;2016-06-15
 
 CSV;
 
@@ -70,6 +73,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
