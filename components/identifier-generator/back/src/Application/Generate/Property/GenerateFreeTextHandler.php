@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GenerateFreeTextHandler implements GeneratePropertyHandler
+final class GenerateFreeTextHandler implements GeneratePropertyHandlerInterface
 {
     public function __invoke(PropertyInterface $freeText, Target $target, string $prefix): string
     {
@@ -22,8 +22,8 @@ final class GenerateFreeTextHandler implements GeneratePropertyHandler
         return $freeText->asString();
     }
 
-    public function supports(PropertyInterface $property): bool
+    public function getPropertyClass(): string
     {
-        return $property instanceof FreeText;
+        return FreeText::class;
     }
 }

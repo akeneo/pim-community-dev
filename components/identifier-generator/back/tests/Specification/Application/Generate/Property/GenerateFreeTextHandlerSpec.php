@@ -7,23 +7,14 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use PhpSpec\ObjectBehavior;
 
-class GenerateAutoNumberHandlerSpec extends ObjectBehavior
+class GenerateFreeTextHandlerSpec extends ObjectBehavior
 {
     public function let(): void {
     }
 
-    public function it_should_support_only_free_texts(): void
+    public function it_should_support_only_auto_numbers(): void
     {
-        $this->supports(FreeText::fromNormalized([
-            'type' => FreeText::type(),
-            'string' => 'AKN-',
-        ]))->shouldReturn(true);
-
-        $this->supports(AutoNumber::fromNormalized([
-            'type' => AutoNumber::type(),
-            'numberMin' => 0,
-            'digitsMin' => 1,
-        ]))->shouldReturn(false);
+        $this->getPropertyClass()->shouldReturn(FreeText::class);
     }
 
     public function it_should_throw_exception_when_invoked_with_something_else_than_free_text(): void

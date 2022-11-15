@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GeneratePropertyHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GeneratePropertyHandlerInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -14,12 +15,19 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
  */
 final class GenerateIdentifierHandler
 {
+    /** @var array<string, GeneratePropertyHandlerInterface> */
+    private array $generateProperties = [];
+
     /**
-     * @param GeneratePropertyHandler[] $generateProperties
+     * @param \Traversable<GeneratePropertyHandlerInterface> $generateProperties
      */
     public function __construct(
-        private array $generateProperties,
+        \Traversable $generateProperties,
     ) {
+        foreach ($generateProperties as $generateProperty) {
+            Assert::isInstanceOf($generateProperty, GeneratePropertyHandlerInterface::class);
+            $this->generateProperties[$generateProperty->getPropertyClass()] = $generateProperty;
+        }
     }
 
     public function __invoke(
@@ -43,15 +51,13 @@ final class GenerateIdentifierHandler
 
     private function generateProperty(PropertyInterface $property, Target $target, string $prefix): string
     {
-        foreach ($this->generateProperties as $generateProperty) {
-            if ($generateProperty->supports($property)) {
-                return ($generateProperty)($property, $target, $prefix);
-            }
+        if (!isset($this->generateProperties[\get_class($property)])) {
+            throw new \InvalidArgumentException(\sprintf(
+                'No generator found for property %s',
+                \get_class($property)
+            ));
         }
 
-        throw new \InvalidArgumentException(\sprintf(
-            'No generator found for property %s',
-            \get_class($property)
-        ));
+        return ($this->generateProperties[\get_class($property)])($property, $target, $prefix);
     }
 }

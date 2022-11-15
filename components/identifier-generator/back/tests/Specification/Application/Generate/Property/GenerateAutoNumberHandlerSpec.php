@@ -18,16 +18,7 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
 
     public function it_should_support_only_auto_numbers(): void
     {
-        $this->supports(FreeText::fromNormalized([
-            'type' => FreeText::type(),
-            'string' => 'AKN-',
-        ]))->shouldReturn(false);
-
-        $this->supports(AutoNumber::fromNormalized([
-            'type' => AutoNumber::type(),
-            'numberMin' => 0,
-            'digitsMin' => 1,
-        ]))->shouldReturn(true);
+        $this->getPropertyClass()->shouldReturn(AutoNumber::class);
     }
 
     public function it_should_throw_exception_when_invoked_with_something_else_than_auto_number(): void

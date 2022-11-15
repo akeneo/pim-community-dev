@@ -23,10 +23,10 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
     public function let(
         GetNextIdentifierQuery $getNextIdentifierQuery
     ): void {
-        $this->beConstructedWith([
+        $this->beConstructedWith(new \ArrayIterator([
             new GenerateAutoNumberHandler($getNextIdentifierQuery->getWrappedObject()),
             new GenerateFreeTextHandler(),
-        ]);
+        ]));
     }
 
     public function it_should_generate_an_identifier_without_delimiter(
