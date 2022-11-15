@@ -398,7 +398,7 @@ JSON;
         array $expectedAllIncomplete
     ): void {
         $indexedProductModel = $this->get('akeneo_elasticsearch.client.product_and_product_model')
-                                    ->get(sprintf('product_model_%d', $productModelId));
+            ->get(sprintf('product_model_%d', $productModelId));
 
         Assert::assertEqualsCanonicalizing($expectedAllComplete, $indexedProductModel['_source']['all_complete']);
         Assert::assertEqualsCanonicalizing($expectedAllIncomplete, $indexedProductModel['_source']['all_incomplete']);

@@ -82,7 +82,13 @@ class ProductAndProductModelProcessor extends AbstractProcessor
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
-        $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', array_merge($normalizerContext, ['with_association_uuids' => false]));
+        $withUuids = $parameters->has('with_uuid') ? $parameters->get('with_uuid') : false;
+
+        $productStandard = $this->normalizer->normalize(
+            $entityWithValues,
+            'standard',
+            array_merge($normalizerContext, ['with_association_uuids' => $withUuids])
+        );
 
         if ($entityWithValues instanceof ProductInterface) {
             $productStandard = $this->fillMissingProductValues->fromStandardFormat($productStandard);
@@ -138,7 +144,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
                     },
                     ARRAY_FILTER_USE_KEY
                 );
-            } elseif (in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty) {
+            } elseif (in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty || 'uuid' === $codeProperty) {
                 $propertiesToExport[$codeProperty] = $property;
             } elseif ('code' === $codeProperty) {
                 $propertiesToExport['identifier'] = $property;

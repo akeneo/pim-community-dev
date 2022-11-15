@@ -44,7 +44,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
 
-        $productStandard = $this->normalizer->normalize($product, 'standard', ['with_association_uuids' => false]);
+        $withUuids = $parameters->has('with_uuid') ? $parameters->get('with_uuid') : false;
+        $productStandard = $this->normalizer->normalize($product, 'standard', ['with_association_uuids' => $withUuids]);
         $jobLocales = $this->stepExecution->getJobParameters()->get('filters')['structure']['locales'];
 
         // not done for product as it fill missing product values at the end for performance purpose

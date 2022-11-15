@@ -38,6 +38,7 @@ JSON;
             'family' => 'familyA',
             'parent' => 'amor',
             'groups' => [],
+            'categories' => ['categoryA2', 'master'],
             'enabled' => true,
             'values' => [
                 'a_localized_and_scopable_text_area' => [['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'my pink tshirt']],
@@ -59,12 +60,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertEventCount(1, ProductUpdated::class);
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-        unset($standardizedProduct['categories']);
-        NormalizedProductCleaner::clean($expectedProduct);
-        NormalizedProductCleaner::clean($standardizedProduct);
-        $this->assertEquals($standardizedProduct, $expectedProduct);
+       $this->assertSameProducts($expectedProduct, 'product_family_variant');
 
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(

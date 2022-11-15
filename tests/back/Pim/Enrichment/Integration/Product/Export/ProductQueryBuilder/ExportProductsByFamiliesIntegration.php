@@ -18,11 +18,12 @@ class ExportProductsByFamiliesIntegration extends AbstractExportTestCase
         $this->createProduct('product_4');
     }
 
-    public function testProductExportWithFilterOnOneFamily()
+    public function testProductExportWithFilterOnOneFamily(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;an_image;a_date;a_file;a_localizable_image-en_US;a_localized_and_scopable_text_area-en_US-tablet;a_metric;a_metric-unit;a_multi_select;a_number_float;a_number_float_negative;a_number_integer;a_price-EUR;a_price-USD;a_ref_data_multi_select;a_ref_data_simple_select;a_scopable_price-tablet-EUR;a_scopable_price-tablet-USD;a_simple_select;a_text;a_text_area;a_yes_no
-product_1;;1;familyA;;;;;;;;;;;;;;;;;;;;;;
+uuid;sku;categories;enabled;family;groups;an_image;a_date;a_file;a_localizable_image-en_US;a_localized_and_scopable_text_area-en_US-tablet;a_metric;a_metric-unit;a_multi_select;a_number_float;a_number_float_negative;a_number_integer;a_price-EUR;a_price-USD;a_ref_data_multi_select;a_ref_data_simple_select;a_scopable_price-tablet-EUR;a_scopable_price-tablet-USD;a_simple_select;a_text;a_text_area;a_yes_no
+{$product1->getUuid()->toString()};product_1;;1;familyA;;;;;;;;;;;;;;;;;;;;;;
 
 CSV;
 
@@ -40,17 +41,20 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithFilterOnAListOfFamilies()
+    public function testProductExportWithFilterOnAListOfFamilies(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;an_image;a_date;a_file;a_localizable_image-en_US;a_localized_and_scopable_text_area-en_US-tablet;a_metric;a_metric-unit;a_multi_select;a_number_float;a_number_float_negative;a_number_integer;a_price-EUR;a_price-USD;a_ref_data_multi_select;a_ref_data_simple_select;a_scopable_price-tablet-EUR;a_scopable_price-tablet-USD;a_simple_select;a_text;a_text_area;a_yes_no
-product_1;;1;familyA;;;;;;;;;;;;;;;;;;;;;;
-product_2;;1;familyA1;;;;;;;;;;;;;;;;;;;;;;
+uuid;sku;categories;enabled;family;groups;an_image;a_date;a_file;a_localizable_image-en_US;a_localized_and_scopable_text_area-en_US-tablet;a_metric;a_metric-unit;a_multi_select;a_number_float;a_number_float_negative;a_number_integer;a_price-EUR;a_price-USD;a_ref_data_multi_select;a_ref_data_simple_select;a_scopable_price-tablet-EUR;a_scopable_price-tablet-USD;a_simple_select;a_text;a_text_area;a_yes_no
+{$product1->getUuid()->toString()};product_1;;1;familyA;;;;;;;;;;;;;;;;;;;;;;
+{$product2->getUuid()->toString()};product_2;;1;familyA1;;;;;;;;;;;;;;;;;;;;;;
 
 CSV;
 
@@ -68,19 +72,24 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithoutAnyFilterOnFamily()
+    public function testProductExportWithoutAnyFilterOnFamily(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_3');
+        $product4 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_4');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;an_image;a_date;a_file;a_localizable_image-en_US;a_localized_and_scopable_text_area-en_US-tablet;a_metric;a_metric-unit;a_multi_select;a_number_float;a_number_float_negative;a_number_integer;a_price-EUR;a_price-USD;a_ref_data_multi_select;a_ref_data_simple_select;a_scopable_price-tablet-EUR;a_scopable_price-tablet-USD;a_simple_select;a_text;a_text_area;a_yes_no
-product_1;;1;familyA;;;;;;;;;;;;;;;;;;;;;;
-product_2;;1;familyA1;;;;;;;;;;;;;;;;;;;;;;
-product_3;;1;familyA2;;;;;;;;;;;;;;;;;;;;;;
-product_4;;1;;;;;;;;;;;;;;;;;;;;;;;
+uuid;sku;categories;enabled;family;groups;an_image;a_date;a_file;a_localizable_image-en_US;a_localized_and_scopable_text_area-en_US-tablet;a_metric;a_metric-unit;a_multi_select;a_number_float;a_number_float_negative;a_number_integer;a_price-EUR;a_price-USD;a_ref_data_multi_select;a_ref_data_simple_select;a_scopable_price-tablet-EUR;a_scopable_price-tablet-USD;a_simple_select;a_text;a_text_area;a_yes_no
+{$product1->getUuid()->toString()};product_1;;1;familyA;;;;;;;;;;;;;;;;;;;;;;
+{$product2->getUuid()->toString()};product_2;;1;familyA1;;;;;;;;;;;;;;;;;;;;;;
+{$product3->getUuid()->toString()};product_3;;1;familyA2;;;;;;;;;;;;;;;;;;;;;;
+{$product4->getUuid()->toString()};product_4;;1;;;;;;;;;;;;;;;;;;;;;;;
 
 CSV;
 
@@ -92,6 +101,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

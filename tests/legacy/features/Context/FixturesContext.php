@@ -131,13 +131,6 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        // TODO CPM-592: delete the 5 following lines of code
-        if (isset($data['uuid']) && '' !== $data['uuid']) {
-            $product = $this->getContainer()->get('pim_catalog.builder.product')->createProduct($data['sku'], null, $data['uuid']);
-            $this->getContainer()->get('pim_catalog.saver.product')->save($product);
-        }
-        unset($data['uuid']);
-
         foreach ($data as $key => $value) {
             $data[$key] = $this->replacePlaceholders($value);
         }

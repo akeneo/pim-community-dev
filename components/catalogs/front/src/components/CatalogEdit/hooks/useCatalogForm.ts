@@ -66,13 +66,20 @@ export const useCatalogForm = (id: string): Result => {
                     case CatalogFormActions.INITIALIZE:
                         dispatch(action);
                         break;
+                    case CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA:
+                        if (Object.keys(values.product_selection_criteria).length > Object.keys(action.value).length) {
+                            setErrors([]);
+                        }
+                        setDirty(true);
+                        dispatch(action);
+                        break;
                     default:
                         setDirty(true);
                         dispatch(action);
                         break;
                 }
             },
-        [setDirty]
+        [setDirty, values, setErrors]
     );
 
     if (catalog.isLoading) {

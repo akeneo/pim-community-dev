@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormaliz
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /**
  * Find the product to import depending the data given by the reader
@@ -17,40 +19,30 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class FindProductToImport
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var ProductBuilderInterface */
-    private $productBuilder;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ProductBuilderInterface               $productBuilder
-     */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        ProductBuilderInterface $productBuilder
+        private IdentifiableObjectRepositoryInterface $productRepository,
+        private ProductBuilderInterface $productBuilder
     ) {
-        $this->productRepository = $productRepository;
-        $this->productBuilder = $productBuilder;
     }
 
     /**
      * Find the product to import
-     *
-     * @param string $productIdentifierCode
-     * @param string $familyCode
-     *
-     * @return ProductInterface
      */
     public function fromFlatData(
-        string $productIdentifierCode,
-        string $familyCode
+        ?string $productIdentifierCode,
+        string $familyCode,
+        ?string $uuid = null,
     ): ProductInterface {
-        $product = $this->productRepository->findOneByIdentifier($productIdentifierCode);
+        $product = null;
+        if (null !== $uuid) {
+            Assert::methodExists($this->productRepository, 'findOneByUuid');
+            $product = $this->productRepository->findOneByUuid(Uuid::fromString($uuid));
+        } elseif (null !== $productIdentifierCode) {
+            $product = $this->productRepository->findOneByIdentifier($productIdentifierCode);
+        }
 
         if (null === $product) {
-            return $this->productBuilder->createProduct($productIdentifierCode, $familyCode);
+            $product = $this->productBuilder->createProduct($productIdentifierCode, $familyCode, $uuid);
         }
 
         return $product;
