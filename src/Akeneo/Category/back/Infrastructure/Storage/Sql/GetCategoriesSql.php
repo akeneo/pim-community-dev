@@ -44,7 +44,7 @@ class GetCategoriesSql implements GetCategoriesInterface
     //TODO: Will be replaced by filtering service. https://akeneo.atlassian.net/browse/GRF-538
     public function searchFilter(array $searchParameter): string
     {
-        if (empty($searchParameter)){
+        if (empty($searchParameter)) {
             $sqlWhere = '1=1';
         } else {
             $sqlWhere = 'category.code IN (:category_codes)';
