@@ -118,6 +118,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseComputeCommentsReadDelay',
 
             // Supplier Portal Supplier coupling
 
