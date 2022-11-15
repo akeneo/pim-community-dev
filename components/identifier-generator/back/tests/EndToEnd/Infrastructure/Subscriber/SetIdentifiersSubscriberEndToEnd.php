@@ -6,8 +6,6 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -18,7 +16,9 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class SetIdentifiersSubscriberEndToEnd extends TestCase
 {
@@ -51,11 +51,8 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
     /** @test */
     public function it_should_generate_an_identifier_on_create(): void
     {
-        $product = $this->getProductBuilder()->createProduct();
-        $this->getProductSaver()->save($product);
+        $productFromDatabase = $this->createProduct();
 
-        /** @var ProductInterface $productFromDatabase */
-        $productFromDatabase = $this->getProductRepository()->find($product->getUuid());
         Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
         Assert::assertSame('AKN-050', $productFromDatabase->getValue('sku')->getData());
     }
@@ -63,20 +60,9 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
     /** @test */
     public function it_should_generate_an_identifier_when_deleting_previous_identifier(): void
     {
-        $this->getAuthenticator()->logIn('admin');
-        $product = $this->getProductBuilder()->createProduct('originalIdentifier');
-        $this->getProductSaver()->save($product);
+        $product = $this->createProduct('originalIdentifier');
+        $productFromDatabase = $this->setIdentifier($product, null);
 
-        $command = UpsertProductCommand::createWithUuid(
-            $this->admin->getId(),
-            ProductUuid::fromUuid($product->getUuid()),
-            [
-                new SetIdentifierValue('sku', null),
-            ]
-        );
-        ($this->getUpsertProductHandler())($command);
-
-        $productFromDatabase = $this->getProductRepository()->find($product->getUuid());
         Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
         Assert::assertSame('AKN-050', $productFromDatabase->getValue('sku')->getData());
     }
@@ -84,26 +70,62 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
     /** @test */
     public function it_should_generate_the_next_identifier_if_there_is_already_one_created(): void
     {
-        $existingProduct = $this->getProductBuilder()->createProduct('AKN-050');
-        $this->getProductSaver()->save($existingProduct);
+        $this->createProduct('AKN-050');
 
-        $product = $this->getProductBuilder()->createProduct();
-        $this->getProductSaver()->save($product);
-
-        /** @var ProductInterface $productFromDatabase */
-        $productFromDatabase = $this->getProductRepository()->find($product->getUuid());
+        $productFromDatabase = $this->createProduct();
         Assert::assertSame('AKN-051', $productFromDatabase->getIdentifier());
         Assert::assertSame('AKN-051', $productFromDatabase->getValue('sku')->getData());
     }
 
-    private function getProductSaver(): ProductSaver
+    /** @test */
+    public function it_should_not_generate_the_identifier_if_generated_identifier_is_invalid(): void
     {
-        return $this->get('pim_catalog.saver.product');
+        $this->addRestrictionsOnIdentifierAttribute();
+
+        $productFromDatabase = $this->createProduct();
+        Assert::assertSame(null, $productFromDatabase->getIdentifier());
+        Assert::assertNull($productFromDatabase->getValue('sku'));
     }
 
-    private function getProductBuilder(): ProductBuilderInterface
+    private function createProduct(?string $identifier = null): ProductInterface
     {
-        return $this->get('pim_catalog.builder.product');
+        $uuid = Uuid::uuid4();
+        $this->getAuthenticator()->logIn('admin');
+
+        $userIntents = [];
+        if (null !== $identifier) {
+            $userIntents = [new SetIdentifierValue('sku', $identifier)];
+        }
+
+        $command = UpsertProductCommand::createWithUuid(
+            $this->admin->getId(),
+            ProductUuid::fromUuid($uuid),
+            $userIntents
+        );
+        ($this->getUpsertProductHandler())($command);
+
+        return $this->getProductRepository()->find($uuid);
+    }
+
+    private function setIdentifier(ProductInterface $product, ?string $identifier = null): ProductInterface
+    {
+        $command = UpsertProductCommand::createWithUuid(
+            $this->admin->getId(),
+            ProductUuid::fromUuid($product->getUuid()),
+            [
+                new SetIdentifierValue('sku', $identifier),
+            ]
+        );
+        ($this->getUpsertProductHandler())($command);
+
+        return $this->getProductRepository()->find($product->getUuid());
+    }
+
+    private function addRestrictionsOnIdentifierAttribute(): void
+    {
+        $this->getConnection()->executeQuery(<<<SQL
+UPDATE pim_catalog_attribute SET max_characters=1 WHERE code='sku';
+SQL);
     }
 
     private function getProductRepository(): ProductRepositoryInterface
@@ -124,5 +146,10 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
     private function getAuthenticator(): AuthenticatorHelper
     {
         return $this->get('akeneo_integration_tests.helper.authenticator');
+    }
+
+    private function getConnection(): Connection
+    {
+        return $this->get('database_connection');
     }
 }
