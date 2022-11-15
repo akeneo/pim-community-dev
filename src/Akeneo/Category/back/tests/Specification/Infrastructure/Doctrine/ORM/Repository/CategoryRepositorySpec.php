@@ -49,7 +49,7 @@ class CategoryRepositorySpec extends ObjectBehavior
         ];
         $treeListener->getConfiguration(Argument::cetera())->willReturn($configuration);
 
-        $eventManager->getListeners()->willReturn([[$treeListener]]);
+        $eventManager->getAllListeners()->willReturn([[$treeListener]]);
 
         $this->beConstructedWith($em, $classMetadata);
     }
