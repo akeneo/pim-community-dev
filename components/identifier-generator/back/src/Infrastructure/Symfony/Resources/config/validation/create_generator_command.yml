@@ -14,14 +14,26 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberLimitPerStructure:
                   limit: 1
             - All:
-                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextLengthLimit: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextFieldsRequired: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberFieldsRequired: ~
                 - Collection:
                     fields:
                         type:
                             - Choice:
                                 choices: ['free_text', 'auto_number']
                                 message: 'Type {{ value }} can only be one of the following: {{ choices }}'
-                    allowExtraFields: true
+                        string:
+                            - Optional:
+                                  - NotBlank: ~
+                                  - Length:
+                                        max: 100
+                        numberMin:
+                            - Optional:
+                                  - PositiveOrZero: ~
+                        digitsMin:
+                            - Optional:
+                                - Positive: ~
+                                - LessThan: 15
         code:
             - NotBlank: ~
 

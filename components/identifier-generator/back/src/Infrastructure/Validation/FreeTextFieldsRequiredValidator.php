@@ -14,23 +14,23 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class FreeTextLengthLimitValidator extends ConstraintValidator
+final class FreeTextFieldsRequiredValidator extends ConstraintValidator
 {
     public function validate($property, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, FreeTextLengthLimit::class);
+        Assert::isInstanceOf($constraint, FreeTextFieldsRequired::class);
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, CommandInterface::class);
         Assert::isArray($property);
         Assert::keyExists($property, 'type');
 
-        if (FreeText::type() === $property['type']) {
-            Assert::keyExists($property, 'string');
-            if (strlen($property['string']) > FreeText::LENGTH_LIMIT) {
-                $this->context
-                    ->buildViolation($constraint->message, ['{{limit}}' => FreeText::LENGTH_LIMIT])
-                    ->addViolation();
-            }
+        if (FreeText::type() === $property['type'] && !isset($property['string'])) {
+            $this->context
+                ->buildViolation($constraint->message, [
+                    '{{field}}' => 'string',
+                    '{{type}}' => FreeText::type(),
+                    ])
+                ->addViolation();
         }
     }
 }
