@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\back\Infrastructure\AntiCorruptionLayer;
+namespace Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer;
 
-use Akeneo\Pim\Enrichment\Product\back\API\ValueObject\UserId;
-use Akeneo\Pim\Enrichment\Product\back\Domain\Query\GetUserId;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\UserId;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetUserId;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -16,10 +15,11 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 final class ACLGetUserId implements GetUserId
 {
     public function __construct(private UserContext $userContext)
-    {}
+    {
+    }
 
     public function getUserId(): UserId
     {
-        return UserId::fromId($this->userContext->getUser()?->getId());
+        return UserId::fromId((string) $this->userContext->getUser()?->getId());
     }
 }

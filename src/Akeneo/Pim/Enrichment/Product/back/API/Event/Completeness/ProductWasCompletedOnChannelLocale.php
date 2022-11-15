@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\API\Event\Completeness;
 
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\back\API\ValueObject\UserId;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

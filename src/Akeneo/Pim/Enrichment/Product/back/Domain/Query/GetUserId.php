@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\back\Domain\Query;
+namespace Akeneo\Pim\Enrichment\Product\Domain\Query;
 
-use Akeneo\Pim\Enrichment\Product\back\API\ValueObject\UserId;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\UserId;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
