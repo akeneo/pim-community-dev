@@ -15,7 +15,7 @@ const getFetchingStatus = (status: 'idle' | 'loading' | 'error' | 'success'): Fe
   if (status === 'loading') return 'fetching';
   if (status === 'success') return 'fetched';
   return status;
-}
+};
 
 export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
   const router = useRouter();
@@ -47,6 +47,6 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
 
   return {
     ...response,
-    status: getFetchingStatus(response.status)
-  }
+    status: getFetchingStatus(response.status),
+  };
 };

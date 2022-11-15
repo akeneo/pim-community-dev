@@ -7,11 +7,9 @@ type CategoryResponse = {
   status: FetchStatus;
   category: EnrichCategory | null;
   error: string | null;
-}
+};
 
 const useCategory = (categoryId: number): CategoryResponse => {
-
-
   const url = useRoute('pim_enriched_category_rest_get', {
     id: categoryId.toString(),
   });

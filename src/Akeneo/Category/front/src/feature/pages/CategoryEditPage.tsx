@@ -29,7 +29,13 @@ import {CategoryToDelete, useCountProductsBeforeDeleteCategory, useDeleteCategor
 import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {EditAttributesForm, EditPermissionsForm, EditPropertiesForm, TemplateTitle, CategoryPageContent} from '../components';
+import {
+  EditAttributesForm,
+  EditPermissionsForm,
+  EditPropertiesForm,
+  TemplateTitle,
+  CategoryPageContent,
+} from '../components';
 
 type Params = {
   categoryId: string;
@@ -82,17 +88,20 @@ const CategoryEditPage: FC = () => {
 
   // ui state
   const [activeTab, setActiveTab] = useSessionStorageState<string>(
-      isGranted('pim_enrich_product_category_edit_attributes') ? Tabs.ATTRIBUTE : Tabs.PROPERTY,
-      'pim_category_activeTab'
+    isGranted('pim_enrich_product_category_edit_attributes') ? Tabs.ATTRIBUTE : Tabs.PROPERTY,
+    'pim_category_activeTab'
   );
   const [isCurrent, switchTo] = useTabBar(activeTab);
   const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
   const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
 
-  const handleSwitchTo = useCallback((tab: string) => {
-    setActiveTab(tab);
-    switchTo(tab);
-  }, [setActiveTab, switchTo]);
+  const handleSwitchTo = useCallback(
+    (tab: string) => {
+      setActiveTab(tab);
+      switchTo(tab);
+    },
+    [setActiveTab, switchTo]
+  );
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
@@ -149,7 +158,10 @@ const CategoryEditPage: FC = () => {
   useEffect(() => {
     if (category === null) return;
 
-    if (activeTab === Tabs.ATTRIBUTE && (!isGranted('pim_enrich_product_category_edit_attributes') || !category.template_uuid)) {
+    if (
+      activeTab === Tabs.ATTRIBUTE &&
+      (!isGranted('pim_enrich_product_category_edit_attributes') || !category.template_uuid)
+    ) {
       handleSwitchTo(Tabs.PROPERTY);
     }
   }, [category, activeTab]);
