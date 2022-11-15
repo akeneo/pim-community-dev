@@ -1,7 +1,7 @@
 import {useCallback} from 'react';
 import {CriterionFactory} from '../models/CriterionFactory';
 import {useInfiniteQuery} from 'react-query';
-import {Attribute} from '../models/Attribute';
+import {Attribute} from '../../../models/Attribute';
 import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
 
 type PageParam = {
