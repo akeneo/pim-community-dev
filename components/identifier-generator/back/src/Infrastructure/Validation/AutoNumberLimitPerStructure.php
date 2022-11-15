@@ -23,7 +23,7 @@ final class AutoNumberLimitPerStructure extends Constraint
         parent::__construct($options, $groups, $payload);
     }
 
-    public function getDefaultOption()
+    public function getDefaultOption(): string
     {
         return 'limit';
     }
