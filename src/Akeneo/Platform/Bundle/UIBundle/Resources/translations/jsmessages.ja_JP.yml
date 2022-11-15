@@ -257,6 +257,7 @@ pim_common:
   parent: 上位
   groups: グループ
   products: 商品
+  product_uuids: 商品
   product_models: 商品モデル
   more: 詳細
   public_view: パブリックビュー
