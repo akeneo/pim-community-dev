@@ -5,7 +5,6 @@ const unitConfig = {
   coveragePathIgnorePatterns: ['src/Akeneo/Pim/Automation/DataQualityInsights'],
   verbose: true,
   testMatch: ['<rootDir>/src/Akeneo/Pim/Automation/DataQualityInsights/tests/front/**/*.unit.(js|jsx|ts|tsx)'],
-  //testRegex: 'src/Akeneo/Pim/Automation/DataQualityInsights/tests/front/unit(.*)(unit).(jsx?|tsx?)$',
 };
 
 module.exports = Object.assign({}, baseConfig, unitConfig);
