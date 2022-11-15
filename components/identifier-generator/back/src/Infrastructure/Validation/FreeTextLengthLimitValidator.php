@@ -24,7 +24,7 @@ final class FreeTextLengthLimitValidator extends ConstraintValidator
         Assert::isArray($property);
         Assert::keyExists($property, 'type');
 
-        if ('free_text' === $property['type']) {
+        if (FreeText::type() === $property['type']) {
             Assert::keyExists($property, 'string');
             if (strlen($property['string']) > FreeText::LENGTH_LIMIT) {
                 $this->context
