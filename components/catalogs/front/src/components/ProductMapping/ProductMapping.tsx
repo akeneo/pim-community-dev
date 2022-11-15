@@ -1,12 +1,13 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import styled from 'styled-components';
 import {getColor, SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourcePlaceholder} from './components/SourcePlaceholder';
-import {useCatalog} from './hooks/useCatalog';
 import {TargetPlaceholder} from './components/TargetPlaceholder';
-import {useProductMappingSchema} from './hooks/useProductMappingSchema';
-import {useProductMappingAttributes} from './hooks/useProductMappingAttributes';
+import {ProductMapping as ProductMappingType} from './models/ProductMapping';
+import {ProductMappingSchema} from './models/ProductMappingSchema';
+import {TargetSourceAssociation} from './components/TargetSourceAssociation';
+import {SourceLabel} from './components/SourceLabel';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -25,24 +26,22 @@ const TargetCell = styled(Table.Cell)`
     color: ${getColor('brand', 100)};
     font-style: italic;
 `;
-const PlaceholderCell = styled(Table.Cell)`
-    color: ${getColor('grey', 100)};
-    font-style: italic;
-`;
 
 type Props = {
-    catalogId: string;
+    productMapping: ProductMappingType;
+    productMappingSchema?: ProductMappingSchema;
 };
 
-export const ProductMapping: FC<Props> = ({catalogId}) => {
+export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema}) => {
     const translate = useTranslate();
-    const {data: catalog} = useCatalog(catalogId);
-    const {data: productMappingSchema} = useProductMappingSchema(catalogId);
-    const {data: productMappingAttributes} = useProductMappingAttributes(catalogId);
 
     const [selectedTarget, setSelectedTarget] = useState<string>();
 
-    const targets = Object.entries(catalog?.product_mapping ?? {});
+    const handleClick = useCallback(targetCode => {
+        setSelectedTarget(targetCode);
+    }, []);
+
+    const targets = Object.entries(productMapping ?? {});
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
@@ -71,35 +70,19 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
                                     <TargetCell>UUID</TargetCell>
                                     <Table.Cell>UUID</Table.Cell>
                                 </Table.Row>
-                                {targets.map(([target, source]) => {
-                                    if ('uuid' === target) {
+                                {targets.map(([targetCode, source]) => {
+                                    if ('uuid' === targetCode) {
                                         return;
                                     }
 
                                     return (
-                                        <Table.Row
-                                            key={target}
-                                            onClick={() => {
-                                                setSelectedTarget(target);
-                                            }}
-                                        >
-                                            <TargetCell>
-                                                {productMappingSchema.properties[target]?.title ?? target}
-                                            </TargetCell>
-                                            {null === source.source && (
-                                                <PlaceholderCell>
-                                                    {translate(
-                                                        'akeneo_catalogs.product_mapping.target.table.placeholder'
-                                                    )}
-                                                </PlaceholderCell>
-                                            )}
-                                            {source.source && undefined !== productMappingAttributes && (
-                                                <Table.Cell>
-                                                    {productMappingAttributes[source.source]?.label ??
-                                                        `[${source.source}]`}
-                                                </Table.Cell>
-                                            )}
-                                        </Table.Row>
+                                        <TargetSourceAssociation
+                                            key={targetCode}
+                                            onClick={handleClick}
+                                            targetCode={targetCode}
+                                            targetLabel={productMappingSchema.properties[targetCode]?.title}
+                                            sourceCode={source.source}
+                                        />
                                     );
                                 })}
                             </>
@@ -111,7 +94,9 @@ export const ProductMapping: FC<Props> = ({catalogId}) => {
                 {selectedTarget === undefined && <SourcePlaceholder />}
                 {selectedTarget && (
                     <SectionTitle>
-                        <SectionTitle.Title>{selectedTarget}</SectionTitle.Title>
+                        <SectionTitle.Title>
+                            <SourceLabel sourceCode={selectedTarget} />
+                        </SectionTitle.Title>
                     </SectionTitle>
                 )}
             </SourceContainer>

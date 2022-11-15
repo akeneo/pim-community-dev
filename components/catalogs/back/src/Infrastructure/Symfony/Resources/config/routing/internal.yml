@@ -89,10 +89,3 @@ akeneo_catalogs_internal_get_product_mapping_schema:
     methods: [ GET ]
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-
-akeneo_catalogs_internal_get_product_mapping_attributes:
-    path: '/rest/catalogs/{catalogId}/mapping/product/attributes'
-    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetProductMappingAttributesAction
-    methods: [ GET ]
-    requirements:
-        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
