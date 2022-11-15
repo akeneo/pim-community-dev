@@ -102,7 +102,6 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             product_mapping: {},
         },
     },
-
     {
         state: {
             enabled: false,
