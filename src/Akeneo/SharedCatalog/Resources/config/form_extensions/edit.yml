@@ -192,6 +192,12 @@ extensions:
         parent: pim-job-instance-shared-catalog-edit-content-structure
         targetZone: filters
         position: 110
+        config:
+            helper:
+                text: shared_catalog.content.attributes.helper.text
+                link:
+                    text: shared_catalog.content.attributes.helper.link.text
+                    href: https://help.akeneo.com/pim/serenity/articles/manage-your-attribute-groups.html
 
     pim-job-instance-shared-catalog-edit-content-data:
         module: pim/job/product/edit/content/data
