@@ -127,15 +127,18 @@ $rules = [
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel',
             'Symfony\Component\Security',
+            'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
             'Webmozart\Assert\Assert',
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',
 
+
             // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
+            'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
