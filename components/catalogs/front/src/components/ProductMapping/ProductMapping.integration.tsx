@@ -9,7 +9,7 @@ import {ProductMapping} from './ProductMapping';
 test('it displays an existing product mapping', async () => {
     mockFetchResponses([
         {
-            url: '/rest/catalogs/123e4567-e89b-12d3-a456-426614174000/mapping/product/attributes',
+            url: '/rest/catalogs/attributes/erp_name',
             json: {
                 erp_name: {
                     code: 'erp_name',
@@ -77,5 +77,5 @@ test('it displays an existing product mapping', async () => {
     expect(await screen.findByText('name')).toBeInTheDocument();
     expect(await screen.findByText('[title]')).toBeInTheDocument();
     expect(await screen.findByText('Description')).toBeInTheDocument();
-    expect(await screen.findByText('ERP name')).toBeInTheDocument();
+    expect(await screen.findByText('[erp_name]')).toBeInTheDocument();
 });
