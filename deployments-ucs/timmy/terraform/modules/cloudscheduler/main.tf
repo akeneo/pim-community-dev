@@ -1,4 +1,9 @@
+locals {
+  enable = var.enable ? 1 : 0
+}
+
 resource "google_cloud_scheduler_job" "this" {
+  count            = local.enable
   project          = var.project_id
   region           = var.region
   name             = var.name

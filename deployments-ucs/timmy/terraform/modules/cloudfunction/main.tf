@@ -1,8 +1,9 @@
 locals {
-  function_bucket_object = "${var.name}.${data.archive_file.this.output_sha}.zip"
+  enable                 = var.enable ? 1 : 0
 }
 
 resource "google_cloudfunctions2_function" "this" {
+  count       = local.enable
   name        = var.name
   location    = var.location
   description = var.description
@@ -15,7 +16,7 @@ resource "google_cloudfunctions2_function" "this" {
     source {
       storage_source {
         bucket = var.bucket_name
-        object = google_storage_bucket_object.this.name
+        object = google_storage_bucket_object.this[count.index].name
       }
     }
   }
@@ -44,6 +45,7 @@ resource "google_cloudfunctions2_function" "this" {
 }
 
 data "archive_file" "this" {
+  count       = local.enable
   type        = "zip"
   output_path = "/tmp/${var.name}.zip"
   source_dir  = var.source_dir
@@ -51,7 +53,8 @@ data "archive_file" "this" {
 }
 
 resource "google_storage_bucket_object" "this" {
-  name   = local.function_bucket_object
+  count  = local.enable
+  name   =  "${var.name}.${data.archive_file.this[count.index].output_sha}.zip"
   bucket = var.bucket_name
-  source = data.archive_file.this.output_path
+  source = data.archive_file.this[count.index].output_path
 }
