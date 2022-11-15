@@ -15,7 +15,7 @@ services:
 
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler: ~
 
-  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommandHandler:
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler:
     arguments:
       -
         - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler'

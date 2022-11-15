@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommandHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
@@ -35,7 +35,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $identifierGeneratorRepository,
-            new GenerateIdentifierCommandHandler([
+            new GenerateIdentifierHandler([
                 new GenerateFreeTextHandler(),
             ]),
             $validator

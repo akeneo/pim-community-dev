@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery;
 use PhpSpec\ObjectBehavior;
 
-class GenerateIdentifierCommandHandlerSpec extends ObjectBehavior
+class GenerateIdentifierHandlerSpec extends ObjectBehavior
 {
     public function let(
         GetNextIdentifierQuery $getNextIdentifierQuery
