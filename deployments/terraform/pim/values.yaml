@@ -402,7 +402,7 @@ mysql:
   image:
     mysql:
       repository: mysql
-      tag: "8.0.26"
+      tag: "8.0.30"
   common:
     class: ssd-retain-csi
   mysql:

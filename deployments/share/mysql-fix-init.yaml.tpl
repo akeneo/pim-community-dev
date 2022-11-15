@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: mysql-fix-init
-        image: mysql:8.0.26
+        image: mysql:8.0.30
         resources:
           requests:
             memory: 3072Mi
