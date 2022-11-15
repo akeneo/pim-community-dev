@@ -15,7 +15,7 @@ use Psr\Http\Message\UriInterface;
 
 class FetchSamplePercentageFromBucket implements FetchSamplePercentage
 {
-    private const BUCKET_CONFIG = 'https://storage.googleapis.com/ake-memcache-test/value_TcfmHa.json';
+    private const BUCKET_CONFIG = 'https://storage.googleapis.com/ake-memcache-test/value_7f0df927-5a23-4d62-8f20-50cfc2189f59.json';
     private Client $client;
 
     public function __construct(
@@ -23,7 +23,6 @@ class FetchSamplePercentageFromBucket implements FetchSamplePercentage
     ){
         $this->client = new Client([
             'timeout' => 2,
-            'headers' => ['Authorization' => null],
             'http_errors' => false
         ]);
 
