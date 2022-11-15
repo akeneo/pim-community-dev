@@ -9,12 +9,17 @@ import {ProductMapping} from './ProductMapping';
 test('it displays an existing product mapping', async () => {
     mockFetchResponses([
         {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+            },
+        },
+        {
             url: '/rest/catalogs/attributes/erp_name',
             json: {
-                erp_name: {
-                    code: 'erp_name',
-                    label: 'ERP name',
-                },
+                code: 'erp_name',
+                label: 'pim erp name',
             },
         },
     ]);
@@ -31,7 +36,7 @@ test('it displays an existing product mapping', async () => {
             scope: 'ecommerce',
         },
         body_html: {
-            source: 'description_html',
+            source: null,
             locale: 'en_US',
             scope: 'ecommerce',
         },
@@ -61,6 +66,10 @@ test('it displays an existing product mapping', async () => {
                 description: 'Product description in raw HTML',
                 type: 'string',
             },
+            erp_name: {
+                title: 'ERP',
+                type: 'string',
+            }
         },
     };
 
@@ -74,8 +83,13 @@ test('it displays an existing product mapping', async () => {
 
     expect(screen.queryByTestId('product-mapping')).toBeInTheDocument();
     expect(await screen.findAllByText('UUID')).toHaveLength(2);
+
     expect(await screen.findByText('name')).toBeInTheDocument();
-    expect(await screen.findByText('[title]')).toBeInTheDocument();
+    expect(await screen.findByText('Title')).toBeInTheDocument();
+
     expect(await screen.findByText('Description')).toBeInTheDocument();
-    expect(await screen.findByText('[erp_name]')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_mapping.target.table.placeholder')).toBeInTheDocument();
+
+    expect(await screen.findByText('ERP')).toBeInTheDocument();
+    expect(await screen.findByText('pim erp name')).toBeInTheDocument();
 });
