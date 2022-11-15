@@ -89,7 +89,7 @@ class ListCategoriesController extends AbstractController
         }
 
         $normalizedCategories = [];
-        foreach ($categories as $category){
+        foreach ($categories as $category) {
             $normalizedCategories[] = ExternalApiCategory::fromDomainModel($category)->normalize();
         }
 
