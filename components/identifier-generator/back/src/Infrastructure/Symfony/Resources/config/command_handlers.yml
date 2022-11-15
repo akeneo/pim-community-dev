@@ -9,11 +9,16 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateGeneratorCommandValidator'
 
-  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler: ~
-
-  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler: ~
-
-  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommandHandler:
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler:
     arguments:
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler'
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler:
+    arguments:
+      - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.generate_property' }
