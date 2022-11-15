@@ -14,6 +14,8 @@ use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Namespaces\IndicesNamespace;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Event\RequestMade;
 
 class ClientSpec extends ObjectBehavior
 {
@@ -22,9 +24,10 @@ class ClientSpec extends ObjectBehavior
         $this->shouldHaveType(Client::class);
     }
 
-    function let(NativeClient $client, ClientBuilder $clientBuilder, Loader $indexConfigurationLoader)
+    function let(NativeClient $client, ClientBuilder $clientBuilder, EventDispatcherInterface $dispatcher, Loader $indexConfigurationLoader)
     {
-        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name');
+        $this->beConstructedWith($clientBuilder, $dispatcher, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name');
+	$dispatcher->dispatch(Argument::any())->willReturn(new RequestMade('type', [], []));
         $clientBuilder->setHosts(Argument::any())->willReturn($clientBuilder);
         $clientBuilder->build()->willReturn($client);
     }
@@ -77,7 +80,7 @@ class ClientSpec extends ObjectBehavior
                 'index' => 'an_index_name',
                 'id' => 'identifier',
             ]
-        )->shouldBeCalled();
+        )->willReturn([])->shouldBeCalled();
 
         $this->get('identifier');
     }
@@ -89,7 +92,7 @@ class ClientSpec extends ObjectBehavior
                 'index' => 'an_index_name',
                 'body' => ['a key' => 'a value'],
             ]
-        )->shouldBeCalled();
+        )->willReturn([])->shouldBeCalled();
 
         $this->search(['a key' => 'a value']);
     }
@@ -173,7 +176,7 @@ class ClientSpec extends ObjectBehavior
                 'index' => 'an_index_name',
                 'id' => 'identifier',
             ]
-        )->shouldBeCalled();
+        )->willReturn([])->shouldBeCalled();
 
         $this->delete('identifier');
     }
@@ -197,7 +200,7 @@ class ClientSpec extends ObjectBehavior
                     ],
                 ],
             ]
-        )->shouldBeCalled();
+        )->willReturn([])->shouldBeCalled();
 
         $this->bulkDelete([40, 33]);
     }
@@ -223,7 +226,7 @@ class ClientSpec extends ObjectBehavior
                     'params_of_id_33',
                 ],
             ]
-        )->shouldBeCalled();
+        )->willReturn([])->shouldBeCalled();
 
         $this->bulkUpdate(['40', '33'], ['40' => 'params_of_id_40', '33' => 'params_of_id_33']);
     }
@@ -316,9 +319,10 @@ class ClientSpec extends ObjectBehavior
     function it_split_bulk_index_when_size_is_more_than_max_batch_size(
         NativeClient $client,
         ClientBuilder $clientBuilder,
+	EventDispatcherInterface $dispatcher,
         Loader $indexConfigurationLoader
     ) {
-        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name', '', 200);
+        $this->beConstructedWith($clientBuilder, $dispatcher, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name', '', 200);
 
         $client->bulk([
             'body' => [

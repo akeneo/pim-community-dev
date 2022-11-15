@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\ClientBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * This class extends behavior of "write" methods in order to index on 2 both aliases in same time:
@@ -22,6 +23,7 @@ final class DualIndexationClient extends Client
 
     public function __construct(
         ClientBuilder $builder,
+        EventDispatcherInterface $dispatcher,
         Loader $configurationLoader,
         array $hosts,
         string $aliasName,
@@ -29,7 +31,7 @@ final class DualIndexationClient extends Client
         int $maxChunkSize,
         Client $dualClient
     ) {
-        parent::__construct($builder, $configurationLoader, $hosts, $aliasName, $idPrefix, $maxChunkSize);
+        parent::__construct($builder, $dispatcher, $configurationLoader, $hosts, $aliasName, $idPrefix, $maxChunkSize);
         $this->dualClient = $dualClient;
     }
 
