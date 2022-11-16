@@ -12,7 +12,7 @@ import {
   CopyIcon,
 } from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
-import {StorageConfiguratorProps, isSftpStorage, StorageLoginType, STORAGE_LOGIN_TYPES} from './model';
+import {StorageConfiguratorProps, isSftpStorage, isValidLoginType, StorageLoginType, STORAGE_LOGIN_TYPES} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
 import {useGetPublicKey} from '../../hooks/useGetPublicKey';
 
@@ -85,7 +85,7 @@ const SftpStorageConfigurator = ({
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
   const publicKey = useGetPublicKey();
 
-  const canCopyToClipboard = (): boolean | undefined => ('clipboard' in navigator ? true : undefined);
+  const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
   const copyToClipboard = (publicKey: string) => canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
 
   return (
@@ -97,7 +97,7 @@ const SftpStorageConfigurator = ({
         placeholder={translate('pim_import_export.form.job_instance.storage_form.file_path.placeholder', {
           file_extension: fileExtension,
         })}
-        onChange={(filePath: string) => onStorageChange({...storage, file_path: filePath})}
+        onChange={file_path => onStorageChange({...storage, file_path})}
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
@@ -139,23 +139,25 @@ const SftpStorageConfigurator = ({
           </Helper>
         ))}
       </Field>
-
       <Field label={translate('pim_import_export.form.job_instance.storage_form.login_type.label')}>
         <SelectInput
           value={storage.login_type}
-          onChange={(loginType: string) => onStorageChange({...storage, login_type: loginType as StorageLoginType})}
+          onChange={login_type => {
+            if (isValidLoginType(login_type)) {
+              onStorageChange({...storage, login_type})
+            }
+          }}
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           clearable={false}
         >
           {STORAGE_LOGIN_TYPES.map(loginType => (
             <SelectInput.Option value={loginType} key={loginType}>
-              {translate(`pim_import_export.form.job_instance.storage_form.connection_type.${loginType}`)}
+              {translate(`pim_import_export.form.job_instance.storage_form.login_type.${loginType}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>
       </Field>
-
       <TextField
         value={storage.username}
         required={true}
@@ -164,7 +166,6 @@ const SftpStorageConfigurator = ({
         onChange={(username: string) => onStorageChange({...storage, username})}
         errors={filterErrors(validationErrors, '[username]')}
       />
-
       {storage.login_type === 'password' ? (
         <TextField
           value={storage.password ?? ''}
@@ -177,12 +178,11 @@ const SftpStorageConfigurator = ({
       ) : (
         <Field label={translate('pim_import_export.form.job_instance.storage_form.public_key.label')}>
           <CopyableInputContainer>
-            <CopyableInput disabled value={publicKey ?? ''} />
-            <CopyableIcon size={16} onClick={undefined !== publicKey ? copyToClipboard(publicKey) : undefined} />
+            <CopyableInput disabled={true} value={publicKey ?? ''} />
+            <CopyableIcon size={16} onClick={null !== publicKey ? copyToClipboard(publicKey) : null} />
           </CopyableInputContainer>
         </Field>
       )}
-
       <CheckStorageForm>
         <CheckStorageConnection>
           <Button onClick={checkReliability} disabled={!canCheckConnection} level="primary">
@@ -199,7 +199,5 @@ const SftpStorageConfigurator = ({
     </>
   );
 };
-
-export type {StorageLoginType};
 
 export {SftpStorageConfigurator};

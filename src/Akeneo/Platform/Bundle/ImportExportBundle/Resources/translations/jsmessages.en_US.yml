@@ -182,6 +182,12 @@ pim_import_export:
                 password:
                     label: Password
                     placeholder: Enter your password
+                public_key:
+                    label: Public key
+                login_type:
+                    label: Connection type
+                    password: Connection with password
+                    private_key: Connection with key
             validation:
                 storage:
                     unavailable_type: This storage is not available, only {{ available_types }} are available.

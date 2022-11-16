@@ -34,6 +34,10 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
   return enabledStorageConfigurators;
 };
 
+const isValidLoginType = (loginType: string): loginType is StorageLoginType => {
+  return STORAGE_LOGIN_TYPES.includes(loginType);
+}
+
 const getStorageConfigurator = (
   storageType: StorageType,
   featureFlags: FeatureFlags
@@ -53,9 +57,10 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
     'host' in storage &&
     'port' in storage &&
     'username' in storage &&
-    'login_type' in storage
+    'login_type' in storage &&
+    isValidLoginType(storage.login_type)
   );
 };
 
 export type {StorageConfiguratorProps, StorageLoginType};
-export {isLocalStorage, isSftpStorage, getStorageConfigurator, STORAGE_LOGIN_TYPES};
+export {isLocalStorage, isSftpStorage, isValidLoginType, getStorageConfigurator, STORAGE_LOGIN_TYPES};

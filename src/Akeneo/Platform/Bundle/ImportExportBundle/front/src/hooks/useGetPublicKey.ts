@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
 
 const useGetPublicKey = () => {
-  const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
+  const [publicKey, setPublicKey] = useState<string | null>(null);
   const route = useRoute('pimee_job_automation_get_public_key');
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const useGetPublicKey = () => {
 
       const data = await response.json();
 
-      setPublicKey(response.ok ? data : {});
+      setPublicKey(response.ok ? data : null);
     };
 
     void getPublicKey();

@@ -241,7 +241,7 @@ test('it allows user to change login type', async () => {
   });
 
   userEvent.click(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.login_type.label'));
-  userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.connection_type.private_key'));
+  userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.login_type.private_key'));
 
   expect(onStorageChange).toHaveBeenLastCalledWith({
     ...storage,
@@ -276,6 +276,7 @@ test('it displays a public key field', async () => {
   const publicKeyField = screen.getByLabelText('pim_import_export.form.job_instance.storage_form.public_key.label');
 
   expect(publicKeyField).toBeInTheDocument();
+  expect(publicKeyField).toHaveValue('-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----');
 });
 
 test('it allows user to fill username field', async () => {

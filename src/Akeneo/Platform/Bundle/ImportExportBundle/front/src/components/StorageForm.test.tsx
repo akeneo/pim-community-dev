@@ -5,11 +5,6 @@ import {renderWithProviders, ValidationError, useFeatureFlags} from '@akeneo-pim
 import {StorageForm} from './StorageForm';
 import {LocalStorage, NoneStorage, SftpStorage} from './model';
 
-global.fetch = jest.fn().mockImplementation(async () => ({
-  ok: true,
-  json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
-}));
-
 const mockedUseFeatureFlags = useFeatureFlags as jest.Mock;
 
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useFeatureFlags', () => ({
