@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Infrastructure\PubSub;
 
+use Akeneo\PerformanceAnalytics\Application\Exception\TenantException;
 use Akeneo\PerformanceAnalytics\Application\LogContext;
 use Akeneo\PerformanceAnalytics\Domain\Message;
 use Akeneo\PerformanceAnalytics\Domain\MessageQueue;
@@ -27,16 +28,16 @@ final class PubSubMessageQueue implements MessageQueue
     public function __construct(
         private Client $client,
         private LoggerInterface $logger,
+        private ?string $pfid,
         private ?string $tenantId,
+        private string $env,
         private string $topicName,
     ) {
     }
 
     public function publish(Message $message): void
     {
-        if (null === $this->tenantId) {
-            $this->logger->warning('Tenant ID is null', LogContext::build());
-        }
+        $this->checkMessagesCanBeSent();
 
         try {
             $this->client->publish($this->topicName, $this->buildPubSubMessage($message));
@@ -59,11 +60,9 @@ final class PubSubMessageQueue implements MessageQueue
             return;
         }
 
-        Assert::allIsInstanceOf($messages, Message::class);
-        if (null === $this->tenantId) {
-            $this->logger->warning('Tenant ID is null', LogContext::build());
-        }
+        $this->checkMessagesCanBeSent();
 
+        Assert::allIsInstanceOf($messages, Message::class);
         $pubSubMessages = \array_map(
             fn (Message $message): PubSubMessage => $this->buildPubSubMessage($message),
             $messages
@@ -105,8 +104,23 @@ final class PubSubMessageQueue implements MessageQueue
             'data' => \json_encode($message->normalize()),
             'attributes' => [
                 'class' => \get_class($message),
-                'tenant_id' => $this->tenantId ?? 'null',
+                'pfid' => $this->pfid ?? '',
+                'tenant_id' => $this->tenantId ?? '',
             ],
         ]);
+    }
+
+    private function checkMessagesCanBeSent(): void
+    {
+        if ('prod' === $this->env && null === $this->pfid && null === $this->tenantId) {
+            $message = 'Cannot send message: PFID and TENANT ID are both null.';
+            $this->logger->critical($message, LogContext::build());
+
+            throw new TenantException($message);
+        }
+
+        if ('prod' === $this->env && null === $this->pfid) {
+            $this->logger->warning('PFID is null', LogContext::build());
+        }
     }
 }

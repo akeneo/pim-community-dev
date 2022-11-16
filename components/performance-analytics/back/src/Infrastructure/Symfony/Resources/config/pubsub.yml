@@ -13,5 +13,7 @@ services:
         arguments:
             - '@Akeneo\PerformanceAnalytics\Infrastructure\PubSub\Client'
             - '@logger'
+            - '%env(default::string:PFID)%'
             - '%env(default::string:APP_TENANT_ID)%'
+            - '%env(string:APP_ENV)%'
             - '%env(string:PUBSUB_TOPIC_PERFORMANCE_ANALYTICS)%'

@@ -18,6 +18,7 @@ use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnrichedHan
 use Akeneo\PerformanceAnalytics\Application\Command\ProductIsEnriched;
 use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
+use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnrichedMessage;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -48,6 +49,8 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
 
     protected function setUp(): void
     {
+        putenv('PFID=fake_pfid');
+        putenv('APP_TENANT_ID=fake_tenant_id');
         parent::setUp();
 
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
@@ -101,6 +104,11 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
 
         $messages = $this->pullAndAckMessages();
         self::assertCount(3, $messages, 'There should be 3 messages');
+
+        $attributes = $messages[0]->attributes();
+        self::assertSame(ProductWasEnrichedMessage::class, $attributes['class'] ?? null);
+        self::assertSame('fake_pfid', $attributes['pfid'] ?? null);
+        self::assertSame('fake_tenant_id', $attributes['tenant_id'] ?? null);
 
         self::assertSame([
             'product_uuid' => $product1->getUuid()->toString(),
