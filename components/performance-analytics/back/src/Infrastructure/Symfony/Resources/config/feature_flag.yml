@@ -3,3 +3,8 @@ services:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
           - '%env(default::FLAG_PERFORMANCE_ANALYTICS_ENABLED)%'
+
+    akeneo.performance_analytics.notify_enriched_products.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(default::FLAG_PERFORMANCE_ANALYTICS_NOTIFY_ENRICHED_PRODUCTS_ENABLED)%'

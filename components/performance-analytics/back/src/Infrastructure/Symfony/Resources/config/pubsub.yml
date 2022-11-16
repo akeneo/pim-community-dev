@@ -4,7 +4,7 @@ services:
             - !service
                 class: Google\Cloud\PubSub\PubSubClient
                 arguments:
-                    -   transport: 'rest'
+                    -   transport: 'grpc'
                         keyFilePath: '%env(string:default:defaultKeyFilePath:PERFORMANCE_ANALYTICS_GOOGLE_APPLICATION_CREDENTIALS)%'
             - '%env(bool:PUBSUB_AUTO_SETUP_PERFORMANCE_ANALYTICS)%'
 

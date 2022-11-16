@@ -19,8 +19,8 @@ use Akeneo\PerformanceAnalytics\Domain\Product\GetProducts;
 use Akeneo\PerformanceAnalytics\Domain\Product\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 final class ACLGetProducts implements GetProducts
 {
@@ -37,11 +37,10 @@ final class ACLGetProducts implements GetProducts
             return [];
         }
 
+        Assert::allIsInstanceOf($uuids, UuidInterface::class);
+
         $connectorProducts = $this->getConnectorProducts->fromProductUuids(
-            \array_map(
-                fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
-                $uuids
-            ),
+            $uuids,
             0,
             null,
             null,

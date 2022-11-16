@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Domain\Product;
 
+use Ramsey\Uuid\UuidInterface;
+
 interface GetProducts
 {
     /**
-     * @param array<string> $uuids
+     * @param array<UuidInterface> $uuids
      * @return array<string, Product>
      */
     public function byUuids(array $uuids): array;

@@ -27,6 +27,12 @@ workflows:
             - test_helm_generated_k8s_files:
                   requires:
                       - checkout
+            - test_back_performance?:
+                  type: approval
+            - test_back_performance:
+                  requires:
+                      - build_srnt_dev
+                      - test_back_performance?
             - deploy_pr_environment?:
                 type: approval
                 filters:

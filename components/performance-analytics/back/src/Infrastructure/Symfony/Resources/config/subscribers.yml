@@ -1,0 +1,8 @@
+services:
+    Akeneo\PerformanceAnalytics\Infrastructure\EventSubscriber\ProductWasCompletedOnChannelLocaleSubscriber:
+        arguments:
+            - '@Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnrichedHandler'
+            - '@logger'
+            - '@akeneo.performance_analytics.notify_enriched_products.feature'
+        tags:
+            - { name: kernel.event_subscriber }

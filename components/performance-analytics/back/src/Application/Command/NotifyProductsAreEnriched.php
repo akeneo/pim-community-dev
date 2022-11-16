@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Application\Command;
 
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 final class NotifyProductsAreEnriched
@@ -32,5 +33,13 @@ final class NotifyProductsAreEnriched
     public function getProductsAreEnriched(): array
     {
         return $this->productsAreEnriched;
+    }
+
+    /**
+     * @return array<UuidInterface>
+     */
+    public function getProductUuids(): array
+    {
+        return \array_map(fn (ProductIsEnriched $productIsEnriched) => $productIsEnriched->productUuid(), $this->productsAreEnriched);
     }
 }

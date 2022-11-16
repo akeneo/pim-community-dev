@@ -81,15 +81,15 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
             ProductWasEnriched::fromProperties(
                 $product1,
                 [
-                    ChannelLocale::fromChannelAndLocale('ecommerce', 'fr_FR'),
-                    ChannelLocale::fromChannelAndLocale('ecommerce', 'en_US'),
+                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR'),
+                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_US'),
                 ],
                 $enrichedAt,
             ),
             ProductWasEnriched::fromProperties(
                 $product2,
                 [
-                    ChannelLocale::fromChannelAndLocale('mobile', 'en_US'),
+                    ChannelLocale::fromChannelAndLocaleString('mobile', 'en_US'),
                 ],
                 $enrichedAt,
             ),
@@ -98,9 +98,21 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
         $messageQueue->publish(ProductsWereEnrichedMessage::fromCollection($productWasEnrichedList))->shouldBeCalled();
 
         $this->__invoke(new NotifyProductsAreEnriched([
-            new ProductIsEnriched($productUuid1->toString(), 'ecommerce', 'fr_FR', $enrichedAt),
-            new ProductIsEnriched($productUuid1->toString(), 'ecommerce', 'en_US', $enrichedAt),
-            new ProductIsEnriched($productUuid2->toString(), 'mobile', 'en_US', $enrichedAt),
+            new ProductIsEnriched(
+                $productUuid1,
+                [
+                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR'),
+                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_US'),
+                ],
+                $enrichedAt
+            ),
+            new ProductIsEnriched(
+                $productUuid2,
+                [
+                    ChannelLocale::fromChannelAndLocaleString('mobile', 'en_US'),
+                ],
+                $enrichedAt
+            ),
         ]));
     }
 
@@ -131,7 +143,7 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
             ProductWasEnriched::fromProperties(
                 $product1,
                 [
-                    ChannelLocale::fromChannelAndLocale('ecommerce', 'fr_FR'),
+                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR'),
                 ],
                 $enrichedAt,
             ),
@@ -141,8 +153,16 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
         $logger->warning(Argument::cetera())->shouldBeCalled();
 
         $this->__invoke(new NotifyProductsAreEnriched([
-            new ProductIsEnriched($productUuid1->toString(), 'ecommerce', 'fr_FR', $enrichedAt),
-            new ProductIsEnriched($productUuid2->toString(), 'ecommerce', 'en_GB', $enrichedAt),
+            new ProductIsEnriched(
+                $productUuid1,
+                [ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR')],
+                $enrichedAt
+            ),
+            new ProductIsEnriched(
+                $productUuid2,
+                [ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_GB')],
+                $enrichedAt
+            ),
         ]));
     }
 }

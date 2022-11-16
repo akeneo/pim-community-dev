@@ -20,7 +20,7 @@ class ChannelLocaleSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('fromChannelAndLocale', ['ecommerce', 'en_US']);
+        $this->beConstructedThrough('fromChannelAndLocaleString', ['ecommerce', 'en_US']);
     }
 
     public function it_is_initializable()
@@ -34,17 +34,5 @@ class ChannelLocaleSpec extends ObjectBehavior
             'channel_code' => 'ecommerce',
             'locale_code' => 'en_US',
         ]);
-    }
-
-    public function it_cannot_create_an_empty_channel_code()
-    {
-        $this->beConstructedThrough('fromChannelAndLocale', ['', 'en_US']);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
-    public function it_cannot_create_an_empty_locale_code()
-    {
-        $this->beConstructedThrough('fromChannelAndLocale', ['ecommerce', '']);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

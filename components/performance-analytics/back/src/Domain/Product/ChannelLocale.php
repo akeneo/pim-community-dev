@@ -13,23 +13,25 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Domain\Product;
 
-use Webmozart\Assert\Assert;
+use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
+use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 
 final class ChannelLocale
 {
     private function __construct(
-        private string $channelCode,
-        private string $localeCode,
+        private ChannelCode $channelCode,
+        private LocaleCode $localeCode,
     ) {
-        Assert::stringNotEmpty($this->channelCode);
-        Assert::stringNotEmpty($this->localeCode);
     }
 
-    public static function fromChannelAndLocale(
+    public static function fromChannelAndLocaleString(
         string $channelCode,
         string $localeCode,
     ): ChannelLocale {
-        return new ChannelLocale($channelCode, $localeCode);
+        return new ChannelLocale(
+            ChannelCode::fromString($channelCode),
+            LocaleCode::fromString($localeCode)
+        );
     }
 
     /**
@@ -38,8 +40,8 @@ final class ChannelLocale
     public function normalize(): array
     {
         return [
-            'channel_code' => $this->channelCode,
-            'locale_code' => $this->localeCode,
+            'channel_code' => $this->channelCode->toString(),
+            'locale_code' => $this->localeCode->toString(),
         ];
     }
 }

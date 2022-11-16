@@ -116,3 +116,10 @@ data:
   FLAG_MARKETPLACE_FAKE_APPS_ENABLED: "1"
   FLAG_APP_DEVELOPER_MODE_ENABLED: "1"
   {{- end }}
+
+  {{- if eq (.Values.common.gcpProjectID | toString) "akecld-saas-dev" }}
+  FLAG_PERFORMANCE_ANALYTICS_ENABLED: "1"
+  {{- else }}
+  FLAG_PERFORMANCE_ANALYTICS_ENABLED: "0"
+  {{- end }}
+  FLAG_PERFORMANCE_ANALYTICS_NOTIFY_ENRICHED_PRODUCTS_ENABLED: "0"

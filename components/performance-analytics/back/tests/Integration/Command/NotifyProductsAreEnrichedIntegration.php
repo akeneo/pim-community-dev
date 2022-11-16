@@ -16,6 +16,7 @@ namespace Akeneo\Test\PerformanceAnalytics\Integration\Command;
 use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnriched;
 use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnrichedHandler;
 use Akeneo\PerformanceAnalytics\Application\Command\ProductIsEnriched;
+use Akeneo\PerformanceAnalytics\Domain\Product\ChannelLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -65,10 +66,7 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
         }
 
         // Empty the messages in the queue
-        $messages = $this->subscription->pull(['returnImmediately' => true]);
-        if ([] !== $messages) {
-            $this->subscription->acknowledgeBatch($messages);
-        }
+        $this->pullAndAckMessages();
     }
 
     public function testItNotifiesProductsAreEnriched(): void
@@ -78,31 +76,26 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
 
         $notifierProductsAreEnriched = new NotifyProductsAreEnriched([
             new ProductIsEnriched(
-                $product1->getUuid()->toString(),
-                'ecommerce',
-                'en_US',
+                $product1->getUuid(),
+                [
+                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_US'),
+                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR'),
+                ],
                 new \DateTimeImmutable('2022-01-30')
             ),
             new ProductIsEnriched(
-                $product1->getUuid()->toString(),
-                'ecommerce',
-                'fr_FR',
-                new \DateTimeImmutable('2022-01-30')
-            ),
-            new ProductIsEnriched(
-                $product2->getUuid()->toString(),
-                'ecommerce',
-                'fr_FR',
+                $product2->getUuid(),
+                [
+                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR'),
+                ],
                 new \DateTimeImmutable('2022-02-28')
             ),
         ]);
 
+        $this->pullAndAckMessages();
         $this->get(NotifyProductsAreEnrichedHandler::class)($notifierProductsAreEnriched);
 
-        $messages = $this->subscription->pull(['returnImmediately' => true]);
-        if ([] !== $messages) {
-            $this->subscription->acknowledgeBatch($messages);
-        }
+        $messages = $this->pullAndAckMessages();
         self::assertCount(1, $messages);
 
         $data = \json_decode($messages[0]->data(), true);
@@ -152,5 +145,15 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
         Assert::assertNotNull($user);
 
         return $user->getId();
+    }
+
+    private function pullAndAckMessages(): array
+    {
+        $messages = $this->subscription->pull(['returnImmediately' => true]);
+        if ([] !== $messages) {
+            $this->subscription->acknowledgeBatch($messages);
+        }
+
+        return $messages;
     }
 }

@@ -51,16 +51,16 @@ class ProductsWereEnrichedMessageSpec extends ObjectBehavior
                 ProductWasEnriched::fromProperties(
                     $product1,
                     [
-                        ChannelLocale::fromChannelAndLocale('e-commerce', 'fr_FR'),
-                        ChannelLocale::fromChannelAndLocale('e-commerce', 'en_GB'),
+                        ChannelLocale::fromChannelAndLocaleString('e-commerce', 'fr_FR'),
+                        ChannelLocale::fromChannelAndLocaleString('e-commerce', 'en_GB'),
                     ],
                     new \DateTimeImmutable()
                 ),
                 ProductWasEnriched::fromProperties(
                     $product2,
                     [
-                        ChannelLocale::fromChannelAndLocale('e-commerce', 'fr_FR'),
-                        ChannelLocale::fromChannelAndLocale('mobile', 'fr_FR'),
+                        ChannelLocale::fromChannelAndLocaleString('e-commerce', 'fr_FR'),
+                        ChannelLocale::fromChannelAndLocaleString('mobile', 'fr_FR'),
                     ],
                     new \DateTimeImmutable()
                 ),

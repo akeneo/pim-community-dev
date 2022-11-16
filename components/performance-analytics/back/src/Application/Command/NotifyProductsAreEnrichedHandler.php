@@ -15,13 +15,12 @@ namespace Akeneo\PerformanceAnalytics\Application\Command;
 
 use Akeneo\PerformanceAnalytics\Application\LogContext;
 use Akeneo\PerformanceAnalytics\Domain\MessageQueue;
-use Akeneo\PerformanceAnalytics\Domain\Product\ChannelLocale;
 use Akeneo\PerformanceAnalytics\Domain\Product\GetProducts;
 use Akeneo\PerformanceAnalytics\Domain\Product\ProductsWereEnrichedMessage;
 use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnriched;
 use Psr\Log\LoggerInterface;
 
-final class NotifyProductsAreEnrichedHandler
+class NotifyProductsAreEnrichedHandler
 {
     public function __construct(
         private MessageQueue $messageQueue,
@@ -32,22 +31,11 @@ final class NotifyProductsAreEnrichedHandler
 
     public function __invoke(NotifyProductsAreEnriched $notifyProductsAreEnriched): void
     {
-        $channelsLocalesByProduct = [];
-        foreach ($notifyProductsAreEnriched->getProductsAreEnriched() as $productIsEnriched) {
-            $channelsLocalesByProduct[$productIsEnriched->productUuid()][] = ChannelLocale::fromChannelAndLocale(
-                $productIsEnriched->channelCode(),
-                $productIsEnriched->localeCode()
-            );
-        }
-
-        $products = $this->getProducts->byUuids(\array_keys($channelsLocalesByProduct));
+        $products = $this->getProducts->byUuids($notifyProductsAreEnriched->getProductUuids());
 
         $productWasEnrichedList = [];
         foreach ($notifyProductsAreEnriched->getProductsAreEnriched() as $productIsEnriched) {
-            $uuidAsString = $productIsEnriched->productUuid();
-            if (\array_key_exists($uuidAsString, $productWasEnrichedList)) {
-                continue;
-            }
+            $uuidAsString = $productIsEnriched->productUuid()->toString();
 
             if (!array_key_exists($uuidAsString, $products)) {
                 $this->logger->warning('Product not found while notifying products are enriched', LogContext::build(['uuid' => $uuidAsString]));
@@ -56,15 +44,15 @@ final class NotifyProductsAreEnrichedHandler
 
             $product = $products[$uuidAsString];
 
-            $productWasEnrichedList[$uuidAsString] = ProductWasEnriched::fromProperties(
+            $productWasEnrichedList[] = ProductWasEnriched::fromProperties(
                 $product,
-                $channelsLocalesByProduct[$productIsEnriched->productUuid()],
+                $productIsEnriched->channelsLocales(),
                 $productIsEnriched->enrichedAt(),
             );
         }
 
         $this->messageQueue->publish(
-            ProductsWereEnrichedMessage::fromCollection(\array_values($productWasEnrichedList))
+            ProductsWereEnrichedMessage::fromCollection($productWasEnrichedList)
         );
     }
 }

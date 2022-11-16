@@ -28,8 +28,8 @@ class ProductWasEnrichedSpec extends ObjectBehavior
         $this->beConstructedThrough('fromProperties', [
             $this->getProduct(),
             [
-                ChannelLocale::fromChannelAndLocale('e-commerce', 'fr_FR'),
-                ChannelLocale::fromChannelAndLocale('e-commerce', 'en_GB'),
+                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'fr_FR'),
+                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'en_GB'),
             ],
             new \DateTimeImmutable(),
         ]);
@@ -71,8 +71,8 @@ class ProductWasEnrichedSpec extends ObjectBehavior
         $this->beConstructedThrough('fromProperties', [
             $product,
             [
-                ChannelLocale::fromChannelAndLocale('e-commerce', 'fr_FR'),
-                ChannelLocale::fromChannelAndLocale('e-commerce', 'en_GB'),
+                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'fr_FR'),
+                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'en_GB'),
             ],
             new \DateTimeImmutable('2022-01-05 00:00:00'),
         ]);
@@ -102,8 +102,8 @@ class ProductWasEnrichedSpec extends ObjectBehavior
         $this->beConstructedThrough('fromProperties', [
             $product,
             [
-                ChannelLocale::fromChannelAndLocale('e-commerce', 'fr_FR'),
-                ChannelLocale::fromChannelAndLocale('e-commerce', 'en_GB'),
+                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'fr_FR'),
+                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'en_GB'),
             ],
             new \DateTimeImmutable('2022-01-05 00:00:00'),
         ]);

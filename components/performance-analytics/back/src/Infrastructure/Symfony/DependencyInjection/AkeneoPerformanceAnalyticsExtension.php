@@ -33,5 +33,6 @@ final class AkeneoPerformanceAnalyticsExtension extends Extension
         $loader->load('pubsub.yml');
         $loader->load('query_handlers.yml');
         $loader->load('repositories.yml');
+        $loader->load('subscribers.yml');
     }
 }

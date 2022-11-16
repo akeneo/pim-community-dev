@@ -20,6 +20,7 @@ $rules = [
             'Webmozart\Assert',
             'Akeneo\PerformanceAnalytics\Domain',
             'Psr\Log\LoggerInterface',
+            'Ramsey\Uuid\UuidInterface',
         ]
     )->in('Akeneo\PerformanceAnalytics\Application'),
 
@@ -34,15 +35,19 @@ $rules = [
             'Akeneo\PerformanceAnalytics\Application',
 
             // Akeneo dependencies
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\Messenger\Tenant\TenantAwareInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
             'Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts',
+            'Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocale',
+            'Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocaleCollection',
 
             // symfony dependencies
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\DependencyInjection\ContainerBuilder',
             'Symfony\Component\DependencyInjection\Extension\Extension',
             'Symfony\Component\DependencyInjection\Loader\YamlFileLoader',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel\Bundle\Bundle',
             'Symfony\Component\HttpKernel\Exception\BadRequestHttpException',

@@ -40,7 +40,7 @@ class CalculateCompletenessCommandPerformance extends KernelTestCase
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
         // Ensure only 2 calls to ES are performed (1 to search, 1 to index)
-        $profileConfig->assert('metrics.http.curl.requests.count == 2', 'Queries to ES');
+        $profileConfig->assert('metrics.http.curl.requests.count == 2', 'Queries to ES and PubSub');
         // Original value: 4.7s
         $profileConfig->assert('metrics.completeness_calculation.wall_time < 8s', 'Completeness calculation time');
 

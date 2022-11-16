@@ -97,4 +97,10 @@ class ACLGetProductsSpec extends ObjectBehavior
             ),
         ]);
     }
+
+    public function it_throws_an_exception_if_an_uuid_is_invalid(GetConnectorProducts $getConnectorProducts)
+    {
+        $getConnectorProducts->fromProductUuids(Argument::cetera())->shouldNotBeCalled();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('byUuids', [[Uuid::uuid4(), 'invalid_uuid']]);
+    }
 }

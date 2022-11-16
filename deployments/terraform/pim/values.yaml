@@ -550,6 +550,3 @@ free_trial:
   hotjar_id: "2273004"
   google_analytics_account_id: UA-35417741-13
   heap_id: "3348469633"
-
-performance_analytics:
-    google_cloud_project: "akecld-prd-perf-analytics-sdb"
