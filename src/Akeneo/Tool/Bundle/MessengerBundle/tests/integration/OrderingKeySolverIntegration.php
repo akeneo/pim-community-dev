@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\Envelope;
 
 /**
@@ -25,7 +26,7 @@ final class OrderingKeySolverIntegration extends KernelTestCase
      */
     protected function setUp(): void
     {
-        $this->testKernel = static::bootKernel(['debug' => false]);
+        static::bootKernel(['debug' => false]);
         $this->orderingKeySolver = self::getContainer()->get(OrderingKeySolver::class);
     }
 

@@ -257,6 +257,7 @@ pim_common:
   parent: Padre
   groups: Grupos
   products: Productos
+  product_uuids: Productos
   product_models: Modelos de producto
   more: Más
   public_view: Vista pública

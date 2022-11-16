@@ -24,7 +24,6 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -89,6 +88,7 @@ class ProductProcessorSpec extends ObjectBehavior
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
             ]
         );
+        $jobParameters->has('with_uuid')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
 
@@ -166,6 +166,8 @@ class ProductProcessorSpec extends ObjectBehavior
         );
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
+        $jobParameters->has('with_uuid')->willReturn(true);
+        $jobParameters->get('with_uuid')->willReturn(true);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
@@ -198,7 +200,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'standard', ['with_association_uuids' => false])->willReturn($productStandard);
+        $normalizer->normalize($product, 'standard', ['with_association_uuids' => true])->willReturn($productStandard);
 
         $this->process($product)->shouldReturn($productStandard);
     }
@@ -234,6 +236,8 @@ class ProductProcessorSpec extends ObjectBehavior
         );
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
+        $jobParameters->has('with_uuid')->willReturn(true);
+        $jobParameters->get('with_uuid')->willReturn(false);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));

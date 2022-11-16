@@ -25,6 +25,6 @@ class When extends SubStep
         $arguments = func_get_args();
         $text = array_shift($arguments);
 
-        parent::__construct('When', $text, $arguments);
+        parent::__construct($text, $arguments);
     }
 }

@@ -15,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

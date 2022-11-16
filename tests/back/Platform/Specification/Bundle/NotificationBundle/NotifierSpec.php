@@ -24,10 +24,10 @@ class NotifierSpec extends ObjectBehavior
     }
 
     function it_can_create_a_notification_from_username(
-        $notificationSaver,
-        $userNotifsSaver,
-        $userNotifFactory,
-        $userProvider,
+        SaverInterface $notificationSaver,
+        BulkSaverInterface $userNotifsSaver,
+        UserNotificationFactory $userNotifFactory,
+        UserProviderInterface $userProvider,
         NotificationInterface $notification,
         UserNotificationInterface $userNotification,
         UserInterface $user
@@ -42,10 +42,10 @@ class NotifierSpec extends ObjectBehavior
     }
 
     function it_can_create_a_notification_from_user(
-        $notificationSaver,
-        $userNotifsSaver,
-        $userNotifFactory,
-        $userProvider,
+        SaverInterface $notificationSaver,
+        BulkSaverInterface $userNotifsSaver,
+        UserNotificationFactory $userNotifFactory,
+        UserProviderInterface $userProvider,
         NotificationInterface $notification,
         UserNotificationInterface $userNotification,
         UserInterface $user
@@ -60,10 +60,10 @@ class NotifierSpec extends ObjectBehavior
     }
 
     function it_can_create_multiple_notifications(
-        $notificationSaver,
-        $userNotifsSaver,
-        $userNotifFactory,
-        $userProvider,
+        SaverInterface $notificationSaver,
+        BulkSaverInterface $userNotifsSaver,
+        UserNotificationFactory $userNotifFactory,
+        UserProviderInterface $userProvider,
         NotificationInterface $notification,
         UserNotificationInterface $userNotification,
         UserNotificationInterface $userNotificationAuthor,
@@ -83,9 +83,9 @@ class NotifierSpec extends ObjectBehavior
     }
 
     function it_does_not_notify_the_system_user(
-        $notificationSaver,
-        $userNotifsSaver,
-        $userNotifFactory,
+        SaverInterface $notificationSaver,
+        BulkSaverInterface $userNotifsSaver,
+        UserNotificationFactory $userNotifFactory,
         NotificationInterface $notification,
         UserInterface $userSystem
     ) {

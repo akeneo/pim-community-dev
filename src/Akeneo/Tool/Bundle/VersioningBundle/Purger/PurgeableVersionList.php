@@ -28,7 +28,7 @@ final class PurgeableVersionList implements \Countable
         return $this->resourceName;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->versionIds);
     }

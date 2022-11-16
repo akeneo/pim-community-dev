@@ -66,7 +66,7 @@ class Cursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         parent::next();
         $this->entity = $this->getNextEntity();
@@ -75,7 +75,7 @@ class Cursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->entity;
     }
@@ -83,7 +83,7 @@ class Cursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         if (null === $this->count) {
             $this->count = count($this->getEntitiesIds());
@@ -95,7 +95,7 @@ class Cursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
         $this->currentPage = 0;

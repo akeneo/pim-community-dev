@@ -52,6 +52,7 @@ class ProductExportController
         $withGridContext = (bool) $request->get('_displayedColumnsOnly');
         $withLabels = (bool) $request->get('_withLabels');
         $withMedia = (bool) $request->get('_withMedia', true);
+        $withUuid = (bool) $request->get('_withUuid', true);
         $fileLocale = $request->get('_fileLocale');
         $jobCode = $request->get('_jobCode');
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
@@ -64,7 +65,7 @@ class ProductExportController
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $rawParameters = $jobInstance->getRawParameters();
         $contextParameters = $this->getContextParameters($request);
-        $dynamicConfiguration = $contextParameters + ['filters' => $filters, 'with_media' => $withMedia];
+        $dynamicConfiguration = $contextParameters + ['filters' => $filters, 'with_media' => $withMedia, 'with_uuid' => $withUuid];
 
         foreach (self::FILE_PATH_KEYS as $filePathKey) {
             if (isset($rawParameters[$filePathKey])) {

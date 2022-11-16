@@ -36,11 +36,12 @@ class ExportProductsByTextAreaIntegration extends AbstractExportTestCase
         $this->createProduct('product_4', [new SetFamily('a_family')]);
     }
 
-    public function testProductExportByFilteringWithEqualsOperatorOnTextArea()
+    public function testProductExportByFilteringWithEqualsOperatorOnTextArea(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area
-product_1;;1;a_family;;Awesome
+uuid;sku;categories;enabled;family;groups;a_text_area
+{$product1->getUuid()->toString()};product_1;;1;a_family;;Awesome
 
 CSV;
 
@@ -58,17 +59,20 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithContainsOperatorOnTextArea()
+    public function testProductExportByFilteringWithContainsOperatorOnTextArea(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area
-product_1;;1;a_family;;Awesome
-product_2;;1;a_family;;"Awesome product"
+uuid;sku;categories;enabled;family;groups;a_text_area
+{$product1->getUuid()->toString()};product_1;;1;a_family;;Awesome
+{$product2->getUuid()->toString()};product_2;;1;a_family;;"Awesome product"
 
 CSV;
 
@@ -86,17 +90,20 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithStartWithOperatorOnTextArea()
+    public function testProductExportByFilteringWithStartWithOperatorOnTextArea(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area
-product_1;;1;a_family;;Awesome
-product_2;;1;a_family;;"Awesome product"
+uuid;sku;categories;enabled;family;groups;a_text_area
+{$product1->getUuid()->toString()};product_1;;1;a_family;;Awesome
+{$product2->getUuid()->toString()};product_2;;1;a_family;;"Awesome product"
 
 CSV;
 
@@ -114,16 +121,18 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithIsEmptyOperatorOnTextArea()
+    public function testProductExportByFilteringWithIsEmptyOperatorOnTextArea(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_4');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area
-product_4;;1;a_family;;
+uuid;sku;categories;enabled;family;groups;a_text_area
+{$product1->getUuid()->toString()};product_4;;1;a_family;;
 
 CSV;
 
@@ -141,6 +150,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

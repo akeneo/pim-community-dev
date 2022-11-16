@@ -92,7 +92,7 @@ class QueryCountCalculator
         }
 
         if (count($sqlParams) != count($types)) {
-            throw QueryException::parameterTypeMissmatch();
+            throw QueryException::parameterTypeMismatch();
         }
 
         if ($sqlParams) {

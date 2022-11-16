@@ -7,12 +7,8 @@ use Twig\TwigFunction;
 
 class MetadataExtension extends \Twig\Extension\AbstractExtension
 {
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(MetadataParser $metadataParser)
+    public function __construct(private MetadataParser $metadataParser)
     {
-        $this->metadataParser = $metadataParser;
     }
 
     /**

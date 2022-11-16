@@ -49,10 +49,8 @@ class BaseCachedObjectRepository implements CachedObjectRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): void
     {
         $this->objectsCache = [];
-
-        return $this;
     }
 }

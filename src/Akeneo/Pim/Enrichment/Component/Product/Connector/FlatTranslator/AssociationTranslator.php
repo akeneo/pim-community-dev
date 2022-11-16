@@ -14,30 +14,15 @@ class AssociationTranslator
 {
     private const PRODUCT_MODELS_COLUMN_SUFFIX = '-product_models';
     private const PRODUCTS_COLUMN_SUFFIX = '-products';
+    private const PRODUCT_UUIDS_COLUMN_SUFFIX = '-product_uuids';
     private const GROUPS_ASSOCIATIONS_SUFFIX = '-groups';
 
-    /** @var AssociationColumnsResolver */
-    private $associationColumnsResolver;
-
-    /** @var GetProductModelLabelsInterface */
-    private $getProductModelLabels;
-
-    /** @var GetProductLabelsInterface */
-    private $getProductLabels;
-
-    /** @var GetGroupTranslations */
-    private $getGroupTranslations;
-
     public function __construct(
-        AssociationColumnsResolver $associationColumnsResolver,
-        GetProductModelLabelsInterface $getProductModelLabels,
-        GetProductLabelsInterface $getProductLabels,
-        GetGroupTranslations $getGroupTranslations
+        private readonly AssociationColumnsResolver $associationColumnsResolver,
+        private readonly GetProductModelLabelsInterface $getProductModelLabels,
+        private readonly GetProductLabelsInterface $getProductLabels,
+        private readonly GetGroupTranslations $getGroupTranslations,
     ) {
-        $this->associationColumnsResolver = $associationColumnsResolver;
-        $this->getProductModelLabels = $getProductModelLabels;
-        $this->getProductLabels = $getProductLabels;
-        $this->getGroupTranslations = $getGroupTranslations;
     }
 
     public function supports(string $columnName): bool
@@ -64,6 +49,9 @@ class AssociationTranslator
         }
         if ($this->isProductAssociation($columnName)) {
             return $this->getProductLabels->byIdentifiersAndLocaleAndScope($codes, $locale, $channel);
+        }
+        if ($this->isProductUuidAssociation($columnName)) {
+            return $this->getProductLabels->byUuidsAndLocaleAndScope($codes, $locale, $channel);
         }
         if ($this->isGroupAssociation($columnName)) {
             return $this->getGroupTranslations->byGroupCodesAndLocale($codes, $locale);
@@ -113,6 +101,11 @@ class AssociationTranslator
     private function isProductAssociation(string $columnName): bool
     {
         return false !== strpos($columnName, self::PRODUCTS_COLUMN_SUFFIX);
+    }
+
+    private function isProductUuidAssociation(string $columnName): bool
+    {
+        return false !== strpos($columnName, self::PRODUCT_UUIDS_COLUMN_SUFFIX);
     }
 
     private function isGroupAssociation(string $columnName): bool

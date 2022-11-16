@@ -91,6 +91,7 @@
 - PIM-10576: Fix product model mass edit acl check
 - PIM-10633: Fix no DQI dashboard average rankings if code case changed
 - PIM-10667: Fix product import when measurement contains line break
+- PIM-10714: Fix family codes are not well-saved in export filters
 - PIM-10669: Fix the attribute list does not update if we don't scroll
 - PIM-10655: Fix format of empty completeness in API
 - PIM-10644: Fix identifier format check on multiple product update
@@ -98,6 +99,7 @@
 - PIM-10686: Fix percentage of inaccurate completeness in the activity dashboard
 - PIM-10659: Fix associated products in grid are now sorted using their uuids
 - PIM-10718: Fix categories with empty labels throw 500 error
+- PIM-10725: Fix get family variant case sensitive
 
 ## Improvements
 
