@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen, fireEvent} from '../../tests/test-utils';
+import {fireEvent, render, screen} from '../../tests/test-utils';
 import {StructureTab} from '../StructureTab';
 import {PROPERTY_NAMES, Structure} from '../../models';
 
@@ -11,6 +11,11 @@ describe('StructureTab', () => {
       {
         type: PROPERTY_NAMES.FREE_TEXT,
         string: 'AKN',
+      },
+      {
+        type: PROPERTY_NAMES.AUTO_NUMBER,
+        digitsMin: 10,
+        numberMin: 42,
       },
     ];
     render(<StructureTab initialStructure={structure} delimiter={null} onStructureChange={jest.fn()} />);
