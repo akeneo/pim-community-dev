@@ -1,16 +1,21 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
-import {PROPERTY_NAMES} from '../../models';
+import {Property, PROPERTY_NAMES} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type PropertiesSelection = {
   code: string;
   items: {
     code: string;
+    defaultValue: Property;
   }[];
 };
 
-const AddPropertyButton: React.FC = () => {
+type AddPropertyButtonProps = {
+  onAddProperty: (property: Property) => void;
+};
+
+const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -25,6 +30,11 @@ const AddPropertyButton: React.FC = () => {
     setSearchValue('');
   };
 
+  const addProperty = (defaultValue: Property) => {
+    onAddProperty(defaultValue);
+    close();
+  };
+
   const items = useMemo(
     (): PropertiesSelection[] => [
       {
@@ -32,6 +42,7 @@ const AddPropertyButton: React.FC = () => {
         items: [
           {
             code: PROPERTY_NAMES.FREE_TEXT,
+            defaultValue: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
           },
         ],
       },
@@ -56,7 +67,7 @@ const AddPropertyButton: React.FC = () => {
 
   return (
     <Dropdown>
-      <Button active ghost level="secondary" onClick={addElement}>
+      <Button active ghost level="secondary" onClick={addElement} size="small">
         {translate('pim_identifier_generator.structure.add_element')}
       </Button>
       {isOpen && (
@@ -78,8 +89,8 @@ const AddPropertyButton: React.FC = () => {
                 <Dropdown.Section>
                   {translate(`pim_identifier_generator.structure.property_type.section.${code}`)}
                 </Dropdown.Section>
-                {items.map(({code}) => (
-                  <Dropdown.Item key={code}>
+                {items.map(({code, defaultValue}) => (
+                  <Dropdown.Item key={code} onClick={() => addProperty(defaultValue)}>
                     {translate(`pim_identifier_generator.structure.property_type.${code}`)}
                   </Dropdown.Item>
                 ))}

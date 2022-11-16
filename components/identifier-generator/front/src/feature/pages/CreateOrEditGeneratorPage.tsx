@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
-import {GeneralPropertiesTab, Structure} from '../tabs';
-import {IdentifierGenerator, IdentifierGeneratorCode} from '../models';
+import {PageContent, PageHeader, useTranslate, SecondaryActions} from '@akeneo-pim-community/shared';
+import {GeneralPropertiesTab, StructureTab} from '../tabs';
+import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {Violation} from '../validators/Violation';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
@@ -35,6 +35,9 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const [generator, setGenerator] = useState<IdentifierGenerator>(initialGenerator);
   const changeTab = useCallback(tabName => () => setCurrentTab(tabName), []);
   const onSave = useCallback(() => mainButtonCallback(generator), [generator, mainButtonCallback]);
+  const onStructureChange = (structure: Structure) => {
+    setGenerator({...generator, structure: structure});
+  };
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
@@ -97,7 +100,13 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             <div>{JSON.stringify(generator.conditions)}</div>
           </>
         )}
-        {currentTab === Tabs.STRUCTURE && <Structure />}
+        {currentTab === Tabs.STRUCTURE && (
+          <StructureTab
+            initialStructure={generator.structure}
+            delimiter={generator.delimiter}
+            onStructureChange={onStructureChange}
+          />
+        )}
       </PageContent>
       {isDeleteGeneratorModalOpen && generatorCodeToDelete && (
         <DeleteGeneratorModal generatorCode={generatorCodeToDelete} onClose={closeModal} onDelete={redirectToList} />

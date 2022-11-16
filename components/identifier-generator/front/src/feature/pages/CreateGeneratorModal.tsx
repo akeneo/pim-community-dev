@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {AttributesIllustration, Button, Field, Modal, TextInput} from 'akeneo-design-system';
-import {IdentifierGenerator, PROPERTY_NAMES} from '../models';
+import {IdentifierGenerator} from '../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Styled} from '../components/Styled';
 import {useIdentifierAttributes} from '../hooks';
@@ -47,8 +47,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
         target,
         labels: {[uiLocale]: label},
         conditions: [],
-        // Temporary
-        structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
+        structure: [],
         delimiter: null,
       });
     }

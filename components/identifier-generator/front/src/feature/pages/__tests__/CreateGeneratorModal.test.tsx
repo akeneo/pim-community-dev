@@ -36,7 +36,7 @@ describe('CreateGeneratorModal', () => {
       conditions: [],
       delimiter: null,
       labels: {en_US: 'Other label'},
-      structure: [{type: 'free_text', string: 'AKN'}],
+      structure: [],
       target: 'sku',
     });
   });
