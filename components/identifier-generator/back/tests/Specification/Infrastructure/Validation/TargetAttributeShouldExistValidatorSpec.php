@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExistValidator;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -35,10 +34,6 @@ class TargetAttributeShouldExistValidatorSpec extends ObjectBehavior
 
     public function it_should_build_violation_when_target_attribute_does_not_exist(ExecutionContext $context): void
     {
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn(new CreateGeneratorCommand('generatorCode', [], [], [], 'sku', '-'));
-
         $context->buildViolation(
             'validation.create.target_attribute_does_not_exist',
             ['{{code}}' => 'sku']
@@ -66,9 +61,6 @@ class TargetAttributeShouldExistValidatorSpec extends ObjectBehavior
                 '',
                 []
             ));
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn(new CreateGeneratorCommand('generatorCode', [], [], [], 'sku', '-'));
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 

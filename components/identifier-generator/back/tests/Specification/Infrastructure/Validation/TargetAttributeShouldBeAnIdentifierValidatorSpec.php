@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifierValidator;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -56,9 +55,6 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
                 '',
                 []
             ));
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn(new CreateGeneratorCommand('generatorCode', [], [], [], 'sku', '-'));
 
         $context->buildViolation(
             'validation.create.target_attribute_is_not_an_identifier',
@@ -87,17 +83,6 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
                 '',
                 []
             ));
-        $command = new CreateGeneratorCommand(
-            'generatorCode',
-            [],
-            [['type' => 'free_text', 'string' => 'abcdef']],
-            ['fr' => 'Générateur'],
-            'sku',
-            '-'
-        );
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn($command);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 

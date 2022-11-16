@@ -37,8 +37,6 @@ final class AutoNumber implements PropertyInterface
         Assert::keyExists($normalizedProperty, 'numberMin');
         Assert::greaterThanEq($normalizedProperty['numberMin'], 0);
         Assert::keyExists($normalizedProperty, 'digitsMin');
-        Assert::greaterThanEq($normalizedProperty['digitsMin'], self::LIMIT_DIGITS_MIN);
-        Assert::lessThanEq($normalizedProperty['digitsMin'], self::LIMIT_DIGITS_MAX);
 
         return self::fromValues(intval($normalizedProperty['numberMin']), intval($normalizedProperty['digitsMin']));
     }

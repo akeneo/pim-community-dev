@@ -1,0 +1,34 @@
+Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand:
+    properties:
+        target:
+            -   NotBlank: ~
+            -   Type: string
+            -   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
+            -   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
+        structure:
+            -   NotBlank: ~
+            -   Count:
+                    max: 20
+            -   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\StructureShouldNotContainMultipleAutoNumber: ~
+            -   All:
+                    -   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextShouldBeValid: ~
+                    -   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid: ~
+                    -   Collection:
+                            fields:
+                                type:
+                                    -   Choice:
+                                            choices: ['free_text', 'auto_number']
+                                            message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                                string:
+                                    -   Optional:
+                                            -   NotBlank: ~
+                                            -   Length:
+                                                    max: 100
+                                            -   Type: string
+                                numberMin:
+                                    -   Optional:
+                                            -   PositiveOrZero: ~
+                                digitsMin:
+                                    -   Optional:
+                                            -   Positive: ~
+                                            -   LessThan: 15

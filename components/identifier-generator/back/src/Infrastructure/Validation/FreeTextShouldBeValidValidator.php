@@ -30,7 +30,7 @@ final class FreeTextShouldBeValidValidator extends ConstraintValidator
 
         if (!\array_key_exists('string', $property)) {
             $this->context
-                ->buildViolation($constraint->nonexistentStringKey)
+                ->buildViolation($constraint->stringKeyRequired)
                 ->addViolation();
         }
     }

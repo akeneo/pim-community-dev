@@ -13,11 +13,11 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AutoNumberLimitPerStructureValidator extends ConstraintValidator
+final class StructureShouldNotContainMultipleAutoNumberValidator extends ConstraintValidator
 {
     public function validate($structure, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, AutoNumberLimitPerStructure::class);
+        Assert::isInstanceOf($constraint, StructureShouldNotContainMultipleAutoNumber::class);
         if (!\is_array($structure)) {
             return;
         }
@@ -35,9 +35,9 @@ final class AutoNumberLimitPerStructureValidator extends ConstraintValidator
             }
         }
 
-        if ($countAutonumber > AutoNumberLimitPerStructure::LIMIT_PER_STRUCTURE) {
+        if ($countAutonumber > StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE) {
             $this->context
-                ->buildViolation($constraint->message, ['{{limit}}' => AutoNumberLimitPerStructure::LIMIT_PER_STRUCTURE])
+                ->buildViolation($constraint->message, ['{{limit}}' => StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE])
                 ->addViolation();
         }
     }

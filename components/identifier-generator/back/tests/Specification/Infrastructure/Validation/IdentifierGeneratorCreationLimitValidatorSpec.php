@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimit;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimitValidator;
@@ -40,18 +39,6 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->shouldBeCalledOnce()
             ->willReturn(1);
 
-        $command = new CreateGeneratorCommand(
-            'generatorCode',
-            [],
-            [['type' => 'free_text', 'string' => 'abcdef']],
-            ['fr' => 'Générateur'],
-            'sku',
-            '-'
-        );
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn($command);
-
         $context->buildViolation(
             'validation.create.identifier_limit_reached',
             ['{{limit}}' => 1]
@@ -69,18 +56,6 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->shouldBeCalledOnce()
             ->willReturn(2);
 
-        $command = new CreateGeneratorCommand(
-            'generatorCode',
-            [],
-            [['type' => 'free_text', 'string' => 'abcdef']],
-            ['fr' => 'Générateur'],
-            'sku',
-            '-'
-        );
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn($command);
-
         $context->buildViolation(
             'validation.create.identifier_limit_reached',
             ['{{limit}}' => 2]
@@ -97,18 +72,6 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->count()
             ->shouldBeCalledOnce()
             ->willReturn(1);
-
-        $command = new CreateGeneratorCommand(
-            'generatorCode',
-            [],
-            [['type' => 'free_text', 'string' => 'abcdef']],
-            ['fr' => 'Générateur'],
-            'sku',
-            '-'
-        );
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn($command);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 

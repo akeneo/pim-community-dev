@@ -110,7 +110,7 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'structure[0][numberMin]: This value should be either positive or zero.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with autoNumber without required field
+  Scenario: Cannot create an identifier generator with autoNumber missing required field
     When I try to create an identifier generator with autoNumber without required field
     Then I should get an error with message 'structure[0]: "numberMin, digitsMin" fields are required for "auto_number" type'
     And the identifier should not be created
