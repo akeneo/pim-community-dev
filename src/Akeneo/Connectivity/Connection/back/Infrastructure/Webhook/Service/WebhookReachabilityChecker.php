@@ -82,7 +82,6 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
             );
         } catch (GuzzleException $e) {
             if ($e instanceof RequestException && $e->hasResponse()) {
-
                 /** @var ResponseInterface */
                 $response = $e->getResponse();
 
