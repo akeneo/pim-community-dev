@@ -4,11 +4,6 @@ import {IdentifierGenerator} from '../models';
 import {Violation} from '../validators';
 import {UseMutateFunction} from 'react-query/types/react/types';
 
-type ErrorResponse = {
-  path: string;
-  message: string;
-}[];
-
 type HookResponse = {
   isLoading: boolean;
   save: UseMutateFunction<IdentifierGenerator, Violation[], IdentifierGenerator>;

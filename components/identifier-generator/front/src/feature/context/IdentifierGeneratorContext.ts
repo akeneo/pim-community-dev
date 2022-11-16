@@ -10,8 +10,7 @@ type IdentifierGeneratorContextType = {
 const defaultValue = {
   unsavedChanges: {
     hasUnsavedChanges: false,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    setHasUnsavedChanges: () => {},
+    setHasUnsavedChanges: () => null,
   },
 };
 
