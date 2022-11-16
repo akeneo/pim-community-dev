@@ -17,8 +17,10 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -34,68 +36,21 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
  */
 class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /** @var EntityWithValuesDraftBuilderInterface */
-    protected $entityWithValuesDraftBuilder;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $productDraftRepo;
-
-    /** @var RemoverInterface */
-    protected $productDraftRemover;
-
-    /** @var NotGrantedDataMergerInterface */
-    private $mergeDataOnProduct;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var PimUserDraftSourceFactory */
-    private $draftSourceFactory;
-
-    /** @var SaverInterface */
-    private $productSaver;
-
-    /** @var BulkSaverInterface */
-    private $bulkProductSaver;
-
-    /** @var SaverInterface */
-    private $productDraftSaver;
-
     public function __construct(
-        ObjectManager $objectManager,
-        AuthorizationCheckerInterface $authorizationChecker,
-        EntityWithValuesDraftBuilderInterface $entityWithValuesDraftBuilder,
-        TokenStorageInterface $tokenStorage,
-        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
-        RemoverInterface $productDraftRemover,
-        NotGrantedDataMergerInterface $mergeDataOnProduct,
-        ProductRepositoryInterface $productRepository,
-        PimUserDraftSourceFactory $draftSourceFactory,
-        SaverInterface $productSaver,
-        BulkSaverInterface $bulkProductSaver,
-        SaverInterface $productDraftSaver
+        private ObjectManager $objectManager,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private EntityWithValuesDraftBuilderInterface $entityWithValuesDraftBuilder,
+        private TokenStorageInterface $tokenStorage,
+        private EntityWithValuesDraftRepositoryInterface $productDraftRepo,
+        private RemoverInterface $productDraftRemover,
+        private NotGrantedDataMergerInterface $mergeDataOnProduct,
+        private ProductRepositoryInterface $productRepository,
+        private PimUserDraftSourceFactory $draftSourceFactory,
+        private SaverInterface $productSaver,
+        private BulkSaverInterface $bulkProductSaver,
+        private SaverInterface $productDraftSaver,
+        private CachedObjectRepositoryInterface $attributeRepository
     ) {
-        $this->objectManager = $objectManager;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->entityWithValuesDraftBuilder = $entityWithValuesDraftBuilder;
-        $this->tokenStorage = $tokenStorage;
-        $this->productDraftRepo = $productDraftRepo;
-        $this->productDraftRemover = $productDraftRemover;
-        $this->mergeDataOnProduct = $mergeDataOnProduct;
-        $this->productRepository = $productRepository;
-        $this->draftSourceFactory = $draftSourceFactory;
-        $this->productSaver = $productSaver;
-        $this->bulkProductSaver = $bulkProductSaver;
-        $this->productDraftSaver = $productDraftSaver;
     }
 
     /**
@@ -204,6 +159,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         );
 
         if (null !== $productDraft) {
+            $this->skipReadOnlyAttributes($productDraft);
             $this->productDraftSaver->save($productDraft, $options);
             $this->objectManager->refresh($fullProduct);
         } elseif (null !== $draft = $this->productDraftRepo->findUserEntityWithValuesDraft($fullProduct, $username)) {
@@ -229,5 +185,30 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $fullProduct = $this->productRepository->find($filteredProduct->getUuid());
 
         return $this->mergeDataOnProduct->merge($filteredProduct, $fullProduct);
+    }
+
+    /**
+     * Retrieve attributes in database to check is_read_only property.
+     * All read only values are removed from the $entityWithValuesDraft->getChanges().
+     * @param EntityWithValuesDraftInterface $entityWithValuesDraft
+     * @return void
+     */
+    private function skipReadOnlyAttributes(EntityWithValuesDraftInterface $entityWithValuesDraft): void
+    {
+        $changes = $entityWithValuesDraft->getChanges();
+
+        if (!isset($changes['values'])) {
+            return;
+        }
+
+        $readOnlyAttributes = array_filter(array_keys($changes['values']), function ($attributeCode) {
+            $attributeFromDatabase = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            return $attributeFromDatabase->getProperty('is_read_only') === true;
+        });
+        $valuesWithoutReadOnlyAttributes = array_diff_key($changes['values'], array_fill_keys($readOnlyAttributes, null));
+        $changes['values'] = $valuesWithoutReadOnlyAttributes;
+
+        $entityWithValuesDraft->setChanges($changes);
     }
 }

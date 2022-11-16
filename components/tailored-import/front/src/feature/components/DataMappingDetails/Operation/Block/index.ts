@@ -8,6 +8,7 @@ export * from './MultiReferenceEntityReplacementOperationBlock';
 export * from './MultiSelectReplacementOperationBlock';
 export * from './OperationBlockProps';
 export * from './RemoveWhitespaceOperationBlock';
+export * from './SearchAndReplace';
 export * from './SimpleReferenceEntityReplacementOperationBlock';
 export * from './SimpleSelectReplacementOperationBlock';
 export * from './SplitOperationBlock';

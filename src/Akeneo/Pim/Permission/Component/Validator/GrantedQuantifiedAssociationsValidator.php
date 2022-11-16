@@ -85,7 +85,7 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
 
         if (count($nonGrantedProducts) > 0) {
             $this->context->buildViolation(
-                GrantedQuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_MESSAGE,
+                QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_MESSAGE,
                 [
                     '{{ values }}' => implode(', ', $nonGrantedProducts),
                 ]
@@ -111,7 +111,7 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
 
         if (count($nonGrantedProductModelCodes) > 0) {
             $this->context->buildViolation(
-                GrantedQuantifiedAssociations::PRODUCT_MODELS_DO_NOT_EXIST_MESSAGE,
+                QuantifiedAssociations::PRODUCT_MODELS_DO_NOT_EXIST_MESSAGE,
                 [
                     '{{ values }}' => implode(', ', $nonGrantedProductModelCodes),
                 ]

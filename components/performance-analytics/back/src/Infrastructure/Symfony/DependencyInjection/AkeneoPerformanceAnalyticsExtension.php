@@ -26,8 +26,11 @@ final class AkeneoPerformanceAnalyticsExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('anti_corruption_layer.yml');
         $loader->load('actions.yml');
+        $loader->load('command_handlers.yml');
         $loader->load('feature_flag.yml');
+        $loader->load('pubsub.yml');
         $loader->load('query_handlers.yml');
         $loader->load('repositories.yml');
     }

@@ -121,3 +121,6 @@ free_trial:
   ft_catalog_api_secret: "fakeValue"
   ft_catalog_api_username: "fakeValue"
 
+performance_analytics:
+  pubsub:
+    topic_performance_analytics: srnt-fake-topic-performance-analytics

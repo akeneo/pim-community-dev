@@ -7,8 +7,6 @@ use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpsertVariantProductWithPermissionWithUuidEndToEnd extends ApiTestCase
@@ -29,7 +27,7 @@ class UpsertVariantProductWithPermissionWithUuidEndToEnd extends ApiTestCase
     public function testUpdateVariantProductValuesByMergingNonViewableAssociations()
     {
         $this->loader->loadProductsForAssociationPermissions();
-        $productOwnUuid = $this->getProductUuidFromIdentifier('product_own')->toString();
+        $productOwnUuid = $this->getProductUuid('product_own')->toString();
         $data = <<<JSON
             {
                 "values": {},
@@ -44,7 +42,7 @@ JSON;
         $this->assertUpdated('variant_product', $data);
 
         $expectedProduct = [
-            'uuid'         => $this->getProductUuidFromIdentifier('variant_product')->toString(),
+            'uuid'         => $this->getProductUuid('variant_product')->toString(),
             'identifier'   => 'variant_product',
             'family'       => 'family_permission',
             'parent'       => 'sub_product_model',
@@ -119,7 +117,7 @@ JSON;
         $this->assertUpdated('variant_product', $data);
 
         $expectedProduct = [
-            'uuid'         => $this->getProductUuidFromIdentifier('variant_product')->toString(),
+            'uuid'         => $this->getProductUuid('variant_product')->toString(),
             'identifier'    => 'variant_product',
             'family'        => 'family_permission',
             'parent'        => 'sub_product_model',
@@ -230,13 +228,12 @@ SQL;
             ['view_category', 'edit_category', 'own_category', 'category_without_right'],
             $categoryCodes
         );
-
     }
 
     public function testUpdateVariantProductAssociationWithNotViewableProduct()
     {
         $this->loader->loadProductsForAssociationPermissions();
-        $productNoView = $this->getProductUuidFromIdentifier('product_no_view')->toString();
+        $productNoView = $this->getProductUuid('product_no_view')->toString();
         $data = <<<JSON
             {
                 "values": {},
@@ -279,7 +276,7 @@ JSON;
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $uuid = $this->getProductUuidFromIdentifier('colored_sized_sweat_no_view')->toString();
+        $uuid = $this->getProductUuid('colored_sized_sweat_no_view')->toString();
         $client->request('PATCH', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], '{"values": {}, "categories": ["own_category"]}');
         $response = $client->getResponse();
 
@@ -444,7 +441,7 @@ JSON;
     private function assertUpdated(string $identifier, string $data, string $sql = null, array $expectedProductNormalized = null): void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $uuid = $this->getProductUuidFromIdentifier($identifier)->toString();
+        $uuid = $this->getProductUuid($identifier)->toString();
         $client->request('PATCH', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], $data);
         Assert::assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
         if (null !== $sql) {
@@ -460,7 +457,7 @@ JSON;
     private function assertUnauthorized(string $identifier, string $data, string $message)
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $uuid = $this->getProductUuidFromIdentifier($identifier)->toString();
+        $uuid = $this->getProductUuid($identifier)->toString();
         $client->request('PATCH', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], $data);
         $response = $client->getResponse();
 
@@ -478,7 +475,7 @@ JSON;
     private function assertUnprocessableEntity(string $identifier, string $data, string $message)
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $uuid = $this->getProductUuidFromIdentifier($identifier)->toString();
+        $uuid = $this->getProductUuid($identifier)->toString();
         $client->request('PATCH', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], $data);
         $response = $client->getResponse();
 
@@ -537,12 +534,5 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
     }
 }

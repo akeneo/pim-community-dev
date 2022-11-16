@@ -47,6 +47,11 @@ test('it can get the default operation for each type', () => {
     type: 'multi_reference_entity_replacement',
     mapping: {},
   });
+  expect(getDefaultOperation('search_and_replace')).toEqual({
+    uuid: expect.any(String),
+    type: 'search_and_replace',
+    replacements: [],
+  });
 
   // @ts-expect-error invalid type
   expect(() => getDefaultOperation('unknown')).toThrowError('Invalid operation type: "unknown"');

@@ -81,10 +81,10 @@ common:
     value: "Etc/UTC"
 
 elasticsearch:
-  appVersion: 7.16.2
+  appVersion: 7.17.7
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch
-    tag: 7.16.2
+    tag: 7.17.7
   fullnameOverride: elasticsearch
   sysctlInitContainer:
     enabled: true
@@ -203,7 +203,7 @@ mysql:
   image:
     mysql:
       repository: mysql
-      tag: "8.0.26"
+      tag: "8.0.30"
   common:
     class: ssd-retain-csi
   mysql:

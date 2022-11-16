@@ -36,6 +36,7 @@ class ReplacementOperationSpec extends ObjectBehavior
     public function it_returns_true_if_a_value_is_mapped()
     {
         $this->hasMappedValue('another_value')->shouldReturn(true);
+        $this->hasMappedValue('Another_Value')->shouldReturn(true);
     }
 
     public function it_returns_false_when_it_check_if_a_value_is_not_mapped()
@@ -46,6 +47,7 @@ class ReplacementOperationSpec extends ObjectBehavior
     public function it_returns_a_mapped_value()
     {
         $this->getMappedValue('another_value')->shouldReturn('another_replacement_value');
+        $this->getMappedValue('AnotheR_value')->shouldReturn('another_replacement_value');
     }
 
     public function it_returns_null_if_value_is_not_mapped()

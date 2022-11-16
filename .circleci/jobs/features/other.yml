@@ -21,6 +21,9 @@ jobs:
                   name: Static tests
                   command: PIM_CONTEXT=test make static-back
             - run:
+                  name: Run deprecations detections
+                  command: PIM_CONTEXT=test make deprecation-back
+            - run:
                   name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
                   command: PIM_CONTEXT=test make lint-back
             - run:

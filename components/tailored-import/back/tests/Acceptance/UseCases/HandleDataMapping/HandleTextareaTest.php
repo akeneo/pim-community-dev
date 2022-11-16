@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SearchAndReplaceOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SearchAndReplaceValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
 
@@ -173,6 +174,108 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                             new SetTextareaValue('name', null, null, 'i want the tags removed'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'i want the characters "decoded"'),
                             new SetTextareaValue('short_description', null, null, 'i want this "fully" cleaned'),
+                        ],
+                    ),
+                    [],
+                ),
+            ],
+            'it handles textarea attribute targets with Search and Replace operation' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '11111111-1111-1111-1111-111111111111' => 'case sensitive: THIS will be replaced with "that" but not this',
+                    '22222222-2222-2222-2222-222222222222' => 'case insensitive: ThIs and tHiS will be replaced with "that"',
+                    '33333333-3333-3333-3333-333333333333' => 'clear me all',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
+                        AttributeTarget::create(
+                            'description',
+                            'pim_catalog_textarea',
+                            'ecommerce',
+                            'fr_FR',
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['11111111-1111-1111-1111-111111111111'],
+                        OperationCollection::create([
+                            new SearchAndReplaceOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [
+                                    new SearchAndReplaceValue(
+                                        '00000000-0000-0000-0000-000000000001',
+                                        'THIS',
+                                        'that',
+                                        true,
+                                    ),
+                                ],
+                            ),
+                        ]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fed',
+                        AttributeTarget::create(
+                            'short_description',
+                            'pim_catalog_textarea',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['22222222-2222-2222-2222-222222222222'],
+                        OperationCollection::create([
+                            new SearchAndReplaceOperation(
+                                '00000000-0000-0000-0001-000000000000',
+                                [
+                                    new SearchAndReplaceValue(
+                                        '00000000-0000-0000-0001-000000000001',
+                                        'this',
+                                        'that',
+                                        false,
+                                    ),
+                                ],
+                            ),
+                        ]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fee',
+                        AttributeTarget::create(
+                            'long_description',
+                            'pim_catalog_textarea',
+                            null,
+                            null,
+                            'set',
+                            'clear',
+                            null,
+                        ),
+                        ['33333333-3333-3333-3333-333333333333'],
+                        OperationCollection::create([
+                            new SearchAndReplaceOperation(
+                                '00000000-0000-0000-0002-000000000000',
+                                [
+                                    new SearchAndReplaceValue(
+                                        '00000000-0000-0000-0002-000000000002',
+                                        'clear me all',
+                                        '',
+                                        false,
+                                    ),
+                                ],
+                            ),
+                        ]),
+                        [],
+                    ),
+                ],
+                'expected' => new ExecuteDataMappingResult(
+                    $this->createUpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        userIntents: [
+                            new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'case sensitive: that will be replaced with "that" but not this'),
+                            new SetTextareaValue('short_description', null, null, 'case insensitive: that and that will be replaced with "that"'),
                         ],
                     ),
                     [],

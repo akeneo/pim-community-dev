@@ -84,6 +84,13 @@ services:
       - '@validator'
       - '@serializer'
 
+  akeneo.tailored_import.controller.validate_search_and_replace_operation_action:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Controller\ValidateSearchAndReplaceOperationAction'
+    public: true
+    arguments:
+      - '@validator'
+      - '@serializer'
+
   akeneo.tailored_import.controller.get_category_trees_action:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetCategoryTreesAction
     public: true

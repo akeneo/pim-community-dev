@@ -1,0 +1,45 @@
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+parameters:
+    paths:
+        - components
+        - src
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#Unsafe usage of new static\(\)\.#'
+        # Internal deprecation
+        - '#Call to deprecated method getAttributeType\(\) of class Akeneo\\Pim\\Structure\\Component\\Model\\AttributeInterface#'
+        - '#Call to deprecated method fetchByIdentifiers\(\) of class Akeneo\\Pim\\Permission\\Bundle\\Enrichment\\Storage\\Sql\\Product\\FetchUserRightsOnProduct.#'
+        - '#Fetching class constant class of deprecated class Akeneo\\ReferenceEntity\\Domain\\Event\\RecordDeletedEvent#'
+        - '#Instantiation of deprecated class Akeneo\\ReferenceEntity\\Domain\\Event\\RecordDeletedEvent#'
+        - '#Parameter \$getViewableLocaleCodesForUser of method Akeneo\\Pim\\Permission\\Component\\Merger\\NotGrantedValuesMerger::__construct\(\) has typehint with deprecated interface Akeneo\\Channel\\Infrastructure\\Component\\Query\\PublicApi\\Permission\\GetAllViewableLocalesForUserInterface#'
+        - '#Parameter \$getViewableLocaleCodesForUser of method Akeneo\\Pim\\Permission\\Component\\Filter\\NotGrantedValuesFilter::__construct\(\) has typehint with deprecated interface Akeneo\\Channel\\Infrastructure\\Component\\Query\\PublicApi\\Permission\\GetAllViewableLocalesForUserInterface#'
+        - '#Parameter \$getAllViewableLocalesForUser of method AkeneoEnterprise\\Connectivity\\Connection\\Infrastructure\\Webhook\\CacheClearer::__construct\(\) has typehint with deprecated class Akeneo\\Pim\\Permission\\Bundle\\Persistence\\Sql\\LocaleRight\\GetAllViewableLocalesForUser#'
+        - '#Parameter \$getViewableLocalesForUser of method Akeneo\\Pim\\Permission\\Component\\Filter\\GrantedProductAttributeFilter::__construct\(\) has typehint with deprecated interface Akeneo\\Channel\\Infrastructure\\Component\\Query\\PublicApi\\Permission\\GetAllViewableLocalesForUserInterface#'
+        - '#Parameter \$getAllViewableLocalesForUser of method Akeneo\\Pim\\Permission\\Component\\Connector\\GetProductsWithQualityScoresWithPermissions::__construct\(\) has typehint with deprecated interface Akeneo\\Channel\\Infrastructure\\Component\\Query\\PublicApi\\Permission\\GetAllViewableLocalesForUserInterface#'
+        - '#Parameter \$getViewableLocaleCodesForUser of method Akeneo\\Pim\\Permission\\Bundle\\Enrichment\\Storage\\Sql\\ProductModel\\SqlGetConnectorProductModelsWithPermissions::__construct\(\) has typehint with deprecated interface Akeneo\\Channel\\Infrastructure\\Component\\Query\\PublicApi\\Permission\\GetAllViewableLocalesForUserInterface#'
+        - '#Parameter \$getAllViewableLocalesForUser of method Akeneo\\Pim\\Permission\\Component\\Connector\\GetProductModelsWithQualityScoresWithPermissions::__construct\(\) has typehint with deprecated interface Akeneo\\Channel\\Infrastructure\\Component\\Query\\PublicApi\\Permission\\GetAllViewableLocalesForUserInterface#'
+        - '#Parameter \$getAllViewableLocalesForUser of method Akeneo\\Pim\\Permission\\Component\\Connector\\GetProductsWithCompletenessesWithPermissions::__construct\(\) has typehint with deprecated interface Akeneo\\Channel\\Infrastructure\\Component\\Query\\PublicApi\\Permission\\GetAllViewableLocalesForUserInterface#'
+        - '#Class Akeneo\\Pim\\Permission\\Bundle\\MassEdit\\Processor\\EditCommonAttributesProcessor extends deprecated class Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\EditCommonAttributesProcessor#'
+        - '#Parameter \$categoryManager of method Akeneo\\Pim\\Permission\\Bundle\\Controller\\Ui\\ProductController::__construct\(\) has typehint with deprecated class Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\Category\\CategoryManager#'
+        - '#Parameter \$categoryManager of method Akeneo\\Pim\\Permission\\Bundle\\Controller\\Ui\\ProductModelController::__construct\(\) has typehint with deprecated class Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\Category\\CategoryManager#'
+        # Doctrine DBAL migration (CPM-741-upgrade-doctrine)
+        - '#Call to deprecated method executeUpdate#'
+        - '#Call to deprecated method fetch\(\) of class Doctrine\\DBAL\\Driver\\ResultStatement#'
+        - '#Fetching class constant class of deprecated class Doctrine\\DBAL\\DBALException#'
+        - '#Call to deprecated method exec\(\) of class Doctrine\\DBAL\\Connection#'
+        - '#Call to deprecated method execute\(\) of class Doctrine\\DBAL\\Statement#'
+        - '#Call to deprecated method query\(\) of class Doctrine\\DBAL\\Connection#'
+        - '#Call to deprecated method fetchColumn\(\) of class Doctrine\\DBAL\\Connection#'
+        - '#Call to deprecated method fetchColumn\(\) of class Doctrine\\DBAL\\Statement#'
+        - '#Call to deprecated method fetchColumn\(\) of class Doctrine\\DBAL\\Driver\\ResultStatement#'
+        - '#Call to deprecated method fetchColumn\(\) of class Doctrine\\DBAL\\ForwardCompatibility\\Result#'
+        - '#Fetching deprecated class constant DATETIME of class Doctrine\\DBAL\\Types\\Type#'
+        - '#Fetching deprecated class constant JSON of class Doctrine\\DBAL\\Types\\Type#'
+        - '#Fetching class constant ASSOCIATIVE of deprecated class Doctrine\\DBAL\\FetchMode#'
+        - '#Call to deprecated method fetchAll\(\) of class Doctrine\\DBAL\\Connection#'
+        - '#Call to deprecated method fetchAssoc\(\) of class Doctrine\\DBAL\\Connection#'
+    excludePaths:
+        - %currentWorkingDirectory%/*Spec.php
+        - %currentWorkingDirectory%/*SpecSkip.php
+        - %currentWorkingDirectory%/src/Akeneo/Tool/Bundle/RuleEngineBundle/Model/Rule.php

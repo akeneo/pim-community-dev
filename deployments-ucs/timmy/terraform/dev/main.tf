@@ -17,6 +17,7 @@ module "bucket" {
 }
 
 module "timmy_request_portal" {
+  enable              = var.enable_timmy_request_portal
   source              = "../modules/cloudfunction"
   project_id          = var.project_id
   name                = substr("${var.region_prefix}${local.prefix_branch_name}-timmy-request-portal", 0, 63)
@@ -205,6 +206,7 @@ module "timmy_delete_fire_document" {
 }
 
 module "timmy_cloudscheduler" {
+  enable                     = var.enable_timmy_cloudscheduler
   source                     = "../modules/cloudscheduler"
   project_id                 = var.project_id
   region                     = var.region

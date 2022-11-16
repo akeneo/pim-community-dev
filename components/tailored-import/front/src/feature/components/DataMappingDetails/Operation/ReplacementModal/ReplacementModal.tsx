@@ -6,6 +6,7 @@ import {
   Helper,
   Modal,
   Pagination,
+  Placeholder,
   Search,
   Table,
   TagInput,
@@ -16,9 +17,6 @@ import {
   formatParameters,
   getLabel,
   LabelCollection,
-  NoDataSection,
-  NoDataText,
-  NoDataTitle,
   NotificationLevel,
   useNotify,
   useRoute,
@@ -224,23 +222,20 @@ const ReplacementModal = ({
               <MappedFilterDropdown value={mappedFilterValue} onChange={handleMappedFilterValueChange} />
             </Search>
             {isDefaultReplacementValueFilter(replacementValueFilter) && 0 === values.length && (
-              <NoDataSection>
-                <AttributesIllustration size={256} />
-                <NoDataTitle>
-                  {translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.no_result.title')}
-                </NoDataTitle>
-              </NoDataSection>
+              <Placeholder
+                size="large"
+                title={translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.no_result.title')}
+                illustration={<AttributesIllustration />}
+              />
             )}
             {!isDefaultReplacementValueFilter(replacementValueFilter) && 0 === values.length && (
-              <NoDataSection>
-                <AttributesIllustration size={256} />
-                <NoDataTitle>
-                  {translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.empty_result.title')}
-                </NoDataTitle>
-                <NoDataText>
-                  {translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.empty_result.text')}
-                </NoDataText>
-              </NoDataSection>
+              <Placeholder
+                size="large"
+                title={translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.empty_result.title')}
+                illustration={<AttributesIllustration />}
+              >
+                {translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.empty_result.text')}
+              </Placeholder>
             )}
             {0 < values.length && (
               <Table>

@@ -53,6 +53,11 @@ pimee_tailored_import_validate_replacement_operation_action:
     defaults: { _controller: akeneo.tailored_import.controller.validate_replacement_operation_action }
     methods: [POST]
 
+pimee_tailored_import_validate_search_and_replace_operation_action:
+    path: /rest/tailored-import/validate-search-and-replace-operation
+    defaults: { _controller: akeneo.tailored_import.controller.validate_search_and_replace_operation_action }
+    methods: [POST]
+
 pimee_tailored_import_get_category_trees_action:
     path: /rest/tailored-import/get-category-trees
     defaults: { _controller: akeneo.tailored_import.controller.get_category_trees_action }

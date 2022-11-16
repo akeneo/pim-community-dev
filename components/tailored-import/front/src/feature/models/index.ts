@@ -15,4 +15,5 @@ export * from './PreviewData';
 export * from './Record';
 export * from './ReplacementValues';
 export * from './SampleData';
+export * from './SearchAndReplaceValue';
 export * from './Target';

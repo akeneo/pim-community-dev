@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
@@ -184,6 +185,7 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
                     '11111111-1111-1111-1111-111111111111' => 'case sensitive: THIS will be replaced with "that" but not this',
                     '22222222-2222-2222-2222-222222222222' => 'case insensitive: ThIs and tHiS will be replaced with "that"',
+                    '33333333-3333-3333-3333-333333333333' => 'clear me all',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -233,6 +235,33 @@ final class HandleTextTest extends HandleDataMappingTestCase
                                         '00000000-0000-0000-0001-000000000001',
                                         'this',
                                         'that',
+                                        false,
+                                    ),
+                                ],
+                            ),
+                        ]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fee',
+                        AttributeTarget::create(
+                            'long_description',
+                            'pim_catalog_text',
+                            null,
+                            null,
+                            'set',
+                            'clear',
+                            null,
+                        ),
+                        ['33333333-3333-3333-3333-333333333333'],
+                        OperationCollection::create([
+                            new SearchAndReplaceOperation(
+                                '00000000-0000-0000-0002-000000000000',
+                                [
+                                    new SearchAndReplaceValue(
+                                        '00000000-0000-0000-0002-000000000002',
+                                        'clear me all',
+                                        '',
                                         false,
                                     ),
                                 ],

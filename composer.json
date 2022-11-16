@@ -132,9 +132,11 @@
         "league/flysystem-aws-s3-v3": "^2.0",
         "liuggio/fastest": "1.8.*",
         "mcustiel/phiremock": "2.1.1",
+        "nunomaduro/phpinsights": "^2.0",
         "phpspec/phpspec": "^7.1.0",
         "phpspec/prophecy": "^1.14.0",
         "phpstan/phpstan": "^1.6.0",
+        "phpstan/phpstan-deprecation-rules": "^1.0.0",
         "phpstan/phpstan-symfony": "^1.1.0",
         "phpstan/phpstan-webmozart-assert": "^1.1.0",
         "phpunit/phpunit": "^9.5",
@@ -144,7 +146,6 @@
         "sensiolabs/behat-page-object-extension": "^2.3.3",
         "symfony/debug-bundle": "^5.4.0",
         "symfony/web-profiler-bundle": "^5.4.0",
-        "nunomaduro/phpinsights": "^2.0",
         "vimeo/psalm": "^4.10"
     },
     "repositories": {

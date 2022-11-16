@@ -60,83 +60,7 @@ jobs:
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
 
-    delete_tenant:
-        parameters:
-            PRODUCT_TYPE:
-                type: string
-                default: ""
-            TENANT_NAME:
-                type: string
-                default: ""
-        environment:
-            <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
-        resource_class: small
-        steps:
-            - attach_workspace:
-                  at: ~/
-            - set_gcloud_config_pim_saas_dev
-            - restore_persisted_env_vars
-            - run:
-                  name: Delete environments
-                  command: |
-                      TENANT_ID=${TYPE}-${TENANT_NAME}
-                      ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-
-                      # Login to argocd call k8s
-                      kubectl config set-context --current --namespace=argocd
-                      argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
-
-                      echo "      argocd app terminate-op ${TENANT_ID} --core || true"
-                      echo "      kubectl delete app ${TENANT_ID} -n argocd"
-                      echo "      kubectl delete ${TENANT_ID}"
-                      argocd app terminate-op ${TENANT_ID} --core || true
-                      kubectl delete app ${TENANT_ID} -n argocd
-                      kubectl delete ns ${TENANT_ID}
-
-    delete_tenant_timmy:
-        parameters:
-            PRODUCT_TYPE:
-                type: string
-                default: "srnt"
-        environment:
-            <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
-        resource_class: small
-        steps:
-            - attach_workspace:
-                  at: ~/
-            - set_gcloud_config_pim_saas_dev
-            - restore_persisted_env_vars
-            - restore_persisted_timmy_env_vars
-            - run:
-                  name: Define value for next steps
-                  command: |
-                      TENANT_ID="${TENANT_NAME}"
-                      REGION_PREFIX="eur-w-1b"
-
-                      echo export TENANT_ID=${TENANT_ID} >> $BASH_ENV
-                      echo export REGION_PREFIX=${REGION_PREFIX} >> $BASH_ENV
-
-                      echo "Tenant id : ${TENANT_ID}"
-                      echo "Region Prefix : ${REGION_PREFIX}"
-            - run:
-                  name: Delete Tenant
-                  no_output_timeout: 30m
-                  command: |
-                      FUNCTION_NAME=${REGION_PREFIX}-timmy-delete-tenant
-                      if [ ! -z "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
-                        FUNCTION_NAME=${REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-delete-tenant
-                      fi
-                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\",\"tenant_name\":\"%s\"}\n" ${CIRCLE_BRANCH} ${TENANT_ID} )
-                      gcloud  config unset auth/impersonate_service_account
-                      DELETE_TENANT_STATUS_CODE=0
-                      gcloud  beta functions call ${FUNCTION_NAME} --region=${GOOGLE_CLUSTER_REGION}  --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
-                      echo ${FUNCTION_NAME}
-                      echo ${JSON_BODY_STRING}
-                      exit ${DELETE_TENANT_STATUS_CODE}
-
-    delete_pim:
+    delete_ucs_pim:
         parameters:
             PIM_NAMESPACE_PREFIX:
               type: string
@@ -173,6 +97,37 @@ jobs:
                       argocd app terminate-op ${PIM_NAMESPACE} --core || true
                       kubectl delete app ${PIM_NAMESPACE} -n argocd
                       kubectl delete ns ${PIM_NAMESPACE}
+
+    delete_ucs_tenant:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+        environment:
+            <<: *envVarsDeployPIMSaaSDev
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - set_gcloud_config_pim_saas_dev
+            - restore_persisted_env_vars
+            - restore_persisted_timmy_env_vars
+            - run:
+                  name: Delete Tenant
+                  no_output_timeout: 30m
+                  command: |
+                      FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-timmy-delete-tenant
+                      if [ ! -z "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
+                        FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-delete-tenant
+                      fi
+                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\",\"tenant_name\":\"%s\"}\n" ${CIRCLE_BRANCH} ${TENANT_NAME} )
+                      gcloud  config unset auth/impersonate_service_account
+                      DELETE_TENANT_STATUS_CODE=0
+                      gcloud  beta functions call ${FUNCTION_NAME} --region=${GOOGLE_CLUSTER_REGION}  --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
+                      echo ${FUNCTION_NAME}
+                      echo ${JSON_BODY_STRING}
+                      exit ${DELETE_TENANT_STATUS_CODE}
 
     delete_timmy:
         parameters:

@@ -402,7 +402,7 @@ mysql:
   image:
     mysql:
       repository: mysql
-      tag: "8.0.26"
+      tag: "8.0.30"
   common:
     class: ssd-retain-csi
   mysql:
@@ -456,10 +456,10 @@ memcached:
     minAvailable: 0
 
 elasticsearch:
-  appVersion: 7.16.2
+  appVersion: 7.17.7
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch
-    tag: 7.16.2
+    tag: 7.17.7
   fullnameOverride: elasticsearch
   sysctlInitContainer:
     enabled: false
@@ -550,3 +550,6 @@ free_trial:
   hotjar_id: "2273004"
   google_analytics_account_id: UA-35417741-13
   heap_id: "3348469633"
+
+performance_analytics:
+    google_cloud_project: "akecld-prd-perf-analytics-sdb"

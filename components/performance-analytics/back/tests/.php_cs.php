@@ -8,6 +8,8 @@ return (new PhpCsFixer\Config())
                 'on_multiline' => 'ensure_fully_multiline'
             ],
             'yoda_style' => false,
+            'phpdoc_align' => false,
+            'phpdoc_separation' => [],
         ]
     )
     ->setCacheFile('var/php_cs.performance_analytics.cache')

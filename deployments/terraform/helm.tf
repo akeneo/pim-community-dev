@@ -290,6 +290,13 @@ resource "local_file" "helm_pim_config" {
           }
         }
       }
+
+      performance_analytics = {
+        service_account_key = base64encode(data.google_secret_manager_secret_version.performance_analytics_service_account_key.secret_data)
+        topic = {
+          name = "${var.google_project_zone}-pim-enriched-product"
+        }
+      }
     }
   )
   filename = "./tf-helm-pim-values.yaml"

@@ -38,6 +38,7 @@ data:
   APP_SECRET: {{ .Values.pim.secret }}
   SRNT_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/srnt.json
   SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
+  PERFORMANCE_ANALYTICS_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/performance_analytics_key.json
   APP_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
   {{- if .Values.onboarder.enabled }}
@@ -69,6 +70,7 @@ data:
   PUBSUB_TOPIC_JOB_QUEUE_UI: {{ .Values.pim.pubsub.topic_job_queue_ui }}
   PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
   PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
+  PUBSUB_TOPIC_PERFORMANCE_ANALYTICS: {{ .Values.performance_analytics.pubsub.topic_performance_analytics }}
 
   LOGGING_LEVEL: {{ .Values.pim.logging_level }}
   {{- if .Values.free_trial.enabled }}

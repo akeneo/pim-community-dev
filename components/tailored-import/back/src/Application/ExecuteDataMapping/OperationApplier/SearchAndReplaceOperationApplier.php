@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\Unex
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SearchAndReplaceOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -32,7 +33,7 @@ final class SearchAndReplaceOperationApplier implements OperationApplierInterfac
         };
     }
 
-    private function searchAndReplace(SearchAndReplaceOperation $operation, StringValue $value): StringValue
+    private function searchAndReplace(SearchAndReplaceOperation $operation, StringValue $value): StringValue|NullValue
     {
         $stringValue = $value->getValue();
 
@@ -42,6 +43,10 @@ final class SearchAndReplaceOperationApplier implements OperationApplierInterfac
             } else {
                 $stringValue = str_ireplace($replacement->getWhat(), $replacement->getWith(), $stringValue);
             }
+        }
+
+        if ('' === $stringValue) {
+            return new NullValue();
         }
 
         return new StringValue($stringValue);

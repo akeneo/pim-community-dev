@@ -34,41 +34,14 @@ use Webmozart\Assert\Assert;
  */
 class ProductProposalController
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
-
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $productDraftRepository;
-
-    /** @var EntityWithValuesDraftManager */
-    protected $productDraftManager;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface    $productRepository
-     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
-     * @param EntityWithValuesDraftManager             $productDraftManager
-     * @param TokenStorageInterface                    $tokenStorage
-     * @param AuthorizationCheckerInterface            $authorizationChecker
-     */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        EntityWithValuesDraftManager $productDraftManager,
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
-        private SecurityFacadeInterface $security,
+        private IdentifiableObjectRepositoryInterface $productRepository,
+        private EntityWithValuesDraftRepositoryInterface $productDraftRepository,
+        private EntityWithValuesDraftManager $productDraftManager,
+        private TokenStorageInterface $tokenStorage,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private SecurityFacadeInterface $security
     ) {
-        $this->productRepository = $productRepository;
-        $this->productDraftRepository = $productDraftRepository;
-        $this->productDraftManager = $productDraftManager;
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**

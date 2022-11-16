@@ -1,0 +1,5 @@
+services:
+    Akeneo\PerformanceAnalytics\Domain\Product\GetProducts:
+        class: Akeneo\PerformanceAnalytics\Infrastructure\AntiCorruptionLayer\ACLGetProducts
+        arguments:
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_without_permissions'

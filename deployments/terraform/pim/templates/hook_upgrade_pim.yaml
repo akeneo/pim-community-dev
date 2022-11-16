@@ -47,6 +47,10 @@ spec:
               mountPath: /var/secrets/google/srnt.json
               subPath: srnt.json
               readOnly: true
+            - name: google-cloud-performance-analytics-key
+              mountPath: /var/secrets/google/performance_analytics_key.json
+              subPath: performance_analytics_key.json
+              readOnly: true
             {{- if .Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
@@ -62,6 +66,12 @@ spec:
             items:
             - key: srntPimStorageKey
               path: srnt.json
+        - name: google-cloud-performance-analytics-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: performanceAnalyticsKey
+              path: performance_analytics_key.json
         {{- if .Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:
