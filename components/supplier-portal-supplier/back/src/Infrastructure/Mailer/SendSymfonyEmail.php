@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer;
 
+use Akeneo\SupplierPortal\Supplier\Domain\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\SendEmail;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 
-class SendSymfonyEmail
+class SendSymfonyEmail implements SendEmail
 {
     public function __construct(
         private MailerInterface $mailer,
     ) {
     }
 
-    public function __invoke(SymfonyEmail $email): void
+    public function __invoke(Email $email): void
     {
         $emailMessage = (new TemplatedEmail())
             ->subject($email->subject)

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer;
+namespace Akeneo\SupplierPortal\Supplier\Domain;
 
-final class SymfonyEmail
+final class Email
 {
     public function __construct(
         public string $subject,

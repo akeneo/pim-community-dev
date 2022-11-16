@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
-use Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSymfonyEmail;
-use Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SymfonyEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\SendEmail;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\SetUpPasswordUrl;
 
 class SendTwigWelcomeEmail implements SendWelcomeEmail
 {
     public function __construct(
-        private SendSymfonyEmail $sendSymfonyEmail,
+        private SendEmail $sendEmail,
         private string $domain,
         private string $assetsPath,
     ) {
@@ -23,7 +23,7 @@ class SendTwigWelcomeEmail implements SendWelcomeEmail
         $setUpPasswordUrl = sprintf(SetUpPasswordUrl::VALUE, $this->domain, $accessToken);
         $embeddedLogoPath = sprintf('%s/%s', $this->assetsPath, 'images/supplier_portal_logo.png');
 
-        $symfonyEmail = new SymfonyEmail(
+        $email = new Email(
             "You've received an invitation to contribute to Akeneo Supplier Portal",
             '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.html.twig',
             '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.txt.twig',
@@ -35,6 +35,6 @@ class SendTwigWelcomeEmail implements SendWelcomeEmail
             $embeddedLogoPath,
         );
 
-        ($this->sendSymfonyEmail)($symfonyEmail);
+        ($this->sendEmail)($email);
     }
 }

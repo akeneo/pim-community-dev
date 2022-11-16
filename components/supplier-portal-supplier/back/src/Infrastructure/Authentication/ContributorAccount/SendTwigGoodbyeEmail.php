@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail;
-use Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSymfonyEmail;
-use Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SymfonyEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\SendEmail;
 
 class SendTwigGoodbyeEmail implements SendGoodbyeEmail
 {
     public function __construct(
-        private SendSymfonyEmail $sendSymfonyEmail,
+        private SendEmail $sendEmail,
         private string $assetsPath,
     ) {
     }
@@ -20,7 +20,7 @@ class SendTwigGoodbyeEmail implements SendGoodbyeEmail
     {
         $embeddedLogoPath = sprintf('%s/%s', $this->assetsPath, 'images/supplier_portal_logo.png');
 
-        $symfonyEmail = new SymfonyEmail(
+        $email = new Email(
             'Your account has been removed from Akeneo Supplier Portal',
             '@AkeneoSupplierPortalSupplier/Email/contributor-removed.html.twig',
             '@AkeneoSupplierPortalSupplier/Email/contributor-removed.txt.twig',
@@ -31,6 +31,6 @@ class SendTwigGoodbyeEmail implements SendGoodbyeEmail
             $embeddedLogoPath,
         );
 
-        ($this->sendSymfonyEmail)($symfonyEmail);
+        ($this->sendEmail)($email);
     }
 }
