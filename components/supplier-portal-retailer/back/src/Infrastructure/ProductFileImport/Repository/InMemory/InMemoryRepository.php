@@ -21,10 +21,10 @@ final class InMemoryRepository implements ProductFileImportRepository
         return $this->productFileImports[$productFileIdentifier] ?? null;
     }
 
-    public function findByJobExecutionId(int $jobExecutionId): ?ProductFileImport
+    public function findByImportExecutionId(int $importExecutionId): ?ProductFileImport
     {
         foreach ($this->productFileImports as $productFileImport) {
-            if ($jobExecutionId === $productFileImport->importExecutionId()) {
+            if ($importExecutionId === $productFileImport->importExecutionId()) {
                 return $productFileImport;
             }
         }

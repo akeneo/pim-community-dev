@@ -60,7 +60,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $productFileImport = ProductFileImport::start($productFile, 666);
         $sut->save($productFileImport);
 
-        $result = $sut->findByJobExecutionId(666);
+        $result = $sut->findByImportExecutionId(666);
         $this->assertSame($result->importExecutionId(), 666);
         $this->assertSame($result->productFileIdentifier(), '44ce8069-8da1-4986-872f-311737f46f02');
     }
@@ -68,7 +68,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itReturnsNullIfProductFileImportDoesNotExist(): void
     {
-        $this->assertNull($this->get(ProductFileImportRepository::class)->findByJobExecutionId(666));
+        $this->assertNull($this->get(ProductFileImportRepository::class)->findByImportExecutionId(666));
     }
 
     private function createProductFile(string $identifier): ProductFile

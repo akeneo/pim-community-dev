@@ -10,5 +10,5 @@ interface ProductFileImportRepository
 {
     public function save(ProductFileImport $productFileImport): void;
 
-    public function findByJobExecutionId(int $jobExecutionId): ?ProductFileImport;
+    public function findByImportExecutionId(int $importExecutionId): ?ProductFileImport;
 }

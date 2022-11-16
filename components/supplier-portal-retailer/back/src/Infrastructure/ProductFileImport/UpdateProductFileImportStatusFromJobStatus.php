@@ -17,7 +17,7 @@ final class UpdateProductFileImportStatusFromJobStatus implements UpdateProductF
 
     public function __invoke(int $jobStatus, int $jobExecutionId): void
     {
-        $productFileImport = $this->productFileImportRepository->findByJobExecutionId($jobExecutionId);
+        $productFileImport = $this->productFileImportRepository->findByImportExecutionId($jobExecutionId);
 
         if (null === $productFileImport) {
             return;

@@ -41,7 +41,7 @@ SQL;
         );
     }
 
-    public function findByJobExecutionId(int $jobExecutionId): ?ProductFileImport
+    public function findByImportExecutionId(int $importExecutionId): ?ProductFileImport
     {
         $sql = <<<SQL
             SELECT 
@@ -54,7 +54,7 @@ SQL;
 SQL;
         $productFileImport = $this->connection->executeQuery(
             $sql,
-            ['jobExecutionId' => $jobExecutionId],
+            ['jobExecutionId' => $importExecutionId],
         )->fetchAssociative();
 
         if (false === $productFileImport) {
