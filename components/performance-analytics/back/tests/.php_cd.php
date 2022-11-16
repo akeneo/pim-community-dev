@@ -56,6 +56,9 @@ $rules = [
             'Google\Cloud\PubSub\Message',
             'Google\Cloud\PubSub\PubSubClient',
             'Google\Cloud\PubSub\Topic',
+
+            // DBAL
+            'Doctrine\DBAL\Connection',
         ]
     )->in('Akeneo\PerformanceAnalytics\Infrastructure'),
 ];

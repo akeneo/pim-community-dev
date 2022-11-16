@@ -8,6 +8,7 @@ use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
 use Akeneo\PerformanceAnalytics\Domain\Product\GetProducts;
 use Akeneo\PerformanceAnalytics\Domain\Product\Product;
+use Akeneo\PerformanceAnalytics\Infrastructure\AntiCorruptionLayer\ACLGetCategoryCodesWithAncestors;
 use Akeneo\PerformanceAnalytics\Infrastructure\AntiCorruptionLayer\ACLGetProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
@@ -20,9 +21,11 @@ use Ramsey\Uuid\Uuid;
 
 class ACLGetProductsSpec extends ObjectBehavior
 {
-    public function let(GetConnectorProducts $getConnectorProducts)
-    {
-        $this->beConstructedWith($getConnectorProducts);
+    public function let(
+        GetConnectorProducts $getConnectorProducts,
+        ACLGetCategoryCodesWithAncestors $aclGetCategoryCodesWithAncestors
+    ) {
+        $this->beConstructedWith($getConnectorProducts, $aclGetCategoryCodesWithAncestors);
     }
 
     public function it_is_a_get_products()
@@ -36,8 +39,10 @@ class ACLGetProductsSpec extends ObjectBehavior
         $this->byUuids([])->shouldReturn([]);
     }
 
-    public function it_returns_a_list_of_products(GetConnectorProducts $getConnectorProducts)
-    {
+    public function it_returns_a_list_of_products(
+        GetConnectorProducts $getConnectorProducts,
+        ACLGetCategoryCodesWithAncestors $aclGetCategoryCodesWithAncestors
+    ) {
         $uuid1 = Uuid::uuid4();
         $uuid2 = Uuid::uuid4();
 
@@ -81,19 +86,25 @@ class ACLGetProductsSpec extends ObjectBehavior
                     null
                 ),
             ]));
+        $aclGetCategoryCodesWithAncestors->forProductUuids([$uuid1, $uuid2])->willReturn([
+            $uuid1->toString() => [CategoryCode::fromString('category1'), CategoryCode::fromString('category2')],
+            $uuid2->toString() => [CategoryCode::fromString('category3'), CategoryCode::fromString('master')],
+        ]);
 
         $this->byUuids([$uuid1, $uuid2])->shouldBeLike([
             $uuid1->toString() => Product::fromProperties(
                 $uuid1,
                 $creationDate1,
                 FamilyCode::fromString('family1'),
+                [CategoryCode::fromString('category1'), CategoryCode::fromString('category2')],
                 [CategoryCode::fromString('category1'), CategoryCode::fromString('category2')]
             ),
             $uuid2->toString() => Product::fromProperties(
                 $uuid2,
                 $creationDate2,
                 null,
-                [CategoryCode::fromString('category3')]
+                [CategoryCode::fromString('category3')],
+                [CategoryCode::fromString('category3'), CategoryCode::fromString('master')]
             ),
         ]);
     }

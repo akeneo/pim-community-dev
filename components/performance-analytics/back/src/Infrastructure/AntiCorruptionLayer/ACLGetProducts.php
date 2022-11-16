@@ -24,8 +24,10 @@ use Webmozart\Assert\Assert;
 
 final class ACLGetProducts implements GetProducts
 {
-    public function __construct(private GetConnectorProducts $getConnectorProducts)
-    {
+    public function __construct(
+        private GetConnectorProducts $getConnectorProducts,
+        private ACLGetCategoryCodesWithAncestors $aclGetCategoryCodesWithAncestors
+    ) {
     }
 
     /**
@@ -46,6 +48,7 @@ final class ACLGetProducts implements GetProducts
             null,
             null
         );
+        $categoryCodesWithAncestors = $this->aclGetCategoryCodesWithAncestors->forProductUuids($uuids);
 
         $products = [];
         /** @var ConnectorProduct $connectorProduct */
@@ -57,7 +60,8 @@ final class ACLGetProducts implements GetProducts
                 \array_map(
                     fn (string $categoryCode): CategoryCode => CategoryCode::fromString($categoryCode),
                     $connectorProduct->categoryCodes()
-                )
+                ),
+                $categoryCodesWithAncestors[$connectorProduct->uuid()->toString()] ?? []
             );
         }
 

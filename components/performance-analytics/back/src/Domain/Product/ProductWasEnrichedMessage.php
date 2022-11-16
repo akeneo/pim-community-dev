@@ -51,10 +51,20 @@ final class ProductWasEnrichedMessage implements Message
             'product_uuid' => $this->product->uuid()->toString(),
             'product_created_at' => $this->product->createdAt()->format('c'),
             'family_code' => $this->product->familyCode()?->toString(),
-            'category_codes' => array_map(fn (CategoryCode $category) => $category->toString(), $this->product->categories()),
+            'category_codes' => $this->normalizeCategoryCodes($this->product->categoryCodes()),
+            'category_codes_with_ancestors' => $this->normalizeCategoryCodes($this->product->categoryWithAncestorsCodes()),
             'channel_code' => $this->channelCode->toString(),
             'locale_code' => $this->localeCode->toString(),
             'enriched_at' => $this->enrichedAt->format('c'),
         ];
+    }
+
+    /**
+     * @param CategoryCode[] $categoryCodes
+     * @return string[]
+     */
+    private function normalizeCategoryCodes(array $categoryCodes): array
+    {
+        return \array_map(static fn (CategoryCode $category): string => $category->toString(), $categoryCodes);
     }
 }

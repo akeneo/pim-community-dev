@@ -56,20 +56,16 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
             $productUuid1,
             new \DateTimeImmutable('2022-07-01'),
             FamilyCode::fromString('family1'),
-            [
-                CategoryCode::fromString('category1'),
-                CategoryCode::fromString('category2'),
-            ]
+            [CategoryCode::fromString('category1'), CategoryCode::fromString('category2')],
+            [CategoryCode::fromString('category1'), CategoryCode::fromString('category2')]
         );
 
         $product2 = Product::fromProperties(
             $productUuid2,
             new \DateTimeImmutable('2022-06-01'),
             FamilyCode::fromString('family2'),
-            [
-                CategoryCode::fromString('category3'),
-                CategoryCode::fromString('category4'),
-            ]
+            [CategoryCode::fromString('category3'), CategoryCode::fromString('category4')],
+            [CategoryCode::fromString('category3'), CategoryCode::fromString('category4')]
         );
 
         $getProducts->byUuids([$productUuid1, $productUuid2])->willReturn([
@@ -135,10 +131,8 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
             $productUuid1,
             new \DateTimeImmutable('2022-07-01'),
             FamilyCode::fromString('family1'),
-            [
-                CategoryCode::fromString('category1'),
-                CategoryCode::fromString('category2'),
-            ]
+            [CategoryCode::fromString('category1'), CategoryCode::fromString('category2')],
+            [CategoryCode::fromString('category1'), CategoryCode::fromString('category2')],
         );
 
         $getProducts->byUuids([$productUuid1->toString(), $productUuid2->toString()])->willReturn([

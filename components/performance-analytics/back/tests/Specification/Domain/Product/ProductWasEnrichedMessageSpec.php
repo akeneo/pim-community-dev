@@ -53,7 +53,8 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             'product_uuid' => $product->uuid()->toString(),
             'product_created_at' => $product->createdAt()->format('c'),
             'family_code' => $product->familyCode()?->toString(),
-            'category_codes' => array_map(fn (CategoryCode $category) => $category->toString(), $product->categories()),
+            'category_codes' => ['category1', 'category2'],
+            'category_codes_with_ancestors' => ['category1', 'category2', 'parent'],
             'channel_code' => 'ecommerce',
             'locale_code' => 'en_US',
             'enriched_at' => '2022-01-05T00:00:00+00:00',
@@ -66,6 +67,7 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             Uuid::uuid4(),
             new \DateTimeImmutable(),
             null,
+            [],
             []
         );
 
@@ -81,6 +83,7 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             'product_created_at' => $product->createdAt()->format('c'),
             'family_code' => null,
             'category_codes' => [],
+            'category_codes_with_ancestors' => [],
             'channel_code' => 'ecommerce',
             'locale_code' => 'en_US',
             'enriched_at' => '2022-01-05T00:00:00+00:00',
@@ -96,6 +99,11 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             [
                 CategoryCode::fromString('category1'),
                 CategoryCode::fromString('category2'),
+            ],
+            [
+                CategoryCode::fromString('category1'),
+                CategoryCode::fromString('category2'),
+                CategoryCode::fromString('parent'),
             ]
         );
     }

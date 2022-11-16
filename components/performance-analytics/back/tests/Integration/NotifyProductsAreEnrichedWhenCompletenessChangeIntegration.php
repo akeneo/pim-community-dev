@@ -28,6 +28,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\Client;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory;
+use Google\Cloud\PubSub\Message;
 use Google\Cloud\PubSub\Subscription;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\UuidInterface;
@@ -171,14 +172,21 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         $this->assertProductChannelLocaleIsInMessages($productEnrichedAtUpdate->getUuid(), 'tablet', 'fr_FR', $messages);
     }
 
+    /**
+     * @return Message[]
+     */
     private function pullAndAckMessages(): array
     {
-        $messages = $this->subscription->pull(['returnImmediately' => true]);
-        if ([] !== $messages) {
-            $this->subscription->acknowledgeBatch($messages);
-        }
+        $allMessages = [];
+        do {
+            $messages = $this->subscription->pull(['returnImmediately' => true]);
+            if ([] !== $messages) {
+                $this->subscription->acknowledgeBatch($messages);
+            }
+            $allMessages = [...$allMessages, ...$messages];
+        } while ([] !== $messages);
 
-        return $messages;
+        return $allMessages;
     }
 
     private function createProductEntity(string $identifier, ?string $familyCode, array $values): ProductInterface

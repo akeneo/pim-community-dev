@@ -3,3 +3,8 @@ services:
         class: Akeneo\PerformanceAnalytics\Infrastructure\AntiCorruptionLayer\ACLGetProducts
         arguments:
             - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_without_permissions'
+            - '@Akeneo\PerformanceAnalytics\Infrastructure\AntiCorruptionLayer\ACLGetCategoryCodesWithAncestors'
+
+    Akeneo\PerformanceAnalytics\Infrastructure\AntiCorruptionLayer\ACLGetCategoryCodesWithAncestors:
+        arguments:
+            - '@database_connection'

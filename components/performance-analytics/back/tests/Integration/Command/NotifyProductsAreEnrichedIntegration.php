@@ -29,6 +29,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\Client;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory;
+use Google\Cloud\PubSub\Message;
 use Google\Cloud\PubSub\Subscription;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -110,35 +111,47 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
         self::assertSame('fake_pfid', $attributes['pfid'] ?? null);
         self::assertSame('fake_tenant_id', $attributes['tenant_id'] ?? null);
 
+        $message1 = \json_decode($messages[0]->data(), true);
+        \sort($message1['category_codes']);
+        \sort($message1['category_codes_with_ancestors']);
         self::assertSame([
             'product_uuid' => $product1->getUuid()->toString(),
             'product_created_at' => $product1->getCreated()->format('c'),
             'family_code' => 'familyA',
             'category_codes' => ['categoryA', 'categoryC'],
+            'category_codes_with_ancestors' => ['categoryA', 'categoryC', 'master'],
             'channel_code' => 'ecommerce',
             'locale_code' => 'en_US',
             'enriched_at' => '2022-01-30T00:00:00+00:00',
-        ], \json_decode($messages[0]->data(), true));
+        ], $message1);
 
+        $message2 = \json_decode($messages[1]->data(), true);
+        \sort($message2['category_codes']);
+        \sort($message2['category_codes_with_ancestors']);
         self::assertSame([
             'product_uuid' => $product1->getUuid()->toString(),
             'product_created_at' => $product1->getCreated()->format('c'),
             'family_code' => 'familyA',
             'category_codes' => ['categoryA', 'categoryC'],
+            'category_codes_with_ancestors' => ['categoryA', 'categoryC', 'master'],
             'channel_code' => 'ecommerce',
             'locale_code' => 'fr_FR',
             'enriched_at' => '2022-01-30T00:00:00+00:00',
-        ], \json_decode($messages[1]->data(), true));
+        ], $message2);
 
+        $message3 = \json_decode($messages[2]->data(), true);
+        \sort($message3['category_codes']);
+        \sort($message3['category_codes_with_ancestors']);
         self::assertSame([
             'product_uuid' => $product2->getUuid()->toString(),
             'product_created_at' => $product2->getCreated()->format('c'),
             'family_code' => 'familyA1',
             'category_codes' => ['categoryB'],
+            'category_codes_with_ancestors' => ['categoryB', 'master'],
             'channel_code' => 'mobile',
             'locale_code' => 'fr_FR',
             'enriched_at' => '2022-02-28T00:00:00+00:00',
-        ], \json_decode($messages[2]->data(), true));
+        ], $message3);
     }
 
     private function createProduct(
@@ -163,13 +176,20 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
         return $user->getId();
     }
 
+    /**
+     * @return Message[]
+     */
     private function pullAndAckMessages(): array
     {
-        $messages = $this->subscription->pull(['returnImmediately' => true]);
-        if ([] !== $messages) {
-            $this->subscription->acknowledgeBatch($messages);
-        }
+        $allMessages = [];
+        do {
+            $messages = $this->subscription->pull(['returnImmediately' => true]);
+            if ([] !== $messages) {
+                $this->subscription->acknowledgeBatch($messages);
+            }
+            $allMessages = [...$allMessages, ...$messages];
+        } while ([] !== $messages);
 
-        return $messages;
+        return $allMessages;
     }
 }

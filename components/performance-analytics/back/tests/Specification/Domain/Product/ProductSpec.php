@@ -27,10 +27,8 @@ class ProductSpec extends ObjectBehavior
             Uuid::uuid4(),
             new \DateTimeImmutable(),
             FamilyCode::fromString('family'),
-            [
-                CategoryCode::fromString('category1'),
-                CategoryCode::fromString('category2'),
-            ],
+            [CategoryCode::fromString('category1'), CategoryCode::fromString('category2')],
+            [CategoryCode::fromString('category1'), CategoryCode::fromString('category2'), CategoryCode::fromString('A')],
         ]);
     }
 
@@ -49,6 +47,7 @@ class ProductSpec extends ObjectBehavior
                 'category1',
                 CategoryCode::fromString('category2'),
             ],
+            [],
         ]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }

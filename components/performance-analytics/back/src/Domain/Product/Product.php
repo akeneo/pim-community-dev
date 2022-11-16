@@ -21,27 +21,32 @@ use Webmozart\Assert\Assert;
 final class Product
 {
     /**
-     * @param array<CategoryCode> $categories
+     * @param array<CategoryCode> $categoryCodes
+     * @param array<CategoryCode> $categoryWithAncestorsCodes
      */
     private function __construct(
         private UuidInterface $uuid,
         private \DateTimeImmutable $createdAt,
         private ?FamilyCode $familyCode,
-        private array $categories
+        private array $categoryCodes,
+        private array $categoryWithAncestorsCodes
     ) {
-        Assert::allIsInstanceOf($this->categories, CategoryCode::class);
+        Assert::allIsInstanceOf($this->categoryCodes, CategoryCode::class);
+        Assert::allIsInstanceOf($this->categoryWithAncestorsCodes, CategoryCode::class);
     }
 
     /**
-     * @param array<CategoryCode> $categories
+     * @param array<CategoryCode> $categoryCodes
+     * @param array<CategoryCode> $categoryWithAncestorsCodes
      */
     public static function fromProperties(
         UuidInterface $uuid,
         \DateTimeImmutable $createdAt,
         ?FamilyCode $familyCode,
-        array $categories
+        array $categoryCodes,
+        array $categoryWithAncestorsCodes
     ): Product {
-        return new Product($uuid, $createdAt, $familyCode, $categories);
+        return new Product($uuid, $createdAt, $familyCode, $categoryCodes, $categoryWithAncestorsCodes);
     }
 
     public function uuid(): UuidInterface
@@ -62,8 +67,16 @@ final class Product
     /**
      * @return array<CategoryCode>
      */
-    public function categories(): array
+    public function categoryCodes(): array
     {
-        return $this->categories;
+        return $this->categoryCodes;
+    }
+
+    /**
+     * @return array<CategoryCode>
+     */
+    public function categoryWithAncestorsCodes(): array
+    {
+        return $this->categoryWithAncestorsCodes;
     }
 }
