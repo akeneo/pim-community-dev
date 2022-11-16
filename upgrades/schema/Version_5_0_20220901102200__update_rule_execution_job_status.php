@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Pim\Upgrade\schema;
+namespace Pim\Upgrade\Schema;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
