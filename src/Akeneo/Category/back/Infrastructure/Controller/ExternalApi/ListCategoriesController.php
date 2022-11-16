@@ -41,7 +41,10 @@ class ListCategoriesController extends AbstractController
     public function __invoke(Request $request): JsonResponse|Response
     {
         if (!$this->featureFlags->isEnabled('enriched_category')) {
-            return $this->forward('pim_api.controller.category::listAction');
+            return $this->forward(
+                controller: 'pim_api.controller.category::listAction',
+                query: $request->query->all(),
+            );
         }
 
         try {
