@@ -8,6 +8,7 @@ use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAcco
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 final class ContributorAccountProviderTest extends TestCase
 {
@@ -23,10 +24,50 @@ final class ContributorAccountProviderTest extends TestCase
     public function itCanLoadAUserFromItsEmail(): void
     {
         $contributorAccount = new ContributorAccount('burger@example.com', 'password');
+
         $query = $this->createMock(DatabaseGetContributorAccountByEmail::class);
-        $query->expects($this->exactly(1))->method('__invoke')->with('burger@example.com')->willReturn($contributorAccount);
+        $query
+            ->expects($this->exactly(1))
+            ->method('__invoke')
+            ->with('burger@example.com')
+            ->willReturn($contributorAccount);
+
         $provider = new ContributorAccountProvider($query);
 
         $this->assertEquals($contributorAccount, $provider->loadUserByIdentifier('burger@example.com'));
+    }
+
+    /** @test */
+    public function itThrowsAnExceptionWhenLoadingANonExistingUser(): void
+    {
+        $query = $this->createMock(DatabaseGetContributorAccountByEmail::class);
+        $query
+            ->expects($this->exactly(1))
+            ->method('__invoke')
+            ->with('burger@example.com')
+            ->willReturn(null);
+
+        $provider = new ContributorAccountProvider($query);
+
+        $this->expectException(UserNotFoundException::class);
+
+        $provider->loadUserByIdentifier('burger@example.com');
+    }
+
+    /** @test */
+    public function itThrowsAnExceptionWhenRefreshingANonExistingUser(): void
+    {
+        $query = $this->createMock(DatabaseGetContributorAccountByEmail::class);
+        $query
+            ->expects($this->exactly(1))
+            ->method('__invoke')
+            ->with('burger@example.com')
+            ->willReturn(null);
+
+        $provider = new ContributorAccountProvider($query);
+
+        $this->expectException(UserNotFoundException::class);
+
+        $provider->refreshUser(new ContributorAccount('burger@example.com', 'password'));
     }
 }

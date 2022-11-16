@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\Contribut
 
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -31,12 +32,21 @@ final class ContributorAccountProvider implements UserProviderInterface
         return ContributorAccount::class === $class;
     }
 
-    public function loadUserByIdentifier(string $identifier): ?UserInterface
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        return ($this->getContributorAccountByEmail)($identifier);
+        $user = ($this->getContributorAccountByEmail)($identifier);
+
+        if (null === $user) {
+            $userNotFound = new UserNotFoundException();
+            $userNotFound->setUserIdentifier($identifier);
+
+            throw $userNotFound;
+        }
+
+        return $user;
     }
 
-    public function loadUserByUsername(string $username): ?UserInterface
+    public function loadUserByUsername(string $username): UserInterface
     {
         return $this->loadUserByIdentifier($username);
     }
