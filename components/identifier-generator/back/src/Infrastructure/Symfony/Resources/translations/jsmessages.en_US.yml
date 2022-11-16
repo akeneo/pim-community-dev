@@ -33,8 +33,10 @@ pim_identifier_generator:
         first_generator: 'Create your first identifier generator!'
         check_help_center: 'Check out our help center for more information.'
         create_info: 'It is only possible to create one Identifier Generator for the moment. You will soon be able to configure multiple generators matching all your usecases.'
+        helper: 'Here, you will be able to build an identifier generator profile for your products. Please note that new and existing references will be impacted by this change. A unique profile is available for the moment, you will be able to create multiple identifier generators soon.'
     structure:
-        helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at <a href="https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html" target="_blank">this article</a>.'
+        helper: 'You must define your product selection in order to create Identifier Structure.'
+        helper_link: 'If you dont know how, take a look at this article'
         title: 'Identifier Structure'
         add_element: 'Add new property'
         property_type:

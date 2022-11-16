@@ -47,8 +47,16 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
 
   return (
     <>
-      <Helper>{translate('pim_identifier_generator.structure.helper')}</Helper>
-      <Styled.TwoColumns>
+      <Helper>
+        {translate('pim_identifier_generator.structure.helper')}{' '}
+        <Link
+          href={'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html'}
+          target={'_blank'}
+        >
+          {translate('pim_identifier_generator.structure.helper_link')}
+        </Link>
+      </Helper>
+      <Styled.TwoColumns withoutSecondColumn={!selectedProperty}>
         <div>
           <SectionTitle>
             <SectionTitle.Title>{translate('pim_identifier_generator.structure.title')}</SectionTitle.Title>

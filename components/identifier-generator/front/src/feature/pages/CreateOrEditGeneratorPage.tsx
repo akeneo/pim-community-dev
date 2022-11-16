@@ -7,6 +7,7 @@ import {Violation} from '../validators/Violation';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
+import {validateIdentifierGenerator} from '../validators/validateIdentifierGenerator';
 
 enum Tabs {
   GENERAL,
@@ -54,6 +55,8 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     openDeleteGeneratorModal();
   };
 
+  const isGeneratorValid = validateIdentifierGenerator(generator, '').length === 0;
+
   return (
     <>
       <Header>
@@ -65,7 +68,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
               </SecondaryActions.Item>
             </SecondaryActions>
           )}
-          <Button disabled={isMainButtonDisabled} onClick={onSave}>
+          <Button disabled={isMainButtonDisabled || !isGeneratorValid} onClick={onSave}>
             {translate('pim_common.save')}
           </Button>
         </PageHeader.Actions>

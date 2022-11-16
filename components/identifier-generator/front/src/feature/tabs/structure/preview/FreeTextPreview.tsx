@@ -7,7 +7,7 @@ type FreeTextPreviewProps = {
 };
 
 const FreeTextPreview: React.FC<FreeTextPreviewProps> = ({property}) => {
-  return <Preview.Highlight>{property.string}</Preview.Highlight>;
+  return <Preview.Highlight>{property.string || ' '}</Preview.Highlight>;
 };
 
 export {FreeTextPreview};

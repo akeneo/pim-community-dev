@@ -4,6 +4,8 @@ import {
   AttributesIllustration,
   Button,
   Helper,
+  Information,
+  Link,
   Placeholder,
   SkeletonPlaceholder,
   Table,
@@ -64,6 +66,12 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
         </Button>
       </Header>
       <PageContent>
+        <Information illustration={<AttributesIllustration />} title={'Welcome to your identifier generator!'}>
+          {translate('pim_identifier_generator.list.helper')}<br/>
+          <Link href="https://www.akeneo.com/" target="_blank">
+            {translate('pim_identifier_generator.list.check_help_center')}
+          </Link>
+        </Information>
         <Table>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>

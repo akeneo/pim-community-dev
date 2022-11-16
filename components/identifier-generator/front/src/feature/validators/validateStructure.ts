@@ -1,9 +1,10 @@
 import {Validator} from './Validator';
-import {ALLOWED_PROPERTY_NAMES, Structure} from '../models';
+import {ALLOWED_PROPERTY_NAMES, PROPERTY_NAMES, Structure} from '../models';
 import {Violation} from './Violation';
+import {validateFreeText} from './validateFreeText';
 
 const validateStructure: Validator<Structure | undefined> = (structure, path) => {
-  const violations: Violation[] = [];
+  let violations: Violation[] = [];
 
   if (structure?.length === 0) {
     violations.push({
@@ -13,13 +14,18 @@ const validateStructure: Validator<Structure | undefined> = (structure, path) =>
   }
 
   structure?.forEach((property, i) => {
+    const subPath = `${path}[${i}]`;
     if (!ALLOWED_PROPERTY_NAMES.includes(property.type)) {
       violations.push({
-        path: `${path}[${i}]`,
+        path: subPath,
         message: `The property type "${
           property.type
         }" is unknown. Please choose one of the following: ${ALLOWED_PROPERTY_NAMES.join(', ')}`,
       });
+    }
+
+    if (property.type === PROPERTY_NAMES.FREE_TEXT) {
+      violations = [...violations, ...validateFreeText(property, subPath)];
     }
   });
 
