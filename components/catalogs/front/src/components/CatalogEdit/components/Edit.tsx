@@ -15,6 +15,8 @@ import {mapProductValueFiltersErrors} from '../utils/mapProductValueFiltersError
 import {ProductMapping} from '../../ProductMapping';
 import {ProductMapping as ProductMappingType} from '../../ProductMapping/models/ProductMapping';
 import {useProductMappingSchema} from '../../../hooks/useProductMappingSchema';
+import {mapProductMappingSourceErrors} from '../utils/mapProductMappingSourceErrors';
+import {ProductMappingErrors} from '../../ProductMapping/models/ProductMappingErrors';
 
 type Props = {
     id: string;
@@ -26,11 +28,14 @@ const ProductMappingWrapper: FC<
     PropsWithChildren<{
         catalogId: string;
         productMapping: ProductMappingType;
+        errors: ProductMappingErrors;
     }>
-> = ({catalogId, productMapping}) => {
+> = ({catalogId, productMapping, errors}) => {
     const {data: productMappingSchema} = useProductMappingSchema(catalogId);
 
-    return <ProductMapping productMapping={productMapping} productMappingSchema={productMappingSchema} />;
+    return (
+        <ProductMapping productMapping={productMapping} productMappingSchema={productMappingSchema} errors={errors} />
+    );
 };
 
 const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
@@ -86,7 +91,11 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
                 />
             )}
             {isCurrent(Tabs.PRODUCT_MAPPING) && (
-                <ProductMappingWrapper catalogId={id} productMapping={values.product_mapping} />
+                <ProductMappingWrapper
+                    catalogId={id}
+                    productMapping={values.product_mapping}
+                    errors={mapProductMappingSourceErrors(errors, Object.keys(values.product_mapping))}
+                />
             )}
         </>
     );

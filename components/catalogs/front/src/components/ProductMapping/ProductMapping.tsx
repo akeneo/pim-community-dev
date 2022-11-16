@@ -8,6 +8,7 @@ import {ProductMapping as ProductMappingType} from './models/ProductMapping';
 import {ProductMappingSchema} from './models/ProductMappingSchema';
 import {TargetSourceAssociation} from './components/TargetSourceAssociation';
 import {SourceLabel} from './components/SourceLabel';
+import {ProductMappingErrors} from './models/ProductMappingErrors';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -30,9 +31,10 @@ const TargetCell = styled(Table.Cell)`
 type Props = {
     productMapping: ProductMappingType;
     productMappingSchema?: ProductMappingSchema;
+    errors: ProductMappingErrors;
 };
 
-export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema}) => {
+export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema, errors}) => {
     const translate = useTranslate();
 
     const [selectedTarget, setSelectedTarget] = useState<string>();
@@ -42,6 +44,17 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema}
     }, []);
 
     const targets = Object.entries(productMapping ?? {});
+
+    const targetsWithErrors = Object.keys(
+        Object.fromEntries(
+            Object.entries(errors).filter(([, value]) => {
+                const properties = Object.entries(value ?? {});
+                const propertiesWithErrors = properties.filter(([, value]) => typeof value === 'string');
+
+                return propertiesWithErrors.length > 0;
+            })
+        )
+    );
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
@@ -82,6 +95,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema}
                                             targetCode={targetCode}
                                             targetLabel={productMappingSchema.properties[targetCode]?.title}
                                             sourceCode={source.source}
+                                            hasError={targetsWithErrors.includes(targetCode)}
                                         />
                                     );
                                 })}
