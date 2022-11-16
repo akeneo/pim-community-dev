@@ -22,7 +22,7 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifierGeneratorSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $identifierGeneratorId = IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002');
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
@@ -46,12 +46,12 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_an_identifier_generator()
+    public function it_is_an_identifier_generator(): void
     {
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
 
-    public function it_can_instantiated_without_delimiter()
+    public function it_can_instantiated_without_delimiter(): void
     {
         $identifierGeneratorId = IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002');
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
@@ -73,69 +73,69 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
 
-    public function it_returns_an_indentifier_generator_id()
+    public function it_returns_an_indentifier_generator_id(): void
     {
         $this->id()->shouldBeLike(IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'));
     }
 
-    public function it_returns_an_indentifier_generator_code()
+    public function it_returns_an_indentifier_generator_code(): void
     {
         $this->code()->shouldBeLike(IdentifierGeneratorCode::fromString('abcdef'));
     }
 
-    public function it_returns_a_delimiter()
+    public function it_returns_a_delimiter(): void
     {
         $this->delimiter()->shouldBeLike(Delimiter::fromString('-'));
     }
 
-    public function it_sets_a_delimiter()
+    public function it_sets_a_delimiter(): void
     {
         $this->delimiter()->asString()->shouldBeLike('-');
         $this->setDelimiter(Delimiter::fromString('='));
         $this->delimiter()->asString()->shouldBeLike('=');
     }
 
-    public function it_returns_a_target()
+    public function it_returns_a_target(): void
     {
         $this->target()->shouldBeLike(Target::fromString('sku'));
     }
 
-    public function it_sets_a_target()
+    public function it_sets_a_target(): void
     {
         $this->target()->asString()->shouldBeLike('sku');
         $this->setTarget(Target::fromString('gtin'));
         $this->target()->asString()->shouldBeLike('gtin');
     }
 
-    public function it_returns_a_conditions()
+    public function it_returns_a_conditions(): void
     {
         $this->conditions()->shouldBeLike(Conditions::fromArray([]));
     }
 
-    public function it_returns_a_structure()
+    public function it_returns_a_structure(): void
     {
         $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
     }
 
-    public function it_sets_a_structure()
+    public function it_sets_a_structure(): void
     {
         $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
         $this->setStructure(Structure::fromArray([
             FreeText::fromString('cba'),
-            AutoNumber::fromValues(3,2),
+            AutoNumber::fromValues(3, 2),
         ]));
         $this->structure()->shouldBeLike(Structure::fromArray([
             FreeText::fromString('cba'),
-            AutoNumber::fromValues(3,2),
+            AutoNumber::fromValues(3, 2),
         ]));
     }
 
-    public function it_returns_a_labels_collection()
+    public function it_returns_a_labels_collection(): void
     {
         $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
     }
 
-    public function it_sets_a_labels_collection()
+    public function it_sets_a_labels_collection(): void
     {
         $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
         $this->setLabelCollection(LabelCollection::fromNormalized([
@@ -148,7 +148,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         ]));
     }
 
-    public function it_can_be_normalized()
+    public function it_can_be_normalized(): void
     {
         $this->normalize()->shouldReturn([
             'uuid' => '2038e1c9-68ff-4833-b06f-01e42d206002',

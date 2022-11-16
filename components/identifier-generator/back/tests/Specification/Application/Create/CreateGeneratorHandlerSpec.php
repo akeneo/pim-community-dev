@@ -22,7 +22,7 @@ class CreateGeneratorHandlerSpec extends ObjectBehavior
     public function let(
         IdentifierGeneratorRepository $identifierGeneratorRepository,
         CommandValidatorInterface $validator
-    ) {
+    ): void {
         $this->beConstructedWith($identifierGeneratorRepository, $validator);
     }
 
