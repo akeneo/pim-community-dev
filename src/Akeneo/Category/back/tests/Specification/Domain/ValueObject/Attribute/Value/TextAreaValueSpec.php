@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Domain\ValueObject\Attribute\Value;
 
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
-use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextAreaValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\Value;
 use PhpSpec\ObjectBehavior;
 
@@ -13,19 +13,19 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class TextValueSpec extends ObjectBehavior
+class TextAreaValueSpec extends ObjectBehavior
 {
     public function it_creates_text_value_from_applier()
     {
         $this->beConstructedThrough('fromApplier',[
-            'Meta shoes',
+            "Meta <p>shoes</p>",
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'seo_meta_description',
             'ecommerce',
             'en_US',
         ]);
 
-        $this->shouldHaveType(TextValue::class);
+        $this->shouldHaveType(TextAreaValue::class);
         $this->shouldHaveType(AbstractValue::class);
         $this->shouldImplement(Value::class);
     }
@@ -33,15 +33,15 @@ class TextValueSpec extends ObjectBehavior
     public function it_creates_text_value_from_array()
     {
         $givenArray = [
-            'data' => 'Meta shoes',
-            'type' => 'text',
+            'data' => "Meta <p>shoes</p>",
+            'type' => 'textarea',
             'channel' => null,
             'locale' => 'en_US',
-            'attribute_code' => 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
+            'attribute_code' => ''
         ];
         $this->beConstructedThrough('fromArray',[$givenArray]);
 
-        $this->shouldHaveType(TextValue::class);
+        $this->shouldHaveType(TextAreaValue::class);
         $this->shouldHaveType(AbstractValue::class);
         $this->shouldImplement(Value::class);
     }
@@ -49,8 +49,8 @@ class TextValueSpec extends ObjectBehavior
     public function it_throws_invalid_argument_exception_from_array()
     {
         $givenArray = [
-            'data' => 'Meta shoes',
-            'type' => 'text',
+            'data' => "Meta <p>shoes</p>",
+            'type' => 'textarea',
             'channel' => null,
             'locale' => 'en_US',
             'attribute_code' => ''
@@ -65,7 +65,7 @@ class TextValueSpec extends ObjectBehavior
     public function it_normalizes(): void
     {
         $this->beConstructedThrough('fromApplier',[
-            'Meta shoes',
+            "Meta <p>shoes</p>",
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'seo_meta_description',
             'ecommerce',
@@ -81,8 +81,8 @@ class TextValueSpec extends ObjectBehavior
         );
         $expectedValue = [
             $localeChannelKey => [
-                'data' => 'Meta shoes',
-                'type' => 'text',
+                'data' => "Meta <p>shoes</p>",
+                'type' => 'textarea',
                 'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => $key
@@ -94,10 +94,10 @@ class TextValueSpec extends ObjectBehavior
 
     public function it_normalizes_with_no_locale(): void
     {
-        $textValue = 'Meta shoes';
+        $textareaValue = "Meta <p>shoes</p>";
 
         $this->beConstructedThrough('fromApplier',[
-            $textValue,
+            $textareaValue,
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'seo_meta_description',
             'ecommerce',
@@ -112,8 +112,8 @@ class TextValueSpec extends ObjectBehavior
         );
         $expectedValue = [
             $localeChannelKey => [
-                'data' => 'Meta shoes',
-                'type' => 'text',
+                'data' => "Meta <p>shoes</p>",
+                'type' => 'textarea',
                 'channel' => 'ecommerce',
                 'locale' => null,
                 'attribute_code' => $key
@@ -125,9 +125,9 @@ class TextValueSpec extends ObjectBehavior
 
     public function it_normalizes_with_no_channel(): void
     {
-        $textValue = 'Meta shoes';
+        $textareaValue = "Meta <p>shoes</p>";
         $this->beConstructedThrough('fromApplier',[
-            $textValue,
+            $textareaValue,
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'seo_meta_description',
             null,
@@ -142,8 +142,8 @@ class TextValueSpec extends ObjectBehavior
         );
         $expectedValue = [
             $localeChannelKey => [
-                'data' => 'Meta shoes',
-                'type' => 'text',
+                'data' => "Meta <p>shoes</p>",
+                'type' => 'textarea',
                 'channel' => null,
                 'locale' => 'en_US',
                 'attribute_code' => $key
@@ -152,4 +152,5 @@ class TextValueSpec extends ObjectBehavior
 
         $this->normalize()->shouldBeLike($expectedValue);
     }
+
 }

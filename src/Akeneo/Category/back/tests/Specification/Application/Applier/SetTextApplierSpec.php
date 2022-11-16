@@ -9,6 +9,7 @@ use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Application\Applier\SetTextApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplier;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
@@ -30,22 +31,15 @@ class SetTextApplierSpec extends ObjectBehavior
 
     function it_applies_set_text_user_intent(): void
     {
-        $identifier = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
-        $valueKey = 'attribute_code'
-            . ValueCollection::SEPARATOR . 'uuid' .
-            ValueCollection::SEPARATOR . 'locale_code';
-
-        $attributes = ValueCollection::fromArray(
-            [
-                'attribute_codes' => [$identifier],
-                $valueKey => [
-                    'data' => 'value',
-                    'channel' => null,
-                    'locale' => 'locale_code',
-                    'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
-                ]
-            ]
+        $givenTextValue = TextValue::fromApplier(
+            value: 'Meta shoes',
+            uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            code: 'seo_meta_description',
+            channel: null,
+            locale: 'en_US'
         );
+
+        $attributes = ValueCollection::fromArray([$givenTextValue]);
 
         $category = new Category(
             id: new CategoryId(1),
@@ -55,23 +49,21 @@ class SetTextApplierSpec extends ObjectBehavior
         );
 
         $userIntent = new SetText(
-            'uuid',
-            'attribute_code',
-            'locale_code',
-            'updated_value'
+            '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            'seo_meta_description',
+            'en_US',
+            'New Meta shoes'
         );
 
-        $expectedAttributes = ValueCollection::fromArray(
-            [
-                'attribute_codes' => [$identifier],
-                $valueKey => [
-                    'data' => 'updated_value',
-                    'channel' => null,
-                    'locale' => 'locale_code',
-                    'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
-                ]
-            ]
-        );
+        $expectedAttributes = ValueCollection::fromArray([
+            TextValue::fromApplier(
+                value: 'New Meta shoes',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: null,
+                locale: 'en_US'
+            )
+        ]);
 
         $this->apply($userIntent, $category);
         Assert::assertEquals(
@@ -83,8 +75,7 @@ class SetTextApplierSpec extends ObjectBehavior
     function it_throws_exception_on_wrong_user_intent_applied(
         SetImage $userIntent,
         Category $category
-    ): void
-    {
+    ): void {
         $this
             ->shouldThrow(\InvalidArgumentException::class)
             ->duringApply(

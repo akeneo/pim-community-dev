@@ -49,7 +49,7 @@ class Category
         $parentId = $result['parent_id'] ? new CategoryId((int) $result['parent_id']) : null;
         $rootId = $result['root_id'] ? new CategoryId((int) $result['root_id']) : null;
         $attributes = $result['value_collection'] ?
-                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null;
+                ValueCollection::fromDatabase(json_decode($result['value_collection'], true)) : null;
         $permissions = isset($result['permissions']) && $result['permissions'] ?
             PermissionCollection::fromArray(json_decode($result['permissions'], true)) : null;
 
@@ -90,6 +90,23 @@ class Category
     public function getAttributes(): ?ValueCollection
     {
         return $this->attributes;
+    }
+
+    /**
+     * @return array<string> (example: [seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d])
+     */
+    public function getAttributeCodes(): array
+    {
+        if (null === $this->attributes) {
+            return [];
+        }
+
+        $attributeCodes = [];
+        foreach ($this->attributes as $attributeValues) {
+            $attributeCodes[] = $attributeValues->getKey();
+        }
+
+        return array_values(array_unique($attributeCodes));
     }
 
     public function getPermissions(): ?PermissionCollection

@@ -7,6 +7,7 @@ namespace Akeneo\Category\Application\Applier;
 use Akeneo\Category\Api\Command\UserIntents\SetImage;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageValue;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
@@ -23,11 +24,13 @@ class SetImageApplier implements UserIntentApplier
 
         $attributes = $category->getAttributes() ?? ValueCollection::fromArray([]);
         $attributes->setValue(
-            attributeUuid: $userIntent->attributeUuid(),
-            attributeCode: $userIntent->attributeCode(),
-            localeCode: $userIntent->localeCode(),
-            channel: null,
-            value: $userIntent->value(),
+            ImageValue::fromApplier(
+                value: $userIntent->value(),
+                uuid: $userIntent->attributeUuid(),
+                code: $userIntent->attributeCode(),
+                channel: null,
+                locale: $userIntent->localeCode(),
+            ),
         );
 
         $category->setAttributes($attributes);

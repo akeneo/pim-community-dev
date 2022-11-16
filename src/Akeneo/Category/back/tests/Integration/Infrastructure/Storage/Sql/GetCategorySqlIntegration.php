@@ -6,7 +6,7 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -43,41 +43,38 @@ class GetCategorySqlIntegration extends TestCase
     public function testGetCategoryByCode(): void
     {
         $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
+
         $this->assertInstanceOf(Category::class, $category);
+        $this->assertEquals([
+            "photo" . AbstractValue::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
+            "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
+        ], $category->getAttributeCodes());
         $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
         $this->assertSame('Socks', $category->getLabels()->getTranslation('en_US'));
-        $this->assertSame(
-            [
-                "data" => "Les chaussures dont vous avez besoin !",
-                "locale" => "fr_FR",
-                "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
-            ],
-            $category->getAttributes()->getValue(
-                attributeCode: 'title',
-                attributeUuid: '87939c45-1d85-4134-9579-d594fff65030',
-                localeCode: 'fr_FR',
-                channel: null
-            )
+
+        $expectedTextValue = $category->getAttributes()->getValue(
+            attributeCode: 'title',
+            attributeUuid: '87939c45-1d85-4134-9579-d594fff65030',
+            channel: null,
+            localeCode: 'fr_FR'
         );
-        $this->assertSame(
-            [
-                "data" => [
-                    "size" => 168107,
-                    "extension" => "jpg",
-                    "file_path" => "8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg",
-                    "mime_type" => "image/jpeg",
-                    "original_filename" => "shoes.jpg"
-                ],
-                "locale" => null,
-                "attribute_code" => "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c"
-            ],
-            $category->getAttributes()->getValue(
-                attributeCode: 'photo',
-                attributeUuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
-                localeCode: null,
-                channel: null
-            )
+        $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
+        $this->assertNull($expectedTextValue->getChannel());
+        $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
+
+        $expectedImageValue = $category->getAttributes()->getValue(
+            attributeCode: 'photo',
+            attributeUuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
+            channel: null,
+            localeCode: null
         );
+        $this->assertSame(168107, $expectedImageValue->getValue()?->getSize());
+        $this->assertSame("jpg", $expectedImageValue->getValue()?->getExtension());
+        $this->assertSame("8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg", $expectedImageValue->getValue()?->getFilePath());
+        $this->assertSame("image/jpeg", $expectedImageValue->getValue()?->getMimeType());
+        $this->assertSame("shoes.jpg", $expectedImageValue->getValue()?->getOriginalFilename());
+        $this->assertNull($expectedImageValue->getChannel());
+        $this->assertNull($expectedImageValue->getLocale());
     }
 
     public function testDoNotGetCategoryById(): void
@@ -94,38 +91,30 @@ class GetCategorySqlIntegration extends TestCase
         $this->assertSame('socks', (string)$category->getCode());
         $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
         $this->assertSame('Socks', $category->getLabels()->getTranslation('en_US'));
-        $this->assertSame(
-            [
-                "data" => "Les chaussures dont vous avez besoin !",
-                "locale" => "fr_FR",
-                "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
-            ],
-            $category->getAttributes()->getValue(
-                attributeCode: 'title',
-                attributeUuid: '87939c45-1d85-4134-9579-d594fff65030',
-                localeCode: 'fr_FR',
-                channel: null
-            )
+
+        $expectedTextValue = $category->getAttributes()->getValue(
+            attributeCode: 'title',
+            attributeUuid: '87939c45-1d85-4134-9579-d594fff65030',
+            channel: null,
+            localeCode: 'fr_FR'
         );
-        $this->assertSame(
-            [
-                "data" => [
-                    "size" => 168107,
-                    "extension" => "jpg",
-                    "file_path" => "8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg",
-                    "mime_type" => "image/jpeg",
-                    "original_filename" => "shoes.jpg"
-                ],
-                "locale" => null,
-                "attribute_code" => "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
-            ],
-            $category->getAttributes()->getValue(
-                attributeCode: 'photo',
-                attributeUuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
-                localeCode: null,
-                channel: null
-            )
+        $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
+        $this->assertNull($expectedTextValue->getChannel());
+        $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
+
+        $expectedImageValue = $category->getAttributes()->getValue(
+            attributeCode: 'photo',
+            attributeUuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
+            channel: null,
+            localeCode: null
         );
+        $this->assertSame(168107, $expectedImageValue->getValue()?->getSize());
+        $this->assertSame("jpg", $expectedImageValue->getValue()?->getExtension());
+        $this->assertSame("8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg", $expectedImageValue->getValue()?->getFilePath());
+        $this->assertSame("image/jpeg", $expectedImageValue->getValue()?->getMimeType());
+        $this->assertSame("shoes.jpg", $expectedImageValue->getValue()?->getOriginalFilename());
+        $this->assertNull($expectedImageValue->getChannel());
+        $this->assertNull($expectedImageValue->getLocale());
     }
 
     public function testGetCategoryWithNoRelatedTranslations(): void
@@ -157,20 +146,24 @@ SQL;
         $this->get('database_connection')->executeQuery($query, [
             'value_collection' => json_encode([
                 "attribute_codes" => [
-                    "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
-                    "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
+                    "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
+                    "photo" . AbstractValue::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
                 ],
-                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "en_US" => [
+                "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . AbstractValue::SEPARATOR . "en_US" => [
                     "data" => "All the shoes you need!",
+                    "type" => "text",
+                    "channel" => null,
                     "locale" => "en_US",
-                    "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
+                    "attribute_code" => "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
                 ],
-                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "fr_FR" => [
+                "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . AbstractValue::SEPARATOR . "fr_FR" => [
                     "data" => "Les chaussures dont vous avez besoin !",
+                    "type" => "text",
+                    "channel" => null,
                     "locale" => "fr_FR",
-                    "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
+                    "attribute_code" => "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
                 ],
-                "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c" => [
+                "photo" . AbstractValue::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c" => [
                     "data" => [
                         "size" => 168107,
                         "extension" => "jpg",
@@ -178,8 +171,10 @@ SQL;
                         "mime_type" => "image/jpeg",
                         "original_filename" => "shoes.jpg"
                     ],
+                    "type" => "image",
+                    "channel" => null,
                     "locale" => null,
-                    "attribute_code" => "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c"
+                    "attribute_code" => "photo" . AbstractValue::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c"
                 ]
             ], JSON_THROW_ON_ERROR),
             'code' => $code

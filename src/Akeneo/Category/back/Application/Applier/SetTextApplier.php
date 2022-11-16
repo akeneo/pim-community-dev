@@ -7,6 +7,7 @@ namespace Akeneo\Category\Application\Applier;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
@@ -22,13 +23,13 @@ class SetTextApplier implements UserIntentApplier
         }
 
         $attributes = $category->getAttributes() ?? ValueCollection::fromArray([]);
-        $attributes->setValue(
-            attributeUuid: $userIntent->attributeUuid(),
-            attributeCode: $userIntent->attributeCode(),
-            localeCode: $userIntent->localeCode(),
-            channel: null,
+        $attributes->setValue(TextValue::fromApplier(
             value: $userIntent->value(),
-        );
+            uuid: $userIntent->attributeUuid(),
+            code: $userIntent->attributeCode(),
+            channel: null,
+            locale: $userIntent->localeCode(),
+        ));
 
         $category->setAttributes($attributes);
     }

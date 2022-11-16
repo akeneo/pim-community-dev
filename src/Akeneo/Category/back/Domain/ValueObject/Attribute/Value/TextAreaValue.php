@@ -6,25 +6,20 @@ namespace Akeneo\Category\Domain\ValueObject\Attribute\Value;
 
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @phpstan-import-type ImageData from ImageDataValue
  */
-final class ImageValue extends AbstractValue
+final class TextAreaValue extends AbstractValue
 {
     private function __construct(
-        private readonly ?ImageDataValue $value,
+        private readonly string $value,
         AttributeUuid $uuid,
         AttributeCode $code,
         ?ChannelValue $channel,
         ?LocaleValue $locale,
     ) {
-        Assert::nullOrIsInstanceOf($value, ImageDataValue::class);
-
         parent::__construct(
             uuid: $uuid,
             code: $code,
@@ -33,24 +28,10 @@ final class ImageValue extends AbstractValue
         );
     }
 
-    /**
-     * @param array{
-     *     size: int,
-     *     extension: string,
-     *     file_path: string,
-     *     mime_type: string,
-     *     original_filename: string,
-     * } | null $value
-     */
-    public static function fromApplier(
-        ?array $value,
-        string $uuid,
-        string $code,
-        ?string $channel,
-        ?string $locale,
-    ): self {
+    public static function fromApplier(string $value, string $uuid, string $code, ?string $channel, ?string $locale): self
+    {
         return new self(
-            value: !empty($value) ? ImageDataValue::fromArray($value) : null,
+            value: $value,
             uuid: AttributeUuid::fromString($uuid),
             code: new AttributeCode($code),
             channel: !empty($channel) ? new ChannelValue($channel) : null,
@@ -60,7 +41,7 @@ final class ImageValue extends AbstractValue
 
     /**
      * @param array{
-     *     data: ImageData|null,
+     *     data: string,
      *     type: string,
      *     channel: string|null,
      *     locale: string|null,
@@ -75,7 +56,7 @@ final class ImageValue extends AbstractValue
         }
 
         return new self(
-            value: !empty($value['data']) ? ImageDataValue::fromArray($value['data']) : null,
+            value: $value['data'],
             uuid: AttributeUuid::fromString($identifiers[1]),
             code: new AttributeCode($identifiers[0]),
             channel: !empty($value['channel']) ? new ChannelValue($value['channel']) : null,
@@ -83,14 +64,14 @@ final class ImageValue extends AbstractValue
         );
     }
 
-    public function getValue(): ?ImageDataValue
+    public function getValue(): string
     {
         return $this->value;
     }
 
     /**
      * @return array<string, array{
-     *     data: ImageData|null,
+     *     data: string,
      *     type: string,
      *     channel: string|null,
      *     locale: string|null,
@@ -101,8 +82,8 @@ final class ImageValue extends AbstractValue
     {
         return array_merge_recursive(
             [$this->getKeyWithChannelAndLocale() => [
-                'data' => $this->value?->normalize(),
-                'type' => AbstractValue::IMAGE_TYPE,
+                'data' => $this->value,
+                'type' => AbstractValue::TEXT_AREA_TYPE,
             ]],
             parent::normalize(),
         );
