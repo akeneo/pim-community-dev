@@ -99,9 +99,6 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
 
     protected function createAttribute(array $data): void
     {
-        $this->attributeOptions[$data['code']] = $data['options'] ?? [];
-        unset($data['options']);
-
         $this->attributes[$data['code']] = $data;
     }
 }

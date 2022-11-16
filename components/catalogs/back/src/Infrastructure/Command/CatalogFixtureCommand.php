@@ -101,9 +101,9 @@ class CatalogFixtureCommand extends Command
                     'locale' => null,
                 ],
                 'name' => [
-                    'source' => 'title',
-                    'scope' => 'ecommerce',
-                    'locale' => 'en_US',
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
                 ],
                 'description' => [
                     'source' => null,

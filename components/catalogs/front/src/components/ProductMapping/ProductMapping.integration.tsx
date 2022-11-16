@@ -76,7 +76,11 @@ test('it displays an existing product mapping', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
-                <ProductMapping productMapping={productMapping} productMappingSchema={productMappingSchema} />
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                />
             </QueryClientProvider>
         </ThemeProvider>
     );
@@ -92,4 +96,93 @@ test('it displays an existing product mapping', async () => {
 
     expect(await screen.findByText('ERP')).toBeInTheDocument();
     expect(await screen.findByText('pim erp name')).toBeInTheDocument();
+});
+
+test('it displays error pills when mapping is incorrect', async () => {
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/description',
+            json: {
+                code: 'description',
+                label: 'Description HTML',
+            },
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: null,
+            scope: 'ecommerce',
+        },
+        body_html: {
+            source: 'description',
+            locale: null,
+            scope: 'ecommerce',
+        },
+    };
+
+    const productMappingSchema = {
+        $id: 'https://example.com/product',
+        $schema: 'https://api.akeneo.com/mapping/product/0.0.1/schema',
+        $comment: 'My first schema !',
+        title: 'Product Mapping',
+        description: 'JSON Schema describing the structure of products expected by our application',
+        type: 'object',
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+            body_html: {
+                type: 'string',
+            },
+        },
+    };
+
+    const mappingErrors = {
+        uuid: {
+            source: null,
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: null,
+            locale: null,
+            scope: 'This channel must be empty.',
+        },
+        body_html: {
+            source: null,
+            locale: 'This locale must not be empty.',
+            scope: null,
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={mappingErrors}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(await screen.findAllByTestId('error-pill')).toHaveLength(2);
 });
