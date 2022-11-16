@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\CommandInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -19,22 +18,26 @@ final class AutoNumberLimitPerStructureValidator extends ConstraintValidator
     public function validate($structure, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, AutoNumberLimitPerStructure::class);
-        $command = $this->context->getRoot();
-        Assert::isInstanceOf($command, CommandInterface::class);
-        Assert::isArray($structure);
+        if (!\is_array($structure)) {
+            return;
+        }
 
         $countAutonumber = 0;
         foreach ($structure as $property) {
-            Assert::isArray($property);
-            Assert::keyExists($property, 'type');
+            if (!\is_array($property)) {
+                return;
+            }
+            if (!\array_key_exists('type', $property)) {
+                return;
+            }
             if (AutoNumber::type() === $property['type']) {
                 ++$countAutonumber;
             }
         }
 
-        if ($countAutonumber > $constraint->limit) {
+        if ($countAutonumber > AutoNumberLimitPerStructure::LIMIT_PER_STRUCTURE) {
             $this->context
-                ->buildViolation($constraint->message, ['{{limit}}' => $constraint->limit])
+                ->buildViolation($constraint->message, ['{{limit}}' => AutoNumberLimitPerStructure::LIMIT_PER_STRUCTURE])
                 ->addViolation();
         }
     }

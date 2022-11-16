@@ -13,20 +13,7 @@ use Symfony\Component\Validator\Constraint;
 final class AutoNumberLimitPerStructure extends Constraint
 {
     public string $message = 'validation.create.auto_number_limit_reached';
-    public int $limit = 1;
-
-    public function __construct($options = null, array $groups = null, $payload = null)
-    {
-        if (null === $options || (is_array($options) && !isset($options['limit']))) {
-            $options['limit'] = $this->limit;
-        }
-        parent::__construct($options, $groups, $payload);
-    }
-
-    public function getDefaultOption(): string
-    {
-        return 'limit';
-    }
+    public const LIMIT_PER_STRUCTURE = 1;
 
     /**
      * @inerhitDoc
