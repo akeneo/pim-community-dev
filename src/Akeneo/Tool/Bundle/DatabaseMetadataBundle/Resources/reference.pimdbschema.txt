@@ -113,6 +113,7 @@ pim_catalog_group_translation | BASE TABLE
 pim_catalog_group_type | BASE TABLE
 pim_catalog_group_type_translation | BASE TABLE
 pim_catalog_identifier_generator | BASE TABLE
+pim_catalog_identifier_generator_prefixes | BASE TABLE
 pim_catalog_locale | BASE TABLE
 pim_catalog_product | BASE TABLE
 pim_catalog_product_model | BASE TABLE
@@ -755,6 +756,10 @@ pim_catalog_identifier_generator | structure | NO | json |
 pim_catalog_identifier_generator | labels | NO | json |
 pim_catalog_identifier_generator | target | NO | varchar(100) |
 pim_catalog_identifier_generator | delimiter | YES | varchar(100) |
+pim_catalog_identifier_generator_prefixes | product_uuid | NO | binary(16) | MUL
+pim_catalog_identifier_generator_prefixes | attribute_id | NO | int | MUL
+pim_catalog_identifier_generator_prefixes | prefix | NO | varchar(255) |
+pim_catalog_identifier_generator_prefixes | number | NO | int |
 pim_catalog_locale | id | NO | int | PRI
 pim_catalog_locale | code | NO | varchar(20) | UNI
 pim_catalog_locale | is_activated | NO | tinyint(1) |
@@ -1325,6 +1330,8 @@ INDEX | pim_catalog_group_type_translation | locale_foreign_key_idx | locale, fo
 INDEX | pim_catalog_group_type_translation | PRIMARY | id
 INDEX | pim_catalog_identifier_generator | PRIMARY | uuid
 INDEX | pim_catalog_identifier_generator | unique_identifier_generator_code | code
+INDEX | pim_catalog_identifier_generator_prefixes | FK_PRODUCTUUID | product_uuid
+INDEX | pim_catalog_identifier_generator_prefixes | index_identifier_generator_prefixes | attribute_id, prefix, number
 INDEX | pim_catalog_locale | PRIMARY | id
 INDEX | pim_catalog_locale | UNIQ_7405C7B177153098 | code
 INDEX | pim_catalog_product | IDX_91CD19C08A37AD0 | family_variant_id
@@ -1611,6 +1618,8 @@ FOREIGN CONSTRAINT | FK_7AC0C83A5C977207 | pim_catalog_group_product.product_uui
 FOREIGN CONSTRAINT | FK_7AC0C83AFE54D947 | pim_catalog_group_product.group_id | pim_catalog_group.id
 FOREIGN CONSTRAINT | FK_622D98DB7E366551 | pim_catalog_group_translation.foreign_key | pim_catalog_group.id
 FOREIGN CONSTRAINT | FK_6EF81AEB7E366551 | pim_catalog_group_type_translation.foreign_key | pim_catalog_group_type.id
+FOREIGN CONSTRAINT | FK_ATTRIBUTEID | pim_catalog_identifier_generator_prefixes.attribute_id | pim_catalog_attribute.id
+FOREIGN CONSTRAINT | FK_PRODUCTUUID | pim_catalog_identifier_generator_prefixes.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_91CD19C08A37AD0 | pim_catalog_product.family_variant_id | pim_catalog_family_variant.id
 FOREIGN CONSTRAINT | FK_91CD19C0B2C5DD70 | pim_catalog_product.product_model_id | pim_catalog_product_model.id
 FOREIGN CONSTRAINT | FK_91CD19C0C35E566A | pim_catalog_product.family_id | pim_catalog_family.id
