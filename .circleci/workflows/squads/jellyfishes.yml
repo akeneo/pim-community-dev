@@ -29,6 +29,10 @@ workflows:
                       - checkout
             - test_back_performance?:
                   type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /JEL-.*/
             - test_back_performance:
                   requires:
                       - build_srnt_dev
