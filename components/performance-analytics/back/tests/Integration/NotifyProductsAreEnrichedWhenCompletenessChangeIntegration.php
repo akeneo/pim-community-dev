@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Test\PerformanceAnalytics\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\CommandMessageBus;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag;
@@ -26,12 +28,17 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\Client;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory;
+use Google\Cloud\PubSub\Subscription;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 use Ramsey\Uuid\UuidInterface;
 
 final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends TestCase
 {
+    private CommandMessageBus $messageBus;
+    private ProductRepositoryInterface $productRepository;
+    private Subscription $subscription;
+
     protected function getConfiguration(): Configuration
     {
         // @todo use a catalog specific to performance-analytics (JEL-71)
