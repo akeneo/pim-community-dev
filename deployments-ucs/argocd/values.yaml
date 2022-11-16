@@ -57,7 +57,7 @@ repoServer:
       iam.gke.io/gcp-service-account: null
   initContainers:
     - name: install-helm-plugins
-      image: alpine/helm:3.8.2
+      image: alpine/helm:3.10.1
       volumeMounts:
         - mountPath: /helm
           name: helm
