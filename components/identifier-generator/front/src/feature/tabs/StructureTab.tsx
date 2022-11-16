@@ -11,11 +11,12 @@ type StructureTabProps = {
   onStructureChange: (structure: StructureType) => void;
 };
 
-type StructureWithIdentifiers = (Property & {id: string})[];
+type PropertyId = string;
+type StructureWithIdentifiers = (Property & {id: PropertyId})[];
 
 const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter, onStructureChange}) => {
   const translate = useTranslate();
-  const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
+  const [selectedPropertyId, setSelectedPropertyId] = useState<PropertyId | undefined>();
   const [structure, setStructure] = useState<StructureWithIdentifiers>(
     initialStructure.map(property => {
       return {
@@ -24,10 +25,6 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
       };
     })
   );
-
-  const onSelectedPropertyChange = (id: string) => {
-    setSelectedPropertyId(id);
-  };
 
   const onPropertyChange = (property: Property) => {
     if (selectedProperty) {
@@ -39,11 +36,11 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
   };
 
   const onAddProperty = (property: Property) => {
-    const newPropertyUuid = uuid();
-    structure.push({...property, id: newPropertyUuid});
+    const newPropertyId = uuid();
+    structure.push({...property, id: newPropertyId});
     setStructure(structure);
     onStructureChange(structure);
-    setSelectedPropertyId(newPropertyUuid);
+    setSelectedPropertyId(newPropertyId);
   };
 
   const selectedProperty = structure.find(propertyWithId => propertyWithId.id === selectedPropertyId);
@@ -61,7 +58,11 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
           {structure.length > 0 && (
             <>
               <Preview structure={structure} delimiter={delimiter} />
-              <PropertiesList structure={structure} onChange={onSelectedPropertyChange} />
+              <PropertiesList
+                structure={structure}
+                onSelect={setSelectedPropertyId}
+                selectedId={selectedPropertyId}
+              />
             </>
           )}
           {structure.length === 0 && (
@@ -86,4 +87,4 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
 };
 
 export {StructureTab};
-export type {StructureWithIdentifiers};
+export type {StructureWithIdentifiers, PropertyId};

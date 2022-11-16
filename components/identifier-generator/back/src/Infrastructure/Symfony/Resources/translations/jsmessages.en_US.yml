@@ -45,6 +45,10 @@ pim_identifier_generator:
             free_text:
                 title: 'Free text settings'
                 string_label: 'Define your text'
+            auto_number:
+                title: 'Auto number'
+                digitsMin_label: 'Min digits'
+                numberMin_label: 'Min number'
         empty:
             title: 'Create your identifier structure'
             text: 'Click on "Add new property" on the top right'

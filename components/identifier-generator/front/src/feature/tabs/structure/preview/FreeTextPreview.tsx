@@ -3,11 +3,11 @@ import {FreeText} from '../../../models';
 import {Preview} from 'akeneo-design-system';
 
 type FreeTextPreviewProps = {
-  freeTextProperty: FreeText;
+  property: FreeText;
 };
 
-const FreeTextPreview: React.FC<FreeTextPreviewProps> = ({freeTextProperty}) => {
-  return <Preview.Highlight>{freeTextProperty.string}</Preview.Highlight>;
+const FreeTextPreview: React.FC<FreeTextPreviewProps> = ({property}) => {
+  return <Preview.Highlight>{property.string}</Preview.Highlight>;
 };
 
 export {FreeTextPreview};
