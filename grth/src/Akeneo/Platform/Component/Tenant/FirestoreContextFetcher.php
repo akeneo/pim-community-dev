@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\Tenant;
 
+use Akeneo\Platform\Component\Tenant\Exception\TenantContextInvalidFormatException;
+use Akeneo\Platform\Component\Tenant\Exception\TenantContextNotFoundException;
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\Firestore\FirestoreClient;
 use Psr\Log\LoggerInterface;
@@ -31,9 +33,6 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
         Assert::notEmpty($collection, 'The collection name must not be empty');
     }
 
-    /**
-     * @throws \JsonException
-     */
     public function getTenantContext(string $tenantId): array
     {
         try {
@@ -69,16 +68,16 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
             $snapshot = $docRef->snapshot();
 
             if (!$snapshot->exists()) {
-                throw new \RuntimeException(
+                throw new TenantContextNotFoundException(
                     sprintf('Unable to fetch context for the "%s" tenant ID: the document does not exist', $tenantId)
                 );
             }
 
             $contextValues = $snapshot->data()['context'] ?? null;
             if (!\is_string($contextValues)) {
-                throw new \RuntimeException(
+                throw new TenantContextInvalidFormatException(
                     sprintf(
-                        'Unable to fetch context for the "%s" tenant ID: the document has an incorrect format',
+                        'Unable to fetch context for the "%s" tenant ID: missing "context" key in the document.',
                         $tenantId
                     )
                 );

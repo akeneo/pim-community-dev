@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Platform\Integration\Tenant;
 
+use Akeneo\Platform\Component\Tenant\Exception\TenantContextInvalidFormatException;
+use Akeneo\Platform\Component\Tenant\Exception\TenantContextNotFoundException;
 use Akeneo\Platform\Component\Tenant\FirestoreContextFetcher;
 use Akeneo\Platform\Component\Tenant\TenantContextDecoder;
 use Akeneo\Platform\Component\Tenant\TenantContextDecoderException;
@@ -39,7 +41,7 @@ final class FirestoreContextFetcherIntegration extends TestCase
 
         // clear values = '{"updated_context": "updated_value"}'
         $this->firestoreCollection()->document('some_tenant_id')->set(
-            ['values' => '{"data":"KLzn+p4OFTwWvyvYNscpvMdURRnVlzfDvTfxluNYv1CBDRSmfcRFqMYnRr+j1VnV","iv":"dfd0c5655a81118a268ddeb40660445d"}']
+            ['context' => '{"data":"KLzn+p4OFTwWvyvYNscpvMdURRnVlzfDvTfxluNYv1CBDRSmfcRFqMYnRr+j1VnV","iv":"dfd0c5655a81118a268ddeb40660445d"}']
         );
 
         // get context from cache
@@ -57,19 +59,21 @@ final class FirestoreContextFetcherIntegration extends TestCase
     /** @test */
     public function it_throws_an_exception_if_the_tenant_is_unknown(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(TenantContextNotFoundException::class);
         $this->expectExceptionMessage('Unable to fetch context for the "unknown_tenant_id" tenant ID');
 
         $this->firestoreContextFetcher->getTenantContext('unknown_tenant_id');
     }
 
     /** @test */
-    public function it_throws_an_exception_if_the_values_key_is_not_defined(): void
+    public function it_throws_an_exception_if_the_context_key_is_not_defined(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to fetch context for the "tenant_id_without_values" tenant ID');
+        $this->expectException(TenantContextInvalidFormatException::class);
+        $this->expectExceptionMessage(
+            'Unable to fetch context for the "tenant_id_without_context" tenant ID: missing "context" key in the document.'
+        );
 
-        $this->firestoreContextFetcher->getTenantContext('tenant_id_without_values');
+        $this->firestoreContextFetcher->getTenantContext('tenant_id_without_context');
     }
 
     /** @test */
@@ -95,7 +99,8 @@ final class FirestoreContextFetcherIntegration extends TestCase
          * ]
          */
         $collection->document('some_tenant_id')->create([
-            'values' => '{"data":"qbbkq1rrnYyj1UkcJ6TR/qTA/ZEd7kPR7Ajyq2vgxUg=","iv":"90d68e58aa2918f137ea2de4c07463ac"}',
+            'status' => 'created',
+            'context' => '{"data":"qbbkq1rrnYyj1UkcJ6TR/qTA/ZEd7kPR7Ajyq2vgxUg=","iv":"90d68e58aa2918f137ea2de4c07463ac"}',
         ]);
 
         /*
@@ -105,12 +110,18 @@ final class FirestoreContextFetcherIntegration extends TestCase
          * ]
          */
         $collection->document('some_other_tenant_id')->create([
-            'values' => '{"data":"q7Hc+qhe2XPZOp7tl+BNru5+ZVENLwxVg7/jDYCy6LY=","iv":"5724001ec68519d4fd2e8c1a76f1af2c"}'
+            'status' => 'created',
+            'context' => '{"data":"q7Hc+qhe2XPZOp7tl+BNru5+ZVENLwxVg7/jDYCy6LY=","iv":"5724001ec68519d4fd2e8c1a76f1af2c"}',
         ]);
 
         // clear values = '{"foo": "bar",, "baz": "snafu"}'
         $collection->document('tenant_id_with_invalid_values')->create([
-            'values' => '{"data":"VgvimYiLnlxArlu3RTMbG41dDANh9xne6d71p/AeCQI=","iv":"5f90664b2fca29dd597d1e741a6f8255"}',
+            'status' => 'created',
+            'context' => '{"data":"VgvimYiLnlxArlu3RTMbG41dDANh9xne6d71p/AeCQI=","iv":"5f90664b2fca29dd597d1e741a6f8255"}',
+        ]);
+
+        $collection->document('tenant_id_without_context')->create([
+            'status' => 'creation_pending',
         ]);
 
         $this->firestoreContextFetcher = new FirestoreContextFetcher(

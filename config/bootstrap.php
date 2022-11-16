@@ -1,42 +1,25 @@
 <?php
 
-use Akeneo\Platform\Component\Tenant\FirestoreContextFetcher;
-use Akeneo\Platform\Component\Tenant\TenantContextDecoder;
-use Monolog\Formatter\JsonFormatter;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use Akeneo\Platform\Component\Tenant\TenantContextLoader;
 use Symfony\Component\Dotenv\Dotenv;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 $dotenv = new Dotenv();
-$dotenv->usePutenv(true);
+$dotenv->usePutenv();
 $dotenv->bootEnv(dirname(__DIR__) . '/.env');
 
-if (isset($_ENV['APP_TENANT_ID']) && '' !== $_ENV['APP_TENANT_ID']) {
-    $stream = match($_ENV['APP_ENV'] ?? '') {
-        'prod' => 'php://stderr',
-        default => __DIR__ . '/../var/logs/bootstrap.log',
-    };
-    $handler = new StreamHandler($stream, $_ENV['LOGGING_LEVEL'] ?? Logger::DEBUG);
-    $jsonFormatter = new JsonFormatter();
-    $jsonFormatter->includeStacktraces();
-    $handler->setFormatter($jsonFormatter);
+function isUcsPlatform(): bool
+{
+    return (isset($_ENV['APP_TENANT_ID']) && '' !== $_ENV['APP_TENANT_ID'])
+        && (isset($_ENV['FIRESTORE_PROJECT_ID']) && '' !== $_ENV['FIRESTORE_PROJECT_ID'])
+        && (isset($_ENV['APP_TENANT_CONTEXT_COLLECTION_NAME']) && '' !== $_ENV['APP_TENANT_CONTEXT_COLLECTION_NAME'])
+        && (isset($_ENV['APP_TENANT_CONTEXT_ENCRYPTION_KEY_PATH']) && '' !== $_ENV['APP_TENANT_CONTEXT_ENCRYPTION_KEY_PATH']);
+}
 
-    $contextCollectionName = $_ENV['APP_TENANT_CONTEXT_COLLECTION_NAME'] ?? null;
-
-    $encryptionKey = trim(file_get_contents($_ENV['APP_TENANT_CONTEXT_ENCRYPTION_KEY_PATH']));
-
-    $contextFetcher = new FirestoreContextFetcher(
-        logger: new Logger('bootstrap', [$handler]),
-        tenantContextDecoder: new TenantContextDecoder($encryptionKey),
-        googleProjectId: $_ENV['FIRESTORE_PROJECT_ID'],
-        collection: $contextCollectionName,
-    );
-    $dotenv->populate(
-        values: $contextFetcher->getTenantContext($_ENV['APP_TENANT_ID']),
-        overrideExistingVars: true
-    );
+if (isUcsPlatform()) {
+    $loader = new TenantContextLoader();
+    $loader->load($dotenv, __DIR__ . '/..');
 }
 
 $_SERVER += $_ENV;
