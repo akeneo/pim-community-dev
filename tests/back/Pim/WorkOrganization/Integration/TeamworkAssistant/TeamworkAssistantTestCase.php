@@ -20,8 +20,7 @@ use Doctrine\DBAL\Connection;
 
 class TeamworkAssistantTestCase extends TestCase
 {
-    /** @var JobLauncher */
-    private $jobLauncher;
+    private JobLauncher $jobLauncher;
 
     /**
      * {@inheritdoc}
@@ -39,6 +38,7 @@ class TeamworkAssistantTestCase extends TestCase
     protected function getConfiguration(): Configuration
     {
         $rootPath = $this->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR;
+
         return new Configuration(
             [
                 $rootPath .
@@ -50,7 +50,7 @@ class TeamworkAssistantTestCase extends TestCase
                 DIRECTORY_SEPARATOR .
                 'catalog' .
                 DIRECTORY_SEPARATOR .
-                'teamwork_assistant'
+                'teamwork_assistant',
             ],
             [],
             ['permission']
@@ -59,36 +59,30 @@ class TeamworkAssistantTestCase extends TestCase
 
     /**
      * Create a project in database and run the project calculation
-     *
-     * @param string $label
-     * @param string $owner
-     * @param string $locale
-     * @param string $channel
-     * @param array  $filters
-     *
-     * @throws \Exception
-     * @return ProjectInterface
      */
-    protected function createProject($label, $owner, $locale, $channel, array $filters)
-    {
+    protected function createProject(
+        string $label,
+        string $owner,
+        string $locale,
+        string $channel,
+        array $filters
+    ): ProjectInterface {
         $dueDate = (new \DateTime())->modify('+1 month');
         $projectData = array_merge([
-            'label'           => $label,
-            'locale'          => $locale,
-            'owner'           => $owner,
-            'channel'         => $channel,
+            'label' => $label,
+            'locale' => $locale,
+            'owner' => $owner,
+            'channel' => $channel,
             'product_filters' => $filters,
-            'description'     => 'An awesome description',
-            'due_date'        => $dueDate->format('Y-m-d'),
-            'datagrid_view'   => ['filters' => '', 'columns' => 'sku,label,family'],
+            'description' => 'An awesome description',
+            'due_date' => $dueDate->format('Y-m-d'),
+            'datagrid_view' => ['filters' => '', 'columns' => 'sku,label,family'],
         ]);
 
-        if (isset($projectData['product_filters'])) {
-            foreach ($projectData['product_filters'] as $key => $filter) {
-                $projectData['product_filters'][$key] = array_merge($filter, [
-                    'context'  => ['locale' => $projectData['locale'], 'scope' => $projectData['channel']],
-                ]);
-            }
+        foreach ($projectData['product_filters'] as $key => $filter) {
+            $projectData['product_filters'][$key] = array_merge($filter, [
+                'context' => ['locale' => $projectData['locale'], 'scope' => $projectData['channel']],
+            ]);
         }
 
         $project = $this->get('pimee_teamwork_assistant.factory.project')->create($projectData);
@@ -105,12 +99,7 @@ class TeamworkAssistantTestCase extends TestCase
         return $project;
     }
 
-    /**
-     * Run the project calculation
-     *
-     * @param ProjectInterface $project
-     */
-    protected function calculateProject(ProjectInterface $project)
+    protected function calculateProject(ProjectInterface $project): void
     {
         $numberOfExecutedJob = $this->findJobExecutionCount();
 
@@ -121,10 +110,7 @@ class TeamworkAssistantTestCase extends TestCase
         $this->isCompleteJobExecution($numberOfExecutedJob);
     }
 
-    /**
-     * @param ProjectInterface $project
-     */
-    protected function removeProject(ProjectInterface $project)
+    protected function removeProject(ProjectInterface $project): void
     {
         // Reload the project to have it in Doctrine's unit of work
         $this->get('pimee_teamwork_assistant.remover.project')->remove(
@@ -134,26 +120,13 @@ class TeamworkAssistantTestCase extends TestCase
         );
     }
 
-    /**
-     * Get the project completeness
-     *
-     * @param ProjectInterface $project
-     * @param string           $username
-     *
-     * @return ProjectCompleteness
-     */
-    protected function getProjectCompleteness(ProjectInterface $project, $username = null)
+    protected function getProjectCompleteness(ProjectInterface $project, ?string $username = null): ProjectCompleteness
     {
         return $this->get('pimee_teamwork_assistant.repository.project_completeness')
             ->getProjectCompleteness($project, $username);
     }
 
-    /**
-     * Return a DBAL connection
-     *
-     * @return Connection
-     */
-    protected function getConnection()
+    protected function getConnection(): Connection
     {
         return $this->get('doctrine.orm.default_entity_manager')->getConnection();
     }
@@ -161,13 +134,9 @@ class TeamworkAssistantTestCase extends TestCase
     /**
      * Check if the project calculation is complete before the timeout.
      *
-     * @param int $numberOfExecutedJob
-     *
      * @throws \RuntimeException
-     * @return bool
-     *
      */
-    private function isCompleteJobExecution($numberOfExecutedJob)
+    private function isCompleteJobExecution(int $numberOfExecutedJob): bool
     {
         $countOfJobExecution = $timeout = 0;
         while ($numberOfExecutedJob >= $countOfJobExecution) {
@@ -186,20 +155,18 @@ class TeamworkAssistantTestCase extends TestCase
 
     /**
      * Find the number of execution for a project calculation job.
-     *
-     * @return int
      */
-    private function findJobExecutionCount()
+    private function findJobExecutionCount(): int
     {
         $sql = <<<SQL
-SELECT count(`execution`.`id`)
-FROM `akeneo_batch_job_execution` AS `execution`
-LEFT JOIN `akeneo_batch_job_instance` AS `instance` ON `execution`.`job_instance_id` = `instance`.`id`
-WHERE `instance`.`code` = :project_calculation
-AND `execution`.`exit_code` = 'COMPLETED'
-SQL;
+        SELECT count(`execution`.`id`)
+        FROM `akeneo_batch_job_execution` AS `execution`
+        LEFT JOIN `akeneo_batch_job_instance` AS `instance` ON `execution`.`job_instance_id` = `instance`.`id`
+        WHERE `instance`.`code` = :project_calculation
+        AND `execution`.`exit_code` = 'COMPLETED'
+        SQL;
 
-        return (int)$this->getConnection()->fetchColumn($sql, [
+        return (int) $this->getConnection()->fetchOne($sql, [
             'project_calculation' => $this->getParameter('pimee_teamwork_assistant.project_calculation.job_name'),
         ]);
     }
