@@ -108,6 +108,7 @@ $rules = [
             'Symfony\Component\HttpFoundation\Response',
             'Symfony\Component\Security\Http\Event\LogoutEvent',
             'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
+            'Symfony\Component\Security\Core\Exception\UserNotFoundException',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],
