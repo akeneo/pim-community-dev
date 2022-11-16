@@ -37,9 +37,6 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const changeTab = useCallback(tabName => () => setCurrentTab(tabName), []);
   const onSave = useCallback(() => mainButtonCallback(generator), [generator, mainButtonCallback]);
   const identifierGeneratorContext = useIdentifierGeneratorContext();
-  const onStructureChange = (structure: Structure) => {
-    setGenerator({...generator, structure: structure});
-  };
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
@@ -62,8 +59,12 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     } else {
       identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(false);
     }
-
     setGenerator(generator);
+  };
+
+  const onStructureChange = (structure: Structure) => {
+    const updatedGenerator = {...generator, structure: structure};
+    onChangeGenerator(updatedGenerator);
   };
 
   const isGeneratorValid = validateIdentifierGenerator(generator, '').length === 0;

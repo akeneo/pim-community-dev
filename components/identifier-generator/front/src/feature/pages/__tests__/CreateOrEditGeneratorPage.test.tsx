@@ -4,6 +4,7 @@ import {CreateOrEditGeneratorPage} from '../';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 import {createMemoryHistory} from 'history';
 import {Router} from 'react-router';
+import {IdentifierGeneratorContext} from '../../context/IdentifierGeneratorContext';
 
 jest.mock('../DeleteGeneratorModal');
 jest.mock('../../tabs/GeneralPropertiesTab');
@@ -83,6 +84,7 @@ describe('CreateOrEditGeneratorPage', () => {
     render(
       <Router history={history}>
         <CreateOrEditGeneratorPage
+          isMainButtonDisabled={false}
           initialGenerator={initialGenerator}
           validationErrors={[]}
           mainButtonCallback={jest.fn()}
@@ -104,6 +106,7 @@ describe('CreateOrEditGeneratorPage', () => {
   it('should update a generate on structure change', () => {
     render(
       <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
         initialGenerator={initialGenerator}
         validationErrors={[]}
         mainButtonCallback={jest.fn()}
@@ -116,5 +119,34 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('[{"type":"free_text","string":"AKN"}]')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update Free Text'));
     expect(screen.getByText('[{"type":"free_text","string":"Updated string"}]')).toBeInTheDocument();
+  });
+
+  it('should update identifier generator context on change', () => {
+    const mockSetHasUnsavedChanges = jest.fn();
+    const identifierGeneratorDependencies = {
+      unsavedChanges: {
+        hasUnsavedChanges: false,
+        setHasUnsavedChanges: mockSetHasUnsavedChanges,
+      },
+    };
+
+    render(<>
+      <IdentifierGeneratorContext.Provider value={identifierGeneratorDependencies}>
+          <CreateOrEditGeneratorPage
+            isMainButtonDisabled={false}
+            initialGenerator={initialGenerator}
+            mainButtonCallback={jest.fn()}
+            validationErrors={[]}
+            isNew={false}
+          />
+      </IdentifierGeneratorContext.Provider>
+    </>);
+
+    fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
+    expect(screen.getByText('StructureTabMock')).toBeInTheDocument();
+    expect(screen.getByText('[{"type":"free_text","string":"AKN"}]')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Update Free Text'));
+
+    expect(mockSetHasUnsavedChanges).toHaveBeenCalled();
   });
 });
