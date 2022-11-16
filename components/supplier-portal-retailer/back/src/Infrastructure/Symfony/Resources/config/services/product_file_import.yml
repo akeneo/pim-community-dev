@@ -44,3 +44,10 @@ services:
   Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\UpdateProductFileImportStatusFromJobStatus:
     arguments:
       - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository'
+
+  # Event subscribers
+  Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Subscriber\UpdateProductFileImportOnJobExecutionEvent:
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\UpdateProductFileImportStatusFromJobStatus'
+    tags:
+      - { name: kernel.event_subscriber }
