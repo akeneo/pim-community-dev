@@ -36,7 +36,7 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
 
 const isValidLoginType = (loginType: string): loginType is StorageLoginType => {
   return STORAGE_LOGIN_TYPES.includes(loginType);
-}
+};
 
 const getStorageConfigurator = (
   storageType: StorageType,

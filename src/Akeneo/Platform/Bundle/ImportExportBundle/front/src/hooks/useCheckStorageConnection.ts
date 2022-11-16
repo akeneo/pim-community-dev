@@ -14,7 +14,7 @@ const useCheckStorageConnection = (storage: SftpStorage) => {
     '' !== storage.host &&
     !isNaN(storage.port) &&
     '' !== storage.username &&
-    (('password' === storage.login_type && '' !== storage.password) || 'private_key' ===  storage.login_type);
+    (('password' === storage.login_type && '' !== storage.password) || 'private_key' === storage.login_type);
 
   useEffect(() => {
     return () => {

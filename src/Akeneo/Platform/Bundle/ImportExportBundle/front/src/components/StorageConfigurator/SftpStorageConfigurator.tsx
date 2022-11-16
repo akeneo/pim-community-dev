@@ -12,7 +12,13 @@ import {
   CopyIcon,
 } from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
-import {StorageConfiguratorProps, isSftpStorage, isValidLoginType, StorageLoginType, STORAGE_LOGIN_TYPES} from './model';
+import {
+  StorageConfiguratorProps,
+  isSftpStorage,
+  isValidLoginType,
+  StorageLoginType,
+  STORAGE_LOGIN_TYPES,
+} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
 import {useGetPublicKey} from '../../hooks/useGetPublicKey';
 
@@ -144,7 +150,7 @@ const SftpStorageConfigurator = ({
           value={storage.login_type}
           onChange={login_type => {
             if (isValidLoginType(login_type)) {
-              onStorageChange({...storage, login_type})
+              onStorageChange({...storage, login_type});
             }
           }}
           emptyResultLabel={translate('pim_common.no_result')}
