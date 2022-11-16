@@ -37,7 +37,10 @@ final class StructureShouldNotContainMultipleAutoNumberValidator extends Constra
 
         if ($countAutonumber > StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE) {
             $this->context
-                ->buildViolation($constraint->message, ['{{limit}}' => StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE])
+                ->buildViolation($constraint->message, [
+                    '{{limit}}' => StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE,
+                    '{{type}}' => AutoNumber::type(),
+                ])
                 ->addViolation();
         }
     }

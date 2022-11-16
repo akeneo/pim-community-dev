@@ -14,6 +14,10 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class TargetAttributeShouldExistValidatorSpec extends ObjectBehavior
 {
     public function let(GetAttributes $getAttributes, ExecutionContext $context): void
@@ -35,7 +39,7 @@ class TargetAttributeShouldExistValidatorSpec extends ObjectBehavior
     public function it_should_build_violation_when_target_attribute_does_not_exist(ExecutionContext $context): void
     {
         $context->buildViolation(
-            'validation.create.target_attribute_does_not_exist',
+            'validation.identifier_generator.target_attribute_does_not_exist',
             ['{{code}}' => 'sku']
         )->shouldBeCalled();
 
@@ -62,7 +66,7 @@ class TargetAttributeShouldExistValidatorSpec extends ObjectBehavior
                 []
             ));
 
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate('sku', new TargetAttributeShouldExist());
     }

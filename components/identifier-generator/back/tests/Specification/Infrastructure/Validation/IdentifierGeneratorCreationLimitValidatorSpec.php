@@ -12,6 +12,10 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
 {
     public function let(IdentifierGeneratorRepository $repository, ExecutionContext $context): void
@@ -73,7 +77,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->shouldBeCalledOnce()
             ->willReturn(1);
 
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate('generatorCode', new IdentifierGeneratorCreationLimit(['limit' => 2]));
     }

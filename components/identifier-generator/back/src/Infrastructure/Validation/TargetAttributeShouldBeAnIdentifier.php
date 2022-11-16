@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class TargetAttributeShouldBeAnIdentifier extends Constraint
 {
-    public string $message = 'validation.create.target_attribute_is_not_an_identifier';
+    public string $message = 'validation.identifier_generator.target_attribute_is_not_an_identifier';
 
     /**
      * @inerhitDoc

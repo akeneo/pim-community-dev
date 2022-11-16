@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class TargetAttributeShouldExist extends Constraint
 {
-    public string $message = 'validation.create.target_attribute_does_not_exist';
+    public string $message = 'validation.identifier_generator.target_attribute_does_not_exist';
 
     /**
      * @inerhitDoc

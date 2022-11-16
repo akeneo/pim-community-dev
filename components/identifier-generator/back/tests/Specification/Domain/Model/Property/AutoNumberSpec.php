@@ -120,7 +120,7 @@ class AutoNumberSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_from_normalized_with_digits_min_is_zero()
+    public function it_throws_an_exception_from_normalized_with_digits_min_is_zero(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'auto_number',
@@ -130,7 +130,7 @@ class AutoNumberSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_from_normalized_with_digits_min_greater_than_limit()
+    public function it_throws_an_exception_from_normalized_with_digits_min_greater_than_limit(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'auto_number',

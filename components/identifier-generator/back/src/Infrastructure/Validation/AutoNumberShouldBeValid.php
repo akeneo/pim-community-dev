@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class AutoNumberShouldBeValid extends Constraint
 {
-    public string $message = 'validation.create.auto_number_fields_required';
+    public string $message = 'validation.identifier_generator.auto_number_fields_required';
 
     /**
      * @inerhitDoc

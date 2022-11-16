@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class FreeTextShouldBeValid extends Constraint
 {
-    public string $stringKeyRequired = 'validation.create.free_text_string_field_required';
+    public string $stringKeyRequired = 'validation.identifier_generator.free_text_string_field_required';
 
     /**
      * @inerhitDoc

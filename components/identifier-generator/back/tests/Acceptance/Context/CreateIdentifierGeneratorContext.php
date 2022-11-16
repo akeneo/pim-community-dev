@@ -382,7 +382,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with too many properties in structure
      */
-    public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure()
+    public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -423,7 +423,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When /^I try to create an identifier generator with free text '(?P<freetextContent>[^']*)'$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithFreeText(string $freetextContent)
+    public function iTryToCreateAnIdentifierGeneratorWithFreeText(string $freetextContent): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -442,7 +442,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with free text without required field
      */
-    public function iCreateAnIdentifierGeneratorWithFreeTextWithoutRequiredField()
+    public function iCreateAnIdentifierGeneratorWithFreeTextWithoutRequiredField(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -461,7 +461,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with free text with unknown field
      */
-    public function iTryToCreateAnIdentifierGeneratorWithFreeTextWithUnknownField()
+    public function iTryToCreateAnIdentifierGeneratorWithFreeTextWithUnknownField(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -480,7 +480,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with autoNumber number min negative
      */
-    public function iCreateAnIdentifierGeneratorWithAutonumberNumberMinNegative()
+    public function iCreateAnIdentifierGeneratorWithAutonumberNumberMinNegative(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -499,7 +499,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with autoNumber without required field
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAutonumberWithoutRequiredField()
+    public function iTryToCreateAnIdentifierGeneratorWithAutonumberWithoutRequiredField(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -518,7 +518,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with autoNumber digits min negative
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAutonumberDigitsMinNegative()
+    public function iTryToCreateAnIdentifierGeneratorWithAutonumberDigitsMinNegative(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -537,7 +537,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with autoNumber digits min too big
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAutonumberDigitsMinTooBig()
+    public function iTryToCreateAnIdentifierGeneratorWithAutonumberDigitsMinTooBig(): void
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(

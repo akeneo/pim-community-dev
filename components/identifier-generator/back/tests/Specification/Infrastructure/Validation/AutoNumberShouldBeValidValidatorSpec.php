@@ -22,7 +22,7 @@ class AutoNumberShouldBeValidValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(AutoNumberShouldBeValidValidator::class);
     }
@@ -41,7 +41,7 @@ class AutoNumberShouldBeValidValidatorSpec extends ObjectBehavior
         ];
 
         $context->buildViolation(
-            'validation.create.auto_number_fields_required',
+            'validation.identifier_generator.auto_number_fields_required',
             [
                 '{{field}}' => 'numberMin, digitsMin',
                 '{{type}}' => 'auto_number',
@@ -59,7 +59,7 @@ class AutoNumberShouldBeValidValidatorSpec extends ObjectBehavior
             'digitsMin' => 2,
         ];
 
-        $context->buildViolation((string)Argument::any(), (array)Argument::any())->shouldNotBeCalled();
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate($autoNumberValid, new AutoNumberShouldBeValid());
     }

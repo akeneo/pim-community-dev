@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\StructureShouldNotContainMultipleAutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\StructureShouldNotContainMultipleAutoNumberValidator;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
@@ -21,7 +22,7 @@ class StructureShouldNotContainMultipleAutoNumberValidatorSpec extends ObjectBeh
         $this->initialize($context);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(StructureShouldNotContainMultipleAutoNumberValidator::class);
     }
@@ -32,18 +33,20 @@ class StructureShouldNotContainMultipleAutoNumberValidatorSpec extends ObjectBeh
             ->during('validate', [[], new NotBlank()]);
     }
 
-    public function it_should_build_violation_when_auto_number_already_exist(ExecutionContext $context): void
+    public function it_should_build_violation_when_structure_contains_multiple_auto_number(ExecutionContext $context): void
     {
         $structure = [
             ['type' => 'free_text', 'string' => 'abcdef'],
             ['type' => 'auto_number', 'numberMin' => 3, 'digitsMin' => 2],
-            ['type' => 'auto_number', 'numberMin' => 5, 'digitsMin' => 4],
+            ['type' => 'auto_number', 'numberMin' => 3, 'digitsMin' => 4],
         ];
 
-        $context->buildViolation(
-            'validation.create.auto_number_limit_reached',
-            ['{{limit}}' => 1]
-        )->shouldBeCalled();
+        $context
+            ->buildViolation('validation.identifier_generator.structure_auto_number_limit_reached', [
+                '{{limit}}' => 1,
+                '{{type}}' => 'auto_number',
+            ])
+            ->shouldBeCalled();
 
         $this->validate($structure, new StructureShouldNotContainMultipleAutoNumber());
     }
@@ -55,10 +58,7 @@ class StructureShouldNotContainMultipleAutoNumberValidatorSpec extends ObjectBeh
             ['type' => 'auto_number', 'numberMin' => 3, 'digitsMin' => 2],
         ];
 
-        $context->buildViolation(
-            'validation.create.auto_number_limit_reached',
-            ['{{limit}}' => 2]
-        )->shouldNotBeCalled();
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate($structure, new StructureShouldNotContainMultipleAutoNumber());
     }

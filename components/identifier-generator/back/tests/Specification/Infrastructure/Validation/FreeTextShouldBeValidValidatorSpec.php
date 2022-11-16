@@ -22,7 +22,7 @@ class FreeTextShouldBeValidValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(FreeTextShouldBeValidValidator::class);
     }
@@ -40,7 +40,7 @@ class FreeTextShouldBeValidValidatorSpec extends ObjectBehavior
         ];
 
         $context->buildViolation(
-            'validation.create.free_text_string_field_required'
+            'validation.identifier_generator.free_text_string_field_required'
         )->shouldBeCalled();
 
         $this->validate($freeTextWithoutString, new FreeTextShouldBeValid());
@@ -53,9 +53,7 @@ class FreeTextShouldBeValidValidatorSpec extends ObjectBehavior
             'string' => 'abcdef',
         ];
 
-        $context->buildViolation(
-            (string) Argument::any()
-        )->shouldNotBeCalled();
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate($freeTextWithoutString, new FreeTextShouldBeValid());
     }

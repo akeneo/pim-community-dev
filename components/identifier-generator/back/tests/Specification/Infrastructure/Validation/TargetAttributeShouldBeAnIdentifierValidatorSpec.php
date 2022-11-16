@@ -57,7 +57,7 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
             ));
 
         $context->buildViolation(
-            'validation.create.target_attribute_is_not_an_identifier',
+            'validation.identifier_generator.target_attribute_is_not_an_identifier',
             ['{{code}}' => 'sku', '{{type}}' => 'pim_catalog_text']
         )->shouldBeCalled();
 
@@ -84,7 +84,7 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
                 []
             ));
 
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate('sku', new TargetAttributeShouldBeAnIdentifier());
     }
