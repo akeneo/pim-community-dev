@@ -48,7 +48,7 @@ class UserRepositoryIntegration extends TeamworkAssistantTestCase
         $twaUserRepo = $this->get('pimee_teamwork_assistant.repository.user');
         $resultUsers = $twaUserRepo->findBySearch(null, ['project' => $project]);
         $resultUsernames = array_map(function (User $user) {
-            return $user->getUsername();
+            return $user->getUserIdentifier();
         }, $resultUsers);
 
         $this->assertNotContains($connectionUsername, $resultUsernames);

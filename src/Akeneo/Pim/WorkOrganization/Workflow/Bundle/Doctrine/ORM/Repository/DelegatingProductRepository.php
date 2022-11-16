@@ -85,7 +85,7 @@ class DelegatingProductRepository implements IdentifiableObjectRepositoryInterfa
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
         if ($canEdit && !$isOwner) {
-            $username = $this->tokenStorage->getToken()->getUser()->getUsername();
+            $username = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
             $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $username);
             if (null !== $productDraft) {
                 $this->productDraftApplier->applyAllChanges($product, $productDraft);

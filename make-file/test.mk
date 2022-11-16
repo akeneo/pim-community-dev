@@ -31,6 +31,11 @@ static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer & c
 	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-static-back
 	echo "Job done! Nothing more to do here..."
 
+deprecation-back:
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
+	${PHP_RUN} -d memory_limit=2G vendor/bin/phpstan analyse -c phpstan-deprecations.neon --level 1
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+
 .PHONY: check-pullup
 check-pullup: #Doc: check pullup
 	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-pullup

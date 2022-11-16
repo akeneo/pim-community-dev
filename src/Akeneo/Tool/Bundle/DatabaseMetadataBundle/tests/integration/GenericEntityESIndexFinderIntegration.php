@@ -27,6 +27,8 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
     private GenericEntityESIndexFinder $searchEs;
 
+    private array $hosts;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -52,6 +54,7 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         ];
         \usort($fixtures, static fn (array $array1, array $array2): int => \strcmp($array1[0], $array2[0]));
         $tests = new \ArrayIterator($fixtures);
+        $resultsFormat = [];
         foreach ($tests as $test) {
             $resultsFormat[] = IndexResultsFactory::initIndexFormatDataResults($test[0], $test[1]);
         }

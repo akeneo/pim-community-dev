@@ -2,12 +2,16 @@
 
 namespace AkeneoEnterprise\Connectivity\Connection\Tests\Integration\Infrastructure\Apps\Persistence;
 
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllAppsUserGroupLabelQuery;
 
 class GetAllAppsUserGroupLabelQueryIntegration extends TestCase
 {
+    private GetAllAppsUserGroupLabelQuery $query;
+    private ConnectedAppLoader $connectedAppLoader;
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
@@ -17,7 +21,6 @@ class GetAllAppsUserGroupLabelQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->connection = $this->get('database_connection');
         $this->query = $this->get(GetAllAppsUserGroupLabelQuery::class);
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
