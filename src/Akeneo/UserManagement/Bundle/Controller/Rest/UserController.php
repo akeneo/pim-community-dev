@@ -377,7 +377,7 @@ class UserController
             $violations = $this->validator->validate($user);
         }
 
-        if (0 < $violations->count() || (isset($passwordViolations) && 0 < $passwordViolations->count())) {
+        if (0 < $violations->count() || 0 < $passwordViolations->count()) {
             $normalizedViolations = [];
             foreach ($violations as $violation) {
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
@@ -385,14 +385,13 @@ class UserController
                     'internal_api'
                 );
             }
-            if (isset($passwordViolations)) {
-                unset($data['password']);
-                foreach ($passwordViolations as $violation) {
-                    $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                        $violation,
-                        'internal_api'
-                    );
-                }
+
+            unset($data['password']);
+            foreach ($passwordViolations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api'
+                );
             }
             $this->objectManager->refresh($user);
 

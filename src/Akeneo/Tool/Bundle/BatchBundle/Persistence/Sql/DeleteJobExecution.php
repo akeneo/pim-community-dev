@@ -23,7 +23,7 @@ final class DeleteJobExecution
     {
         if ($days < 1) {
             throw new \InvalidArgumentException(
-                sprintf('Number of days should be strictly superior to 0, "%s% given', $days)
+                sprintf('Number of days should be strictly superior to 0, "%s" given', $days)
             );
         }
 

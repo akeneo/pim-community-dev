@@ -50,8 +50,8 @@ class FormatterExtension extends AbstractExtension
         $propertiesNormalized = $this->validateConfigurationByType($properties, Configuration::PROPERTIES_KEY);
 
         // replace config values by normalized, extra keys passed directly
-        $config->offsetSet(Configuration::COLUMNS_KEY, array_replace_recursive($columns, $columnsNormalized))
-            ->offsetSet(Configuration::PROPERTIES_KEY, array_replace_recursive($properties, $propertiesNormalized));
+        $config->offsetSet(Configuration::COLUMNS_KEY, array_replace_recursive($columns, $columnsNormalized));
+        $config->offsetSet(Configuration::PROPERTIES_KEY, array_replace_recursive($properties, $propertiesNormalized));
     }
 
     /**
