@@ -89,6 +89,7 @@
 - PIM-10692: Fix wrong DQI assessments on select attribute
 - PIM-10663: Fix API allows proposing changes and accepting proposals on read-only attributes
 - PIM-10726: Fix ProjectsRecalculationLauncher
+- PIM-10694: Fix the PM darfts/proposals are displayed on all the PMs, and not only on the corresponding PM
 
 ## Improvements
 

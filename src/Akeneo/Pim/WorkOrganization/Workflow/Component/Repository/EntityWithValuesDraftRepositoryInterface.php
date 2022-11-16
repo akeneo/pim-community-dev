@@ -40,9 +40,14 @@ interface EntityWithValuesDraftRepositoryInterface extends ObjectRepository
     public function findApprovableByUser(UserInterface $user, ?int $limit = null): ?array;
 
     /**
-     * Apply the context of the datagrid to the query
+     * Apply the context of the datagrid on product draft to the query
      */
-    public function applyDatagridContext(QueryBuilder $qb, ?string $entityWithValuesId): EntityWithValuesDraftRepositoryInterface;
+    public function applyDatagridContextOnProductDraft(QueryBuilder $qb, ?string $entityWithValuesUuid): EntityWithValuesDraftRepositoryInterface;
+
+    /**
+     * Apply the context of the datagrid on product model draft to the query
+     */
+    public function applyDatagridContextOnProductModelDraft(QueryBuilder $qb, ?string $entityWithValuesId): EntityWithValuesDraftRepositoryInterface;
 
     /**
      * Apply filter for datagrid

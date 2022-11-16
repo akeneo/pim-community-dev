@@ -95,8 +95,12 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
             ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author, p.status as status')
             ->from($this->_entityName, 'p', 'p.id');
 
-        if (isset($parameters['entityWithValues'])) {
-            $this->applyDatagridContext($qb, $parameters['entityWithValues']);
+        if (isset($parameters['entityWithValuesUuid'])) {
+            $this->applyDatagridContextOnProductDraft($qb, $parameters['entityWithValuesUuid']);
+        }
+
+        if (isset($parameters['entityWithValuesId'])) {
+            $this->applyDatagridContextOnProductModelDraft($qb, $parameters['entityWithValuesId']);
         }
 
         return $qb;
@@ -105,10 +109,21 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
     /**
      * {@inheritdoc}
      */
-    public function applyDatagridContext(QueryBuilder $qb, ?string $entityWithValuesUuid): EntityWithValuesDraftRepositoryInterface
+    public function applyDatagridContextOnProductDraft(QueryBuilder $qb, ?string $entityWithValuesUuid): EntityWithValuesDraftRepositoryInterface
     {
         $qb->innerJoin('p.entityWithValues', 'entityWithValues', 'WITH', 'entityWithValues.uuid = :entityWithValues');
         $qb->setParameter('entityWithValues', Uuid::fromString($entityWithValuesUuid)->getBytes(), UuidBinaryType::NAME);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyDatagridContextOnProductModelDraft(QueryBuilder $qb, ?string $entityWithValuesId): EntityWithValuesDraftRepositoryInterface
+    {
+        $qb->innerJoin('p.entityWithValues', 'entityWithValues', 'WITH', 'entityWithValues.id = :entityWithValues');
+        $qb->setParameter('entityWithValues', $entityWithValuesId);
 
         return $this;
     }

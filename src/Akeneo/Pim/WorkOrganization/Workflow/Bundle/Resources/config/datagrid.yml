@@ -1,5 +1,6 @@
 parameters:
     pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\EventListener\InjectEntityWithValuesForProductDraftSubscriber
+    pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_model_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\EventListener\InjectEntityWithValuesForProductModelDraftSubscriber
     pimee_workflow.event_listener.configure_proposal_grid_listener.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\EventListener\ConfigureProposalGridListener
     pimee_workflow.datagrid.configuration.product_draft.grid_helper.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\ProductDraft\GridHelper
     pimee_workflow.datasource.result_record.hydrator.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ResultRecord\ProductDraftHydrator
@@ -48,6 +49,13 @@ services:
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-draft-grid, method: buildBefore }
+
+    pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_model_draft:
+        class: '%pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_model_draft.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-model-draft-grid, method: buildBefore }
 
     pimee_workflow.datagrid.register_identifier_filters:
         class: Akeneo\Pim\Enrichment\Bundle\Extension\RegisterIdentifierFilters

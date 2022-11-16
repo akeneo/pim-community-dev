@@ -16,11 +16,11 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
- * Inject the entity with values id for product draft datagrid
+ * Inject the entity with values id for product model draft ddatagrid
  *
- * @author Romain Monceau <romain@akeneo.com>
+ * @author Bryan Stéphan <bryan.stephan@akeneo.com>
  */
-class InjectEntityWithValuesForProductDraftSubscriber
+class InjectEntityWithValuesForProductModelDraftSubscriber
 {
     /** @var RequestParameters $requestParams */
     protected $requestParams;
@@ -42,13 +42,13 @@ class InjectEntityWithValuesForProductDraftSubscriber
      */
     public function buildBefore(BuildBefore $event)
     {
-        $entityWithValuesUuid = $this->requestParams->get('entityWithValues', null);
+        $entityWithValuesId = $this->requestParams->get('entityWithValues', null);
 
-        if (null !== $entityWithValuesUuid) {
+        if (null !== $entityWithValuesId) {
             $datagridConfig = $event->getConfig();
             $datagridConfig->offsetSetByPath(
                 sprintf(ConfiguratorInterface::SOURCE_PATH, ConfiguratorInterface::REPOSITORY_PARAMETERS_KEY),
-                ['entityWithValuesUuid' => $entityWithValuesUuid]
+                ['entityWithValuesId' => $entityWithValuesId]
             );
         }
     }
