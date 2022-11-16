@@ -7,6 +7,12 @@ services:
             - '@security.acl_cache_memcache'
             - '@Akeneo\Platform\Bundle\FrameworkBundle\AclCache\FetchSamplePercentageFromBucket'
 
+    Akeneo\Platform\Bundle\FrameworkBundle\AclCache\AddAclCacheHeaderResponseListener:
+        arguments:
+            - '@security.acl.cache.doctrine.cache_impl'
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: injectAkeneoAclCacheHeader }
+
     security.acl_cache_array:
         class: 'Doctrine\Common\Cache\ArrayCache'
 

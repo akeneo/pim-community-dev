@@ -17,7 +17,7 @@ use Doctrine\Common\Cache\MultiOperationCache;
  */
 class SampleRouterCache implements Cache, FlushableCache, ClearableCache, MultiOperationCache
 {
-    private CacheProvider|null $providerToTarget = null;
+    public CacheProvider|null $providerToTarget = null;
 
     public function __construct(
         private readonly CacheProvider $sampledProvider,

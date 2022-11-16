@@ -2,12 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\FrameworkBundle\AclCache;
 
-use Doctrine\Common\Cache\Cache;
-use Doctrine\Common\Cache\CacheProvider;
-use Doctrine\Common\Cache\ClearableCache;
-use Doctrine\Common\Cache\FlushableCache;
-use Doctrine\Common\Cache\MultiOperationCache;
-
 class FetchSamplePercentageFromApcu implements FetchSamplePercentage
 {
     private const APCU_KEY = 'acl_sample_percentage';
