@@ -12,7 +12,6 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
-
 class FetchSamplePercentageFromBucket implements FetchSamplePercentage
 {
     private const BUCKET_CONFIG = 'https://storage.googleapis.com/ake-memcache-test/value_7f0df927-5a23-4d62-8f20-50cfc2189f59.json';
@@ -20,12 +19,11 @@ class FetchSamplePercentageFromBucket implements FetchSamplePercentage
 
     public function __construct(
         private readonly string $googleProject
-    ){
+    ) {
         $this->client = new Client([
             'timeout' => 2,
             'http_errors' => false
         ]);
-
     }
 
     public function fetch(): int

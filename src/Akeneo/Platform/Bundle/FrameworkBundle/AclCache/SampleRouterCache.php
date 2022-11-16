@@ -23,7 +23,7 @@ class SampleRouterCache implements Cache, FlushableCache, ClearableCache, MultiO
         private readonly CacheProvider $sampledProvider,
         private readonly CacheProvider $sourceOfTruthProvider,
         private readonly FetchSamplePercentage $fetchSamplePercentage
-    ){
+    ) {
     }
 
     public function fetch($id)

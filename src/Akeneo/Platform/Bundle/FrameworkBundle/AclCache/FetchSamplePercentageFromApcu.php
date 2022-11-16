@@ -8,7 +8,6 @@ use Doctrine\Common\Cache\ClearableCache;
 use Doctrine\Common\Cache\FlushableCache;
 use Doctrine\Common\Cache\MultiOperationCache;
 
-
 class FetchSamplePercentageFromApcu implements FetchSamplePercentage
 {
     private const APCU_KEY = 'acl_sample_percentage';
@@ -16,7 +15,7 @@ class FetchSamplePercentageFromApcu implements FetchSamplePercentage
 
     public function __construct(
         private readonly FetchSamplePercentage $fetchSamplePercentage
-    ){
+    ) {
     }
 
     public function fetch(): int
