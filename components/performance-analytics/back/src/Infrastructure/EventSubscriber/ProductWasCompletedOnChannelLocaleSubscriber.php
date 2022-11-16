@@ -17,7 +17,8 @@ use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnriched;
 use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnrichedHandler;
 use Akeneo\PerformanceAnalytics\Application\Command\ProductIsEnriched;
 use Akeneo\PerformanceAnalytics\Application\LogContext;
-use Akeneo\PerformanceAnalytics\Domain\Product\ChannelLocale;
+use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
+use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocale;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocaleCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -62,31 +63,20 @@ final class ProductWasCompletedOnChannelLocaleSubscriber implements EventSubscri
 
     private function buildCommand(ProductWasCompletedOnChannelLocaleCollection $productWasCompletedOnChannelLocaleCollection): ?NotifyProductsAreEnriched
     {
-        $enrichedProductsCompletenesses = [];
+        $productsAreEnriched = [];
 
         /** @var ProductWasCompletedOnChannelLocale $productWasCompletedOnChannelLocale */
         foreach ($productWasCompletedOnChannelLocaleCollection->all() as $productWasCompletedOnChannelLocale) {
-            $uuidString = $productWasCompletedOnChannelLocale->productUuid()->uuid()->toString();
-
-            $enrichedChannelLocale = ChannelLocale::fromChannelAndLocaleString(
-                $productWasCompletedOnChannelLocale->channelCode(),
-                $productWasCompletedOnChannelLocale->localeCode()
-            );
-
-            // @todo Rework ProductIsEnriched to have one instance by product/channel/locale (JEL-79)
-            $enrichedChannelsLocales = \array_key_exists($uuidString, $enrichedProductsCompletenesses)
-                ? [...$enrichedProductsCompletenesses[$uuidString]->channelsLocales(), $enrichedChannelLocale]
-                : [$enrichedChannelLocale];
-
-            $enrichedProductsCompletenesses[$uuidString] = new ProductIsEnriched(
+            $productsAreEnriched[] = new ProductIsEnriched(
                 $productWasCompletedOnChannelLocale->productUuid()->uuid(),
-                $enrichedChannelsLocales,
+                ChannelCode::fromString($productWasCompletedOnChannelLocale->channelCode()),
+                LocaleCode::fromString($productWasCompletedOnChannelLocale->localeCode()),
                 $productWasCompletedOnChannelLocale->completedAt()
             );
         }
 
-        return [] !== $enrichedProductsCompletenesses
-            ? new NotifyProductsAreEnriched(\array_values($enrichedProductsCompletenesses))
+        return [] !== $productsAreEnriched
+            ? new NotifyProductsAreEnriched($productsAreEnriched)
             : null;
     }
 }

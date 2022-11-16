@@ -13,21 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Application\Command;
 
-use Akeneo\PerformanceAnalytics\Domain\Product\ChannelLocale;
+use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
+use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Ramsey\Uuid\UuidInterface;
-use Webmozart\Assert\Assert;
 
 class ProductIsEnriched
 {
-    /**
-     * @param array<ChannelLocale> $channelsLocales
-     */
     public function __construct(
         private UuidInterface $productUuid,
-        private array $channelsLocales,
+        private ChannelCode $channelCode,
+        private LocaleCode $localeCode,
         private \DateTimeImmutable $enrichedAt,
     ) {
-        Assert::allIsInstanceOf($this->channelsLocales, ChannelLocale::class);
     }
 
     public function productUuid(): UuidInterface
@@ -40,11 +37,13 @@ class ProductIsEnriched
         return $this->enrichedAt;
     }
 
-    /**
-     * @return array<ChannelLocale>
-     */
-    public function channelsLocales(): array
+    public function channelCode(): ChannelCode
     {
-        return $this->channelsLocales;
+        return $this->channelCode;
+    }
+
+    public function localeCode(): LocaleCode
+    {
+        return $this->localeCode;
     }
 }

@@ -30,7 +30,6 @@ use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\Client;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory;
 use Google\Cloud\PubSub\Subscription;
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\ExpectationFailedException;
 use Ramsey\Uuid\UuidInterface;
 
 final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends TestCase
@@ -145,13 +144,12 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         );
 
         $messages = $this->pullAndAckMessages();
-        self::assertCount(1, $messages, 'There should be 1 message');
+        self::assertCount(2, $messages, 'There should be 2 messages after products creation');
 
-        $data = \json_decode($messages[0]->data(), true);
-        self::assertCount(2, $data, 'There should be 2 products in the message');
-
-        $this->assertChannelLocaleCountForProduct($productEnrichedAtCreation->getUuid(), 1, $data);
-        $this->assertProductChannelLocaleIsInMessage($productEnrichedAtCreation->getUuid(), 'ecommerce', 'en_US', $data);
+        $this->assertMessagesCountForProduct($productEnrichedAtCreation->getUuid(), 1, $messages);
+        $this->assertProductChannelLocaleIsInMessages($productEnrichedAtCreation->getUuid(), 'ecommerce', 'en_US', $messages);
+        $this->assertMessagesCountForProduct($productEnrichedAtCreation2->getUuid(), 1, $messages);
+        $this->assertProductChannelLocaleIsInMessages($productEnrichedAtCreation2->getUuid(), 'ecommerce', 'en_US', $messages);
 
         $productEnrichedAtUpdate = $this->createOrUpdateProduct(
             'product_enriched_at_update',
@@ -165,15 +163,12 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         );
 
         $messages = $this->pullAndAckMessages();
-        self::assertCount(1, $messages, 'There should be 1 message');
+        self::assertCount(3, $messages, 'There should be 3 messages after product update');
 
-        $data = \json_decode($messages[0]->data(), true);
-        self::assertCount(1, $data, 'There should be 1 product in the message');
-
-        $this->assertChannelLocaleCountForProduct($productEnrichedAtUpdate->getUuid(), 3, $data);
-        $this->assertProductChannelLocaleIsInMessage($productEnrichedAtUpdate->getUuid(), 'ecommerce', 'en_US', $data);
-        $this->assertProductChannelLocaleIsInMessage($productEnrichedAtUpdate->getUuid(), 'tablet', 'en_US', $data);
-        $this->assertProductChannelLocaleIsInMessage($productEnrichedAtUpdate->getUuid(), 'tablet', 'fr_FR', $data);
+        $this->assertMessagesCountForProduct($productEnrichedAtUpdate->getUuid(), 3, $messages);
+        $this->assertProductChannelLocaleIsInMessages($productEnrichedAtUpdate->getUuid(), 'ecommerce', 'en_US', $messages);
+        $this->assertProductChannelLocaleIsInMessages($productEnrichedAtUpdate->getUuid(), 'tablet', 'en_US', $messages);
+        $this->assertProductChannelLocaleIsInMessages($productEnrichedAtUpdate->getUuid(), 'tablet', 'fr_FR', $messages);
     }
 
     private function pullAndAckMessages(): array
@@ -227,40 +222,39 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         return $user->getId();
     }
 
-    private function assertProductChannelLocaleIsInMessage(
+    private function assertProductChannelLocaleIsInMessages(
         UuidInterface $productUuid,
         string $channelCode,
         string $localeCode,
-        array $message
+        array $messages
     ): void {
         $found = false;
-        foreach ($message as $productInfo) {
-            if ($productInfo['product_uuid'] === $productUuid->toString()) {
-                foreach ($productInfo['channels_locales'] as $channelLocale) {
-                    if ($channelLocale['channel_code'] === $channelCode && $channelLocale['locale_code'] === $localeCode) {
-                        $found = true;
-                    }
-                }
+        foreach ($messages as $message) {
+            $productInfo = \json_decode($message->data(), true);
+            if ($productInfo['product_uuid'] === $productUuid->toString()
+                && $productInfo['channel_code'] === $channelCode
+                && $productInfo['locale_code'] === $localeCode) {
+                $found = true;
             }
         }
 
         Assert::assertTrue($found, 'Product channel locale was not found');
     }
 
-    private function assertChannelLocaleCountForProduct(
+    private function assertMessagesCountForProduct(
         UuidInterface $productUuid,
-        int $channelLocaleCount,
-        array $message
+        int $expectedCount,
+        array $messages
     ): void {
-        foreach ($message as $productInfo) {
+        $count = 0;
+        foreach ($messages as $message) {
+            $productInfo = \json_decode($message->data(), true);
             if ($productInfo['product_uuid'] === $productUuid->toString()) {
-                Assert::assertCount($channelLocaleCount, $productInfo['channels_locales']);
-
-                return;
+                ++$count;
             }
         }
 
-        throw new ExpectationFailedException('Product not found in the message');
+        Assert::assertSame($expectedCount, $count, sprintf('There should be %d channel-locale for product %s', $expectedCount, $productUuid->toString()));
     }
 
     private function createFamily(string $code, array $data = []): FamilyInterface

@@ -14,33 +14,30 @@ declare(strict_types=1);
 namespace Akeneo\PerformanceAnalytics\Domain\Product;
 
 use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
-use Webmozart\Assert\Assert;
+use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
+use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
+use Akeneo\PerformanceAnalytics\Domain\Message;
 
-final class ProductWasEnriched
+final class ProductWasEnrichedMessage implements Message
 {
-    /**
-     * @param array<ChannelLocale> $channelsLocales
-     */
     private function __construct(
         private Product $product,
-        private array $channelsLocales,
+        private ChannelCode $channelCode,
+        private LocaleCode $localeCode,
         private \DateTimeImmutable $enrichedAt
     ) {
-        Assert::notEmpty($this->channelsLocales);
-        Assert::allIsInstanceOf($this->channelsLocales, ChannelLocale::class);
     }
 
-    /**
-     * @param array<ChannelLocale> $channelsLocales
-     */
     public static function fromProperties(
         Product $product,
-        array $channelsLocales,
+        ChannelCode $channelCode,
+        LocaleCode $localeCode,
         \DateTimeImmutable $enrichedAt
-    ): ProductWasEnriched {
+    ): ProductWasEnrichedMessage {
         return new self(
             $product,
-            $channelsLocales,
+            $channelCode,
+            $localeCode,
             $enrichedAt
         );
     }
@@ -55,7 +52,8 @@ final class ProductWasEnriched
             'product_created_at' => $this->product->createdAt()->format('c'),
             'family_code' => $this->product->familyCode()?->toString(),
             'category_codes' => array_map(fn (CategoryCode $category) => $category->toString(), $this->product->categories()),
-            'channels_locales' => array_map(fn (ChannelLocale $channelLocale) => $channelLocale->normalize(), $this->channelsLocales),
+            'channel_code' => $this->channelCode->toString(),
+            'locale_code' => $this->localeCode->toString(),
             'enriched_at' => $this->enrichedAt->format('c'),
         ];
     }

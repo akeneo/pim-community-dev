@@ -40,6 +40,9 @@ final class NotifyProductsAreEnriched
      */
     public function getProductUuids(): array
     {
-        return \array_map(fn (ProductIsEnriched $productIsEnriched) => $productIsEnriched->productUuid(), $this->productsAreEnriched);
+        return \array_values(\array_unique(\array_map(
+            static fn (ProductIsEnriched $productIsEnriched): UuidInterface => $productIsEnriched->productUuid(),
+            $this->productsAreEnriched
+        )));
     }
 }

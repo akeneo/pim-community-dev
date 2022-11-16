@@ -17,13 +17,13 @@ use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnriched;
 use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnrichedHandler;
 use Akeneo\PerformanceAnalytics\Application\Command\ProductIsEnriched;
 use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
+use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
+use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\PerformanceAnalytics\Domain\MessageQueue;
-use Akeneo\PerformanceAnalytics\Domain\Product\ChannelLocale;
 use Akeneo\PerformanceAnalytics\Domain\Product\GetProducts;
 use Akeneo\PerformanceAnalytics\Domain\Product\Product;
-use Akeneo\PerformanceAnalytics\Domain\Product\ProductsWereEnrichedMessage;
-use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnriched;
+use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnrichedMessage;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -72,45 +72,51 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
             ]
         );
 
-        $getProducts->byUuids([$productUuid1->toString(), $productUuid2->toString()])->willReturn([
+        $getProducts->byUuids([$productUuid1, $productUuid2])->willReturn([
             $productUuid1->toString() => $product1,
             $productUuid2->toString() => $product2,
         ]);
 
         $productWasEnrichedList = [
-            ProductWasEnriched::fromProperties(
+            ProductWasEnrichedMessage::fromProperties(
                 $product1,
-                [
-                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR'),
-                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_US'),
-                ],
+                ChannelCode::fromString('ecommerce'),
+                LocaleCode::fromString('fr_FR'),
                 $enrichedAt,
             ),
-            ProductWasEnriched::fromProperties(
+            ProductWasEnrichedMessage::fromProperties(
+                $product1,
+                ChannelCode::fromString('ecommerce'),
+                LocaleCode::fromString('en_US'),
+                $enrichedAt,
+            ),
+            ProductWasEnrichedMessage::fromProperties(
                 $product2,
-                [
-                    ChannelLocale::fromChannelAndLocaleString('mobile', 'en_US'),
-                ],
+                ChannelCode::fromString('mobile'),
+                LocaleCode::fromString('en_US'),
                 $enrichedAt,
             ),
         ];
 
-        $messageQueue->publish(ProductsWereEnrichedMessage::fromCollection($productWasEnrichedList))->shouldBeCalled();
+        $messageQueue->publishBatch($productWasEnrichedList)->shouldBeCalled();
 
         $this->__invoke(new NotifyProductsAreEnriched([
             new ProductIsEnriched(
                 $productUuid1,
-                [
-                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR'),
-                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_US'),
-                ],
+                ChannelCode::fromString('ecommerce'),
+                LocaleCode::fromString('fr_FR'),
+                $enrichedAt
+            ),
+            new ProductIsEnriched(
+                $productUuid1,
+                ChannelCode::fromString('ecommerce'),
+                LocaleCode::fromString('en_US'),
                 $enrichedAt
             ),
             new ProductIsEnriched(
                 $productUuid2,
-                [
-                    ChannelLocale::fromChannelAndLocaleString('mobile', 'en_US'),
-                ],
+                ChannelCode::fromString('mobile'),
+                LocaleCode::fromString('en_US'),
                 $enrichedAt
             ),
         ]));
@@ -140,27 +146,28 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
         ]);
 
         $productWasEnrichedList = [
-            ProductWasEnriched::fromProperties(
+            ProductWasEnrichedMessage::fromProperties(
                 $product1,
-                [
-                    ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR'),
-                ],
+                ChannelCode::fromString('ecommerce'),
+                LocaleCode::fromString('fr_FR'),
                 $enrichedAt,
             ),
         ];
 
-        $messageQueue->publish(ProductsWereEnrichedMessage::fromCollection($productWasEnrichedList))->shouldBeCalled();
+        $messageQueue->publishBatch($productWasEnrichedList)->shouldBeCalled();
         $logger->warning(Argument::cetera())->shouldBeCalled();
 
         $this->__invoke(new NotifyProductsAreEnriched([
             new ProductIsEnriched(
                 $productUuid1,
-                [ChannelLocale::fromChannelAndLocaleString('ecommerce', 'fr_FR')],
+                ChannelCode::fromString('ecommerce'),
+                LocaleCode::fromString('fr_FR'),
                 $enrichedAt
             ),
             new ProductIsEnriched(
                 $productUuid2,
-                [ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_GB')],
+                ChannelCode::fromString('ecommerce'),
+                LocaleCode::fromString('en_GB'),
                 $enrichedAt
             ),
         ]));

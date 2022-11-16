@@ -16,8 +16,7 @@ namespace Akeneo\PerformanceAnalytics\Application\Command;
 use Akeneo\PerformanceAnalytics\Application\LogContext;
 use Akeneo\PerformanceAnalytics\Domain\MessageQueue;
 use Akeneo\PerformanceAnalytics\Domain\Product\GetProducts;
-use Akeneo\PerformanceAnalytics\Domain\Product\ProductsWereEnrichedMessage;
-use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnriched;
+use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnrichedMessage;
 use Psr\Log\LoggerInterface;
 
 class NotifyProductsAreEnrichedHandler
@@ -44,15 +43,14 @@ class NotifyProductsAreEnrichedHandler
 
             $product = $products[$uuidAsString];
 
-            $productWasEnrichedList[] = ProductWasEnriched::fromProperties(
+            $productWasEnrichedList[] = ProductWasEnrichedMessage::fromProperties(
                 $product,
-                $productIsEnriched->channelsLocales(),
+                $productIsEnriched->channelCode(),
+                $productIsEnriched->localeCode(),
                 $productIsEnriched->enrichedAt(),
             );
         }
 
-        $this->messageQueue->publish(
-            ProductsWereEnrichedMessage::fromCollection($productWasEnrichedList)
-        );
+        $this->messageQueue->publishBatch($productWasEnrichedList);
     }
 }

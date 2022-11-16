@@ -14,55 +14,29 @@ declare(strict_types=1);
 namespace Specification\Akeneo\PerformanceAnalytics\Domain\Product;
 
 use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
+use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
-use Akeneo\PerformanceAnalytics\Domain\Product\ChannelLocale;
+use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\PerformanceAnalytics\Domain\Product\Product;
-use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnriched;
+use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnrichedMessage;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
-class ProductWasEnrichedSpec extends ObjectBehavior
+class ProductWasEnrichedMessageSpec extends ObjectBehavior
 {
     public function let()
     {
         $this->beConstructedThrough('fromProperties', [
             $this->getProduct(),
-            [
-                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'fr_FR'),
-                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'en_GB'),
-            ],
+            ChannelCode::fromString('ecommerce'),
+            LocaleCode::fromString('en_US'),
             new \DateTimeImmutable(),
         ]);
     }
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(ProductWasEnriched::class);
-    }
-
-    public function it_can_not_be_created_without_channel_locale()
-    {
-        $this->beConstructedThrough('fromProperties', [
-            $this->getProduct(),
-            [],
-            new \DateTimeImmutable(),
-        ]);
-
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
-    public function it_can_not_be_created_with_invalid_channel_locale()
-    {
-        $this->beConstructedThrough('fromProperties', [
-            $this->getProduct(),
-            [
-                'channel_locale1',
-                'channel_locale2',
-            ],
-            new \DateTimeImmutable(),
-        ]);
-
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldHaveType(ProductWasEnrichedMessage::class);
     }
 
     public function it_normalizes()
@@ -70,10 +44,8 @@ class ProductWasEnrichedSpec extends ObjectBehavior
         $product = $this->getProduct();
         $this->beConstructedThrough('fromProperties', [
             $product,
-            [
-                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'fr_FR'),
-                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'en_GB'),
-            ],
+            ChannelCode::fromString('ecommerce'),
+            LocaleCode::fromString('en_US'),
             new \DateTimeImmutable('2022-01-05 00:00:00'),
         ]);
 
@@ -82,10 +54,8 @@ class ProductWasEnrichedSpec extends ObjectBehavior
             'product_created_at' => $product->createdAt()->format('c'),
             'family_code' => $product->familyCode()?->toString(),
             'category_codes' => array_map(fn (CategoryCode $category) => $category->toString(), $product->categories()),
-            'channels_locales' => [
-                ['channel_code' => 'e-commerce', 'locale_code' => 'fr_FR'],
-                ['channel_code' => 'e-commerce', 'locale_code' => 'en_GB'],
-            ],
+            'channel_code' => 'ecommerce',
+            'locale_code' => 'en_US',
             'enriched_at' => '2022-01-05T00:00:00+00:00',
         ]);
     }
@@ -101,10 +71,8 @@ class ProductWasEnrichedSpec extends ObjectBehavior
 
         $this->beConstructedThrough('fromProperties', [
             $product,
-            [
-                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'fr_FR'),
-                ChannelLocale::fromChannelAndLocaleString('e-commerce', 'en_GB'),
-            ],
+            ChannelCode::fromString('ecommerce'),
+            LocaleCode::fromString('en_US'),
             new \DateTimeImmutable('2022-01-05 00:00:00'),
         ]);
 
@@ -113,10 +81,8 @@ class ProductWasEnrichedSpec extends ObjectBehavior
             'product_created_at' => $product->createdAt()->format('c'),
             'family_code' => null,
             'category_codes' => [],
-            'channels_locales' => [
-                ['channel_code' => 'e-commerce', 'locale_code' => 'fr_FR'],
-                ['channel_code' => 'e-commerce', 'locale_code' => 'en_GB'],
-            ],
+            'channel_code' => 'ecommerce',
+            'locale_code' => 'en_US',
             'enriched_at' => '2022-01-05T00:00:00+00:00',
         ]);
     }

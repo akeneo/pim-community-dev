@@ -16,7 +16,8 @@ namespace Specification\Akeneo\PerformanceAnalytics\Infrastructure\EventSubscrib
 use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnriched;
 use Akeneo\PerformanceAnalytics\Application\Command\NotifyProductsAreEnrichedHandler;
 use Akeneo\PerformanceAnalytics\Application\Command\ProductIsEnriched;
-use Akeneo\PerformanceAnalytics\Domain\Product\ChannelLocale;
+use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
+use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\PerformanceAnalytics\Infrastructure\EventSubscriber\ProductWasCompletedOnChannelLocaleSubscriber;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocale;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocaleCollection;
@@ -64,17 +65,20 @@ final class ProductWasCompletedOnChannelLocaleSubscriberSpec extends ObjectBehav
             new NotifyProductsAreEnriched([
                 new ProductIsEnriched(
                     $uuid1,
-                    [
-                        ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_US'),
-                        ChannelLocale::fromChannelAndLocaleString('mobile', 'en_US'),
-                    ],
+                    ChannelCode::fromString('ecommerce'),
+                    LocaleCode::fromString('en_US'),
+                    $completedAt
+                ),
+                new ProductIsEnriched(
+                    $uuid1,
+                    ChannelCode::fromString('mobile'),
+                    LocaleCode::fromString('en_US'),
                     $completedAt
                 ),
                 new ProductIsEnriched(
                     $uuid2,
-                    [
-                        ChannelLocale::fromChannelAndLocaleString('ecommerce', 'en_US'),
-                    ],
+                    ChannelCode::fromString('ecommerce'),
+                    LocaleCode::fromString('en_US'),
                     $completedAt
                 ),
             ])

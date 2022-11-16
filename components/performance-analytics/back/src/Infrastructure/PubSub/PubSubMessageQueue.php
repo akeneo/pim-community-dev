@@ -22,11 +22,13 @@ use Webmozart\Assert\Assert;
 
 final class PubSubMessageQueue implements MessageQueue
 {
+    private const BATCH_SIZE = 500;
+
     public function __construct(
         private Client $client,
         private LoggerInterface $logger,
         private ?string $tenantId,
-        private string $topicName
+        private string $topicName,
     ) {
     }
 
@@ -53,23 +55,47 @@ final class PubSubMessageQueue implements MessageQueue
      */
     public function publishBatch(array $messages): void
     {
+        if ([] === $messages) {
+            return;
+        }
+
         Assert::allIsInstanceOf($messages, Message::class);
         if (null === $this->tenantId) {
             $this->logger->warning('Tenant ID is null', LogContext::build());
         }
 
-        try {
-            $this->client->publishBatch(
-                $this->topicName,
-                \array_map(fn (Message $message): PubSubMessage => $this->buildPubSubMessage($message), $messages)
-            );
-        } catch (\Throwable $e) {
-            $this->logger->error(
-                'Error while sending messages to PubSub: '.$e->getMessage(),
-                LogContext::build(['messages' => \array_map(fn (Message $message): array => $message->normalize(), $messages)])
-            );
+        $pubSubMessages = \array_map(
+            fn (Message $message): PubSubMessage => $this->buildPubSubMessage($message),
+            $messages
+        );
 
-            throw $e;
+        foreach (\array_chunk($pubSubMessages, self::BATCH_SIZE) as $pubSubMessagesBatch) {
+            $try = 1;
+            $isSuccess = false;
+            do {
+                try {
+                    $this->client->publishBatch($this->topicName, $pubSubMessagesBatch);
+                    $isSuccess = true;
+                } catch (\Throwable $exception) {
+                    $this->logger->error(
+                        'Error while sending messages to PubSub: '.$exception->getMessage(),
+                        LogContext::build([
+                            'messages' => \array_map(
+                                fn (PubSubMessage $message): string => $message->data(),
+                                $pubSubMessagesBatch
+                            ),
+                            'try' => $try,
+                        ])
+                    );
+
+                    ++$try;
+                    if ($try >= 3) {
+                        throw $exception;
+                    }
+
+                    usleep(100000 * $try); // 100000 = 100ms
+                }
+            } while (!$isSuccess);
         }
     }
 

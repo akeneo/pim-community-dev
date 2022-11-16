@@ -16,4 +16,9 @@ namespace Akeneo\PerformanceAnalytics\Domain;
 interface MessageQueue
 {
     public function publish(Message $message): void;
+
+    /**
+     * @param Message[] $messages
+     */
+    public function publishBatch(array $messages): void;
 }
