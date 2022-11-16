@@ -33,18 +33,6 @@ class AutoNumberLimitPerStructureValidatorSpec extends ObjectBehavior
             ->during('validate', [[], new NotBlank()]);
     }
 
-    public function it_could_throw_an_error_when_its_not_the_right_command(ExecutionContext $context): void
-    {
-        $context->getRoot()
-            ->shouldBeCalled()
-            ->willReturn(new \stdClass());
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('validate', [[], new AutoNumberLimitPerStructure(['limit' => 2])]);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('validate', [[], new AutoNumberLimitPerStructure()]);
-    }
-
     public function it_should_throw_an_error_when_a_property_structure_is_not_an_array(ExecutionContext $context)
     {
         $command = new CreateGeneratorCommand(
@@ -121,7 +109,6 @@ class AutoNumberLimitPerStructureValidatorSpec extends ObjectBehavior
         $structure = [
             ['type' => 'free_text', 'string' => 'abcdef'],
             ['type' => 'auto_number', 'numberMin' => 3, 'digitsMin' => 2],
-            ['type' => 'auto_number', 'numberMin' => 5, 'digitsMin' => 4],
         ];
         $command = new CreateGeneratorCommand(
             'generatorCode',
@@ -140,6 +127,6 @@ class AutoNumberLimitPerStructureValidatorSpec extends ObjectBehavior
             ['{{limit}}' => 2]
         )->shouldNotBeCalled();
 
-        $this->validate($structure, new AutoNumberLimitPerStructure(['limit' => 2]));
+        $this->validate($structure, new AutoNumberLimitPerStructure());
     }
 }

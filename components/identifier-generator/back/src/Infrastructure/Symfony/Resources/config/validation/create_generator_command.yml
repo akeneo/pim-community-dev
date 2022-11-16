@@ -12,8 +12,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - NotBlank: ~
             - Count:
                   max: 20
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberLimitPerStructure:
-                  limit: 1
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberLimitPerStructure: ~
             - All:
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid: ~

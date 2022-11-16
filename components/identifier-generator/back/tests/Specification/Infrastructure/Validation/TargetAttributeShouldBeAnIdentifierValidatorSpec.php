@@ -37,13 +37,6 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new NotBlank()]);
     }
 
-    public function it_could_throw_an_error_when_its_not_the_right_command(ExecutionContext $context): void
-    {
-        $context->getRoot()
-            ->willReturn(new \stdClass());
-        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new TargetAttributeShouldBeAnIdentifier()]);
-    }
-
     public function it_should_build_violation_when_target_attribute_is_not_an_identifier(
         GetAttributes $getAttributes,
         ExecutionContext $context
