@@ -36,11 +36,17 @@ class FetchSamplePercentageFromBucket implements FetchSamplePercentage
         $rawConfig = $response->getBody()->getContents();
         $config = \json_decode($rawConfig, true);
 
-        if (!is_array($config) && !isset($config[$this->googleProject])) {
+        $explodedGoogleProject = explode('-', $this->googleProject);
+        $env = end($explodedGoogleProject);
+        if (empty($env)) {
             return 0;
         }
 
-        $samplePercentage = $config[$this->googleProject];
+        if (!is_array($config) && !isset($config[$env])) {
+            return 0;
+        }
+
+        $samplePercentage = $config[$env];
         if (!is_int($samplePercentage)) {
             return 0;
         }
