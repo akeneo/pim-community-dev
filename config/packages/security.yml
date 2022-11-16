@@ -55,12 +55,12 @@ security:
         api:
             pattern:                        ^/api
             stateless:                      true
+            json_login:                     ~
             access_denied_handler:          pim_api.security.access_denied_handler
             provider:                       pim_user_api
 
         main:
             pattern:                        ^/
-            lazy:                           true
             provider:                       chain_provider
             form_login:
                 enable_csrf:                true
@@ -76,8 +76,12 @@ security:
                 samesite:                   'lax'
 
     access_control:
+        - { path: ^/ , roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/user/(login|reset-request|send-email|check-email)$, roles: PUBLIC_ACCESS }
+        - { path: ^/user/reset/*, roles: PUBLIC_ACCESS }
+        - { path: ^/installer, roles: PUBLIC_ACCESS }
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/rest/v1$, role: PUBLIC_ACCESS }
         - { path: ^/api/, role: pim_api_overall_access }
 
 acl:

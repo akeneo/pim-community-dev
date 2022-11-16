@@ -218,7 +218,7 @@ class UserContext
      */
     public function getUserTimezone(): string
     {
-        $user = $this->security->getUser();
+        $user = $this->getUser();
         if (null === $user) {
             throw new \RuntimeException('Impossible to load the current user from context.');
         }
@@ -248,6 +248,14 @@ class UserContext
         }
 
         return $uiLocale->getCode();
+    }
+
+    /**
+     * Get authenticated user.
+     */
+    public function getUser(): ?UserInterface
+    {
+        return $this->security->getUser();
     }
 
     /**
@@ -359,7 +367,7 @@ class UserContext
      */
     protected function getUserOption($optionName)
     {
-        $user = $this->security->getUser();
+        $user = $this->getUser();
         if (!$user instanceof UserInterface) {
             return null;
         }
