@@ -46,8 +46,8 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
           },
           {
             code: PROPERTY_NAMES.AUTO_NUMBER,
-            defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1}
-          }
+            defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
+          },
         ],
       },
     ],

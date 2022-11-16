@@ -31,7 +31,7 @@ const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange})
           {translate(`pim_identifier_generator.structure.settings.${selectedProperty.type}.title`)}
         </SectionTitle.Title>
       </SectionTitle>
-      <Component selectedProperty={selectedProperty} onChange={onChange}/>
+      <Component selectedProperty={selectedProperty} onChange={onChange} />
     </>
   );
 };

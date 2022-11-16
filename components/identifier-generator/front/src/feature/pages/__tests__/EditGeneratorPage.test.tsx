@@ -26,10 +26,12 @@ const initialGenerator: IdentifierGenerator = {
     en_US: 'Initial Label',
   },
   conditions: [],
-  structure: [{
-    type: PROPERTY_NAMES.FREE_TEXT,
-    string: 'AKN',
-  }],
+  structure: [
+    {
+      type: PROPERTY_NAMES.FREE_TEXT,
+      string: 'AKN',
+    },
+  ],
   delimiter: null,
   target: 'sku',
 };

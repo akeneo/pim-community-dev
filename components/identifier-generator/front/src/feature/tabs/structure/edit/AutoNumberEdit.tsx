@@ -18,14 +18,10 @@ const AutoNumberEdit: PropertyEditFieldsProps<AutoNumber> = ({selectedProperty, 
 
   return (
     <>
-      <Field
-        label={translate('pim_identifier_generator.structure.settings.auto_number.digitsMin_label')}
-      >
-        <NumberInput value={`${selectedProperty.digitsMin}`} onChange={onDigitsMinChange} min={1} max={15}/>
+      <Field label={translate('pim_identifier_generator.structure.settings.auto_number.digitsMin_label')}>
+        <NumberInput value={`${selectedProperty.digitsMin}`} onChange={onDigitsMinChange} min={1} max={15} />
       </Field>
-      <Field
-        label={translate('pim_identifier_generator.structure.settings.auto_number.numberMin_label')}
-      >
+      <Field label={translate('pim_identifier_generator.structure.settings.auto_number.numberMin_label')}>
         <NumberInput value={`${selectedProperty.numberMin}`} onChange={onNumberMinChange} min={0} />
       </Field>
     </>

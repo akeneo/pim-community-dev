@@ -67,7 +67,8 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
       </Header>
       <PageContent>
         <Information illustration={<AttributesIllustration />} title={'Welcome to your identifier generator!'}>
-          {translate('pim_identifier_generator.list.helper')}<br/>
+          {translate('pim_identifier_generator.list.helper')}
+          <br />
           <Link href="https://www.akeneo.com/" target="_blank">
             {translate('pim_identifier_generator.list.check_help_center')}
           </Link>

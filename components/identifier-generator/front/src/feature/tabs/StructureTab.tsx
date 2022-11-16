@@ -66,11 +66,7 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
           {structure.length > 0 && (
             <>
               <Preview structure={structure} delimiter={delimiter} />
-              <PropertiesList
-                structure={structure}
-                onSelect={setSelectedPropertyId}
-                selectedId={selectedPropertyId}
-              />
+              <PropertiesList structure={structure} onSelect={setSelectedPropertyId} selectedId={selectedPropertyId} />
             </>
           )}
           {structure.length === 0 && (
