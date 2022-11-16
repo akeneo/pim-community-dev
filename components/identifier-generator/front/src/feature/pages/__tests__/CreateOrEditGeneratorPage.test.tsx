@@ -25,6 +25,7 @@ describe('CreateOrEditGeneratorPage', () => {
     const mainButtonCallback = jest.fn();
     render(
       <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
         initialGenerator={initialGenerator}
         validationErrors={[]}
         mainButtonCallback={mainButtonCallback}
@@ -49,6 +50,7 @@ describe('CreateOrEditGeneratorPage', () => {
     const mainButtonCallback = jest.fn();
     render(
       <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
         initialGenerator={initialGenerator}
         validationErrors={[]}
         mainButtonCallback={mainButtonCallback}
@@ -64,6 +66,7 @@ describe('CreateOrEditGeneratorPage', () => {
     const mainButtonCallback = jest.fn();
     render(
       <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
         initialGenerator={initialGenerator}
         validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
         mainButtonCallback={mainButtonCallback}

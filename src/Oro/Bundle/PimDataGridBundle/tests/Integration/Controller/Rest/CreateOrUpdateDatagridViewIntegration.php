@@ -56,7 +56,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
         $datagridView = $this->datagridViewRepository->find($id);
         $this->assertNotNull($datagridView);
         $this->assertSame('product-grid', $datagridView->getDatagridAlias());
-        $this->assertSame($this->loggedUser->getUsername(), $datagridView->getOwner()->getUsername());
+        $this->assertSame($this->loggedUser->getUserIdentifier(), $datagridView->getOwner()->getUserIdentifier());
         $this->assertSame(DatagridView::TYPE_PRIVATE, $datagridView->getType());
     }
 
@@ -79,7 +79,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
         $datagridView = $this->datagridViewRepository->find($id);
         $this->assertNotNull($datagridView);
         $this->assertSame('product-grid', $datagridView->getDatagridAlias());
-        $this->assertSame($this->loggedUser->getUsername(), $datagridView->getOwner()->getUsername());
+        $this->assertSame($this->loggedUser->getUserIdentifier(), $datagridView->getOwner()->getUserIdentifier());
         $this->assertSame(DatagridView::TYPE_PUBLIC, $datagridView->getType());
     }
 
@@ -108,7 +108,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
         $this->assertNotNull($datagridView);
         $this->assertSame('product-grid', $datagridView->getDatagridAlias());
         $this->assertSame('Edited view', $datagridView->getLabel());
-        $this->assertSame($this->loggedUser->getUsername(), $datagridView->getOwner()->getUsername());
+        $this->assertSame($this->loggedUser->getUserIdentifier(), $datagridView->getOwner()->getUserIdentifier());
         $this->assertSame(DatagridView::TYPE_PUBLIC, $datagridView->getType(), 'Type cannot be changed');
         $this->assertSame(['identifier', 'created', 'updated' , 'enabled'], $datagridView->getColumns());
     }
@@ -138,7 +138,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
         $this->assertNotNull($datagridView);
         $this->assertSame('product-grid', $datagridView->getDatagridAlias());
         $this->assertSame('Edited private view', $datagridView->getLabel());
-        $this->assertSame($this->loggedUser->getUsername(), $datagridView->getOwner()->getUsername());
+        $this->assertSame($this->loggedUser->getUserIdentifier(), $datagridView->getOwner()->getUserIdentifier());
         $this->assertSame(DatagridView::TYPE_PRIVATE, $datagridView->getType(), 'Type cannot be changed');
         $this->assertSame(['identifier', 'created', 'updated' , 'enabled'], $datagridView->getColumns());
     }

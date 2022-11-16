@@ -24,8 +24,8 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($requirementFactory);
 
-        $eventArgs->getEntity()->willReturn($channel);
-        $eventArgs->getEntityManager()->willReturn($entityManager);
+        $eventArgs->getObject()->willReturn($channel);
+        $eventArgs->getObjectManager()->willReturn($entityManager);
     }
 
     public function it_is_an_event_subscriber()
@@ -39,10 +39,10 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
     }
 
     public function it_ignores_non_ChannelInterface_entity(
-        $eventArgs,
-        $entityManager
+        LifecycleEventArgs $eventArgs,
+        EntityManagerInterface $entityManager
     ) {
-        $eventArgs->getEntity()->willReturn(null);
+        $eventArgs->getObject()->willReturn(null);
         $entityManager->persist(Argument::any())->shouldNotBeCalled();
 
         $this->prePersist($eventArgs)->shouldReturn(null);

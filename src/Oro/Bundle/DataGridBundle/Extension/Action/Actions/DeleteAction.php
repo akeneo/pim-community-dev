@@ -20,6 +20,6 @@ class DeleteAction extends AbstractAction
             $options['confirmation'] = true;
         }
 
-        parent::setOptions($options);
+        return parent::setOptions($options);
     }
 }
