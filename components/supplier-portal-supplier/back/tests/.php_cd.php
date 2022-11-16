@@ -68,8 +68,6 @@ $rules = [
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Symfony',
-            'Twig\Environment',
-            'Swift_Mailer',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Infrastructure'),
 
@@ -106,7 +104,6 @@ $rules = [
             // External dependencies coupling
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
-            'Twig\Environment',
             'Symfony\Component\HttpFoundation\Request',
             'Symfony\Component\HttpFoundation\Response',
             'Symfony\Component\Security\Http\Event\LogoutEvent',

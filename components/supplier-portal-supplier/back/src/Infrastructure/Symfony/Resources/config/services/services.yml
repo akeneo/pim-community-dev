@@ -1,4 +1,4 @@
 services:
-    Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSymfonyEmail:
         arguments:
             - '@mailer'

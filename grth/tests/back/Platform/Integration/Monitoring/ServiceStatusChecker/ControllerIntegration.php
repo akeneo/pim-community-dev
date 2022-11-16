@@ -18,6 +18,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportException;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
+use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 
 final class ControllerIntegration extends KernelTestCase
 {
@@ -34,7 +37,11 @@ final class ControllerIntegration extends KernelTestCase
             'X-AUTH-TOKEN' => 'my_auth_token',
         ]);
 
-        $smtpCheckerKo = new SmtpChecker($this->createMock(\Swift_Transport::class), $this->createMock(LoggerInterface::class));
+        $smtpCheckerKo = new SmtpChecker(
+            self::getContainer()->get('mailer.transport_factory.smtp'),
+            'smtp://foo.bar',
+            $this->createMock(LoggerInterface::class)
+        );
 
         $this->controller = new Controller(
             self::getContainer()->get(MysqlChecker::class),
@@ -73,7 +80,7 @@ final class ControllerIntegration extends KernelTestCase
                 'smtp' => [
                     'ok' => false,
                     'optional' => true,
-                    'message' => 'Unable to ping the mailer transport.',
+                    'message' => 'Unable to ping the mailer transport: "Connection could not be established with host "ssl://foo.bar:465": stream_socket_client(): php_network_getaddresses: getaddrinfo for foo.bar failed: No address associated with hostname".',
                 ],
                 'pub_sub' => [
                     'ok' => true,
@@ -113,7 +120,7 @@ final class ControllerIntegration extends KernelTestCase
                 'smtp' => [
                     'ok' => false,
                     'optional' => true,
-                    'message' => 'Unable to ping the mailer transport.',
+                    'message' => 'Unable to ping the mailer transport: "Connection could not be established with host "ssl://foo.bar:465": stream_socket_client(): php_network_getaddresses: getaddrinfo for foo.bar failed: No address associated with hostname".',
                 ],
                 'pub_sub' => [
                     'ok' => true,

@@ -23,9 +23,9 @@ functions.http('createDocument', (req, res) => {
   //check envar
   const domain = process.env.domain;
   const projectId = process.env.projectId;
-  const mailerBaseUrl = process.env.mailerBaseUrl;
+  const mailerBaseDsn = process.env.mailerBaseDsn;
 
-  if (!domain || !projectId || !mailerBaseUrl) {
+  if (!domain || !projectId || !mailerBaseDsn) {
     res.status(402).send(" env variable empty !!!");
   }
 
@@ -36,7 +36,8 @@ functions.http('createDocument', (req, res) => {
       "APP_INDEX_HOSTS": "elasticsearch-client." + tenantId + ".svc.cluster.local",
       "APP_TENANT_ID": tenantId,
       "MAILER_PASSWORD": emailPassword,
-      "MAILER_URL": mailerBaseUrl + "?encryption=tls&auth_mode=login&username=" + tenantName + "-" + projectId + "@mg.cloud.akeneo.com&password=" + emailPassword + "&sender_address=no-reply%40" + tenantName + "." + domain,
+      "MAILER_DSN": mailerBaseDsn + "?encryption=tls&auth_mode=login",
+      "MAILER_FROM": "Akeneo <no-reply@" + tenantName + "." + domain + ">",
       "MAILER_USER": tenantName + "-" + projectId + "@mg.cloud.akeneo.com",
       "MEMCACHED_SVC": "memcached." + tenantId + ".svc.cluster.local",
       "APP_DATABASE_PASSWORD": mysqlPassword,
@@ -44,7 +45,6 @@ functions.http('createDocument', (req, res) => {
       "SRNT_GOOGLE_BUCKET_NAME": tenantId
     }
   });
-
 
   const encryptKey = process.env.TENANT_CONTEXT_ENCRYPTION_KEY;
 

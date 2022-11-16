@@ -112,7 +112,6 @@ module "timmy_create_tenant" {
     GCP_PROJECT_ID                 = var.project_id
     GOOGLE_ZONE                    = var.google_zone
     LOG_LEVEL                      = "debug"
-    MAILER_BASE_URL                = "smtp://smtp.mailgun.org:2525"
     MAILER_DOMAIN                  = "mg.cloud.akeneo.com"
     NODE_ENV                       = "production"
     REGION                         = var.region
@@ -182,7 +181,7 @@ module "timmy_create_fire_document" {
     domain             = var.domain
     projectId          = var.project_id
     fireStoreProjectId = var.firestore_project_id
-    mailerBaseUrl      = "smtp://smtp.mailgun.org:2525"
+    mailerBaseDsn      = "smtp://smtp.mailgun.org:2525"
     tenantContext      = var.tenant_context_collection_name
   }
 }

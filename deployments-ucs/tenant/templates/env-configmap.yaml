@@ -19,7 +19,8 @@ data:
   GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
   LC_ALL: C.UTF-8
-  MAILER_URL: {{ .Values.mailer.baseMailerUrl }}?encryption=tls&auth_mode=login&username={{ .Values.mailer.login }}&password={{ .Values.mailer.password }}&sender_address=no-reply%40{{ .Values.common.fqdn }}
+  MAILER_DSN: {{ .Values.mailer.baseMailerDsn }}?encryption=tls&auth_mode=login
+  MAILER_FROM: "Akeneo <no-reply@{{ .Values.common.fqdn }}>"
   MEMCACHED_SVC:  {{ .Values.memcached.fullnameOverride | quote}}
   {{- if .Values.editionFlag.enabled }}
   PIM_EDITION: {{ ((index .Values.global.extraLabels "tags.akeneo.com/product_reference_type") | toString) }}

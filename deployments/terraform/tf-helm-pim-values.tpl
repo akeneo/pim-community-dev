@@ -74,7 +74,7 @@ backup:
 mailer:
   login: ${mailgun.login_email}
   password: ${mailgun.password}
-  base_mailer_url: "smtp://${mailgun.host}:${mailgun.port}"
+  base_mailer_dsn: "smtp://${mailgun.login_email}:${mailgun.password}@${mailgun.host}:${mailgun.port}"
 
 pim:
   serviceAccountKey: ${pim.storage_key}

@@ -69,7 +69,7 @@ common:
 mailer:
   login: null # Generated with terraform template
   password: null # Generated with terraform template
-  base_mailer_url: null # Generated with terraform template
+  base_mailer_dsn: null # Generated with terraform template
 
 image:
   pim:

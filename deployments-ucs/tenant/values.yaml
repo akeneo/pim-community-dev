@@ -176,7 +176,7 @@ image:
 mailer:
   login: null
   password: null
-  baseMailerUrl: null
+  baseMailerDsn: null
   domain: null
   apiKey: null
 

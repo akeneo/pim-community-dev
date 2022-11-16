@@ -159,5 +159,12 @@ services:
     networks:
       - 'pim'
 
+  mailcatcher:
+    image: 'schickling/mailcatcher'
+    ports:
+      - '1080:1080'
+    networks:
+      - 'pim'
+
 networks:
   pim:
