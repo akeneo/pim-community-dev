@@ -14,7 +14,7 @@ services:
             - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
             - '@event_dispatcher'
             - '@Akeneo\Pim\Enrichment\Product\Domain\Clock'
-            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetUserId'
+            - '@security.token_storage'
 
     pim_catalog.completeness.missing_required_attributes_calculator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator'

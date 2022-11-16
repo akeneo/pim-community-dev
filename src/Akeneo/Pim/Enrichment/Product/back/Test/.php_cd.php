@@ -93,7 +93,6 @@ $rules = [
         'Symfony\Component\HttpKernel',
         'Symfony\Component\Config\FileLocator',
         'Doctrine\DBAL\Connection',
-        'Akeneo\UserManagement\Bundle\Context\UserContext',
     ])->in('Akeneo\Pim\Enrichment\Product\Infrastructure'),
 ];
 

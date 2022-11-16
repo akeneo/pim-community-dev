@@ -4,7 +4,3 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
     
-    Akeneo\Pim\Enrichment\Product\Domain\Query\GetUserId:
-        class: Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLGetUserId
-        arguments:
-            - '@pim_user.context.user'

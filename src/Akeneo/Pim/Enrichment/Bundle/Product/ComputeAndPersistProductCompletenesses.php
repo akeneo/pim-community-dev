@@ -14,7 +14,9 @@ use Akeneo\Pim\Enrichment\Product\Domain\Query\GetUserId;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -24,7 +26,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ComputeAndPersistProductCompletenesses
 {
     private const CHUNK_SIZE = 1000;
-    private ?string $userId;
 
     public function __construct(
         private CompletenessCalculator $completenessCalculator,
@@ -32,9 +33,8 @@ class ComputeAndPersistProductCompletenesses
         private GetProductCompletenesses $getProductCompletenesses,
         private EventDispatcherInterface $eventDispatcher,
         private Clock $clock,
-        private GetUserId $aclGetUserId,
+        private TokenStorageInterface $tokenStorage,
     ) {
-        $this->userId = $this->aclGetUserId->getUserId()->id();
     }
 
     /**
@@ -66,6 +66,10 @@ class ComputeAndPersistProductCompletenesses
         array $previousProductsCompletenessCollections
     ): ?ProductWasCompletedOnChannelLocaleCollection {
         $now = $this->clock->now();
+        /** @var \Akeneo\UserManagement\Component\Model\UserInterface $user */
+        $user = $this->tokenStorage->getToken()?->getUser();
+        $userId = (string) $user?->getId();
+
         $productCompletedOnChannelLocaleEvents = [];
         foreach ($newProductsCompletenessCollections as $uuid => $newProductCompletenessCollection) {
             $previousProductCompletenessCollection = $previousProductsCompletenessCollections[$uuid] ?? null;
@@ -73,7 +77,7 @@ class ComputeAndPersistProductCompletenesses
             $productCompletedOnChannelLocaleEvents = [
                 ...$productCompletedOnChannelLocaleEvents,
                 ...$newProductCompletenessCollection->buildProductWasCompletedOnChannelLocaleEvents(
-                    $this->userId,
+                    $userId,
                     $now,
                     $previousProductCompletenessCollection
                 )
