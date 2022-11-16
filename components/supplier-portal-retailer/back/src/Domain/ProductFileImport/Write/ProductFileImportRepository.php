@@ -9,4 +9,6 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductF
 interface ProductFileImportRepository
 {
     public function save(ProductFileImport $productFileImport): void;
+
+    public function findByJobExecutionId(int $jobExecutionId): ?ProductFileImport;
 }
