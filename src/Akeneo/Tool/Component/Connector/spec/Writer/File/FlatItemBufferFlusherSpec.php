@@ -63,9 +63,9 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
 
         $buffer->count()->willReturn(3);
         $buffer->key()->willReturn(0);
-        $buffer->rewind()->willReturn();
+        $buffer->rewind();
         $buffer->valid()->willReturn(true, false);
-        $buffer->next()->willReturn();
+        $buffer->next();
         $buffer->current()->willReturn(['fooA', 'fooB']);
 
         $buffer->getHeaders()->willReturn(['colA', 'colB']);
@@ -87,10 +87,10 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('write')->shouldBeCalled();
         $parameters->all()->willReturn([]);
 
-        $buffer->rewind()->willReturn();
+        $buffer->rewind();
         $buffer->count()->willReturn(3);
         $buffer->valid()->willReturn(true, true, true, false);
-        $buffer->next()->willReturn();
+        $buffer->next();
         $buffer->current()->willReturn([
             'colA' => 'fooA',
             'colB' => 'fooB'
@@ -122,10 +122,10 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('write')->shouldBeCalled();
         $parameters->all()->willReturn([]);
 
-        $buffer->rewind()->willReturn();
+        $buffer->rewind();
         $buffer->count()->willReturn(3);
         $buffer->valid()->willReturn(true, true, true, false);
-        $buffer->next()->willReturn();
+        $buffer->next();
         $buffer->current()->willReturn([
             'colA' => 'fooA',
             'colB' => 'fooB'

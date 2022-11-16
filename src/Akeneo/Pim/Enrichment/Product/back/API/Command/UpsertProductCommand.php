@@ -46,6 +46,12 @@ final class UpsertProductCommand
         private ?QuantifiedAssociationUserIntentCollection $quantifiedAssociationUserIntents = null,
         private array $valueUserIntents = []
     ) {
+        /**
+         * TODO to remove when false negative will be fixed
+         * Call to static method Webmozart\Assert\Assert::allImplementsInterface() with array<Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent> and
+        'Akeneo\\Pim\\Enrichment\\Product\\API\\Command\\UserIntent\\ValueUserIntent' will always evaluate to false.
+         * @phpstan-ignore-next-line
+         */
         Assert::allImplementsInterface($this->valueUserIntents, ValueUserIntent::class);
     }
 

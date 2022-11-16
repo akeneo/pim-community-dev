@@ -13,6 +13,7 @@ return (new PhpCsFixer\Config())
         '@PSR12' => true,
         'no_extra_blank_lines' => true,
         'trailing_comma_in_multiline' => true,
+        'void_return' => true,
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(

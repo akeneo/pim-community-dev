@@ -25,7 +25,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyDisabledProduct()
     {
         $expected = [
-            'uuid'                    => $this->getUuidFromIdentifier('bar'),
+            'uuid'                    => $this->getProductUuid('bar')->toString(),
             'identifier'              => 'bar',
             'family'                  => null,
             'parent'                  => null,
@@ -45,7 +45,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyEnabledProduct()
     {
         $expected = [
-            'uuid'                    => $this->getUuidFromIdentifier('baz'),
+            'uuid'                    => $this->getProductUuid('baz')->toString(),
             'identifier'              => 'baz',
             'family'                  => null,
             'parent'                  => null,
@@ -65,7 +65,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testProductWithAllAttributes()
     {
         $expected = [
-            'uuid'                    => $this->getUuidFromIdentifier('foo'),
+            'uuid'          => $this->getProductUuid('foo')->toString(),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -283,7 +283,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testProductWithFilteredAttributes()
     {
         $expected = [
-            'uuid'          => $this->getUuidFromIdentifier('foo'),
+            'uuid'          => $this->getProductUuid('foo')->toString(),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -441,13 +441,5 @@ class ProductNormalizerIntegration extends TestCase
         }
 
         return $data;
-    }
-
-    private function getUuidFromIdentifier(string $identifier): string
-    {
-        return $this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => $identifier]
-        );
     }
 }

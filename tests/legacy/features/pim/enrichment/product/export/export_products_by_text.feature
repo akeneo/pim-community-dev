@@ -15,11 +15,13 @@ Feature: Export products according to text attribute filter
       | code    | requirements-mobile | attributes                         |
       | rangers | sku                 | sku,comment,name,title,title_2,title_3 |
     And the following products:
-      | sku      | enabled | family  | categories        | comment         | name-en_US | title        | title_2       | title_3    |
-      | SNKRS-1B | 1       | rangers | summer_collection | Awesome         | Ranger 1B  | My title     | Awesome title |            |
-      | SNKRS-1R | 1       | rangers | summer_collection | Awesome product |            | Nice product |               |            |
-      | SNKRS-1N | 1       | rangers | summer_collection |                 |            |              | Amazing title |            |
-      | SNKRS-1Z | 1       | rangers | summer_collection | This is nice    | Ranger 1Z  |              |               | Nice title |
+      | uuid                                 | sku      | enabled | family  | categories        | comment         | name-en_US | title        | title_2       | title_3    |
+      | ad087739-9bd9-4ee5-a8a9-378864c67a26 | SNKRS-1B | 1       | rangers | summer_collection | Awesome         | Ranger 1B  | My title     | Awesome title |            |
+      | f601bebb-8678-4db0-a56e-31bcedbb9153 | SNKRS-1R | 1       | rangers | summer_collection | Awesome product |            | Nice product |               |            |
+      | f12b2144-a725-459c-b134-efd349719d97 | SNKRS-1N | 1       | rangers | summer_collection |                 |            |              | Amazing title |            |
+      | d06d9eb9-7df9-4316-a88c-e2c708b54267 | SNKRS-1Z | 1       | rangers | summer_collection | This is nice    | Ranger 1Z  |              |               | Nice title |
+    And the following job "csv_footwear_product_export" configuration:
+      | with_uuid | yes |
     And I am logged in as "Julia"
 
   Scenario: Export products by text values
@@ -45,6 +47,6 @@ Feature: Export products according to text attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;comment;name-en_US;title;title_2;title_3
-    SNKRS-1B;summer_collection;1;rangers;;Awesome;"Ranger 1B";"My title";"Awesome title";
+    uuid;sku;categories;enabled;family;groups;comment;name-en_US;title;title_2;title_3
+    ad087739-9bd9-4ee5-a8a9-378864c67a26;SNKRS-1B;summer_collection;1;rangers;;Awesome;"Ranger 1B";"My title";"Awesome title";
     """

@@ -24,6 +24,7 @@ describe('CreateGeneratorPage', () => {
     const expectCall = mockResponse('akeneo_identifier_generator_rest_create', 'POST', {
       status: 201,
       body: initialGenerator,
+      json: initialGenerator,
     });
 
     const history = createMemoryHistory();

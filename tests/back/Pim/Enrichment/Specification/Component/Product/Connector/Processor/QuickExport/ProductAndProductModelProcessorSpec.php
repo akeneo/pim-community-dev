@@ -73,7 +73,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(false);
 
-        $this->shouldThrow('\InvalidArgumentException')->duringProcess($product);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringProcess($product);
     }
 
     function it_process_product_with_selected_properties(
@@ -103,6 +103,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(true);
         $jobParameters->get('scope')->willReturn('ecommerce');
+        $jobParameters->has('with_uuid')->willReturn(false);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn(['en_US']);
 
@@ -117,7 +118,13 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
             'family' => 'shoes',
             'values' => []
         ];
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $normalizationContext = [
+            'channels' => ['ecommerce'],
+            'locales' => ['en_US'],
+            'filter_types' => ['pim.transform.product_value.structured', 'pim.transform.product_value.structured.quick_export'],
+            'with_association_uuids' => false,
+        ];
+        $normalizer->normalize($product, 'standard', $normalizationContext)->shouldBeCalled()->willReturn($standardFormat);
         $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
@@ -126,7 +133,6 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
             'values' => []
         ]);
     }
-
 
     function it_process_product_without_selected_properties(
         $stepExecution,
@@ -155,6 +161,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(true);
         $jobParameters->get('scope')->willReturn('ecommerce');
+        $jobParameters->has('with_uuid')->willReturn(true);
+        $jobParameters->get('with_uuid')->willReturn(true);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn(['en_US']);
 
@@ -165,14 +173,23 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $detacher->detach($product)->shouldBeCalled();
 
         $standardFormat = [
+            'uuid' => '085ca1c9-6d19-49a5-a47f-ffaa053da212',
             'sku' => 'foo',
             'family' => 'shoes',
             'values' => []
         ];
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+
+        $normalizationContext = [
+            'channels' => ['ecommerce'],
+            'locales' => ['en_US'],
+            'filter_types' => ['pim.transform.product_value.structured', 'pim.transform.product_value.structured.quick_export'],
+            'with_association_uuids' => true,
+        ];
+        $normalizer->normalize($product, 'standard', $normalizationContext)->shouldBeCalled()->willReturn($standardFormat);
         $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
+            'uuid' => '085ca1c9-6d19-49a5-a47f-ffaa053da212',
             'sku' => 'foo',
             'family' => 'shoes',
             'values' => []
@@ -206,6 +223,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(true);
         $jobParameters->get('scope')->willReturn('ecommerce');
+        $jobParameters->has('with_uuid')->willReturn(true);
+        $jobParameters->get('with_uuid')->willReturn(false);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn(['en_US']);
 
@@ -220,7 +239,13 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
             'family_variant' => 'shoes',
             'values' => []
         ];
-        $normalizer->normalize($productModel, 'standard', Argument::any())->willReturn($standardFormat);
+        $normalizationContext = [
+            'channels' => ['ecommerce'],
+            'locales' => ['en_US'],
+            'filter_types' => ['pim.transform.product_value.structured', 'pim.transform.product_value.structured.quick_export'],
+            'with_association_uuids' => false,
+        ];
+        $normalizer->normalize($productModel, 'standard', $normalizationContext)->willReturn($standardFormat);
         $fillMissingProductModelValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($productModel)->shouldReturn([

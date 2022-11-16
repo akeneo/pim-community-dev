@@ -2,6 +2,7 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
 import {CreateGeneratorModal} from '../';
 import {waitFor} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../../hooks/useIdentifierAttributes');
 
@@ -36,7 +37,7 @@ describe('CreateGeneratorModal', () => {
       conditions: [],
       delimiter: null,
       labels: {en_US: 'Other label'},
-      structure: [{type: 'free_text', string: 'AKN'}],
+      structure: [],
       target: 'sku',
     });
   });
@@ -56,5 +57,30 @@ describe('CreateGeneratorModal', () => {
     expect(codeInput).toHaveValue('new_code');
 
     expect(confirmButton).toBeEnabled();
+  });
+
+  it('should limit label string length', () => {
+    const onSave = jest.fn();
+    render(<CreateGeneratorModal onClose={jest.fn()} onSave={onSave} />);
+
+    const confirmButton = screen.getByText('pim_common.confirm');
+    const labelInput = screen.getByRole('textbox', {name: 'pim_common.label'});
+    const codeInput = screen.getByRole('textbox', {name: 'pim_common.code pim_common.required_label'});
+
+    expect(confirmButton).toBeDisabled();
+
+    const labelLengthLimit = 255;
+    const codeLengthLimit = 100;
+    const lorem =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, ' +
+      'sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. ' +
+      'Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat ' +
+      'consequat sit amet ac ex. ';
+    const truncLabel = lorem.substring(0, labelLengthLimit);
+    const truncCode = truncLabel.replace(/[^a-zA-Z0-9]/g, '_').substring(0, codeLengthLimit);
+    // user changes label and automatically changes code
+    userEvent.type(labelInput, lorem);
+    expect(labelInput).toHaveValue(truncLabel);
+    expect(codeInput).toHaveValue(truncCode);
   });
 });

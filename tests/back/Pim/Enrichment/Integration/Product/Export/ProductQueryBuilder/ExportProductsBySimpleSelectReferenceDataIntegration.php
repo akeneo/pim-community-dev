@@ -38,11 +38,12 @@ class ExportProductsBySimpleSelectReferenceDataIntegration extends AbstractExpor
 
     }
 
-    public function testProductExportByFilteringOnOneOption()
+    public function testProductExportByFilteringOnOneOption(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_baby_blue');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_simple_select
-product_option_baby_blue;;1;a_family;;baby-blue
+uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
+{$product1->getUuid()->toString()};product_option_baby_blue;;1;a_family;;baby-blue
 
 CSV;
 
@@ -60,17 +61,20 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringOnTwoOptions()
+    public function testProductExportByFilteringOnTwoOptions(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_baby_blue');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_champagne');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_simple_select
-product_option_baby_blue;;1;a_family;;baby-blue
-product_option_champagne;;1;a_family;;champagne
+uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
+{$product1->getUuid()->toString()};product_option_baby_blue;;1;a_family;;baby-blue
+{$product2->getUuid()->toString()};product_option_champagne;;1;a_family;;champagne
 
 CSV;
 
@@ -88,17 +92,20 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithEmpty()
+    public function testProductExportByFilteringWithEmpty(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option_attribute');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_simple_select
-product_without_option;;1;a_family;;
-product_without_option_attribute;;1;a_family;;
+uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
+{$product1->getUuid()->toString()};product_without_option;;1;a_family;;
+{$product2->getUuid()->toString()};product_without_option_attribute;;1;a_family;;
 
 CSV;
 
@@ -116,12 +123,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithAnEmptyList()
+    public function testProductExportByFilteringWithAnEmptyList(): void
     {
         $expectedCsv = '';
 
@@ -139,6 +147,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

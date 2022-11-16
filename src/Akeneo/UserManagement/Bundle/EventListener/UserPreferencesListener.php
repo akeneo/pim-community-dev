@@ -60,7 +60,7 @@ class UserPreferencesListener
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        $manager = $args->getEntityManager();
+        $manager = $args->getObjectManager();
         $uow = $manager->getUnitOfWork();
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             $this->preUpdate($uow, $entity);
@@ -77,7 +77,7 @@ class UserPreferencesListener
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        $manager = $args->getEntityManager();
+        $manager = $args->getObjectManager();
 
         if (!empty($this->deactivatedLocales)) {
             $this->onLocalesDeactivated($manager);

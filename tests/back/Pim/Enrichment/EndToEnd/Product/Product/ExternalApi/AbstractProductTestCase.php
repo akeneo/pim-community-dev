@@ -151,7 +151,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier identifier of the product that should be created
      */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
+    protected function assertSameProducts(array $expectedProduct, string $identifier): void
     {
         $this->getOrmCacheClearer()->clear();
         $product = $this->getProductRepository()->findOneByIdentifier($identifier);

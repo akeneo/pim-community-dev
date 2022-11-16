@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -39,64 +40,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface, NonBlockingWarningAggregatorInterface
 {
-    /** @var FindProductToImport */
-    private $findProductToImport;
-
-    /** @var AddParent */
-    private $addParent;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
-
-    /** @var FilterInterface */
-    protected $productFilter;
-
-    /** @var AttributeFilterInterface */
-    private $productAttributeFilter;
-
-    /** @var MediaStorer */
-    private $mediaStorer;
-
-    /** @var RemoveParentInterface */
-    private $removeParent;
-
-    private CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes;
-
     /** @var Warning[] */
     private array $nonBlockingWarnings = [];
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        FindProductToImport $findProductToImport,
-        AddParent $addParent,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher,
-        FilterInterface $productFilter,
-        AttributeFilterInterface $productAttributeFilter,
-        MediaStorer $mediaStorer,
-        RemoveParentInterface $removeParent,
-        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes
+        private FindProductToImport $findProductToImport,
+        private AddParent $addParent,
+        protected ObjectUpdaterInterface $updater,
+        protected ValidatorInterface $validator,
+        protected ObjectDetacherInterface $detacher,
+        protected FilterInterface $productFilter,
+        private AttributeFilterInterface $productAttributeFilter,
+        private MediaStorer $mediaStorer,
+        private RemoveParentInterface $removeParent,
+        private CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes
     ) {
         parent::__construct($repository);
-
-        $this->findProductToImport = $findProductToImport;
-        $this->addParent = $addParent;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->detacher = $detacher;
-        $this->productFilter = $productFilter;
-        $this->productAttributeFilter = $productAttributeFilter;
-        $this->repository = $repository;
-        $this->mediaStorer = $mediaStorer;
-        $this->removeParent = $removeParent;
-        $this->cleanLineBreaksInTextAttributes = $cleanLineBreaksInTextAttributes;
     }
 
     /**
@@ -106,13 +66,13 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     {
         $itemHasStatus = isset($item['enabled']);
         if (!isset($item['enabled'])) {
-            $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');
+            $item['enabled'] = $this->stepExecution->getJobParameters()->get('enabled');
         }
 
         $identifier = $this->getIdentifier($item);
-
-        if (null === $identifier) {
-            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        $uuid = $this->getUuid($item);
+        if (null !== $uuid && !Uuid::isValid($uuid)) {
+            $this->skipItemWithMessage($item, 'The uuid must be valid');
         }
 
         $parentProductModelCode = $item['parent'] ?? '';
@@ -129,7 +89,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $item = $this->productAttributeFilter->filter($item);
             $filteredItem = $this->filterItemData($item);
 
-            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode);
+            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $uuid);
         } catch (AccessDeniedException $e) {
             throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
         }
@@ -223,14 +183,18 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         return $this->productFilter->filter($product, $filteredItem);
     }
 
-    /**
-     * @param array $item
-     *
-     * @return string|null
-     */
-    protected function getIdentifier(array $item)
+    protected function getIdentifier(array $item): ?string
     {
-        return isset($item['identifier']) ? $item['identifier'] : null;
+        $identifier = $item['identifier'] ?? null;
+
+        return ('' !== $identifier) ? $identifier : null;
+    }
+
+    protected function getUuid(array $item): ?string
+    {
+        $uuid = $item['uuid'] ?? null;
+
+        return ('' !== $uuid) ? $uuid : null;
     }
 
     /**
@@ -270,6 +234,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         foreach ($this->repository->getIdentifierProperties() as $identifierProperty) {
             unset($item['values'][$identifierProperty]);
         }
+        unset($item['uuid']);
         unset($item['identifier']);
         unset($item['associations']);
         unset($item['quantified_associations']);

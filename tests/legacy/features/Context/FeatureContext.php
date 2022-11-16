@@ -350,16 +350,6 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * Get the mail recorder
-     *
-     * @return \Akeneo\Platform\Bundle\ImportExportBundle\Test\MailRecorder
-     */
-    public function getMailRecorder()
-    {
-        return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function assertCheckboxChecked($checkbox)

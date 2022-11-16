@@ -66,7 +66,7 @@ class DefaultColumnSorter implements ColumnSorterInterface
         $splitedColumn = $this->fieldSplitter->splitFieldName($column);
         $column = is_array($splitedColumn) ? $splitedColumn[0] : $column;
 
-        return in_array($column, $this->firstDefaultColumns);
+        return in_array($column, $this->getFirstDefaultColumns());
     }
 
     /**
@@ -80,7 +80,7 @@ class DefaultColumnSorter implements ColumnSorterInterface
         $a = $this->getColumnCode($a);
         $b = $this->getColumnCode($b);
 
-        return array_search($a, $this->firstDefaultColumns) - array_search($b, $this->firstDefaultColumns);
+        return array_search($a, $this->getFirstDefaultColumns()) - array_search($b, $this->getFirstDefaultColumns());
     }
 
     /**
@@ -93,6 +93,14 @@ class DefaultColumnSorter implements ColumnSorterInterface
         $splitedColumn = $this->fieldSplitter->splitFieldName($column);
 
         return is_array($splitedColumn) ? $splitedColumn[0] : $column;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getFirstDefaultColumns(): array
+    {
+        return $this->firstDefaultColumns;
     }
 
     private function isTrailingColumn(string $column): bool

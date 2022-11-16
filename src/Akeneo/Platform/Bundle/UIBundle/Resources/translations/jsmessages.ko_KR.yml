@@ -257,6 +257,7 @@ pim_common:
   parent: 상위
   groups: 그룹
   products: 제품
+  product_uuids: 제품
   product_models: 제품 모델
   more: 더보기 
   public_view: 공개 뷰

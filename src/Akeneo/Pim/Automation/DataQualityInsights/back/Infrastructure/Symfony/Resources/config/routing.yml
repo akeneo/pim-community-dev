@@ -102,3 +102,11 @@ akeneo_data_quality_insights_product_model_quality_score:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelQualityScoreController
         _feature: data_quality_insights
     methods: [GET]
+
+
+akeneo_data_quality_insights_find_families:
+    path: /data-quality-insights/families
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\FindFamiliesController
+        _feature: data_quality_insights
+    methods: [GET]

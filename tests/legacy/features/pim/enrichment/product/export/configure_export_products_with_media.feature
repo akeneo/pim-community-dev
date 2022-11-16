@@ -28,10 +28,10 @@ Feature: Configure export of products media
     And export directory of "csv_footwear_product_export" should contain the following file:
       | product_export.csv |
     And export directory of "csv_footwear_product_export" should contain the following media:
-      | files/bd9859a1-bbd9-4714-a5d8-74858e7e41cd/side_view/akeneo.jpg |
-      | files/42541333-ec27-4d00-8267-3f9a33ed81c1/side_view/akeneo.jpg |
-      | files/d31edfac-b656-4d24-897f-9445e0566470/side_view/akeneo.jpg |
-      | files/981b5307-501d-47cd-9228-eb1b51ab1cff/side_view/akeneo.jpg |
+      | files/gothic_boot_1/side_view/akeneo.jpg |
+      | files/gothic_boot_2/side_view/akeneo.jpg |
+      | files/gothic_boot_3/side_view/akeneo.jpg |
+      | files/gothic_boot_4/side_view/akeneo.jpg |
 
   Scenario: Successfully export products in xlsx with media
     Given the following job "xlsx_product_export" configuration:
@@ -46,7 +46,7 @@ Feature: Configure export of products media
     And export directory of "xlsx_product_export" should contain the following file:
       | product_export.xlsx |
     And export directory of "xlsx_product_export" should contain the following media:
-      | files/bd9859a1-bbd9-4714-a5d8-74858e7e41cd/side_view/akeneo.jpg |
-      | files/42541333-ec27-4d00-8267-3f9a33ed81c1/side_view/akeneo.jpg |
-      | files/d31edfac-b656-4d24-897f-9445e0566470/side_view/akeneo.jpg |
-      | files/981b5307-501d-47cd-9228-eb1b51ab1cff/side_view/akeneo.jpg |
+      | files/gothic_boot_1/side_view/akeneo.jpg |
+      | files/gothic_boot_2/side_view/akeneo.jpg |
+      | files/gothic_boot_3/side_view/akeneo.jpg |
+      | files/gothic_boot_4/side_view/akeneo.jpg |
