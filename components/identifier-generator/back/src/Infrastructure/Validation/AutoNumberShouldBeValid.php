@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class FreeTextLengthLimit extends Constraint
+final class AutoNumberShouldBeValid extends Constraint
 {
-    public string $message = 'validation.create.free_text_size_limit_reached';
+    public string $message = 'validation.create.auto_number_fields_required';
 
     /**
      * @inerhitDoc

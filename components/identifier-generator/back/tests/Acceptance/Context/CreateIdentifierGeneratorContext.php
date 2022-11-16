@@ -21,7 +21,6 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
-use InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -31,7 +30,6 @@ use Webmozart\Assert\Assert;
 final class CreateIdentifierGeneratorContext implements Context
 {
     private ?ViolationsException $violations = null;
-    private ?\InvalidArgumentException $invalidArgumentException = null;
 
     public function __construct(
         private CreateGeneratorHandler $createGeneratorHandler,
@@ -112,15 +110,6 @@ final class CreateIdentifierGeneratorContext implements Context
     public function iShouldNotGetAnyError(): void
     {
         Assert::null($this->violations);
-    }
-
-    /**
-     * @Then /^I should get an exception with message '(?P<message>[^']*)'$/
-     */
-    public function iShouldGetAnExceptionWithMessage($message): void
-    {
-        Assert::notNull($this->invalidArgumentException);
-        Assert::contains($this->invalidArgumentException->getMessage(), $message);
     }
 
     /**
@@ -447,8 +436,120 @@ final class CreateIdentifierGeneratorContext implements Context
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
-        } catch (InvalidArgumentException $exception) {
-            $this->invalidArgumentException = $exception;
+        }
+    }
+
+    /**
+     * @When I try to create an identifier generator with free text without required field
+     */
+    public function iCreateAnIdentifierGeneratorWithFreeTextWithoutRequiredField()
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'free_text']],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to create an identifier generator with free text with unknown field
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithFreeTextWithUnknownField()
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to create an identifier generator with autoNumber number min negative
+     */
+    public function iCreateAnIdentifierGeneratorWithAutonumberNumberMinNegative()
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'auto_number', 'numberMin' => -2, 'digitsMin' => 3]],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to create an identifier generator with autoNumber without required field
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAutonumberWithoutRequiredField()
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'auto_number', 'numberMin' => 4]],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to create an identifier generator with autoNumber digits min negative
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAutonumberDigitsMinNegative()
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'auto_number', 'digitsMin' => -2, 'numberMin' => 4]],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to create an identifier generator with autoNumber digits min too big
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAutonumberDigitsMinTooBig()
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'auto_number', 'digitsMin' => 22, 'numberMin' => 4]],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
         }
     }
 }

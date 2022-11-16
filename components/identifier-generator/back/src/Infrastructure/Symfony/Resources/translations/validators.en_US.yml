@@ -3,4 +3,5 @@ validation:
         target_attribute_does_not_exist: 'The "{{code}}" attribute code given as target does not exist'
         target_attribute_is_not_an_identifier: 'The "{{code}}" attribute code is "{{type}}" type and should be of type identifier'
         identifier_limit_reached: 'Limit of "{{limit}}" identifier generators is reached'
-        free_text_size_limit_reached: 'Free text is too long. It should have {{limit}} characters or less.'
+        nonexistent_string_key: 'Free text should contain "string" key'
+        auto_number_fields_required: '"{{field}}" fields are required for "{{type}}" type'
