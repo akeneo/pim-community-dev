@@ -42,6 +42,7 @@ services:
 
   # Domain service
   Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\UpdateProductFileImportStatusFromJobStatus:
+    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\UpdateProductFileImportStatusFromJobStatus
     arguments:
       - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository'
 
