@@ -360,7 +360,7 @@ endif
 
 .PHONY: upgrade-instance
 upgrade-instance:
-	git clone --depth 1 git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
+	git clone --depth 1 -b ${OPERATIONS_TOOLS_BRANCH} git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
 	cd $(OPERATIONS_TOOLS_DIR) && git checkout $(OPERATIONS_TOOLS_BRANCH)
 	cp $(OPERATIONS_TOOLS_DIR)/jenkins.yaml /usr/share/jenkins/ref/casc/jenkins.yaml
 	mkdir -p /workspace && cp ${HOME}/gcloud-service-key.json /workspace/pim_ci.json
