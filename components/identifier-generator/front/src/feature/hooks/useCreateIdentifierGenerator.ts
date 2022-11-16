@@ -6,14 +6,14 @@ import {Violation} from '../validators/Violation';
 import {UseMutateFunction} from 'react-query/types/react/types';
 
 type ErrorResponse = {
-  violations?: Violation[]
-}
+  violations?: Violation[];
+};
 
 type HookResponse = {
-  mutate:  UseMutateFunction<IdentifierGenerator, ErrorResponse, IdentifierGenerator, unknown>,
-  error: ErrorResponse,
-  isLoading: boolean
-}
+  mutate: UseMutateFunction<IdentifierGenerator, ErrorResponse, IdentifierGenerator, unknown>;
+  error: ErrorResponse;
+  isLoading: boolean;
+};
 
 const useCreateIdentifierGenerator = (): HookResponse => {
   const router = useRouter();

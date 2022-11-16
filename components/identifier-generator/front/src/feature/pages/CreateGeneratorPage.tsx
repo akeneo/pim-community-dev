@@ -26,10 +26,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
         }
       },
       onSuccess: ({code}: IdentifierGenerator) => {
-        notify(
-          NotificationLevel.SUCCESS,
-          translate('pim_identifier_generator.flash.create.success', {code})
-        );
+        notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success', {code}));
         history.push(`/${code}`);
       },
     });

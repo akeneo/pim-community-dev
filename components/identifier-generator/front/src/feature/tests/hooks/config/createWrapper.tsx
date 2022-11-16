@@ -6,8 +6,8 @@ const createWrapper: () => ComponentType<null> | undefined = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {retry: false},
-      mutations: {retry: false}
-    }
+      mutations: {retry: false},
+    },
   });
 
   return ({children}: {children: React.ReactNode}) => (
