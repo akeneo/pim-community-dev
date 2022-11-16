@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocale;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
@@ -93,10 +94,10 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
         ]);
 
         $productUuid = ProductUuid::fromUuid($uuid);
-        $this->buildProductWasCompletedOnChannelLocaleEvents($changedAt, $previousCompletenessCollection)
+        $this->buildProductWasCompletedOnChannelLocaleEvents('1', $changedAt, $previousCompletenessCollection)
             ->shouldBeLike([
-                new ProductWasCompletedOnChannelLocale($productUuid, $changedAt, 'ecommerce', 'en_US'),
-                new ProductWasCompletedOnChannelLocale($productUuid, $changedAt, 'ecommerce', 'de_DE'),
+                new ProductWasCompletedOnChannelLocale('1', $productUuid, $changedAt, 'ecommerce', 'en_US'),
+                new ProductWasCompletedOnChannelLocale('1', $productUuid, $changedAt, 'ecommerce', 'de_DE'),
             ]);
     }
 
@@ -115,7 +116,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
             new ProductCompleteness('mobile', 'en_US', 10, 2),
         ]);
 
-        $this->buildProductWasCompletedOnChannelLocaleEvents($changedAt, $previousCompletenessCollection)
+        $this->buildProductWasCompletedOnChannelLocaleEvents('1', $changedAt, $previousCompletenessCollection)
             ->shouldReturn([]);
     }
 }

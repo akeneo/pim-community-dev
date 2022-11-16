@@ -16,10 +16,13 @@ use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocale;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocaleCollection;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -33,13 +36,15 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         GetProductCompletenesses $getProductCompletenesses,
         EventDispatcher $eventDispatcher,
         Clock $clock,
+        TokenStorageInterface $tokenStorage,
     ) {
         $this->beConstructedWith(
             $completenessCalculator,
             $saveProductCompletenesses,
             $getProductCompletenesses,
             $eventDispatcher,
-            $clock
+            $clock,
+            $tokenStorage
         );
     }
 
@@ -54,9 +59,16 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         GetProductCompletenesses $getProductCompletenesses,
         EventDispatcher $eventDispatcher,
         Clock $clock,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user,
     ) {
         $uuid1 = Uuid::uuid4();
         $uuid2 = Uuid::uuid4();
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+        $user->getId()->willReturn(1);
 
         $getProductCompletenesses->fromProductUuids([
             $uuid1->toString(),
@@ -94,8 +106,8 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         $clock->now()->willReturn($changedAt);
 
         $event = new ProductWasCompletedOnChannelLocaleCollection([
-            new ProductWasCompletedOnChannelLocale(ProductUuid::fromUuid($uuid1), $changedAt, 'ecommerce', 'fr_FR'),
-            new ProductWasCompletedOnChannelLocale(ProductUuid::fromUuid($uuid2), $changedAt, 'ecommerce', 'en_US'),
+            new ProductWasCompletedOnChannelLocale('1', ProductUuid::fromUuid($uuid1), $changedAt, 'ecommerce', 'fr_FR'),
+            new ProductWasCompletedOnChannelLocale('1', ProductUuid::fromUuid($uuid2), $changedAt, 'ecommerce', 'en_US'),
         ]);
 
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce();
