@@ -22,6 +22,9 @@ pim_identifier_generator:
         create:
             success: 'The identifier generator "{{ code }}" was successfully created'
             error: 'The identifier generator could not be created'
+        update:
+            success: 'The identifier generator "{{ code }}" was successfully updated'
+            error: 'The identifier generator could not be updated'
         delete:
             success: 'The identifier generator "{{ code }}" was successfully deleted'
             error: 'The identifier generator could not be deleted'

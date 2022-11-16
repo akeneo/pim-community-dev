@@ -36,7 +36,7 @@ const AddPropertyButton: React.FC = () => {
         ],
       },
     ],
-    [translate]
+    []
   );
 
   const filterElements = useMemo((): PropertiesSelection[] => {

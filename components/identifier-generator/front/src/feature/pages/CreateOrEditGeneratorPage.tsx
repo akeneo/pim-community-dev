@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageContent, PageHeader, useTranslate, SecondaryActions, useRouter} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, Structure} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode} from '../models';
 import {Violation} from '../validators/Violation';
@@ -15,6 +15,7 @@ enum Tabs {
 }
 
 type CreateOrEditGeneratorProps = {
+  isMainButtonDisabled: boolean;
   initialGenerator: IdentifierGenerator;
   mainButtonCallback: (identifierGenerator: IdentifierGenerator) => void;
   validationErrors: Violation[];
@@ -23,6 +24,7 @@ type CreateOrEditGeneratorProps = {
 
 const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   initialGenerator,
+  isMainButtonDisabled,
   mainButtonCallback,
   validationErrors,
   isNew,
@@ -60,7 +62,9 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
               </SecondaryActions.Item>
             </SecondaryActions>
           )}
-          <Button onClick={onSave}>{translate('pim_common.save')}</Button>
+          <Button disabled={isMainButtonDisabled} onClick={onSave}>
+            {translate('pim_common.save')}
+          </Button>
         </PageHeader.Actions>
       </Header>
       <PageContent>
