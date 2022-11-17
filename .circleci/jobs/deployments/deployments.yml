@@ -530,12 +530,9 @@ jobs:
 
     test_deploy_ucs_pim:
       parameters:
-        PIM_NAMESPACE_PREFIX:
-          type: string
-          default: "pim"
-        PRODUCT_TYPE:
-          type: string
-          default: "srnt"
+          CLUSTER_NEXT:
+              type: boolean
+              default: false
       environment:
           <<: *envVarsDeployPIMSaaSDev
       <<: *dockerCloudDeployerUCS
@@ -546,6 +543,11 @@ jobs:
         - add_ssh_keys:
             fingerprints:
               - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+        - when:
+              condition:
+                  equal: [true, << parameters.CLUSTER_NEXT >> ]
+              steps:
+                  - modify_cluster
         - set_gcloud_config_pim_saas_dev
         - restore_persisted_env_vars
         - install_yq_v3
@@ -553,7 +555,7 @@ jobs:
             name: Prepare the variables
             command: |
               CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0 )}')
-              PIM_NAMESPACE=$(echo << parameters.PIM_NAMESPACE_PREFIX >>-${CIRCLE_BRANCH_LOWER} | cut -c -63)
+              PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
 
               TENANT_NAME_PREFIX=ucs
               TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
@@ -602,6 +604,9 @@ jobs:
               echo export SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB=${SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB} >> $BASH_ENV
               echo export CLOUD_FUNCTION_NAME=${CLOUD_FUNCTION_NAME} >> $BASH_ENV
               echo export CLOUD_FUNCTION_BUCKET=${CLOUD_FUNCTION_BUCKET} >> $BASH_ENV
+        - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${PIM_NAMESPACE}"
         - run:
             name: Create branch deployement
             command: |
@@ -702,15 +707,15 @@ jobs:
 
     test_deploy_ucs_tenant:
         parameters:
-            PRODUCT_TYPE:
-                type: string
-                default: "srnt"
             CLUSTER_NEXT:
                 type: boolean
                 default: false
             PIM_EDITION:
                 type: string
                 default: "serenity_instance"
+            DEPLOY_PR:
+                type: boolean
+                default: false
         environment:
             <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
@@ -734,8 +739,14 @@ jobs:
                   name: Define value for next steps
                   command: |
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      TENANT_NAME_PREFIX=ucs
-                      TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
+                      DEPLOY_PR=$(echo << parameters.DEPLOY_PR >>)
+                      if [ ${DEPLOY_PR} = "false" ]; then
+                        TENANT_NAME_PREFIX="ucs-ci-ee"
+                        TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
+                      else
+                        TENANT_NAME_PREFIX="ucs-pr-ee"
+                        TENANT_NAME=$(echo "${TENANT_NAME_PREFIX}-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
+                      fi
                       TENANT_ID=${TYPE}-${TENANT_NAME}
                       FQDN="${TENANT_NAME}.${GOOGLE_DOMAIN}"
                       PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
@@ -785,8 +796,50 @@ jobs:
                   git commit -m "Update tenant version" || true
                   git push --set-upstream origin ${CIRCLE_BRANCH} || true
             - run:
+                  name: Sync the tenant if the tenant already exist
+                  command: |
+                      # Will failed if there is no application found
+                      APP_NAME=$(kubectl get application -n argocd | grep ${TENANT_ID} | awk '{print $1}') || true
+                      if [ "${APP_NAME}" != "${TENANT_ID}" ]; then
+                        TENANT_EXIST=false
+                        echo export TENANT_EXIST=${TENANT_EXIST} >> $BASH_ENV
+                        echo "The tenant ${TENANT_ID} doesn't exit, we need to create it"
+                        exit 0
+                      fi
+
+                      TENANT_EXIST=true
+                      echo export TENANT_EXIST=${TENANT_EXIST} >> $BASH_ENV
+
+                      # Better to store the password in CircleCI or other mecanisme
+                      ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+                      # Login to argocd call k8s
+                      kubectl config set-context --current --namespace=argocd
+                      argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+                      argocd app get ${TENANT_ID} --hard-refresh --core
+                      argocd app wait --sync --health --operation ${TENANT_ID} --core
+
+                      # Check if hook failed
+                      STATUS_HEALTH=$(argocd app get ${TENANT_ID} | grep Failed | awk '{print $6}') || true
+                      if [ -n "${STATUS_HEALTH}" ]; then
+                        echo "Error when deploying argocd app"
+                        exit 1
+                      fi
+                      echo "argocd app sync successfull"
+
+                      echo "============================"
+                      echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
+                      echo "user : admin"
+                      echo "password : ${ARGOCD_PASSWORD}"
+                      echo "============================"
+            - run:
                   name: Deploy Tenant with Timmy
                   command: |
+                      if [ "${TENANT_EXIST}" == "true" ]; then
+                        echo "The tenant ${TENANT_ID} exits and is already SYNC, we don't need to recreate it"
+                        exit 0
+                      fi
+
                       FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-timmy-create-tenant
                       if [ -n "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
                         FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
@@ -799,22 +852,30 @@ jobs:
                       echo ${FUNCTION_URL}
                       echo ${JSON_BODY_STRING}
                       curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
-                      exit ${TENANT_STATUS_CODE}
 
-                      # Wait PH-423
-                      # # Check if hook failed
-                      # STATUS_HEALTH=$(argocd app get ${TENANT_ID} | grep Failed | awk '{print $6}') || true
-                      # if [ -n "${STATUS_HEALTH}" ]; then
-                      #   echo "Error when deploying argocd app"
-                      #   exit 1
-                      # fi
-                      # echo "argocd app sync successfull"
+                      # Better to store the password in CircleCI or other mecanisme
+                      ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+                      # Login to argocd call k8s
+                      kubectl config set-context --current --namespace=argocd
+                      argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+                      argocd app wait --sync --health --operation ${TENANT_ID} --core
+
+                      # Check if hook failed
+                      STATUS_HEALTH=$(argocd app get ${TENANT_ID} | grep Failed | awk '{print $6}') || true
+                      if [ -n "${STATUS_HEALTH}" ]; then
+                        echo "Error when deploying argocd app"
+                        exit 1
+                      fi
+                      echo "argocd app sync successfull"
 
                       echo "============================"
                       echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
                       echo "user : admin"
                       echo "password : ${ARGOCD_PASSWORD}"
                       echo "============================"
+
+                      exit ${TENANT_STATUS_CODE}
             - run:
                   name: Persist env vars for next jobs
                   command: |
@@ -846,9 +907,6 @@ jobs:
 
     test_deploy_timmy:
         parameters:
-            PRODUCT_TYPE:
-                type: string
-                default: "srnt"
             CLUSTER_NEXT:
                 type: boolean
                 default: false
@@ -889,27 +947,12 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      TENANT_NAME_PREFIX=ucs
-                      TENANT_NAME=${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
-                      TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
-                      WORKLOAD_IDENTITY_KSA="${TENANT_NAME}-ksa-workload-identity"
-                      GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
                       TERRAFORM_PATH="deployments-ucs/timmy/terraform/${ENV_NAME}"
 
                       echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
-                      echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> $BASH_ENV
                       echo export TERRAFORM_PATH=${TERRAFORM_PATH} >> $BASH_ENV
-                      echo export TENANT_NAME=${TENANT_NAME} >> $BASH_ENV
-                      echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
-                      echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
-                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
-                      echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME} >> $BASH_ENV
 
-                      echo "Instance name prefix: ${TENANT_NAME_PREFIX}"
-                      echo "Instance name: ${TENANT_NAME}"
-                      echo "Image tag: ${IMAGE_TAG}"
                       echo "Path terraform: ${TERRAFORM_PATH}"
             - run:
                   name: Init and Plan terraform
