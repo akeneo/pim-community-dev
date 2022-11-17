@@ -8,6 +8,8 @@ use Akeneo\SupplierPortal\Retailer\Domain\Clock;
 
 final class SystemClock implements Clock
 {
+    public const TIMEZONE = 'UTC';
+
     public function now(): \DateTimeImmutable
     {
         return new \DateTimeImmutable('now', new \DateTimeZone(self::TIMEZONE));
