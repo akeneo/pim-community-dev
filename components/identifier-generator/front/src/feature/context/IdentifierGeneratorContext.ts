@@ -3,17 +3,11 @@ import {createContext} from 'react';
 type IdentifierGeneratorContextType = {
   unsavedChanges: {
     hasUnsavedChanges: boolean;
-    setHasUnsavedChanges?: (newValue: boolean) => void;
+    setHasUnsavedChanges: (newValue: boolean) => void;
   };
 };
 
-const defaultValue = {
-  unsavedChanges: {
-    hasUnsavedChanges: false,
-  },
-};
-
-const IdentifierGeneratorContext = createContext<IdentifierGeneratorContextType>(defaultValue);
+const IdentifierGeneratorContext = createContext<IdentifierGeneratorContextType | undefined>(undefined);
 
 export {IdentifierGeneratorContext};
 export type {IdentifierGeneratorContextType};

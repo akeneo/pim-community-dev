@@ -29,6 +29,8 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                 - Length:
                     max: 255
         delimiter:
+            - NotBlank:
+                allowNull: true
             - Length:
                 max: 100
 
@@ -48,3 +50,8 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
                                   choices: ['free_text', 'auto_number']
                                   message: 'Type {{ value }} can only be one of the following: {{ choices }}'
                     allowExtraFields: true
+        delimiter:
+            - NotBlank:
+                allowNull: true
+            - Length:
+                max: 100

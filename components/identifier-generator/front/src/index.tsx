@@ -9,24 +9,17 @@ import {
 } from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import {IdentifierGeneratorApp} from './feature';
-import {IdentifierGeneratorContext} from './feature/context/IdentifierGeneratorContext';
+import {IdentifierGeneratorContextProvider} from './feature/context';
 
 DangerousMicrofrontendAutomaticAuthenticator.enable('admin', 'admin');
-
-const value = {
-  unsavedChanges: {
-    hasUnsavedChanges: false,
-    setHasUnsavedChanges: (hasChanges: boolean) => (value.unsavedChanges.hasUnsavedChanges = hasChanges),
-  },
-};
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
       <MicroFrontendDependenciesProvider routes={routes as Routes}>
-        <IdentifierGeneratorContext.Provider value={value}>
+        <IdentifierGeneratorContextProvider>
           <IdentifierGeneratorApp />
-        </IdentifierGeneratorContext.Provider>
+        </IdentifierGeneratorContextProvider>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
   </React.StrictMode>,

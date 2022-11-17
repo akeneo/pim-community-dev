@@ -167,4 +167,70 @@ final class UpdateIdentifierGeneratorContext implements Context
             $this->violations = $exception;
         }
     }
+
+    /**
+     * @When I try to update an identifier generator with delimiter :delimiter
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                [],
+                [['type' => 'free_text', 'string' => 'abcdef']],
+                ['fr' => 'Générateur'],
+                'sku',
+                $delimiter,
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to update an identifier generator with an empty delimiter
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAnEmptyDelimiter(): void
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                [],
+                [['type' => 'free_text', 'string' => 'abcdef']],
+                ['fr' => 'Générateur'],
+                'sku',
+                ''
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I update the identifier generator with delimiter null
+     */
+    public function iUpdateTheIdentifierGeneratorWithDelimiterNull(): void
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                [],
+                [['type' => 'free_text', 'string' => 'abcdef']],
+                ['fr' => 'Générateur'],
+                'sku',
+                null,
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @Then The identifier generator is updated in the repository and delimiter is null
+     */
+    public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndDelimiterIsNull(): void
+    {
+        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        Assert::eq(null, $identifierGenerator->delimiter()->asString());
+    }
 }

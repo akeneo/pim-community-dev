@@ -27,4 +27,22 @@ class DelimiterSpec extends ObjectBehavior
     {
         $this->asString()->shouldReturn('-');
     }
+
+    public function it_cannot_be_instantiated_with_an_empty_string(): void
+    {
+        $this->beConstructedThrough('fromString', ['']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_returns_a_delimiter_with_null_value(): void
+    {
+        $this->beConstructedThrough('fromString', [null]);
+        $this->asString()->shouldReturn(null);
+    }
+
+    public function it_cannot_be_instantiated_with_value_too_long(): void
+    {
+        $this->beConstructedThrough('fromString', ['abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }

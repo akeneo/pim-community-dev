@@ -44,6 +44,12 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
     setSelectedPropertyId(newPropertyId);
   };
 
+  const onDeleteProperty = (propertyId: PropertyId) => {
+    const newStructure = structure.filter(property => property.id !== propertyId);
+    setStructure(newStructure);
+    onStructureChange(newStructure);
+  };
+
   const selectedProperty = structure.find(propertyWithId => propertyWithId.id === selectedPropertyId);
 
   return (
@@ -70,6 +76,7 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
                 onSelect={setSelectedPropertyId}
                 selectedId={selectedPropertyId}
                 onChange={setStructure}
+                onDelete={onDeleteProperty}
               />
             </>
           )}
