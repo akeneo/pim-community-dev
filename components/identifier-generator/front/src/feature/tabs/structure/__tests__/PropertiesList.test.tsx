@@ -17,6 +17,7 @@ describe('PropertiesList', () => {
 
     let dataTransferred = '';
     const dataTransfer = {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       getData: (_format: string) => {
         return dataTransferred;
       },

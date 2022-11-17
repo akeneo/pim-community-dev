@@ -1,7 +1,6 @@
 import React from 'react';
 import {mockResponse, render, screen} from '../../tests/test-utils';
 import {CreateGeneratorPage} from '../';
-import {IdentifierGenerator} from '../../models';
 import {Router} from 'react-router-dom';
 import {act, fireEvent, waitFor} from '@testing-library/react';
 import {createMemoryHistory} from 'history';

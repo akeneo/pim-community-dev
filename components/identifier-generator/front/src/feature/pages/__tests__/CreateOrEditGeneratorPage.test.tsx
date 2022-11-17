@@ -8,6 +8,7 @@ import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../DeleteGeneratorModal');
 jest.mock('../../tabs/GeneralPropertiesTab');
+jest.mock('../../tabs/SelectionTab');
 jest.mock('../../tabs/StructureTab');
 
 describe('CreateOrEditGeneratorPage', () => {
@@ -26,7 +27,7 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('GeneratorPropertiesMock')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.product_selection'));
-    expect(screen.getByText('Not implemented YET')).toBeInTheDocument();
+    expect(screen.getByText('SelectionTabMock')).toBeInTheDocument();
     expect(screen.getByText('[]')).toBeInTheDocument(); // conditions
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
