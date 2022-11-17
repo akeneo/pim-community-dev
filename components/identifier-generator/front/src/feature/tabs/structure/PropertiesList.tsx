@@ -1,23 +1,30 @@
 import React from 'react';
-import {PropertyLine} from './PropertyLine';
 import {Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
-import {StructureWithIdentifiers} from '../StructureTab';
+import {PropertyId, StructureWithIdentifiers} from '../StructureTab';
+import {PROPERTY_NAMES} from '../../models';
+import {AutoNumberLine, FreeTextLine} from './line';
 
 type PropertiesListProps = {
   structure: StructureWithIdentifiers;
-  onChange: (id: string) => void;
+  onSelect: (id: PropertyId) => void;
+  selectedId?: PropertyId;
+  onChange: (structure: StructureWithIdentifiers) => void;
 };
 
-const PropertiesList: React.FC<PropertiesListProps> = ({structure, onChange}) => {
+const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, selectedId, onChange}) => {
+  const onReorder = (indices: number[]) => {
+    onChange(indices.map(i => structure[i]));
+  };
+
   return (
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    <Table isDragAndDroppable={true} onReorder={/* istanbul ignore next */ () => {}}>
+    <Table isDragAndDroppable={true} onReorder={onReorder}>
       <Table.Body>
-        {structure.map(item => (
-          <Table.Row key={item.id} onClick={() => onChange(item.id)}>
+        {structure.map(property => (
+          <Table.Row key={property.id} onClick={() => onSelect(property.id)} isSelected={property.id === selectedId}>
             <Styled.TitleCell>
-              <PropertyLine property={item} />
+              {property.type === PROPERTY_NAMES.FREE_TEXT && <FreeTextLine freeTextProperty={property} />}
+              {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberLine property={property} />}
             </Styled.TitleCell>
           </Table.Row>
         ))}

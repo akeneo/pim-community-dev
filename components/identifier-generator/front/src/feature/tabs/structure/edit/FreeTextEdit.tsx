@@ -1,31 +1,25 @@
-import React from 'react';
-import {FreeText, Property, PROPERTY_NAMES} from '../../../models';
-import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
+import React, {useCallback} from 'react';
+import {FreeText} from '../../../models';
+import {Field, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {PropertyEditFieldsProps} from '../PropertyEdit';
 
-type FreeTextEditProps = {
-  selectedProperty: FreeText;
-  onChange: (propertyWithId: Property) => void;
-};
-
-const FreeTextEdit: React.FC<FreeTextEditProps> = ({selectedProperty, onChange}) => {
+const FreeTextEdit: PropertyEditFieldsProps<FreeText> = ({selectedProperty, onChange}) => {
   const translate = useTranslate();
-  const onTextChange = (text: string) => {
-    selectedProperty.string = text;
-    onChange(selectedProperty);
-  };
+  const onTextChange = useCallback(
+    (text: string) => {
+      onChange({...selectedProperty, string: text});
+    },
+    [onChange, selectedProperty]
+  );
+
+  const stringInputRef = React.useRef<HTMLInputElement | null>(null);
+  useAutoFocus(stringInputRef);
 
   return (
-    <>
-      <SectionTitle>
-        <SectionTitle.Title level="secondary">
-          {translate(`pim_identifier_generator.structure.settings.${PROPERTY_NAMES.FREE_TEXT}.title`)}
-        </SectionTitle.Title>
-      </SectionTitle>
-      <Field label={translate(`pim_identifier_generator.structure.settings.${PROPERTY_NAMES.FREE_TEXT}.string_label`)}>
-        <TextInput value={selectedProperty.string} onChange={onTextChange} />
-      </Field>
-    </>
+    <Field label={translate('pim_identifier_generator.structure.settings.free_text.string_label')}>
+      <TextInput value={selectedProperty.string} onChange={onTextChange} maxLength={100} ref={stringInputRef} />
+    </Field>
   );
 };
 

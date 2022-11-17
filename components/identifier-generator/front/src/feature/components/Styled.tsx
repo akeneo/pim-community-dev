@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {getColor, Table} from 'akeneo-design-system';
+import {AkeneoThemedProps, getColor, Table} from 'akeneo-design-system';
 
 const FormContainer = styled.div`
   display: flex;
@@ -25,10 +25,14 @@ const TitleCell = styled(Table.Cell)`
   color: ${getColor('brand', 100)};
 `;
 
-const TwoColumns = styled.div`
+const InputContainer = styled.div`
+  max-width: 10vw;
+`;
+
+const TwoColumns = styled.div<{withoutSecondColumn: boolean} & AkeneoThemedProps>`
   margin-top: 10px;
   display: grid;
-  grid-template-columns: auto 300px;
+  grid-template-columns: ${({withoutSecondColumn}) => (withoutSecondColumn ? 'auto' : 'auto 300px')};
   grid-template-rows: 1fr;
   grid-column-gap: 30px;
   & > * > * {
@@ -39,6 +43,7 @@ const TwoColumns = styled.div`
 const Styled = {
   FormContainer,
   FullPageCenteredContent,
+  InputContainer,
   TitleCell,
   TwoColumns,
 };

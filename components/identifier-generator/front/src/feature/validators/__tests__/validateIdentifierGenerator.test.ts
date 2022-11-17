@@ -1,7 +1,7 @@
 import {validateIdentifierGenerator} from '../validateIdentifierGenerator';
 import {PROPERTY_NAMES} from '../../models';
 
-describe('IdentifierGeneratorValidator', () => {
+describe('validateIdentifierGenerator', () => {
   it('should not add violation for valid identifier generator', () => {
     expect(
       validateIdentifierGenerator(

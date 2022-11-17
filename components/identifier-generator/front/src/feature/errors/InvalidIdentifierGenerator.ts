@@ -1,4 +1,4 @@
-import {Violation} from '../validators/Violation';
+import {Violation} from '../validators';
 
 class InvalidIdentifierGenerator extends Error {
   violations: Violation[];
