@@ -63,6 +63,88 @@ test('it warns the user if the product file import configurations list cannot be
     );
 });
 
+test('it allows a user to launch an import of a product file', async () => {
+    const processTrackerUrl = '#/job/show/28';
+    global.fetch = jest
+        .fn()
+        .mockImplementationOnce(async () => ({
+            ok: true,
+            json: async () => [
+                {code: 'import1', label: 'Import 1'},
+                {code: 'import2', label: 'Import 2'},
+            ],
+        }))
+        .mockImplementationOnce(async () => ({
+            ok: true,
+            json: async () => processTrackerUrl,
+        }));
+
+    await act(async () => {
+        renderWithProviders(
+            <ProductFileImportConfigurationsModal productFileIdentifier="66ac030b-073d-4966-9624-5d992ac3a8c3" />
+        );
+        openModal();
+    });
+
+    const selectField = screen.getByLabelText(
+        'supplier_portal.product_file_dropping.supplier_files.product_files_modal.import_field_label'
+    );
+    userEvent.click(selectField);
+    userEvent.click(screen.getByText('Import 1'));
+
+    const submitButton = screen.getByText(
+        'supplier_portal.product_file_dropping.supplier_files.product_files_modal.import_button_label'
+    );
+    await act(async () => {
+        userEvent.click(submitButton);
+    });
+    expect(window.location.href).toContain(processTrackerUrl);
+});
+
+test('it failed to launch an import of a product file', async () => {
+    const notify = jest.spyOn(mockedDependencies, 'notify');
+    global.fetch = jest
+        .fn()
+        .mockImplementationOnce(async () => ({
+            ok: true,
+            json: async () => [
+                {code: 'import1', label: 'Import 1'},
+                {code: 'import2', label: 'Import 2'},
+            ],
+        }))
+        .mockImplementationOnce(async () => ({
+            ok: false,
+            status: 500,
+        }));
+
+    await act(async () => {
+        renderWithProviders(
+            <ProductFileImportConfigurationsModal productFileIdentifier="66ac030b-073d-4966-9624-5d992ac3a8c3" />
+        );
+        openModal();
+    });
+
+    const selectField = screen.getByLabelText(
+        'supplier_portal.product_file_dropping.supplier_files.product_files_modal.import_field_label'
+    );
+    userEvent.click(selectField);
+    userEvent.click(screen.getByText('Import 1'));
+
+    const submitButton = screen.getByText(
+        'supplier_portal.product_file_dropping.supplier_files.product_files_modal.import_button_label'
+    );
+    await act(async () => {
+        userEvent.click(submitButton);
+    });
+
+    expect(notify).toHaveBeenNthCalledWith(
+        1,
+        NotificationLevel.ERROR,
+        'supplier_portal.product_file_dropping.supplier_files.product_files_modal.error_launching_product_import.unknown_error.title',
+        'supplier_portal.product_file_dropping.supplier_files.product_files_modal.error_launching_product_import.unknown_error.content'
+    );
+});
+
 function openModal() {
     userEvent.click(
         screen.getByText('supplier_portal.product_file_dropping.supplier_files.discussion.import_file_button_label')

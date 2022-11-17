@@ -3,16 +3,23 @@ import {Button, Field, ImportXlsxIllustration, Modal, SelectInput, useBooleanSta
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useProductFileImports} from '../hooks';
 import {ProductFileImportConfiguration} from '../models/read/ProductFileImportConfiguration';
-
-const ProductFileImportConfigurationsModal = () => {
+type Props = {productFileIdentifier: string};
+const ProductFileImportConfigurationsModal = ({productFileIdentifier}: Props) => {
     const translate = useTranslate();
     const [isModalOpen, openModal, closeModal] = useBooleanState(false);
-    const [selectedProfile, setProfile] = useState<string | null>(null);
-    const {productFileImportConfigurations} = useProductFileImports(isModalOpen);
+    const [selectedProductFileImport, selectProductFileImport] = useState<string | null>(null);
+    const {productFileImportConfigurations, importProductFile} = useProductFileImports(isModalOpen);
 
     const onClose = () => {
-        setProfile(null);
+        selectProductFileImport(null);
         closeModal();
+    };
+
+    const onImportProductFile = () => {
+        if (null === selectedProductFileImport) {
+            return;
+        }
+        importProductFile(selectedProductFileImport, productFileIdentifier);
     };
 
     return (
@@ -35,8 +42,8 @@ const ProductFileImportConfigurationsModal = () => {
                     >
                         <SelectInput
                             emptyResultLabel=""
-                            value={selectedProfile}
-                            onChange={setProfile}
+                            value={selectedProductFileImport}
+                            onChange={selectProductFileImport}
                             placeholder={translate(
                                 'supplier_portal.product_file_dropping.supplier_files.product_files_modal.select_import_placeholder'
                             )}
@@ -59,7 +66,11 @@ const ProductFileImportConfigurationsModal = () => {
                         <Button level="tertiary" onClick={onClose}>
                             {translate('pim_common.cancel')}
                         </Button>
-                        <Button level="primary" onClick={() => {}} disabled={null === selectedProfile}>
+                        <Button
+                            level="primary"
+                            onClick={onImportProductFile}
+                            disabled={null === selectedProductFileImport}
+                        >
                             {translate(
                                 'supplier_portal.product_file_dropping.supplier_files.product_files_modal.import_button_label'
                             )}
