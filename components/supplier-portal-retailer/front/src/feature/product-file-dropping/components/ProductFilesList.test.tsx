@@ -4,6 +4,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ProductFilesList} from './ProductFilesList';
 import {ProductFileRow} from '../hooks';
 import userEvent from '@testing-library/user-event';
+import {ImportStatus} from "../models/ProductFileRow";
 
 const productFilesList: ProductFileRow[] = [
     {
@@ -12,6 +13,7 @@ const productFilesList: ProductFileRow[] = [
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: true,
+        importStatus: ImportStatus.TO_IMPORT,
     },
     {
         supplier: 'mega supplier',
@@ -19,6 +21,7 @@ const productFilesList: ProductFileRow[] = [
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: false,
+        importStatus: ImportStatus.IN_PROGRESS,
     },
     {
         supplier: 'mega supplier',
@@ -26,6 +29,7 @@ const productFilesList: ProductFileRow[] = [
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: false,
+        importStatus: ImportStatus.COMPLETED,
     },
     {
         supplier: 'mega supplier',
@@ -33,6 +37,7 @@ const productFilesList: ProductFileRow[] = [
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: false,
+        importStatus: ImportStatus.COMPLETED,
     },
     {
         supplier: 'mega supplier',
@@ -40,6 +45,7 @@ const productFilesList: ProductFileRow[] = [
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: false,
+        importStatus: ImportStatus.TO_IMPORT,
     },
 ];
 
@@ -54,6 +60,9 @@ test('it renders a list of product files', () => {
     );
     expect(screen.queryAllByText('mega supplier').length).toBe(5);
     expect(screen.queryAllByText('07/25/2022, 08:00 AM').length).toBe(5);
+    expect(screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.to_import').length).toBe(2);
+    expect(screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.completed').length).toBe(2);
+    expect(screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.in_progress').length).toBe(1);
 });
 
 test('it renders a paginated list of product files', async () => {

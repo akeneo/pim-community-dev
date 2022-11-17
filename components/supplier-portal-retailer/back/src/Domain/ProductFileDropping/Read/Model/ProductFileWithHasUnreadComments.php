@@ -9,13 +9,13 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductF
 final class ProductFileWithHasUnreadComments
 {
     public function __construct(
-        public string $identifier,
-        public string $originalFilename,
-        public ?string $path,
-        public ?string $uploadedByContributor,
-        public string $uploadedBySupplier,
-        public ?string $uploadedAt,
-        public bool $hasUnreadComments,
+        public readonly string $identifier,
+        public readonly string $originalFilename,
+        public readonly ?string $path,
+        public readonly ?string $uploadedByContributor,
+        public readonly string $uploadedBySupplier,
+        public readonly ?string $uploadedAt,
+        public readonly bool $hasUnreadComments,
         public ?string $importStatus,
     ) {
         $this->importStatus = $importStatus ?? ProductFileImportStatus::TO_IMPORT->value;
