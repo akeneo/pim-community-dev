@@ -1,9 +1,9 @@
-import React, {useCallback, useState} from 'react';
-import {AttributesIllustration, Button, Field, Modal, TextInput} from 'akeneo-design-system';
+import React, {useCallback, useEffect, useState} from 'react';
+import {AttributesIllustration, Button, Field, Modal, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {IdentifierGenerator} from '../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Styled} from '../components/Styled';
-import {useIdentifierAttributes} from '../hooks';
+import {useIdentifierAttributes, useValidateFormWithEnter} from '../hooks';
 
 type CreateGeneratorModalProps = {
   onClose: () => void;
@@ -17,7 +17,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   const [target, setTarget] = useState<string | undefined>();
   const {data} = useIdentifierAttributes();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setTarget(data[0].code);
     }
@@ -28,6 +28,9 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   const uiLocale = userContext.get('uiLocale');
   const labelLengthLimit = 255;
   const codeLengthLimit = 100;
+
+  const labelInputRef = React.useRef<HTMLInputElement | null>(null);
+  useAutoFocus(labelInputRef);
 
   const onLabelChange = useCallback(
     (value: string) => {
@@ -42,8 +45,10 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
     setCode(value);
   }, []);
 
+  const isFormInvalid = React.useMemo(() => code === '', [code]);
+
   const onConfirm = useCallback(() => {
-    if (target) {
+    if (target && !isFormInvalid) {
       onSave({
         code,
         target,
@@ -53,9 +58,9 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
         delimiter: null,
       });
     }
-  }, [code, label, onSave, uiLocale, target]);
+  }, [target, isFormInvalid, onSave, code, uiLocale, label]);
 
-  const isFormInvalid = React.useMemo(() => code === '', [code]);
+  useValidateFormWithEnter(onConfirm);
 
   return (
     <Modal closeTitle={translate('pim_common.close')} illustration={<AttributesIllustration />} onClose={onClose}>
@@ -63,7 +68,13 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
       <Modal.Title>{translate('pim_identifier_generator.create.form.title')}</Modal.Title>
       <Styled.FormContainer>
         <Field label={translate('pim_common.label')} locale={uiLocale}>
-          <TextInput name="label" value={label} onChange={onLabelChange} maxLength={labelLengthLimit} />
+          <TextInput
+            name="label"
+            value={label}
+            onChange={onLabelChange}
+            maxLength={labelLengthLimit}
+            ref={labelInputRef}
+          />
         </Field>
         <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
           <TextInput name="code" value={code} onChange={onCodeChange} maxLength={codeLengthLimit} />

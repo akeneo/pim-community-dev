@@ -69,6 +69,18 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
     }
   }, [debouncedSearchValue, items]);
 
+  const searchInputRef = React.useRef<HTMLInputElement | null>(null);
+  // We can not use the useAutoFocus here because the element is hidden when dropdown is not open
+  const focusCallback = React.useCallback(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        if (searchInputRef.current !== null) searchInputRef.current.focus();
+      }, 0);
+    }
+  }, [searchInputRef, isOpen]);
+
+  React.useEffect(focusCallback, [isOpen, focusCallback]);
+
   return (
     <Dropdown>
       <Button active ghost level="secondary" onClick={addElement} size="small">
@@ -82,6 +94,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
               placeholder={translate('pim_common.search')}
               searchValue={searchValue}
               title={translate('pim_common.search')}
+              inputRef={searchInputRef}
             />
           </Dropdown.Header>
           <Dropdown.ItemCollection
