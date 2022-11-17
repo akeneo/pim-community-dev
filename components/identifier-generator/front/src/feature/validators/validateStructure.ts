@@ -4,7 +4,7 @@ import {Violation} from './Violation';
 import {validateFreeText} from './validateFreeText';
 
 const validateStructure: Validator<Structure | undefined> = (structure, path) => {
-  let violations: Violation[] = [];
+  const violations: Violation[] = [];
 
   if (structure?.length === 0) {
     violations.push({
@@ -25,7 +25,7 @@ const validateStructure: Validator<Structure | undefined> = (structure, path) =>
     }
 
     if (property.type === PROPERTY_NAMES.FREE_TEXT) {
-      violations = [...violations, ...validateFreeText(property, subPath)];
+      violations.push(...validateFreeText(property, subPath));
     }
   });
 

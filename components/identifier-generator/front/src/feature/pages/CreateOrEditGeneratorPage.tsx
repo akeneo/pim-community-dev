@@ -1,13 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageContent, PageHeader, useTranslate, SecondaryActions} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, StructureTab} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
-import {Violation} from '../validators/Violation';
+import {validateIdentifierGenerator, Violation} from '../validators/';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
-import {validateIdentifierGenerator} from '../validators/validateIdentifierGenerator';
 
 enum Tabs {
   GENERAL,
