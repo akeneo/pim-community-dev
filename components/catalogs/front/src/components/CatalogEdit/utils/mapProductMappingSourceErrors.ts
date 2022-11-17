@@ -5,7 +5,7 @@ import {ProductMappingErrors} from '../../ProductMapping/models/ProductMappingEr
 export const mapProductMappingSourceErrors = (errors: CatalogFormErrors, keys: string[]): ProductMappingErrors => {
     const map: ProductMappingErrors = {};
 
-    keys.forEach((key) => {
+    keys.forEach(key => {
         map[key] = {
             source: findFirstError(errors, `[product_mapping][${key}][source]`),
             locale: findFirstError(errors, `[product_mapping][${key}][locale]`),
