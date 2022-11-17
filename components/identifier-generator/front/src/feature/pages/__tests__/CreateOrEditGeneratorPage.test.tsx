@@ -79,7 +79,6 @@ describe('CreateOrEditGeneratorPage', () => {
           validationErrors={[]}
           mainButtonCallback={jest.fn()}
           isNew={false}
-          isMainButtonDisabled={false}
         />
       </Router>
     );
