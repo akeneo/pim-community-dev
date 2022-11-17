@@ -83,4 +83,24 @@ describe('CreateGeneratorModal', () => {
     expect(labelInput).toHaveValue(truncLabel);
     expect(codeInput).toHaveValue(truncCode);
   });
+
+  it('should validate when user types Enter', async () => {
+    const onSave = jest.fn();
+    render(<CreateGeneratorModal onClose={jest.fn()} onSave={onSave} />);
+    await waitFor(() => screen.getByText('pim_identifier_generator.create.form.title'));
+
+    const labelInput = screen.getByRole('textbox', {name: 'pim_common.label'});
+
+    fireEvent.change(labelInput, {target: {value: 'New label 123'}});
+
+    fireEvent.keyDown(labelInput, {key: 'Enter', code: 'Enter'});
+    expect(onSave).toBeCalledWith({
+      code: 'New_label_123',
+      conditions: [],
+      delimiter: null,
+      labels: {en_US: 'New label 123'},
+      structure: [],
+      target: 'sku',
+    });
+  });
 });
