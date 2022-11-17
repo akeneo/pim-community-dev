@@ -1,4 +1,6 @@
 Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand:
+    constraints:
+        - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CodeAttributeShouldExist: ~
     properties:
         target:
             - NotBlank: ~

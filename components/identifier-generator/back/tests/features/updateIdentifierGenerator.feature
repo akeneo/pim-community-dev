@@ -11,9 +11,9 @@ Feature: Update Identifier Generator
     Then The identifier generator is updated in the repository
     And I should not get any error
 
-#  Scenario: Cannot update an unknown identifier generator
-#    When I try to update an unknown identifier generator
-#    Then I should get an exception message 'Identifier generator "unknown" does not exist or you do not have permission to access it.'
+  Scenario: Cannot update an unknown identifier generator
+    When I try to update an unknown identifier generator
+    Then I should get an error on update with message 'Identifier generator "unknown" does not exist or you do not have permission to access it.'
 
   Scenario: Cannot update an identifier with not existing target
     When I try to update an identifier generator with target 'toto'

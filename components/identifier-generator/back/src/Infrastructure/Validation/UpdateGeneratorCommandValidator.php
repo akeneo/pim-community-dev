@@ -17,9 +17,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class UpdateGeneratorCommandValidator implements CommandValidatorInterface
 {
-    public function __construct(
-        private ValidatorInterface $validator,
-    ) {
+    public function __construct(private ValidatorInterface $validator)
+    {
     }
 
     public function validate(CommandInterface $command): void
