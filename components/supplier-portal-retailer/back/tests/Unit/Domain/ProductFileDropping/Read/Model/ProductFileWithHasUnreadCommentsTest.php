@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\ProductFileDropping\Read\Model;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileWithHasUnreadComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
 use PHPUnit\Framework\TestCase;
 
 final class ProductFileWithHasUnreadCommentsTest extends TestCase
@@ -20,6 +21,7 @@ final class ProductFileWithHasUnreadCommentsTest extends TestCase
             '44ce8069-8da1-4986-872f-311737f46f02',
             '2022-07-12 14:55:46',
             false,
+            null,
         );
 
         static::assertSame(
@@ -31,6 +33,7 @@ final class ProductFileWithHasUnreadCommentsTest extends TestCase
                 'uploadedBySupplier' => '44ce8069-8da1-4986-872f-311737f46f02',
                 'uploadedAt' => '2022-07-12 14:55:46',
                 'hasUnreadComments' => false,
+                'importStatus' => ProductFileImportStatus::TO_IMPORT->value,
             ],
             $sut->toArray(),
         );
@@ -44,7 +47,7 @@ final class ProductFileWithHasUnreadCommentsTest extends TestCase
         );
         $properties = $productFileWithHasUnreadComments->getProperties();
 
-        static::assertCount(7, $properties);
+        static::assertCount(8, $properties);
         static::assertSame('hasUnreadComments', $properties[6]->getName());
     }
 }

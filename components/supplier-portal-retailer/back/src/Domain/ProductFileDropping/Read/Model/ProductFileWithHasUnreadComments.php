@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model;
 
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+
 final class ProductFileWithHasUnreadComments
 {
     public function __construct(
@@ -14,7 +16,9 @@ final class ProductFileWithHasUnreadComments
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
         public bool $hasUnreadComments,
+        public ?string $importStatus,
     ) {
+        $this->importStatus = $importStatus ?? ProductFileImportStatus::TO_IMPORT->value;
     }
 
     public function toArray(): array
@@ -27,6 +31,7 @@ final class ProductFileWithHasUnreadComments
             'uploadedBySupplier' => $this->uploadedBySupplier,
             'uploadedAt' => $this->uploadedAt,
             'hasUnreadComments' => $this->hasUnreadComments,
+            'importStatus' => $this->importStatus,
         ];
     }
 }
