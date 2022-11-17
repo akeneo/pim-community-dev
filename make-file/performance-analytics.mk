@@ -9,6 +9,7 @@ performance-analytics-unit-back: #Doc: launch PHPSpec for performance analytics
 performance-analytics-lint-back:
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/performance-analytics/back/tests/.php_cs.php components/performance-analytics/back
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/performance-analytics/back/tests/phpstan.neon
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/performance-analytics/back/tests/phpstan_tests.neon
 
 .PHONY: performance-analytics-lint-back-fix
 performance-analytics-lint-back-fix: #Doc: launch php-cs-fixer without dry-run for performance analytic
