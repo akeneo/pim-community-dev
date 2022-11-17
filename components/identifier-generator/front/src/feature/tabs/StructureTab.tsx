@@ -50,7 +50,7 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
     <>
       <Helper>
         <TranslationWithLink
-          key={'pim_identifier_generator.structure.helper'}
+          translationKey={'pim_identifier_generator.structure.helper'}
           href={'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html'}
           linkKey={'pim_identifier_generator.structure.helper_link'}
         />

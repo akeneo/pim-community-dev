@@ -23,7 +23,7 @@ describe('AutoNumberEdit', () => {
     fireEvent.change(screen.getByTitle('10'), {target: {value: '5'}});
     expect(onChange).toBeCalledWith({
       type: PROPERTY_NAMES.AUTO_NUMBER,
-      numberMin: 69,
+      numberMin: 42,
       digitsMin: 5,
     });
   });

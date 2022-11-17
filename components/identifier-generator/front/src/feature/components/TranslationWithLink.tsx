@@ -3,14 +3,14 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {Link} from 'akeneo-design-system';
 
 type TranslationWithLinkProps = {
-  key: string;
+  translationKey: string;
   href: string;
   linkKey: string;
 };
 
-const TranslationWithLink: React.FC<TranslationWithLinkProps> = ({key, href, linkKey}) => {
+const TranslationWithLink: React.FC<TranslationWithLinkProps> = ({translationKey, href, linkKey}) => {
   const translate = useTranslate();
-  const translation = translate(key);
+  const translation = translate(translationKey);
   const linkTranslation = translate(linkKey);
   const [left, right] = translation.split('{{link}}');
 
