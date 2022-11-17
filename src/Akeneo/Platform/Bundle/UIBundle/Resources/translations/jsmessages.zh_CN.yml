@@ -257,6 +257,7 @@ pim_common:
   parent: 父级
   groups: 分组
   products: 产品
+  product_uuids: 产品
   product_models: 产品模型
   more: 更多
   public_view: 公共视图

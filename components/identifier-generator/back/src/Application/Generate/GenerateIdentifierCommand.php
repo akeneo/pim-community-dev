@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -35,5 +36,10 @@ final class GenerateIdentifierCommand
     public function getProperties(): array
     {
         return $this->identifierGenerator->structure()->getProperties();
+    }
+
+    public function getTarget(): Target
+    {
+        return $this->identifierGenerator->target();
     }
 }

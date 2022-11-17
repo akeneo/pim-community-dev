@@ -46,6 +46,12 @@ lint-back:
 	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 
+.PHONY: deprecation-back
+deprecation-back:
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
+	${PHP_RUN} -d memory_limit=2G vendor/bin/phpstan analyse -c phpstan-deprecations.neon --level 1
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+
 .PHONY: migration-lint-back
 migration-lint-back:
 	$(DOCKER_COMPOSE) run --rm php php vendor/bin/phpstan analyse -c upgrades/phpstan.neon

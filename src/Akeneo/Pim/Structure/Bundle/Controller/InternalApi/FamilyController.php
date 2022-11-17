@@ -135,13 +135,11 @@ class FamilyController
 
         $normalizedFamilies = [];
         foreach ($families as $family) {
-            $normalizedFamilies[strtolower($family->getCode())] = $this->normalizer->normalize(
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize(
                 $family,
                 'internal_api',
                 ['expanded' => $expanded]
             );
-
-            $normalizedFamilies[strtolower($family->getCode())]['code'] = strtolower($family->getCode());
         }
 
         return new JsonResponse($normalizedFamilies);

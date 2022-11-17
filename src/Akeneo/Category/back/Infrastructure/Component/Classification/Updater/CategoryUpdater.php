@@ -149,13 +149,13 @@ class CategoryUpdater implements ObjectUpdaterInterface
         if (null !== $category->getId() && $category->isRoot()) {
             if (true === $this->isCategoryTreeLinkedToUser->byCategoryTreeId($category->getId())) {
                 throw InvalidPropertyException::expected(
-                    sprintf('You can\'t move a category tree linked to a user.', $data),
+                    "You can't move a category tree linked to a user.",
                     static::class
                 );
             }
             if (true === $this->isCategoryTreeLinkedToChannel->byCategoryTreeId($category->getId())) {
                 throw InvalidPropertyException::expected(
-                    sprintf('You can\'t move a category tree linked to a channel.', $data),
+                    "You can't move a category tree linked to a channel.",
                     static::class
                 );
             }

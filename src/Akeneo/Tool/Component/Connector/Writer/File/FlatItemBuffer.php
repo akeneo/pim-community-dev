@@ -38,7 +38,7 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return $this->count;
     }

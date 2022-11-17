@@ -24,6 +24,7 @@ class Category
         private ?LabelCollection $labels = null,
         private ?CategoryId $parentId = null,
         private ?CategoryId $rootId = null,
+        private ?\DateTimeImmutable $updated = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
     ) {
@@ -36,6 +37,7 @@ class Category
      *     translations: string|null,
      *     parent_id: int|null,
      *     root_id: int|null,
+     *     updated: string|null,
      *     value_collection: string|null,
      *     permissions: string|null,
      *     template_uuid: string|null
@@ -43,21 +45,22 @@ class Category
      */
     public static function fromDatabase(array $category): self
     {
-        $id = new CategoryId((int) $category['id']);
-        $code = new Code($category['code']);
-        $labelCollection = $category['translations'] ?
-            LabelCollection::fromArray(
-                json_decode($category['translations'], true, 512, JSON_THROW_ON_ERROR),
-            ) : null;
-        $parentId = $category['parent_id'] ? new CategoryId((int) $category['parent_id']) : null;
-        $rootId = $category['root_id'] ? new CategoryId((int) $category['root_id']) : null;
-        $attributes = $category['value_collection'] ?
-                ValueCollection::fromArray(json_decode($category['value_collection'], true)) : null;
-        $permissions = isset($category['permissions']) && $category['permissions'] ?
-            PermissionCollection::fromArray(json_decode($category['permissions'], true)) : null;
-        $templateUuid = isset($category['template_uuid']) ? TemplateUuid::fromString($category['template_uuid']) : null;
-
-        return new self($id, $code, $templateUuid, $labelCollection, $parentId, $rootId, $attributes, $permissions);
+        return new self(
+            id: new CategoryId((int) $category['id']),
+            code: new Code($category['code']),
+            templateUuid: isset($category['template_uuid']) ? TemplateUuid::fromString($category['template_uuid']) : null,
+            labels: $category['translations'] ?
+                LabelCollection::fromArray(
+                    json_decode($category['translations'], true, 512, JSON_THROW_ON_ERROR),
+                ) : null,
+            parentId: $category['parent_id'] ? new CategoryId((int) $category['parent_id']) : null,
+            rootId: $category['root_id'] ? new CategoryId((int) $category['root_id']) : null,
+            updated: $category['updated'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $category['updated']) : null,
+            attributes: $category['value_collection'] ?
+                ValueCollection::fromArray(json_decode($category['value_collection'], true)) : null,
+            permissions: isset($category['permissions']) && $category['permissions'] ?
+                PermissionCollection::fromArray(json_decode($category['permissions'], true)) : null,
+        );
     }
 
     public function getId(): ?CategoryId
@@ -83,6 +86,11 @@ class Category
     public function getRootId(): ?CategoryId
     {
         return $this->rootId;
+    }
+
+    public function getUpdated(): ?\DateTimeImmutable
+    {
+        return $this->updated;
     }
 
     public function isRoot(): bool

@@ -54,7 +54,7 @@ final class DuplicateUserIntegration extends ControllerIntegrationTestCase
         $duplicatedUser = $this->userRepository->findOneByIdentifier('test2');
         self::assertNotNull($duplicatedUser);
         self::assertNotSame($user->getId(), $duplicatedUser->getId());
-        self::assertSame('test2', $duplicatedUser->getUsername());
+        self::assertSame('test2', $duplicatedUser->getUserIdentifier());
         self::assertSame('first', $duplicatedUser->getFirstName());
         self::assertSame('last', $duplicatedUser->getLastName());
         self::assertSame('new@example.com', $duplicatedUser->getEmail());

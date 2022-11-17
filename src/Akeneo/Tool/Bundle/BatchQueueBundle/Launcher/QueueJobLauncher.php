@@ -110,7 +110,7 @@ class QueueJobLauncher implements JobLauncherInterface
                     'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
                     $jobInstance->getCode(),
                     $job->getName(),
-                    print_r($jobParameters->all(), true),
+                    json_encode($jobParameters->all()),
                     $this->getErrorMessages($errors)
                 )
             );

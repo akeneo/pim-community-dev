@@ -61,7 +61,7 @@ class JSONFileBuffer implements BufferInterface
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         $rawLine = $this->file->current();
 
@@ -71,7 +71,7 @@ class JSONFileBuffer implements BufferInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->file->next();
     }
@@ -79,7 +79,7 @@ class JSONFileBuffer implements BufferInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): int
     {
         return $this->file->key();
     }
@@ -87,7 +87,7 @@ class JSONFileBuffer implements BufferInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->file->valid();
     }
@@ -95,7 +95,7 @@ class JSONFileBuffer implements BufferInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->file->rewind();
     }

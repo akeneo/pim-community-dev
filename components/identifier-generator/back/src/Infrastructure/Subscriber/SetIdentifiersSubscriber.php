@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommandHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
@@ -29,7 +29,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private IdentifierGeneratorRepository $identifierGeneratorRepository,
-        private GenerateIdentifierCommandHandler $generateIdentifierCommandHandler,
+        private GenerateIdentifierHandler $generateIdentifierCommandHandler,
         private ValidatorInterface $validator,
     ) {
     }
