@@ -32,7 +32,7 @@ class AddAclCacheHeaderResponseListener
     {
         if ($this->cache->providerToTarget === null) {
             $value = 'acl_cache_not_used';
-        } else if ($this->cache->providerToTarget instanceof ArrayCache) {
+        } elseif ($this->cache->providerToTarget instanceof ArrayCache) {
             $value = 'array_cache';
         } else {
             $value = 'memcache';
