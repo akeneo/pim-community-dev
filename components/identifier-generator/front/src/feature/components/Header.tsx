@@ -2,7 +2,7 @@ import React from 'react';
 import {Common} from './Common';
 import {PageHeader, PimView, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
-import {useIdentifierGeneratorContext} from '../context/useIdentifierGeneratorContext';
+import {useIdentifierGeneratorContext} from '../context';
 
 type HeaderProps = {
   children: React.ReactNode;

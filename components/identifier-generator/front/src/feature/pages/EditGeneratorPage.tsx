@@ -4,7 +4,7 @@ import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {useSaveGenerator} from '../hooks/useSaveGenerator';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {useQueryClient} from 'react-query';
-import {useIdentifierGeneratorContext} from '../context/useIdentifierGeneratorContext';
+import {useIdentifierGeneratorContext} from '../context';
 
 type EditGeneratorProps = {
   initialGenerator: IdentifierGenerator;

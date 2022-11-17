@@ -4,7 +4,7 @@ import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {useHistory} from 'react-router-dom';
 import {useCreateIdentifierGenerator} from '../hooks';
-import {useIdentifierGeneratorContext} from '../context/useIdentifierGeneratorContext';
+import {useIdentifierGeneratorContext} from '../context';
 
 type CreateGeneratorProps = {
   initialGenerator: IdentifierGenerator;
