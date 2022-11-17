@@ -4,6 +4,7 @@ import {IdentifierGeneratorContext, IdentifierGeneratorContextType} from './Iden
 const useIdentifierGeneratorContext = (): IdentifierGeneratorContextType => {
   const result = useContext(IdentifierGeneratorContext);
 
+  /* istanbul ignore if */
   if (typeof result === 'undefined') {
     throw new Error('You called useIdentifierGeneratorContext outside of a ContextProvider');
   }
