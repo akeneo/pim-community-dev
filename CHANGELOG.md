@@ -87,6 +87,7 @@
 - PIM-10698: Fix PHP Warning: Undefined array key "locale" in Tailored Import
 - PIM-10693: Improve the speed up of the process stop time on the rules
 - PIM-10692: Fix wrong DQI assessments on select attribute
+- PIM-10721: Fix error 500 when trying to patch product with null or "" as data for record
 - PIM-10663: Fix API allows proposing changes and accepting proposals on read-only attributes
 - PIM-10726: Fix ProjectsRecalculationLauncher
 - PIM-10713: Hide Shared Catalog Export Profile under a Serenity FT

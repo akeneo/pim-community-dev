@@ -36,6 +36,10 @@ final class RecordsComparator implements ComparatorInterface
     {
         $default = ['locale' => null, 'scope' => null, 'data' => []];
         $originals = \array_merge($default, $originals);
+
+        if (null === $data['data'] || '' === $data['data']) {
+            $data['data'] = [];
+        }
         $data['data'] = \array_unique($data['data']);
 
         $originalsToLower = \array_map('strtolower', $originals['data']);

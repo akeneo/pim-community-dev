@@ -17,23 +17,23 @@ use PhpSpec\ObjectBehavior;
 
 final class RecordsComparatorSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith(['akeneo_reference_entity_collection']);
     }
 
-    function it_is_a_comparator()
+    public function it_is_a_comparator(): void
     {
         $this->shouldBeAnInstanceOf(ComparatorInterface::class);
     }
 
-    function it_supports_reference_entity_collection_type()
+    public function it_supports_reference_entity_collection_type(): void
     {
         $this->supports('akeneo_reference_entity_collection')->shouldBe(true);
         $this->supports('other')->shouldBe(false);
     }
 
-    function it_get_changes_when_adding_records_data()
+    public function it_get_changes_when_adding_records_data(): void
     {
         $changes = ['data' => ['redchilli', 'bluestorm'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = [];
@@ -45,7 +45,7 @@ final class RecordsComparatorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_get_changes_when_changing_records_data()
+    public function it_get_changes_when_changing_records_data(): void
     {
         $changes = ['data' => ['redchilli', 'bluestorm'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => ['bluestorm', 'navyblue', 'redchilli']];
@@ -57,7 +57,7 @@ final class RecordsComparatorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_null_when_records_is_the_same()
+    public function it_returns_null_when_records_is_the_same(): void
     {
         $changes = ['data' => ['redchilli', 'bluestorm'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => ['bluestorm', 'redchilli'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
@@ -65,7 +65,7 @@ final class RecordsComparatorSpec extends ObjectBehavior
         $this->compare($changes, $originals)->shouldReturn(null);
     }
 
-    function it_compares_in_a_case_insensitive_way()
+    public function it_compares_in_a_case_insensitive_way(): void
     {
         $changes = ['data' => ['UPPER_CASE', 'lower_CASE'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => ['LOWER_case', 'upper_case'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
@@ -73,7 +73,7 @@ final class RecordsComparatorSpec extends ObjectBehavior
         $this->compare($changes, $originals)->shouldReturn(null);
     }
 
-    function it_remove_duplicate_with_different_case_sensitivity()
+    public function it_removes_duplicate_with_different_case_sensitivity(): void
     {
         $changes = ['data' => ['redchilli', 'bluestorm', 'RedChilli'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => ['bluestorm', 'redchilli'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
@@ -81,7 +81,7 @@ final class RecordsComparatorSpec extends ObjectBehavior
         $this->compare($changes, $originals)->shouldReturn(null);
     }
 
-    function it_remove_old_duplicate_with_different_case_sensitivity()
+    public function it_removes_old_duplicate_with_different_case_sensitivity(): void
     {
         $changes = ['data' => ['redchilli', 'bluestorm'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => ['RedChilli', 'bluestorm', 'redchilli'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
@@ -90,6 +90,30 @@ final class RecordsComparatorSpec extends ObjectBehavior
             'data'  => ['redchilli', 'bluestorm'],
             'locale' => 'en_US',
             'scope'  => 'ecommerce',
+        ]);
+    }
+
+    public function it_handles_null_data_as_empty_array(): void
+    {
+        $changes = ['data' => null, 'locale' => null, 'scope' => null];
+        $originals = ['data' => ['bluestorm'], 'locale' => null, 'scope' => null];
+
+        $this->compare($changes, $originals)->shouldReturn([
+            'data'  => [],
+            'locale' => null,
+            'scope'  => null,
+        ]);
+    }
+
+    public function it_handles_string_data_as_empty_array(): void
+    {
+        $changes = ['data' => '', 'locale' => null, 'scope' => null];
+        $originals = ['data' => ['bluestorm'], 'locale' => null, 'scope' => null];
+
+        $this->compare($changes, $originals)->shouldReturn([
+            'data'  => [],
+            'locale' => null,
+            'scope'  => null,
         ]);
     }
 }
