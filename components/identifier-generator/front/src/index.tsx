@@ -16,7 +16,6 @@ DangerousMicrofrontendAutomaticAuthenticator.enable('admin', 'admin');
 const value = {
   unsavedChanges: {
     hasUnsavedChanges: false,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     setHasUnsavedChanges: (hasChanges: boolean) => (value.unsavedChanges.hasUnsavedChanges = hasChanges),
   },
 };

@@ -53,17 +53,20 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     openDeleteGeneratorModal();
   };
 
-  const onChangeGenerator = (generator: IdentifierGenerator) => {
-    if (JSON.stringify(generator) !== JSON.stringify(initialGenerator)) {
-      identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(true);
-    } else {
-      identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(false);
-    }
-    setGenerator(generator);
-  };
+  const onChangeGenerator = useCallback(
+    (generator: IdentifierGenerator) => {
+      if (JSON.stringify(generator) !== JSON.stringify(initialGenerator)) {
+        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges?.(true);
+      } else {
+        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges?.(false);
+      }
+      setGenerator(generator);
+    },
+    [identifierGeneratorContext.unsavedChanges, initialGenerator]
+  );
 
   const onStructureChange = (structure: Structure) => {
-    const updatedGenerator = {...generator, structure: structure};
+    const updatedGenerator = {...generator, structure};
     onChangeGenerator(updatedGenerator);
   };
 
