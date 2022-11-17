@@ -6,6 +6,7 @@ namespace AkeneoTestEnterprise\Platform\Integration\Tenant;
 
 use Akeneo\Platform\Component\Tenant\Exception\TenantContextInvalidFormatException;
 use Akeneo\Platform\Component\Tenant\Exception\TenantContextNotFoundException;
+use Akeneo\Platform\Component\Tenant\Exception\TenantContextNotReadyException;
 use Akeneo\Platform\Component\Tenant\FirestoreContextFetcher;
 use Akeneo\Platform\Component\Tenant\TenantContextDecoder;
 use Akeneo\Platform\Component\Tenant\TenantContextDecoderException;
@@ -41,7 +42,10 @@ final class FirestoreContextFetcherIntegration extends TestCase
 
         // clear values = '{"updated_context": "updated_value"}'
         $this->firestoreCollection()->document('some_tenant_id')->set(
-            ['context' => '{"data":"KLzn+p4OFTwWvyvYNscpvMdURRnVlzfDvTfxluNYv1CBDRSmfcRFqMYnRr+j1VnV","iv":"dfd0c5655a81118a268ddeb40660445d"}']
+            [
+                'status' => 'created',
+                'context' => '{"data":"KLzn+p4OFTwWvyvYNscpvMdURRnVlzfDvTfxluNYv1CBDRSmfcRFqMYnRr+j1VnV","iv":"dfd0c5655a81118a268ddeb40660445d"}',
+            ]
         );
 
         // get context from cache
@@ -70,7 +74,7 @@ final class FirestoreContextFetcherIntegration extends TestCase
     {
         $this->expectException(TenantContextInvalidFormatException::class);
         $this->expectExceptionMessage(
-            'Unable to fetch context for the "tenant_id_without_context" tenant ID: missing "context" key in the document.'
+            'Unable to fetch context for the "tenant_id_without_context" tenant ID: missing key in the document.'
         );
 
         $this->firestoreContextFetcher->getTenantContext('tenant_id_without_context');
@@ -82,6 +86,14 @@ final class FirestoreContextFetcherIntegration extends TestCase
         $this->expectException(TenantContextDecoderException::class);
 
         $this->firestoreContextFetcher->getTenantContext('tenant_id_with_invalid_values');
+    }
+
+    /** @test */
+    public function it_throws_an_exception_if_the_tenant_is_not_ready(): void
+    {
+        $this->expectException(TenantContextNotReadyException::class);
+
+        $this->firestoreContextFetcher->getTenantContext('tenant_id_not_ready');
     }
 
     /**
@@ -121,7 +133,16 @@ final class FirestoreContextFetcherIntegration extends TestCase
         ]);
 
         $collection->document('tenant_id_without_context')->create([
+            'status' => 'created',
+        ]);
+
+        $collection->document('tenant_id_without_status')->create([
+            'context' => '{"data":"VgvimYiLnlxArlu3RTMbG41dDANh9xne6d71p/AeCQI=","iv":"5f90664b2fca29dd597d1e741a6f8255"}',
+        ]);
+
+        $collection->document('tenant_id_not_ready')->create([
             'status' => 'creation_pending',
+            'context' => '{"data":"VgvimYiLnlxArlu3RTMbG41dDANh9xne6d71p/AeCQI=","iv":"5f90664b2fca29dd597d1e741a6f8255"}',
         ]);
 
         $this->firestoreContextFetcher = new FirestoreContextFetcher(

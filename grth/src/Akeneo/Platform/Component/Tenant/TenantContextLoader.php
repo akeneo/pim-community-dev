@@ -15,6 +15,7 @@ namespace Akeneo\Platform\Component\Tenant;
 
 use Akeneo\Platform\Component\Tenant\Exception\TenantContextInvalidFormatException;
 use Akeneo\Platform\Component\Tenant\Exception\TenantContextNotFoundException;
+use Akeneo\Platform\Component\Tenant\Exception\TenantContextNotReadyException;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -63,6 +64,9 @@ final class TenantContextLoader
         } catch (TenantContextNotFoundException|TenantContextInvalidFormatException $e) {
             $logger->critical(sprintf('Not found or invalid context: %s', $e->getMessage()));
             $this->displayError(404, $errorFileDirectory);
+        } catch (TenantContextNotReadyException $e) {
+            $logger->critical(sprintf('Context status not ready: %s', $e->getMessage()));
+            $this->displayError(500, $errorFileDirectory);
         } catch (Throwable $e) {
             $logger->critical(sprintf('Error while initializing context: %s', $e->getMessage()));
             $this->displayError(500, $errorFileDirectory);

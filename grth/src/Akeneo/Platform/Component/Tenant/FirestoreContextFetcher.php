@@ -15,6 +15,7 @@ namespace Akeneo\Platform\Component\Tenant;
 
 use Akeneo\Platform\Component\Tenant\Exception\TenantContextInvalidFormatException;
 use Akeneo\Platform\Component\Tenant\Exception\TenantContextNotFoundException;
+use Akeneo\Platform\Component\Tenant\Exception\TenantContextNotReadyException;
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\Firestore\FirestoreClient;
 use Psr\Log\LoggerInterface;
@@ -23,11 +24,11 @@ use Webmozart\Assert\Assert;
 final class FirestoreContextFetcher implements TenantContextFetcherInterface
 {
     public function __construct(
-        private LoggerInterface $logger,
-        private TenantContextDecoderInterface $tenantContextDecoder,
-        private string $googleProjectId,
-        private string $collection,
-        private int $cacheTtl = 30
+        private readonly LoggerInterface $logger,
+        private readonly TenantContextDecoderInterface $tenantContextDecoder,
+        private readonly string $googleProjectId,
+        private readonly string $collection,
+        private readonly int $cacheTtl = 30
     ) {
         Assert::notEmpty($googleProjectId, 'The Google Project ID must not be empty');
         Assert::notEmpty($collection, 'The collection name must not be empty');
@@ -73,15 +74,23 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
                 );
             }
 
-            $contextValues = $snapshot->data()['context'] ?? null;
-            if (!\is_string($contextValues)) {
+            $tenantData = $snapshot->data();
+            if (!$this->isTenantDataValid($tenantData)) {
                 throw new TenantContextInvalidFormatException(
                     sprintf(
-                        'Unable to fetch context for the "%s" tenant ID: missing "context" key in the document.',
+                        'Unable to fetch context for the "%s" tenant ID: missing key in the document.',
                         $tenantId
                     )
                 );
             }
+
+            if (!$this->isTenantReady($tenantData)) {
+                throw new TenantContextNotReadyException(
+                    sprintf('Context not available for "%s" tenant ID. Status = %s', $tenantId, $tenantData['status'])
+                );
+            }
+
+            $contextValues = $tenantData['context'] ?? null;
             $this->logger->debug(
                 \sprintf(
                     'Context for %s tenant fetched from Firestore in %.4Fs',
@@ -101,5 +110,20 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
         );
 
         return $contextValues;
+    }
+
+    private function isTenantDataValid(array $tenantData): bool
+    {
+        $tenantStatus = $tenantData['status'] ?? null;
+        $tenantContext = $tenantData['context'] ?? null;
+
+        return (null !== $tenantStatus) && (null !== $tenantContext);
+    }
+
+    private function isTenantReady(array $tenantData): bool
+    {
+        $tenantStatus = $tenantData['status'] ?? null;
+
+        return TenantContextStatuses::TENANT_STATUS_CREATED->value === $tenantStatus;
     }
 }
