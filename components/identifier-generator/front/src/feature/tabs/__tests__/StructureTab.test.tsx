@@ -55,4 +55,46 @@ describe('StructureTab', () => {
     fireEvent.change(screen.getByTitle('original value'), {target: {value: 'updated value'}});
     expect(onStructureChange).toBeCalledWith(expect.any(Array));
   });
+
+  it('should delete a property', () => {
+    const onStructureChange = jest.fn();
+    render(
+      <StructureTab
+        initialStructure={[
+          {
+            type: PROPERTY_NAMES.FREE_TEXT,
+            string: 'original value',
+          },
+        ]}
+        delimiter={null}
+        onStructureChange={onStructureChange}
+      />
+    );
+
+    fireEvent.click(screen.getByText('pim_common.delete'));
+    expect(screen.getByText('pim_identifier_generator.list.confirmation')).toBeInTheDocument();
+    fireEvent.click(screen.getAllByText('pim_common.delete')[1]);
+    expect(onStructureChange).toBeCalledWith([]);
+  });
+
+  it('should cancel deletion of a property', () => {
+    const onStructureChange = jest.fn();
+    render(
+      <StructureTab
+        initialStructure={[
+          {
+            type: PROPERTY_NAMES.FREE_TEXT,
+            string: 'original value',
+          },
+        ]}
+        delimiter={null}
+        onStructureChange={onStructureChange}
+      />
+    );
+
+    fireEvent.click(screen.getByText('pim_common.delete'));
+    expect(screen.getByText('pim_identifier_generator.list.confirmation')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_common.cancel'));
+    expect(screen.queryByText('pim_identifier_generator.list.confirmation')).not.toBeInTheDocument();
+  });
 });

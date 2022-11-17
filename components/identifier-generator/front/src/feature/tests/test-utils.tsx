@@ -4,6 +4,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {DependenciesContext} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
 import {render, RenderOptions, RenderResult} from '@testing-library/react';
+import {IdentifierGeneratorContextProvider} from '../context';
 
 const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
   const queryClient = new QueryClient({
@@ -18,7 +19,9 @@ const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
   return (
     <ThemeProvider theme={pimTheme}>
       <DependenciesContext.Provider value={{translate: k => k}}>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <IdentifierGeneratorContextProvider>{children}</IdentifierGeneratorContextProvider>
+        </QueryClientProvider>
       </DependenciesContext.Provider>
     </ThemeProvider>
   );

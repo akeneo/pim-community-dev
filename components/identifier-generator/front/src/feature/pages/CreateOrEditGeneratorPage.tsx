@@ -1,13 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageContent, PageHeader, SecondaryActions, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {validateIdentifierGenerator, Violation} from '../validators/';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
-import {useIdentifierGeneratorContext} from '../context/useIdentifierGeneratorContext';
+import {useIdentifierGeneratorContext} from '../context';
 
 enum Tabs {
   GENERAL,
@@ -44,10 +44,12 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const closeModal = (): void => {
     closeDeleteGeneratorModal();
   };
+
   const redirectToList = (): void => {
     closeModal();
     history.push('/');
   };
+
   const handleDeleteModal = (): void => {
     setGeneratorCodeToDelete(generator.code);
     openDeleteGeneratorModal();
@@ -55,14 +57,14 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   const onChangeGenerator = useCallback(
     (generator: IdentifierGenerator) => {
-      if (JSON.stringify(generator) !== JSON.stringify(initialGenerator)) {
-        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges?.(true);
+      if (JSON.stringify(generator) !== JSON.stringify(initialGenerator) || isNew) {
+        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(true);
       } else {
-        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges?.(false);
+        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(false);
       }
       setGenerator(generator);
     },
-    [identifierGeneratorContext.unsavedChanges, initialGenerator]
+    [identifierGeneratorContext.unsavedChanges, initialGenerator, isNew]
   );
 
   const onStructureChange = (structure: Structure) => {
@@ -86,7 +88,6 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           <Button disabled={isMainButtonDisabled || !isGeneratorValid} onClick={onSave}>
             {translate('pim_common.save')}
           </Button>
-          {identifierGeneratorContext.unsavedChanges.hasUnsavedChanges && <UnsavedChanges />}
         </PageHeader.Actions>
       </Header>
       <PageContent>
