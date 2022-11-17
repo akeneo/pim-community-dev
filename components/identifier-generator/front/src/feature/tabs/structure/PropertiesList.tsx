@@ -14,11 +14,7 @@ type PropertiesListProps = {
 
 const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, selectedId, onChange}) => {
   const onReorder = (indices: number[]) => {
-    const newStructure: StructureWithIdentifiers = [];
-    indices.forEach((lineNumber, i) => {
-      newStructure[i] = structure[lineNumber];
-    });
-    onChange(newStructure);
+    onChange(indices.map(i => structure[i]));
   };
 
   return (

@@ -13,13 +13,7 @@ describe('PropertiesList', () => {
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'Third item', id: 'id2'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'Fourth item', id: 'id3'},
     ];
-    render(<PropertiesList
-      structure={structure}
-      onChange={onChange}
-      selectedId={undefined}
-      onSelect={jest.fn()}
-    />);
-
+    render(<PropertiesList structure={structure} onChange={onChange} selectedId={undefined} onSelect={jest.fn()} />);
 
     let dataTransferred = '';
     const dataTransfer = {
