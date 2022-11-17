@@ -92,7 +92,7 @@ module "storage_bucket_prod" {
 module "storage_bucket_cloudbuild" {
   source         = "../modules/storage-bucket"
   for_each       = toset(local.child_projects)
-  project_id     = each.key
+  project_id     = local.project_id
   admin_members  = concat(local.admins, ["serviceAccount:${local.main_sa}"])
   viewer_members = concat(local.admins)
   bucket_name    = "${each.key}-cloudbuild-logs"
