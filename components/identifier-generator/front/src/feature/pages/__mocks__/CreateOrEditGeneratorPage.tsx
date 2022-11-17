@@ -1,5 +1,5 @@
 import React from 'react';
-import {Violation} from '../../validators/Violation';
+import {Violation} from '../../validators';
 import {IdentifierGenerator} from '../../models';
 
 type CreateOrEditGeneratorProps = {

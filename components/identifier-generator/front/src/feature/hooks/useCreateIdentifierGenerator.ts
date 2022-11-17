@@ -2,7 +2,7 @@ import {IdentifierGenerator} from '../models';
 import {InvalidIdentifierGenerator, ServerError} from '../errors';
 import {useMutation, useQueryClient} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {Violation} from '../validators/Violation';
+import {Violation} from '../validators';
 import {UseMutateFunction} from 'react-query/types/react/types';
 
 type ErrorResponse = {

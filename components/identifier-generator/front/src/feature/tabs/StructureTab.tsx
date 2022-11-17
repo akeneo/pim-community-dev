@@ -4,6 +4,7 @@ import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-
 import {AddPropertyButton, Preview, PropertiesList, PropertyEdit} from './structure';
 import {Delimiter, Property, Structure as StructureType} from '../models';
 import {Styled} from '../components/Styled';
+import {TranslationWithLink} from '../components';
 
 type StructureTabProps = {
   initialStructure: StructureType;
@@ -11,11 +12,12 @@ type StructureTabProps = {
   onStructureChange: (structure: StructureType) => void;
 };
 
-type StructureWithIdentifiers = (Property & {id: string})[];
+type PropertyId = string;
+type StructureWithIdentifiers = (Property & {id: PropertyId})[];
 
 const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter, onStructureChange}) => {
   const translate = useTranslate();
-  const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
+  const [selectedPropertyId, setSelectedPropertyId] = useState<PropertyId | undefined>();
   const [structure, setStructure] = useState<StructureWithIdentifiers>(
     initialStructure.map(property => {
       return {
@@ -24,10 +26,6 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
       };
     })
   );
-
-  const onSelectedPropertyChange = (id: string) => {
-    setSelectedPropertyId(id);
-  };
 
   const onPropertyChange = (property: Property) => {
     if (selectedProperty) {
@@ -39,19 +37,25 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
   };
 
   const onAddProperty = (property: Property) => {
-    const newPropertyUuid = uuid();
-    structure.push({...property, id: newPropertyUuid});
+    const newPropertyId = uuid();
+    structure.push({...property, id: newPropertyId});
     setStructure(structure);
     onStructureChange(structure);
-    setSelectedPropertyId(newPropertyUuid);
+    setSelectedPropertyId(newPropertyId);
   };
 
   const selectedProperty = structure.find(propertyWithId => propertyWithId.id === selectedPropertyId);
 
   return (
     <>
-      <Helper>{translate('pim_identifier_generator.structure.helper')}</Helper>
-      <Styled.TwoColumns>
+      <Helper>
+        <TranslationWithLink
+          translationKey={'pim_identifier_generator.structure.helper'}
+          href={'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html'}
+          linkKey={'pim_identifier_generator.structure.helper_link'}
+        />
+      </Helper>
+      <Styled.TwoColumns withoutSecondColumn={!selectedProperty}>
         <div>
           <SectionTitle>
             <SectionTitle.Title>{translate('pim_identifier_generator.structure.title')}</SectionTitle.Title>
@@ -61,7 +65,7 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
           {structure.length > 0 && (
             <>
               <Preview structure={structure} delimiter={delimiter} />
-              <PropertiesList structure={structure} onChange={onSelectedPropertyChange} />
+              <PropertiesList structure={structure} onSelect={setSelectedPropertyId} selectedId={selectedPropertyId} />
             </>
           )}
           {structure.length === 0 && (
@@ -86,4 +90,4 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
 };
 
 export {StructureTab};
-export type {StructureWithIdentifiers};
+export type {StructureWithIdentifiers, PropertyId};

@@ -44,6 +44,10 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
             code: PROPERTY_NAMES.FREE_TEXT,
             defaultValue: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
           },
+          {
+            code: PROPERTY_NAMES.AUTO_NUMBER,
+            defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
+          },
         ],
       },
     ],
@@ -87,7 +91,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
             {filterElements.map(({code, items}) => (
               <React.Fragment key={code}>
                 <Dropdown.Section>
-                  {translate(`pim_identifier_generator.structure.property_type.section.${code}`)}
+                  {translate(`pim_identifier_generator.structure.property_type.sections.${code}`)}
                 </Dropdown.Section>
                 {items.map(({code, defaultValue}) => (
                   <Dropdown.Item key={code} onClick={() => addProperty(defaultValue)}>

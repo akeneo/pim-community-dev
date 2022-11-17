@@ -1,7 +1,7 @@
 import React from 'react';
-import {fireEvent, render, screen} from '../../../tests/test-utils';
-import {FreeText, PROPERTY_NAMES} from '../../../models';
-import {FreeTextEdit} from '../edit/FreeTextEdit';
+import {fireEvent, render, screen} from '../../../../tests/test-utils';
+import {FreeText, PROPERTY_NAMES} from '../../../../models';
+import {FreeTextEdit} from '../FreeTextEdit';
 
 describe('FreeTextEdit', () => {
   it('calls the callback on change', () => {

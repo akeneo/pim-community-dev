@@ -1,6 +1,6 @@
 import React from 'react';
 import {mockResponse, render, screen, waitFor} from '../../tests/test-utils';
-import {IdentifierGenerator} from '../../models';
+import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 import {EditGeneratorPage} from '../';
 import userEvent from '@testing-library/user-event';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
@@ -26,7 +26,12 @@ const initialGenerator: IdentifierGenerator = {
     en_US: 'Initial Label',
   },
   conditions: [],
-  structure: [],
+  structure: [
+    {
+      type: PROPERTY_NAMES.FREE_TEXT,
+      string: 'AKN',
+    },
+  ],
   delimiter: null,
   target: 'sku',
 };

@@ -1,9 +1,9 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageContent, PageHeader, useTranslate, SecondaryActions} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, StructureTab} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
-import {Violation} from '../validators/Violation';
+import {validateIdentifierGenerator, Violation} from '../validators/';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
@@ -54,6 +54,8 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     openDeleteGeneratorModal();
   };
 
+  const isGeneratorValid = validateIdentifierGenerator(generator, '').length === 0;
+
   return (
     <>
       <Header>
@@ -65,7 +67,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
               </SecondaryActions.Item>
             </SecondaryActions>
           )}
-          <Button disabled={isMainButtonDisabled} onClick={onSave}>
+          <Button disabled={isMainButtonDisabled || !isGeneratorValid} onClick={onSave}>
             {translate('pim_common.save')}
           </Button>
         </PageHeader.Actions>
