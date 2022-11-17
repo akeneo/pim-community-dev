@@ -39,3 +39,16 @@ services:
     public: true
     arguments:
       - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler'
+
+  # Domain service
+  Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\UpdateProductFileImportStatusFromJobStatus:
+    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\UpdateProductFileImportStatusFromJobStatus
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository'
+
+  # Event subscribers
+  Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Subscriber\UpdateProductFileImportOnJobExecutionEvent:
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\UpdateProductFileImportStatusFromJobStatus'
+    tags:
+      - { name: kernel.event_subscriber }
