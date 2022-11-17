@@ -2,8 +2,8 @@
 Feature: Create Identifier Generator
 
   Background:
-    Given the sku identifier attribute
-    And the name text attribute
+    Given the 'sku' identifier attribute
+    And the 'name' text attribute
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator
@@ -31,7 +31,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with blank target
-    When I try to create an identifier generator with blank target
+    When I try to create an identifier generator with target ''
     Then I should get an error with message 'target: This value should not be blank.'
     And the identifier should not be created
 

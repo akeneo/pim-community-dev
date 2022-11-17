@@ -63,7 +63,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given the :attributeCode identifier attribute
+     * @Given the ':attributeCode' identifier attribute
      */
     public function theIdentifierAttribute(string $attributeCode): void
     {
@@ -121,7 +121,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given the :attributeCode text attribute
+     * @Given the ':attributeCode' text attribute
      */
     public function theOtherTextAttribute(string $attributeCode): void
     {
@@ -201,25 +201,6 @@ final class CreateIdentifierGeneratorContext implements Context
                 [['type' => 'unknown', 'string' => 'abcdef']],
                 ['fr' => 'Générateur'],
                 'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
-    }
-
-    /**
-     * @When I try to create an identifier generator with blank target
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithBlankTarget(): void
-    {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
-                '',
                 '-'
             ));
         } catch (ViolationsException $exception) {
