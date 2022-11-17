@@ -1,12 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SecondaryActions, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, StructureTab} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {validateIdentifierGenerator, Violation} from '../validators/';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
+import {useIdentifierGeneratorContext} from '../context/useIdentifierGeneratorContext';
 
 enum Tabs {
   GENERAL,
@@ -35,9 +36,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const [generator, setGenerator] = useState<IdentifierGenerator>(initialGenerator);
   const changeTab = useCallback(tabName => () => setCurrentTab(tabName), []);
   const onSave = useCallback(() => mainButtonCallback(generator), [generator, mainButtonCallback]);
-  const onStructureChange = (structure: Structure) => {
-    setGenerator({...generator, structure: structure});
-  };
+  const identifierGeneratorContext = useIdentifierGeneratorContext();
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
@@ -52,6 +51,23 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const handleDeleteModal = (): void => {
     setGeneratorCodeToDelete(generator.code);
     openDeleteGeneratorModal();
+  };
+
+  const onChangeGenerator = useCallback(
+    (generator: IdentifierGenerator) => {
+      if (JSON.stringify(generator) !== JSON.stringify(initialGenerator)) {
+        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges?.(true);
+      } else {
+        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges?.(false);
+      }
+      setGenerator(generator);
+    },
+    [identifierGeneratorContext.unsavedChanges, initialGenerator]
+  );
+
+  const onStructureChange = (structure: Structure) => {
+    const updatedGenerator = {...generator, structure};
+    onChangeGenerator(updatedGenerator);
   };
 
   const isGeneratorValid = validateIdentifierGenerator(generator, '').length === 0;
@@ -70,6 +86,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           <Button disabled={isMainButtonDisabled || !isGeneratorValid} onClick={onSave}>
             {translate('pim_common.save')}
           </Button>
+          {identifierGeneratorContext.unsavedChanges.hasUnsavedChanges && <UnsavedChanges />}
         </PageHeader.Actions>
       </Header>
       <PageContent>
@@ -95,7 +112,9 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             {translate('pim_identifier_generator.tabs.identifier_structure')}
           </TabBar.Tab>
         </TabBar>
-        {currentTab === Tabs.GENERAL && <GeneralPropertiesTab generator={generator} onGeneratorChange={setGenerator} />}
+        {currentTab === Tabs.GENERAL && (
+          <GeneralPropertiesTab generator={generator} onGeneratorChange={onChangeGenerator} />
+        )}
         {currentTab === Tabs.PRODUCT_SELECTION && (
           <>
             <div>Not implemented YET</div>

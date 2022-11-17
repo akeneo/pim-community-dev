@@ -1,7 +1,7 @@
 import React from 'react';
 import {mockResponse, render, screen} from '../../tests/test-utils';
 import {Edit} from '../';
-import {IdentifierGenerator} from '../../models';
+import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../../pages/CreateOrEditGeneratorPage');
 
@@ -34,17 +34,6 @@ describe('Edit', () => {
   });
 
   it('should render the edit page', async () => {
-    const initialGenerator: IdentifierGenerator = {
-      code: 'initialCode',
-      labels: {
-        en_US: 'Initial Label',
-      },
-      conditions: [],
-      structure: [],
-      delimiter: null,
-      target: 'sku',
-    };
-
     mockResponse('akeneo_identifier_generator_rest_get', 'GET', {json: initialGenerator});
 
     render(<Edit />);
