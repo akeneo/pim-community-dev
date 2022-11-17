@@ -244,6 +244,7 @@ pim_common:
   parent: Ylätaso
   groups: Ryhmät
   products: Tuotteet
+  product_uuids: Tuotteet
   product_models: Tuotemallit
   more: Lisää
   public_view: Julkinen näkymä

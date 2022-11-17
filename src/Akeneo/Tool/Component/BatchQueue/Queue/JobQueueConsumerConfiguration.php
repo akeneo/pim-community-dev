@@ -51,9 +51,9 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
 
     /** @var array */
     private $listSupportedSettings = ["whitelistedJobInstanceCodes", "blacklistedJobInstanceCodes", "queueCheckInterval", "timeToLive"];
-    
 
-    public function setWhitelistedJobInstanceCodes(array $codes): Self
+
+    public function setWhitelistedJobInstanceCodes(array $codes): self
     {
         if (empty($codes)) {
             return $this;
@@ -74,7 +74,7 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
         return $this;
     }
 
-    public function setBlacklistedJobInstanceCodes(array $codes): Self
+    public function setBlacklistedJobInstanceCodes(array $codes): self
     {
         if (empty($codes)) {
             return $this;
@@ -95,26 +95,26 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
         return $this;
     }
 
-    public function setQueueCheckInterval(int $interval): Self
+    public function setQueueCheckInterval(int $interval): self
     {
         $this->queueCheckInterval = $interval;
 
         return $this;
     }
 
-    public function setTimeToLive(int $iterations): Self
+    public function setTimeToLive(int $iterations): self
     {
         $this->timeToLive = $iterations;
 
         return $this;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return true === array_key_exists($offset, array_flip($this->listSupportedSettings));
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): array|int
     {
         switch ($offset) {
             case "whitelistedJobInstanceCodes":
@@ -136,12 +136,12 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
         }
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \RuntimeException("Please do use setters to set properties.");
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \RuntimeException('Cannot unset configutation properties.');
     }

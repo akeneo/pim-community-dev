@@ -26,12 +26,12 @@ type Props = {
 
 const ProductMappingWrapper: FC<
     PropsWithChildren<{
-        id: string;
+        catalogId: string;
         productMapping: ProductMappingType;
         errors: ProductMappingErrors;
     }>
-> = ({id, productMapping, errors}) => {
-    const {data: productMappingSchema} = useProductMappingSchema(id);
+> = ({catalogId, productMapping, errors}) => {
+    const {data: productMappingSchema} = useProductMappingSchema(catalogId);
 
     return (
         <ProductMapping productMapping={productMapping} productMappingSchema={productMappingSchema} errors={errors} />
@@ -92,7 +92,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
             )}
             {isCurrent(Tabs.PRODUCT_MAPPING) && (
                 <ProductMappingWrapper
-                    id={id}
+                    catalogId={id}
                     productMapping={values.product_mapping}
                     errors={mapProductMappingSourceErrors(errors, Object.keys(values.product_mapping))}
                 />

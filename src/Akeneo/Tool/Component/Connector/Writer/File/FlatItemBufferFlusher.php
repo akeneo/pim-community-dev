@@ -136,7 +136,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $headers = $this->columnPresenter->present($headers, $this->stepExecution->getJobParameters()->all());
 
         $hollowItem = array_fill_keys($headers, '');
-
+        $writer = null;
+        $filePath = '';
         foreach ($buffer as $count => $incompleteItem) {
             if (0 === $writtenLinesCount % $maxLinesPerFile) {
                 $filePath = $this->resolveFilePath(

@@ -45,7 +45,7 @@ class UserPreferencesListenerSpec extends ObjectBehavior
         CategoryRepositoryInterface $categoryRepository,
         ClassMetadata $metadata
     ) {
-        $args->getEntityManager()->willReturn($em);
+        $args->getObjectManager()->willReturn($em);
         $em->getUnitOfWork()->willReturn($uow);
 
         $uow->getScheduledEntityUpdates()->willReturn([]);
@@ -83,7 +83,7 @@ class UserPreferencesListenerSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         ClassMetadata $metadata
     ) {
-        $args->getEntityManager()->willReturn($em);
+        $args->getObjectManager()->willReturn($em);
         $em->getUnitOfWork()->willReturn($uow);
         $uow->getScheduledEntityUpdates()->willReturn([]);
         $uow->getScheduledEntityDeletions()->willReturn([$ecommerceChannel]);

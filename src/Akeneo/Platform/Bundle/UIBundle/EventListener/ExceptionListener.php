@@ -20,15 +20,15 @@ class ExceptionListener extends BaseExceptionListener
 {
     /**
      * Handles security related exceptions.
-     *
-     * @param ExceptionEvent $event An GetResponseForExceptionEvent instance
      */
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();
         $request = $event->getRequest();
         if (!$request->isXmlHttpRequest() || !($exception instanceof AuthenticationException)) {
-            return parent::onKernelException($event);
+            parent::onKernelException($event);
+
+            return;
         }
 
         $response = new JsonResponse();

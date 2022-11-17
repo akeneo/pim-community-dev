@@ -36,82 +36,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyVariantController
 {
-    /** @var ApiResourceRepositoryInterface */
-    protected $familyRepository;
-
-    /** @var ApiResourceRepositoryInterface */
-    protected $familyVariantRepository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var PaginatorInterface */
-    protected $paginator;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
-    /** @var  ValidatorInterface */
-    protected $validator;
-
-    /** @var SimpleFactoryInterface */
-    protected $factory;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
-    /** @var array */
-    protected $apiConfiguration;
-
-    /**
-     * @param ApiResourceRepositoryInterface $familyRepository
-     * @param ApiResourceRepositoryInterface $familyVariantRepository
-     * @param NormalizerInterface            $normalizer
-     * @param PaginatorInterface             $paginator
-     * @param ParameterValidatorInterface    $parameterValidator
-     * @param ValidatorInterface             $validator
-     * @param SimpleFactoryInterface         $factory
-     * @param ObjectUpdaterInterface         $updater
-     * @param SaverInterface                 $saver
-     * @param RouterInterface                $router
-     * @param StreamResourceResponse         $partialUpdateStreamResource
-     * @param array                          $apiConfiguration
-     */
     public function __construct(
-        ApiResourceRepositoryInterface $familyRepository,
-        ApiResourceRepositoryInterface $familyVariantRepository,
-        NormalizerInterface $normalizer,
-        PaginatorInterface $paginator,
-        ParameterValidatorInterface $parameterValidator,
-        ValidatorInterface $validator,
-        SimpleFactoryInterface $factory,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        RouterInterface $router,
-        StreamResourceResponse $partialUpdateStreamResource,
-        array $apiConfiguration
+        private ApiResourceRepositoryInterface $familyRepository,
+        private ApiResourceRepositoryInterface $familyVariantRepository,
+        private NormalizerInterface $normalizer,
+        private PaginatorInterface $paginator,
+        private ParameterValidatorInterface $parameterValidator,
+        private ValidatorInterface $validator,
+        private SimpleFactoryInterface $factory,
+        private ObjectUpdaterInterface $updater,
+        private SaverInterface $saver,
+        private RouterInterface $router,
+        private StreamResourceResponse $partialUpdateStreamResource,
+        private array $apiConfiguration
     ) {
-        $this->familyRepository = $familyRepository;
-        $this->familyVariantRepository = $familyVariantRepository;
-        $this->normalizer = $normalizer;
-        $this->paginator = $paginator;
-        $this->parameterValidator = $parameterValidator;
-        $this->validator = $validator;
-        $this->factory = $factory;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->router = $router;
-        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
-        $this->apiConfiguration = $apiConfiguration;
     }
 
     /**
@@ -133,7 +71,7 @@ class FamilyVariantController
         }
 
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($code);
-        if (null === $familyVariant || $familyVariant->getFamily()->getCode() !== $familyCode) {
+        if (null === $familyVariant || \strtolower($familyVariant->getFamily()->getCode()) !== \strtolower($familyCode)) {
             throw new NotFoundHttpException(
                 sprintf(
                     'Family variant "%s" does not exist or is not a variant of the family "%s".',

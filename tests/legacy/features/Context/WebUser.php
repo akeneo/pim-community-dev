@@ -2341,24 +2341,6 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $email
-     *
-     * @Given /^an email to "([^"]*)" should have been sent$/
-     */
-    public function anEmailToShouldHaveBeenSent($email)
-    {
-        $recorder = $this->getMainContext()->getMailRecorder();
-        if (0 === count($recorder->getMailsSentTo($email))) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'No emails were sent to %s.',
-                    $email
-                )
-            );
-        }
-    }
-
-    /**
      * @param int $seconds
      *
      * @Then /^I wait (\d+) seconds$/
@@ -2471,12 +2453,12 @@ class WebUser extends PimContext
 
             return $field;
         }, 'System locale field was not found');
-      
+
         $selectInput->click();
 
         $optionElt =  $this->spin(function () use ($language) {
             $elt  =$this->getCurrentPage()->find('css', "[title~=\"$language\"]");
-           
+
             if (null === $elt) {
                 throw new ElementNotFoundException($this->getCurrentPage()->getDriver());
             }

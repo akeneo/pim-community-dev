@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\PimVersionBundle;
 
-use Akeneo\Platform\Bundle\PimVersionBundle\version\PimVersion;
+use Akeneo\Platform\Bundle\PimVersionBundle\Version\PimVersion;
 
 /**
  * Class VersionProvider

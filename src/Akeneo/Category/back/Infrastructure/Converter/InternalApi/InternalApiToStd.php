@@ -34,7 +34,7 @@ class InternalApiToStd implements ConverterInterface
     /**
      * @param InternalApi $data
      *
-     * @retrun StandardInternalApi
+     * @return StandardInternalApi
      *
      * @throws ArrayConversionException
      */

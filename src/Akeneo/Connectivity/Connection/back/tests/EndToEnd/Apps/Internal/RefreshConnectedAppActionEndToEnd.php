@@ -30,8 +30,6 @@ class RefreshConnectedAppActionEndToEnd extends WebTestCase
         $this->featureFlagMarketplaceActivate = $this->get(
             'akeneo_connectivity.connection.marketplace_activate.feature'
         );
-        $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->userGroupLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
     }
