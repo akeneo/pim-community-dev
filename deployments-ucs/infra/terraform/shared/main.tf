@@ -11,9 +11,10 @@ locals {
     "serviceAccount:gke-sa@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
     "serviceAccount:cluster-bootstrap@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
   ]
-  dns_delegated_projects = [
+  child_projects = [
     "akecld-prd-pim-saas-dev",
-    "akecld-prd-pim-saas-sandbox"
+    "akecld-prd-pim-saas-sandbox",
+    "akecld-prd-pim-saas-demo",
   ]
   cloudbuild_github_repository = "pim-enterprise-dev"
   cloudbuild_github_branch     = "master"
@@ -85,6 +86,19 @@ module "storage_bucket_prod" {
   bucket_name    = "akeneo-pim-saas-charts-prod"
   bucket_region  = local.multi_region
 }
+
+#### Cloudbuild
+
+module "storage_bucket_cloudbuild" {
+  source         = "../modules/storage-bucket"
+  for_each       = toset(local.child_projects)
+  project_id     = each.key
+  admin_members  = concat(local.admins, ["serviceAccount:${local.main_sa}"])
+  viewer_members = concat(local.admins)
+  bucket_name    = "${each.key}-cloudbuild-logs"
+  bucket_region  = local.multi_region
+}
+
 
 module "cloud_build_infra_pim_saas_dev" {
   source                       = "../modules/cloudbuild"
@@ -166,7 +180,7 @@ module "shared_dns_zone" {
   source     = "../modules/shared-dns-zone"
   project_id = local.project_id
   zone_name  = local.shared_dns_zone
-  admins     = formatlist("serviceAccount:main-service-account@%s.iam.gserviceaccount.com", local.dns_delegated_projects)
+  admins     = formatlist("serviceAccount:main-service-account@%s.iam.gserviceaccount.com", local.child_projects)
 }
 
 terraform {

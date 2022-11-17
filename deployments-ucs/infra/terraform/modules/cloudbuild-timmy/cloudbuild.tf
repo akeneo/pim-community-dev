@@ -51,12 +51,3 @@ resource "google_cloudbuild_trigger" "master-trigger" {
 
   include_build_logs = "INCLUDE_BUILD_LOGS_WITH_STATUS"
 }
-
-resource "google_storage_bucket" "cloudbuild_logs" {
-  name          = "${var.trigger_name}-cloudbuild-logs"
-  location      = "EU"
-  force_destroy = true
-  project       = var.project_id
-
-  uniform_bucket_level_access = true
-}
