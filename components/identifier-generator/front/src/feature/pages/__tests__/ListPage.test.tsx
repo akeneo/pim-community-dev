@@ -36,7 +36,7 @@ describe('ListPage', () => {
     render(<ListPage onCreate={jest.fn()} />);
 
     expect(screen.getByText('pim_identifier_generator.list.first_generator')).toBeVisible();
-    expect(screen.queryByText('pim_identifier_generator.list.create_info')).not.toBeInTheDocument();
+    expect(screen.queryByText('pim_identifier_generator.list.max_generator.title')).not.toBeInTheDocument();
     expect(screen.getByText('pim_common.create')).toBeEnabled();
   });
 
@@ -50,7 +50,7 @@ describe('ListPage', () => {
     render(<ListPage onCreate={jest.fn()} />);
 
     await waitFor(() => {
-      expect(screen.queryByText('pim_identifier_generator.list.create_info')).toBeVisible();
+      expect(screen.queryByText('pim_identifier_generator.list.max_generator.title')).toBeVisible();
     });
     expect(screen.getByText('pim_common.create')).toBeDisabled();
     expect(screen.queryByText('pim_identifier_generator.list.first_generator')).not.toBeInTheDocument();
@@ -75,13 +75,13 @@ describe('ListPage', () => {
     );
 
     await waitFor(() => {
-      expect(screen.queryByText('pim_identifier_generator.list.create_info')).toBeVisible();
+      expect(screen.queryByText('pim_identifier_generator.list.max_generator.title')).toBeVisible();
     });
 
     const rows = screen.getAllByRole('row');
     expect(rows.length).toBe(3);
 
-    fireEvent.click(rows[2]);
+    fireEvent.click(rows[1]);
     expect(history.location.pathname).toEqual('/test');
   });
 

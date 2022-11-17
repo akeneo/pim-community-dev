@@ -2,6 +2,7 @@ import React, {useCallback, useMemo, useState} from 'react';
 import {PageContent, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {
   AttributesIllustration,
+  CodingIllustration,
   Button,
   Helper,
   Information,
@@ -105,16 +106,6 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
             {isLoading && <ListSkeleton />}
             {!isGeneratorListEmpty && (
               <>
-                <tr>
-                  <td colSpan={3}>
-                    <Helper level="info">
-                      {translate('pim_identifier_generator.list.create_info')}{' '}
-                      <a href={helpCenterUrl} target="_blank" rel="noreferrer">
-                        {translate('pim_identifier_generator.list.check_help_center')}
-                      </a>
-                    </Helper>
-                  </td>
-                </tr>
                 {generators?.map(({labels, code, target}) => (
                   <Table.Row key={code} onClick={goToEditPage(code)}>
                     <Table.Cell>
@@ -136,6 +127,20 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                     </Table.ActionCell>
                   </Table.Row>
                 ))}
+                <tr>
+                  <td colSpan={3}>
+                    <Placeholder
+                      illustration={<CodingIllustration />}
+                      size="large"
+                      title={translate('pim_identifier_generator.list.max_generator.title')}
+                    >
+                      {translate('pim_identifier_generator.list.max_generator.info')}
+                      <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                        {translate('pim_identifier_generator.list.check_help_center')}
+                      </Styled.HelpCenterLink>
+                    </Placeholder>
+                  </td>
+                </tr>
               </>
             )}
           </Table.Body>
