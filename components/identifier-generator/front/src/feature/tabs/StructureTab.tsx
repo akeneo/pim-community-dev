@@ -4,6 +4,7 @@ import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-
 import {AddPropertyButton, Preview, PropertiesList, PropertyEdit} from './structure';
 import {Delimiter, Property, Structure as StructureType} from '../models';
 import {Styled} from '../components/Styled';
+import {TranslationWithLink} from '../components';
 
 type StructureTabProps = {
   initialStructure: StructureType;
@@ -48,13 +49,11 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
   return (
     <>
       <Helper>
-        {translate('pim_identifier_generator.structure.helper')}{' '}
-        <Link
+        <TranslationWithLink
+          key={'pim_identifier_generator.structure.helper'}
           href={'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html'}
-          target={'_blank'}
-        >
-          {translate('pim_identifier_generator.structure.helper_link')}
-        </Link>
+          linkKey={'pim_identifier_generator.structure.helper_link'}
+        />
       </Helper>
       <Styled.TwoColumns withoutSecondColumn={!selectedProperty}>
         <div>

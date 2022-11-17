@@ -6,7 +6,7 @@ import {
   validateLabelCollection,
   validateStructure,
   validateTarget,
-  Validator
+  Validator,
 } from './';
 
 const validateIdentifierGenerator: Validator<IdentifierGenerator> = (identifierGenerator, path) => [

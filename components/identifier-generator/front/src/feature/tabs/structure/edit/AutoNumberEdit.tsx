@@ -6,13 +6,19 @@ import {PropertyEditFieldsProps} from '../PropertyEdit';
 
 const AutoNumberEdit: PropertyEditFieldsProps<AutoNumber> = ({selectedProperty, onChange}) => {
   const translate = useTranslate();
-  const onDigitsMinChange = useCallback((value: string) => {
-    onChange({...selectedProperty, digitsMin: Number(value)});
-  }, [onChange, selectedProperty]);
+  const onDigitsMinChange = useCallback(
+    (value: string) => {
+      onChange({...selectedProperty, digitsMin: Number(value)});
+    },
+    [onChange, selectedProperty]
+  );
 
-  const onNumberMinChange = useCallback((value: string) => {
-    onChange({...selectedProperty, numberMin: Number(value)});
-  }, [onChange, selectedProperty]);
+  const onNumberMinChange = useCallback(
+    (value: string) => {
+      onChange({...selectedProperty, numberMin: Number(value)});
+    },
+    [onChange, selectedProperty]
+  );
 
   return (
     <>
