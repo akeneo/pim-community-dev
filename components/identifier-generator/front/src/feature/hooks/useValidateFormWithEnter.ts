@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {Key} from 'akeneo-design-system';
 
 const useValidateFormWithEnter: (confirmCallback: () => void) => void = confirmCallback => {
-  return useEffect(() => {
+  useEffect(() => {
     const listener = (event: KeyboardEvent) => {
       if (event.code === Key.Enter || event.code === Key.NumpadEnter) {
         confirmCallback();
