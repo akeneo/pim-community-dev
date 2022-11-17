@@ -26,3 +26,4 @@ akeneo_feature_flag:
         - { feature: 'job_automation', service: 'akeneo.job_automation.feature' }
         - { feature: 'enriched_category', service: 'akeneo.category.enriched.feature'}
         - { feature: 'performance_analytics', service: 'akeneo.performance_analytics.feature'}
+        - { feature: 'shared_catalog', service: 'akeneo.feature_flag.service.only_serenity_feature' }

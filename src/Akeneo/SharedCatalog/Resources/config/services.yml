@@ -16,7 +16,7 @@ services:
             - '@akeneo_batch.job_repository'
             - []
         tags:
-            - { name: akeneo_batch.job, connector: '%akeneo.shared_catalog.connector.name%', type: '%pim_connector.job.export_type%' }
+            - { name: akeneo_batch.job, connector: '%akeneo.shared_catalog.connector.name%', type: '%pim_connector.job.export_type%', feature: shared_catalog }
 
     akeneo.shared_catalog.job.job_parameters.default_values_provider:
         class: 'Akeneo\SharedCatalog\Connector\DefaultValueProvider'
