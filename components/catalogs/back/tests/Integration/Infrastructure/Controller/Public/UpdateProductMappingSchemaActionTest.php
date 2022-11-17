@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
@@ -199,23 +201,167 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         Assert::assertEquals(422, $response->getStatusCode());
     }
 
+    public function testItCreateTheProductMapping(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient([
+            'write_catalogs',
+        ]);
+
+        $this->commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            'shopifi',
+        ));
+
+        $this->client->request(
+            'PUT',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            $this->getValidSchemaData(),
+        );
+
+        /** @var Catalog $catalog */
+        $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $expectedProductMapping = [
+            'uuid' => [
+                'source' => 'uuid',
+                'locale' => null,
+                'scope' => null,
+            ],
+            'name' => [
+                'source' => null,
+                'locale' => null,
+                'scope' => null,
+            ],
+            'body_html' => [
+                'source' => null,
+                'locale' => null,
+                'scope' => null,
+            ],
+        ];
+
+        Assert::assertEquals($expectedProductMapping, $catalog->getProductMapping());
+    }
+
+    public function testItUpdateTheProductMapping(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient([
+            'write_catalogs',
+        ]);
+
+        $this->commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            'shopifi',
+        ));
+
+        $currentProductMapping = [
+            'uuid' => [
+                'source' => 'uuid',
+                'locale' => null,
+                'scope' => null,
+            ],
+            'name' => [
+                'source' => 'Title',
+                'locale' => 'en_US',
+                'scope' => 'ecommerce',
+            ],
+            'body_html' => [
+                'source' => null,
+                'locale' => null,
+                'scope' => null,
+            ],
+        ];
+
+        $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', $currentProductMapping);
+
+        $this->client->request(
+            'PUT',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            $this->getValidSchemaDataWithMoreAndLessTargets(),
+        );
+
+        $expectedProductMapping = [
+            'uuid' => [
+                'source' => 'uuid',
+                'locale' => null,
+                'scope' => null,
+            ],
+            'name' => [
+                'source' => 'Title',
+                'locale' => 'en_US',
+                'scope' => 'ecommerce',
+            ],
+            'name_from_erp' => [
+                'source' => null,
+                'locale' => null,
+                'scope' => null,
+            ],
+        ];
+
+        /** @var Catalog $catalog */
+        $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        Assert::assertEquals($expectedProductMapping, $catalog->getProductMapping());
+    }
+
     private function getValidSchemaData(): string
     {
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
           "type": "object",
           "properties": {
+            "uuid": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
             "body_html": {
               "title": "Description",
               "description": "Product description in raw HTML",
+              "type": "string"
+            }
+          }
+        }
+        JSON_WRAP;
+    }
+
+    private function getValidSchemaDataWithMoreAndLessTargets(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "name_from_erp": {
+              "title": "ERP Name",
+              "description": "Name from the ERP",
               "type": "string"
             }
           }
