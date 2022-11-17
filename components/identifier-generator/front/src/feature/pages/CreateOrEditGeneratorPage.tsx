@@ -115,7 +115,9 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         {currentTab === Tabs.GENERAL && (
           <GeneralPropertiesTab generator={generator} onGeneratorChange={onChangeGenerator} />
         )}
-        {currentTab === Tabs.PRODUCT_SELECTION && <SelectionTab generator={generator} />}
+        {currentTab === Tabs.PRODUCT_SELECTION && (
+          <SelectionTab target={generator.target} conditions={generator.conditions} />
+        )}
         {currentTab === Tabs.STRUCTURE && (
           <StructureTab
             initialStructure={generator.structure}
