@@ -36,6 +36,8 @@ pim_identifier_generator:
         max_generator:
             title: 'It is only possible to create one Identifier Generator for the moment.'
             info: 'You will soon be able to configure multiple generators matching all your usecases.'
+    selection:
+        helper: 'Please note that 100% of your products with an empty identifier will be impacted. You will soon be able to create multiple generators with different product selections.'
     structure:
         helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at {{link}}.'
         helper_link: 'this article'

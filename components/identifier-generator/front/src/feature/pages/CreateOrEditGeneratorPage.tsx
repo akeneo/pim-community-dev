@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageContent, PageHeader, SecondaryActions, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
-import {GeneralPropertiesTab, StructureTab} from '../tabs';
+import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {validateIdentifierGenerator, Violation} from '../validators/';
 import {Header} from '../components';
@@ -115,12 +115,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         {currentTab === Tabs.GENERAL && (
           <GeneralPropertiesTab generator={generator} onGeneratorChange={onChangeGenerator} />
         )}
-        {currentTab === Tabs.PRODUCT_SELECTION && (
-          <>
-            <div>Not implemented YET</div>
-            <div>{JSON.stringify(generator.conditions)}</div>
-          </>
-        )}
+        {currentTab === Tabs.PRODUCT_SELECTION && <SelectionTab generator={generator} />}
         {currentTab === Tabs.STRUCTURE && (
           <StructureTab
             initialStructure={generator.structure}

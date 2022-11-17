@@ -25,6 +25,10 @@ const TitleCell = styled(Table.Cell)`
   color: ${getColor('brand', 100)};
 `;
 
+const InputContainer = styled.div`
+  max-width: 10vw;
+`;
+
 const TwoColumns = styled.div<{withoutSecondColumn: boolean} & AkeneoThemedProps>`
   margin-top: 10px;
   display: grid;
@@ -39,6 +43,7 @@ const TwoColumns = styled.div<{withoutSecondColumn: boolean} & AkeneoThemedProps
 const Styled = {
   FormContainer,
   FullPageCenteredContent,
+  InputContainer,
   TitleCell,
   TwoColumns,
 };
