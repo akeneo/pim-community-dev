@@ -9,12 +9,16 @@ type PropertiesListProps = {
   structure: StructureWithIdentifiers;
   onSelect: (id: PropertyId) => void;
   selectedId?: PropertyId;
+  onChange: (structure: StructureWithIdentifiers) => void;
 };
 
-const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, selectedId}) => {
+const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, selectedId, onChange}) => {
+  const onReorder = (indices: number[]) => {
+    onChange(indices.map(i => structure[i]));
+  };
+
   return (
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    <Table isDragAndDroppable={true} onReorder={/* istanbul ignore next */ () => {}}>
+    <Table isDragAndDroppable={true} onReorder={onReorder}>
       <Table.Body>
         {structure.map(property => (
           <Table.Row key={property.id} onClick={() => onSelect(property.id)} isSelected={property.id === selectedId}>
