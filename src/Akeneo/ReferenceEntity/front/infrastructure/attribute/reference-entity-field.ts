@@ -46,9 +46,12 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
    * {@inheritdoc}
    */
   renderInput(templateContext: any) {
+    // PIM-10729: for case insensitivity concern, we need to lowercase the value to be able to compare it with lower-cased RE identifier
+    const value = Property.accessProperty(this.getFormData(), this.fieldName)?.toLowerCase();
+
     return template({
       ...templateContext,
-      value: Property.accessProperty(this.getFormData(), this.fieldName),
+      value,
       choices: this.getChoices(),
       multiple: false,
       readOnly: this.isReadOnly(),
@@ -61,9 +64,12 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
   getChoices() {
     return this.referenceEntities.reduce(
       (result: {[key: string]: string}, referenceEntity: ReferenceEntityListItem) => {
-        result[referenceEntity.getIdentifier().stringValue()] = referenceEntity.getLabel(
-          UserContext.get('catalogLocale')
-        );
+        result[
+          referenceEntity
+            .getIdentifier()
+            .stringValue()
+            .toLowerCase()
+        ] = referenceEntity.getLabel(UserContext.get('catalogLocale'));
 
         return result;
       },

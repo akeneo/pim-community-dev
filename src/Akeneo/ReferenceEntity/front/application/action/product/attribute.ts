@@ -34,7 +34,8 @@ export const updateAttributeList = (referenceEntityIdentifier: ReferenceEntityId
 
   const linkedAttributes = attributes
     .filter(
-      (attribute: NormalizedAttribute) => referenceEntityIdentifier.stringValue() === attribute.reference_data_name
+      (attribute: NormalizedAttribute) =>
+        referenceEntityIdentifier.stringValue().toLowerCase() === attribute.reference_data_name.toLowerCase()
     )
     .map(hydrate);
 
