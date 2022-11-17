@@ -19,11 +19,6 @@ use Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver;
 use Doctrine\Common\Cache\ArrayCache;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
-/**
- * Add a custom context header in the response to facilitate log analysis
- *
- * @author JM Leroux <jean-marie.leroux@akeneo.com>
- */
 class AddAclCacheHeaderResponseListener
 {
     private const HEADER_ACl_CACHE = 'x-akeneo-acl-cache';
@@ -35,9 +30,16 @@ class AddAclCacheHeaderResponseListener
 
     public function injectAkeneoAclCacheHeader(ResponseEvent $event): void
     {
+        if ($this->cache->providerToTarget === null) {
+            $value = 'acl_cache_not_used';
+        } else if ($this->cache->providerToTarget instanceof ArrayCache) {
+            $value = 'array_cache';
+        } else {
+            $value = 'memcache';
+        }
         $event->getResponse()->headers->set(
             self::HEADER_ACl_CACHE,
-            $this->cache->providerToTarget instanceof ArrayCache ? 'array_cache' : 'memcache'
+            $value
         );
     }
 }
