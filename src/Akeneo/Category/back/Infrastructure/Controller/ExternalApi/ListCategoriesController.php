@@ -23,11 +23,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class ListCategoriesController extends AbstractController
 {
     public function __construct(
-        private PaginatorInterface $paginator,
-        private ParameterValidatorInterface $parameterValidator,
-        private FeatureFlags $featureFlags,
-        private GetCategoriesInterface $getCategories,
-        private array $apiConfiguration
+        private readonly PaginatorInterface $paginator,
+        private readonly ParameterValidatorInterface $parameterValidator,
+        private readonly FeatureFlags $featureFlags,
+        private readonly GetCategoriesInterface $getCategories,
+        private readonly array $apiConfiguration
     ) {
     }
 
@@ -67,11 +67,12 @@ class ListCategoriesController extends AbstractController
         }
         //TODO: Take limit, offset & order into account. https://akeneo.atlassian.net/browse/GRF-538
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $order = ['root' => 'ASC', 'left' => 'ASC'];
         try {
             //TODO: Call Filtering service (to be created) instead. https://akeneo.atlassian.net/browse/GRF-538
-            $categories = $this->getCategories->byCodes(
+            $categories = $this->getCategories->afterOffset(
                 $searchFilters,
+                $queryParameters['limit'],
+                $offset,
                 $request->query->getBoolean('with_enriched_attributes')
             );
         } catch (\InvalidArgumentException $exception) {

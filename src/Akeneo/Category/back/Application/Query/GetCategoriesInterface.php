@@ -17,5 +17,5 @@ interface GetCategoriesInterface
      *
      * @return array<Category>
      */
-    public function byCodes(array $categoryCodes, bool $isEnrichedAttributes): array;
+    public function afterOffset(array $categoryCodes, int $limit, int $offset, bool $isEnrichedAttributes): array;
 }

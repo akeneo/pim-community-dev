@@ -125,4 +125,9 @@ class ExternalApiCategory
             'values' => $this->getValues(),
         ];
     }
+
+    public static function fromArray(): self
+    {
+
+    }
 }

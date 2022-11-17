@@ -14,34 +14,31 @@ use Doctrine\DBAL\Connection;
  */
 class GetCategoriesSql implements GetCategoriesInterface
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
     }
 
-    /**
-     * @param array<string> $categoryCodes
-     *
-     * @return array<Category>
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \JsonException
-     */
-    //TODO: To refactor when filtering service is created. https://akeneo.atlassian.net/browse/GRF-538
-    public function byCodes(array $categoryCodes, bool $isEnrichedAttributes): array
+    public function afterOffset(
+        array $categoryCodes,
+        int $limit,
+        int $offset,
+        bool $isEnrichedAttributes
+    ): array
     {
         $condition['sqlWhere'] = $this->searchFilter($categoryCodes);
-        $condition['sqlGroupBy'] = 'GROUP BY category.code';
+        $condition['limitOffset'] = $this->buildLimitOffset($limit, $offset);
         $condition['params'] = [
             'category_codes' => $categoryCodes,
             'with_enriched_attributes' => $isEnrichedAttributes ?: false
-            ];
+        ];
         $condition['types'] = [
             'category_codes' => Connection::PARAM_STR_ARRAY,
             'with_enriched_attributes' => \PDO::PARAM_BOOL
-            ];
+        ];
 
         return $this->execute($condition);
     }
-    //TODO: Will be replaced by filtering service. https://akeneo.atlassian.net/browse/GRF-538
+    //TODO: Will be replaced by filtering service. https://akeneo.atlassian.net/browse/GRF-376
     public function searchFilter(array $searchParameter): string
     {
         if (empty($searchParameter)) {
@@ -50,6 +47,16 @@ class GetCategoriesSql implements GetCategoriesInterface
             $sqlWhere = 'category.code IN (:category_codes)';
         }
         return $sqlWhere;
+    }
+
+    private function buildLimitOffset(int $limit, int $offset): string
+    {
+        $sqlLimitAndOffset = sprintf('LIMIT %d', $limit);
+        if ($offset !== 0){
+            $sqlLimitAndOffset .= sprintf(' OFFSET %d', $offset);
+        }
+
+        return $sqlLimitAndOffset;
     }
 
     /**
@@ -62,7 +69,7 @@ class GetCategoriesSql implements GetCategoriesInterface
     private function execute(array $condition): array
     {
         $sqlWhere = $condition['sqlWhere'];
-        $sqlGroupBy = $condition['sqlGroupBy'] ?? '';
+        $sqlLimitOffset = $condition['limitOffset'];
 
         $sqlQuery = <<<SQL
             WITH translation as (
@@ -70,7 +77,7 @@ class GetCategoriesSql implements GetCategoriesInterface
                 FROM pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE $sqlWhere
-                $sqlGroupBy
+                GROUP BY category.code
             )
             SELECT
                 category.id,
@@ -84,7 +91,8 @@ class GetCategoriesSql implements GetCategoriesInterface
                 pim_catalog_category category
                 LEFT JOIN translation ON translation.code = category.code
             WHERE $sqlWhere
-            $sqlGroupBy
+            ORDER BY category.root, category.lft
+            $sqlLimitOffset
         SQL;
 
         $results = $this->connection->executeQuery(
