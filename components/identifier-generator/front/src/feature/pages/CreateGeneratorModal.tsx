@@ -68,7 +68,13 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
       <Modal.Title>{translate('pim_identifier_generator.create.form.title')}</Modal.Title>
       <Styled.FormContainer>
         <Field label={translate('pim_common.label')} locale={uiLocale}>
-          <TextInput name="label" value={label} onChange={onLabelChange} maxLength={labelLengthLimit} ref={labelInputRef}/>
+          <TextInput
+            name="label"
+            value={label}
+            onChange={onLabelChange}
+            maxLength={labelLengthLimit}
+            ref={labelInputRef}
+          />
         </Field>
         <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
           <TextInput name="code" value={code} onChange={onCodeChange} maxLength={codeLengthLimit} />

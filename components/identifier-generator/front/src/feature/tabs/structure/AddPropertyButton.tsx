@@ -79,10 +79,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
     }
   }, [searchInputRef, isOpen]);
 
-  React.useEffect(
-    focusCallback,
-    [isOpen]
-  );
+  React.useEffect(focusCallback, [isOpen, focusCallback]);
 
   return (
     <Dropdown>

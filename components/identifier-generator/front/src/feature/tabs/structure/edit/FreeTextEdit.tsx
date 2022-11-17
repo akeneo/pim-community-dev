@@ -18,7 +18,7 @@ const FreeTextEdit: PropertyEditFieldsProps<FreeText> = ({selectedProperty, onCh
 
   return (
     <Field label={translate('pim_identifier_generator.structure.settings.free_text.string_label')}>
-      <TextInput value={selectedProperty.string} onChange={onTextChange} maxLength={100} ref={stringInputRef}/>
+      <TextInput value={selectedProperty.string} onChange={onTextChange} maxLength={100} ref={stringInputRef} />
     </Field>
   );
 };
