@@ -23,7 +23,7 @@ class ProductSelectionsValidator
     private const CHANNEL_FIELD = 'channel';
     private const LOCALE_FIELD = 'locale';
     private const FIELD_FIELD = 'field';
-    private const FIELDS_WITH_NO_CHANNEL_NOR_LOCALES = ['enable', 'family', 'categories'];
+    private const FIELDS_WITH_NO_CHANNEL_NOR_LOCALES = ['enabled', 'family', 'categories'];
 
     public function __construct(
         private RuleEngineValidatorACLInterface $ruleEngineValidatorACL,

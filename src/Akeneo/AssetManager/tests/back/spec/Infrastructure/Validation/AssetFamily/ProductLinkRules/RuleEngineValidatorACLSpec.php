@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACLInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddAction;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use PhpSpec\ObjectBehavior;
@@ -47,11 +47,11 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
         $oneViolation = $this->oneViolation();
 
         $productConditionValidator->validate(
-            Argument::that(fn(ProductCondition $actualCondition) => $productSelection['field'] === $actualCondition->getField()
-                && $productSelection['operator'] === $actualCondition->getOperator()
-                && $productSelection['value'] === $actualCondition->getValue()
-                && $productSelection['locale'] === $actualCondition->getLocale()
-                && $productSelection['channel'] === $actualCondition->getScope())
+            Argument::that(fn(Condition $actualCondition) => $productSelection['field'] === $actualCondition->field
+                && $productSelection['operator'] === $actualCondition->operator
+                && $productSelection['value'] === $actualCondition->value
+                && $productSelection['locale'] === $actualCondition->locale
+                && $productSelection['channel'] === $actualCondition->scope)
         )->willReturn($oneViolation);
 
         $this->validateProductSelection($productSelection)->shouldReturn($oneViolation);

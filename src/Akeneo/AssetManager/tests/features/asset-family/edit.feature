@@ -105,7 +105,7 @@ Feature: Edit an asset family
       | product_field | error_message                                           |
       | categories    | You cannot specify a channel for the field "categories" |
       | family        | You cannot specify a channel for the field "family"     |
-      | enable        | You cannot specify a channel for the field "enable"     |
+      | enabled       | You cannot specify a channel for the field "enabled"    |
 
   @acceptance-back @error
   Scenario Outline: Cannot update an asset family if a product selection has a filter on a product property with a locale
@@ -114,10 +114,10 @@ Feature: Edit an asset family
     Then there should be a validation error with message '<error_message>'
 
     Examples:
-      | product_field | error_message                                           |
+      | product_field | error_message                                          |
       | categories    | You cannot specify a locale for the field "categories" |
       | family        | You cannot specify a locale for the field "family"     |
-      | enable        | You cannot specify a locale for the field "enable"     |
+      | enabled       | You cannot specify a locale for the field "enabled"    |
 
   # Product selection field
   @acceptance-back @nominal

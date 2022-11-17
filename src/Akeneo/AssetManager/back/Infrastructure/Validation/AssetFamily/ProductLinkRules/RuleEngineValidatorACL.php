@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddAction;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -36,7 +36,7 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
     public function validateProductSelection(array $normalizedProductSelection): ConstraintViolationListInterface
     {
         $normalizedProductSelection['scope'] = $normalizedProductSelection['channel'] ?? null;
-        $productCondition = new ProductCondition($normalizedProductSelection);
+        $productCondition = new Condition($normalizedProductSelection);
 
         return $this->productConditionValidator->validate($productCondition);
     }

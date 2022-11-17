@@ -38,7 +38,7 @@ class ReplacePattern
      * @throws \InvalidArgumentException When the rule value has more than one pattern to replace and the asset value is an array
      *
      */
-    public static function replace($ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset): array|string
+    public static function replace($ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset): array|string|bool
     {
         $patterns = self::detectPatterns($ruleValue);
         $valueForPatterns = self::findValuesForPatterns($propertyAccessibleAsset, $patterns);
