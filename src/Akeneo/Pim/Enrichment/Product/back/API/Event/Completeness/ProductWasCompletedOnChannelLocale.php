@@ -13,17 +13,12 @@ use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 final class ProductWasCompletedOnChannelLocale
 {
     public function __construct(
-        private ?string $userId,
         private ProductUuid $productUuid,
         private \DateTimeImmutable $completedAt,
         private string $channelCode,
-        private string $localeCode
+        private string $localeCode,
+        private ?string $authorId
     ) {
-    }
-
-    public function getUserId(): ?string
-    {
-        return $this->userId;
     }
 
     public function productUuid(): ProductUuid
@@ -44,5 +39,10 @@ final class ProductWasCompletedOnChannelLocale
     public function localeCode(): string
     {
         return $this->localeCode;
+    }
+
+    public function authorId(): ?string
+    {
+        return $this->authorId;
     }
 }

@@ -106,8 +106,8 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         $clock->now()->willReturn($changedAt);
 
         $event = new ProductWasCompletedOnChannelLocaleCollection([
-            new ProductWasCompletedOnChannelLocale('1', ProductUuid::fromUuid($uuid1), $changedAt, 'ecommerce', 'fr_FR'),
-            new ProductWasCompletedOnChannelLocale('1', ProductUuid::fromUuid($uuid2), $changedAt, 'ecommerce', 'en_US'),
+            new ProductWasCompletedOnChannelLocale(ProductUuid::fromUuid($uuid1), $changedAt, 'ecommerce', 'fr_FR', '1'),
+            new ProductWasCompletedOnChannelLocale(ProductUuid::fromUuid($uuid2), $changedAt, 'ecommerce', 'en_US', '1'),
         ]);
 
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce();

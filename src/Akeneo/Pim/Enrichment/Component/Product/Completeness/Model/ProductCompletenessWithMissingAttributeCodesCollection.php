@@ -55,9 +55,9 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
      * @return ProductWasCompletedOnChannelLocale[]
      */
     public function buildProductWasCompletedOnChannelLocaleEvents(
-        ?string $userId,
         \DateTimeImmutable $completedAt,
         ?ProductCompletenessCollection $previousProductCompletenessCollection,
+        ?string $authorId,
     ): array {
         $events = [];
         $productUuid = ProductUuid::fromString($this->productId);
@@ -70,11 +70,11 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
             $previousRatio = $previousProductCompleteness?->ratio();
             if (100 !== $previousRatio && 100 === $newProductCompleteness->ratio()) {
                 $events[] = new ProductWasCompletedOnChannelLocale(
-                    $userId,
                     $productUuid,
                     $completedAt,
                     $newProductCompleteness->channelCode(),
-                    $newProductCompleteness->localeCode()
+                    $newProductCompleteness->localeCode(),
+                    $authorId
                 );
             }
         }
