@@ -19,13 +19,14 @@ final class DatabaseListProductFiles implements ListProductFiles
         $page = max($page, 1);
 
         $sql = <<<SQL
-            SELECT 
-                product_file.identifier, 
+            SELECT
+                product_file.identifier,
                 original_filename,
-                uploaded_by_contributor, 
-                supplier.label AS supplier, 
+                uploaded_by_contributor,
+                supplier.label AS supplier,
                 uploaded_at,
-                IFNULL(COALESCE(last_comment_read_by_retailer.last_read_at, 0) < MAX(supplier_comments.created_at), 0) AS 'has_unread_comments'
+                IFNULL(COALESCE(last_comment_read_by_retailer.last_read_at, 0) < MAX(supplier_comments.created_at), 0) AS 'has_unread_comments',
+                product_file_import.import_status
             FROM akeneo_supplier_portal_supplier_product_file AS product_file
             INNER JOIN akeneo_supplier_portal_supplier AS supplier
                 ON product_file.uploaded_by_supplier = supplier.identifier
@@ -33,8 +34,10 @@ final class DatabaseListProductFiles implements ListProductFiles
                 ON last_comment_read_by_retailer.product_file_identifier = product_file.identifier
             LEFT JOIN akeneo_supplier_portal_product_file_supplier_comments AS supplier_comments
                 ON supplier_comments.product_file_identifier = product_file.identifier
-            GROUP BY product_file.identifier, uploaded_at
-            ORDER BY uploaded_at DESC 
+            LEFT JOIN akeneo_supplier_portal_product_file_imported_by_job_execution AS product_file_import
+                ON product_file_import.product_file_identifier = product_file.identifier
+            GROUP BY product_file.identifier, uploaded_at, product_file_import.import_status
+            ORDER BY uploaded_at DESC
             LIMIT :limit
             OFFSET :offset
         SQL;
@@ -47,6 +50,7 @@ final class DatabaseListProductFiles implements ListProductFiles
             $file['supplier'],
             $file['uploaded_at'],
             (bool) $file['has_unread_comments'],
+            $file['import_status'],
         ), $this->connection->executeQuery(
             $sql,
             [
