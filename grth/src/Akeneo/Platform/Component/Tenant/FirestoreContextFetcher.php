@@ -74,8 +74,12 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
                 );
             }
 
-            $tenantData = $snapshot->data();
-            if (!$this->isTenantDataValid($tenantData)) {
+            $tenantDocument = $snapshot->data();
+            if (!$this->isTenantDataValid($tenantDocument)) {
+                $this->logger->info(
+                    'Tenant store document for tenant ID "%s"',
+                    ['document' => $tenantDocument]
+                );
                 throw new TenantContextInvalidFormatException(
                     sprintf(
                         'Unable to fetch context for the "%s" tenant ID: missing key in the document.',
@@ -84,13 +88,21 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
                 );
             }
 
-            if (!$this->isTenantReady($tenantData)) {
+            if (!$this->isTenantReady($tenantDocument)) {
+                $this->logger->info(
+                    'Tenant store document for tenant ID "%s"',
+                    ['document' => $tenantDocument]
+                );
                 throw new TenantContextNotReadyException(
-                    sprintf('Context not available for "%s" tenant ID. Status = %s', $tenantId, $tenantData['status'])
+                    sprintf(
+                        'Context not available for "%s" tenant ID. Status = %s',
+                        $tenantId,
+                        $tenantDocument['status']
+                    )
                 );
             }
 
-            $contextValues = $tenantData['context'] ?? null;
+            $contextValues = $tenantDocument['context'] ?? null;
             $this->logger->debug(
                 \sprintf(
                     'Context for %s tenant fetched from Firestore in %.4Fs',

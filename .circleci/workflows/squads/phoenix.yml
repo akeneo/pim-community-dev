@@ -37,14 +37,13 @@ workflows:
                   only:
                     - /BH-.*/
                     - /PH-.*/
-              requires:
-                - test_deploy_ucs_pim
-                - test_deploy_timmy
           - test_deploy_ucs_tenant:
                 name: test_deploy_ucs_tenant_pr
                 DEPLOY_PR: true
                 requires:
                     - deploy_pr?
+                    - test_deploy_ucs_pim
+                    - test_deploy_timmy
           - delete_ucs_tenant_pr?:
                 type: approval
                 filters:
@@ -122,14 +121,13 @@ workflows:
                   only:
                     - /BH-.*/
                     - /PH-.*/
-              requires:
-                - test_deploy_ucs_pim_without_build
-                - test_deploy_timmy_without_build
           - test_deploy_ucs_tenant:
                 name: test_deploy_ucs_tenant_pr_without_build
                 DEPLOY_PR: true
                 requires:
                     - deploy_pr_without_build?
+                    - test_deploy_ucs_pim_without_build
+                    - test_deploy_timmy_without_build
           - delete_ucs_tenant_pr_without_build?:
                 type: approval
                 filters:

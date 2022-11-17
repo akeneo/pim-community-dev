@@ -35,7 +35,7 @@ final class TenantContextLoader
         $errorFileDirectory = sprintf('%s/config/errors', $appRootDir);
         $logger = $this->createLogger($appRootDir);
 
-        if ($tenantId || $contextCollectionName || $googleProjectId || $encryptionKeyPath) {
+        if (!$tenantId || !$contextCollectionName || !$googleProjectId || !$encryptionKeyPath) {
             $logger->critical(
                 'Error while initializing context: missing environment variable',
                 [
