@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {IdentifierGenerator} from '../models';
 import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {useHistory} from 'react-router-dom';
 import {useCreateIdentifierGenerator} from '../hooks';
+import {useIdentifierGeneratorContext} from '../context/useIdentifierGeneratorContext';
 
 type CreateGeneratorProps = {
   initialGenerator: IdentifierGenerator;
@@ -14,6 +15,11 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
   const translate = useTranslate();
   const history = useHistory();
   const {mutate, error, isLoading} = useCreateIdentifierGenerator();
+  const identifierGeneratorContext = useIdentifierGeneratorContext();
+
+  useEffect(() => {
+    identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(true);
+  }, [identifierGeneratorContext.unsavedChanges]);
 
   const onSave = (generator: IdentifierGenerator) => {
     mutate(generator, {

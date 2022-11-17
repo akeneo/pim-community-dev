@@ -1,7 +1,8 @@
 import React from 'react';
 import {Common} from './Common';
-import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
+import {PageHeader, PimView, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
+import {useIdentifierGeneratorContext} from '../context/useIdentifierGeneratorContext';
 
 type HeaderProps = {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({children}) => {
   const translate = useTranslate();
+  const identifierGeneratorContext = useIdentifierGeneratorContext();
 
   return (
     <>
@@ -31,6 +33,9 @@ const Header: React.FC<HeaderProps> = ({children}) => {
         </PageHeader.UserActions>
         <PageHeader.Actions>{children}</PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
+        <PageHeader.State>
+          {identifierGeneratorContext.unsavedChanges.hasUnsavedChanges && <UnsavedChanges />}
+        </PageHeader.State>
       </PageHeader>
     </>
   );
