@@ -6,13 +6,19 @@ akeneo.job_automation:
       label: 'Permisos de grups d''usuaris'
       disabled_helper: No teniu permisos per llistar grups d'usuaris.
     enable: Habilita la planificació
+    cannot_view_all_jobs: "No podeu veure les tasques automatitzades al seguiment de processos, ja que no teniu el permís següent per a la vostra funció: \"Veure totes les tasques al seguiment de processos\". Poseu-vos en contacte amb el vostre administrador PIM."
     frequency:
+      helper: "La freqüència es mostra en UTC. Per a la teva zona horària ({{ timezone }}): {{ selectedTimeInUserTimezone }}"
+      hourly_helper: Les freqüències executades diverses vegades al dia comencen a la mitjanit (UTC).
       title: Freqüència
       daily: Cada dia
       weekly: Cada setmana
+      weekday: Dia
       every_4_hours: Cada 4 hores
       every_8_hours: Cada 8 hores
       every_12_hours: Cada 12 hores
+      hours: Hora
+      minutes: Minut
       monday: Dilluns
       tuesday: Dimarts
       wednesday: Dimecres
@@ -29,5 +35,8 @@ akeneo.job_automation:
       label: Usuaris
       disabled_helper: No teniu permís per llistar usuaris.
   validation:
+    invalid_frequency_option: Opció de freqüència no vàlida
+    invalid_week_day: Dia de la setmana no vàlid
+    invalid_hourly_frequency: Freqüència horària no vàlida
     invalid_hours: Horari no vàlid
     invalid_minutes: Minuts no vàlids

@@ -40,11 +40,19 @@ pim_table_configuration:
       no_validations_allowed: 'No utilitzeu validacions en una columna "{{ columnType }}", tipus de columna actual: "{{ given }}"'
       invalid_validation_key: 'Les validacions "{{ given }}" no funcionen en una columna "{{ columnType }}", permeses: "{{ expected }}"'
       too_many_table_attributes: Heu assolit el nombre màxim d'atributs de taula dins del vostre PIM ({{ limit }})
+      measurement_family_should_exist: Assegureu-vos que la família de mesures "{{ measurement_family_code }}" existeix abans d'afegir-la a la taula
+      measurement_unit_should_exist: Assegureu-vos que la unitat "{{ measurement_unit_code }}" existeix a la família de mesures "{{ measurement_family_code }}" abans d'afegir-la a la taula
       measurement_family_code_must_be_filled: S'ha d'omplir el codi de la família de mesures
       measurement_default_unit_code_must_be_filled: S'ha d'omplir el codi de la unitat de mesura per defecte
+      measurement_family_code_cannot_be_set: El codi de família de mesures no es pot establir per a un tipus de columna "{{ data_type }}".
+      measurement_default_unit_code_cannot_be_set: El codi d'unitat predeterminat de mesura no es pot establir per a un tipus de columna "{{ data_type }}".
+      measurement_family_cannot_be_updated: El mesurament_family_code no es pot actualitzar
+      measurement_family_should_not_be_linked: 'Aquesta família de mesures s''utilitza en un atribut de producte i, per tant, no es pot eliminar.'
+      measurement_family_unit_should_not_be_linked: 'Aquesta unitat de família de mesura s''utilitza en un atribut de producte. Només podeu editar les etiquetes i el símbol traduïts d''una unitat.'
     product_value:
       non_existing_columns: '[0,1]La columna "{{ no_existing_columns }}" no existeix|]1,Inf[Les columnes "{{ non_existing_columns }}" no existeixen'
       unexpected_data_type: 'La columna "{{ columnCode }}" espera un {{ expected }}, {{ given }} donat'
+      unexpected_data_type_for_measurement: 'La columna "{{ columnCode }}" espera un codi d''unitat de cadena i una quantitat numèrica, {{ given }} donat'
       first_column_required: 'La columna "{{ columnCode }}" és obligatòria'
       unknown_option: 'Assegureu-vos que només feu servir codis d''opció existents, valor actual: "{{ optionCode }}"'
       integer_required: 'Aquest valor hauria de ser un nombre enter: {{ invalid_value }}'
@@ -54,6 +62,7 @@ pim_table_configuration:
       max_length_validation: Aquest valor ha de contenir {{ limit }} caràcters o menys.
       too_many_rows: Heu assolit el nombre màxim de files de la vostra taula ({{ limit }}).
       record_should_exist: 'El registre "{{ recordCode }}" a l''entitat de referència "{{ referenceEntityIdentifier }}" no existeix'
+      measurement_unit_should_exist: 'La unitat "{{ measurement_unit_code }}" a la família de mesures "{{ measurement_family_code }}" no existeix'
     product_value_collection:
       too_many_cells: Heu assolit el nombre màxim de cel·les de la taula del vostre producte ({{ count }} cel·les, només {{ limit }} permesos).
     reference_entity:

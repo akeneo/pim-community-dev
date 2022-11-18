@@ -1,9 +1,13 @@
+batch_jobs.xlsx_tailored_product_import.label: Importació de productes a mida a XLSX
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}No s'ha assignat cap columna|{1}{{ count }}/{{ total }} columna s'ha assignat|]1, Inf[{{ count }}/{{ total }} columnes assignades"
   global_settings:
     error_action:
       label: Gestió d'errors
       skip_product: Omet el producte
       skip_value: Omet el valor
+      helper_message: Definir el comportament en cas d'error.
   file_structure:
     placeholder:
       title: El teu perfil d'importació està buit.
@@ -25,15 +29,22 @@ akeneo.tailored_import:
       first_column: Primera columna de producte
       unique_identifier_column: Columna d'identificador únic
   data_mapping_list:
+    title: Estructura de mapes
     no_sources: Cap font
     add: Afegir atributs
+    remove: Esteu segur que voleu eliminar aquest mapatge?
   data_mapping:
     title: Configuració
+    no_data_mapping_selected: No s'ha seleccionat cap mapa.
+    attribute_not_found: Aquest atribut s'ha suprimit, ja no el podeu utilitzar en un mapeig.
     property_not_valid: Aquesta propietat no és vàlida.
     preview:
       button: Vista prèvia
+      input_title: Vista prèvia d'entrada
+      output_title: Vista prèvia de la sortida
       placeholder: N/A
       refresh: Actualitzar
+      unable_to_generate_preview_data: No es pot generar la previsualització
     operations:
       title: Operació(ns)
       identifier: No hi ha cap operació disponible per a l'atribut d'identificador
@@ -60,10 +71,28 @@ akeneo.tailored_import:
         comma: Coma (,)
         semicolon: Punt i coma (;)
         pipe: Barra vertical (|)
+      search_and_replace:
+        title: Cerca i substitueix
+        helper: Podeu afegir fins a 10 reemplaçaments.
+        what:
+          header: Cercar
+          placeholder: Cerqueu el valor a substituir
+        with:
+          header: Substitueix per
+          placeholder: Definiu el vostre valor de substitució
+        case_sensitive: Cas delicat
       simple_select_replacement:
+        title: Substitució senzilla de selecció
         option_labels: Etiqueta d'opcions
+      simple_reference_entity_replacement:
+        title: Substitució de l'enllaç únic de l'entitat de referència
+        option_labels: Etiquetes de registre
       multi_select_replacement:
+        title: Substitució de selecció múltiple
         option_labels: Etiqueta d'opcions
+      multi_reference_entity_replacement:
+        title: Substitució de múltiples enllaços de l'entitat de referència
+        option_labels: Etiquetes de registre
       categories_replacement:
         title: Substitució de categories
         modal:
@@ -72,12 +101,23 @@ akeneo.tailored_import:
             header:
               replacement: Etiquetes de les categories
               source_values: Categories de la font
-      no_result: No hi ha disponible l'operació
-      no_available:
-        link: Cliqueu aquí per consultar el Centre d'Ajuda.
-      replacement:
+      family_replacement:
+        title: Substitució de famílies
+        option_labels: Etiquetes de família
         modal:
+          title: Gestionar les famílies
+      no_result: No hi ha disponible l'operació
+      no_source: Primer, seleccioneu una font i després tindreu accés a les operacions
+      no_available:
+        text: No hi ha més operacions disponibles.
+        link: Cliqueu aquí per consultar el Centre d'Ajuda.
+      remove: Esteu segur que voleu eliminar aquesta operació?
+      replacement:
+        to_placeholder: Definiu els valors d'origen al vostre fitxer.
+        modal:
+          records: Gestionar registres
           options: Administrar opcions
+          subtitle: Substitució
           no_result:
             title: Ho sentim, no hi ha cap valor en aquest atribut.
           empty_result:
@@ -86,8 +126,15 @@ akeneo.tailored_import:
           filters:
             mapped:
               label: Mostrar
+              unmapped: Tots els valors sense substitució
+              mapped: Tots els valors amb substitució
               all: Tots els valors
+          table:
+            header:
+              source_values: Valors de la font
+          validation_error: Alguns valors de substitució no són vàlids; consulteu els missatges d'error que hi ha a sota de cada camp.
       boolean_replacement:
+        title: Substitució booleana
         field:
           yes_value: Valor Si
           no_value: Valor No
@@ -99,11 +146,18 @@ akeneo.tailored_import:
     sources:
       title: Font(s)
       add:
+        title: Menú desplegable de fonts obertes
         label: Afegeix una font
+        helper: "]-Inf, 1]Per a aquest tipus d'atribut, només podeu afegir una font.|]1, Inf[Per a aquest tipus d'atribut, només podeu afegir fins a {{ limit }} fonts."
     target:
       title: Objectiu
+      identifier: No hi ha cap configuració disponible per a l'atribut d'identificador utilitzat com a objectiu.
+      enabled: No hi ha cap configuració disponible per a la propietat activada utilitzada com a objectiu.
+      locale_specific: Aquest atribut és específic de la configuració regional
       action_if_not_empty:
         title: Assignar
+        add: Afegeix als valors existents
+        set: Substituïu els valors existents
       clear_if_empty: Esborra si està buit al fitxer
       parameters:
         decimal_separator:
@@ -117,6 +171,9 @@ akeneo.tailored_import:
         price_currency:
           title: Moneda
           placeholder: Seleccioneu una moneda
+      invalid:
+        attribute: Aquest atribut s'ha suprimit i s'ha tornat a crear amb un altre tipus. Si us plau, traieu aquest mapa de dades i torneu-lo a afegir.
+        property: Aquesta propietat no és vàlida, traieu aquesta assignació de dades i torneu-la a afegir.
   form:
     job_instance:
       tab:
@@ -134,6 +191,8 @@ akeneo.tailored_import:
     columns:
       max_count_reached: El vostre full no ha de contenir més de {{ limit }} columnes.
       at_least_one_required: La capçalera ha de contenir almenys {{ limit }} columnes.
+      uuid:
+        should_be_unique: Aquest UUID de columna ja existeix; introduïu-ne un de nou.
       index:
         should_be_unique: Aquest índex de columna ja existeix; introduïu-ne un de nou.
       label:
@@ -141,6 +200,16 @@ akeneo.tailored_import:
         max_length_reached: L'etiqueta de la columna és massa llarga. Ha de contenir {{ limit }} caràcters o menys.
     data_mappings:
       target_should_unique: L'objectiu "{{ code }}" no es pot seleccionar diverses vegades.
+      max_count_reached: Heu arribat al límit de {{ limit }} mapes, ja no podeu afegir mapes a la vostra importació.
+      no_identifier_target_found: No hi ha cap assignació orientada a un identificador, afegiu-ne un.
+      too_many_identifier_target_found: Hi ha més d'un mapeig orientat a un identificador, traieu-ne un.
+      uuid:
+        should_be_unique: Aquest UUID de mapatge ja existeix; introduïu-ne un de nou.
+      sources:
+        at_least_one_required: Heu d'afegir almenys una font al vostre mapeig.
+        max_count_reached: Heu assolit el límit de fonts {{ limit }}, ja no podeu afegir fonts al vostre mapatge.
+        should_be_unique: Aquesta font ja existeix, introduïu-ne una de nova.
+        should_exist: Una de les fonts ja no existeix, suprimiu totes les fonts d'aquest mapeig i torneu-ho a provar
     target:
       attribute_should_exist: L'atribut {{ attribute_code }} no existeix. Si us plau, crea o escull un diferent.
       property_should_exist: La propietat {{ property_code }} no existeix. Si us plau, crea o escull una diferent.
@@ -159,6 +228,7 @@ akeneo.tailored_import:
       channel_should_not_be_blank: L'atribut {{ attribute_code }} ara té un valor per canal. Creeu-lo o trieu un objectiu diferent.
       locale_should_be_blank: L'atribut {{ attribute_code }} ja no té un valor per configuració regional. Si us plau, suprimiu-lo i torneu-lo a crear o trieu un objectiu diferent.
       channel_should_be_blank: L'atribut {{ attribute_code }} ja no té un valor per canal. Si us plau, suprimiu-lo i torneu-lo a crear o trieu un objectiu diferent.
+      invalid_specific_locale: L'atribut {{ attribute_code }} és específic de la configuració regional. Seleccioneu una altra configuració regional.
     file_key:
       does_not_exist: No s'ha trobat el fitxer {{ file_key }}.
     uploaded_file:
@@ -176,6 +246,9 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: El tipus d'operació {{ operation_type }} és incompatible amb el vostre tipus d'objectiu.
       missing_required_operations: "Falten les operacions necessàries: {{ missing_required_operations }}"
+      max_replacements_reached: Només podeu afegir fins a {{ limit }} substitucions.
 pim_information:
   import:
+    title: Descobriu els mapes amb la importació personalitzada
+    text: "Aquest nou perfil d'importació us permet personalitzar l'estructura d'importació de productes mitjançant el mapeig de dades. Us permet seleccionar fàcilment les fonts del vostre fitxer, assignar-les als atributs del vostre PIM i realitzar operacions per transformar les vostres dades."
     link.text: Cliqueu aquí per saber més.

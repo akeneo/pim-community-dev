@@ -7,6 +7,8 @@ akeneo.tailored_import:
     columns:
       max_count_reached: El vostre full no ha de contenir més de {{ limit }} columnes.
       at_least_one_required: La capçalera ha de contenir almenys {{ limit }} columnes.
+      uuid:
+        should_be_unique: Aquest UUID de columna ja existeix; introduïu-ne un de nou.
       index:
         should_be_unique: Aquest índex de columna ja existeix; introduïu-ne un de nou.
       label:
@@ -14,7 +16,15 @@ akeneo.tailored_import:
         max_length_reached: L'etiqueta de la columna és massa llarga. Ha de contenir {{ limit }} caràcters o menys.
     data_mappings:
       target_should_unique: L'objectiu "{{ code }}" no es pot seleccionar diverses vegades.
+      max_count_reached: Heu arribat al límit de {{ limit }} mapes, ja no podeu afegir mapes a la vostra importació.
+      no_identifier_target_found: No hi ha cap assignació orientada a un identificador, afegiu-ne un.
+      too_many_identifier_target_found: Hi ha més d'un mapeig orientat a un identificador, traieu-ne un.
+      uuid:
+        should_be_unique: Aquest UUID de mapatge ja existeix; introduïu-ne un de nou.
       sources:
+        at_least_one_required: Heu d'afegir almenys una font al vostre mapeig.
+        max_count_reached: Heu assolit el límit de fonts {{ limit }}, ja no podeu afegir fonts al vostre mapatge.
+        should_be_unique: Aquesta font ja existeix, introduïu-ne una de nova.
         should_exist: Una de les fonts ja no existeix, suprimiu totes les fonts d'aquest mapeig i torneu-ho a provar
     target:
       attribute_should_exist: L'atribut {{ attribute_code }} no existeix. Si us plau, crea o escull un diferent.
