@@ -4,7 +4,7 @@ extensions:
         config:
             datagridName: association-product-picker-grid
             categoryTreeRoute: pim_enrich_product_grid_category_tree
-            columnName: id
+            columnName: identifier
             fetcher: product
 
     pim-association-product-and-product-model-picker-modal-filters-list:
