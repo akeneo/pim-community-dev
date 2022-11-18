@@ -13,23 +13,23 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifierGeneratorCodeSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedThrough('fromString', ['abcdef']);
     }
 
-    public function it_is_a_identifier_generator()
+    public function it_is_a_identifier_generator(): void
     {
         $this->shouldBeAnInstanceOf(IdentifierGeneratorCode::class);
     }
 
-    public function it_cannot_be_instantiated_with_an_empty_string()
+    public function it_cannot_be_instantiated_with_an_empty_string(): void
     {
         $this->beConstructedThrough('fromString', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_returns_a_code()
+    public function it_returns_a_code(): void
     {
         $this->asString()->shouldReturn('abcdef');
     }

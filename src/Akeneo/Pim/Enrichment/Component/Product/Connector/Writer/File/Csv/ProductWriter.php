@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHe
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
@@ -152,6 +153,19 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
      */
     protected function getItemIdentifier(array $product): string
     {
-        return $product['uuid'] ?? $product['identifier'];
+        return $product['identifier'] ?? $product['uuid'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConverterOptions(JobParameters $parameters): array
+    {
+        $converterOptions =  parent::getConverterOptions($parameters);
+        if ($parameters->has('with_uuid')) {
+            $converterOptions += ['with_uuid' => $parameters->get('with_uuid')];
+        }
+
+        return $converterOptions;
     }
 }

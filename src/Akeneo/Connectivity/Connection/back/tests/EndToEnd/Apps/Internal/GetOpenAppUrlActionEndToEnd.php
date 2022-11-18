@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
@@ -21,6 +22,7 @@ class GetOpenAppUrlActionEndToEnd extends WebTestCase
 {
     private FakeWebMarketplaceApi $webMarketplaceApi;
     private Connection $connection;
+    private ConnectedAppLoader $connectedAppLoader;
 
     protected function getConfiguration(): Configuration
     {

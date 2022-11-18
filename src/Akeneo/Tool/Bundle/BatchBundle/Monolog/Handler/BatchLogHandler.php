@@ -68,8 +68,6 @@ class BatchLogHandler extends StreamHandler
      * @param string $subDirectory
      *
      * @return string
-     *
-     * @deprecated
      */
     private function getRealPath($filename, $subDirectory = null)
     {

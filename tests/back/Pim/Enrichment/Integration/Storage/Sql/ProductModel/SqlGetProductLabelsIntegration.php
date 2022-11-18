@@ -9,7 +9,6 @@ use PHPUnit\Framework\Assert;
 
 class SqlGetProductLabelsIntegration extends TestCase
 {
-
     public function test_that_it_returns_product_labels()
     {
         $actual = $this->getProductLabelsQuery()->byIdentifiersAndLocaleAndScope(
@@ -22,11 +21,34 @@ class SqlGetProductLabelsIntegration extends TestCase
             'en_US',
             'ecommerce'
         );
+        Assert::assertArrayNotHasKey('unknown', $actual);
 
         $expected = [
             'braided-hat-m' => 'Braided hat ',
             '1111111292' => 'Scarf',
             'watch' => null,
+        ];
+        Assert::assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function test_it_gets_product_labels_from_uuids(): void
+    {
+        $uuids = \array_map(
+            fn (string $identifier): string => $this->getProductUuid($identifier)?->toString(),
+            ['braided-hat-m', '1111111292', 'watch'],
+        );
+        $uuids[] = 'f412f686-892f-493b-9f76-9681e7d34b76'; // non existing product uuid
+
+        $actual = $this->getProductLabelsQuery()->byUuidsAndLocaleAndScope(
+            $uuids,
+            'en_US',
+            'ecommerce'
+        );
+        Assert::assertArrayNotHasKey('f412f686-892f-493b-9f76-9681e7d34b76', $actual);
+        $expected = [
+            $uuids[0] => 'Braided hat ',
+            $uuids[1] => 'Scarf',
+            $uuids[2] => null,
         ];
         Assert::assertEqualsCanonicalizing($expected, $actual);
     }

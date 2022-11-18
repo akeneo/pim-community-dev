@@ -257,6 +257,7 @@ pim_common:
   parent: Element nadrzędny
   groups: Grupy
   products: Produkty
+  product_uuids: Produkty
   product_models: Modele produktu
   more: Więcej
   public_view: Widok publiczny

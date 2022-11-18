@@ -60,7 +60,7 @@ class CreateUserValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_if_it_is_not_a_created_user(CreateUser $constraint, UserInterface $user)
     {
         $user->getId()->willReturn(666);
-        $user->getUsername()->willReturn('foo bar');
+        $user->getUserIdentifier()->willReturn('foo bar');
         $this->validate($user, $constraint)->shouldReturn(null);
     }
 }

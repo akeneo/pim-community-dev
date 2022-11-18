@@ -24,7 +24,7 @@ class MailResetNotifierSpec extends ObjectBehavior
         MailNotifierInterface $mailer
     )
     {
-        $this->beConstructedWith($logger, $twig, $mailer, 'null://localhost?encryption=tls&auth_mode=login&username=foo&password=bar&sender_address=no-reply@example.com');
+        $this->beConstructedWith($logger, $twig, $mailer, 'null://localhost?encryption=tls&auth_mode=login&username=foo&password=bar');
     }
 
     function it_notifies(User $user, $mailer, $twig)

@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
 import {Styled} from './Styled';
 import {useUiLocales} from '../hooks';
@@ -13,13 +13,14 @@ type LabelTranslationsProps = {
 const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, onLabelsChange}) => {
   const translate = useTranslate();
   const {data: locales = [], error} = useUiLocales();
+  const [value, setValue] = useState<LabelCollection>(labelCollection);
 
   const onLabelChange = useCallback(
     (locale: string) => (label: string) => {
-      labelCollection[locale] = label;
-      onLabelsChange({...labelCollection});
+      setValue({...value, [locale]: label});
+      onLabelsChange({...value, [locale]: label});
     },
-    [labelCollection, onLabelsChange]
+    [value, onLabelsChange]
   );
 
   return (
@@ -33,7 +34,7 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
         {error && <Helper level="error">{translate('pim_error.general')}</Helper>}
         {locales.map(locale => (
           <Field label={locale.label} key={locale.code} locale={locale.code}>
-            <TextInput value={labelCollection[locale.code] || ''} onChange={onLabelChange(locale.code)} />
+            <TextInput value={value[locale.code] || ''} onChange={onLabelChange(locale.code)} />
           </Field>
         ))}
       </Styled.FormContainer>

@@ -1,29 +1,19 @@
 import React from 'react';
 import {mockResponse, render, screen} from '../../tests/test-utils';
 import {CreateGeneratorPage} from '../';
-import {IdentifierGenerator} from '../../models';
 import {Router} from 'react-router-dom';
 import {act, fireEvent, waitFor} from '@testing-library/react';
 import {createMemoryHistory} from 'history';
+import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../CreateOrEditGeneratorPage');
-
-const initialGenerator: IdentifierGenerator = {
-  code: 'initialCode',
-  labels: {
-    en_US: 'Initial Label',
-  },
-  conditions: [],
-  structure: [],
-  delimiter: null,
-  target: 'sku',
-};
 
 describe('CreateGeneratorPage', () => {
   it('should create a generator', async () => {
     const expectCall = mockResponse('akeneo_identifier_generator_rest_create', 'POST', {
       status: 201,
       body: initialGenerator,
+      json: initialGenerator,
     });
 
     const history = createMemoryHistory();

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation;
 
 use PhpSpec\ObjectBehavior;
 
 class ErrorSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(
             'a message',
@@ -15,11 +17,11 @@ class ErrorSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_be_normalized()
+    public function it_should_be_normalized(): void
     {
         $this->normalize()->shouldReturn([
             'path' => 'a path',
-            'message' => 'a message'
+            'message' => 'a message',
         ]);
     }
 }

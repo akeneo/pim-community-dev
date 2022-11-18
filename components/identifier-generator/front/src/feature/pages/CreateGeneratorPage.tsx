@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {IdentifierGenerator} from '../models';
 import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
-import {Violation} from '../validators/Violation';
 import {useHistory} from 'react-router-dom';
-import {InvalidIdentifierGenerator} from '../errors';
 import {useCreateIdentifierGenerator} from '../hooks';
+import {useIdentifierGeneratorContext} from '../context';
 
 type CreateGeneratorProps = {
   initialGenerator: IdentifierGenerator;
@@ -15,34 +14,36 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
   const notify = useNotify();
   const translate = useTranslate();
   const history = useHistory();
-  const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
-  const createIdentifierGenerator = useCreateIdentifierGenerator();
+  const {mutate, error, isLoading} = useCreateIdentifierGenerator();
+  const identifierGeneratorContext = useIdentifierGeneratorContext();
+
+  useEffect(() => {
+    identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(true);
+  }, [identifierGeneratorContext.unsavedChanges]);
 
   const onSave = (generator: IdentifierGenerator) => {
-    createIdentifierGenerator.mutate(generator, {
+    mutate(generator, {
       onError: error => {
-        if (error instanceof InvalidIdentifierGenerator) {
+        // @ts-ignore
+        if (error.violations) {
           notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
-          setValidationErrors(error.violations);
         } else {
           notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));
         }
       },
-      onSuccess: (_data, variables) => {
-        notify(
-          NotificationLevel.SUCCESS,
-          translate('pim_identifier_generator.flash.create.success', {code: variables.code})
-        );
-        history.push(`/${variables.code}`);
+      onSuccess: ({code}: IdentifierGenerator) => {
+        notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success', {code}));
+        history.push(`/${code}`);
       },
     });
   };
 
   return (
     <CreateOrEditGeneratorPage
+      isMainButtonDisabled={isLoading}
       initialGenerator={initialGenerator}
       mainButtonCallback={onSave}
-      validationErrors={validationErrors}
+      validationErrors={error?.violations || []}
       isNew={true}
     />
   );

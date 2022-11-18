@@ -32,6 +32,6 @@ final class ErrorList implements \Countable
 
     public function __toString(): string
     {
-        return \join("\n", array_map(fn (Error $error): string => $error->__toString(), $this->errors));
+        return \implode("\n", array_map(fn (Error $error): string => $error->__toString(), $this->errors));
     }
 }

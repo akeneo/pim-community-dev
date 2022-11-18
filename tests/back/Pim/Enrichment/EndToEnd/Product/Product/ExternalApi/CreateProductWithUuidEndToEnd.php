@@ -53,7 +53,7 @@ JSON;
         $this->assertSame(
             sprintf(
                 'http://localhost/api/rest/v1/products-uuid/%s',
-                $this->getProductUuid('product_create_headers')
+                $this->getProductUuid('product_create_headers')->toString()
             ),
             $response->headers->get('location')
         );
@@ -1053,7 +1053,7 @@ JSON;
 
         $client->request('GET', sprintf(
             '/api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('foo')
+            $this->getProductUuid('foo')->toString()
         ));
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());

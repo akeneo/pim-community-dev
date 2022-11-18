@@ -30,9 +30,6 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
      */
     public function insert(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
     {
-        $this->defaultParams['template_uuid'] = (string) $templateUuid;
-        $this->defaultTypes['template_uuid'] = \PDO::PARAM_STR;
-
         $this->insertAttributes($attributeCollection->getAttributes());
     }
 

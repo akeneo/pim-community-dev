@@ -12,4 +12,4 @@ type Property = {type: PROPERTY_NAMES} & (AutoNumber | FreeText);
 type Structure = Property[];
 
 export {ALLOWED_PROPERTY_NAMES, PROPERTY_NAMES};
-export type {Structure};
+export type {Structure, Property};
