@@ -33,6 +33,38 @@ class StructureShouldNotContainMultipleAutoNumberValidatorSpec extends ObjectBeh
             ->during('validate', [[], new NotBlank()]);
     }
 
+    public function it_should_not_validate_something_else_than_an_array(ExecutionContext $context): void
+    {
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+
+        $this->validate(new \stdClass(), new StructureShouldNotContainMultipleAutoNumber());
+    }
+
+    public function it_should_not_validate_something_else_than_an_array_of_array(ExecutionContext $context): void
+    {
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+
+        $this->validate([new \stdClass()], new StructureShouldNotContainMultipleAutoNumber());
+    }
+
+    public function it_should_not_validate_something_else_than_an_array_of_property(ExecutionContext $context): void
+    {
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+
+        $this->validate([[]], new StructureShouldNotContainMultipleAutoNumber());
+    }
+
+    public function it_should_not_validate_a_structure_without_auto_number(ExecutionContext $context): void
+    {
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+
+        $structure = [
+            ['type' => 'free_text', 'string' => 'abcdef'],
+            ['type' => 'free_text', 'string' => 'ghijkl'],
+        ];
+        $this->validate($structure, new StructureShouldNotContainMultipleAutoNumber());
+    }
+
     public function it_should_build_violation_when_structure_contains_multiple_auto_number(ExecutionContext $context): void
     {
         $structure = [
