@@ -45,12 +45,15 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
                 uploaded_by_supplier,
                 uploaded_at,
                 rc.retailer_comments,
-                sc.supplier_comments
+                sc.supplier_comments,
+                product_file_import.import_status
             FROM akeneo_supplier_portal_supplier_product_file
             LEFT JOIN retailer_comments rc
                 ON identifier = rc.product_file_identifier
             LEFT JOIN supplier_comments sc
                 ON identifier = sc.product_file_identifier
+            LEFT JOIN akeneo_supplier_portal_product_file_imported_by_job_execution AS product_file_import
+                ON product_file_import.product_file_identifier = akeneo_supplier_portal_supplier_product_file.identifier
             WHERE identifier = :productFileIdentifier;
         SQL;
 
@@ -70,6 +73,7 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             $productFileWithComments['uploaded_by_contributor'],
             $productFileWithComments['uploaded_by_supplier'],
             $productFileWithComments['uploaded_at'],
+            $productFileWithComments['import_status'],
             $productFileWithComments['retailer_comments']
                 ? \array_filter(\json_decode(
                     $productFileWithComments['retailer_comments'],

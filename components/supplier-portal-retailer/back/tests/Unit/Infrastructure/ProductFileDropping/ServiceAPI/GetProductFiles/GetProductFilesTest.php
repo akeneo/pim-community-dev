@@ -26,6 +26,7 @@ final class GetProductFilesTest extends TestCase
             'jimmy@supplier.com',
             '8110a4f5-9d1e-488e-a878-1a274423cfa4',
             '',
+            null,
         )], 1);
 
         $listProductFilesQueryHandler

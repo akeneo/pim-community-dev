@@ -13,6 +13,7 @@ final class ProductFile
         public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
+        public readonly ?string $importStatus,
         public array $retailerComments = [],
         public array $supplierComments = [],
         public ?string $retailerLastReadAt = null,
@@ -33,6 +34,7 @@ final class ProductFile
             'supplierComments' => $this->supplierComments,
             'retailerLastReadAt' => $this->retailerLastReadAt,
             'supplierLastReadAt' => $this->supplierLastReadAt,
+            'importStatus' => $this->importStatus,
         ];
     }
 }

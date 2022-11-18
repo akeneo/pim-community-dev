@@ -7,6 +7,9 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
@@ -201,5 +204,25 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
         ]], $productFiles[0]->supplierComments);
         static::assertNull($productFiles[0]->retailerLastReadAt);
         static::assertSame('2022-09-07 00:00:00', $productFiles[0]->supplierLastReadAt);
+        static::assertNull($productFiles[0]->importStatus);
+    }
+
+    /** @test */
+    public function itGetsTheProductFilesWithImportStatus(): void
+    {
+        $productFile = (new ProductFileBuilder())
+            ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+            ->uploadedBySupplier($this->supplier)
+            ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+            ->build();
+        ($this->get(ProductFileRepository::class))->save($productFile);
+
+        $productFileImport = ProductFileImport::start($productFile, 666);
+        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
+
+        $sut = $this->get(ListProductFilesForSupplier::class);
+        /** @var ProductFile[] $productFiles */
+        $productFiles = ($sut)('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7');
+        static::assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFiles[0]->importStatus);
     }
 }

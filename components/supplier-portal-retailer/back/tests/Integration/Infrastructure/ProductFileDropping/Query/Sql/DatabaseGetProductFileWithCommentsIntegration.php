@@ -63,6 +63,7 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
             'supplierComments' => [],
             'retailerLastReadAt' => null,
             'supplierLastReadAt' => null,
+            'importStatus' => null,
         ], $productFile->toArray());
     }
 

@@ -30,6 +30,7 @@ final class InMemoryGetProductFileWithComments implements GetProductFileWithComm
             $productFile->contributorEmail(),
             $productFile->uploadedBySupplier(),
             $productFile->uploadedAt(),
+            null,
             $productFile->newRetailerComments(),
             $productFile->newSupplierComments(),
         );

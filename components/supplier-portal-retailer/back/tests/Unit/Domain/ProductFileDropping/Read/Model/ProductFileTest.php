@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\ProductFileDropping\Read\Model;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
 use PHPUnit\Framework\TestCase;
 
 final class ProductFileTest extends TestCase
@@ -19,6 +20,7 @@ final class ProductFileTest extends TestCase
             'contributor@example.com',
             '44ce8069-8da1-4986-872f-311737f46f02',
             '2022-07-12 14:55:46',
+            null,
         );
 
         static::assertSame(
@@ -33,6 +35,7 @@ final class ProductFileTest extends TestCase
                 'supplierComments' => [],
                 'retailerLastReadAt' => null,
                 'supplierLastReadAt' => null,
+                'importStatus' => null,
             ],
             $sut->toArray(),
         );
@@ -48,6 +51,7 @@ final class ProductFileTest extends TestCase
             'contributor@example.com',
             '44ce8069-8da1-4986-872f-311737f46f02',
             '2022-07-12 14:55:46',
+            ProductFileImportStatus::IN_PROGRESS->value,
             [
                 [
                     'author_email' => 'julia@roberts.com',
@@ -90,6 +94,7 @@ final class ProductFileTest extends TestCase
                 ],
                 'retailerLastReadAt' => '2022-09-08 08:59:38',
                 'supplierLastReadAt' => null,
+                'importStatus' => ProductFileImportStatus::IN_PROGRESS->value,
             ],
             $sut->toArray(),
         );
