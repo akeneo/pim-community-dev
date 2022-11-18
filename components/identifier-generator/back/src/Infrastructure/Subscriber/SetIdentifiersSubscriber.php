@@ -137,8 +137,6 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                     \iterator_to_array($violations)
                 ))
             );
-        } else {
-            $violations = $this->validator->validate($product);
         }
     }
 
