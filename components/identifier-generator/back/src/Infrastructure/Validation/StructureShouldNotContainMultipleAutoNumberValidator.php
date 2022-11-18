@@ -36,7 +36,6 @@ final class StructureShouldNotContainMultipleAutoNumberValidator extends Constra
                     $this->context
                         ->buildViolation($constraint->message, [
                             '{{limit}}' => StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE,
-                            '{{type}}' => AutoNumber::type(),
                         ])
                         ->addViolation();
 

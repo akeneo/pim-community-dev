@@ -76,7 +76,6 @@ class StructureShouldNotContainMultipleAutoNumberValidatorSpec extends ObjectBeh
         $context
             ->buildViolation('validation.identifier_generator.structure_auto_number_limit_reached', [
                 '{{limit}}' => 1,
-                '{{type}}' => 'auto_number',
             ])
             ->shouldBeCalled();
 
