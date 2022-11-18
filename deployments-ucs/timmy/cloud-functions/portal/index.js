@@ -14,7 +14,6 @@ const {GoogleAuth} = require('google-auth-library');
 const auth = new GoogleAuth();
 const {createLogger, format, transports} = require('winston');
 const {LoggingWinston} = require('@google-cloud/logging-winston');
-const path = require('path');
 const loggingWinston = new LoggingWinston();
 
 let logger = null;
@@ -216,6 +215,8 @@ async function updateInstanceStatusInPortal(branchName, tenant_name, instanceId,
     logger.info(`Update the \`${tenant_name}\` instance (id=${instanceId}) in the portal with \`${status}\` status`);
     return await instance.patch(`console/instances/${instanceId}/status/${status}`);
 }
+
+module.exports = { requiredEnvironmentVariables, prefixUrlWithBranchName };
 
 functions.http('requestPortal', (req, res) => {
   requiredEnvironmentVariables([

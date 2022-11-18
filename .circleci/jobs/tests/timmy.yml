@@ -1,0 +1,17 @@
+jobs:
+  test_unit_timmy:
+    docker:
+      - image: node:16
+    resource_class: small
+    steps:
+      - git-shallow-clone/checkout
+      - run:
+          name: Install timmy-request-portal cloud function dependencies
+          command: |
+            cd deployments-ucs/timmy/cloud-functions/portal
+            npm install --include=dev
+      - run:
+          name: Run mocha tests for timmy-request-portal cloud function
+          command: |
+            cd deployments-ucs/timmy/cloud-functions/portal
+            ./node_modules/.bin/mocha tests/index.test.js

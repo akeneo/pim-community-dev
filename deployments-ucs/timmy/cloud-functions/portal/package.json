@@ -14,5 +14,8 @@
   },
   "scripts": {
     "start": "functions-framework --port=8081 --target=requestPortal"
+  },
+  "devDependencies": {
+    "mocha": "^10.1.0"
   }
 }
