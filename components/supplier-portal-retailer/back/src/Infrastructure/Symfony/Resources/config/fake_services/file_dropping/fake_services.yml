@@ -20,3 +20,8 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\InMemory\InMemoryStreamStoredProductFile
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnMarkingCommentsAsRead:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseComputeCommentsReadDelay'
+            - '@monolog.logger.supplier_portal'
