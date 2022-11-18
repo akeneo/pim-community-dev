@@ -169,6 +169,25 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertNull($shoesCategory->getAttributes());
     }
 
+    public function testGetCategoryWithLimitSetToOneAndOffsetToTwo(): void{
+        $parameters['sqlWhere'] = '1=1';
+        $parameters['sqlLimitOffset'] = 'LIMIT 1 OFFSET 2';
+        $parameters['params'] = [
+            'with_enriched_attributes' => false
+        ];
+        $parameters['types'] = [
+            'with_enriched_attributes' => \PDO::PARAM_BOOL
+        ];
+        $retrievedCategory = $this->get(GetCategoriesInterface::class)->execute($parameters);
+        $this->assertIsArray($retrievedCategory);
+
+        // we retrieve only 1 out of the 3 existing categories
+        $this->assertCount(1, $retrievedCategory);
+
+        // we check that we retrieved the correct category according to the OFFSET
+        $this->assertSame('shoes', (string) $retrievedCategory[0]->getCode());
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
