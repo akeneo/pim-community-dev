@@ -1,8 +1,41 @@
 pimee_catalog_rule:
   rule_definition:
     validation:
+      locale:
+        unknown: 'La configuració regional "{{ locale_code }}" no existeix o no està activada'
+      currency:
+        unknown: 'Cal una moneda vàlida, la moneda "{{ currency }}" no existeix o no està activada'
+        missing_key: 'Falta la clau "{{ key }}" o està buida'
+        unexpected_key: 'La clau {{ key }} és irrellevant'
+      measurement:
+        invalid_unit: 'El codi d''unitat "{{ unitCode }}" no existeix o no pertany a la família de mesures de l''atribut "{{ attributeCode }}"'
+        invalid_attribute_type: 'La clau {{ key }} és irrellevant per a l''atribut {{ attributeCode }}'
+      attribute:
+        unknown: 'L''atribut "{{ code }}" no existeix'
+        unexpected_type: 'L''atribut "{{ attribute_code }}" té un tipus d''atribut "{{ invalid_type }}" no vàlid. Es requereix un atribut {{ expected_types }}'
+        missing_locale: 'L''atribut "{{ attributeCode }}" requereix una configuració regional'
+        unexpected_locale: 'L''atribut "{{ attributeCode }}" no requereix cap configuració regional, si us plau, traieu-lo'
+        unknown_locale: 'L''atribut "{{ attributeCode }}" requereix una configuració regional existent i activada. Assegureu-vos que la vostra configuració regional existeixi i estigui activada.'
+        invalid_specific_locale: 'L''atribut "{{ attributeCode }}" és específic de la configuració regional i requereix una de les configuracions regionals següents: {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'No hi ha cap configuració regional "{{ invalidLocale }}" al canal "{{ channelCode }}"'
+        missing_scope: 'L''atribut "{{ attributeCode }}" requereix un àmbit'
+        unexpected_scope: 'L''atribut "{{ attributeCode }}" no requereix un àmbit, si us plau, traieu-lo'
+        unknown_scope: 'L''atribut "{{ attributeCode }}" requereix un àmbit existent'
+      invalid_code: 'El codi de la regla només ha de contenir lletres, números i guions baixos'
+      conditions:
+        missing_key: 'Falta la clau "condicions" o està buida'
+        missing_value_key: 'Falta la clau "valor" o està buida'
+        missing_operator_key: 'Falta la clau "operador" o està buida'
+        existing_field: 'El camp "{{ field }}" no es pot filtrar o no es pot utilitzar amb l''operador "{{ operator }}"'
+        missing_field_key: 'Falta la clau "camp" o està buida'
       actions:
+        missing_key: 'Falta la clau "accions" o està buida'
+        add:
+          invalid_field: 'No podeu afegir elements al camp "{{ field }}"'
+        clear:
+          invalid_field: 'No podeu esborrar dades del camp "{{ field }}"'
         copy:
+          invalid_fields: 'No podeu copiar dades del camp "{{ from_field }}" al camp "{{ to_field }}"'
           missing_from_field_key: 'Falta la clau "from_field" o està buida'
           missing_to_field_key: 'Falta la clau "to_field" o està buida'
         concatenate:

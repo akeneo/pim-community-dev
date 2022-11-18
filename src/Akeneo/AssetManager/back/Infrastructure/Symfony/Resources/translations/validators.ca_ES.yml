@@ -36,9 +36,18 @@ pim_asset_manager:
       transformation:
         limit_reached: 'Has arribat al límit de transformacions %limit%'
         same_operation_twice: 'L''operació "%operation_type%" no és pot definir dos cops en una transformació'
+        source_can_not_be_a_target: 'La font de l''atribut "%attribute_code%" no pot ser un objectiu d''atribut d''una transformació.'
         attribute_reference_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
+        source_should_be_media_file: 'L''atribut font ha de ser del tipus fitxer multimèdia.'
+        target_should_be_media_file: 'L''atribut objectiu ha de ser del tipus fitxer multimèdia.'
+        filename_is_not_unique: 'Ja existeix una transformació amb el prefix del nom de fitxer "%filename_prefix%" i el sufix "%filename_suffix%" per a la font de l''atribut "%attribute_code%"'
+        target_is_not_unique: 'Dues transformacions no poden tenir el mateix objectiu.'
+        code_is_not_unique: 'No podeu definir dues transformacions amb el mateix codi "%transformation_code%"'
+        filename_prefix_suffix_empty: 'Hauríeu de tenir almenys les propietats filename_prefix o filename_suffix i una d''elles no hauria de ser cadenes buides.'
+        empty_operation_list: 'Es requereix almenys una operació de transformació.'
         unknown_extra_field: 'La propietat {{ field }} no s''esperava.'
       naming_convention:
+        property_should_exist: 'La propietat "%property%" no existeix per a aquesta família de recursos'
         not_main_media_attribute_code: 'La propietat ha de coincidir amb el codi de l''atribut definit com a mitjà principal'
   asset:
     validation:
@@ -55,6 +64,8 @@ pim_asset_manager:
         extension_not_allowed: '"%file_extension%" no es permeten arxius per a aquest atribut. Les extensions permeses son: %allowed_file_extensions%'
         file_size_exceeded: 'L''arxiu excedeix la mida màxima establerta per l''atribut.'
         should_exist: 'L''arxiu "%file_path%" no s''ha trobat.'
+        target_readonly: 'No podeu actualitzar el valor de "%attribute_code%" que és l''objectiu d''una transformació.'
+        invalid_filename: 'El fitxer "%file_path%" conté caràcters no vàlids.'
       option:
         code_does_not_exist: 'L''opció amb el codi "%option_code%" no existeix per aquest atribut'
       option_collection:
@@ -78,6 +89,8 @@ pim_asset_manager:
         should_be_integer: 'Aquest camp ha de ser un enter'
         integer_too_long: 'Aquest enter és massa gran'
         should_be_numeric: 'Aquest camp té que ser un valor numèric amb els separador decimal correcte'
+      main_media:
+        not_main_media_attribute: 'L''atribut esperat com a multimèdia principal és "%main_media_attribute%", "%attribute%".'
       media_link:
         protocol_not_allowed: 'Aquest camp hauria de començar amb un protocol vàlid. Els protocols permesos són: %allowed_protocols%.'
         domain_not_allowed: 'Aquest URL no està permès.'
@@ -123,3 +136,8 @@ pim_asset_manager:
         should_not_be_empty: 'El sufix no pot ser una cadena buida.'
       media_type:
         not_expected: 'El tipus de medi donat no correspon al que s''espera (%supported_media_types%).'
+      media_file:
+        cannot_contain_extension_separator: 'Les extensions no poden contenir el separador d''extensions ".", "%wrong_extension%".'
+        should_only_contain_lowercase_letters_and_numbers: 'Les extensions només haurien de contenir lletres minúscules i números, "%wrong_extension%".'
+        cannot_be_longer_than_max: 'Les extensions no poden tenir més de %expected_length% caràcters, la longitud de %actual_length% indicada.'
+        there_cannot_be_duplicated_extensions: 'No hi ha extensions duplicades: s''han trobat %duplicates%.'

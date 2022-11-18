@@ -8,20 +8,36 @@ pim_datagrid:
   no_entities:
     proposal: No hi ha cap proposta per revisar.
     product_draft: No hi ha cap projecte de producte per revisar.
+  no_entities.published product: No s'ha trobat cap producte publicat
   no_results:
     proposal: No hi ha cap proposta per revisar. Intentar canviar els criteris de cerca.
     product_draft: No hi ha cap projecte de producte per revisar. Intentar canviar els criteris de cerca.
+  no_results.published product: Ho sentim, no hi ha cap producte publicat per a la teva cerca.
   workflow:
+    partial_approve: Aprova els canvis a l'atribut {{ attribute }} del producte {{ product }}
+    partial_reject: Rebutja els canvis a l'atribut {{ attribute }} del producte {{ product }}
     by: per
     at: a
     status:
       in_progress: En procés
       ready: En espera d'aprovació
+      can_be_partially_reviewed: Es pot revisar parcialment
+      can_not_be_approved: No es pot revisar
+      can_not_be_deleted: No es pot suprimir
     status_message:
       ready: En espera d'aprovació
+      in_progress: Aquesta proposta està actualment en procés i encara no s'ha enviat.
+      can_be_partially_reviewed: Només podeu revisar aquesta proposta parcialment perquè alguns canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
+      can_not_be_approved: No pots revisar aquesta proposta perquè tots els canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
+      can_not_be_deleted: No pots eliminar aquesta proposta perquè tots els canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
+    draft_in_progress: Hi ha en procés un esborrany de {{ author }} per a aquest producte.
+    no_diff: El valor "{{ value }}" és el mateix entre la proposta i la còpia de treball.
     new_value: 'Nou valor:'
     old_value: 'Valor antic:'
     see_more: Veure més
+    actions:
+      approve_all: Aprovar-ho tot
+      refuse_all: Rebutjar-ho tot
 pimee_datagrid:
   cells:
     expand:
@@ -34,6 +50,7 @@ pimee_workflow:
         original_product: Editar la còpia de treball
     proposal:
       modal.title: Deixa un comentari (opcional - 255 caràcters màx.)
+    removing_error: Les entitats vinculades a productes publicats no es poden eliminar.
   proposal:
     overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} propostes"
     selected: "]-Inf, 1]{{ count }} proposta seleccionada|]1, Inf[{{ count }} propostes seleccionades"
@@ -46,14 +63,20 @@ pimee_workflow:
       error: "La proposta no es pot aplicar a causa de l'error següent: {{ error }}"
     reject:
       title: Rebutjar la proposta
+      success: La proposta ha estat rebutjada
+      error: "La proposta no es pot rebutjar a causa del següent error: {{ error }}"
     remove:
       title: Eliminar proposta
+      success: La proposta ha estat eliminada
+      error: "La proposta no es pot eliminar a causa de l'error següent: {{ error }}"
     partial_approve:
       title: Aprovar informació parcial
       success: La proposta ha estat validada de forma parcialment correcta
+      error: "La proposta no es pot aprovar parcialment a causa del següent error: {{ error }}"
     partial_reject:
       title: Rebutjar canvis parcialment
       success: Els canvis han estat rebutjats correctament
+      error: "La proposta no es pot rebutjar parcialment a causa del següent error: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Exportació en CSV del producte publicat
@@ -93,6 +116,8 @@ batch_jobs:
     perform.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
   publish_product:
     perform.label: Publicar productes
+  unpublish_product:
+    perform.label: Despublicar productes
   default_steps:
     clean_attribute:
       clean_draft: Propostes de neteja
@@ -115,6 +140,7 @@ pimee_dashboard:
       product: Producte
       review: Revisar
       empty: No hi ha propostes per revisar
+      title: Propostes per revisar
       view_all: Veure totes les propostes
     header.view_all: Veure tots
 pimee_enrich.entity.product:
@@ -123,6 +149,8 @@ pimee_enrich.entity.product:
       published: Publicat
       revert: Restaurar
     attribute:
+      can_be_updated_by_rules: "]-Inf, 1]Aquest atribut es pot actualitzar mitjançant <span>una regla</span>|]1, +Inf[Aquest atribut es pot actualitzar mitjançant <span>{{ count }} regles</span>"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]Aquest atribut es pot actualitzar mitjançant una regla|]1, +Inf[Aquest atribut es pot actualitzar mitjançant regles {{ count }}"
       value_updated: Aquest valor s'actualitzarà pel projecte actual
     meta:
       published_version: Versió publicada
@@ -155,6 +183,7 @@ pimee_enrich.entity.published_product:
     publish:
       success: Producte publicat amb èxit
       fail: No s'ha pogut publicar aquest producte
+      fail_no_identifier: Impossible publicar aquest producte perquè no té identificador
     unpublish:
       success: Producte despublicat amb èxit
       fail: No s'ha pogut despublicar aquest producte
@@ -215,4 +244,5 @@ pim_title:
   pimee_workflow_published_product_view: Producte publicat {{ product.label }} | Veure
 pim_analytics:
   info_type:
+    nb_published_products: Número de productes publicats
     nb_product_drafts: Nombre d'esborranys de productes

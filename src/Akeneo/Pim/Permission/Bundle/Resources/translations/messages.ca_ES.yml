@@ -61,6 +61,7 @@ pim_enrich:
       message:
         error: No ets el propietari del producte, no el podeu publicar.
         warning: No ets el propietari dels productes seleccionats. No els podeu publicar "%notGranted%".
+        no_identifier: Impossible publicar aquest producte perquè no té identificador.
       not_editable: No teniu permissos per editar els productes "%identifiers%".
     unpublish:
       message:

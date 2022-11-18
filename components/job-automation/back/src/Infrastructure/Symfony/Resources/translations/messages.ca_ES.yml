@@ -1,3 +1,4 @@
 akeneo.job_automation:
   notification:
     invalid_job_instance: 'El perfil {{ type }} "{{ label }}" no s''ha pogut iniciar a causa dels errors següents: {{ error }}'
+    internal_error: Falla interna del sistema. La vostra feina no es pot posar en marxa a causa d'un problema d'infraestructura. Si us plau, torna-ho a provar més tard.

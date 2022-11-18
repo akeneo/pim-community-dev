@@ -7,6 +7,26 @@ batch_jobs:
     export.label: Exportació de recursos
   asset_manager_csv_asset_import:
     label: Importació de recurs a CSV
+    import.label: Importar recursos
   asset_manager_xlsx_asset_import:
+    label: Importació de recurs en XLSX
     import.label: Importar recursos
 akeneo_assetmanager.export.assets.filter.asset_family: Families de recursos
+pim_analytics:
+  info_type:
+    api_connection: Nombre de connexions API
+    nb_asset_families: Nombre de families de recursos
+    max_number_of_assets_per_asset_family: Nombre màxim d'actius per família d'actius
+    max_number_of_attributes_per_asset_family: Nombre màxim d'atributs per família d'actius
+    average_number_of_assets_per_asset_family: Nombre mitjà d'actius per família d'actius
+    average_number_of_values_per_assets: Nombre mitjà de valors per actiu
+    average_number_of_attributes_per_asset_family: Nombre mitjà d'atributs per família d'actius
+    data_source:
+      tracked: Destinació de dades rastrejada
+      untracked: Destinació de dades sense seguiment
+    data_destination:
+      tracked: Font de dades rastrejada
+      untracked: Font de dades sense seguiment
+    other:
+      tracked: Altres rastrejades
+      untracked: Altres sense rastrejar
