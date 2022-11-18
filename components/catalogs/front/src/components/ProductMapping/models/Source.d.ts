@@ -1,5 +1,5 @@
 export type Source = {
-    source: string;
-    locale?: string;
-    scope?: string;
+    source: string | null;
+    locale: string | null;
+    scope: string | null;
 };

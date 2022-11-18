@@ -1,26 +1,18 @@
-jest.unmock('./useInfiniteAttributeCriterionFactories');
+import {useInfiniteAttributes} from './useInfiniteAttributes';
+
+jest.unmock('./useInfiniteAttributes');
 
 import {act, renderHook} from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
 import {mocked} from 'ts-jest/utils';
 import {Attribute} from '../../models/Attribute';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
-import {useInfiniteAttributeCriterionFactories} from './useInfiniteAttributeCriterionFactories';
-import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
 
 const ALLOWED_ATTRIBUTE_TYPES = [
-    'identifier',
     'text',
-    'textarea',
-    'simpleselect',
-    'multiselect',
-    'number',
-    'metric',
-    'boolean',
-    'date',
 ];
 
-test('it fetches attributes & paginates criterion factories', async () => {
+test('it fetches attributes & paginates', async () => {
     const attributes: Attribute[] = [
         {
             code: 'name',
@@ -47,11 +39,9 @@ test('it fetches attributes & paginates criterion factories', async () => {
 
     fetchMock.mockResponseOnce(JSON.stringify(attributes.slice(0, 2)));
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributeCriterionFactories({limit: 2}), {
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributes({limit: 2}), {
         wrapper: ReactQueryWrapper,
     });
-
-
 
     expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/attributes?page=1&limit=2&search=&types='+ALLOWED_ATTRIBUTE_TYPES.join(','), expect.any(Object));
     expect(result.current).toMatchObject({
@@ -70,12 +60,18 @@ test('it fetches attributes & paginates criterion factories', async () => {
         isError: false,
         data: [
             {
+                code: 'name',
                 label: 'Name',
-                factory: expect.any(Function),
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
             {
+                code: 'description',
                 label: 'Description',
-                factory: expect.any(Function),
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
         ],
         error: null,
@@ -94,56 +90,31 @@ test('it fetches attributes & paginates criterion factories', async () => {
         isError: false,
         data: [
             {
+                code: 'name',
                 label: 'Name',
-                factory: expect.any(Function),
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
             {
+                code: 'description',
                 label: 'Description',
-                factory: expect.any(Function),
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
             {
+                code: 'ean',
                 label: 'EAN',
-                factory: expect.any(Function),
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
         ],
         error: null,
         hasNextPage: false,
         fetchNextPage: expect.any(Function),
     });
-});
-
-test('it returns a custom factory with the attribute code as field', async () => {
-    const factory = jest.fn(state => state);
-    const findCriterionByType = jest.fn(() => ({
-        factory: factory,
-        component: jest.fn(),
-    }));
-    mocked(useFindAttributeCriterionByType).mockImplementation(() => findCriterionByType);
-
-    const attributes: Attribute[] = [
-        {
-            code: 'description',
-            label: 'Description',
-            type: 'pim_catalog_text',
-            scopable: false,
-            localizable: false,
-        },
-    ];
-
-    fetchMock.mockResponseOnce(JSON.stringify(attributes));
-
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributeCriterionFactories(), {
-        wrapper: ReactQueryWrapper,
-    });
-
-    await waitForNextUpdate();
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    expect(result.current.data![0].factory()).toMatchObject({
-        field: 'description',
-    });
-    expect(findCriterionByType).toHaveBeenCalledWith('pim_catalog_text');
-    expect(factory).toHaveBeenCalledWith({field: 'description'});
 });
 
 test('it searches with a string', async () => {
@@ -160,7 +131,7 @@ test('it searches with a string', async () => {
     );
 
     const {result, waitForNextUpdate} = renderHook(
-        () => useInfiniteAttributeCriterionFactories({search: 'Description', limit: 2}),
+        () => useInfiniteAttributes({search: 'Description', limit: 2}),
         {
             wrapper: ReactQueryWrapper,
         }
@@ -177,8 +148,11 @@ test('it searches with a string', async () => {
         isError: false,
         data: [
             {
+                code: 'description',
                 label: 'Description',
-                factory: expect.any(Function),
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
         ],
         error: null,
@@ -190,7 +164,7 @@ test('it searches with a string', async () => {
 test('it stops fetching if there is no more pages', async () => {
     fetchMock.mockResponseOnce(JSON.stringify([]));
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributeCriterionFactories(), {
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributes(), {
         wrapper: ReactQueryWrapper,
     });
 
