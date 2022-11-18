@@ -32,7 +32,6 @@ final class AutoNumberShouldBeValidValidator extends ConstraintValidator
             $this->context
                 ->buildViolation($constraint->message, [
                     '{{field}}' => 'numberMin, digitsMin',
-                    '{{type}}' => AutoNumber::type(),
                 ])
                 ->addViolation();
         }

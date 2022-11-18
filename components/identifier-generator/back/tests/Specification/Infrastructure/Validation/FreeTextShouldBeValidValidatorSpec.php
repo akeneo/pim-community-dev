@@ -33,6 +33,20 @@ class FreeTextShouldBeValidValidatorSpec extends ObjectBehavior
             ->during('validate', [['type' => 'free_text', 'string' => 'abcdef'], new NotBlank()]);
     }
 
+    public function it_should_not_validate_something_else_than_an_array(ExecutionContext $context): void
+    {
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+
+        $this->validate(new \stdClass(), new FreeTextShouldBeValid());
+    }
+
+    public function it_should_not_validate_a_property_which_is_not_a_free_text(ExecutionContext $context): void
+    {
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+
+        $this->validate(['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3], new FreeTextShouldBeValid());
+    }
+
     public function it_should_build_violation_when_free_text_is_invalid(ExecutionContext $context): void
     {
         $freeTextWithoutString = [

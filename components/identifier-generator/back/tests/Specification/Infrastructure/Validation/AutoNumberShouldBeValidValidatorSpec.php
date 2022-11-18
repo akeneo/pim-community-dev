@@ -33,6 +33,20 @@ class AutoNumberShouldBeValidValidatorSpec extends ObjectBehavior
             ->during('validate', [['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3], new NotBlank()]);
     }
 
+    public function it_should_not_validate_something_else_than_an_array(ExecutionContext $context): void
+    {
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+
+        $this->validate(new \stdClass(), new AutoNumberShouldBeValid());
+    }
+
+    public function it_should_not_validate_a_property_which_is_not_an_auto_number(ExecutionContext $context): void
+    {
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+
+        $this->validate(['type' => 'free_text', 'string' => 'abcdef'], new AutoNumberShouldBeValid());
+    }
+
     public function it_should_build_violation_when_auto_number_is_invalid(ExecutionContext $context): void
     {
         $autoNumberWithoutField = [
