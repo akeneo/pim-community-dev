@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Domain;
 
-enum PeriodType: string
+enum AggregationType: string
 {
-    case DAY = 'day';
-    case WEEK = 'week';
-    case MONTH = 'month';
-    case YEAR = 'year';
+    case FAMILIES = 'families';
+    case CATEGORIES = 'categories';
 }

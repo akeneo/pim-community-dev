@@ -33,6 +33,7 @@ final class GetHistoricalTimeToEnrichHandler
             $getHistoricalTimeToEnrich->startDate(),
             $getHistoricalTimeToEnrich->endDate(),
             $getHistoricalTimeToEnrich->aggregationPeriodType(),
+            $getHistoricalTimeToEnrich->aggregationType(),
             $getHistoricalTimeToEnrich->channelFilter(),
             $getHistoricalTimeToEnrich->localeFilter(),
             $getHistoricalTimeToEnrich->familyFilter(),

@@ -2,7 +2,7 @@ import React, {FC, useMemo} from 'react';
 import {FetcherContext} from '../contexts';
 import {TimeToEnrich} from '../../TimeToEnrich';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {Channel, Family, Locale} from '../models';
+import {Channel, ChannelCode, Family, FamilyCode, Locale, LocaleCode} from '../models';
 
 const PimFetcherProvider: FC = ({children}) => {
   const router = useRouter();
@@ -12,12 +12,26 @@ const PimFetcherProvider: FC = ({children}) => {
         fetchHistoricalTimeToEnrich: async (
           startDate: string,
           endDate: string,
-          periodType: string
+          periodType: string,
+          aggregationType: string,
+          filters: {
+            families: FamilyCode[];
+            channels: ChannelCode[];
+            locales: LocaleCode[];
+          }
         ): Promise<TimeToEnrich[]> => {
           const response = await fetch(
             router.generate('pimee_performance_analytics_historical_average_tte') +
               '?' +
-              new URLSearchParams({start_date: startDate, end_date: endDate, period_type: periodType}),
+              new URLSearchParams({
+                start_date: startDate,
+                end_date: endDate,
+                period_type: periodType,
+                aggregation_type: aggregationType,
+                families: filters?.families?.join(','),
+                channels: filters?.channels?.join(','),
+                locales: filters?.locales?.join(','),
+              }),
             {
               method: 'GET',
               headers: {

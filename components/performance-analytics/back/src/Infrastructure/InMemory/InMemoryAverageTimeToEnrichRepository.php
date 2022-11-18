@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Infrastructure\InMemory;
 
+use Akeneo\PerformanceAnalytics\Domain\AggregationType;
 use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
 use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
@@ -33,17 +34,18 @@ class InMemoryAverageTimeToEnrichRepository implements AverageTimeToEnrichReposi
         \DateTimeImmutable $startDate,
         \DateTimeImmutable $endDate,
         PeriodType $aggregationPeriodType,
+        AggregationType $aggregationType,
         ?ChannelCode $channelFilter = null,
         ?LocaleCode $localeFilter = null,
         ?FamilyCode $familyFilter = null,
         ?CategoryCode $categoryFilter = null
     ): AverageTimeToEnrichCollection {
-        $averageTimeToEnrichList = match ($aggregationPeriodType->toString()) {
+        $averageTimeToEnrichList = match ($aggregationPeriodType) {
             PeriodType::DAY => $this->generateRandomTimeToEnrichListByDay($startDate, $endDate),
             PeriodType::WEEK => $this->generateRandomTimeToEnrichListByWeek($startDate, $endDate),
             PeriodType::MONTH => $this->generateRandomTimeToEnrichListByMonth($startDate, $endDate),
             PeriodType::YEAR => $this->generateRandomTimeToEnrichListByYear($startDate, $endDate),
-            default => throw new \InvalidArgumentException(\sprintf('The \'%s\' period type is not implemented', $aggregationPeriodType->toString())),
+            default => throw new \InvalidArgumentException(\sprintf('The \'%s\' period type is not implemented', $aggregationPeriodType->name)),
         };
 
         return AverageTimeToEnrichCollection::fromList($averageTimeToEnrichList);

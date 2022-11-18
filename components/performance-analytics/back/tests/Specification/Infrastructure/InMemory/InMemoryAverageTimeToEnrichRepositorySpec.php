@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\PerformanceAnalytics\Infrastructure\InMemory;
 
+use Akeneo\PerformanceAnalytics\Domain\AggregationType;
 use Akeneo\PerformanceAnalytics\Domain\PeriodType;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichCollection;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +26,8 @@ class InMemoryAverageTimeToEnrichRepositorySpec extends ObjectBehavior
         $averageTimeToEnrichList = $this->search(
             $startDate,
             $startDate->modify('+4 weeks'),
-            PeriodType::week()
+            PeriodType::WEEK,
+            AggregationType::FAMILIES
         );
         $averageTimeToEnrichList->shouldHaveType(AverageTimeToEnrichCollection::class);
         $averageTimeToEnrichList->normalize()->shouldHaveCount(5);
@@ -41,7 +43,8 @@ class InMemoryAverageTimeToEnrichRepositorySpec extends ObjectBehavior
         $averageTimeToEnrichList = $this->search(
             $startDate,
             $startDate->modify('+6 DAY'),
-            PeriodType::day()
+            PeriodType::DAY,
+            AggregationType::FAMILIES
         );
 
         $averageTimeToEnrichList->shouldHaveType(AverageTimeToEnrichCollection::class);
@@ -58,7 +61,8 @@ class InMemoryAverageTimeToEnrichRepositorySpec extends ObjectBehavior
         $averageTimeToEnrichList = $this->search(
             $startDate,
             $startDate->modify('+3 MONTH'),
-            PeriodType::month()
+            PeriodType::MONTH,
+            AggregationType::FAMILIES
         );
 
         $averageTimeToEnrichList->shouldHaveType(AverageTimeToEnrichCollection::class);
@@ -75,7 +79,8 @@ class InMemoryAverageTimeToEnrichRepositorySpec extends ObjectBehavior
         $averageTimeToEnrichList = $this->search(
             $startDate,
             $startDate->modify('+3 YEAR'),
-            PeriodType::year()
+            PeriodType::YEAR,
+            AggregationType::FAMILIES
         );
 
         $averageTimeToEnrichList->shouldHaveType(AverageTimeToEnrichCollection::class);

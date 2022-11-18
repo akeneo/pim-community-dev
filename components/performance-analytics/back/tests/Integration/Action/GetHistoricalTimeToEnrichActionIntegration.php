@@ -20,7 +20,7 @@ final class GetHistoricalTimeToEnrichActionIntegration extends ActionIntegration
 {
     public function testItReturnsHistoricalTimeToEnrichByDay(): void
     {
-        $response = $this->launchQuery('2022-09-01', '2022-09-30', 'day');
+        $response = $this->launchQuery('2022-09-01', '2022-09-30', 'day', 'categories');
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
         self::assertSame('application/json', $response->headers->get('Content-type'));
 
@@ -34,7 +34,7 @@ final class GetHistoricalTimeToEnrichActionIntegration extends ActionIntegration
 
     public function testItReturnsHistoricalTimeToEnrichByWeek(): void
     {
-        $response = $this->launchQuery('2022-09-01', '2022-09-30', 'week');
+        $response = $this->launchQuery('2022-09-01', '2022-09-30', 'week', 'families');
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
         self::assertSame('application/json', $response->headers->get('Content-type'));
 
@@ -66,17 +66,19 @@ final class GetHistoricalTimeToEnrichActionIntegration extends ActionIntegration
     public function generateWrongParameters(): array
     {
         return [
-            [['start_date' => 'toto', 'end_date' => '2022-09-30', 'period_type' => 'day']],
-            [['start_date' => '2022-09-01', 'end_date' => 'toto', 'period_type' => 'day']],
-            [['start_date' => '2022-09-01', 'end_date' => '2022-09-30', 'period_type' => 'unknown']],
-            [['end_date' => '2022-09-30', 'period_type' => 'day']],
-            [['start_date' => '2022-09-01', 'period_type' => 'day']],
-            [['start_date' => '2022-09-01', 'end_date' => '2022-09-30']],
-            [['start_date' => '2022-09-30', 'end_date' => '2022-09-29', 'period_type' => 'day']],
+            [['start_date' => 'toto', 'end_date' => '2022-09-30', 'period_type' => 'day', 'aggregation_type' => 'families']],
+            [['start_date' => '2022-09-01', 'end_date' => 'toto', 'period_type' => 'day', 'aggregation_type' => 'families']],
+            [['start_date' => '2022-09-01', 'end_date' => '2022-09-30', 'period_type' => 'unknown', 'aggregation_type' => 'families']],
+            [['end_date' => '2022-09-30', 'period_type' => 'day', 'aggregation_type' => 'families']],
+            [['start_date' => '2022-09-01', 'period_type' => 'day', 'aggregation_type' => 'families']],
+            [['start_date' => '2022-09-01', 'end_date' => '2022-09-30', 'aggregation_type' => 'families']],
+            [['start_date' => '2022-09-30', 'end_date' => '2022-09-29', 'period_type' => 'day', 'aggregation_type' => 'families']],
+            [['start_date' => '2022-09-30', 'end_date' => '2022-10-01', 'period_type' => 'day']],
+            [['start_date' => '2022-09-30', 'end_date' => '2022-10-01', 'period_type' => 'day', 'aggregation_type' => 'unknown']],
         ];
     }
 
-    private function launchQuery(string $startDate, string $endDate, string $periodType): Response
+    private function launchQuery(string $startDate, string $endDate, string $periodType, string $aggregationType): Response
     {
         $this->client->request(
             Request::METHOD_GET,
@@ -85,6 +87,7 @@ final class GetHistoricalTimeToEnrichActionIntegration extends ActionIntegration
                 'start_date' => $startDate,
                 'end_date' => $endDate,
                 'period_type' => $periodType,
+                'aggregation_type' => $aggregationType,
             ],
             [],
             [

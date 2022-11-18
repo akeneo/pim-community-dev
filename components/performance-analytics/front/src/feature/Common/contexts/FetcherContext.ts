@@ -1,10 +1,20 @@
 import {createContext, useContext} from 'react';
 import {TimeToEnrich} from '../../TimeToEnrich';
-import {Channel, Family, Locale} from '../models';
+import {Channel, ChannelCode, Family, FamilyCode, Locale, LocaleCode} from '../models';
 
 type FetcherValue = {
   timeToEnrich: {
-    fetchHistoricalTimeToEnrich: (startDate: string, endDate: string, periodType: string) => Promise<TimeToEnrich[]>;
+    fetchHistoricalTimeToEnrich: (
+      startDate: string,
+      endDate: string,
+      periodType: string,
+      aggregationType: string,
+      filters: {
+        families: FamilyCode[];
+        channels: ChannelCode[];
+        locales: LocaleCode[];
+      }
+    ) => Promise<TimeToEnrich[]>;
   };
   family: {
     fetchFamilies: (limit: number, page: number, search?: string) => Promise<{[key: string]: Family}>;

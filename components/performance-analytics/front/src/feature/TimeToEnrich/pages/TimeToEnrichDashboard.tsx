@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {AddingValueIllustration, Information, SectionTitle, Button} from 'akeneo-design-system';
 import {TimeToEnrichChartLegend, TimeToEnrichControlPanel, TimeToEnrichHistoricalChart} from '../components';
-import {getEndDate, getStartDate, TimeToEnrich, TimeToEnrichFilters} from '../models';
+import {getEndDate, getPeriodType, getStartDate, TimeToEnrich, TimeToEnrichFilters} from '../models';
 import {AkeneoSpinner, defaultFilters, useFetchers} from '../../Common';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -20,13 +20,23 @@ const TimeToEnrichDashboard: FC = () => {
   const translate = useTranslate();
 
   useEffect(() => {
-    const fetchData = async (startDate: string, endDate: string, periodType: string): Promise<TimeToEnrich[]> => {
-      return await fetcher.timeToEnrich.fetchHistoricalTimeToEnrich(startDate, endDate, periodType);
+    const fetchData = async (filters: TimeToEnrichFilters): Promise<TimeToEnrich[]> => {
+      return await fetcher.timeToEnrich.fetchHistoricalTimeToEnrich(
+        getStartDate(filters),
+        getEndDate(filters),
+        getPeriodType(filters),
+        filters.aggregation,
+        {
+          families: filters.families,
+          channels: filters.channels,
+          locales: filters.locales,
+        }
+      );
     };
 
-    const promise1 = fetchData(getStartDate(filters), getEndDate(filters), 'week');
+    const promise1 = fetchData(filters);
     promise1.then(async timeToEnrichList => setReferenceTimeToEnrichList(timeToEnrichList));
-    const promise2 = fetchData(getStartDate(filters), getEndDate(filters), 'week');
+    const promise2 = fetchData(filters);
     promise2.then(async timeToEnrichList => setComparisonTimeToEnrichList(timeToEnrichList));
     Promise.all([promise1, promise2]).then(() => setIsLoading(false));
 

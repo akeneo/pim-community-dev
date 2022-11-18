@@ -16,6 +16,7 @@ namespace Akeneo\PerformanceAnalytics\Infrastructure\InternalAPI;
 use Akeneo\PerformanceAnalytics\Application\Exception\InvalidQueryException;
 use Akeneo\PerformanceAnalytics\Application\Query\GetHistoricalTimeToEnrich;
 use Akeneo\PerformanceAnalytics\Application\Query\GetHistoricalTimeToEnrichHandler;
+use Akeneo\PerformanceAnalytics\Domain\AggregationType;
 use Akeneo\PerformanceAnalytics\Domain\PeriodType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -74,15 +75,25 @@ final class GetHistoricalTimeToEnrichAction
             throw new BadRequestHttpException('The "period_type" parameter is required and should be a string.');
         }
         try {
-            $periodType = PeriodType::fromString($request->get('period_type'));
-        } catch (\Exception) {
+            $periodType = PeriodType::from($request->get('period_type'));
+        } catch (\Throwable) {
             throw new BadRequestHttpException('The "period_type" parameter is not a valid period type.');
+        }
+
+        if (!is_string($request->get('aggregation_type'))) {
+            throw new BadRequestHttpException('The "aggregation_type" parameter is required and should be a string.');
+        }
+        try {
+            $aggregationType = AggregationType::from($request->get('aggregation_type'));
+        } catch (\Throwable) {
+            throw new BadRequestHttpException('The "aggregation_type" parameter is not a valid aggregation type.');
         }
 
         return new GetHistoricalTimeToEnrich(
             $startDate,
             $endDate,
-            $periodType
+            $periodType,
+            $aggregationType
         );
     }
 }

@@ -2,7 +2,7 @@ import React, {FC, useMemo} from 'react';
 import {FetcherContext} from '../contexts';
 import {TimeToEnrich} from '../../TimeToEnrich';
 import moment from 'moment';
-import {Channel, Family, Locale} from '../models';
+import {Channel, ChannelCode, Family, FamilyCode, Locale, LocaleCode} from '../models';
 
 const families: Family[] = Array.from(Array(100).keys()).map((index: number) => {
   return {
@@ -56,7 +56,13 @@ const FakeFetcherProvider: FC = ({children}) => {
         fetchHistoricalTimeToEnrich: (
           startDate: string,
           endDate: string,
-          periodType: string
+          periodType: string,
+          aggregationType: string,
+          filters: {
+            families: FamilyCode[];
+            channels: ChannelCode[];
+            locales: LocaleCode[];
+          }
         ): Promise<TimeToEnrich[]> => {
           const timeToEnrichList: TimeToEnrich[] = [];
           let cursorDate = moment(startDate);

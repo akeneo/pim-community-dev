@@ -31,5 +31,13 @@ const getEndDate: (filters: TimeToEnrichFilters) => string = filters => {
   return date.toISOString().substr(0, 10);
 };
 
+const getPeriodType: (filters: TimeToEnrichFilters) => string = filters => {
+  if (filters.period === PredefinedPeriod.LAST_12_MONTHS) {
+    return 'month';
+  }
+
+  return 'week';
+};
+
 export type {TimeToEnrichFilters};
-export {getStartDate, getEndDate};
+export {getStartDate, getEndDate, getPeriodType};
