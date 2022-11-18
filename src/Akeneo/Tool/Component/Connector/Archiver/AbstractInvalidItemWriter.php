@@ -82,13 +82,14 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
             if ($invalidItemPositions->contains($currentItemPosition)) {
                 $headers = $fileIterator->getHeaders();
 
-                $readItem = $this->removeDataWithEmptyHeaders($headers, $readItem);
+                $readItem = $this->removeValuesWithEmptyHeaders($readItem, $headers);
+                $headers = $this->removeEmptyHeaders($headers);
 
-                $headers = array_filter($headers, function (string $columnName) {
-                    return '' !== trim($columnName);
-                });
+                $headersLength = count($headers);
+                $readItem = $this->padEmptyValuesToReadItem($readItem, $headersLength);
+                $readItem = $this->trimTrailingValuesWithoutHeaders($readItem, $headersLength);
 
-                $invalidItem = array_combine($headers, array_slice($readItem, 0, count($headers)));
+                $invalidItem = array_combine($headers, $readItem);
                 if (false !== $invalidItem) {
                     $itemsToWrite[] = $invalidItem;
                 }
@@ -190,7 +191,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      */
     abstract protected function getFilename(): string;
 
-    private function removeDataWithEmptyHeaders(array $headers, array $readItem): array
+    private function removeValuesWithEmptyHeaders(array $readItem, array $headers): array
     {
         $emptyHeaderKeys = array_keys(array_filter($headers, function (string $columnName) {
             return '' === trim($columnName);
@@ -201,5 +202,22 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
         }
 
         return $readItem;
+    }
+
+    private function removeEmptyHeaders(array $headers): array
+    {
+        return array_filter($headers, function (string $columnName) {
+            return '' !== trim($columnName);
+        });
+    }
+
+    private function padEmptyValuesToReadItem(array $readItem, int $headersLength): array
+    {
+        return array_pad($readItem, $headersLength, '');
+    }
+
+    private function trimTrailingValuesWithoutHeaders(array $readItem, int $headersLength): array
+    {
+        return array_slice($readItem, 0, $headersLength);
     }
 }
