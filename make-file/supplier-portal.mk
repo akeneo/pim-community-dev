@@ -152,9 +152,23 @@ tests-back-supplier-portal: lint-back coupling coupling-list-unused-requirements
 .PHONY: tests-front-supplier-portal
 tests-front-supplier-portal: lint-front unit-front #Doc: Run front tests for Supplier Portal
 
-tests-supplier-portal-retailer: lint-front-retailer unit-front-retailer lint-back-retailer coupling-retailer coupling-list-unused-requirements-retailer unit-back-retailer acceptance-back-retailer integration-back-retailer
+.PHONY: tests-front-retailer
+tests-front-retailer: lint-front-retailer unit-front-retailer
 
-tests-supplier-portal-supplier: lint-front-supplier unit-front-supplier lint-back-supplier coupling-supplier coupling-list-unused-requirements-supplier unit-back-supplier acceptance-back-supplier integration-back-supplier
+.PHONY: tests-back-retailer
+tests-back-retailer: lint-back-retailer coupling-retailer coupling-list-unused-requirements-retailer unit-back-retailer acceptance-back-retailer integration-back-retailer
+
+.PHONY: tests-supplier-portal-retailer
+tests-supplier-portal-retailer: tests-front-retailer tests-back-retailer
+
+.PHONY: tests-front-supplier
+tests-front-supplier: lint-front-supplier unit-front-supplier
+
+.PHONY: tests-back-supplier
+tests-back-supplier: lint-back-supplier coupling-supplier coupling-list-unused-requirements-supplier unit-back-supplier acceptance-back-supplier integration-back-supplier
+
+.PHONY: tests-supplier-portal-supplier
+tests-supplier-portal-supplier: tests-front-supplier tests-back-supplier
 
 .PHONY: build-supplier-portal-supplier-front-app
 build-supplier-portal-supplier-front-app: #Doc: Build Supplier Portal supplier frontend application
