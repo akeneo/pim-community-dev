@@ -49,13 +49,19 @@ test('it displays an existing product mapping', async () => {
 
     const productMappingSchema = {
         properties: {
-            uuid: {},
-            name: {},
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
             body_html: {
                 title: 'Description',
+                type: 'string',
             },
             erp_name: {
                 title: 'ERP',
+                type: 'string',
             },
         },
     };
@@ -122,12 +128,6 @@ test('it displays error pills when mapping is incorrect', async () => {
     };
 
     const productMappingSchema = {
-        $id: 'https://example.com/product',
-        $schema: 'https://api.akeneo.com/mapping/product/0.0.1/schema',
-        $comment: 'My first schema !',
-        title: 'Product Mapping',
-        description: 'JSON Schema describing the structure of products expected by our application',
-        type: 'object',
         properties: {
             uuid: {
                 type: 'string',
