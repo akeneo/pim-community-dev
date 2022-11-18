@@ -1,21 +1,15 @@
 <?php
 
-namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
+namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UpdateIndexesSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
-/**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-class UpdateIndexesSubscriber implements EventSubscriberInterface
+final class SqlUpdateIdentifierPrefixesQuery
 {
     public function __construct(
         private AttributeRepositoryInterface $attributeRepository,
@@ -23,42 +17,10 @@ class UpdateIndexesSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents()
-    {
-        return [
-            StorageEvents::POST_SAVE => 'updateProductIndexes',
-            StorageEvents::POST_SAVE_ALL => 'updateProductsIndexes',
-        ];
-    }
-
-    public function updateProductIndexes(GenericEvent $event): void
-    {
-        $object = $event->getSubject();
-        if (!$object instanceof ProductInterface) {
-            return;
-        }
-
-        $this->updateIndexes([$event->getSubject()]);
-    }
-
-    public function updateProductsIndexes(GenericEvent $event): void
-    {
-        if (!\is_array($event->getSubject())) {
-            return;
-        }
-        foreach ($event->getSubject() as $subject) {
-            if (!$subject instanceof ProductInterface) {
-                return;
-            }
-        }
-
-        $this->updateIndexes($event->getSubject());
-    }
-
     /**
      * @param ProductInterface[] $products
      */
-    private function updateIndexes(array $products): void
+    public function updateFromProducts(array $products)
     {
         $deleteSql = <<<SQL
 DELETE FROM pim_catalog_identifier_generator_prefixes WHERE product_uuid IN (:product_uuids)
