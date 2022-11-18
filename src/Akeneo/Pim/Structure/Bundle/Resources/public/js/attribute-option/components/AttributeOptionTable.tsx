@@ -89,15 +89,17 @@ const AttributeOptionTable = ({
       if (sortedAttributeOptions) {
         setFilteredAttributeOptions(
           sortedAttributeOptions.filter((attributeOption: AttributeOption) => {
+            const search = searchString.toLowerCase().trim();
+
             return (
-              attributeOption.code.toLocaleLowerCase().includes(searchString.toLowerCase().trim()) ||
-              attributeOption.optionValues[locale].value.toLocaleLowerCase().includes(searchString.toLowerCase().trim())
+              attributeOption.code?.toLocaleLowerCase().includes(search) ||
+              attributeOption.optionValues[locale].value?.toLocaleLowerCase().includes(search)
             );
           })
         );
       }
     },
-    [sortedAttributeOptions]
+    [sortedAttributeOptions, locale]
   );
 
   const search = useCallback(
