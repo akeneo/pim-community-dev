@@ -8,6 +8,7 @@ use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Test\Integration\Configuration;
+use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -48,14 +49,34 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testDoNotGetCategoryByCodes(): void
     {
-        $category = $this->get(GetCategoriesInterface::class)->byCodes(['wrong_code'], true);
+        $parameters['sqlWhere'] = 'category.code IN (:category_codes)';
+        $parameters['sqlLimitOffset'] = 'LIMIT 10';
+        $parameters['params'] = [
+            'category_codes' => ['wrong code'],
+            'with_enriched_attributes' => true
+        ];
+        $parameters['types'] = [
+            'category_codes' => Connection::PARAM_STR_ARRAY,
+            'with_enriched_attributes' => \PDO::PARAM_BOOL
+        ];
+        $category = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($category);
         $this->assertEmpty($category);
     }
 
     public function testGetCategoryByCodes(): void
     {
-        $retrievedCategories = $this->get(GetCategoriesInterface::class)->byCodes(['socks', 'shoes'], true);
+        $parameters['sqlWhere'] = 'category.code IN (:category_codes)';
+        $parameters['sqlLimitOffset'] = 'LIMIT 10';
+        $parameters['params'] = [
+            'category_codes' => ['socks', 'shoes'],
+            'with_enriched_attributes' => true
+        ];
+        $parameters['types'] = [
+            'category_codes' => Connection::PARAM_STR_ARRAY,
+            'with_enriched_attributes' => \PDO::PARAM_BOOL
+        ];
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($retrievedCategories);
         // we retrieve 2 out of the 3 existing categories
         $this->assertCount(2, $retrievedCategories);
@@ -112,7 +133,17 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testGetCategoryByCodesWithoutEnrichedCategories(): void
     {
-        $retrievedCategories = $this->get(GetCategoriesInterface::class)->byCodes(['shoes'], false);
+        $parameters['sqlWhere'] = 'category.code IN (:category_codes)';
+        $parameters['sqlLimitOffset'] = 'LIMIT 10';
+        $parameters['params'] = [
+            'category_codes' => ['shoes'],
+            'with_enriched_attributes' => false
+        ];
+        $parameters['types'] = [
+            'category_codes' => Connection::PARAM_STR_ARRAY,
+            'with_enriched_attributes' => \PDO::PARAM_BOOL
+        ];
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($retrievedCategories);
         // we retrieve 1 out of the 3 existing categories
         $this->assertCount(1, $retrievedCategories);
