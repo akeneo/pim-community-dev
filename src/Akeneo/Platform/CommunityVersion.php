@@ -15,7 +15,7 @@ class CommunityVersion
     public const VERSION = '6.0.53';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Bully for Bugs';
+    const VERSION_CODENAME = 'Buccaneer Bunny';
 
     /** @staticvar string */
     const EDITION = 'CE';
