@@ -18,10 +18,6 @@ security:
             pattern:                        ^/(_(profiler|wdt)|css|images|js)/
             security:                       false
 
-        install:
-            pattern:                        ^/installer
-            security:                       false
-
         login:
             pattern:                        ^/user/(login|reset-request|send-email|check-email)$
             provider:                       chain_provider
@@ -44,6 +40,7 @@ security:
 
         app_scopes_update:
             pattern:                        ^/connect/apps/v1/scopes/update
+#            fos_oauth:                      true
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
             provider:                       pim_user_api
@@ -55,7 +52,7 @@ security:
         api:
             pattern:                        ^/api
             stateless:                      true
-            json_login:                     ~
+#            fos_oauth:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
             provider:                       pim_user_api
 
@@ -76,13 +73,11 @@ security:
                 samesite:                   'lax'
 
     access_control:
-        - { path: ^/ , roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/user/(login|reset-request|send-email|check-email)$, roles: PUBLIC_ACCESS }
         - { path: ^/user/reset/*, roles: PUBLIC_ACCESS }
-        - { path: ^/installer, roles: PUBLIC_ACCESS }
-        - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/api/rest/v1$, role: PUBLIC_ACCESS }
         - { path: ^/api/, role: pim_api_overall_access }
+        - { path: ^/ , roles: IS_AUTHENTICATED_FULLY }
 
 acl:
     connection: default

@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * User rest controller.
+ * User rest controller
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -46,24 +46,57 @@ class UserController
     private const PASSWORD_MINIMUM_LENGTH = 8;
     private const PASSWORD_MAXIMUM_LENGTH = 4096;
 
+    protected TokenStorageInterface $tokenStorage;
+    protected NormalizerInterface $normalizer;
+    protected ObjectRepository $repository;
+    protected ObjectUpdaterInterface $updater;
+    protected ValidatorInterface $validator;
+    protected SaverInterface $saver;
+    protected NormalizerInterface $constraintViolationNormalizer;
+    protected SimpleFactoryInterface $factory;
+    protected UserPasswordHasherInterface $encoder;
+    private EventDispatcherInterface $eventDispatcher;
+    private Session $session;
+    private ObjectManager $objectManager;
+    private NumberFactory $numberFactory;
+    private RemoverInterface $remover;
+    private TranslatorInterface $translator;
+    private SecurityFacade $securityFacade;
+
     public function __construct(
-        protected Security $security,
-        protected NormalizerInterface $normalizer,
-        protected ObjectRepository $repository,
-        protected ObjectUpdaterInterface $updater,
-        protected ValidatorInterface $validator,
-        protected SaverInterface $saver,
-        protected NormalizerInterface $constraintViolationNormalizer,
-        protected SimpleFactoryInterface $factory,
-        protected UserPasswordHasherInterface $encoder,
-        private EventDispatcherInterface $eventDispatcher,
-        private Session $session,
-        private ObjectManager $objectManager,
-        private RemoverInterface $remover,
-        private NumberFactory $numberFactory,
-        private TranslatorInterface $translator,
-        private SecurityFacade $securityFacade
+        TokenStorageInterface $tokenStorage,
+        NormalizerInterface $normalizer,
+        ObjectRepository $repository,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        SaverInterface $saver,
+        NormalizerInterface $constraintViolationNormalizer,
+        SimpleFactoryInterface $factory,
+        UserPasswordHasherInterface $encoder,
+        EventDispatcherInterface $eventDispatcher,
+        Session $session,
+        ObjectManager $objectManager,
+        RemoverInterface $remover,
+        NumberFactory $numberFactory,
+        TranslatorInterface $translator,
+        SecurityFacade $securityFacade
     ) {
+        $this->tokenStorage = $tokenStorage;
+        $this->normalizer = $normalizer;
+        $this->repository = $repository;
+        $this->updater = $updater;
+        $this->validator = $validator;
+        $this->saver = $saver;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->factory = $factory;
+        $this->encoder = $encoder;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->session = $session;
+        $this->objectManager = $objectManager;
+        $this->remover = $remover;
+        $this->numberFactory = $numberFactory;
+        $this->translator = $translator;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -71,7 +104,8 @@ class UserController
      */
     public function getCurrentAction()
     {
-        $user = $this->security->getUser();
+        $token = $this->tokenStorage->getToken();
+        $user = null !== $token ? $token->getUser() : null;
 
         if (null === $user) {
             throw new NotFoundHttpException('No logged in user found');
@@ -84,9 +118,15 @@ class UserController
         return new JsonResponse($result);
     }
 
+    /**
+     * @param int $identifier
+     *
+     * @return JsonResponse
+     */
     public function getAction(int $identifier): JsonResponse
     {
-        $currentUserIdentifier = $this->security->getUser()->getId();
+        $token = $this->tokenStorage->getToken();
+        $currentUserIdentifier = null !== $token ? $token->getUser()->getId() : null;
 
         if (
             $currentUserIdentifier !== $identifier &&
@@ -101,7 +141,10 @@ class UserController
     }
 
     /**
-     * @param int $identifier
+     * @param Request $request
+     * @param int     $identifier
+     *
+     * @return Response
      *
      * @AclAncestor("pim_user_user_edit")
      */
@@ -114,7 +157,7 @@ class UserController
         $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
 
-        // code is useful to reach the route, cannot forget it in the query
+        //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
         unset($data['visible_group_ids']);
 
@@ -130,8 +173,8 @@ class UserController
 
     /**
      * @return JsonResponse|RedirectResponse
-     *
      * @throws \HttpException
+     *
      */
     public function updateProfileAction(Request $request, int $identifier): Response
     {
@@ -142,7 +185,8 @@ class UserController
         $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
 
-        $currentUser = $this->security->getUser();
+        $token = $this->tokenStorage->getToken();
+        $currentUser = null !== $token ? $token->getUser() : null;
         if (null === $currentUser || $currentUser->getId() !== $user->getId()) {
             throw new AccessDeniedHttpException();
         }
@@ -159,7 +203,7 @@ class UserController
     {
         $this->eventDispatcher->dispatch(
             new GenericEvent($user, [
-                'current_user' => $this->security->getUser(),
+                'current_user' => $this->tokenStorage->getToken()->getUser(),
                 'previous_username' => $previousUsername,
             ]),
             UserEvent::POST_UPDATE
@@ -265,6 +309,12 @@ class UserController
         return new JsonResponse($this->normalizer->normalize($targetUser, 'internal_api'));
     }
 
+    /**
+     * @param Request $request
+     * @param int     $identifier
+     *
+     * @return Response
+     */
     public function deleteAction(Request $request, int $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
@@ -273,8 +323,9 @@ class UserController
 
         $user = $this->getUserOr404($identifier);
 
-        $currentUser = $this->security->getUser();
-        if (null !== $currentUser && $user->getId() === $currentUser->getId()) {
+        $token = $this->tokenStorage->getToken();
+        $currentUser = null !== $token ? $token->getUser() : null;
+        if ($currentUser !== null && $user->getId() === $currentUser->getId()) {
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
@@ -292,12 +343,20 @@ class UserController
         $user = $this->repository->findOneBy(['id' => $identifier]);
 
         if (null === $user || true === $user->isApiUser()) {
-            throw new NotFoundHttpException(sprintf('Username with id "%s" not found', $identifier));
+            throw new NotFoundHttpException(
+                sprintf('Username with id "%s" not found', $identifier)
+            );
         }
 
         return $user;
     }
 
+    /**
+     * @param UserInterface $user
+     * @param array $data
+     *
+     * @return JsonResponse
+     */
     private function updateUser(UserInterface $user, array $data): JsonResponse
     {
         $violations = new ConstraintViolationList();
@@ -306,7 +365,7 @@ class UserController
         $previousUserName = $user->getUserIdentifier();
         if ($this->isPasswordUpdating($data)) {
             $passwordViolations = $this->validatePassword($user, $data);
-            if (0 === $passwordViolations->count()) {
+            if ($passwordViolations->count() === 0) {
                 $data['password'] = $data['new_password'];
             }
         }
