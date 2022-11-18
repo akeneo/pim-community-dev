@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {getColor, Pill, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourceLabel} from './SourceLabel';
+import {Source} from '../models/Source';
 
 const TargetCell = styled(Table.Cell)`
     width: 215px;
@@ -18,27 +19,28 @@ const ErrorPill = styled(Pill)`
 `;
 
 type Props = {
+    isSelected: boolean;
     targetCode: string;
     targetLabel: string | undefined;
-    sourceCode: string | null;
-    onClick: (targetCode: string) => void;
+    source: Source | null;
+    onClick: (targetCode: string, source: Source|null) => void;
     hasError: boolean;
 };
 
-export const TargetSourceAssociation: FC<Props> = memo(({targetCode, targetLabel, sourceCode, onClick, hasError}) => {
+export const TargetSourceAssociation: FC<Props> = memo(({isSelected, targetCode, targetLabel, source, onClick, hasError}) => {
     const translate = useTranslate();
 
     return (
-        <Table.Row key={targetCode} onClick={() => onClick(targetCode)}>
+        <Table.Row key={targetCode} onClick={() => onClick(targetCode, source)} isSelected={isSelected} >
             <TargetCell>{targetLabel ?? targetCode}</TargetCell>
-            {null === sourceCode && (
+            {(null === source || null === source.source) && (
                 <PlaceholderCell>
                     {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
                 </PlaceholderCell>
             )}
-            {sourceCode && (
+            {null !== source && source.source && (
                 <Table.Cell>
-                    <SourceLabel sourceCode={sourceCode} />
+                    <SourceLabel sourceCode={source.source} />
                     {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
                 </Table.Cell>
             )}

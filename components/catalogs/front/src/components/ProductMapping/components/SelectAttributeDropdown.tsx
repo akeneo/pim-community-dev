@@ -1,32 +1,36 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
-import {Button, Dropdown, Field, GroupsIllustration, Search, SelectInput} from 'akeneo-design-system';
+import {Dropdown, Field, GroupsIllustration, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteAttributes} from '../hooks/useInfiniteAttributes';
 import {Attribute} from '../../models/Attribute';
+import {useAttribute} from '../../../hooks/useAttribute';
+import styled from 'styled-components';
 
+const SelectAttributeDropdownField = styled(Field)`
+    margin-top: 15px;
+`;
 
-export const SelectSourceDropdown: FC<{}> = () => {
+type Props = {
+    code: string;
+    onChange: (value : Attribute) => void;
+};
+
+export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
     const [isInvalid, setIsInvalid] = useState<boolean>(false);
     const {data: attributes, fetchNextPage} = useInfiniteAttributes({search});
-    const [value, setValue] = useState<string>('');
+    const {data: attribute} = useAttribute(code);
 
     const handleAttributeSelection = useCallback(
         (attribute: Attribute) => {
-            console.log(attribute);
-            setValue(attribute.label);
+            onChange(attribute);
+            setIsOpen(false);
         },
-        []
+        [onChange]
     );
 
-    const handleOpenDropDown = useCallback(
-        () => {
-            setIsOpen(true);
-        },
-        []
-    );
     const handlePreventSelect = useCallback(
         (e) => {
             e.preventDefault();
@@ -37,16 +41,16 @@ export const SelectSourceDropdown: FC<{}> = () => {
 
     return (
         <>
-            <Field label="My field label">
+            <SelectAttributeDropdownField label="My field label">
                 <Dropdown>
-                    <SelectInput onClick={handleOpenDropDown} onMouseDown={handlePreventSelect}
+                    <SelectInput onMouseDown={handlePreventSelect}
                         emptyResultLabel=''
                         openLabel=''
-                        value={value}
+                        value={attribute?.label ?? (code.length > 0 ? `[${code}]` : '')}
                         onChange={() => null}
                         clearable={false}
                         invalid={isInvalid}
-                        data-testid='value'
+                        data-testid='product-mapping-select-attribute'
                     >
                     </SelectInput>
                     {isOpen && (
@@ -72,7 +76,8 @@ export const SelectSourceDropdown: FC<{}> = () => {
                                 )}
                                 {attributes?.map(attribute => (
                                     <Dropdown.Item key={attribute.code}
-                                                   onClick={() => handleAttributeSelection(attribute)}>
+                                                   onClick={() => handleAttributeSelection(attribute)}
+                                                   isActive={attribute.code === code}>
                                         {attribute.label}
                                     </Dropdown.Item>
                                 ))}
@@ -80,7 +85,7 @@ export const SelectSourceDropdown: FC<{}> = () => {
                         </Dropdown.Overlay>
                     )}
                 </Dropdown>
-            </Field>
+            </SelectAttributeDropdownField>
         </>
     );
 };

@@ -2,14 +2,13 @@ import React, {FC, useCallback, useState} from 'react';
 import styled from 'styled-components';
 import {getColor, SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {SourcePlaceholder} from './components/SourcePlaceholder';
 import {TargetPlaceholder} from './components/TargetPlaceholder';
 import {ProductMapping as ProductMappingType} from './models/ProductMapping';
 import {ProductMappingSchema} from './models/ProductMappingSchema';
 import {TargetSourceAssociation} from './components/TargetSourceAssociation';
-import {SourceLabel} from './components/SourceLabel';
 import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
+import {Source} from './models/Source';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -33,16 +32,29 @@ type Props = {
     productMapping: ProductMappingType;
     productMappingSchema?: ProductMappingSchema;
     errors: ProductMappingErrors;
+    onChange: (values: ProductMappingType) => void;
 };
 
-export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema, errors}) => {
+export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema, errors, onChange}) => {
     const translate = useTranslate();
 
-    const [selectedTarget, setSelectedTarget] = useState<string>();
+    const [selectedTarget, setSelectedTarget] = useState<string|null>(null);
+    const [selectedSource, setSelectedSource] = useState<Source|null>(null);
 
-    const handleClick = useCallback(targetCode => {
+    const handleClick = useCallback((targetCode, source) => {
         setSelectedTarget(targetCode);
-    }, []);
+        setSelectedSource(source);
+    }, [selectedTarget]);
+
+    const handleSourceUpdate = useCallback((source: Source) => {
+        if (selectedTarget !== null) {
+            onChange({
+                ...productMapping,
+                [selectedTarget]: source,
+            });
+            setSelectedSource(source);
+        }
+    }, [selectedTarget, onChange]);
 
     const targets = Object.entries(productMapping ?? {});
 
@@ -91,11 +103,12 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
 
                                     return (
                                         <TargetSourceAssociation
+                                            isSelected={selectedTarget === targetCode}
                                             key={targetCode}
                                             onClick={handleClick}
                                             targetCode={targetCode}
                                             targetLabel={productMappingSchema.properties[targetCode]?.title}
-                                            sourceCode={source.source}
+                                            source={source}
                                             hasError={targetsWithErrors.includes(targetCode)}
                                         />
                                     );
@@ -106,15 +119,11 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                 </Table>
             </TargetContainer>
             <SourceContainer>
-                {/*{selectedTarget === undefined && <SourcePlaceholder />}*/}
-                {/*{selectedTarget && (*/}
-                {/*    <SectionTitle>*/}
-                {/*        <SectionTitle.Title>*/}
-                {/*            <SourceLabel sourceCode={selectedTarget} />*/}
-                {/*        </SectionTitle.Title>*/}
-                {/*    </SectionTitle>*/}
-                {/*)}*/}
-                <SourcePanel selectedTarget={selectedTarget}></SourcePanel>
+                <SourcePanel
+                    target={selectedTarget}
+                    source={selectedSource}
+                    onChange={handleSourceUpdate}
+                ></SourcePanel>
             </SourceContainer>
         </MappingContainer>
     );

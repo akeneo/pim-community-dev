@@ -1,30 +1,44 @@
-import React, {FC} from 'react';
-import {Badge, SectionTitle} from 'akeneo-design-system';
+import React, {FC, useCallback} from 'react';
+import {SectionTitle, Tag} from 'akeneo-design-system';
 import {SourcePlaceholder} from './SourcePlaceholder';
-import {SelectSourceDropdown} from './SelectSourceDropdown';
+import {SelectAttributeDropdown} from './SelectAttributeDropdown';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
+import {Source} from '../models/Source';
+import {Attribute} from '../../models/Attribute';
+
 
 type Props = {
-    selectedTarget: string|undefined;
+    target: string|null;
+    source: Source|null;
+    onChange: (value : Source) => void;
 };
 
-export const SourcePanel: FC<Props> = ({selectedTarget}) => {
+export const SourcePanel: FC<Props> = ({target, source, onChange}) => {
     const translate = useTranslate();
+    const handleSourceSelection = useCallback((value: Attribute) => {
+        onChange({
+            source: value.code,
+            locale: null,
+            scope: null
+        });
+    }, [target, onChange]);
 
     return (
         <>
-            {selectedTarget === undefined && <SourcePlaceholder/>}
-            {selectedTarget && (
+            {target === null && <SourcePlaceholder/>}
+            {target && (
                 <>
                     <SectionTitle>
-                        <SectionTitle.Title>{selectedTarget}</SectionTitle.Title>
+                        <SectionTitle.Title>{target}</SectionTitle.Title>
                     </SectionTitle>
                     <SectionTitle>
-                        <Badge level="secondary">1</Badge>
+                        <Tag tint="purple">1</Tag>
                         <SectionTitle.Title level="secondary">{translate('akeneo_catalogs.product_mapping.source.title')}</SectionTitle.Title>
                     </SectionTitle>
-                    <SelectSourceDropdown></SelectSourceDropdown>
+                    <SelectAttributeDropdown
+                        code={null !== source && null !== source.source ? source.source : ''}
+                        onChange={handleSourceSelection}
+                    ></SelectAttributeDropdown>
                 </>
             )}
         </>

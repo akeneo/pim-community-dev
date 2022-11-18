@@ -29,13 +29,17 @@ const ProductMappingWrapper: FC<
         catalogId: string;
         productMapping: ProductMappingType;
         errors: ProductMappingErrors;
+        onChange: (values: ProductMappingType) => void;
     }>
-> = ({catalogId, productMapping, errors}) => {
+> = ({catalogId, productMapping, onChange, errors}) => {
     const {data: productMappingSchema} = useProductMappingSchema(catalogId);
 
-    return (
-        <ProductMapping productMapping={productMapping} productMappingSchema={productMappingSchema} errors={errors} />
-    );
+    return <ProductMapping
+        productMapping={productMapping}
+        productMappingSchema={productMappingSchema}
+        onChange={onChange}
+        errors={errors}
+    />;
 };
 
 const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
@@ -61,6 +65,13 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
     /* istanbul ignore next */
     const handleFilterValuesChange = useCallback(
         value => dispatch({type: CatalogFormActions.SET_PRODUCT_VALUE_FILTERS, value: value}),
+        [dispatch]
+    );
+    /* istanbul ignore next */
+    const handleMappingChange = useCallback(
+        value => {
+            dispatch({type: CatalogFormActions.SET_PRODUCT_MAPPING, value: value})
+        },
         [dispatch]
     );
 
@@ -94,6 +105,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
                 <ProductMappingWrapper
                     catalogId={id}
                     productMapping={values.product_mapping}
+                    onChange={handleMappingChange}
                     errors={mapProductMappingSourceErrors(errors, Object.keys(values.product_mapping))}
                 />
             )}
