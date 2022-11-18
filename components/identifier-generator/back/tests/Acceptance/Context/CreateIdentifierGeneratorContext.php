@@ -304,7 +304,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with delimiter ':delimiter'
+     * @When /^I try to create an identifier generator with delimiter '(?P<delimiter>[^']*)'$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
     {

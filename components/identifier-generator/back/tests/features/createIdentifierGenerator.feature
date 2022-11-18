@@ -71,7 +71,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with an empty delimiter
-    When I try to create an identifier generator with an empty delimiter
+    When I try to create an identifier generator with delimiter ''
     Then I should get an error with message 'delimiter: This value should not be blank.'
     And the identifier should not be created
 

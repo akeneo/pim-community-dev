@@ -403,7 +403,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with delimiter ':delimiter'
+     * @When /^I try to update an identifier generator with delimiter '(?P<delimiter>[^']*)'$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
     {
