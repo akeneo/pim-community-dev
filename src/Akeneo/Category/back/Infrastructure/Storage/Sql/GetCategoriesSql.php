@@ -12,64 +12,23 @@ use Doctrine\DBAL\Connection;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCategoriesSql implements GetCategoriesInterface
+final class GetCategoriesSql implements GetCategoriesInterface
 {
     public function __construct(private readonly Connection $connection)
     {
     }
 
-    public function afterOffset(
-        array $categoryCodes,
-        int $limit,
-        int $offset,
-        bool $isEnrichedAttributes
-    ): array
-    {
-        $condition['sqlWhere'] = $this->searchFilter($categoryCodes);
-        $condition['limitOffset'] = $this->buildLimitOffset($limit, $offset);
-        $condition['params'] = [
-            'category_codes' => $categoryCodes,
-            'with_enriched_attributes' => $isEnrichedAttributes ?: false
-        ];
-        $condition['types'] = [
-            'category_codes' => Connection::PARAM_STR_ARRAY,
-            'with_enriched_attributes' => \PDO::PARAM_BOOL
-        ];
-
-        return $this->execute($condition);
-    }
-    //TODO: Will be replaced by filtering service. https://akeneo.atlassian.net/browse/GRF-376
-    public function searchFilter(array $searchParameter): string
-    {
-        if (empty($searchParameter)) {
-            $sqlWhere = '1=1';
-        } else {
-            $sqlWhere = 'category.code IN (:category_codes)';
-        }
-        return $sqlWhere;
-    }
-
-    private function buildLimitOffset(int $limit, int $offset): string
-    {
-        $sqlLimitAndOffset = sprintf('LIMIT %d', $limit);
-        if ($offset !== 0){
-            $sqlLimitAndOffset .= sprintf(' OFFSET %d', $offset);
-        }
-
-        return $sqlLimitAndOffset;
-    }
-
     /**
-     * @param array $condition
+     * @param array<int, mixed>|array<string, mixed> $parameters
      *
      * @return array<Category>
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
      */
-    private function execute(array $condition): array
+    public function execute(array $parameters): array
     {
-        $sqlWhere = $condition['sqlWhere'];
-        $sqlLimitOffset = $condition['limitOffset'];
+        $sqlWhere = $parameters['sqlWhere'];
+        $sqlLimitOffset = $parameters['sqlLimitOffset'];
 
         $sqlQuery = <<<SQL
             WITH translation as (
@@ -97,8 +56,8 @@ class GetCategoriesSql implements GetCategoriesInterface
 
         $results = $this->connection->executeQuery(
             $sqlQuery,
-            $condition['params'],
-            $condition['types']
+            $parameters['params'],
+            $parameters['types']
         )->fetchAllAssociative();
 
         if (!$results) {
