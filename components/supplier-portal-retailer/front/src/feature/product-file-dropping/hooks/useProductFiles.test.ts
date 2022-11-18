@@ -10,6 +10,7 @@ const backendResponse = {
             uploadedByContributor: 'a@a.a',
             uploadedBySupplier: 'test',
             hasUnreadComments: true,
+            importStatus: 'in_progress',
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
@@ -18,6 +19,7 @@ const backendResponse = {
             uploadedByContributor: 'a@a.a',
             uploadedBySupplier: 'test',
             hasUnreadComments: false,
+            importStatus: 'in_progress',
         },
     ],
     total: 2,
@@ -43,6 +45,7 @@ test('it loads the product files', async () => {
             contributor: 'a@a.a',
             supplier: 'test',
             hasUnreadComments: true,
+            importStatus: 'in_progress',
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
@@ -50,6 +53,7 @@ test('it loads the product files', async () => {
             contributor: 'a@a.a',
             supplier: 'test',
             hasUnreadComments: false,
+            importStatus: 'in_progress',
         },
     ]);
     expect(result.current[1]).toBe(backendResponse.total);

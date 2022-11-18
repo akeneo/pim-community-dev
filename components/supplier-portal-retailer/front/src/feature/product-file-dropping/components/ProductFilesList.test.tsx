@@ -4,7 +4,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ProductFilesList} from './ProductFilesList';
 import {ProductFileRow} from '../hooks';
 import userEvent from '@testing-library/user-event';
-import {ImportStatus} from "../models/ProductFileRow";
+import {ImportStatus} from '../models/ProductFileRow';
 
 const productFilesList: ProductFileRow[] = [
     {
@@ -60,9 +60,15 @@ test('it renders a list of product files', () => {
     );
     expect(screen.queryAllByText('mega supplier').length).toBe(5);
     expect(screen.queryAllByText('07/25/2022, 08:00 AM').length).toBe(5);
-    expect(screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.to_import').length).toBe(2);
-    expect(screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.completed').length).toBe(2);
-    expect(screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.in_progress').length).toBe(1);
+    expect(
+        screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.to_import').length
+    ).toBe(2);
+    expect(
+        screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.completed').length
+    ).toBe(2);
+    expect(
+        screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.in_progress').length
+    ).toBe(1);
 });
 
 test('it renders a paginated list of product files', async () => {
