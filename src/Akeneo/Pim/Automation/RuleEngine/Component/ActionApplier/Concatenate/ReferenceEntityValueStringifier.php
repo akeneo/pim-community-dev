@@ -106,6 +106,6 @@ final class ReferenceEntityValueStringifier extends AbstractValueStringifier imp
         return null === $labelLocale
             ? $stringRecordCode
             : $recordDetails->labels->getLabel($labelLocale) ?? $stringRecordCode
-            ;
+        ;
     }
 }

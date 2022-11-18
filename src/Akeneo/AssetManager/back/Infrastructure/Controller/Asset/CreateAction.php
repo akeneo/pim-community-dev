@@ -108,7 +108,6 @@ class CreateAction
             $namingConventionEditCommand = $this->getNamingConventionEditCommand($request);
         } catch (NamingConventionException $e) {
             if ($e->namingConventionAbortOnError()) {
-
                 // TODO AST-410
                 // FIXME: This is a dirty fix to display the error messages in the UI, find a better solution
                 // Also, error message should be translated

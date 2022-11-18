@@ -41,8 +41,6 @@ final class CleanAssetFamilyIdentifierOnAttributeCreationSubscriber implements E
 
     public function cleanAssetFamilyIdentifier(GenericEvent $event)
     {
-        $assetFamilyIdentifier = null;
-        $assetFamily = null;
         $attribute = $event->getSubject();
         if (!$attribute instanceof AttributeInterface) {
             return;
@@ -53,7 +51,7 @@ final class CleanAssetFamilyIdentifierOnAttributeCreationSubscriber implements E
         }
 
         try {
-            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(strval($attribute->getProperty('reference_data_name')));
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString((string) $attribute->getProperty('reference_data_name'));
         } catch (\InvalidArgumentException) {
             return;
         }
@@ -61,7 +59,7 @@ final class CleanAssetFamilyIdentifierOnAttributeCreationSubscriber implements E
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
 
         if (null !== $assetFamily) {
-            $attribute->setProperty('reference_data_name', strval($assetFamily->getIdentifier()));
+            $attribute->setProperty('reference_data_name', (string) $assetFamily->getIdentifier());
         }
     }
 }

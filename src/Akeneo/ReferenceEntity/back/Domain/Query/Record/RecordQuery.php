@@ -196,7 +196,7 @@ class RecordQuery
         foreach ($this->filters as $filter) {
             if ('values.*' === $field) {
                 preg_match('/' . $field . '/', $filter['field'], $matches);
-                if (\count($matches) > 0) {
+                if (!empty($matches)) {
                     return true;
                 }
             }

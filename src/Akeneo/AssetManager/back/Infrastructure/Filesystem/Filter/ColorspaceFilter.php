@@ -26,12 +26,11 @@ class ColorspaceFilter implements LoaderInterface
     {
         Assert::keyExists($options, 'colorspace');
 
-        switch ($options['colorspace']) {
-            case 'grey': $image->usePalette(new Grayscale()); break;
-            case 'cmyk': $image->usePalette(new CMYK()); break;
-            case 'rgb':
-            default: $image->usePalette(new RGB());
-        }
+        match ($options['colorspace']) {
+            'grey' => $image->usePalette(new Grayscale()),
+            'cmyk' => $image->usePalette(new CMYK()),
+            default => $image->usePalette(new RGB()),
+        };
 
         return $image;
     }
