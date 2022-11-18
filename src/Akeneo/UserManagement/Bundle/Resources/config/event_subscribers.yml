@@ -57,3 +57,11 @@ services:
             - '@oro_security.acl.manager'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\UserManagement\Bundle\EventListener\RateLimitLoginThrottlingListener:
+        arguments:
+            - '@pim_user.manager'
+            - '%pim_user.account_lock.duration%'
+            - '%pim_user.account_lock.max_consecutive_failures%'
+        tags:
+           - {name: 'kernel.event_subscriber', dispatcher: 'security.event_dispatcher.main'}

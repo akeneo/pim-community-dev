@@ -13,11 +13,11 @@ use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\FirewallMapInterface;
 
 /**
- * User context that provides access to user locale, channel and default category tree.
+ * User context that provides access to user locale, channel and default category tree
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -26,27 +26,70 @@ use Symfony\Component\Security\Http\FirewallMapInterface;
 class UserContext
 {
     /** @staticvar string */
-    public const REQUEST_LOCALE_PARAM = 'dataLocale';
+    const REQUEST_LOCALE_PARAM = 'dataLocale';
 
     /** @staticvar string */
-    public const USER_PRODUCT_CATEGORY_TYPE = 'product';
+    const USER_PRODUCT_CATEGORY_TYPE = 'product';
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
+    /** @var RequestStack */
+    protected $requestStack;
+
+    /** @var array */
+    protected $userLocales;
+
+    /** @var LocaleInterface */
+    protected $currentLocale;
+
+    /** @var string */
+    protected $defaultLocale;
+
+    protected FirewallMapInterface $firewall;
+
+    /**
+     * @param TokenStorageInterface       $tokenStorage
+     * @param LocaleRepositoryInterface   $localeRepository
+     * @param ChannelRepositoryInterface  $channelRepository
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param RequestStack                $requestStack
+     * @param string                      $defaultLocale
+     */
     public function __construct(
-        protected Security $security,
-        protected LocaleRepositoryInterface $localeRepository,
-        protected ChannelRepositoryInterface $channelRepository,
-        protected CategoryRepositoryInterface $categoryRepository,
-        protected RequestStack $requestStack,
-        protected string $defaultLocale,
-        protected FirewallMapInterface $firewall
+        TokenStorageInterface $tokenStorage,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        RequestStack $requestStack,
+        $defaultLocale,
+        FirewallMapInterface $firewall
     ) {
+        $this->tokenStorage = $tokenStorage;
+        $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
+        $this->categoryRepository= $categoryRepository;
+        $this->requestStack = $requestStack;
+        $this->defaultLocale = $defaultLocale;
+        $this->firewall = $firewall;
     }
 
     /**
      * Returns the current locale from the request or the user's catalog locale
-     * or the first activated locale.
+     * or the first activated locale
      *
      * @throws \LogicException When there are no activated locales
+     *
+     * @return LocaleInterface
      */
     public function getCurrentLocale(): LocaleInterface
     {
@@ -109,7 +152,9 @@ class UserContext
     }
 
     /**
-     * Returns the current locale code.
+     * Returns the current locale code
+     *
+     * @return string
      */
     public function getCurrentLocaleCode(): string
     {
@@ -117,13 +162,13 @@ class UserContext
     }
 
     /**
-     * Returns active locales.
+     * Returns active locales
      *
      * @return LocaleInterface[]
      */
     public function getUserLocales(): array
     {
-        if (null === $this->userLocales) {
+        if ($this->userLocales === null) {
             $this->userLocales = $this->localeRepository->getActivatedLocales();
         }
 
@@ -131,7 +176,9 @@ class UserContext
     }
 
     /**
-     * Returns the codes of active locales.
+     * Returns the codes of active locales
+     *
+     * @return array
      */
     public function getUserLocaleCodes(): array
     {
@@ -144,7 +191,9 @@ class UserContext
     }
 
     /**
-     * Get user channel.
+     * Get user channel
+     *
+     * @return ChannelInterface
      */
     public function getUserChannel(): ChannelInterface
     {
@@ -158,7 +207,9 @@ class UserContext
     }
 
     /**
-     * Get user channel code.
+     * Get user channel code
+     *
+     * @return string
      */
     public function getUserChannelCode(): string
     {
@@ -166,7 +217,7 @@ class UserContext
     }
 
     /**
-     * Get channel choices with user channel code first.
+     * Get channel choices with user channel code first
      *
      * @return string[]
      */
@@ -191,6 +242,8 @@ class UserContext
      * For the given $relatedEntity of category asked, return the default user category.
      *
      * @param string $relatedEntity
+     *
+     * @return CategoryInterface|null
      */
     public function getUserCategoryTree($relatedEntity): ?CategoryInterface
     {
@@ -202,7 +255,9 @@ class UserContext
     }
 
     /**
-     * Get user product category tree.
+     * Get user product category tree
+     *
+     * @return CategoryInterface
      */
     public function getUserProductCategoryTree(): CategoryInterface
     {
@@ -215,6 +270,8 @@ class UserContext
      * Return the current user's timezone.
      *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function getUserTimezone(): string
     {
@@ -227,7 +284,7 @@ class UserContext
     }
 
     /**
-     * Returns the UI user locale.
+     * Returns the UI user locale
      *
      * @return LocaleInterface|null
      */
@@ -237,7 +294,7 @@ class UserContext
     }
 
     /**
-     * Returns the UI user locale code.
+     * Returns the UI user locale code
      *
      * @return string
      */
@@ -251,15 +308,25 @@ class UserContext
     }
 
     /**
-     * Get authenticated user.
+     * Get authenticated user
+     *
+     * @return UserInterface|null
      */
-    public function getUser(): ?UserInterface
+    public function getUser()
     {
-        return $this->security->getUser();
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
     }
 
     /**
-     * Get the user context as an array.
+     * Get the user context as an array
      *
      * @return array
      */
@@ -269,10 +336,10 @@ class UserContext
         $locales = $this->getUserLocaleCodes();
 
         return [
-            'locales' => $locales,
+            'locales'  => $locales,
             'channels' => $channels,
-            'locale' => $this->getUiLocale()->getCode(),
-            'channel' => $this->getUserChannelCode(),
+            'locale'   => $this->getUiLocale()->getCode(),
+            'channel'  => $this->getUserChannelCode()
         ];
     }
 
@@ -285,7 +352,7 @@ class UserContext
     }
 
     /**
-     * Returns the request locale.
+     * Returns the request locale
      *
      * @return LocaleInterface|null
      */
@@ -306,7 +373,7 @@ class UserContext
     }
 
     /**
-     * Returns the user session locale.
+     * Returns the user session locale
      *
      * @return LocaleInterface|null
      */
@@ -327,7 +394,7 @@ class UserContext
     }
 
     /**
-     * Returns the catalog user locale.
+     * Returns the catalog user locale
      *
      * @return LocaleInterface|null
      */
@@ -339,7 +406,7 @@ class UserContext
     }
 
     /**
-     * Returns the default application locale.
+     * Returns the default application locale
      *
      * @return LocaleInterface|null
      */
@@ -349,7 +416,9 @@ class UserContext
     }
 
     /**
-     * Checks if a locale is activated.
+     * Checks if a locale is activated
+     *
+     * @param LocaleInterface $locale
      *
      * @return bool
      */
@@ -359,7 +428,7 @@ class UserContext
     }
 
     /**
-     * Get a user option.
+     * Get a user option
      *
      * @param string $optionName
      *
@@ -367,27 +436,31 @@ class UserContext
      */
     protected function getUserOption($optionName)
     {
-        $user = $this->getUser();
-        if (!$user instanceof UserInterface) {
-            return null;
-        }
+        $token = $this->tokenStorage->getToken();
 
-        $method = sprintf('get%s', ucfirst($optionName));
-
-        if (null === $user || !is_object($user)) {
-            return null;
-        }
-
-        if (is_callable([$user, $method])) {
-            $value = $user->$method();
-            if ($value) {
-                return $value;
+        if ($token !== null) {
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                return null;
             }
-        } else {
-            $value = $user->getProperty($optionName);
 
-            if ($value) {
-                return $value;
+            $method = sprintf('get%s', ucfirst($optionName));
+
+            if (null === $user || !is_object($user)) {
+                return null;
+            }
+
+            if (is_callable([$user, $method])) {
+                $value = $user->$method();
+                if ($value) {
+                    return $value;
+                }
+            } else {
+                $value = $user->getProperty($optionName);
+
+                if ($value) {
+                    return $value;
+                }
             }
         }
 
@@ -395,7 +468,7 @@ class UserContext
     }
 
     /**
-     * Get current request.
+     * Get current request
      *
      * @return Request|null
      */

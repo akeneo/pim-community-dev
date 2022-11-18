@@ -6,7 +6,7 @@ services:
         public: true
         class: '%pim_user.context.user.class%'
         arguments:
-            - '@security.helper'
+            - '@security.token_storage'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.category'
