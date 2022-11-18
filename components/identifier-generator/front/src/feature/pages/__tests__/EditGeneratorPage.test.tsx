@@ -1,9 +1,9 @@
 import React from 'react';
 import {mockResponse, render, screen, waitFor} from '../../tests/test-utils';
-import {IdentifierGenerator} from '../../models';
 import {EditGeneratorPage} from '../';
 import userEvent from '@testing-library/user-event';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
+import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
 const mockNotify = jest.fn();
 
@@ -19,17 +19,6 @@ jest.mock('@akeneo-pim-community/shared', () => ({
     return mockNotify;
   },
 }));
-
-const initialGenerator: IdentifierGenerator = {
-  code: 'initialCode',
-  labels: {
-    en_US: 'Initial Label',
-  },
-  conditions: [],
-  structure: [],
-  delimiter: null,
-  target: 'sku',
-};
 
 const defaultUiLocales = [
   {

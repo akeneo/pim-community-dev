@@ -22,7 +22,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(IdentifierGeneratorCreationLimitValidator::class);
     }

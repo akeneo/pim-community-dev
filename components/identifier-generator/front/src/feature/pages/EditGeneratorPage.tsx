@@ -4,6 +4,7 @@ import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {useSaveGenerator} from '../hooks/useSaveGenerator';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {useQueryClient} from 'react-query';
+import {useIdentifierGeneratorContext} from '../context';
 
 type EditGeneratorProps = {
   initialGenerator: IdentifierGenerator;
@@ -14,6 +15,7 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
   const notify = useNotify();
   const translate = useTranslate();
   const {save, isLoading, error} = useSaveGenerator();
+  const identifierGeneratorContext = useIdentifierGeneratorContext();
 
   const onSave = useCallback(
     (generator: IdentifierGenerator) => {
@@ -30,10 +32,11 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
             translate('pim_identifier_generator.flash.update.success', {code: generator.code})
           );
           queryClient.invalidateQueries({queryKey: ['getIdentifierGenerator']});
+          identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(false);
         },
       });
     },
-    [notify, queryClient, save, translate]
+    [notify, queryClient, save, translate, identifierGeneratorContext.unsavedChanges]
   );
 
   return (
