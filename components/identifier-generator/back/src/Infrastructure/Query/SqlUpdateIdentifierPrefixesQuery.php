@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UpdateIndexesSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -22,46 +21,34 @@ final class SqlUpdateIdentifierPrefixesQuery
      */
     public function updateFromProducts(array $products)
     {
-        $deleteSql = <<<SQL
-DELETE FROM pim_catalog_identifier_generator_prefixes WHERE product_uuid IN (:product_uuids)
-SQL;
+        $this->deletePreviousPrefixes($products);
+        $this->insertNewPrefixes($products);
+    }
 
-        $productUuidsAsBytes = \array_map(
-            fn (ProductInterface $product): string => Uuid::fromString($product->getUuid())->getBytes(),
-            $products
-        );
-
-        $this->connection->executeQuery($deleteSql,
-            ['product_uuids' => $productUuidsAsBytes],
-            ['product_uuids' => Connection::PARAM_STR_ARRAY]
-        );
-
-        $toAdd = [];
+    private function insertNewPrefixes(array $products): void
+    {
         /** @var AttributeInterface[] $identifierAttributes */
         $identifierAttributes = [$this->attributeRepository->getIdentifier()];
+        $newPrefixes = [];
         foreach ($products as $product) {
             foreach ($identifierAttributes as $identifierAttribute) {
-                $toAdd = \array_merge($toAdd, $this->getPrefixesAndNumbers(
+                $newPrefixes[] = $this->getPrefixesAndNumbers(
                     $product->getValue($identifierAttribute->getCode())?->getData(),
                     $identifierAttribute->getId(),
                     $product->getUuid()->toString()
-                ));
+                );
             }
         }
 
-        if (\count($toAdd) === 0) {
+        $flatNewPrefixes = \array_merge_recursive($newPrefixes);
+
+        if (\count($flatNewPrefixes) === 0) {
             return;
         }
 
         $values = [];
-        foreach ($toAdd as $line) {
-            $values[] = \sprintf(
-                '(UUID_TO_BIN("%s"), %d, "%s", %d)',
-                $line[0],
-                $line[1],
-                $line[2],
-                $line[3]
-            );
+        foreach ($flatNewPrefixes as $newPrefix) {
+            $values[] = \sprintf('(UUID_TO_BIN("%s"), %d, "%s", %d)', ...$newPrefix);
         };
 
         $valuesStr = \implode(',', $values);
@@ -106,5 +93,25 @@ SQL;
             $i++;
         }
         return \intval($result);
+    }
+
+    /**
+     * @param ProductInterface[] $products
+     */
+    private function deletePreviousPrefixes(array $products): void
+    {
+        $deleteSql = <<<SQL
+DELETE FROM pim_catalog_identifier_generator_prefixes WHERE product_uuid IN (:product_uuids)
+SQL;
+
+        $productUuidsAsBytes = \array_map(
+            fn (ProductInterface $product): string => Uuid::fromString($product->getUuid())->getBytes(),
+            $products
+        );
+
+        $this->connection->executeQuery($deleteSql,
+            ['product_uuids' => $productUuidsAsBytes],
+            ['product_uuids' => Connection::PARAM_STR_ARRAY]
+        );
     }
 }
