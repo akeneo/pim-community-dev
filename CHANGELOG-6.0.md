@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10688: Fix error on toLocaleLowerCase for select attribute options
+
 # 6.0.53 (2022-11-10)
 
 # 6.0.52 (2022-11-08)
