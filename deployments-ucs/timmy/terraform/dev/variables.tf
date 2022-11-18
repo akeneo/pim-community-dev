@@ -52,6 +52,10 @@ variable "project_id" {
   default = "akecld-prd-pim-saas-dev"
 }
 
+variable "shared_project_id" {
+  type    = string
+}
+
 variable "tenant_context_collection_name" {
   type    = string
   default = "tenant_contexts"

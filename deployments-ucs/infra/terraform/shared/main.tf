@@ -31,7 +31,18 @@ module "secrets" {
     {
       name = "DATADOG_API_KEY"
       members = [
-        "serviceAccount:${local.main_sa}"
+        "serviceAccount:${local.main_sa}",
+        "serviceAccount:ci-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
+      ]
+      labels = {
+        usage = "datadog"
+      }
+    },
+     {
+      name = "DATADOG_APP_KEY"
+      members = [
+        "serviceAccount:${local.main_sa}",
+        "serviceAccount:ci-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
       ]
       labels = {
         usage = "datadog"
