@@ -44,6 +44,16 @@ class CodeAttributeShouldExistValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new NotBlank()]);
     }
 
+    public function it_should_not_validate_something_else_than_an_update_generator_command(
+        IdentifierGeneratorRepository $identifierGeneratorRepository,
+    ): void {
+        $identifierGeneratorRepository
+            ->get((string)Argument::any())
+            ->shouldNotBeCalled();
+
+        $this->validate(new \stdClass(), new CodeAttributeShouldExist());
+    }
+
     public function it_should_build_violation_when_code_attribute_does_not_exist(ExecutionContext $context): void
     {
         $context->buildViolation(
