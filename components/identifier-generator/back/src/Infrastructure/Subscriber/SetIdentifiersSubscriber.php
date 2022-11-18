@@ -6,15 +6,21 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -31,6 +37,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         private IdentifierGeneratorRepository $identifierGeneratorRepository,
         private GenerateIdentifierHandler $generateIdentifierCommandHandler,
         private ValidatorInterface $validator,
+        private MetadataFactoryInterface $metadataFactory,
     ) {
     }
 
@@ -104,15 +111,34 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         $newIdentifier = ($this->generateIdentifierCommandHandler)($command);
 
         $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);
+        Assert::isInstanceOf($value, ScalarValue::class);
         $product->addValue($value);
         $product->setIdentifier($newIdentifier);
-        // TODO CPM-809: We should only check if the new value changes the attribute validations (uniqueness/regexp/etc)
-        $violations = $this->validator->validate($product);
+
+        // Check if product identifier is unique
+        $violations = $this->validator->validate($product, new UniqueProductEntity());
+        if (\count($violations) === 0) {
+            // Check if value matches the attribute constraints
+            $attributeViolations = $this->validator->validate($value, $this->getConstraints($value));
+            $violations->addAll($attributeViolations);
+        }
+
         if (count($violations) > 0) {
             $product->removeValue($value);
             $product->setIdentifier(null);
 
-            throw new UnableToSetIdentifierException();
+            throw new UnableToSetIdentifierException(
+                new ErrorList(\array_map(
+                    fn (ConstraintViolationInterface $violation): Error => new Error(
+                        (string) $violation->getMessage(),
+                        $violation->getParameters(),
+                        $violation->getPropertyPath()
+                    ),
+                    \iterator_to_array($violations)
+                ))
+            );
+        } else {
+            $violations = $this->validator->validate($product);
         }
     }
 
@@ -126,5 +152,20 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         }
 
         return $this->identifierGenerators;
+    }
+
+    /**
+     * @return Constraint[]
+     */
+    private function getConstraints(ScalarValue $value): array
+    {
+        $metadata = $this->metadataFactory->getMetadataFor($value);
+        $membersMetadata = $metadata->getPropertyMetadata('data');
+        $constraints = [];
+        foreach ($membersMetadata as $memberMetadata) {
+            $constraints = \array_merge($constraints, $memberMetadata->getConstraints());
+        }
+
+        return $constraints;
     }
 }
