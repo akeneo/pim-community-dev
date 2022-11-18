@@ -72,6 +72,7 @@ pim_enrich.entity.product:
         meta:
             updated: Last update
             groups: Groups
+            uuid: UUID
         show_group:
             title: Group {{ group }}
             view_group: View group

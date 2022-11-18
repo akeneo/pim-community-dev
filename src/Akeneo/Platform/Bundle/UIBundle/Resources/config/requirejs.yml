@@ -703,6 +703,7 @@ config:
     pim/product-edit-form/meta/change-family:                pimui/js/product/form/meta/change-family
     pim/product-edit-form/meta/created:                      pimui/js/product/form/meta/created
     pim/product-edit-form/meta/updated:                      pimui/js/product/form/meta/updated
+    pim/product-edit-form/meta/uuid:                         pimui/js/product/form/meta/uuid
     pim/product-edit-form/meta/groups:                       pimui/js/product/form/meta/groups
     pim/product-edit-form/meta/status-switcher:              pimui/js/product/form/meta/status-switcher
     pim/product-edit-form/download-pdf:                      pimui/js/product/form/download-pdf
@@ -899,6 +900,7 @@ config:
     pim/form/common/user-main-image:                     pimui/js/form/common/user-main-image
     pim/form/common/meta/created:                        pimui/js/form/common/meta/created
     pim/form/common/meta/updated:                        pimui/js/form/common/meta/updated
+    pim/form/common/meta/uuid:                           pimui/js/form/common/meta/uuid
     pim/form/common/attributes:                          pimui/js/form/common/attributes
     pim/form/common/attributes/copy:                     pimui/js/form/common/attributes/copy
     pim/form/common/attributes/copy-field:               pimui/js/form/common/attributes/copy-field
@@ -1033,6 +1035,7 @@ config:
     pim/template/form/state:                                  pimui/templates/form/state.html
     pim/template/form/meta/created:                           pimui/templates/form/meta/created.html
     pim/template/form/meta/updated:                           pimui/templates/form/meta/updated.html
+    pim/template/form/meta/uuid:                              pimui/templates/form/meta/uuid.html
     pim/template/form/meta:                                   pimui/templates/form/meta.html
     pim/template/form/tab/attributes:                         pimui/templates/form/tab/attributes.html
     pim/template/form/save-buttons:                           pimui/templates/form/save-buttons.html
@@ -1130,6 +1133,7 @@ config:
     pim/template/product/meta/group-modal:               pimui/templates/product/meta/group-modal.html
     pim/template/product/meta/created:                   pimui/templates/product/meta/created.html
     pim/template/product/meta/updated:                   pimui/templates/product/meta/updated.html
+    pim/template/product/meta/uuid:                      pimui/templates/product/meta/uuid.html
     pim/template/product/scope-switcher:                 pimui/templates/product/scope-switcher.html
     pim/template/product/field/field:                    pimui/templates/product/field/field.html
     pim/template/product/field/field-guidelines:         pimui/templates/product/field/field-guidelines.html
