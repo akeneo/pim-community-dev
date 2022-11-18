@@ -12,7 +12,7 @@ class GenerateFreeTextHandlerSpec extends ObjectBehavior
     public function let(): void {
     }
 
-    public function it_should_support_only_auto_numbers(): void
+    public function it_should_support_only_free_text(): void
     {
         $this->getPropertyClass()->shouldReturn(FreeText::class);
     }

@@ -1,16 +1,21 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
-import {PROPERTY_NAMES} from '../../models';
+import {Property, PROPERTY_NAMES} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type PropertiesSelection = {
   code: string;
   items: {
     code: string;
+    defaultValue: Property;
   }[];
 };
 
-const AddPropertyButton: React.FC = () => {
+type AddPropertyButtonProps = {
+  onAddProperty: (property: Property) => void;
+};
+
+const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -25,6 +30,11 @@ const AddPropertyButton: React.FC = () => {
     setSearchValue('');
   };
 
+  const addProperty = (defaultValue: Property) => {
+    onAddProperty(defaultValue);
+    close();
+  };
+
   const items = useMemo(
     (): PropertiesSelection[] => [
       {
@@ -32,6 +42,11 @@ const AddPropertyButton: React.FC = () => {
         items: [
           {
             code: PROPERTY_NAMES.FREE_TEXT,
+            defaultValue: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
+          },
+          {
+            code: PROPERTY_NAMES.AUTO_NUMBER,
+            defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
           },
         ],
       },
@@ -54,9 +69,21 @@ const AddPropertyButton: React.FC = () => {
     }
   }, [debouncedSearchValue, items]);
 
+  const searchInputRef = React.useRef<HTMLInputElement | null>(null);
+  // We can not use the useAutoFocus here because the element is hidden when dropdown is not open
+  const focusCallback = React.useCallback(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        if (searchInputRef.current !== null) searchInputRef.current.focus();
+      }, 0);
+    }
+  }, [searchInputRef, isOpen]);
+
+  React.useEffect(focusCallback, [isOpen, focusCallback]);
+
   return (
     <Dropdown>
-      <Button active ghost level="secondary" onClick={addElement}>
+      <Button active ghost level="secondary" onClick={addElement} size="small">
         {translate('pim_identifier_generator.structure.add_element')}
       </Button>
       {isOpen && (
@@ -67,6 +94,7 @@ const AddPropertyButton: React.FC = () => {
               placeholder={translate('pim_common.search')}
               searchValue={searchValue}
               title={translate('pim_common.search')}
+              inputRef={searchInputRef}
             />
           </Dropdown.Header>
           <Dropdown.ItemCollection
@@ -76,10 +104,10 @@ const AddPropertyButton: React.FC = () => {
             {filterElements.map(({code, items}) => (
               <React.Fragment key={code}>
                 <Dropdown.Section>
-                  {translate(`pim_identifier_generator.structure.property_type.section.${code}`)}
+                  {translate(`pim_identifier_generator.structure.property_type.sections.${code}`)}
                 </Dropdown.Section>
-                {items.map(({code}) => (
-                  <Dropdown.Item key={code}>
+                {items.map(({code, defaultValue}) => (
+                  <Dropdown.Item key={code} onClick={() => addProperty(defaultValue)}>
                     {translate(`pim_identifier_generator.structure.property_type.${code}`)}
                   </Dropdown.Item>
                 ))}
