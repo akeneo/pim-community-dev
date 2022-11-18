@@ -153,7 +153,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with target ':target'
+     * @When /^I try to update an identifier generator with target '(?P<target>[^']*)'$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithTarget(string $target): void
     {
@@ -210,7 +210,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with ':locale' label ':label'
+     * @When /^I try to update an identifier generator with '(?P<locale>[^']*)' label '(?P<label>[^']*)'$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithLabel(string $locale, string $label): void
     {
@@ -415,25 +415,6 @@ final class UpdateIdentifierGeneratorContext implements Context
                 ['fr' => 'Générateur'],
                 'sku',
                 $delimiter
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
-    }
-
-    /**
-     * @When I try to update an identifier generator with an empty delimiter
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAnEmptyDelimiter(): void
-    {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
-                'sku',
-                ''
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;

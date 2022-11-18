@@ -39,5 +39,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
                 - Length:
                     max: 255
         delimiter:
+            - NotBlank:
+                allowNull: true
             - Length:
                 max: 100

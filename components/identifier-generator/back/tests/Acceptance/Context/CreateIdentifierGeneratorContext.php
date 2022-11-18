@@ -77,7 +77,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with not existing target :target
+     * @When I try to create an identifier generator with not existing target ':target'
      */
     public function iTryToCreateAnIdentifierGeneratorWithNotExistingTarget(string $target): void
     {
@@ -135,7 +135,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with target ':target'
+     * @When /^I try to create an identifier generator with target '(?P<target>[^']*)'$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithTarget(string $target): void
     {
@@ -228,25 +228,6 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with blank code
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithBlankCode(): void
-    {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                '',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
-    }
-
-    /**
      * @When I create an identifier generator without label
      */
     public function iCreateAnIdentifierGeneratorWithoutLabel(): void
@@ -266,7 +247,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with code ':code'
+     * @When /^I try to create an identifier generator with code '(?P<code>[^']*)'$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithCode(string $code): void
     {
@@ -285,7 +266,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with ':locale' label ':label'
+     * @When /^I try to create an identifier generator with '(?P<locale>[^']*)' label '(?P<label>[^']*)'$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithLabel(string $locale, string $label): void
     {
@@ -316,25 +297,6 @@ final class CreateIdentifierGeneratorContext implements Context
                 [],
                 'sku',
                 $delimiter
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
-    }
-
-    /**
-     * @When I try to create an identifier generator with an empty delimiter
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithAnEmptyDelimiter(): void
-    {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                [],
-                'sku',
-                ''
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;

@@ -41,7 +41,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with blank code
-    When I try to create an identifier generator with blank code
+    When I try to create an identifier generator with code ''
     Then I should get an error with message 'code: This value should not be blank.'
     And the identifier should not be created
 
