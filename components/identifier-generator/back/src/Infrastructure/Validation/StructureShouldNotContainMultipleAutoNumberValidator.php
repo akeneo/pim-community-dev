@@ -32,16 +32,17 @@ final class StructureShouldNotContainMultipleAutoNumberValidator extends Constra
             }
             if (AutoNumber::type() === $property['type']) {
                 ++$countAutonumber;
-            }
-        }
+                if ($countAutonumber > StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE) {
+                    $this->context
+                        ->buildViolation($constraint->message, [
+                            '{{limit}}' => StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE,
+                            '{{type}}' => AutoNumber::type(),
+                        ])
+                        ->addViolation();
 
-        if ($countAutonumber > StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE) {
-            $this->context
-                ->buildViolation($constraint->message, [
-                    '{{limit}}' => StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE,
-                    '{{type}}' => AutoNumber::type(),
-                ])
-                ->addViolation();
+                    return;
+                }
+            }
         }
     }
 }
