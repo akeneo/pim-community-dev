@@ -44,7 +44,6 @@ class AutoNumberShouldBeValidValidatorSpec extends ObjectBehavior
             'validation.identifier_generator.auto_number_fields_required',
             [
                 '{{field}}' => 'numberMin, digitsMin',
-                '{{type}}' => 'auto_number',
             ]
         )->shouldBeCalled();
 
