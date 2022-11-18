@@ -18,6 +18,8 @@ final class FreeText implements PropertyInterface
     private function __construct(
         private string $value,
     ) {
+        Assert::stringNotEmpty($value);
+        Assert::maxLength($value, self::LENGTH_LIMIT);
     }
 
     public static function type(): string
@@ -33,8 +35,7 @@ final class FreeText implements PropertyInterface
         Assert::keyExists($normalizedProperty, 'type');
         Assert::eq($normalizedProperty['type'], self::type());
         Assert::keyExists($normalizedProperty, 'string');
-        Assert::stringNotEmpty($normalizedProperty['string']);
-        Assert::maxLength($normalizedProperty['string'], self::LENGTH_LIMIT);
+        Assert::string($normalizedProperty['string']);
 
         return self::fromString($normalizedProperty['string']);
     }
@@ -52,9 +53,6 @@ final class FreeText implements PropertyInterface
 
     public static function fromString(string $value): self
     {
-        Assert::stringNotEmpty($value);
-        Assert::maxLength($value, self::LENGTH_LIMIT);
-
         return new self($value);
     }
 
