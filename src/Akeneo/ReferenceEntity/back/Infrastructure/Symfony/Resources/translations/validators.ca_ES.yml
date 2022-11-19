@@ -51,6 +51,7 @@ pim_reference_entity:
       channel_and_locale:
         are_expected: 'L''atribut "%attribute_code%" de l''entitat de referència "%reference_entity_identifier%" requereix un valor per canal i un per local.'
       number:
+        should_be_string: 'Aquest camp ha de ser una cadena'
         should_be_integer: 'Aquest camp té que ser un enter'
         integer_too_long: 'Aquest enter és massa gran'
         should_be_numeric: 'Aquest camp té que ser un valor numèric amb el separador decimal correcte'
@@ -89,5 +90,13 @@ pim_reference_entity:
       record_type:
         is_required: 'Necessita especificar el tipus d''entitat de referencia per crear un atribut d''enllaç d''Entitat de referencia'
         reference_entity_should_exist: 'L''entitat de referencia "%reference_entity_code%" no s''ha trobat.'
+      prefix:
+        should_not_be_empty: 'El nom no pot ser una cadena buida.'
+      suffix:
+        should_not_be_empty: 'El sufix no pot ser una cadena buida.'
       media_type:
         not_expected: 'El tipus de medi donat no correspon al que s''espera (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'La propietat "%attribute_code%" espera un codi de registre vàlid. El registre "%invalid_record%" no existeix'
+      records_should_exist: 'La propietat "%attribute_code%" espera codis de registre vàlids. Els registres següents no existeixen: "%invalid_records%"'

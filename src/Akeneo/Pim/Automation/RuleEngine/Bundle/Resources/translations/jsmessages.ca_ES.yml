@@ -54,6 +54,7 @@ pimee_catalog_rule:
           empty_selection: No hi ha cap regla seleccionada.
       tags:
         set: Configurar
+        add: Afegir
         calculate: Calcula
         clear: Netejar
         concatenate: Concatena
@@ -252,8 +253,17 @@ pimee_catalog_rule:
         remove_groups:
           title: ELIMINAR productes dels grups
           helper: Per eliminar productes dels grups, seleccioneu un o diversos grups
+          subtitle: Selecciona els teus grups
         calculate:
+          title: CALCULAR valors
+          helper: Per calcular els valors d'atributs numèrics, escolliu atributs i/o valors i, a continuació, seleccioneu l'atribut objectiu en què voleu posar el resultat. També podeu arrodonir el resultat final si cal.
+          add_value: Afegir un valor
+          add_attribute: Afegir atribut
+          select_target: Selecciona el teu objectiu
+          attribute_placeholder: Seleccioneu el vostre atribut objectiu
+          round_precision: Precisió de l'arrodoniment
           operator:
+            add: Afegir
             subtract: Treu
             multiply: Multiplicar
             divide: Dividir
@@ -336,8 +346,49 @@ pimee_catalog_rule:
       operators:
         specific_date: Data específica
       label:
+        date_type: Trieu un tipus de data
+        operator: Tria un operador
+        date: Tria una data
+        relative_date: Tria una data
+        locale: Trieu una localització
+        scope: Trieu un abast
+        period: Trieu una unitat de temps
+        open_period: Obre el menú de la unitat de temps
+        date_from: Trieu una data d'inici
+        date_to: Trieu una data de finalització
+        date_past: Data en el passat
+        date_future: Data en el futur
         date_present: Ara
+      day: "]-Inf, 1] Dia|]1, +Inf[ Dies"
+      week: "]-Inf, 1] Setmana|]1, +Inf[ Setmanes"
+      month: "]-Inf, 1] Mes|]1, +Inf[ Mesos"
+      year: "]-Inf, 1] Any|]1, +Inf[ Anys"
+      hour: "]-Inf, 1] Hora|]1, +Inf[ Hores"
+      minute: "]-Inf, 1] Minut|]1, +Inf[ Minuts"
   exceptions:
+    loading: S'ha produït un error durant la càrrega de la definició de la regla.
+    required: Aquest camp és obligatori
+    required_attribute: Es requereix un atribut
+    required_locale: Es requereix una configuració regional per a l'atribut {{ attributeLabel }}
+    required_scope: Es requereix un canal per a l'atribut {{ attributeLabel }}
+    required_currency: Es requereix una moneda per a l'atribut {{ attributeLabel }}
+    required_locale_completeness: Es requereix una configuració regional per completar-la
+    required_scope_completeness: Es requereix un canal per a la integritat
+    required_value: Es requereix un valor per a aquesta acció
+    required_categories: Es requereix almenys una categoria per a aquesta acció
+    required_constant_for_operation: Es requereix un valor constant per a aquesta operació
+    required_operator_for_operation: Per a aquesta operació cal un operador
+    required_unit: Es requereix una unitat de mesura
+    identifier_or_quantity_missing: Es requereix un identificador i una quantitat per a cada element
+    required_item: Es requereix almenys un element per a aquesta acció
+    division_by_zero: Les divisions per zero no són possibles
+    two_operations_are_required: La llista d'operacions ha de contenir 2 operacions o més.
+    two_items_are_required: La llista ha de contenir 2 elements o més.
+    unknown_or_inactive_locale: 'La configuració regional "{{ localeCode }}" no existeix o no està activada'
+    unknown_or_inactive_currency: 'La moneda "{{ currencyCode }}" no existeix o no està activada'
+    unbound_locale: 'La configuració regional "{{ localeCode }}" no està activada al canal "{{ channelCode }}"'
+    unbound_currency: 'La moneda "{{ currencyCode }}" no està activada al canal "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: Aquest atribut no es localitzable. Si us plau, elimineu la configuració regional abans de continuar.
     unknown_scope: 'El canal "{{ scopeCode }}" no existeix'
     scope_on_unscopable_attribute: Aquest atribut no és abastable. Si us plau, elimina el canal abans de continuar.
     unknown_families: "{1}La família {{ familyCodes }} no existeix|]1,+Inf[Les {{ familyCodes }} famílies no existeixen"

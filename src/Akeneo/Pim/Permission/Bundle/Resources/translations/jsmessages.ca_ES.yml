@@ -60,8 +60,28 @@ pim_analytics:
   info_type:
     nb_custom_locale_accesses: Número de locals amb acceos personalitzats
     nb_custom_category_accesses: Número de categories amb accessos personalitzats
+    nb_custom_attribute_group_accesses: Número de grup d'atributs amb accessos personalitzats
+category.permissions:
+  view.label: Permet veure els productes
+  edit.label: Permet editar els productes
+  own.label: Permet tenir productes propis
+  own.help: Revisar, publicar, despublicar, classificar i associar productes
+  no_access_to_products: No teniu accés a productes de qualsevol dels arbres, contacteu amb l'administrador
+  apply_on_children.label: Aplicar canvis en els fills
+  apply_on_children.help: Es conserven els permisos existents per als fills
 pim_permissions:
   widget:
     entity:
+      attribute_group:
+        label: Grups d'atribut
+        help: Si voleu que la vostra aplicació pugui modificar totes les dades del vostre producte, trieu l'opció Tot al nivell Edita. En cas contrari, seleccioneu només els grups d'atributs que la vostra aplicació podrà veure o modificar segons el nivell.
+      category:
+        label: Arbres de categories
+        help: Si voleu que la vostra aplicació pugui modificar els vostres productes sense utilitzar propostes PIM, trieu el nivell Propi. En cas contrari, trieu el nivell d'edició.
       locale:
         label: Configuracions regionals
+        help: Si voleu que la vostra aplicació pugui editar els vostres productes en tots els idiomes, trieu l'opció Tots al nivell Edita. En cas contrari, seleccioneu només els idiomes que la vostra aplicació podrà veure o modificar segons el nivell.
+      not_granted_warning: Aquesta secció només és accessible per als usuaris amb el {{ permission }}. Poseu-vos en contacte amb el vostre administrador. Amb el permís adequat, podreu tornar a la configuració de l'aplicació i editar-los.
+pimee_enrich.acl.category.edit_permissions: Administrar els permisos de categoria
+pimee_enrich.acl.attribute_group.edit_permissions: Administrar permisos de grup d'atributs
+pimee_enrich.acl.locale.edit_permissions: Administrar els permisos de configuració regional

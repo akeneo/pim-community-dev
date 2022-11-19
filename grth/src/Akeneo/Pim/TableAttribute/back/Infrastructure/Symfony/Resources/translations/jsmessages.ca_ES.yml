@@ -114,9 +114,41 @@ table_attribute_template:
         parcel1: Paquet 1
         parcel2: Paquet 2
         parcel3: Paquet 3
+        parcel4: Paquet 4
+    width:
+      label: Amplada (polzades)
+    length:
+      label: Longitud (polzades)
+    height:
+      label: Alçada (polzades)
 pim_table_attribute:
   form:
     attribute:
+      tab:
+        table_structure: Estructura de la taula
+      table_attribute: Atribut de taula
+      add_column: Afegeix columnes noves
+      select_type: Seleccioneu el vostre tipus
+      data_type: Tipus de columna
+      labels: Traduccions d'etiquetes
+      column_management: Gestió de columnes
+      please_type: Si us plau, escriviu "{{ text }}"
+      confirm_column_delete: Esteu segur que voleu suprimir aquesta columna?
+      confirm_option_delete: Esteu segur que voleu suprimir aquesta opció?
+      empty_title: L'estructura de la taula està buida.
+      empty_subtitle: El primer pas és definir les columnes.
+      unique_title: L'atribut de la taula està gairebé llest.
+      unique_subtitle: Definiu almenys 2 columnes per començar a utilitzar la vostra taula.
+      new_option_placeholder: Escriu la teva nova etiqueta d'opció
+      manage_options: Administrar opcions
+      column_code: Codi de columna
+      properties_helper: Heu de definir l'estructura de la taula i almenys 2 columnes abans de poder desar l'atribut de la taula
+      table_structure_helper_text: Un atribut de taula ha de contenir almenys 2 columnes. El primer sempre és un tipus de columna "selecciona". Un cop hàgiu creat la primera columna, heu d'afegir opcions. Per fer-ho, feu clic a "gestionar les opcions" i afegiu fins a {{ limit }} opcions! Aleshores, podreu utilitzar cadascuna d'aquestes opcions com a files a les vostres taules de productes.
+      table_structure_helper_text_with_reference_entity: Un atribut de taula ha de contenir almenys 2 columnes. Un cop hàgiu creat el primer, utilitzant els tipus de columna "Selecciona" o "Entitats de referència", definiu i gestioneu les files en funció d'opcions o registres.
+      table_structure_helper_link: Consulteu el nostre centre d'ajuda per obtenir més informació.
+      limit_option_reached: Heu arribat al límit d'opcions de {{ limit }}.
+      template_label: Seleccioneu l'estàndard de la vostra taula "{{ templateLabel }}".
+      delete_column_helper: Quan suprimiu aquesta columna, tots els seus valors s'eliminen de tots els productes mitjançant l'atribut de taula "{{ attributeLabel }}".
       delete_first_column_option_helper: Quan suprimiu aquesta opció, se suprimirà tota la fila de tots els productes que utilitzin l'atribut de taula "{{ attributeLabel }}".
       delete_other_column_option_helper: Quan suprimiu aquesta opció, el valor de la cel·la s'eliminarà per a tots els productes amb l'atribut de taula "{{ attributeLabel }}".
       no_options_helper: Si us plau, afegiu la vostra primera opció.
@@ -172,7 +204,31 @@ pim_table_attribute:
     min: Valor mínim
     max: Valor màxim
     decimals_allowed: Valors decimals permesos
+    max_length_range: Definiu un nombre màxim de caràcters inferior o igual a {{ maximum }}
+  templates:
+    choose_template: Tria la teva plantilla
+    choose_template_subtitle: Aquestes plantilles són només exemples, no normatives. Podeu editar-los abans de desar l'estructura d'atributs.
+    empty_table: Taula buida
+    nutrition: Nutrició
+    nutrition-unitedkingdom: Nutrició (Regne Unit)
+    nutrition-europe: Valors nutricionals mitjans (Europa)
+    nutrition-unitedstates: Dades nutricionals (Estats Units)
+    food_composition: Composició dels aliments
+    clothing_composition: Composició de la roba
+    dimensions: Dimensions del producte
+    dimensions-metric: Dimensions (sistema mètric)
+    dimensions-imperial: Dimensions (sistema imperial)
+    packaging: Dimensions de l'embalatge
+    packaging-metric: Dimensions de l'embalatge (sistema mètric)
+    packaging-imperial: Dimensions de l'embalatge (sistema imperial)
+  product_edit_form:
+    add_rows: Afegeix files
+    search: Cercar
   datagrid:
+    placeholder: La vista prèvia no està disponible, obriu la pàgina del producte per accedir als valors dels atributs de la taula
+    any: Cualsevol
+    select_your_column: Seleccioneu la vostra columna
+    select_your_row: Seleccioneu la vostra fila
     select_your_operator: Selecciona el seu operador
     select_your_value: Seleccioneu el vostre valor
     any_row: Qualsevol fila
