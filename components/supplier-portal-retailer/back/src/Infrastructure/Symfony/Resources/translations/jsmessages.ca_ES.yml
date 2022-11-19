@@ -17,6 +17,7 @@ supplier_portal:
         title: S'ha creat el proveïdor.
         content: Ara podeu editar-lo a la secció de gestió de proveïdors.
       error:
+        unknown_error: S'ha produït un error en crear el proveïdor.
         supplier_already_exists: 'Ja existeix un proveïdor amb el codi "{{ supplierCode }}".'
     supplier_list:
       menu_item: Proveïdors
@@ -42,6 +43,7 @@ supplier_portal:
         title: Proveïdor
         confirmation_question: Esteu segur que voleu esborrar aquest proveïdor?
         warning: Si suprimiu aquest proveïdor, es perdrà qualsevol enriquiment no desat.
+        unknown_error: S'ha produït un error en suprimir el proveïdor.
     supplier_edit:
       tabs:
         configuration: Configuració
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: No hem pogut afegir aquest col·laborador.
             content: El correu electrònic {{ emailAddress }} ja s'utilitza per a un altre proveïdor i encara no admetem diversos proveïdors que tinguin el mateix col·laborador. Disculpeu les molèsties.
+      loading_error: S'ha produït un error en carregar el proveïdor.
       success_message: El proveïdor s'ha actualitzat correctament
+      update_error: S'ha produït un error al actualitzar el proveïdor.
       delete_label: Eliminar aquest proveïdor
   product_file_dropping:
     breadcrumb:
@@ -96,14 +100,33 @@ supplier_portal:
         comment_input_label: Enviar un nou missatge
         discussion_title: Discussió
         submit_button_label: Enviar
+        loading_error: S'ha produït un error en carregar l'arxiu del producte.
+        comment_submit_error: S'ha produït un error en enviar el comentari.
+        empty_content: El comentari no pot estar buit.
         max_comment_length_reached: El comentari no pot tenir més de 255 caràcters.
         max_number_of_comments_reached: Has arribat al límit de comentaris.
+        product_file_does_not_exist_anymore: Ho sentim, aquest fitxer de producte s'ha suprimit automàticament després de 90 dies i ja no es pot accedir.
+      product_files_modal:
+        title: Arxiu de producte
+        subtitle: Seleccioneu el perfil d'importació personalitzat
+        import_field_label: Importar
+        select_import_placeholder: Seleccioneu una importació personalitzada
+        import_button_label: Importar ara
+        error_loading_product_import_profiles:
+          title: No podem mostrar els perfils d'importació personalitzats.
+          content: Disculpeu les molèsties, torneu-ho a provar d'aquí a uns instants.
+        error_launching_product_import:
+          missing_file: Aquest fitxer ja no existeix.
+          unknown_error:
+            title: Passa un error inesperat del nostre costat.
+            content: Si us plau, torna-ho a provar més tard
     pim_notification:
       button_label: Veure els arxius del producte
 pim_title:
   supplier_portal_retailer_supplier_list: Proveïdors
   supplier_portal_retailer_supplier_edit: Editar un proveïdor
   supplier_portal_retailer_product_files_list: Arxius de producte
+  supplier_portal_retailer_product_files_show: Arxiu de producte
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Portal de proveïdors Importació de proveïdors a XLSX
 pim_notification:
   supplier_portal:

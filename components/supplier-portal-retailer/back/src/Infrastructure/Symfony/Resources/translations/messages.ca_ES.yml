@@ -1,0 +1,4 @@
+supplier_portal:
+  product_file_dropping:
+    pim_notification:
+      content: "<strong>{{ contributorEmail }}</strong> de <strong>{{ supplierLabel }}</strong> us acaba d'enviar un fitxer de producte a través del portal de proveïdors."
