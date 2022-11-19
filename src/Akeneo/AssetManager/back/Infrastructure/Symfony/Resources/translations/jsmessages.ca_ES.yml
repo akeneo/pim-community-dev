@@ -103,6 +103,9 @@ pim_asset_manager:
         extrapolated_attribute_type_should_be_supported: 'L''atribut "{{ %attribute_code% }}" del tipus "{{ %attribute_type% }}" no s''admet, només s''admeten els tipus d''atributs següents per a aquest camp: {{ %supported_attribute_type% }}'
         channel_should_exist: 'El canal "{{ %channel_code% }}" no existeix'
         locale_should_exist: 'El local "{{ %locale_code% }}" no està activat o no existeix'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'L''atribut "{{ %attribute_code% }}" no es pot utilitzar per a l''extrapolació perquè té un valor per canal'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'L''atribut "{{ %attribute_code% }}" no es pot utilitzar per a l''extrapolació perquè té un valor per configuració regional'
+        assignment_mode_not_supported: 'S''ha trobat un mode d''assignació "{{ %assignment_mode% }}" no vàlid en una regla d''enllaç de producte, que s''espera que sigui "substituïu" o "afegeix"'
         channel_not_supported_for_field: 'No pots especificar un canal per a cada camp "{{ %product_field% }}"'
         locale_not_supported_for_field: 'No pots especificar un local pel camp "{{ %product_field% }}"'
         assignmement_attribute_does_not_support_this_asset_family: 'L''atribut de producte "{{ %product_attribute_code% }}" no pot contenir recursos de families de recursos "{{ %asset_family_identifier% }}"'
@@ -115,6 +118,7 @@ pim_asset_manager:
       edit: Editar família
       view: Veure família
       execute_product_link_rules: Executar regles
+      execute_naming_convention: Executar la convenció de nomenclatura
     permission:
       title: Permisos de la família de recursos
     title: Recursos
@@ -133,15 +137,19 @@ pim_asset_manager:
         link: Si voleu aprofundir en les transformacions d'actius, feu clic aquí.
       subsection: 'Propietats de transformació'
     product_link_rules:
+      naming_convention_subsection: 'Propietats de la convenció de nomenclatura'
       product_link_rules_subsection: 'Propietats de les regles d''enllaç del producte'
       help:
         description: 'Aquí podeu definir fins a 2 regles d''enllaç de producte per a cada família d''actius.'
         link: 'Si vol profunditzar en la funció de Regles d''enllaç de producte, cliqueu aquí.'
       execute_rules:
         confirm_title: Confirmar l'execució
+        confirm_content: Esteu segur que voleu executar totes les regles? (podria trigar molt de temps)
         execute_rules: Executar regles
       execute_naming_convention:
         confirm_title: Confirmar l'execució
+        confirm_content: Esteu segur que voleu executar la convenció de nomenclatura? (això podria trigar molt de temps)
+        execute_naming_convention: Executar la convenció de nomenclatura
     naming_convention:
       help:
         description: Aquí és on podeu definir les propietats de la convenció de nomenclatura.
@@ -183,6 +191,8 @@ pim_asset_manager:
     delete:
       message: Esteu segur que voleu suprimir la família de recursos "{{ assetFamilyLabel }}"?
       title: Families de recursos
+    edit:
+      discard_changes: Perdreu els canvis a la família de recursos "{{ assetFamilyLabel }}" si abandoneu la pàgina.
     notification:
       save:
         success: La família de recursos s'ha actualitzat correctament.
@@ -487,14 +497,19 @@ pim_asset_manager:
       message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
       title: Atribut
     notification:
+      list:
+        fail: S'ha produït un error durant l'actualització de la llista d'atributs
       save:
         success: Atribut actualitzat correctament.
+        fail: S'ha produït un error durant el guardat de l'atribut
         validation_error: No s'ha pogut actualitzar l'atribut
       create:
         success: Atribut creat correctament.
+        fail: S'ha produït un error durant la creació de l'atribut
         validation_error: No s'ha pogut crear l'atribut
       delete:
         success: Atribut eliminat correctament.
+        fail: S'ha produït un error durant l'eliminació de l'atribut
     options:
       no_value: Feu clic aquí per seleccionar una opció.
       sub_title: Families de recursos
@@ -503,9 +518,12 @@ pim_asset_manager:
     media_link:
       placeholder: Posa el teu enllaç multimèdia aquí
       read_only: Aquest enllaç multimèdia és només de lectura
+      reload: Tornar a carregar la miniatura de l'enllaç multimèdia
     media_file:
+      placeholder: Arrossegar i deixar per carrgar o feu clic aquí
       read_only: Aquest fitxer multimèdia és només de lectura
       uploading: Pujant...
+    used_as_transformation_target: Aquest camp només es llegeix, ja que s'utilitza com a objectiu en una transformació d'actius.
   jobs:
     asset_manager_execute_naming_convention:
       error: 'La convenció de nomenclatura ha fallat al recurs "{{ asset }}"'
@@ -515,6 +533,8 @@ pim_enrich:
   entity:
     attribute:
       property:
+        type:
+          pim_catalog_asset_collection: Col·lecció d'actius
         section:
           type_specific: Escriu els paràmetres específics
         asset_family:
@@ -522,6 +542,16 @@ pim_enrich:
           default_label: Si us plau trieu un recurs de família
 permission:
   mass_action: Aplicar {{ rightLevel }} regles en tots els grups
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Eixos sobre famílies d'actius
+      hint: Si utilitzeu les famílies d'actius, aquí teniu els eixos que us ajudaran a controlar el vostre volum.
+  axis:
+    count_asset_family: Famílies de recursos
+    average_max_assets_per_asset_family: Recursos per famílies de recursos
+    average_max_attributes_per_asset_family: Atributs per famílies de recursos
 pim_import_export:
   form:
     job_instance:
@@ -533,6 +563,8 @@ pim_import_export:
 akeneo_job_process_tracker:
   type_filter:
     asset_manager_execute_naming_convention: Executar la convenció de nomenclatura de la família d'actius
+    asset_manager_link_assets_to_products: Enllaçar actius amb productes
+    asset_manager_compute_transformations: Calcular les transformacions dels actius
     asset_manager_mass_delete_assets: Supressió massiva de recursos
     asset_manager_mass_edit_assets: Editar en massa els recursos
 batch_jobs:
@@ -540,6 +572,8 @@ batch_jobs:
     execute_naming_convention: Executar la convenció de nomenclatura de la família d'actius
     mass_delete_assets: Executeu la supressió massiva d'actius
     mass_edit_assets: Executa l'edició massiva d'actius
+    link_assets_to_products: Enllaçar actius amb productes
+    compute_transformations: Calcular les transformacions dels actius
 job_execution:
   summary:
     assets: Recursos

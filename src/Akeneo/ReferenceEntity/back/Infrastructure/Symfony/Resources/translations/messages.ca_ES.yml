@@ -30,6 +30,10 @@ pim_analytics:
     average_number_of_values_per_records: Mitjana de valors per registre en totes les entitats de referència
     average_number_of_records_per_reference_entity: Mitjana de registres per entitat de referència
     max_number_of_attributes_per_reference_entity: Nombre màxim d'atributs per entitat de referència
+    average_number_of_attributes_per_reference_entity: Nombre mitjà d'atributs per entitat de referència
+    average_percentage_localizable_only_attributes: Percentatge mitjà d'atributs només localitzables per entitat de referència
+    average_percentage_scopable_only_attributes: Percentatge mitjà d'atributs només explorables per entitat de referència
+    average_percentage_scopable_and_localizable_attributes: Percentatge mitjà d'atributs localitzables i explorables per entitat de referència
 job_execution:
   summary:
     records: Registres

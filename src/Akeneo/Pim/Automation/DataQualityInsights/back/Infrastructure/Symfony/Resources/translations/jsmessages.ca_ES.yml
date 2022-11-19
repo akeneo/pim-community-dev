@@ -15,6 +15,7 @@ akeneo_data_quality_insights:
       consistency:
         title: Consistència
         attributes_link: Mostrar tots els atributs millorables
+        success: Les dades del vostre producte són totalment coherents. Felicitats!
     messages:
       add_image_attribute_recommendation: Una imatge val més que mil paraules. Hauríeu d'afegir una col·lecció de recursos o un atribut d'imatge per millorar la qualitat de les dades d'aquest producte.
   product_edit_form:
