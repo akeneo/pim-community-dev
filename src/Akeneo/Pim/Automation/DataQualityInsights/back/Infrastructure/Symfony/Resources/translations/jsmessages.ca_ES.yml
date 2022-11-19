@@ -134,16 +134,19 @@ akeneo_data_quality_insights:
       all_missing_attributes: Tots els atributs que falten
     back_to_products: Tornar als productes
   attribute_group:
+    helper_dqi_info: El càlcul de la puntuació de qualitat només tindrà en compte els atributs que pertanyen als grups d'atributs activats a la qualitat de les dades.
     helper_dqi_link: Més informació en el centre d'ajuda.
     activation: Habilitat
     dqi_status: Estat de Data Quality Insights
     activated: Habilitat
     disabled: Deshabilitat
     used_groups_helper: "Els grups d'atributs següents es tenen en compte en el càlcul de Data Quality Insights:"
+    all_groups_evaluated: Tots els grups d'atributs d'aquest producte es tenen en compte per al càlcul de la puntuació de qualitat. Per obtenir el nivell de qualitat més rellevant, <a href="{{ link }}" target="_blank">obteniu informació sobre com desactivar els grups d'atributs al nostre centre d'ajuda.</a>
   product_grid:
     filter_label:
       quality_score: Puntuació de qualitat
       enrichment_quality: Qualitat d'enriquiment
+      images_quality: Imatge del producte
     filter_value:
       good: Bé
       to_improve: A millorar

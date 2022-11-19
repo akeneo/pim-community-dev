@@ -53,4 +53,11 @@ pim_analytics:
     is_demo_catalog: Catàleg de demostració instal·lat
     nb_active_event_subscription: Nombre de web-hooks activats
     activated_app_ids: Aplicacions connectades
+    nb_activated_apps: Nombre d'aplicacions connectades
+    data_source.tracked: Nombre de connexions d'origen de l'API rastrejades
+    data_source.untracked: Nombre de connexions d'origen de l'API no rastrejades
+    data_destination.tracked: Nombre de connexions de destí de l'API rastrejades
+    data_destination.untracked: Nombre de connexions de destí de l'API no rastrejades
+    other.tracked: Nombre d'altres connexions de l'API rastrejades
+    other.untracked: Nombre d'altres connexions de l'API no rastrejades
 
