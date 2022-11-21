@@ -178,6 +178,17 @@ class CatalogFixtureCommand extends Command
             },
             "name": {
               "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "erp_name": {
+              "type": "string",
+              "title": "Erp name"
+            },
+            "meta_title": {
+              "type": "string",
+              "title": "Meta title"
             }
           }
         }

@@ -39,10 +39,12 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
     const translate = useTranslate();
 
     const [selectedTarget, setSelectedTarget] = useState<string|null>(null);
+    const [selectedTargetLabel, setSelectedTargetLabel] = useState<string|null>(null);
     const [selectedSource, setSelectedSource] = useState<Source|null>(null);
 
     const handleClick = useCallback((targetCode, source) => {
         setSelectedTarget(targetCode);
+        setSelectedTargetLabel(productMappingSchema?.properties[targetCode]?.title ?? targetCode);
         setSelectedSource(source);
     }, [selectedTarget]);
 
@@ -121,6 +123,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             <SourceContainer>
                 <SourcePanel
                     target={selectedTarget}
+                    targetLabel={selectedTargetLabel}
                     source={selectedSource}
                     onChange={handleSourceUpdate}
                 ></SourcePanel>
