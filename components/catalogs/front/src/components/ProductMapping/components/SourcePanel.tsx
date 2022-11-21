@@ -4,7 +4,7 @@ import {SourcePlaceholder} from './SourcePlaceholder';
 import {SelectAttributeDropdown} from './SelectAttributeDropdown';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Source} from '../models/Source';
-import {Attribute} from '../../models/Attribute';
+import {Attribute} from '../../../models/Attribute';
 
 
 type Props = {

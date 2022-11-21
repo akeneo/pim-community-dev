@@ -1,6 +1,6 @@
 import {useCallback} from 'react';
 import {useInfiniteQuery} from 'react-query';
-import {Attribute} from '../../models/Attribute';
+import {Attribute} from '../../../models/Attribute';
 
 type PageParam = {
     number: number;
