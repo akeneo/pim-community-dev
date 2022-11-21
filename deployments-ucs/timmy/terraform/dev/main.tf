@@ -76,7 +76,7 @@ module "timmy_request_portal" {
     PORTAL_HOSTNAME                  = "portal-dev3-sandbox.ip.akeneo.com"
     PORTAL_LOGIN_HOSTNAME            = "connect-sandbox.ip.akeneo.com"
     TENANT_CONTINENT                 = "europe-west3"
-    TENANT_EDITION_FLAGS             = "serenity_instance"
+    TENANT_EDITION_FLAGS             = "serenity_instance,growth_edition_instance"
     TENANT_ENVIRONMENT               = "sandbox"
   }
 }

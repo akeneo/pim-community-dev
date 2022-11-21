@@ -252,23 +252,29 @@ functions.http('requestPortal', (req, res) => {
     await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
       const instanceId = subject['id'];
+      const pim_edition = subject['reference']['type'];
       const tenant_name = subject['instance_fqdn']['prefix'];
-      const administrator = subject['administrator'];
+      const dns_cloud_domain = subject['instance_fqdn']['suffix'];
+      const administrator_login = subject['administrator']['email'];
+      const administrator_first_name = subject['administrator']['first_name'];
+      const administrator_last_name = subject['administrator']['last_name'];
+      const administrator_email = subject['administrator']['email'];
+      const administrator_ui_locale = subject['locale'];
 
       logger.debug(`Prepare creation of the  \`${tenant_name}\` tenant (id=${instanceId})`);
 
       const payload = {
         branchName: branchName,
-        tenant_name: subject['instance_fqdn']['prefix'],
-        pim_edition: process.env.TENANT_EDITION_FLAGS,
-        dnsCloudDomain: subject['instance_fqdn']['suffix'],
+        tenant_name: tenant_name,
+        pim_edition: pim_edition,
+        dnsCloudDomain: dns_cloud_domain,
         pim: {
           defaultAdminUser: {
-            login: administrator['email'],
-            firstName: administrator['first_name'],
-            lastName: administrator['last_name'],
-            email: administrator['email'],
-            uiLocale: subject['locale']
+            login: administrator_login,
+            firstName: administrator_first_name,
+            lastName: administrator_last_name,
+            email: administrator_email,
+            uiLocale: administrator_ui_locale
           },
           api: {
             namespace: pimNamespace
