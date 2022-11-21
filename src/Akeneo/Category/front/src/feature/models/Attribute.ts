@@ -19,6 +19,7 @@ export type Attribute = {
   code: string;
   type: CategoryAttributeType;
   order: number;
+  is_scopable: boolean;
   is_localizable: boolean;
   labels: LabelCollection;
   template_uuid: string;
