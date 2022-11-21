@@ -23,7 +23,7 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetProductsQuery;
 final class GetProductsHandler
 {
     public function __construct(
-        private GetProductsWithFilteredValuesQueryInterface $getProductsQuery,
+        private GetProductsWithFilteredValuesQueryInterface $getProductsWithFilteredValuesQuery,
         private GetCatalogQueryInterface $getCatalogQuery,
         private DisableCatalogQueryInterface $disableCatalogQuery,
         private IsCatalogValidInterface $isCatalogValid,
@@ -50,7 +50,7 @@ final class GetProductsHandler
         }
 
         try {
-            return $this->getProductsQuery->execute(
+            return $this->getProductsWithFilteredValuesQuery->execute(
                 $catalogDomain,
                 $query->getSearchAfter(),
                 $query->getLimit(),
