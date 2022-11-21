@@ -36,7 +36,7 @@ final class ValidateChannel
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
             throw new InvalidQueryException(
-                sprintf('Scope "%s" does not exist.', $channelCode)
+                \sprintf('Scope "%s" does not exist.', $channelCode)
             );
         }
     }

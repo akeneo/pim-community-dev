@@ -67,7 +67,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
 
         $this->checkChannelAndValue($field, $channel, $value);
 
-        if (in_array(
+        if (\in_array(
             $operator,
             [
                 Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES,
@@ -78,7 +78,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         )) {
             $this->checkOptions($field, $options);
             $localeCodes = $options['locales'];
-        } elseif ($operator === Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE && array_key_exists('locales', $options)) {
+        } elseif ($operator === Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE && \array_key_exists('locales', $options)) {
             $this->checkOptions($field, $options);
             $localeCodes = $options['locales'];
         } else {
@@ -101,10 +101,10 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
          *      EXISTS "completeness.tablet.fr_FR" AND
          *      EXISTS "completeness.tablet.it_IT"
          */
-        if (in_array($operator, [Operators::NOT_EQUAL, Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE])) {
+        if (\in_array($operator, [Operators::NOT_EQUAL, Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE])) {
             $filterClauses = [];
             foreach ($localeCodes as $localeCode) {
-                $field = sprintf('completeness.%s.%s', $channel, $localeCode);
+                $field = \sprintf('completeness.%s.%s', $channel, $localeCode);
                 $filterClauses[] = [
                     'term' => [
                         $field => $value,
@@ -132,7 +132,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         $shouldClauses = [];
 
         foreach ($localeCodes as $localeCode) {
-            $field = sprintf('completeness.%s.%s', $channel, $localeCode);
+            $field = \sprintf('completeness.%s.%s', $channel, $localeCode);
 
             switch ($operator) {
                 case Operators::EQUALS:
@@ -257,7 +257,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      */
     protected function checkChannelAndValue($field, $channel, $value)
     {
-        if (!is_numeric($value)) {
+        if (!\is_numeric($value)) {
             throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
         }
 
@@ -280,7 +280,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      */
     protected function checkOptions($field, array $options)
     {
-        if (!array_key_exists('locales', $options)) {
+        if (!\array_key_exists('locales', $options)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $field,
                 'locales',
@@ -289,7 +289,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             );
         }
 
-        if (!isset($options['locales']) || !is_array($options['locales'])) {
+        if (!isset($options['locales']) || !\is_array($options['locales'])) {
             throw InvalidPropertyTypeException::arrayOfArraysExpected(
                 $field,
                 static::class,
@@ -309,7 +309,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     {
         $channel = $this->channelRepository->findOneByIdentifier($code);
         if (null === $channel) {
-            throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $code));
+            throw new ObjectNotFoundException(\sprintf('Channel with "%s" code does not exist', $code));
         }
 
         return $channel;

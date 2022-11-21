@@ -43,7 +43,7 @@ class CalculateProductModelCompleteness implements CalculateProductCompletenessI
     public function calculate(ProductEntityIdInterface $productModelId): CompletenessCalculationResult
     {
         if (!$productModelId instanceof ProductModelId) {
-            throw new \InvalidArgumentException(sprintf('Invalid product model id: %s', (string)$productModelId));
+            throw new \InvalidArgumentException(\sprintf('Invalid product model id: %s', (string)$productModelId));
         }
 
         $result = new CompletenessCalculationResult();

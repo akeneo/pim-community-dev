@@ -41,7 +41,7 @@ final class GetProductModelsWithQualityScores implements GetProductModelsWithQua
 
         $productModelsQualityScores = $this->getProductsQualityScores($connectorProductModelList);
 
-        $productModelsWithQualityScores = array_map(function (ConnectorProductModel $productModel) use ($productModelsQualityScores, $channel, $locales) {
+        $productModelsWithQualityScores = \array_map(function (ConnectorProductModel $productModel) use ($productModelsQualityScores, $channel, $locales) {
             if (!isset($productModelsQualityScores[$productModel->code()])) {
                 return $productModel->buildWithQualityScores(new QualityScoreCollection([]));
             }
@@ -57,7 +57,7 @@ final class GetProductModelsWithQualityScores implements GetProductModelsWithQua
     {
         return new ConnectorProductModelList(
             $connectorProductModelList->totalNumberOfProductModels(),
-            array_map(
+            \array_map(
                 fn (ConnectorProductModel $productModel) => $productModel->buildWithQualityScores(new QualityScoreCollection([])),
                 $connectorProductModelList->connectorProductModels()
             )
@@ -66,7 +66,7 @@ final class GetProductModelsWithQualityScores implements GetProductModelsWithQua
 
     private function getProductsQualityScores(ConnectorProductModelList $connectorProductModelList): array
     {
-        $productModelCodes = array_map(
+        $productModelCodes = \array_map(
             fn (ConnectorProductModel $connectorProductModel) => $connectorProductModel->code(),
             $connectorProductModelList->connectorProductModels()
         );
@@ -86,7 +86,7 @@ final class GetProductModelsWithQualityScores implements GetProductModelsWithQua
                 continue;
             }
             foreach ($scoresLocales as $scoreLocale => $score) {
-                if (empty($locales) || in_array($scoreLocale, $locales)) {
+                if (empty($locales) || \in_array($scoreLocale, $locales)) {
                     $filteredQualityScores[$scoreChannel][$scoreLocale] = $score;
                 }
             }

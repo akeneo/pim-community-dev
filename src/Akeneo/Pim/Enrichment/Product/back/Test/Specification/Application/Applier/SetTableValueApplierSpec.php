@@ -14,18 +14,18 @@ use PhpSpec\ObjectBehavior;
 
 class SetTableValueApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $updater)
+    public function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetTableValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_set_table_value_user_intent(ObjectUpdaterInterface $updater): void
+    public function it_applies_set_table_value_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $setTable = new SetTableValue(
@@ -59,7 +59,7 @@ class SetTableValueApplierSpec extends ObjectBehavior
         $this->apply($setTable, $product, 1);
     }
 
-    function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

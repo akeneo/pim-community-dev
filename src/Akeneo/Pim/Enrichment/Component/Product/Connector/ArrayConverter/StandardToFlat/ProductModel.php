@@ -35,7 +35,7 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
                 $convertedItem = $this->convertQuantifiedAssociations($data, $convertedItem);
                 break;
             case 'categories':
-                $convertedItem[$property] = implode(',', $data);
+                $convertedItem[$property] = \implode(',', $data);
                 break;
             case 'code':
             case 'family_variant':
@@ -48,7 +48,7 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
                 }
                 break;
             case 'quality_scores':
-                if (is_array($data)) {
+                if (\is_array($data)) {
                     $convertedItem = $convertedItem + $this->qualityScoreConverter->convert($data);
                 }
                 break;
@@ -92,8 +92,8 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
     {
         foreach ($data as $assocName => $associations) {
             foreach ($associations as $assocType => $entities) {
-                $propertyName = sprintf('%s-%s', $assocName, $assocType);
-                $convertedItem[$propertyName] = implode(',', $entities);
+                $propertyName = \sprintf('%s-%s', $assocName, $assocType);
+                $convertedItem[$propertyName] = \implode(',', $entities);
             }
         }
 
@@ -145,9 +145,9 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
     {
         foreach ($data as $associationTypeCode => $quantifiedAssociations) {
             foreach ($quantifiedAssociations as $entityType => $quantifiedLinks) {
-                $propertyName = sprintf('%s-%s', $associationTypeCode, $entityType);
-                $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
-                $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
+                $propertyName = \sprintf('%s-%s', $associationTypeCode, $entityType);
+                $convertedItem[$propertyName] = \implode(',', \array_column($quantifiedLinks, 'identifier'));
+                $convertedItem[\sprintf('%s-quantity', $propertyName)] = \implode('|', \array_column($quantifiedLinks, 'quantity'));
             }
         }
 

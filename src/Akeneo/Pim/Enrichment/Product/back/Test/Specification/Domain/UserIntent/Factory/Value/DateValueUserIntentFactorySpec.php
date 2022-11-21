@@ -12,12 +12,12 @@ use PhpSpec\ObjectBehavior;
 
 class DateValueUserIntentFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(DateValueUserIntentFactory::class);
     }
 
-    function it_returns_set_date_user_intent()
+    public function it_returns_set_date_user_intent()
     {
         $this->create(AttributeTypes::DATE, 'a_date', [
             'data' => '2022-05-20',
@@ -42,7 +42,7 @@ class DateValueUserIntentFactorySpec extends ObjectBehavior
         ));
     }
 
-    function it_returns_clear_value()
+    public function it_returns_clear_value()
     {
         $this->create(AttributeTypes::DATE, 'a_date', [
             'data' => null,
@@ -57,7 +57,7 @@ class DateValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new ClearValue('a_date', 'ecommerce', 'fr_FR'));
     }
 
-    function it_throws_an_exception_if_data_is_not_valid()
+    public function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', [AttributeTypes::DATE, 'a_date', ['value']]);

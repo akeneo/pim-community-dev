@@ -34,16 +34,16 @@ final class ValidateCategories
         }
 
         $categories = $search['categories'];
-        if (!is_array($categories)) {
+        if (!\is_array($categories)) {
             throw new InvalidQueryException(
-                sprintf('Search query parameter "categories" has to be an array, "%s" given.', gettype($categories))
+                \sprintf('Search query parameter "categories" has to be an array, "%s" given.', \gettype($categories))
             );
         }
 
         $errors = [];
         foreach ($categories as $category) {
             foreach ($category['value'] as $categoryCode) {
-                $categoryCode = trim($categoryCode);
+                $categoryCode = \trim($categoryCode);
                 if (null === $this->categoryRepository->findOneByIdentifier($categoryCode)) {
                     $errors[] = $categoryCode;
                 }
@@ -51,8 +51,8 @@ final class ValidateCategories
         }
 
         if (!empty($errors)) {
-            $plural = count($errors) > 1 ? 'Categories "%s" do not exist.' : 'Category "%s" does not exist.';
-            throw new InvalidQueryException(sprintf($plural, implode(', ', $errors)));
+            $plural = \count($errors) > 1 ? 'Categories "%s" do not exist.' : 'Category "%s" does not exist.';
+            throw new InvalidQueryException(\sprintf($plural, \implode(', ', $errors)));
         }
     }
 }

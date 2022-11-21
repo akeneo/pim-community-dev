@@ -37,7 +37,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     {
         $continueToEvaluateProducts = true;
         $continueToEvaluateProductModels = true;
-        $startTime = time();
+        $startTime = \time();
         $evaluationTime['products'] = [
             'count' => 0,
             'time' => 0
@@ -49,29 +49,29 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
 
         do {
             if ($continueToEvaluateProducts) {
-                $evaluationProductsStartTime = microtime(true);
+                $evaluationProductsStartTime = \microtime(true);
                 $evaluationCount = $this->evaluatePendingProductCriteria();
-                $evaluationProductsEndTime = microtime(true);
+                $evaluationProductsEndTime = \microtime(true);
                 $continueToEvaluateProducts = $evaluationCount > 0;
 
                 $evaluationTime['products']['count'] += $evaluationCount;
-                $evaluationTime['products']['time'] += round($evaluationProductsEndTime - $evaluationProductsStartTime, 3);
+                $evaluationTime['products']['time'] += \round($evaluationProductsEndTime - $evaluationProductsStartTime, 3);
                 $this->stepExecution->addSummaryInfo('evaluations', $evaluationTime);
             }
 
             if ($continueToEvaluateProductModels) {
-                $evaluationProductModelsStartTime = microtime(true);
+                $evaluationProductModelsStartTime = \microtime(true);
                 $evaluationCount = $this->evaluatePendingProductModelCriteria();
-                $evaluationProductModelsEndTime = microtime(true);
+                $evaluationProductModelsEndTime = \microtime(true);
                 $continueToEvaluateProductModels = $evaluationCount > 0;
 
                 $evaluationTime['product_models']['count'] += $evaluationCount;
-                $evaluationTime['product_models']['time'] += round($evaluationProductModelsEndTime - $evaluationProductModelsStartTime, 3);
+                $evaluationTime['product_models']['time'] += \round($evaluationProductModelsEndTime - $evaluationProductModelsStartTime, 3);
                 $this->stepExecution->addSummaryInfo('evaluations', $evaluationTime);
             }
 
             if ($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false) {
-                sleep($this->noEvaluationSleep);
+                \sleep($this->noEvaluationSleep);
                 $continueToEvaluateProducts = true;
                 $continueToEvaluateProductModels = true;
             }
@@ -91,8 +91,8 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
             Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
             ($this->evaluateProducts)($productUuidCollection);
 
-            $evaluationCount += count($productUuidCollection);
-            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productUuidCollection));
+            $evaluationCount += \count($productUuidCollection);
+            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + \count($productUuidCollection));
         }
 
         return $evaluationCount;
@@ -105,8 +105,8 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
             Assert::isInstanceOf($productModelIdCollection, ProductModelIdCollection::class);
             ($this->evaluateProductModels)($productModelIdCollection);
 
-            $evaluationCount += count($productModelIdCollection);
-            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productModelIdCollection));
+            $evaluationCount += \count($productModelIdCollection);
+            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + \count($productModelIdCollection));
         }
 
         return $evaluationCount;
@@ -114,7 +114,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
 
     private function isTimeboxReached(int $startTime): bool
     {
-        $actualTime = time();
+        $actualTime = \time();
         $timeSpentFromBegining = $actualTime - $startTime;
 
         return $timeSpentFromBegining >= $this->timeBoxInSecondsAllowed;

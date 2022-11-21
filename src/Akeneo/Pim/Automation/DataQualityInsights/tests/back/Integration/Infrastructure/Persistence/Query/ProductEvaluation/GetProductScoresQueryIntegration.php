@@ -68,7 +68,7 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
             ),
         ];
 
-        $this->get(ProductScoreRepository::class)->saveAll(array_values($productsScores));
+        $this->get(ProductScoreRepository::class)->saveAll(\array_values($productsScores));
 
         $expectedProductsScores = [
             $productUuidA => new Read\Scores(

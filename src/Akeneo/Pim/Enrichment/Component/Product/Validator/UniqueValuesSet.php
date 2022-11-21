@@ -42,7 +42,7 @@ class UniqueValuesSet
     public function addValue(ValueInterface $value, EntityWithValuesInterface $entity): bool
     {
         $identifier = $this->getEntityId($entity);
-        $data = strtolower($value->__toString());
+        $data = \strtolower($value->__toString());
         $attributeCode = $value->getAttributeCode();
 
         if (isset($this->uniqueValues[$attributeCode][$data])) {
@@ -75,12 +75,12 @@ class UniqueValuesSet
     {
         if ($entity instanceof ProductInterface || $entity instanceof ProductModelInterface) {
             if (null !== $entity->getCreated()) {
-                return $entity instanceof ProductInterface && get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
+                return $entity instanceof ProductInterface && \get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
                     ? $entity->getUuid()->toString()
                     : $entity->getId();
             }
         }
 
-        return spl_object_hash($entity);
+        return \spl_object_hash($entity);
     }
 }

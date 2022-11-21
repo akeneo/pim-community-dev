@@ -58,7 +58,7 @@ class GroupTypeNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof GroupTypeInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof GroupTypeInterface && \in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool

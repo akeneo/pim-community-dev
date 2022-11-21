@@ -17,6 +17,6 @@ class AsynchronousCriterionEvaluationsFilterIterator extends \FilterIterator
     {
         $criterionEvaluation = $this->getInnerIterator()->current();
 
-        return in_array(strval($criterionEvaluation->getCriterionCode()), self::ASYNCHRONOUS_CRITERION_CODES);
+        return \in_array(\strval($criterionEvaluation->getCriterionCode()), self::ASYNCHRONOUS_CRITERION_CODES);
     }
 }

@@ -44,7 +44,7 @@ class GetNormalizedProductModelQualityScores implements GetNormalizedQualityScor
                 continue;
             }
             foreach ($scoresLocales as $scoreLocale => $score) {
-                if (empty($locales) || in_array($scoreLocale, $locales)) {
+                if (empty($locales) || \in_array($scoreLocale, $locales)) {
                     $filteredQualityScores[$scoreChannel][$scoreLocale] = $score;
                 }
             }

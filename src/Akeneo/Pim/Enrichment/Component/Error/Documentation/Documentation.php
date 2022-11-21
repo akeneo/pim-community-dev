@@ -34,14 +34,14 @@ class Documentation
 
         foreach ($messageParameters as $needle => $messageParameter) {
             if (!$messageParameter instanceof MessageParameterInterface) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Class "%s" accepts only associative array of "%s" as $messageParameters.',
                     self::class,
                     MessageParameterInterface::class
                 ));
             }
-            if (1 !== substr_count($message, sprintf('{%s}', $needle))) {
-                throw new \InvalidArgumentException(sprintf(
+            if (1 !== \substr_count($message, \sprintf('{%s}', $needle))) {
+                throw new \InvalidArgumentException(\sprintf(
                     '$messageParameters "%s" not found in $message "%s".',
                     $needle,
                     $message

@@ -29,7 +29,7 @@ class BooleanComparator implements ComparatorInterface
      */
     public function supports($column)
     {
-        return in_array($column, $this->columns);
+        return \in_array($column, $this->columns);
     }
 
     /**

@@ -39,7 +39,7 @@ class FQCNResolver
     {
         try {
             $className = $this->container->getParameter(
-                sprintf('pim_catalog.entity.%s.class', $entityType)
+                \sprintf('pim_catalog.entity.%s.class', $entityType)
             );
         } catch (InvalidArgumentException $e) {
             $className = null;

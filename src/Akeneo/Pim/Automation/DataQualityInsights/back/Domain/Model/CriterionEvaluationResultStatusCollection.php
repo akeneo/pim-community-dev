@@ -37,7 +37,7 @@ final class CriterionEvaluationResultStatusCollection implements \IteratorAggreg
     public function toArrayString(): array
     {
         return $this->resultsStatus->mapWith(function (CriterionEvaluationResultStatus $resultStatus) {
-            return strval($resultStatus);
+            return \strval($resultStatus);
         });
     }
 

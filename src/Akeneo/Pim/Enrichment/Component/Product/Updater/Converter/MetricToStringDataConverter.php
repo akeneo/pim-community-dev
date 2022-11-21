@@ -22,7 +22,7 @@ final class MetricToStringDataConverter implements ValueDataConverter
     public function supportsAttributes(AttributeInterface $sourceAttribute, AttributeInterface $targetAttribute): bool
     {
         return AttributeTypes::METRIC === $sourceAttribute->getType() &&
-            in_array($targetAttribute->getType(), [AttributeTypes::TEXT, AttributeTypes::TEXTAREA]);
+            \in_array($targetAttribute->getType(), [AttributeTypes::TEXT, AttributeTypes::TEXTAREA]);
     }
 
     /**

@@ -46,7 +46,7 @@ class ProductModelReader extends Reader implements FileReaderInterface
     {
         $data = parent::read();
 
-        if (!is_array($data) || !isset($data['values'])) {
+        if (!\is_array($data) || !isset($data['values'])) {
             return $data;
         }
 

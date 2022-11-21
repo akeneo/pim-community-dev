@@ -151,9 +151,9 @@ class MediaFileController
      */
     public function getAction(Request $request, $code)
     {
-        $media = $this->mediaRepository->findOneByIdentifier(urldecode($code));
+        $media = $this->mediaRepository->findOneByIdentifier(\urldecode($code));
         if (null === $media || FileStorage::CATALOG_STORAGE_ALIAS !== $media->getStorage()) {
-            throw new NotFoundHttpException(sprintf('Media file "%s" does not exist.', $code));
+            throw new NotFoundHttpException(\sprintf('Media file "%s" does not exist.', $code));
         }
 
         $mediaApi = $this->normalizer->normalize($media, 'external_api');
@@ -182,7 +182,7 @@ class MediaFileController
             'with_count' => 'false',
         ];
 
-        $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $queryParameters = \array_merge($defaultParameters, $request->query->all());
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $criteria = ['storage' => FileStorage::CATALOG_STORAGE_ALIAS];
@@ -215,7 +215,7 @@ class MediaFileController
      */
     public function downloadAction(Request $request, $code)
     {
-        $filename = urldecode($code);
+        $filename = \urldecode($code);
 
         $fileInfo = $this->mediaRepository->findOneBy([
             'key'     => $filename,
@@ -223,21 +223,21 @@ class MediaFileController
         ]);
 
         if (null === $fileInfo) {
-            throw new NotFoundHttpException(sprintf('Media file "%s" does not exist.', $filename));
+            throw new NotFoundHttpException(\sprintf('Media file "%s" does not exist.', $filename));
         }
 
         $fs = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
         $options = [
             'headers' => [
                 'Content-Type'        => $fileInfo->getMimeType(),
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $fileInfo->getOriginalFilename())
+                'Content-Disposition' => \sprintf('attachment; filename="%s"', $fileInfo->getOriginalFilename())
             ]
         ];
 
         try {
             return $this->fileFetcher->fetch($fs, $filename, $options);
         } catch (FileNotFoundException $e) {
-            throw new NotFoundHttpException(sprintf('Media file "%s" is not present on the filesystem.', $filename), $e);
+            throw new NotFoundHttpException(\sprintf('Media file "%s" is not present on the filesystem.', $filename), $e);
         }
     }
 
@@ -278,7 +278,7 @@ class MediaFileController
         $productModel = $this->productModelRepository->findOneByIdentifier($productModelInfos['code']);
         if (null === $productModel) {
             throw new UnprocessableEntityHttpException(
-                sprintf('Product model "%s" does not exist.', $productModelInfos['code'])
+                \sprintf('Product model "%s" does not exist.', $productModelInfos['code'])
             );
         }
 
@@ -310,7 +310,7 @@ class MediaFileController
         $product = $this->productRepository->findOneByIdentifier($productInfos['identifier']);
         if (null === $product) {
             throw new UnprocessableEntityHttpException(
-                sprintf('Product "%s" does not exist.', $productInfos['identifier'])
+                \sprintf('Product "%s" does not exist.', $productInfos['identifier'])
             );
         }
 
@@ -450,13 +450,13 @@ class MediaFileController
      */
     protected function getProductDecodedContent($content): array
     {
-        $decodedContent = json_decode($content, true);
+        $decodedContent = \json_decode($content, true);
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
         }
 
         if (!isset($decodedContent['identifier']) || !isset($decodedContent['attribute']) ||
-            !array_key_exists('locale', $decodedContent) || !array_key_exists('scope', $decodedContent)) {
+            !\array_key_exists('locale', $decodedContent) || !\array_key_exists('scope', $decodedContent)) {
             throw new UnprocessableEntityHttpException(
                 'Product property must contain "identifier", "attribute", "locale" and "scope" properties.'
             );
@@ -474,13 +474,13 @@ class MediaFileController
      */
     protected function getProductModelDecodedContent($content): array
     {
-        $decodedContent = json_decode($content, true);
+        $decodedContent = \json_decode($content, true);
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
         }
 
         if (!isset($decodedContent['code']) || !isset($decodedContent['attribute']) ||
-            !array_key_exists('locale', $decodedContent) || !array_key_exists('scope', $decodedContent)) {
+            !\array_key_exists('locale', $decodedContent) || !\array_key_exists('scope', $decodedContent)) {
             throw new UnprocessableEntityHttpException(
                 'Product model property must contain "code", "attribute", "locale" and "scope" properties.'
             );

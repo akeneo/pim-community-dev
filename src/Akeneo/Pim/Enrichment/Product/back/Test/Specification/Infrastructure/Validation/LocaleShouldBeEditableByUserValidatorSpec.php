@@ -20,32 +20,32 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 {
-    function let(IsLocaleEditable $isLocaleEditable, ExecutionContext $context)
+    public function let(IsLocaleEditable $isLocaleEditable, ExecutionContext $context)
     {
         $this->beConstructedWith($isLocaleEditable);
         $this->initialize($context);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(LocaleShouldBeEditableByUserValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function it_throws_an_exception_with_a_wrong_constraint()
+    public function it_throws_an_exception_with_a_wrong_constraint()
     {
         $command = UpsertProductCommand::createWithIdentifier(userId: 1, productIdentifier: ProductIdentifier::fromIdentifier('foo'), userIntents: []);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
 
-    function it_throws_an_exception_with_a_wrong_value()
+    public function it_throws_an_exception_with_a_wrong_value()
     {
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('validate', [new \stdClass(), new LocaleShouldBeEditableByUser([])]);
     }
 
-    function it_validates_when_the_locale_is_editable_by_the_user(
+    public function it_validates_when_the_locale_is_editable_by_the_user(
         ExecutionContext $context,
         IsLocaleEditable $isLocaleEditable
     ) {
@@ -62,7 +62,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());
     }
 
-    function it_adds_a_violation_when_the_locale_is_not_editable_for_the_user(
+    public function it_adds_a_violation_when_the_locale_is_not_editable_for_the_user(
         ExecutionContext $context,
         IsLocaleEditable $isLocaleEditable,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
@@ -85,7 +85,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());
     }
 
-    function it_does_nothing_when_value_intent_does_not_concern_a_locale(
+    public function it_does_nothing_when_value_intent_does_not_concern_a_locale(
         ExecutionContext $context,
         IsLocaleEditable $isLocaleEditable
     ) {

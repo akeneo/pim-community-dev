@@ -119,7 +119,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     {
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Expects a "Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface", "%s" provided.',
                     ClassUtils::getClass($group)
                 )
@@ -131,7 +131,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     {
         $context = $this->productClassName;
         $this->versionContext->addContextInfo(
-            sprintf('Comes from variant group %s', $group->getCode()),
+            \sprintf('Comes from variant group %s', $group->getCode()),
             $context
         );
         $this->objectManager->persist($group);

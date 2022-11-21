@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         GetAttributes $getAttributes,
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context
@@ -34,13 +34,13 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_is_a_constraint_validator(): void
+    public function it_is_a_constraint_validator(): void
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
         $this->shouldHaveType(LocaleAndChannelShouldBeConsistentValidator::class);
     }
 
-    function it_throws_an_exception_for_a_wrong_constraint(): void
+    public function it_throws_an_exception_for_a_wrong_constraint(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             [new SetTextValue('name', 'ecommerce', 'en_US', 'My beautiful product')],
@@ -48,7 +48,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_if_the_value_is_not_an_array(): void
+    public function it_throws_an_exception_if_the_value_is_not_an_array(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             new SetTextValue('name', null, null, 'foo bar'),
@@ -56,7 +56,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_if_one_of_the_values_is_not_a_value_user_intent(): void
+    public function it_throws_an_exception_if_one_of_the_values_is_not_a_value_user_intent(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             [new SetTextValue('name', null, null, 'foo bar'), new \stdClass()],
@@ -64,7 +64,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_does_nothing_if_the_attribute_does_not_exist(
+    public function it_does_nothing_if_the_attribute_does_not_exist(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context
     ): void {
@@ -77,7 +77,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_violation_if_no_channel_code_is_provided_for_a_scopable_attribute(
+    public function it_adds_a_violation_if_no_channel_code_is_provided_for_a_scopable_attribute(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -102,7 +102,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_violation_if_a_channel_code_is_provided_for_a_non_scopable_attribute(
+    public function it_adds_a_violation_if_a_channel_code_is_provided_for_a_non_scopable_attribute(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -123,12 +123,12 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            [new SetTextValue('name', 'ecommerce', null , 'My beautiful product')],
+            [new SetTextValue('name', 'ecommerce', null, 'My beautiful product')],
             new LocaleAndChannelShouldBeConsistent()
         );
     }
 
-    function it_adds_a_violation_if_the_channel_does_not_exist(
+    public function it_adds_a_violation_if_the_channel_does_not_exist(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -153,7 +153,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_violation_if_no_locale_code_is_provided_for_a_localizable_attribute(
+    public function it_adds_a_violation_if_no_locale_code_is_provided_for_a_localizable_attribute(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -178,7 +178,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_violation_if_a_locale_code_is_provided_for_a_non_localizable_attribute(
+    public function it_adds_a_violation_if_a_locale_code_is_provided_for_a_non_localizable_attribute(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -204,7 +204,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_violation_if_locale_code_is_not_active(
+    public function it_adds_a_violation_if_locale_code_is_not_active(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -229,7 +229,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_violation_if_locale_is_not_bound_to_the_channel(
+    public function it_adds_a_violation_if_locale_is_not_bound_to_the_channel(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -255,7 +255,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_violation_if_locale_is_invalid_for_a_locale_specific_attribute(
+    public function it_adds_a_violation_if_locale_is_invalid_for_a_locale_specific_attribute(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -282,7 +282,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_add_a_violation_when_scope_and_locale_are_consistent(
+    public function it_does_not_add_a_violation_when_scope_and_locale_are_consistent(
         GetAttributes $getAttributes,
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context

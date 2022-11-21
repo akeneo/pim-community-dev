@@ -102,7 +102,7 @@ class AncestorIdFilter extends AbstractFieldFilter
             FieldFilterHelper::checkString(self::ANCESTOR_ID_ES_FIELD, $value, static::class);
             if (!$this->isValidId($value)) {
                 throw new ObjectNotFoundException(
-                    sprintf('Object "product model" with ID "%s" does not exist', $value)
+                    \sprintf('Object "product model" with ID "%s" does not exist', $value)
                 );
             }
         }
@@ -110,7 +110,7 @@ class AncestorIdFilter extends AbstractFieldFilter
 
     private function isValidId(string $value): bool
     {
-        $id = str_replace('product_model_', '', $value);
+        $id = \str_replace('product_model_', '', $value);
 
         return null !== $this->productModelRepository->findOneBy(['id' => $id]);
     }

@@ -75,7 +75,7 @@ SQL;
 
         $attributeOptions = $this->connection->executeQuery($sql, [
             'attribute_code' => $attributeCode,
-            'search' => sprintf('%%%s%%', $searchParameters->getSearch()),
+            'search' => \sprintf('%%%s%%', $searchParameters->getSearch()),
             'locale_code' => $searchParameters->getLocale(),
             'include_codes' => $searchParameters->getIncludeCodes(),
             'exclude_codes' => $searchParameters->getExcludeCodes(),
@@ -91,10 +91,10 @@ SQL;
             'offset' => \PDO::PARAM_INT,
         ])->fetchAllAssociative();
 
-        return array_map(
+        return \array_map(
             static fn (array $attributeOption) => new AttributeOption(
                 $attributeOption['code'],
-                null !== $attributeOption['labels'] ? json_decode($attributeOption['labels'], true) : [],
+                null !== $attributeOption['labels'] ? \json_decode($attributeOption['labels'], true) : [],
             ),
             $attributeOptions,
         );
@@ -121,7 +121,7 @@ SQL;
 
         $matchesCount = $this->connection->executeQuery($sql, [
             'attribute_code' => $attributeCode,
-            'search' => sprintf('%%%s%%', $searchParameters->getSearch() ?? ''),
+            'search' => \sprintf('%%%s%%', $searchParameters->getSearch() ?? ''),
             'locale_code' => $searchParameters->getLocale(),
             'include_codes' => $searchParameters->getIncludeCodes(),
             'exclude_codes' => $searchParameters->getExcludeCodes(),
@@ -138,7 +138,7 @@ SQL;
 
     private function isAttributeAutoSorted(string $attributeCode): bool
     {
-        $attributeProperties = unserialize($this->connection->executeQuery(
+        $attributeProperties = \unserialize($this->connection->executeQuery(
             'SELECT properties from pim_catalog_attribute attribute WHERE attribute.code = :attribute_code',
             ['attribute_code' => $attributeCode],
         )->fetchOne());

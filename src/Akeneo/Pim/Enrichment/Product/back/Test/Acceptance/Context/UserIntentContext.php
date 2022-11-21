@@ -526,11 +526,11 @@ final class UserIntentContext implements Context
 
         Assert::isEmpty(
             $notFound,
-            \sprintf("These user intents are not found:\n%s\nResults were:\n%s\n", print_r($notFound, true), print_r($handledStamp->getResult(), true))
+            \sprintf("These user intents are not found:\n%s\nResults were:\n%s\n", \print_r($notFound, true), \print_r($handledStamp->getResult(), true))
         );
         Assert::isEmpty(
             $results,
-            \sprintf("There is some extra user intent:\n%s\nResults were:\n%s", print_r($results, true), print_r($handledStamp->getResult(), true))
+            \sprintf("There is some extra user intent:\n%s\nResults were:\n%s", \print_r($results, true), \print_r($handledStamp->getResult(), true))
         );
     }
 

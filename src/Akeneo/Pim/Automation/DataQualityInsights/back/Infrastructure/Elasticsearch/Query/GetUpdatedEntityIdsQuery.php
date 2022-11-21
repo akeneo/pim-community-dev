@@ -33,7 +33,7 @@ class GetUpdatedEntityIdsQuery implements GetUpdatedEntityIdsQueryInterface
     public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         if ($this->documentType !== ProductModelInterface::class && $this->documentType !== ProductInterface::class) {
-            throw new \InvalidArgumentException(sprintf('Invalid type %s', $this->documentType));
+            throw new \InvalidArgumentException(\sprintf('Invalid type %s', $this->documentType));
         }
 
         $query = [
@@ -78,7 +78,7 @@ class GetUpdatedEntityIdsQuery implements GetUpdatedEntityIdsQueryInterface
 
             yield $this->idFactory->createCollection($productIds);
 
-            $returnedProducts += count($productIds);
+            $returnedProducts += \count($productIds);
             $result = $returnedProducts < $totalProducts && $searchAfter !== $previousSearchAfter
                 ? $this->searchAfter($searchQuery, $searchAfter)
                 : [];

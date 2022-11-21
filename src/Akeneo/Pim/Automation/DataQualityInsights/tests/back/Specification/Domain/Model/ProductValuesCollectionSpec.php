@@ -35,7 +35,7 @@ class ProductValuesCollectionSpec extends ObjectBehavior
         $this->add($textValues2);
         $this->add($textareaValues);
 
-        $allTextValues = iterator_to_array($this->getTextValues()->getWrappedObject());
+        $allTextValues = \iterator_to_array($this->getTextValues()->getWrappedObject());
         Assert::eq($allTextValues, [$textValues1, $textValues2]);
     }
 
@@ -53,7 +53,7 @@ class ProductValuesCollectionSpec extends ObjectBehavior
         $this->add($textareaValues2);
         $this->add($textValues);
 
-        $allTextValues = iterator_to_array($this->getTextareaValues()->getWrappedObject());
+        $allTextValues = \iterator_to_array($this->getTextareaValues()->getWrappedObject());
         Assert::eq($allTextValues, [$textareaValues1, $textareaValues2]);
     }
 
@@ -74,7 +74,7 @@ class ProductValuesCollectionSpec extends ObjectBehavior
         $this->add($notLocalizableTextValues);
         $this->add($textareaValues);
 
-        $allTextValues = iterator_to_array($this->getLocalizableTextValues()->getWrappedObject());
+        $allTextValues = \iterator_to_array($this->getLocalizableTextValues()->getWrappedObject());
         Assert::eq($allTextValues, [$localizableTextValues1, $localizableTextValues2]);
     }
 
@@ -95,7 +95,7 @@ class ProductValuesCollectionSpec extends ObjectBehavior
         $this->add($notLocalizableTextareaValues);
         $this->add($textValues);
 
-        $allTextValues = iterator_to_array($this->getLocalizableTextareaValues()->getWrappedObject());
+        $allTextValues = \iterator_to_array($this->getLocalizableTextareaValues()->getWrappedObject());
         Assert::eq($allTextValues, [$localizableTextareaValues1, $localizableTextareaValues2]);
     }
 
@@ -122,8 +122,8 @@ class ProductValuesCollectionSpec extends ObjectBehavior
     private function givenRandomValuesForAttribute(Attribute $attribute): ProductValues
     {
         $values = (new ChannelLocaleDataCollection())
-            ->addToChannelAndLocale(new ChannelCode('mobile'), new LocaleCode('en_US'), strval(Uuid::uuid4()))
-            ->addToChannelAndLocale(new ChannelCode('print'), new LocaleCode('fr_FR'), strval(Uuid::uuid4()));
+            ->addToChannelAndLocale(new ChannelCode('mobile'), new LocaleCode('en_US'), \strval(Uuid::uuid4()))
+            ->addToChannelAndLocale(new ChannelCode('print'), new LocaleCode('fr_FR'), \strval(Uuid::uuid4()));
 
         return new ProductValues($attribute, $values);
     }

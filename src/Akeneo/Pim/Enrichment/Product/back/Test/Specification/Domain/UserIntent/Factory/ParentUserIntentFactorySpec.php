@@ -10,23 +10,23 @@ use PhpSpec\ObjectBehavior;
 
 class ParentUserIntentFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ParentUserIntentFactory::class);
     }
 
-    function it_returns_change_parent()
+    public function it_returns_change_parent()
     {
         $this->create('parent', 'new_parent')->shouldBeLike([new ChangeParent('new_parent')]);
     }
 
-    function it_returns_convert_to_simple_product()
+    public function it_returns_convert_to_simple_product()
     {
         $this->create('parent', null)->shouldBeLike([new ConvertToSimpleProduct()]);
         $this->create('parent', '')->shouldBeLike([new ConvertToSimpleProduct()]);
     }
 
-    function it_throws_an_exception_if_data_is_not_valid()
+    public function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', ['parent', 12]);

@@ -45,9 +45,9 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
 
         $this->givenANotInvolvedProductModel();
 
-        $productModelIds = array_keys($expectedEvaluationRates);
+        $productModelIds = \array_keys($expectedEvaluationRates);
         $productModelIds[] = 12345; // Unknown product
-        $productIdCollection = $this->get(ProductModelIdFactory::class)->createCollection(array_map(fn ($id) => (string) $id, $productModelIds));
+        $productIdCollection = $this->get(ProductModelIdFactory::class)->createCollection(\array_map(fn ($id) => (string) $id, $productModelIds));
 
         $evaluationRates = $this->get(GetEvaluationRatesByProductModelsAndCriterionQuery::class)
             ->execute($productIdCollection, new CriterionCode('spelling'));
@@ -125,7 +125,8 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
     {
         $productModelId = $this->createProductModel('not_evaluated_product', 'a_family_variant')->getId();
 
-        $this->get('database_connection')->executeQuery(<<<SQL
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
 REPLACE INTO pim_data_quality_insights_product_model_criteria_evaluation (product_id, criterion_code, evaluated_at, status, result) 
 VALUES (:productId, :criterionCode, null, 'pending', null);
 SQL,

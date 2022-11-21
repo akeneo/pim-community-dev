@@ -15,7 +15,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class CommandMessageBusSpec extends ObjectBehavior
 {
-    function let(DummyHandler $handler1, DummyHandler $handler2)
+    public function let(DummyHandler $handler1, DummyHandler $handler2)
     {
         $this->beConstructedWith([
             'Other' => $handler1,
@@ -23,13 +23,13 @@ class CommandMessageBusSpec extends ObjectBehavior
         ]);
     }
 
-    function it_is_a_message_bus()
+    public function it_is_a_message_bus()
     {
         $this->shouldHaveType(CommandMessageBus::class);
         $this->shouldImplement(MessageBusInterface::class);
     }
 
-    function it_executes_the_correct_handler(DummyHandler $handler1, DummyHandler $handler2)
+    public function it_executes_the_correct_handler(DummyHandler $handler1, DummyHandler $handler2)
     {
         $command = UpsertProductCommand::createWithIdentifier(userId: 1, productIdentifier: ProductIdentifier::fromIdentifier('foo'), userIntents: []);
         $handler1->__invoke(Argument::any())->shouldNotBeCalled();
@@ -38,7 +38,7 @@ class CommandMessageBusSpec extends ObjectBehavior
         $this->dispatch($command);
     }
 
-    function it_throws_an_exception_when_the_command_cannot_be_handled(DummyHandler $handler1, DummyHandler $handler2)
+    public function it_throws_an_exception_when_the_command_cannot_be_handled(DummyHandler $handler1, DummyHandler $handler2)
     {
         $handler1->__invoke(Argument::any())->shouldNotBeCalled();
         $handler2->__invoke(Argument::any())->shouldNotBeCalled();

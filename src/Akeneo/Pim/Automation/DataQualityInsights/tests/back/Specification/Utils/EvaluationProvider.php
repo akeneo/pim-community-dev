@@ -43,10 +43,10 @@ abstract class EvaluationProvider
                 $channelCode = new ChannelCode($channel);
                 $localeCode = new LocaleCode($locale);
 
-                if (array_key_exists('rate', $data)) {
+                if (\array_key_exists('rate', $data)) {
                     $result->addRate($channelCode, $localeCode, new Rate((int) $data['rate']));
                 }
-                if (array_key_exists('attributes', $data)) {
+                if (\array_key_exists('attributes', $data)) {
                     $result->addRateByAttributes($channelCode, $localeCode, $data['attributes'] ?? []);
                 }
 
@@ -68,11 +68,11 @@ abstract class EvaluationProvider
                 $channelCode = new ChannelCode($channel);
                 $localeCode = new LocaleCode($locale);
 
-                if (array_key_exists('rate', $data) && is_numeric($data['rate'])) {
+                if (\array_key_exists('rate', $data) && \is_numeric($data['rate'])) {
                     $result->addRate($channelCode, $localeCode, new Rate($data['rate']));
                 }
 
-                if (array_key_exists('attributes', $data)) {
+                if (\array_key_exists('attributes', $data)) {
                     $result->addMissingAttributes($channelCode, $localeCode, $data['attributes'] ?? []);
                 }
             }

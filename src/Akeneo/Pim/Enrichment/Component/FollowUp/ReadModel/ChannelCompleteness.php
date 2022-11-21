@@ -82,7 +82,7 @@ class ChannelCompleteness
     {
         $locales = [];
         foreach ($this->localeCompletenesses as $localeCompleteness) {
-            $locales = array_merge($locales, $localeCompleteness->toArray());
+            $locales = \array_merge($locales, $localeCompleteness->toArray());
         }
 
         return [

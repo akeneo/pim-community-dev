@@ -14,33 +14,33 @@ use PhpSpec\ObjectBehavior;
  */
 final class SetFileValueSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', '/path/to/file.txt');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetFileValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    function it_returns_the_attribute_code()
+    public function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('name');
     }
 
-    function it_returns_the_locale_code()
+    public function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    function it_returns_the_channel_code()
+    public function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    function it_returns_the_value()
+    public function it_returns_the_value()
     {
         $this->value()->shouldReturn('/path/to/file.txt');
     }

@@ -29,7 +29,7 @@ class PricesComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return in_array($type, $this->types);
+        return \in_array($type, $this->types);
     }
 
     /**
@@ -38,32 +38,32 @@ class PricesComparator implements ComparatorInterface
     public function compare($data, $originals)
     {
         $default = ['locale' => null, 'scope' => null, 'data' => []];
-        $originals = array_merge($default, $originals);
+        $originals = \array_merge($default, $originals);
 
         $originalPrices = [];
         foreach ($originals['data'] as $price) {
             if (null !== $price['amount']) {
                 $originalPrices[$price['currency']] = $price['amount'];
-                if (is_numeric($price['amount'])) {
-                    $originalPrices[$price['currency']] = number_format($price['amount'], 4);
+                if (\is_numeric($price['amount'])) {
+                    $originalPrices[$price['currency']] = \number_format($price['amount'], 4);
                 }
             }
         }
 
         $dataPrices = [];
-        if (is_array($data['data'])) {
+        if (\is_array($data['data'])) {
             foreach ($data['data'] as $price) {
                 if (null !== $price['amount']) {
                     $dataPrices[$price['currency']] = $price['amount'];
-                    if (is_numeric($price['amount'])) {
-                        $dataPrices[$price['currency']] = number_format($price['amount'], 4);
+                    if (\is_numeric($price['amount'])) {
+                        $dataPrices[$price['currency']] = \number_format($price['amount'], 4);
                     }
                 }
             }
         }
 
         if ($dataPrices !== $originalPrices) {
-            $data['data'] = array_filter($data['data'], function (array $price) {
+            $data['data'] = \array_filter($data['data'], function (array $price) {
                 return null !== $price['amount'];
             });
             return $data;

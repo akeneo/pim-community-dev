@@ -149,8 +149,8 @@ class DataQualityInsightsTestCase extends TestCase
 
     protected function createFamily(string $code, array $data = []): FamilyInterface
     {
-        $data = array_merge(['code' => $code], $data);
-        $data['attributes'] = array_merge(['sku'], $data['attributes'] ?? []);
+        $data = \array_merge(['code' => $code], $data);
+        $data['attributes'] = \array_merge(['sku'], $data['attributes'] ?? []);
 
         $family = $this->get('akeneo_integration_tests.base.family.builder')->build($data);
 
@@ -164,7 +164,7 @@ class DataQualityInsightsTestCase extends TestCase
 
     protected function createFamilyVariant(string $code, string $family, array $data = []): FamilyVariantInterface
     {
-        $data = array_merge(['code' => $code, 'family' => $family], $data);
+        $data = \array_merge(['code' => $code, 'family' => $family], $data);
 
         $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $data);
@@ -200,7 +200,7 @@ class DataQualityInsightsTestCase extends TestCase
             'type' => AttributeTypes::TEXT,
             'group' => 'other',
         ];
-        $data = array_merge($defaultData, $data);
+        $data = \array_merge($defaultData, $data);
 
         $this->ensureAttributeGroupExists($defaultData['group']);
 
@@ -227,7 +227,7 @@ class DataQualityInsightsTestCase extends TestCase
 
     protected function createAttributeGroup(string $code, array $data = []): AttributeGroupInterface
     {
-        $data = array_merge(['code' => $code], $data);
+        $data = \array_merge(['code' => $code], $data);
 
         $attributeGroup = $this->get('pim_catalog.factory.attribute_group')->create();
         $this->get('pim_catalog.updater.attribute_group')->update($attributeGroup, $data);
@@ -321,7 +321,7 @@ SQL;
             'currencies' => ['USD'],
             'category_tree' => 'master',
         ];
-        $data = array_merge($defaultData, $data);
+        $data = \array_merge($defaultData, $data);
 
         $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($code);
         if (null === $channel) {
@@ -343,7 +343,7 @@ SQL;
 
         // Kill background process to avoid a race condition during loading fixtures for the next integration test.
         // @see DAPI-1477
-        exec('pkill -f "remove_completeness_for_channel_and_locale"');
+        \exec('pkill -f "remove_completeness_for_channel_and_locale"');
     }
 
     protected function getLocaleId(string $code): int
@@ -353,7 +353,7 @@ SQL;
             ['code' => $code]
         )->fetchOne();
 
-        return intval($localeId);
+        return \intval($localeId);
     }
 
     protected function resetProductsScores(): void

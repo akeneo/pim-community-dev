@@ -76,7 +76,7 @@ class SequentialEditController
     {
         $productQueryBuilder = $this->pqbFactory->create(['filters' => $filters]);
         if (null !== $context['sort']) {
-            $field = key($context['sort']);
+            $field = \key($context['sort']);
             $productQueryBuilder->addSorter($field, $context['sort'][$field], $context);
         }
 

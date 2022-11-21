@@ -45,10 +45,10 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      */
     public function next(): void
     {
-        if (false === next($this->items)) {
-            $this->from += count($this->items);
+        if (false === \next($this->items)) {
+            $this->from += \count($this->items);
             $this->items = $this->getNextItems($this->esQuery);
-            reset($this->items);
+            \reset($this->items);
         }
     }
 
@@ -60,7 +60,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         $this->from = $this->initialFrom;
         $this->to = $this->from + $this->limit;
         $this->items = $this->getNextItems($this->esQuery);
-        reset($this->items);
+        \reset($this->items);
     }
 
     /**
@@ -70,7 +70,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery): IdentifierResults
     {
-        $size = min(($this->to - $this->from), $this->pageSize);
+        $size = \min(($this->to - $this->from), $this->pageSize);
         $esQuery['size'] = $size;
         $identifiers = new IdentifierResults();
 
@@ -81,7 +81,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         $sort = ['id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
-            $sort = array_merge($esQuery['sort'], $sort);
+            $sort = \array_merge($esQuery['sort'], $sort);
         }
 
         $esQuery['sort'] = $sort;

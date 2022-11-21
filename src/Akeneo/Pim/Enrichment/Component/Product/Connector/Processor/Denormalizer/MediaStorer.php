@@ -27,7 +27,7 @@ class MediaStorer
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 
         foreach ($rawProductValues as $attributeCode => $values) {
-            if (in_array($attributeCode, $mediaAttributes)) {
+            if (\in_array($attributeCode, $mediaAttributes)) {
                 foreach ($values as $index => $value) {
                     if (empty($value['data'])) {
                         continue;

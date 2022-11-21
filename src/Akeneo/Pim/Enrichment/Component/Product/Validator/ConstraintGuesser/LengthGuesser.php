@@ -27,7 +27,7 @@ class LengthGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return in_array(
+        return \in_array(
             $attribute->getType(),
             [
                 AttributeTypes::TEXT,
@@ -49,7 +49,7 @@ class LengthGuesser implements ConstraintGuesserInterface
             static::TEXT_FIELD_LENGTH;
 
         if ($maxCharacters = $attribute->getMaxCharacters()) {
-            $characterLimit = min($maxCharacters, $characterLimit);
+            $characterLimit = \min($maxCharacters, $characterLimit);
         }
         $code = AttributeTypes::IDENTIFIER !== $attribute->getType() ? $attribute->getCode() : 'identifier';
 

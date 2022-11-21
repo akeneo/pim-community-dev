@@ -58,14 +58,14 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $productModels, array $options = [])
     {
-        $productModels = array_unique($productModels, SORT_REGULAR);
+        $productModels = \array_unique($productModels, SORT_REGULAR);
         foreach ($productModels as $productModel) {
             $this->validateProductModel($productModel);
         }
 
         if (true !== ($options['force_save'] ?? false)) {
-            $productModels = array_values(
-                array_filter(
+            $productModels = \array_values(
+                \array_filter(
                     $productModels,
                     function (ProductModelInterface $product): bool {
                         return $product->isDirty();
@@ -82,7 +82,7 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(new GenericEvent($productModels, $options), StorageEvents::PRE_SAVE_ALL);
 
-        $areProductsNew = array_map(
+        $areProductsNew = \array_map(
             function ($productModel) {
                 return null === $productModel->getId();
             },
@@ -91,7 +91,7 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($productModels as $i => $productModel) {
             $this->eventDispatcher->dispatch(
-                new GenericEvent($productModel, array_merge($options, ['is_new' => $areProductsNew[$i]])),
+                new GenericEvent($productModel, \array_merge($options, ['is_new' => $areProductsNew[$i]])),
                 StorageEvents::PRE_SAVE
             );
 
@@ -106,7 +106,7 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($productModels as $i => $productModel) {
             $this->eventDispatcher->dispatch(
-                new GenericEvent($productModel, array_merge($options, ['is_new' => $areProductsNew[$i]])),
+                new GenericEvent($productModel, \array_merge($options, ['is_new' => $areProductsNew[$i]])),
                 StorageEvents::POST_SAVE
             );
         }
@@ -121,7 +121,7 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
     {
         if (!$productModel instanceof ProductModelInterface) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Expects a %s, "%s" provided',
                     ProductModelInterface::class,
                     ClassUtils::getClass($productModel)

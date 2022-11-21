@@ -48,6 +48,6 @@ final class SqlGetAttributeOptionCodes implements GetAttributeOptionCodes
                 yield $result['code'];
                 $searchAfterId = $result['id'];
             }
-        } while (count($results) === self::BATCH_QUERY_SIZE);
+        } while (\count($results) === self::BATCH_QUERY_SIZE);
     }
 }

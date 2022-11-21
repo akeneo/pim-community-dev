@@ -84,7 +84,7 @@ final class ElasticsearchProductModelProjection
 
     public function addAdditionalData(array $additionalData): ElasticsearchProductModelProjection
     {
-        $additionalData = array_merge($this->additionalData, $additionalData);
+        $additionalData = \array_merge($this->additionalData, $additionalData);
 
         return new self(
             $this->id,
@@ -139,6 +139,6 @@ final class ElasticsearchProductModelProjection
             'attributes_for_this_level' => $this->attributesForThisLevel,
         ];
 
-        return array_merge($data, $this->additionalData);
+        return \array_merge($data, $this->additionalData);
     }
 }

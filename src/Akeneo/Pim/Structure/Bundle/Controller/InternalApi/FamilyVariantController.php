@@ -104,7 +104,7 @@ class FamilyVariantController
         }
 
         if ($request->query->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
+            $options['identifiers'] = \explode(',', $request->query->get('identifiers'));
         }
 
         $familyVariants = $this->searchableRepository->findBySearch(
@@ -154,7 +154,7 @@ class FamilyVariantController
         }
 
         $familyVariant = $this->familyVariantFactory->create();
-        $content = json_decode($request->getContent(), true);
+        $content = \json_decode($request->getContent(), true);
 
         return $this->saveFamilyVariant($familyVariant, $content);
     }
@@ -172,7 +172,7 @@ class FamilyVariantController
         }
 
         $familyVariant = $this->getFamilyVariant($identifier);
-        $content = json_decode($request->getContent(), true);
+        $content = \json_decode($request->getContent(), true);
 
         return $this->saveFamilyVariant($familyVariant, $content);
     }
@@ -197,7 +197,7 @@ class FamilyVariantController
         } catch (\LogicException $e) {
             return new JsonResponse(
                 [
-                    'message' => sprintf(
+                    'message' => \sprintf(
                         'Cannot remove family variant "%s" as it is used by some product models',
                         $familyVariant->getCode()
                     ),
@@ -222,7 +222,7 @@ class FamilyVariantController
 
         if (null === $familyVariant) {
             throw new NotFoundHttpException(
-                sprintf('Family variant with code %s does not exist.', $code)
+                \sprintf('Family variant with code %s does not exist.', $code)
             );
         }
 
@@ -251,7 +251,7 @@ class FamilyVariantController
             );
         }
 
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             return new JsonResponse($normalizedViolations, 400);
         }
 

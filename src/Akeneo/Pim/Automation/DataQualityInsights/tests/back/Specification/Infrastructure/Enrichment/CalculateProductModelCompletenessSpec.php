@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductModelAttributesMaskQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
@@ -26,15 +26,13 @@ class CalculateProductModelCompletenessSpec extends ObjectBehavior
         GetCompletenessProductMasks                 $getCompletenessProductMasks,
         GetProductModelAttributesMaskQueryInterface $getProductModelAttributesMaskQuery,
         ProductModelRepositoryInterface             $productModelRepository
-    )
-    {
+    ) {
         $this->beConstructedWith($getCompletenessProductMasks, $getProductModelAttributesMaskQuery, $productModelRepository);
     }
 
     public function it_returns_an_empty_result_when_there_is_no_product_mask_to_apply(
         ProductModelRepositoryInterface $productModelRepository
-    )
-    {
+    ) {
         $productModelRepository->find(42)->willReturn(null);
 
         $this->calculate(new ProductModelId(42))->shouldBeLike(new CompletenessCalculationResult());
@@ -55,8 +53,7 @@ class CalculateProductModelCompletenessSpec extends ObjectBehavior
         FamilyInterface                             $family,
         WriteValueCollection                        $values,
         CompletenessProductMask                     $productMask
-    )
-    {
+    ) {
         $productModelId = new ProductModelId(42);
 
         $productModelRepository->find(42)->willReturn($productModel);

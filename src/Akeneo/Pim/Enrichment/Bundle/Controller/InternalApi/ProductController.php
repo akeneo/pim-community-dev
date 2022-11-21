@@ -77,7 +77,7 @@ class ProductController
      */
     public function indexAction(Request $request): JsonResponse
     {
-        $productUuids = explode(',', $request->get('uuids'));
+        $productUuids = \explode(',', $request->get('uuids'));
 
         $products = $this->productRepository->getItemsFromUuids($productUuids);
 
@@ -120,7 +120,7 @@ class ProductController
             return new RedirectResponse('/');
         }
 
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
 
         if (isset($data['parent'])) {
             $product = $this->variantProductBuilder->createProduct(
@@ -276,7 +276,7 @@ class ProductController
 
         if (null === $product) {
             throw new NotFoundHttpException(
-                sprintf('Product with uuid %s could not be found.', (string) $uuid)
+                \sprintf('Product with uuid %s could not be found.', (string) $uuid)
             );
         }
 
@@ -289,7 +289,7 @@ class ProductController
 
         if (null === $identifier) {
             throw new NotFoundHttpException(
-                sprintf('Product with uuid %s could not be found.', $uuid)
+                \sprintf('Product with uuid %s could not be found.', $uuid)
             );
         }
 
@@ -311,7 +311,7 @@ class ProductController
 
         if (!$attribute) {
             throw new NotFoundHttpException(
-                sprintf('Attribute with id %d could not be found.', $id)
+                \sprintf('Attribute with id %d could not be found.', $id)
             );
         }
 
@@ -326,7 +326,7 @@ class ProductController
         ]);
         $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
         if (!empty($dataFiltered)) {
-            $data = array_replace($data, $dataFiltered);
+            $data = \array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
         }
@@ -359,7 +359,7 @@ class ProductController
         foreach ($violations as $violation) {
             $propertyPath = $violation->getPropertyPath();
 
-            if (0 === strpos($propertyPath, 'quantifiedAssociations.')) {
+            if (0 === \strpos($propertyPath, 'quantifiedAssociations.')) {
                 $normalizedViolations['quantified_associations'][] = $this->normalizer->normalize(
                     $violation,
                     'internal_api',

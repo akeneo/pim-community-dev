@@ -60,7 +60,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
                 new CriterionCode('completion'),
                 $productModelId,
                 CriterionEvaluationStatus::pending()
-        ));
+            ));
         $this->productModelCriterionEvaluationRepository->create($criteria);
 
         $evaluations = $this->findAllProductModelEvaluations();
@@ -104,7 +104,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
 
         $updatedEvaluation = $this->findCriterionEvaluation($productModelIdWithExistingEvaluation, $criterionCode);
         $this->assertSame($existingEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT), $updatedEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT));
-        $this->assertSame(CriterionEvaluationStatus::PENDING, strval($updatedEvaluation->getStatus()));
+        $this->assertSame(CriterionEvaluationStatus::PENDING, \strval($updatedEvaluation->getStatus()));
         $this->assertNotNull($updatedEvaluation->getResult());
     }
 
@@ -194,7 +194,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
         $stmt = $this->db->executeQuery(
             'SELECT COUNT(*) FROM pim_data_quality_insights_product_model_criteria_evaluation'
         );
-        $count = intval($stmt->fetchOne());
+        $count = \intval($stmt->fetchOne());
 
         $this->assertSame($expectedCount, $count);
     }
@@ -213,10 +213,10 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
     private function givenAnExistingCriterionEvaluation(CriterionCode $criterionCode, ProductModelId $productModelId): Write\CriterionEvaluation
     {
         $evaluation = new Write\CriterionEvaluation(
-                $criterionCode,
-                $productModelId,
-                CriterionEvaluationStatus::pending()
-            );
+            $criterionCode,
+            $productModelId,
+            CriterionEvaluationStatus::pending()
+        );
         $evaluations = (new Write\CriterionEvaluationCollection)->add($evaluation);
 
         $this->productModelCriterionEvaluationRepository->create($evaluations);
@@ -225,9 +225,9 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
         $localeEn = new LocaleCode('en_US');
 
         $evaluationResult = (new Write\CriterionEvaluationResult())
-            ->addRate($channelEcommerce, $localeEn, new Rate(rand(0, 100)))
+            ->addRate($channelEcommerce, $localeEn, new Rate(\rand(0, 100)))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text_area' => rand(0, 100)])
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text_area' => \rand(0, 100)])
         ;
 
         $evaluation->end($evaluationResult);
@@ -242,7 +242,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
         if (null === $expectedDate) {
             $this->assertNull($date);
         } else {
-           $this->assertEquals($expectedDate->format(Clock::TIME_FORMAT), $date->format(Clock::TIME_FORMAT));
+            $this->assertEquals($expectedDate->format(Clock::TIME_FORMAT), $date->format(Clock::TIME_FORMAT));
         }
     }
 }

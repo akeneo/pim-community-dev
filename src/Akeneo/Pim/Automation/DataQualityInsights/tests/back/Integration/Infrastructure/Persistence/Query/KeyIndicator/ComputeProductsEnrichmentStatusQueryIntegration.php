@@ -46,9 +46,9 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         $expectedProductsEnrichmentStatus += $this->givenProductWithoutEvaluationResults();
         $this->givenNotInvolvedProduct();
 
-        $productUuids = array_keys($expectedProductsEnrichmentStatus);
+        $productUuids = \array_keys($expectedProductsEnrichmentStatus);
 
-        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection(array_map(fn($productUuid) => (string) $productUuid, $productUuids));
+        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection(\array_map(fn ($productUuid) => (string) $productUuid, $productUuids));
         $productsEnrichmentStatus = $this->get('akeneo.pim.automation.data_quality_insights.query.compute_products_enrichment_status_query')
             ->compute($productUuidCollection);
 
@@ -142,7 +142,8 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
             ]
         ]);
 
-        $this->get('database_connection')->executeQuery(<<<SQL
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation
 SET result = null, evaluated_at = null, status = 'pending' 
 WHERE product_uuid = :productUuid;

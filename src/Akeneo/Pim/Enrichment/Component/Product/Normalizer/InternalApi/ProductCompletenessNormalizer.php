@@ -24,7 +24,7 @@ class ProductCompletenessNormalizer implements NormalizerInterface, CacheableSup
     {
         return [
             'required' => $completeness->requiredCount(),
-            'missing'  => count($completeness->missingAttributeCodes()),
+            'missing'  => \count($completeness->missingAttributeCodes()),
             'ratio'    => $completeness->ratio(),
             'locale'   => $completeness->localeCode(),
             'channel'  => $completeness->channelCode(),

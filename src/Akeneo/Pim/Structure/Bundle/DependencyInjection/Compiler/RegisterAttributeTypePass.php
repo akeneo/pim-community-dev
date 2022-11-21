@@ -34,7 +34,7 @@ class RegisterAttributeTypePass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds(self::ATTRIBUTE_TYPE_TAG);
 
         foreach ($taggedServices as $id => $attributes) {
-            $attributes = current($attributes);
+            $attributes = \current($attributes);
             $alias = $attributes['alias'];
             $feature = $attributes['feature'] ?? null;
 

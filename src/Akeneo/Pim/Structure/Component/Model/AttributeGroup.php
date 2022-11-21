@@ -213,7 +213,7 @@ class AttributeGroup implements AttributeGroupInterface
     {
         $max = 0;
         foreach ($this->getAttributes() as $att) {
-            $max = max($att->getSortOrder(), $max);
+            $max = \max($att->getSortOrder(), $max);
         }
 
         return $max;

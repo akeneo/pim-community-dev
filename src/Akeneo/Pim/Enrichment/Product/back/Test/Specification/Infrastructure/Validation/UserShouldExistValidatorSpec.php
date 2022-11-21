@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UserShouldExistValidatorSpec extends ObjectBehavior
 {
-    function let(UserRepositoryInterface $userRepository, ExecutionContext $context)
+    public function let(UserRepositoryInterface $userRepository, ExecutionContext $context)
     {
         $userRepository->findOneBy(['id' => 1])->willReturn(new User());
         $userRepository->findOneBy(['id' => 2])->willReturn(null);
@@ -27,18 +27,18 @@ class UserShouldExistValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(UserShouldExistValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function it_throws_an_exception_with_a_wrong_constraint()
+    public function it_throws_an_exception_with_a_wrong_constraint()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [1, new Type([])]);
     }
 
-    function it_does_nothing_when_the_value_is_not_an_integer(ExecutionContext $context)
+    public function it_does_nothing_when_the_value_is_not_an_integer(ExecutionContext $context)
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
         $context->addViolation(Argument::any())->shouldNotBeCalled();
@@ -47,7 +47,7 @@ class UserShouldExistValidatorSpec extends ObjectBehavior
         $this->validate(null, new UserShouldExist());
     }
 
-    function it_adds_a_violation_when_user_is_unknown(
+    public function it_adds_a_violation_when_user_is_unknown(
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
@@ -59,7 +59,7 @@ class UserShouldExistValidatorSpec extends ObjectBehavior
         $this->validate(2, $constraint);
     }
 
-    function it_validates_when_user_exists(ExecutionContext $context)
+    public function it_validates_when_user_exists(ExecutionContext $context)
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
         $context->addViolation(Argument::any())->shouldNotBeCalled();

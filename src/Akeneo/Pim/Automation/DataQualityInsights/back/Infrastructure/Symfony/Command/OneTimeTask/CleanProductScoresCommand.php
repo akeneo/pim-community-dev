@@ -32,7 +32,7 @@ final class CleanProductScoresCommand extends Command
 
     protected function configure()
     {
-        $this->addOption('bulk-size', 's', InputOption::VALUE_REQUIRED, sprintf('Bulk size (%d by default)', $this->bulkSize));
+        $this->addOption('bulk-size', 's', InputOption::VALUE_REQUIRED, \sprintf('Bulk size (%d by default)', $this->bulkSize));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

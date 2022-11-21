@@ -75,25 +75,25 @@ final class DispatchProductRemovedEventSubscriber implements DispatchBufferedPim
 
         if ($postSaveEvent->hasArgument('unitary') && true === $postSaveEvent->getArgument('unitary')) {
             $this->dispatchBufferedPimEvents();
-        } elseif (count($this->events) >= $this->maxBulkSize) {
+        } elseif (\count($this->events) >= $this->maxBulkSize) {
             $this->dispatchBufferedPimEvents();
         }
     }
 
     public function dispatchBufferedPimEvents(): void
     {
-        if (count($this->events) === 0) {
+        if (\count($this->events) === 0) {
             return;
         }
 
         try {
             $this->messageBus->dispatch(new BulkEvent($this->events));
             $this->loggerBusinessEvent->info(
-                json_encode(
+                \json_encode(
                     [
                         'type' => 'business_event.dispatch',
-                        'event_count' => count($this->events),
-                        'events' => array_map(function ($event) {
+                        'event_count' => \count($this->events),
+                        'events' => \array_map(function ($event) {
                             return [
                                 'name' => $event->getName(),
                                 'uuid' => $event->getUuid(),

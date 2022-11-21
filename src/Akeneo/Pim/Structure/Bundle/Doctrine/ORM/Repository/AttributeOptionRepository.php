@@ -61,7 +61,7 @@ class AttributeOptionRepository extends EntityRepository implements
         if (!empty($ids)) {
             $qb
                 ->andWhere(
-                    $qb->expr()->in(sprintf('o.%s', $identifier), ':ids')
+                    $qb->expr()->in(\sprintf('o.%s', $identifier), ':ids')
                 )
                 ->setParameter('ids', $ids);
         }
@@ -84,15 +84,15 @@ class AttributeOptionRepository extends EntityRepository implements
             $isLabelBlank = (null === $row['label']) || ('' === $row['label']);
             $results[] = [
                 'id'   => $row[$identifier],
-                'text' => $isLabelBlank ? sprintf('[%s]', $row['code']) : $row['label'],
+                'text' => $isLabelBlank ? \sprintf('[%s]', $row['code']) : $row['label'],
             ];
         }
 
         if ($autoSorting) {
-            usort(
+            \usort(
                 $results,
                 function ($first, $second) {
-                    return strcasecmp($first['text'], $second['text']);
+                    return \strcasecmp($first['text'], $second['text']);
                 }
             );
         }
@@ -113,7 +113,7 @@ class AttributeOptionRepository extends EntityRepository implements
             }
         }
 
-        return sprintf('[%s]', $object->getCode());
+        return \sprintf('[%s]', $object->getCode());
     }
 
     /**
@@ -129,7 +129,7 @@ class AttributeOptionRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        list($attributeCode, $optionCode) = explode('.', $code);
+        list($attributeCode, $optionCode) = \explode('.', $code);
 
         return $this->createQueryBuilder('o')
             ->innerJoin('o.attribute', 'a')

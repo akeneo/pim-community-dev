@@ -36,6 +36,6 @@ class AttributeExtension extends \Twig\Extension\AbstractExtension
             return false;
         }
 
-        return 1 === preg_match("/\p{Han}+/u", $text);
+        return 1 === \preg_match("/\p{Han}+/u", $text);
     }
 }

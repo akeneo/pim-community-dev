@@ -14,46 +14,46 @@ use PhpSpec\ObjectBehavior;
  */
 class ReplaceAssociatedProductsSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith('X_SELL', ['identifier1', 'identifier2']);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ReplaceAssociatedProducts::class);
         $this->shouldImplement(AssociationUserIntent::class);
     }
 
-    function it_returns_the_association_type()
+    public function it_returns_the_association_type()
     {
         $this->associationType()->shouldReturn('X_SELL');
     }
 
-    function it_returns_the_product_identifiers()
+    public function it_returns_the_product_identifiers()
     {
         $this->productIdentifiers()->shouldReturn(['identifier1', 'identifier2']);
     }
 
-    function it_can_only_be_instantiated_with_string_product_identifiers()
+    public function it_can_only_be_instantiated_with_string_product_identifiers()
     {
         $this->beConstructedWith('X_SELL', ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_can_be_instantiated_with_empty_product_identifiers()
+    public function it_can_be_instantiated_with_empty_product_identifiers()
     {
         $this->beConstructedWith('X_SELL', []);
         $this->productIdentifiers()->shouldReturn([]);
     }
 
-    function it_cannot_be_instantiated_if_one_of_the_product_identifiers_is_empty()
+    public function it_cannot_be_instantiated_if_one_of_the_product_identifiers_is_empty()
     {
         $this->beConstructedWith('X_SELL', ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_empty_association_type()
+    public function it_cannot_be_instantiated_with_empty_association_type()
     {
         $this->beConstructedWith('', ['identifier1', 'identifier2']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

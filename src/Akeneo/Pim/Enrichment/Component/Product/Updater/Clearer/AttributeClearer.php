@@ -41,7 +41,7 @@ final class AttributeClearer implements ClearerInterface
         Assert::isInstanceOf($entity, EntityWithValuesInterface::class);
         Assert::true(
             $this->supportsProperty($attributeCode),
-            sprintf('The clearer does not handle the "%s" property.', $attributeCode)
+            \sprintf('The clearer does not handle the "%s" property.', $attributeCode)
         );
 
         $value = $entity->getValue($attributeCode, $options['locale'] ?? null, $options['scope'] ?? null);

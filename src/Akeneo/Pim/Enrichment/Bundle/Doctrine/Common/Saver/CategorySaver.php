@@ -71,7 +71,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(new GenericEvent($objects, $options), StorageEvents::PRE_SAVE_ALL);
 
-        $areObjectsNew = array_map(function ($object) {
+        $areObjectsNew = \array_map(function ($object) {
             return null === $object->getId();
         }, $objects);
 
@@ -79,7 +79,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
             $this->validateObject($object);
 
             $this->eventDispatcher->dispatch(
-                new GenericEvent($object, array_merge($options, ['is_new' => $areObjectsNew[$i]])),
+                new GenericEvent($object, \array_merge($options, ['is_new' => $areObjectsNew[$i]])),
                 StorageEvents::PRE_SAVE
             );
 
@@ -90,7 +90,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
 
         foreach ($objects as $i => $object) {
             $this->eventDispatcher->dispatch(
-                new GenericEvent($object, array_merge($options, ['is_new' => $areObjectsNew[$i]])),
+                new GenericEvent($object, \array_merge($options, ['is_new' => $areObjectsNew[$i]])),
                 StorageEvents::POST_SAVE
             );
         }
@@ -102,7 +102,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
     {
         if (!$object instanceof CategoryInterface) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Expects a "%s", "%s" provided.',
                     CategoryInterface::class,
                     ClassUtils::getClass($object)
@@ -127,7 +127,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
      */
     private function lockUnitarySave(CategoryInterface $object): LockInterface
     {
-        $lockIdentifier = sprintf('create_category_in_root_%d', $object->getRoot());
+        $lockIdentifier = \sprintf('create_category_in_root_%d', $object->getRoot());
         $lock = $this->lockFactory->createLock($lockIdentifier, self::LOCK_TTL_IN_SECONDS);
 
         $errors = 0;

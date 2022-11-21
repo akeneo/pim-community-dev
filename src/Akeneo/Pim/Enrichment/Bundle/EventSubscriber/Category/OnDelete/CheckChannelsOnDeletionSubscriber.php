@@ -50,7 +50,7 @@ final class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        if (count($subject->getChannels()) > 0) {
+        if (\count($subject->getChannels()) > 0) {
             throw new ConflictHttpException($this->translator->trans('flash.tree.not removable'));
         }
     }

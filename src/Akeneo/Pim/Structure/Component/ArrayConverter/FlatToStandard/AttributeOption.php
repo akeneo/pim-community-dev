@@ -66,9 +66,9 @@ class AttributeOption implements ArrayConverterInterface
         $this->validate($item);
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
-            $isLabel = false !== strpos($field, 'label-', 0);
+            $isLabel = false !== \strpos($field, 'label-', 0);
             if ($isLabel) {
-                $labelTokens = explode('-', $field);
+                $labelTokens = \explode('-', $field);
                 $labelLocale = $labelTokens[1];
                 $convertedItem['labels'][$labelLocale] = $data;
             } else {
@@ -93,19 +93,19 @@ class AttributeOption implements ArrayConverterInterface
 
         $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
 
-        $authorizedFields = array_merge($requiredFields, ['sort_order']);
+        $authorizedFields = \array_merge($requiredFields, ['sort_order']);
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
         foreach ($localeCodes as $code) {
             $authorizedFields[] = 'label-' . $code;
         }
 
-        foreach (array_keys($item) as $field) {
-            if (!in_array($field, $authorizedFields)) {
+        foreach (\array_keys($item) as $field) {
+            if (!\in_array($field, $authorizedFields)) {
                 throw new StructureArrayConversionException(
-                    sprintf(
+                    \sprintf(
                         'Field "%s" is provided, authorized fields are: "%s"',
                         $field,
-                        implode(', ', $authorizedFields)
+                        \implode(', ', $authorizedFields)
                     )
                 );
             }

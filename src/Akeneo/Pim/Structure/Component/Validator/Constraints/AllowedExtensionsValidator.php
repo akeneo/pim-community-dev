@@ -40,14 +40,14 @@ class AllowedExtensionsValidator extends ConstraintValidator
             return;
         }
 
-        $extensions = explode(',', $value);
+        $extensions = \explode(',', $value);
 
         foreach ($extensions as $extension) {
-            if (!in_array($extension, $this->validExtensions)) {
+            if (!\in_array($extension, $this->validExtensions)) {
                 $this->context
                     ->buildViolation($constraint->message)
                     ->setParameter('%extension%', $extension)
-                    ->setParameter('%valid_extensions%', implode(', ', $this->validExtensions))
+                    ->setParameter('%valid_extensions%', \implode(', ', $this->validExtensions))
                     ->addViolation();
             }
         }

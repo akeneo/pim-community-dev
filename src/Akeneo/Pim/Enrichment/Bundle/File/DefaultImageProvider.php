@@ -48,7 +48,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      */
     public function getImageUrl($fileType, $filter)
     {
-        $fileKey = sprintf('%s_default_image', $fileType);
+        $fileKey = \sprintf('%s_default_image', $fileType);
         if (!$this->cacheManager->isStored($fileKey, $filter)) {
             $binary = $this->getImageBinary($fileType);
             $this->cacheManager->store(
@@ -75,10 +75,10 @@ class DefaultImageProvider implements DefaultImageProviderInterface
         if (isset($this->defaultImages[$fileType])) {
             $image = $this->defaultImages[$fileType];
 
-            return new Binary(file_get_contents($image['path']), $image['mime_type'], $image['extension']);
+            return new Binary(\file_get_contents($image['path']), $image['mime_type'], $image['extension']);
         }
 
-        throw new \InvalidArgumentException(sprintf('No default image is defined for file type "%s"', $fileType));
+        throw new \InvalidArgumentException(\sprintf('No default image is defined for file type "%s"', $fileType));
     }
 
     /**

@@ -23,7 +23,7 @@ class QuantifiedAssociationsStructureValidator
      */
     public function validate(string $field, $data): void
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $field,
                 static::class,
@@ -32,18 +32,18 @@ class QuantifiedAssociationsStructureValidator
         }
 
         foreach ($data as $associationTypeCode => $associationTypeValues) {
-            if (!is_array($associationTypeValues)) {
+            if (!\is_array($associationTypeValues)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    sprintf('"%s" should contain an array', $associationTypeCode),
+                    \sprintf('"%s" should contain an array', $associationTypeCode),
                     static::class,
                     $data
                 );
             }
 
             if (
-                array_key_exists(self::PRODUCT_LINK_TYPE, $associationTypeValues)
-                && array_key_exists(self::PRODUCT_UUID_LINK_TYPE, $associationTypeValues)
+                \array_key_exists(self::PRODUCT_LINK_TYPE, $associationTypeValues)
+                && \array_key_exists(self::PRODUCT_UUID_LINK_TYPE, $associationTypeValues)
             ) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
@@ -54,42 +54,42 @@ class QuantifiedAssociationsStructureValidator
             }
 
             foreach ($associationTypeValues as $quantifiedLinkType => $quantifiedLinks) {
-                if (!is_string($quantifiedLinkType)) {
+                if (!\is_string($quantifiedLinkType)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        sprintf('entity type in "%s" should be a string', $associationTypeCode),
+                        \sprintf('entity type in "%s" should be a string', $associationTypeCode),
                         static::class,
                         $data
                     );
                 }
 
-                if (!is_array($quantifiedLinks) || !$this->isArraySequential($quantifiedLinks)) {
+                if (!\is_array($quantifiedLinks) || !$this->isArraySequential($quantifiedLinks)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        sprintf('"%s[%s]" should contain an array', $associationTypeCode, $quantifiedLinkType),
+                        \sprintf('"%s[%s]" should contain an array', $associationTypeCode, $quantifiedLinkType),
                         static::class,
                         $data
                     );
                 }
 
-                if (!in_array($quantifiedLinkType, self::QUANTIFIED_LINK_TYPES)) {
+                if (!\in_array($quantifiedLinkType, self::QUANTIFIED_LINK_TYPES)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        sprintf(
+                        \sprintf(
                             'entity type in "%s" should contain one of these value',
-                            implode(',', self::QUANTIFIED_LINK_TYPES)
+                            \implode(',', self::QUANTIFIED_LINK_TYPES)
                         ),
                         static::class,
                         $data
                     );
                 }
 
-                if (!in_array($quantifiedLinkType, self::QUANTIFIED_LINK_TYPES)) {
+                if (!\in_array($quantifiedLinkType, self::QUANTIFIED_LINK_TYPES)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        sprintf(
+                        \sprintf(
                             'entity type in "%s" should contain one of these value',
-                            implode(',', self::QUANTIFIED_LINK_TYPES)
+                            \implode(',', self::QUANTIFIED_LINK_TYPES)
                         ),
                         static::class,
                         $data
@@ -105,7 +105,7 @@ class QuantifiedAssociationsStructureValidator
                             $data
                         );
                     }
-                    if (!is_int($quantifiedLink['quantity'])) {
+                    if (!\is_int($quantifiedLink['quantity'])) {
                         throw InvalidPropertyTypeException::validArrayStructureExpected(
                             $field,
                             'a quantified association should contain a valid quantity',
@@ -124,7 +124,7 @@ class QuantifiedAssociationsStructureValidator
                             );
                         }
 
-                        if (!is_string($quantifiedLink['identifier'])) {
+                        if (!\is_string($quantifiedLink['identifier'])) {
                             throw InvalidPropertyTypeException::validArrayStructureExpected(
                                 $field,
                                 'a quantified association should contain a valid identifier',
@@ -142,7 +142,7 @@ class QuantifiedAssociationsStructureValidator
                             );
                         }
 
-                        if (!is_string($quantifiedLink['uuid']) || !Uuid::isValid($quantifiedLink['uuid'])) {
+                        if (!\is_string($quantifiedLink['uuid']) || !Uuid::isValid($quantifiedLink['uuid'])) {
                             throw InvalidPropertyTypeException::validArrayStructureExpected(
                                 $field,
                                 'a quantified association should contain a valid uuid',
@@ -160,7 +160,7 @@ class QuantifiedAssociationsStructureValidator
                             );
                         }
 
-                        if (!is_string($quantifiedLink['identifier'])) {
+                        if (!\is_string($quantifiedLink['identifier'])) {
                             throw InvalidPropertyTypeException::validArrayStructureExpected(
                                 $field,
                                 'a quantified association should contain a valid identifier',
@@ -179,6 +179,6 @@ class QuantifiedAssociationsStructureValidator
      */
     private function isArraySequential(array $data): bool
     {
-        return empty($data) || array_keys($data) === range(0, count($data) - 1);
+        return empty($data) || \array_keys($data) === \range(0, \count($data) - 1);
     }
 }

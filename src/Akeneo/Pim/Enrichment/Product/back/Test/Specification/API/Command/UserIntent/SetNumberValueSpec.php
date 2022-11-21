@@ -14,44 +14,44 @@ use PhpSpec\ObjectBehavior;
  */
 class SetNumberValueSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', '10');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetNumberValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    function it_returns_the_attribute_code()
+    public function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('name');
     }
 
-    function it_returns_the_locale_code()
+    public function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    function it_returns_the_channel_code()
+    public function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    function it_returns_the_value()
+    public function it_returns_the_value()
     {
         $this->value()->shouldReturn('10');
     }
 
-    function it_accepts_int_string_as_value()
+    public function it_accepts_int_string_as_value()
     {
         $this->beConstructedWith('name_string_int', 'ecommerce', 'en_US', '33');
         $this->value()->shouldReturn('33');
     }
 
-    function it_accepts_float_string_as_value()
+    public function it_accepts_float_string_as_value()
     {
         $this->beConstructedWith('name_string_float', 'ecommerce', 'en_US', '33.33');
         $this->value()->shouldReturn('33.33');

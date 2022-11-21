@@ -29,7 +29,7 @@ class IsVariantAxisWithoutAvailableLocalesValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, IsVariantAxisWithoutAvailableLocales::class);
         }
 
-        if (!$value instanceof AttributeInterface || !is_string($value->getCode())) {
+        if (!$value instanceof AttributeInterface || !\is_string($value->getCode())) {
             return;
         }
 

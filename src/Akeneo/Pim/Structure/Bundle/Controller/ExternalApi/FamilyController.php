@@ -121,7 +121,7 @@ class FamilyController
     {
         $family = $this->repository->findOneByIdentifier($code);
         if (null === $family) {
-            throw new NotFoundHttpException(sprintf('Family "%s" does not exist.', $code));
+            throw new NotFoundHttpException(\sprintf('Family "%s" does not exist.', $code));
         }
 
         $familyApi = $this->normalizer->normalize($family, 'external_api');
@@ -150,8 +150,8 @@ class FamilyController
             'with_count' => 'false',
         ];
 
-        $queryParameters = array_merge($defaultParameters, $request->query->all());
-        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
+        $queryParameters = \array_merge($defaultParameters, $request->query->all());
+        $searchFilters = \json_decode($queryParameters['search'] ?? '[]', true);
         if (null === $searchFilters) {
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
@@ -267,7 +267,7 @@ class FamilyController
      */
     protected function getDecodedContent($content)
     {
-        $decodedContent = json_decode($content, true);
+        $decodedContent = \json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -292,7 +292,7 @@ class FamilyController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -348,9 +348,9 @@ class FamilyController
      */
     protected function validateCodeConsistency($code, array $data)
     {
-        if (array_key_exists('code', $data) && $code !== $data['code']) {
+        if (\array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(
-                sprintf(
+                \sprintf(
                     'The code "%s" provided in the request body must match the code "%s" provided in the url.',
                     $data['code'],
                     $code

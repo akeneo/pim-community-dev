@@ -23,7 +23,7 @@ class MetricGuesser implements ConstraintGuesserInterface
     {
         $numericGuesser = new NumericGuesser();
 
-        return array_merge([new ValidMetric()], $numericGuesser->guessConstraints($attribute));
+        return \array_merge([new ValidMetric()], $numericGuesser->guessConstraints($attribute));
     }
 
     /**

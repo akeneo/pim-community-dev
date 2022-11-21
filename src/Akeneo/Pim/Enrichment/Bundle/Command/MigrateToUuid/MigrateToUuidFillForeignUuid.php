@@ -194,7 +194,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     private function getTablesWithoutProductTable(): array
     {
-        return array_filter(
+        return \array_filter(
             self::TABLES,
             fn (string $tableName): bool => $tableName !== 'pim_catalog_product',
             ARRAY_FILTER_USE_KEY

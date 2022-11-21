@@ -22,18 +22,18 @@ class Family extends AbstractSimpleArrayConverter implements ArrayConverterInter
         switch ($property) {
             case 'labels':
                 foreach ($data as $localeCode => $label) {
-                    $labelKey = sprintf('label-%s', $localeCode);
+                    $labelKey = \sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
             case 'attribute_requirements':
                 foreach ($data as $scopeCode => $attributes) {
-                    $requirementKey = sprintf('requirements-%s', $scopeCode);
-                    $convertedItem[$requirementKey] = implode(',', $attributes);
+                    $requirementKey = \sprintf('requirements-%s', $scopeCode);
+                    $convertedItem[$requirementKey] = \implode(',', $attributes);
                 }
                 break;
             case 'attributes':
-                $convertedItem[$property] = implode(',', $data);
+                $convertedItem[$property] = \implode(',', $data);
                 break;
             default:
                 $convertedItem[$property] = (string) $data;

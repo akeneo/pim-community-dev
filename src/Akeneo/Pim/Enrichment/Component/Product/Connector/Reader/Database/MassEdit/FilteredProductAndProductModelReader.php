@@ -128,7 +128,7 @@ class FilteredProductAndProductModelReader implements
         $channelCode = $parameters->get('filters')['structure']['scope'];
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
-            throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
+            throw new ObjectNotFoundException(\sprintf('Channel with "%s" code does not exist', $channelCode));
         }
 
         return $channel;
@@ -144,12 +144,12 @@ class FilteredProductAndProductModelReader implements
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
-        if (array_key_exists('data', $filters)) {
+        if (\array_key_exists('data', $filters)) {
             $filters = $filters['data'];
         }
 
         if ($this->readChildren) {
-            $filters = array_map(function ($filter) {
+            $filters = \array_map(function ($filter) {
                 if ('id' === $filter['field']) {
                     $filter['field'] = 'self_and_ancestor.id';
                 }
@@ -162,8 +162,8 @@ class FilteredProductAndProductModelReader implements
             }, $filters);
         }
 
-        return array_filter($filters, function ($filter) {
-            return count($filter) > 0;
+        return \array_filter($filters, function ($filter) {
+            return \count($filter) > 0;
         });
     }
 

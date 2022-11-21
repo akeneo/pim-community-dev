@@ -28,6 +28,6 @@ final class FamilyId
 
     public function __toString()
     {
-        return strval($this->id);
+        return \strval($this->id);
     }
 }

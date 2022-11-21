@@ -65,10 +65,10 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         $parameters['with_uuid'] = false;
 
         $channels = $this->channelRepository->getFullChannels();
-        $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
+        $defaultChannelCode = (0 !== \count($channels)) ? $channels[0]->getCode() : null;
 
         $localesCodes = $this->localeRepository->getActivatedLocaleCodes();
-        $defaultLocaleCodes = (0 !== count($localesCodes)) ? [$localesCodes[0]] : [];
+        $defaultLocaleCodes = (0 !== \count($localesCodes)) ? [$localesCodes[0]] : [];
 
         $parameters['filters'] = [
             'data'      => [
@@ -97,6 +97,6 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
      */
     public function supports(JobInterface $job)
     {
-        return in_array($job->getName(), $this->supportedJobNames);
+        return \in_array($job->getName(), $this->supportedJobNames);
     }
 }

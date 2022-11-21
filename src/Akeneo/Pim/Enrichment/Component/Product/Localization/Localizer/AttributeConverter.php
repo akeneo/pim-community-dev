@@ -47,7 +47,7 @@ class AttributeConverter implements AttributeConverterInterface
     public function convertToDefaultFormats(array $items, array $options = [])
     {
         $this->violations = new ConstraintViolationList();
-        $this->cacheAttributeTypeByCodes(array_keys($items));
+        $this->cacheAttributeTypeByCodes(\array_keys($items));
 
         foreach ($items as $code => $item) {
             if (isset($this->attributeTypeByCodes[$code])) {
@@ -132,7 +132,7 @@ class AttributeConverter implements AttributeConverterInterface
      */
     public function convertToLocalizedFormats(array $items, array $options = [])
     {
-        $this->cacheAttributeTypeByCodes(array_keys($items));
+        $this->cacheAttributeTypeByCodes(\array_keys($items));
 
         foreach ($items as $code => $item) {
             if (isset($this->attributeTypeByCodes[$code])) {
@@ -184,7 +184,7 @@ class AttributeConverter implements AttributeConverterInterface
         $channelCode = isset($data['scope']) && '' !== $data['scope'] ? $data['scope'] : '<all_channels>';
         $localeCode = isset($data['locale']) && '' !== $data['locale'] ? $data['locale'] : '<all_locales>';
 
-        return sprintf('values[%s-%s-%s]', $attributeCode, $channelCode, $localeCode);
+        return \sprintf('values[%s-%s-%s]', $attributeCode, $channelCode, $localeCode);
     }
 
     /**
@@ -192,7 +192,7 @@ class AttributeConverter implements AttributeConverterInterface
      */
     private function cacheAttributeTypeByCodes(array $codes)
     {
-        $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
+        $codesToFetch = \array_diff($codes, \array_keys($this->attributeTypeByCodes));
 
         // we can have numeric keys here, we can't use array_merge :(
         $this->attributeTypeByCodes += $this->attributeRepository->getAttributeTypeByCodes($codesToFetch);

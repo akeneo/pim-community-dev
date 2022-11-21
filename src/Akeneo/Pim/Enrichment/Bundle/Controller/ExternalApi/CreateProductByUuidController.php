@@ -80,7 +80,7 @@ class CreateProductByUuidController
 
         if (isset($data['uuid']) && $this->productExists($data['uuid'])) {
             $this->throwViolationException(
-                sprintf('The %s uuid is already used for another product.', $data['uuid']),
+                \sprintf('The %s uuid is already used for another product.', $data['uuid']),
                 'uuid'
             );
         }
@@ -141,7 +141,7 @@ class CreateProductByUuidController
 
     private function getDecodedContent($content): array
     {
-        $decodedContent = json_decode($content, true);
+        $decodedContent = \json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -172,7 +172,7 @@ class CreateProductByUuidController
     {
         throw new DocumentedHttpException(
             Documentation::URL . 'post_products_uuid',
-            sprintf('%s Check the expected format on the API documentation.', $message),
+            \sprintf('%s Check the expected format on the API documentation.', $message),
             $previousException
         );
     }

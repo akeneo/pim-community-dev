@@ -138,7 +138,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
 
         $cleanedFilteredItem = $this->cleanLineBreaksInTextAttributes->cleanStandardFormat($filteredItem);
-        if (is_array($filteredItem['values'] ?? null) && is_array($cleanedFilteredItem['values'] ?? null)) {
+        if (\is_array($filteredItem['values'] ?? null) && \is_array($cleanedFilteredItem['values'] ?? null)) {
             foreach ($cleanedFilteredItem['values'] as $field => $values) {
                 if ($values !== $filteredItem['values'][$field]) {
                     $this->nonBlockingWarnings[] = new Warning(
@@ -155,7 +155,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->updateProduct($product, $cleanedFilteredItem);
         } catch (PropertyException $exception) {
             $this->detachProduct($product);
-            $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
+            $message = \sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
             $this->skipItemWithMessage($item, $message, $exception);
         } catch (InvalidArgumentException | AccessDeniedException $exception) {
             $this->detachProduct($product);
@@ -204,7 +204,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     protected function getFamilyCode(array $item): string
     {
-        if (key_exists('family', $item)) {
+        if (\key_exists('family', $item)) {
             return $item['family'];
         }
 

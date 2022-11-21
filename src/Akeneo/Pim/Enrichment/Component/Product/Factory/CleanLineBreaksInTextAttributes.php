@@ -18,10 +18,10 @@ class CleanLineBreaksInTextAttributes
                 }
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {
                     foreach ($localeRawValue as $localeCode => $data) {
-                        if (!is_string($data)) {
+                        if (!\is_string($data)) {
                             continue;
                         }
-                        $cleanedData = str_replace(
+                        $cleanedData = \str_replace(
                             ["\r\n", "\r", "\n"],
                             ' ',
                             $data

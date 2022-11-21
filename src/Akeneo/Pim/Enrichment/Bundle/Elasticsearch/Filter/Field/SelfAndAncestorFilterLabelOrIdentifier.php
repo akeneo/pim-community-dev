@@ -55,19 +55,19 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
 
         $clauses[] = [
             'wildcard' => [
-                'ancestors.codes' => sprintf('*%s*', $this->escapeValue($value)),
+                'ancestors.codes' => \sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
         $clauses[] = [
             'wildcard' => [
-                'identifier' => sprintf('*%s*', $this->escapeValue($value)),
+                'identifier' => \sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 
         if (null !== $channel && null !== $locale) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('ancestors.labels.%s.%s', $channel, $locale) => sprintf(
+                    \sprintf('ancestors.labels.%s.%s', $channel, $locale) => \sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -75,7 +75,7 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
             ];
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('label.%s.%s', $channel, $locale) => sprintf(
+                    \sprintf('label.%s.%s', $channel, $locale) => \sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -86,7 +86,7 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
         if (null !== $channel) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('ancestors.labels.%s.<all_locales>', $channel) => sprintf(
+                    \sprintf('ancestors.labels.%s.<all_locales>', $channel) => \sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -94,7 +94,7 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
             ];
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('label.%s.<all_locales>', $channel) => sprintf(
+                    \sprintf('label.%s.<all_locales>', $channel) => \sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -105,7 +105,7 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
         if (null !== $locale) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('ancestors.labels.<all_channels>.%s', $locale) => sprintf(
+                    \sprintf('ancestors.labels.<all_channels>.%s', $locale) => \sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -113,7 +113,7 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
             ];
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('label.<all_channels>.%s', $locale) => sprintf(
+                    \sprintf('label.<all_channels>.%s', $locale) => \sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -123,12 +123,12 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
 
         $clauses[] = [
             'wildcard' => [
-                'ancestors.labels.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
+                'ancestors.labels.<all_channels>.<all_locales>' => \sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
         $clauses[] = [
             'wildcard' => [
-                'label.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
+                'label.<all_channels>.<all_locales>' => \sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 
@@ -167,6 +167,6 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
     {
         $regex = '#[-+=|! &(){}\[\]^"~*<>?:/\\\]#';
 
-        return preg_replace($regex, '\\\$0', $value);
+        return \preg_replace($regex, '\\\$0', $value);
     }
 }

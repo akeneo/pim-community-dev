@@ -151,6 +151,6 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         $result = $queryBuilder->getQuery()->getArrayResult();
 
-        return count($result) > 0;
+        return \count($result) > 0;
     }
 }

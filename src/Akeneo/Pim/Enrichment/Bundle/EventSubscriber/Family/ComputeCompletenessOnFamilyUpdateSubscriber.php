@@ -153,17 +153,17 @@ final class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscrib
     private function areAttributeRequirementsListsUpdated(FamilyInterface $family): bool
     {
         $oldAttributeRequirementsKeys = $this->getOldAttributeRequirementKeys($family);
-        $newAttributeRequirementsKeys = array_keys($family->getAttributeRequirements());
+        $newAttributeRequirementsKeys = \array_keys($family->getAttributeRequirements());
 
-        sort($oldAttributeRequirementsKeys);
-        sort($newAttributeRequirementsKeys);
+        \sort($oldAttributeRequirementsKeys);
+        \sort($newAttributeRequirementsKeys);
 
-        $diff = array_merge(
-            array_diff($oldAttributeRequirementsKeys, $newAttributeRequirementsKeys),
-            array_diff($newAttributeRequirementsKeys, $oldAttributeRequirementsKeys)
+        $diff = \array_merge(
+            \array_diff($oldAttributeRequirementsKeys, $newAttributeRequirementsKeys),
+            \array_diff($newAttributeRequirementsKeys, $oldAttributeRequirementsKeys)
         );
 
-        return count($diff) > 0;
+        return \count($diff) > 0;
     }
 
     /**
@@ -177,7 +177,7 @@ final class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscrib
 
         $oldAttributeRequirements = $this->attributeRequirementRepository->findRequiredAttributesCodesByFamily($family);
         foreach ($oldAttributeRequirements as $oldAttributeRequirement) {
-            $oldAttributeRequirementsKeys[] = sprintf(
+            $oldAttributeRequirementsKeys[] = \sprintf(
                 '%s_%s',
                 $oldAttributeRequirement['attribute'],
                 $oldAttributeRequirement['channel']
@@ -201,14 +201,14 @@ final class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscrib
             return $attribute->getCode();
         })->toArray();
 
-        sort($oldAttributeList);
-        sort($newAttributeList);
+        \sort($oldAttributeList);
+        \sort($newAttributeList);
 
-        $diff = array_merge(
-            array_diff($oldAttributeList, $newAttributeList),
-            array_diff($newAttributeList, $oldAttributeList)
+        $diff = \array_merge(
+            \array_diff($oldAttributeList, $newAttributeList),
+            \array_diff($newAttributeList, $oldAttributeList)
         );
 
-        return count($diff) > 0;
+        return \count($diff) > 0;
     }
 }

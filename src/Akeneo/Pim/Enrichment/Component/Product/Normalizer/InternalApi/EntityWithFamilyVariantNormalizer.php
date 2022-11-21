@@ -99,11 +99,11 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
     public function normalize($entity, $format = null, array $context = []): array
     {
         if (!$entity instanceof ProductModelInterface && !$entity instanceof ProductInterface) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 '"%s" or "%s" expected, "%s" received',
                 ProductModelInterface::class,
                 ProductInterface::class,
-                get_class($entity)
+                \get_class($entity)
             ));
         }
 
@@ -139,7 +139,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof EntityWithFamilyVariantInterface && in_array($format, $this->supportedFormat);
+        return $data instanceof EntityWithFamilyVariantInterface && \in_array($format, $this->supportedFormat);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -194,7 +194,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
                 $valuesForLocale[] = $normalizedValue;
             }
 
-            $axesValuesLabels[$localeCode] = implode(', ', $valuesForLocale);
+            $axesValuesLabels[$localeCode] = \implode(', ', $valuesForLocale);
         }
 
         return $axesValuesLabels;
@@ -269,7 +269,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
             } elseif (AttributeTypes::METRIC === $axisAttribute->getType()) {
                 $data = $value->getData();
                 $orderArray[] = $data->getUnit();
-                $orderArray[] = floatval($data->getData());
+                $orderArray[] = \floatval($data->getData());
             } elseif (AttributeTypes::BOOLEAN === $axisAttribute->getType()) {
                 $orderArray[] = (true === $value->getData() ? '1' : '0');
             } else {

@@ -84,12 +84,22 @@ class ReadValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        $values[] = $this->valueFactory->createWithoutCheckingData(
-                            $attribute,
-                            $channelCode,
-                            $localeCode,
-                            $data
-                        );
+                        try {
+                            $values[] = $this->valueFactory->createByCheckingData(
+                                $attribute,
+                                $channelCode,
+                                $localeCode,
+                                $data
+                            );
+                        } catch (\TypeError | InvalidPropertyTypeException | InvalidPropertyException $exception) {
+                            $this->logger->notice(
+                                \sprintf(
+                                    'Tried to load a product value for attribute "%s" that does not have the '.
+                                    'expected type in database.',
+                                    $attribute->code()
+                                )
+                            );
+                        }
                     }
                 }
             }

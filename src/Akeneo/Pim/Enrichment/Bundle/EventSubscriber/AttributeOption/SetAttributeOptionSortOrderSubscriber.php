@@ -58,17 +58,17 @@ class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
     public function onPreSaveAll(GenericEvent $event)
     {
         $subjects = $event->getSubject();
-        if (!is_array($subjects)) {
+        if (!\is_array($subjects)) {
             return;
         }
 
-        if (current($subjects) instanceof AttributeOptionInterface) {
+        if (\current($subjects) instanceof AttributeOptionInterface) {
             $this->setSortOrders($subjects);
 
             return;
         }
 
-        if (current($subjects) instanceof AttributeInterface) {
+        if (\current($subjects) instanceof AttributeInterface) {
             $options = [];
             foreach ($subjects as $attribute) {
                 foreach ($attribute->getOptions() as $option) {
@@ -84,7 +84,7 @@ class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
      */
     private function setSortOrders(array $options): void
     {
-        $options = array_filter($options, function (AttributeoptionInterface $option) {
+        $options = \array_filter($options, function (AttributeoptionInterface $option) {
             return null === $option->getSortOrder();
         });
 
@@ -92,12 +92,12 @@ class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $attributeCodes = array_unique(array_map(function (AttributeOptionInterface $option): string {
+        $attributeCodes = \array_unique(\array_map(function (AttributeOptionInterface $option): string {
             return $option->getAttribute()->getCode();
         }, $options));
 
         $currentMaxSortOrders = $this->getAttributeOptionsMaxSortOrder->forAttributeCodes(
-            array_values($attributeCodes)
+            \array_values($attributeCodes)
         );
 
         foreach ($options as $option) {

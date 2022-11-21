@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 
 class UserIntentApplierRegistrySpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         UserIntentApplier $setEnabledApplier,
         UserIntentApplier $setNumberValueApplier
     ) {
@@ -22,7 +22,7 @@ class UserIntentApplierRegistrySpec extends ObjectBehavior
         $this->beConstructedWith([$setEnabledApplier, $setNumberValueApplier]);
     }
 
-    function it_returns_the_applier_of_a_user_intent(
+    public function it_returns_the_applier_of_a_user_intent(
         UserIntentApplier $setEnabledApplier,
         UserIntentApplier $setNumberValueApplier
     ) {
@@ -31,7 +31,7 @@ class UserIntentApplierRegistrySpec extends ObjectBehavior
         $this->getApplier(new SetNumberValue('attribute', null, null, '1'))->shouldReturn($setNumberValueApplier);
     }
 
-    function it_returns_null_when_no_applier_is_found()
+    public function it_returns_null_when_no_applier_is_found()
     {
         $this->getApplier(new SetTextValue('description', null, null, 'Lorem Ipsum'))->shouldReturn(null);
     }

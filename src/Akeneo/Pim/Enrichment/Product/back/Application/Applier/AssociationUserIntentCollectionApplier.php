@@ -213,7 +213,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             return null;
         }
 
-        $uuids = array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $formerAssociations);
+        $uuids = \array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $formerAssociations);
 
         $viewableProductUuids = $this->getViewableProducts->fromProductUuids($uuids, $userId);
         $viewableProductUuidsAsStr = \array_map(fn (UuidInterface $uuid): string => $uuid->toString(), $viewableProductUuids);

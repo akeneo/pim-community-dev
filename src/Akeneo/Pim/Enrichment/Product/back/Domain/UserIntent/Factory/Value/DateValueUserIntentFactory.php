@@ -33,10 +33,10 @@ class DateValueUserIntentFactory implements ValueUserIntentFactory
         if (null === $data['data'] || '' === $data['data']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
-        if (!is_string($data['data'])) {
+        if (!\is_string($data['data'])) {
             throw InvalidPropertyTypeException::stringExpected($attributeCode, static::class, $data['data']);
         }
-        if (!preg_match(self::PATTERN, $data['data'], $matches)) {
+        if (!\preg_match(self::PATTERN, $data['data'], $matches)) {
             throw InvalidPropertyException::dateExpected($attributeCode, 'yyyy-mm-dd', static::class, $data['data']);
         }
         if (!\checkdate((int) $matches['month'], (int) $matches['day'], (int) $matches['year'])) {

@@ -61,7 +61,7 @@ class InvalidDirectionException extends \LogicException
             [$direction],
             null,
             $className,
-            sprintf($message, $direction),
+            \sprintf($message, $direction),
             self::NOT_SUPPORTED_CODE
         );
     }

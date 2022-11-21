@@ -108,7 +108,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         if ($this->importType === self::ROOT_PRODUCT_MODEL && !empty($parent) ||
             $this->importType === self::SUB_PRODUCT_MODEL && empty($parent)
         ) {
-            $this->stepExecution->incrementSummaryInfo(sprintf('skipped_in_%s', $this->importType));
+            $this->stepExecution->incrementSummaryInfo(\sprintf('skipped_in_%s', $this->importType));
 
             return null;
         }
@@ -165,7 +165,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             $this->productModelUpdater->update($productModel, $standardProductModel);
         } catch (PropertyException $exception) {
             $this->objectDetacher->detach($productModel);
-            $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
+            $message = \sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
             $this->skipItemWithMessage($standardProductModel, $message, $exception);
         } catch (AccessDeniedException $exception) {
             $this->objectDetacher->detach($productModel);

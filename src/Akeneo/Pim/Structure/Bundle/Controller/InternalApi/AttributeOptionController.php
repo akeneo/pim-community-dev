@@ -185,7 +185,7 @@ class AttributeOptionController
         $attributeOption->setAttribute($attribute);
 
         //Should be replaced by a paramConverter
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
 
         return $this->manageFormSubmission($attributeOption, $data);
     }
@@ -209,7 +209,7 @@ class AttributeOptionController
         $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
 
         //Should be replaced by a paramConverter
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
 
         return $this->manageFormSubmission($attributeOption, $data);
     }
@@ -264,9 +264,9 @@ class AttributeOptionController
 
         $attribute = $this->findAttributeOr404($attributeId);
         //Should be replaced by a paramConverter
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
 
-        $sorting = array_flip($data);
+        $sorting = \array_flip($data);
 
         $this->sorter->updateSorting($attribute, $sorting);
 

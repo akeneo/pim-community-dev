@@ -178,7 +178,7 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
 
         $ranks = [];
         foreach ($elasticsearchResult["aggregations"] as $channelLocaleKey => $aggregationPerRank) {
-            [$channelCode, $localeCode] = explode('.', $channelLocaleKey);
+            [$channelCode, $localeCode] = \explode('.', $channelLocaleKey);
 
             Assert::keyExists($aggregationPerRank, 'buckets');
             foreach ($aggregationPerRank['buckets'] as ['key' => $rank, 'doc_count' => $numberOfProducts]) {

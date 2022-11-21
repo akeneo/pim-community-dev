@@ -24,7 +24,7 @@ class RegexValidator extends BaseValidator
             return;
         }
 
-        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+        if (!\is_scalar($value) && !(\is_object($value) && \method_exists($value, '__toString'))) {
             throw new UnexpectedValueException($value, 'string');
         }
 
@@ -34,7 +34,7 @@ class RegexValidator extends BaseValidator
             $value = ($constraint->normalizer)($value);
         }
 
-        if ($constraint->match xor preg_match($constraint->pattern, $value)) {
+        if ($constraint->match xor \preg_match($constraint->pattern, $value)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setParameter('{{ pattern }}', $constraint->pattern)

@@ -96,7 +96,7 @@ class CategoryTreeController extends AbstractController
             $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
         }
 
-        $formatedTrees = array_map(function (CategoryTree $tree) use ($selectedTreeId) {
+        $formatedTrees = \array_map(function (CategoryTree $tree) use ($selectedTreeId) {
             return [
                 'id' => $tree->getId()->getValue(),
                 'code' => (string) $tree->getCode(),
@@ -141,7 +141,7 @@ class CategoryTreeController extends AbstractController
             $prevSibling = $this->categoryRepository->find($prevSiblingId);
         }
 
-        if (is_object($prevSibling)) {
+        if (\is_object($prevSibling)) {
             $this->categoryRepository->persistAsNextSiblingOf($category, $prevSibling);
         } else {
             $this->categoryRepository->persistAsFirstChildOf($category, $parent);
@@ -232,7 +232,7 @@ class CategoryTreeController extends AbstractController
         }
 
         $category = $this->categoryFactory->create();
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
         $this->categoryUpdater->update($category, $data);
         $violations = $this->validator->validate($category);
 
@@ -246,7 +246,7 @@ class CategoryTreeController extends AbstractController
             $normalizedViolations[$normalizedViolation['path']] = $normalizedViolation['message'];
         }
 
-        if (count($normalizedViolations) > 0) {
+        if (\count($normalizedViolations) > 0) {
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 
@@ -290,7 +290,7 @@ class CategoryTreeController extends AbstractController
         }
 
         $normalizedCategory = $this->normalizer->normalize($category, 'internal_api');
-        $normalizedCategory = array_merge($normalizedCategory, [
+        $normalizedCategory = \array_merge($normalizedCategory, [
             'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
         ]);
         $formData = $this->categoryFormViewNormalizer->normalizeFormView($form->createView());
@@ -338,8 +338,8 @@ class CategoryTreeController extends AbstractController
     {
         $trees = $this->categoryRepository->getTrees();
 
-        $productsCountByCategories = array_fill_keys(
-            array_map(fn (CategoryInterface $category) => $category->getId(), $trees),
+        $productsCountByCategories = \array_fill_keys(
+            \array_map(fn (CategoryInterface $category) => $category->getId(), $trees),
             0
         );
 

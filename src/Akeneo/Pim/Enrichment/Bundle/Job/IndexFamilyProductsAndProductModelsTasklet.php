@@ -85,14 +85,14 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
         foreach ($productUuids as $productUuid) {
             $productUuidsToIndex[] = $productUuid;
 
-            if (count($productUuidsToIndex) >= $this->batchSize) {
+            if (\count($productUuidsToIndex) >= $this->batchSize) {
                 $this->indexProducts($productUuidsToIndex);
                 $this->cacheClearer->clear();
                 $productUuidsToIndex = [];
             }
         }
 
-        if (count($productUuidsToIndex) > 0) {
+        if (\count($productUuidsToIndex) > 0) {
             $this->indexProducts($productUuidsToIndex);
         }
 
@@ -100,14 +100,14 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
             Assert::isInstanceOf($productModel, ProductModelInterface::class);
             $productModelCodesToIndex[] = $productModel->getCode();
 
-            if (count($productModelCodesToIndex) >= $this->batchSize) {
+            if (\count($productModelCodesToIndex) >= $this->batchSize) {
                 $this->indexProductModels($productModelCodesToIndex);
                 $this->cacheClearer->clear();
                 $productModelCodesToIndex = [];
             }
         }
 
-        if (count($productModelCodesToIndex) > 0) {
+        if (\count($productModelCodesToIndex) > 0) {
             $this->indexProductModels($productModelCodesToIndex);
         }
     }
@@ -171,7 +171,7 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     {
         $this->productAndAncestorsIndexer->indexFromProductUuids($productUuids);
 
-        $productCount = count($productUuids);
+        $productCount = \count($productUuids);
 
         $this->stepExecution->incrementProcessedItems($productCount);
         $this->stepExecution->incrementSummaryInfo('process', $productCount);
@@ -185,7 +185,7 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     {
         $this->productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
 
-        $productModelCount = count($productModelCodes);
+        $productModelCount = \count($productModelCodes);
 
         $this->stepExecution->incrementProcessedItems($productModelCount);
         $this->stepExecution->incrementSummaryInfo('process', $productModelCount);

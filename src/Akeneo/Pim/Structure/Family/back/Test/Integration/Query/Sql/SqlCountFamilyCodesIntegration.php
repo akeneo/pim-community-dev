@@ -2,9 +2,9 @@
 
 namespace Akeneo\Test\Pim\Structure\Family\Integration\Query\Sql;
 
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyCodes;
 use Akeneo\Pim\Structure\Family\Infrastructure\Query\Sql\SqlCountFamilyCodes;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyCodes;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuerySearch;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

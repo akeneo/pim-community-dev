@@ -47,14 +47,14 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
                 $identifierPrefix = self::PRODUCT_IDENTIFIER_PREFIX;
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Invalid type %s', $this->documentType));
+                throw new \InvalidArgumentException(\sprintf('Invalid type %s', $this->documentType));
         }
 
         $computedKeyIndicators = $this->computeProductsKeyIndicators->compute($entityIdCollection);
 
         $params = [];
         foreach ($entityIdCollection->toArray() as $entityId) {
-            if (!array_key_exists((string) $entityId, $scores)) {
+            if (!\array_key_exists((string) $entityId, $scores)) {
                 continue;
             }
             $qualityScores = $scores[(string) $entityId];
@@ -73,7 +73,7 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
         }
 
         $this->esClient->bulkUpdate(
-            array_map(
+            \array_map(
                 fn ($productId) => $identifierPrefix . $productId,
                 $entityIdCollection->toArrayString()
             ),

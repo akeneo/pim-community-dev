@@ -67,7 +67,7 @@ class ParentFieldSetter extends AbstractFieldSetter
 
         if (null !== $familyVariant && $product->isVariant() && $product->getFamilyVariant() !== $familyVariant) {
             throw InvalidPropertyException::expected(
-                sprintf(
+                \sprintf(
                     'New parent "%s" of variant product "%s" must have the same family variant "%s" than the previous parent',
                     $parent->getCode(),
                     $product->getIdentifier(),

@@ -11,12 +11,12 @@ use PhpSpec\ObjectBehavior;
 
 class NumberValueUserIntentFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(NumberValueUserIntentFactory::class);
     }
 
-    function it_returns_set_number_user_intent()
+    public function it_returns_set_number_user_intent()
     {
         $this->create(AttributeTypes::NUMBER, 'a_number', [
             'data' => '10',
@@ -31,7 +31,7 @@ class NumberValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetNumberValue('a_number', null, null, '10.02'));
     }
 
-    function it_returns_clear_value()
+    public function it_returns_clear_value()
     {
         $this->create(AttributeTypes::NUMBER, 'a_number', [
             'data' => null,

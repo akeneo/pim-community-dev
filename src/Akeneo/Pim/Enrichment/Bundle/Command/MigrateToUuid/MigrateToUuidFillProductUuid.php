@@ -124,7 +124,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         WHERE p.id = product_to_migrate.id AND product_to_migrate.rn = product_uuid.rn;
         SQL;
 
-        $sql = strtr($sql, [
+        $sql = \strtr($sql, [
             '{rows}' => \implode(',', $rows),
             '{batch_size}' => self::BATCH_SIZE,
         ]);

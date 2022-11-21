@@ -87,18 +87,18 @@ class ProductModel implements ArrayConverterInterface
     protected function filterFields(array $mappedItem, bool $withAssociations): array
     {
         if (false === $withAssociations) {
-            $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
-            $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
-            $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
-            $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
-            $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
-            foreach (array_keys($mappedItem) as $field) {
-                $field = is_int($field) ? strval($field) : $field;
-                $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
-                $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
-                $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
-                $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
-                $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
+            $isGroupAssociationPattern = \sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
+            $isProductAssociationPattern = \sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+            $isProductModelAssociationPattern = \sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
+            $isProductAssociationQuantityPattern = \sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+            $isProductModelAssociationQuantityPattern = \sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+            foreach (\array_keys($mappedItem) as $field) {
+                $field = \is_int($field) ? \strval($field) : $field;
+                $isGroup = (1 === \preg_match($isGroupAssociationPattern, $field));
+                $isProduct = (1 === \preg_match($isProductAssociationPattern, $field));
+                $isProductModel = (1 === \preg_match($isProductModelAssociationPattern, $field));
+                $isProductQuantity = (1 === \preg_match($isProductAssociationQuantityPattern, $field));
+                $isProductModelQuantity = (1 === \preg_match($isProductModelAssociationQuantityPattern, $field));
                 if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
                     unset($mappedItem[$field]);
                 }
@@ -140,26 +140,26 @@ class ProductModel implements ArrayConverterInterface
      */
     protected function validateOptionalFields(array $mappedFlatProductModel): void
     {
-        $optionalFields = array_merge(
+        $optionalFields = \array_merge(
             ['categories', 'code', 'family_variant', 'parent'],
             $this->attributeColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
 
         // index $optionalFields by keys to improve performances
-        $optionalFields = array_combine($optionalFields, $optionalFields);
+        $optionalFields = \array_combine($optionalFields, $optionalFields);
         $unknownFields = [];
 
-        foreach (array_keys($mappedFlatProductModel) as $field) {
+        foreach (\array_keys($mappedFlatProductModel) as $field) {
             if (!isset($optionalFields[$field])) {
                 $unknownFields[] = $field;
             }
         }
 
-        if (0 < count($unknownFields)) {
-            $message = count($unknownFields) > 1 ? 'The fields "%s" do not exist' : 'The field "%s" does not exist';
+        if (0 < \count($unknownFields)) {
+            $message = \count($unknownFields) > 1 ? 'The fields "%s" do not exist' : 'The field "%s" does not exist';
 
-            throw new StructureArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
+            throw new StructureArrayConversionException(\sprintf($message, \implode(', ', $unknownFields)));
         }
     }
 
@@ -169,7 +169,7 @@ class ProductModel implements ArrayConverterInterface
     protected function getOptionalAssociationFields(): array
     {
         if (empty($this->optionalAssocFields)) {
-            $this->optionalAssocFields = array_merge(
+            $this->optionalAssocFields = \array_merge(
                 $this->assocColumnsResolver->resolveAssociationColumns(),
                 $this->assocColumnsResolver->resolveQuantifiedAssociationColumns()
             );
@@ -188,9 +188,9 @@ class ProductModel implements ArrayConverterInterface
         $stringFields = ['code', 'categories', 'family_variant', 'parent'];
 
         foreach ($mappedFlatProductModel as $field => $value) {
-            if (in_array($field, $stringFields) && !is_scalar($value)) {
+            if (\in_array($field, $stringFields) && !\is_scalar($value)) {
                 throw new DataArrayConversionException(
-                    sprintf('The field "%s" should contain a scalar, "%s" provided', $field, gettype($value))
+                    \sprintf('The field "%s" should contain a scalar, "%s" provided', $field, \gettype($value))
                 );
             }
         }

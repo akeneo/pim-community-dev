@@ -14,46 +14,46 @@ use PhpSpec\ObjectBehavior;
  */
 class DissociateGroupsSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith('X_SELL', ['group1', 'group2']);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(DissociateGroups::class);
         $this->shouldImplement(AssociationUserIntent::class);
     }
 
-    function it_returns_the_association_type()
+    public function it_returns_the_association_type()
     {
         $this->associationType()->shouldReturn('X_SELL');
     }
 
-    function it_returns_the_group_codes()
+    public function it_returns_the_group_codes()
     {
         $this->groupCodes()->shouldReturn(['group1', 'group2']);
     }
 
-    function it_can_only_be_instantiated_with_string_group_codes()
+    public function it_can_only_be_instantiated_with_string_group_codes()
     {
         $this->beConstructedWith('X_SELL', ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_empty_group_codes()
+    public function it_cannot_be_instantiated_with_empty_group_codes()
     {
         $this->beConstructedWith('X_SELL', []);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_if_one_of_the_group_codes_is_empty()
+    public function it_cannot_be_instantiated_if_one_of_the_group_codes_is_empty()
     {
         $this->beConstructedWith('X_SELL', ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_empty_association_type()
+    public function it_cannot_be_instantiated_with_empty_association_type()
     {
         $this->beConstructedWith('', ['group1', 'group2']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

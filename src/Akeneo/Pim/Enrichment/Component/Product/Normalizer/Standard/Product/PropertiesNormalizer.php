@@ -40,7 +40,7 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
+        $context = \array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
 
         // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment

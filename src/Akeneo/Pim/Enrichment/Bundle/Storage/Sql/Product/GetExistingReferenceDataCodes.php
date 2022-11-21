@@ -42,7 +42,7 @@ final class GetExistingReferenceDataCodes implements GetExistingReferenceDataCod
         $repository = $this->repositoryResolver->resolve($referenceDataName);
         $tableName = $this->entityManager->getClassMetadata($repository->getClassName())->getTableName();
 
-        $sql = sprintf('SELECT code FROM %s WHERE code IN (:codes) ORDER BY FIELD(code, :codes)', $tableName);
+        $sql = \sprintf('SELECT code FROM %s WHERE code IN (:codes) ORDER BY FIELD(code, :codes)', $tableName);
 
         return $this->entityManager->getConnection()->executeQuery(
             $sql,

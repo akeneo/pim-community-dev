@@ -52,11 +52,11 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             return;
         }
 
-        $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
+        $insertValues = \implode(', ', \array_map(function (Write\ProductScores $productScore) {
             $productUuid = $productScore->getEntityId();
             Assert::isInstanceOf($productUuid, ProductUuid::class);
 
-            return sprintf(
+            return \sprintf(
                 "(UUID_TO_BIN('%s'), '%s', '%s', '%s')",
                 (string) $productUuid,
                 $productScore->getEvaluatedAt()->format('Y-m-d'),

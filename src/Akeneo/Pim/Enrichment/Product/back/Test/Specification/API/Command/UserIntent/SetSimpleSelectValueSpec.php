@@ -14,38 +14,38 @@ use PhpSpec\ObjectBehavior;
  */
 class SetSimpleSelectValueSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith('size', 'ecommerce', 'en_US', 'M');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetSimpleSelectValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    function it_returns_the_attribute_code()
+    public function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('size');
     }
 
-    function it_returns_the_locale_code()
+    public function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    function it_returns_the_channel_code()
+    public function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    function it_returns_the_value()
+    public function it_returns_the_value()
     {
         $this->value()->shouldReturn('M');
     }
 
-    function it_is_not_initializable_with_an_empty_value()
+    public function it_is_not_initializable_with_an_empty_value()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', '');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

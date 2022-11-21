@@ -43,8 +43,8 @@ final class AscendantCategories implements AscendantCategoriesInterface
                 ->where('product_model.id = :id')
                 ->setParameter(':id', $entity->getId());
 
-            $result = array_map(function ($id) {
-                return intval($id['id']);
+            $result = \array_map(function ($id) {
+                return \intval($id['id']);
             }, $queryBuilder->getQuery()->getResult());
         } elseif ($entity instanceof ProductInterface && $entity->isVariant()) {
             $queryBuilder
@@ -58,11 +58,11 @@ final class AscendantCategories implements AscendantCategoriesInterface
                 ->setParameter(':uuid', $entity->getUuid()->getBytes());
 
             foreach ($queryBuilder->getQuery()->getResult() as $resultItem) {
-                if (!in_array(intval($resultItem['id']), $result)) {
-                    $result[] = intval($resultItem['id']);
+                if (!\in_array(\intval($resultItem['id']), $result)) {
+                    $result[] = \intval($resultItem['id']);
                 }
-                if (null !== $resultItem['parent_id'] && !in_array(intval($resultItem['parent_id']), $result)) {
-                    $result[] = intval($resultItem['parent_id']);
+                if (null !== $resultItem['parent_id'] && !\in_array(\intval($resultItem['parent_id']), $result)) {
+                    $result[] = \intval($resultItem['parent_id']);
                 }
             }
         }

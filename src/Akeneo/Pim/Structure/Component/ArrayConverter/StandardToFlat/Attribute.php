@@ -33,16 +33,16 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
         switch ($property) {
             case 'labels':
                 foreach ($data as $localeCode => $label) {
-                    $labelKey = sprintf('label-%s', $localeCode);
+                    $labelKey = \sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
             case 'options':
             case 'available_locales':
             case 'allowed_extensions':
-                $convertedItem[$property] = implode(',', $data);
+                $convertedItem[$property] = \implode(',', $data);
                 break;
-            case in_array($property, $this->booleanFields):
+            case \in_array($property, $this->booleanFields):
                 if (null === $data) {
                     $convertedItem[$property] = '';
                     break;
@@ -52,7 +52,7 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                 break;
             case 'guidelines':
                 foreach ($data as $localeCode => $label) {
-                    $key = sprintf('guidelines-%s', $localeCode);
+                    $key = \sprintf('guidelines-%s', $localeCode);
                     $convertedItem[$key] = $label;
                 }
                 break;

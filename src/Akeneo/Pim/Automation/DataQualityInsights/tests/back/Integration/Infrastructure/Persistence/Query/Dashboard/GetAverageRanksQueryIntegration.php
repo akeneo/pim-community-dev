@@ -93,9 +93,9 @@ final class GetAverageRanksQueryIntegration extends TestCase
         ));
 
         $expectedAverageRanks = [
-            strval($familyACode) => Rank::fromString('rank_4'),
-            strval($familyBCode) => Rank::fromString('rank_1'),
-            strval($familyWithoutRates) => null,
+            \strval($familyACode) => Rank::fromString('rank_4'),
+            \strval($familyBCode) => Rank::fromString('rank_1'),
+            \strval($familyWithoutRates) => null,
         ];
 
         $averageRanks = $this->query->byFamilies(new ChannelCode('ecommerce'), new LocaleCode('en_US'), [$familyACode, $familyBCode, $familyWithoutRates]);
@@ -158,9 +158,9 @@ final class GetAverageRanksQueryIntegration extends TestCase
         ));
 
         $expectedAverageRanks = [
-            strval($categoryACode) => Rank::fromString('rank_4'),
-            strval($categoryBCode) => Rank::fromString('rank_1'),
-            strval($categoryWithoutRates) => null,
+            \strval($categoryACode) => Rank::fromString('rank_4'),
+            \strval($categoryBCode) => Rank::fromString('rank_1'),
+            \strval($categoryWithoutRates) => null,
         ];
 
         $averageRanks = $this->query->byCategories(new ChannelCode('ecommerce'), new LocaleCode('en_US'), [$categoryACode, $categoryBCode, $categoryWithoutRates]);

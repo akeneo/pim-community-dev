@@ -59,14 +59,14 @@ class FamilyRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('f');
         $rootAlias = $qb->getRootAliases()[0];
 
-        $labelExpr = sprintf(
+        $labelExpr = \sprintf(
             '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
             $rootAlias
         );
 
         $qb
             ->select($rootAlias)
-            ->addSelect(sprintf('%s AS familyLabel', $labelExpr))
+            ->addSelect(\sprintf('%s AS familyLabel', $labelExpr))
             ->addSelect('translation.label');
 
         $qb
@@ -97,7 +97,7 @@ class FamilyRepository extends EntityRepository implements
             $qb->resetDQLPart('where');
 
             foreach ($whereParts as $part) {
-                if (!is_string($part) || !strpos($part, 'entityIds')) {
+                if (!\is_string($part) || !\strpos($part, 'entityIds')) {
                     $qb->andWhere($part);
                 }
             }

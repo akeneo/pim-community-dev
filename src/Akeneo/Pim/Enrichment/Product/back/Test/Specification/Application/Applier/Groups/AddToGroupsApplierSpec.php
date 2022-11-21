@@ -13,19 +13,19 @@ use PhpSpec\ObjectBehavior;
 
 class AddToGroupsApplierSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ObjectUpdaterInterface $productUpdater
     ) {
         $this->beConstructedWith($productUpdater);
     }
 
-    function it_is_an_user_intent_applier()
+    public function it_is_an_user_intent_applier()
     {
         $this->shouldHaveType(AddToGroupsApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_a_add_groups_user_intent_on_a_new_product(
+    public function it_applies_a_add_groups_user_intent_on_a_new_product(
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {
@@ -36,7 +36,7 @@ class AddToGroupsApplierSpec extends ObjectBehavior
         $this->apply($userIntent, $product, 10);
     }
 
-    function it_applies_a_add_groups_user_intent_on_an_existing_product_with_groups(
+    public function it_applies_a_add_groups_user_intent_on_an_existing_product_with_groups(
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {
@@ -47,7 +47,7 @@ class AddToGroupsApplierSpec extends ObjectBehavior
         $this->apply($userIntent, $product, 10);
     }
 
-    function it_ignores_duplicate_groups(
+    public function it_ignores_duplicate_groups(
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {

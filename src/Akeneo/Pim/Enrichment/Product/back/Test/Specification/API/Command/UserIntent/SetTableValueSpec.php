@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class SetTableValueSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith(
             'nutrition',
@@ -27,28 +27,28 @@ class SetTableValueSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetTableValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    function it_returns_the_attribute_code()
+    public function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('nutrition');
     }
 
-    function it_returns_the_locale_code()
+    public function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    function it_returns_the_channel_code()
+    public function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    function it_returns_the_table_value()
+    public function it_returns_the_table_value()
     {
         $this->tableValue()->shouldBeLike(
             [
@@ -58,16 +58,18 @@ class SetTableValueSpec extends ObjectBehavior
         );
     }
 
-    function it_must_be_instantiated_with_valid_data_structure()
+    public function it_must_be_instantiated_with_valid_data_structure()
     {
-        $this->beConstructedWith('nutrition',
+        $this->beConstructedWith(
+            'nutrition',
             'ecommerce',
             'en_US',
             ['ingredient' => 'salt']
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
 
-        $this->beConstructedWith('nutrition',
+        $this->beConstructedWith(
+            'nutrition',
             'ecommerce',
             'en_US',
             [

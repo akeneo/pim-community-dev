@@ -67,7 +67,7 @@ class FamilyAttributeUsedAsAxisValidator extends ConstraintValidator
             }
         )->toArray();
 
-        return array_diff($attributeCodesUsedAsAxis, $family->getAttributeCodes());
+        return \array_diff($attributeCodesUsedAsAxis, $family->getAttributeCodes());
     }
 
     /**

@@ -84,7 +84,7 @@ SQL;
             if (null === $row['all_quantified_associations']) {
                 continue;
             }
-            $allQuantifiedAssociationsWithProductId = json_decode($row['all_quantified_associations'], true);
+            $allQuantifiedAssociationsWithProductId = \json_decode($row['all_quantified_associations'], true);
             $associationWithIdentifiers = $this->associationsWithIdentifiers(
                 $allQuantifiedAssociationsWithProductId,
                 $validQuantifiedAssociationTypeCodes
@@ -106,11 +106,11 @@ SQL;
 
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductIds as $associationTypeCode => $associationWithIds) {
-            if (empty($associationWithIds) || !is_string($associationTypeCode)) {
+            if (empty($associationWithIds) || !\is_string($associationTypeCode)) {
                 continue;
             }
 
-            if (!in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
+            if (!\in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
                 continue;
             }
 
@@ -127,7 +127,7 @@ SQL;
                 ];
             }
             if (!empty($uniqueQuantifiedAssociations)) {
-                $result[$associationTypeCode]['products'] = array_values($uniqueQuantifiedAssociations);
+                $result[$associationTypeCode]['products'] = \array_values($uniqueQuantifiedAssociations);
             }
         }
 
@@ -136,7 +136,7 @@ SQL;
 
     private function productModelCodes(array $quantifiedAssociationWithProductModelId): array
     {
-        return array_map(
+        return \array_map(
             function (array $quantifiedAssociations) {
                 return $quantifiedAssociations['id'];
             },
@@ -151,7 +151,7 @@ SQL;
             if (empty($quantifiedAssociationWithId)) {
                 continue;
             }
-            $productModelCodes = array_merge(
+            $productModelCodes = \array_merge(
                 $productModelCodes,
                 $this->productModelCodes($quantifiedAssociationWithId)
             );

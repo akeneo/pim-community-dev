@@ -53,7 +53,7 @@ final class EvaluateCompleteness
         }
 
         $missingAttributes = $completenessResult->getMissingAttributes()->getByChannelAndLocale($channelCode, $localeCode);
-        $missingAttributesCount = null === $missingAttributes ? 0 : count($missingAttributes);
+        $missingAttributesCount = null === $missingAttributes ? 0 : \count($missingAttributes);
 
         $totalNumberOfAttributes = $completenessResult->getTotalNumberOfAttributes()->getByChannelAndLocale($channelCode, $localeCode);
 

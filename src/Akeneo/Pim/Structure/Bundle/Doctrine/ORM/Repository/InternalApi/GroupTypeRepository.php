@@ -67,14 +67,14 @@ class GroupTypeRepository extends EntityRepository implements
         $rootAlias = 'g';
         $qb = $this->createQueryBuilder($rootAlias);
 
-        $labelExpr = sprintf(
+        $labelExpr = \sprintf(
             "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
             $rootAlias
         );
 
         $qb
             ->select($rootAlias)
-            ->addSelect(sprintf("%s AS label", $labelExpr));
+            ->addSelect(\sprintf("%s AS label", $labelExpr));
 
         $qb
             ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');

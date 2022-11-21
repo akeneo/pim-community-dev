@@ -39,7 +39,7 @@ abstract class AbstractAttributeRemover implements AttributeRemoverInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute->getType(), $this->supportedTypes);
+        return \in_array($attribute->getType(), $this->supportedTypes);
     }
 
     /**

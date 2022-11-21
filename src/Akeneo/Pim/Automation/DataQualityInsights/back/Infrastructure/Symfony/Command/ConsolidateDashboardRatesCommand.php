@@ -31,7 +31,7 @@ final class ConsolidateDashboardRatesCommand extends Command
 
     protected function configure()
     {
-        $this->addArgument('day', InputArgument::OPTIONAL, 'Day of the consolidation "Y-m-d".', date('Y-m-d'));
+        $this->addArgument('day', InputArgument::OPTIONAL, 'Day of the consolidation "Y-m-d".', \date('Y-m-d'));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -39,12 +39,12 @@ final class ConsolidateDashboardRatesCommand extends Command
         $consolidationDate = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getArgument('day'));
 
         if (!$consolidationDate instanceof \DateTimeImmutable) {
-            throw new \InvalidArgumentException(sprintf('The consolidation date "%s" is invalid', $input->getArgument('day')));
+            throw new \InvalidArgumentException(\sprintf('The consolidation date "%s" is invalid', $input->getArgument('day')));
         }
 
         $consolidationDate = new ConsolidationDate($consolidationDate);
 
-        $output->writeln(sprintf('Start to consolidate the dashboard rates for %s.', $consolidationDate->format('Y-m-d')));
+        $output->writeln(\sprintf('Start to consolidate the dashboard rates for %s.', $consolidationDate->format('Y-m-d')));
         $this->consolidateDashboardRates->consolidate($consolidationDate);
         $output->writeln('Consolidation done.');
 

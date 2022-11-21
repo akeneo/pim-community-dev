@@ -47,6 +47,6 @@ class IdentifierSorter extends BaseFieldSorter implements AttributeSorterInterfa
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute->getType(), $this->supportedAttributes);
+        return \in_array($attribute->getType(), $this->supportedAttributes);
     }
 }

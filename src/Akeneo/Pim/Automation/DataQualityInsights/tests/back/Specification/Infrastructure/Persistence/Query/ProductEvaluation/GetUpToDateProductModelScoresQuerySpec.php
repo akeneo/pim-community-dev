@@ -23,8 +23,7 @@ class GetUpToDateProductModelScoresQuerySpec extends ObjectBehavior
     public function let(
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
         GetProductModelScoresQueryInterface $getProductModelScoresQuery
-    )
-    {
+    ) {
         $this->beConstructedWith($hasUpToDateEvaluationQuery, $getProductModelScoresQuery);
     }
 

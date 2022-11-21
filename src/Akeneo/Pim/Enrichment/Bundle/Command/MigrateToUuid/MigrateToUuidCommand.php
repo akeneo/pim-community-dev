@@ -92,13 +92,13 @@ class MigrateToUuidCommand extends Command
         $this->start();
         try {
             while ($waitForDQI && $this->hasDQIJobStarted()) {
-                $this->logger->notice(sprintf(
+                $this->logger->notice(\sprintf(
                     'There is a "%s" job in progress. Wait for %d seconds before retrying migration start...',
                     self::DQI_JOB_NAME,
                     self::WAIT_TIME_IN_SECONDS
                 ));
 
-                sleep(self::WAIT_TIME_IN_SECONDS);
+                \sleep(self::WAIT_TIME_IN_SECONDS);
             }
 
             $startMigrationTime = \time();
@@ -120,7 +120,7 @@ class MigrateToUuidCommand extends Command
                     $step->setStatusDone();
                     $this->logger->notice(
                         \sprintf('Nothing to do, skipping step %s', $step->getName()),
-                        $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
+                        $logContext->toArray(['migration_duration_in_second' => \time() - $startMigrationTime])
                     );
 
                     continue;
@@ -131,18 +131,18 @@ class MigrateToUuidCommand extends Command
                 if (!$step->addMissing($context)) {
                     $step->setStatusInError();
                     $this->logger->error('An item can not be migrated. Step stopped.', $logContext->toArray());
-                    $this->logger->notice('Migration stopped', ['migration_duration_in_second' => time() - $startMigrationTime]);
+                    $this->logger->notice('Migration stopped', ['migration_duration_in_second' => \time() - $startMigrationTime]);
                     return Command::FAILURE;
                 }
                 $step->setStatusDone();
                 $this->logger->notice(
                     \sprintf('Step done in %0.2f seconds (%s)', $step->getDuration(), $step->getName()),
-                    $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
+                    $logContext->toArray(['migration_duration_in_second' => \time() - $startMigrationTime])
                 );
             }
 
             $this->success();
-            $this->logger->notice('Migration done!', ['migration_duration_in_second' => time() - $startMigrationTime]);
+            $this->logger->notice('Migration done!', ['migration_duration_in_second' => \time() - $startMigrationTime]);
         } catch (\Throwable $e) {
             $this->logger->error('Migration failed!', ['message' => $e->getMessage(), 'exception' => $e]);
             $this->fail();
@@ -241,7 +241,7 @@ class MigrateToUuidCommand extends Command
             ['tableName' => $tableName]
         );
 
-        return count($rows) >= 1;
+        return \count($rows) >= 1;
     }
 
     private function isDatabaseReady(): bool

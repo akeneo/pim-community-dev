@@ -23,8 +23,8 @@ final class SynchronousCriterionEvaluationsFilter implements SynchronousCriterio
 
     public function filter(\Iterator $iterator): array
     {
-        return array_filter(iterator_to_array($iterator), function (CriterionEvaluation $criterionEvaluation) {
-            return in_array(strval($criterionEvaluation->getCriterionCode()), self::SYNCHRONOUS_CRITERION_CODES);
+        return \array_filter(\iterator_to_array($iterator), function (CriterionEvaluation $criterionEvaluation) {
+            return \in_array(\strval($criterionEvaluation->getCriterionCode()), self::SYNCHRONOUS_CRITERION_CODES);
         });
     }
 }

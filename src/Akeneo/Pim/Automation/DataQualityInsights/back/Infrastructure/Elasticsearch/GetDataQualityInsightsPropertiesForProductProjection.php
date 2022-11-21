@@ -33,7 +33,7 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
      */
     public function fromProductUuids(array $productUuids, array $context = []): array
     {
-        $productUuidCollection = $this->idFactory->createCollection(array_map(fn (UuidInterface $productUuid) => $productUuid->toString(), array_values($productUuids)));
+        $productUuidCollection = $this->idFactory->createCollection(\array_map(fn (UuidInterface $productUuid) => $productUuid->toString(), \array_values($productUuids)));
         Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
         $productScores = $this->getProductScoresQuery->byProductUuidCollection($productUuidCollection);
         $productKeyIndicators = $this->getProductsKeyIndicators->compute($productUuidCollection);

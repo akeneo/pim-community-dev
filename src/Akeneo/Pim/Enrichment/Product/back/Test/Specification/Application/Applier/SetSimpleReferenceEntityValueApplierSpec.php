@@ -16,18 +16,18 @@ use PhpSpec\ObjectBehavior;
 
 class SetSimpleReferenceEntityValueApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $updater)
+    public function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetSimpleReferenceEntityValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_set_simple_reference_entity_user_intent(ObjectUpdaterInterface $updater): void
+    public function it_applies_set_simple_reference_entity_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $setSimpleReferenceEntityValue = new SetSimpleReferenceEntityValue(
@@ -55,7 +55,7 @@ class SetSimpleReferenceEntityValueApplierSpec extends ObjectBehavior
         $this->apply($setSimpleReferenceEntityValue, $product, 1);
     }
 
-    function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

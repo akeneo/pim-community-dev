@@ -108,7 +108,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getRawValues(): array
     {
-        if (is_object($this->rawValues)) {
+        if (\is_object($this->rawValues)) {
             return [];
         }
 
@@ -225,7 +225,7 @@ class ProductModel implements ProductModelInterface
      */
     public function hasAttribute(string $attributeCode): bool
     {
-        return in_array($attributeCode, $this->getValues()->getAttributeCodes(), true);
+        return \in_array($attributeCode, $this->getValues()->getAttributeCodes(), true);
     }
 
     /**
@@ -342,7 +342,7 @@ class ProductModel implements ProductModelInterface
             return $category->getCode();
         })->toArray();
 
-        sort($codes);
+        \sort($codes);
 
         return $codes;
     }
@@ -564,7 +564,7 @@ class ProductModel implements ProductModelInterface
         $currentAssociation = $this->getSimilarAssociation($newAssociation);
         if ($currentAssociation) {
             throw new \LogicException(
-                sprintf(
+                \sprintf(
                     'Can not add an association of type %s because the product already has one',
                     $currentAssociation->getAssociationType()->getCode()
                 )

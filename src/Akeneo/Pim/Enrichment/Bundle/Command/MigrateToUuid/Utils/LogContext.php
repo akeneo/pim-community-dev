@@ -20,7 +20,7 @@ class LogContext
 
     public function toArray(array $extraContext = []): array
     {
-        return array_filter(array_merge(
+        return \array_filter(\array_merge(
             $this->context,
             $extraContext,
             ['step' => $this->step->getName(), 'step_status' => $this->step->getStatus(), 'step_duration' => $this->step->getDuration()]

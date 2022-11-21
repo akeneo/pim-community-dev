@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -68,7 +68,8 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                 'product_df470d52-7723-4890-85a0-e79be625e2ed',
                 'product_fef37e64-a963-47a9-b087-2cc67968f0a2',
                 'product_6d125b99-d971-41d9-a264-b020cd486aee'
-            ], [
+            ],
+            [
                 'product_df470d52-7723-4890-85a0-e79be625e2ed' => [
                     'script' => [
                         'source' => "ctx._source.data_quality_insights = params;",

@@ -46,7 +46,7 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
 
         $this->givenANotInvolvedProduct();
 
-        $productUuids = array_keys($expectedEvaluationRates);
+        $productUuids = \array_keys($expectedEvaluationRates);
         $productUuids[] = Uuid::uuid4()->toString(); // Unknown product
 
         $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection($productUuids);
@@ -127,7 +127,8 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
     {
         $product = $this->createProduct('not_evaluated_product');
 
-        $this->get('database_connection')->executeQuery(<<<SQL
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
 REPLACE INTO pim_data_quality_insights_product_criteria_evaluation (product_uuid, criterion_code, evaluated_at, status, result) 
 VALUES (:productUuid, :criterionCode, null, 'pending', null);
 SQL,

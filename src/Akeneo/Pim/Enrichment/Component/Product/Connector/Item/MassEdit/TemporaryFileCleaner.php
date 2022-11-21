@@ -26,8 +26,8 @@ class TemporaryFileCleaner implements StepExecutionAwareInterface
     {
         $actions = $this->getConfiguredActions();
         foreach ($actions as $action) {
-            if (isset($action['value']['filePath']) && is_file($action['value']['filePath'])) {
-                unlink($action['value']['filePath']);
+            if (isset($action['value']['filePath']) && \is_file($action['value']['filePath'])) {
+                \unlink($action['value']['filePath']);
             }
         }
     }

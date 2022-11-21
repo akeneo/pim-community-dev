@@ -24,15 +24,13 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
     public function let(
         GetQualityScoresFactory         $getQualityScoresFactory,
         ProductEntityIdFactoryInterface $idFactory
-    )
-    {
+    ) {
         $this->beConstructedWith($getQualityScoresFactory, $idFactory);
     }
 
     public function it_returns_no_rows_when_given_no_rows(
         ProductQueryBuilderInterface $productQueryBuilder
-    )
-    {
+    ) {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
             [],
@@ -48,8 +46,7 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
         GetQualityScoresFactory $getQualityScoresFactory,
         ProductEntityIdFactoryInterface $idFactory,
         ProductEntityIdCollection $productIdCollection
-    )
-    {
+    ) {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
             [],
@@ -83,11 +80,10 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 
     public function it_returns_product_model_row_with_additional_property_DQI_score(
         ProductQueryBuilderInterface $productQueryBuilder,
-                                     $getQualityScoresFactory,
-                                     $idFactory,
+        $getQualityScoresFactory,
+        $idFactory,
         ProductEntityIdCollection    $productIdCollection
-    )
-    {
+    ) {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
             [],
@@ -120,13 +116,13 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
     private function makeProductRow(string $technicalId): Row
     {
         return Row::fromProduct(
-            sprintf('product_or_product_model_%s', $technicalId),
+            \sprintf('product_or_product_model_%s', $technicalId),
             null,
             [],
             true,
             new \DateTime(),
             new \DateTime(),
-            sprintf('Label of %s', $technicalId),
+            \sprintf('Label of %s', $technicalId),
             null,
             null,
             $technicalId,
@@ -138,11 +134,11 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
     private function makeProductModelRow(int $technicalId): Row
     {
         return Row::fromProductModel(
-            sprintf('product_or_product_model_%s', $technicalId),
+            \sprintf('product_or_product_model_%s', $technicalId),
             'accessories',
             new \DateTime(),
             new \DateTime(),
-            sprintf('Label of %s', $technicalId),
+            \sprintf('Label of %s', $technicalId),
             null,
             $technicalId,
             [],
@@ -156,11 +152,11 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
         return [
             'haveScoreProperties' => function (array $rows) {
                 foreach ($rows as $index => $row) {
-                    $properties = iterator_to_array($row->additionalProperties()->getIterator());
-                    $values = array_filter($properties, function ($property) {
+                    $properties = \iterator_to_array($row->additionalProperties()->getIterator());
+                    $values = \array_filter($properties, function ($property) {
                         return $property->name() === 'data_quality_insights_score';
                     });
-                    if (count($values) === 0) {
+                    if (\count($values) === 0) {
                         throw new FailureException("Property not found for Row at index " . $index);
                     }
                 }

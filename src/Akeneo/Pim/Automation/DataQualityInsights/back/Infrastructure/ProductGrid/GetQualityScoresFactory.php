@@ -38,9 +38,9 @@ class GetQualityScoresFactory
                 $scoresByIds = $this->getProductModelScoresQuery->byProductModelIdCollection($entityIdCollection);
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Invalid type %s', $type));
+                throw new \InvalidArgumentException(\sprintf('Invalid type %s', $type));
         }
 
-        return array_map(fn (Read\Scores $scores) => ($this->getScoresByCriteria)($scores), $scoresByIds);
+        return \array_map(fn (Read\Scores $scores) => ($this->getScoresByCriteria)($scores), $scoresByIds);
     }
 }

@@ -64,7 +64,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, NormalizerAwareI
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormat);
+        return $data instanceof AttributeOptionInterface && \in_array($format, $this->supportedFormat);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -89,7 +89,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, NormalizerAwareI
         }
 
         foreach ($activeLocales as $activatedLocale) {
-            if (!in_array($activatedLocale->getCode(), $usedLocales)) {
+            if (!\in_array($activatedLocale->getCode(), $usedLocales)) {
                 $attributeOptionValue = $this->optionValueFactory->create();
                 $attributeOptionValue->setLocale($activatedLocale->getCode());
                 $attributeOptionValue->setValue('');

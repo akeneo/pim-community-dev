@@ -86,7 +86,7 @@ class MassEditController
      */
     public function launchAction(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
 
         $data = $this->operationConverter->convert($data);
         $operation = new MassEditOperation($data['jobInstanceCode'], $data['filters'], $data['actions']);

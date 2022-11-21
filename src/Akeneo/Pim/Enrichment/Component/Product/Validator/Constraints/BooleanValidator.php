@@ -41,12 +41,12 @@ class BooleanValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_bool($checkedValue)) {
+        if (!\is_bool($checkedValue)) {
             $this->context->buildViolation(
                 $constraint->message,
                 [
                     '{{ attribute_code }}' => $code,
-                    '{{ given_type }}' => gettype($checkedValue),
+                    '{{ given_type }}' => \gettype($checkedValue),
                 ]
             )
                 ->setCode(Boolean::NOT_BOOLEAN_ERROR)

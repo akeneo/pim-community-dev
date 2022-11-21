@@ -36,7 +36,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
         $reflection = new \ReflectionClass($this->model);
 
         if (!$reflection->implementsInterface($this->interface)) {
-            $this->failure = sprintf(
+            $this->failure = \sprintf(
                 'Please implement "%s" for your Reference Data model "%s".',
                 $this->interface,
                 $this->model
@@ -53,7 +53,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
      */
     public function getDescription()
     {
-        return sprintf('Reference data models must implement "%s".', $this->interface);
+        return \sprintf('Reference data models must implement "%s".', $this->interface);
     }
 
     /**

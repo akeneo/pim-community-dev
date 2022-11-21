@@ -58,14 +58,14 @@ class AttributeColumnInfoExtractor
     public function extractColumnInfo($fieldName): ?array
     {
         if (
-            in_array($fieldName, $this->assoColumnResolver->resolveAssociationColumns()) ||
-            in_array($fieldName, $this->assoColumnResolver->resolveQuantifiedAssociationColumns())
+            \in_array($fieldName, $this->assoColumnResolver->resolveAssociationColumns()) ||
+            \in_array($fieldName, $this->assoColumnResolver->resolveQuantifiedAssociationColumns())
         ) {
             $this->excludedFieldNames[] = $fieldName;
         }
 
-        if (!isset($this->fieldNameInfoCache[$fieldName]) && !in_array($fieldName, $this->excludedFieldNames)) {
-            $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
+        if (!isset($this->fieldNameInfoCache[$fieldName]) && !\in_array($fieldName, $this->excludedFieldNames)) {
+            $explodedFieldName = \explode(self::FIELD_SEPARATOR, $fieldName);
             $attributeCode = $explodedFieldName[0];
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
@@ -88,18 +88,18 @@ class AttributeColumnInfoExtractor
      */
     protected function extractAttributeInfo(AttributeInterface $attribute, array $explodedFieldName): array
     {
-        array_shift($explodedFieldName);
+        \array_shift($explodedFieldName);
 
         $info = [
             'attribute'   => $attribute,
-            'locale_code' => $attribute->isLocalizable() ? array_shift($explodedFieldName) : null,
-            'scope_code'  => $attribute->isScopable() ? array_shift($explodedFieldName) : null,
+            'locale_code' => $attribute->isLocalizable() ? \array_shift($explodedFieldName) : null,
+            'scope_code'  => $attribute->isScopable() ? \array_shift($explodedFieldName) : null,
         ];
 
         if ('prices' === $attribute->getBackendType()) {
-            $info['price_currency'] = array_shift($explodedFieldName);
+            $info['price_currency'] = \array_shift($explodedFieldName);
         } elseif ('metric' === $attribute->getBackendType()) {
-            $info['metric_unit'] = array_shift($explodedFieldName);
+            $info['metric_unit'] = \array_shift($explodedFieldName);
         }
 
         return $info;
@@ -118,17 +118,17 @@ class AttributeColumnInfoExtractor
 
         $expectedSize = $this->calculateExpectedSize($attribute);
 
-        $nbTokens = count($explodedFieldName);
-        if (!in_array($nbTokens, $expectedSize)) {
+        $nbTokens = \count($explodedFieldName);
+        if (!\in_array($nbTokens, $expectedSize)) {
             $expected = [
                 $isLocalizable ? 'a locale' : 'no locale',
                 $isScopable ? 'a scope' : 'no scope',
                 $isPrice ? 'an optional currency' : 'no currency',
             ];
-            $expected = implode(', ', $expected);
+            $expected = \implode(', ', $expected);
 
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'The field "%s" is not well-formatted, attribute "%s" expects %s',
                     $fieldName,
                     $attribute->getCode(),
@@ -189,7 +189,7 @@ class AttributeColumnInfoExtractor
 
             if ($channel !== null && $locale !== null && !$channel->hasLocale($locale)) {
                 throw new \InvalidArgumentException(
-                    sprintf(
+                    \sprintf(
                         'The locale "%s" of the field "%s" is not available in scope "%s"',
                         $attributeInfo['locale_code'],
                         $fieldName,
@@ -208,9 +208,9 @@ class AttributeColumnInfoExtractor
         if ($attribute->isLocaleSpecific()) {
             $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldNames);
             $availableLocales = $attribute->getAvailableLocaleCodes();
-            if (!in_array($explodedFieldNames[1], $availableLocales)) {
+            if (!\in_array($explodedFieldNames[1], $availableLocales)) {
                 throw new \LogicException(
-                    sprintf(
+                    \sprintf(
                         'The provided specific locale "%s" does not exist for "%s" attribute ',
                         $attributeInfo['locale_code'],
                         $attribute->getCode()

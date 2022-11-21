@@ -73,8 +73,8 @@ class AttributeGroup implements ArrayConverterInterface
     protected function convertField(array $convertedItem, $field, $data)
     {
         if ('attributes' === $field) {
-            $convertedItem[$field] = empty($data) ? [] : explode(',', $data);
-        } elseif (preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
+            $convertedItem[$field] = empty($data) ? [] : \explode(',', $data);
+        } elseif (\preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
             if (!isset($convertedItem['labels'])) {
                 $convertedItem['labels'] = [];
             }

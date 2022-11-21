@@ -65,8 +65,8 @@ class GroupRepository extends EntityRepository implements
         $typeLabelExpr = 'COALESCE(typeTrans.label, type.code)';
 
         $qb
-            ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
-            ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
+            ->addSelect(\sprintf('%s AS groupLabel', $groupLabelExpr))
+            ->addSelect(\sprintf('%s AS typeLabel', $typeLabelExpr))
             ->addSelect('translation.label')
         ;
 

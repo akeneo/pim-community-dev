@@ -67,7 +67,7 @@ final class NonExistentPriceCollectionValueFilter implements NonExistentValuesFi
                         $amountByCurrency = [];
                         foreach ($value as $price) {
                             if (isset($price['amount']) && isset($price['currency'])) {
-                                if (in_array($price['currency'], $activatedCurrencies)) {
+                                if (\in_array($price['currency'], $activatedCurrencies)) {
                                     //Only the last price by currency is kept
                                     $amountByCurrency[$price['currency']] = $price['amount'];
                                 }

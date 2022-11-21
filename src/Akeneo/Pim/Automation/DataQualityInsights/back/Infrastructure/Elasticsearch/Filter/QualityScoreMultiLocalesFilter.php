@@ -40,7 +40,7 @@ final class QualityScoreMultiLocalesFilter extends AbstractFieldFilter implement
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $values);
         }
 
@@ -48,14 +48,14 @@ final class QualityScoreMultiLocalesFilter extends AbstractFieldFilter implement
             throw InvalidPropertyException::dataExpected($field, 'a channel', static::class);
         }
 
-        $values = array_map(fn ($value) => intval($value), $values);
+        $values = \array_map(fn ($value) => \intval($value), $values);
         $applyOnAllSelectedLocales = $operator === self::OPERATOR_IN_ALL_LOCALES;
 
         $locales = $this->getLocalesFromOptions($options);
         $terms = [];
         foreach ($locales as $locale) {
             $terms[] = [
-                'terms' => [sprintf('data_quality_insights.%s.%s.%s', ($this->getScoresProperty)(), $channel, $locale) => $values]
+                'terms' => [\sprintf('data_quality_insights.%s.%s.%s', ($this->getScoresProperty)(), $channel, $locale) => $values]
             ];
         }
 
@@ -72,11 +72,11 @@ final class QualityScoreMultiLocalesFilter extends AbstractFieldFilter implement
 
     private function getLocalesFromOptions(array $options): array
     {
-        if (!array_key_exists('locales', $options)) {
+        if (!\array_key_exists('locales', $options)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(self::FIELD, 'locales', static::class, $options);
         }
 
-        if (!is_array($options['locales'])) {
+        if (!\is_array($options['locales'])) {
             throw InvalidPropertyTypeException::arrayOfArraysExpected(self::FIELD, static::class, $options);
         }
 

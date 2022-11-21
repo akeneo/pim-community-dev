@@ -94,7 +94,7 @@ final class UpsertProductHandler
             $command->valueUserIntents()
         );
         $userIntents = \array_filter(
-            array_merge(
+            \array_merge(
                 [
                     'parentUserIntent' => $command->parentUserIntent(),
                 ],
@@ -131,7 +131,7 @@ final class UpsertProductHandler
                     throw new ViolationsException($violations);
                 }
             } else {
-                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($userIntent)));
+                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', \get_class($userIntent)));
             }
         }
     }

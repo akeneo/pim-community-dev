@@ -114,7 +114,7 @@ class UpdateProductByUuidController
     private function getDecodedContent($content): array
     {
         // TODO: CPM-718
-        $decodedContent = json_decode($content, true);
+        $decodedContent = \json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -169,7 +169,7 @@ class UpdateProductByUuidController
             $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $data['values']]);
 
             if (!empty($dataFiltered)) {
-                $data = array_replace($data, $dataFiltered);
+                $data = \array_replace($data, $dataFiltered);
             } else {
                 $data['values'] = [];
             }
@@ -203,7 +203,7 @@ class UpdateProductByUuidController
     {
         if (isset($data['uuid']) && $uuid !== $data['uuid']) {
             throw new UnprocessableEntityHttpException(
-                sprintf(
+                \sprintf(
                     'The uuid "%s" provided in the request body must match the uuid "%s" provided in the url.',
                     $data['uuid'],
                     $uuid
@@ -216,7 +216,7 @@ class UpdateProductByUuidController
     {
         throw new DocumentedHttpException(
             Documentation::URL . 'patch_products_uuid__uuid_',
-            sprintf('%s Check the expected format on the API documentation.', $message),
+            \sprintf('%s Check the expected format on the API documentation.', $message),
             $previousException
         );
     }
@@ -271,6 +271,6 @@ class UpdateProductByUuidController
     protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
     {
         return null !== $product->getCreated() && $product->isVariant() &&
-            array_key_exists('parent', $data) && null === $data['parent'];
+            \array_key_exists('parent', $data) && null === $data['parent'];
     }
 }

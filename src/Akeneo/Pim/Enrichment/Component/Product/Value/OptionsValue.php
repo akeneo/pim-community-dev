@@ -41,7 +41,7 @@ class OptionsValue extends AbstractValue implements OptionsValueInterface
      */
     public function hasCode(string $code): bool
     {
-        return in_array($code, $this->data);
+        return \in_array($code, $this->data);
     }
 
     /**
@@ -63,7 +63,7 @@ class OptionsValue extends AbstractValue implements OptionsValueInterface
             $optionStrings[] = '['.$optionCode.']';
         }
 
-        return implode(', ', $optionStrings);
+        return \implode(', ', $optionStrings);
     }
 
     /**
@@ -80,7 +80,7 @@ class OptionsValue extends AbstractValue implements OptionsValueInterface
         $comparedAttributeOptions = $value->getData();
         $thisAttributeOptions = $this->getData();
 
-        return count(array_diff($thisAttributeOptions, $comparedAttributeOptions)) === 0 &&
-            count(array_diff($comparedAttributeOptions, $thisAttributeOptions)) === 0;
+        return \count(\array_diff($thisAttributeOptions, $comparedAttributeOptions)) === 0 &&
+            \count(\array_diff($comparedAttributeOptions, $thisAttributeOptions)) === 0;
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Akeneo\Test\Pim\Structure\Family\Integration\Query\Sql;
 
+use Akeneo\Pim\Structure\Family\Infrastructure\Query\Sql\SqlFindFamilyCodes;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQueryPagination;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuerySearch;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
-use Akeneo\Pim\Structure\Family\Infrastructure\Query\Sql\SqlFindFamilyCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;

@@ -47,15 +47,15 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 
     private function translateHeaders(array $flatItemsByColumnName, string $locale): array
     {
-        $this->headerRegistry->warmup(array_keys($flatItemsByColumnName), $locale);
+        $this->headerRegistry->warmup(\array_keys($flatItemsByColumnName), $locale);
 
         $results = [];
         foreach ($flatItemsByColumnName as $columnCode => $flatItemValues) {
             $translator = $this->headerRegistry->getTranslator($columnCode);
             $columnLabelized = null !== $translator ? $translator->translate($columnCode, $locale) :
-                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
+                \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
 
-            $columnName = sprintf(
+            $columnName = \sprintf(
                 '%s%s%s',
                 $columnCode,
                 FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
@@ -101,7 +101,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 
     private function areValuesEmpty(array $values): bool
     {
-        return 0 === count(array_filter($values, function ($value) {
+        return 0 === \count(\array_filter($values, function ($value) {
             return '' !== $value;
         }));
     }

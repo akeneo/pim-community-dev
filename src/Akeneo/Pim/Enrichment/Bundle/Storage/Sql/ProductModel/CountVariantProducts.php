@@ -23,7 +23,7 @@ final class CountVariantProducts implements CountVariantProductsInterface
 
     public function forProductModelCodes(array $productModelCodes): int
     {
-        if (0 === count($productModelCodes)) {
+        if (0 === \count($productModelCodes)) {
             return 0;
         }
 

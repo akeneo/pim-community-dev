@@ -54,7 +54,7 @@ class SqlFindGrantedCategoryTrees implements FindGrantedCategoryTrees
     {
         $translationNormalizer = $this->translationNormalizer;
 
-        return array_map(
+        return \array_map(
             static function (Category $category) use ($translationNormalizer) {
                 $categoryTree = new CategoryTree();
                 $categoryTree->code = $category->getCode();

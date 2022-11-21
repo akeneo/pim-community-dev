@@ -23,7 +23,7 @@ class PriceNormalizer extends AbstractValueDataNormalizer implements CacheableSu
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ProductPriceInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof ProductPriceInterface && \in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -38,7 +38,7 @@ class PriceNormalizer extends AbstractValueDataNormalizer implements CacheableSu
     {
         $data = $object->getData();
         if (null !== $data && '' !== $data) {
-            $data = number_format($data, static::DECIMAL_PRECISION, '.', '');
+            $data = \number_format($data, static::DECIMAL_PRECISION, '.', '');
         }
 
         return (string) $data;
@@ -49,6 +49,6 @@ class PriceNormalizer extends AbstractValueDataNormalizer implements CacheableSu
      */
     protected function getFieldName($object, array $context = [])
     {
-        return sprintf('%s-%s', parent::getFieldName($object, $context), $object->getCurrency());
+        return \sprintf('%s-%s', parent::getFieldName($object, $context), $object->getCurrency());
     }
 }

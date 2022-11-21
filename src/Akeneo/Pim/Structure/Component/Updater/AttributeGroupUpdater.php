@@ -90,23 +90,23 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      */
     protected function validateDataType($field, $data)
     {
-        if (in_array($field, ['labels', 'attributes'])) {
-            if (!is_array($data)) {
+        if (\in_array($field, ['labels', 'attributes'])) {
+            if (!\is_array($data)) {
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
 
             foreach ($data as $value) {
-                if (null !== $value && !is_scalar($value)) {
+                if (null !== $value && !\is_scalar($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        sprintf('one of the "%s" values is not a scalar', $field),
+                        \sprintf('one of the "%s" values is not a scalar', $field),
                         static::class,
                         $data
                     );
                 }
             }
-        } elseif (in_array($field, ['code', 'sort_order'])) {
-            if (null !== $data && !is_scalar($data)) {
+        } elseif (\in_array($field, ['code', 'sort_order'])) {
+            if (null !== $data && !\is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
         } else {
@@ -154,7 +154,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
         $defaultGroup = $this->attributeGroupRepository->findDefaultAttributeGroup();
 
         foreach ($attributeGroup->getAttributes() as $attribute) {
-            if (!in_array($attribute->getCode(), $data)) {
+            if (!\in_array($attribute->getCode(), $data)) {
                 $defaultGroup->addAttribute($attribute);
             }
         }

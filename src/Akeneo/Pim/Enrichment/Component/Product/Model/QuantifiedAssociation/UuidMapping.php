@@ -49,7 +49,7 @@ final class UuidMapping
             Assert::nullOrStringNotEmpty($line['identifier']);
             Assert::numeric($line['id']);
             Assert::notNull($line['id']);
-            Assert::uuid($line['uuid'], sprintf('Invalid uuid "%s"', $line['uuid']));
+            Assert::uuid($line['uuid'], \sprintf('Invalid uuid "%s"', $line['uuid']));
 
             $this->uuidsToIdentifiers[$line['uuid']] = $line['identifier'];
             $this->uuidsToIds[$line['uuid']] = $line['id'];
@@ -119,6 +119,6 @@ final class UuidMapping
 
     public function hasUuidFromUuid(string $uuid): bool
     {
-        return array_key_exists($uuid, $this->uuidsToIds);
+        return \array_key_exists($uuid, $this->uuidsToIds);
     }
 }

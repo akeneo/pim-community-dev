@@ -137,7 +137,7 @@ final class ConnectorProductNormalizer
             $result[$associationType] = [];
             foreach ($associationsByType as $entityType => $associationsByEntityType) {
                 $result[$associationType][$entityType] = $entityType === 'products' ?
-                    array_map(fn (array $associatedObject): ?string => $associatedObject['identifier'], $associationsByEntityType) :
+                    \array_map(fn (array $associatedObject): ?string => $associatedObject['identifier'], $associationsByEntityType) :
                     $associationsByEntityType;
             }
         }
@@ -169,10 +169,10 @@ final class ConnectorProductNormalizer
         foreach ($quantifiedAssociations as $associationType => $associationsByType) {
             foreach ($associationsByType as $entityType => $associationsByEntityType) {
                 $result[$associationType][$entityType] = $entityType === 'products' ?
-                    array_map(
-                        fn (array $associatedObject): array => array_filter(
+                    \array_map(
+                        fn (array $associatedObject): array => \array_filter(
                             $associatedObject,
-                            fn (string $key): bool => in_array($key, ['identifier', 'quantity']),
+                            fn (string $key): bool => \in_array($key, ['identifier', 'quantity']),
                             ARRAY_FILTER_USE_KEY
                         ),
                         $associationsByEntityType

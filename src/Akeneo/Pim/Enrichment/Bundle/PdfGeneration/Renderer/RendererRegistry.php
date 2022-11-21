@@ -42,7 +42,7 @@ class RendererRegistry
         }
 
         throw new RendererRequiredException(
-            sprintf('At least one renderer should be registered to render the object : %s', get_class($object))
+            \sprintf('At least one renderer should be registered to render the object : %s', \get_class($object))
         );
     }
 }

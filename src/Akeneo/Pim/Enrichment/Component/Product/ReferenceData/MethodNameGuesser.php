@@ -38,17 +38,17 @@ class MethodNameGuesser
         if ($singularify) {
             $names = (new EnglishInflector())->singularize($dataName);
 
-            if (1 < count($names)) {
+            if (1 < \count($names)) {
                 throw new \LogicException(
-                    sprintf('Error while guessing the method name for "%s"', $dataName)
+                    \sprintf('Error while guessing the method name for "%s"', $dataName)
                 );
             }
 
-            $name = current($names);
+            $name = \current($names);
         }
 
-        $name = ucfirst($name);
+        $name = \ucfirst($name);
 
-        return sprintf('%s%s', $prefix, $name);
+        return \sprintf('%s%s', $prefix, $name);
     }
 }

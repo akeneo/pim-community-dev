@@ -353,7 +353,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         $selectedChildren = 0;
         foreach ($children as $child) {
             $selectedChildren += $child['selectedChildrenCount'];
-            if (preg_match('/checked/', $child['state'])) {
+            if (\preg_match('/checked/', $child['state'])) {
                 $selectedChildren++;
             }
         }
@@ -361,7 +361,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
 
         // set label in bold
         if ($selectedChildren > 0) {
-            $result['data'] = sprintf('%s', $result['data']);
+            $result['data'] = \sprintf('%s', $result['data']);
         }
 
         return $result;
@@ -425,7 +425,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
             $state = 'open';
         }
 
-        if (in_array($category->getId(), $selectedIds)) {
+        if (\in_array($category->getId(), $selectedIds)) {
             $state .= ' toselect jstree-checked';
         }
 
@@ -452,7 +452,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     {
         $children = $category['__children'];
         $category = $category['item'];
-        $hasChild = (count($children) > 0);
+        $hasChild = (\count($children) > 0);
 
         return $this->defineCategoryState($category, $hasChild, $selectedIds);
     }
@@ -471,7 +471,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         $categoryItemsCounter = $this->categoryItemsCounter->get($type);
 
         if (null === $categoryItemsCounter) {
-            throw new \Exception(sprintf('No category counter found for %s', $type));
+            throw new \Exception(\sprintf('No category counter found for %s', $type));
         }
 
         return $categoryItemsCounter;

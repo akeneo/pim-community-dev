@@ -217,7 +217,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
                 $progressBar->advance($productBatchSize);
             }
         }
-        if (count($productIds) > 0) {
+        if (\count($productIds) > 0) {
             $this->launchCleanTask($productIds, $env, $rootDir);
         }
 
@@ -231,10 +231,10 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     {
         $process = new Process(
             [
-                sprintf('%s/../bin/console', $rootDir),
+                \sprintf('%s/../bin/console', $rootDir),
                 'pim:product:refresh',
-                sprintf('--env=%s', $env),
-                implode(',', $productIds),
+                \sprintf('--env=%s', $env),
+                \implode(',', $productIds),
             ]
         );
         $process->setTimeout(null);
@@ -252,16 +252,16 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
             $attributeCodes
         );
 
-        $confirmMessage = sprintf(
+        $confirmMessage = \sprintf(
             "This command will launch a job to remove the values of the attributes:\n" .
                 "%s\n" .
                 " This will update:\n" .
                 " - %d product model(s) (and %d product variant(s))\n" .
                 " - %d product(s)\n" .
                 " Do you want to proceed?",
-            implode(
-                array_map(function (string $attributeCode) {
-                    return sprintf(" - %s\n", $attributeCode);
+            \implode(
+                \array_map(function (string $attributeCode) {
+                    return \sprintf(" - %s\n", $attributeCode);
                 }, $attributeCodes)
             ),
             $countProductModels,
@@ -280,14 +280,14 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
             'attribute_codes' => $attributeCodes,
         ]);
 
-        $jobUrl = sprintf(
+        $jobUrl = \sprintf(
             '%s/#%s',
             $this->pimUrl,
             $this->router->generate(self::JOB_TRACKER_ROUTE, ['id' => $jobExecution->getId()])
         );
 
         $io->text(
-            sprintf(
+            \sprintf(
                 'The cleaning removed attribute values job has been launched, you can follow its progression here: %s',
                 $jobUrl
             )
@@ -301,7 +301,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         array $attributeCodesToClean,
         array $allBlacklistedAttributeCodes
     ): bool {
-        $nonExistingBlacklistedAttributeCodes = array_diff($attributeCodesToClean, $allBlacklistedAttributeCodes);
+        $nonExistingBlacklistedAttributeCodes = \array_diff($attributeCodesToClean, $allBlacklistedAttributeCodes);
         if (!empty($nonExistingBlacklistedAttributeCodes)) {
             $io->writeln('<error>The following attribute codes do not exist in the Blacklist:</error>');
             $io->listing($nonExistingBlacklistedAttributeCodes);
@@ -325,7 +325,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     ): void {
         $products = $this->getProducts($this->productQueryBuilderFactory);
 
-        $progressBar = new ProgressBar($output, count($products));
+        $progressBar = new ProgressBar($output, \count($products));
 
         $env = $input->getOption('env');
         $this->cleanProducts(
@@ -337,7 +337,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
             $this->kernelRootDir
         );
         $io->newLine();
-        $io->text(sprintf('%d products well cleaned', $products->count()));
+        $io->text(\sprintf('%d products well cleaned', $products->count()));
 
         $this->eventDispatcher->dispatch(new GenericEvent(), AttributeEvents::POST_CLEAN);
     }

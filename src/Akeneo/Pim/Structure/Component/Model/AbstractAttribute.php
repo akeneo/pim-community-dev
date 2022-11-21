@@ -558,7 +558,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function hasLocaleSpecific(LocaleInterface $locale)
     {
-        return in_array($locale->getCode(), $this->getAvailableLocaleCodes());
+        return \in_array($locale->getCode(), $this->getAvailableLocaleCodes());
     }
 
     /**
@@ -838,7 +838,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getAllowedExtensions()
     {
-        return $this->allowedExtensions ? array_map('trim', explode(',', $this->allowedExtensions)) : [];
+        return $this->allowedExtensions ? \array_map('trim', \explode(',', $this->allowedExtensions)) : [];
     }
 
     /**
@@ -846,9 +846,9 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function setAllowedExtensions($allowedExtensions)
     {
-        $allowedExtensions = explode(',', strtolower($allowedExtensions));
-        $allowedExtensions = array_unique(array_map('trim', $allowedExtensions));
-        $this->allowedExtensions = implode(',', $allowedExtensions);
+        $allowedExtensions = \explode(',', \strtolower($allowedExtensions));
+        $allowedExtensions = \array_unique(\array_map('trim', $allowedExtensions));
+        $this->allowedExtensions = \implode(',', $allowedExtensions);
 
         return $this;
     }
@@ -895,9 +895,9 @@ abstract class AbstractAttribute implements AttributeInterface
     public function setParameters($parameters)
     {
         foreach ($parameters as $code => $value) {
-            $method = 'set'.ucfirst($code);
-            if (!method_exists($this, $method)) {
-                throw new \Exception(sprintf('The parameter "%s" does not exist.', $code));
+            $method = 'set'.\ucfirst($code);
+            if (!\method_exists($this, $method)) {
+                throw new \Exception(\sprintf('The parameter "%s" does not exist.', $code));
             }
             $this->$method($value);
         }
@@ -1065,7 +1065,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function isBackendTypeReferenceData()
     {
-        return in_array($this->getBackendType(), [
+        return \in_array($this->getBackendType(), [
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
@@ -1092,7 +1092,7 @@ abstract class AbstractAttribute implements AttributeInterface
 
     public function getGuidelinesLocaleCodes(): array
     {
-        return array_keys($this->guidelines);
+        return \array_keys($this->guidelines);
     }
 
     public function getRawTableConfiguration(): ?array

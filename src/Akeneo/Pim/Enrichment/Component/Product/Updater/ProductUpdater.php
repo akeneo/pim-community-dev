@@ -167,7 +167,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         $data = $this->reorderParentProperty($data);
 
         foreach ($data as $code => $value) {
-            if (!is_string($code)) {
+            if (!\is_string($code)) {
                 throw new BadRequestHttpException('Invalid json message received');
             }
             $filteredValue = $this->filterData($product, $code, $value, $data);
@@ -224,7 +224,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 }
                 break;
             default:
-                if (!in_array($field, $this->ignoredFields)) {
+                if (!\in_array($field, $this->ignoredFields)) {
                     throw UnknownPropertyException::unknownProperty($field);
                 }
         }
@@ -232,7 +232,7 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     protected function validateAssociationsDataType($data): void
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 'associations',
                 static::class,
@@ -242,7 +242,7 @@ class ProductUpdater implements ObjectUpdaterInterface
 
         foreach ($data as $associationTypeCode => $associationTypeValues) {
             $this->validateScalar('associations', $associationTypeCode);
-            if (!is_array($associationTypeValues)) {
+            if (!\is_array($associationTypeValues)) {
                 throw InvalidPropertyTypeException::arrayExpected(
                     'associations',
                     static::class,
@@ -283,22 +283,22 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     protected function validateScalar(string $field, $data): void
     {
-        if (null !== $data && !is_scalar($data)) {
+        if (null !== $data && !\is_scalar($data)) {
             throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
         }
     }
 
     protected function validateScalarArray(string $field, $data): void
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
         }
 
         foreach ($data as $value) {
-            if (null !== $value && !is_scalar($value)) {
+            if (null !== $value && !\is_scalar($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    sprintf('one of the %s is not a scalar', $field),
+                    \sprintf('one of the %s is not a scalar', $field),
                     static::class,
                     $data
                 );

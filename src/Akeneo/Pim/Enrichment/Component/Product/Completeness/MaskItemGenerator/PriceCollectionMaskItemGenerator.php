@@ -58,7 +58,7 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
                 $filledCurrencies[] = $price['currency'];
             }
         }
-        sort($filledCurrencies);
+        \sort($filledCurrencies);
 
         return $this->getCurrencyCombinations($filledCurrencies, $attributeCode, '-' . $channelCode . '-' . $localeCode);
     }

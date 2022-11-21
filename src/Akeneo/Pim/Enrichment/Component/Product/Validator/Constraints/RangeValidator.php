@@ -41,7 +41,7 @@ class RangeValidator extends BaseRangeValidator
                 $this->validateData($value->getData(), $constraint);
                 break;
 
-            case is_numeric($value):
+            case \is_numeric($value):
                 $this->validateNumeric($value, $constraint);
                 break;
 
@@ -119,7 +119,7 @@ class RangeValidator extends BaseRangeValidator
 
         // it allows to have a proper message when the value is superior to the technical maximum value allowed by PHP
         // we don't put it by default, as otherwise the message is quite weird for the user (between 0 and 9.22E18)
-        if ((null === $constraint->max && is_numeric($value) && $value > PHP_INT_MAX)
+        if ((null === $constraint->max && \is_numeric($value) && $value > PHP_INT_MAX)
             || PHP_INT_MAX < $constraint->max) {
             $constraint->max = PHP_INT_MAX;
         }

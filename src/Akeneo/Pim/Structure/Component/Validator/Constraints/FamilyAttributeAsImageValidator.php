@@ -57,10 +57,10 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
 
         if (!$this->isAttributeAsImageTypeValid($family)) {
             $this->context
-                ->buildViolation(sprintf(
+                ->buildViolation(\sprintf(
                     $constraint->messageAttributeType,
-                    join(', ', array_map(function ($validAttributeType) {
-                        return sprintf('"%s"', $validAttributeType);
+                    \join(', ', \array_map(function ($validAttributeType) {
+                        return \sprintf('"%s"', $validAttributeType);
                     }, $this->validAttributeTypes))
                 ))
                 ->atPath($constraint->propertyPath)
@@ -82,7 +82,7 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      */
     protected function doesAttributeAsImageBelongToFamily(FamilyInterface $family): bool
     {
-        return in_array($family->getAttributeAsImage()->getCode(), $family->getAttributeCodes());
+        return \in_array($family->getAttributeAsImage()->getCode(), $family->getAttributeCodes());
     }
 
     /**
@@ -92,7 +92,7 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      */
     protected function isAttributeAsImageTypeValid(FamilyInterface $family): bool
     {
-        return in_array($family->getAttributeAsImage()->getType(), $this->validAttributeTypes);
+        return \in_array($family->getAttributeAsImage()->getType(), $this->validAttributeTypes);
     }
 
     /**

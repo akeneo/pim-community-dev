@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         GetCategoryCodes $getCategoryCodes,
         GetOwnedCategories $getOwnedCategories,
         GetProductUuids $getProductUuids,
@@ -32,13 +32,13 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_is_a_constraint_validator()
+    public function it_is_a_constraint_validator()
     {
         $this->shouldHaveType(IsUserOwnerOfTheProductValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function it_throws_an_exception_with_a_wrong_constraint()
+    public function it_throws_an_exception_with_a_wrong_constraint()
     {
         $command = UpsertProductCommand::createWithIdentifier(
             userId: 1,
@@ -48,13 +48,13 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
 
-    function it_throws_an_exception_with_a_wrong_value()
+    public function it_throws_an_exception_with_a_wrong_value()
     {
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('validate', [new \stdClass(), new IsUserOwnerOfTheProduct([])]);
     }
 
-    function it_does_nothing_when_product_does_not_exist(
+    public function it_does_nothing_when_product_does_not_exist(
         ExecutionContext $context,
         GetProductUuids $getProductUuids,
     ) {
@@ -70,7 +70,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $this->validate($command, new IsUserOwnerOfTheProduct());
     }
 
-    function it_validates_when_the_product_does_not_have_any_category(
+    public function it_validates_when_the_product_does_not_have_any_category(
         ExecutionContext $context,
         GetProductUuids $getProductUuids,
         GetCategoryCodes $getCategoryCodes,
@@ -89,7 +89,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $this->validate($command, new IsUserOwnerOfTheProduct());
     }
 
-    function it_validates_when_the_product_has_owned_category(
+    public function it_validates_when_the_product_has_owned_category(
         GetOwnedCategories $getOwnedCategories,
         GetProductUuids $getProductUuids,
         GetCategoryCodes $getCategoryCodes,
@@ -110,7 +110,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $this->validate($command, new IsUserOwnerOfTheProduct());
     }
 
-    function it_adds_a_violation_when_the_product_does_not_have_owned_category(
+    public function it_adds_a_violation_when_the_product_does_not_have_owned_category(
         GetOwnedCategories $getOwnedCategories,
         GetCategoryCodes $getCategoryCodes,
         ExecutionContext $context,

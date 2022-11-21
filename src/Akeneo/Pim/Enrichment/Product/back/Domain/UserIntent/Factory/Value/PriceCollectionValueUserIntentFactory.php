@@ -38,16 +38,16 @@ class PriceCollectionValueUserIntentFactory implements ValueUserIntentFactory
         }
         foreach ($data['data'] as $price) {
             $this->validateScalarArray($attributeCode, $price);
-            if (!array_key_exists('amount', $price)) {
+            if (!\array_key_exists('amount', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'amount', static::class, $data);
             }
-            if (!array_key_exists('currency', $price)) {
+            if (!\array_key_exists('currency', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'currency', static::class, $data);
             }
-            if (null !== $price['amount'] && (!is_scalar($price['amount']) || \is_bool($price['amount']))) {
+            if (null !== $price['amount'] && (!\is_scalar($price['amount']) || \is_bool($price['amount']))) {
                 throw InvalidPropertyTypeException::scalarExpected($attributeCode, 'amount', $price['amount']);
             }
-            if (!is_string($price['currency'])) {
+            if (!\is_string($price['currency'])) {
                 throw InvalidPropertyTypeException::stringExpected($attributeCode, 'currency', $price['currency']);
             }
             if (null === $price['amount'] || '' === $price['amount']) {

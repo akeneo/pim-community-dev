@@ -22,11 +22,11 @@ class TranslatedColumnPresenter implements ColumnPresenterInterface
 
     private function findDuplicatedTranslations(array $columns): array
     {
-        $columnTranslations = array_map(function (string $column) {
+        $columnTranslations = \array_map(function (string $column) {
             return $this->extractColumnTranslation($column);
         }, $columns);
 
-        return array_unique(array_diff_assoc($columnTranslations, array_unique($columnTranslations)));
+        return \array_unique(\array_diff_assoc($columnTranslations, \array_unique($columnTranslations)));
     }
 
     private function headerAreTranslated(array $context): bool
@@ -39,23 +39,23 @@ class TranslatedColumnPresenter implements ColumnPresenterInterface
 
     private function removeCodeWhenTranslationIsNotDuplicated(array $columns, array $duplicatedTranslations): array
     {
-        return array_map(function (string $column) use ($duplicatedTranslations) {
-            list($code, $columnTranslation) = explode(
+        return \array_map(function (string $column) use ($duplicatedTranslations) {
+            list($code, $columnTranslation) = \explode(
                 FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
                 $column,
                 2
             );
 
-            if (!in_array($columnTranslation, $duplicatedTranslations)) {
+            if (!\in_array($columnTranslation, $duplicatedTranslations)) {
                 return $columnTranslation;
             }
 
-            return sprintf('%s - %s', $columnTranslation, $code);
+            return \sprintf('%s - %s', $columnTranslation, $code);
         }, $columns);
     }
 
     private function extractColumnTranslation(string $columnName): string
     {
-        return explode(FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR, $columnName, 2)[1];
+        return \explode(FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR, $columnName, 2)[1];
     }
 }

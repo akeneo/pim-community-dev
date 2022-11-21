@@ -17,19 +17,19 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
 {
-    function let(IsAttributeEditable $isAttributeEditable, ExecutionContext $executionContext)
+    public function let(IsAttributeEditable $isAttributeEditable, ExecutionContext $executionContext)
     {
         $this->beConstructedWith($isAttributeEditable);
         $this->initialize($executionContext);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
         $this->shouldHaveType(AttributeGroupShouldBeEditableValidator::class);
     }
 
-    function it_can_only_validate_the_right_constraint(): void
+    public function it_can_only_validate_the_right_constraint(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             new SetTextValue('identifier1', null, null, 'foo'),
@@ -37,7 +37,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_can_only_validate_value_user_intents(): void
+    public function it_can_only_validate_value_user_intents(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             new \stdClass(),
@@ -45,7 +45,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_should_build_a_violation_when_the_attribute_value_is_not_editable(
+    public function it_should_build_a_violation_when_the_attribute_value_is_not_editable(
         IsAttributeEditable $isAttributeEditable,
         ExecutionContext $executionContext,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
@@ -70,7 +70,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_should_not_build_any_violation_when_the_attribute_value_is_editable(
+    public function it_should_not_build_any_violation_when_the_attribute_value_is_editable(
         IsAttributeEditable $isAttributeEditable,
         ExecutionContext $executionContext,
     ): void {

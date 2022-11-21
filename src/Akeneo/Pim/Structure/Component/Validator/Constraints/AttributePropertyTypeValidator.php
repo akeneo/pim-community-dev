@@ -26,7 +26,7 @@ class AttributePropertyTypeValidator extends ConstraintValidator
         Assert::isInstanceOf($attribute, AttributeInterface::class);
 
         $validator = $this->context->getValidator();
-        $typeConstraint = new Type(array_filter([
+        $typeConstraint = new Type(\array_filter([
             'type' => $constraint->type,
             'message' => $constraint->message,
         ]));

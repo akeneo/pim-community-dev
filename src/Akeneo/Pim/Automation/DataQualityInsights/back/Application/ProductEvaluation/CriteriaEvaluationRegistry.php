@@ -20,18 +20,18 @@ class CriteriaEvaluationRegistry
         $this->criterionEvaluationServices = [];
         foreach ($criterionEvaluationServices as $criterionEvaluationService) {
             if ($criterionEvaluationService instanceof EvaluateCriterionInterface) {
-                $this->criterionEvaluationServices[strval($criterionEvaluationService->getCode())] = $criterionEvaluationService;
+                $this->criterionEvaluationServices[\strval($criterionEvaluationService->getCode())] = $criterionEvaluationService;
             }
         }
     }
 
     public function get(CriterionCode $code): EvaluateCriterionInterface
     {
-        if (!array_key_exists(strval($code), $this->criterionEvaluationServices)) {
-            throw new CriterionNotFoundException(sprintf('No evaluation service found for criterion "%s"', $code));
+        if (!\array_key_exists(\strval($code), $this->criterionEvaluationServices)) {
+            throw new CriterionNotFoundException(\sprintf('No evaluation service found for criterion "%s"', $code));
         }
 
-        return $this->criterionEvaluationServices[strval($code)];
+        return $this->criterionEvaluationServices[\strval($code)];
     }
 
     public function getCriterionCoefficient(CriterionCode $code): int

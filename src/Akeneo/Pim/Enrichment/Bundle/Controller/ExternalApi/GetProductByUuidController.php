@@ -63,7 +63,7 @@ class GetProductByUuidController
                 $product = $this->getProductsWithCompletenesses->fromConnectorProduct($product);
             }
         } catch (ObjectNotFoundException) {
-            throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $uuid));
+            throw new NotFoundHttpException(\sprintf('Product "%s" does not exist or you do not have permission to access it.', $uuid));
         }
 
         $normalizedProduct = $this->connectorProductWithUuidNormalizer->normalizeConnectorProduct($product);

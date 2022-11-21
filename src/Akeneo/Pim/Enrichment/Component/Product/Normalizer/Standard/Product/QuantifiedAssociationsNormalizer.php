@@ -94,6 +94,6 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
             $ancestors[] = $current;
         }
 
-        return array_reverse($ancestors);
+        return \array_reverse($ancestors);
     }
 }

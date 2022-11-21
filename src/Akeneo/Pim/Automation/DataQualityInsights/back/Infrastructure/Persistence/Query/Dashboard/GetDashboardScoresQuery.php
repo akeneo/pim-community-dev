@@ -78,6 +78,6 @@ SQL;
             return null;
         }
 
-        return new Read\DashboardRates(json_decode($result, true), $channel, $locale, $timePeriod);
+        return new Read\DashboardRates(\json_decode($result, true), $channel, $locale, $timePeriod);
     }
 }

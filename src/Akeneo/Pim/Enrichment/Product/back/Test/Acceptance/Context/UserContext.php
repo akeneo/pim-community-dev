@@ -60,7 +60,7 @@ final class UserContext implements Context
      */
     public function theUserGroups(string $groups): void
     {
-        foreach (explode(',', $groups) as $groupName) {
+        foreach (\explode(',', $groups) as $groupName) {
             $group = new Group($groupName);
             $this->groupRepository->save($group);
         }
@@ -71,7 +71,7 @@ final class UserContext implements Context
      */
     public function theRoles(string $roles): void
     {
-        foreach (explode(',', $roles) as $stringRole) {
+        foreach (\explode(',', $roles) as $stringRole) {
             $role = new Role($stringRole);
             $this->roleRepository->save($role);
         }

@@ -111,8 +111,8 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
         }
 
         foreach ($givenOptionCodes as $optionCode) {
-            if (isset($existentOptionCodesIndexedInsensitive[strtolower($optionCode ?? '')])) {
-                $result[] = $existentOptionCodesIndexedInsensitive[strtolower($optionCode)];
+            if (isset($existentOptionCodesIndexedInsensitive[\strtolower($optionCode ?? '')])) {
+                $result[] = $existentOptionCodesIndexedInsensitive[\strtolower($optionCode)];
             }
         }
 

@@ -32,7 +32,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
         }
 
         throw new \LogicException(
-            sprintf(
+            \sprintf(
                 'Cannot compare value of attribute type "%s". ' .
                 'Please check that a comparator exists for such attribute type.',
                 $attributeType
@@ -60,7 +60,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
         }
 
         throw new \LogicException(
-            sprintf(
+            \sprintf(
                 'Cannot compare value of field "%s". ' .
                 'Please check that a comparator exists for such field.',
                 $field
@@ -87,7 +87,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
     {
         $comparators = [];
         foreach ($this->comparators[$type] as $groupedComparators) {
-            $comparators = array_merge($comparators, $groupedComparators);
+            $comparators = \array_merge($comparators, $groupedComparators);
         }
 
         return $comparators;

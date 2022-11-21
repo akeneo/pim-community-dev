@@ -85,7 +85,7 @@ SQL;
                 ("1" === $attributeData["is_localizable"]),
                 $localeCodes,
                 $channelCurrencyCodes,
-                null !== $attributeData['specific_to_locales'] ? json_decode($attributeData['specific_to_locales'], true) : []
+                null !== $attributeData['specific_to_locales'] ? \json_decode($attributeData['specific_to_locales'], true) : []
             );
         }
 

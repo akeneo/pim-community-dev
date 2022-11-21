@@ -59,7 +59,7 @@ class ValueConverter implements ConverterInterface
      */
     public function convert(array $productValues)
     {
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($productValues));
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(\array_keys($productValues));
 
         foreach ($productValues as $code => $values) {
             if ($attributeTypes[$code] === AttributeTypes::IMAGE || $attributeTypes[$code] === AttributeTypes::FILE) {

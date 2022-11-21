@@ -30,7 +30,7 @@ class FileGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute): bool
     {
-        return in_array(
+        return \in_array(
             $attribute->getType(),
             [
                 AttributeTypes::FILE,
@@ -48,16 +48,16 @@ class FileGuesser implements ConstraintGuesserInterface
         $options = [];
 
         $maxSize = $attribute->getMaxFileSize();
-        if (is_numeric($maxSize)) {
+        if (\is_numeric($maxSize)) {
             if ($maxSize == (int) $maxSize) {
                 $maxSize = (int) $maxSize;
                 $unit = self::MEGABYTE_UNIT;
             } else {
-                $maxSize = intval($maxSize * self::KILOBYTE_MULTIPLIER);
+                $maxSize = \intval($maxSize * self::KILOBYTE_MULTIPLIER);
                 $unit = self::KILOBYTE_UNIT;
             }
             if ($maxSize > 0) {
-                $options['maxSize'] = sprintf('%d%s', $maxSize, $unit);
+                $options['maxSize'] = \sprintf('%d%s', $maxSize, $unit);
             }
         }
 

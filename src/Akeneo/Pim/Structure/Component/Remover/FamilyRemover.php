@@ -74,7 +74,7 @@ class FamilyRemover implements RemoverInterface
     private function ensureFamilyHasNoVariants(FamilyInterface $family): void
     {
         if (! $family->getFamilyVariants()->isEmpty()) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Can not remove family "%s" because it is linked to family variants.',
                 $family->getCode()
             ));
@@ -89,7 +89,7 @@ class FamilyRemover implements RemoverInterface
     private function ensureFamilyHasNoProducts(FamilyInterface $family): void
     {
         if ($this->counter->count($family) > 0) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Family "%s" could not be removed as it still has products',
                 $family->getCode()
             ));

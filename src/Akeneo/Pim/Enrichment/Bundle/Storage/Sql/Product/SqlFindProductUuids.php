@@ -29,7 +29,7 @@ final class SqlFindProductUuids
      */
     public function fromIdentifiers(array $identifiers): array
     {
-        if (count($identifiers) === 0) {
+        if (\count($identifiers) === 0) {
             return [];
         }
 
@@ -39,6 +39,6 @@ final class SqlFindProductUuids
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
 
-        return array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $result);
+        return \array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $result);
     }
 }

@@ -19,23 +19,23 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
 {
-    function let(ExecutionContext $context)
+    public function let(ExecutionContext $context)
     {
         $this->initialize($context);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(UserIntentsShouldBeUniqueValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function it_throws_an_exception_with_a_wrong_constraint()
+    public function it_throws_an_exception_with_a_wrong_constraint()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [1, new Type([])]);
     }
 
-    function it_throws_an_exception_when_value_intents_collide(ConstraintViolationBuilderInterface $violationBuilder, ExecutionContext $context)
+    public function it_throws_an_exception_when_value_intents_collide(ConstraintViolationBuilderInterface $violationBuilder, ExecutionContext $context)
     {
         $constraint = new UserIntentsShouldBeUnique();
         $context->buildViolation($constraint->message, ['{{ attributeCode }}' => 'a_text'])->shouldBeCalledOnce()->willReturn($violationBuilder);
@@ -49,7 +49,7 @@ class UserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         ], $constraint);
     }
 
-    function it_throws_an_exception_when_price_value_intents_collide(ConstraintViolationBuilderInterface $violationBuilder, ExecutionContext $context)
+    public function it_throws_an_exception_when_price_value_intents_collide(ConstraintViolationBuilderInterface $violationBuilder, ExecutionContext $context)
     {
         $constraint = new UserIntentsShouldBeUnique();
         $context->buildViolation($constraint->message, ['{{ attributeCode }}' => 'a_price'])->shouldBeCalledOnce()->willReturn($violationBuilder);
@@ -63,7 +63,7 @@ class UserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         ], $constraint);
     }
 
-    function it_throws_an_exception_when_price_value_is_set_and_clear(
+    public function it_throws_an_exception_when_price_value_is_set_and_clear(
         ConstraintViolationBuilderInterface $violationBuilder,
         ExecutionContext $context
     ) {
@@ -81,7 +81,7 @@ class UserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         ], $constraint);
     }
 
-    function it_does_nothing_when_the_value_intents_are_distinct(ExecutionContext $context)
+    public function it_does_nothing_when_the_value_intents_are_distinct(ExecutionContext $context)
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -93,7 +93,7 @@ class UserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         ], new UserIntentsShouldBeUnique());
     }
 
-    function it_does_nothing_when_the_price_value_intents_are_distinct(ExecutionContext $context)
+    public function it_does_nothing_when_the_price_value_intents_are_distinct(ExecutionContext $context)
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 

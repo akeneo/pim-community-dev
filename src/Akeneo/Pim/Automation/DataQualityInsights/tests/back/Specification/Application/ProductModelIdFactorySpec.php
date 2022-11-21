@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -19,7 +19,7 @@ class ProductModelIdFactorySpec extends ObjectBehavior
         $collectionBehavior = $this->createCollection(['1234', '4321']);
 
         $collection = $collectionBehavior->getWrappedObject();
-        Assert::allIsInstanceOf($collection, ProductModelId:: class);
+        Assert::allIsInstanceOf($collection, ProductModelId::class);
         Assert::same((string) $collection->toArray()[0], '1234');
         Assert::same((string) $collection->toArray()[1], '4321');
     }

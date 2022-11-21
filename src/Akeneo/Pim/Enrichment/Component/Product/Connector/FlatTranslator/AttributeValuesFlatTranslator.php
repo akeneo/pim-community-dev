@@ -31,7 +31,7 @@ class AttributeValuesFlatTranslator
 
     public function supports(string $columnName): bool
     {
-        return in_array($columnName, $this->attributeColumnsResolver->resolveAttributeColumns());
+        return \in_array($columnName, $this->attributeColumnsResolver->resolveAttributeColumns());
     }
 
     public function translate(string $columnName, array $values, string $locale): array

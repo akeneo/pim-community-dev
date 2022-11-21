@@ -45,10 +45,10 @@ final class AttributeOptionValidation implements DocumentationBuilderInterface
         $parameters = $constraintViolation->getParameters();
 
         if (!isset($parameters['%attribute_code%'])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Parameter "%s" is missing from "%s" class.',
                 '%attribute_code%',
-                get_class($constraintViolation)
+                \get_class($constraintViolation)
             ));
         }
 
@@ -67,7 +67,7 @@ final class AttributeOptionValidation implements DocumentationBuilderInterface
                 'Please check the {attribute_options_settings}.',
                 [
                     'attribute_options_settings' => new RouteMessageParameter(
-                        sprintf('Options settings of the %s attribute', $parameters['%attribute_code%']),
+                        \sprintf('Options settings of the %s attribute', $parameters['%attribute_code%']),
                         'pim_enrich_attribute_edit',
                         ['code' => $parameters['%attribute_code%']]
                     )

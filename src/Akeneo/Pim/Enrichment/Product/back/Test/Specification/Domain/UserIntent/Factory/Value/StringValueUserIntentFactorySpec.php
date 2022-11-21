@@ -15,12 +15,12 @@ use PhpSpec\ObjectBehavior;
 
 class StringValueUserIntentFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(StringValueUserIntentFactory::class);
     }
 
-    function it_returns_set_text_user_intent()
+    public function it_returns_set_text_user_intent()
     {
         $this->create(AttributeTypes::TEXT, 'a_text', [
             'data' => 'coucou',
@@ -29,7 +29,7 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetTextValue('a_text', null, null, 'coucou'));
     }
 
-    function it_returns_set_text_area_user_intent()
+    public function it_returns_set_text_area_user_intent()
     {
         $this->create(AttributeTypes::TEXTAREA, 'a_textarea', [
             'data' => '<p>coucou</p>',
@@ -38,7 +38,7 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetTextareaValue('a_textarea', null, null, '<p>coucou</p>'));
     }
 
-    function it_returns_set_simple_select_user_intent()
+    public function it_returns_set_simple_select_user_intent()
     {
         $this->create(AttributeTypes::OPTION_SIMPLE_SELECT, 'a_simple_select', [
             'data' => 'coucou',
@@ -47,7 +47,7 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetSimpleSelectValue('a_simple_select', null, null, 'coucou'));
     }
 
-    function it_returns_set_simple_reference_entity_user_intent()
+    public function it_returns_set_simple_reference_entity_user_intent()
     {
         $this->create(AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT, 'a_simple_reference_entity', [
             'data' => 'coucou',
@@ -56,7 +56,7 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetSimpleReferenceEntityValue('a_simple_reference_entity', null, null, 'coucou'));
     }
 
-    function it_returns_set_simple_reference_data_user_intent()
+    public function it_returns_set_simple_reference_data_user_intent()
     {
         $this->create(AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT, 'a_simple_reference_data', [
             'data' => 'coucou',
@@ -65,7 +65,7 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetSimpleReferenceDataValue('a_simple_reference_data', null, null, 'coucou'));
     }
 
-    function it_returns_clear_value()
+    public function it_returns_clear_value()
     {
         $this->create(AttributeTypes::TEXT, 'a_text', [
             'data' => null,
@@ -80,7 +80,7 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new ClearValue('a_text', 'ecommerce', 'fr_FR'));
     }
 
-    function it_throws_an_exception_if_data_is_not_valid()
+    public function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', [AttributeTypes::TEXT, 'a_text', ['value']]);

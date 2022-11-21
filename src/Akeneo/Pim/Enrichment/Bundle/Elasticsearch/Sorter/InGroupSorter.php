@@ -38,7 +38,7 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
      */
     public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
     {
-        $groupId = str_replace('in_group_', '', $field);
+        $groupId = \str_replace('in_group_', '', $field);
 
         $group = null;
         if (null !== $groupId) {
@@ -48,11 +48,11 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
         if (null === $group) {
             throw new InvalidArgumentException(
                 self::class,
-                sprintf('Unsupported field "%s" for InGroupSorter.', $field)
+                \sprintf('Unsupported field "%s" for InGroupSorter.', $field)
             );
         }
 
-        $field = sprintf('%s.%s', 'in_group', $group->getCode());
+        $field = \sprintf('%s.%s', 'in_group', $group->getCode());
 
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the sorter.');
@@ -93,6 +93,6 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
      */
     public function supportsField($field)
     {
-        return (strpos($field, 'in_group_') !== false);
+        return (\strpos($field, 'in_group_') !== false);
     }
 }

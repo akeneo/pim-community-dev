@@ -160,7 +160,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {
-        if (!is_numeric($value)) {
+        if (!\is_numeric($value)) {
             throw InvalidPropertyTypeException::numericExpected($attribute->getCode(), static::class, $value);
         }
     }

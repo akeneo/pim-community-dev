@@ -58,7 +58,7 @@ class GetProductEvaluation
 
         foreach ($channelsLocales as $channelCode => $locales) {
             foreach ($locales as $localeCode) {
-                $formattedProductEvaluation[strval($channelCode)][strval($localeCode)] =
+                $formattedProductEvaluation[\strval($channelCode)][\strval($localeCode)] =
                     $this->formatCriteriaEvaluations($criteriaEvaluations, $channelCode, $localeCode);
             }
         }
@@ -90,13 +90,13 @@ class GetProductEvaluation
         $status = null !== $evaluationResult ? $evaluationResult->getStatus()->get($channelCode, $localeCode) : null;
 
         return [
-            'code' => strval($criterionCode),
+            'code' => \strval($criterionCode),
             'rate' => [
                 'value' => null !== $rate ? $rate->toInt() : null,
                 'rank' => null !== $rate ? $rate->toLetter() : null,
             ],
             'improvable_attributes' => $attributes ?? [],
-            'status' => null !== $status ? strval($status) : CriterionEvaluationResultStatus::IN_PROGRESS,
+            'status' => null !== $status ? \strval($status) : CriterionEvaluationResultStatus::IN_PROGRESS,
         ];
     }
 }

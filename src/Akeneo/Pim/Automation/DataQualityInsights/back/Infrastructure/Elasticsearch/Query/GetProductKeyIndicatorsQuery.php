@@ -48,7 +48,7 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
         $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
         $categoryChildren = $category instanceof CategoryInterface ? $this->categoryRepository->getAllChildrenCodes($category) : [];
 
-        $terms = [['terms' => ['categories' => array_merge([$categoryCode], $categoryChildren)]]];
+        $terms = [['terms' => ['categories' => \array_merge([$categoryCode], $categoryChildren)]]];
 
         return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes, $terms);
     }
@@ -61,7 +61,7 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
 
         $query = [
             'bool' => [
-                'must' => array_merge([[
+                'must' => \array_merge([[
                     'term' => [
                         'document_type' => $this->documentType
                     ],
@@ -77,7 +77,7 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
 
         $aggregations = [];
         foreach ($keyIndicatorCodes as $keyIndicatorCode) {
-            $aggregations[(string)$keyIndicatorCode]['terms']['field'] = sprintf(
+            $aggregations[(string)$keyIndicatorCode]['terms']['field'] = \sprintf(
                 'data_quality_insights.key_indicators.%s.%s.%s',
                 $channelCode,
                 $localeCode,
@@ -101,7 +101,7 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
             }
 
             Assert::isArray($aggregationBuckets);
-            $keyIndicators[$keyIndicatorCode] = $this->formatKeyIndicator(strval($keyIndicatorCode), $aggregationBuckets);
+            $keyIndicators[$keyIndicatorCode] = $this->formatKeyIndicator(\strval($keyIndicatorCode), $aggregationBuckets);
         }
 
         return $keyIndicators;

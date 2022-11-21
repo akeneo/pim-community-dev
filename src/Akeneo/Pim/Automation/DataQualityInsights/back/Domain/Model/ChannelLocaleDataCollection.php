@@ -48,12 +48,12 @@ final class ChannelLocaleDataCollection implements \IteratorAggregate
 
     public function getByChannelAndLocale(ChannelCode $channel, LocaleCode $locale)
     {
-        return $this->channelLocaleData[strval($channel)][strval($locale)] ?? null;
+        return $this->channelLocaleData[\strval($channel)][\strval($locale)] ?? null;
     }
 
     public function addToChannelAndLocale(ChannelCode $channel, LocaleCode $locale, $data): self
     {
-        $this->channelLocaleData[strval($channel)][strval($locale)] = $data;
+        $this->channelLocaleData[\strval($channel)][\strval($locale)] = $data;
 
         return $this;
     }

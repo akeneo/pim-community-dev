@@ -11,12 +11,12 @@ use PhpSpec\ObjectBehavior;
 
 class AssociationsUserIntentFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(AssociationsUserIntentFactory::class);
     }
 
-    function it_returns_associations_user_intent()
+    public function it_returns_associations_user_intent()
     {
         $this->create('associations', [
             'PACK' => [
@@ -47,7 +47,7 @@ class AssociationsUserIntentFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_if_data_is_invalid()
+    public function it_throws_an_exception_if_data_is_invalid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', ['associations', 'association']);

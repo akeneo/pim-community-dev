@@ -280,7 +280,7 @@ SQL;
                 $locale = \Locale::getDisplayName($localeCode, $translationLocaleCode);
                 $localeCompleteness = new LocaleCompleteness($locale, $localesWithNbCompleteByChannel[$channelCode]['locales'][$localeCode]);
 
-                if (!in_array($localeCompleteness, $localeCompletenesses, true)) {
+                if (!\in_array($localeCompleteness, $localeCompletenesses, true)) {
                     $localeCompletenesses[$localeCompleteness->locale()] = $localeCompleteness;
                 }
             }
@@ -293,7 +293,7 @@ SQL;
                 $channelLabels
             );
 
-            if (!in_array($channelCompleteness, $channelCompletenesses, true)) {
+            if (!\in_array($channelCompleteness, $channelCompletenesses, true)) {
                 $channelCompletenesses[$channelCompleteness->channel()] = $channelCompleteness;
             }
         }

@@ -84,7 +84,7 @@ class MassOperationConverter implements ConverterInterface
             $operation['actions'][0]['normalized_values'] = $values;
         }
 
-        $operation['actions'] = array_filter($operation['actions'], function ($action) {
+        $operation['actions'] = \array_filter($operation['actions'], function ($action) {
             if (!isset($action['field'])) {
                 return true;
             }

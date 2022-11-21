@@ -60,16 +60,16 @@ class Attribute implements ArrayConverterInterface
      */
     protected function convertFields($field, $booleanFields, $data, $convertedItem)
     {
-        if (false !== strpos($field, 'label-', 0)) {
-            $labelTokens = explode('-', $field);
+        if (false !== \strpos($field, 'label-', 0)) {
+            $labelTokens = \explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif (0 === strpos($field, 'guidelines-')) {
-            if (!array_key_exists('guidelines', $convertedItem)) {
+        } elseif (0 === \strpos($field, 'guidelines-')) {
+            if (!\array_key_exists('guidelines', $convertedItem)) {
                 $convertedItem['guidelines'] = [];
             }
 
-            $guidelinesTokens = explode('-', $field);
+            $guidelinesTokens = \explode('-', $field);
             $guidelinesLocaleCode = $guidelinesTokens[1];
             $convertedItem['guidelines'][$guidelinesLocaleCode] = $data;
         } elseif ('number_min' === $field ||
@@ -86,7 +86,7 @@ class Attribute implements ArrayConverterInterface
             'available_locales' === $field ||
             'allowed_extensions' === $field
         ) {
-            $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
+            $convertedItem[$field] = ('' === $data) ? [] : \explode(',', $data);
         } elseif ('date_min' === $field ||
             'date_max'=== $field
         ) {
@@ -97,13 +97,13 @@ class Attribute implements ArrayConverterInterface
                     $convertedItem[$field] = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
                 } catch (\JsonException $e) {
                     throw new DataArrayConversionException(
-                        sprintf('The property "%s" could not be converted into JSON', $field),
+                        \sprintf('The property "%s" could not be converted into JSON', $field),
                         0,
                         $e
                     );
                 }
             }
-        } elseif (in_array($field, $booleanFields, true) && '' !== $data) {
+        } elseif (\in_array($field, $booleanFields, true) && '' !== $data) {
             $convertedItem[$field] = (bool) $data;
         } elseif ('' !== $data) {
             $convertedItem[$field] = (string) $data;
@@ -125,8 +125,8 @@ class Attribute implements ArrayConverterInterface
             return null;
         }
 
-        if (is_numeric($number)) {
-            return number_format($number, 4, '.', '');
+        if (\is_numeric($number)) {
+            return \number_format($number, 4, '.', '');
         }
 
         return $number;

@@ -79,11 +79,11 @@ SQL;
         $queryParametersValues = [];
         $queryParametersTypes = [];
         foreach ($criteriaEvaluations as $index => $criterionEvaluation) {
-            $productId = sprintf('productId_%d', $index);
-            $criterionCode = sprintf('criterionCode_%d', $index);
-            $status = sprintf('status_%d', $index);
+            $productId = \sprintf('productId_%d', $index);
+            $criterionCode = \sprintf('criterionCode_%d', $index);
+            $status = \sprintf('status_%d', $index);
 
-            $queries[] = sprintf($queryFormat, $criterionCode, $status, $productId, $status);
+            $queries[] = \sprintf($queryFormat, $criterionCode, $status, $productId, $status);
 
             $queryParametersValues[$criterionCode] = (string)$criterionEvaluation->getCriterionCode();
             $queryParametersValues[$status] = $criterionEvaluation->getStatus();
@@ -98,7 +98,7 @@ SQL;
             }
         }
 
-        $query = implode("\n", $queries);
+        $query = \implode("\n", $queries);
         $success = false;
         $retry = 0;
 
@@ -112,7 +112,7 @@ SQL;
                     $this->executeWithLock($query, $queryParametersValues, $queryParametersTypes);
                     $success = true;
                 } else {
-                    usleep(rand(100000, 500000 * 2**$retry));
+                    \usleep(\rand(100000, 500000 * 2**$retry));
                 }
             }
         }
@@ -143,7 +143,7 @@ SQL;
         } finally {
             $this->dbConnection->executeQuery('UNLOCK TABLES');
             $this->dbConnection->executeQuery('SET foreign_key_checks=1');
-            $this->dbConnection->executeQuery(sprintf('SET autocommit=%d', $formerAutocommitValue));
+            $this->dbConnection->executeQuery(\sprintf('SET autocommit=%d', $formerAutocommitValue));
         }
     }
 
@@ -159,13 +159,13 @@ SQL;
 
         /** @var Write\CriterionEvaluation $criterionEvaluation */
         foreach ($criteriaEvaluations as $index => $criterionEvaluation) {
-            $productId = sprintf('productId_%d', $index);
-            $criterionCode = sprintf('criterionCode_%d', $index);
-            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
-            $status = sprintf('status_%d', $index);
-            $result = sprintf('result_%d', $index);
+            $productId = \sprintf('productId_%d', $index);
+            $criterionCode = \sprintf('criterionCode_%d', $index);
+            $evaluatedAt = \sprintf('evaluatedAt_%d', $index);
+            $status = \sprintf('status_%d', $index);
+            $result = \sprintf('result_%d', $index);
 
-            $queries[] = sprintf($sqlQueryFormat, $evaluatedAt, $status, $result, $productId, $criterionCode);
+            $queries[] = \sprintf($sqlQueryFormat, $evaluatedAt, $status, $result, $productId, $criterionCode);
 
             $queryParametersValues[$criterionCode] = (string)$criterionEvaluation->getCriterionCode();
             $queryParametersValues[$evaluatedAt] = $this->formatDate($criterionEvaluation->getEvaluatedAt());
@@ -182,7 +182,7 @@ SQL;
             }
         }
 
-        $this->dbConnection->executeQuery(implode("\n", $queries), $queryParametersValues, $queryParametersTypes);
+        $this->dbConnection->executeQuery(\implode("\n", $queries), $queryParametersValues, $queryParametersTypes);
     }
 
 
@@ -194,7 +194,7 @@ SQL;
 
         $formattedCriterionEvaluationResult = $this->transformCriterionEvaluationResult->transformToIds($criterionEvaluationResult->toArray());
 
-        return json_encode($formattedCriterionEvaluationResult);
+        return \json_encode($formattedCriterionEvaluationResult);
     }
 
     private function formatDate(?\DateTimeImmutable $date): ?string

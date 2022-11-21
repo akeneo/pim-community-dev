@@ -36,11 +36,11 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
         if (isset($context['filters']['structure']['attributes']) &&
             !empty($context['filters']['structure']['attributes'])
         ) {
-            $rawColumns = array_merge(
+            $rawColumns = \array_merge(
                 ['uuid'],
                 [$this->identifierAttributeCode()],
                 $this->firstDefaultColumns,
-                array_map(function ($associationType) {
+                \array_map(function ($associationType) {
                     return $associationType->getCode();
                 }, $this->associationTypeRepository->findAll()),
                 $context['filters']['structure']['attributes']
@@ -48,12 +48,12 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
 
             $sortedColumns = [];
             foreach ($rawColumns as $columnCode) {
-                $sortedColumns = array_merge($sortedColumns, array_filter($columns, function ($columnCandidate) use ($columnCode) {
-                    return 0 !== preg_match(sprintf('/^%s(-.*)*$/', $columnCode), $columnCandidate);
+                $sortedColumns = \array_merge($sortedColumns, \array_filter($columns, function ($columnCandidate) use ($columnCode) {
+                    return 0 !== \preg_match(\sprintf('/^%s(-.*)*$/', $columnCode), $columnCandidate);
                 }));
             }
 
-            return array_unique($sortedColumns);
+            return \array_unique($sortedColumns);
         }
 
         return parent::sort($columns);

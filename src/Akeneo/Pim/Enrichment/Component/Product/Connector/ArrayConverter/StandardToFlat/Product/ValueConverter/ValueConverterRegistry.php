@@ -26,7 +26,7 @@ class ValueConverterRegistry
             $this->register($converter, ++$priority);
         }
 
-        ksort($this->converters);
+        \ksort($this->converters);
 
         return $this;
     }

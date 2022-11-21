@@ -52,7 +52,7 @@ class FileController
 
     public function showAction(Request $request, string $filename, ?string $filter = null): Response
     {
-        $filename = urldecode($filename);
+        $filename = \urldecode($filename);
         $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename);
         if (null === $fileInfo) {
             return $this->renderDefaultImage(FileTypes::MISC, $filter);
@@ -65,7 +65,7 @@ class FileController
             return $this->renderDefaultImage($fileType, $filter);
         }
 
-        if (in_array($mimeType, self::SVG_MIME_TYPES)) {
+        if (\in_array($mimeType, self::SVG_MIME_TYPES)) {
             return $this->getFileResponse($filename, 'image/svg+xml');
         }
 
@@ -88,7 +88,7 @@ class FileController
         }
 
         throw new NotFoundHttpException(
-            sprintf('File with key "%s" could not be found.', $filename)
+            \sprintf('File with key "%s" could not be found.', $filename)
         );
     }
 
@@ -120,7 +120,7 @@ class FileController
      */
     public function downloadAction($filename)
     {
-        $filename = urldecode($filename);
+        $filename = \urldecode($filename);
 
         foreach ($this->filesystemAliases as $alias) {
             $fs = $this->filesystemProvider->getFilesystem($alias);
@@ -129,7 +129,7 @@ class FileController
                 $headers = [];
 
                 if (null !== $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename)) {
-                    $headers['Content-Disposition'] = sprintf(
+                    $headers['Content-Disposition'] = \sprintf(
                         'attachment; filename="%s"',
                         $fileInfo->getOriginalFilename()
                     );
@@ -140,7 +140,7 @@ class FileController
         }
 
         throw new NotFoundHttpException(
-            sprintf('File with key "%s" could not be found.', $filename)
+            \sprintf('File with key "%s" could not be found.', $filename)
         );
     }
 
@@ -183,7 +183,7 @@ class FileController
         if (null !== $file) {
             $mimeType = $file->getMimeType();
         }
-        if (null === $mimeType && file_exists($filename)) {
+        if (null === $mimeType && \file_exists($filename)) {
             $mimeType = (new MimeTypes())->guessMimeType($filename);
         }
 

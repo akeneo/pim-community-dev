@@ -7,9 +7,9 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedEntityIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -42,7 +42,7 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
         $getUpdatedProductIdsQuery = $this->get('akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_ids_query');
 
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');
-        $this->assertEquals([], iterator_to_array($getUpdatedProductIdsQuery->since($today, 2)));
+        $this->assertEquals([], \iterator_to_array($getUpdatedProductIdsQuery->since($today, 2)));
 
         $this->givenAnUpdatedProduct($today);
         $expectedProduct1 = $this->givenAnUpdatedProduct($today->modify('+1 SECOND'));
@@ -57,13 +57,13 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        $productUuids = iterator_to_array($getUpdatedProductIdsQuery->since($today->modify('+1 HOUR'), 3));
-        $productUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
+        $productUuids = \iterator_to_array($getUpdatedProductIdsQuery->since($today->modify('+1 HOUR'), 3));
+        $productUuids = \array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
 
         $this->assertCount(2, $productUuids);
         $this->assertCount(3, $productUuids[0]);
         $this->assertCount(1, $productUuids[1]);
-        $productUuids = array_merge($productUuids[0], $productUuids[1]);
+        $productUuids = \array_merge($productUuids[0], $productUuids[1]);
 
         $this->assertExpectedEntityId($expectedProduct1, $productUuids);
         $this->assertExpectedEntityId($expectedProduct2, $productUuids);
@@ -77,7 +77,7 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
         $getUpdatedProductModelIdsQuery = $this->get('akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_model_ids_query');
 
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');
-        $this->assertEquals([], iterator_to_array($getUpdatedProductModelIdsQuery->since($today, 2)));
+        $this->assertEquals([], \iterator_to_array($getUpdatedProductModelIdsQuery->since($today, 2)));
 
         $this->givenAnUpdatedParentProductModel('a_product_model_not_recently_updated', $today->modify('-1 SECOND'));
 
@@ -92,13 +92,13 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        $productIds = iterator_to_array($getUpdatedProductModelIdsQuery->since($today->modify('+1 HOUR'), 3));
-        $productIds = array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productIds);
+        $productIds = \iterator_to_array($getUpdatedProductModelIdsQuery->since($today->modify('+1 HOUR'), 3));
+        $productIds = \array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productIds);
 
         $this->assertCount(2, $productIds);
         $this->assertCount(3, $productIds[0]);
         $this->assertCount(1, $productIds[1]);
-        $productIds = array_merge($productIds[0], $productIds[1]);
+        $productIds = \array_merge($productIds[0], $productIds[1]);
 
         $this->assertExpectedEntityId($expectedProductModel1, $productIds);
         $this->assertExpectedEntityId($expectedProductModel2, $productIds);
@@ -109,7 +109,7 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
     private function createProduct(): ProductInterface
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(strval(Uuid::uuid4()))
+            ->withIdentifier(\strval(Uuid::uuid4()))
             ->build();
 
         $this->get('pim_catalog.saver.product')->save($product);
@@ -120,7 +120,7 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
     private function createProductVariant(string $parentCode): ProductInterface
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(strval(Uuid::uuid4()))
+            ->withIdentifier(\strval(Uuid::uuid4()))
             ->withFamily('familyA')
             ->build();
 
@@ -201,7 +201,7 @@ SQL;
     private function givenAnUpdatedSubProductModel(string $parentCode, \DateTimeImmutable $updatedAt): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
-            ->withCode(strval(Uuid::uuid4()))
+            ->withCode(\strval(Uuid::uuid4()))
             ->withFamilyVariant('familyVariantA1')
             ->withParent($parentCode)
             ->build();
@@ -221,6 +221,6 @@ SQL;
             }
         }
 
-        throw new AssertionFailedError(sprintf('Expected entity id %s not found', (string) $expectedEntityId));
+        throw new AssertionFailedError(\sprintf('Expected entity id %s not found', (string) $expectedEntityId));
     }
 }

@@ -74,7 +74,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
             }
         }
 
-        return array_filter($filteredValues);
+        return \array_filter($filteredValues);
     }
 
     /**
@@ -139,7 +139,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
                 return false;
             }
 
-            if ($attribute->isLocaleSpecific() && !in_array($value['locale'], $attribute->getAvailableLocaleCodes())) {
+            if ($attribute->isLocaleSpecific() && !\in_array($value['locale'], $attribute->getAvailableLocaleCodes())) {
                 return false;
             }
         }
@@ -163,7 +163,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
      */
     protected function getAttribute($code)
     {
-        if (!array_key_exists($code, $this->attributes)) {
+        if (!\array_key_exists($code, $this->attributes)) {
             $this->attributes[$code] = $this->attributeRepository->findOneByIdentifier($code);
         }
 
@@ -177,7 +177,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
      */
     protected function getLocale($code)
     {
-        if (!array_key_exists($code, $this->locales)) {
+        if (!\array_key_exists($code, $this->locales)) {
             $this->locales[$code] = $this->localeRepository->findOneByIdentifier($code);
         }
 
@@ -191,7 +191,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
      */
     protected function getChannel($code)
     {
-        if (!array_key_exists($code, $this->channels)) {
+        if (!\array_key_exists($code, $this->channels)) {
             $this->channels[$code] = $this->channelRepository->findOneByIdentifier($code);
         }
 

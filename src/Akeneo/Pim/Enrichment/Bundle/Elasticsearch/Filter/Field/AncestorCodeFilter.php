@@ -46,7 +46,7 @@ class AncestorCodeFilter extends AbstractFieldFilter
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             $values = [$values];
         }
 

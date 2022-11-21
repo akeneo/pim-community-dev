@@ -70,7 +70,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function first()
     {
-        return reset($this->values);
+        return \reset($this->values);
     }
 
     /**
@@ -78,7 +78,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function last()
     {
-        return end($this->values);
+        return \end($this->values);
     }
 
     /**
@@ -86,7 +86,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function key()
     {
-        return key($this->values);
+        return \key($this->values);
     }
 
     /**
@@ -94,7 +94,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function next()
     {
-        return next($this->values);
+        return \next($this->values);
     }
 
     /**
@@ -102,7 +102,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function current()
     {
-        return current($this->values);
+        return \current($this->values);
     }
 
     /**
@@ -110,7 +110,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function removeKey($key)
     {
-        if (!array_key_exists($key, $this->values)) {
+        if (!\array_key_exists($key, $this->values)) {
             return null;
         }
 
@@ -132,7 +132,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function remove(ValueInterface $value)
     {
-        $key = array_search($value, $this->values, true);
+        $key = \array_search($value, $this->values, true);
 
         if (false === $key) {
             return false;
@@ -164,7 +164,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function containsKey($key)
     {
-        return array_key_exists($key, $this->values);
+        return \array_key_exists($key, $this->values);
     }
 
     /**
@@ -172,7 +172,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function contains(ValueInterface $value)
     {
-        return in_array($value, $this->values, true);
+        return \in_array($value, $this->values, true);
     }
 
     /**
@@ -208,7 +208,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function getKeys()
     {
-        return array_keys($this->values);
+        return \array_keys($this->values);
     }
 
     /**
@@ -216,7 +216,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function getValues()
     {
-        return array_values($this->values);
+        return \array_values($this->values);
     }
 
     /**
@@ -224,7 +224,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function count(): int
     {
-        return count($this->values);
+        return \count($this->values);
     }
 
     /**
@@ -280,7 +280,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function getAttributeCodes()
     {
-        return array_values($this->attributeCodes);
+        return \array_values($this->attributeCodes);
     }
 
     /**
@@ -288,7 +288,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
      */
     public function filter(\Closure $filterBy)
     {
-        $filteredValues = array_filter($this->values, $filterBy);
+        $filteredValues = \array_filter($this->values, $filterBy);
 
         return new self($filteredValues);
     }
@@ -297,7 +297,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     {
         $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';
         $localeCode = null !== $localeCode ? $localeCode : '<all_locales>';
-        $key = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
+        $key = \sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
 
         return $key;
     }

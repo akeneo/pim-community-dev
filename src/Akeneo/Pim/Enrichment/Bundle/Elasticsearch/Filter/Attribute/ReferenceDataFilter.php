@@ -172,19 +172,19 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $referenceDataRepository = $this->referenceDataRepositoryResolver->resolve($attribute->getReferenceDataName());
         Assert::implementsInterface($referenceDataRepository, ReferenceDataRepositoryInterface::class);
         $existingReferenceData =  $referenceDataRepository->findCodesByIdentifiers($values);
-        $referenceDataCodes = array_map(
+        $referenceDataCodes = \array_map(
             function ($referenceData) {
                 return $referenceData['code'];
             },
             $existingReferenceData
         );
 
-        $unexistingValues = array_diff($values, $referenceDataCodes);
-        if (count($unexistingValues) > 0) {
-            $message = sprintf(
+        $unexistingValues = \array_diff($values, $referenceDataCodes);
+        if (\count($unexistingValues) > 0) {
+            $message = \sprintf(
                 'No reference data "%s" with code "%s" has been found',
                 $attribute->getReferenceDataName(),
-                reset($unexistingValues)
+                \reset($unexistingValues)
             );
 
             throw InvalidPropertyException::validEntityCodeExpected(
@@ -192,7 +192,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
                 'code',
                 $message,
                 $referenceDataRepository->getClassName(),
-                implode(',', $values)
+                \implode(',', $values)
             );
         }
     }

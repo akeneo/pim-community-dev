@@ -17,18 +17,18 @@ use PhpSpec\ObjectBehavior;
 
 class SetPriceValueApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $updater)
+    public function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetPriceValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_set_price_value_user_intent(ObjectUpdaterInterface $updater): void
+    public function it_applies_set_price_value_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $setPriceValueIntent = new SetPriceValue(
@@ -61,7 +61,7 @@ class SetPriceValueApplierSpec extends ObjectBehavior
         $this->apply($setPriceValueIntent, $product, 1);
     }
 
-    function it_applies_set_price_value_user_intent_and_add_to_an_existing_price_collection_value(
+    public function it_applies_set_price_value_user_intent_and_add_to_an_existing_price_collection_value(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
         ValueInterface $formerValue
@@ -69,7 +69,7 @@ class SetPriceValueApplierSpec extends ObjectBehavior
         $product->getValue('a_price', null, null)->shouldBeCalled()->willReturn($formerValue);
         $formerValue->getData()->willReturn(
             new PriceCollection([
-                new ProductPrice('10','USD'),
+                new ProductPrice('10', 'USD'),
             ])
         );
 
@@ -107,7 +107,7 @@ class SetPriceValueApplierSpec extends ObjectBehavior
         $this->apply($setPriceValueIntent, $product, 1);
     }
 
-    function it_applies_set_price_value_user_intent_and_update_an_existing_price_collection_value(
+    public function it_applies_set_price_value_user_intent_and_update_an_existing_price_collection_value(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
         ValueInterface $formerValue
@@ -115,7 +115,7 @@ class SetPriceValueApplierSpec extends ObjectBehavior
         $product->getValue('a_price', null, null)->shouldBeCalled()->willReturn($formerValue);
         $formerValue->getData()->willReturn(
             new PriceCollection([
-                new ProductPrice('10','EUR'),
+                new ProductPrice('10', 'EUR'),
             ])
         );
 
@@ -149,7 +149,7 @@ class SetPriceValueApplierSpec extends ObjectBehavior
         $this->apply($setPriceValueIntent, $product, 1);
     }
 
-    function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

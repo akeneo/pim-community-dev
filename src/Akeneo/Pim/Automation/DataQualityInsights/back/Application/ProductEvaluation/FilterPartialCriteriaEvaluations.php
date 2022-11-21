@@ -24,7 +24,7 @@ class FilterPartialCriteriaEvaluations
 
         /** @var Read\CriterionEvaluation $criteriaEvaluation */
         foreach ($criteriaEvaluations as $criteriaEvaluation) {
-            if (in_array($criteriaEvaluation->getCriterionCode(), $partialCriteriaCodes)) {
+            if (\in_array($criteriaEvaluation->getCriterionCode(), $partialCriteriaCodes)) {
                 $partialCriteriaEvaluations->add($criteriaEvaluation);
             }
         }

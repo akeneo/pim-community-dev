@@ -41,6 +41,6 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
             ->leftJoin('g.translations', 't')
             ->getQuery();
 
-        return array_keys($query->getArrayResult());
+        return \array_keys($query->getArrayResult());
     }
 }

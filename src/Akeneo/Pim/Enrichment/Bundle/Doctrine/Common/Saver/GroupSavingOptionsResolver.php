@@ -38,7 +38,7 @@ class GroupSavingOptionsResolver implements SavingOptionsResolverInterface
      */
     public function resolveSaveAllOptions(array $options)
     {
-        return array_merge($this->resolveSaveOptions($options), ['unitary' => false]);
+        return \array_merge($this->resolveSaveOptions($options), ['unitary' => false]);
     }
 
     /**

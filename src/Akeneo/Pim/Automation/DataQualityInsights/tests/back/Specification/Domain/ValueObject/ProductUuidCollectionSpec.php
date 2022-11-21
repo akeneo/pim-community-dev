@@ -106,7 +106,8 @@ final class ProductUuidCollectionSpec extends ObjectBehavior
             '6d125b99-d971-41d9-a264-b020cd486aee',
             'b492b9f5-9a8f-495a-8cd7-912c69c31902'
         ];
-        $this->beConstructedThrough('fromProductUuids', [$uuids]);-
+        $this->beConstructedThrough('fromProductUuids', [$uuids]);
+        -
 
         $this->toArrayString()->shouldBeArray();
         $this->toArrayString()->shouldBeLike($uuidsExpected);

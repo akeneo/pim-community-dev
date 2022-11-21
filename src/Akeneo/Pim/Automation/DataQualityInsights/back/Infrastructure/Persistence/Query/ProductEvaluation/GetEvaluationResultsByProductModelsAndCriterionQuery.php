@@ -41,7 +41,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productModelIds' => array_map(fn (string $productModelId) => (int) $productModelId, $productModelIdCollection->toArrayString()),
+                'productModelIds' => \array_map(fn (string $productModelId) => (int) $productModelId, $productModelIdCollection->toArrayString()),
                 'criterionCode' => $criterionCode,
             ],
             [
@@ -63,7 +63,7 @@ SQL;
             return null;
         }
 
-        $rawResult = json_decode($rawResult, true, JSON_THROW_ON_ERROR);
+        $rawResult = \json_decode($rawResult, true, JSON_THROW_ON_ERROR);
         $rawResult = $this->transformCriterionEvaluationResultIds->transformToCodes($criterionCode, $rawResult);
 
         return Read\CriterionEvaluationResult::fromArray($rawResult);

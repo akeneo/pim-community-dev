@@ -44,7 +44,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
             return;
         }
         // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-        if (get_class($product) == 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+        if (\get_class($product) == 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
             return;
         }
         if (!$event->hasArgument('unitary') || true !== $event->getArgument('unitary')) {
@@ -64,13 +64,13 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     public function deleteProducts(RemoveEvent $event): void
     {
         $products = $event->getSubject();
-        if (!is_array($products) || !is_array($event->getSubjectId())) {
+        if (!\is_array($products) || !\is_array($event->getSubjectId())) {
             return;
         }
-        $products = array_filter($products, function ($product) {
+        $products = \array_filter($products, function ($product) {
             return $product instanceof ProductInterface
                 // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-                && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
+                && \get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
         });
 
         if ($this->elasticsearchShouldBeRefreshed($products)) {
@@ -96,7 +96,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
             }
         }
 
-        return array_unique($ancestorCodes, SORT_STRING);
+        return \array_unique($ancestorCodes, SORT_STRING);
     }
 
     /**
@@ -109,7 +109,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     private function elasticsearchShouldBeRefreshed(array $products): bool
     {
         foreach ($products as $product) {
-            if (null !== $product->getCreated() && 10 > time() - $product->getCreated()->getTimestamp()) {
+            if (null !== $product->getCreated() && 10 > \time() - $product->getCreated()->getTimestamp()) {
                 return true;
             }
         }

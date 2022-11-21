@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GetProductUuidsHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ProductUuidQueryFetcher $productUuidQueryFetcher,
         ValidatorInterface $validator
@@ -61,12 +61,12 @@ class GetProductUuidsHandlerSpec extends ObjectBehavior
         $this->beConstructedWith($pqb, $applyProductSearchQueryParametersToPQB, $productUuidQueryFetcher, $validator);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(GetProductUuidsHandler::class);
     }
 
-    function it_returns_a_cursor(
+    public function it_returns_a_cursor(
         ValidatorInterface $validator,
         ConstraintViolationList $constraintViolationList,
         ProductUuidQueryFetcher $productUuidQueryFetcher
@@ -80,7 +80,7 @@ class GetProductUuidsHandlerSpec extends ObjectBehavior
         $this->__invoke($query)->shouldHaveType(ProductUuidCursor::class);
     }
 
-    function it_throws_an_exception_when_query_is_not_valid(
+    public function it_throws_an_exception_when_query_is_not_valid(
         ValidatorInterface $validator,
         ConstraintViolationList $constraintViolationList
     ) {

@@ -12,7 +12,7 @@ final class LocaleCollection implements \IteratorAggregate, \Countable
 
     public function __construct(array $localeCodes)
     {
-        if (count($localeCodes) === 0) {
+        if (\count($localeCodes) === 0) {
             throw new \InvalidArgumentException('A locale collection must contain at least one element.');
         }
 
@@ -38,13 +38,13 @@ final class LocaleCollection implements \IteratorAggregate, \Countable
 
     public function count(): int
     {
-        return count($this->localeCodes);
+        return \count($this->localeCodes);
     }
 
     public function toArrayString(): array
     {
-        return array_values(
-            array_map(fn (LocaleCode $localeCode) => $localeCode->__toString(), $this->localeCodes)
+        return \array_values(
+            \array_map(fn (LocaleCode $localeCode) => $localeCode->__toString(), $this->localeCodes)
         );
     }
 }

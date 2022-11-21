@@ -33,7 +33,7 @@ class RegisterFlatTranslatorPass implements CompilerPassInterface
     {
         $registry = $container->getDefinition($registryId);
         $translators = $container->findTaggedServiceIds($translatorTag);
-        foreach (array_keys($translators) as $translatorId) {
+        foreach (\array_keys($translators) as $translatorId) {
             $registry->addMethodCall(
                 'addTranslator',
                 [new Reference($translatorId)]

@@ -44,11 +44,11 @@ final class DashboardWidgetCategoriesController
     {
         $requestCategories = $request->get('categories', []);
 
-        if (!is_array($requestCategories)) {
+        if (!\is_array($requestCategories)) {
             throw new \InvalidArgumentException('The list of categories must be an array');
         }
 
-        return array_map(function ($categoryCode) {
+        return \array_map(function ($categoryCode) {
             return new CategoryCode($categoryCode);
         }, $requestCategories);
     }

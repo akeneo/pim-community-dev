@@ -14,33 +14,33 @@ use PhpSpec\ObjectBehavior;
  */
 class ClearPriceValueSpec extends ObjectBehavior
 {
-    function let(): void
+    public function let(): void
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', 'EUR');
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ClearPriceValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    function it_returns_the_attribute_code(): void
+    public function it_returns_the_attribute_code(): void
     {
         $this->attributeCode()->shouldReturn('name');
     }
 
-    function it_returns_the_locale_code(): void
+    public function it_returns_the_locale_code(): void
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    function it_returns_the_channel_code(): void
+    public function it_returns_the_channel_code(): void
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    function it_returns_the_currency_code(): void
+    public function it_returns_the_currency_code(): void
     {
         $this->currencyCode()->shouldReturn('EUR');
     }

@@ -44,8 +44,8 @@ class IdFilter extends AbstractFieldFilter
 
         $this->checkValue($operator, $value);
 
-        if (is_array($value)) {
-            $value = array_map(
+        if (\is_array($value)) {
+            $value = \array_map(
                 function ($value) {
                     return (string) $this->prefix.$value;
                 },
@@ -113,12 +113,12 @@ class IdFilter extends AbstractFieldFilter
      */
     protected function checkValue($operator, $value)
     {
-        if (in_array($operator, [Operators::EQUALS, Operators::NOT_EQUAL])) {
+        if (\in_array($operator, [Operators::EQUALS, Operators::NOT_EQUAL])) {
             FieldFilterHelper::checkString('id', $value, static::class);
         } else {
             FieldFilterHelper::checkArray('id', $value, static::class);
             foreach ($value as $oneValue) {
-                if (!is_string($oneValue)) {
+                if (!\is_string($oneValue)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         'id',
                         'one of the value is not string',

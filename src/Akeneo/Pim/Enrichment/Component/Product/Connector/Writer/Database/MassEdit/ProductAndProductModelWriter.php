@@ -53,14 +53,14 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
      */
     public function write(array $items)
     {
-        $products = array_filter($items, function ($item) {
+        $products = \array_filter($items, function ($item) {
             return $item instanceof ProductInterface;
         });
-        $productModels = array_filter($items, function ($item) {
+        $productModels = \array_filter($items, function ($item) {
             return $item instanceof ProductModelInterface;
         });
 
-        array_walk($items, function ($item) {
+        \array_walk($items, function ($item) {
             $this->incrementCount($item);
         });
 

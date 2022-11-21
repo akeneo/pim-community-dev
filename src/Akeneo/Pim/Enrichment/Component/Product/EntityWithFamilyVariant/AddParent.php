@@ -57,7 +57,7 @@ class AddParent
 
         if (null === $productModel = $this->productModelRepository->findOneByIdentifier($parentProductModelCode)) {
             throw new \InvalidArgumentException(
-                sprintf('The given product model "%s" does not exist', $parentProductModelCode)
+                \sprintf('The given product model "%s" does not exist', $parentProductModelCode)
             );
         }
 
@@ -90,7 +90,7 @@ class AddParent
 
         $filteredValues = $product->getValues()->filter(
             function (ValueInterface $value) use ($attributeCodes) {
-                return in_array($value->getAttributeCode(), $attributeCodes);
+                return \in_array($value->getAttributeCode(), $attributeCodes);
             }
         );
 

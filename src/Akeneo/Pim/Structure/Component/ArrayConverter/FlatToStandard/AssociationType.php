@@ -77,8 +77,8 @@ class AssociationType implements ArrayConverterInterface
      */
     protected function convertField($convertedItem, $field, $data)
     {
-        if (false !== strpos($field, 'label-', 0)) {
-            $labelTokens = explode('-', $field);
+        if (false !== \strpos($field, 'label-', 0)) {
+            $labelTokens = \explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
         } elseif ('code' === $field) {

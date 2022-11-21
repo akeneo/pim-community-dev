@@ -35,7 +35,7 @@ class AddUniqueAttributes
         $bottomAttributeSet = $familyVariant->getVariantAttributeSet($familyVariant->getNumberOfLevel());
 
         foreach ($familyUniqueAttributes as $uniqueAttribute) {
-            if (!in_array($uniqueAttribute->getCode(), $familyVariantAttributeCodes)) {
+            if (!\in_array($uniqueAttribute->getCode(), $familyVariantAttributeCodes)) {
                 $bottomAttributeSet->addAttribute($uniqueAttribute);
             }
         }

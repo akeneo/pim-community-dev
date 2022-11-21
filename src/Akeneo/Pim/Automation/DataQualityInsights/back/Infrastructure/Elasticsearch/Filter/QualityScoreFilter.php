@@ -33,7 +33,7 @@ class QualityScoreFilter extends AbstractFieldFilter implements FieldFilterInter
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $values);
         }
 
@@ -46,18 +46,18 @@ class QualityScoreFilter extends AbstractFieldFilter implements FieldFilterInter
         }
 
         try {
-            $values = array_map(function ($value) {
-                $rank = is_numeric($value) ? Rank::fromInt(intval($value)) : Rank::fromLetter(strval($value));
+            $values = \array_map(function ($value) {
+                $rank = \is_numeric($value) ? Rank::fromInt(\intval($value)) : Rank::fromLetter(\strval($value));
                 return $rank->toInt();
             }, $values);
         } catch (\InvalidArgumentException $exception) {
-            throw InvalidPropertyException::dataExpected($field, sprintf('values among "%s"', implode('", "', Rank::LETTERS_MAPPING)), static::class);
+            throw InvalidPropertyException::dataExpected($field, \sprintf('values among "%s"', \implode('", "', Rank::LETTERS_MAPPING)), static::class);
         }
 
         $this->searchQueryBuilder->addFilter(
             [
                 'terms' => [
-                    sprintf('data_quality_insights.%s.%s.%s', ($this->getScoresProperty)(), $channel, $locale) => $values
+                    \sprintf('data_quality_insights.%s.%s.%s', ($this->getScoresProperty)(), $channel, $locale) => $values
                 ]
             ]
         );

@@ -112,17 +112,17 @@ class IndexProductModelCommand extends Command
         } elseif (!empty($input->getArgument('codes'))) {
             $requestedCodes = $input->getArgument('codes');
             $existingroductModelCodes = $this->getExistingProductModelCodes($requestedCodes);
-            $nonExistingCodes = array_diff($requestedCodes, $existingroductModelCodes);
+            $nonExistingCodes = \array_diff($requestedCodes, $existingroductModelCodes);
             if (!empty($nonExistingCodes)) {
                 $output->writeln(
-                    sprintf(
+                    \sprintf(
                         '<error>Some product models were not found for the given codes: %s</error>',
-                        implode(', ', $nonExistingCodes)
+                        \implode(', ', $nonExistingCodes)
                     )
                 );
             }
-            $chunkedProductModelCodes = array_chunk($existingroductModelCodes, $batchSize);
-            $productModelCount = count($existingroductModelCodes);
+            $chunkedProductModelCodes = \array_chunk($existingroductModelCodes, $batchSize);
+            $productModelCount = \count($existingroductModelCodes);
         } else {
             $output->writeln(
                 '<error>Please specify a list of product model codes to index or use the flag --all to index all product models</error>'
@@ -141,13 +141,13 @@ class IndexProductModelCommand extends Command
             public function bulkExecute(array $codes): int
             {
                 $this->productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($codes);
-                return count($codes);
+                return \count($codes);
             }
         };
 
         $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount), $bulkESHandler, $output);
 
-        $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
+        $output->writeln(\sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 
         return 0;
     }
@@ -195,8 +195,8 @@ SQL;
                 return;
             }
 
-            $formerId = (int)end($rows)['id'];
-            yield array_column($rows, 'code');
+            $formerId = (int)\end($rows)['id'];
+            yield \array_column($rows, 'code');
         }
     }
 
@@ -246,9 +246,9 @@ SQL;
                 return;
             }
 
-            $formerId = (int)end($rows)['id'];
-            $existingMysqlIdentifiers = array_column($rows, '_id');
-            $existingMysqlUpdated = array_column($rows, 'updated');
+            $formerId = (int)\end($rows)['id'];
+            $existingMysqlIdentifiers = \array_column($rows, '_id');
+            $existingMysqlUpdated = \array_column($rows, 'updated');
 
             $results = $this->productAndProductModelClient->search([
                'query' => [
@@ -269,11 +269,11 @@ SQL;
                 'size' => $batchSize
             ]);
 
-            $esIdentifiers = array_map(function ($doc) {
+            $esIdentifiers = \array_map(function ($doc) {
                 return $doc['_id'];
             }, $results['hits']['hits']);
 
-            $diff = array_diff($existingMysqlIdentifiers, $esIdentifiers);
+            $diff = \array_diff($existingMysqlIdentifiers, $esIdentifiers);
 
             yield $diff;
         }
@@ -286,7 +286,7 @@ SQL;
     {
         if (!$this->productAndProductModelClient->hasIndex()) {
             throw new \RuntimeException(
-                sprintf(
+                \sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
                     $this->productAndProductModelClient->getIndexName()
                 )

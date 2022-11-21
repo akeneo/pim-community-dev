@@ -45,24 +45,37 @@ class CalculateProductCompletenessSpec extends ObjectBehavior
         $productUuid = ProductUuid::fromString($uuid);
 
         $completenessCalculator->fromProductUuid(Uuid::fromString($uuid))->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(
-            $uuid, [
+            $uuid,
+            [
                 new ProductCompletenessWithMissingAttributeCodes(
-                    'ecommerce', 'en_US', 10, [
+                    'ecommerce',
+                    'en_US',
+                    10,
+                    [
                         'name', 'description', 'weight', 'height'
                     ]
                 ),
                 new ProductCompletenessWithMissingAttributeCodes(
-                    'ecommerce', 'fr_FR', 10, [
+                    'ecommerce',
+                    'fr_FR',
+                    10,
+                    [
                         'name', 'description', 'weight', 'height', 'width', 'brand'
                     ]
                 ),
                 new ProductCompletenessWithMissingAttributeCodes(
-                    'print', 'en_US', 12, [
+                    'print',
+                    'en_US',
+                    12,
+                    [
                         'name', 'description', 'weight', 'height'
                     ]
                 ),
                 new ProductCompletenessWithMissingAttributeCodes(
-                    'print', 'fr_FR', 10, [
+                    'print',
+                    'fr_FR',
+                    10,
+                    [
                         'name', 'description', 'weight', 'height', 'width', 'brand', 'color'
                     ]
                 ),

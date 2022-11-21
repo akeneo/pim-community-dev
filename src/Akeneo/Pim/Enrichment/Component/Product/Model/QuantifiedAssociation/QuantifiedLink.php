@@ -38,7 +38,7 @@ class QuantifiedLink
         Assert::nullOrStringNotEmpty($identifier);
         Assert::uuid(
             $uuid,
-            sprintf('The associated product "%s" is not a valid uuid', $uuid)
+            \sprintf('The associated product "%s" is not a valid uuid', $uuid)
         );
 
         return new self($quantity, $identifier, Uuid::fromString($uuid));

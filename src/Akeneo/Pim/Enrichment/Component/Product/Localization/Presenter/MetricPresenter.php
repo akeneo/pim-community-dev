@@ -74,7 +74,7 @@ class MetricPresenter extends NumberPresenter
         $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
         $unit = isset($value['unit']) && $value['unit'] !== '' ? $unitLabel : null;
 
-        return join(' ', array_filter([$amount, $unit], fn ($value) => null !== $value && '' !== $value));
+        return \join(' ', \array_filter([$amount, $unit], fn ($value) => null !== $value && '' !== $value));
     }
 
     /**
@@ -89,8 +89,8 @@ class MetricPresenter extends NumberPresenter
      */
     protected function getStructuredMetric($value, $versionedAttribute)
     {
-        $parts = preg_split('/-/', $versionedAttribute);
-        $unit = end($parts);
+        $parts = \preg_split('/-/', $versionedAttribute);
+        $unit = \end($parts);
 
         return ('unit' === $unit) ? ['amount' => null, 'unit' => $value] : ['amount' => $value, 'unit' => null];
     }

@@ -142,7 +142,7 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
             )
         ];
 
-        $this->get(ProductModelScoreRepository::class)->saveAll(array_values($productModelsScores));
+        $this->get(ProductModelScoreRepository::class)->saveAll(\array_values($productModelsScores));
 
         return $productModelsScores;
     }

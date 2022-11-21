@@ -36,10 +36,10 @@ class ProductModelScoreRepository implements ProductModelScoreRepositoryInterfac
         $queriesParametersTypes = [];
 
         foreach ($productsScores as $index => $productModelScore) {
-            $productModelId = sprintf('productModelId_%d', $index);
-            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
-            $scores = sprintf('scores_%d', $index);
-            $scoresPartialCriteria = sprintf('scores_partial_criteria_%d', $index);
+            $productModelId = \sprintf('productModelId_%d', $index);
+            $evaluatedAt = \sprintf('evaluatedAt_%d', $index);
+            $scores = \sprintf('scores_%d', $index);
+            $scoresPartialCriteria = \sprintf('scores_partial_criteria_%d', $index);
 
             $queries .= <<<SQL
 INSERT INTO pim_data_quality_insights_product_model_score (product_model_id, evaluated_at, scores, scores_partial_criteria)

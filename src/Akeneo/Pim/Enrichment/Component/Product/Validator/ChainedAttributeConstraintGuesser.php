@@ -32,7 +32,7 @@ class ChainedAttributeConstraintGuesser implements ConstraintGuesserInterface
 
         foreach ($this->guessers as $guesser) {
             if ($guesser->supportAttribute($attribute)) {
-                $constraints = array_merge(
+                $constraints = \array_merge(
                     $constraints,
                     $guesser->guessConstraints($attribute)
                 );

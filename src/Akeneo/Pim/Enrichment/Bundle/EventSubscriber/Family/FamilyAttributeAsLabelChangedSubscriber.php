@@ -40,7 +40,7 @@ class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterfac
     {
         $subject = $event->getSubject();
 
-        if (!$subject instanceof FamilyInterface || is_null($subject->getId())) {
+        if (!$subject instanceof FamilyInterface || \is_null($subject->getId())) {
             return;
         }
 
@@ -66,7 +66,7 @@ class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterfac
                 $this->esClient->updateByQuery([
                     'script' => [
                         'source' => "ctx._source.label = ctx._source.values[params.attributeAsLabel]",
-                        'params' => ['attributeAsLabel' => sprintf('%s-text', $attributeCodeAsLabel)],
+                        'params' => ['attributeAsLabel' => \sprintf('%s-text', $attributeCodeAsLabel)],
                     ],
                     'query' => [
                         'term' => ['family.code' => $familyCode]

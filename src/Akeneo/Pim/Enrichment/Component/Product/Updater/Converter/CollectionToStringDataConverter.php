@@ -50,6 +50,6 @@ final class CollectionToStringDataConverter implements ValueDataConverter
             $chunks[] = (string) $data;
         }
 
-        return implode(', ', $chunks);
+        return \implode(', ', $chunks);
     }
 }

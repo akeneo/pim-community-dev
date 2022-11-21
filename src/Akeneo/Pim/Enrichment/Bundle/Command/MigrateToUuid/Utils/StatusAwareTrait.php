@@ -20,7 +20,7 @@ trait StatusAwareTrait
 
     public function setStatusInProgress(): void
     {
-        $this->startTime = microtime(true);
+        $this->startTime = \microtime(true);
         $this->status = 'in_progress';
     }
 
@@ -39,6 +39,6 @@ trait StatusAwareTrait
         if ($this->startTime === null) {
             return null;
         }
-        return microtime(true) - $this->startTime;
+        return \microtime(true) - $this->startTime;
     }
 }

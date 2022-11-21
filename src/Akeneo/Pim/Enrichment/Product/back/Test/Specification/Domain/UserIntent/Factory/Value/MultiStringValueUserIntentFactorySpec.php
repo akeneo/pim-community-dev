@@ -19,12 +19,12 @@ use PhpSpec\ObjectBehavior;
 
 class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(MultiStringValueUserIntentFactory::class);
     }
 
-    function it_returns_set_multi_select_user_intent()
+    public function it_returns_set_multi_select_user_intent()
     {
         $this->create(AttributeTypes::OPTION_MULTI_SELECT, 'a_multi_select', [
             'data' => ['option1', 'option2'],
@@ -33,7 +33,7 @@ class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetMultiSelectValue('a_multi_select', null, null, ['option1', 'option2']));
     }
 
-    function it_returns_set_multi_reference_entity_user_intent()
+    public function it_returns_set_multi_reference_entity_user_intent()
     {
         $this->create(AttributeTypes::REFERENCE_ENTITY_COLLECTION, 'a_multi_ref_entity', [
             'data' => ['record1', 'record2'],
@@ -42,7 +42,7 @@ class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetMultiReferenceEntityValue('a_multi_ref_entity', null, null, ['record1', 'record2']));
     }
 
-    function it_returns_set_multi_reference_data_user_intent()
+    public function it_returns_set_multi_reference_data_user_intent()
     {
         $this->create(AttributeTypes::REFERENCE_DATA_MULTI_SELECT, 'a_multi_ref_data', [
             'data' => ['record1', 'record2'],
@@ -51,7 +51,7 @@ class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetMultiReferenceDataValue('a_multi_ref_data', null, null, ['record1', 'record2']));
     }
 
-    function it_returns_set_asset_collection_user_intent()
+    public function it_returns_set_asset_collection_user_intent()
     {
         $this->create(AttributeTypes::ASSET_COLLECTION, 'an_asset_collection', [
             'data' => ['asset1', 'asset2'],
@@ -60,7 +60,7 @@ class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetAssetValue('an_asset_collection', null, null, ['asset1', 'asset2']));
     }
 
-    function it_returns_clear_value()
+    public function it_returns_clear_value()
     {
         $this->create(AttributeTypes::OPTION_MULTI_SELECT, 'a_multi_select', [
             'data' => [],
@@ -69,7 +69,7 @@ class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new ClearValue('a_multi_select', 'ecommerce', 'fr_FR'));
     }
 
-    function it_throws_an_exception_if_data_is_not_valid()
+    public function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', [AttributeTypes::OPTION_MULTI_SELECT, 'a_multi_select', ['value']]);

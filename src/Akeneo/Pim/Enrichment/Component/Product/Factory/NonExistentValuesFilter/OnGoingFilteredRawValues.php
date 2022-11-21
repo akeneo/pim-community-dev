@@ -61,7 +61,7 @@ final class OnGoingFilteredRawValues
 
     public function addFilteredValuesIndexedByType(array $filteredValueCollectionsIndexedByType): OnGoingFilteredRawValues
     {
-        $attributeTypesHandled = array_keys($filteredValueCollectionsIndexedByType);
+        $attributeTypesHandled = \array_keys($filteredValueCollectionsIndexedByType);
 
         $nonFilteredRawValues = $this->nonFilteredRawValuesCollectionIndexedByType;
 

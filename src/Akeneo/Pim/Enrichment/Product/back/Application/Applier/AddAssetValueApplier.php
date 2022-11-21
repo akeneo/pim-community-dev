@@ -33,7 +33,7 @@ final class AddAssetValueApplier implements UserIntentApplier
             $userIntent->channelCode()
         );
         $formerValueAsString = $formerValue ?
-            array_map(fn ($value) => $value->normalize(), $formerValue->getData())
+            \array_map(fn ($value) => $value->normalize(), $formerValue->getData())
             : null;
         $values = null !== $formerValueAsString ?
             \array_unique(\array_merge($formerValueAsString, $userIntent->assetCodes())) :

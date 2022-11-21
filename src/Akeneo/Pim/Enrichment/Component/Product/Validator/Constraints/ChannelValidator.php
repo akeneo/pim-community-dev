@@ -38,7 +38,7 @@ class ChannelValidator extends ChoiceValidator
         }
 
         $channels = $this->channelRepository->getChannelCodes();
-        if (0 === count($channels)) {
+        if (0 === \count($channels)) {
             throw new ConstraintDefinitionException('No channel is set in the application');
         }
         $constraint->choices = $channels;

@@ -104,7 +104,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     private function createProduct(): ProductUuid
     {
         $product = $this->getProductBuilder()
-            ->withIdentifier(strval(Uuid::uuid4()))
+            ->withIdentifier(\strval(Uuid::uuid4()))
             ->build();
 
         $this->get('pim_catalog.saver.product')->save($product);
@@ -115,7 +115,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     private function createVariantProduct(string $parentCode): ProductUuid
     {
         $product = $this->getProductBuilder()
-            ->withIdentifier(strval(Uuid::uuid4()))
+            ->withIdentifier(\strval(Uuid::uuid4()))
             ->withFamily('familyA')
             ->build();
 

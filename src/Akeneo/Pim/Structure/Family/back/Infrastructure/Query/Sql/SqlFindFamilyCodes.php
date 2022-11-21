@@ -43,7 +43,7 @@ class SqlFindFamilyCodes implements FindFamilyCodes
         $statement = $this->connection->executeQuery(
             $sql,
             [
-                'search' => sprintf('%%%s%%', $query->search?->value),
+                'search' => \sprintf('%%%s%%', $query->search?->value),
                 'locale_code' => $query->search?->labelLocale,
                 'include_codes' => $query->includeCodes,
                 'exclude_codes' => $query->excludeCodes,

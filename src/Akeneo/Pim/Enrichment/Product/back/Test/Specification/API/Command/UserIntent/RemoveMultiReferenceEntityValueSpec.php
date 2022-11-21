@@ -15,50 +15,50 @@ use PhpSpec\ObjectBehavior;
  */
 class RemoveMultiReferenceEntityValueSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith('attribute_ref_entity', null, null, ['Akeneo', 'Ziggy']);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(RemoveMultiReferenceEntityValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    function it_returns_the_attribute_code()
+    public function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('attribute_ref_entity');
     }
 
-    function it_returns_the_locale_code()
+    public function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn(null);
     }
 
-    function it_returns_the_channel_code()
+    public function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn(null);
     }
 
-    function it_returns_the_record_codes()
+    public function it_returns_the_record_codes()
     {
         $this->recordCodes()->shouldReturn(['Akeneo', 'Ziggy']);
     }
 
-    function it_can_only_be_instantiated_with_string_record_codes()
+    public function it_can_only_be_instantiated_with_string_record_codes()
     {
         $this->beConstructedWith('attribute_ref_entity', null, null, ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_empty_record_codes()
+    public function it_cannot_be_instantiated_with_empty_record_codes()
     {
         $this->beConstructedWith('attribute_ref_entity', null, null, []);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_if_one_of_the_record_codes_is_empty()
+    public function it_cannot_be_instantiated_if_one_of_the_record_codes_is_empty()
     {
         $this->beConstructedWith('attribute_ref_entity', null, null, ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

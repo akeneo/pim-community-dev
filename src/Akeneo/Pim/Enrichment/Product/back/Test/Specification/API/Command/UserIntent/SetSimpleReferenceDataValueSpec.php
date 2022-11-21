@@ -14,38 +14,38 @@ use PhpSpec\ObjectBehavior;
  */
 class SetSimpleReferenceDataValueSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith('attribute_name', null, null, 'Akeneo');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetSimpleReferenceDataValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    function it_returns_the_attribute_code()
+    public function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('attribute_name');
     }
 
-    function it_returns_the_locale_code()
+    public function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn(null);
     }
 
-    function it_returns_the_channel_code()
+    public function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn(null);
     }
 
-    function it_returns_the_value()
+    public function it_returns_the_value()
     {
         $this->value()->shouldReturn('Akeneo');
     }
 
-    function it_cannot_be_instantiated_with_an_empty_value()
+    public function it_cannot_be_instantiated_with_an_empty_value()
     {
         $this->beConstructedWith('attribute_name', null, null, '');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

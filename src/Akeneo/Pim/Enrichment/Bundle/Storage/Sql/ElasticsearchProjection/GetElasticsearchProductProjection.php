@@ -59,7 +59,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $rows
         );
         $notFetchedUuids = \array_diff(
-            array_map(fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
+            \array_map(fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
             $rowUuids
         );
 
@@ -110,8 +110,8 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 \json_decode($row['completeness'], true),
                 $row['parent_product_model_code'],
                 $values,
-                array_filter(\json_decode($row['ancestor_ids'], true)),
-                array_filter(\json_decode($row['ancestor_codes'], true)),
+                \array_filter(\json_decode($row['ancestor_ids'], true)),
+                \array_filter(\json_decode($row['ancestor_codes'], true)),
                 $productLabels,
                 $row['attribute_codes_of_ancestor'],
                 $row['attribute_codes_for_this_level']
@@ -314,7 +314,7 @@ SQL;
             $attributeCodesInFamily = \json_decode($row['attribute_codes_in_family'], true);
             $attributeCodesAtVariantProductLevel = \json_decode($row['attribute_codes_at_variant_product_level'], true);
 
-            $row['attribute_codes_of_ancestor'] = array_values(array_unique(array_diff($attributeCodesInFamily, $attributeCodesAtVariantProductLevel)));
+            $row['attribute_codes_of_ancestor'] = \array_values(\array_unique(\array_diff($attributeCodesInFamily, $attributeCodesAtVariantProductLevel)));
 
             return $row;
         }, $rows);

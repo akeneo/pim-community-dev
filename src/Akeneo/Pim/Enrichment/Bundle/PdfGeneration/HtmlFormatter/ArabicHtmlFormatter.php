@@ -18,9 +18,9 @@ class ArabicHtmlFormatter implements HtmlFormatter
         $arabic = new Arabic();
         $arabicIndexes = $arabic->arIdentify($html);
 
-        for ($i = count($arabicIndexes)-1; $i >= 0; $i-=2) {
-            $utf8ar = $arabic->utf8Glyphs(substr($html, $arabicIndexes[$i-1], $arabicIndexes[$i] - $arabicIndexes[$i-1]), 50, false);
-            $html   = substr_replace($html, $utf8ar, $arabicIndexes[$i-1], $arabicIndexes[$i] - $arabicIndexes[$i-1]);
+        for ($i = \count($arabicIndexes)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(\substr($html, $arabicIndexes[$i-1], $arabicIndexes[$i] - $arabicIndexes[$i-1]), 50, false);
+            $html   = \substr_replace($html, $utf8ar, $arabicIndexes[$i-1], $arabicIndexes[$i] - $arabicIndexes[$i-1]);
         }
 
         return $html;

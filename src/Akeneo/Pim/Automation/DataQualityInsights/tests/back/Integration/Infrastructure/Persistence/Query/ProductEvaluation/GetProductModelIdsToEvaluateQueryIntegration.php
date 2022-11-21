@@ -11,8 +11,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsToEvaluateQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -35,15 +35,15 @@ class GetProductModelIdsToEvaluateQueryIntegration extends DataQualityInsightsTe
         $this->createMinimalFamilyAndFamilyVariant('a_family', 'a_family_variant');
         $this->givenAProductModelWithEvaluationDone();
 
-        $this->assertEquals([], iterator_to_array($this->productModelQuery->execute(4, 2)), 'All product models evaluations should be done');
+        $this->assertEquals([], \iterator_to_array($this->productModelQuery->execute(4, 2)), 'All product models evaluations should be done');
 
         $expectedProductIds = $this->givenThreeProductModelsToEvaluate();
-        $productIds = iterator_to_array($this->productModelQuery->execute(4, 2));
-        $productIds = array_map(fn(ProductModelIdCollection $collection) => $collection->toArrayString(), $productIds);
+        $productIds = \iterator_to_array($this->productModelQuery->execute(4, 2));
+        $productIds = \array_map(fn (ProductModelIdCollection $collection) => $collection->toArrayString(), $productIds);
 
         $this->assertCount(2, $productIds);
         $this->assertCount(2, $productIds[0]);
-        $this->assertEqualsCanonicalizing($expectedProductIds, array_merge_recursive(...$productIds));
+        $this->assertEqualsCanonicalizing($expectedProductIds, \array_merge_recursive(...$productIds));
     }
 
     private function givenThreeProductModelsToEvaluate(): array

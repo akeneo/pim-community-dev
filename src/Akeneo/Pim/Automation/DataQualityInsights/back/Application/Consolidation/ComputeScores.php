@@ -66,8 +66,8 @@ class ComputeScores
             return null;
         }
 
-        $score = round(array_sum($criteriaRates) / $totalCoefficient, 0, PHP_ROUND_HALF_DOWN);
+        $score = \round(\array_sum($criteriaRates) / $totalCoefficient, 0, PHP_ROUND_HALF_DOWN);
 
-        return new Rate(intval($score));
+        return new Rate(\intval($score));
     }
 }

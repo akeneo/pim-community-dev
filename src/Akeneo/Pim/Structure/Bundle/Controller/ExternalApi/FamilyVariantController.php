@@ -67,13 +67,13 @@ class FamilyVariantController
     {
         $family = $this->familyRepository->findOneByIdentifier($familyCode);
         if (null === $family) {
-            throw new NotFoundHttpException(sprintf('Family "%s" does not exist.', $familyCode));
+            throw new NotFoundHttpException(\sprintf('Family "%s" does not exist.', $familyCode));
         }
 
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($code);
         if (null === $familyVariant || \strtolower($familyVariant->getFamily()->getCode()) !== \strtolower($familyCode)) {
             throw new NotFoundHttpException(
-                sprintf(
+                \sprintf(
                     'Family variant "%s" does not exist or is not a variant of the family "%s".',
                     $code,
                     $familyCode
@@ -101,7 +101,7 @@ class FamilyVariantController
     {
         $family = $this->familyRepository->findOneByIdentifier($familyCode);
         if (null === $family) {
-            throw new NotFoundHttpException(sprintf('Family "%s" does not exist.', $familyCode));
+            throw new NotFoundHttpException(\sprintf('Family "%s" does not exist.', $familyCode));
         }
 
         try {
@@ -116,7 +116,7 @@ class FamilyVariantController
             'with_count' => 'false',
         ];
 
-        $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $queryParameters = \array_merge($defaultParameters, $request->query->all());
 
         $criteria['family'] = $family->getId();
 
@@ -264,7 +264,7 @@ class FamilyVariantController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -297,7 +297,7 @@ class FamilyVariantController
      */
     protected function getDecodedContent($content): array
     {
-        $decodedContent = json_decode($content, true);
+        $decodedContent = \json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -319,9 +319,9 @@ class FamilyVariantController
      */
     protected function validateCodeConsistency($familyVariantCode, array $data)
     {
-        if (array_key_exists('code', $data) && $familyVariantCode !== $data['code']) {
+        if (\array_key_exists('code', $data) && $familyVariantCode !== $data['code']) {
             throw new UnprocessableEntityHttpException(
-                sprintf(
+                \sprintf(
                     'The code "%s" provided in the request body must match the code "%s" provided in the url.',
                     $data['code'],
                     $familyVariantCode

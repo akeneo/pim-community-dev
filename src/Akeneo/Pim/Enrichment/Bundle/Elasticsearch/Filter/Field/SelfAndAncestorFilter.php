@@ -115,7 +115,7 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
             FieldFilterHelper::checkString(self::ANCESTOR_ID_ES_FIELD, $value, static::class);
             if (!$this->isValidProductModelId($value) && !$this->isValidProductId($value)) {
                 throw new ObjectNotFoundException(
-                    sprintf('Object with ID "%s" does not exist as a product nor as a product model', $value)
+                    \sprintf('Object with ID "%s" does not exist as a product nor as a product model', $value)
                 );
             }
         }
@@ -128,11 +128,11 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
      */
     private function isValidProductModelId(string $value): bool
     {
-        if (0 !== strpos($value, 'product_model_')) {
+        if (0 !== \strpos($value, 'product_model_')) {
             return false;
         }
 
-        $id = str_replace('product_model_', '', $value);
+        $id = \str_replace('product_model_', '', $value);
 
         return null !== $this->productModelRepository->findOneBy(['id' => $id]);
     }
@@ -144,11 +144,11 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
      */
     private function isValidProductId(string $value): bool
     {
-        if (0 !== strpos($value, 'product_')) {
+        if (0 !== \strpos($value, 'product_')) {
             return false;
         }
 
-        $uuid = str_replace('product_', '', $value);
+        $uuid = \str_replace('product_', '', $value);
 
         return null !== $this->productRepository->findOneBy(['uuid' => $uuid]);
     }

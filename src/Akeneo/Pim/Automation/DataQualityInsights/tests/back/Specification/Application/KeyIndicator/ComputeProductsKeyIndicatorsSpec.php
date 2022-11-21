@@ -20,8 +20,7 @@ final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
         ComputeProductsKeyIndicator       $goodEnrichment,
         ComputeProductsKeyIndicator       $hasImage
-    )
-    {
+    ) {
         $this->beConstructedWith($getLocalesByChannelQuery, [$goodEnrichment, $hasImage]);
     }
 

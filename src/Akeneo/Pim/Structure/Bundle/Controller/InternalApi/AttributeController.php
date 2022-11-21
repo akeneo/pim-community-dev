@@ -143,21 +143,21 @@ class AttributeController
 
         // If 'identifiers=' is used, any 'options[identifiers][]=' passed will be overwritten.
         if ($request->get('identifiers', null) !== null) {
-            $options['identifiers'] = array_unique(explode(',', $request->get('identifiers')));
+            $options['identifiers'] = \array_unique(\explode(',', $request->get('identifiers')));
         }
 
-        if (count($options['identifiers']) > 0) {
-            $options['limit'] = count($options['identifiers']);
+        if (\count($options['identifiers']) > 0) {
+            $options['limit'] = \count($options['identifiers']);
         }
 
         if ($request->get('types', null) !== null) {
-            $options['types'] = is_array($request->get('types')) ?
+            $options['types'] = \is_array($request->get('types')) ?
                 $request->get('types') :
-                explode(',', $request->get('types'));
+                \explode(',', $request->get('types'));
         }
 
         if ($request->get('attribute_groups', null) !== null) {
-            $options['attribute_groups'] = array_unique(explode(',', $request->get('attribute_groups')));
+            $options['attribute_groups'] = \array_unique(\explode(',', $request->get('attribute_groups')));
         }
 
         if ($request->get('localizable', null) !== null) {
@@ -194,7 +194,7 @@ class AttributeController
             $options
         );
 
-        $normalizedAttributes = array_map(function ($attribute) {
+        $normalizedAttributes = \array_map(function ($attribute) {
             return $this->lightAttributeNormalizer->normalize(
                 $attribute,
                 'internal_api',
@@ -225,7 +225,7 @@ class AttributeController
         }
 
         if (null === $attribute) {
-            throw new NotFoundHttpException(sprintf('Attribute with code "%s" not found', $identifier));
+            throw new NotFoundHttpException(\sprintf('Attribute with code "%s" not found', $identifier));
         }
 
         return new JsonResponse($this->normalizer->normalize(
@@ -250,7 +250,7 @@ class AttributeController
 
         $attribute = $this->factory->create();
 
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
 
         $localizedDataViolations = $this->validateLocalizedData($data);
         $this->updateAttribute($attribute, $data);
@@ -294,7 +294,7 @@ class AttributeController
 
         $attribute = $this->getAttributeOr404($identifier);
 
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
 
         $localizedDataViolations = $this->validateLocalizedData($data);
         $this->updateAttribute($attribute, $data);
@@ -371,9 +371,9 @@ class AttributeController
         }
 
         $channelCodes = $this->channelCodesUsedAsConversionUnit($code);
-        if (count($channelCodes) > 0) {
+        if (\count($channelCodes) > 0) {
             $message = $this->translator->trans('flash.attribute.used_as_conversion_unit', [
-                '%channelCodes%' => join(', ', $channelCodes)
+                '%channelCodes%' => \join(', ', $channelCodes)
             ]);
 
             return new JsonResponse(
@@ -406,7 +406,7 @@ class AttributeController
         $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
         if (null === $attribute) {
             throw new NotFoundHttpException(
-                sprintf('Attribute with identifier "%s" not found', $identifier)
+                \sprintf('Attribute with identifier "%s" not found', $identifier)
             );
         }
 
@@ -481,8 +481,8 @@ class AttributeController
         // TODO This method can be updated with a real SQL query (not in 2.3 because we can't filter on JSON columns)
         $channelCodes = [];
         foreach ($this->channelRepository->findAll() as $channel) {
-            $attributeCodes = array_keys($channel->getConversionUnits());
-            if (in_array($code, $attributeCodes)) {
+            $attributeCodes = \array_keys($channel->getConversionUnits());
+            if (\in_array($code, $attributeCodes)) {
                 $channelCodes[] = $channel->getCode();
             }
         }

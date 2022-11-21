@@ -24,7 +24,7 @@ class ReferenceDataRepository extends EntityRepository implements
     public function findBySearch($search = null, array $options = [])
     {
         if (null !== $labelProperty = $this->getReferenceDataLabelProperty()) {
-            $selectDql = sprintf(
+            $selectDql = \sprintf(
                 '%s.%s as id, ' .
                 'CASE WHEN %s.%s IS NULL OR %s.%s = \'\' THEN CONCAT(\'[\', %s.code, \']\') ELSE %s.%s END AS text',
                 $this->getAlias(),
@@ -38,7 +38,7 @@ class ReferenceDataRepository extends EntityRepository implements
                 $labelProperty
             );
         } else {
-            $selectDql = sprintf(
+            $selectDql = \sprintf(
                 '%s.%s as id, CONCAT(\'[\', %s.code, \']\') as text',
                 $this->getAlias(),
                 isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id',
@@ -50,16 +50,16 @@ class ReferenceDataRepository extends EntityRepository implements
         $qb->select($selectDql);
 
         if ($this->getClassMetadata()->hasField('sortOrder')) {
-            $qb->orderBy(sprintf('%s.sortOrder', $this->getAlias()), 'DESC');
-            $qb->addOrderBy(sprintf('%s.code', $this->getAlias()));
+            $qb->orderBy(\sprintf('%s.sortOrder', $this->getAlias()), 'DESC');
+            $qb->addOrderBy(\sprintf('%s.code', $this->getAlias()));
         } else {
-            $qb->orderBy(sprintf('%s.code', $this->getAlias()));
+            $qb->orderBy(\sprintf('%s.code', $this->getAlias()));
         }
 
         if (null !== $search) {
-            $searchDql = sprintf('%s.code LIKE :search', $this->getAlias());
+            $searchDql = \sprintf('%s.code LIKE :search', $this->getAlias());
             if (null !== $labelProperty) {
-                $searchDql .= sprintf(' OR %s.%s LIKE :search', $this->getAlias(), $labelProperty);
+                $searchDql .= \sprintf(' OR %s.%s LIKE :search', $this->getAlias(), $labelProperty);
             }
             $qb->andWhere($searchDql)->setParameter('search', "%$search%");
         }

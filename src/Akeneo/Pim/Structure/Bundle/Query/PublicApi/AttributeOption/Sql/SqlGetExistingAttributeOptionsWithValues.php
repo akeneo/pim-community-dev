@@ -54,13 +54,13 @@ GROUP BY attribute.code, attribute_option.code
 SQL;
 
         $rawResults = $this->connection->executeQuery(
-            sprintf($query, implode(',', $queryStringParams)),
+            \sprintf($query, \implode(',', $queryStringParams)),
             $queryParams
         )->fetchAllAssociative();
 
         $indexedResults = [];
         foreach ($rawResults as $rawResult) {
-            $indexedResults[$rawResult['option_key']] = json_decode($rawResult['labels'], true);
+            $indexedResults[$rawResult['option_key']] = \json_decode($rawResult['labels'], true);
         }
 
         return $indexedResults;
@@ -68,14 +68,14 @@ SQL;
 
     private function getAttributeCodeFromKey(string $key): string
     {
-        $chunks = explode('.', $key);
+        $chunks = \explode('.', $key);
 
         return $chunks[0];
     }
 
     private function getOptionCodeFromKey(string $key): string
     {
-        $chunks = explode('.', $key);
+        $chunks = \explode('.', $key);
 
         return $chunks[1];
     }

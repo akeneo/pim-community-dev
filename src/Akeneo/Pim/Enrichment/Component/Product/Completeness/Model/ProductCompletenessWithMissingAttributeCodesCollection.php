@@ -36,19 +36,19 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
 
     public function isEmpty(): bool
     {
-        return count($this->completenesses) === 0;
+        return \count($this->completenesses) === 0;
     }
 
     public function getCompletenessForChannelAndLocale(string $channelCode, string $localeCode): ?ProductCompletenessWithMissingAttributeCodes
     {
-        $key = sprintf('%s-%s', $channelCode, $localeCode);
+        $key = \sprintf('%s-%s', $channelCode, $localeCode);
 
         return $this->completenesses[$key] ?? null;
     }
 
     public function count(): int
     {
-        return count($this->completenesses);
+        return \count($this->completenesses);
     }
 
     /**
@@ -84,7 +84,7 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
 
     private function add(ProductCompletenessWithMissingAttributeCodes $completeness): void
     {
-        $key = sprintf('%s-%s', $completeness->channelCode(), $completeness->localeCode());
+        $key = \sprintf('%s-%s', $completeness->channelCode(), $completeness->localeCode());
         $this->completenesses[$key] = $completeness;
     }
 }

@@ -32,7 +32,7 @@ class ProductAnalyzer implements AnalyzerInterface
 
         while ($valuesData = $reader->read()) {
             if (0 === $stats['columns_count']) {
-                $stats['columns_count'] = count($valuesData);
+                $stats['columns_count'] = \count($valuesData);
             }
 
             $valuesCount = $this->countValues($valuesData);
@@ -51,7 +51,7 @@ class ProductAnalyzer implements AnalyzerInterface
         }
 
         if ($stats['products']['count'] > 0) {
-            $stats['products']['values_per_product']['average'] = round(
+            $stats['products']['values_per_product']['average'] = \round(
                 $stats['products']['values_count'] / $stats['products']['count']
             );
         }

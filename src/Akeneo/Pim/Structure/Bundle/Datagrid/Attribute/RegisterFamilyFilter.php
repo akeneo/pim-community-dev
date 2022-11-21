@@ -33,7 +33,7 @@ class RegisterFamilyFilter
                 'options' => [
                     'field_options' => [
                         'multiple' => true,
-                        'choices' => array_flip($this->familyRepository->execute($this->userContext->getCurrentLocaleCode())),
+                        'choices' => \array_flip($this->familyRepository->execute($this->userContext->getCurrentLocaleCode())),
                     ],
                 ],
             ]

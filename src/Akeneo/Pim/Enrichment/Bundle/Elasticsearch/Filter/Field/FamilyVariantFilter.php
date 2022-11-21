@@ -107,7 +107,7 @@ class FamilyVariantFilter extends AbstractFieldFilter implements FieldFilterInte
 
             if (null === $this->familyVariantRepository->findOneByIdentifier($value)) {
                 throw new ObjectNotFoundException(
-                    sprintf('Object "family_variant" with code "%s" does not exist', $value)
+                    \sprintf('Object "family_variant" with code "%s" does not exist', $value)
                 );
             }
         }

@@ -84,22 +84,22 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
     {
         switch ($field) {
             case 'code':
-                if (!is_string($value)) {
+                if (!\is_string($value)) {
                     throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
                 }
 
                 $familyVariant->setCode($value);
                 break;
             case 'labels':
-                if (!is_array($value)) {
+                if (!\is_array($value)) {
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
                 foreach ($value as $label) {
-                    if (null !== $label && !is_scalar($label)) {
+                    if (null !== $label && !\is_scalar($label)) {
                         throw InvalidPropertyTypeException::validArrayStructureExpected(
                             $field,
-                            sprintf('one of the %s is not a scalar', $field),
+                            \sprintf('one of the %s is not a scalar', $field),
                             static::class,
                             $label
                         );
@@ -124,7 +124,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
             case 'variant_attribute_sets':
                 $isNew = null === $familyVariant->getId();
 
-                if (!is_array($value)) {
+                if (!\is_array($value)) {
                     throw InvalidPropertyTypeException::arrayOfObjectsExpected($field, static::class, $value);
                 }
 
@@ -140,7 +140,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 }
 
                 foreach ($value as $attributeSetData) {
-                    if (!is_array($attributeSetData)) {
+                    if (!\is_array($attributeSetData)) {
                         throw InvalidPropertyTypeException::arrayOfObjectsExpected(
                             $field,
                             static::class,
@@ -151,25 +151,25 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                         continue;
                     }
 
-                    if (isset($attributeSetData['axes']) && !is_array($attributeSetData['axes'])) {
+                    if (isset($attributeSetData['axes']) && !\is_array($attributeSetData['axes'])) {
                         throw InvalidPropertyTypeException::arrayExpected(
-                            sprintf('%s" in the property "%s', 'axes', $field),
+                            \sprintf('%s" in the property "%s', 'axes', $field),
                             static::class,
                             $attributeSetData['axes']
                         );
                     }
 
-                    if (isset($attributeSetData['attributes']) && !is_array($attributeSetData['attributes'])) {
+                    if (isset($attributeSetData['attributes']) && !\is_array($attributeSetData['attributes'])) {
                         throw InvalidPropertyTypeException::arrayExpected(
-                            sprintf('%s" in the property "%s', 'attributes', $field),
+                            \sprintf('%s" in the property "%s', 'attributes', $field),
                             static::class,
                             $attributeSetData['attributes']
                         );
                     }
 
-                    if (!is_integer($attributeSetData['level'])) {
+                    if (!\is_integer($attributeSetData['level'])) {
                         throw InvalidPropertyTypeException::integerExpected(
-                            sprintf('%s" in the property "%s', 'level', $field),
+                            \sprintf('%s" in the property "%s', 'level', $field),
                             static::class,
                             $attributeSetData['level']
                         );
@@ -220,12 +220,12 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
      */
     private function getAttributes(array $attributeCodes, int $level): array
     {
-        return array_map(function ($attributeCode) use ($level) {
+        return \array_map(function ($attributeCode) use ($level) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if (null === $attribute) {
                 throw InvalidPropertyException::validEntityCodeExpected(
-                    sprintf('attribute_set_%d', $level),
+                    \sprintf('attribute_set_%d', $level),
                     'attribute code',
                     'The attribute does not exist',
                     static::class,

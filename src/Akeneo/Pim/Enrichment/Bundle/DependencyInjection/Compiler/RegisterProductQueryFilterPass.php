@@ -34,14 +34,14 @@ class RegisterProductQueryFilterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $registryTag = sprintf('pim_catalog.query.filter.%s_registry', $this->type);
+        $registryTag = \sprintf('pim_catalog.query.filter.%s_registry', $this->type);
 
         if (!$container->hasDefinition($registryTag)) {
             throw new \LogicException('Filter registry must be configured');
         }
 
         $registry = $container->getDefinition($registryTag);
-        $filterTag = sprintf('pim_catalog.elasticsearch.query.%s_filter', $this->type);
+        $filterTag = \sprintf('pim_catalog.elasticsearch.query.%s_filter', $this->type);
 
         $filters = $this->findAndSortTaggedServices($filterTag, $container);
         foreach ($filters as $filter) {
@@ -68,8 +68,8 @@ class RegisterProductQueryFilterPass implements CompilerPassInterface
                 $sortedServices[$priority][] = new Reference($serviceId);
             }
         }
-        krsort($sortedServices);
+        \krsort($sortedServices);
 
-        return count($sortedServices) > 0 ? call_user_func_array('array_merge', $sortedServices) : [];
+        return \count($sortedServices) > 0 ? \call_user_func_array('array_merge', $sortedServices) : [];
     }
 }

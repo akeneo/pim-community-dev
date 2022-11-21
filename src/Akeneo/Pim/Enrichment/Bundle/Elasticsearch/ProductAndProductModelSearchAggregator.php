@@ -72,14 +72,14 @@ class ProductAndProductModelSearchAggregator
      */
     private function getAttributeCodes(array $rawFilters): array
     {
-        $attributeFilters = array_filter(
+        $attributeFilters = \array_filter(
             $rawFilters,
             function ($filter) {
                 return 'attribute' === $filter['type'];
             }
         );
 
-        return array_column($attributeFilters, 'field');
+        return \array_column($attributeFilters, 'field');
     }
 
     /**
@@ -91,7 +91,7 @@ class ProductAndProductModelSearchAggregator
      */
     private function getCategoryCodes(array $rawFilters): array
     {
-        $categoriesFilter = array_filter(
+        $categoriesFilter = \array_filter(
             $rawFilters,
             function ($filter) {
                 return 'field' === $filter['type'] &&
@@ -101,10 +101,10 @@ class ProductAndProductModelSearchAggregator
         );
         $categoryCodes = [];
         foreach ($categoriesFilter as $categoryFilter) {
-            $categoryCodes = array_merge($categoryCodes, $categoryFilter['value']);
+            $categoryCodes = \array_merge($categoryCodes, $categoryFilter['value']);
             if (Operators::IN_CHILDREN_LIST === $categoryFilter['operator']) {
                 $childrenCategory = $this->getAllChildrenCodes($categoryCodes);
-                $categoryCodes = array_merge($categoryCodes, $childrenCategory);
+                $categoryCodes = \array_merge($categoryCodes, $childrenCategory);
             }
         }
 
@@ -126,7 +126,7 @@ class ProductAndProductModelSearchAggregator
             if (null !== $category) {
                 $childrenCodes = $this->categoryRepository->getAllChildrenCodes($category);
                 $childrenCodes[] = $category->getCode();
-                $allChildrenCodes = array_merge($allChildrenCodes, $childrenCodes);
+                $allChildrenCodes = \array_merge($allChildrenCodes, $childrenCodes);
             }
         }
 

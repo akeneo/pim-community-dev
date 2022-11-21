@@ -105,9 +105,9 @@ class AssociationFieldSetter extends AbstractFieldSetter
         AssociationTypeInterface $associationType,
         array $productsUuids
     ): void {
-        $productsUuids = array_unique($productsUuids);
+        $productsUuids = \array_unique($productsUuids);
         foreach ($owner->getAssociatedProducts($associationType->getCode()) as $associatedProduct) {
-            $index = array_search($associatedProduct->getUuid(), $productsUuids);
+            $index = \array_search($associatedProduct->getUuid(), $productsUuids);
 
             if (false === $index) {
                 $this->removeAssociatedProduct($owner, $associatedProduct, $associationType);
@@ -136,9 +136,9 @@ class AssociationFieldSetter extends AbstractFieldSetter
         AssociationTypeInterface $associationType,
         array $productsIdentifiers
     ): void {
-        $productsIdentifiers = array_unique($productsIdentifiers);
+        $productsIdentifiers = \array_unique($productsIdentifiers);
         foreach ($owner->getAssociatedProducts($associationType->getCode()) as $associatedProduct) {
-            $index = array_search($associatedProduct->getIdentifier(), $productsIdentifiers);
+            $index = \array_search($associatedProduct->getIdentifier(), $productsIdentifiers);
 
             if (false === $index) {
                 $this->removeAssociatedProduct($owner, $associatedProduct, $associationType);
@@ -193,10 +193,10 @@ class AssociationFieldSetter extends AbstractFieldSetter
         AssociationTypeInterface $associationType,
         array $productModelsIdentifiers
     ): void {
-        $productModelsIdentifiers = array_unique($productModelsIdentifiers);
+        $productModelsIdentifiers = \array_unique($productModelsIdentifiers);
 
         foreach ($owner->getAssociatedProductModels($associationType->getCode()) as $associatedProductModel) {
-            $index = array_search($associatedProductModel->getCode(), $productModelsIdentifiers);
+            $index = \array_search($associatedProductModel->getCode(), $productModelsIdentifiers);
 
             if (false === $index) {
                 $this->removeAssociatedProductModel($owner, $associatedProductModel, $associationType);
@@ -257,10 +257,10 @@ class AssociationFieldSetter extends AbstractFieldSetter
         AssociationTypeInterface $associationType,
         array $groupsCodes
     ): void {
-        $groupsCodes = array_unique($groupsCodes);
+        $groupsCodes = \array_unique($groupsCodes);
 
         foreach ($owner->getAssociatedGroups($associationType->getCode()) as $associatedGroup) {
-            $index = array_search($associatedGroup->getCode(), $groupsCodes);
+            $index = \array_search($associatedGroup->getCode(), $groupsCodes);
 
             if (false === $index) {
                 $owner->removeAssociatedGroup($associatedGroup, $associationType->getCode());
@@ -286,7 +286,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
     protected function checkData(string $field, $data): void
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $field,
                 static::class,
@@ -302,12 +302,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
     protected function checkAssociationData(string $field, array $data, string $assocTypeCode, $items): void
     {
-        if (!is_array($items) || !is_string($assocTypeCode) ||
+        if (!\is_array($items) || !\is_string($assocTypeCode) ||
             (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']) && !isset($items['product_uuids']))
         ) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
-                sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+                \sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
                 static::class,
                 $data
             );
@@ -323,12 +323,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
         }
 
         foreach ($items as $type => $itemData) {
-            if (!is_array($itemData)) {
-                $message = sprintf(
+            if (!\is_array($itemData)) {
+                $message = \sprintf(
                     'Property "%s" in association "%s" expects an array as data, "%s" given.',
                     $type,
                     $assocTypeCode,
-                    gettype($itemData)
+                    \gettype($itemData)
                 );
 
                 throw new InvalidPropertyTypeException(
@@ -347,10 +347,10 @@ class AssociationFieldSetter extends AbstractFieldSetter
     protected function checkAssociationItems(string $field, string $assocTypeCode, array $data, array $items, string $type): void
     {
         foreach ($items as $item) {
-            if (!is_string($item)) {
+            if (!\is_string($item)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+                    \sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
                     static::class,
                     $data
                 );
@@ -358,7 +358,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
             if ('product_uuids' === $type && !Uuid::isValid($item)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    sprintf(
+                    \sprintf(
                         'association format is not valid for the association type "%s", "product_uuids" expects an array of valid uuids.',
                         $assocTypeCode
                     ),

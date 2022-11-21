@@ -43,7 +43,7 @@ final class AssociationFieldClearer implements ClearerInterface
     {
         Assert::true(
             $this->supportsProperty($property),
-            sprintf('The clearer does not handle the "%s" property.', $property)
+            \sprintf('The clearer does not handle the "%s" property.', $property)
         );
 
         if (!$entity instanceof EntityWithAssociationsInterface) {

@@ -30,7 +30,7 @@ SQL;
 
         $statement = $this->connection->executeQuery($query);
 
-        return array_map(function ($row) {
+        return \array_map(function ($row) {
             return new FamilyCode($row['code']);
         }, $statement->fetchAllAssociative());
     }

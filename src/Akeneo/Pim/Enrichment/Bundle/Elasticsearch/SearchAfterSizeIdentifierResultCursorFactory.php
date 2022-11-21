@@ -31,12 +31,12 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
         $options = $this->resolveOptions($options);
         $sort = ['id' => 'asc'];
 
-        $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type', 'id']);
-        $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;
+        $esQuery['_source'] = \array_merge($esQuery['_source'], ['document_type', 'id']);
+        $esQuery['sort'] = isset($esQuery['sort']) ? \array_merge($esQuery['sort'], $sort) : $sort;
         $esQuery['size'] = $options['limit'];
 
         if (null !== $options['search_after_unique_key']) {
-            array_push($options['search_after'], $options['search_after_unique_key']);
+            \array_push($options['search_after'], $options['search_after_unique_key']);
         }
         if (!empty($options['search_after'])) {
             $esQuery['search_after'] = $options['search_after'];

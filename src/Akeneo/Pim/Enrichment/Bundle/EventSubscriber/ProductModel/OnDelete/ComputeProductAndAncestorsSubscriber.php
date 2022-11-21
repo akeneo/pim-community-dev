@@ -58,7 +58,7 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
     public function onProductModelRemoveAll(RemoveEvent $event): void
     {
         $productModels = $event->getSubject();
-        if (!is_array($productModels) || !current($productModels) instanceof ProductModelInterface) {
+        if (!\is_array($productModels) || !\current($productModels) instanceof ProductModelInterface) {
             return;
         }
 
@@ -79,7 +79,7 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
     private function elasticsearchShouldBeRefreshed(array $productModels): bool
     {
         foreach ($productModels as $productModel) {
-            if (null !== $productModel->getCreated() && 10 > time() - $productModel->getCreated()->getTimestamp()) {
+            if (null !== $productModel->getCreated() && 10 > \time() - $productModel->getCreated()->getTimestamp()) {
                 return true;
             }
         }

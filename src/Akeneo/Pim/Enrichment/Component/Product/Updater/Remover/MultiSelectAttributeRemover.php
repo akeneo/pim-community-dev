@@ -70,7 +70,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         if (null !== $value) {
             $newOptionCodes = [];
             foreach ($value->getData() as $originalOptionCode) {
-                if (!in_array($originalOptionCode, $optionCodes)) {
+                if (!\in_array($originalOptionCode, $optionCodes)) {
                     $newOptionCodes[] = $originalOptionCode;
                 }
             }
@@ -95,7 +95,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
@@ -104,10 +104,10 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         }
 
         foreach ($data as $key => $value) {
-            if (!is_string($value)) {
+            if (!\is_string($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    sprintf('one of the option codes is not a string, "%s" given', gettype($value)),
+                    \sprintf('one of the option codes is not a string, "%s" given', \gettype($value)),
                     static::class,
                     $data
                 );

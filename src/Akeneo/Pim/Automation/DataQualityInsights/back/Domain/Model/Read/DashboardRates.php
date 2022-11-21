@@ -29,14 +29,14 @@ final class DashboardRates
     public function __construct(array $rates, ChannelCode $channelCode, LocaleCode $localeCode, TimePeriod $timePeriod)
     {
         $this->rates = $rates;
-        $this->channelCode = strval($channelCode);
-        $this->localeCode = strval($localeCode);
-        $this->timePeriod = strval($timePeriod);
+        $this->channelCode = \strval($channelCode);
+        $this->localeCode = \strval($localeCode);
+        $this->timePeriod = \strval($timePeriod);
     }
 
     public function toArray()
     {
-        if (! array_key_exists($this->timePeriod, $this->rates)) {
+        if (! \array_key_exists($this->timePeriod, $this->rates)) {
             return [];
         }
 
@@ -106,7 +106,7 @@ final class DashboardRates
     {
         $monthlyTimePeriodDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))->isLastDayOfMonth() ?
             new \DateTimeImmutable() :
-            (new \DateTimeImmutable())->setTimestamp(strtotime(date('Y-m-t')));
+            (new \DateTimeImmutable())->setTimestamp(\strtotime(\date('Y-m-t')));
 
         $lastMonths = [];
         for ($i = self::NUMBER_OF_MONTHS_TO_RETURN; $i >= 1; $i--) {

@@ -70,7 +70,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
             return;
         }
 
-        if (is_array($subject) && current($subject) instanceof CategoryInterface) {
+        if (\is_array($subject) && \current($subject) instanceof CategoryInterface) {
             foreach ($subject as $category) {
                 $this->computedCodes[$category->getCode()] = $this->getCodeAndChildrenCodes($category);
                 $this->computedRootCodes[] = $this->getRootCategoryCode($category);
@@ -109,17 +109,17 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
     public function removeCategoryFilters(GenericEvent $event): int
     {
         $subject = $event->getSubject();
-        if (!is_array($subject) || !current($subject) instanceof CategoryInterface) {
+        if (!\is_array($subject) || !\current($subject) instanceof CategoryInterface) {
             return 0;
         }
 
         $codes = [];
         foreach ($subject as $category) {
             $code = $category->getCode();
-            $codes = array_merge($codes, $this->computedCodes[$code] ?? [$code]);
+            $codes = \array_merge($codes, $this->computedCodes[$code] ?? [$code]);
         }
 
-        return $this->removeCategoryCodesFilterInAllJobInstances(array_unique($codes));
+        return $this->removeCategoryCodesFilterInAllJobInstances(\array_unique($codes));
     }
 
     /**
@@ -132,7 +132,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
     {
         $codes = [$category->getCode()];
         foreach ($category->getChildren() as $child) {
-            $codes = array_merge($codes, $this->getCodeAndChildrenCodes($child));
+            $codes = \array_merge($codes, $this->getCodeAndChildrenCodes($child));
         }
 
         return $codes;
@@ -161,7 +161,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
             $this->bulkSaver->saveAll($jobsToUpdate);
         }
 
-        return count($jobsToUpdate);
+        return \count($jobsToUpdate);
     }
 
     /**
@@ -175,7 +175,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
     {
         $rawParameters = $jobInstance->getRawParameters();
 
-        if (is_array($rawParameters['filters']['data'] ?? null)) {
+        if (\is_array($rawParameters['filters']['data'] ?? null)) {
             foreach ($rawParameters['filters']['data'] as $filterKey => $filter) {
                 if ('categories' !== $filter['field']) {
                     continue;
@@ -183,7 +183,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
 
                 $newValues = [];
                 foreach ($filter['value'] as $value) {
-                    if (!in_array($value, $categoryCodes)) {
+                    if (!\in_array($value, $categoryCodes)) {
                         $newValues[] = $value;
                     }
                 }
@@ -191,7 +191,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
                 if (empty($newValues)) {
                     $rawParameters['filters']['data'][$filterKey]['value'] = empty($this->computedRootCodes)
                         ? self::DEFAULT_CATEGORY_FILTER_VALUE
-                        : array_unique($this->computedRootCodes)
+                        : \array_unique($this->computedRootCodes)
                     ;
                     $rawParameters['filters']['data'][$filterKey]['operator'] = self::DEFAULT_CATEGORY_FILTER_OPERATOR;
                     $jobInstance->setRawParameters($rawParameters);
@@ -199,7 +199,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
                     return true;
                 }
 
-                if (count($newValues) !== count(($filter['value']))) {
+                if (\count($newValues) !== \count(($filter['value']))) {
                     $rawParameters['filters']['data'][$filterKey]['value'] = $newValues;
                     $jobInstance->setRawParameters($rawParameters);
 

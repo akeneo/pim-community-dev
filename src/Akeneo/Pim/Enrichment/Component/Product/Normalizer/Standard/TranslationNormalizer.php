@@ -30,7 +30,7 @@ class TranslationNormalizer implements NormalizerInterface, CacheableSupportsMet
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context = array_merge(
+        $context = \array_merge(
             [
                 'property' => 'label',
                 'locales'  => [],
@@ -38,8 +38,8 @@ class TranslationNormalizer implements NormalizerInterface, CacheableSupportsMet
             $context
         );
 
-        $translations = array_fill_keys($context['locales'], null);
-        $method = sprintf('get%s', ucfirst($context['property']));
+        $translations = \array_fill_keys($context['locales'], null);
+        $method = \sprintf('get%s', \ucfirst($context['property']));
 
         foreach ($object->getTranslations() as $translation) {
             $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
@@ -47,13 +47,13 @@ class TranslationNormalizer implements NormalizerInterface, CacheableSupportsMet
                 continue;
             }
 
-            if (false === method_exists($translation, $method)) {
+            if (false === \method_exists($translation, $method)) {
                 throw new \LogicException(
-                    sprintf("Class %s doesn't provide method %s", get_class($translation), $method)
+                    \sprintf("Class %s doesn't provide method %s", \get_class($translation), $method)
                 );
             }
 
-            if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
+            if (empty($context['locales']) || \in_array($translation->getLocale(), $context['locales'])) {
                 $translations[$translation->getLocale()] = '' === $translation->$method() ?
                     null : $translation->$method();
             }

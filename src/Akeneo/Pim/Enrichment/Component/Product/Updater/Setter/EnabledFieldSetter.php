@@ -45,7 +45,7 @@ class EnabledFieldSetter extends AbstractFieldSetter
             $data = true;
         }
 
-        if (!is_bool($data)) {
+        if (!\is_bool($data)) {
             throw InvalidPropertyTypeException::booleanExpected(
                 $field,
                 static::class,

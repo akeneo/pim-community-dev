@@ -41,9 +41,9 @@ class RemoveValuesFromProductModels
 
     private function removeValuesForAttributeCodes(array $attributeCodes, array $productModelIdentifiers): void
     {
-        $paths = implode(
+        $paths = \implode(
             ',',
-            array_map(fn ($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)), $attributeCodes)
+            \array_map(fn ($attributeCode) => $this->connection->quote(\sprintf('$."%s"', $attributeCode)), $attributeCodes)
         );
 
         $this->connection->executeQuery(

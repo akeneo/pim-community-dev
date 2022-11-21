@@ -19,7 +19,7 @@ class GetAttributeTypesMasksQuery implements GetRequiredAttributesMasks
     public function __construct(Connection $connection, array $attributeTypes)
     {
         $this->connection = $connection;
-        $this->attributeTypes = array_map(fn ($code) => (string) $code, $attributeTypes);
+        $this->attributeTypes = \array_map(fn ($code) => (string) $code, $attributeTypes);
     }
 
     /**
@@ -92,12 +92,12 @@ SQL;
             ]
         )->fetchAllAssociative();
 
-        $masksPerFamily = array_fill_keys($familyCodes, []);
+        $masksPerFamily = \array_fill_keys($familyCodes, []);
         foreach ($rows as $masksPerChannelAndLocale) {
             $masksPerFamily[$masksPerChannelAndLocale['family_code']][] = new RequiredAttributesMaskForChannelAndLocale(
                 $masksPerChannelAndLocale['channel_code'],
                 $masksPerChannelAndLocale['locale_code'],
-                json_decode($masksPerChannelAndLocale['mask'], true)
+                \json_decode($masksPerChannelAndLocale['mask'], true)
             );
         }
 

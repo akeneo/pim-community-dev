@@ -227,7 +227,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
 
         $this->esClient->refreshIndex();
 
-        $updatedId = $isProductModel ? sprintf('product_model_%d', $productId) : sprintf('product_%s', $productId->toString());
+        $updatedId = $isProductModel ? \sprintf('product_model_%d', $productId) : \sprintf('product_%s', $productId->toString());
         $this->esClient->updateByQuery(
             [
                 'script' => [

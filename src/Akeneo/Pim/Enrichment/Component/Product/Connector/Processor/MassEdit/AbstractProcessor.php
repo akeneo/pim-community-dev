@@ -45,12 +45,12 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface, ItemPro
         foreach ($violations as $violation) {
             // TODO re-format the message, property path doesn't exist for class constraint
             $invalidValue = $violation->getInvalidValue();
-            if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
+            if (\is_object($invalidValue) && \method_exists($invalidValue, '__toString')) {
                 $invalidValue = (string) $invalidValue;
-            } elseif (is_object($invalidValue)) {
-                $invalidValue = get_class($invalidValue);
+            } elseif (\is_object($invalidValue)) {
+                $invalidValue = \get_class($invalidValue);
             }
-            $errors = sprintf(
+            $errors = \sprintf(
                 "%s: %s: %s\n",
                 $violation->getPropertyPath(),
                 $violation->getMessage(),

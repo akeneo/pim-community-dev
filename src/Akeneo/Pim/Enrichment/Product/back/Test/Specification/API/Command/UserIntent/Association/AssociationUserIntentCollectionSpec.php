@@ -16,25 +16,25 @@ use PhpSpec\ObjectBehavior;
  */
 class AssociationUserIntentCollectionSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith([new AssociateProducts('X_SELL', ['identifier'])]);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(AssociationUserIntentCollection::class);
         $this->shouldImplement(UserIntent::class);
     }
 
-    function it_returns_the_association_user_intents()
+    public function it_returns_the_association_user_intents()
     {
         $userIntent = new AssociateProducts('X_SELL', ['identifier']);
         $this->beConstructedWith([$userIntent]);
         $this->associationUserIntents()->shouldReturn([$userIntent]);
     }
 
-    function it_cannot_be_instantiated_with_other_intent_than_association_intent()
+    public function it_cannot_be_instantiated_with_other_intent_than_association_intent()
     {
         $this->beConstructedWith([new SetTextValue('code', null, null, 'value')]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

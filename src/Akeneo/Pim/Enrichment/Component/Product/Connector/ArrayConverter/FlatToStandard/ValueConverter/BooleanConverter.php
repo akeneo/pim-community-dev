@@ -30,7 +30,7 @@ class BooleanConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
-        if (in_array($value, ['1', '0'])) {
+        if (\in_array($value, ['1', '0'])) {
             $data = (bool) $value;
         } elseif ('' === $value || null === $value) {
             $data = null;
@@ -39,7 +39,7 @@ class BooleanConverter extends AbstractValueConverter
                 'pim_catalog.constraint.boolean.boolean_value_is_required_in_import',
                 [
                     '{{ attribute_code }}' => $attributeFieldInfo['attribute']->getCode(),
-                    '{{ given_type }}' => gettype($value),
+                    '{{ given_type }}' => \gettype($value),
                 ],
                 'validators'
             ));

@@ -30,7 +30,7 @@ class FindAttributeCodeAsLabelForFamily implements FindAttributeCodeAsLabelForFa
 SQL;
         $result = $this->connection->executeQuery($sql, ['code' => $code])->fetch(\PDO::FETCH_COLUMN);
 
-        if (!is_string($result)) {
+        if (!\is_string($result)) {
             return null;
         }
 

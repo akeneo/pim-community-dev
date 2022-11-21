@@ -53,7 +53,7 @@ class AttributeTypeRegistry
             !isset($this->types[$alias]) ||
             (null !== $this->types[$alias]['feature'] && !$this->featureFlags->isEnabled($this->types[$alias]['feature']))
         ) {
-            throw new \LogicException(sprintf('Attribute type "%s" is not registered', $alias));
+            throw new \LogicException(\sprintf('Attribute type "%s" is not registered', $alias));
         }
 
         return $this->types[$alias]['attribute_type'];
@@ -66,9 +66,9 @@ class AttributeTypeRegistry
      */
     public function getAliases()
     {
-        $aliases = array_keys($this->types);
+        $aliases = \array_keys($this->types);
 
-        return array_filter(
+        return \array_filter(
             $aliases,
             function ($alias) {
                 return null === $this->types[$alias]['feature'] || $this->featureFlags->isEnabled($this->types[$alias]['feature']);
@@ -83,8 +83,8 @@ class AttributeTypeRegistry
      */
     public function getSortedAliases()
     {
-        $types = array_combine($this->getAliases(), $this->getAliases());
-        asort($types);
+        $types = \array_combine($this->getAliases(), $this->getAliases());
+        \asort($types);
 
         return $types;
     }

@@ -44,10 +44,10 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
      */
     public function next(): void
     {
-        if (false === next($this->items)) {
-            $this->position += count($this->items);
+        if (false === \next($this->items)) {
+            $this->position += \count($this->items);
             $this->items = $this->getNextItems($this->esQuery);
-            reset($this->items);
+            \reset($this->items);
         }
     }
 
@@ -58,7 +58,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     {
         $this->searchAfter = [];
         $this->items = $this->getNextItems($this->esQuery);
-        reset($this->items);
+        \reset($this->items);
     }
 
     /**
@@ -78,7 +78,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
         $sort = ['id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
-            $sort = array_merge($esQuery['sort'], $sort);
+            $sort = \array_merge($esQuery['sort'], $sort);
         }
 
         $esQuery['sort'] = $sort;
@@ -96,7 +96,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
             $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type'], $hit['_source']['id']);
         }
 
-        $lastResult = end($response['hits']['hits']);
+        $lastResult = \end($response['hits']['hits']);
 
         if (false !== $lastResult) {
             $this->searchAfter = $lastResult['sort'];

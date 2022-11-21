@@ -88,14 +88,14 @@ class ValuesController
             return new RedirectResponse('/');
         }
 
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
 
         $locale = $this->userContext->getUiLocale()->getCode();
         $data   = $this->productValueConverter->convert($data);
         $data   = $this->localizedConverter->convertToDefaultFormats($data, ['locale' => $locale]);
         $data = ['values' => $data];
 
-        $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
+        $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . \microtime());
         $data = $this->unchangedValuesFilter->filter($product, $data);
 
         $this->productUpdater->update($product, $data);
@@ -125,9 +125,9 @@ class ValuesController
      */
     protected function removeIdentifierViolations(ConstraintViolationListInterface $violations)
     {
-        $identifierPath = sprintf('values[%s-<all_channels>-<all_locales>]', $this->attributeRepository->getIdentifierCode());
+        $identifierPath = \sprintf('values[%s-<all_channels>-<all_locales>]', $this->attributeRepository->getIdentifierCode());
         foreach ($violations as $offset => $violation) {
-            if (0 === strpos($violation->getPropertyPath(), $identifierPath)) {
+            if (0 === \strpos($violation->getPropertyPath(), $identifierPath)) {
                 $violations->remove($offset);
             }
         }

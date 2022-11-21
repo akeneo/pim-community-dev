@@ -25,7 +25,7 @@ class MissingRequiredAttributesNormalizer implements MissingRequiredAttributesNo
                     'locales' => [],
                 ];
             }
-            $missingRequiredAttributes[$channelCode]['locales'][$completeness->localeCode()]['missing'] = array_map(
+            $missingRequiredAttributes[$channelCode]['locales'][$completeness->localeCode()]['missing'] = \array_map(
                 function (string $attributeCode): array {
                     return ['code' => $attributeCode];
                 },
@@ -33,6 +33,6 @@ class MissingRequiredAttributesNormalizer implements MissingRequiredAttributesNo
             );
         }
 
-        return array_values($missingRequiredAttributes);
+        return \array_values($missingRequiredAttributes);
     }
 }

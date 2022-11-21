@@ -60,10 +60,10 @@ class AttributeOptionNormalizer implements NormalizerInterface, CacheableSupport
     protected function normalizeLabels(AttributeOptionInterface $attributeOption, $context)
     {
         $locales = isset($context['locales']) ? $context['locales'] : [];
-        $labels = array_fill_keys($locales, null);
+        $labels = \array_fill_keys($locales, null);
 
         foreach ($attributeOption->getOptionValues() as $translation) {
-            if (empty($locales) || in_array($translation->getLocale(), $locales)) {
+            if (empty($locales) || \in_array($translation->getLocale(), $locales)) {
                 $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
                 if (null === $locale || !$locale->isActivated()) {
                     continue;

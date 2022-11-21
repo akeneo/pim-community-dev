@@ -19,7 +19,7 @@ final class InMemoryChannels implements ChannelsInterface
     public function __construct(array $channelsIdsByCodes)
     {
         $this->channelsIdsByCodes = $channelsIdsByCodes;
-        $this->channelsCodesByIds = array_flip($channelsIdsByCodes);
+        $this->channelsCodesByIds = \array_flip($channelsIdsByCodes);
     }
 
     public function getIdByCode(string $code): ?int

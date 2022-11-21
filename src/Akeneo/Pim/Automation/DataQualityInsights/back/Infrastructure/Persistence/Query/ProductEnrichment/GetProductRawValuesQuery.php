@@ -53,6 +53,6 @@ SQL;
 
         $result = $statement->fetchOne();
 
-        return false === $result ? [] : json_decode($result, true);
+        return false === $result ? [] : \json_decode($result, true);
     }
 }

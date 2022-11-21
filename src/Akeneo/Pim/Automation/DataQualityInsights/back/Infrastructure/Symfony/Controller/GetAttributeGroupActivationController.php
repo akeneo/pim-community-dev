@@ -38,7 +38,7 @@ final class GetAttributeGroupActivationController
         }
 
         return new JsonResponse([
-            'attribute_group_code' => strval($attributeGroupActivation->getAttributeGroupCode()),
+            'attribute_group_code' => \strval($attributeGroupActivation->getAttributeGroupCode()),
             'activated' => $attributeGroupActivation->isActivated(),
         ]);
     }

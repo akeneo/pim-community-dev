@@ -44,7 +44,7 @@ final class GetRequiredAttributesMasksAggregator implements GetRequiredAttribute
             }
         }
 
-        $nonExistingFamilyCodes = array_diff($familyCodes, \array_keys($result));
+        $nonExistingFamilyCodes = \array_diff($familyCodes, \array_keys($result));
         if (\count($nonExistingFamilyCodes) > 0) {
             throw new NonExistingFamiliesException($nonExistingFamilyCodes);
         }

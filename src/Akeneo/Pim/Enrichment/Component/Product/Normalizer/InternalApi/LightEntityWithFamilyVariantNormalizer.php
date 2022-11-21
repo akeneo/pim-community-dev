@@ -76,7 +76,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
         $channelCode = $context['channel'] ?? null;
         $localeCode = $context['locale'] ?? null;
 
-        if (!is_string($channelCode) || !is_string($localeCode)) {
+        if (!\is_string($channelCode) || !\is_string($localeCode)) {
             throw new \LogicException('channel and locale have to be defined in the $context argument');
         }
 
@@ -94,7 +94,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
             $completeness = $this->getProductCompleteness($entity, $channelCode, $localeCode);
         }
 
-        return array_merge($result, [
+        return \array_merge($result, [
             'identifier' => $entity->getIdentifier(),
             'labels' => [$localeCode => $entity->getLabel($localeCode, $channelCode)],
             'axes_values_labels' => $this->getAxesLabel($entity, $localeCode),
@@ -137,7 +137,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
             $valuesForLocale[] = $normalizedValue;
         }
 
-        return [$localeCode => implode(', ', $valuesForLocale)];
+        return [$localeCode => \implode(', ', $valuesForLocale)];
     }
 
     private function getAttributeLabelsNormalizer(AttributeInterface $attribute): ?AxisValueLabelsNormalizer
@@ -180,7 +180,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
             } elseif (AttributeTypes::METRIC === $axisAttribute->getType()) {
                 $data = $value->getData();
                 $orderArray[] = $data->getUnit();
-                $orderArray[] = floatval($data->getData());
+                $orderArray[] = \floatval($data->getData());
             } elseif (AttributeTypes::BOOLEAN === $axisAttribute->getType()) {
                 $orderArray[] = (true === $value->getData() ? '1' : '0');
             } else {

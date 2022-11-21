@@ -32,7 +32,7 @@ class GetIdMappingFromProductModelCodesQuery implements GetIdMappingFromProductM
         SELECT id, code from pim_catalog_product_model WHERE code IN (:product_codes)
 SQL;
 
-        $mapping = array_column($this->connection->executeQuery(
+        $mapping = \array_column($this->connection->executeQuery(
             $query,
             ['product_codes' => $productModelCodes],
             ['product_codes' => Connection::PARAM_STR_ARRAY]

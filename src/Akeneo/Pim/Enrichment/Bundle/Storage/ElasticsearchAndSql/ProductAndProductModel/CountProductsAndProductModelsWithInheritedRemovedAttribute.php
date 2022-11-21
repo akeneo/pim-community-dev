@@ -47,9 +47,9 @@ final class CountProductsAndProductModelsWithInheritedRemovedAttribute implement
                                     ],
                                 ],
                             ],
-                            'should' => array_map(function (string $attributeCode) {
+                            'should' => \array_map(function (string $attributeCode) {
                                 return [
-                                    'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
+                                    'exists' => ['field' => \sprintf('values.%s-*', $attributeCode)],
                                 ];
                             }, $attributesCodes),
                             'minimum_should_match' => 1,

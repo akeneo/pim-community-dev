@@ -23,8 +23,8 @@ class ReferenceDataNameChecker implements CheckerInterface
     {
         $name = $configuration->getName();
 
-        if (1 === preg_match("/[^A-Za-z]/", $name)) {
-            $this->failure = sprintf('Please use a proper name instead of "%s" for your Reference Data.', $name);
+        if (1 === \preg_match("/[^A-Za-z]/", $name)) {
+            $this->failure = \sprintf('Please use a proper name instead of "%s" for your Reference Data.', $name);
 
             return false;
         }
@@ -37,7 +37,7 @@ class ReferenceDataNameChecker implements CheckerInterface
      */
     public function getDescription()
     {
-        return sprintf('Reference data names must use only letters and be camel-cased.');
+        return \sprintf('Reference data names must use only letters and be camel-cased.');
     }
 
     /**

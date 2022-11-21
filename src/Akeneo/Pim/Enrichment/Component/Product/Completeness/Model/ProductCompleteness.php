@@ -67,6 +67,6 @@ final class ProductCompleteness
             return 100;
         }
 
-        return (int)floor(100 * ($this->requiredCount - $this->missingCount) / $this->requiredCount);
+        return (int)\floor(100 * ($this->requiredCount - $this->missingCount) / $this->requiredCount);
     }
 }

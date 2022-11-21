@@ -23,12 +23,12 @@ class CleanLineBreaksInTextAttributes
 
     public function cleanStandardFormat(array $item): array
     {
-        if (!is_array($item['values'] ?? null)) {
+        if (!\is_array($item['values'] ?? null)) {
             return $item;
         }
 
         $fieldsWithLineBreak = $this->getFieldsWithLineBreak($item);
-        if (0 === count($fieldsWithLineBreak)) {
+        if (0 === \count($fieldsWithLineBreak)) {
             return $item;
         }
 
@@ -37,8 +37,8 @@ class CleanLineBreaksInTextAttributes
         foreach ($textAttributeFieldsToClean as $field) {
             $valuesForField = $item['values'][$field] ?? null;
             foreach ($valuesForField as $key => $value) {
-                if (is_string($value['data'])) {
-                    $cleanedData = str_replace(
+                if (\is_string($value['data'])) {
+                    $cleanedData = \str_replace(
                         ["\r\n", "\r", "\n"],
                         ' ',
                         $value['data']
@@ -62,8 +62,8 @@ class CleanLineBreaksInTextAttributes
         foreach ($item['values'] as $field => $values) {
             foreach ($values as $value) {
                 if (
-                    is_string($value['data'])
-                    && (false !== strpos($value['data'], "\r") || false !== strpos($value['data'], "\n"))
+                    \is_string($value['data'])
+                    && (false !== \strpos($value['data'], "\r") || false !== \strpos($value['data'], "\n"))
                 ) {
                     $fieldsWithLineBreak[] = $field;
 
@@ -82,7 +82,7 @@ class CleanLineBreaksInTextAttributes
     {
         $attributes = $this->getAttributes->forCodes($fieldsWithLineBreak);
 
-        return array_keys(array_filter(
+        return \array_keys(\array_filter(
             $attributes,
             fn (Attribute $attribute): bool => AttributeTypes::TEXT === $attribute->type()
         ));

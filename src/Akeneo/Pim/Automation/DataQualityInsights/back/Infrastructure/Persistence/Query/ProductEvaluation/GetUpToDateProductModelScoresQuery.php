@@ -37,7 +37,7 @@ class GetUpToDateProductModelScoresQuery implements GetProductModelScoresQueryIn
     {
         $upToDateProductModels = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productModelIdCollection);
 
-        if (is_null($upToDateProductModels)) {
+        if (\is_null($upToDateProductModels)) {
             return [];
         }
 

@@ -111,7 +111,7 @@ class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
             if (null === $this->groupRepository->findOneByIdentifier($value)) {
                 throw new ObjectNotFoundException(
-                    sprintf('Object "groups" with code "%s" does not exist', $value)
+                    \sprintf('Object "groups" with code "%s" does not exist', $value)
                 );
             }
         }

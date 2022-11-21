@@ -65,7 +65,7 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
         }
 
         if ($this->thereAreEntitiesCurrentlyUsingThisOptionAsAxes($attributeOption, $familyVariantsIdentifiers)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Attribute option "%s" could not be removed as it is used as variant axis value.',
                 $attributeOption->getCode()
             ));

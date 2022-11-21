@@ -49,7 +49,7 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQuery implements GetPendingC
         $productsCriteriaEvaluations = [];
         while ($resultRow = $entityCriteriaEvaluationStatement->fetchAssociative()) {
             $entityId = $this->idFactory->create($resultRow['entity_id']);
-            $criteria = json_decode($resultRow['criteria']);
+            $criteria = \json_decode($resultRow['criteria']);
             $productsCriteriaEvaluations[(string)$entityId] = $this->hydrateProductCriteriaEvaluations($entityId, $criteria);
         }
 

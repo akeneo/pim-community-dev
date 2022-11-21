@@ -42,7 +42,7 @@ class MultiSelectConverter extends AbstractValueConverter implements ValueConver
                 $value['scope']
             );
 
-            $convertedItem[$flatName] = implode(',', $value['data']);
+            $convertedItem[$flatName] = \implode(',', $value['data']);
         }
 
         return $convertedItem;

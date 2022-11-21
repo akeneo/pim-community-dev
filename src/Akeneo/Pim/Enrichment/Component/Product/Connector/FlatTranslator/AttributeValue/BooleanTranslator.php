@@ -28,15 +28,15 @@ class BooleanTranslator implements FlatAttributeValueTranslatorInterface
         $trueLocalized = $this->labelTranslator->translate(
             'pim_common.yes',
             $locale,
-            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'yes')
+            \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'yes')
         );
         $falseLocalized = $this->labelTranslator->translate(
             'pim_common.no',
             $locale,
-            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'no')
+            \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'no')
         );
 
-        return array_map(function ($value) use ($trueLocalized, $falseLocalized) {
+        return \array_map(function ($value) use ($trueLocalized, $falseLocalized) {
             $valueLocalized = $value;
             if ('1' === $value) {
                 $valueLocalized = $trueLocalized;

@@ -63,7 +63,7 @@ final class SqlGetOptionsCountAndTranslationByAttribute implements GetOptionsCou
             ],
         )->fetchAllAssociative();
 
-        return array_map(
+        return \array_map(
             fn (array $result): array => [
                 'code' => $result['code'],
                 'label' => $result['label'],

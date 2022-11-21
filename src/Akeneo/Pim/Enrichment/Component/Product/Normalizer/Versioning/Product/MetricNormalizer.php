@@ -28,7 +28,7 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof MetricInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof MetricInterface && \in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -44,11 +44,11 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
     public function normalize($object, $format = null, array $context = [])
     {
         $context = $this->resolveContext($context);
-        $decimalsAllowed = !array_key_exists('decimals_allowed', $context) || true === $context['decimals_allowed'];
+        $decimalsAllowed = !\array_key_exists('decimals_allowed', $context) || true === $context['decimals_allowed'];
 
         if (self::MULTIPLE_FIELDS_FORMAT === $context['metric_format']) {
             $fieldKey = $this->getFieldName($object, $context);
-            $unitFieldKey = sprintf('%s-unit', $fieldKey);
+            $unitFieldKey = \sprintf('%s-unit', $fieldKey);
 
             $data = $this->getMetricData($object, false, $decimalsAllowed);
             $result = [
@@ -92,9 +92,9 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
 
         $pattern = $decimalsAllowed ? '%.4F' : '%d';
         if ($withUnit) {
-            $data = sprintf($pattern. ' %s', $metric->getData(), $metric->getUnit());
+            $data = \sprintf($pattern. ' %s', $metric->getData(), $metric->getUnit());
         } else {
-            $data = sprintf($pattern, $metric->getData());
+            $data = \sprintf($pattern, $metric->getData());
         }
 
         return $data;
@@ -109,11 +109,11 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
      */
     protected function resolveContext(array $context = [])
     {
-        $context = array_merge(['metric_format' => self::MULTIPLE_FIELDS_FORMAT], $context);
+        $context = \array_merge(['metric_format' => self::MULTIPLE_FIELDS_FORMAT], $context);
 
-        if (!in_array($context['metric_format'], [self::MULTIPLE_FIELDS_FORMAT, self::SINGLE_FIELD_FORMAT])) {
+        if (!\in_array($context['metric_format'], [self::MULTIPLE_FIELDS_FORMAT, self::SINGLE_FIELD_FORMAT])) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Value "%s" of "metric_format" context value is not allowed ' .
                     '(allowed values: "%s, %s"',
                     $context['metric_format'],

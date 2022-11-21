@@ -24,7 +24,7 @@ class QueryBuilderUtility
         $parameters = $qb->getParameters();
         $dql = $qb->getDQL();
         foreach ($parameters as $parameter) {
-            if (strpos($dql, ':'.$parameter->getName()) === false) {
+            if (\strpos($dql, ':'.$parameter->getName()) === false) {
                 $parameters->removeElement($parameter);
             }
         }

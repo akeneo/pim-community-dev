@@ -77,7 +77,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      */
     public function normalize($family, $format = null, array $context = array())
     {
-        $fullAttributes = array_key_exists('full_attributes', $context)
+        $fullAttributes = \array_key_exists('full_attributes', $context)
             && true === $context['full_attributes'];
 
         if (isset($context['expanded']) && false === $context['expanded']) {
@@ -126,7 +126,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     public function supportsNormalization($family, $format = null): bool
     {
         return $family instanceof FamilyInterface &&
-            in_array($format, $this->supportedFormats);
+            \in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -188,7 +188,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
                 );
             }
 
-            $result[$channel] = array_map(function ($attribute) {
+            $result[$channel] = \array_map(function ($attribute) {
                 return $attribute->getCode();
             }, $attributes);
         }
@@ -208,10 +208,10 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
         $attributeCodesUsedAsAxis = [];
         foreach ($family->getFamilyVariants() as $familyVariant) {
             $attributesAxisCodes = $this->getAttributeAxisCodesForFamilyVariant($familyVariant);
-            $attributeCodesUsedAsAxis = array_merge($attributeCodesUsedAsAxis, $attributesAxisCodes);
+            $attributeCodesUsedAsAxis = \array_merge($attributeCodesUsedAsAxis, $attributesAxisCodes);
         }
 
-        return array_values(array_unique($attributeCodesUsedAsAxis));
+        return \array_values(\array_unique($attributeCodesUsedAsAxis));
     }
 
     /**
@@ -223,7 +223,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      */
     private function getAttributeAxisCodesForFamilyVariant(FamilyVariantInterface $familyVariant): array
     {
-        $attributesAxisCodes = array_map(function ($attribute) {
+        $attributesAxisCodes = \array_map(function ($attribute) {
             return $attribute->getCode();
         }, $familyVariant->getAxes()->toArray());
 

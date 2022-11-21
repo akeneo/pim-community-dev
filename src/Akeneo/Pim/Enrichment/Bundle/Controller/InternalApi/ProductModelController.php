@@ -135,7 +135,7 @@ class ProductModelController
 
         if (null === $productModel || true === $cantView) {
             throw new NotFoundHttpException(
-                sprintf('Product model with identifier "%s" could not be found.', $identifier)
+                \sprintf('Product model with identifier "%s" could not be found.', $identifier)
             );
         }
 
@@ -153,10 +153,10 @@ class ProductModelController
      */
     public function indexAction(Request $request): JsonResponse
     {
-        $productModelIdentifiers = explode(',', $request->get('identifiers'));
+        $productModelIdentifiers = \explode(',', $request->get('identifiers'));
         $productModels = $this->productModelRepository->findByIdentifiers($productModelIdentifiers);
 
-        $normalizedProductModels = array_map(function ($productModel) {
+        $normalizedProductModels = \array_map(function ($productModel) {
             return $this->normalizeProductModel($productModel);
         }, $productModels);
 
@@ -177,13 +177,13 @@ class ProductModelController
         }
 
         $productModel = $this->productModelFactory->create();
-        $content = json_decode($request->getContent(), true);
+        $content = \json_decode($request->getContent(), true);
 
         $this->productModelUpdater->update($productModel, $content);
 
         $violations = $this->productModelValidator->validate($productModel);
 
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             $normalizedViolations = $this->normalizeCreateViolations($violations, $productModel);
 
             return new JsonResponse($normalizedViolations, 400);
@@ -210,7 +210,7 @@ class ProductModelController
         }
 
         $productModel = $this->findProductModelOr404($id);
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
         $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $productModel]);
 
         $this->updateProductModel($productModel, $data);
@@ -252,11 +252,11 @@ class ProductModelController
         $normalizedChildren = [];
         foreach ($children as $child) {
             if (!$child instanceof ProductModelInterface && !$child instanceof ProductInterface) {
-                throw new \LogicException(sprintf(
+                throw new \LogicException(\sprintf(
                     'Child of a product model must be of class "%s" or "%s", "%s" received.',
                     ProductModelInterface::class,
                     ProductInterface::class,
-                    get_class($child)
+                    \get_class($child)
                 ));
             }
 
@@ -285,7 +285,7 @@ class ProductModelController
         $search = $request->query->get('search');
         $options = $request->query->get('options');
         $familyVariantCode = $options['family_variant'];
-        $page = intval($options['page']) - 1;
+        $page = \intval($options['page']) - 1;
         $familyVariant = $this->getFamilyVariant($familyVariantCode);
 
         $productModels = $this->productModelRepository->searchLastLevelByCode(
@@ -309,7 +309,7 @@ class ProductModelController
      */
     public function listFamilyVariantProductModels(Request $request)
     {
-        $search = trim($request->query->get('search'));
+        $search = \trim($request->query->get('search'));
         $options = $request->query->get('options');
         $familyVariant = $this->getFamilyVariant($options['family_variant']);
 
@@ -364,7 +364,7 @@ class ProductModelController
     {
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
         if (null === $familyVariant) {
-            throw new \InvalidArgumentException(sprintf('Unknown family variant code "%s"', $familyVariantCode));
+            throw new \InvalidArgumentException(\sprintf('Unknown family variant code "%s"', $familyVariantCode));
         }
 
         return $familyVariant;
@@ -423,7 +423,7 @@ class ProductModelController
         $dataFiltered = $this->emptyValuesFilter->filter($productModel, ['values' => $values]);
 
         if (!empty($dataFiltered)) {
-            $data = array_replace($data, $dataFiltered);
+            $data = \array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
         }
@@ -451,7 +451,7 @@ class ProductModelController
 
         if (null === $productModel) {
             throw new NotFoundHttpException(
-                sprintf('ProductModel with id %s could not be found.', $id)
+                \sprintf('ProductModel with id %s could not be found.', $id)
             );
         }
 
@@ -468,7 +468,7 @@ class ProductModelController
         foreach ($violations as $violation) {
             $propertyPath = $violation->getPropertyPath();
 
-            if (0 === strpos($propertyPath, 'quantifiedAssociations.')) {
+            if (0 === \strpos($propertyPath, 'quantifiedAssociations.')) {
                 $normalizedViolations['quantified_associations'][] = $this->normalizer->normalize(
                     $violation,
                     'internal_api',
@@ -497,7 +497,7 @@ class ProductModelController
         foreach ($violations as $violation) {
             $propertyPath = $violation->getPropertyPath();
 
-            if (0 === strpos($propertyPath, 'quantifiedAssociations.')) {
+            if (0 === \strpos($propertyPath, 'quantifiedAssociations.')) {
                 $normalizedViolations['quantified_associations'][] = $this->normalizer->normalize(
                     $violation,
                     'internal_api',

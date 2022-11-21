@@ -41,9 +41,9 @@ class FamilySorter extends BaseFieldSorter
 
         $familyLabelPath = null;
 
-        if (null !== $locale && !in_array($locale, $this->localeRepository->getActivatedLocaleCodes())) {
+        if (null !== $locale && !\in_array($locale, $this->localeRepository->getActivatedLocaleCodes())) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a valid locale code to filter on family labels. "%s" given.', $locale)
+                \sprintf('Expects a valid locale code to filter on family labels. "%s" given.', $locale)
             );
         } elseif (null !== $locale) {
             $familyLabelPath = 'family.labels.' . $locale;

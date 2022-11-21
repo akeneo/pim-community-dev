@@ -62,7 +62,7 @@ class CatalogStructureScopeMapper implements ScopeMapperInterface
     public function getAcls(string $scopeName): array
     {
         if (!\array_key_exists($scopeName, self::SCOPE_ACL_MAP)) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist.', $scopeName));
+            throw new \InvalidArgumentException(\sprintf('The scope "%s" does not exist.', $scopeName));
         }
 
         return self::SCOPE_ACL_MAP[$scopeName];
@@ -71,7 +71,7 @@ class CatalogStructureScopeMapper implements ScopeMapperInterface
     public function getMessage(string $scopeName): array
     {
         if (!\array_key_exists($scopeName, self::SCOPE_MESSAGE_MAP)) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist.', $scopeName));
+            throw new \InvalidArgumentException(\sprintf('The scope "%s" does not exist.', $scopeName));
         }
 
         return self::SCOPE_MESSAGE_MAP[$scopeName];
@@ -80,7 +80,7 @@ class CatalogStructureScopeMapper implements ScopeMapperInterface
     public function getLowerHierarchyScopes(string $scopeName): array
     {
         if (!\array_key_exists($scopeName, self::SCOPE_HIERARCHY)) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist.', $scopeName));
+            throw new \InvalidArgumentException(\sprintf('The scope "%s" does not exist.', $scopeName));
         }
 
         return self::SCOPE_HIERARCHY[$scopeName];

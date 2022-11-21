@@ -30,7 +30,7 @@ final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluati
     {
         Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
 
-        $ratesPath = sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
+        $ratesPath = \sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
 
         $query = <<<SQL
 SELECT BIN_TO_UUID(p.uuid) AS product_uuid, JSON_EXTRACT(e.result, '$ratesPath') AS rates
@@ -64,7 +64,7 @@ SQL;
             return [];
         }
 
-        $rates = json_decode($evaluationResult['rates'], true, 512, JSON_THROW_ON_ERROR);
+        $rates = \json_decode($evaluationResult['rates'], true, 512, JSON_THROW_ON_ERROR);
         $rates = $this->transformCriterionEvaluationResultIds->transformToCodes($criterionCode, [TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => $rates]);
 
         return $rates['rates'] ?? [];

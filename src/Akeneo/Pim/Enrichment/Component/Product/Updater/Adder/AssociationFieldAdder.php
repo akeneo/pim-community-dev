@@ -230,7 +230,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
 
     protected function checkData(string $field, $data): void
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $field,
                 static::class,
@@ -246,23 +246,23 @@ class AssociationFieldAdder extends AbstractFieldAdder
 
     protected function checkAssociationData(string $field, array $data, string $assocTypeCode, $items): void
     {
-        if (!is_array($items) || !is_string($assocTypeCode) ||
+        if (!\is_array($items) || !\is_string($assocTypeCode) ||
             (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']))) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
-                sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+                \sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
                 static::class,
                 $data
             );
         }
 
         foreach ($items as $type => $itemData) {
-            if (!is_array($itemData)) {
-                $message = sprintf(
+            if (!\is_array($itemData)) {
+                $message = \sprintf(
                     'Property "%s" in association "%s" expects an array as data, "%s" given.',
                     $type,
                     $assocTypeCode,
-                    gettype($itemData)
+                    \gettype($itemData)
                 );
 
                 throw new InvalidPropertyTypeException(
@@ -281,10 +281,10 @@ class AssociationFieldAdder extends AbstractFieldAdder
     protected function checkAssociationItems(string $field, string $assocTypeCode, array $data, array $items): void
     {
         foreach ($items as $code) {
-            if (!is_string($code)) {
+            if (!\is_string($code)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+                    \sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
                     static::class,
                     $data
                 );

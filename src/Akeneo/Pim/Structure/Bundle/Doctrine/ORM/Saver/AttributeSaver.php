@@ -109,7 +109,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     {
         if (!$attribute instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Expects a "Akeneo\Pim\Structure\Component\Model\AttributeInterface", "%s" provided.',
                     ClassUtils::getClass($attribute)
                 )

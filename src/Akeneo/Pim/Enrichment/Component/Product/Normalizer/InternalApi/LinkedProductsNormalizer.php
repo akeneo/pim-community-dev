@@ -24,7 +24,7 @@ class LinkedProductsNormalizer
 
     public function normalize(Rows $rows, string $channelCode, string $localeCode): array
     {
-        return array_map(
+        return \array_map(
             function (Row $row) use ($channelCode, $localeCode) {
                 return [
                     'id'                             => $row->technicalId(),

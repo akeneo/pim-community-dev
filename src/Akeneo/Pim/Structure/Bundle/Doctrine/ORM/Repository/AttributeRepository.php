@@ -65,7 +65,7 @@ class AttributeRepository extends EntityRepository implements
 
         if (isset($criterias['conditions'])) {
             foreach ($criterias['conditions'] as $criteria => $value) {
-                $qb->andWhere($qb->expr()->eq(sprintf('a.%s', $criteria), $value));
+                $qb->andWhere($qb->expr()->eq(\sprintf('a.%s', $criteria), $value));
             }
         }
 
@@ -85,7 +85,7 @@ class AttributeRepository extends EntityRepository implements
             ->getQuery()
             ->getArrayResult();
 
-        return array_map(
+        return \array_map(
             function ($data) {
                 return $data['code'];
             },
@@ -111,7 +111,7 @@ class AttributeRepository extends EntityRepository implements
             ->getQuery()
             ->getArrayResult();
 
-        return array_map(
+        return \array_map(
             function ($data) {
                 return $data['code'];
             },
@@ -196,13 +196,13 @@ class AttributeRepository extends EntityRepository implements
             $groupLabelExpr = 'COALESCE(NULLIF(gtrans.label, \'\'), CONCAT(CONCAT(\'[\', g.code), \']\'))';
 
             $qb = $this->_em->createQueryBuilder()
-                ->select('att.code', sprintf('%s as label', $labelExpr))
+                ->select('att.code', \sprintf('%s as label', $labelExpr))
                 ->from($this->_entityName, 'att')
                 ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')
                 ->leftJoin('att.group', 'g')
                 ->leftJoin('g.translations', 'gtrans', 'WITH', 'gtrans.locale = :locale')
                 ->addSelect('g.sortOrder')
-                ->addSelect(sprintf('%s as groupLabel', $groupLabelExpr))
+                ->addSelect(\sprintf('%s as groupLabel', $groupLabelExpr))
                 ->setParameter('locale', $locale);
             if (!empty($ids)) {
                 $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
@@ -227,17 +227,17 @@ class AttributeRepository extends EntityRepository implements
             ->select('att.id')
             ->from($this->_entityName, 'att', 'att.id');
 
-        if (is_array($codes) && !empty($codes)) {
+        if (\is_array($codes) && !empty($codes)) {
             $qb->andWhere("att.code IN (:codes)");
             $qb->setParameter('codes', $codes);
-        } elseif (is_array($codes)) {
+        } elseif (\is_array($codes)) {
             return [];
         }
 
-        if (is_array($groupIds) && !empty($groupIds)) {
+        if (\is_array($groupIds) && !empty($groupIds)) {
             $qb->andWhere("att.group IN (:groupIds)");
             $qb->setParameter('groupIds', $groupIds);
-        } elseif (is_array($groupIds)) {
+        } elseif (\is_array($groupIds)) {
             return [];
         }
 
@@ -246,7 +246,7 @@ class AttributeRepository extends EntityRepository implements
 
         $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
-        return array_keys($result);
+        return \array_keys($result);
     }
 
     /**
@@ -314,7 +314,7 @@ class AttributeRepository extends EntityRepository implements
         if (null === $result) {
             return [];
         } else {
-            return array_map('current', $qb->getQuery()->getScalarResult());
+            return \array_map('current', $qb->getQuery()->getScalarResult());
         }
     }
 
@@ -335,7 +335,7 @@ class AttributeRepository extends EntityRepository implements
             return [];
         }
 
-        return array_map('current', $qb->getQuery()->getScalarResult());
+        return \array_map('current', $qb->getQuery()->getScalarResult());
     }
 
     /**

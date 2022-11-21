@@ -79,7 +79,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
             return null;
         }
 
-        $item = array_merge(
+        $item = \array_merge(
             [
                 'associations' => [],
                 'quantified_associations' => [],
@@ -93,7 +93,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
 
         $product = $this->findProduct($item['identifier'], $item);
         if (null === $product) {
-            $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $item['identifier']));
+            $this->skipItemWithMessage($item, \sprintf('No product with identifier "%s" has been found', $item['identifier']));
         }
 
         $parameters = $this->stepExecution->getJobParameters();

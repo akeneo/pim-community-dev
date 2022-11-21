@@ -57,7 +57,7 @@ class CleanRemovedProductsCommand extends Command
         $numberOfIndexedProducts = $this->removeDocumentFromIndex($output, $batchSize) ?? 0;
 
         $output->writeln('');
-        $output->writeln(sprintf('<info>%d products de-indexed</info>', $numberOfIndexedProducts));
+        $output->writeln(\sprintf('<info>%d products de-indexed</info>', $numberOfIndexedProducts));
 
         return Command::SUCCESS;
     }
@@ -72,15 +72,15 @@ class CleanRemovedProductsCommand extends Command
         $chunkedNonExistentProductIds = $this->filterNonExistentProductInMySQL($esProductsIdsChunk);
 
         foreach ($chunkedNonExistentProductIds as $nonExistentProductIds) {
-            $uuids = array_map(fn ($id) => Uuid::fromString(($id)), $nonExistentProductIds);
+            $uuids = \array_map(fn ($id) => Uuid::fromString(($id)), $nonExistentProductIds);
             $ancestorCodes = $this->getAncestorsFromProductsIds($nonExistentProductIds);
             $this->productAndAncestorsIndexer->removeFromProductUuidsAndReindexAncestors(
                 $uuids,
                 $ancestorCodes
             );
 
-            $indexedProductCount += count($nonExistentProductIds);
-            $progressBar->advance(count($nonExistentProductIds));
+            $indexedProductCount += \count($nonExistentProductIds);
+            $progressBar->advance(\count($nonExistentProductIds));
         }
 
         $progressBar->finish();
@@ -110,7 +110,7 @@ SQL;
                 ]
             )->fetchFirstColumn();
 
-            $nonExistentProductIdsInMysql = array_diff($productIdsFromEs, $productIdsFromMysql);
+            $nonExistentProductIdsInMysql = \array_diff($productIdsFromEs, $productIdsFromMysql);
             if (!empty($nonExistentProductIdsInMysql)) {
                 yield $nonExistentProductIdsInMysql;
             }
@@ -121,7 +121,7 @@ SQL;
     {
         $searchAfter = null;
         do {
-            $params = array_merge(
+            $params = \array_merge(
                 [
                     'sort' => ['id' => 'asc'],
                     'size' => $batchSize,
@@ -146,16 +146,16 @@ SQL;
             );
             $results = $this->productAndProductModelClient->search($params);
 
-            $productsIds = array_map(function ($doc) {
-                return substr($doc['_source']['id'], strlen(ElasticsearchProductProjection::INDEX_PREFIX_ID));
+            $productsIds = \array_map(function ($doc) {
+                return \substr($doc['_source']['id'], \strlen(ElasticsearchProductProjection::INDEX_PREFIX_ID));
             }, $results['hits']['hits']);
 
             yield $productsIds;
 
             $resultsPage = $results['hits']['hits'];
-            $lastResult = end($resultsPage);
+            $lastResult = \end($resultsPage);
             $searchAfter = $lastResult['sort'] ?? [];
-        } while (count($resultsPage)>0);
+        } while (\count($resultsPage)>0);
     }
 
     private function getAncestorsFromProductsIds(array $productIds): array
@@ -193,7 +193,7 @@ SQL;
     {
         if (!$this->productAndProductModelClient->hasIndex()) {
             throw new \RuntimeException(
-                sprintf(
+                \sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
                     $this->productAndProductModelClient->getIndexName()
                 )

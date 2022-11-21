@@ -37,7 +37,7 @@ class BaseFieldSorter implements FieldSorterInterface
     {
         if (!$searchQueryBuilder instanceof SearchQueryBuilder) {
             throw new \InvalidArgumentException(
-                sprintf('Query builder should be an instance of "%s"', SearchQueryBuilder::class)
+                \sprintf('Query builder should be an instance of "%s"', SearchQueryBuilder::class)
             );
         }
 
@@ -86,6 +86,6 @@ class BaseFieldSorter implements FieldSorterInterface
      */
     public function supportsField($field)
     {
-        return in_array($field, $this->supportedFields);
+        return \in_array($field, $this->supportedFields);
     }
 }

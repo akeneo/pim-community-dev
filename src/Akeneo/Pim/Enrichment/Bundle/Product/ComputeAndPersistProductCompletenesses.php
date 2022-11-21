@@ -39,7 +39,7 @@ class ComputeAndPersistProductCompletenesses
      */
     public function fromProductUuids(array $productUuids): void
     {
-        foreach (array_chunk($productUuids, self::CHUNK_SIZE) as $uuidsChunk) {
+        foreach (\array_chunk($productUuids, self::CHUNK_SIZE) as $uuidsChunk) {
             $previousCompletenessCollections = $this->getProductCompletenesses->fromProductUuids($uuidsChunk);
             $completenessCollections = $this->completenessCalculator->fromProductUuids($uuidsChunk);
             $this->saveProductCompletenesses->saveAll($completenessCollections);

@@ -42,7 +42,7 @@ class FamilyVariantsByAttributeAxes implements FamilyVariantsByAttributeAxesInte
         $codes = $queryBuilder->getQuery()
             ->getArrayResult();
 
-        return array_map(
+        return \array_map(
             function ($data) {
                 return $data['code'];
             },

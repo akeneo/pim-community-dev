@@ -26,7 +26,7 @@ use Ramsey\Uuid\Uuid;
 
 class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ObjectUpdaterInterface $productUpdater,
         GetViewableProducts $getViewableProducts,
         GetViewableProductModels $getViewableProductModels
@@ -34,13 +34,13 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $this->beConstructedWith($productUpdater, $getViewableProducts, $getViewableProductModels);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(QuantifiedAssociationUserIntentCollectionApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_associates_quantified_products_by_updating_a_quantity(
+    public function it_associates_quantified_products_by_updating_a_quantity(
         ObjectUpdaterInterface $productUpdater,
     ) {
         $product = new Product();
@@ -71,7 +71,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_associates_quantified_products_by_adding_one_association(
+    public function it_associates_quantified_products_by_adding_one_association(
         ObjectUpdaterInterface $productUpdater,
     ) {
         $product = new Product();
@@ -103,7 +103,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_does_nothing_when_product_is_already_associated_with_the_same_quantity(
+    public function it_does_nothing_when_product_is_already_associated_with_the_same_quantity(
         ObjectUpdaterInterface $productUpdater,
     ) {
         $product = new Product();
@@ -127,7 +127,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_dissociates_quantified_products(ObjectUpdaterInterface $productUpdater)
+    public function it_dissociates_quantified_products(ObjectUpdaterInterface $productUpdater)
     {
         $product = new Product();
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
@@ -156,7 +156,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_dissociates_all_quantified_products(ObjectUpdaterInterface $productUpdater)
+    public function it_dissociates_all_quantified_products(ObjectUpdaterInterface $productUpdater)
     {
         $product = new Product();
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
@@ -183,7 +183,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_replaces_quantified_products(ObjectUpdaterInterface $productUpdater, GetViewableProducts $getViewableProducts)
+    public function it_replaces_quantified_products(ObjectUpdaterInterface $productUpdater, GetViewableProducts $getViewableProducts)
     {
         $product = new Product();
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
@@ -218,7 +218,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_replaces_quantified_products_by_uuid(ObjectUpdaterInterface $productUpdater, GetViewableProducts $getViewableProducts)
+    public function it_replaces_quantified_products_by_uuid(ObjectUpdaterInterface $productUpdater, GetViewableProducts $getViewableProducts)
     {
         $product = new Product();
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
@@ -257,7 +257,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_associates_quantified_product_models_by_updating_a_quantity(
+    public function it_associates_quantified_product_models_by_updating_a_quantity(
         ObjectUpdaterInterface $productUpdater,
     ) {
         $product = new Product();
@@ -288,7 +288,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_dissociates_quantified_product_models(ObjectUpdaterInterface $productUpdater)
+    public function it_dissociates_quantified_product_models(ObjectUpdaterInterface $productUpdater)
     {
         $product = new Product();
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
@@ -317,7 +317,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         );
     }
 
-    function it_replaces_quantified_product_models(ObjectUpdaterInterface $productUpdater, GetViewableProductModels $getViewableProductModels)
+    public function it_replaces_quantified_product_models(ObjectUpdaterInterface $productUpdater, GetViewableProductModels $getViewableProductModels)
     {
         $product = new Product();
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([

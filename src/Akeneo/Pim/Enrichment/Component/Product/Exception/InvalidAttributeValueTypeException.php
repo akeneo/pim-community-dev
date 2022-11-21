@@ -50,7 +50,7 @@ class InvalidAttributeValueTypeException extends InvalidPropertyTypeException im
             $message,
             [
                 'attribute' => $attributeCode,
-                'invalid' => gettype($attributeValue),
+                'invalid' => \gettype($attributeValue),
             ]
         );
 

@@ -92,7 +92,7 @@ SQL;
             $masksPerFamily[$masksPerChannelAndLocale['family_code']][] = new RequiredAttributesMaskForChannelAndLocale(
                 (string) $masksPerChannelAndLocale['channel_code'],
                 (string) $masksPerChannelAndLocale['locale_code'],
-                json_decode($masksPerChannelAndLocale['mask'], true)
+                \json_decode($masksPerChannelAndLocale['mask'], true)
             );
         }
 

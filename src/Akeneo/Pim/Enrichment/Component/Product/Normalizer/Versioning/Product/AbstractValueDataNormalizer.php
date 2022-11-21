@@ -35,11 +35,11 @@ abstract class AbstractValueDataNormalizer implements NormalizerInterface
      */
     protected function getFieldName($object, array $context = [])
     {
-        if (!array_key_exists('field_name', $context)) {
+        if (!\array_key_exists('field_name', $context)) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Missing required "field_name" context value, got "%s"',
-                    implode(', ', array_keys($context))
+                    \implode(', ', \array_keys($context))
                 )
             );
         }

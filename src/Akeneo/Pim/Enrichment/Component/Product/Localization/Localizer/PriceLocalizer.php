@@ -48,11 +48,11 @@ class PriceLocalizer extends NumberLocalizer
      */
     public function localize($prices, array $options = [])
     {
-        if (!is_array($prices)) {
+        if (!\is_array($prices)) {
             return parent::localize($prices, $options);
         }
 
-        if (array_key_exists('amount', $prices) && array_key_exists('currency', $prices)) {
+        if (\array_key_exists('amount', $prices) && \array_key_exists('currency', $prices)) {
             $prices['amount'] = parent::localize($prices['amount'], $options);
         } else {
             foreach ($prices as $index => $price) {

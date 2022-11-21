@@ -191,7 +191,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
         $errors = $this->get('pim_catalog.validator.product')->validate($productModel);
         if (0 !== $errors->count()) {
             throw new \Exception(
-                sprintf(
+                \sprintf(
                     'Impossible to setup test in %s: %s',
                     static::class,
                     $errors->get(0)->getMessage()

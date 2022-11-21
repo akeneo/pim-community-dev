@@ -70,7 +70,7 @@ class ConsolidateProductModelScoresSpec extends ObjectBehavior
         $computeScores->fromCriteriaEvaluations($productModelId2Evaluations)->willReturn($scores2);
 
         $productModelScoreRepository->saveAll(Argument::that(function (array $productModelScores) use ($productModelId1, $productModelId2, $scores1, $scores2) {
-            return 2 === count($productModelScores)
+            return 2 === \count($productModelScores)
                 && $productModelScores[0] instanceof Write\ProductScores && (string) $productModelId1 === (string) $productModelScores[0]->getEntityId() && $scores1 === $productModelScores[0]->getScores()
                 && $productModelScores[1] instanceof Write\ProductScores && (string) $productModelId2 === (string) $productModelScores[1]->getEntityId() && $scores2 === $productModelScores[1]->getScores();
         }))->shouldBeCalled();

@@ -48,8 +48,8 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $standardAttribute = $this->standardNormalizer->normalize($attribute, 'standard', $context);
 
         $flatAttribute = $standardAttribute;
-        $flatAttribute['allowed_extensions'] = implode(self::ITEM_SEPARATOR, $standardAttribute['allowed_extensions']);
-        $flatAttribute['available_locales'] = implode(self::ITEM_SEPARATOR, $standardAttribute['available_locales']);
+        $flatAttribute['allowed_extensions'] = \implode(self::ITEM_SEPARATOR, $standardAttribute['allowed_extensions']);
+        $flatAttribute['available_locales'] = \implode(self::ITEM_SEPARATOR, $standardAttribute['available_locales']);
         $flatAttribute['locale_specific'] = $attribute->isLocaleSpecific();
 
         /** @phpstan-ignore-next-line */
@@ -75,7 +75,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeInterface && \in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool

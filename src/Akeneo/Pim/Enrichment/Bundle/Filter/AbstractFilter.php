@@ -48,6 +48,6 @@ abstract class AbstractFilter implements CollectionFilterInterface, ObjectFilter
      */
     public function supportsCollection($collection, $type, array $options = [])
     {
-        return ($collection instanceof \Traversable && $collection instanceof \ArrayAccess) || is_array($collection);
+        return ($collection instanceof \Traversable && $collection instanceof \ArrayAccess) || \is_array($collection);
     }
 }

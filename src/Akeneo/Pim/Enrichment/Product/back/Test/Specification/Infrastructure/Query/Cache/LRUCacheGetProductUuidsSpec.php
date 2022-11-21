@@ -74,13 +74,13 @@ class LRUCacheGetProductUuidsSpec extends ObjectBehavior
         $this->fromIdentifiers(['product2', 'product1']);
     }
 
-    function it_returns_null_when_product_does_not_exist(GetProductUuids $getProductUuids): void
+    public function it_returns_null_when_product_does_not_exist(GetProductUuids $getProductUuids): void
     {
         $getProductUuids->fromIdentifier('non_existing_product')->willReturn(null);
         $this->fromIdentifier('non_existing_product')->shouldReturn(null);
     }
 
-    function it_returns_null_when_products_do_not_exist(GetProductUuids $getProductUuids): void
+    public function it_returns_null_when_products_do_not_exist(GetProductUuids $getProductUuids): void
     {
         $uuid1 = Uuid::uuid4();
         $uuid2 = Uuid::uuid4();

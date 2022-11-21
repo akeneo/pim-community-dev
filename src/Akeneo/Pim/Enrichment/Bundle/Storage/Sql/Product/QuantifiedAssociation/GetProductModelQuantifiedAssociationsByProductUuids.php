@@ -55,7 +55,7 @@ WHERE p.uuid IN (:productUuids)
 ;
 SQL;
 
-        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $uuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $rows = $this->connection->executeQuery(
             $query,
@@ -76,7 +76,7 @@ SQL;
                 continue;
             }
             $allQuantifiedAssociationsWithProductId = [];
-            $allQuantifiedAssociationsWithProductIdFromJson = json_decode($row['all_quantified_associations'], true);
+            $allQuantifiedAssociationsWithProductIdFromJson = \json_decode($row['all_quantified_associations'], true);
             foreach ($allQuantifiedAssociationsWithProductIdFromJson as $key => $value) {
                 $allQuantifiedAssociationsWithProductId[\strval($key)] = $value;
             }
@@ -102,18 +102,18 @@ SQL;
             if (empty($quantifiedAssociationWithId)) {
                 continue;
             }
-            $productIds = array_merge($productIds, $this->productIds($quantifiedAssociationWithId));
+            $productIds = \array_merge($productIds, $this->productIds($quantifiedAssociationWithId));
         }
 
         $productIdMapping = $this->getIdMappingFromProductModelIdsQuery->execute($productIds);
 
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductId as $associationTypeCode => $associationWithIds) {
-            if (empty($associationWithIds) || !is_string($associationTypeCode)) {
+            if (empty($associationWithIds) || !\is_string($associationTypeCode)) {
                 continue;
             }
 
-            if (!in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
+            if (!\in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
                 continue;
             }
 
@@ -130,7 +130,7 @@ SQL;
                 ];
             }
             if (!empty($uniqueQuantifiedAssociations)) {
-                $result[$associationTypeCode]['product_models'] = array_values($uniqueQuantifiedAssociations);
+                $result[$associationTypeCode]['product_models'] = \array_values($uniqueQuantifiedAssociations);
             }
         }
 
@@ -139,7 +139,7 @@ SQL;
 
     private function productIds(array $quantifiedAssociationWithProductId): array
     {
-        return array_map(
+        return \array_map(
             function (array $quantifiedAssociations) {
                 return $quantifiedAssociations['id'];
             },

@@ -26,16 +26,16 @@ class RouteMessageParameter implements MessageParameterInterface
     public function __construct(string $title, string $route, array $routeParameters = [])
     {
         $this->title = $title;
-        if (1 !== preg_match('/^[a-z_]+$/', $route)) {
-            throw new \InvalidArgumentException(sprintf(
+        if (1 !== \preg_match('/^[a-z_]+$/', $route)) {
+            throw new \InvalidArgumentException(\sprintf(
                 'The provided route must be composed by a-z or _ characters only, "%s" given.',
                 $route
             ));
         }
         $this->route = $route;
         foreach ($routeParameters as $key => $parameter) {
-            if (!is_string($key) || !(is_string($parameter) || is_numeric($parameter))) {
-                throw new \InvalidArgumentException(sprintf(
+            if (!\is_string($key) || !(\is_string($parameter) || \is_numeric($parameter))) {
+                throw new \InvalidArgumentException(\sprintf(
                     '$routeParameter argument from "%s" class must be an associative array of string.',
                     self::class
                 ));

@@ -78,7 +78,7 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
         $optionCodes = $this->getOptionCodes($connectorProducts);
         $optionWithLabels = $this->getOptionWithLabels($optionCodes);
 
-        return array_map(function (ConnectorProduct $product) use ($optionWithLabels) {
+        return \array_map(function (ConnectorProduct $product) use ($optionWithLabels) {
             return $product->buildLinkedData($optionWithLabels);
         }, $connectorProducts);
     }
@@ -116,7 +116,7 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
             return [];
         }
 
-        $queryStringParams = array_fill(0, count($optionCodes), '(?, ?)');
+        $queryStringParams = \array_fill(0, \count($optionCodes), '(?, ?)');
 
         $queryParams = [];
         foreach ($optionCodes as [$attributeCode, $optionCode]) {
@@ -154,10 +154,10 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
         SQL;
 
         $row = $this->connection->executeQuery(
-            sprintf($query, implode(',', $queryStringParams)),
+            \sprintf($query, \implode(',', $queryStringParams)),
             $queryParams
         )->fetchAssociative();
 
-        return isset($row['result']) ? json_decode($row['result'], true) : [];
+        return isset($row['result']) ? \json_decode($row['result'], true) : [];
     }
 }

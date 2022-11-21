@@ -67,11 +67,11 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
             $associatedEntity->addAssociatedProductModel($owner, $associationTypeCode);
         } else {
             throw new \LogicException(
-                sprintf(
+                \sprintf(
                     'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
                     ProductInterface::class,
                     ProductModelInterface::class,
-                    get_class($associatedEntity)
+                    \get_class($associatedEntity)
                 )
             );
         }
@@ -91,11 +91,11 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
             $associatedEntity->removeAssociatedProductModel($owner, $associationTypeCode);
         } else {
             throw new \LogicException(
-                sprintf(
+                \sprintf(
                     'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
                     ProductInterface::class,
                     ProductModelInterface::class,
-                    get_class($owner)
+                    \get_class($owner)
                 )
             );
         }

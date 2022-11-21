@@ -75,11 +75,11 @@ class PriceCollectionValue extends AbstractValue implements PriceCollectionValue
         $priceStrings = [];
         foreach ($this->data as $price) {
             if (null !== $price->getData()) {
-                $priceStrings[] = sprintf('%.2F %s', $price->getData(), $price->getCurrency());
+                $priceStrings[] = \sprintf('%.2F %s', $price->getData(), $price->getCurrency());
             }
         }
 
-        return implode(', ', $priceStrings);
+        return \implode(', ', $priceStrings);
     }
 
     /**

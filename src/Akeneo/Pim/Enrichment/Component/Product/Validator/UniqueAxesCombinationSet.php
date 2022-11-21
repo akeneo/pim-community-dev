@@ -58,7 +58,7 @@ class UniqueAxesCombinationSet
                 if ($entity instanceof ProductInterface) {
                     throw new AlreadyExistingAxisValueCombinationException(
                         $cachedIdentifier,
-                        sprintf(
+                        \sprintf(
                             'Variant product "%s" already have the "%s" combination of axis values.',
                             $cachedIdentifier,
                             $axisValueCombination
@@ -68,7 +68,7 @@ class UniqueAxesCombinationSet
 
                 throw new AlreadyExistingAxisValueCombinationException(
                     $cachedIdentifier,
-                    sprintf(
+                    \sprintf(
                         'Product model "%s" already have the "%s" combination of axis values.',
                         $cachedIdentifier,
                         $axisValueCombination

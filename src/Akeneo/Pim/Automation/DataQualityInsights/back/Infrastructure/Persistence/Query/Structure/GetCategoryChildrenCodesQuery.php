@@ -37,7 +37,7 @@ SQL;
         $categoryCodes = $statement->fetchFirstColumn();
 
         if (empty($categoryCodes)) {
-            throw new \RuntimeException(sprintf('The category %s was not found.', $categoryCode));
+            throw new \RuntimeException(\sprintf('The category %s was not found.', $categoryCode));
         }
 
         return $categoryCodes;

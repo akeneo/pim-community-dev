@@ -49,12 +49,12 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
             ];
         }
 
-        if (1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $propertyPath, $matches)) {
+        if (1 === \preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $propertyPath, $matches)) {
             if (!isset($context['product']) && !isset($context['productModel'])) {
                 throw new \InvalidArgumentException('Expects a product or product model context');
             }
 
-            $attribute = explode('-', $matches['attribute']);
+            $attribute = \explode('-', $matches['attribute']);
             $attributeCode = $attribute[0];
 
             // TODO: TIP-722 - to revert once the identifier product value is dropped.
@@ -76,14 +76,14 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
             ];
         }
 
-        if (0 === strpos($propertyPath, 'values[')) {
+        if (0 === \strpos($propertyPath, 'values[')) {
             if (!isset($context['product']) && !isset($context['productModel'])) {
                 throw new \InvalidArgumentException('Expects a product or product model context');
             }
 
-            $codeStart = strpos($propertyPath, '[') + 1;
-            $codeLength = strpos($propertyPath, ']') - $codeStart;
-            $attribute = json_decode(substr($propertyPath, $codeStart, $codeLength), true);
+            $codeStart = \strpos($propertyPath, '[') + 1;
+            $codeLength = \strpos($propertyPath, ']') - $codeStart;
+            $attribute = \json_decode(\substr($propertyPath, $codeStart, $codeLength), true);
 
             return [
                 'attribute' => $attribute['code'],
@@ -105,7 +105,7 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return in_array($format, $this->supportedFormats) && $data instanceof ConstraintViolationInterface;
+        return \in_array($format, $this->supportedFormats) && $data instanceof ConstraintViolationInterface;
     }
 
     public function hasCacheableSupportsMethod(): bool

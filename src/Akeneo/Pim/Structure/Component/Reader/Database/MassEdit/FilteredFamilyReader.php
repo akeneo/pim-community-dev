@@ -43,7 +43,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         $filters = $this->getConfiguredFilters();
         $familyIds = $this->getFamilyIds($filters);
 
-        return count($familyIds);
+        return \count($familyIds);
     }
 
     /**
@@ -122,7 +122,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
 
-        $filter = current($filters);
+        $filter = \current($filters);
         $filter = $resolver->resolve($filter);
 
         return $filter['value'];

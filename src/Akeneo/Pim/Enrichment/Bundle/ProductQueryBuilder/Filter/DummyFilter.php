@@ -51,7 +51,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute->getType(), $this->supportedAttributeTypes);
+        return \in_array($attribute->getType(), $this->supportedAttributeTypes);
     }
 
     /**
@@ -59,7 +59,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array($field, $this->supportedFields);
+        return \in_array($field, $this->supportedFields);
     }
 
     /**
@@ -67,7 +67,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, $this->supportedOperators);
+        return \in_array($operator, $this->supportedOperators);
     }
 
     /**

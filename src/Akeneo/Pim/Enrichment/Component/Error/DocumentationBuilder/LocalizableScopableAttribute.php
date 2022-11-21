@@ -40,7 +40,7 @@ final class LocalizableScopableAttribute implements DocumentationBuilderInterfac
                 'Please check your {attribute_settings}.',
                 [
                     'attribute_settings' => new RouteMessageParameter(
-                        sprintf('%s attributes settings', $object->getAttributeCode()),
+                        \sprintf('%s attributes settings', $object->getAttributeCode()),
                         'pim_enrich_attribute_edit',
                         ['code' => $object->getAttributeCode()]
                     )

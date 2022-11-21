@@ -67,11 +67,11 @@ class GetEvaluableProductValuesQuery implements GetEvaluableProductValuesQueryIn
     private function buildProductValuesByChannelAndLocale(Attribute $attribute, ChannelLocaleCollection $channelsLocales, array $rawValues): ?ProductValues
     {
         $productValues = new ChannelLocaleDataCollection();
-        $attributeCode = strval($attribute->getCode());
+        $attributeCode = \strval($attribute->getCode());
 
         foreach ($channelsLocales as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode) {
-                $value = isset($rawValues[$attributeCode]) ? $this->getValue($rawValues[$attributeCode], strval($channelCode), strval($localeCode)) : null;
+                $value = isset($rawValues[$attributeCode]) ? $this->getValue($rawValues[$attributeCode], \strval($channelCode), \strval($localeCode)) : null;
                 if (null !== $value) {
                     $productValues->addToChannelAndLocale($channelCode, $localeCode, $value);
                 }

@@ -42,7 +42,7 @@ SQL;
 
         $labels = [];
         foreach ($results as $result) {
-            $values = json_decode($result['raw_values'], true);
+            $values = \json_decode($result['raw_values'], true);
 
             $productModelCode = $result['code'];
             $labelCode = $result['label_code'];

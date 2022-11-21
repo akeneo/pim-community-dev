@@ -36,7 +36,7 @@ class ValueFactory
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         if (null === $data || [] === $data || '' === $data) {
-            throw new InvalidArgumentException(get_class($this), sprintf('Data should not be empty, %s found', json_encode($data)));
+            throw new InvalidArgumentException(\get_class($this), \sprintf('Data should not be empty, %s found', \json_encode($data)));
         }
 
         ValidateAttribute::validate($attribute, $channelCode, $localeCode);
@@ -64,7 +64,7 @@ class ValueFactory
             return $this->valueFactories[$attribute->type()];
         }
 
-        throw new \OutOfBoundsException(sprintf(
+        throw new \OutOfBoundsException(\sprintf(
             'No read factory has been registered to create a Product Value for the attribute type "%s"',
             $attribute->type()
         ));

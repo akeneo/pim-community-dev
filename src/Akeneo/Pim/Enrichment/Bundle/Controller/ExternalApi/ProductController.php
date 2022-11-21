@@ -133,14 +133,14 @@ class ProductController
         $query = new ListProductsQuery();
 
         if ($request->query->has('attributes')) {
-            $query->attributeCodes = explode(',', $request->query->get('attributes'));
+            $query->attributeCodes = \explode(',', $request->query->get('attributes'));
         }
         if ($request->query->has('locales')) {
-            $query->localeCodes = explode(',', $request->query->get('locales'));
+            $query->localeCodes = \explode(',', $request->query->get('locales'));
         }
         if ($request->query->has('search')) {
-            $query->search = json_decode($request->query->get('search'), true);
-            if (!is_array($query->search)) {
+            $query->search = \json_decode($request->query->get('search'), true);
+            if (!\is_array($query->search)) {
                 throw new BadRequestHttpException('Search query parameter should be valid JSON.');
             }
         }
@@ -167,11 +167,11 @@ class ProductController
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (BadRequest400Exception $e) {
-            $message = json_decode($e->getMessage(), true);
+            $message = \json_decode($e->getMessage(), true);
             if (
                 null !== $message && isset($message['error']['root_cause'][0]['type'])
                 && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
-                && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
+                && 0 === \strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
             ) {
                 throw new DocumentedHttpException(
                     Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
@@ -199,7 +199,7 @@ class ProductController
             Assert::isInstanceOf($user, UserInterface::class);
 
             $uuidsFromIdentifiers = $this->findProductUuids->fromIdentifiers([$code]);
-            if (!array_key_exists($code, $uuidsFromIdentifiers)) {
+            if (!\array_key_exists($code, $uuidsFromIdentifiers)) {
                 throw new ObjectNotFoundException();
             }
 
@@ -214,7 +214,7 @@ class ProductController
                 $product = $this->getProductsWithCompletenesses->fromConnectorProduct($product);
             }
         } catch (ObjectNotFoundException) {
-            throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
+            throw new NotFoundHttpException(\sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
         }
 
         $normalizedProduct = $this->connectorProductNormalizer->normalizeConnectorProduct($product);
@@ -258,7 +258,7 @@ class ProductController
         if (!isset($data['identifier']) || $data['identifier'] === '') {
             throw new DocumentedHttpException(
                 Documentation::URL . 'post_products_uuid',
-                sprintf(self::NO_IDENTIFIER_MESSAGE)
+                \sprintf(self::NO_IDENTIFIER_MESSAGE)
             );
         }
 
@@ -267,7 +267,7 @@ class ProductController
             $firstViolation = $violations->get(0);
             throw new DocumentedHttpException(
                 Documentation::URL . 'post_products',
-                sprintf('%s Check the expected format on the API documentation.', $firstViolation->getMessage()),
+                \sprintf('%s Check the expected format on the API documentation.', $firstViolation->getMessage()),
                 new \LogicException($firstViolation->getMessage())
             );
         }
@@ -279,7 +279,7 @@ class ProductController
 
             throw new DocumentedHttpException(
                 Documentation::URL . 'post_products',
-                sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                \sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
                 $e
             );
         }
@@ -317,16 +317,16 @@ class ProductController
             $message = 'The identifier field requires a string.';
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',
-                sprintf('%s Check the expected format on the API documentation.', $message)
+                \sprintf('%s Check the expected format on the API documentation.', $message)
             );
         }
 
         $data = $this->getDecodedContent($request->getContent());
 
-        if (array_key_exists('identifier', $data) && (null === $data['identifier'] || '' === $data['identifier'])) {
+        if (\array_key_exists('identifier', $data) && (null === $data['identifier'] || '' === $data['identifier'])) {
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products_uuid__uuid_',
-                sprintf(self::NO_IDENTIFIER_MESSAGE)
+                \sprintf(self::NO_IDENTIFIER_MESSAGE)
             );
         }
 
@@ -335,7 +335,7 @@ class ProductController
             $firstViolation = $violations->get(0);
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',
-                sprintf('%s Check the expected format on the API documentation.', $firstViolation->getMessage()),
+                \sprintf('%s Check the expected format on the API documentation.', $firstViolation->getMessage()),
                 new \LogicException($firstViolation->getMessage())
             );
         }
@@ -347,7 +347,7 @@ class ProductController
 
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',
-                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -365,7 +365,7 @@ class ProductController
             }
         }
 
-        $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
+        $data['identifier'] = \array_key_exists('identifier', $data) ? $data['identifier'] : $code;
         $data = $this->populateIdentifierProductValue($data);
 
         if (!$isCreation) {
@@ -429,7 +429,7 @@ class ProductController
      */
     protected function getDecodedContent($content): array
     {
-        $decodedContent = json_decode($content, true);
+        $decodedContent = \json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -449,7 +449,7 @@ class ProductController
      */
     protected function updateProduct(ProductInterface $product, array $data, string $anchor): void
     {
-        if (array_key_exists('variant_group', $data)) {
+        if (\array_key_exists('variant_group', $data)) {
             throw new DocumentedHttpException(
                 Documentation::URL_DOCUMENTATION . 'products-with-variants.html',
                 'Property "variant_group" does not exist anymore. Check the link below to understand why.'
@@ -476,7 +476,7 @@ class ProductController
             if ($exception instanceof PropertyException) {
                 throw new DocumentedHttpException(
                     Documentation::URL . $anchor,
-                    sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                    \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                     $exception
                 );
             }
@@ -517,7 +517,7 @@ class ProductController
             $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $data['values']]);
 
             if (!empty($dataFiltered)) {
-                $data = array_replace($data, $dataFiltered);
+                $data = \array_replace($data, $dataFiltered);
             } else {
                 $data['values'] = [];
             }
@@ -530,7 +530,7 @@ class ProductController
 
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',
-                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -636,9 +636,9 @@ class ProductController
      */
     protected function validateCodeConsistency(string $code, array $data): void
     {
-        if (array_key_exists('identifier', $data) && $code !== $data['identifier']) {
+        if (\array_key_exists('identifier', $data) && $code !== $data['identifier']) {
             throw new UnprocessableEntityHttpException(
-                sprintf(
+                \sprintf(
                     'The identifier "%s" provided in the request body must match the identifier "%s" provided in the url.',
                     $data['identifier'],
                     $code
@@ -677,7 +677,7 @@ class ProductController
     protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
     {
         return null !== $product->getCreated() && $product->isVariant() &&
-            array_key_exists('parent', $data) && null === $data['parent'];
+            \array_key_exists('parent', $data) && null === $data['parent'];
     }
 
     private function normalizeProductsList(ConnectorProductList $connectorProductList, ListProductsQuery $query): array
@@ -689,7 +689,7 @@ class ProductController
         ];
 
         if ($query->search !== []) {
-            $queryParameters['search'] = json_encode($query->search);
+            $queryParameters['search'] = \json_encode($query->search);
         }
         if (null !== $query->channelCode) {
             $queryParameters['scope'] = $query->channelCode;
@@ -698,10 +698,10 @@ class ProductController
             $queryParameters['search_scope'] = $query->searchChannelCode;
         }
         if (null !== $query->localeCodes) {
-            $queryParameters['locales'] = join(',', $query->localeCodes);
+            $queryParameters['locales'] = \join(',', $query->localeCodes);
         }
         if (null !== $query->attributeCodes) {
-            $queryParameters['attributes'] = join(',', $query->attributeCodes);
+            $queryParameters['attributes'] = \join(',', $query->attributeCodes);
         }
         if (true === $query->withAttributeOptionsAsBoolean()) {
             $queryParameters['with_attribute_options'] = 'true';
@@ -734,7 +734,7 @@ class ProductController
             return $paginatedProducts;
         } else {
             $connectorProducts = $connectorProductList->connectorProducts();
-            $lastProduct = end($connectorProducts);
+            $lastProduct = \end($connectorProducts);
 
             $parameters = [
                 'query_parameters' => $queryParameters,

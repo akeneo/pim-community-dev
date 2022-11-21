@@ -79,7 +79,7 @@ class ListChildrenCategoriesWithCountIncludingSubCategories implements Query\Lis
         string $translationLocaleCode,
         ?int $categoryIdToSelectedAsFilter
     ) : array {
-        $parentCategoryId = array_shift($categoryIdsInPath);
+        $parentCategoryId = \array_shift($categoryIdsInPath);
         $subchildCategoryId = $categoryIdsInPath[0] ?? null;
 
         $categoriesWithoutProductCount = $this->fetchChildrenCategories($parentCategoryId, $translationLocaleCode);
@@ -91,7 +91,7 @@ class ListChildrenCategoriesWithCountIncludingSubCategories implements Query\Lis
             $childrenCategoriesToExpand = null !== $subchildCategoryId && $subchildCategoryId === (int) $category['child_id'] ?
                 $this->getRecursivelyCategories($categoryIdsInPath, $translationLocaleCode, $categoryIdToSelectedAsFilter): [];
 
-            $isLeaf = count($category['children_codes']) === 0;
+            $isLeaf = \count($category['children_codes']) === 0;
             $isUsedAsFilter = null !== $categoryIdToSelectedAsFilter ? (int) $category['child_id'] === $categoryIdToSelectedAsFilter: false;
 
             $categories[] = new ChildCategory(
@@ -157,9 +157,9 @@ SQL;
 
         $categories = [];
         foreach ($rows as $row) {
-            $childrenCategoryCodes = null !== $row['children_codes'] ? explode(',', $row['children_codes']) : [];
+            $childrenCategoryCodes = null !== $row['children_codes'] ? \explode(',', $row['children_codes']) : [];
             $row['children_codes'] = $childrenCategoryCodes;
-            array_shift($row['children_codes']);
+            \array_shift($row['children_codes']);
 
             $categories[] = $row;
         }
@@ -284,7 +284,7 @@ SQL;
             ]
         )->fetchAllAssociative();
 
-        $ids = array_map(function ($row) {
+        $ids = \array_map(function ($row) {
             return (int) $row['id'];
         }, $rows);
 

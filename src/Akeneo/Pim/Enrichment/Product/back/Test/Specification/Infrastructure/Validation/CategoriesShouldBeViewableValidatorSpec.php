@@ -19,32 +19,32 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
 {
-    function let(GetViewableCategories $getViewableCategories, ExecutionContext $context)
+    public function let(GetViewableCategories $getViewableCategories, ExecutionContext $context)
     {
         $this->beConstructedWith($getViewableCategories);
         $this->initialize($context);
     }
 
-    function it_is_a_constraint_validator()
+    public function it_is_a_constraint_validator()
     {
         $this->shouldHaveType(CategoriesShouldBeViewableValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function it_throws_an_exception_with_a_wrong_constraint()
+    public function it_throws_an_exception_with_a_wrong_constraint()
     {
         $command = UpsertProductCommand::createWithIdentifier(userId: 1, productIdentifier: ProductIdentifier::fromIdentifier('foo'), userIntents: []);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
 
-    function it_throws_an_exception_with_a_wrong_value()
+    public function it_throws_an_exception_with_a_wrong_value()
     {
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('validate', [new \stdClass(), new CategoriesShouldBeViewable([])]);
     }
 
-    function it_allows_adding_categories_if_user_has_access(
+    public function it_allows_adding_categories_if_user_has_access(
         ExecutionContext $context,
         GetViewableCategories $getViewableCategories
     ) {
@@ -61,7 +61,7 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
         $this->validate($categoryUserIntent, new CategoriesShouldBeViewable());
     }
 
-    function it_adds_a_violation_when_a_category_is_not_viewable(
+    public function it_adds_a_violation_when_a_category_is_not_viewable(
         ExecutionContext $context,
         GetViewableCategories $getViewableCategories,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
@@ -84,7 +84,7 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
         $this->validate($categoryUserIntent, new CategoriesShouldBeViewable());
     }
 
-    function it_adds_a_violation_when_several_categories_are_not_viewable(
+    public function it_adds_a_violation_when_several_categories_are_not_viewable(
         ExecutionContext $context,
         GetViewableCategories $getViewableCategories,
         ConstraintViolationBuilderInterface $constraintViolationBuilder

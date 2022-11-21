@@ -47,7 +47,7 @@ SQL;
         while ($productUuid = $stmt->fetchOne()) {
             $productUuids[] = $productUuid;
 
-            if (count($productUuids) >= $bulkSize) {
+            if (\count($productUuids) >= $bulkSize) {
                 yield $this->idFactory->createCollection($productUuids);
                 $productUuids = [];
             }

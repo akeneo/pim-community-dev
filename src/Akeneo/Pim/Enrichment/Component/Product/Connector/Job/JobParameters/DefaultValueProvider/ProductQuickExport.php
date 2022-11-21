@@ -55,6 +55,6 @@ class ProductQuickExport implements DefaultValuesProviderInterface
      */
     public function supports(JobInterface $job)
     {
-        return in_array($job->getName(), $this->supportedJobNames);
+        return \in_array($job->getName(), $this->supportedJobNames);
     }
 }

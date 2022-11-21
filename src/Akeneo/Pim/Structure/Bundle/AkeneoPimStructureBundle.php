@@ -28,7 +28,7 @@ class AkeneoPimStructureBundle extends Bundle
         ;
 
         $productMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Pim\Structure\Component\Model'
+            \realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Pim\Structure\Component\Model'
         ];
 
         $container->addCompilerPass(

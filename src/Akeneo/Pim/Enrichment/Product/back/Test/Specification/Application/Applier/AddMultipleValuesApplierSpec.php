@@ -12,18 +12,18 @@ use PhpSpec\ObjectBehavior;
 
 class AddMultipleValuesApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $updater)
+    public function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(AddMultipleValuesApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_add_multiple_values_user_intent(ObjectUpdaterInterface $updater): void
+    public function it_applies_add_multiple_values_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $addMultiSelectValue = new AddMultiSelectValue('code', 'ecommerce', 'en_US', ['option1', 'option2']);
@@ -46,7 +46,7 @@ class AddMultipleValuesApplierSpec extends ObjectBehavior
         $this->apply($addMultiSelectValue, $product, 1);
     }
 
-    function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

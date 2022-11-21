@@ -40,7 +40,7 @@ final class GetUpToDateCriteriaEvaluationsByEntityIdQuerySpec extends ObjectBeha
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending(),
                 null
-        ));
+            ));
 
         $getCriteriaEvaluationsByProductIdQuery->execute($productUuid)->willReturn($criteriaEvaluations);
 

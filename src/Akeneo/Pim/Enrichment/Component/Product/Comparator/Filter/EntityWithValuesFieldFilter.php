@@ -50,8 +50,8 @@ class EntityWithValuesFieldFilter implements FilterInterface
         $result = [];
 
         foreach ($newFields as $field => $value) {
-            if (!in_array($field, $this->entityFields)) {
-                throw new \LogicException(sprintf('Cannot filter value of field "%s"', $field));
+            if (!\in_array($field, $this->entityFields)) {
+                throw new \LogicException(\sprintf('Cannot filter value of field "%s"', $field));
             }
 
             $comparator = $this->comparatorRegistry->getFieldComparator($field);

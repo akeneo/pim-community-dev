@@ -45,7 +45,7 @@ class BlacklistedAttributeCodeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, BlacklistedAttributeCode::class);
         }
 
-        if (is_string($attributeCode) && $this->isAttributeCodeBlacklisted->execute($attributeCode)) {
+        if (\is_string($attributeCode) && $this->isAttributeCodeBlacklisted->execute($attributeCode)) {
             $this->addInternalViolation($attributeCode, $constraint);
             $this->context
                 ->buildViolation($constraint->message)
@@ -56,7 +56,7 @@ class BlacklistedAttributeCodeValidator extends ConstraintValidator
     private function addInternalViolation(string $attributeCode, BlacklistedAttributeCode $constraint): void
     {
         $jobExecutionId = $this->getBlacklistedAttributeJobExecutionId->forAttributeCode($attributeCode);
-        $jobExecutionLink = sprintf('#%s', $this->router->generate(self::JOB_TRACKER_ROUTE, ['id' => $jobExecutionId]));
+        $jobExecutionLink = \sprintf('#%s', $this->router->generate(self::JOB_TRACKER_ROUTE, ['id' => $jobExecutionId]));
         $internalApiMessage = $this->translator->trans(
             $constraint->internalAPIMessage,
             ['{{ link }}' => $jobExecutionLink],

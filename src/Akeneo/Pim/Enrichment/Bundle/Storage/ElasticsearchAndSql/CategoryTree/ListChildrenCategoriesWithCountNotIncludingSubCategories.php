@@ -79,7 +79,7 @@ class ListChildrenCategoriesWithCountNotIncludingSubCategories implements Query\
         string $translationLocaleCode,
         ?int $categoryIdToFilterWith
     ) : array {
-        $parentCategoryId = array_shift($categoryIdsInPath);
+        $parentCategoryId = \array_shift($categoryIdsInPath);
         $subchildCategoryId = $categoryIdsInPath[0] ?? null;
 
         $categoriesWithoutCount = $this->fetchChildrenCategories($parentCategoryId, $translationLocaleCode);
@@ -274,7 +274,7 @@ SQL;
             ]
         )->fetchAllAssociative();
 
-        $ids = array_map(function ($row) {
+        $ids = \array_map(function ($row) {
             return (int) $row['id'];
         }, $rows);
 

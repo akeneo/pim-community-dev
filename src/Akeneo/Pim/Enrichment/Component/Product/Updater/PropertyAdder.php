@@ -53,7 +53,7 @@ class PropertyAdder implements PropertyAdderInterface
 
         $adder = $this->adderRegistry->getAdder($field);
         if (null === $adder) {
-            throw new \LogicException(sprintf('No adder found for field "%s"', $field));
+            throw new \LogicException(\sprintf('No adder found for field "%s"', $field));
         }
 
         if ($adder instanceof AttributeAdderInterface) {
@@ -62,9 +62,9 @@ class PropertyAdder implements PropertyAdderInterface
         } elseif ($adder instanceof FieldAdderInterface) {
             $adder->addFieldData($product, $field, $data, $options);
         } else {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 "The adder must implements AttributeAdderInterface or FieldAdderInterface, '%s' given",
-                get_class($adder)
+                \get_class($adder)
             ));
         }
 

@@ -64,7 +64,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
      */
     public function normalize($productModel, $format = null, array $context = array()): array
     {
-        $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
+        $context = \array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
 
         $data[self::FIELD_CODE] = $productModel->getCode();
         $data[self::FIELD_FAMILY_VARIANT] = $productModel->getFamilyVariant()->getCode();

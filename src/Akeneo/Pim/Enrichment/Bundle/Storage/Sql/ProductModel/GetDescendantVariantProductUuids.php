@@ -57,6 +57,6 @@ SQL;
             ['codes' => Connection::PARAM_STR_ARRAY]
         )->fetchFirstColumn();
 
-        return array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $result);
+        return \array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $result);
     }
 }

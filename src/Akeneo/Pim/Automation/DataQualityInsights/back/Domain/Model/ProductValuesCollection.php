@@ -22,7 +22,7 @@ final class ProductValuesCollection implements \IteratorAggregate
 
     public function add(ProductValues $productValues): self
     {
-        $this->productValuesByAttribute[strval($productValues->getAttribute()->getCode())] = $productValues;
+        $this->productValuesByAttribute[\strval($productValues->getAttribute()->getCode())] = $productValues;
 
         return $this;
     }

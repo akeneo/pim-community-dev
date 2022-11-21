@@ -48,7 +48,7 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
             $types['locales'] = Connection::PARAM_STR_ARRAY;
         }
 
-        $sql = sprintf(
+        $sql = \sprintf(
             <<<SQL
 SELECT 
        BIN_TO_UUID(product.uuid) AS product_uuid,
@@ -71,11 +71,11 @@ SQL,
         );
         $rows = $this->connection->executeQuery($sql, $params, $types)->fetchAllAssociative();
 
-        $results = array_reduce(
+        $results = \array_reduce(
             $rows,
             function (array $normalized, array $row) {
                 $productUuid = Uuid::fromString($row['product_uuid']);
-                $normalized[$productUuid->toString()] = new ProductCompletenessCollection($productUuid, array_map(
+                $normalized[$productUuid->toString()] = new ProductCompletenessCollection($productUuid, \array_map(
                     function (array $completeness): ProductCompleteness {
                         return new ProductCompleteness(
                             $completeness['channel_code'],
@@ -84,7 +84,7 @@ SQL,
                             (int) $completeness['missing_count']
                         );
                     },
-                    json_decode($row['completenesses'], true)
+                    \json_decode($row['completenesses'], true)
                 ));
 
                 return $normalized;
@@ -93,7 +93,7 @@ SQL,
         );
 
         $productUuidsAsStrings = \array_map(fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids);
-        $missingUuids = array_diff($productUuidsAsStrings, array_keys($results));
+        $missingUuids = \array_diff($productUuidsAsStrings, \array_keys($results));
         if (!empty($missingUuids)) {
             foreach ($missingUuids as $missingUuid) {
                 $results[$missingUuid] = new ProductCompletenessCollection(Uuid::fromString($missingUuid), []);

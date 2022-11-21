@@ -95,7 +95,7 @@ SQL;
 
         $categories = [];
         foreach ($rows as $row) {
-            $childrenCategoriesCodes = null !== $row['children_codes'] ? explode(',', $row['children_codes']) : [];
+            $childrenCategoriesCodes = null !== $row['children_codes'] ? \explode(',', $row['children_codes']) : [];
             $row['children_codes'] = $childrenCategoriesCodes;
 
             $categories[] = $row;

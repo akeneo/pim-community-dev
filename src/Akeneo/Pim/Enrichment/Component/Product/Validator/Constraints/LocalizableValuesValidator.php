@@ -68,7 +68,7 @@ final class LocalizableValuesValidator extends ConstraintValidator
                         '%invalid_locale%' => $localizableValue->getLocaleCode(),
                     ]
                 )
-                    ->atPath(sprintf('[%s]', $key))
+                    ->atPath(\sprintf('[%s]', $key))
                     ->setCode(LocalizableValues::NON_ACTIVE_LOCALE)
                     ->addViolation();
 
@@ -80,7 +80,7 @@ final class LocalizableValuesValidator extends ConstraintValidator
                 // this validator is not responsible for checking the existence of the channel (it is the responsibility
                 // of `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValuesValidator`),
                 // hence the `null !== $channel` test
-                if (null !== $channel && !in_array($localizableValue->getLocaleCode(), $channel->getLocaleCodes())) {
+                if (null !== $channel && !\in_array($localizableValue->getLocaleCode(), $channel->getLocaleCodes())) {
                     $this->context->buildViolation(
                         $constraint->invalidLocaleForChannelMessage,
                         [
@@ -89,7 +89,7 @@ final class LocalizableValuesValidator extends ConstraintValidator
                             '%invalid_locale%' => $localizableValue->getLocaleCode(),
                         ]
                     )
-                        ->atPath(sprintf('[%s]', $key))
+                        ->atPath(\sprintf('[%s]', $key))
                         ->setCode(LocalizableValues::INVALID_LOCALE_FOR_CHANNEL)
                         ->addViolation();
 
@@ -98,7 +98,7 @@ final class LocalizableValuesValidator extends ConstraintValidator
             }
 
             $attribute = $attributes[$localizableValue->getAttributeCode()];
-            if ($attribute->isLocaleSpecific() && !in_array($localizableValue->getLocaleCode(), $attribute->availableLocaleCodes())) {
+            if ($attribute->isLocaleSpecific() && !\in_array($localizableValue->getLocaleCode(), $attribute->availableLocaleCodes())) {
                 $this->context->buildViolation(
                     $constraint->invalidLocaleSpecificMessage,
                     [
@@ -106,7 +106,7 @@ final class LocalizableValuesValidator extends ConstraintValidator
                         '%locale%' => $localizableValue->getLocaleCode(),
                     ]
                 )
-                    ->atPath(sprintf('[%s]', $key))
+                    ->atPath(\sprintf('[%s]', $key))
                     ->setCode(LocalizableValues::NOT_AVAILABLE_LOCALE_ERROR)
                     ->addViolation();
             }

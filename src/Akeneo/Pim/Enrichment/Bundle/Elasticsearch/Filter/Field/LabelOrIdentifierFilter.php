@@ -46,14 +46,14 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
 
         $clauses[] = [
             'wildcard' => [
-                'identifier' => sprintf('*%s*', $this->escapeValue($value)),
+                'identifier' => \sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 
         if (null !== $channel && null !== $locale) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('label.%s.%s', $channel, $locale) => sprintf('*%s*', $this->escapeValue($value)),
+                    \sprintf('label.%s.%s', $channel, $locale) => \sprintf('*%s*', $this->escapeValue($value)),
                 ]
             ];
         }
@@ -61,7 +61,7 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
         if (null !== $channel) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('label.%s.<all_locales>', $channel) => sprintf('*%s*', $this->escapeValue($value)),
+                    \sprintf('label.%s.<all_locales>', $channel) => \sprintf('*%s*', $this->escapeValue($value)),
                 ]
             ];
         }
@@ -69,14 +69,14 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
         if (null !== $locale) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('label.<all_channels>.%s', $locale) => sprintf('*%s*', $this->escapeValue($value)),
+                    \sprintf('label.<all_channels>.%s', $locale) => \sprintf('*%s*', $this->escapeValue($value)),
                 ]
             ];
         }
 
         $clauses[] = [
             'wildcard' => [
-                'label.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
+                'label.<all_channels>.<all_locales>' => \sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 
@@ -102,7 +102,7 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
     {
         FieldFilterHelper::checkString('label_or_identifier', $value, static::class);
 
-        if (!in_array($operator, [Operators::CONTAINS])) {
+        if (!\in_array($operator, [Operators::CONTAINS])) {
             throw InvalidOperatorException::notSupported($operator, static::class);
         }
     }
@@ -124,6 +124,6 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
     {
         $regex = '#[-+=|! &(){}\[\]^"~*<>?:/\\\]#';
 
-        return preg_replace($regex, '\\\$0', $value);
+        return \preg_replace($regex, '\\\$0', $value);
     }
 }

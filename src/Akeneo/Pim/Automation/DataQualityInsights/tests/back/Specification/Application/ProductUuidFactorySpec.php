@@ -22,7 +22,7 @@ class ProductUuidFactorySpec extends ObjectBehavior
         ]);
 
         $collection = $collectionBehavior->getWrappedObject();
-        Assert::allIsInstanceOf($collection, ProductUuid:: class);
+        Assert::allIsInstanceOf($collection, ProductUuid::class);
         Assert::same((string) $collection->toArray()[0], 'df470d52-7723-4890-85a0-e79be625e2ed');
         Assert::same((string) $collection->toArray()[1], '6d125b99-d971-41d9-a264-b020cd486aee');
     }

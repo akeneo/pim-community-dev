@@ -33,7 +33,7 @@ class GetProductsWithCompletenesses implements GetProductsWithCompletenessesInte
         ?string $channel = null,
         array $locales = []
     ): ConnectorProductList {
-        $productUuids = array_map(
+        $productUuids = \array_map(
             fn (ConnectorProduct $connectorProduct): UuidInterface => $connectorProduct->uuid(),
             $connectorProductList->connectorProducts()
         );
@@ -46,7 +46,7 @@ class GetProductsWithCompletenesses implements GetProductsWithCompletenessesInte
 
         return new ConnectorProductList(
             $connectorProductList->totalNumberOfProducts(),
-            array_map(
+            \array_map(
                 fn (ConnectorProduct $product) =>
                     $product->buildWithCompletenesses($productCompletenesses[$product->uuid()->toString()]),
                 $connectorProductList->connectorProducts()

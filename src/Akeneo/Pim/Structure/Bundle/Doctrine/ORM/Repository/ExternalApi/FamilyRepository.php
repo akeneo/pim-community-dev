@@ -56,7 +56,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
         $qb = $this->addFilters($qb, $searchFilters);
 
         foreach ($orders as $field => $sort) {
-            $qb->addOrderBy(sprintf('r.%s', $field), $sort);
+            $qb->addOrderBy(\sprintf('r.%s', $field), $sort);
         }
 
         if (null !== $offset) {
@@ -94,8 +94,8 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
 
         foreach ($searchFilters as $property => $searchFilter) {
             foreach ($searchFilter as $key => $criterion) {
-                $parameter = sprintf(':%s_%s', $property, $key);
-                $field = sprintf('r.%s', $property);
+                $parameter = \sprintf(':%s_%s', $property, $key);
+                $field = \sprintf('r.%s', $property);
                 switch ($criterion['operator']) {
                     case 'IN':
                         $qb->andWhere($qb->expr()->in($field, $parameter));
@@ -175,14 +175,14 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 ]),
             ]),
         ];
-        $availableSearchFilters = array_keys($constraints);
+        $availableSearchFilters = \array_keys($constraints);
 
         $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
-            if (!in_array($property, $availableSearchFilters)) {
-                throw new \InvalidArgumentException(sprintf(
+            if (!\in_array($property, $availableSearchFilters)) {
+                throw new \InvalidArgumentException(\sprintf(
                     'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
-                    implode(', ', $availableSearchFilters),
+                    \implode(', ', $availableSearchFilters),
                     $property
                 ));
             }
@@ -192,7 +192,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
             }
         }
         if (!empty($exceptionMessages)) {
-            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
+            throw new \InvalidArgumentException(\implode(' ', $exceptionMessages));
         }
     }
 }

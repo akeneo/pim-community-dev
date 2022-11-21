@@ -238,7 +238,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
     ): ?array {
         $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProducts();
 
-        $newAssociations = array_map(static fn (QuantifiedEntity $quantifiedEntity) => [
+        $newAssociations = \array_map(static fn (QuantifiedEntity $quantifiedEntity) => [
             'identifier' => $quantifiedEntity->entityIdentifier(),
             'uuid' => null,
             'quantity' => $quantifiedEntity->quantity(),
@@ -252,7 +252,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         }
 
         $formerAssociatedIdentifiers = \array_column($formerAssociations, 'identifier');
-        $formerAssociatedIdentifiers = array_filter(
+        $formerAssociatedIdentifiers = \array_filter(
             $formerAssociatedIdentifiers,
             static fn ($formerAssociatedIdentifier) => $formerAssociatedIdentifier !== null
         );
@@ -276,7 +276,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
     ): ?array {
         $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProductModels();
 
-        $newAssociations = array_map(static fn (QuantifiedEntity $quantifiedEntity) => [
+        $newAssociations = \array_map(static fn (QuantifiedEntity $quantifiedEntity) => [
             'identifier' => $quantifiedEntity->entityIdentifier(),
             'quantity' => $quantifiedEntity->quantity(),
         ], $quantifiedEntities);
@@ -328,7 +328,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         }
 
         $formerAssociatedUuids = \array_column($formerAssociations, 'uuid');
-        $formerAssociatedUuids = array_filter(
+        $formerAssociatedUuids = \array_filter(
             $formerAssociatedUuids,
             static fn ($formerAssociatedUuid) => $formerAssociatedUuid !== null
         ) ?: [];

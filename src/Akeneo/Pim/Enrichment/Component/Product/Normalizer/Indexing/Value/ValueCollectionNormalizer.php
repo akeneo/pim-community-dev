@@ -37,7 +37,7 @@ class ValueCollectionNormalizer implements NormalizerInterface, CacheableSupport
             $normalizedValues[] = $this->normalizer->normalize($value, $format, $context);
         }
 
-        $result = empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);
+        $result = empty($normalizedValues) ? [] : \array_replace_recursive(...$normalizedValues);
 
         return $result;
     }

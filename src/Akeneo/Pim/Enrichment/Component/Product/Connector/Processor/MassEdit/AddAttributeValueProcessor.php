@@ -133,7 +133,7 @@ class AddAttributeValueProcessor extends AbstractProcessor
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
         $isEditable = $this->checkAttributeEditable->isEditable($entity, $attribute);
-        $hasCorrectType = in_array($attribute->getType(), $this->supportedTypes);
+        $hasCorrectType = \in_array($attribute->getType(), $this->supportedTypes);
 
         return $isEditable && $hasCorrectType;
     }
@@ -180,7 +180,7 @@ class AddAttributeValueProcessor extends AbstractProcessor
             new DataInvalidItem(
                 [
                     'class'  => ClassUtils::getClass($entity),
-                    'id'     => $entity instanceof ProductInterface && get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
+                    'id'     => $entity instanceof ProductInterface && \get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
                         ? $entity->getUuid()->toString()
                         : $entity->getId(),
                     'string' => $entity->getIdentifier(),

@@ -78,7 +78,7 @@ class AssociationColumnsResolver
      */
     public function resolveQuantifiedAssociationColumns(): array
     {
-        return array_merge($this->resolveQuantifiedIdentifierAssociationColumns(), $this->resolveQuantifiedQuantityAssociationColumns());
+        return \array_merge($this->resolveQuantifiedIdentifierAssociationColumns(), $this->resolveQuantifiedQuantityAssociationColumns());
     }
 
     /**

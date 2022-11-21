@@ -21,11 +21,10 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         $this->beConstructedWith($completenessCalculator, $localesByChannelQuery);
     }
 
-    public function it_evaluates_the_image_enrichment_for_a_product_with_image (
+    public function it_evaluates_the_image_enrichment_for_a_product_with_image(
         CalculateProductCompletenessInterface $completenessCalculator,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ): void
-    {
+    ): void {
         $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = EvaluationProvider::aWritableCriterionEvaluation(
             EvaluateImageEnrichment::CRITERION_CODE,
@@ -77,18 +76,17 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedResult);
     }
 
-    public function it_evaluates_the_image_enrichment_for_a_product_without_image (
+    public function it_evaluates_the_image_enrichment_for_a_product_without_image(
         CalculateProductCompletenessInterface $completenessCalculator,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ): void
-    {
+    ): void {
         $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = EvaluationProvider::aWritableCriterionEvaluation(
             EvaluateImageEnrichment::CRITERION_CODE,
             CriterionEvaluationStatus::DONE,
             Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')
         );
-       $textAttribute = CatalogProvider::anAttribute('a_text_attribute');
+        $textAttribute = CatalogProvider::anAttribute('a_text_attribute');
         $productValues = CatalogProvider::aListOfProductValues([
             ['attribute' => $textAttribute, 'values' => ['a_channel' => ['en_US' => '', 'fr_FR' => '']]],
         ]);

@@ -166,7 +166,7 @@ class ProductRepository extends EntityRepository implements
             ])
             ->setMaxResults(1);
 
-        return count($queryBuilder->getQuery()->getArrayResult()) > 0;
+        return \count($queryBuilder->getQuery()->getArrayResult()) > 0;
     }
 
     /**

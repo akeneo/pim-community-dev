@@ -54,7 +54,7 @@ final class ValidateProperties
                     $this->hasWrongOperatorForParentProperty($propertyCode, $filter['operator'])
                 )) {
                     throw new InvalidQueryException(
-                        sprintf(
+                        \sprintf(
                             'Filter on property "%s" is not supported or does not support operator "%s"',
                             $propertyCode,
                             $filter['operator']
@@ -67,7 +67,7 @@ final class ValidateProperties
 
     private function isProductField(string $propertyCode): bool
     {
-        return in_array($propertyCode, self::$productFields);
+        return \in_array($propertyCode, self::$productFields);
     }
 
     private function isExistingAttribute(string $propertyCode): bool

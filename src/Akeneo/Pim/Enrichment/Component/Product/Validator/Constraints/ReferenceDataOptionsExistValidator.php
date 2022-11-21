@@ -57,13 +57,13 @@ class ReferenceDataOptionsExistValidator extends ConstraintValidator
         $referenceDataNames = $this->getReferenceDataNamesIndexedByAttributeCode($refDataValues->getAttributeCodes());
 
         $existingRefDataCodes = $this->getExistingReferenceDadaCodesIndexedByAttributeCodes($refDataValues, $referenceDataNames);
-        array_walk_recursive($existingRefDataCodes, function (string &$value) {
-            $value = strtolower($value);
+        \array_walk_recursive($existingRefDataCodes, function (string &$value) {
+            $value = \strtolower($value);
         });
 
         foreach ($refDataValues as $key => $value) {
             if ($value instanceof ReferenceDataValueInterface) {
-                if (!in_array(strtolower($value->getData()), ($existingRefDataCodes[$value->getAttributeCode()] ?? []))) {
+                if (!\in_array(\strtolower($value->getData()), ($existingRefDataCodes[$value->getAttributeCode()] ?? []))) {
                     $this->context->buildViolation(
                         $constraint->message,
                         [
@@ -71,11 +71,11 @@ class ReferenceDataOptionsExistValidator extends ConstraintValidator
                             '%reference_data_name%' => $referenceDataNames[$value->getAttributeCode()],
                             '%invalid_code%' => $value->getData(),
                         ]
-                    )->atPath(sprintf('[%s]', $key))->addViolation();
+                    )->atPath(\sprintf('[%s]', $key))->addViolation();
                 }
             } elseif ($value instanceof ReferenceDataCollectionValueInterface) {
-                $notExistingRefDataCodes = array_diff(
-                    array_map('strtolower', $value->getData()),
+                $notExistingRefDataCodes = \array_diff(
+                    \array_map('strtolower', $value->getData()),
                     ($existingRefDataCodes[$value->getAttributeCode()] ?? [])
                 );
                 if (!empty($notExistingRefDataCodes)) {
@@ -84,9 +84,9 @@ class ReferenceDataOptionsExistValidator extends ConstraintValidator
                         [
                             '%attribute_code%' => $value->getAttributeCode(),
                             '%reference_data_name%' => $referenceDataNames[$value->getAttributeCode()],
-                            '%invalid_codes%' => implode(', ', $notExistingRefDataCodes),
+                            '%invalid_codes%' => \implode(', ', $notExistingRefDataCodes),
                         ]
-                    )->atPath(sprintf('[%s]', $key))->addViolation();
+                    )->atPath(\sprintf('[%s]', $key))->addViolation();
                 }
             }
         }
@@ -104,10 +104,10 @@ class ReferenceDataOptionsExistValidator extends ConstraintValidator
         $existingReferenceDataCodes = [];
         foreach ($optionCodesIndexedByReferenceDataName as $refDataName => $refDataCodes) {
             $existingReferenceDataCodes[$refDataName] = $this->getExistingReferenceDataCodes
-                ->fromReferenceDataNameAndCodes($refDataName, array_values(array_unique(array_merge_recursive(...$refDataCodes))));
+                ->fromReferenceDataNameAndCodes($refDataName, \array_values(\array_unique(\array_merge_recursive(...$refDataCodes))));
         }
 
-        return array_map(function (string $referenceDataName) use ($existingReferenceDataCodes): array {
+        return \array_map(function (string $referenceDataName) use ($existingReferenceDataCodes): array {
             return $existingReferenceDataCodes[$referenceDataName];
         }, $referenceDataNames);
     }

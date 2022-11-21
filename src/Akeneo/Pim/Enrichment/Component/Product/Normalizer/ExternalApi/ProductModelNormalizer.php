@@ -54,9 +54,9 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         $mediaAttributeCodes = $this->attributeRepository->getMediaAttributeCodes();
         foreach ($productModelStandard['values'] as $attributeCode => $values) {
             // if $context['attributes'] is defined, returns only these attributes
-            if (isset($context['attributes']) && !in_array($attributeCode, $context['attributes'])) {
+            if (isset($context['attributes']) && !\in_array($attributeCode, $context['attributes'])) {
                 unset($productModelStandard['values'][$attributeCode]);
-            } elseif (in_array($attributeCode, $mediaAttributeCodes)) {
+            } elseif (\in_array($attributeCode, $mediaAttributeCodes)) {
                 $productModelStandard['values'][$attributeCode] = $this->addDownloadLink($values);
             }
         }
@@ -110,10 +110,10 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
     private function formatQuantifiedAssociations(array $quantifiedAssociations): array
     {
-        return array_map(static function (array $quantifiedAssociation) {
-            $quantifiedAssociation['products'] = array_map(static fn (array $productLink) => array_filter(
+        return \array_map(static function (array $quantifiedAssociation) {
+            $quantifiedAssociation['products'] = \array_map(static fn (array $productLink) => \array_filter(
                 $productLink,
-                fn (string $key): bool => in_array($key, ['identifier', 'quantity']),
+                fn (string $key): bool => \in_array($key, ['identifier', 'quantity']),
                 ARRAY_FILTER_USE_KEY
             ), $quantifiedAssociation['products']);
 

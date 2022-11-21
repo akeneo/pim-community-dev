@@ -47,7 +47,8 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $completenessCalculator->calculate($productUuid)->willReturn((new Write\CompletenessCalculationResult())
+        $completenessCalculator->calculate($productUuid)->willReturn(
+            (new Write\CompletenessCalculationResult())
             ->addRate($channelMobile, $localeEn, new Rate(100))
             ->addRate($channelMobile, $localeFr, new Rate(85))
             ->addMissingAttributes($channelMobile, $localeFr, ['name', 'weight'])

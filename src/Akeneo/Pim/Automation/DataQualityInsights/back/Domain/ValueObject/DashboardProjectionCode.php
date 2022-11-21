@@ -32,11 +32,11 @@ final class DashboardProjectionCode
 
     public static function family(FamilyCode $familyCode): self
     {
-        return new self(strval($familyCode));
+        return new self(\strval($familyCode));
     }
 
     public static function category(CategoryCode $categoryCode): self
     {
-        return new self(strval($categoryCode));
+        return new self(\strval($categoryCode));
     }
 }

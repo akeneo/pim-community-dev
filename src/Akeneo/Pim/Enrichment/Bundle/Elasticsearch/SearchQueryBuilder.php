@@ -134,7 +134,7 @@ class SearchQueryBuilder
      */
     public function addSort(array $sort)
     {
-        $this->sortClauses = array_merge($this->sortClauses, $sort);
+        $this->sortClauses = \array_merge($this->sortClauses, $sort);
 
         return $this;
     }

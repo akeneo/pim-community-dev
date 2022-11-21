@@ -12,18 +12,18 @@ use PhpSpec\ObjectBehavior;
 
 class SetDateValueApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $updater)
+    public function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(SetDateValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_set_date_value_user_intent(ObjectUpdaterInterface $updater): void
+    public function it_applies_set_date_value_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $setDateValue = new SetDateValue('code', 'ecommerce', 'en_US', new \DateTime("2022-03-04T09:35:24+00:00"));
@@ -46,7 +46,7 @@ class SetDateValueApplierSpec extends ObjectBehavior
         $this->apply($setDateValue, $product, 1);
     }
 
-    function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

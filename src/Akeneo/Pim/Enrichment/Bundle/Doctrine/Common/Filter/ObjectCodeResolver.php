@@ -42,7 +42,7 @@ class ObjectCodeResolver
     public function getCodesFromIds($entityName, array $ids, AttributeInterface $attribute = null)
     {
         if (!isset($this->fieldMapping[$entityName])) {
-            throw new \InvalidArgumentException(sprintf('The class %s cannot be found', $entityName));
+            throw new \InvalidArgumentException(\sprintf('The class %s cannot be found', $entityName));
         }
 
         $repository = $this->objectManager->getRepository($this->fieldMapping[$entityName]);
@@ -53,7 +53,7 @@ class ObjectCodeResolver
 
             if (null === $entity) {
                 throw new ObjectNotFoundException(
-                    sprintf('Object "%s" with id "%s" does not exist', $entityName, $id)
+                    \sprintf('Object "%s" with id "%s" does not exist', $entityName, $id)
                 );
             }
 

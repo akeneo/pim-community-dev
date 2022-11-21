@@ -62,11 +62,11 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      */
     public function normalize($version, $format = null, array $context = [])
     {
-        $context = array_merge($context, ['locale' => $this->localeAware->getLocale()]);
+        $context = \array_merge($context, ['locale' => $this->localeAware->getLocale()]);
 
         try {
             $timezone = $this->userContext->getUserTimezone();
-            $loggedAtContext = array_merge($context, ['timezone' => $timezone]);
+            $loggedAtContext = \array_merge($context, ['timezone' => $timezone]);
         } catch (\RuntimeException $exception) {
             $loggedAtContext = $context;
         }
@@ -89,7 +89,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof Version && in_array($format, $this->supportedFormats);
+        return $data instanceof Version && \in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -108,10 +108,10 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             $user = $this->userManager->findUserByUsername($author);
 
             if (null === $user) {
-                $userName = sprintf('%s - %s', $author, $this->translator->trans('pim_user.user.removed_user'));
+                $userName = \sprintf('%s - %s', $author, $this->translator->trans('pim_user.user.removed_user'));
             } else {
                 Assert::isInstanceOf($user, UserInterface::class);
-                $userName = sprintf('%s %s', $user->getFirstName(), $user->getLastName());
+                $userName = \sprintf('%s %s', $user->getFirstName(), $user->getLastName());
             }
 
             $this->authorCache[$author] = $userName;
@@ -131,13 +131,13 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     protected function convertChangeset(array $changeset, array $context)
     {
         $attributeCodes = [];
-        foreach (array_keys($changeset) as $valueHeader) {
+        foreach (\array_keys($changeset) as $valueHeader) {
             $attributeCode = $this->extractAttributeCode($valueHeader);
 
             $attributeCodes[$attributeCode] = true;
         }
 
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($attributeCodes));
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(\array_keys($attributeCodes));
 
         foreach ($changeset as $valueHeader => $valueChanges) {
             $context['versioned_attribute'] = $valueHeader;
@@ -168,8 +168,8 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      */
     protected function extractAttributeCode($valueHeader)
     {
-        if (($separatorPos = strpos($valueHeader, self::ATTRIBUTE_HEADER_SEPARATOR)) !== false) {
-            return substr($valueHeader, 0, $separatorPos);
+        if (($separatorPos = \strpos($valueHeader, self::ATTRIBUTE_HEADER_SEPARATOR)) !== false) {
+            return \substr($valueHeader, 0, $separatorPos);
         }
 
         return $valueHeader;

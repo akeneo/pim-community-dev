@@ -45,11 +45,11 @@ class VariantNavigationNormalizer implements NormalizerInterface, CacheableSuppo
     public function normalize($entity, $format = null, array $context = [])
     {
         if (!$entity instanceof ProductModelInterface && !$entity instanceof ProductInterface) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 '"%s" or "%s" expected, "%s" received',
                 ProductModelInterface::class,
                 ProductInterface::class,
-                get_class($entity)
+                \get_class($entity)
             ));
         }
 
@@ -59,7 +59,7 @@ class VariantNavigationNormalizer implements NormalizerInterface, CacheableSuppo
         foreach ($entity->getFamilyVariant()->getVariantAttributeSets() as $attributeSet) {
             foreach ($localeCodes as $localeCode) {
                 $labels = $attributeSet->getAxesLabels($localeCode);
-                $navigationData[$attributeSet->getLevel()]['axes'][$localeCode] = implode(', ', $labels);
+                $navigationData[$attributeSet->getLevel()]['axes'][$localeCode] = \implode(', ', $labels);
             }
         }
 
@@ -75,9 +75,9 @@ class VariantNavigationNormalizer implements NormalizerInterface, CacheableSuppo
             $level++;
         } while (null !== $currentEntity);
 
-        $tree = array_reverse($reversedTree);
-        $navigationData = array_replace_recursive($navigationData, $tree);
-        ksort($navigationData);
+        $tree = \array_reverse($reversedTree);
+        $navigationData = \array_replace_recursive($navigationData, $tree);
+        \ksort($navigationData);
 
         return $navigationData;
     }
@@ -87,7 +87,7 @@ class VariantNavigationNormalizer implements NormalizerInterface, CacheableSuppo
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof EntityWithFamilyVariantInterface && in_array($format, $this->supportedFormat);
+        return $data instanceof EntityWithFamilyVariantInterface && \in_array($format, $this->supportedFormat);
     }
 
     public function hasCacheableSupportsMethod(): bool

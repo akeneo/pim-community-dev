@@ -21,7 +21,7 @@ class NumericGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return in_array(
+        return \in_array(
             $attribute->getType(),
             [
                 AttributeTypes::METRIC,

@@ -15,6 +15,6 @@ class ProductNotFoundException extends \RuntimeException implements EventBuildin
 {
     public function __construct(UuidInterface $uuid)
     {
-        parent::__construct(sprintf('Product "%s" not found', $uuid->toString()));
+        parent::__construct(\sprintf('Product "%s" not found', $uuid->toString()));
     }
 }

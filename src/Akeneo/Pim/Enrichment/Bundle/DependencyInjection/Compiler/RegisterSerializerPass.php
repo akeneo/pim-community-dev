@@ -38,16 +38,16 @@ class RegisterSerializerPass implements CompilerPassInterface
     {
         if (!$container->hasDefinition($this->serializerServiceId)) {
             throw new \LogicException(
-                sprintf('Resolver "%s" is called on an incorrect serializer service id', get_class($this))
+                \sprintf('Resolver "%s" is called on an incorrect serializer service id', \get_class($this))
             );
         }
 
         // Looks for all the services tagged "serializer.normalizer" and adds them to the Serializer service
-        $normalizerTag = sprintf("%s.normalizer", $this->serializerServiceId);
+        $normalizerTag = \sprintf("%s.normalizer", $this->serializerServiceId);
         $normalizers = $this->findAndSortTaggedServices($normalizerTag, $container);
 
         // Looks for all the services tagged "serializer.encoders" and adds them to the Serializer service
-        $encoderTag = sprintf("%s.encoder", $this->serializerServiceId);
+        $encoderTag = \sprintf("%s.encoder", $this->serializerServiceId);
         $encoders = $this->findAndSortTaggedServices($encoderTag, $container);
 
         $container->getDefinition($this->serializerServiceId)->setArguments([$normalizers, $encoders]);
@@ -67,7 +67,7 @@ class RegisterSerializerPass implements CompilerPassInterface
 
         if (empty($services)) {
             throw new \RuntimeException(
-                sprintf('You must tag at least one service as "%s" to use the Serializer service', $tagName)
+                \sprintf('You must tag at least one service as "%s" to use the Serializer service', $tagName)
             );
         }
 
@@ -79,9 +79,9 @@ class RegisterSerializerPass implements CompilerPassInterface
             }
         }
 
-        krsort($sortedServices);
+        \krsort($sortedServices);
 
         // Flatten the array
-        return call_user_func_array('array_merge', $sortedServices);
+        return \call_user_func_array('array_merge', $sortedServices);
     }
 }

@@ -74,7 +74,7 @@ final class RunUniqueProcessJob
             $process->start();
 
             while ($process->isRunning()) {
-                sleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
+                \sleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
                 $this->executionManager->updateHealthCheck($jobExecutionMessage->getJobExecutionId());
                 $this->writeProcessOutput($process);
             }
@@ -99,7 +99,7 @@ final class RunUniqueProcessJob
     private function initializeProcess(JobInstance $jobInstance, JobExecution $jobExecution): Process
     {
         $pathFinder = new PhpExecutableFinder();
-        $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+        $console = \sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
         $process = new Process([
             $pathFinder->find(),
@@ -167,7 +167,7 @@ final class RunUniqueProcessJob
         $lastJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
         $jobParameters = $buildJobParameters($lastJobExecution);
 
-        if (!is_array($jobParameters)) {
+        if (!\is_array($jobParameters)) {
             $jobParameters = [];
         }
 

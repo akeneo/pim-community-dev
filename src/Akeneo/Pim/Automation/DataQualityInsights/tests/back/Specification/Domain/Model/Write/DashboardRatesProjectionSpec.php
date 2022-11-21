@@ -110,11 +110,11 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
         return new RanksDistributionCollection([
             "ecommerce" => [
                 "en_US" => [
-                    "rank_1" => rand(1, 100),
-                    "rank_2" => rand(1, 100),
-                    "rank_3" => rand(1, 100),
-                    "rank_4" => rand(1, 100),
-                    "rank_5" => rand(1, 100)
+                    "rank_1" => \rand(1, 100),
+                    "rank_2" => \rand(1, 100),
+                    "rank_3" => \rand(1, 100),
+                    "rank_4" => \rand(1, 100),
+                    "rank_5" => \rand(1, 100)
                 ],
             ],
         ]);

@@ -75,7 +75,7 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
     public function __toString()
     {
         if (null !== $labelProperty = static::getLabelProperty()) {
-            $getter = 'get' . ucfirst($labelProperty);
+            $getter = 'get' . \ucfirst($labelProperty);
             $label = $this->$getter();
 
             if (!empty($label)) {
@@ -83,6 +83,6 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
             }
         }
 
-        return sprintf('[%s]', $this->code);
+        return \sprintf('[%s]', $this->code);
     }
 }

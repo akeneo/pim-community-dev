@@ -22,7 +22,7 @@ class AttributeOptionNormalizer extends BaseNormalizer
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeOptionInterface && \in_array($format, $this->supportedFormats);
     }
 
     /**
@@ -30,7 +30,7 @@ class AttributeOptionNormalizer extends BaseNormalizer
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        if (array_key_exists('field_name', $context)) {
+        if (\array_key_exists('field_name', $context)) {
             return [
                 $context['field_name'] => $object->getCode(),
             ];
@@ -56,12 +56,12 @@ class AttributeOptionNormalizer extends BaseNormalizer
         $labels = [];
         $locales = isset($context['locales']) ? $context['locales'] : [];
         foreach ($locales as $locale) {
-            $labels[sprintf('label-%s', $locale)] = '';
+            $labels[\sprintf('label-%s', $locale)] = '';
         }
 
         foreach ($entity->getOptionValues() as $translation) {
-            if (empty($locales) || in_array($translation->getLocale(), $locales)) {
-                $labels[sprintf('label-%s', $translation->getLocale())] = $translation->getValue();
+            if (empty($locales) || \in_array($translation->getLocale(), $locales)) {
+                $labels[\sprintf('label-%s', $translation->getLocale())] = $translation->getValue();
             }
         }
 

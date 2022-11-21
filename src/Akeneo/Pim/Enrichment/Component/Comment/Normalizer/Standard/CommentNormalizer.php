@@ -83,7 +83,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return [
 
             'username' => $comment->getAuthor()->getUserIdentifier(),
-            'fullName' => sprintf(
+            'fullName' => \sprintf(
                 '%s %s',
                 $comment->getAuthor()->getFirstName(),
                 $comment->getAuthor()->getLastName()

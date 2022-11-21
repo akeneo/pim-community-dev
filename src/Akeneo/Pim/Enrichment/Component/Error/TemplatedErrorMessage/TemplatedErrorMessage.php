@@ -24,15 +24,15 @@ class TemplatedErrorMessage
     public function __construct(string $template, array $parameters)
     {
         foreach ($parameters as $key => $value) {
-            if (false === is_string($value)) {
-                throw new \InvalidArgumentException(sprintf(
+            if (false === \is_string($value)) {
+                throw new \InvalidArgumentException(\sprintf(
                     'Message parameter "{%s}" must be of type string, %s given.',
                     $key,
-                    gettype($value)
+                    \gettype($value)
                 ));
             }
-            if (1 !== substr_count($template, sprintf('{%s}', $key))) {
-                throw new \InvalidArgumentException(sprintf(
+            if (1 !== \substr_count($template, \sprintf('{%s}', $key))) {
+                throw new \InvalidArgumentException(\sprintf(
                     'Message parameter "{%s}" was not found in the message template "%s".',
                     $key,
                     $template
@@ -58,7 +58,7 @@ class TemplatedErrorMessage
     {
         $message = $this->template;
         foreach ($this->parameters as $key => $value) {
-            $message = str_replace(sprintf('{%s}', $key), $value, $message);
+            $message = \str_replace(\sprintf('{%s}', $key), $value, $message);
         }
 
         return $message;

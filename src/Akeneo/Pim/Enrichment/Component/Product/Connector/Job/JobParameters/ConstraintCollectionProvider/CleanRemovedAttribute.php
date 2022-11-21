@@ -42,6 +42,6 @@ final class CleanRemovedAttribute implements ConstraintCollectionProviderInterfa
      */
     public function supports(JobInterface $job): bool
     {
-        return in_array($job->getName(), $this->supportedJobNames);
+        return \in_array($job->getName(), $this->supportedJobNames);
     }
 }

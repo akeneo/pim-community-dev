@@ -88,6 +88,6 @@ class VariantProductRepository implements VariantProductRepositoryInterface
             return null;
         }
 
-        return current($results);
+        return \current($results);
     }
 }

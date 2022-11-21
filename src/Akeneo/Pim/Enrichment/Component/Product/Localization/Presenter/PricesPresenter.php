@@ -25,7 +25,7 @@ class PricesPresenter extends NumberPresenter
             return $prices;
         }
 
-        if (!is_array($prices)) {
+        if (!\is_array($prices)) {
             if (!isset($options['versioned_attribute'])) {
                 return parent::present($prices, $options);
             }
@@ -35,9 +35,9 @@ class PricesPresenter extends NumberPresenter
 
         $numberFormatter = $this
             ->numberFactory
-            ->create(array_merge($options, ['type' => \NumberFormatter::CURRENCY]));
+            ->create(\array_merge($options, ['type' => \NumberFormatter::CURRENCY]));
 
-        if (array_key_exists('amount', $prices) && array_key_exists('currency', $prices)) {
+        if (\array_key_exists('amount', $prices) && \array_key_exists('currency', $prices)) {
             return $this->getPrice($numberFormatter, $prices);
         }
 
@@ -48,7 +48,7 @@ class PricesPresenter extends NumberPresenter
             }
         }
 
-        return implode(', ', $presentedPrices);
+        return \implode(', ', $presentedPrices);
     }
 
     /**
@@ -62,8 +62,8 @@ class PricesPresenter extends NumberPresenter
      */
     protected function getStructuredPrice($price, $versionedAttribute)
     {
-        $parts = preg_split('/-/', $versionedAttribute);
-        $currency = end($parts);
+        $parts = \preg_split('/-/', $versionedAttribute);
+        $currency = \end($parts);
 
         return ['amount' => (float) $price, 'currency' => $currency];
     }

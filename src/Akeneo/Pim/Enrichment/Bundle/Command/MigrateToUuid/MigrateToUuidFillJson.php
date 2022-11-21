@@ -134,7 +134,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         SQL;
 
         $this->connection->executeQuery(\strtr($sql, [
-            '{rows}' => implode(',', $rows),
+            '{rows}' => \implode(',', $rows),
             '{tableName}' => $tableName,
         ]));
     }
@@ -209,9 +209,9 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         $allItemsMigrated = true;
         $previousEntityId = -1;
         $formerAssociations = $this->getFormerAssociations($tableName, $previousEntityId);
-        $this->logContext->addContext('table_missing_associations_counter', count($formerAssociations));
+        $this->logContext->addContext('table_missing_associations_counter', \count($formerAssociations));
 
-        while (count($formerAssociations) > 0) {
+        while (\count($formerAssociations) > 0) {
             $productIdToUuidMap = $this->getProductIdToUuidMap($formerAssociations, $dryRun);
             $newAssociations = $this->getNewAssociationsAndIds($formerAssociations, $productIdToUuidMap);
 
@@ -302,7 +302,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         $newProductAssociations = [];
         foreach ($formerProductAssociations as $formerProductAssociation) {
             $associatedProductId = $formerProductAssociation['id'];
-            if (array_key_exists($associatedProductId, $productIdToUuidMap)) {
+            if (\array_key_exists($associatedProductId, $productIdToUuidMap)) {
                 // the product exists
                 $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
                 if ($associatedProductUuid === null) {

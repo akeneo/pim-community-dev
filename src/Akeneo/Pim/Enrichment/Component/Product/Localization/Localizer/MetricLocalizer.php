@@ -42,7 +42,7 @@ class MetricLocalizer extends NumberLocalizer
      */
     public function localize($metric, array $options = [])
     {
-        if (!is_array($metric)) {
+        if (!\is_array($metric)) {
             return parent::localize($metric, $options);
         }
 

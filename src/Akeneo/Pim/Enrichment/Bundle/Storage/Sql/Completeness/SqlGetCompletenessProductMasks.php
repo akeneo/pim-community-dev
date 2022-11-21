@@ -78,12 +78,12 @@ SQL;
 
         $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
-        $rows = array_map(
+        $rows = \array_map(
             function (array $row): array {
                 return [
                     'id' => $row['uuid'],
                     'familyCode' => $row['familyCode'],
-                    'cleanedRawValues' => json_decode($row['rawValues'], true),
+                    'cleanedRawValues' => \json_decode($row['rawValues'], true),
                 ];
             },
             $this->connection->executeQuery(
@@ -121,7 +121,7 @@ SQL;
             // array_unique is important for big catalog (see PIM-9783), because for a very high number of rows the array_merge takes too much time.
             // For instance for 1.000 rows it can take 1 second, for 10.000 rows more than 1 minute.
             // With array_unique it's less than 1 second in both cases.
-            $attributeCodes = array_unique(array_merge($attributeCodes, array_keys($row['cleanedRawValues'])));
+            $attributeCodes = \array_unique(\array_merge($attributeCodes, \array_keys($row['cleanedRawValues'])));
         }
         $attributes = $this->getAttributes->forCodes($attributeCodes);
 
@@ -168,6 +168,6 @@ SQL;
             return [];
         }
 
-        return array_merge(...$masks);
+        return \array_merge(...$masks);
     }
 }

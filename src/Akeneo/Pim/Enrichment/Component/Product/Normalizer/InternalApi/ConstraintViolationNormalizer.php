@@ -60,7 +60,7 @@ class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSup
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ConstraintViolation && in_array($format, $this->supportedFormats);
+        return $data instanceof ConstraintViolation && \in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool

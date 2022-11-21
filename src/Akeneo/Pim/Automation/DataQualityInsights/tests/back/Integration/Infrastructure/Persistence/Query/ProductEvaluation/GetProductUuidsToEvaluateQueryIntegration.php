@@ -30,16 +30,16 @@ class GetProductUuidsToEvaluateQueryIntegration extends DataQualityInsightsTestC
     public function test_it_returns_all_product_id_with_pending_criteria()
     {
         $this->givenAProductWithEvaluationDone();
-        $this->assertEquals([], iterator_to_array($this->productQuery->execute(4, 2)), 'All products evaluations should be done');
+        $this->assertEquals([], \iterator_to_array($this->productQuery->execute(4, 2)), 'All products evaluations should be done');
 
         $expectedProductUuids = $this->givenThreeProductsToEvaluate();
 
-        $productUuids = iterator_to_array($this->productQuery->execute(4, 2));
-        $productUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArrayString(), $productUuids);
+        $productUuids = \iterator_to_array($this->productQuery->execute(4, 2));
+        $productUuids = \array_map(fn (ProductUuidCollection $collection) => $collection->toArrayString(), $productUuids);
 
         $this->assertCount(2, $productUuids);
         $this->assertCount(2, $productUuids[0]);
-        $this->assertEqualsCanonicalizing($expectedProductUuids, array_merge_recursive(...$productUuids));
+        $this->assertEqualsCanonicalizing($expectedProductUuids, \array_merge_recursive(...$productUuids));
     }
 
     private function givenThreeProductsToEvaluate(): array

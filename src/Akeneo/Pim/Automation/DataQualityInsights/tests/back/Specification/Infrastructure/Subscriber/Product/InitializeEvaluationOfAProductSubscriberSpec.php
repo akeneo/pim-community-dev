@@ -78,8 +78,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $createProductsCriteriaEvaluations,
         $idFactory,
         ProductInterface $product
-    )
-    {
+    ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
         $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));

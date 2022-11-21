@@ -49,7 +49,7 @@ class ParentsAssociationsNormalizer implements NormalizerInterface, CacheableSup
             }
         }
 
-        ksort($data);
+        \ksort($data);
 
         return $data;
     }

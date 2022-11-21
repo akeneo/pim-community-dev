@@ -23,8 +23,7 @@ class AddProductModelScorePropertySpec extends ObjectBehavior
     public function it_returns_row_with_additional_property_DQI_score(
         $addScoresToProductAndProductModelRows,
         ProductQueryBuilderInterface $productQueryBuilder
-    )
-    {
+    ) {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
             [],
@@ -44,11 +43,11 @@ class AddProductModelScorePropertySpec extends ObjectBehavior
         return [
             'haveScoreProperties' => function (array $rows) {
                 foreach ($rows as $index => $row) {
-                    $properties = iterator_to_array($row->additionalProperties()->getIterator());
-                    $values = array_filter($properties, function ($property) {
+                    $properties = \iterator_to_array($row->additionalProperties()->getIterator());
+                    $values = \array_filter($properties, function ($property) {
                         return $property->name() === 'data_quality_insights_score';
                     });
-                    if (count($values) === 0) {
+                    if (\count($values) === 0) {
                         throw new FailureException("Property not found for Row at index " . $index);
                     }
                 }
@@ -60,13 +59,13 @@ class AddProductModelScorePropertySpec extends ObjectBehavior
     private function makeProductModelRow(string $technicalId): Row
     {
         return Row::fromProduct(
-            sprintf('product_model_%s', $technicalId), // identifier
+            \sprintf('product_model_%s', $technicalId), // identifier
             null, // family
             [], // groupCodes
             true, // $enabled,
             new \DateTime(), // created
             new \DateTime(), // updated
-            sprintf('Label of %s', $technicalId), // label
+            \sprintf('Label of %s', $technicalId), // label
             null, // image
             null, // completeness,
             $technicalId, //technicalId,

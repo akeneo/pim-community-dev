@@ -53,12 +53,12 @@ final class TransformRawValuesCollections
         $attributeCodes = [];
 
         foreach ($rawValueCollections as $productIdentifier => $rawValues) {
-            foreach (array_keys($rawValues) as $attributeCode) {
+            foreach (\array_keys($rawValues) as $attributeCode) {
                 $attributeCodes[] = (string) $attributeCode;
             }
         }
 
-        $attributes = $this->getAttributes->forCodes(array_values(array_unique($attributeCodes)));
+        $attributes = $this->getAttributes->forCodes(\array_values(\array_unique($attributeCodes)));
 
         return $attributes;
     }

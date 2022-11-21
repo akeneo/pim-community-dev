@@ -39,7 +39,7 @@ class KeepOnlyValuesForVariation
 
             $entityValues = $entity->getValues();
             foreach ($entityValues as $value) {
-                if (!in_array($value->getAttributeCode(), $attributeCodesToKeep)) {
+                if (!\in_array($value->getAttributeCode(), $attributeCodesToKeep)) {
                     $entityValues->removeByAttributeCode($value->getAttributeCode());
                 }
             }
@@ -60,7 +60,7 @@ class KeepOnlyValuesForVariation
 
     private function getAttributeCodesToKeepForDescendants(VariantAttributeSetInterface $descendantAttributeSet): array
     {
-        $attributesToKeep = array_merge(
+        $attributesToKeep = \array_merge(
             $descendantAttributeSet->getAttributes()->toArray(),
             $descendantAttributeSet->getAxes()->toArray()
         );

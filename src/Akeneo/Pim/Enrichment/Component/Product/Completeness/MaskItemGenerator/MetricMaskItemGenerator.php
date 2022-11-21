@@ -29,7 +29,7 @@ class MetricMaskItemGenerator implements MaskItemGeneratorForAttributeType
         }
 
         return [
-            sprintf(
+            \sprintf(
                 '%s-%s-%s',
                 $attributeCode,
                 $channelCode,

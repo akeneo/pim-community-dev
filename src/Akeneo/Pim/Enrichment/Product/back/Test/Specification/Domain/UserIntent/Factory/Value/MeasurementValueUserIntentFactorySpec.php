@@ -11,12 +11,12 @@ use PhpSpec\ObjectBehavior;
 
 class MeasurementValueUserIntentFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(MeasurementValueUserIntentFactory::class);
     }
 
-    function it_returns_set_measurement_user_intent()
+    public function it_returns_set_measurement_user_intent()
     {
         $this->create(AttributeTypes::METRIC, 'a_metric', [
             'data' => [
@@ -28,7 +28,7 @@ class MeasurementValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetMeasurementValue('a_metric', null, null, 20, 'KILOMETER'));
     }
 
-    function it_returns_clear_value()
+    public function it_returns_clear_value()
     {
         $this->create(AttributeTypes::METRIC, 'a_metric', [
             'data' => null,
@@ -55,7 +55,7 @@ class MeasurementValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new ClearValue('a_metric', 'ecommerce', 'fr_FR'));
     }
 
-    function it_throws_an_exception_if_data_is_not_valid()
+    public function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', [AttributeTypes::METRIC, 'a_metric', ['value']]);

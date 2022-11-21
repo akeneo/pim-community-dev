@@ -70,7 +70,7 @@ class GroupType implements ArrayConverterInterface
     {
         if ('code' === $field) {
             $convertedItem[$field] = $data;
-        } elseif (preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
+        } elseif (\preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
             if (!isset($convertedItem['label'])) {
                 $convertedItem['label'] = [];
             }
