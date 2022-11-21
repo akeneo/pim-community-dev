@@ -14,7 +14,7 @@ services:
             - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
         tags:
             - { name: validator.constraint_validator }
-    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CodeAttributeShouldExistValidator:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorShouldExistValidator:
         arguments:
             - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
         tags:

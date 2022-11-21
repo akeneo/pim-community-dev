@@ -14,7 +14,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CodeAttributeShouldExistValidator extends ConstraintValidator
+final class IdentifierGeneratorShouldExistValidator extends ConstraintValidator
 {
     public function __construct(private IdentifierGeneratorRepository $identifierGeneratorRepository)
     {
@@ -22,7 +22,7 @@ final class CodeAttributeShouldExistValidator extends ConstraintValidator
 
     public function validate($updateGeneratorCommand, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, CodeAttributeShouldExist::class);
+        Assert::isInstanceOf($constraint, IdentifierGeneratorShouldExist::class);
         if (!$updateGeneratorCommand instanceof UpdateGeneratorCommand) {
             return;
         }

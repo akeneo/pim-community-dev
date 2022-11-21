@@ -15,8 +15,8 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CodeAttributeShouldExist;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CodeAttributeShouldExistValidator;
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorShouldExist;
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorShouldExistValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Context\ExecutionContext;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CodeAttributeShouldExistValidatorSpec extends ObjectBehavior
+class IdentifierGeneratorShouldExistValidatorSpec extends ObjectBehavior
 {
     public function let(IdentifierGeneratorRepository $identifierGeneratorRepository, ExecutionContext $context): void
     {
@@ -36,7 +36,7 @@ class CodeAttributeShouldExistValidatorSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(CodeAttributeShouldExistValidator::class);
+        $this->shouldHaveType(IdentifierGeneratorShouldExistValidator::class);
     }
 
     public function it_can_only_validate_the_right_constraint(): void
@@ -51,7 +51,7 @@ class CodeAttributeShouldExistValidatorSpec extends ObjectBehavior
             ->get((string)Argument::any())
             ->shouldNotBeCalled();
 
-        $this->validate(new \stdClass(), new CodeAttributeShouldExist());
+        $this->validate(new \stdClass(), new IdentifierGeneratorShouldExist());
     }
 
     public function it_should_build_violation_when_code_attribute_does_not_exist(ExecutionContext $context): void
@@ -69,7 +69,7 @@ class CodeAttributeShouldExistValidatorSpec extends ObjectBehavior
             'sku',
             '-'
         );
-        $this->validate($updateGeneratorCommand, new CodeAttributeShouldExist());
+        $this->validate($updateGeneratorCommand, new IdentifierGeneratorShouldExist());
     }
 
     public function it_should_be_valid_when_code_attribute_exist(
@@ -100,6 +100,6 @@ class CodeAttributeShouldExistValidatorSpec extends ObjectBehavior
             'sku',
             '-'
         );
-        $this->validate($updateGeneratorCommand, new CodeAttributeShouldExist());
+        $this->validate($updateGeneratorCommand, new IdentifierGeneratorShouldExist());
     }
 }
