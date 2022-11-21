@@ -84,7 +84,8 @@ class GetAttributesActionTest extends IntegrationTestCase
         Assert::assertSame('name', $attributes[0]['code']);
     }
 
-    public function testItGetsAttributesByTypes(): void {
+    public function testItGetsAttributesByTypes(): void
+    {
         $client = $this->getAuthenticatedInternalApiClient('admin');
         $this->createAttribute([
             'code' => 'name',
@@ -115,11 +116,11 @@ class GetAttributesActionTest extends IntegrationTestCase
         $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals([
-            "code" => "clothing_size",
-            "label" => "[clothing_size]",
-            "type" => "pim_catalog_simpleselect",
-            "scopable" => false,
-            "localizable" => false,
-        ],$attributes[0]);
+            'code' => 'clothing_size',
+            'label' => '[clothing_size]',
+            'type' => 'pim_catalog_simpleselect',
+            'scopable' => false,
+            'localizable' => false,
+        ], $attributes[0]);
     }
 }

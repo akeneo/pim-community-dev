@@ -20,18 +20,19 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
     }
 
     /**
+     * @param array<string> $types
      * @return array<array{code: string, label: string, type: string, scopable: bool, localizable: bool, measurement_family?: string, default_measurement_unit?: string}>
      */
     public function execute(?string $search = null, int $page = 1, int $limit = 20, array $types = []): array
     {
-        $types = array_map(fn($type) => \sprintf('pim_catalog_%s', $type), $types);
+        $types = \array_map(fn ($type) => \sprintf('pim_catalog_%s', $type), $types);
 
         $attributes = $this->searchableAttributeRepository->findBySearch(
             $search,
             [
                 'limit' => $limit,
                 'page' => $page,
-                'types' => !empty($types) ? $types : null,
+                'types' => empty($types) ? null : $types,
             ],
         );
 
