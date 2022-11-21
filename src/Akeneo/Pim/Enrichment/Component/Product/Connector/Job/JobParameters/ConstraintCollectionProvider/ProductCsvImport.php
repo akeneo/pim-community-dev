@@ -59,6 +59,6 @@ class ProductCsvImport implements ConstraintCollectionProviderInterface
      */
     public function supports(JobInterface $job)
     {
-        return \in_array($job->getName(), $this->supportedJobNames);
+        return in_array($job->getName(), $this->supportedJobNames);
     }
 }

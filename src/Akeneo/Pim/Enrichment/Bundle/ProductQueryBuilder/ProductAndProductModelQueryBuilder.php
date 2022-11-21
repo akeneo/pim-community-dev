@@ -158,7 +158,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     private function hasRawFilter(string $filterProperty, string $value): bool
     {
-        return !empty(\array_filter(
+        return !empty(array_filter(
             $this->getRawFilters(),
             function ($filter) use ($filterProperty, $value) {
                 return $value === $filter[$filterProperty];
@@ -173,7 +173,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     private function hasFilterOnCategoryWhichImplyAggregation(): bool
     {
-        $hasFilter = !empty(\array_filter(
+        $hasFilter = !empty(array_filter(
             $this->getRawFilters(),
             function (array $filter) {
                 return 'field' === $filter['type'] &&

@@ -62,12 +62,12 @@ GROUP BY family.code, channel_code, locale_code
             ['familyCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
-        $masksPerFamily = \array_fill_keys($familyCodes, []);
+        $masksPerFamily = array_fill_keys($familyCodes, []);
         foreach ($rows as $masksPerChannelAndLocale) {
             $masksPerFamily[$masksPerChannelAndLocale['family_code']][] = new RequiredAttributesMaskForChannelAndLocale(
                 $masksPerChannelAndLocale['channel_code'],
                 $masksPerChannelAndLocale['locale_code'],
-                \json_decode($masksPerChannelAndLocale['mask'], true)
+                json_decode($masksPerChannelAndLocale['mask'], true)
             );
         }
 

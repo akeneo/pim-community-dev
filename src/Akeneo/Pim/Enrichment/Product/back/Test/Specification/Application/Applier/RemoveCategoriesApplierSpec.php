@@ -15,23 +15,23 @@ use PhpSpec\ObjectBehavior;
 
 class RemoveCategoriesApplierSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $productUpdater, GetCategoryCodes $getCategoryCodes)
+    function let(ObjectUpdaterInterface $productUpdater, GetCategoryCodes $getCategoryCodes)
     {
         $this->beConstructedWith($productUpdater, $getCategoryCodes);
     }
 
-    public function it_is_an_user_intent_applier()
+    function it_is_an_user_intent_applier()
     {
         $this->shouldHaveType(RemoveCategoriesApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_supports_remove_category_user_intent()
+    function it_supports_remove_category_user_intent()
     {
         $this->getSupportedUserIntents()->shouldReturn([RemoveCategories::class]);
     }
 
-    public function it_removes_categories_on_an_uncategorized_product(
+    function it_removes_categories_on_an_uncategorized_product(
         ObjectUpdaterInterface $productUpdater,
         GetCategoryCodes $getCategoryCodes
     ) {
@@ -45,7 +45,7 @@ class RemoveCategoriesApplierSpec extends ObjectBehavior
         $this->apply(new RemoveCategories(['supplier', 'print']), $product, 10);
     }
 
-    public function it_removes_categories_on_an_categorized_product(
+    function it_removes_categories_on_an_categorized_product(
         ObjectUpdaterInterface $productUpdater,
         GetCategoryCodes $getCategoryCodes
     ) {
@@ -59,7 +59,7 @@ class RemoveCategoriesApplierSpec extends ObjectBehavior
         $this->apply(new RemoveCategories(['supplier', 'print']), $product, 10);
     }
 
-    public function it_removes_categories_on_an_unknown_product(
+    function it_removes_categories_on_an_unknown_product(
         ObjectUpdaterInterface $productUpdater,
         GetCategoryCodes $getCategoryCodes
     ) {

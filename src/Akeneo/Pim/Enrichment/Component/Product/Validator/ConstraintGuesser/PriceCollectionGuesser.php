@@ -23,7 +23,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return \in_array(
+        return in_array(
             $attribute->getType(),
             [
                 AttributeTypes::PRICE_COLLECTION,
@@ -44,7 +44,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
         return [
             new All(
                 [
-                    'constraints' => \array_merge(
+                    'constraints' => array_merge(
                         [
                             new Type(
                                 ['type' => ProductPriceInterface::class]

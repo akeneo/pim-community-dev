@@ -143,14 +143,14 @@ class AddDefaultValuesSubscriber implements EventSubscriberInterface
     {
         $this->initializeChannelsAndLocales();
 
-        return \array_values(\array_unique(\array_merge(...\array_values($this->cachedChannelsAndLocales))));
+        return array_values(array_unique(array_merge(...array_values($this->cachedChannelsAndLocales))));
     }
 
     private function getChannelCodes(): array
     {
         $this->initializeChannelsAndLocales();
 
-        return \array_keys($this->cachedChannelsAndLocales);
+        return array_keys($this->cachedChannelsAndLocales);
     }
 
     private function initializeChannelsAndLocales(): void

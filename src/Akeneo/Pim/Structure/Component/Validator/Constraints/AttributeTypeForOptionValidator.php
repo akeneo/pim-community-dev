@@ -42,7 +42,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
 
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();
-            if (null !== $attribute && !\in_array($attribute->getType(), $authorizedTypes)) {
+            if (null !== $attribute && !in_array($attribute->getType(), $authorizedTypes)) {
                 $this->addInvalidAttributeViolation($constraint, $attributeOption, $authorizedTypes);
             }
         }
@@ -63,7 +63,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
                 $constraint->invalidAttributeMessage,
                 [
                     '%attribute%'       => $option->getAttribute()->getCode(),
-                    '%attribute_types%' => \implode('", "', $authorizedTypes),
+                    '%attribute_types%' => implode('", "', $authorizedTypes),
                 ]
             )
             ->atPath($constraint->propertyPath ?? '')

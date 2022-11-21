@@ -36,21 +36,21 @@ final class PurgeOutdatedData
         $daily = TimePeriod::daily();
 
         for ($day = PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS; $day < PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS * 2; $day++) {
-            $purgeDates->add($daily, $purgeDate->modify(\sprintf('-%d DAY', $day)));
+            $purgeDates->add($daily, $purgeDate->modify(sprintf('-%d DAY', $day)));
         }
 
         $purgeDates
             ->add(
                 TimePeriod::weekly(),
-                $purgeDate->modify(\sprintf('-%d WEEK', self::CONSOLIDATION_RETENTION_WEEKS))->modify('Sunday last week')
+                $purgeDate->modify(sprintf('-%d WEEK', self::CONSOLIDATION_RETENTION_WEEKS))->modify('Sunday last week')
             )
             ->add(
                 TimePeriod::monthly(),
-                $purgeDate->modify(\sprintf('-%d MONTH', self::CONSOLIDATION_RETENTION_MONTHS))->modify('Last day of last month')
+                $purgeDate->modify(sprintf('-%d MONTH', self::CONSOLIDATION_RETENTION_MONTHS))->modify('Last day of last month')
             )
             ->add(
                 TimePeriod::yearly(),
-                $purgeDate->modify(\sprintf('-%d YEAR', self::CONSOLIDATION_RETENTION_YEARS))->modify('Last day of december last year')
+                $purgeDate->modify(sprintf('-%d YEAR', self::CONSOLIDATION_RETENTION_YEARS))->modify('Last day of december last year')
             );
 
         $this->dashboardScoresProjectionRepository->purgeRates($purgeDates);

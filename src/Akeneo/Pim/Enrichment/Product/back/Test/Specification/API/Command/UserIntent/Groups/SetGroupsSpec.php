@@ -14,18 +14,18 @@ use PhpSpec\ObjectBehavior;
  */
 class SetGroupsSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith(['promotions', 'toto']);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetGroups::class);
         $this->shouldImplement(GroupUserIntent::class);
     }
 
-    public function it_returns_the_group_codes()
+    function it_returns_the_group_codes()
     {
         $this->groupCodes()->shouldReturn(['promotions', 'toto']);
     }

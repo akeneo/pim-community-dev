@@ -79,7 +79,7 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return \in_array($attribute->getType(), $this->supportedAttributeTypes);
+        return in_array($attribute->getType(), $this->supportedAttributeTypes);
     }
 
     /**

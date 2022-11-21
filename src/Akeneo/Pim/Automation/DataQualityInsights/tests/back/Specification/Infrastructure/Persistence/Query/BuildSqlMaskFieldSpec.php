@@ -40,11 +40,11 @@ SQL;
             $attributeTypeB
         ]);
         $attributeTypeA->getCase()->willReturn(
-            "WHEN attribute.attribute_type = 'typeA'
+        "WHEN attribute.attribute_type = 'typeA'
             THEN 'TypeA'"
         );
         $attributeTypeB->getCase()->willReturn(
-            "WHEN attribute.attribute_type = 'typeB'
+        "WHEN attribute.attribute_type = 'typeB'
             THEN 'TypeB'"
         );
 
@@ -73,10 +73,10 @@ SQL;
         return [
             'haveSqlQueryEqualsTo' => function ($subject, $expected) {
                 // Remove all spaces to compare sql query
-                $strippedSubject = \trim(\preg_replace('/\s+/', ' ', $subject));
-                $strippedExpected = \trim(\preg_replace('/\s+/', ' ', $expected));
+                $strippedSubject = trim(preg_replace('/\s+/', ' ', $subject));
+                $strippedExpected = trim(preg_replace('/\s+/', ' ', $expected));
                 if ($strippedSubject !== $strippedExpected) {
-                    throw new FailureException(\sprintf(
+                    throw new FailureException(sprintf(
                         'The mask has not the expected sql structure  :' . PHP_EOL . '%s ' . PHP_EOL . 'but we got this : ' . PHP_EOL . '%s',
                         $strippedExpected,
                         $strippedSubject

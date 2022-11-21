@@ -12,12 +12,12 @@ use PhpSpec\ObjectBehavior;
 
 class PriceCollectionValueUserIntentFactorySpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(PriceCollectionValueUserIntentFactory::class);
     }
 
-    public function it_returns_set_price_collection_user_intent()
+    function it_returns_set_price_collection_user_intent()
     {
         $this->create(AttributeTypes::PRICE_COLLECTION, 'a_price', [
             'data' => [
@@ -37,7 +37,7 @@ class PriceCollectionValueUserIntentFactorySpec extends ObjectBehavior
         ));
     }
 
-    public function it_returns_clear_value()
+    function it_returns_clear_value()
     {
         $this->create(AttributeTypes::PRICE_COLLECTION, 'a_price', [
             'data' => null,
@@ -52,7 +52,7 @@ class PriceCollectionValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new ClearValue('a_price', 'ecommerce', 'fr_FR'));
     }
 
-    public function it_throws_an_exception_if_data_is_not_valid()
+    function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', [AttributeTypes::METRIC, 'a_metric', ['value']]);

@@ -70,7 +70,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
     {
         if (null === $this->stepExecution) {
             throw new \InvalidArgumentException(
-                \sprintf('In order to execute "%s" you need to set a step execution.', static::class)
+                sprintf('In order to execute "%s" you need to set a step execution.', static::class)
             );
         }
 
@@ -217,8 +217,8 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
      */
     private function countProductsToDelete(array $products, array $productModels): int
     {
-        return \count($products) + $this->countVariantProducts->forProductModelCodes(
-            \array_map(
+        return count($products) + $this->countVariantProducts->forProductModelCodes(
+            array_map(
                 function (ProductModelInterface $productModel) {
                     return $productModel->getCode();
                 },
@@ -235,7 +235,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
     private function countProductModelsToDelete(array $productModels): int
     {
         return $this->countProductModelsAndChildrenProductModels->forProductModelCodes(
-            \array_map(
+            array_map(
                 function (ProductModelInterface $productModel) {
                     return $productModel->getCode();
                 },
@@ -263,8 +263,8 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
      */
     private function filterProducts(array $entities): array
     {
-        return \array_values(
-            \array_filter($entities, function ($item) {
+        return array_values(
+            array_filter($entities, function ($item) {
                 return $item instanceof ProductInterface;
             })
         );
@@ -279,8 +279,8 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
      */
     private function filterProductModels(array $entities): array
     {
-        return \array_values(
-            \array_filter($entities, function ($item) {
+        return array_values(
+            array_filter($entities, function ($item) {
                 return $item instanceof ProductModelInterface;
             })
         );

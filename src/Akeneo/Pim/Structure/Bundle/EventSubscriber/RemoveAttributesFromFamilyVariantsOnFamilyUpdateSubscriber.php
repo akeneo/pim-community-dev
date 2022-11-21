@@ -68,7 +68,7 @@ class RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber implements Even
         $getAttributeCodeFunction = function (AttributeInterface $attribute) {
             return $attribute->getCode();
         };
-        $familyVariantAttributesCodes = \array_merge(
+        $familyVariantAttributesCodes = array_merge(
             $familyVariant->getAttributes()->map($getAttributeCodeFunction)->toArray(),
             $familyVariant->getAxes()->map($getAttributeCodeFunction)->toArray()
         );
@@ -90,7 +90,7 @@ class RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber implements Even
         array $familyAttributeCodes,
         array $familyVariantsAttributeCodes
     ): array {
-        return \array_diff($familyVariantsAttributeCodes, $familyAttributeCodes);
+        return array_diff($familyVariantsAttributeCodes, $familyAttributeCodes);
     }
 
     /**
@@ -106,7 +106,7 @@ class RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber implements Even
         foreach ($familyVariant->getVariantAttributeSets() as $variantAttributeSet) {
             $attributesToKeep = [];
             foreach ($variantAttributeSet->getAttributes() as $attribute) {
-                if (!\in_array($attribute->getCode(), $toRemoveAttributes)) {
+                if (!in_array($attribute->getCode(), $toRemoveAttributes)) {
                     $attributesToKeep[] = $attribute;
                 }
             }

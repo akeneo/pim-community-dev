@@ -12,6 +12,6 @@ final class NonExistingFamiliesException extends \RuntimeException
 {
     public function __construct(array $nonExistingFamilyCodes)
     {
-        parent::__construct(\sprintf("The following family codes do not exist: %s", \implode(", ", $nonExistingFamilyCodes)));
+        parent::__construct(sprintf("The following family codes do not exist: %s", implode(", ", $nonExistingFamilyCodes)));
     }
 }

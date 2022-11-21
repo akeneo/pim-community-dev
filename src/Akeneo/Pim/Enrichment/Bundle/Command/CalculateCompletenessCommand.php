@@ -72,7 +72,7 @@ class CalculateCompletenessCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->lock()) {
-            $output->writeln(\sprintf('The command "%s" is still running in another process.', self::$defaultName));
+            $output->writeln(sprintf('The command "%s" is still running in another process.', self::$defaultName));
 
             return 0;
         }
@@ -86,7 +86,7 @@ class CalculateCompletenessCommand extends Command
         foreach ($this->getProductUuids($batchSize) as $productUuids) {
             $this->computeAndPersistProductCompleteness->fromProductUuids($productUuids);
             $this->productAndAncestorsIndexer->indexFromProductUuids($productUuids);
-            $progressBar->advance(\count($productUuids));
+            $progressBar->advance(count($productUuids));
         }
         $progressBar->finish();
         $output->writeln('');
@@ -127,9 +127,9 @@ SQL;
                 return;
             }
 
-            $lastUuidAsBytes = \end($rows);
+            $lastUuidAsBytes = end($rows);
 
-            yield \array_map(fn (string $uuidAsBytes): UuidInterface => Uuid::fromBytes($uuidAsBytes), $rows);
+            yield array_map(fn (string $uuidAsBytes): UuidInterface => Uuid::fromBytes($uuidAsBytes), $rows);
         }
     }
 }

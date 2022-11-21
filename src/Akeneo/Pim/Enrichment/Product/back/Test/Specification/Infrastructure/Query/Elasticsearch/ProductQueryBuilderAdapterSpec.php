@@ -22,7 +22,7 @@ use Ramsey\Uuid\Uuid;
 
 class ProductQueryBuilderAdapterSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
@@ -44,13 +44,13 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(ProductQueryBuilderAdapter::class);
         $this->shouldImplement(ProductQueryBuilderInterface::class);
     }
 
-    public function it_builds_the_query(
+    function it_builds_the_query(
         FilterRegistryInterface $filterRegistry,
         FieldFilterInterface $fieldFilter
     ) {
@@ -60,7 +60,7 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
         $this->buildQuery(null)->shouldReturn(['_source' => ['id', 'identifier', 'document_type']]);
     }
 
-    public function it_builds_the_query_with_a_user(
+    function it_builds_the_query_with_a_user(
         FilterRegistryInterface $filterRegistry,
         FieldFilterInterface $fieldFilter
     ) {
@@ -70,7 +70,7 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
         $this->buildQuery(1)->shouldReturn(['_source' => ['id', 'identifier', 'document_type']]);
     }
 
-    public function it_builds_the_query_with_a_search_after(
+    function it_builds_the_query_with_a_search_after(
         FilterRegistryInterface $filterRegistry,
         FieldFilterInterface $fieldFilter
     ) {
@@ -82,7 +82,7 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
             ->shouldReturn(['_source' => ['id', 'identifier', 'document_type'], 'search_after' => ['product_' . $uuid->toString()]]);
     }
 
-    public function it_adds_permission_filters_and_builds_the_query(
+    function it_adds_permission_filters_and_builds_the_query(
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,

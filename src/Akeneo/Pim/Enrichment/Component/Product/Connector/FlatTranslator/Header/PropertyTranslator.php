@@ -21,7 +21,7 @@ class PropertyTranslator implements FlatHeaderTranslatorInterface
 
     public function supports(string $columnName): bool
     {
-        return \in_array($columnName, $this->supportedFields);
+        return in_array($columnName, $this->supportedFields);
     }
 
     public function warmup(array $columnNames, string $locale): void
@@ -31,9 +31,9 @@ class PropertyTranslator implements FlatHeaderTranslatorInterface
     public function translate(string $columnName, string $locale): string
     {
         return $this->labelTranslator->translate(
-            \sprintf('pim_common.%s', $columnName),
+            sprintf('pim_common.%s', $columnName),
             $locale,
-            \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName)
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName)
         );
     }
 }

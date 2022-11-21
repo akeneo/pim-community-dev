@@ -81,11 +81,11 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         ?array $localesToFilterOn
     ): ConnectorProductModelList {
         $result = $productQueryBuilder->execute();
-        $productModelCodes = \array_map(
+        $productModelCodes = array_map(
             function (IdentifierResult $identifier) {
                 return $identifier->getIdentifier();
             },
-            \iterator_to_array($result)
+            iterator_to_array($result)
         );
 
         $productModels = $this->fromProductModelCodes(
@@ -108,7 +108,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         $connectorProductModels = $this->fromProductModelCodes([$productModelCode], $userId, null, null, null);
 
         if ($connectorProductModels->totalNumberOfProductModels() === 0) {
-            throw new ObjectNotFoundException(\sprintf('Product model "%s" was not found', $productModelCode));
+            throw new ObjectNotFoundException(sprintf('Product model "%s" was not found', $productModelCode));
         }
 
         return $connectorProductModels->connectorProductModels()[0];
@@ -121,7 +121,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
     ): ConnectorProductModelList {
-        $rows = \array_replace_recursive(
+        $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductModelCodes->fromProductModelCodes($productModelCodes),
             $this->fetchAssociationsIndexedByProductModelCode($productModelCodes),
             $this->fetchQuantifiedAssociationsIndexedByProductModelCode($productModelCodes),
@@ -177,7 +177,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             );
         }
 
-        return new ConnectorProductModelList(\count($productModels), $productModels);
+        return new ConnectorProductModelList(count($productModels), $productModels);
     }
 
     private function fetchCategoryCodesIndexedByProductModelCode(array $productModelCodes): array
@@ -194,14 +194,14 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
 
     private function fetchAssociationsIndexedByProductModelCode(array $productModelCodes): array
     {
-        $associations = \array_replace_recursive(
+        $associations = array_replace_recursive(
             $this->getProductAssociationsByProductModelCodes->fetchByProductModelCodes($productModelCodes),
             $this->getProductModelAssociationsByProductModelCodes->fromProductModelCodes($productModelCodes),
             $this->getGroupAssociationsByProductModelCodes->fromProductModelCodes($productModelCodes)
         );
         $associationsIndexedByCode = [];
         foreach ($associations as $productModelCode => $association) {
-            \ksort($association);
+            ksort($association);
             $associationsIndexedByCode[$productModelCode]['associations'] = $association;
         }
 
@@ -210,14 +210,14 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
 
     private function fetchQuantifiedAssociationsIndexedByProductModelCode(array $productModelCodes): array
     {
-        $quantifiedAssociations = \array_replace_recursive(
+        $quantifiedAssociations = array_replace_recursive(
             $this->getProductQuantifiedAssociationsByProductModelCodes->fromProductModelCodes($productModelCodes),
             $this->getProductModelQuantifiedAssociationsByProductModelCodes->fromProductModelCodes($productModelCodes),
         );
 
         $quantifiedAssociationsIndexedByCode = [];
         foreach ($quantifiedAssociations as $productModelCode => $quantifiedAssociation) {
-            $associationTypes = \array_map('strval', \array_keys($quantifiedAssociation));
+            $associationTypes = array_map('strval', array_keys($quantifiedAssociation));
 
             $filledAssociations = [];
             foreach ($associationTypes as $associationType) {
@@ -238,7 +238,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
     {
         $result = [];
         foreach ($rawValues as $attributeCode => $attributeValues) {
-            if (\in_array($attributeCode, $attributeCodes)) {
+            if (in_array($attributeCode, $attributeCodes)) {
                 $result[$attributeCode] = $attributeValues;
             }
         }
@@ -266,7 +266,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         foreach ($rawValues as $attributeCode => $attributeValues) {
             foreach ($attributeValues as $scope => $scopedValue) {
                 foreach ($scopedValue as $locale => $value) {
-                    if ($locale === '<all_locales>' || \in_array($locale, $localesToFilterOn)) {
+                    if ($locale === '<all_locales>' || in_array($locale, $localesToFilterOn)) {
                         $result[$attributeCode][$scope][$locale] = $value;
                     }
                 }

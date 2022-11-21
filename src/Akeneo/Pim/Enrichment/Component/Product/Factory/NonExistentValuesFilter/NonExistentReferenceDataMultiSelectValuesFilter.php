@@ -113,7 +113,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                             if (!\is_scalar($value)) {
                                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                                     $attributeCode,
-                                    \sprintf('one of the "%s" values is not a scalar', $attributeCode),
+                                    sprintf('one of the "%s" values is not a scalar', $attributeCode),
                                     static::class,
                                     $values
                                 );

@@ -35,15 +35,15 @@ final class ValidateAttributes
 
         $errors = [];
         foreach ($attributeCodes as $attributeCode) {
-            $attributeCode = \trim($attributeCode);
+            $attributeCode = trim($attributeCode);
             if (null === $this->attributeRepository->findOneByIdentifier($attributeCode)) {
                 $errors[] = $attributeCode;
             }
         }
 
         if (!empty($errors)) {
-            $plural = \count($errors) > 1 ? 'Attributes "%s" do not exist.' : 'Attribute "%s" does not exist.';
-            throw new InvalidQueryException(\sprintf($plural, \implode(', ', $errors)));
+            $plural = count($errors) > 1 ? 'Attributes "%s" do not exist.' : 'Attribute "%s" does not exist.';
+            throw new InvalidQueryException(sprintf($plural, implode(', ', $errors)));
         }
     }
 }

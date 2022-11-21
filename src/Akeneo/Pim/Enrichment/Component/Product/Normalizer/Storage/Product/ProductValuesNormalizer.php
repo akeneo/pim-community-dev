@@ -36,7 +36,7 @@ class ProductValuesNormalizer implements NormalizerInterface, CacheableSupportsM
             $normalizedValues[] = $this->valueNormalizer->normalize($value, $format, $context);
         }
 
-        $result = empty($normalizedValues) ? [] : \array_replace_recursive(...$normalizedValues);
+        $result = empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);
 
         return $result;
     }

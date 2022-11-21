@@ -69,12 +69,12 @@ class AttributeColumnsResolver
         if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
             $fields[] = $field;
             foreach ($currencyCodes as $currencyCode) {
-                $currencyField = \sprintf('%s-%s', $field, $currencyCode);
+                $currencyField = sprintf('%s-%s', $field, $currencyCode);
                 $fields[] = $currencyField;
             }
         } elseif (AttributeTypes::METRIC === $value['type']) {
             $fields[] = $field;
-            $metricField = \sprintf('%s-%s', $field, 'unit');
+            $metricField = sprintf('%s-%s', $field, 'unit');
             $fields[] = $metricField;
         } else {
             $fields[] = $field;
@@ -97,11 +97,11 @@ class AttributeColumnsResolver
         $field = $attributeCode;
 
         if (null !== $localeCode) {
-            $field = \sprintf('%s-%s', $field, $localeCode);
+            $field = sprintf('%s-%s', $field, $localeCode);
         }
 
         if (null !== $scopeCode) {
-            $field = \sprintf('%s-%s', $field, $scopeCode);
+            $field = sprintf('%s-%s', $field, $scopeCode);
         }
 
         return $field;

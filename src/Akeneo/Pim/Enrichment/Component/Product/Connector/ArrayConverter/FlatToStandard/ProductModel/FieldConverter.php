@@ -40,16 +40,16 @@ class FieldConverter implements FieldConverterInterface
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
         $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns();
 
-        if (\in_array($fieldName, $associationFields)) {
+        if (in_array($fieldName, $associationFields)) {
             $value = $this->fieldSplitter->splitCollection($value);
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
             return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
-        } elseif (\in_array($fieldName, $quantifiedAssociationFields)) {
+        } elseif (in_array($fieldName, $quantifiedAssociationFields)) {
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
             return new ConvertedField('quantified_associations', [$associationTypeCode => [$associatedWith => $value]]);
-        } elseif (\in_array($fieldName, $this->assocFieldResolver->resolveQuantifiedQuantityAssociationColumns())) {
+        } elseif (in_array($fieldName, $this->assocFieldResolver->resolveQuantifiedQuantityAssociationColumns())) {
             return new ConvertedField($fieldName, $value);
         }
 
@@ -60,7 +60,7 @@ class FieldConverter implements FieldConverterInterface
         }
 
         // Code must be alpha-numeric
-        if (\in_array($fieldName, ['parent', 'code', 'family_variant'])) {
+        if (in_array($fieldName, ['parent', 'code', 'family_variant'])) {
             return new ConvertedField($fieldName, (string) $value);
         }
 
@@ -75,8 +75,8 @@ class FieldConverter implements FieldConverterInterface
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
         $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedAssociationColumns();
 
-        $fields = \array_merge(self::PRODUCT_MODEL_FIELDS, $associationFields, $quantifiedAssociationFields);
+        $fields = array_merge(self::PRODUCT_MODEL_FIELDS, $associationFields, $quantifiedAssociationFields);
 
-        return \in_array($fieldName, $fields);
+        return in_array($fieldName, $fields);
     }
 }

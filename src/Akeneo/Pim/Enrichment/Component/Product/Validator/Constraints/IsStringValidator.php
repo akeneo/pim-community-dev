@@ -41,12 +41,12 @@ class IsStringValidator extends ConstraintValidator
             return;
         }
 
-        if (!\is_string($checkedValue)) {
+        if (!is_string($checkedValue)) {
             $this->context->buildViolation(
                 $constraint->message,
                 [
                     '%attribute%' => $code,
-                    '%givenType%' => \gettype($checkedValue),
+                    '%givenType%' => gettype($checkedValue),
                 ]
             )
                 ->setCode(IsString::IS_STRING)

@@ -31,7 +31,7 @@ final class CatalogQualityScoreEvolution
     {
         $data = $this->initLastMonthsWithEmptyData();
 
-        foreach (\array_keys($data) as $period) {
+        foreach (array_keys($data) as $period) {
             if (isset($this->scores['monthly'][$period][$this->channel][$this->locale])) {
                 $ranksDistribution = new RanksDistribution($this->scores['monthly'][$period][$this->channel][$this->locale]);
                 $data[$period] = $ranksDistribution->getAverageRank()->toLetter();
@@ -61,7 +61,7 @@ final class CatalogQualityScoreEvolution
 
     private function addCurrentCatalogAverageRankToCurrentMonth(array $data, ?string $currentAverageRank): array
     {
-        $data[\array_key_last($data)] = $currentAverageRank;
+        $data[array_key_last($data)] = $currentAverageRank;
 
         return $data;
     }

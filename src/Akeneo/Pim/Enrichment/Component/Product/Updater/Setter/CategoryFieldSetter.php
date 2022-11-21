@@ -88,7 +88,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
      */
     protected function checkData($field, $data)
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $field,
                 static::class,
@@ -97,10 +97,10 @@ class CategoryFieldSetter extends AbstractFieldSetter
         }
 
         foreach ($data as $key => $value) {
-            if (!\is_string($value)) {
+            if (!is_string($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    \sprintf('one of the category codes is not a string, "%s" given', \gettype($value)),
+                    sprintf('one of the category codes is not a string, "%s" given', gettype($value)),
                     static::class,
                     $data
                 );

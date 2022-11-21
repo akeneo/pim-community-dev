@@ -51,8 +51,8 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
             new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
             new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
             new Regex([
-                'pattern' => \sprintf('/.\.%s$/', $this->filePathExtension),
-                'message' => \sprintf('The extension file must be ".%s"', $this->filePathExtension)
+                'pattern' => sprintf('/.\.%s$/', $this->filePathExtension),
+                'message' => sprintf('The extension file must be ".%s"', $this->filePathExtension)
             ])
         ];
         $constraintFields['filePathProduct'] = $constraintFilePath;
@@ -95,6 +95,6 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
      */
     public function supports(JobInterface $job)
     {
-        return \in_array($job->getName(), $this->supportedJobNames);
+        return in_array($job->getName(), $this->supportedJobNames);
     }
 }

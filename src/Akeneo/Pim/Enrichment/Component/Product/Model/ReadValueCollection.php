@@ -29,7 +29,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
         foreach ($this->values as $value) {
             $attributeCodes[] = $value->getAttributeCode();
         }
-        $this->attributeCodes = \array_unique($attributeCodes);
+        $this->attributeCodes = array_unique($attributeCodes);
     }
 
     /**
@@ -45,7 +45,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function first()
     {
-        return \reset($this->values);
+        return reset($this->values);
     }
 
     /**
@@ -53,7 +53,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function last()
     {
-        return \end($this->values);
+        return end($this->values);
     }
 
     /**
@@ -61,7 +61,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function key(): mixed
     {
-        return \key($this->values);
+        return key($this->values);
     }
 
     /**
@@ -69,7 +69,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function next()
     {
-        return \next($this->values);
+        return next($this->values);
     }
 
     /**
@@ -77,7 +77,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function current()
     {
-        return \current($this->values);
+        return current($this->values);
     }
 
     /**
@@ -85,7 +85,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function contains(ValueInterface $value)
     {
-        return \in_array($value, $this->values, true);
+        return in_array($value, $this->values, true);
     }
 
     /**
@@ -93,7 +93,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function getValues()
     {
-        return \array_values($this->values);
+        return array_values($this->values);
     }
 
     public function getAttributeCodes()
@@ -106,7 +106,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function count(): int
     {
-        return \count($this->values);
+        return count($this->values);
     }
 
     /**
@@ -130,9 +130,9 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function filter(\Closure $filterBy)
     {
-        $filteredValues = \array_filter($this->values, $filterBy);
+        $filteredValues = array_filter($this->values, $filterBy);
 
-        return new self(\array_values($filteredValues));
+        return new self(array_values($filteredValues));
     }
 
     /**
@@ -140,8 +140,8 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
      */
     public function map(\Closure $mapFunction)
     {
-        $transformedValues = \array_map($mapFunction, $this->values);
+        $transformedValues = array_map($mapFunction, $this->values);
 
-        return new self(\array_values($transformedValues));
+        return new self(array_values($transformedValues));
     }
 }

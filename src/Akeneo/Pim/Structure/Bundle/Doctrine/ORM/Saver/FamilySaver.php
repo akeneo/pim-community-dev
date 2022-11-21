@@ -91,7 +91,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     {
         if (!$family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Expects a "Akeneo\Pim\Structure\Component\Model\FamilyInterface", "%s" provided.',
                     ClassUtils::getClass($family)
                 )

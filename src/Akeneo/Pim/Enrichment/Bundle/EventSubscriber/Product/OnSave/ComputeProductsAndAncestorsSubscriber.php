@@ -48,20 +48,20 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     public function handleMultipleProducts(GenericEvent $event): void
     {
         $products = $event->getSubject();
-        if (!\is_array($products)) {
+        if (!is_array($products)) {
             return;
         }
 
-        $products = \array_filter(
+        $products = array_filter(
             $products,
             function ($product): bool {
                 return $product instanceof ProductInterface
                     // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-                    && \get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
+                    && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
             }
         );
 
-        $productUuids = \array_map(
+        $productUuids = array_map(
             fn (ProductInterface $product): UuidInterface => $product->getUuid(),
             $products
         );

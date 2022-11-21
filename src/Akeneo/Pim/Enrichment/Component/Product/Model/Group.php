@@ -193,7 +193,7 @@ class Group implements GroupInterface
       */
     public function getGroupSequence()
     {
-        return ['Group', \strtolower($this->getType()->getCode())];
+        return ['Group', strtolower($this->getType()->getCode())];
     }
 
     /**

@@ -34,6 +34,6 @@ final class CriterionEvaluationCollection implements \IteratorAggregate, \Counta
 
     public function count(): int
     {
-        return \count($this->criteriaEvaluations);
+        return count($this->criteriaEvaluations);
     }
 }

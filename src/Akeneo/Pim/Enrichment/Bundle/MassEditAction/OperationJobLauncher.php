@@ -56,7 +56,7 @@ class OperationJobLauncher
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier($jobInstanceCode);
 
         if (null === $jobInstance) {
-            throw new NotFoundResourceException(\sprintf('No JobInstance found with code "%s"', $jobInstanceCode));
+            throw new NotFoundResourceException(sprintf('No JobInstance found with code "%s"', $jobInstanceCode));
         }
 
         $user = $this->retrieveUser();

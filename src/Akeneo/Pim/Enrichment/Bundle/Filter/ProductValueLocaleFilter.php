@@ -27,7 +27,7 @@ class ProductValueLocaleFilter implements CollectionFilterInterface, ObjectFilte
 
         return !empty($localeCodes) &&
             $value->isLocalizable() &&
-            !\in_array($value->getLocaleCode(), $localeCodes);
+            !in_array($value->getLocaleCode(), $localeCodes);
     }
 
     /**

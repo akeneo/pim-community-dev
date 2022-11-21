@@ -21,13 +21,13 @@ class FindFamiliesController
         $identifiers = $request->query->get('identifiers') ?? [];
         $families = $this->familySearchableRepository->findBySearch(null, [
             'identifiers' => $identifiers,
-            'limit' => \count($identifiers),
+            'limit' => count($identifiers),
         ]);
 
         $normalizedFamilies = [];
         foreach ($families as $family) {
             // PIM-10633: force the family code in lowercase
-            $familyCode = \strtolower($family->getCode());
+            $familyCode = strtolower($family->getCode());
             $normalizedFamilies[$familyCode] = [
                 ...$this->normalizer->normalize($family, 'internal_api', ['expanded' => true]),
                 'code' => $familyCode,

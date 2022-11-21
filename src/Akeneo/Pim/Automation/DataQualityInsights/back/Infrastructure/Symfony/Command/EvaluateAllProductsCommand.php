@@ -42,7 +42,7 @@ final class EvaluateAllProductsCommand extends Command
     protected function configure()
     {
         $this->setHidden(true);
-        $this->addOption('bulk-size', null, InputOption::VALUE_REQUIRED, \sprintf('Bulk size (%d by default)', self::DEFAULT_BULK_SIZE));
+        $this->addOption('bulk-size', null, InputOption::VALUE_REQUIRED, sprintf('Bulk size (%d by default)', self::DEFAULT_BULK_SIZE));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -64,8 +64,8 @@ final class EvaluateAllProductsCommand extends Command
 
         $bulkSize = $input->getOption('bulk-size') ?? self::DEFAULT_BULK_SIZE;
 
-        $this->evaluateAllProducts($io, \intval($bulkSize));
-        $this->evaluateAllProductModels($io, \intval($bulkSize));
+        $this->evaluateAllProducts($io, intval($bulkSize));
+        $this->evaluateAllProductModels($io, intval($bulkSize));
 
         return Command::SUCCESS;
     }
@@ -89,7 +89,7 @@ final class EvaluateAllProductsCommand extends Command
             foreach ($this->getProductIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, $bulkSize) as $productIds) {
                 ($this->evaluateProducts)($productIds);
 
-                $countProductIds = \count($productIds);
+                $countProductIds = count($productIds);
                 $progressBar->advance($countProductIds);
                 $evaluationCount += $countProductIds;
                 $totalEvaluations+= $countProductIds;
@@ -97,7 +97,7 @@ final class EvaluateAllProductsCommand extends Command
         } while ($evaluationCount > 0);
 
         $progressBar->clear();
-        $io->success(\sprintf('%d products have been evaluated.', $totalEvaluations));
+        $io->success(sprintf('%d products have been evaluated.', $totalEvaluations));
     }
 
     private function evaluateAllProductModels(SymfonyStyle $io, int $bulkSize): void
@@ -119,7 +119,7 @@ final class EvaluateAllProductsCommand extends Command
             foreach ($this->getProductModelsIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, $bulkSize) as $productModelIds) {
                 ($this->evaluateProductModels)($productModelIds);
 
-                $countProductIds = \count($productModelIds);
+                $countProductIds = count($productModelIds);
                 $progressBar->advance($countProductIds);
                 $evaluationCount += $countProductIds;
                 $totalEvaluations+= $countProductIds;
@@ -127,7 +127,7 @@ final class EvaluateAllProductsCommand extends Command
         } while ($evaluationCount > 0);
 
         $progressBar->clear();
-        $io->success(\sprintf('%d product models have been evaluated.', $totalEvaluations));
+        $io->success(sprintf('%d product models have been evaluated.', $totalEvaluations));
     }
 
     private function countProductsToEvaluate(): int
@@ -138,7 +138,7 @@ FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE status = 'pending';
 SQL;
 
-        return \intval($this->dbConnection->executeQuery($query)->fetchOne());
+        return intval($this->dbConnection->executeQuery($query)->fetchOne());
     }
 
     private function countProductModelsToEvaluate(): int
@@ -149,6 +149,6 @@ FROM pim_data_quality_insights_product_model_criteria_evaluation
 WHERE status = 'pending';
 SQL;
 
-        return \intval($this->dbConnection->executeQuery($query)->fetchOne());
+        return intval($this->dbConnection->executeQuery($query)->fetchOne());
     }
 }

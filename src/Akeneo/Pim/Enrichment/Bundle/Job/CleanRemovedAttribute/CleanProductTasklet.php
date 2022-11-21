@@ -60,7 +60,7 @@ class CleanProductTasklet implements TaskletInterface, TrackableTaskletInterface
             self::BATCH_SIZE
         ) as $identifiers) {
             $this->removeValuesFromProducts->forAttributeCodes($attributeCodes, $identifiers);
-            $productCount = \count($identifiers);
+            $productCount = count($identifiers);
             $this->stepExecution->incrementSummaryInfo('process', $productCount);
             $this->stepExecution->incrementProcessedItems($productCount);
             $this->jobRepository->updateStepExecution($this->stepExecution);

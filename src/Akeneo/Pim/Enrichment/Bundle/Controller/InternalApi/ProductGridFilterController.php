@@ -64,7 +64,7 @@ class ProductGridFilterController
         unset($options['catalogLocale']);
 
         if ($request->get('identifiers', null) !== null) {
-            $options['identifiers'] = \array_unique(\explode(',', $request->get('identifiers')));
+            $options['identifiers'] = array_unique(explode(',', $request->get('identifiers')));
         }
 
         $options['useable_as_grid_filter'] = true;
@@ -76,14 +76,14 @@ class ProductGridFilterController
             $options['limit'],
             $options['page']
         );
-        $options['limit'] -= \count($systemFilters);
+        $options['limit'] -= count($systemFilters);
 
         $attributes = $this->attributeSearchRepository->findBySearch(
             $request->get('search'),
             $options
         );
 
-        $normalizedAttributes = \array_map(function ($attribute) {
+        $normalizedAttributes = array_map(function ($attribute) {
             return $this->lightAttributeNormalizer->normalize(
                 $attribute,
                 'internal_api',
@@ -91,7 +91,7 @@ class ProductGridFilterController
             );
         }, $attributes);
 
-        return new JsonResponse(\array_merge($systemFilters, $normalizedAttributes));
+        return new JsonResponse(array_merge($systemFilters, $normalizedAttributes));
     }
 
     /**
@@ -113,7 +113,7 @@ class ProductGridFilterController
         $formattedSystemFilters = [];
         foreach ($systemFilters as $code => $systemFilter) {
             $label = $this->translator->trans($systemFilter['label'], [], null, $locale);
-            if (!\in_array($code, ['scope', 'locale']) && ('' === $search || \stripos($code, $search) !== false || \stripos($label, $search) !== false)) {
+            if (!in_array($code, ['scope', 'locale']) && ('' === $search || stripos($code, $search) !== false || stripos($label, $search) !== false)) {
                 $formattedSystemFilters[] = [
                     'code' => $code,
                     'labels' => [$locale => $label],
@@ -122,7 +122,7 @@ class ProductGridFilterController
             }
         }
 
-        return \array_slice($formattedSystemFilters, ($page - 1) * $limit, $limit);
+        return array_slice($formattedSystemFilters, ($page - 1) * $limit, $limit);
     }
 
     private function retrieveUser(): UserInterface

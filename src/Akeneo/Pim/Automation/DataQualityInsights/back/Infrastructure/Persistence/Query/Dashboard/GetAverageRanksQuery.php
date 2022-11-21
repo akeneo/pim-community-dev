@@ -36,7 +36,7 @@ final class GetAverageRanksQuery implements GetAverageRanksQueryInterface
 
     private function fetchByCodes(ChannelCode $channelCode, LocaleCode $localeCode, string $entityType, array $entityCodes): array
     {
-        $path = \sprintf('\'$.average_ranks."%s"."%s"\'', $channelCode, $localeCode);
+        $path = sprintf('\'$.average_ranks."%s"."%s"\'', $channelCode, $localeCode);
 
         $query = <<<SQL
 SELECT
@@ -50,7 +50,7 @@ SQL;
             $query,
             [
                 'type' => $entityType,
-                'codes' => \array_map('strval', $entityCodes),
+                'codes' => array_map('strval', $entityCodes),
             ],
             [
                 'type' => \PDO::PARAM_STR,
@@ -60,12 +60,12 @@ SQL;
 
         $averageRanks = [];
         while ($rawAverageRanks = $stmt->fetchAssociative()) {
-            $averageRanks[\strtolower($rawAverageRanks['code'])] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
+            $averageRanks[strtolower($rawAverageRanks['code'])] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
         }
 
         $entityAverageRanks = [];
         foreach ($entityCodes as $entityCode) {
-            $entityCode = \strtolower(\strval($entityCode));
+            $entityCode = strtolower(strval($entityCode));
             $entityAverageRanks[$entityCode] = $averageRanks[$entityCode] ?? null;
         }
 

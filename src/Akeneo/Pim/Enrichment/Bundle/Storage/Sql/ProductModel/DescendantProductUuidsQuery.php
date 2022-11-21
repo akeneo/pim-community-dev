@@ -41,7 +41,7 @@ SQL;
             ['productModelIds' => Connection::PARAM_INT_ARRAY]
         )->fetchAllAssociative();
 
-        return \array_map(function ($rowData) {
+        return array_map(function ($rowData) {
             return Uuid::fromString($rowData['uuid']);
         }, $resultRows);
     }

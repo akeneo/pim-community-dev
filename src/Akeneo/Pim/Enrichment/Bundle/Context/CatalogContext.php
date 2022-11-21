@@ -92,7 +92,7 @@ class CatalogContext
     public function getConfiguration($key)
     {
         if (!isset($this->configuration[$key]) || $this->configuration[$key] === null) {
-            throw new \LogicException(\sprintf('"%s" expects to be configured with "%s"', \get_class($this), $key));
+            throw new \LogicException(sprintf('"%s" expects to be configured with "%s"', get_class($this), $key));
         }
 
         return $this->configuration[$key];

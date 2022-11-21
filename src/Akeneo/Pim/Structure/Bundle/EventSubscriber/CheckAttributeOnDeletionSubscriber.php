@@ -67,10 +67,10 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
     {
         $attributes = $event->getSubject();
 
-        if (!\is_array($attributes)) {
+        if (!is_array($attributes)) {
             return;
         }
-        $attributes = \array_filter(
+        $attributes = array_filter(
             $attributes,
             fn ($attr): bool => $attr instanceof AttributeInterface
         );
@@ -78,7 +78,7 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $attributeIds = \array_map(
+        $attributeIds = array_map(
             fn (AttributeInterface $attr):int => $attr->getId(),
             $attributes
         );

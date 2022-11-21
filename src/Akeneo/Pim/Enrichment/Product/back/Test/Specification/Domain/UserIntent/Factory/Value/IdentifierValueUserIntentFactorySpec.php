@@ -10,18 +10,18 @@ use PhpSpec\ObjectBehavior;
 
 class IdentifierValueUserIntentFactorySpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(IdentifierValueUserIntentFactory::class);
     }
 
-    public function it_returns_set_identifier_user_intent()
+    function it_returns_set_identifier_user_intent()
     {
         $this->create(AttributeTypes::IDENTIFIER, 'my_identifier', ['data' => 'my_sku'])
             ->shouldBeLike(new SetIdentifierValue('my_identifier', 'my_sku'));
     }
 
-    public function it_throws_an_error_if_data_is_not_valid()
+    function it_throws_an_error_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', [AttributeTypes::IDENTIFIER, 'my_identifier', 'coucou']);

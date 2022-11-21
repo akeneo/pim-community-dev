@@ -35,7 +35,7 @@ class FileComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return \in_array($type, $this->types);
+        return in_array($type, $this->types);
     }
 
     /**
@@ -44,7 +44,7 @@ class FileComparator implements ComparatorInterface
     public function compare($data, $originals)
     {
         $default = ['locale' => null, 'scope' => null, 'data' => null];
-        $originals = \array_merge($default, $originals);
+        $originals = array_merge($default, $originals);
 
         if (!isset($data['data']) && !isset($originals['data'])) {
             return null;
@@ -54,7 +54,7 @@ class FileComparator implements ComparatorInterface
             $originalFile = $this->repository->findOneByIdentifier($originals['data']);
 
             // compare a local file and a stored file (can happen during an import for instance)
-            if (\is_file($data['data']) &&
+            if (is_file($data['data']) &&
                 null !== $originalFile &&
                 $originalFile->getHash() === $this->getHashFile($data['data'])
             ) {
@@ -81,6 +81,6 @@ class FileComparator implements ComparatorInterface
      */
     protected function getHashFile($filePath = null)
     {
-        return null !== $filePath ? \sha1_file($filePath) : null;
+        return null !== $filePath ? sha1_file($filePath) : null;
     }
 }

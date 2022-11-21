@@ -185,11 +185,11 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     protected function checkValue(AttributeInterface $attribute, $data)
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
         }
 
-        if (!\array_key_exists('amount', $data)) {
+        if (!array_key_exists('amount', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
@@ -198,7 +198,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        if (!\array_key_exists('unit', $data)) {
+        if (!array_key_exists('unit', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'unit',
@@ -207,32 +207,32 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        if (null === $data['amount'] || !\is_numeric($data['amount'])) {
+        if (null === $data['amount'] || !is_numeric($data['amount'])) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->getCode(),
-                \sprintf('key "amount" has to be a numeric, "%s" given', \gettype($data['amount'])),
+                sprintf('key "amount" has to be a numeric, "%s" given', gettype($data['amount'])),
                 static::class,
                 $data
             );
         }
 
-        if (!\is_string($data['unit'])) {
+        if (!is_string($data['unit'])) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->getCode(),
-                \sprintf('key "unit" has to be a string, "%s" given', \gettype($data['unit'])),
+                sprintf('key "unit" has to be a string, "%s" given', gettype($data['unit'])),
                 static::class,
                 $data
             );
         }
 
-        if (!\array_key_exists(
+        if (!array_key_exists(
             $data['unit'],
             $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())
         )) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'unit',
-                \sprintf(
+                sprintf(
                     'The unit does not exist in the attribute\'s family "%s"',
                     $attribute->getMetricFamily()
                 ),

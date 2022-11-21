@@ -17,7 +17,7 @@ final class DuplicateOptionsValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         Assert::isInstanceOf($constraint, DuplicateOptions::class);
-        if (!\is_array($value) || \count($value) <= 1) {
+        if (!is_array($value) || \count($value) <= 1) {
             return;
         }
         Assert::allString($value);
@@ -37,7 +37,7 @@ final class DuplicateOptionsValidator extends ConstraintValidator
                 $constraint->message,
                 [
                     '{{ duplicate_options }}' => \implode(', ', $duplicateOptions),
-                    '%count%' => \count($duplicateOptions),
+                    '%count%' => count($duplicateOptions),
                     '%attribute_code%' => $constraint->attributeCode,
                 ]
             )->setCode(DuplicateOptions::DUPLICATE_ATTRIBUTE_OPTIONS)->addViolation();

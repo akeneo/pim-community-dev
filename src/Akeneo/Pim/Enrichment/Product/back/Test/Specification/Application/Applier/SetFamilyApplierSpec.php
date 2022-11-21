@@ -12,27 +12,27 @@ use PhpSpec\ObjectBehavior;
 
 class SetFamilyApplierSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $updater)
+    function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetFamilyApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_set_family_user_intent(ObjectUpdaterInterface $updater): void
+    function it_applies_set_family_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $setFamily = new SetFamily('other');
-        $updater->update($product, ['family' => 'other'])->shouldBeCalledOnce();
+        $updater->update($product,['family' => 'other'])->shouldBeCalledOnce();
 
         $this->apply($setFamily, $product, 1);
     }
 
-    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

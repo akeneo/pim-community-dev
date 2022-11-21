@@ -28,7 +28,7 @@ class DateValidator extends BaseDateValidator
 
         foreach ($this->context->getViolations() as $key => $violation) {
             /* @var ConstraintViolationInterface $violation */
-            if (\in_array($violation->getCode(), [Date::INVALID_DATE_ERROR, Date::INVALID_FORMAT_ERROR])) {
+            if (in_array($violation->getCode(), [Date::INVALID_DATE_ERROR, Date::INVALID_FORMAT_ERROR])) {
                 $this->context->getViolations()->remove($key);
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('%attribute%', $constraint->attributeCode)

@@ -59,7 +59,7 @@ SQL;
      */
     public function addResource($resourceName)
     {
-        if (!\in_array($resourceName, $this->resourceNames)) {
+        if (!in_array($resourceName, $this->resourceNames)) {
             $this->resourceNames[] = $resourceName;
         }
     }

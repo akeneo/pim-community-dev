@@ -21,11 +21,11 @@ class DocumentationCollection
     {
         foreach ($documentations as $documentation) {
             if (!$documentation instanceof Documentation) {
-                throw new \InvalidArgumentException(\sprintf(
+                throw new \InvalidArgumentException(sprintf(
                     'Class "%s" can only contain collection of "%s", instance of "%s" given.',
                     self::class,
                     Documentation::class,
-                    \get_class($documentation)
+                    get_class($documentation)
                 ));
             }
         }

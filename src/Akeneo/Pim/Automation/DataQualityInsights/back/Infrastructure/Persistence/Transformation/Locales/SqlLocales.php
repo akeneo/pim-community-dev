@@ -53,8 +53,8 @@ final class SqlLocales implements LocalesInterface
         )->fetchOne();
 
         if ($locales) {
-            $this->localeCodesByIds = \json_decode($locales, true);
-            $this->localeIdsByCodes = \array_flip($this->localeCodesByIds);
+            $this->localeCodesByIds = json_decode($locales, true);
+            $this->localeIdsByCodes = array_flip($this->localeCodesByIds);
         }
 
         $this->localesLoaded = true;

@@ -11,25 +11,24 @@ use PhpSpec\ObjectBehavior;
 
 class CategoriesUserIntentFactorySpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(CategoriesUserIntentFactory::class);
         $this->shouldImplement(UserIntentFactory::class);
     }
 
-    public function it_returns_category_user_intent()
-    {
+    function it_returns_category_user_intent() {
         $this->create('categories', ['categoryA', 'categoryA'])
             ->shouldBeLike([new SetCategories(['categoryA', 'categoryA'])]);
     }
 
-    public function it_returns_empty_set_categories_user_intent()
+    function it_returns_empty_set_categories_user_intent()
     {
         $this->create('categories', [])
             ->shouldBeLike([new SetCategories([])]);
     }
 
-    public function it_throws_an_exception_if_data_is_not_valid()
+    function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', ['categories', 'categoryA']);

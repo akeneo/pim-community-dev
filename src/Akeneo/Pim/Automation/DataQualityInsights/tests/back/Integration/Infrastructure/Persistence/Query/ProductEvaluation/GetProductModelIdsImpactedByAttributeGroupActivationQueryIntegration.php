@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -48,13 +48,13 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         $this->givenASubProductModelNotImpactedBecauseOfItsVariantFamily();
         $this->givenASubProductModelNotImpactedBecauseOfItsLevelTwoAttributes();
 
-        $productModelIds = \iterator_to_array($this->get(GetProductModelIdsImpactedByAttributeGroupActivationQuery::class)
+        $productModelIds = iterator_to_array($this->get(GetProductModelIdsImpactedByAttributeGroupActivationQuery::class)
             ->updatedSince($this->updatedSince, 2));
 
-        $productModelIds = \array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productModelIds);
+        $productModelIds = array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productModelIds);
 
         $this->assertCount(3, $productModelIds);
-        $this->assertEqualsCanonicalizing($expectedProductModelIds, \array_merge_recursive(...$productModelIds));
+        $this->assertEqualsCanonicalizing($expectedProductModelIds, array_merge_recursive(...$productModelIds));
     }
 
     private function givenAnImpactedRootProductModelWithASingleVariationLevel(): ProductModelId

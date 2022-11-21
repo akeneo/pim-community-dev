@@ -60,7 +60,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects %s as data, "%s" given.',
                 $name,
                 $expected,
@@ -81,7 +81,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects a boolean as data, "%s" given.',
                 $name,
                 $data
@@ -101,7 +101,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects a float as data, "%s" given.',
                 $name,
                 $data
@@ -121,7 +121,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects an integer as data, "%s" given.',
                 $name,
                 $data
@@ -141,7 +141,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects a numeric as data, "%s" given.',
                 $name,
                 $data
@@ -161,7 +161,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects a string as data, "%s" given.',
                 $name,
                 $data
@@ -181,7 +181,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects an array as data, "%s" given.',
                 $name,
                 $data
@@ -201,7 +201,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects an array of arrays as data, "%s" given.',
                 $name,
                 $data
@@ -222,7 +222,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects an array with the key "%s", "%s" given.',
                 $name,
                 $key,
@@ -247,7 +247,7 @@ class InvalidArgumentException extends \InvalidArgumentException
 
         return new self(
             $className,
-            \sprintf($err, $name, $key, $because, $data),
+            sprintf($err, $name, $key, $because, $data),
             self::ARRAY_INVALID_KEY_CODE
         );
     }
@@ -267,7 +267,7 @@ class InvalidArgumentException extends \InvalidArgumentException
 
         return new self(
             $className,
-            \sprintf($err, $name, $key, $because, $data),
+            sprintf($err, $name, $key, $because, $data),
             self::VALID_ENTITY_CODE_EXPECTED_CODE
         );
     }
@@ -284,7 +284,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects an array with numeric data for the key "%s", "%s" given.',
                 $name,
                 $key,
@@ -306,7 +306,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects an array with string data for the key "%s", "%s" given.',
                 $name,
                 $key,
@@ -328,7 +328,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects an array with a string value for the key "%s", '.
                 '"%s" given.',
                 $name,
@@ -348,7 +348,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             null,
-            \sprintf('Attribute or field "%s" expects a non empty array.', $name),
+            sprintf('Attribute or field "%s" expects a non empty array.', $name),
             self::EMPTY_ARRAY_CODE
         );
     }
@@ -363,7 +363,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects a valid scope and locale.',
                 $name
             ),
@@ -381,7 +381,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects a valid scope.',
                 $name
             ),
@@ -399,11 +399,11 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             null,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects a valid association format as ["associationTypeCode1" => '.
                 '["products" => ["sku1, "sku2"], "groups" => ["group1"]]]", "%s" given.',
                 $name,
-                \print_r($data, true)
+                print_r($data, true)
             ),
             self::ASSOCIATION_FORMAT_EXPECTED_CODE
         );
@@ -420,7 +420,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             $className,
-            \sprintf(
+            sprintf(
                 'Attribute or field "%s" expects valid data, scope and locale. %s',
                 $name,
                 $exception->getMessage()

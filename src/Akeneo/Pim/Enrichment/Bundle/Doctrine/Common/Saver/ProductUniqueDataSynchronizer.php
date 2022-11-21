@@ -51,7 +51,7 @@ class ProductUniqueDataSynchronizer
         $actualAttributeCodes = $this->getAttributeCodes($actualUniqueDataCollection);
 
         // We substract from the original collection the new attributes to have the attribute codes to remove
-        $attributeCodeToRemoveFromUniqueCollection = \array_diff(
+        $attributeCodeToRemoveFromUniqueCollection = array_diff(
             $attributeCodesToUpdate,
             $actualAttributeCodes
         );
@@ -61,7 +61,7 @@ class ProductUniqueDataSynchronizer
         );
 
         // We do the opposite to have the attribute codes to add
-        $attributeCodeToAddToUniqueCollection = \array_diff(
+        $attributeCodeToAddToUniqueCollection = array_diff(
             $actualAttributeCodes,
             $attributeCodesToUpdate
         );
@@ -72,7 +72,7 @@ class ProductUniqueDataSynchronizer
         );
 
         // We do union of the two arrays to get the attribute codes to update
-        $attributeCodeToUpdateInUniqueCollection = \array_intersect(
+        $attributeCodeToUpdateInUniqueCollection = array_intersect(
             $actualAttributeCodes,
             $attributeCodesToUpdate
         );
@@ -135,7 +135,7 @@ class ProductUniqueDataSynchronizer
 
     private function getAttributeCodes(array $uniqueDataCollectionToUpdate)
     {
-        return \array_values(\array_map(
+        return array_values(array_map(
             function ($uniqueData) {
                 return $uniqueData->getAttribute()->getCode();
             },
@@ -145,10 +145,10 @@ class ProductUniqueDataSynchronizer
 
     private function getUniqueDataCollectionFromAttributeCodes(array $uniqueDataCollection, $attributeCodes)
     {
-        return \array_filter(
+        return array_filter(
             $uniqueDataCollection,
             function (ProductUniqueDataInterface $uniqueData) use ($attributeCodes) {
-                return \in_array($uniqueData->getAttribute()->getCode(), $attributeCodes);
+                return in_array($uniqueData->getAttribute()->getCode(), $attributeCodes);
             }
         );
     }

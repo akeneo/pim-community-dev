@@ -43,7 +43,7 @@ class GetFromIdentifiersAction
 
         $channelCode = $request->query->get('channel');
         $localeCode = $request->query->get('locale');
-        $identifiers = \json_decode($request->getContent(), true);
+        $identifiers = json_decode($request->getContent(), true);
 
         $productRows = $this->findLinkedProductWithAssociations($identifiers['products'], $localeCode, $channelCode);
         $productModelRows = $this->findLinkedProductModelWithAssociations($identifiers['product_models'], $localeCode, $channelCode);
@@ -51,7 +51,7 @@ class GetFromIdentifiersAction
         $normalizedProductModels = $this->linkedProductsNormalizer->normalize($productModelRows, $channelCode, $localeCode);
 
         return new JsonResponse([
-            'items' => \array_merge($normalizedProducts, $normalizedProductModels),
+            'items' => array_merge($normalizedProducts, $normalizedProductModels),
             'total_count' => $productRows->totalCount() + $productModelRows->totalCount()
         ]);
     }
@@ -69,8 +69,8 @@ class GetFromIdentifiersAction
             ]
         );
 
-        $productUuids = \array_map(
-            static fn (string $productUuid) => \sprintf('product_%s', $productUuid),
+        $productUuids = array_map(
+            static fn (string $productUuid) => sprintf('product_%s', $productUuid),
             $productUuids
         );
 

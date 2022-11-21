@@ -14,19 +14,19 @@ use PhpSpec\ObjectBehavior;
 
 class SetGroupsApplierSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ObjectUpdaterInterface $productUpdater
     ) {
         $this->beConstructedWith($productUpdater);
     }
 
-    public function it_is_an_user_intent_applier()
+    function it_is_an_user_intent_applier()
     {
         $this->shouldHaveType(SetGroupsApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_a_set_groups_user_intent(
+    function it_applies_a_set_groups_user_intent(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product
     ) {
@@ -38,7 +38,7 @@ class SetGroupsApplierSpec extends ObjectBehavior
         $this->apply($userIntent, $product, 10);
     }
 
-    public function it_does_not_update_if_groups_are_the_same(
+    function it_does_not_update_if_groups_are_the_same(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product
     ) {

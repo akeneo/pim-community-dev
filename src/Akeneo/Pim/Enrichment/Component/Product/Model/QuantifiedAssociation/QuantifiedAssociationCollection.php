@@ -39,7 +39,7 @@ class QuantifiedAssociationCollection
 
                 foreach ($quantifiedLinks as $association) {
                     Assert::isArray($association);
-                    if (!\array_key_exists('identifier', $association) && !\array_key_exists('uuid', $association)) {
+                    if (!array_key_exists('identifier', $association) && !array_key_exists('uuid', $association)) {
                         throw new \InvalidArgumentException('Expected one of the keys "identifier" or "uuid" to exist.');
                     }
                     Assert::keyExists($association, 'quantity');
@@ -73,7 +73,7 @@ class QuantifiedAssociationCollection
     ): self {
         $mappedQuantifiedAssociations = [];
         foreach ($rawQuantifiedAssociations as $associationType => $associations) {
-            if (!\in_array($associationType, $associationTypeCodes)) {
+            if (!in_array($associationType, $associationTypeCodes)) {
                 continue;
             }
 
@@ -123,7 +123,7 @@ class QuantifiedAssociationCollection
 
         $result = $this->normalize();
         foreach ($submittedQuantifiedAssociations as $submittedAssociationTypeCode => $submittedAssociations) {
-            $result[$submittedAssociationTypeCode] = \array_merge(
+            $result[$submittedAssociationTypeCode] = array_merge(
                 $currentQuantifiedAssociationNormalized[$submittedAssociationTypeCode] ?? [],
                 $submittedAssociations
             );
@@ -144,7 +144,7 @@ class QuantifiedAssociationCollection
             }
         }
 
-        return \array_unique($result);
+        return array_unique($result);
     }
 
     public function getQuantifiedAssociationsProductUuids(): array
@@ -159,7 +159,7 @@ class QuantifiedAssociationCollection
             }
         }
 
-        return \array_unique($result);
+        return array_unique($result);
     }
 
     public function getQuantifiedAssociationsProductModelCodes(): array
@@ -172,12 +172,12 @@ class QuantifiedAssociationCollection
             }
         }
 
-        return \array_unique($result);
+        return array_unique($result);
     }
 
     public function clearQuantifiedAssociations()
     {
-        $quantifiedAssociationsCleared = \array_fill_keys(
+        $quantifiedAssociationsCleared = array_fill_keys(
             $this->getAssociationTypeCodes(),
             ['products' => [], 'product_models' => []]
         );
@@ -215,15 +215,15 @@ class QuantifiedAssociationCollection
 
     private function mergeQuantifiedLinks(array $currentQuantifiedLinks, array $quantifiedLinksToMerge): array
     {
-        $mergedQuantifiedLinks = \array_reverse(\array_merge($currentQuantifiedLinks, $quantifiedLinksToMerge));
+        $mergedQuantifiedLinks = array_reverse(array_merge($currentQuantifiedLinks, $quantifiedLinksToMerge));
 
         $uuidList = [];
         $identifierList = [];
 
         foreach ($mergedQuantifiedLinks as $index => $mergedQuantifiedLink) {
             if (
-                isset($mergedQuantifiedLink['uuid']) && \in_array($mergedQuantifiedLink['uuid'], $uuidList)
-                || isset($mergedQuantifiedLink['identifier']) && \in_array($mergedQuantifiedLink['identifier'], $identifierList)
+                isset($mergedQuantifiedLink['uuid']) && in_array($mergedQuantifiedLink['uuid'], $uuidList)
+                || isset($mergedQuantifiedLink['identifier']) && in_array($mergedQuantifiedLink['identifier'], $identifierList)
             ) {
                 unset($mergedQuantifiedLinks[$index]);
                 continue;
@@ -238,7 +238,7 @@ class QuantifiedAssociationCollection
             }
         }
 
-        return \array_reverse(\array_values($mergedQuantifiedLinks));
+        return array_reverse(array_values($mergedQuantifiedLinks));
     }
 
     /**
@@ -326,10 +326,10 @@ class QuantifiedAssociationCollection
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
             $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = $quantifiedAssociation['product_models'];
-            $filteredQuantifiedAssociations[$associationTypeCode]['products'] = \array_filter(
+            $filteredQuantifiedAssociations[$associationTypeCode]['products'] = array_filter(
                 $quantifiedAssociation['products'],
                 function (QuantifiedLink $quantifiedLink) use ($productIdentifiersToKeep) {
-                    return null === $quantifiedLink->identifier() || \in_array($quantifiedLink->identifier(), $productIdentifiersToKeep);
+                    return null === $quantifiedLink->identifier() || in_array($quantifiedLink->identifier(), $productIdentifiersToKeep);
                 }
             );
         }
@@ -345,17 +345,17 @@ class QuantifiedAssociationCollection
     public function filterProductUuids(array $productUuidsToKeep)
     {
         $filteredQuantifiedAssociations = [];
-        $productUuidsToKeepAsStr = \array_map(
+        $productUuidsToKeepAsStr = array_map(
             fn (UuidInterface $uuid): string => $uuid->toString(),
             $productUuidsToKeep
         );
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
             $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = $quantifiedAssociation['product_models'];
-            $filteredQuantifiedAssociations[$associationTypeCode]['products'] = \array_filter(
+            $filteredQuantifiedAssociations[$associationTypeCode]['products'] = array_filter(
                 $quantifiedAssociation['products'],
                 function (QuantifiedLink $quantifiedLink) use ($productUuidsToKeepAsStr) {
                     return null === $quantifiedLink->uuid() ||
-                        \in_array($quantifiedLink->uuid()->toString(), $productUuidsToKeepAsStr);
+                        in_array($quantifiedLink->uuid()->toString(), $productUuidsToKeepAsStr);
                 }
             );
         }
@@ -368,10 +368,10 @@ class QuantifiedAssociationCollection
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
             $filteredQuantifiedAssociations[$associationTypeCode]['products'] = $quantifiedAssociation['products'];
-            $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = \array_filter(
+            $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = array_filter(
                 $quantifiedAssociation['product_models'],
                 function (QuantifiedLink $quantifiedLink) use ($productModelCodesToKeep) {
-                    return \in_array($quantifiedLink->identifier(), $productModelCodesToKeep);
+                    return in_array($quantifiedLink->identifier(), $productModelCodesToKeep);
                 }
             );
         }
@@ -388,17 +388,17 @@ class QuantifiedAssociationCollection
             <=> ($quantifiedLinkB['identifier'] ?? $quantifiedLinkB['uuid'] ?? '');
 
         $normalized = $this->normalize();
-        \ksort($normalized);
+        ksort($normalized);
         foreach ($normalized as $associationType => $associations) {
-            \usort($normalized[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
-            \usort($normalized[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
+            usort($normalized[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
+            usort($normalized[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
         }
 
         $otherNormalized = $otherCollection->normalize();
-        \ksort($otherNormalized);
+        ksort($otherNormalized);
         foreach ($otherNormalized as $associationType => $associations) {
-            \usort($otherNormalized[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
-            \usort($otherNormalized[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
+            usort($otherNormalized[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
+            usort($otherNormalized[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
         }
 
         return $normalized === $otherNormalized;
@@ -406,6 +406,6 @@ class QuantifiedAssociationCollection
 
     private function getAssociationTypeCodes()
     {
-        return \array_keys($this->quantifiedAssociations);
+        return array_keys($this->quantifiedAssociations);
     }
 }

@@ -52,7 +52,7 @@ final class FetchProductModelRowsFromCodes
 
         $valueCollections = $this->getValueCollection($codes, $attributeCodes, $channelCode, $localeCode);
 
-        $rows = \array_replace_recursive(
+        $rows = array_replace_recursive(
             $this->getProperties($codes),
             $this->getLabels($codes, $valueCollections, $channelCode, $localeCode),
             ($this->productModelImagesFromCodes)($codes, $channelCode, $localeCode),
@@ -119,7 +119,7 @@ SQL;
     {
         $result = [];
         foreach ($codes as $code) {
-            $result[$code]['label'] = \sprintf('[%s]', $code);
+            $result[$code]['label'] = sprintf('[%s]', $code);
         }
 
         $sql = <<<SQL
@@ -288,16 +288,16 @@ SQL;
         $productModels = [];
 
         foreach ($rows as $row) {
-            $values = \json_decode($row['raw_values'], true);
+            $values = json_decode($row['raw_values'], true);
             // filter attributes directly on raw_values for performance reason
-            $attributeCodesToKeep = \array_filter(
-                \array_merge(
+            $attributeCodesToKeep = array_filter(
+                array_merge(
                     $attributeCodes,
                     [$row['attribute_as_label_code']]
                 )
             );
 
-            $filteredValues = \array_intersect_key($values, \array_flip($attributeCodesToKeep));
+            $filteredValues = array_intersect_key($values, array_flip($attributeCodesToKeep));
             $productModels[$row['code']] = $filteredValues;
         }
 

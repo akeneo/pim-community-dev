@@ -54,15 +54,15 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
         }
 
-        $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : \array_keys($productStandard['values']);
+        $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : array_keys($productStandard['values']);
         $attributeCodes = $this->filterLocaleSpecificAttributeCodes($attributeCodes, $jobLocales);
         if (!$parameters->has('with_media') || true !== $parameters->get('with_media')) {
-            $attributeCodes = \array_diff($attributeCodes, $this->attributeRepository->findMediaAttributeCodes());
+            $attributeCodes = array_diff($attributeCodes, $this->attributeRepository->findMediaAttributeCodes());
         }
 
         $productStandard['values'] = FilterValues::create()
             ->filterByChannelCode($channel->getCode())
-            ->filterByLocaleCodes(\array_intersect($channel->getLocaleCodes(), $parameters->get('filters')['structure']['locales']))
+            ->filterByLocaleCodes(array_intersect($channel->getLocaleCodes(), $parameters->get('filters')['structure']['locales']))
             ->filterByAttributeCodes($attributeCodes)
             ->execute($productStandard['values']);
 
@@ -93,7 +93,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      */
     protected function filterLocaleSpecificAttributeCodes(array $attributeCodes, array $jobLocales): array
     {
-        return \array_filter($attributeCodes, function (string $attributeCode) use ($jobLocales) {
+        return array_filter($attributeCodes, function (string $attributeCode) use ($jobLocales) {
             $attribute = $this->getAttributes->forCode($attributeCode);
 
             if (null === $attribute) {
@@ -104,7 +104,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
                 return true;
             }
 
-            return !empty(\array_intersect($jobLocales, $attribute->availableLocaleCodes()));
+            return !empty(array_intersect($jobLocales, $attribute->availableLocaleCodes()));
         });
     }
 
@@ -119,7 +119,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     {
         $attributes = $parameters->get('filters')['structure']['attributes'];
         $identifierCode = $this->attributeRepository->getIdentifierCode();
-        if (!\in_array($identifierCode, $attributes)) {
+        if (!in_array($identifierCode, $attributes)) {
             $attributes[] = $identifierCode;
         }
 

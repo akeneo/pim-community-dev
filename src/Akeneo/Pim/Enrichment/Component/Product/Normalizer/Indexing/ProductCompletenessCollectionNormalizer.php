@@ -40,7 +40,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface, Ca
     public function supportsNormalization($data, $format = null): bool
     {
         return
-            \in_array($format, [
+            in_array($format, [
                 ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             ]) &&
             $data instanceof ProductCompletenessCollection;

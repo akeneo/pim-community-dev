@@ -22,12 +22,12 @@ final class ValidateCriterion
     public function validate(?array $search): void
     {
         foreach ($search as $searchKey => $filters) {
-            if (!\is_array($filters) || !isset($filters[0])) {
+            if (!is_array($filters) || !isset($filters[0])) {
                 throw new InvalidQueryException(
-                    \sprintf(
+                    sprintf(
                         'Structure of filter "%s" should respect this structure: %s',
                         $searchKey,
-                        \sprintf('{"%s":[{"operator": "my_operator", "value": "my_value"}]}', $searchKey)
+                        sprintf('{"%s":[{"operator": "my_operator", "value": "my_value"}]}', $searchKey)
                     )
                 );
             }
@@ -35,13 +35,13 @@ final class ValidateCriterion
             foreach ($filters as $searchFilter) {
                 if (!isset($searchFilter['operator'])) {
                     throw new InvalidQueryException(
-                        \sprintf('Operator is missing for the property "%s".', $searchKey)
+                        sprintf('Operator is missing for the property "%s".', $searchKey)
                     );
                 }
 
-                if (!\is_string($searchFilter['operator'])) {
+                if (!is_string($searchFilter['operator'])) {
                     throw new InvalidQueryException(
-                        \sprintf('Operator has to be a string, "%s" given.', \gettype($searchFilter['operator']))
+                        sprintf('Operator has to be a string, "%s" given.', gettype($searchFilter['operator']))
                     );
                 }
             }

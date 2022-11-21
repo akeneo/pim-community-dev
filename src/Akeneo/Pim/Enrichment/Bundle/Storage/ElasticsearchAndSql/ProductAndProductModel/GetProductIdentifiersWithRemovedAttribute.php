@@ -31,7 +31,7 @@ final class GetProductIdentifiersWithRemovedAttribute implements GetProductIdent
         ]);
         foreach ($attributesCodes as $attributeCode) {
             $this->searchQueryBuilder->addShould([
-                'exists' => ['field' => \sprintf('values.%s-*', $attributeCode)],
+                'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
             ]);
         }
 
@@ -39,16 +39,16 @@ final class GetProductIdentifiersWithRemovedAttribute implements GetProductIdent
             'identifier' => 'asc',
         ]);
 
-        $body = \array_merge(['size' => $batchSize, '_source' => ['identifier']], $this->searchQueryBuilder->getQuery());
+        $body = array_merge(['size' => $batchSize, '_source' => ['identifier']], $this->searchQueryBuilder->getQuery());
 
         $rows = $this->elasticsearchClient->search($body);
 
         while (!empty($rows['hits']['hits'])) {
-            $identifiers = \array_map(function (array $product) {
+            $identifiers = array_map(function (array $product) {
                 return $product['_source']['identifier'];
             }, $rows['hits']['hits']);
             yield $identifiers;
-            $body['search_after'] = \end($rows['hits']['hits'])['sort'];
+            $body['search_after'] = end($rows['hits']['hits'])['sort'];
             $rows = $this->elasticsearchClient->search($body);
         }
     }

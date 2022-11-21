@@ -51,7 +51,7 @@ abstract class AbstractListCategoryController extends AbstractController
         $category = $this->categoryRepository->find($categoryId);
 
         if (null === $category) {
-            throw new NotFoundHttpException(\sprintf('%s category not found', $this->categoryClass));
+            throw new NotFoundHttpException(sprintf('%s category not found', $this->categoryClass));
         }
 
         $categories = null;

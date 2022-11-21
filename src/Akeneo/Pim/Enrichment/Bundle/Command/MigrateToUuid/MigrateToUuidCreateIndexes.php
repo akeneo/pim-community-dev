@@ -74,7 +74,7 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
             }
 
             if (null !== $indexName && !$this->indexExists($tableName, $indexName)) {
-                $this->logger->notice(\sprintf('Will add index on uuid for %s', $tableName), $logContext->toArray());
+                $this->logger->notice(sprintf('Will add index on uuid for %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->addIndexOnUuid(
                         $tableName,
@@ -91,7 +91,7 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
             $additionalIndexes = $tableProperties[self::TEMPORARY_INDEXES_INDEX] ?? [];
             foreach ($additionalIndexes as $additionalIndexName => $columns) {
                 if ($this->tableExists($tableName) && !$this->indexExists($tableName, $additionalIndexName)) {
-                    $this->logger->notice(\sprintf('Will add additional index for %s', $tableName), $logContext->toArray());
+                    $this->logger->notice(sprintf('Will add additional index for %s', $tableName), $logContext->toArray());
                     if (!$context->dryRun()) {
                         $this->addAdditionalIndex(
                             $tableName,

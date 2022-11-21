@@ -30,7 +30,7 @@ class CollectionNormalizer implements NormalizerInterface, NormalizerAwareInterf
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof Collection && \in_array($format, $this->supportedFormats);
+        return $data instanceof Collection && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -46,41 +46,41 @@ class CollectionNormalizer implements NormalizerInterface, NormalizerAwareInterf
         $result = [];
         foreach ($object as $item) {
             $normalizedItem = $this->normalizer->normalize($item, $format, $context);
-            if (\is_array($normalizedItem)) {
+            if (is_array($normalizedItem)) {
                 foreach ($normalizedItem as $key => $value) {
-                    if (\array_key_exists($key, $result)) {
+                    if (array_key_exists($key, $result)) {
                         // TODO: this breaks product value collection denormalization into csv
                         // for prices and metric
                         $result[$key] = $result[$key] . ',' . $value;
                     } else {
-                        $result = \array_replace($result, $normalizedItem);
+                        $result = array_replace($result, $normalizedItem);
                     }
                 }
             } else {
-                if (\is_array($result)) {
+                if (is_array($result)) {
                     $result = '';
                 }
                 $result .= $normalizedItem . ',';
             }
         }
 
-        if (\is_array($result) && \count($result) > 0) {
+        if (is_array($result) && count($result) > 0) {
             return $result;
         }
 
         if (!isset($context['field_name'])) {
             throw new InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Missing required "field_name" context value, got "%s"',
-                    \implode(', ', \array_keys($context))
+                    implode(', ', array_keys($context))
                 )
             );
         }
 
-        if (\is_array($result)) {
+        if (is_array($result)) {
             $result = '';
         }
 
-        return [$context['field_name'] => \rtrim($result, ',')];
+        return [$context['field_name'] => rtrim($result, ',')];
     }
 }

@@ -45,7 +45,7 @@ final class ElasticsearchProductProjection implements ElasticsearchProjection
 
     public function addAdditionalData(array $additionalData): ElasticsearchProductProjection
     {
-        $additionalData = \array_merge($this->additionalData, $additionalData);
+        $additionalData = array_merge($this->additionalData, $additionalData);
 
         return new self(
             $this->uuid,
@@ -91,7 +91,7 @@ final class ElasticsearchProductProjection implements ElasticsearchProjection
         }
 
         $data = [
-            'id' => \sprintf('%s%s', self::INDEX_PREFIX_ID, $this->uuid->toString()),
+            'id' => sprintf('%s%s', self::INDEX_PREFIX_ID, $this->uuid->toString()),
             'identifier' => $this->identifier,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
             'updated' => $this->updatedDate->format(self::INDEX_DATE_FORMAT),
@@ -106,7 +106,7 @@ final class ElasticsearchProductProjection implements ElasticsearchProjection
             'parent' => $this->parentProductModelCode,
             'values' => $this->values,
             'ancestors' => [
-                'ids' => \preg_filter('/^/', 'product_model_', $this->ancestorIds),
+                'ids' => preg_filter('/^/', 'product_model_', $this->ancestorIds),
                 'codes' => $this->ancestorCodes,
                 'labels' => null !== $this->parentProductModelCode ? $this->label : [],
             ],
@@ -120,6 +120,6 @@ final class ElasticsearchProductProjection implements ElasticsearchProjection
             $data['in_group'] = $inGroup;
         }
 
-        return \array_merge($data, $this->additionalData);
+        return array_merge($data, $this->additionalData);
     }
 }

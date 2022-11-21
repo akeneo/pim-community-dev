@@ -62,9 +62,9 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 
         while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
             try {
-                $productModelIdsCollection = $this->idFactory->createCollection(\array_map(fn ($productModelId) => (string) $productModelId, $productModelIds));
+                $productModelIdsCollection = $this->idFactory->createCollection(array_map(fn ($productModelId) => (string) $productModelId, $productModelIds));
                 $this->createCriteriaEvaluations->create($completenessCriteria, $productModelIdsCollection);
-                $lastProductModelId = \end($productModelIds);
+                $lastProductModelId = end($productModelIds);
             } catch (\Throwable $e) {
                 //Removes line in pim_one_time_task in order to be able to re-run the command if it previously failed
                 $this->deleteTask();
@@ -146,7 +146,7 @@ SQL;
             ]
         );
 
-        return \array_map(static function ($resultRow) {
+        return array_map(static function ($resultRow) {
             return (int) $resultRow['id'];
         }, $bulkResult->fetchAllAssociative());
     }

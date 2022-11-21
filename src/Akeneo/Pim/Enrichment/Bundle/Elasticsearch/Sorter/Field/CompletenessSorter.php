@@ -25,7 +25,7 @@ class CompletenessSorter extends BaseFieldSorter
     {
         $this->checkLocaleAndChannel($locale, $channel);
 
-        $field .= \sprintf('.%s.%s', $channel, $locale);
+        $field .= sprintf('.%s.%s', $channel, $locale);
 
         return parent::addFieldSorter($field, $direction, $locale, $channel);
     }

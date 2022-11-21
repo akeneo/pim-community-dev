@@ -50,7 +50,7 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
                         [
                             'locale' => $userIntent->localeCode(),
                             'scope' => $userIntent->channelCode(),
-                            'data' => \array_values(\array_unique(\array_merge($formerRecordCodes, $userIntent->recordCodes()))),
+                            'data' => \array_values(\array_unique(array_merge($formerRecordCodes, $userIntent->recordCodes()))),
                         ],
                     ],
                 ],

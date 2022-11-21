@@ -37,7 +37,7 @@ SQL;
         );
 
         if (false === $productIdentifier) {
-            throw new \Exception(\sprintf('No identifier found for product uuid %s', $productUuid));
+            throw new \Exception(sprintf('No identifier found for product uuid %s', $productUuid));
         }
 
         return new ProductIdentifier($productIdentifier);

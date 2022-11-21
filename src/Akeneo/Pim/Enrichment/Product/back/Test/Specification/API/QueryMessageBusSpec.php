@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class QueryMessageBusSpec extends ObjectBehavior
 {
-    public function let(DummyHandler $handler1, DummyHandler $handler2)
+    function let(DummyHandler $handler1, DummyHandler $handler2)
     {
         $this->beConstructedWith([
             'Other' => $handler1,
@@ -24,13 +24,13 @@ class QueryMessageBusSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_is_a_query_message_bus()
+    function it_is_a_query_message_bus()
     {
         $this->shouldHaveType(QueryMessageBus::class);
         $this->shouldImplement(MessageBusInterface::class);
     }
 
-    public function it_executes_the_correct_handler(DummyHandler $handler1, DummyHandler $handler2)
+    function it_executes_the_correct_handler(DummyHandler $handler1, DummyHandler $handler2)
     {
         $query = new GetProductUuidsQuery([], 1);
         $handler1->__invoke(Argument::any())->shouldNotBeCalled();
@@ -44,7 +44,7 @@ class QueryMessageBusSpec extends ObjectBehavior
         $handledStamp->getResult()->shouldBe($result);
     }
 
-    public function it_throws_an_exception_when_the_query_cannot_be_handled(DummyHandler $handler1, DummyHandler $handler2)
+    function it_throws_an_exception_when_the_query_cannot_be_handled(DummyHandler $handler1, DummyHandler $handler2)
     {
         $handler1->__invoke(Argument::any())->shouldNotBeCalled();
         $handler2->__invoke(Argument::any())->shouldNotBeCalled();

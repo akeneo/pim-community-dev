@@ -28,7 +28,7 @@ class GetProductModelScoresQuery implements GetProductModelScoresQueryInterface
     {
         $scoresByIdentifiers = $this->getProductModelScoresByCodesQuery->byProductModelCodes($productModelCodes);
 
-        return \array_map(
+        return array_map(
             fn (Read\Scores $scores) => $this->qualityScoreCollection(($this->getScoresByCriteria)($scores)),
             $scoresByIdentifiers
         );

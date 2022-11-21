@@ -47,7 +47,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
             $this->activatedLocaleCodes = $this->localeRepository->getActivatedLocaleCodes();
         }
 
-        $context = \array_merge($context, [
+        $context = array_merge($context, [
             'locales' => $this->activatedLocaleCodes,
         ]);
 

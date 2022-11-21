@@ -79,7 +79,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
      */
     public function next(): void
     {
-        if (false === \next($this->items)) {
+        if (false === next($this->items)) {
             $this->items = $this->getNextIdentifiers($this->esQuery)->all();
             \reset($this->items);
         }

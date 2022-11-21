@@ -61,7 +61,7 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
         foreach ($productIdentifiers as $productIdentifier) {
             $productUuidsToClean[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
 
-            if (\count($productUuidsToClean) >= $this->productBatchSize) {
+            if (count($productUuidsToClean) >= $this->productBatchSize) {
                 $products = $this->productRepository->getItemsFromUuids($productUuidsToClean);
                 $this->cleanProducts($products);
                 $this->cacheClearer->clear();

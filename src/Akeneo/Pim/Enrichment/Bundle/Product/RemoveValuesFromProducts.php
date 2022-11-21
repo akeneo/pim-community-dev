@@ -38,9 +38,9 @@ class RemoveValuesFromProducts
      */
     private function removeValuesForAttributeCodes(array $attributeCodes, array $productIdentifiers): void
     {
-        $paths = \implode(
+        $paths = implode(
             ',',
-            \array_map(fn ($attributeCode) => $this->connection->quote(\sprintf('$."%s"', $attributeCode)), $attributeCodes)
+            array_map(fn ($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)), $attributeCodes)
         );
 
         $this->resilientDeadlockConnection->executeQuery(
@@ -55,7 +55,7 @@ class RemoveValuesFromProducts
             [
                 'identifiers' => Connection::PARAM_STR_ARRAY,
             ],
-            \sprintf('%s:%s', self::class, 'removeValuesForAttributeCodes'),
+            sprintf('%s:%s', self::class, 'removeValuesForAttributeCodes'),
         );
     }
 

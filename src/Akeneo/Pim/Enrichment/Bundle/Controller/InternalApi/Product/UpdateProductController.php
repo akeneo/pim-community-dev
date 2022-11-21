@@ -68,7 +68,7 @@ final class UpdateProductController
         }
 
         $product = $this->findProductOr404($uuid);
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         try {
             $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
         } catch (ObjectNotFoundException) {
@@ -142,7 +142,7 @@ final class UpdateProductController
         $product = $this->productRepository->find($uuid);
 
         if (null === $product) {
-            throw new NotFoundHttpException(\sprintf('Product with uuid %s could not be found.', $uuid));
+            throw new NotFoundHttpException(sprintf('Product with uuid %s could not be found.', $uuid));
         }
 
         return $product;
@@ -162,7 +162,7 @@ final class UpdateProductController
         $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
 
         if (!empty($dataFiltered)) {
-            $data = \array_replace($data, $dataFiltered);
+            $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
         }
@@ -201,7 +201,7 @@ final class UpdateProductController
         $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
 
         if (!empty($dataFiltered)) {
-            $data = \array_replace($data, $dataFiltered);
+            $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
         }
@@ -235,7 +235,7 @@ final class UpdateProductController
         foreach ($violations as $violation) {
             $propertyPath = $violation->getPropertyPath();
 
-            if (0 === \strpos($propertyPath, 'quantifiedAssociations.')) {
+            if (0 === strpos($propertyPath, 'quantifiedAssociations.')) {
                 $normalizedViolations['quantified_associations'][] = $this->normalizer->normalize(
                     $violation,
                     'internal_api',

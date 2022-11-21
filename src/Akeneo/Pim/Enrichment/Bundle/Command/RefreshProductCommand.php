@@ -70,7 +70,7 @@ class RefreshProductCommand extends Command
         $identifiers = $input->getArgument('identifiers');
 
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('id', Operators::IN_LIST, \explode(',', $identifiers));
+        $pqb->addFilter('id', Operators::IN_LIST, explode(',', $identifiers));
         $products = $pqb->execute();
 
         $productsToSave = [

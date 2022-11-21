@@ -58,7 +58,7 @@ class QuantifiedAssociationsFromAncestorsFilter
             foreach ($associationTypeValues[self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [] as $quantifiedLink) {
                 $ancestorsQuantifiedLinks = $ancestorsQuantifiedAssociations[$associationTypeCode][self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [];
 
-                if (!\in_array($quantifiedLink, $ancestorsQuantifiedLinks)) {
+                if (!in_array($quantifiedLink, $ancestorsQuantifiedLinks)) {
                     $filteredData[$associationTypeCode][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
                 }
             }
@@ -67,7 +67,7 @@ class QuantifiedAssociationsFromAncestorsFilter
             foreach ($associationTypeValues[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [] as $quantifiedLink) {
                 $ancestorsQuantifiedLinks = $ancestorsQuantifiedAssociations[$associationTypeCode][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [];
 
-                if (!\in_array($quantifiedLink, $ancestorsQuantifiedLinks)) {
+                if (!in_array($quantifiedLink, $ancestorsQuantifiedLinks)) {
                     $filteredData[$associationTypeCode][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
                 }
             }
@@ -94,6 +94,6 @@ class QuantifiedAssociationsFromAncestorsFilter
             $ancestors[] = $current;
         }
 
-        return \array_reverse($ancestors);
+        return array_reverse($ancestors);
     }
 }

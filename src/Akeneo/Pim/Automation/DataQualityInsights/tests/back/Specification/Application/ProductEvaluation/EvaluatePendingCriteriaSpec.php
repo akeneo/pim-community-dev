@@ -51,7 +51,8 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         SynchronousCriterionEvaluationsFilterInterface         $synchronousCriterionEvaluationsFilter,
         LoggerInterface                                        $logger,
         ProductEntityIdFactoryInterface                        $idFactory
-    ) {
+    )
+    {
         $this->beConstructedWith($repository, $evaluationRegistry, $applicabilityRegistry, $getPendingCriteriaEvaluationsQuery, $getEvaluableProductValuesQuery, $synchronousCriterionEvaluationsFilter, $logger, $idFactory);
     }
 
@@ -143,7 +144,8 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         ProductEntityIdCollection                              $productIdCollection,
         ProductEntityIdInterface                               $productIdA,
         ProductEntityIdInterface                               $productIdB
-    ) {
+    )
+    {
         $productIdCollection->isEmpty()->willReturn(false);
         $productIdCollection->toArrayString()->willReturn(['42', '123']);
 
@@ -201,7 +203,8 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         ProductEntityIdCollection                              $productIdCollection,
         ProductEntityIdInterface                               $productIdA,
         ProductEntityIdInterface                               $productIdB
-    ) {
+    )
+    {
         $productIdCollection->isEmpty()->willReturn(false);
         $productIdCollection->toArrayString()->willReturn(['42', '123']);
 
@@ -262,10 +265,10 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
     private function givenRandomProductValues(): ProductValuesCollection
     {
-        $attribute = new Attribute(new AttributeCode(\strval(Uuid::uuid4())), AttributeType::text(), true);
+        $attribute = new Attribute(new AttributeCode(strval(Uuid::uuid4())), AttributeType::text(), true);
         $values = (new ChannelLocaleDataCollection())
-            ->addToChannelAndLocale(new ChannelCode('mobile'), new LocaleCode('en_US'), \strval(Uuid::uuid4()))
-            ->addToChannelAndLocale(new ChannelCode('print'), new LocaleCode('fr_FR'), \strval(Uuid::uuid4()));
+            ->addToChannelAndLocale(new ChannelCode('mobile'), new LocaleCode('en_US'), strval(Uuid::uuid4()))
+            ->addToChannelAndLocale(new ChannelCode('print'), new LocaleCode('fr_FR'), strval(Uuid::uuid4()));
 
         return (new ProductValuesCollection())->add(new ProductValues($attribute, $values));
     }

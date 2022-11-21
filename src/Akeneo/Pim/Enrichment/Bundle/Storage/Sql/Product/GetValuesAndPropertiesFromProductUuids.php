@@ -57,7 +57,7 @@ WHERE p.uuid IN (?)
 GROUP BY p.uuid, p.identifier
 SQL;
 
-        $uuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $rows = $this->connection->fetchAllAssociative(
             $query,
@@ -68,8 +68,8 @@ SQL;
         $platform = $this->connection->getDatabasePlatform();
         $results = [];
         foreach ($rows as $row) {
-            $groupCodes = \array_values(\array_filter(\json_decode($row['group_codes'])));
-            \sort($groupCodes);
+            $groupCodes = array_values(array_filter(json_decode($row['group_codes'])));
+            sort($groupCodes);
 
             $results[$row['uuid']] = [
                 'uuid' => Uuid::fromString(Type::getType(Types::STRING)->convertToPHPValue($row['uuid'], $platform)),
@@ -80,7 +80,7 @@ SQL;
                 'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
                 'family_code' => Type::getType(Types::STRING)->convertToPHPValue($row['family_code'], $platform),
                 'group_codes' => $groupCodes,
-                'raw_values' => \json_decode($row['raw_values'], true)
+                'raw_values' => json_decode($row['raw_values'], true)
             ];
         }
 

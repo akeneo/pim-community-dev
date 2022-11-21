@@ -59,7 +59,7 @@ class RegisterRendererPass implements CompilerPassInterface
             }
             $priorities[$priority][] = $serviceId;
         }
-        \krsort($priorities);
+        krsort($priorities);
 
         return $priorities;
     }

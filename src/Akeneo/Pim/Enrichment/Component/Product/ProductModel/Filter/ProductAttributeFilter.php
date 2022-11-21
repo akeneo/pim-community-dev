@@ -39,7 +39,7 @@ class ProductAttributeFilter implements AttributeFilterInterface
      */
     public function filter(array $standardProduct): array
     {
-        if (\array_key_exists('values', $standardProduct) && \is_array($standardProduct['values'])) {
+        if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
             foreach ($standardProduct['values'] as $code => $value) {
                 if (null === $this->attributeRepository->findOneByIdentifier($code)) {
                     throw UnknownPropertyException::unknownProperty($code);
@@ -69,7 +69,7 @@ class ProductAttributeFilter implements AttributeFilterInterface
             $attributeSet = $parentProductModel
                 ->getFamilyVariant()
                 ->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
-            $attributes = new ArrayCollection(\array_merge(
+            $attributes = new ArrayCollection(array_merge(
                 $attributeSet->getAttributes()->toArray(),
                 $attributeSet->getAxes()->toArray()
             ));
@@ -101,7 +101,7 @@ class ProductAttributeFilter implements AttributeFilterInterface
         })->toArray();
 
         foreach ($flatProduct['values'] as $attributeName => $value) {
-            if (!\in_array($attributeName, $attributeCodesToKeep)) {
+            if (!in_array($attributeName, $attributeCodesToKeep)) {
                 unset($flatProduct['values'][$attributeName]);
             }
         }

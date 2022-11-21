@@ -50,7 +50,7 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
         $standardAttributeGroup = $this->standardNormalizer->normalize($attributeGroup, 'standard', $context);
         $flatAttributeGroup = $standardAttributeGroup;
 
-        $flatAttributeGroup['attributes'] = \implode(self::ITEM_SEPARATOR, $standardAttributeGroup['attributes']);
+        $flatAttributeGroup['attributes'] = implode(self::ITEM_SEPARATOR, $standardAttributeGroup['attributes']);
 
         unset($flatAttributeGroup['labels']);
         $flatAttributeGroup += $this->translationNormalizer->normalize(
@@ -67,7 +67,7 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AttributeGroupInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeGroupInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool

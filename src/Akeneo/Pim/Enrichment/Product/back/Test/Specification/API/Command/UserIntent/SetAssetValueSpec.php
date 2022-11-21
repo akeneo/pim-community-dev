@@ -14,50 +14,50 @@ use PhpSpec\ObjectBehavior;
  */
 class SetAssetValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('code', 'ecommerce', 'en_US', ['absorb_packshot_1', 'admete_packshot_3']);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetAssetValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    public function it_returns_the_attribute_code()
+    function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('code');
     }
 
-    public function it_returns_the_locale_code()
+    function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    public function it_returns_the_channel_code()
+    function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    public function it_returns_the_asset_codes()
+    function it_returns_the_asset_codes()
     {
         $this->assetCodes()->shouldReturn(['absorb_packshot_1', 'admete_packshot_3']);
     }
 
-    public function it_can_only_be_instanced_with_string_asset_codes()
+    function it_can_only_be_instanced_with_string_asset_codes()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_cannot_be_instanced_with_empty_asset_codes_array()
+    function it_cannot_be_instanced_with_empty_asset_codes_array()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', []);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_cannot_be_instanced_if_one_of_the_asset_codes_is_empty()
+    function it_cannot_be_instanced_if_one_of_the_asset_codes_is_empty()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

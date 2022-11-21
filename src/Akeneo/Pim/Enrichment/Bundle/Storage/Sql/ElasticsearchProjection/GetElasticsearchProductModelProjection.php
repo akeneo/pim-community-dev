@@ -182,10 +182,10 @@ SQL;
                 'updated' => $dateTimeImmutableType->convertToPhpValue($row['updated'], $platform),
                 'entity_updated' => $dateTimeImmutableType->convertToPhpValue($row['entity_updated'], $platform),
                 'family_code' => $row['family_code'],
-                'family_labels' => \json_decode($row['family_labels'], true),
+                'family_labels' => json_decode($row['family_labels'], true),
                 'family_variant_code' => $row['family_variant_code'],
-                'category_codes' => \json_decode($row['category_codes'], true),
-                'ancestor_category_codes' => \json_decode($row['ancestor_category_codes'], true),
+                'category_codes' => json_decode($row['category_codes'], true),
+                'ancestor_category_codes' => json_decode($row['ancestor_category_codes'], true),
                 'parent_code' => $row['parent_code'],
                 'values' => $this->valueCollectionNormalizer->normalize($row['values'], ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX),
                 'value_collection' => $row['values'],
@@ -257,7 +257,7 @@ SQL;
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
         );
 
-        $results = \array_fill_keys(
+        $results = array_fill_keys(
             $productModelCodes,
             [
                 'all_complete' => [],
@@ -267,8 +267,8 @@ SQL;
 
         foreach ($rows as $row) {
             $results[$row['product_model_code']] = [
-                'all_complete' => \json_decode($row['all_complete'], true),
-                'all_incomplete' => \json_decode($row['all_incomplete'], true),
+                'all_complete' => json_decode($row['all_complete'], true),
+                'all_incomplete' => json_decode($row['all_incomplete'], true),
             ];
         }
 
@@ -345,7 +345,7 @@ SQL;
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
         );
 
-        $results = \array_fill_keys(
+        $results = array_fill_keys(
             $productModelCodes,
             [
                 'ancestor_attribute_codes' => [],
@@ -354,10 +354,10 @@ SQL;
         );
 
         foreach ($rows as $row) {
-            $familyAttributes = \json_decode($row['family_attribute_codes'], true);
-            $familyVariantAttributeCodesPerLevel = \json_decode($row['attribute_codes_per_level'], true);
-            $variantAttributeCodes = \array_merge(...\array_values($familyVariantAttributeCodesPerLevel));
-            $commonAttributeCodes = \array_values(\array_diff($familyAttributes, $variantAttributeCodes));
+            $familyAttributes = json_decode($row['family_attribute_codes'], true);
+            $familyVariantAttributeCodesPerLevel = json_decode($row['attribute_codes_per_level'], true);
+            $variantAttributeCodes = array_merge(...array_values($familyVariantAttributeCodesPerLevel));
+            $commonAttributeCodes = array_values(array_diff($familyAttributes, $variantAttributeCodes));
 
             $results[$row['code']] = [
                 'ancestor_attribute_codes' => null === $row['parent_id'] ? [] : $commonAttributeCodes,

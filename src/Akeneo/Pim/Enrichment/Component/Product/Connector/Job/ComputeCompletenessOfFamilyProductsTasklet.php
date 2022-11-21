@@ -80,14 +80,14 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
         foreach ($productUuids as $uuid) {
             $productUuidsToCompute[] = $uuid;
 
-            if (\count($productUuidsToCompute) >= self::BATCH_SIZE) {
+            if (count($productUuidsToCompute) >= self::BATCH_SIZE) {
                 $this->computeCompleteness($productUuidsToCompute);
                 $this->cacheClearer->clear();
                 $productUuidsToCompute = [];
             }
         }
 
-        if (\count($productUuidsToCompute) > 0) {
+        if (count($productUuidsToCompute) > 0) {
             $this->computeCompleteness($productUuidsToCompute);
         }
     }
@@ -97,8 +97,8 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
         $completenessCollections = $this->completenessCalculator->fromProductUuids($productUuids);
         $this->saveProductCompletenesses->saveAll($completenessCollections);
 
-        $this->stepExecution->incrementProcessedItems(\count($productUuids));
-        $this->stepExecution->incrementSummaryInfo('process', \count($productUuids));
+        $this->stepExecution->incrementProcessedItems(count($productUuids));
+        $this->stepExecution->incrementSummaryInfo('process', count($productUuids));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 

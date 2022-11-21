@@ -26,7 +26,7 @@ class QuantifiedAssociationsMerger
             return [];
         }
 
-        $firstEntityWithQuantifiedAssociations = \array_shift($entitiesWithQuantifiedAssociations);
+        $firstEntityWithQuantifiedAssociations = array_shift($entitiesWithQuantifiedAssociations);
         $mergedQuantifiedAssociations = $firstEntityWithQuantifiedAssociations->getQuantifiedAssociations();
         foreach ($entitiesWithQuantifiedAssociations as $entity) {
             if (!$entity instanceof EntityWithQuantifiedAssociationsInterface) {

@@ -108,7 +108,7 @@ class AttributeGroupController
     {
         $attributeGroup = $this->repository->findOneByIdentifier($code);
         if (null === $attributeGroup) {
-            throw new NotFoundHttpException(\sprintf('Attribute group "%s" does not exist.', $code));
+            throw new NotFoundHttpException(sprintf('Attribute group "%s" does not exist.', $code));
         }
 
         $attributeGroupApi = $this->normalizer->normalize($attributeGroup, 'external_api');
@@ -139,8 +139,8 @@ class AttributeGroupController
             'with_count' => 'false',
         ];
 
-        $queryParameters = \array_merge($defaultParameters, $request->query->all());
-        $searchFilters = \json_decode($queryParameters['search'] ?? '[]', true);
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
         if (null === $searchFilters) {
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
@@ -261,7 +261,7 @@ class AttributeGroupController
      */
     protected function getDecodedContent($content)
     {
-        $decodedContent = \json_decode($content, true);
+        $decodedContent = json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -286,7 +286,7 @@ class AttributeGroupController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -321,9 +321,9 @@ class AttributeGroupController
      */
     protected function validateCodeConsistency($code, array $data)
     {
-        if (\array_key_exists('code', $data) && $code !== $data['code']) {
+        if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(
-                \sprintf(
+                sprintf(
                     'The code "%s" provided in the request body must match the code "%s" provided in the url.',
                     $data['code'],
                     $code

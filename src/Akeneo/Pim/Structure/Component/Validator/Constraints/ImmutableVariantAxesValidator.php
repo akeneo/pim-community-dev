@@ -49,15 +49,15 @@ class ImmutableVariantAxesValidator extends ConstraintValidator
             return;
         }
 
-        $axisCodes = \array_map(function (AttributeInterface $axis) {
+        $axisCodes = array_map(function (AttributeInterface $axis) {
             return $axis->getCode();
         }, $entity->getAxes()->toArray());
 
-        $originalAxisCodes = \array_map(function (AttributeInterface $axis) {
+        $originalAxisCodes = array_map(function (AttributeInterface $axis) {
             return $axis->getCode();
         }, $originalData['axes']->toArray());
 
-        if (0 < \count($this->getModifiedCodes($axisCodes, $originalAxisCodes))) {
+        if (0 < count($this->getModifiedCodes($axisCodes, $originalAxisCodes))) {
             $this->context->buildViolation(
                 ImmutableVariantAxes::IMMUTABLE_VARIANT_AXES,
                 [
@@ -75,9 +75,9 @@ class ImmutableVariantAxesValidator extends ConstraintValidator
      */
     private function getModifiedCodes(array $axisCodes, array $originalAxisCodes): array
     {
-        return \array_merge(
-            \array_diff($axisCodes, $originalAxisCodes),
-            \array_diff($originalAxisCodes, $axisCodes)
+        return array_merge(
+            array_diff($axisCodes, $originalAxisCodes),
+            array_diff($originalAxisCodes, $axisCodes)
         );
     }
 }

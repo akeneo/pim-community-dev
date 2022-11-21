@@ -10,8 +10,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluableAttributesByProductModelQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -131,7 +131,7 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
 
     private function addAttributesToFamilyA(array $attributesData): void
     {
-        $attributes = \array_map(function ($attributeData) {
+        $attributes = array_map(function ($attributeData) {
             $attributeCodes[] = $attributeData['code'];
             $attribute = $this->get('pim_catalog.factory.attribute')->create();
 
@@ -160,13 +160,11 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
 
-        $attributeCodes = \array_map(function ($attribute) {
-            return $attribute->getCode();
-        }, $attributes);
+        $attributeCodes = array_map(function ($attribute) { return $attribute->getCode();}, $attributes);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA');
         $this->get('pim_catalog.updater.family')->update($family, [
-            'attributes' => \array_merge($family->getAttributeCodes(), $attributeCodes)
+            'attributes' => array_merge($family->getAttributeCodes(), $attributeCodes)
         ]);
         $this->get('pim_catalog.saver.family')->save($family);
     }

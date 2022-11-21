@@ -14,29 +14,29 @@ use PhpSpec\ObjectBehavior;
  */
 class RemoveFromGroupsSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith(['promotions', 'toto']);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(RemoveFromGroups::class);
         $this->shouldImplement(GroupUserIntent::class);
     }
 
-    public function it_returns_the_group_codes()
+    function it_returns_the_group_codes()
     {
         $this->groupCodes()->shouldReturn(['promotions', 'toto']);
     }
 
-    public function it_throws_an_error_if_parameter_is_a_code_is_an_empty_string()
+    function it_throws_an_error_if_parameter_is_a_code_is_an_empty_string()
     {
         $this->beConstructedWith(['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_error_if_parameter_is_an_empty_array()
+    function it_throws_an_error_if_parameter_is_an_empty_array()
     {
         $this->beConstructedWith([]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

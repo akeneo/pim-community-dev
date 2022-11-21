@@ -39,16 +39,16 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
                 return [];
             }
 
-            $results = \array_fill_keys($nonCachedAttributeOptionKeys, '');
+            $results = array_fill_keys($nonCachedAttributeOptionKeys, '');
             $existingAttributeOptionCodes = $this->getExistingOptionCodes->fromOptionCodesByAttributeCode(
                 $this->fromCacheKeys($nonCachedAttributeOptionKeys)
             );
-            $existingKeys = \array_combine(
+            $existingKeys = array_combine(
                 $this->toCacheKeys($existingAttributeOptionCodes),
                 $this->normalizeExistingAttributeOptionsResults($existingAttributeOptionCodes)
             );
 
-            return \array_replace($results, $existingKeys);
+            return array_replace($results, $existingKeys);
         };
 
         $values = $this->cache->getForKeys(
@@ -56,7 +56,7 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
             $fetchNonCachedAttributeOptions
         );
 
-        return $this->denormalizeExistingAttributeOptionsResults(\array_unique(\array_values(\array_filter($values))));
+        return $this->denormalizeExistingAttributeOptionsResults(array_unique(array_values(array_filter($values))));
     }
 
     /**
@@ -74,7 +74,7 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
         $keys = [];
         foreach ($optionCodesIndexedByAttributeCode as $attributeCode => $optionCodes) {
             foreach ($optionCodes as $optionCode) {
-                $keys[] = \strtolower(\sprintf('%s.%s', $attributeCode, $optionCode));
+                $keys[] = strtolower(sprintf('%s.%s', $attributeCode, $optionCode));
             }
         }
 
@@ -110,7 +110,7 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
         $results = [];
         foreach ($optionCodesIndexedByAttributeCode as $attributeCode => $optionCodes) {
             foreach ($optionCodes as $optionCode) {
-                $results[] = \sprintf('%s.%s', $attributeCode, $optionCode);
+                $results[] = sprintf('%s.%s', $attributeCode, $optionCode);
             }
         }
 
@@ -124,7 +124,7 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
     {
         $results = [];
         foreach ($normalizedResults as $normalizedResult) {
-            [$attributeCode, $optionCode] = \explode('.', $normalizedResult);
+            [$attributeCode, $optionCode] = explode('.', $normalizedResult);
             $results[$attributeCode][] = $optionCode;
         }
 

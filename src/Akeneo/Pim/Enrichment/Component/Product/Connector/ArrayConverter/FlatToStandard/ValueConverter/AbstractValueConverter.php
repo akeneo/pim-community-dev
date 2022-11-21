@@ -32,6 +32,6 @@ abstract class AbstractValueConverter implements ValueConverterInterface
      */
     public function supportsField($attributeType)
     {
-        return \in_array($attributeType, $this->supportedFieldType);
+        return in_array($attributeType, $this->supportedFieldType);
     }
 }

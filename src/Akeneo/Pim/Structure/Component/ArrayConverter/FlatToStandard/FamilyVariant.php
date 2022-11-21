@@ -88,8 +88,8 @@ class FamilyVariant implements ArrayConverterInterface
      */
     protected function convertField(array $convertedItem, string $field, $data): array
     {
-        if (false !== \strpos($field, 'label-', 0)) {
-            $labelTokens = \explode('-', $field);
+        if (false !== strpos($field, 'label-', 0)) {
+            $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
         } elseif ('' !== $data) {
@@ -99,9 +99,9 @@ class FamilyVariant implements ArrayConverterInterface
                     $convertedItem[$field] = (string) $data;
 
                     break;
-                case (false !== \strpos($field, 'variant-axes_')):
+                case (false !== strpos($field, 'variant-axes_')):
                     $matches = null;
-                    \preg_match('/^variant-axes_(?P<level>.*)$/', $field, $matches);
+                    preg_match('/^variant-axes_(?P<level>.*)$/', $field, $matches);
                     $level = (int) $matches['level'];
 
                     if (!isset($convertedItem['variant_attribute_sets'][$level - 1]) ||
@@ -110,12 +110,12 @@ class FamilyVariant implements ArrayConverterInterface
                         $convertedItem['variant_attribute_sets'][$level - 1]['level'] = $level;
                     }
 
-                    $convertedItem['variant_attribute_sets'][$level - 1]['axes'] = \explode(',', $data);
+                    $convertedItem['variant_attribute_sets'][$level - 1]['axes'] = explode(',', $data);
 
                     break;
-                case (false !== \strpos($field, 'variant-attributes_')):
+                case (false !== strpos($field, 'variant-attributes_')):
                     $matches = null;
-                    \preg_match('/^variant-attributes_(?P<level>.*)$/', $field, $matches);
+                    preg_match('/^variant-attributes_(?P<level>.*)$/', $field, $matches);
                     $level = (int) $matches['level'];
 
                     if (!isset($convertedItem['variant_attribute_sets'][$level - 1]) ||
@@ -124,7 +124,7 @@ class FamilyVariant implements ArrayConverterInterface
                         $convertedItem['variant_attribute_sets'][$level - 1]['level'] = $level;
                     }
 
-                    $convertedItem['variant_attribute_sets'][$level - 1]['attributes'] = \explode(
+                    $convertedItem['variant_attribute_sets'][$level - 1]['attributes'] = explode(
                         ',',
                         $data
                     );

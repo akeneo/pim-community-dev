@@ -19,16 +19,16 @@ final class InMemoryAttributes implements AttributesInterface
     public function __construct(array $attributesIdsByCodes)
     {
         $this->attributesIdsByCodes = $attributesIdsByCodes;
-        $this->attributesCodesByIds = \array_flip($attributesIdsByCodes);
+        $this->attributesCodesByIds = array_flip($attributesIdsByCodes);
     }
 
     public function getCodesByIds(array $attributesIds): array
     {
-        return \array_flip(\array_intersect($this->attributesIdsByCodes, $attributesIds));
+        return array_flip(array_intersect($this->attributesIdsByCodes, $attributesIds));
     }
 
     public function getIdsByCodes(array $attributesCodes): array
     {
-        return \array_flip(\array_intersect($this->attributesCodesByIds, $attributesCodes));
+        return array_flip(array_intersect($this->attributesCodesByIds, $attributesCodes));
     }
 }

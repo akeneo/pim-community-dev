@@ -123,7 +123,7 @@ class FamilyVariant implements FamilyVariantInterface
         $attributes = [];
         foreach ($this->variantAttributeSets as $attributeSet) {
             $variantAttributeSetAttributes = $attributeSet->getAttributes()->toArray();
-            $attributes = \array_merge($attributes, $variantAttributeSetAttributes);
+            $attributes = array_merge($attributes, $variantAttributeSetAttributes);
         }
 
         return new ArrayCollection($attributes);
@@ -137,7 +137,7 @@ class FamilyVariant implements FamilyVariantInterface
         $axes = [];
         foreach ($this->variantAttributeSets as $attributeSet) {
             $variantSetAxes = $attributeSet->getAxes()->toArray();
-            $axes = \array_merge($axes, $variantSetAxes);
+            $axes = array_merge($axes, $variantSetAxes);
         }
 
         return new ArrayCollection($axes);
@@ -172,8 +172,8 @@ class FamilyVariant implements FamilyVariantInterface
             static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0,
             $axes
         );
-        \sort($formerAxeIds);
-        \sort($newAxeIds);
+        sort($formerAxeIds);
+        sort($newAxeIds);
 
         if ($formerAxeIds !== $newAxeIds) {
             $this->events[] = FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL;
@@ -202,8 +202,8 @@ class FamilyVariant implements FamilyVariantInterface
             static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0,
             $attributes
         );
-        \sort($formerAttributeIds);
-        \sort($newAttributeIds);
+        sort($formerAttributeIds);
+        sort($newAttributeIds);
 
         if ($formerAttributeIds !== $newAttributeIds) {
             $this->events[] = FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL;
@@ -315,7 +315,7 @@ class FamilyVariant implements FamilyVariantInterface
     public function getLevelForAttributeCode(string $attributeCode): int
     {
         if (!$this->getFamily()->hasAttributeCode($attributeCode)) {
-            throw new \InvalidArgumentException(\sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Impossible to get variation level for attribute "%s", as family "%s" does not contain it.',
                 $attributeCode,
                 $this->getFamily()->getCode()

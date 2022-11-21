@@ -29,7 +29,7 @@ class ScalarComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return \in_array($type, $this->types);
+        return in_array($type, $this->types);
     }
 
     /**
@@ -42,9 +42,9 @@ class ScalarComparator implements ComparatorInterface
         }
 
         $default = ['locale' => null, 'scope' => null, 'data' => null];
-        $originals = \array_merge($default, $originals);
+        $originals = array_merge($default, $originals);
 
-        if (\is_array($data['data'])) {
+        if (is_array($data['data'])) {
             return $data;
         }
 

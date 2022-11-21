@@ -36,7 +36,7 @@ abstract class AbstractCursor implements CursorInterface
             $this->rewind();
         }
 
-        return \current($this->items);
+        return current($this->items);
     }
 
     /**
@@ -48,7 +48,7 @@ abstract class AbstractCursor implements CursorInterface
             $this->rewind();
         }
 
-        return \key($this->items) + $this->position;
+        return key($this->items) + $this->position;
     }
 
     /**
@@ -99,7 +99,7 @@ abstract class AbstractCursor implements CursorInterface
         $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(
             $identifierResults->getProductModelIdentifiers()
         );
-        $hydratedItems = \array_merge($hydratedProducts, $hydratedProductModels);
+        $hydratedItems = array_merge($hydratedProducts, $hydratedProductModels);
 
         $orderedItems = [];
 

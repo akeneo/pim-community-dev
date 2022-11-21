@@ -15,19 +15,19 @@ use PhpSpec\ObjectBehavior;
 
 class RemoveFromGroupsApplierSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ObjectUpdaterInterface $productUpdater
     ) {
         $this->beConstructedWith($productUpdater);
     }
 
-    public function it_is_an_user_intent_applier()
+    function it_is_an_user_intent_applier()
     {
         $this->shouldHaveType(RemoveFromGroupsApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_a_remove_groups_user_intent_on_a_product(
+    function it_applies_a_remove_groups_user_intent_on_a_product(
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {
@@ -38,7 +38,7 @@ class RemoveFromGroupsApplierSpec extends ObjectBehavior
         $this->apply($userIntent, $product, 10);
     }
 
-    public function it_applies_a_remove_groups_user_intent_on_non_present_groups(
+    function it_applies_a_remove_groups_user_intent_on_non_present_groups(
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {

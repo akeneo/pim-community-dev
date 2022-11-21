@@ -25,11 +25,11 @@ final class RanksDistribution
 
     public function __construct(array $ranksDistribution)
     {
-        if (!empty(\array_diff_key($ranksDistribution, self::DEFAULT_DISTRIBUTION))) {
+        if (!empty(array_diff_key($ranksDistribution, self::DEFAULT_DISTRIBUTION))) {
             throw new \InvalidArgumentException('Invalid rank keys');
         }
 
-        $this->ranksDistribution = \array_replace(self::DEFAULT_DISTRIBUTION, \array_map('intval', $ranksDistribution));
+        $this->ranksDistribution = array_replace(self::DEFAULT_DISTRIBUTION, array_map('intval', $ranksDistribution));
     }
 
     public function toArray(): array
@@ -39,16 +39,16 @@ final class RanksDistribution
 
     public function getPercentages(): array
     {
-        $total = \array_sum($this->ranksDistribution);
+        $total = array_sum($this->ranksDistribution);
 
-        return \array_map(function ($distribution) use ($total) {
-            return \round($distribution / $total * 100, 2);
+        return array_map(function ($distribution) use ($total) {
+            return round($distribution / $total * 100, 2);
         }, $this->ranksDistribution);
     }
 
     public function getAverageRank(): ?Rank
     {
-        $distributionSum = \array_sum($this->ranksDistribution);
+        $distributionSum = array_sum($this->ranksDistribution);
 
         if (0 === $distributionSum) {
             return null;
@@ -62,7 +62,7 @@ final class RanksDistribution
             $total += $rank->toInt() * $distribution;
         }
 
-        $average = \intval(\round($total / $distributionSum));
+        $average = intval(round($total / $distributionSum));
 
         return $ranks[$average];
     }

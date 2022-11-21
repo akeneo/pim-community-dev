@@ -50,7 +50,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
         $standardFamily = $this->standardNormalizer->normalize($family, 'standard', $context);
         $flatFamily = $standardFamily;
 
-        $flatFamily['attributes'] = \implode(self::ITEM_SEPARATOR, $flatFamily['attributes']);
+        $flatFamily['attributes'] = implode(self::ITEM_SEPARATOR, $flatFamily['attributes']);
 
         unset($flatFamily['attribute_requirements']);
         $flatFamily += $this->normalizeRequirements($standardFamily['attribute_requirements']);
@@ -66,7 +66,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof FamilyInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof FamilyInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -85,7 +85,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     {
         $flat = [];
         foreach ($requirements as $channelCode => $attributeCodes) {
-            $flat['requirements-' . $channelCode] = \implode(self::ITEM_SEPARATOR, $attributeCodes);
+            $flat['requirements-' . $channelCode] = implode(self::ITEM_SEPARATOR, $attributeCodes);
         }
 
         return $flat;

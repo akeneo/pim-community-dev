@@ -24,7 +24,7 @@ final class CommandMessageBus implements MessageBusInterface
      */
     public function __construct(iterable $handlers)
     {
-        $this->handlers = $handlers instanceof \Traversable ? \iterator_to_array($handlers) : $handlers;
+        $this->handlers = $handlers instanceof \Traversable ? iterator_to_array($handlers) : $handlers;
         Assert::allString(\array_keys($this->handlers));
         Assert::allObject($this->handlers);
     }
@@ -34,9 +34,9 @@ final class CommandMessageBus implements MessageBusInterface
      */
     public function dispatch(object $message, array $stamps = []): Envelope
     {
-        $handler = $this->handlers[\get_class($message)] ?? null;
+        $handler = $this->handlers[get_class($message)] ?? null;
         if (null === $handler) {
-            throw new UnknownCommandException(\sprintf('No configured handler for the "%s" command', \get_class($message)));
+            throw new UnknownCommandException(\sprintf('No configured handler for the "%s" command', get_class($message)));
         }
 
         $handler($message);

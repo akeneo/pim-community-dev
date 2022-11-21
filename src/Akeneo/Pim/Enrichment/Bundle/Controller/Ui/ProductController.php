@@ -86,7 +86,7 @@ class ProductController extends AbstractListCategoryController
         $product = $this->productRepository->find($uuid);
         if (null === $product) {
             throw new NotFoundHttpException(
-                \sprintf('Product with uuid "%s" could not be found.', $uuid)
+                sprintf('Product with uuid "%s" could not be found.', $uuid)
             );
         }
 

@@ -28,7 +28,7 @@ abstract class AbstractFieldFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return \in_array($field, $this->supportedFields);
+        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -36,7 +36,7 @@ abstract class AbstractFieldFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return \in_array($operator, $this->supportedOperators);
+        return in_array($operator, $this->supportedOperators);
     }
 
     /**
@@ -62,7 +62,7 @@ abstract class AbstractFieldFilter implements FieldFilterInterface
     {
         if (!$searchQueryBuilder instanceof SearchQueryBuilder) {
             throw new \InvalidArgumentException(
-                \sprintf('Query builder should be an instance of "%s"', SearchQueryBuilder::class)
+                sprintf('Query builder should be an instance of "%s"', SearchQueryBuilder::class)
             );
         }
 

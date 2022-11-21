@@ -35,8 +35,8 @@ class RegisterIdentifierFilters
     {
         $datagridConfiguration = $event->getConfig();
 
-        $attributeIdentifiers = \array_filter($this->getAttributes->forType(AttributeTypes::IDENTIFIER));
-        $attributeCodes = \array_keys($attributeIdentifiers);
+        $attributeIdentifiers = array_filter($this->getAttributes->forType(AttributeTypes::IDENTIFIER));
+        $attributeCodes = array_keys($attributeIdentifiers);
         $attributeTranslations = $this->getAttributeTranslations->byAttributeCodesAndLocale($attributeCodes, $this->getCurrentLocaleCode());
 
         $filters = $datagridConfiguration->offsetGet(Configuration::FILTERS_KEY);
@@ -52,7 +52,7 @@ class RegisterIdentifierFilters
         return [
             'type' => 'product_value_string',
             'ftype' => 'identifier',
-            'label' => $attributeTranslations[$attribute->code()] ?? \sprintf('[%s]', $attribute->code()),
+            'label' => $attributeTranslations[$attribute->code()] ?? sprintf('[%s]', $attribute->code()),
             'data_name' => $attribute->code(),
             'options' => [
                 'field_options' => [

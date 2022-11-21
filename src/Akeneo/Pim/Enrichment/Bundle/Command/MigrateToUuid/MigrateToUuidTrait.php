@@ -19,7 +19,7 @@ trait MigrateToUuidTrait
             ['tableName' => $tableName]
         );
 
-        return \count($rows) >= 1;
+        return count($rows) >= 1;
     }
 
     protected function columnExists(string $tableName, string $columnName): bool
@@ -34,7 +34,7 @@ trait MigrateToUuidTrait
             ['columnName' => $columnName]
         );
 
-        return \count($rows) >= 1;
+        return count($rows) >= 1;
     }
 
     protected function triggerExists(string $triggerName): bool

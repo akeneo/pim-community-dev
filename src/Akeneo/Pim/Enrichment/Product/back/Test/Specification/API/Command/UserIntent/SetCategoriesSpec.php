@@ -14,12 +14,12 @@ use PhpSpec\ObjectBehavior;
  */
 class SetCategoriesSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith(['categoryA', 'categoryB']);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetCategories::class);
         $this->shouldImplement(CategoryUserIntent::class);
@@ -27,14 +27,14 @@ class SetCategoriesSpec extends ObjectBehavior
         $this->categoryCodes()->shouldReturn(['categoryA', 'categoryB']);
     }
 
-    public function it_requires_non_empty_values_in_array()
+    function it_requires_non_empty_values_in_array()
     {
         $this->beConstructedWith(['']);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_requires_string_values_in_the_array()
+    function it_requires_string_values_in_the_array()
     {
         $this->beConstructedWith(['test', 42]);
 

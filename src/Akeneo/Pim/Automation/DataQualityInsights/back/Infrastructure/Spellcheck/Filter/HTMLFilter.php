@@ -90,9 +90,9 @@ class HTMLFilter
         // By default attribute values NOT treated as text.
         $ignoreAttrValue = true;
 
-        $length = \mb_strlen($string);
+        $length = mb_strlen($string);
         for ($i = 0; $i < $length; $i++) {
-            $char = \mb_substr($string, $i, 1);
+            $char = mb_substr($string, $i, 1);
             switch (true) {
                 case '<' === $char:
                     $context = self::CTX_TAG_NAME;
@@ -135,7 +135,7 @@ class HTMLFilter
                         case self::CTX_ATTR_VALUE === $expecting:
                             $context = self::CTX_ATTR_VALUE;
                             if ($attrName !== null) {
-                                $ignoreAttrValue = !\in_array(\strtolower($attrName), self::$textAttrs, true);
+                                $ignoreAttrValue = !in_array(strtolower($attrName), self::$textAttrs, true);
                             }
                             $expecting = null;
                             break;
@@ -188,10 +188,10 @@ class HTMLFilter
      */
     private function filterEntities(string $string): string
     {
-        return \preg_replace_callback(
+        return preg_replace_callback(
             '/&\w+;/',
             static function ($match) {
-                return \str_repeat(' ', \strlen($match[0]));
+                return str_repeat(' ', strlen($match[0]));
             },
             $string
         );
@@ -202,14 +202,14 @@ class HTMLFilter
      */
     private function filterMetaTags(string $string): string
     {
-        return \preg_replace_callback(
+        return preg_replace_callback(
             '/<meta[^>]+(http-equiv\s*=|name\s*=\s*["\']?([^>"\']+))[^>]*>/i',
             static function ($match) {
                 if (
-                    \count($match) < 3
-                    || !\in_array(\strtolower($match[2]), self::$textMetaTags, true)
+                    count($match) < 3
+                    || !in_array(strtolower($match[2]), self::$textMetaTags, true)
                 ) {
-                    return \str_repeat(' ', \strlen($match[0]));
+                    return str_repeat(' ', strlen($match[0]));
                 }
 
                 return $match[0];
@@ -228,7 +228,7 @@ class HTMLFilter
         }
 
         foreach (self::$ignoreTags as $tag) {
-            if (\strcasecmp($tag, $tagName) === 0) {
+            if (strcasecmp($tag, $tagName) === 0) {
                 return true;
             }
         }

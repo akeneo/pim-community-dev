@@ -57,7 +57,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
     {
         if (
             $object instanceof ConstraintViolationInterface
-            && \in_array($object->getCode(), self::SUPPORTED_CONSTRAINTS_CODES)
+            && in_array($object->getCode(), self::SUPPORTED_CONSTRAINTS_CODES)
         ) {
             return true;
         }

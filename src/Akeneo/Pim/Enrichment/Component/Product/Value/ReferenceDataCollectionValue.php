@@ -53,7 +53,7 @@ class ReferenceDataCollectionValue extends AbstractValue implements
         foreach ($this->data as $refCode) {
             $refCodeStrings[] = '['.$refCode.']';
         }
-        return \implode(', ', $refCodeStrings);
+        return implode(', ', $refCodeStrings);
     }
 
     /**
@@ -70,7 +70,7 @@ class ReferenceDataCollectionValue extends AbstractValue implements
         $comparedRefDataCollection = $value->getData();
         $thisRefDataCollection = $this->getData();
 
-        return \count(\array_diff($thisRefDataCollection, $comparedRefDataCollection)) === 0 &&
-            \count(\array_diff($comparedRefDataCollection, $thisRefDataCollection)) === 0;
+        return count(array_diff($thisRefDataCollection, $comparedRefDataCollection)) === 0 &&
+            count(array_diff($comparedRefDataCollection, $thisRefDataCollection)) === 0;
     }
 }

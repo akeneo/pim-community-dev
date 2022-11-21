@@ -78,7 +78,7 @@ class ProductModelCategoryController
 
         if (null === $productModel) {
             throw new NotFoundHttpException(
-                \sprintf('Product model with ID "%s" could not be found.', $id)
+                sprintf('Product model with ID "%s" could not be found.', $id)
             );
         }
 

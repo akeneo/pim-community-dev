@@ -35,7 +35,7 @@ class InvalidOptionsException extends InvalidPropertyException
         int $code = 0,
         \Exception $previous = null
     ) {
-        parent::__construct($propertyName, \implode(', ', $propertyValues), $className, $message, $code, $previous);
+        parent::__construct($propertyName, implode(', ', $propertyValues), $className, $message, $code, $previous);
 
         $this->propertyValues = $propertyValues;
     }
@@ -59,13 +59,13 @@ class InvalidOptionsException extends InvalidPropertyException
         array $values
     ): InvalidOptionsException {
         $message = 'Property "%s" expects a list of valid %s. %s, "%s" given.';
-        $flatValues = \implode(', ', $values);
+        $flatValues = implode(', ', $values);
 
         return new static(
             $propertyName,
             $values,
             $className,
-            \sprintf($message, $propertyName, $key, $because, $flatValues),
+            sprintf($message, $propertyName, $key, $because, $flatValues),
             self::VALID_ENTITY_CODE_EXPECTED_CODES
         );
     }
@@ -83,6 +83,6 @@ class InvalidOptionsException extends InvalidPropertyException
      */
     public function toString(): string
     {
-        return \implode(', ', $this->propertyValues);
+        return implode(', ', $this->propertyValues);
     }
 }

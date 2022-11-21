@@ -55,7 +55,7 @@ class MediaController
         $uploadedFile = $request->files->get('file');
         $violations = $this->validator->validate($uploadedFile);
 
-        if (\count($violations) > 0) {
+        if (count($violations) > 0) {
             $errors = [];
             foreach ($violations as $violation) {
                 $errors[$violation->getPropertyPath()] = [

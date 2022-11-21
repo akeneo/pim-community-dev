@@ -24,7 +24,7 @@ final class ProductAndProductsModelDocumentTypeFacetFactory
         $rawResult = $result->getRawResult();
         $aggregations = $rawResult['aggregations'] ?? [];
         $documentTypeAggregation = $aggregations[$facetName] ?? null;
-        if (!\is_array($documentTypeAggregation)) {
+        if (!is_array($documentTypeAggregation)) {
             return null;
         }
 

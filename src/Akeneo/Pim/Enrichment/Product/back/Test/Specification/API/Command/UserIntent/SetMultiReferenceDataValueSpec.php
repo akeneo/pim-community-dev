@@ -14,50 +14,50 @@ use PhpSpec\ObjectBehavior;
  */
 class SetMultiReferenceDataValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('attribute_ref_data', null, null, ['Akeneo', 'Ziggy']);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetMultiReferenceDataValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    public function it_returns_the_attribute_code()
+    function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('attribute_ref_data');
     }
 
-    public function it_returns_the_locale_code()
+    function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn(null);
     }
 
-    public function it_returns_the_channel_code()
+    function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn(null);
     }
 
-    public function it_returns_the_values()
+    function it_returns_the_values()
     {
         $this->values()->shouldReturn(['Akeneo', 'Ziggy']);
     }
 
-    public function it_can_only_be_instantiated_with_string_values()
+    function it_can_only_be_instantiated_with_string_values()
     {
         $this->beConstructedWith('attribute_ref_data', null, null, ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_cannot_be_instantiated_with_empty_values()
+    function it_cannot_be_instantiated_with_empty_values()
     {
         $this->beConstructedWith('attribute_ref_data', null, null, []);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_cannot_be_instantiated_if_one_of_the_values_is_empty()
+    function it_cannot_be_instantiated_if_one_of_the_values_is_empty()
     {
         $this->beConstructedWith('attribute_ref_data', null, null, ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

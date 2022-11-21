@@ -53,7 +53,7 @@ class ConstraintViolationNormalizer extends ViolationNormalizer
             $product = $context['product'];
             if (false === $product instanceof ProductInterface) {
                 throw new \LogicException(
-                    \sprintf('Context property "product" should be an instance of %s', ProductInterface::class)
+                    sprintf('Context property "product" should be an instance of %s', ProductInterface::class)
                 );
             }
             $data['product'] = [

@@ -311,7 +311,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 
         $errors = $this->get('validator')->validate($group);
         if (0 !== $errors->count()) {
-            throw new \Exception(\sprintf('Impossible to setup test in %s: %s', static::class, $errors->get(0)->getMessage()));
+            throw new \Exception(sprintf('Impossible to setup test in %s: %s', static::class, $errors->get(0)->getMessage()));
         }
 
         $this->get('pim_catalog.saver.group')->save($group);

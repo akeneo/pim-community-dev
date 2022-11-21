@@ -93,7 +93,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
                 break;
             case Operators::BETWEEN:
-                $values = \array_values($value);
+                $values = array_values($value);
                 $clause = [
                     'range' => [
                         $field => [
@@ -107,7 +107,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
                 break;
             case Operators::NOT_BETWEEN:
-                $values = \array_values($value);
+                $values = array_values($value);
                 $betweenClause = [
                     'range' => [
                         $field => [
@@ -144,7 +144,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 return $this->addFieldFilter(
                     $field,
                     Operators::GREATER_THAN,
-                    new \DateTimeImmutable(\sprintf('%s days ago', $value), new \DateTimeZone('UTC')),
+                    new \DateTimeImmutable(sprintf('%s days ago', $value), new \DateTimeZone('UTC')),
                     $locale,
                     $channel,
                     $options
@@ -217,14 +217,14 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 break;
             case Operators::BETWEEN:
             case Operators::NOT_BETWEEN:
-                if (!\is_array($value)) {
+                if (!is_array($value)) {
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
-                if (2 !== \count($value)) {
+                if (2 !== count($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        \sprintf('should contain 2 strings with the format "%s"', "yyyy-mm-dd H:i:s"),
+                        sprintf('should contain 2 strings with the format "%s"', "yyyy-mm-dd H:i:s"),
                         static::class,
                         $value
                     );
@@ -242,13 +242,13 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
                 break;
             case Operators::SINCE_LAST_JOB:
-                if (!\is_string($value)) {
+                if (!is_string($value)) {
                     throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
                 }
 
                 break;
             case Operators::SINCE_LAST_N_DAYS:
-                if (!\is_int($value)) {
+                if (!is_int($value)) {
                     throw InvalidPropertyTypeException::integerExpected($field, static::class, $value);
                 }
 

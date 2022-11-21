@@ -37,7 +37,7 @@ final class CriterionEvaluationResult
 
     public function getDataToArray(): array
     {
-        return \array_map(function (ChannelLocaleDataCollection $data) {
+        return array_map(function (ChannelLocaleDataCollection $data) {
             return $data->toArray();
         }, $this->data);
     }

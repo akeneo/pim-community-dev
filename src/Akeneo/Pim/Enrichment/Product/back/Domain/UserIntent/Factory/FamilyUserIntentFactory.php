@@ -28,7 +28,7 @@ class FamilyUserIntentFactory implements UserIntentFactory
         if (null === $data || '' === $data) {
             return [new RemoveFamily()];
         }
-        if (!\is_string($data)) {
+        if (!is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected($fieldName, static::class, $data);
         }
 

@@ -167,7 +167,7 @@ class ProductModelController
                 $productModel = $this->getProductModelsWithQualityScores->fromConnectorProductModel($productModel);
             }
         } catch (ObjectNotFoundException $e) {
-            throw new NotFoundHttpException(\sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
+            throw new NotFoundHttpException(sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
         }
 
         return new JsonResponse(
@@ -191,7 +191,7 @@ class ProductModelController
             $message = 'The code field requires a string.';
             throw new DocumentedHttpException(
                 Documentation::URL . 'post_product_models',
-                \sprintf('%s Check the expected format on the API documentation.', $message)
+                sprintf('%s Check the expected format on the API documentation.', $message)
             );
         }
 
@@ -219,13 +219,13 @@ class ProductModelController
         $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
 
         $data = $this->getDecodedContent($request->getContent());
-        $data['code'] = \array_key_exists('code', $data) ? $data['code'] : $code;
+        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
 
         if (!\is_string($data['code'])) {
             $message = 'The code field requires a string.';
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_product_models__code_',
-                \sprintf('%s Check the expected format on the API documentation.', $message)
+                sprintf('%s Check the expected format on the API documentation.', $message)
             );
         }
 
@@ -296,14 +296,14 @@ class ProductModelController
         $query = new ListProductModelsQuery();
 
         if ($request->query->has('attributes')) {
-            $query->attributeCodes = \explode(',', $request->query->get('attributes'));
+            $query->attributeCodes = explode(',', $request->query->get('attributes'));
         }
         if ($request->query->has('locales')) {
-            $query->localeCodes = \explode(',', $request->query->get('locales'));
+            $query->localeCodes = explode(',', $request->query->get('locales'));
         }
         if ($request->query->has('search')) {
-            $query->search = \json_decode($request->query->get('search'), true);
-            if (!\is_array($query->search)) {
+            $query->search = json_decode($request->query->get('search'), true);
+            if (!is_array($query->search)) {
                 throw new UnprocessableEntityHttpException('Search query parameter should be valid JSON.');
             }
         }
@@ -324,11 +324,11 @@ class ProductModelController
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (BadRequest400Exception $e) {
-            $message = \json_decode($e->getMessage(), true);
+            $message = json_decode($e->getMessage(), true);
 
             if (null !== $message && isset($message['error']['root_cause'][0]['type'])
                 && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
-                && 0 === \strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')) {
+                && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')) {
                 throw new DocumentedHttpException(
                     Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
                     'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
@@ -403,7 +403,7 @@ class ProductModelController
      */
     protected function getDecodedContent($content): array
     {
-        $decodedContent = \json_decode($content, true);
+        $decodedContent = json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -425,9 +425,9 @@ class ProductModelController
      */
     protected function validateCodeConsistency(string $code, array $data): void
     {
-        if (\array_key_exists('code', $data) && $code !== $data['code']) {
+        if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(
-                \sprintf(
+                sprintf(
                     'The code "%s" provided in the request body must match the code "%s" provided in the url.',
                     $data['code'],
                     $code
@@ -469,7 +469,7 @@ class ProductModelController
     protected function updateProductModel(ProductModelInterface $productModel, array $data, string $anchor): void
     {
         try {
-            if (\array_key_exists('values', $data)) {
+            if (array_key_exists('values', $data)) {
                 $data = $this->productModelAttributeFilter->filter($data);
             }
 
@@ -477,7 +477,7 @@ class ProductModelController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         } catch (InvalidArgumentException $exception) {
@@ -510,7 +510,7 @@ class ProductModelController
         ];
 
         if ($query->search !== []) {
-            $queryParameters['search'] = \json_encode($query->search);
+            $queryParameters['search'] = json_encode($query->search);
         }
         if (null !== $query->channelCode) {
             $queryParameters['scope'] = $query->channelCode;
@@ -519,10 +519,10 @@ class ProductModelController
             $queryParameters['search_scope'] = $query->searchChannelCode;
         }
         if (null !== $query->localeCodes) {
-            $queryParameters['locales'] = \join(',', $query->localeCodes);
+            $queryParameters['locales'] = join(',', $query->localeCodes);
         }
         if (null !== $query->attributeCodes) {
-            $queryParameters['attributes'] = \join(',', $query->attributeCodes);
+            $queryParameters['attributes'] = join(',', $query->attributeCodes);
         }
 
         if (PaginationTypes::OFFSET === $query->paginationType) {
@@ -544,7 +544,7 @@ class ProductModelController
             );
         } else {
             $productModels = $connectorProductModels->connectorProductModels();
-            $lastProductModel = \end($productModels);
+            $lastProductModel = end($productModels);
 
             $parameters = [
                 'query_parameters'    => $queryParameters,

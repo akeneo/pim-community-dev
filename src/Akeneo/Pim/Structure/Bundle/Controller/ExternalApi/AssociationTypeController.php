@@ -121,7 +121,7 @@ class AssociationTypeController
     {
         $associationType = $this->repository->findOneByIdentifier($code);
         if (null === $associationType) {
-            throw new NotFoundHttpException(\sprintf('Association type "%s" does not exist.', $code));
+            throw new NotFoundHttpException(sprintf('Association type "%s" does not exist.', $code));
         }
 
         $associationTypeApi = $this->normalizer->normalize($associationType, 'external_api');
@@ -152,7 +152,7 @@ class AssociationTypeController
             'with_count' => 'false',
         ];
 
-        $queryParameters = \array_merge($defaultParameters, $request->query->all());
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $associationTypes = $this->repository->searchAfterOffset(
@@ -266,7 +266,7 @@ class AssociationTypeController
      */
     protected function getDecodedContent($content)
     {
-        $decodedContent = \json_decode($content, true);
+        $decodedContent = json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -291,7 +291,7 @@ class AssociationTypeController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -347,9 +347,9 @@ class AssociationTypeController
      */
     protected function validateCodeConsistency($code, array $data)
     {
-        if (\array_key_exists('code', $data) && $code !== $data['code']) {
+        if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(
-                \sprintf(
+                sprintf(
                     'The code "%s" provided in the request body must match the code "%s" provided in the url.',
                     $data['code'],
                     $code

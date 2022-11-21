@@ -14,28 +14,28 @@ use PhpSpec\ObjectBehavior;
  */
 class ClearValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US');
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(ClearValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    public function it_returns_the_attribute_code()
+    function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('name');
     }
 
-    public function it_returns_the_locale_code()
+    function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    public function it_returns_the_channel_code()
+    function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }

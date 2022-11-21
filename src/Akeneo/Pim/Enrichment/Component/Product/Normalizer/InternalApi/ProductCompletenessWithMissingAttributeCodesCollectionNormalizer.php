@@ -117,7 +117,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionNormalizer
             $channelCodes[] = $completeness->channelCode();
         }
 
-        return \array_values(\array_unique($channelCodes));
+        return array_values(array_unique($channelCodes));
     }
 
     /**
@@ -129,10 +129,10 @@ class ProductCompletenessWithMissingAttributeCodesCollectionNormalizer
     {
         $attributeCodes = [];
         foreach ($completenesses as $completeness) {
-            $attributeCodes = \array_merge($attributeCodes, $completeness->missingAttributeCodes());
+            $attributeCodes = array_merge($attributeCodes, $completeness->missingAttributeCodes());
         }
 
-        return \array_values(\array_unique($attributeCodes));
+        return array_values(array_unique($attributeCodes));
     }
 
     /**
@@ -147,7 +147,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionNormalizer
             $localeCodes[] = $completeness->localeCode();
         }
 
-        return \array_values(\array_unique($localeCodes));
+        return array_values(array_unique($localeCodes));
     }
 
     /**
@@ -185,7 +185,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionNormalizer
             'channel'   => $channelCode,
             'labels'    => $this->getChannelLabels($channelLabels, $localeCodes, $channelCode),
             'stats'    => [
-                'total'    => \count($channelCompletenesses),
+                'total'    => count($channelCompletenesses),
                 'complete' => $this->countComplete($channelCompletenesses),
                 'average'  => $this->average($channelCompletenesses),
             ],
@@ -226,7 +226,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionNormalizer
             $complete += $completeness->ratio();
         }
 
-        return (int) \round($complete / \count($completenesses));
+        return (int) round($complete / count($completenesses));
     }
 
     /**
@@ -247,7 +247,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionNormalizer
         foreach ($completenesses as $completeness) {
             $normalizedCompletenesses[$completeness->localeCode()] = [
                 'completeness' => $this->normalizer->normalize($completeness, 'internal_api'),
-                'missing' => \array_map(function ($attributeCode) use ($localeCodes, $attributeLabels) {
+                'missing' => array_map(function ($attributeCode) use ($localeCodes, $attributeLabels) {
                     return [
                         'code'   => $attributeCode,
                         'labels' => $this->normalizeAttributeLabels($attributeLabels, $attributeCode, $localeCodes),

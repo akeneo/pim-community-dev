@@ -66,11 +66,11 @@ SQL;
         );
 
         foreach ($rows as $row) {
-            $rawValues = \json_decode($row['raw_values'], true) ?? [];
+            $rawValues = json_decode($row['raw_values'], true) ?? [];
 
             if (!empty($attributeCodesToFilter)) {
-                $rawValues = \array_filter($rawValues, function (string $attributeCode) use ($attributeCodesToFilter) {
-                    return \in_array($attributeCode, $attributeCodesToFilter);
+                $rawValues = array_filter($rawValues, function (string $attributeCode) use ($attributeCodesToFilter) {
+                    return in_array($attributeCode, $attributeCodesToFilter);
                 }, ARRAY_FILTER_USE_KEY);
             }
 

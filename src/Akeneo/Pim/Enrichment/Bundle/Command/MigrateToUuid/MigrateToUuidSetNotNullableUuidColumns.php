@@ -90,7 +90,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
         foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
             $logContext->addContext('substep', $tableName);
             if ($this->tableExists($tableName) && $this->isColumnNullable($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
-                $this->logger->notice(\sprintf('Will set uuid column not nullable for %s', $tableName), $logContext->toArray());
+                $this->logger->notice(sprintf('Will set uuid column not nullable for %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->setUuidColumnNotNullable(
                         $tableName,

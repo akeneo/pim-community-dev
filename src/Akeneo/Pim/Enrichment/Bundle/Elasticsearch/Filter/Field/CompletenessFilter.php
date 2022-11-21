@@ -59,8 +59,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             case Operators::AT_LEAST_COMPLETE:
                 $shouldClauses = [];
                 foreach ($locales as $locale) {
-                    $completeness = \sprintf('completeness.%s.%s', $channel, $locale);
-                    $allIncomplete = \sprintf('all_incomplete.%s.%s', $channel, $locale);
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allIncomplete = sprintf('all_incomplete.%s.%s', $channel, $locale);
                     $shouldClauses[] = [
                         'bool' => [
                             'should' => [
@@ -77,8 +77,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             case Operators::ALL_COMPLETE:
                 $mustClauses = [];
                 foreach ($locales as $locale) {
-                    $completeness = \sprintf('completeness.%s.%s', $channel, $locale);
-                    $allComplete = \sprintf('all_complete.%s.%s', $channel, $locale);
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allComplete = sprintf('all_complete.%s.%s', $channel, $locale);
                     $mustClauses[] = [
                         'bool' => [
                             'should' => [
@@ -95,8 +95,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             case Operators::AT_LEAST_INCOMPLETE:
                 $shouldClause = [];
                 foreach ($locales as $locale) {
-                    $completeness = \sprintf('completeness.%s.%s', $channel, $locale);
-                    $allComplete = \sprintf('all_complete.%s.%s', $channel, $locale);
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allComplete = sprintf('all_complete.%s.%s', $channel, $locale);
                     $shouldClause[] = [
                         'bool' => [
                             'should' => [
@@ -113,8 +113,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             case Operators::ALL_INCOMPLETE:
                 $mustClauses = [];
                 foreach ($locales as $locale) {
-                    $completeness = \sprintf('completeness.%s.%s', $channel, $locale);
-                    $allIncomplete = \sprintf('all_incomplete.%s.%s', $channel, $locale);
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allIncomplete = sprintf('all_incomplete.%s.%s', $channel, $locale);
                     $mustClauses[] = [
                         'bool' => [
                             'should' => [
@@ -132,7 +132,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                 $shouldClauses = [];
 
                 foreach ($locales as $locale) {
-                    $field = \sprintf('completeness.%s.%s', $channel, $locale);
+                    $field = sprintf('completeness.%s.%s', $channel, $locale);
                     $clause = [
                         'term' => [
                             $field => $value
@@ -149,7 +149,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                 $shouldClauses = [];
 
                 foreach ($locales as $locale) {
-                    $field = \sprintf('completeness.%s.%s', $channel, $locale);
+                    $field = sprintf('completeness.%s.%s', $channel, $locale);
                     $clause = [
                         'range' => [
                             $field => [
@@ -167,7 +167,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                 $shouldClauses = [];
 
                 foreach ($locales as $locale) {
-                    $field = \sprintf('completeness.%s.%s', $channel, $locale);
+                    $field = sprintf('completeness.%s.%s', $channel, $locale);
                     $clause = [
                         'range' => [
                             $field => [
@@ -184,7 +184,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             case Operators::NOT_EQUAL:
                 $filterClauses = [];
                 foreach ($locales as $locale) {
-                    $field = \sprintf('completeness.%s.%s', $channel, $locale);
+                    $field = sprintf('completeness.%s.%s', $channel, $locale);
                     $filterClauses[] = [
                         'term' => [
                             $field => $value,

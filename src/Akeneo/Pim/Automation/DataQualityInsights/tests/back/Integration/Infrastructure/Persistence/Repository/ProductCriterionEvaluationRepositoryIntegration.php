@@ -56,7 +56,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
                 new CriterionCode('completion'),
                 $productUuid,
                 CriterionEvaluationStatus::pending()
-            ));
+        ));
 
         $this->productCriterionEvaluationRepository->create($criteria);
 
@@ -100,7 +100,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
 
         $updatedEvaluation = $this->findCriterionEvaluation($productUuidWithExistingEvaluation, $criterionCode);
         $this->assertSame($existingEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT), $updatedEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT));
-        $this->assertSame(CriterionEvaluationStatus::PENDING, \strval($updatedEvaluation->getStatus()));
+        $this->assertSame(CriterionEvaluationStatus::PENDING, strval($updatedEvaluation->getStatus()));
         $this->assertNotNull($updatedEvaluation->getResult());
     }
 
@@ -189,7 +189,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         $stmt = $this->db->executeQuery(
             'SELECT COUNT(*) FROM pim_data_quality_insights_product_criteria_evaluation'
         );
-        $count = \intval($stmt->fetchOne());
+        $count = intval($stmt->fetchOne());
 
         $this->assertSame($expectedCount, $count);
     }
@@ -220,9 +220,9 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         $this->createAttribute('description');
 
         $evaluationResult = (new Write\CriterionEvaluationResult())
-            ->addRate($channelEcommerce, $localeEn, new Rate(\rand(0, 100)))
+            ->addRate($channelEcommerce, $localeEn, new Rate(rand(0, 100)))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelEcommerce, $localeEn, ['description' => \rand(0, 100)])
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['description' => rand(0, 100)])
         ;
 
         $evaluation->end($evaluationResult);
@@ -236,7 +236,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         if (null === $expectedDate) {
             $this->assertNull($date);
         } else {
-            $this->assertEquals($expectedDate->format(Clock::TIME_FORMAT), $date->format(Clock::TIME_FORMAT));
+           $this->assertEquals($expectedDate->format(Clock::TIME_FORMAT), $date->format(Clock::TIME_FORMAT));
         }
     }
 }

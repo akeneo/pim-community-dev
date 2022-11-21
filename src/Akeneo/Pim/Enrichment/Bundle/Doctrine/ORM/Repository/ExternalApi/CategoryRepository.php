@@ -56,7 +56,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
         $qb = $this->addFilters($qb, $searchFilters);
 
         foreach ($orders as $field => $sort) {
-            $qb->addOrderBy(\sprintf('r.%s', $field), $sort);
+            $qb->addOrderBy(sprintf('r.%s', $field), $sort);
         }
 
         if (null !== $offset) {
@@ -92,8 +92,8 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
 
         foreach ($searchFilters as $property => $searchFilter) {
             foreach ($searchFilter as $key => $criterion) {
-                $parameter = \sprintf(':%s_%s', $property, $key);
-                $field = \sprintf('r.%s', $property);
+                $parameter = sprintf(':%s_%s', $property, $key);
+                $field = sprintf('r.%s', $property);
                 switch ($criterion['operator']) {
                     case '=':
                         if ('parent' === $property) {
@@ -104,7 +104,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                                 ->getOneOrNullResult();
 
                             if (!$parentCategory) {
-                                throw new \InvalidArgumentException(\sprintf('Parent code %s does not exist.', $criterion['value']));
+                                throw new \InvalidArgumentException(sprintf('Parent code %s does not exist.', $criterion['value']));
                             }
 
                             $qb->andWhere($qb->expr()->gt('r.left', $parentCategory->getLeft()));
@@ -203,14 +203,14 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 ])
             ]),
         ];
-        $availableSearchFilters = \array_keys($constraints);
+        $availableSearchFilters = array_keys($constraints);
 
         $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
-            if (!\in_array($property, $availableSearchFilters)) {
-                throw new \InvalidArgumentException(\sprintf(
+            if (!in_array($property, $availableSearchFilters)) {
+                throw new \InvalidArgumentException(sprintf(
                     'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
-                    \implode(', ', $availableSearchFilters),
+                    implode(', ', $availableSearchFilters),
                     $property
                 ));
             }
@@ -221,7 +221,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
         }
 
         if (!empty($exceptionMessages)) {
-            throw new \InvalidArgumentException(\implode(' ', $exceptionMessages));
+            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
         }
     }
 }

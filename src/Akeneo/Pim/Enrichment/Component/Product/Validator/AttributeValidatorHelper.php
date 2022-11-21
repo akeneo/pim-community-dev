@@ -59,7 +59,7 @@ class AttributeValidatorHelper
 
         if ($attribute->isLocalizable() && null === $locale) {
             throw new LocalizableAttributeException(
-                \sprintf(
+                sprintf(
                     'Attribute "%s" expects a locale, none given.',
                     $attribute->getCode()
                 )
@@ -68,7 +68,7 @@ class AttributeValidatorHelper
 
         if (!$attribute->isLocalizable() && null !== $locale) {
             throw new NotLocalizableAttributeException(
-                \sprintf(
+                sprintf(
                     'Attribute "%s" does not expect a locale, "%s" given.',
                     $attribute->getCode(),
                     $locale
@@ -80,9 +80,9 @@ class AttributeValidatorHelper
             $this->localeCodes = $this->getActivatedLocaleCodes();
         }
 
-        if (!\in_array($locale, $this->localeCodes)) {
+        if (!in_array($locale, $this->localeCodes)) {
             throw new UnavailableLocaleException(
-                \sprintf(
+                sprintf(
                     'Attribute "%s" expects an existing and activated locale, "%s" given.',
                     $attribute->getCode(),
                     $locale
@@ -90,12 +90,12 @@ class AttributeValidatorHelper
             );
         }
 
-        if ($attribute->isLocaleSpecific() && !\in_array($locale, $attribute->getAvailableLocaleCodes())) {
+        if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->getAvailableLocaleCodes())) {
             throw new UnavailableSpecificLocaleException(
-                \sprintf(
+                sprintf(
                     'Attribute "%s" is locale specific and expects one of these locales: %s, "%s" given.',
                     $attribute->getCode(),
-                    \implode(', ', $attribute->getAvailableLocaleCodes()),
+                    implode(', ', $attribute->getAvailableLocaleCodes()),
                     $locale
                 )
             );
@@ -114,7 +114,7 @@ class AttributeValidatorHelper
     ) {
         if ($fromAttribute->getMetricFamily() !== $toAttribute->getMetricFamily()) {
             throw new \LogicException(
-                \sprintf(
+                sprintf(
                     'Metric families are not the same for attributes: "%s" and "%s".',
                     $fromAttribute->getCode(),
                     $toAttribute->getCode()
@@ -139,7 +139,7 @@ class AttributeValidatorHelper
 
         if ($attribute->isScopable() && null === $scope) {
             throw new \LogicException(
-                \sprintf(
+                sprintf(
                     'Attribute "%s" expects a scope, none given.',
                     $attribute->getCode()
                 )
@@ -148,7 +148,7 @@ class AttributeValidatorHelper
 
         if (!$attribute->isScopable() && null !== $scope) {
             throw new \LogicException(
-                \sprintf(
+                sprintf(
                     'Attribute "%s" does not expect a scope, "%s" given.',
                     $attribute->getCode(),
                     $scope
@@ -160,9 +160,9 @@ class AttributeValidatorHelper
             $this->scopeCodes = $this->getScopeCodes();
         }
 
-        if (!\in_array($scope, $this->scopeCodes)) {
+        if (!in_array($scope, $this->scopeCodes)) {
             throw new \LogicException(
-                \sprintf(
+                sprintf(
                     'Attribute "%s" expects an existing scope, "%s" given.',
                     $attribute->getCode(),
                     $scope

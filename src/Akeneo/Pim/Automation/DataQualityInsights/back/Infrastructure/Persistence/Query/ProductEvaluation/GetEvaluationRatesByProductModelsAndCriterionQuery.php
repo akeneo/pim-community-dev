@@ -25,7 +25,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQuery implements GetEva
 
     public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
-        $ratesPath = \sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
+        $ratesPath = sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
 
         $query = <<<SQL
 SELECT product_id, JSON_EXTRACT(result, '$ratesPath') AS rates
@@ -58,7 +58,7 @@ SQL;
             return [];
         }
 
-        $rates = \json_decode($evaluationResult['rates'], true, 512, JSON_THROW_ON_ERROR);
+        $rates = json_decode($evaluationResult['rates'], true, 512, JSON_THROW_ON_ERROR);
         $rates = $this->transformCriterionEvaluationResultIds->transformToCodes($criterionCode, [TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => $rates]);
 
         return $rates['rates'] ?? [];

@@ -45,30 +45,30 @@ class FieldConverter implements FieldConverterInterface
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
         $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns();
 
-        if (\in_array($fieldName, $associationFields)) {
+        if (in_array($fieldName, $associationFields)) {
             $value = $this->fieldSplitter->splitCollection($value);
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
             return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
-        } elseif (\in_array($fieldName, $quantifiedAssociationFields)) {
+        } elseif (in_array($fieldName, $quantifiedAssociationFields)) {
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
             return new ConvertedField('quantified_associations', [$associationTypeCode => [$associatedWith => $value]]);
-        } elseif (\in_array($fieldName, $this->assocFieldResolver->resolveQuantifiedQuantityAssociationColumns())) {
+        } elseif (in_array($fieldName, $this->assocFieldResolver->resolveQuantifiedQuantityAssociationColumns())) {
             return new ConvertedField($fieldName, $value);
-        } elseif (\in_array($fieldName, ['categories'])) {
+        } elseif (in_array($fieldName, ['categories'])) {
             $categories = $this->fieldSplitter->splitCollection($value);
 
             return new ConvertedField($fieldName, $categories);
-        } elseif (\in_array($fieldName, ['groups'])) {
+        } elseif (in_array($fieldName, ['groups'])) {
             return $this->extractGroup($value);
         } elseif ('enabled' === $fieldName) {
             return new ConvertedField($fieldName, (bool) $value);
-        } elseif (\in_array($fieldName, ['family', 'parent', 'uuid'])) {
+        } elseif (in_array($fieldName, ['family', 'parent', 'uuid'])) {
             return new ConvertedField($fieldName, $value);
         }
 
-        throw new \LogicException(\sprintf('No converters found for attribute type "%s"', $fieldName));
+        throw new \LogicException(sprintf('No converters found for attribute type "%s"', $fieldName));
     }
 
     /**
@@ -81,9 +81,9 @@ class FieldConverter implements FieldConverterInterface
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
         $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedAssociationColumns();
 
-        $fields = \array_merge(['uuid', 'categories', 'groups', 'enabled', 'family', 'parent'], $associationFields, $quantifiedAssociationFields);
+        $fields = array_merge(['uuid', 'categories', 'groups', 'enabled', 'family', 'parent'], $associationFields, $quantifiedAssociationFields);
 
-        return \in_array($column, $fields);
+        return in_array($column, $fields);
     }
 
     /**

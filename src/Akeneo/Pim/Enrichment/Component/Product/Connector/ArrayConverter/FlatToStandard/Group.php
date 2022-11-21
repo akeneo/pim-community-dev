@@ -80,8 +80,8 @@ class Group implements ArrayConverterInterface
      */
     protected function convertField($convertedItem, $field, $data)
     {
-        if (false !== \strpos($field, 'label-', 0)) {
-            $labelTokens = \explode('-', $field);
+        if (false !== strpos($field, 'label-', 0)) {
+            $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
         }
@@ -119,13 +119,13 @@ class Group implements ArrayConverterInterface
             $authorizedFields[] = 'label-' . $code;
         }
 
-        foreach (\array_keys($item) as $field) {
-            if (!\in_array($field, $authorizedFields)) {
+        foreach (array_keys($item) as $field) {
+            if (!in_array($field, $authorizedFields)) {
                 throw new StructureArrayConversionException(
-                    \sprintf(
+                    sprintf(
                         'Field "%s" is provided, authorized fields are: "%s"',
                         $field,
-                        \implode(', ', $authorizedFields)
+                        implode(', ', $authorizedFields)
                     )
                 );
             }

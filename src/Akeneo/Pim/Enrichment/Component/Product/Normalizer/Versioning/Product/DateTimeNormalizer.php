@@ -34,7 +34,7 @@ class DateTimeNormalizer extends AbstractValueDataNormalizer implements Cacheabl
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof \DateTime && \in_array($format, $this->supportedFormats);
+        return $data instanceof \DateTime && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -61,6 +61,6 @@ class DateTimeNormalizer extends AbstractValueDataNormalizer implements Cacheabl
      */
     protected function resolveContext(array $context = [])
     {
-        return \array_merge(['format' => $this->format], $context);
+        return array_merge(['format' => $this->format], $context);
     }
 }

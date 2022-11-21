@@ -29,7 +29,7 @@ final class GetCategoryCodesByProductUuids
     {
         Assert::allIsInstanceOf($uuids, UuidInterface::class);
 
-        $uuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids);
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids);
 
         $results = [];
         foreach ($uuids as $uuid) {
@@ -70,10 +70,10 @@ SQL;
         );
 
         foreach ($queryResults as $queryResult) {
-            $categoryCodes = \json_decode($queryResult['category_codes']);
-            \sort($categoryCodes);
+            $categoryCodes = json_decode($queryResult['category_codes']);
+            sort($categoryCodes);
             // @todo https://akeneo.atlassian.net/browse/PIM-9220
-            $categoryCodes = \array_values(\array_unique($categoryCodes));
+            $categoryCodes = array_values(array_unique($categoryCodes));
             $results[$queryResult['product_uuid']] = $categoryCodes;
         }
 

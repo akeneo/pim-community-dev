@@ -7,6 +7,6 @@ final class JobNotFoundException extends \Exception
 {
     public function __construct($jobName)
     {
-        parent::__construct(\sprintf('Job "%s" not found', $jobName));
+        parent::__construct(sprintf('Job "%s" not found', $jobName));
     }
 }

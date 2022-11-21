@@ -156,7 +156,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
         if (null !== $options['is_locale_specific']) {
             $qb->leftJoin('a.availableLocales', 'al');
-            $qb->andWhere(\sprintf('al.id IS %s', $options['is_locale_specific'] ? 'NOT NULL' : 'NULL'));
+            $qb->andWhere(sprintf('al.id IS %s', $options['is_locale_specific'] ? 'NOT NULL' : 'NULL'));
         }
 
         if (null !== $options['useable_as_grid_filter']) {

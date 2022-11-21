@@ -188,7 +188,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ProductModelInterface && \in_array($format, $this->supportedFormat);
+        return $data instanceof ProductModelInterface && in_array($format, $this->supportedFormat);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -225,7 +225,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         foreach ($associations as $association) {
             $associationType = $association->getAssociationType();
-            $meta[$associationType->getCode()]['groupIds'] = \array_map(
+            $meta[$associationType->getCode()]['groupIds'] = array_map(
                 function ($group) {
                     return $group->getId();
                 },
@@ -250,10 +250,10 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
     private function formatQuantifiedAssociations(array $quantifiedAssociations): array
     {
-        return \array_map(static function (array $quantifiedAssociation) {
-            $quantifiedAssociation['products'] = \array_map(static fn (array $productLink) => \array_filter(
+        return array_map(static function (array $quantifiedAssociation) {
+            $quantifiedAssociation['products'] = array_map(static fn (array $productLink) => array_filter(
                 $productLink,
-                fn (string $key): bool => \in_array($key, ['uuid', 'quantity']),
+                fn (string $key): bool => in_array($key, ['uuid', 'quantity']),
                 ARRAY_FILTER_USE_KEY
             ), $quantifiedAssociation['products']);
 

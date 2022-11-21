@@ -27,7 +27,7 @@ final class TimePeriod
 
     public function __construct(string $value)
     {
-        if (! \in_array($value, self::ALLOWED_VALUES)) {
+        if (! in_array($value, self::ALLOWED_VALUES)) {
             throw new \InvalidArgumentException('Unknown time period value');
         }
 

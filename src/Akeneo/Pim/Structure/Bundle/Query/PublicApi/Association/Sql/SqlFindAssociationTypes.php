@@ -43,12 +43,12 @@ SQL;
 
         $searchFilters = [];
         if (null !== $search) {
-            $search = \sprintf('%%%s%%', $search);
+            $search = sprintf('%%%s%%', $search);
             $searchFilters[] = "(translation.label LIKE :search OR association_type.code LIKE :search)";
         }
 
-        $query = \strtr($query, [
-            '{searchFilters}' => 0 === \count($searchFilters) ? 'TRUE' : \implode(' AND ', $searchFilters),
+        $query = strtr($query, [
+            '{searchFilters}' => 0 === count($searchFilters) ? 'TRUE' : implode(' AND ', $searchFilters),
         ]);
 
         $rawResults = $this->connection->executeQuery(
@@ -72,8 +72,8 @@ SQL;
             $associationTypes[] = new AssociationType(
                 $rawResult['code'],
                 LabelCollection::fromArray([$localeCode => $rawResult['label']]),
-                \boolval($rawResult['is_quantified']),
-                \boolval($rawResult['is_two_way'])
+                boolval($rawResult['is_quantified']),
+                boolval($rawResult['is_two_way'])
             );
         }
 

@@ -123,7 +123,7 @@ abstract class EnrichmentProductTestCase extends TestCase
 
     protected function createFamily(string $code, array $data = []): FamilyInterface
     {
-        $data = \array_merge(['code' => $code], $data);
+        $data = array_merge(['code' => $code], $data);
 
         $data['attributes'] = \array_unique(\array_merge(['sku'], $data['attributes']));
         $family = $this->get('akeneo_integration_tests.base.family.builder')->build($data);
@@ -137,7 +137,7 @@ abstract class EnrichmentProductTestCase extends TestCase
 
     protected function createFamilyVariant(string $code, string $family, array $data = []): FamilyVariantInterface
     {
-        $data = \array_merge(['code' => $code, 'family' => $family], $data);
+        $data = array_merge(['code' => $code, 'family' => $family], $data);
 
         $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $data);
@@ -156,7 +156,7 @@ abstract class EnrichmentProductTestCase extends TestCase
             'type' => AttributeTypes::TEXT,
             'group' => 'other',
         ];
-        $data = \array_merge($defaultData, $data);
+        $data = array_merge($defaultData, $data);
 
         $attribute = $this->get('akeneo_integration_tests.base.attribute.builder')->build($data, true);
         $violations = $this->get('validator')->validate($attribute);

@@ -135,7 +135,7 @@ class AttributeOptionController
         $attributeOption = $this->attributeOptionsRepository->findOneByIdentifier($attributeCode . '.' . $code);
         if (null === $attributeOption) {
             throw new NotFoundHttpException(
-                \sprintf(
+                sprintf(
                     'Attribute option "%s" does not exist or is not an option of the attribute "%s".',
                     $code,
                     $attributeCode
@@ -175,7 +175,7 @@ class AttributeOptionController
             'with_count' => 'false',
         ];
 
-        $queryParameters = \array_merge($defaultParameters, $request->query->all());
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
 
         $criteria['attribute'] = $attribute->getId();
 
@@ -260,8 +260,8 @@ class AttributeOptionController
             $attributeOption = $this->factory->create();
         }
 
-        $data['attribute'] = \array_key_exists('attribute', $data) ? $data['attribute'] : $attributeCode;
-        $data['code'] = \array_key_exists('code', $data) ? $data['code'] : $code;
+        $data['attribute'] = array_key_exists('attribute', $data) ? $data['attribute'] : $attributeCode;
+        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
         $this->updateAttributeOption($attributeOption, $data, 'patch_attributes__attribute_code__options__code_');
         $this->validateAttributeOption($attributeOption);
 
@@ -314,7 +314,7 @@ class AttributeOptionController
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
         if (null === $attribute) {
-            throw new NotFoundHttpException(\sprintf('Attribute "%s" does not exist.', $attributeCode));
+            throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist.', $attributeCode));
         }
 
         return $attribute;
@@ -330,12 +330,12 @@ class AttributeOptionController
     protected function isAttributeSupportingOptions(AttributeInterface $attribute)
     {
         $attributeType = $attribute->getType();
-        if (!\in_array($attributeType, $this->supportedAttributeTypes)) {
+        if (!in_array($attributeType, $this->supportedAttributeTypes)) {
             throw new NotFoundHttpException(
-                \sprintf(
+                sprintf(
                     'Attribute "%s" does not support options. Only attributes of type "%s" support options.',
                     $attribute->getCode(),
-                    \implode('", "', $this->supportedAttributeTypes)
+                    implode('", "', $this->supportedAttributeTypes)
                 )
             );
         }
@@ -352,7 +352,7 @@ class AttributeOptionController
      */
     protected function getDecodedContent($content)
     {
-        $decodedContent = \json_decode($content, true);
+        $decodedContent = json_decode($content, true);
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -377,7 +377,7 @@ class AttributeOptionController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                \sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -444,9 +444,9 @@ class AttributeOptionController
      */
     protected function validateCodeConsistency($attributeCode, $optionCode, array $data, $isCreation)
     {
-        if ($isCreation && \array_key_exists('attribute', $data) && $attributeCode !== $data['attribute']) {
+        if ($isCreation && array_key_exists('attribute', $data) && $attributeCode !== $data['attribute']) {
             throw new UnprocessableEntityHttpException(
-                \sprintf(
+                sprintf(
                     'The attribute code "%s" provided in the request body must match the attribute code "%s" provided in the url.',
                     $data['attribute'],
                     $attributeCode
@@ -454,9 +454,9 @@ class AttributeOptionController
             );
         }
 
-        if ($isCreation && null !== $optionCode && \array_key_exists('code', $data) && $optionCode !== $data['code']) {
+        if ($isCreation && null !== $optionCode && array_key_exists('code', $data) && $optionCode !== $data['code']) {
             throw new UnprocessableEntityHttpException(
-                \sprintf(
+                sprintf(
                     'The option code "%s" provided in the request body must match the option code "%s" provided in the url.',
                     $data['code'],
                     $optionCode

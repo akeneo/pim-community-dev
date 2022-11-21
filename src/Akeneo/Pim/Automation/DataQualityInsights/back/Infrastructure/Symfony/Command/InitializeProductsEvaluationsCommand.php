@@ -66,7 +66,7 @@ final class InitializeProductsEvaluationsCommand extends Command
     {
         $io->text('Computing number of products to initialize...');
 
-        $productCount = \intval($this->dbConnection->executeQuery(
+        $productCount = intval($this->dbConnection->executeQuery(
             <<<SQL
 SELECT COUNT(*) FROM pim_catalog_product;
 SQL
@@ -77,16 +77,16 @@ SQL
             return;
         }
 
-        $io->text(\sprintf('Initialzing evaluation of %d products...', $productCount));
+        $io->text(sprintf('Initialzing evaluation of %d products...', $productCount));
 
         $progressBar = new ProgressBar($io, $productCount);
         $progressBar->start();
 
-        $criteria = \array_map(fn ($criterionCode) => \strval($criterionCode), $this->productCriteriaRegistry->getAllCriterionCodes());
+        $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productCriteriaRegistry->getAllCriterionCodes());
 
         $lastProductUuidAsBytes = '';
         while ($productUuids = $this->getProductUuidsFrom($lastProductUuidAsBytes)) {
-            $values = \implode(', ', $this->buildProductCriteriaEvaluationsValues($productUuids, $criteria));
+            $values = implode(', ', $this->buildProductCriteriaEvaluationsValues($productUuids, $criteria));
             $query = <<<SQL
 INSERT INTO pim_data_quality_insights_product_criteria_evaluation (product_uuid, criterion_code, status) 
 VALUES $values
@@ -94,9 +94,9 @@ ON DUPLICATE KEY UPDATE status = :statusPending;
 SQL;
             $this->dbConnection->executeQuery($query, ['statusPending' => CriterionEvaluationStatus::PENDING]);
 
-            $progressBar->advance(\count($productUuids));
+            $progressBar->advance(count($productUuids));
 
-            $lastProductUuidAsBytes = Uuid::fromString(\end($productUuids))->getBytes();
+            $lastProductUuidAsBytes = Uuid::fromString(end($productUuids))->getBytes();
         }
 
         $progressBar->clear();
@@ -107,7 +107,7 @@ SQL;
     {
         $io->text('Computing number of product models to initialize...');
 
-        $productModelCount = \intval($this->dbConnection->executeQuery(
+        $productModelCount = intval($this->dbConnection->executeQuery(
             <<<SQL
 SELECT COUNT(*) FROM pim_catalog_product_model;
 SQL
@@ -118,17 +118,17 @@ SQL
             return;
         }
 
-        $io->text(\sprintf('Initialzing evaluation of %d product models...', $productModelCount));
+        $io->text(sprintf('Initialzing evaluation of %d product models...', $productModelCount));
 
         $progressBar = new ProgressBar($io, $productModelCount);
         $progressBar->start();
 
-        $criteria = \array_map(fn ($criterionCode) => \strval($criterionCode), $this->productModelCriteriaRegistry->getAllCriterionCodes());
+        $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productModelCriteriaRegistry->getAllCriterionCodes());
         $statusPending = CriterionEvaluationStatus::PENDING;
 
         $lastProductModelId = 0;
         while ($productModelIds = $this->getProductModelIdsFrom($lastProductModelId)) {
-            $values = \implode(', ', $this->buildProductModelCriteriaEvaluationsValues($productModelIds, $criteria));
+            $values = implode(', ', $this->buildProductModelCriteriaEvaluationsValues($productModelIds, $criteria));
             $query = <<<SQL
 INSERT INTO pim_data_quality_insights_product_model_criteria_evaluation (product_id, criterion_code, status) 
 VALUES $values
@@ -136,9 +136,9 @@ ON DUPLICATE KEY UPDATE status = :statusPending;
 SQL;
             $this->dbConnection->executeQuery($query, ['statusPending' => CriterionEvaluationStatus::PENDING]);
 
-            $progressBar->advance(\count($productModelIds));
+            $progressBar->advance(count($productModelIds));
 
-            $lastProductModelId = \intval(\end($productModelIds));
+            $lastProductModelId = intval(end($productModelIds));
         }
 
         $progressBar->clear();
@@ -150,7 +150,7 @@ SQL;
         $values = [];
         foreach ($productUuids as $productUuid) {
             foreach ($criteria as $criterion) {
-                $values[] = \sprintf("(UUID_TO_BIN('%s'), '%s', '%s')", $productUuid, $criterion, CriterionEvaluationStatus::PENDING);
+                $values[] = sprintf("(UUID_TO_BIN('%s'), '%s', '%s')", $productUuid, $criterion, CriterionEvaluationStatus::PENDING);
             }
         }
 
@@ -162,7 +162,7 @@ SQL;
         $values = [];
         foreach ($productModelIds as $productModelId) {
             foreach ($criteria as $criterion) {
-                $values[] = \sprintf("(%d, '%s', '%s')", $productModelId, $criterion, CriterionEvaluationStatus::PENDING);
+                $values[] = sprintf("(%d, '%s', '%s')", $productModelId, $criterion, CriterionEvaluationStatus::PENDING);
             }
         }
 

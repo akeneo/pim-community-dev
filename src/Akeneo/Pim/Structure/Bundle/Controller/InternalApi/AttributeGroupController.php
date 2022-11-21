@@ -186,7 +186,7 @@ class AttributeGroupController
         $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($identifier);
 
         if (null === $attributeGroup) {
-            throw new NotFoundHttpException(\sprintf('Attribute group with code "%s" not found', $identifier));
+            throw new NotFoundHttpException(sprintf('Attribute group with code "%s" not found', $identifier));
         }
 
         return new JsonResponse($this->normalizer->normalize($attributeGroup, 'internal_api'));
@@ -209,7 +209,7 @@ class AttributeGroupController
         $attributeGroup = $this->attributeGroupFactory->create();
         $attributeGroup->setSortOrder($maxSortOrder + 1);
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $this->updater->update($attributeGroup, $data);
 
         $violations = $this->validator->validate($attributeGroup);
@@ -253,7 +253,7 @@ class AttributeGroupController
 
         $attributeGroup = $this->getAttributeGroupOr404($identifier);
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $sortOrder = $data['attributes_sort_order'];
         unset($data['attributes_sort_order']);
 
@@ -280,7 +280,7 @@ class AttributeGroupController
         $this->saver->save($attributeGroup);
 
         if ($this->securityFacade->isGranted('pim_enrich_attribute_sort')) {
-            $attributes = $this->attributeRepository->findBy(['code' => \array_keys($sortOrder)]);
+            $attributes = $this->attributeRepository->findBy(['code' => array_keys($sortOrder)]);
             foreach ($attributes as $attribute) {
                 if ($attribute->getSortOrder() !== $sortOrder[$attribute->getCode()]) {
                     $this->attributeUpdater->update($attribute, ['sort_order' => $sortOrder[$attribute->getCode()]]);
@@ -317,7 +317,7 @@ class AttributeGroupController
             return new RedirectResponse('/');
         }
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
 
         foreach ($data as $attributeGroupCode => $sortOrder) {
             $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($attributeGroupCode);
@@ -380,7 +380,7 @@ class AttributeGroupController
             $options['limit'] = SearchableRepositoryInterface::FETCH_LIMIT;
         }
 
-        if (0 > \intval($options['limit'])) {
+        if (0 > intval($options['limit'])) {
             $options['limit'] = null;
         }
 
@@ -389,11 +389,11 @@ class AttributeGroupController
         }
 
         if ($request->request->has('identifiers')) {
-            $options['identifiers'] = \explode(',', $request->request->get('identifiers'));
+            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
         }
 
         if ($request->request->has('attribute_groups')) {
-            $options['attribute_groups'] = \explode(
+            $options['attribute_groups'] = explode(
                 ',',
                 $request->request->get('attribute_groups')
             );
@@ -416,7 +416,7 @@ class AttributeGroupController
         $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($identifier);
         if (null === $attributeGroup) {
             throw new NotFoundHttpException(
-                \sprintf('Attribute group with identifier "%s" not found', $identifier)
+                sprintf('Attribute group with identifier "%s" not found', $identifier)
             );
         }
 
@@ -435,15 +435,15 @@ class AttributeGroupController
         $attributeCodesBefore = $this->findAttributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
 
         if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_remove_attribute') &&
-            \count($attributeCodesBefore) > 0 &&
-            \count(\array_diff($attributeCodesBefore, $attributeCodesAfter)) > 0
+            count($attributeCodesBefore) > 0 &&
+            count(array_diff($attributeCodesBefore, $attributeCodesAfter)) > 0
         ) {
             throw new AccessDeniedHttpException('You cannot remove attributes from the attribute group');
         }
 
         if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_add_attribute') &&
-            \count($attributeCodesAfter) > 0 &&
-            \count(\array_diff($attributeCodesAfter, $attributeCodesBefore)) > 0
+            count($attributeCodesAfter) > 0 &&
+            count(array_diff($attributeCodesAfter, $attributeCodesBefore)) > 0
         ) {
             throw new AccessDeniedHttpException('You cannot add attributes to the attribute group');
         }

@@ -144,14 +144,14 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
                 $products[] = $entity;
             }
 
-            if (\count($productModels) >= $this->batchSize) {
+            if (count($productModels) >= $this->batchSize) {
                 $this->validateProductModels($productModels);
                 $this->productModelSaver->saveAll($productModels);
                 $this->clearBatchCaches();
                 $productModels = [];
             }
 
-            if (\count($products) >= $this->batchSize) {
+            if (count($products) >= $this->batchSize) {
                 $this->validateProducts($products);
                 $this->productSaver->saveAll($products);
                 $this->clearBatchCaches();
@@ -194,7 +194,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
             if ($violations->count() !== 0) {
                 throw new \LogicException(
                     $this->buildErrorMessage(
-                        \sprintf(
+                        sprintf(
                             'One or more validation errors occured for ProductModel with code "%s" during family variant structure change:',
                             $productModel->getCode()
                         ),
@@ -218,7 +218,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
             if ($violations->count() !== 0) {
                 throw new \LogicException(
                     $this->buildErrorMessage(
-                        \sprintf(
+                        sprintf(
                             'One or more validation errors occured for Product with identifier "%s" during family variant structure change:',
                             $product->getIdentifier()
                         ),
@@ -235,7 +235,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     ): string {
         $errorMessage = $baseMessage;
         foreach ($constraintViolationList as $violation) {
-            $errorMessage .= \sprintf("\n  - %s", $violation->getMessage());
+            $errorMessage .= sprintf("\n  - %s", $violation->getMessage());
         }
 
         return $errorMessage;

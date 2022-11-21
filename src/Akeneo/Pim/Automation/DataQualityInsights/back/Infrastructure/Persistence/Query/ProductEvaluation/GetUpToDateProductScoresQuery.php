@@ -37,7 +37,7 @@ class GetUpToDateProductScoresQuery implements GetProductScoresQueryInterface
     {
         $upToDateProducts = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productUuidCollection);
 
-        if (\is_null($upToDateProducts)) {
+        if (is_null($upToDateProducts)) {
             return [];
         }
 

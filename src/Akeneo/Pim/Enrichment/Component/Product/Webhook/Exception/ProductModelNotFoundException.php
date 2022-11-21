@@ -15,6 +15,6 @@ class ProductModelNotFoundException extends \RuntimeException implements EventBu
 {
     public function __construct(string $identifier)
     {
-        parent::__construct(\sprintf('Product Model "%s" not found', $identifier));
+        parent::__construct(sprintf('Product Model "%s" not found', $identifier));
     }
 }

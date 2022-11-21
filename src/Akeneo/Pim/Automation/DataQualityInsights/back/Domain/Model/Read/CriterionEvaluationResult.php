@@ -50,13 +50,13 @@ final class CriterionEvaluationResult
     {
         $attributes = $this->data['attributes_with_rates'] ?? [];
 
-        if (\count($attributes) > 0) {
+        if (count($attributes) > 0) {
             return ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($attributes, function ($attributes) {
-                if (false === \is_array($attributes)) {
+                if (false === is_array($attributes)) {
                     return [];
                 }
 
-                $attributes = \array_keys(\array_filter($attributes, function ($rate) {
+                $attributes = array_keys(array_filter($attributes, function ($rate) {
                     return $rate < 100;
                 }));
 
@@ -68,7 +68,7 @@ final class CriterionEvaluationResult
         $attributes = $this->data['attributes'] ?? [];
 
         return ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($attributes, function ($attributeCodes) {
-            return \is_array($attributeCodes) ? $attributeCodes : [];
+            return is_array($attributeCodes) ? $attributeCodes : [];
         });
     }
 

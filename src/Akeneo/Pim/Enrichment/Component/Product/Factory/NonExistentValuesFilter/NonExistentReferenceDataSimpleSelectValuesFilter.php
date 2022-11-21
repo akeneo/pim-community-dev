@@ -40,7 +40,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!\is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = $referenceDataCodes[$attributeCode][\strtolower($value)] ?? '';
+                            $simpleSelectValues[$channel][$locale] = $referenceDataCodes[$attributeCode][strtolower($value)] ?? '';
                         }
                     }
                 }
@@ -70,7 +70,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                     $values
                 );
                 foreach ($existingCodes as $existingCode) {
-                    $existingReferenceDataCodes[$attributeCode][\strtolower($existingCode)] = $existingCode;
+                    $existingReferenceDataCodes[$attributeCode][strtolower($existingCode)] = $existingCode;
                 }
             }
         }

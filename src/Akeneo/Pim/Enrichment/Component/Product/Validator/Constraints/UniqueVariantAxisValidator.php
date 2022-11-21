@@ -86,11 +86,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         $ownCombination = $this->getCombinationOfAxisValues($entity->getValuesForVariation(), $axes);
 
-        if ('' === \str_replace(',', '', $ownCombination)) {
+        if ('' === str_replace(',', '', $ownCombination)) {
             return;
         }
 
-        $axesAttributesCodesToFilter = \array_map(function (AttributeInterface $axisAttribute) {
+        $axesAttributesCodesToFilter = array_map(function (AttributeInterface $axisAttribute) {
             return $axisAttribute->getCode();
         }, $axes);
 
@@ -105,8 +105,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $siblingsCombinations[$siblingIdentifier] = $this->getCombinationOfAxisValues($values, $axes);
         }
 
-        if (\in_array($ownCombination, $siblingsCombinations, true)) {
-            $alreadyInDatabaseSiblingIdentifier = \array_search($ownCombination, $siblingsCombinations);
+        if (in_array($ownCombination, $siblingsCombinations, true)) {
+            $alreadyInDatabaseSiblingIdentifier = array_search($ownCombination, $siblingsCombinations);
 
             $this->addViolation(
                 $axes,
@@ -130,7 +130,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         $combination = $this->getCombinationOfAxisValues($entity->getValuesForVariation(), $axes);
 
-        if ('' === \str_replace(',', '', $combination)) {
+        if ('' === str_replace(',', '', $combination)) {
             return;
         }
 
@@ -178,7 +178,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $combination[] = (string)$value;
         }
 
-        return \implode(',', $combination);
+        return implode(',', $combination);
     }
 
     /**
@@ -193,7 +193,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         string $siblingIdentifier
     ): void {
-        $axesCodes = \implode(',', \array_map(
+        $axesCodes = implode(',', array_map(
             function (AttributeInterface $axis) {
                 return $axis->getCode();
             },

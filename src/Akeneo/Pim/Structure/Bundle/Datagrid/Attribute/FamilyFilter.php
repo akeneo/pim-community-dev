@@ -16,12 +16,12 @@ class FamilyFilter extends ChoiceFilter
         Assert::implementsInterface($ds, PimFilterDatasourceAdapterInterface::class);
         $data = $this->parseData($data);
 
-        if (!$data || !isset($data['value']) || !\is_array($data['value'])) {
+        if (!$data || !isset($data['value']) || !is_array($data['value'])) {
             return false;
         }
 
         $qb = $ds->getQueryBuilder();
-        $rootAlias = \current($qb->getRootAliases());
+        $rootAlias = current($qb->getRootAliases());
 
         $qb
             ->innerJoin($rootAlias . '.families', 'f', 'WITH', 'f.code IN(:families)')

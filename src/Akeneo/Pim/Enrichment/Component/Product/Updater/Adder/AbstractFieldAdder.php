@@ -19,6 +19,6 @@ abstract class AbstractFieldAdder implements FieldAdderInterface
      */
     public function supportsField($field)
     {
-        return \in_array($field, $this->supportedFields);
+        return in_array($field, $this->supportedFields);
     }
 }

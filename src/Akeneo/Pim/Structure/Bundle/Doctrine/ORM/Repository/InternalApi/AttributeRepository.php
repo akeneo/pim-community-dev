@@ -69,7 +69,7 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $rootAlias = $qb->getRootAliases()[0];
 
-        $labelExpr = \sprintf(
+        $labelExpr = sprintf(
             '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
             $rootAlias
         );
@@ -77,8 +77,8 @@ class AttributeRepository extends EntityRepository implements
 
         $qb
             ->select($rootAlias)
-            ->addSelect(\sprintf("%s AS label", $labelExpr))
-            ->addSelect(\sprintf("%s AS groupLabel", $groupExpr))
+            ->addSelect(sprintf("%s AS label", $labelExpr))
+            ->addSelect(sprintf("%s AS groupLabel", $groupExpr))
             ->addSelect('translation.label')
             ->addSelect('attributeGroup.code');
 

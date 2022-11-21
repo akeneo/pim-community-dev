@@ -15,12 +15,12 @@ use PhpSpec\ObjectBehavior;
  */
 class ConvertStandardFormatIntoUserIntentsHandlerSpec extends ObjectBehavior
 {
-    public function let(UserIntentFactoryRegistry $userIntentFactoryRegistry)
+    function let(UserIntentFactoryRegistry $userIntentFactoryRegistry)
     {
         $this->beConstructedWith($userIntentFactoryRegistry);
     }
 
-    public function it_returns_user_intents(
+    function it_returns_user_intents(
         UserIntentFactoryRegistry $userIntentFactoryRegistry,
         UserIntent $userIntent1,
         UserIntent $userIntent2,

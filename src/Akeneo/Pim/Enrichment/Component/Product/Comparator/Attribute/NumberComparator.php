@@ -29,7 +29,7 @@ class NumberComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return \in_array($type, $this->types);
+        return in_array($type, $this->types);
     }
 
     /**
@@ -38,13 +38,13 @@ class NumberComparator implements ComparatorInterface
     public function compare($data, $originals)
     {
         $default = ['locale' => null, 'scope' => null, 'data' => null];
-        $originals = \array_merge($default, $originals);
+        $originals = array_merge($default, $originals);
 
         if (null === $data['data'] && null === $originals['data']) {
             return null;
         }
 
-        if (!\is_numeric($data['data'])) {
+        if (!is_numeric($data['data'])) {
             return $data;
         }
 

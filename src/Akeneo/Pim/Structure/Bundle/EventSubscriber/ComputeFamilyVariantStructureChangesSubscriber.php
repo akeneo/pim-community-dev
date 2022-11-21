@@ -91,9 +91,9 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     public function bulkComputeVariantStructureChanges(GenericEvent $event): void
     {
         $familyVariants = $event->getSubject();
-        if (!\is_array($familyVariants)
+        if (!is_array($familyVariants)
             || [] === $familyVariants
-            || !\current($familyVariants) instanceof FamilyVariantInterface
+            || !current($familyVariants) instanceof FamilyVariantInterface
             || ($event->hasArgument(self::DISABLE_JOB_LAUNCHING) && $event->getArgument(self::DISABLE_JOB_LAUNCHING))
         ) {
             return;

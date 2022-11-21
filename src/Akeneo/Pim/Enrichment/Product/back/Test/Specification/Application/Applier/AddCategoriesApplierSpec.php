@@ -15,23 +15,23 @@ use PhpSpec\ObjectBehavior;
 
 class AddCategoriesApplierSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $productUpdater, GetCategoryCodes $getCategoryCodes)
+    function let(ObjectUpdaterInterface $productUpdater, GetCategoryCodes $getCategoryCodes)
     {
         $this->beConstructedWith($productUpdater, $getCategoryCodes);
     }
 
-    public function it_is_an_user_intent_applier()
+    function it_is_an_user_intent_applier()
     {
         $this->shouldHaveType(AddCategoriesApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_supports_add_category_user_intent()
+    function it_supports_add_category_user_intent()
     {
         $this->getSupportedUserIntents()->shouldReturn([AddCategories::class]);
     }
 
-    public function it_adds_categories_on_an_uncategorized_product(
+    function it_adds_categories_on_an_uncategorized_product(
         ObjectUpdaterInterface $productUpdater,
         GetCategoryCodes $getCategoryCodes
     ) {
@@ -45,7 +45,7 @@ class AddCategoriesApplierSpec extends ObjectBehavior
         $this->apply(new AddCategories(['supplier', 'print']), $product, 10);
     }
 
-    public function it_adds_categories_on_an_categorized_product(
+    function it_adds_categories_on_an_categorized_product(
         ObjectUpdaterInterface $productUpdater,
         GetCategoryCodes $getCategoryCodes
     ) {
@@ -59,7 +59,7 @@ class AddCategoriesApplierSpec extends ObjectBehavior
         $this->apply(new AddCategories(['supplier', 'print']), $product, 10);
     }
 
-    public function it_adds_categories_on_an_unknown_product(
+    function it_adds_categories_on_an_unknown_product(
         ObjectUpdaterInterface $productUpdater,
         GetCategoryCodes $getCategoryCodes
     ) {

@@ -45,7 +45,7 @@ class ScopableValuesValidator extends ConstraintValidator
                         '%channel%' => $value->getScopeCode(),
                     ]
                 )
-                    ->atPath(\sprintf('[%s]', $key))
+                    ->atPath(sprintf('[%s]', $key))
                     ->setCode(ScopableValues::SCOPABLE_VALUES)
                     ->addViolation();
             }

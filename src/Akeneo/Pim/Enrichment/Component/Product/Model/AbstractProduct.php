@@ -205,7 +205,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function hasAttribute(string $attributeCode): bool
     {
-        return \in_array($attributeCode, $this->getValues()->getAttributeCodes(), true);
+        return in_array($attributeCode, $this->getValues()->getAttributeCodes(), true);
     }
 
     /**
@@ -421,7 +421,7 @@ abstract class AbstractProduct implements ProductInterface
         $codes = $this->getCategories()->map(function (CategoryInterface $category): string {
             return $category->getCode();
         })->toArray();
-        \sort($codes);
+        sort($codes);
 
         return $codes;
     }
@@ -434,7 +434,7 @@ abstract class AbstractProduct implements ProductInterface
         $codes = $this->groups->map(function (GroupInterface $group): string {
             return $group->getCode();
         })->toArray();
-        \sort($codes);
+        sort($codes);
 
         return $codes;
     }
@@ -663,7 +663,7 @@ abstract class AbstractProduct implements ProductInterface
         $currentAssociation = $this->getAssociationForTypeCode($newAssociation->getAssociationType()->getCode());
         if ($currentAssociation) {
             throw new \LogicException(
-                \sprintf(
+                sprintf(
                     'Can not add an association of type %s because the product already has one',
                     $currentAssociation->getAssociationType()->getCode()
                 )

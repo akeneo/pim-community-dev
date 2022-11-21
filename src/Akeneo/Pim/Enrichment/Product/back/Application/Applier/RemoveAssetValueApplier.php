@@ -34,7 +34,7 @@ final class RemoveAssetValueApplier implements UserIntentApplier
             $userIntent->channelCode(),
         );
         $formerValueAsString = $formerValue ?
-            \array_map(fn ($value) => $value->normalize(), $formerValue->getData())
+            array_map(fn ($value) => $value->normalize(), $formerValue->getData())
             : null;
         $values = $formerValueAsString !== null ?
             \array_diff($formerValueAsString, $userIntent->assetCodes())

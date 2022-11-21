@@ -37,7 +37,7 @@ class GetProductModelScores
         foreach ($this->getLocalesByChannelQuery->getChannelLocaleCollection() as $channelCode => $locales) {
             foreach ($locales as $localeCode) {
                 $score = $productScores->getByChannelAndLocale($channelCode, $localeCode);
-                $formattedProductScores[\strval($channelCode)][\strval($localeCode)] = $score?->toLetter();
+                $formattedProductScores[strval($channelCode)][strval($localeCode)] = $score?->toLetter();
             }
         }
 

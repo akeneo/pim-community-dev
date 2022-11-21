@@ -35,7 +35,7 @@ class FileTypeGuesser implements FileTypeGuesserInterface
             FileTypes::VIDEO => ['video/*']
         ];
 
-        $this->typesMapping = \array_merge($typesMapping, $extraTypesMapping);
+        $this->typesMapping = array_merge($typesMapping, $extraTypesMapping);
     }
 
     /**
@@ -49,8 +49,8 @@ class FileTypeGuesser implements FileTypeGuesserInterface
                     return $fileType;
                 }
 
-                if ($discrete = \strstr($mappedType, '/*', true)) {
-                    if (\strstr($mimeType, '/', true) === $discrete) {
+                if ($discrete = strstr($mappedType, '/*', true)) {
+                    if (strstr($mimeType, '/', true) === $discrete) {
                         return $fileType;
                     }
                 }

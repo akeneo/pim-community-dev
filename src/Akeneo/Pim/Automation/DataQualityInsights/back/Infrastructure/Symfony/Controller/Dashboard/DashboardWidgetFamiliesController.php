@@ -45,11 +45,11 @@ final class DashboardWidgetFamiliesController
     {
         $requestFamilies = $request->get('families', []);
 
-        if (!\is_array($requestFamilies)) {
+        if (!is_array($requestFamilies)) {
             throw new \InvalidArgumentException('The list of families must be an array');
         }
 
-        return \array_map(function ($familyCode) {
+        return array_map(function ($familyCode) {
             return new FamilyCode($familyCode);
         }, $requestFamilies);
     }

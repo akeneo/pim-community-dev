@@ -36,8 +36,8 @@ class GroupViolationNormalizer implements NormalizerInterface
 
         foreach ($violations as $violation) {
             $path = $violation->getPropertyPath();
-            if (0 === \strpos($path, 'translations')) {
-                $propertyPath = \str_replace('.label', '', $path);
+            if (0 === strpos($path, 'translations')) {
+                $propertyPath = str_replace('.label', '', $path);
 
                 $translation = $accessor->getValue($violation->getRoot(), $propertyPath);
 

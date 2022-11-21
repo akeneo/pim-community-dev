@@ -58,10 +58,10 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
         }
 
         $allowedCursorOptions = ['page_size', 'search_after', 'search_after_unique_key', 'limit', 'from'];
-        $cursorOptions = \array_filter(
+        $cursorOptions = array_filter(
             $this->defaultContext,
             function ($key) use ($allowedCursorOptions) {
-                return \in_array($key, $allowedCursorOptions);
+                return in_array($key, $allowedCursorOptions);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -115,7 +115,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
 
         if (null === $filter) {
             throw new UnsupportedFilterException(
-                \sprintf('Filter on property "%s" is not supported or does not support operator "%s"', $field, $operator)
+                sprintf('Filter on property "%s" is not supported or does not support operator "%s"', $field, $operator)
             );
         }
 
@@ -154,7 +154,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
 
         if (null === $sorter) {
             throw new \LogicException(
-                \sprintf('Sorter on field "%s" is not supported', $field)
+                sprintf('Sorter on field "%s" is not supported', $field)
             );
         }
 
@@ -275,6 +275,6 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      */
     protected function getFinalContext(array $context)
     {
-        return \array_merge($this->defaultContext, $context);
+        return array_merge($this->defaultContext, $context);
     }
 }

@@ -10,17 +10,17 @@ use PhpSpec\ObjectBehavior;
 
 class ACLGetAttributeTypesSpec extends ObjectBehavior
 {
-    public function let(AttributeRepositoryInterface $attributeRepository)
+    function let(AttributeRepositoryInterface $attributeRepository)
     {
         $this->beConstructedWith($attributeRepository);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(ACLGetAttributeTypes::class);
     }
 
-    public function it_returns_attribute_types_from_attribute_codes(AttributeRepositoryInterface $attributeRepository)
+    function it_returns_attribute_types_from_attribute_codes(AttributeRepositoryInterface $attributeRepository)
     {
         $attributeRepository->getAttributeTypeByCodes(['sku', 'name', 'unknown'])->willReturn([
             'sku' => 'pim_catalog_identifier',
@@ -34,7 +34,7 @@ class ACLGetAttributeTypesSpec extends ObjectBehavior
         $this->fromAttributeCodes([])->shouldReturn([]);
     }
 
-    public function it_throws_an_exception_when_input_data_is_not_valid()
+    function it_throws_an_exception_when_input_data_is_not_valid()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromAttributeCodes', [['sku', true]]);
     }

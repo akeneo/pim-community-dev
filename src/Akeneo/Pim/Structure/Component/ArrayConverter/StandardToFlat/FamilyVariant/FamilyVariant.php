@@ -20,16 +20,16 @@ class FamilyVariant extends AbstractSimpleArrayConverter implements ArrayConvert
         switch ($property) {
             case 'labels':
                 foreach ($data as $localeCode => $label) {
-                    $labelKey = \sprintf('label-%s', $localeCode);
+                    $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
             case 'variant_attribute_sets':
                 foreach ($data as $normalizedAttributeSet) {
-                    $axesKey = \sprintf('variant-axes_%d', $normalizedAttributeSet['level']);
-                    $attributesKey = \sprintf('variant-attributes_%d', $normalizedAttributeSet['level']);
-                    $convertedItem[$axesKey] = \implode(',', $normalizedAttributeSet['axes']);
-                    $convertedItem[$attributesKey] = \implode(',', $normalizedAttributeSet['attributes']);
+                    $axesKey = sprintf('variant-axes_%d', $normalizedAttributeSet['level']);
+                    $attributesKey = sprintf('variant-attributes_%d', $normalizedAttributeSet['level']);
+                    $convertedItem[$axesKey] = implode(',', $normalizedAttributeSet['axes']);
+                    $convertedItem[$attributesKey] = implode(',', $normalizedAttributeSet['attributes']);
                 }
                 break;
             default:

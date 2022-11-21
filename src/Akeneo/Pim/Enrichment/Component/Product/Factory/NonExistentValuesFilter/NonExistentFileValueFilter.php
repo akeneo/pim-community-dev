@@ -87,7 +87,7 @@ final class NonExistentFileValueFilter implements NonExistentValuesFilter
             }
         }
 
-        $files = $this->fileInfoRepository->findBy(['key' => \array_unique($fileKeys)]);
+        $files = $this->fileInfoRepository->findBy(['key' => array_unique($fileKeys)]);
         $filesIndexedByKey = [];
 
         /** @var FileInfoInterface $file */

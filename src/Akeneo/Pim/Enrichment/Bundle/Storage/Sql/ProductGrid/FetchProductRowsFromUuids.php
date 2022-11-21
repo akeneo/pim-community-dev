@@ -42,15 +42,15 @@ final class FetchProductRowsFromUuids
             return [];
         }
 
-        $uuids = \array_map(
+        $uuids = array_map(
             fn (string $uuid): UuidInterface =>
-                Uuid::fromString(\preg_replace('/^product_/', '', $uuid)),
+                Uuid::fromString(preg_replace('/^product_/', '', $uuid)),
             $uuids
         );
 
         $valueCollections = $this->getValueCollection($uuids, $attributeCodes, $channelCode, $localeCode);
 
-        $rows = \array_replace_recursive(
+        $rows = array_replace_recursive(
             $this->getProperties($uuids),
             $this->getLabels($uuids, $valueCollections, $channelCode, $localeCode),
             $this->getImages($uuids, $valueCollections),
@@ -107,7 +107,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -144,7 +144,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -152,15 +152,15 @@ SQL;
         $products = [];
 
         foreach ($rows as $row) {
-            $values = \json_decode($row['raw_values'], true);
-            $attributeCodesToKeep = \array_filter(
-                \array_merge(
+            $values = json_decode($row['raw_values'], true);
+            $attributeCodesToKeep = array_filter(
+                array_merge(
                     $attributeCodes,
                     [$row['attribute_as_label_code'], $row['attribute_as_image_code']]
                 )
             );
 
-            $filteredValues = \array_intersect_key($values, \array_flip($attributeCodesToKeep));
+            $filteredValues = array_intersect_key($values, array_flip($attributeCodesToKeep));
 
             $products[$row['uuid']] = $filteredValues;
         }
@@ -200,7 +200,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -217,7 +217,7 @@ SQL;
             if (null !== $labelValue && null !== $labelValue->getData()) {
                 $result[$row['uuid']]['label'] = $labelValue->getData();
             } else {
-                $result[$row['uuid']]['label'] = \sprintf('[%s]', $row['identifier'] ?? $row['uuid']);
+                $result[$row['uuid']]['label'] = sprintf('[%s]', $row['identifier'] ?? $row['uuid']);
             }
         }
 
@@ -246,7 +246,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -284,7 +284,7 @@ SQL;
         $rows = $this->connection->executeQuery(
             $sql,
             [
-                'uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
                 'locale_code' => $localeCode,
                 'channel_code' => $channelCode
             ],
@@ -321,7 +321,7 @@ SQL;
         $rows = $this->connection->executeQuery(
             $sql,
             [
-                'uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
                 'locale_code' => $localeCode
             ],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
@@ -360,14 +360,14 @@ SQL;
         $rows = $this->connection->executeQuery(
             $sql,
             [
-                'uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
                 'locale_code' => $localeCode
             ],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         foreach ($rows as $row) {
-            $result[$row['uuid']]['groups'] = \json_decode($row['product_groups']);
+            $result[$row['uuid']]['groups'] = json_decode($row['product_groups']);
         }
 
         return $result;

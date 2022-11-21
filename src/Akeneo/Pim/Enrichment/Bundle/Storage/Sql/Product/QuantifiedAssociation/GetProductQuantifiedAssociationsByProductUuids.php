@@ -67,7 +67,7 @@ WHERE p.uuid IN (:productUuids)
 ;
 SQL;
 
-        $uuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $rows = $this->connection->executeQuery(
             $query,
@@ -87,7 +87,7 @@ SQL;
             if (null === $row['all_quantified_associations']) {
                 continue;
             }
-            $allQuantifiedAssociationsWithProductId = \json_decode($row['all_quantified_associations'], true);
+            $allQuantifiedAssociationsWithProductId = json_decode($row['all_quantified_associations'], true);
             $associationWithIdentifiers = $this->associationsWithIdentifiers(
                 $allQuantifiedAssociationsWithProductId,
                 $validQuantifiedAssociationTypeCodes
@@ -110,7 +110,7 @@ SQL;
             if (empty($quantifiedAssociationWithId)) {
                 continue;
             }
-            $productIds = \array_merge($productIds, $this->productIds($quantifiedAssociationWithId));
+            $productIds = array_merge($productIds, $this->productIds($quantifiedAssociationWithId));
         }
 
         $productIdMapping = $this->getIdMappingFromProductIdsQuery->execute($productIds);
@@ -123,7 +123,7 @@ SQL;
 
             $associationTypeCode = (string) $associationTypeCode;
 
-            if (!\in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
+            if (!in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
                 continue;
             }
 
@@ -141,7 +141,7 @@ SQL;
                 ];
             }
             if (!empty($uniqueQuantifiedAssociations)) {
-                $result[$associationTypeCode]['products'] = \array_values($uniqueQuantifiedAssociations);
+                $result[$associationTypeCode]['products'] = array_values($uniqueQuantifiedAssociations);
             }
         }
 
@@ -150,7 +150,7 @@ SQL;
 
     private function productIds(array $quantifiedAssociationWithProductId): array
     {
-        return \array_map(
+        return array_map(
             function (array $quantifiedAssociations) {
                 return $quantifiedAssociations['id'];
             },

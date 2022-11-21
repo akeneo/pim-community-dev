@@ -124,7 +124,7 @@ class AssociationTypeController
 
         $associationType = $this->getAssociationTypeOr404($identifier);
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $this->updater->update($associationType, $data);
 
         $violations = $this->validator->validate($associationType);
@@ -186,7 +186,7 @@ class AssociationTypeController
         $associationType = $this->associationTypeRepo->findOneByIdentifier($code);
         if (null === $associationType) {
             throw new NotFoundHttpException(
-                \sprintf('Association type with code "%s" not found', $code)
+                sprintf('Association type with code "%s" not found', $code)
             );
         }
 
@@ -209,7 +209,7 @@ class AssociationTypeController
         }
 
         $associationType = new AssociationType();
-        $this->updater->update($associationType, \json_decode($request->getContent(), true));
+        $this->updater->update($associationType, json_decode($request->getContent(), true));
         $violations = $this->validator->validate($associationType);
 
         $normalizedViolations = [];
@@ -221,7 +221,7 @@ class AssociationTypeController
             );
         }
 
-        if (\count($normalizedViolations) > 0) {
+        if (count($normalizedViolations) > 0) {
             return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 

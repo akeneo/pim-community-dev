@@ -14,20 +14,20 @@ use PhpSpec\ObjectBehavior;
 
 class SetCategoriesApplierSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ObjectUpdaterInterface $productUpdater,
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes
     ) {
         $this->beConstructedWith($productUpdater, $getNonViewableCategoryCodes);
     }
 
-    public function it_is_an_user_intent_applier()
+    function it_is_an_user_intent_applier()
     {
         $this->shouldHaveType(SetCategoriesApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_a_set_categories_user_intent_on_a_new_product(
+    function it_applies_a_set_categories_user_intent_on_a_new_product(
         ObjectUpdaterInterface $productUpdater,
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes
     ) {

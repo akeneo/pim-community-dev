@@ -61,7 +61,7 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
             return false;
         }
 
-        return \in_array($attributeAsLabel->getCode(), $family->getAttributeCodes());
+        return in_array($attributeAsLabel->getCode(), $family->getAttributeCodes());
     }
 
     /**
@@ -76,7 +76,7 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
             return false;
         }
 
-        return \in_array($family->getAttributeAsLabel()->getType(), [
+        return in_array($family->getAttributeAsLabel()->getType(), [
             AttributeTypes::IDENTIFIER,
             AttributeTypes::TEXT,
         ]);

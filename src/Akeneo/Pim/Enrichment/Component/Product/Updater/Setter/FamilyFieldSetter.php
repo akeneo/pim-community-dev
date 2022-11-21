@@ -72,7 +72,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
      */
     protected function checkData($field, $data)
     {
-        if (!\is_string($data) && null !== $data) {
+        if (!is_string($data) && null !== $data) {
             throw InvalidPropertyTypeException::stringExpected(
                 $field,
                 static::class,

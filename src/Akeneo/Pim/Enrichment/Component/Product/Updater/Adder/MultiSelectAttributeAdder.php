@@ -42,7 +42,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
     ): void {
         $options = $this->resolver->resolve($options);
 
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
@@ -74,7 +74,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         if (null !== $optionsValue) {
             Assert::isInstanceOf($optionsValue, OptionsValueInterface::class);
             foreach ($optionsValue->getOptionCodes() as $optionValue) {
-                if (!\in_array($optionValue, $optionCodes)) {
+                if (!in_array($optionValue, $optionCodes)) {
                     $optionCodes[] = $optionValue;
                 }
             }

@@ -73,16 +73,16 @@ final class ApplyProductSearchQueryParametersToPQB
 
                 $value = $filter['value'] ?? null;
 
-                if (\in_array($propertyCode, ['created', 'updated'])) {
-                    if (\in_array($filter['operator'], [Operators::BETWEEN, Operators::NOT_BETWEEN]) && \is_array($value)) {
+                if (in_array($propertyCode, ['created', 'updated'])) {
+                    if (in_array($filter['operator'], [Operators::BETWEEN, Operators::NOT_BETWEEN]) && is_array($value)) {
                         $values = [];
                         foreach ($value as $date) {
                             $values[] = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
                         }
                         $value = $values;
-                    } elseif (!\in_array($filter['operator'], [Operators::SINCE_LAST_N_DAYS, Operators::SINCE_LAST_JOB])) {
+                    } elseif (!in_array($filter['operator'], [Operators::SINCE_LAST_N_DAYS, Operators::SINCE_LAST_JOB])) {
                         //PIM-7541 Create the date with the server timezone configuration. Do not force it to UTC timezone.
-                        $value = \DateTime::createFromFormat('Y-m-d H:i:s', \strval($value));
+                        $value = \DateTime::createFromFormat('Y-m-d H:i:s', strval($value));
                     }
                 }
 

@@ -90,9 +90,9 @@ class FamilyVariantValidator extends ConstraintValidator
             }
         }
 
-        if (\count($attributeCodes) !== \count(\array_unique($attributeCodes))) {
+        if (count($attributeCodes) !== count(array_unique($attributeCodes))) {
             $this->context->buildViolation(FamilyVariant::ATTRIBUTES_UNIQUE, [
-                '%attributes%' => \implode(',', \array_diff_assoc($attributeCodes, \array_unique($attributeCodes)))
+                '%attributes%' => implode(',', array_diff_assoc($attributeCodes, array_unique($attributeCodes)))
             ])->atPath('variant_attribute_sets')->addViolation();
         }
     }
@@ -122,7 +122,7 @@ class FamilyVariantValidator extends ConstraintValidator
             }
 
             $availableTypes = FamilyVariantModel::getAvailableAxesAttributeTypes();
-            if (!\in_array($axis->getType(), $availableTypes)) {
+            if (!in_array($axis->getType(), $availableTypes)) {
                 $this->context->buildViolation(FamilyVariant::AXES_ATTRIBUTE_TYPE, [
                     '%axis%' => $axis->getCode(),
                 ])->atPath('variant_attribute_sets')->addViolation();
@@ -141,9 +141,9 @@ class FamilyVariantValidator extends ConstraintValidator
             }
         }
 
-        if (\count($axisCodes) !== \count(\array_unique($axisCodes))) {
+        if (count($axisCodes) !== count(array_unique($axisCodes))) {
             $this->context->buildViolation(FamilyVariant::AXES_UNIQUE, [
-                '%attributes%' => \implode(\array_diff_assoc($axisCodes, \array_unique($axisCodes))),
+                '%attributes%' => implode(array_diff_assoc($axisCodes, array_unique($axisCodes))),
             ])->atPath('variant_attribute_sets')->addViolation();
         }
     }

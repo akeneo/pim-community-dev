@@ -29,7 +29,7 @@ class IsUuid4Validator extends ConstraintValidator
         if (!$fields instanceof FieldsInterface || $fields->getVersion() !== 4) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ uuid }}', $value->toString())
-                ->setParameter('{{ version }}', $fields instanceof FieldsInterface ? \strval($fields->getVersion()): null)
+                ->setParameter('{{ version }}', $fields instanceof FieldsInterface ? strval($fields->getVersion()): null)
                 ->addViolation();
         }
     }

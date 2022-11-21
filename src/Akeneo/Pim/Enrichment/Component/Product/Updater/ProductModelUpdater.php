@@ -91,7 +91,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if (\array_key_exists('parent', $data)) {
+        if (array_key_exists('parent', $data)) {
             $this->updateParentAndFamily($productModel, $data);
             unset($data['parent']);
         }
@@ -148,7 +148,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 $this->updateProductModelFields($productModel, $field, $data);
                 break;
             default:
-                if (!\in_array($field, $this->ignoredFields)) {
+                if (!in_array($field, $this->ignoredFields)) {
                     throw UnknownPropertyException::unknownProperty($field);
                 }
         }
@@ -180,22 +180,22 @@ class ProductModelUpdater implements ObjectUpdaterInterface
 
     private function validateScalar(string $field, $data)
     {
-        if (null !== $data && !\is_scalar($data)) {
+        if (null !== $data && !is_scalar($data)) {
             throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
         }
     }
 
     private function validateScalarArray(string $field, $data)
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
         }
 
         foreach ($data as $value) {
-            if (null !== $value && !\is_scalar($value)) {
+            if (null !== $value && !is_scalar($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    \sprintf('one of the %s is not a scalar', $field),
+                    sprintf('one of the %s is not a scalar', $field),
                     static::class,
                     $data
                 );
@@ -315,7 +315,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         $parent = $productModel->getParent();
         if (null !== $parent && $familyVariantCode !== $parent->getFamilyVariant()->getCode()) {
             throw InvalidPropertyException::expected(
-                \sprintf(
+                sprintf(
                     'The parent is not a product model of the family variant "%s" but belongs to the family "%s".',
                     $familyVariantCode,
                     $parent->getFamilyVariant()->getCode()
@@ -346,7 +346,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      */
     protected function validateAssociationsDataType($data): void
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 'associations',
                 static::class,
@@ -356,7 +356,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
 
         foreach ($data as $associationTypeCode => $associationTypeValues) {
             $this->validateScalar('associations', $associationTypeCode);
-            if (!\is_array($associationTypeValues)) {
+            if (!is_array($associationTypeValues)) {
                 throw InvalidPropertyTypeException::arrayExpected(
                     'associations',
                     static::class,

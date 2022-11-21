@@ -41,7 +41,7 @@ class QualityScoreConverter
         $convertedItems = [];
         foreach ($scores as $channel => $localeScores) {
             foreach ($localeScores as $locale => $score) {
-                $propertyName = \sprintf(
+                $propertyName = sprintf(
                     '%s-%s-%s',
                     GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX,
                     $locale,

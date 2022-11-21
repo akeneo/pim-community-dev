@@ -47,7 +47,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format
-            && \get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
+            && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -68,7 +68,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
             return [$entityWithFamilyVariant];
         }
 
-        return \array_merge($this->getAncestorProducts($parent), [$entityWithFamilyVariant]);
+        return array_merge($this->getAncestorProducts($parent), [$entityWithFamilyVariant]);
     }
 
     /**
@@ -98,12 +98,12 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                         foreach ($association->getProducts() as $product) {
                             $data[$code]['product_uuids'][] = $product->getUuid()->toString();
                         }
-                        \sort($data[$code]['product_uuids']);
+                        sort($data[$code]['product_uuids']);
                     } elseif (\get_class($associationAwareEntity) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
                         // do nothing, published product associations are computed in their own normalizer
                         // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
                     } elseif ($associationAwareEntity instanceof ProductInterface) {
-                        $data[$code]['product_uuids'] = \array_merge($data[$code]['product_uuids'], $this->getAssociatedProductUuidsByProduct->getUuids(
+                        $data[$code]['product_uuids'] = array_merge($data[$code]['product_uuids'], $this->getAssociatedProductUuidsByProduct->getUuids(
                             $associationAwareEntity->getUuid(),
                             $association
                         ));
@@ -116,12 +116,12 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                         foreach ($association->getProducts() as $product) {
                             $data[$code]['products'][] = $product->getReference();
                         }
-                        \sort($data[$code]['products']);
+                        sort($data[$code]['products']);
                     } elseif (\get_class($associationAwareEntity) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
                         // do nothing, published product associations are computed in their own normalizer
                         // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
                     } elseif ($associationAwareEntity instanceof ProductInterface) {
-                        $data[$code]['products'] = \array_merge($data[$code]['products'], $this->getAssociatedProductUuidsByProduct->getIdentifiers(
+                        $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductUuidsByProduct->getIdentifiers(
                             $associationAwareEntity->getUuid(),
                             $association
                         ));
@@ -137,17 +137,17 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
             }
         }
 
-        $data = \array_map(function ($association) use ($withUuid) {
+        $data = array_map(function ($association) use ($withUuid) {
             if ($withUuid) {
-                $association['product_uuids'] = \array_values(\array_unique($association['product_uuids']));
+                $association['product_uuids'] = array_values(array_unique($association['product_uuids']));
             } else {
-                $association['products'] = \array_values(\array_unique($association['products']));
+                $association['products'] = array_values(array_unique($association['products']));
             }
 
             return $association;
         }, $data);
 
-        \ksort($data);
+        ksort($data);
 
         return $data;
     }

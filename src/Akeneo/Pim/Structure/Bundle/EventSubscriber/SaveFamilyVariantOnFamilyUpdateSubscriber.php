@@ -128,9 +128,9 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     {
         $errorMessage = 'One or more errors occurred while updating the following family variants:\n';
         foreach ($allViolations as $familyVariantCode => $constraintViolationList) {
-            $errorMessage .= \sprintf('%s:\n', $familyVariantCode);
+            $errorMessage .= sprintf('%s:\n', $familyVariantCode);
             foreach ($constraintViolationList as $violation) {
-                $errorMessage .= \sprintf('- %s\n', $violation->getMessage());
+                $errorMessage .= sprintf('- %s\n', $violation->getMessage());
             }
         }
 

@@ -61,7 +61,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 
         $attribute = $this->getAttributes->forCode($attributeCode);
         if (null === $attribute) {
-            throw new \InvalidArgumentException(\sprintf('The "%s" attribute code was not found', $attributeCode));
+            throw new \InvalidArgumentException(sprintf('The "%s" attribute code was not found', $attributeCode));
         }
 
         $batchIdentifiers = $this->getProductAndProductModelIdentifiersWithValues->forAttributeAndValues(

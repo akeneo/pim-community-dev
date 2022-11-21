@@ -51,7 +51,7 @@ class TransformChannelLocaleDataIdsSpec extends ObjectBehavior
             ],
         ];
 
-        $this->transformToCodes($dataToTransform, fn ($elements) => \count($elements))->shouldReturn($expectedTransformedData);
+        $this->transformToCodes($dataToTransform, fn ($elements) => count($elements))->shouldReturn($expectedTransformedData);
     }
 
     public function it_removes_unknown_channels_and_locales_during_transformation(): void
@@ -74,6 +74,6 @@ class TransformChannelLocaleDataIdsSpec extends ObjectBehavior
             ],
         ];
 
-        $this->transformToCodes($dataToTransform, fn ($elements) => \count($elements))->shouldReturn($expectedTransformedData);
+        $this->transformToCodes($dataToTransform, fn ($elements) => count($elements))->shouldReturn($expectedTransformedData);
     }
 }

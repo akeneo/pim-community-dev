@@ -30,7 +30,7 @@ final class ConnectorProductModelNormalizer
 
     public function normalizeConnectorProductModelList(ConnectorProductModelList $list): array
     {
-        return \array_map(function (ConnectorProductModel $connectorProductModel): array {
+        return array_map(function (ConnectorProductModel $connectorProductModel): array {
             return $this->normalizeConnectorProductModel($connectorProductModel);
         }, $list->connectorProductModels());
     }

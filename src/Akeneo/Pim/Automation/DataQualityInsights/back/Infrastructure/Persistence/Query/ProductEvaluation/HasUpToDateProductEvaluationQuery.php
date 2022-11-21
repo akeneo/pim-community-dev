@@ -32,7 +32,7 @@ final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQu
         $productIdCollection = $this->idFactory->createCollection([(string)$productUuid]);
         $upToDateProducts = $this->forEntityIdCollection($productIdCollection);
 
-        return !\is_null($upToDateProducts);
+        return !is_null($upToDateProducts);
     }
 
     public function forEntityIdCollection(ProductEntityIdCollection $productUuidCollection): ?ProductUuidCollection
@@ -67,11 +67,11 @@ SQL;
 
         $result = $stmt->fetchAllAssociative();
 
-        if (!\is_array($result)) {
+        if (!is_array($result)) {
             return null;
         }
 
-        $uuids = \array_map(function ($resultRow) {
+        $uuids = array_map(function ($resultRow) {
             return $resultRow['uuid'];
         }, $result);
 

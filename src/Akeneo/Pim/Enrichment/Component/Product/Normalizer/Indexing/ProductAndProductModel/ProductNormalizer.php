@@ -95,18 +95,18 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             $parent = $entityWithFamilyVariant->getParent();
 
             $attributes = $this->attributesProvider->getAttributes($parent);
-            $attributeCodes = \array_map(
+            $attributeCodes = array_map(
                 function (AttributeInterface $attribute) {
                     return $attribute->getCode();
                 },
                 $attributes
             );
-            $ancestorsAttributesCodes = \array_merge($ancestorsAttributesCodes, $attributeCodes);
+            $ancestorsAttributesCodes = array_merge($ancestorsAttributesCodes, $attributeCodes);
 
             $entityWithFamilyVariant = $parent;
         }
 
-        \sort($ancestorsAttributesCodes);
+        sort($ancestorsAttributesCodes);
 
         return $ancestorsAttributesCodes;
     }
@@ -129,19 +129,19 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      */
     private function getAttributeCodesForOwnLevel(ProductInterface $product): array
     {
-        $attributeCodes = \array_keys($product->getRawValues());
+        $attributeCodes = array_keys($product->getRawValues());
         $familyAttributesCodes = [];
         if ($product->isVariant()) {
             $familyAttributes = $this->attributesProvider->getAttributes($product);
-            $familyAttributesCodes = \array_map(function (AttributeInterface $attribute) {
+            $familyAttributesCodes = array_map(function (AttributeInterface $attribute) {
                 return $attribute->getCode();
             }, $familyAttributes);
         } elseif (null !== $product->getFamily()) {
             $familyAttributesCodes = $product->getFamily()->getAttributeCodes();
         }
 
-        $attributeCodes = \array_unique(\array_merge($familyAttributesCodes, $attributeCodes));
-        \sort($attributeCodes);
+        $attributeCodes = array_unique(array_merge($familyAttributesCodes, $attributeCodes));
+        sort($attributeCodes);
 
         return $attributeCodes;
     }

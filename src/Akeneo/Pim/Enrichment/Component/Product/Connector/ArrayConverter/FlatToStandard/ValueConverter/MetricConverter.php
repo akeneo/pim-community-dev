@@ -35,7 +35,7 @@ class MetricConverter extends AbstractValueConverter
             $data = null;
             $unit = null;
             $tokens = $this->fieldSplitter->splitUnitValue($value);
-            if (1 === \count($tokens)) {
+            if (1 === count($tokens)) {
                 /* PIM-8290: If there is only one word in the value field, this can be the unit either the amount.
                  * There can be 3 cases:
                  * 1) this is a valid amount (e.g. 12 or 12.3456)
@@ -46,7 +46,7 @@ class MetricConverter extends AbstractValueConverter
                  * The case 2 is valid but will not imply a value update as there is no amount
                  * The case 3 will raise an invalid unit value from ValidMetric validator.
                  */
-                if (\preg_match('/^[A-Za-z_]+$/', $tokens[0])) {
+                if (preg_match('/^[A-Za-z_]+$/', $tokens[0])) {
                     $data = null;
                     $unit = $tokens[0];
                 } else {
@@ -59,7 +59,7 @@ class MetricConverter extends AbstractValueConverter
             }
 
             if (null !== $data) {
-                $data = !$attributeFieldInfo['attribute']->isDecimalsAllowed() && \preg_match('|^\d+$|', $data) ?
+                $data = !$attributeFieldInfo['attribute']->isDecimalsAllowed() && preg_match('|^\d+$|', $data) ?
                     (int) $data : (string) $data;
             }
 

@@ -31,7 +31,7 @@ class LabelRenderer
         }
 
         if ($fallbackOnCode) {
-            return \sprintf('[%s]', $referenceData->getCode());
+            return sprintf('[%s]', $referenceData->getCode());
         }
 
         return null;

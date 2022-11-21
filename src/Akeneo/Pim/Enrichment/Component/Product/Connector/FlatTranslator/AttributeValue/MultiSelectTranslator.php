@@ -35,7 +35,7 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
             $optionKeys
         );
 
-        $attributeOptionTranslations = \array_change_key_case($attributeOptionTranslations, CASE_LOWER);
+        $attributeOptionTranslations = array_change_key_case($attributeOptionTranslations, CASE_LOWER);
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
@@ -44,17 +44,17 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
                 continue;
             }
 
-            $optionCodes = \explode(',', $value);
-            $labelizedOptions = \array_map(
+            $optionCodes = explode(',', $value);
+            $labelizedOptions = array_map(
                 function ($optionCode) use ($attributeCode, $locale, $attributeOptionTranslations) {
                     $optionKey = self::generateOptionKey($attributeCode, $optionCode);
 
-                    return $attributeOptionTranslations[$optionKey][$locale] ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $optionCode);
+                    return $attributeOptionTranslations[$optionKey][$locale] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $optionCode);
                 },
                 $optionCodes
             );
 
-            $result[$valueIndex] = \implode(',', $labelizedOptions);
+            $result[$valueIndex] = implode(',', $labelizedOptions);
         }
 
         return $result;
@@ -67,13 +67,13 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
             if (null === $value || '' === $value) {
                 continue;
             }
-            $optionCodes = \explode(',', $value);
-            $currentOptionKeys = \array_map(
+            $optionCodes = explode(',', $value);
+            $currentOptionKeys = array_map(
                 static fn ($optionCode) => self::generateOptionKey($attributeCode, $optionCode),
                 $optionCodes
             );
 
-            $optionKeys = \array_merge($optionKeys, $currentOptionKeys);
+            $optionKeys = array_merge($optionKeys, $currentOptionKeys);
         }
 
         return $optionKeys;
@@ -81,6 +81,6 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
 
     private static function generateOptionKey(string $attributeCode, string $optionCode): string
     {
-        return \sprintf('%s.%s', \strtolower($attributeCode), \strtolower($optionCode));
+        return sprintf('%s.%s', strtolower($attributeCode), strtolower($optionCode));
     }
 }

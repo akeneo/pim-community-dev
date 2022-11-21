@@ -36,7 +36,7 @@ final class CleanCompletenessEvaluationResultsCommand extends Command
 
     protected function configure()
     {
-        $this->addOption('bulk-size', 's', InputOption::VALUE_REQUIRED, \sprintf('Bulk size (%d by default)', $this->bulkSize));
+        $this->addOption('bulk-size', 's', InputOption::VALUE_REQUIRED, sprintf('Bulk size (%d by default)', $this->bulkSize));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -122,8 +122,8 @@ SQL;
             )->fetchAllAssociative();
 
             if (!empty($results)) {
-                $lastProductUuidAsBytes = Uuid::fromString(\end($results)['product_uuid'])->getBytes();
-                yield \array_map(function (array $resultRow) {
+                $lastProductUuidAsBytes = Uuid::fromString(end($results)['product_uuid'])->getBytes();
+                yield array_map(function (array $resultRow) {
                     $resultRow['result'] = null !== $resultRow['result'] ? \json_decode($resultRow['result'], true) : [];
                     return $resultRow;
                 }, $results);
@@ -163,8 +163,8 @@ SQL;
             )->fetchAllAssociative();
 
             if (!empty($results)) {
-                $lastProductModelId = \end($results)['product_id'];
-                yield \array_map(function (array $resultRow) {
+                $lastProductModelId = end($results)['product_id'];
+                yield array_map(function (array $resultRow) {
                     $resultRow['result'] = null !== $resultRow['result'] ? \json_decode($resultRow['result'], true) : [];
                     return $resultRow;
                 }, $results);
@@ -192,9 +192,9 @@ SQL;
 
     private function countAttributesByChannelAndLocales(array $attributesList): array
     {
-        return \array_map(
-            fn ($attributesByLocale) => \array_map(
-                fn ($attributes) => \count($attributes),
+        return array_map(
+            fn ($attributesByLocale) => array_map(
+                fn ($attributes) => count($attributes),
                 $attributesByLocale
             ),
             $attributesList
@@ -207,8 +207,8 @@ SQL;
             return;
         }
 
-        $values = \implode(', ', \array_map(function (array $result) {
-            return \sprintf(
+        $values = implode(', ', array_map(function (array $result) {
+            return sprintf(
                 "(UUID_TO_BIN('%s'), '%s', '%s', '%s')",
                 $result['product_uuid'],
                 $result['criterion_code'],
@@ -233,8 +233,8 @@ SQL;
             return;
         }
 
-        $values = \implode(', ', \array_map(function (array $result) {
-            return \sprintf(
+        $values = implode(', ', array_map(function (array $result) {
+            return sprintf(
                 "(%d, '%s', '%s', '%s')",
                 $result['product_id'],
                 $result['criterion_code'],

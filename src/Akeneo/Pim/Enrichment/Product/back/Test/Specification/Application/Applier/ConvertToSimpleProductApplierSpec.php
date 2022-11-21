@@ -13,21 +13,22 @@ use PhpSpec\ObjectBehavior;
 
 class ConvertToSimpleProductApplierSpec extends ObjectBehavior
 {
-    public function let(RemoveParentInterface $removeParent)
+    function let(RemoveParentInterface $removeParent)
     {
         $this->beConstructedWith($removeParent);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(ConvertToSimpleProductApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_remove_parent_user_intent(
+    function it_applies_remove_parent_user_intent(
         RemoveParentInterface $removeParent,
         ProductInterface $product
-    ): void {
+    ): void
+    {
         $removeParentIntent = new ConvertToSimpleProduct();
         $product->isVariant()->willReturn(true);
         $removeParent->from($product)->shouldBeCalledOnce();
@@ -35,10 +36,11 @@ class ConvertToSimpleProductApplierSpec extends ObjectBehavior
         $this->apply($removeParentIntent, $product, 1);
     }
 
-    public function it_does_nothing_when_product_has_no_parent(
+    function it_does_nothing_when_product_has_no_parent(
         ProductInterface $product,
         RemoveParentInterface $removeParent
-    ): void {
+    ): void
+    {
         $removeParentIntent = new ConvertToSimpleProduct();
         $product->isVariant()->willReturn(false);
 
@@ -47,7 +49,7 @@ class ConvertToSimpleProductApplierSpec extends ObjectBehavior
         $this->apply($removeParentIntent, $product, 1);
     }
 
-    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

@@ -34,7 +34,7 @@ class FileNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof FileInfoInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof FileInfoInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool

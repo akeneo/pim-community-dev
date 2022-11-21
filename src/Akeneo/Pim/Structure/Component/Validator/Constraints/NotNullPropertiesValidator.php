@@ -35,14 +35,14 @@ class NotNullPropertiesValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, NotNullProperties::class);
         }
 
-        if (!\in_array($attribute->getType(), $this->supportedTypes)) {
+        if (!in_array($attribute->getType(), $this->supportedTypes)) {
             return;
         }
 
         $values = $attribute->getProperties();
 
         foreach ($constraint->properties as $propertyCode) {
-            if (!\array_key_exists($propertyCode, $values) ||
+            if (!array_key_exists($propertyCode, $values) ||
                 null === $values[$propertyCode] ||
                 '' === $values[$propertyCode]
             ) {

@@ -69,14 +69,14 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $products, array $options = [])
     {
-        $products = \array_unique($products, SORT_REGULAR);
+        $products = array_unique($products, SORT_REGULAR);
         foreach ($products as $product) {
             $this->validateProduct($product);
         }
 
         if (true !== ($options['force_save'] ?? false)) {
-            $products = \array_values(
-                \array_filter(
+            $products = array_values(
+                array_filter(
                     $products,
                     function (ProductInterface $product): bool {
                         return $product->isDirty();
@@ -93,13 +93,13 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(new GenericEvent($products, $options), StorageEvents::PRE_SAVE_ALL);
 
-        $areProductsNew = \array_map(function ($product) {
+        $areProductsNew = array_map(function ($product) {
             return null === $product->getCreated();
         }, $products);
 
         foreach ($products as $i => $product) {
             $this->eventDispatcher->dispatch(
-                new GenericEvent($product, \array_merge($options, ['is_new' => $areProductsNew[$i]])),
+                new GenericEvent($product, array_merge($options, ['is_new' => $areProductsNew[$i]])),
                 StorageEvents::PRE_SAVE
             );
             $this->uniqueDataSynchronizer->synchronize($product);
@@ -111,7 +111,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($products as $i => $product) {
             $this->eventDispatcher->dispatch(
-                new GenericEvent($product, \array_merge($options, ['is_new' => $areProductsNew[$i]])),
+                new GenericEvent($product, array_merge($options, ['is_new' => $areProductsNew[$i]])),
                 StorageEvents::POST_SAVE
             );
         }
@@ -130,7 +130,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     {
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Expects a %s, "%s" provided',
                     ProductInterface::class,
                     ClassUtils::getClass($product)

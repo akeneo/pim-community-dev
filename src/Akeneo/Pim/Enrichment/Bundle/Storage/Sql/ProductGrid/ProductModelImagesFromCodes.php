@@ -56,7 +56,7 @@ final class ProductModelImagesFromCodes
     {
         $codesPerImageLevel = $this->codesPerImageLevel($codes);
 
-        $images = \array_replace_recursive(
+        $images = array_replace_recursive(
             $this->getImagesFromCurrentOrParentProductModel(
                 $codesPerImageLevel['image_in_current_or_parent_product_model'],
                 $channelCode,
@@ -143,12 +143,12 @@ SQL;
 
         foreach ($rows as $row) {
             $codesPerLevel[$row['image_level']][] = $row['product_model_code'];
-            $key = \array_search($row['product_model_code'], $codes);
+            $key = array_search($row['product_model_code'], $codes);
             unset($codes[$key]);
         }
 
         // product model codes are not returned by the SQL request if the attribute as image is at level 0
-        $codesPerLevel['image_in_current_or_parent_product_model'] = \array_merge($codesPerLevel['image_in_current_or_parent_product_model'], $codes);
+        $codesPerLevel['image_in_current_or_parent_product_model'] = array_merge($codesPerLevel['image_in_current_or_parent_product_model'], $codes);
 
         return $codesPerLevel;
     }
@@ -187,8 +187,8 @@ SQL;
         $productModelsInfo = [];
 
         foreach ($rows as $row) {
-            $rawValues = \json_decode($row['raw_values'], true);
-            $filteredRawValues = \array_intersect_key($rawValues, [$row['attribute_code'] => true]);
+            $rawValues = json_decode($row['raw_values'], true);
+            $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
             $productModels[$row['code']] = $filteredRawValues;
             $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
             $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
@@ -268,8 +268,8 @@ SQL;
                 continue;
             }
 
-            $rawValues = \json_decode($row['raw_values'], true);
-            $filteredRawValues = \array_intersect_key($rawValues, [$row['attribute_code'] => true]);
+            $rawValues = json_decode($row['raw_values'], true);
+            $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
 
             $productModels[$row['code']] = $filteredRawValues;
             $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;

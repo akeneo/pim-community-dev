@@ -86,7 +86,7 @@ final class ProductRemover implements RemoverInterface, BulkRemoverInterface
         $this->eventDispatcher->dispatch(
             new RemoveEvent(
                 $products,
-                \array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), \array_keys($removedProducts))
+                array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), array_keys($removedProducts))
             ),
             StorageEvents::POST_REMOVE_ALL
         );

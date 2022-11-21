@@ -27,13 +27,13 @@ class BooleanNormalizer implements AxisValueLabelsNormalizer
             return $this->labelTranslator->translate(
                 'pim_common.yes',
                 $locale,
-                \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'yes')
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'yes')
             );
         }
         return $this->labelTranslator->translate(
             'pim_common.no',
             $locale,
-            \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'no')
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'no')
         );
     }
 

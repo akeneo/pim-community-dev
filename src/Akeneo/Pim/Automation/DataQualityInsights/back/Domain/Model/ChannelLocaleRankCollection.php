@@ -36,7 +36,7 @@ final class ChannelLocaleRankCollection
         $rankCollection->ranks = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
             $normalizedRanks,
             function ($normalizedRank) use ($getNormalizedRankValue) {
-                return Rank::fromInt(\intval($getNormalizedRankValue($normalizedRank)));
+                return Rank::fromInt(intval($getNormalizedRankValue($normalizedRank)));
             }
         );
 

@@ -21,7 +21,7 @@ final class DateToStringDataConverter implements ValueDataConverter
     public function supportsAttributes(AttributeInterface $sourceAttribute, AttributeInterface $targetAttribute): bool
     {
         return AttributeTypes::DATE === $sourceAttribute->getType() &&
-            \in_array($targetAttribute->getType(), [AttributeTypes::TEXT, AttributeTypes::TEXTAREA]);
+            in_array($targetAttribute->getType(), [AttributeTypes::TEXT, AttributeTypes::TEXTAREA]);
     }
 
     /**

@@ -106,7 +106,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         foreach ($productIdentifiers as $productIdentifier) {
             Assert::same($productIdentifier->getType(), ProductInterface::class);
             $batchedProductUuids[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
-            if (\count($batchedProductUuids) >= $this->batchSize) {
+            if (count($batchedProductUuids) >= $this->batchSize) {
                 $products = $this->productRepository->getItemsFromUuids($batchedProductUuids);
                 $this->updateAndSaveProducts($products);
                 $batchedProductUuids = [];
@@ -114,7 +114,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             }
         }
 
-        if (\count($batchedProductUuids) > 0) {
+        if (count($batchedProductUuids) > 0) {
             $products = $this->productRepository->getItemsFromUuids($batchedProductUuids);
             $this->updateAndSaveProducts($products);
             $this->cacheClearer->clear();
@@ -166,8 +166,8 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         // PIM-9798: Force save the products. For example if the required attributes are updated on the family,
         // the product has not changed but completeness does => Need to update it.
         $this->productSaver->saveAll($products, ['force_save' => true]);
-        $this->stepExecution->incrementSummaryInfo('process', \count($products));
-        $this->stepExecution->incrementProcessedItems(\count($products));
+        $this->stepExecution->incrementSummaryInfo('process', count($products));
+        $this->stepExecution->incrementProcessedItems(count($products));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 

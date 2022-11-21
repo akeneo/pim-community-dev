@@ -56,7 +56,7 @@ class RequiredAttributesMask
         }
 
         throw new \InvalidArgumentException(
-            \sprintf("The completeness family mask for family %s, channel %s and locale %s does not exist", $this->familyCode, $channelCode, $localeCode)
+            sprintf("The completeness family mask for family %s, channel %s and locale %s does not exist", $this->familyCode, $channelCode, $localeCode)
         );
     }
 

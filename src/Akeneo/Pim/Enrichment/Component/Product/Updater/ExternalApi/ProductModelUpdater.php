@@ -43,7 +43,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if (null !== $productModel->getParent() && \array_key_exists('parent', $data) && null === $data['parent']) {
+        if (null !== $productModel->getParent() && array_key_exists('parent', $data) && null === $data['parent']) {
             throw ImmutablePropertyException::immutableProperty(
                 'parent',
                 'NULL',
@@ -51,7 +51,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if (\array_key_exists('family_variant', $data) && null === $data['family_variant']) {
+        if (array_key_exists('family_variant', $data) && null === $data['family_variant']) {
             throw InvalidPropertyException::valueNotEmptyExpected(
                 'family_variant',
                 ProductModelInterface::class
@@ -60,7 +60,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
 
         $checkFamilyCode = false;
         $familyCode = null;
-        if (\array_key_exists('family', $data)) {
+        if (array_key_exists('family', $data)) {
             $familyCode = $data['family'];
             unset($data['family']);
             $checkFamilyCode = true;
@@ -81,10 +81,10 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     private function validateFamilyCode($familyCode, ProductModelInterface $productModel): void
     {
         if (null !== $productModel->getId()) {
-            if (!\is_string($familyCode) || empty($familyCode) || $productModel->getFamily()->getCode() !== $familyCode) {
+            if (!is_string($familyCode) || empty($familyCode) || $productModel->getFamily()->getCode() !== $familyCode) {
                 throw ImmutablePropertyException::immutableProperty(
                     'family',
-                    \is_scalar($familyCode) ? $familyCode : \gettype($familyCode),
+                    is_scalar($familyCode) ? $familyCode : gettype($familyCode),
                     ProductModelInterface::class
                 );
             }
@@ -94,13 +94,13 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             throw InvalidPropertyException::valueNotEmptyExpected('family', ProductModelInterface::class);
         }
 
-        if (!\is_string($familyCode)) {
+        if (!is_string($familyCode)) {
             throw InvalidPropertyTypeException::stringExpected('family', ProductModelInterface::class, $familyCode);
         }
 
         if (null !== $productModel->getFamilyVariant() && $familyCode !== $productModel->getFamily()->getCode()) {
             throw InvalidPropertyException::expected(
-                \sprintf(
+                sprintf(
                     'The family "%s" does not match the family of the variant "%s".',
                     $familyCode,
                     $productModel->getFamilyVariant()->getCode()

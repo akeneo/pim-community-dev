@@ -5,8 +5,8 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsToEvaluateQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -19,7 +19,8 @@ class EvaluateProductsAndProductModelsCriteriaTaskletSpec extends ObjectBehavior
         GetEntityIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
         EvaluateProducts                     $evaluateProducts,
         EvaluateProductModels                $evaluateProductModels,
-    ): void {
+    ): void
+    {
         $this->beConstructedWith($getProductUuidsToEvaluateQuery, $getProductModelsIdsToEvaluateQuery, $evaluateProducts, $evaluateProductModels, 1000, 2, 0, 0);
     }
 
@@ -28,7 +29,8 @@ class EvaluateProductsAndProductModelsCriteriaTaskletSpec extends ObjectBehavior
         GetEntityIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
         EvaluateProducts                     $evaluateProducts,
         EvaluateProductModels                $evaluateProductModels
-    ): void {
+    ): void
+    {
         $stepExecution = new StepExecution('name', new JobExecution());
         $this->setStepExecution($stepExecution);
 

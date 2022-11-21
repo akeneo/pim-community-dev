@@ -53,7 +53,7 @@ class PropertyRemover implements PropertyRemoverInterface
 
         $remover = $this->removerRegistry->getRemover($field);
         if (null === $remover) {
-            throw new \LogicException(\sprintf('No remover found for field "%s"', $field));
+            throw new \LogicException(sprintf('No remover found for field "%s"', $field));
         }
 
         if ($remover instanceof AttributeRemoverInterface) {
@@ -62,9 +62,9 @@ class PropertyRemover implements PropertyRemoverInterface
         } elseif ($remover instanceof FieldRemoverInterface) {
             $remover->removeFieldData($entityWithValues, $field, $data, $options);
         } else {
-            throw new \RuntimeException(\sprintf(
+            throw new \RuntimeException(sprintf(
                 "The remover must implements AttributeRemoverInterface or FieldRemoverInterface, '%s' given",
-                \get_class($remover)
+                get_class($remover)
             ));
         }
 

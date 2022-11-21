@@ -42,7 +42,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
             null;
 
         foreach (['labels', 'guidelines', 'group_labels'] as $field) {
-            if (\array_key_exists($field, $normalizedAttribute) && [] === $normalizedAttribute[$field]) {
+            if (array_key_exists($field, $normalizedAttribute) && [] === $normalizedAttribute[$field]) {
                 $normalizedAttribute[$field] = (object)[];
             }
         }

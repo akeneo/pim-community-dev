@@ -54,7 +54,7 @@ class WrongValuesOnVariantProductCleaner
         $attributeLevel = $familyVariant->getLevelForAttributeCode($attribute->getCode());
         $hasAttributeInParentLevel = $attributeLevel !== $familyVariant->getNumberOfLevel();
         $attributeCodesInLastLevel = $variantProduct->getValuesForVariation()->getAttributeCodes();
-        $hasValueForThisAttributeInLastLevel = \in_array($attribute->getCode(), $attributeCodesInLastLevel);
+        $hasValueForThisAttributeInLastLevel = in_array($attribute->getCode(), $attributeCodesInLastLevel);
 
         return $hasAttributeInParentLevel && $hasValueForThisAttributeInLastLevel;
     }

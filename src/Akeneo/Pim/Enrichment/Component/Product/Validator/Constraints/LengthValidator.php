@@ -16,7 +16,7 @@ class LengthValidator extends BaseLengthValidator
         if (!$constraint instanceof Length) {
             throw new UnexpectedTypeException($constraint, Length::class);
         }
-        if (!\is_scalar($value) && !(\is_object($value) && \method_exists($value, '__toString'))) {
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
             return parent::validate($value, $constraint);
         }
         if (null === $value || ('' === $value && ($constraint->allowEmptyString ?? true))) {
@@ -28,9 +28,9 @@ class LengthValidator extends BaseLengthValidator
 
         $stringValue = (string) $value;
 
-        $length = \strlen($stringValue);
-        if (!$invalidCharset = !@\mb_check_encoding($stringValue, $constraint->charset)) {
-            $length = \mb_strlen($stringValue, $constraint->charset);
+        $length = strlen($stringValue);
+        if (!$invalidCharset = !@mb_check_encoding($stringValue, $constraint->charset)) {
+            $length = mb_strlen($stringValue, $constraint->charset);
         }
 
         if (null !== $constraint->max && $length > $constraint->max && $constraint->min !== $constraint->max) {

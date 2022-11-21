@@ -29,7 +29,7 @@ class ArrayComparator implements ComparatorInterface
      */
     public function supports($column)
     {
-        return \in_array($column, $this->columns);
+        return in_array($column, $this->columns);
     }
 
     /**
@@ -37,12 +37,12 @@ class ArrayComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        if (\is_array($data)) {
-            \sort($data);
+        if (is_array($data)) {
+            sort($data);
         }
 
-        if (\is_array($originals)) {
-            \sort($originals);
+        if (is_array($originals)) {
+            sort($originals);
         }
 
         if ($originals === $data) {

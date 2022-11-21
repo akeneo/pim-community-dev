@@ -64,8 +64,8 @@ SQL;
         )->fetchAllAssociative();
 
         foreach ($queryResults as $queryResult) {
-            $categoryCodes = \json_decode($queryResult['category_codes']);
-            \sort($categoryCodes);
+            $categoryCodes = json_decode($queryResult['category_codes']);
+            sort($categoryCodes);
             $results[$queryResult['product_model_code']] = $categoryCodes;
         }
 

@@ -37,9 +37,9 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
      */
     public function forAttributeAndValues(string $attributeCode, string $backendType, array $values): iterable
     {
-        $attributePath = \sprintf('values.%s-%s.*', $attributeCode, $backendType);
+        $attributePath = sprintf('values.%s-%s.*', $attributeCode, $backendType);
 
-        $query = ([] === $values) ? '*' : \implode(' OR ', $values);
+        $query = ([] === $values) ? '*' : implode(' OR ', $values);
 
         $baseQuery = [
             '_source' => ['id', 'identifier', 'document_type'],
@@ -74,7 +74,7 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
             $response = $this->client->search($query);
 
             $hits = $response['hits']['hits'] ?? [];
-            if (0 === \count($hits)) {
+            if (0 === count($hits)) {
                 break;
             }
 
@@ -84,7 +84,7 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
             }
             yield $identifiers;
 
-            $lastResult = \end($hits);
+            $lastResult = end($hits);
             $searchAfter = $lastResult['sort'];
         }
     }

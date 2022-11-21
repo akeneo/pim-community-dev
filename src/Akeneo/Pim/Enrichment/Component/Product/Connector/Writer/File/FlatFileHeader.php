@@ -114,7 +114,7 @@ final class FlatFileHeader
             $channelCode,
             $localizable,
             $localeCodes,
-            (\in_array($attributeType, $mediaAttributeTypes)),
+            (in_array($attributeType, $mediaAttributeTypes)),
             (AttributeTypes::METRIC === $attributeType),
             (AttributeTypes::PRICE_COLLECTION === $attributeType),
             $channelCurrencyCodes,
@@ -136,7 +136,7 @@ final class FlatFileHeader
      */
     public function generateHeaderStrings(): array
     {
-        if ($this->isLocaleSpecific && \count(\array_intersect($this->localeCodes, $this->specificToLocales)) === 0) {
+        if ($this->isLocaleSpecific && count(array_intersect($this->localeCodes, $this->specificToLocales)) === 0) {
             return [];
         }
 
@@ -145,19 +145,19 @@ final class FlatFileHeader
         if ($this->isLocalizable && $this->isScopable) {
             foreach ($this->localeCodes as $localeCode) {
                 if (!$this->isLocaleSpecific ||
-                    ($this->isLocaleSpecific && \in_array($localeCode, $this->specificToLocales))) {
-                    $prefixes[] = \sprintf('%s-%s-%s', $this->code, $localeCode, $this->channelCode);
+                    ($this->isLocaleSpecific && in_array($localeCode, $this->specificToLocales))) {
+                    $prefixes[] = sprintf('%s-%s-%s', $this->code, $localeCode, $this->channelCode);
                 }
             }
         } elseif ($this->isLocalizable) {
             foreach ($this->localeCodes as $localeCode) {
                 if (!$this->isLocaleSpecific ||
-                    ($this->isLocaleSpecific && \in_array($localeCode, $this->specificToLocales))) {
-                    $prefixes[] = \sprintf('%s-%s', $this->code, $localeCode);
+                    ($this->isLocaleSpecific && in_array($localeCode, $this->specificToLocales))) {
+                    $prefixes[] = sprintf('%s-%s', $this->code, $localeCode);
                 }
             }
         } elseif ($this->isScopable) {
-            $prefixes[] = \sprintf('%s-%s', $this->code, $this->channelCode);
+            $prefixes[] = sprintf('%s-%s', $this->code, $this->channelCode);
         } else {
             $prefixes[] = $this->code;
         }
@@ -167,13 +167,13 @@ final class FlatFileHeader
         if ($this->usesCurrencies) {
             foreach ($prefixes as $prefix) {
                 foreach ($this->channelCurrencyCodes as $currencyCode) {
-                    $headers[] = \sprintf('%s-%s', $prefix, $currencyCode);
+                    $headers[] = sprintf('%s-%s', $prefix, $currencyCode);
                 }
             }
         } elseif ($this->usesUnit) {
             foreach ($prefixes as $prefix) {
                 $headers[] = $prefix;
-                $headers[] = \sprintf('%s-unit', $prefix);
+                $headers[] = sprintf('%s-unit', $prefix);
             }
         } else {
             $headers = $prefixes;

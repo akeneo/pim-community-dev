@@ -20,9 +20,9 @@ class HrefMessageParameter implements MessageParameterInterface
     public function __construct(string $title, string $href)
     {
         $this->title = $title;
-        if (false === \filter_var($href, FILTER_VALIDATE_URL)) {
+        if (false === filter_var($href, FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Class "%s" need an URL as href argument, "%s" given.',
                     self::class,
                     $href

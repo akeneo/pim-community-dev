@@ -109,7 +109,7 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
             $uuids[] = $uuid->toString();
         }
         Assert::assertCount(6, $productUuidCursor);
-        \sort($uuids);
+        sort($uuids);
 
         $productUuidCursor = $this->launchPQBCommand(
             ['updated' => [['operator' => '>', 'value' => $dateInThePast]]],

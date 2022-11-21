@@ -59,7 +59,7 @@ class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
 
         foreach ($productValues as $channel => $localeValues) {
             foreach ($localeValues as $localeCode => $value) {
-                if (!$attribute->isLocaleSpecific() || $localeCode === '<all_locales>' || \in_array($localeCode, $attribute->availableLocaleCodes())) {
+                if (!$attribute->isLocaleSpecific() || $localeCode === '<all_locales>' || in_array($localeCode, $attribute->availableLocaleCodes())) {
                     $filteredProductValues[$channel][$localeCode] = $value;
                 }
             }

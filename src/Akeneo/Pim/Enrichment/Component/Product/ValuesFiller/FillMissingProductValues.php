@@ -69,12 +69,12 @@ final class FillMissingProductValues implements FillMissingValuesInterface
 
         $productValuesInPivotFormat = $this->createProductValuesInPivotFormat($productStandardFormat);
         $nullValuesInPivotFormat = $this->createNullValuesInPivotFormat($familyCode);
-        $productValuesWithNullValuesInPivotFormat = \array_replace_recursive($nullValuesInPivotFormat, $productValuesInPivotFormat);
+        $productValuesWithNullValuesInPivotFormat = array_replace_recursive($nullValuesInPivotFormat, $productValuesInPivotFormat);
         $standardProductValues = $this->pivotFormatToStandardFormat($productValuesWithNullValuesInPivotFormat);
 
         $priceProductValuesInPivotFormat = $this->createPriceProductValuesInPivotFormat($productStandardFormat);
         $nullPriceValuesInPivotFormat = $this->createNullPriceValuesInPivotFormat($familyCode);
-        $priceProductValuesWithNullValuesInPivotFormat = \array_replace_recursive($nullPriceValuesInPivotFormat, $priceProductValuesInPivotFormat);
+        $priceProductValuesWithNullValuesInPivotFormat = array_replace_recursive($nullPriceValuesInPivotFormat, $priceProductValuesInPivotFormat);
         $standardPriceProductValues = $this->pivotFormatToStandardFormatForPriceValues($priceProductValuesWithNullValuesInPivotFormat);
 
         $productStandardFormat['values'] = $standardProductValues + $standardPriceProductValues;
@@ -96,7 +96,7 @@ final class FillMissingProductValues implements FillMissingValuesInterface
         $nullValues = [];
 
         $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($familyCode);
-        $nonPriceAttributes = \array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
+        $nonPriceAttributes = array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
             return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
         });
 
@@ -162,11 +162,11 @@ final class FillMissingProductValues implements FillMissingValuesInterface
      */
     private function createProductValuesInPivotFormat(array $productStandardFormat): array
     {
-        $attributeCodes = \array_map(function ($key) {
+        $attributeCodes = array_map(function ($key) {
             return (string) $key;
-        }, \array_keys($productStandardFormat['values']));
+        }, array_keys($productStandardFormat['values']));
         $attributes = $this->getAttributes->forCodes($attributeCodes);
-        $nonPriceAttributes = \array_filter($attributes, function (Attribute $attribute): bool {
+        $nonPriceAttributes = array_filter($attributes, function (Attribute $attribute): bool {
             return AttributeTypes::PRICE_COLLECTION !== $attribute->type();
         });
 
@@ -218,7 +218,7 @@ final class FillMissingProductValues implements FillMissingValuesInterface
         $nullValues = [];
         $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($familyCode);
 
-        $priceAttributes = \array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
+        $priceAttributes = array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
             return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
         });
 
@@ -265,11 +265,11 @@ final class FillMissingProductValues implements FillMissingValuesInterface
      */
     private function createPriceProductValuesInPivotFormat(array $productStandardFormat): array
     {
-        $attributeCodes = \array_map(function ($key) {
+        $attributeCodes = array_map(function ($key) {
             return (string) $key;
-        }, \array_keys($productStandardFormat['values']));
+        }, array_keys($productStandardFormat['values']));
         $attributes = $this->getAttributes->forCodes($attributeCodes);
-        $priceAttributes = \array_filter($attributes, function (Attribute $attribute): bool {
+        $priceAttributes = array_filter($attributes, function (Attribute $attribute): bool {
             return AttributeTypes::PRICE_COLLECTION === $attribute->type();
         });
 
@@ -342,7 +342,7 @@ final class FillMissingProductValues implements FillMissingValuesInterface
             }
         }
 
-        \ksort($currencies);
+        ksort($currencies);
 
         return $currencies;
     }
@@ -363,7 +363,7 @@ final class FillMissingProductValues implements FillMissingValuesInterface
 
     private function sortCurrenciesByCode(array $currencies): array
     {
-        \usort(
+        usort(
             $currencies,
             function (CurrencyInterface $a, CurrencyInterface $b) {
                 return $a->getCode() <=> $b->getCode();

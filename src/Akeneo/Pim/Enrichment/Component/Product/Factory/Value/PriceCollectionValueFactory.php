@@ -137,7 +137,7 @@ final class PriceCollectionValueFactory implements ValueFactory
 
         if (false === $sort) {
             throw new \LogicException(
-                \sprintf('Impossible to perform multisort on the following array: %s', \json_encode($arrayPrices)),
+                sprintf('Impossible to perform multisort on the following array: %s', json_encode($arrayPrices)),
                 0,
                 static::class
             );

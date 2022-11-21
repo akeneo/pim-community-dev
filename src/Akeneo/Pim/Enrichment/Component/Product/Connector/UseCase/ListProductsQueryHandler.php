@@ -121,7 +121,7 @@ final class ListProductsQueryHandler
             $queryLocales,
         );
 
-        $this->eventDispatcher->dispatch(new ReadProductsEvent(\count($connectorProductList->connectorProducts())));
+        $this->eventDispatcher->dispatch(new ReadProductsEvent(count($connectorProductList->connectorProducts())));
 
         if ($query->withQualityScores()) {
             $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList(

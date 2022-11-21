@@ -87,7 +87,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $productStandard = $this->normalizer->normalize(
             $entityWithValues,
             'standard',
-            \array_merge($normalizerContext, ['with_association_uuids' => $withUuids])
+            array_merge($normalizerContext, ['with_association_uuids' => $withUuids])
         );
 
         if ($entityWithValues instanceof ProductInterface) {
@@ -108,12 +108,12 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $selectedProperties = $parameters->get('selected_properties');
 
         if ($this->areAttributesToFilter($parameters)) {
-            if (\in_array('identifier', $selectedProperties)) {
+            if (in_array('identifier', $selectedProperties)) {
                 $identifier = $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
                 $selectedProperties[] = $identifier->getCode();
                 $selectedProperties[] = 'code';
             }
-            if (\in_array('family', $selectedProperties)) {
+            if (in_array('family', $selectedProperties)) {
                 $selectedProperties[] = 'family_variant';
             }
             $productStandard = $this->filterProperties($productStandard, $selectedProperties);
@@ -137,14 +137,14 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $propertiesToExport = [];
         foreach ($product as $codeProperty => $property) {
             if ('values' === $codeProperty) {
-                $propertiesToExport['values'] = \array_filter(
+                $propertiesToExport['values'] = array_filter(
                     $property,
                     function ($attributeCode) use ($selectedProperties) {
-                        return \in_array($attributeCode, $selectedProperties);
+                        return in_array($attributeCode, $selectedProperties);
                     },
                     ARRAY_FILTER_USE_KEY
                 );
-            } elseif (\in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty || 'uuid' === $codeProperty) {
+            } elseif (in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty || 'uuid' === $codeProperty) {
                 $propertiesToExport[$codeProperty] = $property;
             } elseif ('code' === $codeProperty) {
                 $propertiesToExport['identifier'] = $property;

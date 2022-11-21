@@ -20,7 +20,7 @@ class FileExtensionValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (\is_string($value)) {
+        if (is_string($value)) {
             $this->validateFileExtension($value, $constraint);
         }
     }
@@ -38,12 +38,12 @@ class FileExtensionValidator extends ConstraintValidator
         }
 
         if (!empty($constraint->allowedExtensions)) {
-            $extensionTokens = \explode('.', $filePath);
-            $extension = \end($extensionTokens);
-            if (!\in_array(\strtolower($extension), $constraint->allowedExtensions)) {
+            $extensionTokens = explode('.', $filePath);
+            $extension = end($extensionTokens);
+            if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->buildViolation(
                     $constraint->extensionsMessage,
-                    ['%extensions%' => \implode(', ', $constraint->allowedExtensions)]
+                    ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
                 )->addViolation();
             }
         }

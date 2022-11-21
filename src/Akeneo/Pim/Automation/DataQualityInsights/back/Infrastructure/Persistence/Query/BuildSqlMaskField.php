@@ -22,7 +22,7 @@ class BuildSqlMaskField
 
     public function __invoke(): string
     {
-        if (\count($this->attributeCases) === 0) {
+        if (count($this->attributeCases) === 0) {
             return $this->getDefaultMask();
         }
         return $this->getMaskWithCases($this->formatAttributeCases());
@@ -50,7 +50,7 @@ SQL;
         foreach ($this->attributeCases as $attributeCase) {
             $formattedCases[] = $attributeCase->getCase();
         }
-        return \implode(' ', $formattedCases);
+        return implode(' ', $formattedCases);
     }
 
     private function getMaskWithCases(string $cases): string

@@ -30,7 +30,7 @@ class ValidRegexValidator extends ConstraintValidator
         }
 
         if ($value) {
-            if (false === @\preg_match($value, null)) {
+            if (false === @preg_match($value, null)) {
                 $this->context->buildViolation($constraint->message)
                     ->addViolation();
             }

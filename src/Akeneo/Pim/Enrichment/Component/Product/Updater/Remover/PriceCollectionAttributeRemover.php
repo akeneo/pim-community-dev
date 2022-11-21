@@ -92,7 +92,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         if (null !== $productValue) {
             $prices = [];
             foreach ($productValue->getData() as $price) {
-                if (!\in_array($price->getCurrency(), $currencyToRemove)) {
+                if (!in_array($price->getCurrency(), $currencyToRemove)) {
                     $prices[] = ['amount' => $price->getData(), 'currency' => $price->getCurrency()];
                 }
             }
@@ -113,7 +113,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      */
     protected function checkData(AttributeInterface $attribute, $data): void
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
@@ -122,7 +122,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         }
 
         foreach ($data as $price) {
-            if (!\is_array($price)) {
+            if (!is_array($price)) {
                 throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->getCode(),
                     static::class,
@@ -130,7 +130,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 );
             }
 
-            if (!\array_key_exists('amount', $price)) {
+            if (!array_key_exists('amount', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
@@ -139,7 +139,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 );
             }
 
-            if (!\array_key_exists('currency', $price)) {
+            if (!array_key_exists('currency', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
@@ -148,7 +148,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 );
             }
 
-            if (!\in_array($price['currency'], $this->findActivatedCurrencies->forAllChannels())) {
+            if (!in_array($price['currency'], $this->findActivatedCurrencies->forAllChannels())) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
                     'currency code',

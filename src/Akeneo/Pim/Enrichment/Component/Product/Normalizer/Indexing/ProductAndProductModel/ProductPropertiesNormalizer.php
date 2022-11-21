@@ -140,7 +140,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
         );
 
         foreach ($this->additionalDataNormalizers as $normalizer) {
-            $data = \array_merge($data, $normalizer->normalize($product, $format, $context));
+            $data = array_merge($data, $normalizer->normalize($product, $format, $context));
         }
 
         return $data;
@@ -161,7 +161,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
             return [];
         }
 
-        $valuePath = \sprintf('%s-text', $family->getAttributeAsLabel()->getCode());
+        $valuePath = sprintf('%s-text', $family->getAttributeAsLabel()->getCode());
         if (!isset($values[$valuePath])) {
             return [];
         }
@@ -368,7 +368,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
                 $parent = $parent->getParent();
             }
 
-            $date = \max($dates);
+            $date = max($dates);
         }
 
         return $date;

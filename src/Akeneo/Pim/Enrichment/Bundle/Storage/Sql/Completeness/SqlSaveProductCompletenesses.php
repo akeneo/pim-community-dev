@@ -61,7 +61,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
 
         $deleteAndInsertFunction = function () use ($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode) {
-            $productUuidsAsBytes = \array_unique(\array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
+            $productUuidsAsBytes = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
                 return Uuid::fromString($productCompletenessCollection->productId())->getBytes();
             }, $productCompletenessCollections));
 
@@ -73,9 +73,9 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
 
             $numberCompletenessRow = 0;
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
-                $numberCompletenessRow += \count($productCompletenessCollection);
+                $numberCompletenessRow += count($productCompletenessCollection);
             }
-            $placeholders = \implode(',', \array_fill(0, $numberCompletenessRow, '(?, ?, UUID_TO_BIN(?), ?, ?)'));
+            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, UUID_TO_BIN(?), ?, ?)'));
 
             if (empty($placeholders)) {
                 return;
@@ -158,8 +158,8 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                     throw $e;
                 }
 
-                $this->logger->warning(\sprintf('Deadlock occurred when persisting the completeness, %s/4 retry', $retry));
-                \usleep(300000 + \rand(50000, $retry * 100000));
+                $this->logger->warning(sprintf('Deadlock occurred when persisting the completeness, %s/4 retry', $retry));
+                usleep(300000 + rand(50000, $retry * 100000));
             }
         }
     }
@@ -187,7 +187,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             $this->connection->executeQuery('COMMIT');
         } finally {
             $this->connection->executeQuery('UNLOCK TABLES');
-            $this->connection->executeQuery(\sprintf('SET autocommit=%d', $formerAutocommitValue));
+            $this->connection->executeQuery(sprintf('SET autocommit=%d', $formerAutocommitValue));
         }
     }
 }

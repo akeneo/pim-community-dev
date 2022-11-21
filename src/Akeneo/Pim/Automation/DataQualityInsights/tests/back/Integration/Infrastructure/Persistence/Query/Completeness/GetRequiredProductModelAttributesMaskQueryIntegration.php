@@ -131,7 +131,7 @@ class GetRequiredProductModelAttributesMaskQueryIntegration extends Completeness
             'a_non_localizable_scopable_locale_specific-tablet-<all_locales>',
         ], $tabletEnUS->mask());
 
-        $this->assertEqualsCanonicalizing([
+        $this->assertEqualsCanonicalizing( [
             'a_price-EUR-USD-<all_channels>-<all_locales>',
             'a_localizable_non_scopable_price-EUR-USD-<all_channels>-fr_FR',
             'a_non_localizable_non_scopable_text-<all_channels>-<all_locales>',

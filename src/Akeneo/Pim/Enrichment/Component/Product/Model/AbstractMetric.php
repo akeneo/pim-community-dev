@@ -93,7 +93,7 @@ abstract class AbstractMetric implements MetricInterface
             return false;
         }
 
-        if (!\is_string($metric->getData()) || !\is_string($this->data)) {
+        if (!is_string($metric->getData()) || !is_string($this->data)) {
             return $metric->getData() === $this->data;
         }
 
@@ -101,7 +101,7 @@ abstract class AbstractMetric implements MetricInterface
             return false;
         }
 
-        return 0 === \bccomp($metric->getData(), $this->data, 50);
+        return 0 === bccomp($metric->getData(), $this->data, 50);
     }
 
     /**
@@ -109,8 +109,8 @@ abstract class AbstractMetric implements MetricInterface
      */
     public function __toString()
     {
-        return \join(' ', \array_filter([
-            $this->data !== null ? \sprintf('%.4F', $this->data) : null,
+        return join(' ', array_filter([
+            $this->data !== null ? sprintf('%.4F', $this->data) : null,
             $this->unit,
         ]));
     }

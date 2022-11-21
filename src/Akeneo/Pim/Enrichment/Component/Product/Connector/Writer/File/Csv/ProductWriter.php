@@ -81,7 +81,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
     {
         $this->hasItems = true;
         foreach ($items as $item) {
-            if (isset($item['family']) && !\in_array($item['family'], $this->familyCodes)) {
+            if (isset($item['family']) && !in_array($item['family'], $this->familyCodes)) {
                 $this->familyCodes[] = $item['family'];
             }
         }
@@ -123,7 +123,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
         $headerStrings = [];
         foreach ($headers as $header) {
             if ($withMedia || !$header->isMedia()) {
-                $headerStrings = \array_merge(
+                $headerStrings = array_merge(
                     $headerStrings,
                     $header->generateHeaderStrings()
                 );

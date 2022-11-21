@@ -49,7 +49,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
             return;
         }
 
-        $this->initializeProductModelCriteria(\intval($subject->getId()));
+        $this->initializeProductModelCriteria(intval($subject->getId()));
     }
 
     private function initializeProductModelCriteria(int $productModelId): void

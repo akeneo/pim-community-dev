@@ -11,12 +11,12 @@ use PhpSpec\ObjectBehavior;
 
 class TableValueUserIntentFactorySpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(TableValueUserIntentFactory::class);
     }
 
-    public function it_returns_set_table_user_intent()
+    function it_returns_set_table_user_intent()
     {
         $this->create(AttributeTypes::TABLE, 'a_table', [
             'data' => [['average_nutritional_value' => 'carbohydrate', 'per_100_g' => '100']],
@@ -25,7 +25,7 @@ class TableValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetTableValue('a_table', null, null, [['average_nutritional_value' => 'carbohydrate', 'per_100_g' => '100']]));
     }
 
-    public function it_returns_clear_value_user_intent()
+    function it_returns_clear_value_user_intent()
     {
         $this->create(AttributeTypes::TABLE, 'a_table', [
             'data' => null,
@@ -34,7 +34,7 @@ class TableValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new ClearValue('a_table', null, null));
     }
 
-    public function it_throws_an_exception_if_data_is_not_valid()
+    function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', [AttributeTypes::TABLE, 'a_table', ['value']]);

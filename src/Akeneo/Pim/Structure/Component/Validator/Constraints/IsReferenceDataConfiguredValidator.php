@@ -48,15 +48,15 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
         }
 
         if (null !== $this->registry &&
-            \in_array($attribute->getType(), $this->referenceDataTypes) &&
+            in_array($attribute->getType(), $this->referenceDataTypes) &&
             !$this->registry->has($referenceDataName)
         ) {
-            $references = \array_keys($this->registry->all());
+            $references = array_keys($this->registry->all());
 
             $this->context
                 ->buildViolation($constraint->message)
                 ->setParameter('%reference_data_name%', $referenceDataName)
-                ->setParameter('%references%', \implode(', ', $references))
+                ->setParameter('%references%', implode(', ', $references))
                 ->atPath($constraint->propertyPath)
                 ->addViolation();
         }

@@ -140,7 +140,7 @@ class ProductCommentController
         }
 
         $product = $this->findProductOr404($uuid);
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
         $form = $this->formFactory->create(CommentType::class, $comment, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -177,7 +177,7 @@ class ProductCommentController
 
         $product = $this->findProductOr404($uuid);
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $data['parent'] = $commentId;
 
         $reply = $this->commentBuilder->buildComment($product, $this->getUser());
@@ -224,7 +224,7 @@ class ProductCommentController
 
         if (!$product) {
             throw new NotFoundHttpException(
-                \sprintf('Product with uuid %s could not be found.', $uuid)
+                sprintf('Product with uuid %s could not be found.', $uuid)
             );
         }
 
@@ -242,7 +242,7 @@ class ProductCommentController
             return null;
         }
 
-        if (!\is_object($user = $token->getUser())) {
+        if (!is_object($user = $token->getUser())) {
             return null;
         }
 

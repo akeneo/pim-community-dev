@@ -48,21 +48,21 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         $normalized = $value->normalize();
 
         foreach ($normalized as $associationTypeCode => $targets) {
-            $propertyPath = \sprintf('%s', $associationTypeCode);
-            $productsPropertyPath = \sprintf('%s.products', $propertyPath);
-            $productModelsPropertyPath = \sprintf('%s.product_models', $propertyPath);
+            $propertyPath = sprintf('%s', $associationTypeCode);
+            $productsPropertyPath = sprintf('%s.products', $propertyPath);
+            $productModelsPropertyPath = sprintf('%s.product_models', $propertyPath);
 
             $this->validateAssociationType($associationTypeCode, $propertyPath);
-            $this->validateLinkTypes(\array_keys($targets), $propertyPath);
+            $this->validateLinkTypes(array_keys($targets), $propertyPath);
 
             foreach ($targets['products'] as $index => $quantifiedLink) {
-                $quantityPropertyPath = \sprintf('%s[%d].quantity', $productsPropertyPath, $index);
+                $quantityPropertyPath = sprintf('%s[%d].quantity', $productsPropertyPath, $index);
 
                 $this->validateAssociationQuantity($quantifiedLink['quantity'], $quantityPropertyPath);
             }
 
             foreach ($targets['product_models'] as $index => $quantifiedLink) {
-                $quantityPropertyPath = \sprintf('%s[%d].quantity', $productModelsPropertyPath, $index);
+                $quantityPropertyPath = sprintf('%s[%d].quantity', $productModelsPropertyPath, $index);
 
                 $this->validateAssociationQuantity($quantifiedLink['quantity'], $quantityPropertyPath);
             }
@@ -71,7 +71,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $this->validateProductsExist($targets['product_uuids'] ?? [], $productsPropertyPath);
             $this->validateProductModelsExist($targets['product_models'], $productModelsPropertyPath);
 
-            $totalQuantifiedLinkCount = \count($targets['product_models']) + \count($targets['products']);
+            $totalQuantifiedLinkCount = count($targets['product_models']) + count($targets['products']);
             $this->validateTotalCount($totalQuantifiedLinkCount, $propertyPath);
         }
     }
@@ -107,12 +107,12 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
     private function validateLinkTypes(array $linkTypes, string $propertyPath): void
     {
         foreach ($linkTypes as $linkType) {
-            if (!\in_array($linkType, self::ALLOWED_LINK_TYPES)) {
+            if (!in_array($linkType, self::ALLOWED_LINK_TYPES)) {
                 $this->context->buildViolation(
                     QuantifiedAssociationsConstraint::LINK_TYPE_UNEXPECTED_MESSAGE,
                     [
                         '{{ value }}' => $linkType,
-                        '{{ allowed }}' => \implode(',', self::ALLOWED_LINK_TYPES),
+                        '{{ allowed }}' => implode(',', self::ALLOWED_LINK_TYPES),
                     ]
                 )
                     ->atPath($propertyPath)
@@ -141,13 +141,13 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $productUuids
         );
 
-        $nonExistingProducts = \array_merge($nonExistingProductIdentifiers, $nonExistingProductUuids);
+        $nonExistingProducts = array_merge($nonExistingProductIdentifiers, $nonExistingProductUuids);
 
-        if (\count($nonExistingProducts) > 0) {
+        if (count($nonExistingProducts) > 0) {
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::PRODUCTS_DO_NOT_EXIST_MESSAGE,
                 [
-                    '{{ values }}' => \implode(', ', $nonExistingProducts),
+                    '{{ values }}' => implode(', ', $nonExistingProducts),
                 ]
             )
                 ->atPath($propertyPath)
@@ -158,7 +158,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     private function validateProductModelsExist(array $quantifiedLinks, string $propertyPath): void
     {
-        $productModelCodes = \array_map(
+        $productModelCodes = array_map(
             function ($quantifiedLink) {
                 return $quantifiedLink['identifier'];
             },
@@ -166,11 +166,11 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         );
 
         $nonExistingProductModelCodes = $this->findNonExistingProductModelCodesQuery->execute($productModelCodes);
-        if (\count($nonExistingProductModelCodes) > 0) {
+        if (count($nonExistingProductModelCodes) > 0) {
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::PRODUCT_MODELS_DO_NOT_EXIST_MESSAGE,
                 [
-                    '{{ values }}' => \implode(', ', $nonExistingProductModelCodes),
+                    '{{ values }}' => implode(', ', $nonExistingProductModelCodes),
                 ]
             )
                 ->atPath($propertyPath)
@@ -181,9 +181,9 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     private function validateAssociationQuantity($quantity, string $propertyPath): void
     {
-        if (!\preg_match('/^[0-9]{1,10}$/', $quantity)
-            || \intval($quantity) < self::MIN_QUANTITY
-            || \intval($quantity) > self::MAX_QUANTITY) {
+        if (!preg_match('/^[0-9]{1,10}$/', $quantity)
+            || intval($quantity) < self::MIN_QUANTITY
+            || intval($quantity) > self::MAX_QUANTITY) {
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::INVALID_QUANTITY_MESSAGE,
                 [

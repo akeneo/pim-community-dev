@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UpsertProductHandlerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
@@ -57,12 +57,12 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_intializable()
+    function it_is_intializable()
     {
         $this->shouldHaveType(UpsertProductHandler::class);
     }
 
-    public function it_creates_updates_and_saves_a_product(
+    function it_creates_updates_and_saves_a_product(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
@@ -91,7 +91,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    public function it_fetches_updates_and_saves_a_product(
+    function it_fetches_updates_and_saves_a_product(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
@@ -121,7 +121,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    public function it_does_not_dispatch_event_when_product_was_not_updated(
+    function it_does_not_dispatch_event_when_product_was_not_updated(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
@@ -153,7 +153,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    public function it_throws_an_exception_when_command_is_not_valid(
+    function it_throws_an_exception_when_command_is_not_valid(
         ValidatorInterface $validator,
         SaverInterface $productSaver,
         TokenStorageInterface $tokenStorage,
@@ -176,7 +176,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $this->shouldThrow(new ViolationsException($violations))->during('__invoke', [$command]);
     }
 
-    public function it_throws_an_exception_when_product_is_not_valid(
+    function it_throws_an_exception_when_product_is_not_valid(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
@@ -203,7 +203,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $this->shouldThrow(new LegacyViolationsException($violations))->during('__invoke', [$command]);
     }
 
-    public function it_throws_an_exception_when_updater_throws_an_exception(
+    function it_throws_an_exception_when_updater_throws_an_exception(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
@@ -234,7 +234,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $this->shouldThrow(ViolationsException::class)->during('__invoke', [$command]);
     }
 
-    public function it_updates_a_product_with_user_intents(
+    function it_updates_a_product_with_user_intents(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
@@ -273,7 +273,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    public function it_throws_an_error_when_user_intent_cannot_be_handled(
+    function it_throws_an_error_when_user_intent_cannot_be_handled(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
@@ -321,7 +321,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('__invoke', [$command]);
     }
 
-    public function it_throws_an_error_when_connected_user_is_different_from_user_id(
+    function it_throws_an_error_when_connected_user_is_different_from_user_id(
         ValidatorInterface $validator,
         SaverInterface $productSaver,
         ObjectUpdaterInterface $productUpdater,

@@ -105,14 +105,14 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
             $ordersEqualsOrSuperior = $this->findAttributeGroupOrdersEqualOrSuperiorTo->execute($attributeGroup);
 
             // If there is a conflict in sort order, set the next one available
-            if (!empty($ordersEqualsOrSuperior) && (int) \current($ordersEqualsOrSuperior) === (int) $attributeGroup->getSortOrder()) {
-                $rangeOrders = \range(\min($ordersEqualsOrSuperior), \max($ordersEqualsOrSuperior));
-                $availableOrders = \array_diff($rangeOrders, $ordersEqualsOrSuperior);
+            if (!empty($ordersEqualsOrSuperior) && (int) current($ordersEqualsOrSuperior) === (int) $attributeGroup->getSortOrder()) {
+                $rangeOrders = range(min($ordersEqualsOrSuperior), max($ordersEqualsOrSuperior));
+                $availableOrders = array_diff($rangeOrders, $ordersEqualsOrSuperior);
 
                 if (!empty($availableOrders)) {
-                    $nextAvailableOrder = \current($availableOrders);
+                    $nextAvailableOrder = current($availableOrders);
                 } else {
-                    $nextAvailableOrder = \max($ordersEqualsOrSuperior) + 1;
+                    $nextAvailableOrder = max($ordersEqualsOrSuperior) + 1;
                 }
 
                 $attributeGroup->setSortOrder($nextAvailableOrder);

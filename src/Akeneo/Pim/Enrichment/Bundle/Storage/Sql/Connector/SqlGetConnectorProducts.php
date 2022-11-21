@@ -53,9 +53,9 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $result = $pqb->execute();
-        $uuids = \array_map(function (IdentifierResult $identifier) {
+        $uuids = array_map(function (IdentifierResult $identifier) {
             return $this->getUuidFromIdentifierResult($identifier->getId());
-        }, \iterator_to_array($result));
+        }, iterator_to_array($result));
 
         $products = $this->fromProductUuids($uuids, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
 
@@ -86,7 +86,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     {
         $products = $this->fromProductUuids([$productUuid], $userId, null, null, null);
         if ($products->totalNumberOfProducts() === 0) {
-            throw new ObjectNotFoundException(\sprintf('Product "%s" was not found.', $productUuid->toString()));
+            throw new ObjectNotFoundException(sprintf('Product "%s" was not found.', $productUuid->toString()));
         }
 
         return $products->connectorProducts()[0];
@@ -99,7 +99,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
     ): ConnectorProductList {
-        $rows = \array_replace_recursive(
+        $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids($productUuids),
             $this->fetchAssociationsIndexedByProductUuids($productUuids),
             $this->fetchQuantifiedAssociationsIndexedByProductUuids($productUuids),
@@ -160,14 +160,14 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             );
         }
 
-        return new ConnectorProductList(\count($products), $products);
+        return new ConnectorProductList(count($products), $products);
     }
 
     private function filterByAttributeCodes(array $rawValues, array $attributeCodes): array
     {
         $result = [];
         foreach ($rawValues as $attributeCode => $attributeValues) {
-            if (\in_array($attributeCode, $attributeCodes)) {
+            if (in_array($attributeCode, $attributeCodes)) {
                 $result[$attributeCode] = $attributeValues;
             }
         }
@@ -195,7 +195,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         foreach ($rawValues as $attributeCode => $attributeValues) {
             foreach ($attributeValues as $scope => $scopedValue) {
                 foreach ($scopedValue as $locale => $value) {
-                    if ($locale === '<all_locales>' || \in_array($locale, $localesToFilterOn)) {
+                    if ($locale === '<all_locales>' || in_array($locale, $localesToFilterOn)) {
                         $result[$attributeCode][$scope][$locale] = $value;
                     }
                 }
@@ -222,7 +222,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
     private function fetchAssociationsIndexedByProductUuids(array $uuids): array
     {
-        $associations = \array_replace_recursive(
+        $associations = array_replace_recursive(
             $this->getProductAssociationsByProductUuids->fetchByProductUuids($uuids),
             $this->getProductModelAssociationsByProductUuids->fetchByProductUuids($uuids),
             $this->getGroupAssociationsByProductUuids->fetchByProductUuids($uuids)
@@ -238,14 +238,14 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
     private function fetchQuantifiedAssociationsIndexedByProductUuids(array $uuids): array
     {
-        $quantifiedAssociations = \array_replace_recursive(
+        $quantifiedAssociations = array_replace_recursive(
             $this->getProductQuantifiedAssociationsByProductUuids->fromProductUuids($uuids),
             $this->getProductModelQuantifiedAssociationsByProductUuids->fromProductUuids($uuids),
         );
 
         $quantifiedAssociationsIndexedByUuid = [];
         foreach ($quantifiedAssociations as $uuid => $quantifiedAssociation) {
-            $associationTypes = \array_map('strval', \array_keys($quantifiedAssociation));
+            $associationTypes = array_map('strval', array_keys($quantifiedAssociation));
 
             $filledAssociations = [];
             foreach ($associationTypes as $associationType) {
@@ -274,7 +274,7 @@ FROM pim_catalog_product
 WHERE identifier IN (:identifiers)
 SQL;
 
-        return \array_map(
+        return array_map(
             fn (string $uuidStr): UuidInterface => Uuid::fromString($uuidStr),
             $this->connection->fetchFirstColumn(
                 $sql,
@@ -288,7 +288,7 @@ SQL;
     {
         $matches = [];
         if (!\preg_match('/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/', $esId, $matches)) {
-            throw new \InvalidArgumentException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
+            throw new \InvalidArgumentException(sprintf('Invalid Elasticsearch identifier %s', $esId));
         }
 
         return Uuid::fromString($matches['uuid']);

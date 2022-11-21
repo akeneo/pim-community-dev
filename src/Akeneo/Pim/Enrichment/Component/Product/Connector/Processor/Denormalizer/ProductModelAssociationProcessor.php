@@ -81,7 +81,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
             return null;
         }
 
-        $item = \array_merge(
+        $item = array_merge(
             [
                 'associations' => [],
                 'quantified_associations' => [],
@@ -95,7 +95,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
 
         $entity = $this->findEntity($item['code'], $item);
         if (null === $entity) {
-            $this->skipItemWithMessage($item, \sprintf('No product model with code "%s" has been found', $item['code']));
+            $this->skipItemWithMessage($item, sprintf('No product model with code "%s" has been found', $item['code']));
         }
 
         $parameters = $this->stepExecution->getJobParameters();

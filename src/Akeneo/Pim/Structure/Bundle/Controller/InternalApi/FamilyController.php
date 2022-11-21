@@ -125,7 +125,7 @@ class FamilyController
 
         if ($request->query->has('identifiers')) {
             $options = $request->query->get('options');
-            $options['identifiers'] = \explode(',', $request->query->get('identifiers'));
+            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
         }
 
         $families = $this->familySearchableRepo->findBySearch(
@@ -235,7 +235,7 @@ class FamilyController
         $allowedTypes = FamilyVariant::getAvailableAxesAttributeTypes();
 
         $availableAxes = $family->getAttributes()->filter(function (AttributeInterface $attribute) use ($allowedTypes) {
-            return \in_array($attribute->getType(), $allowedTypes);
+            return in_array($attribute->getType(), $allowedTypes);
         });
 
         $normalizedAvailableAttributes = [];
@@ -259,7 +259,7 @@ class FamilyController
 
         if (null === $family) {
             throw new NotFoundHttpException(
-                \sprintf('Family with code %s does not exist.', $code)
+                sprintf('Family with code %s does not exist.', $code)
             );
         }
 
@@ -280,17 +280,17 @@ class FamilyController
             return new RedirectResponse('/');
         }
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
 
         if (!$this->securityFacade->isGranted('pim_enrich_family_edit_properties')) {
-            $data = \array_filter($data, function ($value, $key) {
-                return !\in_array($key, $this->propertiesFields);
+            $data = array_filter($data, function ($value, $key) {
+                return !in_array($key, $this->propertiesFields);
             });
         }
 
         if (!$this->securityFacade->isGranted('pim_enrich_family_edit_attributes')) {
-            $data = \array_filter($data, function ($value, $key) {
-                return !\in_array($key, $this->attributeFields);
+            $data = array_filter($data, function ($value, $key) {
+                return !in_array($key, $this->attributeFields);
             });
         }
 
@@ -336,7 +336,7 @@ class FamilyController
         }
 
         $family = $this->familyFactory->create();
-        $this->updater->update($family, \json_decode($request->getContent(), true));
+        $this->updater->update($family, json_decode($request->getContent(), true));
         $violations = $this->validator->validate($family);
 
         $normalizedViolations = [];
@@ -348,7 +348,7 @@ class FamilyController
             );
         }
 
-        if (\count($normalizedViolations) > 0) {
+        if (count($normalizedViolations) > 0) {
             return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 

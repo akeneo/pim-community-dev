@@ -58,7 +58,7 @@ final class TransformCriterionEvaluationResultCodes
                     $propertyDataByIds = $this->transformStatusCodesToIds($propertyValues);
                     break;
                 default:
-                    throw new CriterionEvaluationResultTransformationFailedException(\sprintf('Unknown property code "%s"', $propertyCode));
+                    throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown property code "%s"', $propertyCode));
             }
 
             $resultByIds[self::PROPERTIES_ID[$propertyCode]] = $propertyDataByIds;
@@ -83,7 +83,7 @@ final class TransformCriterionEvaluationResultCodes
                         $this->transformChannelLocaleDataFromCodesToIds($dataByCodes, fn ($number) => $number);
                     break;
                 default:
-                    throw new CriterionEvaluationResultTransformationFailedException(\sprintf('Unknown result data type "%s"', $dataType));
+                    throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown result data type "%s"', $dataType));
             }
         }
 
@@ -117,7 +117,7 @@ final class TransformCriterionEvaluationResultCodes
     {
         return $this->transformChannelLocaleDataFromCodesToIds($dataByAttributes, function (array $attributeData) {
             $attributeIdsData = [];
-            $attributesIds = $this->attributes->getIdsByCodes(\array_keys($attributeData));
+            $attributesIds = $this->attributes->getIdsByCodes(array_keys($attributeData));
 
             foreach ($attributeData as $attributeCode => $data) {
                 $attributeId = $attributesIds[$attributeCode] ?? null;
@@ -139,7 +139,7 @@ final class TransformCriterionEvaluationResultCodes
     {
         return $this->transformChannelLocaleDataFromCodesToIds($statusCodes, function (string $statusCode) {
             if (!isset(self::STATUS_ID[$statusCode])) {
-                throw new CriterionEvaluationResultTransformationFailedException(\sprintf('Unknown status code "%s"', $statusCode));
+                throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown status code "%s"', $statusCode));
             }
 
             return self::STATUS_ID[$statusCode];

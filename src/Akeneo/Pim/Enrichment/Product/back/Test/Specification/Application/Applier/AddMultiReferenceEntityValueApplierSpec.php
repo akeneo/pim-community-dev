@@ -17,18 +17,18 @@ use Prophecy\Argument;
 
 class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $updater)
+    function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(AddMultiReferenceEntityValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_add_multi_reference_entity_user_intent(
+    function it_applies_add_multi_reference_entity_user_intent(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
         ValueInterface $formerRecordCodes
@@ -66,7 +66,7 @@ class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         $this->apply($addMultiReferenceEntityValue, $product, 1);
     }
 
-    public function it_does_not_update_the_product_when_there_is_nothing_to_add(
+    function it_does_not_update_the_product_when_there_is_nothing_to_add(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
         ValueInterface $formerRecordCodes
@@ -86,7 +86,7 @@ class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         $this->apply($addMultiReferenceEntityValue, $product, 1);
     }
 
-    public function it_throws_an_exception_when_user_intent_is_not_supported()
+    function it_throws_an_exception_when_user_intent_is_not_supported()
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

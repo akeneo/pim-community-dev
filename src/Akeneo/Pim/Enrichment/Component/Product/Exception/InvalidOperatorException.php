@@ -66,7 +66,7 @@ class InvalidOperatorException extends \LogicException
             $operators,
             $value,
             $className,
-            \sprintf($message, \implode(', ', $operators), \gettype($value)),
+            sprintf($message, implode(', ', $operators), gettype($value)),
             self::SCALAR_EXPECTED_CODE
         );
     }
@@ -88,7 +88,7 @@ class InvalidOperatorException extends \LogicException
             $operators,
             $value,
             $className,
-            \sprintf($message, \implode(', ', $operators), \gettype($value)),
+            sprintf($message, implode(', ', $operators), gettype($value)),
             self::ARRAY_EXPECTED_CODE
         );
     }
@@ -109,7 +109,7 @@ class InvalidOperatorException extends \LogicException
             [$operator],
             null,
             $className,
-            \sprintf($message, $operator),
+            sprintf($message, $operator),
             self::NOT_SUPPORTED_CODE
         );
     }

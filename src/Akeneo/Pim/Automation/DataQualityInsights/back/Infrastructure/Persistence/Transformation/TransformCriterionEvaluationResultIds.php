@@ -53,7 +53,7 @@ final class TransformCriterionEvaluationResultIds
     {
         $resultByCodes = [];
         $propertiesIds = TransformCriterionEvaluationResultCodes::PROPERTIES_ID;
-        $propertiesCodes = \array_flip($propertiesIds);
+        $propertiesCodes = array_flip($propertiesIds);
 
         foreach ($evaluationResult as $propertyId => $propertyData) {
             switch ($propertyId) {
@@ -67,7 +67,7 @@ final class TransformCriterionEvaluationResultIds
                     $propertyDataByCodes = $this->transformStatusIdsToCodes($propertyData);
                     break;
                 default:
-                    throw new CriterionEvaluationResultTransformationFailedException(\sprintf('Unknown property id "%s"', $propertyId));
+                    throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown property id "%s"', $propertyId));
             }
 
             $resultByCodes[$propertiesCodes[$propertyId]] = $propertyDataByCodes;
@@ -85,10 +85,10 @@ final class TransformCriterionEvaluationResultIds
 
     private function transformStatusIdsToCodes(array $statusIds): array
     {
-        $statusCodes = \array_flip(TransformCriterionEvaluationResultCodes::STATUS_ID);
+        $statusCodes = array_flip(TransformCriterionEvaluationResultCodes::STATUS_ID);
         return $this->transformChannelLocaleDataIds->transformToCodes($statusIds, function ($statusId) use ($statusCodes) {
             if (!isset($statusCodes[$statusId])) {
-                throw new CriterionEvaluationResultTransformationFailedException(\sprintf('Unknown status id "%s"', $statusId));
+                throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown status id "%s"', $statusId));
             }
 
             return $statusCodes[$statusId];

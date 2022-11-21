@@ -42,7 +42,7 @@ class StructureVersionUpdater implements EventSubscriberInterface
     {
         $subject = $event->getSubject();
 
-        if (!\is_object($subject)) {
+        if (!is_object($subject)) {
             return;
         }
 
@@ -57,9 +57,9 @@ class StructureVersionUpdater implements EventSubscriberInterface
 
     public function onPostSaveAll(GenericEvent $event)
     {
-        $subject = \current($event->getSubject());
+        $subject = current($event->getSubject());
 
-        if (!\is_object($subject)) {
+        if (!is_object($subject)) {
             return;
         }
 

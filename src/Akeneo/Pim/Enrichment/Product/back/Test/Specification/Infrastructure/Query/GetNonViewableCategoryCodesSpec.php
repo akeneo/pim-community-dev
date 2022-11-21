@@ -13,18 +13,18 @@ use Ramsey\Uuid\Uuid;
 
 class GetNonViewableCategoryCodesSpec extends ObjectBehavior
 {
-    public function let(GetCategoryCodes $getCategoryCodes, GetViewableCategories $getViewableCategories)
+    function let(GetCategoryCodes $getCategoryCodes, GetViewableCategories $getViewableCategories)
     {
         $this->beConstructedWith($getCategoryCodes, $getViewableCategories);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(GetNonViewableCategoryCodes::class);
         $this->shouldImplement(GetNonViewableCategoryCodesInterface::class);
     }
 
-    public function it_returns_non_viewable_category_codes_for_a_list_of_product_identifiers(
+    function it_returns_non_viewable_category_codes_for_a_list_of_product_identifiers(
         GetCategoryCodes $getCategoryCodes,
         GetViewableCategories $getViewableCategories
     ) {

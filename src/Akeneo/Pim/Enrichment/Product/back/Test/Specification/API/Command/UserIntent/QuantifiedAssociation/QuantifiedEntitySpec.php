@@ -9,40 +9,40 @@ use PhpSpec\ObjectBehavior;
 
 class QuantifiedEntitySpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('foo', 5);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(QuantifiedEntity::class);
     }
 
-    public function it_cannot_be_constructed_with_empty_product_identifier()
+    function it_cannot_be_constructed_with_empty_product_identifier()
     {
         $this->beConstructedWith('', 5);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_cannot_be_constructed_with_negative_quantity()
+    function it_cannot_be_constructed_with_negative_quantity()
     {
         $this->beConstructedWith('foo', -5);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_cannot_be_constructed_with_zero_quantity()
+    function it_cannot_be_constructed_with_zero_quantity()
     {
         $this->beConstructedWith('foo', 0);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_returns_the_entity_identifier()
+    function it_returns_the_entity_identifier()
     {
         $this->entityIdentifier()->shouldReturn('foo');
     }
 
-    public function it_returns_the_quantity()
+    function it_returns_the_quantity()
     {
         $this->quantity()->shouldReturn(5);
     }

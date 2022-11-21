@@ -9,9 +9,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollecti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductRawValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluableAttributesByProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductRawValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -104,25 +104,19 @@ class GetEvaluableProductValuesQuerySpec extends ObjectBehavior
             ]);
 
         $expectedProductValues = (new ProductValuesCollection())
-            ->add(new ProductValues(
-                $attributeText1,
-                (new ChannelLocaleDataCollection())
+            ->add(new ProductValues($attributeText1, (new ChannelLocaleDataCollection())
                 ->addToChannelAndLocale($ecommerce, $enUS, 'A text en_US')
                 ->addToChannelAndLocale($ecommerce, $frFR, 'A text fr_FR')
                 ->addToChannelAndLocale($mobile, $enUS, 'A text en_US')
                 ->addToChannelAndLocale($mobile, $frFR, 'A text fr_FR')
             ))
-            ->add(new ProductValues(
-                $attributeText2,
-                (new ChannelLocaleDataCollection())
+            ->add(new ProductValues($attributeText2, (new ChannelLocaleDataCollection())
                 ->addToChannelAndLocale($ecommerce, $enUS, 'A text not localizable for ecommerce')
                 ->addToChannelAndLocale($ecommerce, $frFR, 'A text not localizable for ecommerce')
                 ->addToChannelAndLocale($mobile, $enUS, 'A text not localizable for mobile')
                 ->addToChannelAndLocale($mobile, $frFR, 'A text not localizable for mobile')
             ))
-            ->add(new ProductValues(
-                $attributeTextarea1,
-                (new ChannelLocaleDataCollection())
+            ->add(new ProductValues($attributeTextarea1, (new ChannelLocaleDataCollection())
                 ->addToChannelAndLocale($ecommerce, $enUS, 'A textarea for ecommerce en_US')
                 ->addToChannelAndLocale($ecommerce, $frFR, 'A textarea for ecommerce fr_FR')
                 ->addToChannelAndLocale($mobile, $enUS, 'A textarea for mobile en_US')

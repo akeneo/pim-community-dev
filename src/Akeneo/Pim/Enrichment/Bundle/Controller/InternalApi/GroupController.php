@@ -81,11 +81,11 @@ class GroupController
         $group = $this->groupRepository->findOneBy(['code' => $identifier]);
 
         if (!$group) {
-            throw new NotFoundHttpException(\sprintf('Group with code "%s" not found', $identifier));
+            throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $identifier));
         }
 
         return new JsonResponse($this->normalizer->normalize([
-            'products'     => \array_values($this->productRepository->getProductsByGroup($group, self::MAX_PRODUCTS)),
+            'products'     => array_values($this->productRepository->getProductsByGroup($group, self::MAX_PRODUCTS)),
             'productCount' => $this->productRepository->getProductCountByGroup($group)
         ], 'internal_api', $this->userContext->toArray()));
     }
@@ -104,10 +104,10 @@ class GroupController
 
         $group = $this->groupRepository->findOneByIdentifier($code);
         if (null === $group) {
-            throw new NotFoundHttpException(\sprintf('Group with code "%s" not found', $code));
+            throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $code));
         }
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $this->updater->update($group, $data);
 
         $violations = $this->validator->validate($group);
@@ -124,7 +124,7 @@ class GroupController
 
         $this->saver->save($group);
 
-        if (\array_key_exists('products', $data)) {
+        if (array_key_exists('products', $data)) {
             $this->groupProductsHandler->handle(new GroupProductsCommand($group->getId(), $data['products']));
         }
 
@@ -146,7 +146,7 @@ class GroupController
 
         $group = $this->groupRepository->findOneByIdentifier($code);
         if (null === $group) {
-            throw new NotFoundHttpException(\sprintf('Group with code "%s" not found', $code));
+            throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $code));
         }
 
         $this->remover->remove($group);
@@ -163,7 +163,7 @@ class GroupController
             return new RedirectResponse('/');
         }
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $group = $this->groupFactory->createGroup();
         $this->updater->update($group, $data);
         $violations = $this->validator->validate($group);
@@ -177,7 +177,7 @@ class GroupController
             );
         }
 
-        if (\count($normalizedViolations) > 0) {
+        if (count($normalizedViolations) > 0) {
             return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
@@ -203,7 +203,7 @@ class GroupController
             $options['limit'] = SearchableRepositoryInterface::FETCH_LIMIT;
         }
 
-        if (0 > \intval($options['limit'])) {
+        if (0 > intval($options['limit'])) {
             $options['limit'] = null;
         }
 
@@ -212,7 +212,7 @@ class GroupController
         }
 
         if (isset($options['identifiers'])) {
-            $options['ids'] = \explode(',', $options['identifiers']);
+            $options['ids'] = explode(',', $options['identifiers']);
         }
 
         return $options;

@@ -254,11 +254,11 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      */
     protected function checkAmount(AttributeInterface $attribute, $data): void
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
         }
 
-        if (!\array_key_exists('amount', $data)) {
+        if (!array_key_exists('amount', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
@@ -267,10 +267,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (!\is_numeric($data['amount'])) {
+        if (!is_numeric($data['amount'])) {
             throw InvalidPropertyTypeException::numericExpected(
                 $attribute->getCode(),
-                \sprintf('key "amount" has to be a numeric, "%s" given', \gettype($data['amount'])),
+                sprintf('key "amount" has to be a numeric, "%s" given', gettype($data['amount'])),
                 $data
             );
         }
@@ -285,11 +285,11 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      */
     protected function checkCurrency(AttributeInterface $attribute, $data): void
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
         }
 
-        if (!\array_key_exists('currency', $data)) {
+        if (!array_key_exists('currency', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'currency',
@@ -299,8 +299,8 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         }
 
         if ('' === $data['currency'] ||
-            !\is_string($data['currency']) ||
-            !\in_array($data['currency'], $this->findActivatedCurrencies->forAllChannels())
+            !is_string($data['currency']) ||
+            !in_array($data['currency'], $this->findActivatedCurrencies->forAllChannels())
         ) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),

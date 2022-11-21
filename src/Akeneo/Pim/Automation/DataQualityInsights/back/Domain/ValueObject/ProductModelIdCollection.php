@@ -18,12 +18,12 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
 
     private function __construct(array $productModelIds)
     {
-        $this->productModelIds = \array_values(\array_unique($productModelIds));
+        $this->productModelIds = array_values(array_unique($productModelIds));
     }
 
     public static function fromStrings(array $productEntityIds): self
     {
-        return new self(\array_map(fn ($productModelId) => ProductModelId::fromString((string) $productModelId), $productEntityIds));
+        return new self(array_map(fn ($productModelId) => ProductModelId::fromString((string) $productModelId), $productEntityIds));
     }
 
     /**
@@ -41,7 +41,7 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
 
     public function count(): int
     {
-        return \count($this->productModelIds);
+        return count($this->productModelIds);
     }
 
     public function isEmpty(): bool
@@ -51,6 +51,6 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
 
     public function toArrayString(): array
     {
-        return \array_map(fn (ProductModelId $productModelId) => (string)$productModelId, $this->productModelIds);
+        return array_map(fn (ProductModelId $productModelId) => (string)$productModelId, $this->productModelIds);
     }
 }

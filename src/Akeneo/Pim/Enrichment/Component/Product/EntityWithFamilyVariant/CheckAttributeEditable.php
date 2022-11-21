@@ -50,7 +50,7 @@ class CheckAttributeEditable
         $attributeSet = $familyVariant->getVariantAttributeSet($level);
         if (null === $attributeSet) {
             throw new \Exception(
-                \sprintf(
+                sprintf(
                     'The variant attribute set of level "%d" was expected for the family variant "%s".',
                     $level,
                     $familyVariant->getCode()

@@ -103,7 +103,7 @@ final class GetRequiredAttributesMasksQueryIntegration extends CompletenessTestC
             'a_non_localizable_scopable_locale_specific-tablet-<all_locales>',
         ], $tabletEnUS->mask());
 
-        $this->assertEqualsCanonicalizing([
+        $this->assertEqualsCanonicalizing( [
             'sku-<all_channels>-<all_locales>',
             'a_price-EUR-USD-<all_channels>-<all_locales>',
             'a_localizable_non_scopable_price-EUR-USD-<all_channels>-fr_FR',

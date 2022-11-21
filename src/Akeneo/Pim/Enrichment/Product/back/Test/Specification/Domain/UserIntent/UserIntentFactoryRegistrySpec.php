@@ -14,14 +14,14 @@ use PhpSpec\ObjectBehavior;
  */
 class UserIntentFactoryRegistrySpec extends ObjectBehavior
 {
-    public function let(UserIntentFactory $userIntentFactory1, UserIntentFactory $userIntentFactory2)
+    function let(UserIntentFactory $userIntentFactory1, UserIntentFactory $userIntentFactory2)
     {
         $userIntentFactory1->getSupportedFieldNames()->willReturn(['family']);
         $userIntentFactory2->getSupportedFieldNames()->willReturn(['categories']);
         $this->beConstructedWith([$userIntentFactory1, $userIntentFactory2], ['identifier']);
     }
 
-    public function it_returns_a_user_intent(
+    function it_returns_a_user_intent(
         UserIntentFactory $userIntentFactory1,
         UserIntentFactory $userIntentFactory2,
         UserIntent $userIntent,
@@ -33,13 +33,13 @@ class UserIntentFactoryRegistrySpec extends ObjectBehavior
         $this->fromStandardFormatField('categories', 'data')->shouldReturn([$userIntent2]);
     }
 
-    public function it_throws_an_exception_if_fieldname_is_not_supported()
+    function it_throws_an_exception_if_fieldname_is_not_supported()
     {
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('fromStandardFormatField', ['unknown', 'data']);
     }
 
-    public function it_returns_null_if_fieldname_is_ignored()
+    function it_returns_null_if_fieldname_is_ignored()
     {
         $this->fromStandardFormatField('identifier', 'data')->shouldReturn([]);
     }

@@ -62,7 +62,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
 
         $result = null;
 
-        if (\is_array($data)) {
+        if (is_array($data)) {
             $data = new ArrayCollection($data);
         }
 
@@ -71,17 +71,17 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
 
         if (AttributeTypes::BOOLEAN === $type) {
             $result = [$fieldName => (string) (int) $data];
-        } elseif (\is_null($data)) {
+        } elseif (is_null($data)) {
             $result = [$fieldName => ''];
             if ('metric' === $backendType) {
                 $result[$fieldName . '-unit'] = '';
             }
-        } elseif (\is_int($data) || \is_float($data) || 'decimal' === $attribute->getBackendType()) {
-            $pattern = $attribute->isDecimalsAllowed() ? \sprintf('%%.%sF', $this->precision) : '%d';
-            $result = [$fieldName => \sprintf($pattern, $data)];
-        } elseif (\is_string($data)) {
+        } elseif (is_int($data) || is_float($data) || 'decimal' === $attribute->getBackendType()) {
+            $pattern = $attribute->isDecimalsAllowed() ? sprintf('%%.%sF', $this->precision) : '%d';
+            $result = [$fieldName => sprintf($pattern, $data)];
+        } elseif (is_string($data)) {
             $result = [$fieldName => $data];
-        } elseif (\is_object($data)) {
+        } elseif (is_object($data)) {
             // TODO: Find a way to have proper currency-suffixed keys for normalized price data
             // even when an empty collection is passed
             if ('prices' === $backendType && $data instanceof Collection && $data->isEmpty()) {
@@ -104,10 +104,10 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
 
         if (null === $result) {
             throw new \RuntimeException(
-                \sprintf(
+                sprintf(
                     'Cannot normalize product value "%s" which data is a(n) "%s"',
                     $fieldName,
-                    \is_object($data) ? \get_class($data) : \gettype($data)
+                    is_object($data) ? get_class($data) : gettype($data)
                 )
             );
         }
@@ -120,7 +120,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ValueInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof ValueInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -141,10 +141,10 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
         $suffix = '';
 
         if ($value->isLocalizable()) {
-            $suffix = \sprintf('-%s', $value->getLocaleCode());
+            $suffix = sprintf('-%s', $value->getLocaleCode());
         }
         if ($value->isScopable()) {
-            $suffix .= \sprintf('-%s', $value->getScopeCode());
+            $suffix .= sprintf('-%s', $value->getScopeCode());
         }
 
         return $value->getAttributeCode() . $suffix;
@@ -158,7 +158,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
         if ($attribute->isLocaleSpecific() && $attribute->isLocalizable()) {
             $currentLocale = $value->getLocaleCode();
             $availableLocales = $attribute->getAvailableLocaleCodes();
-            if (!\in_array($currentLocale, $availableLocales)) {
+            if (!in_array($currentLocale, $availableLocales)) {
                 return true;
             }
         }
@@ -183,7 +183,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
             }
         }
 
-        \usort(
+        usort(
             $options,
             function ($first, $second) {
                 $sort = $first->getSortOrder() - $second->getSortOrder();

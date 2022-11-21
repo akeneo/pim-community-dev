@@ -33,8 +33,8 @@ final class CriterionEvaluationStatus
             throw new \InvalidArgumentException('The status can not be an empty string.');
         }
 
-        if (!\in_array($status, self::STATUS_LIST)) {
-            throw new \InvalidArgumentException(\sprintf('The status "%s" does not exist.', $status));
+        if (!in_array($status, self::STATUS_LIST)) {
+            throw new \InvalidArgumentException(sprintf('The status "%s" does not exist.', $status));
         }
 
         $this->status = $status;

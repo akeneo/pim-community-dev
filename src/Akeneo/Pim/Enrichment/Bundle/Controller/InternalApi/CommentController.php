@@ -72,7 +72,7 @@ class CommentController
         $comment = $this->doctrine->find($this->commentClassName, $id);
 
         if (null === $comment) {
-            throw new NotFoundHttpException(\sprintf('Comment with id %s not found.', $id));
+            throw new NotFoundHttpException(sprintf('Comment with id %s not found.', $id));
         }
 
         if ($comment->getAuthor() !== $this->getUser()) {
@@ -97,7 +97,7 @@ class CommentController
             return null;
         }
 
-        if (!\is_object($user = $token->getUser())) {
+        if (!is_object($user = $token->getUser())) {
             return null;
         }
 

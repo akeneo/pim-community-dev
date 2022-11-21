@@ -70,9 +70,9 @@ class ColumnsMerger
                     $resultRow[$fieldName] = $fieldValue;
                 }
             } else {
-                if (\in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedQuantityAssociationColumns())) {
+                if (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedQuantityAssociationColumns())) {
                     $collectedQuantifiedAssociations = $this->collectQuantifiedQuantityAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
-                } elseif (\in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns())) {
+                } elseif (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns())) {
                     $collectedQuantifiedAssociations = $this->collectQuantifiedIdentifierAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
                 } else {
                     $resultRow[$fieldName] = $fieldValue;
@@ -115,14 +115,14 @@ class ColumnsMerger
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
 
-        if (!\in_array($cleanField, \array_keys($collectedMetrics))) {
+        if (!in_array($cleanField, array_keys($collectedMetrics))) {
             $collectedMetrics[$cleanField] = ['data' => '', 'unit' => ''];
         }
         if ('unit' === $attributeInfos['metric_unit']) {
             $collectedMetrics[$cleanField]['unit'] = $fieldValue;
         } else {
-            if (\is_string($fieldValue)) {
-                $collectedMetrics[$cleanField]['data'] = \trim($fieldValue);
+            if (is_string($fieldValue)) {
+                $collectedMetrics[$cleanField]['data'] = trim($fieldValue);
             } else {
                 $collectedMetrics[$cleanField]['data'] = $fieldValue;
             }
@@ -141,12 +141,12 @@ class ColumnsMerger
         foreach ($collectedMetrics as $fieldName => $metricData) {
             $metricValue = $metricData['data'];
 
-            if (\is_float($metricValue)) {
-                $metricValue = \number_format($metricValue, decimals: MeasureConverter::SCALE, thousands_separator: '');
+            if (is_float($metricValue)) {
+                $metricValue = number_format($metricValue, decimals: MeasureConverter::SCALE, thousands_separator: '');
             }
 
-            $resultRow[$fieldName] = \trim(
-                \sprintf(
+            $resultRow[$fieldName] = trim(
+                sprintf(
                     '%s%s%s',
                     $metricValue,
                     AttributeColumnInfoExtractor::UNIT_SEPARATOR,
@@ -170,17 +170,17 @@ class ColumnsMerger
         $cleanField = $this->getCleanFieldName($attributeInfos);
         if (null !== $attributeInfos['price_currency']) {
             $collectedPrices[$cleanField] = $collectedPrices[$cleanField] ?? [];
-            if ('' === \trim($fieldValue)) {
+            if ('' === trim($fieldValue)) {
                 return $collectedPrices;
             }
-            $collectedPrices[$cleanField][] = \sprintf(
+            $collectedPrices[$cleanField][] = sprintf(
                 '%s%s%s',
                 $fieldValue,
                 AttributeColumnInfoExtractor::UNIT_SEPARATOR,
                 $attributeInfos['price_currency']
             );
         } else {
-            $collectedPrices[$cleanField] = \explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $fieldValue);
+            $collectedPrices[$cleanField] = explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $fieldValue);
         }
 
         return $collectedPrices;
@@ -188,7 +188,7 @@ class ColumnsMerger
 
     private function collectQuantifiedQuantityAssociationData(array $collectedQuantifiedAssociations, string $fieldName, $fieldValue): array
     {
-        list($associationTypeCode, $productType) = \explode('-', $fieldName);
+        list($associationTypeCode, $productType) = explode('-', $fieldName);
         if (!isset($collectedQuantifiedAssociations[$associationTypeCode])) {
             $collectedQuantifiedAssociations[$associationTypeCode] = ['products' => [], 'product_models' => []];
         }
@@ -197,9 +197,9 @@ class ColumnsMerger
             return $collectedQuantifiedAssociations;
         }
 
-        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = \array_merge(
+        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_merge(
             $collectedQuantifiedAssociations[$associationTypeCode][$productType] ?? [],
-            ['quantities' => \explode(ProductAssociation::QUANTITY_SEPARATOR, $fieldValue)]
+            ['quantities' => explode(ProductAssociation::QUANTITY_SEPARATOR, $fieldValue)]
         );
 
         return $collectedQuantifiedAssociations;
@@ -207,7 +207,7 @@ class ColumnsMerger
 
     private function collectQuantifiedIdentifierAssociationData(array $collectedQuantifiedAssociations, string $fieldName, $fieldValue): array
     {
-        list($associationTypeCode, $productType) = \explode('-', $fieldName);
+        list($associationTypeCode, $productType) = explode('-', $fieldName);
         if (!isset($collectedQuantifiedAssociations[$associationTypeCode])) {
             $collectedQuantifiedAssociations[$associationTypeCode] = ['products' => [], 'product_models' => []];
         }
@@ -216,9 +216,9 @@ class ColumnsMerger
             return $collectedQuantifiedAssociations;
         }
 
-        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = \array_merge(
+        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_merge(
             $collectedQuantifiedAssociations[$associationTypeCode][$productType] ?? [],
-            ['identifiers' => \explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue)]
+            ['identifiers' => explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue)]
         );
 
         return $collectedQuantifiedAssociations;
@@ -232,7 +232,7 @@ class ColumnsMerger
     protected function mergePriceData(array $resultRow, array $collectedPrices)
     {
         foreach ($collectedPrices as $fieldName => $prices) {
-            $resultRow[$fieldName] = \implode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $prices);
+            $resultRow[$fieldName] = implode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $prices);
         }
 
         return $resultRow;
@@ -243,20 +243,20 @@ class ColumnsMerger
         foreach ($collectedQuantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
             foreach (['products', 'product_models'] as $entityType) {
                 if (empty($quantifiedAssociation[$entityType])) {
-                    $resultRow[\sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] = [];
+                    $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] = [];
 
                     continue;
                 }
 
                 if (
-                    \count($quantifiedAssociation[$entityType]['identifiers']) !==
-                    \count($quantifiedAssociation[$entityType]['quantities'])
+                    count($quantifiedAssociation[$entityType]['identifiers']) !==
+                    count($quantifiedAssociation[$entityType]['quantities'])
                 ) {
                     throw new \LogicException('Inconsistency detected: the count of identifiers and quantities is not the same');
                 }
 
-                $resultRow[\sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] =
-                \array_map(function ($identifier, $quantity) {
+                $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] =
+                array_map(function ($identifier, $quantity) {
                     return ['identifier' => $identifier, 'quantity' => (int) $quantity];
                 }, $quantifiedAssociation[$entityType]['identifiers'], $quantifiedAssociation[$entityType]['quantities']);
             }

@@ -36,7 +36,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
 
     public function execute(): void
     {
-        $startTime = \time();
+        $startTime = time();
         $lastProductUuidAsBytes = '';
 
         try {
@@ -50,9 +50,9 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
                 }
 
                 $this->consolidateProductScores->consolidate(
-                    $this->idFactory->createCollection(\array_map(fn ($uuid) => (string) $uuid, $uuids))
+                    $this->idFactory->createCollection(array_map(fn ($uuid) => (string) $uuid, $uuids))
                 );
-                $lastProductUuidAsBytes = \end($uuids);
+                $lastProductUuidAsBytes = end($uuids);
             } while (false === $this->isTimeboxReached($startTime));
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
@@ -83,7 +83,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
 
     private function isTimeboxReached(int $startTime): bool
     {
-        $actualTime = \time();
+        $actualTime = time();
         $timeSpentFromBegining = $actualTime - $startTime;
 
         if ($timeSpentFromBegining >= self::TIMEBOX_IN_SECONDS_ALLOWED) {

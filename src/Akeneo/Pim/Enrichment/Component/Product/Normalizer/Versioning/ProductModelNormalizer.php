@@ -55,11 +55,11 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $familyVariant = $object->getFamilyVariant();
         $results[self::FIELD_FAMILY_VARIANT] = null === $familyVariant ? null : $familyVariant->getCode();
         $results[self::FIELD_CODE] = $object->getCode();
-        $results[self::FIELD_CATEGORY] = \implode(self::ITEM_SEPARATOR, $object->getCategoryCodes());
+        $results[self::FIELD_CATEGORY] = implode(self::ITEM_SEPARATOR, $object->getCategoryCodes());
         $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
-        $results = \array_merge($results, $this->normalizeAssociations($object->getAssociations()));
-        $results = \array_merge($results, $this->quantifiedAssociationsNormalizer->normalize($object, $format, $context));
-        $results = \array_replace($results, $this->normalizeValues($object, $format, $context));
+        $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
+        $results = array_merge($results, $this->quantifiedAssociationsNormalizer->normalize($object, $format, $context));
+        $results = array_replace($results, $this->normalizeValues($object, $format, $context));
 
         return $results;
     }
@@ -69,7 +69,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ProductModelInterface && \in_array($format, ['flat']);
+        return $data instanceof ProductModelInterface && in_array($format, ['flat']);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -105,9 +105,9 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $normalizedValues = [];
         foreach ($values as $value) {
             $normalizedValue = $this->normalizer->normalize($value, $format, $context);
-            $normalizedValues = \array_replace($normalizedValues, $normalizedValue);
+            $normalizedValues = array_replace($normalizedValues, $normalizedValue);
         }
-        \ksort($normalizedValues);
+        ksort($normalizedValues);
 
         return $normalizedValues;
     }
@@ -121,7 +121,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      */
     private function resolveContext(array $context): array
     {
-        return \array_merge(
+        return array_merge(
             [
                 'scopeCode'     => null,
                 'localeCodes'   => [],
@@ -160,9 +160,9 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
                 $productModels[] = $productModel->getCode();
             }
 
-            $results[$columnPrefix . '-groups'] = \implode(',', $groups);
-            $results[$columnPrefix . '-products'] = \implode(',', $products);
-            $results[$columnPrefix . '-product_models'] = \implode(',', $productModels);
+            $results[$columnPrefix . '-groups'] = implode(',', $groups);
+            $results[$columnPrefix . '-products'] = implode(',', $products);
+            $results[$columnPrefix . '-product_models'] = implode(',', $productModels);
         }
 
         return $results;

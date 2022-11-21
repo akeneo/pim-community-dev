@@ -54,7 +54,7 @@ SQL;
             [\Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         );
 
-        if (!\method_exists($stmt, 'rowCount')) {
+        if (!method_exists($stmt, 'rowCount')) {
             throw new \RuntimeException('Cannot find the count of rows.');
         }
 

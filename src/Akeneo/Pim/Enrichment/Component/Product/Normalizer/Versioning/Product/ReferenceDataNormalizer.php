@@ -33,7 +33,7 @@ class ReferenceDataNormalizer implements NormalizerInterface, CacheableSupportsM
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ReferenceDataInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof ReferenceDataInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -52,11 +52,11 @@ class ReferenceDataNormalizer implements NormalizerInterface, CacheableSupportsM
      */
     protected function getFieldName(array $context = [])
     {
-        if (!\array_key_exists('field_name', $context)) {
+        if (!array_key_exists('field_name', $context)) {
             throw new \InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Missing required "field_name" context value, got "%s"',
-                    \implode(', ', \array_keys($context))
+                    implode(', ', array_keys($context))
                 )
             );
         }

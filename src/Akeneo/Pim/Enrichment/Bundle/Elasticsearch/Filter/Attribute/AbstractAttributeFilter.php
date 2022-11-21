@@ -47,7 +47,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return \in_array($attribute->getType(), $this->supportedAttributeTypes);
+        return in_array($attribute->getType(), $this->supportedAttributeTypes);
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return \in_array($operator, $this->supportedOperators);
+        return in_array($operator, $this->supportedOperators);
     }
 
     /**
@@ -73,7 +73,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     {
         if (!$searchQueryBuilder instanceof SearchQueryBuilder) {
             throw new \InvalidArgumentException(
-                \sprintf('Query builder should be an instance of "%s"', SearchQueryBuilder::class)
+                sprintf('Query builder should be an instance of "%s"', SearchQueryBuilder::class)
             );
         }
 

@@ -77,7 +77,7 @@ final class ListProductsByUuidQueryHandler
             $queryLocales,
         );
 
-        $this->eventDispatcher->dispatch(new ReadProductsEvent(\count($connectorProductList->connectorProducts())));
+        $this->eventDispatcher->dispatch(new ReadProductsEvent(count($connectorProductList->connectorProducts())));
 
         if ($query->withQualityScores()) {
             $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList(
@@ -109,7 +109,7 @@ final class ListProductsByUuidQueryHandler
 
         if (null !== $query->searchAfter) {
             $searchAfter = Uuid::isValid($query->searchAfter) ? Uuid::fromString($query->searchAfter)->toString() : $query->searchAfter;
-            $pqbOptions['search_after'] = [\sprintf('product_%s', $searchAfter)];
+            $pqbOptions['search_after'] = [sprintf('product_%s', $searchAfter)];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);

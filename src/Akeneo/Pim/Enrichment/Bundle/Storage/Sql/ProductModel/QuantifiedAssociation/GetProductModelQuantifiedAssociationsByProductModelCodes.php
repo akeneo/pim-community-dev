@@ -84,7 +84,7 @@ SQL;
             if (null === $row['all_quantified_associations']) {
                 continue;
             }
-            $allQuantifiedAssociationsWithProductModelId = \json_decode($row['all_quantified_associations'], true);
+            $allQuantifiedAssociationsWithProductModelId = json_decode($row['all_quantified_associations'], true);
             $associationWithCodes = $this->associationsWithCodes(
                 $allQuantifiedAssociationsWithProductModelId,
                 $validQuantifiedAssociationTypeCodes
@@ -106,11 +106,11 @@ SQL;
 
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductModelIds as $associationTypeCode => $associationWithIds) {
-            if (empty($associationWithIds) || !\is_string($associationTypeCode)) {
+            if (empty($associationWithIds) || !is_string($associationTypeCode)) {
                 continue;
             }
 
-            if (!\in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
+            if (!in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
                 continue;
             }
 
@@ -127,7 +127,7 @@ SQL;
                 ];
             }
             if (!empty($uniqueQuantifiedAssociations)) {
-                $result[$associationTypeCode]['product_models'] = \array_values($uniqueQuantifiedAssociations);
+                $result[$associationTypeCode]['product_models'] = array_values($uniqueQuantifiedAssociations);
             }
         }
 
@@ -136,7 +136,7 @@ SQL;
 
     private function productModelIds(array $quantifiedAssociationWithProductModelId): array
     {
-        return \array_map(
+        return array_map(
             function (array $quantifiedAssociations) {
                 return $quantifiedAssociations['id'];
             },
@@ -152,7 +152,7 @@ SQL;
             if (empty($quantifiedAssociationWithId)) {
                 continue;
             }
-            $productModelIds = \array_merge($productModelIds, $this->productModelIds($quantifiedAssociationWithId));
+            $productModelIds = array_merge($productModelIds, $this->productModelIds($quantifiedAssociationWithId));
         }
 
         return $this->getIdMappingFromProductModelIdsQuery->execute($productModelIds);

@@ -60,7 +60,7 @@ class FamilyVariantSearchableRepository implements SearchableRepositoryInterface
             $qb->setParameter('familyId', $options['familyId']);
         }
 
-        if (isset($options['identifiers']) && \is_array($options['identifiers']) && !empty($options['identifiers'])) {
+        if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
             $qb->andWhere('fv.code in (:codes)');
             $qb->setParameter('codes', $options['identifiers']);
         }

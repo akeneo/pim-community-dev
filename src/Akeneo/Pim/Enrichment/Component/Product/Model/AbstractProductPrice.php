@@ -58,6 +58,6 @@ abstract class AbstractProductPrice implements ProductPriceInterface
      */
     public function __toString()
     {
-        return ($this->data !== null) ? \sprintf('%.2F %s', $this->data, $this->currency) : '';
+        return ($this->data !== null) ? sprintf('%.2F %s', $this->data, $this->currency) : '';
     }
 }

@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class GetAttributeTypesProductModelMasksQueryIntegration extends CompletenessTestCase
 {
+
     public function test_it_retrieves_image_attributes_for_a_product_model_with_one_level_of_variation()
     {
         $this->givenCurrencyForChannel([['code' => 'ecommerce', 'currencies' => ['USD']]]);

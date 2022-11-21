@@ -84,7 +84,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
 
     private function createAttributes(array $attributesData): void
     {
-        $attributes = \array_map(function ($attributeData) {
+        $attributes = array_map(function ($attributeData) {
             $attribute = $this->get('pim_catalog.factory.attribute')->create();
 
             if (isset($attributeData['properties'])) {

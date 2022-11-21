@@ -9,8 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
@@ -36,7 +36,7 @@ use Ramsey\Uuid\UuidInterface;
  */
 class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ObjectUpdaterInterface $productUpdater,
         GetViewableProducts $getViewableProducts,
         GetViewableProductModels $getViewableProductModels
@@ -44,18 +44,18 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->beConstructedWith($productUpdater, $getViewableProducts, $getViewableProductModels);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(AssociationUserIntentCollectionApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_supports_association_user_intent_collection()
+    function it_supports_association_user_intent_collection()
     {
         $this->getSupportedUserIntents()->shouldReturn([AssociationUserIntentCollection::class]);
     }
 
-    public function it_applies_associate_products(
+    function it_applies_associate_products(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -78,7 +78,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_applies_multiple_associate_products(
+    function it_applies_multiple_associate_products(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -108,7 +108,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_applies_multiple_same_associate_products(
+    function it_applies_multiple_same_associate_products(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -132,7 +132,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_does_nothing_if_products_are_already_associated(
+    function it_does_nothing_if_products_are_already_associated(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -151,7 +151,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_applies_dissociate_products(
+    function it_applies_dissociate_products(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -179,7 +179,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_does_nothing_if_product_to_dissociate_is_not_associated(
+    function it_does_nothing_if_product_to_dissociate_is_not_associated(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product
     ) {
@@ -197,7 +197,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_associates_and_dissociates_products(
+    function it_associates_and_dissociates_products(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product
     ) {
@@ -221,7 +221,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_replaces_associated_products(
+    function it_replaces_associated_products(
         ObjectUpdaterInterface $productUpdater,
         GetViewableProducts $getViewableProducts,
         ProductInterface $product,
@@ -255,7 +255,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_replaces_associated_products_with_uuids(
+    function it_replaces_associated_products_with_uuids(
         ObjectUpdaterInterface $productUpdater,
         GetViewableProducts $getViewableProducts,
         ProductInterface $product,
@@ -283,7 +283,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
         $uuids = [$viewableProduct->getUuid()->toString(), $nonViewableProduct->getUuid()->toString()];
         \sort($uuids);
-        $uuids = \array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids);
+        $uuids = array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids);
 
         $getViewableProducts->fromProductUuids($uuids, 42)
             ->willReturn([$viewableProduct->getUuid()]);
@@ -291,7 +291,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_does_nothing_if_products_to_associate_are_the_same_as_existing_associated_products(
+    function it_does_nothing_if_products_to_associate_are_the_same_as_existing_associated_products(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -314,7 +314,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_applies_associate_product_models(
+    function it_applies_associate_product_models(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -337,7 +337,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_does_nothing_if_product_models_are_already_associated(
+    function it_does_nothing_if_product_models_are_already_associated(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -356,7 +356,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_applies_dissociate_product_models(
+    function it_applies_dissociate_product_models(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
@@ -382,7 +382,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_does_nothing_if_product_model_to_dissociate_is_not_associated(
+    function it_does_nothing_if_product_model_to_dissociate_is_not_associated(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product
     ) {
@@ -400,7 +400,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_replaces_associated_product_models(
+    function it_replaces_associated_product_models(
         ObjectUpdaterInterface $productUpdater,
         GetViewableProductModels $getViewableProductModels,
         ProductInterface $product,
@@ -430,7 +430,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_does_nothing_if_product_models_to_associate_are_the_same_as_existing_associated_product_models(
+    function it_does_nothing_if_product_models_to_associate_are_the_same_as_existing_associated_product_models(
         ObjectUpdaterInterface $productUpdater,
         GetViewableProductModels $getViewableProductModels,
         ProductInterface $product,
@@ -453,7 +453,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_applies_associate_groups(
+    function it_applies_associate_groups(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
         GroupInterface $group,
@@ -476,7 +476,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $this->apply($collection, $product, 42);
     }
 
-    public function it_does_nothing_if_groups_are_already_associated(
+    function it_does_nothing_if_groups_are_already_associated(
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product
     ) {

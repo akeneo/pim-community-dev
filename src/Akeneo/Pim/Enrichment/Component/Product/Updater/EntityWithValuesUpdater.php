@@ -75,17 +75,17 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
      */
     protected function checkValuesData($entityWithValues)
     {
-        if (!\is_array($entityWithValues)) {
+        if (!is_array($entityWithValues)) {
             throw InvalidPropertyTypeException::arrayExpected('values', static::class, $entityWithValues);
         }
 
         foreach ($entityWithValues as $code => $values) {
-            if (!\is_array($values)) {
+            if (!is_array($values)) {
                 throw InvalidPropertyTypeException::arrayExpected($code, static::class, $values);
             }
 
             foreach ($values as $value) {
-                if (!\is_array($value)) {
+                if (!is_array($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $code,
                         'one of the values is not an array',
@@ -94,38 +94,38 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
                     );
                 }
 
-                if (!\array_key_exists('locale', $value)) {
+                if (!array_key_exists('locale', $value)) {
                     throw InvalidPropertyTypeException::arrayKeyExpected($code, 'locale', static::class, $value);
                 }
 
-                if (!\array_key_exists('scope', $value)) {
+                if (!array_key_exists('scope', $value)) {
                     throw InvalidPropertyTypeException::arrayKeyExpected($code, 'scope', static::class, $value);
                 }
 
-                if (!\array_key_exists('data', $value)) {
+                if (!array_key_exists('data', $value)) {
                     throw InvalidPropertyTypeException::arrayKeyExpected($code, 'data', static::class, $value);
                 }
 
-                if (null !== $value['locale'] && !\is_string($value['locale'])) {
+                if (null !== $value['locale'] && !is_string($value['locale'])) {
                     $message = 'Property "%s" expects a value with a string as locale, "%s" given.';
 
                     throw new InvalidPropertyTypeException(
                         $code,
                         $value['locale'],
                         static::class,
-                        \sprintf($message, $code, \gettype($value['locale'])),
+                        sprintf($message, $code, gettype($value['locale'])),
                         InvalidPropertyTypeException::STRING_EXPECTED_CODE
                     );
                 }
 
-                if (null !== $value['scope'] && !\is_string($value['scope'])) {
+                if (null !== $value['scope'] && !is_string($value['scope'])) {
                     $message = 'Property "%s" expects a value with a string as scope, "%s" given.';
 
                     throw new InvalidPropertyTypeException(
                         $code,
                         $value['scope'],
                         static::class,
-                        \sprintf($message, $code, \gettype($value['scope'])),
+                        sprintf($message, $code, gettype($value['scope'])),
                         InvalidPropertyTypeException::STRING_EXPECTED_CODE
                     );
                 }

@@ -63,7 +63,7 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AssociationTypeInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof AssociationTypeInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool

@@ -19,14 +19,14 @@ final class ProductUuidCollection implements ProductEntityIdCollection
 
     private function __construct(array $productUuids)
     {
-        $this->productUuids = \array_values(\array_unique($productUuids));
+        $this->productUuids = array_values(array_unique($productUuids));
     }
 
     public static function fromStrings(array $productUuids): self
     {
         Assert::allString($productUuids);
 
-        return new self(\array_map(fn (string $productUuid) => ProductUuid::fromString($productUuid), $productUuids));
+        return new self(array_map(fn (string $productUuid) => ProductUuid::fromString($productUuid), $productUuids));
     }
 
     public static function fromString(string $productUuid): self
@@ -63,7 +63,7 @@ final class ProductUuidCollection implements ProductEntityIdCollection
 
     public function count(): int
     {
-        return \count($this->productUuids);
+        return count($this->productUuids);
     }
 
     public function isEmpty(): bool
@@ -73,11 +73,11 @@ final class ProductUuidCollection implements ProductEntityIdCollection
 
     public function toArrayString(): array
     {
-        return \array_map(fn (ProductEntityIdInterface $productUuid) => (string) $productUuid, $this->productUuids);
+        return array_map(fn (ProductEntityIdInterface $productUuid) => (string) $productUuid, $this->productUuids);
     }
 
     public function toArrayBytes(): array
     {
-        return \array_map(fn (ProductEntityIdInterface $productUuid) => $productUuid->toBytes(), $this->productUuids);
+        return array_map(fn (ProductEntityIdInterface $productUuid) => $productUuid->toBytes(), $this->productUuids);
     }
 }

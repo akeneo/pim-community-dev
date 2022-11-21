@@ -26,9 +26,9 @@ class FieldFilterHelper
      */
     public static function getCode($field)
     {
-        $fieldData = \explode('.', $field);
+        $fieldData = explode('.', $field);
 
-        return \count($fieldData) > 1 ? $fieldData[0] : $field;
+        return count($fieldData) > 1 ? $fieldData[0] : $field;
     }
 
     /**
@@ -41,9 +41,9 @@ class FieldFilterHelper
      */
     public static function getProperty($field, $default = 'code')
     {
-        $fieldData = \explode('.', $field);
+        $fieldData = explode('.', $field);
 
-        return \count($fieldData) > 1 ? $fieldData[1] : $default;
+        return count($fieldData) > 1 ? $fieldData[1] : $default;
     }
 
     /**
@@ -55,7 +55,7 @@ class FieldFilterHelper
      */
     public static function hasProperty($field)
     {
-        return \strpos($field, '.') !== false;
+        return strpos($field, '.') !== false;
     }
 
     /**
@@ -69,7 +69,7 @@ class FieldFilterHelper
      */
     public static function checkArray($field, $value, $className)
     {
-        if (!\is_array($value)) {
+        if (!is_array($value)) {
             throw InvalidPropertyTypeException::arrayExpected(static::getCode($field), $className, $value);
         }
     }
@@ -79,7 +79,7 @@ class FieldFilterHelper
         self::checkArray($field, $value, $className);
 
         foreach ($value as $subValue) {
-            if (!\is_string($subValue)) {
+            if (!is_string($subValue)) {
                 throw InvalidPropertyTypeException::arrayOfStringsExpected(static::getCode($field), $className, $value);
             }
         }
@@ -101,7 +101,7 @@ class FieldFilterHelper
             return;
         }
 
-        if (!\is_string($value)) {
+        if (!is_string($value)) {
             throw InvalidPropertyException::dateExpected($field, $format, $className, $value);
         }
 
@@ -128,7 +128,7 @@ class FieldFilterHelper
      */
     public static function checkString($field, $value, $className)
     {
-        if (!\is_string($value)) {
+        if (!is_string($value)) {
             throw InvalidPropertyTypeException::stringExpected($field, $className, $value);
         }
     }
@@ -144,7 +144,7 @@ class FieldFilterHelper
      */
     public static function checkIdentifier($field, $value, $className)
     {
-        $invalidIdField = static::hasProperty($field) && static::getProperty($field) === 'id' && !\is_numeric($value);
+        $invalidIdField = static::hasProperty($field) && static::getProperty($field) === 'id' && !is_numeric($value);
         if ($invalidIdField) {
             throw InvalidPropertyTypeException::numericExpected(
                 static::getCode($field),
@@ -153,9 +153,9 @@ class FieldFilterHelper
             );
         }
 
-        $invalidDefaultField = !static::hasProperty($field) && !\is_string($value) && !\is_numeric($value);
+        $invalidDefaultField = !static::hasProperty($field) && !is_string($value) && !is_numeric($value);
         $invalidStringField = static::hasProperty($field) && static::getProperty($field) !== 'id' &&
-            !\is_string($value) && !\is_numeric($value);
+            !is_string($value) && !is_numeric($value);
 
         if ($invalidDefaultField || $invalidStringField) {
             throw InvalidPropertyTypeException::stringExpected(static::getCode($field), $className, $value);

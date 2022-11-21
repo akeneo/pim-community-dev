@@ -48,7 +48,7 @@ class PrepareEvaluationsCommand extends Command
 
                 $from = $defaultFrom;
                 if (null !== $lastJobExecution) {
-                    $from = \max($lastJobExecution->getStartTime(), $defaultFrom);
+                    $from = max($lastJobExecution->getStartTime(), $defaultFrom);
                 }
 
                 return [PrepareEvaluationsParameters::UPDATED_SINCE_PARAMETER => $from->format(PrepareEvaluationsParameters::UPDATED_SINCE_DATE_FORMAT)];

@@ -24,7 +24,7 @@ final class SqlFindFlattenAttributes implements FindFlattenAttributesInterface
         int $offset = 0,
         string $search = null
     ): array {
-        if (0 === $limit || (\is_array($attributeTypes) && 0 === \count($attributeTypes))) {
+        if (0 === $limit || (is_array($attributeTypes) && 0 === count($attributeTypes))) {
             return [];
         }
 
@@ -65,12 +65,12 @@ SQL;
         }
 
         if (null !== $search) {
-            $search = \sprintf('%%%s%%', $search);
+            $search = sprintf('%%%s%%', $search);
             $searchFilters[] = "(translation.label LIKE :search OR attribute.code LIKE :search)";
         }
 
-        $query = \strtr($query, [
-            '{searchFilters}' => 0 === \count($searchFilters) ? 'TRUE' : \implode(' AND ', $searchFilters),
+        $query = strtr($query, [
+            '{searchFilters}' => 0 === count($searchFilters) ? 'TRUE' : implode(' AND ', $searchFilters),
         ]);
 
         $rawResults = $this->connection->executeQuery(

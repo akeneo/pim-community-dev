@@ -221,7 +221,7 @@ class Family implements FamilyInterface
      */
     public function hasAttributeCode($attributeCode)
     {
-        return \in_array($attributeCode, $this->getAttributeCodes());
+        return in_array($attributeCode, $this->getAttributeCodes());
     }
 
     /**
@@ -267,7 +267,7 @@ class Family implements FamilyInterface
     {
         return $this->attributes->filter(
             function ($attribute) {
-                return \in_array(
+                return in_array(
                     $attribute->getType(),
                     [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER]
                 );
@@ -426,7 +426,7 @@ class Family implements FamilyInterface
      */
     public function getAttributeRequirementKey(AttributeRequirementInterface $requirement)
     {
-        return \sprintf(
+        return sprintf(
             '%s_%s',
             $requirement->getAttributeCode(),
             $requirement->getChannelCode()
@@ -471,12 +471,12 @@ class Family implements FamilyInterface
             $attributes
         );
 
-        \sort($formerAttributeCodes);
-        \sort($newAttributeCodes);
+        sort($formerAttributeCodes);
+        sort($newAttributeCodes);
 
         if ($formerAttributeCodes !== $newAttributeCodes) {
-            $attributeCodesToRemove = \array_diff($formerAttributeCodes, $newAttributeCodes);
-            $attributeCodesToAdd = \array_diff($newAttributeCodes, $formerAttributeCodes);
+            $attributeCodesToRemove = array_diff($formerAttributeCodes, $newAttributeCodes);
+            $attributeCodesToAdd = array_diff($newAttributeCodes, $formerAttributeCodes);
 
             if (\count($attributeCodesToRemove) > 0) {
                 $familyVariants = $this->getFamilyVariants();

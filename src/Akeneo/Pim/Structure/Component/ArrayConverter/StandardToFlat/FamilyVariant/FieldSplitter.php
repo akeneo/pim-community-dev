@@ -18,8 +18,8 @@ class FieldSplitter extends BaseFieldSplitter
      */
     public function splitFieldName($field): array
     {
-        if (1 === \preg_match('/variant-axes/', $field) || 1 === \preg_match('/variant-attributes/', $field)) {
-            return \explode('_', $field);
+        if (1 === preg_match('/variant-axes/', $field) || 1 === preg_match('/variant-attributes/', $field)) {
+            return explode('_', $field);
         }
 
         return parent::splitFieldName($field);

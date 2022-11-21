@@ -47,12 +47,12 @@ final class GetExistingAttributeOptionCodes implements GetExistingAttributeOptio
 SQL;
 
         $rawResults = $this->connection->executeQuery(
-            \sprintf($query, \implode(',', $queryStringParams)),
+            sprintf($query, implode(',', $queryStringParams)),
             $queryParams
         )->fetchAllAssociative();
 
-        $results =  \array_reduce($rawResults, function (array $results, array  $item): array {
-            $results[$item['attribute_code']] = \json_decode($item['option_codes'], true);
+        $results =  array_reduce($rawResults, function (array $results, array  $item): array {
+            $results[$item['attribute_code']] = json_decode($item['option_codes'], true);
 
             return $results;
         }, []);

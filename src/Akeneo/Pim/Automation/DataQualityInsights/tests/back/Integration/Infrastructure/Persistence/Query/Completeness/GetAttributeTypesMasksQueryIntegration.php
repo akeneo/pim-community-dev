@@ -88,11 +88,12 @@ class GetAttributeTypesMasksQueryIntegration extends CompletenessTestCase
             'an_us_image-<all_channels>-<all_locales>',
         ], $tabletEnUS->mask());
 
-        $this->assertEqualsCanonicalizing([
+        $this->assertEqualsCanonicalizing( [
             'an_image-<all_channels>-<all_locales>',
             'a_second_image-tablet-<all_locales>',
             'a_third_image-<all_channels>-fr_FR',
             'a_fr_image-<all_channels>-<all_locales>',
         ], $tabletFrFr->mask());
+
     }
 }

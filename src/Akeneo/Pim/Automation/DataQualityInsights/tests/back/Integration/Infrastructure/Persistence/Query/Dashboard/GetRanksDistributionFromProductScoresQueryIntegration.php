@@ -222,7 +222,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     {
         $this->lastInsertedProductIdentifier++;
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(\sprintf('product_%d', $this->lastInsertedProductIdentifier))
+            ->withIdentifier(sprintf('product_%d', $this->lastInsertedProductIdentifier))
             ->withFamily($family)
             ->build();
 
@@ -235,7 +235,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     {
         $this->lastInsertedProductIdentifier++;
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(\sprintf('product_%d', $this->lastInsertedProductIdentifier))
+            ->withIdentifier(sprintf('product_%d', $this->lastInsertedProductIdentifier))
             ->withCategories(...$categories)
             ->build();
 

@@ -15,7 +15,7 @@ class InMemoryGetProductUuidsSpec extends ObjectBehavior
     private const FOO_UUID = 'de18ff6f-29a6-4b2a-9c38-0135aad32dbb';
     private const BAZ_UUID = 'a5ba5f6b-3307-4f44-8a98-0ac4d1370245';
 
-    public function let(ProductRepositoryInterface $productRepository)
+    function let(ProductRepositoryInterface $productRepository)
     {
         $fooProduct = new Product(self::FOO_UUID);
         $productRepository->findOneByIdentifier('foo')->willReturn($fooProduct);
@@ -33,22 +33,22 @@ class InMemoryGetProductUuidsSpec extends ObjectBehavior
         $this->beConstructedWith($productRepository);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(InMemoryGetProductUuids::class);
     }
 
-    public function it_retrieves_a_product_uuid_from_an_identifier()
+    function it_retrieves_a_product_uuid_from_an_identifier()
     {
         $this->fromIdentifier('foo')->shouldBeLike(Uuid::fromString(self::FOO_UUID));
     }
 
-    public function it_returns_null_if_identifier_does_not_exist()
+    function it_returns_null_if_identifier_does_not_exist()
     {
         $this->fromIdentifier('unknown')->shouldBe(null);
     }
 
-    public function it_retrieves_a_map_of_product_uuids_indexed_by_identifier()
+    function it_retrieves_a_map_of_product_uuids_indexed_by_identifier()
     {
         $this->fromIdentifiers(['foo', 'bar', 'baz'])->shouldBeLike([
             'foo' => Uuid::fromString(self::FOO_UUID),
@@ -56,17 +56,17 @@ class InMemoryGetProductUuidsSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_retrieves_an_existing_uuid()
+    function it_retrieves_an_existing_uuid()
     {
         $this->fromUuid(Uuid::fromString(self::FOO_UUID))->shouldBeLike(Uuid::fromString(self::FOO_UUID));
     }
 
-    public function it_returns_null_if_the_uuid_does_not_exist()
+    function it_returns_null_if_the_uuid_does_not_exist()
     {
         $this->fromUuid(Uuid::uuid4())->shouldBe(null);
     }
 
-    public function it_retrieves_existing_product_uuids()
+    function it_retrieves_existing_product_uuids()
     {
         $this->fromUuids([
             Uuid::uuid4(),

@@ -19,18 +19,18 @@ use PhpSpec\ObjectBehavior;
  */
 final class SetMultiReferenceDataValueApplierSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $updater)
+    function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetMultiReferenceDataValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_set_multi_reference_data_user_intent(ObjectUpdaterInterface $updater): void
+    function it_applies_set_multi_reference_data_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $setMultiReferenceDataValue = new SetMultiReferenceDataValue(
@@ -58,7 +58,7 @@ final class SetMultiReferenceDataValueApplierSpec extends ObjectBehavior
         $this->apply($setMultiReferenceDataValue, $product, 1);
     }
 
-    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('apply', [new SetEnabled(true), new Product(), 1]);

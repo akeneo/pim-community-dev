@@ -33,7 +33,7 @@ SQL;
             ['parentId' => $parentProductModelId]
         )->fetchAllAssociative();
 
-        return \array_map(function ($rowData) {
+        return array_map(function ($rowData) {
             return (int) $rowData['id'];
         }, $resultRows);
     }

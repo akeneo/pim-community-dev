@@ -42,13 +42,13 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
         }
         $data['family'] = $options['familyCode'] ?? null;
 
-        if (\array_key_exists('variant_attribute_sets', $data) && \is_array($data['variant_attribute_sets'])) {
+        if (array_key_exists('variant_attribute_sets', $data) && is_array($data['variant_attribute_sets'])) {
             $this->validateVariantAttributeSets($data['variant_attribute_sets']);
 
-            if (null !== $familyVariant->getId() && $familyVariant->getNumberOfLevel() !== \count($data['variant_attribute_sets'])) {
+            if (null !== $familyVariant->getId() && $familyVariant->getNumberOfLevel() !== count($data['variant_attribute_sets'])) {
                 throw new ImmutablePropertyException(
                     'variant_attribute_sets',
-                    \count($data['variant_attribute_sets']),
+                    count($data['variant_attribute_sets']),
                     static::class,
                     'The number of variant attribute sets cannot be changed.'
                 );
@@ -68,7 +68,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
     private function validateVariantAttributeSets(array $variantAttributeSets): void
     {
         foreach ($variantAttributeSets as $variantAttributeSet) {
-            if (\is_array($variantAttributeSet) && !\array_key_exists('level', $variantAttributeSet)) {
+            if (is_array($variantAttributeSet) && !array_key_exists('level', $variantAttributeSet)) {
                 throw MandatoryPropertyException::mandatoryProperty('level', static::class);
             }
         }

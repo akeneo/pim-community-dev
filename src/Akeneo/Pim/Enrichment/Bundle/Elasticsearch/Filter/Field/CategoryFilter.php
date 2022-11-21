@@ -147,7 +147,7 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
 
             if (null === $this->categoryRepository->findOneBy(['code' => $value])) {
                 throw new ObjectNotFoundException(
-                    \sprintf('Object "category" with code "%s" does not exist', $value)
+                    sprintf('Object "category" with code "%s" does not exist', $value)
                 );
             }
         }
@@ -167,7 +167,7 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
             $category = $this->categoryRepository->findOneBy(['code' => $categoryCode]);
             $childrenCodes = $this->categoryRepository->getAllChildrenCodes($category);
             $childrenCodes[] = $category->getCode();
-            $allChildrenCodes = \array_merge($allChildrenCodes, $childrenCodes);
+            $allChildrenCodes = array_merge($allChildrenCodes, $childrenCodes);
         }
 
         return $allChildrenCodes;

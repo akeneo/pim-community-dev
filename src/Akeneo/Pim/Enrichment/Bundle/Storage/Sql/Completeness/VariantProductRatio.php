@@ -97,7 +97,7 @@ SQL;
             INNER JOIN pim_catalog_channel channel ON channel.id = product.channel_id
 SQL;
 
-        $query = \sprintf($query, $subquery);
+        $query = sprintf($query, $subquery);
         $parameters = [];
         $parameters[] = ['name' => 'root_product_model_id', 'value' => $productModel->getId()];
 

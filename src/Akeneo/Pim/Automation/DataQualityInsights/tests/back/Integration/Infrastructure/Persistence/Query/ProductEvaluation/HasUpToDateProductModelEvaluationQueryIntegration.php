@@ -98,11 +98,11 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
 
     private function givenASubProductModelWithAnOutdatedEvaluationComparedToItsParent(\DateTimeImmutable $updatedAt): ProductModelId
     {
-        $parentCode = \strval(Uuid::uuid4());
+        $parentCode = strval(Uuid::uuid4());
         $this->givenAParentProductModel($parentCode, $updatedAt);
 
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
-            ->withCode(\strval(Uuid::uuid4()))
+            ->withCode(strval(Uuid::uuid4()))
             ->withFamilyVariant('familyVariantA1')
             ->withParent($parentCode)
             ->build();
@@ -119,11 +119,11 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
 
     private function givenASubProductModelWithAnUpToDateEvaluationComparedToItsParent(\DateTimeImmutable $updatedAt): ProductModelId
     {
-        $parentCode = \strval(Uuid::uuid4());
+        $parentCode = strval(Uuid::uuid4());
         $this->givenAParentProductModel($parentCode, $updatedAt);
 
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
-            ->withCode(\strval(Uuid::uuid4()))
+            ->withCode(strval(Uuid::uuid4()))
             ->withFamilyVariant('familyVariantA1')
             ->withParent($parentCode)
             ->build();
@@ -156,7 +156,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
     private function createProductModel(string $familyVariant): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
-            ->withCode(\strval(Uuid::uuid4()))
+            ->withCode(strval(Uuid::uuid4()))
             ->withFamilyVariant($familyVariant)
             ->build();
 

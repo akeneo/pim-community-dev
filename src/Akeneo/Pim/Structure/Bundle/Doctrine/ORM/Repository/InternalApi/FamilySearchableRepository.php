@@ -61,7 +61,7 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
      */
     protected function applyQueryOptions(QueryBuilder $qb, array $options)
     {
-        if (isset($options['identifiers']) && \is_array($options['identifiers']) && !empty($options['identifiers'])) {
+        if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
             $qb->andWhere('f.code in (:codes)');
             $qb->setParameter('codes', $options['identifiers']);
         }

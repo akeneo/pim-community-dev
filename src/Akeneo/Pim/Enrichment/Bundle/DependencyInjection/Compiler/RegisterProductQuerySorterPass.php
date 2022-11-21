@@ -68,8 +68,8 @@ class RegisterProductQuerySorterPass implements CompilerPassInterface
                 $sortedServices[$priority][] = new Reference($serviceId);
             }
         }
-        \krsort($sortedServices);
+        krsort($sortedServices);
 
-        return \count($sortedServices) > 0 ? \call_user_func_array('array_merge', $sortedServices) : [];
+        return count($sortedServices) > 0 ? call_user_func_array('array_merge', $sortedServices) : [];
     }
 }

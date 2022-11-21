@@ -30,6 +30,6 @@ class LabelCollection
 
     public function hasLabel(string $localeCode): bool
     {
-        return \array_key_exists($localeCode, $this->translatedLabels);
+        return array_key_exists($localeCode, $this->translatedLabels);
     }
 }

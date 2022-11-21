@@ -33,7 +33,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
 
         while ($productModelId = $stmtRootProductModels->fetchOne()) {
             $productModelIds[] = $productModelId;
-            if (\count($productModelIds) >= $bulkSize) {
+            if (count($productModelIds) >= $bulkSize) {
                 yield $this->idFactory->createCollection($productModelIds);
                 $productModelIds = [];
             }
@@ -43,7 +43,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
 
         while ($productModelId = $stmtSubProductModels->fetchOne()) {
             $productModelIds[] = $productModelId;
-            if (\count($productModelIds) >= $bulkSize) {
+            if (count($productModelIds) >= $bulkSize) {
                 yield $this->idFactory->createCollection($productModelIds);
                 $productModelIds = [];
             }

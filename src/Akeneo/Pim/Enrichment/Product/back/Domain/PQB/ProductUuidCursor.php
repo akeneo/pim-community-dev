@@ -81,7 +81,7 @@ final class ProductUuidCursor implements ProductUuidCursorInterface
      */
     public function next(): void
     {
-        if (null === $this->uuids || false === \next($this->uuids)) {
+        if (null === $this->uuids || false === next($this->uuids)) {
             $productResults = $this->fetcher->getNextResults();
             $this->uuids = $productResults->uuids();
             $this->count = $productResults->count();

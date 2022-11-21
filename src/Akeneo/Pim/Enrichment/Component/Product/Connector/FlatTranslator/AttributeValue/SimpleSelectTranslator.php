@@ -34,7 +34,7 @@ class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
             $optionKeys
         );
 
-        $attributeOptionTranslations = \array_change_key_case($attributeOptionTranslations, CASE_LOWER);
+        $attributeOptionTranslations = array_change_key_case($attributeOptionTranslations, CASE_LOWER);
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
@@ -44,7 +44,7 @@ class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
             }
 
             $optionKey = self::generateOptionKey($attributeCode, $value);
-            $attributeOptionTranslation = $attributeOptionTranslations[$optionKey][$locale] ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $value);
+            $attributeOptionTranslation = $attributeOptionTranslations[$optionKey][$locale] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $value);
             $result[$valueIndex] = $attributeOptionTranslation;
         }
 
@@ -62,11 +62,11 @@ class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
             $optionKeys[] = self::generateOptionKey($attributeCode, $optionCode);
         }
 
-        return \array_values(\array_unique($optionKeys));
+        return array_values(array_unique($optionKeys));
     }
 
     private static function generateOptionKey(string $attributeCode, string $optionCode): string
     {
-        return \sprintf('%s.%s', \strtolower($attributeCode), \strtolower($optionCode));
+        return sprintf('%s.%s', strtolower($attributeCode), strtolower($optionCode));
     }
 }

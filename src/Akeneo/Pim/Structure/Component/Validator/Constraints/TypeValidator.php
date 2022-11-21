@@ -49,7 +49,7 @@ class TypeValidator extends ConstraintValidator
             $this->context
                 ->buildViolation(
                     $constraint->message,
-                    \array_merge($violation->getParameters(), ['{{ givenType }}' => \getType($value)])
+                    array_merge($violation->getParameters(), ['{{ givenType }}' => getType($value)])
                 )
                 ->addViolation();
         }

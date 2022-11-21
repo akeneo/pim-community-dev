@@ -46,7 +46,7 @@ final class ConnectorProduct
             $this->validateAssociationsFormat();
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Malformed associations parameter: %s',
                     \json_encode($this->associations)
                 ),
@@ -59,7 +59,7 @@ final class ConnectorProduct
             $this->validateQuantifiedAssociationsFormat();
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Malformed quantified associations parameter %s',
                     \json_encode($this->quantifiedAssociations)
                 ),
@@ -73,24 +73,24 @@ final class ConnectorProduct
     {
         Assert::allIsMap($this->associations);
         foreach ($this->associations as $associationsByType) {
-            Assert::allRegex(\array_keys($associationsByType), '/products|product_models|groups/');
+            Assert::allRegex(array_keys($associationsByType), '/products|product_models|groups/');
             Assert::isMap($associationsByType);
-            if (\array_key_exists('products', $associationsByType)) {
+            if (array_key_exists('products', $associationsByType)) {
                 Assert::isArray($associationsByType['products']);
                 foreach ($associationsByType['products'] as $associatedProduct) {
                     Assert::isMap($associatedProduct);
                     Assert::keyExists($associatedProduct, 'uuid');
                     Assert::stringNotEmpty($associatedProduct['uuid']);
-                    Assert::true(Uuid::isValid($associatedProduct['uuid']), \sprintf('The associated product "%s" is not a valid uuid', $associatedProduct['uuid']));
+                    Assert::true(Uuid::isValid($associatedProduct['uuid']), sprintf('The associated product "%s" is not a valid uuid', $associatedProduct['uuid']));
                     Assert::keyExists($associatedProduct, 'identifier');
                     Assert::nullOrString($associatedProduct['identifier']);
                 }
             }
-            if (\array_key_exists('product_models', $associationsByType)) {
+            if (array_key_exists('product_models', $associationsByType)) {
                 Assert::isArray($associationsByType['product_models']);
                 Assert::allStringNotEmpty($associationsByType['product_models']);
             }
-            if (\array_key_exists('groups', $associationsByType)) {
+            if (array_key_exists('groups', $associationsByType)) {
                 Assert::isArray($associationsByType['groups']);
                 Assert::allStringNotEmpty($associationsByType['groups']);
             }
@@ -101,21 +101,21 @@ final class ConnectorProduct
     {
         Assert::allIsMap($this->quantifiedAssociations);
         foreach ($this->quantifiedAssociations as $quantifiedAssociationsByType) {
-            Assert::allRegex(\array_keys($quantifiedAssociationsByType), '/products|product_models/');
+            Assert::allRegex(array_keys($quantifiedAssociationsByType), '/products|product_models/');
             Assert::isMap($quantifiedAssociationsByType);
-            if (\array_key_exists('products', $quantifiedAssociationsByType)) {
+            if (array_key_exists('products', $quantifiedAssociationsByType)) {
                 Assert::isArray($quantifiedAssociationsByType['products']);
                 foreach ($quantifiedAssociationsByType['products'] as $quantifiedAssociatedProduct) {
                     Assert::isMap($quantifiedAssociatedProduct);
                     Assert::keyExists($quantifiedAssociatedProduct, 'uuid');
                     Assert::stringNotEmpty($quantifiedAssociatedProduct['uuid']);
-                    Assert::true(Uuid::isValid($quantifiedAssociatedProduct['uuid']), \sprintf('The associated product "%s" is not a valid uuid', $quantifiedAssociatedProduct['uuid']));
+                    Assert::true(Uuid::isValid($quantifiedAssociatedProduct['uuid']), sprintf('The associated product "%s" is not a valid uuid', $quantifiedAssociatedProduct['uuid']));
                     Assert::keyExists($quantifiedAssociatedProduct, 'identifier');
                     Assert::nullOrString($quantifiedAssociatedProduct['identifier']);
                     Assert::keyExists($quantifiedAssociatedProduct, 'quantity');
                 }
             }
-            if (\array_key_exists('product_models', $quantifiedAssociationsByType)) {
+            if (array_key_exists('product_models', $quantifiedAssociationsByType)) {
                 Assert::isArray($quantifiedAssociationsByType['product_models']);
                 foreach ($quantifiedAssociationsByType['product_models'] as $quantifiedAssociatedProductModel) {
                     Assert::isMap($quantifiedAssociatedProductModel);
@@ -226,7 +226,7 @@ final class ConnectorProduct
             $this->parentProductModelCode,
             $this->associations,
             $this->quantifiedAssociations,
-            \array_merge($this->metadata, [$key => $value]),
+            array_merge($this->metadata, [$key => $value]),
             $this->values,
             $this->qualityScores,
             $this->completenesses
@@ -324,8 +324,8 @@ final class ConnectorProduct
 
     public function filterValuesByAttributeCodesAndLocaleCodes(array $attributeCodesToKeep, array $localeCodesToKeep): ConnectorProduct
     {
-        $attributeCodes = \array_flip($attributeCodesToKeep);
-        $localeCodes = \array_flip($localeCodesToKeep);
+        $attributeCodes = array_flip($attributeCodesToKeep);
+        $localeCodes = array_flip($localeCodesToKeep);
 
         $values = $this->values->filter(function (ValueInterface $value) use ($attributeCodes, $localeCodes) {
             return isset($attributeCodes[$value->getAttributeCode()])
@@ -355,13 +355,13 @@ final class ConnectorProduct
     {
         $associatedProducts = [];
         foreach ($this->associations as $associationType => $associations) {
-            $associatedProducts[] = \array_map(
+            $associatedProducts[] = array_map(
                 fn (array $associatedProduct): string => $associatedProduct['uuid'],
                 $associations['products']
             );
         }
 
-        return !empty($associatedProducts) ? \array_unique(\array_merge(...$associatedProducts)) : [];
+        return !empty($associatedProducts) ? array_unique(array_merge(...$associatedProducts)) : [];
     }
 
     public function associatedProductModelCodes(): array
@@ -371,33 +371,33 @@ final class ConnectorProduct
             $associatedProductModels[] = $associations['product_models'];
         }
 
-        return !empty($associatedProductModels) ? \array_unique(\array_merge(...$associatedProductModels)) : [];
+        return !empty($associatedProductModels) ? array_unique(array_merge(...$associatedProductModels)) : [];
     }
 
     public function associatedWithQuantityProductIdentifiers()
     {
-        $associatedWithQuantityProducts = \array_map(function ($quantifiedAssociations) {
-            return \array_column($quantifiedAssociations['products'], 'identifier');
-        }, \array_values($this->quantifiedAssociations));
+        $associatedWithQuantityProducts = array_map(function ($quantifiedAssociations) {
+            return array_column($quantifiedAssociations['products'], 'identifier');
+        }, array_values($this->quantifiedAssociations));
 
         if (empty($associatedWithQuantityProducts)) {
             return [];
         }
 
-        return \array_values(\array_unique(\array_merge(...$associatedWithQuantityProducts)));
+        return array_values(array_unique(array_merge(...$associatedWithQuantityProducts)));
     }
 
     public function associatedWithQuantityProductModelCodes()
     {
-        $associatedWithQuantityProductModels = \array_map(function ($quantifiedAssociations) {
-            return \array_column($quantifiedAssociations['product_models'], 'identifier');
-        }, \array_values($this->quantifiedAssociations));
+        $associatedWithQuantityProductModels = array_map(function ($quantifiedAssociations) {
+            return array_column($quantifiedAssociations['product_models'], 'identifier');
+        }, array_values($this->quantifiedAssociations));
 
         if (empty($associatedWithQuantityProductModels)) {
             return [];
         }
 
-        return \array_values(\array_unique(\array_merge(...$associatedWithQuantityProductModels)));
+        return array_values(array_unique(array_merge(...$associatedWithQuantityProductModels)));
     }
 
     public function filterAssociatedProductModelsByProductModelCodes(array $productModelCodesToFilter): ConnectorProduct
@@ -405,7 +405,7 @@ final class ConnectorProduct
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
             $filteredAssociations[$associationType]['products'] = $association['products'];
-            $filteredAssociations[$associationType]['product_models'] = \array_values(\array_intersect(
+            $filteredAssociations[$associationType]['product_models'] = array_values(array_intersect(
                 $association['product_models'],
                 $productModelCodesToFilter
             ));
@@ -435,15 +435,15 @@ final class ConnectorProduct
     {
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
-            $filteredProductModelQuantifiedAssociations = \array_filter(
+            $filteredProductModelQuantifiedAssociations = array_filter(
                 $quantifiedAssociation['product_models'],
                 function ($quantifiedLink) use ($productModelCodesToFilter) {
-                    return \in_array($quantifiedLink['identifier'], $productModelCodesToFilter);
+                    return in_array($quantifiedLink['identifier'], $productModelCodesToFilter);
                 }
             );
 
             $filteredQuantifiedAssociations[$associationType]['products'] = $quantifiedAssociation['products'];
-            $filteredQuantifiedAssociations[$associationType]['product_models'] = \array_values($filteredProductModelQuantifiedAssociations);
+            $filteredQuantifiedAssociations[$associationType]['product_models'] = array_values($filteredProductModelQuantifiedAssociations);
         }
 
         return new self(
@@ -469,14 +469,14 @@ final class ConnectorProduct
     {
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
-            $filteredProductQuantifiedAssociations = \array_filter(
+            $filteredProductQuantifiedAssociations = array_filter(
                 $quantifiedAssociation['products'],
                 function ($quantifiedLink) use ($productIdentifiersToFilter) {
-                    return \in_array($quantifiedLink['identifier'], $productIdentifiersToFilter);
+                    return in_array($quantifiedLink['identifier'], $productIdentifiersToFilter);
                 }
             );
 
-            $filteredQuantifiedAssociations[$associationType]['products'] = \array_values($filteredProductQuantifiedAssociations);
+            $filteredQuantifiedAssociations[$associationType]['products'] = array_values($filteredProductQuantifiedAssociations);
             $filteredQuantifiedAssociations[$associationType]['product_models'] = $quantifiedAssociation['product_models'];
         }
 
@@ -503,9 +503,9 @@ final class ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
-            $filteredAssociations[$associationType]['products'] = \array_values(\array_filter(
+            $filteredAssociations[$associationType]['products'] = array_values(array_filter(
                 $association['products'],
-                fn (array $associatedProduct): bool => \in_array($associatedProduct['identifier'], $productIdentifiersToFilter)
+                fn (array $associatedProduct): bool => in_array($associatedProduct['identifier'], $productIdentifiersToFilter)
             ));
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
@@ -534,9 +534,9 @@ final class ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
-            $filteredAssociations[$associationType]['products'] = \array_values(\array_filter(
+            $filteredAssociations[$associationType]['products'] = array_values(array_filter(
                 $association['products'],
-                fn (array $associatedProduct): bool => \in_array($associatedProduct['uuid'], $productUuidsToFilter)
+                fn (array $associatedProduct): bool => in_array($associatedProduct['uuid'], $productUuidsToFilter)
             ));
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
@@ -563,7 +563,7 @@ final class ConnectorProduct
 
     public function filterByCategoryCodes(array $categoryCodesToFilter): ConnectorProduct
     {
-        $categoryCodes = \array_values(\array_intersect($this->categoryCodes, $categoryCodesToFilter));
+        $categoryCodes = array_values(array_intersect($this->categoryCodes, $categoryCodesToFilter));
 
         return new self(
             $this->uuid,

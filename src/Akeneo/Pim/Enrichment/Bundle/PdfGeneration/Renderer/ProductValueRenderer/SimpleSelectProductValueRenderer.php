@@ -39,12 +39,12 @@ class SimpleSelectProductValueRenderer implements ProductValueRenderer
         $option = $this->attributeOptionRepository->findOneByIdentifier($attribute->getCode() . '.' . $optionCode);
 
         if (null === $option) {
-            return \sprintf('[%s]', $optionCode);
+            return sprintf('[%s]', $optionCode);
         }
 
         $option->setLocale($localeCode);
         $translation = $option->getTranslation();
 
-        return null !== $translation->getValue() ? $translation->getValue() : \sprintf('[%s]', $option->getCode());
+        return null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
     }
 }

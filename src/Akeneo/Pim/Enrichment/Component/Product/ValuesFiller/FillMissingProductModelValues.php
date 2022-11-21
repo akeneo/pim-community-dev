@@ -57,7 +57,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
 
         $productModelValuesInPivotFormat = $this->createProductModelValuesInPivotFormat($productModelStandardFormat);
         $nullValuesInPivotFormat = $this->createNullValuesInPivotFormat($familyVariantCode, $level);
-        $productValuesWithNullValuesInPivotFormat = \array_replace_recursive(
+        $productValuesWithNullValuesInPivotFormat = array_replace_recursive(
             $nullValuesInPivotFormat,
             $productModelValuesInPivotFormat
         );
@@ -65,7 +65,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
 
         $priceProductModelValuesInPivotFormat = $this->createPriceProductModelValuesInPivotFormat($productModelStandardFormat);
         $nullPriceValuesInPivotFormat = $this->createNullPriceValuesInPivotFormat($familyVariantCode, $level);
-        $priceProductModelValuesWithNullValuesInPivotFormat = \array_replace_recursive(
+        $priceProductModelValuesWithNullValuesInPivotFormat = array_replace_recursive(
             $nullPriceValuesInPivotFormat,
             $priceProductModelValuesInPivotFormat
         );
@@ -93,7 +93,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
         $nullValues = [];
 
         $attributesInFamily = $this->getAttributesInFamilyVariantIndexedByCode($familyVariantCode, $level);
-        $nonPriceAttributes = \array_filter(
+        $nonPriceAttributes = array_filter(
             $attributesInFamily,
             function (AttributeInterface $attribute): bool {
                 return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
@@ -166,7 +166,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
             $productModelStandardFormat['family_variant'],
             null === $productModelStandardFormat['parent'] ? 0 : 1
         );
-        $nonPriceAttributes = \array_filter(
+        $nonPriceAttributes = array_filter(
             $attributesInFamily,
             function (AttributeInterface $attribute): bool {
                 return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
@@ -221,7 +221,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
         $nullValues = [];
         $attributesInFamily = $this->getAttributesInFamilyVariantIndexedByCode($familyVariantCode, $level);
 
-        $priceAttributes = \array_filter(
+        $priceAttributes = array_filter(
             $attributesInFamily,
             function (AttributeInterface $attribute): bool {
                 return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
@@ -275,7 +275,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
             $productModelStandardFormat['family_variant'],
             null === $productModelStandardFormat['parent'] ? 0 : 1
         );
-        $priceAttributes = \array_filter(
+        $priceAttributes = array_filter(
             $attributesInFamily,
             function (AttributeInterface $attribute): bool {
                 return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
@@ -351,7 +351,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
             }
         }
 
-        \ksort($currencies);
+        ksort($currencies);
 
         return $currencies;
     }
@@ -379,7 +379,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
 
     private function sortCurrenciesByCode(array $currencies): array
     {
-        \usort($currencies, function (CurrencyInterface $a, CurrencyInterface $b) {
+        usort($currencies, function (CurrencyInterface $a, CurrencyInterface $b) {
             return $a->getCode() <=> $b->getCode();
         });
 

@@ -25,7 +25,7 @@ final class ProductUuid implements ProductEntityIdInterface
     public static function fromString(string $uuid): self
     {
         if (!Uuid::isValid($uuid)) {
-            throw new \InvalidArgumentException(\sprintf('Product uuid should be a valid uuid, %s given', $uuid));
+            throw new \InvalidArgumentException(sprintf('Product uuid should be a valid uuid, %s given', $uuid));
         }
 
         return new self(Uuid::fromString($uuid));

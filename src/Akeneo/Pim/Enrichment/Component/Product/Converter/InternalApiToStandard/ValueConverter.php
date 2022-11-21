@@ -52,7 +52,7 @@ class ValueConverter implements ConverterInterface
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 
         foreach ($productValues as $code => $values) {
-            if (\in_array($code, $mediaAttributes)) {
+            if (in_array($code, $mediaAttributes)) {
                 foreach ($values as $index => $value) {
                     $productValues[$code][$index]['data'] = $value['data']['filePath'];
                 }

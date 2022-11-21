@@ -71,7 +71,7 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
         $family = $this->familyRepository->findOneByIdentifier($familyCode);
 
         if (null === $family) {
-            throw new \InvalidArgumentException(\sprintf('Family not found, "%s" given', $familyCode));
+            throw new \InvalidArgumentException(sprintf('Family not found, "%s" given', $familyCode));
         }
 
         return $family;

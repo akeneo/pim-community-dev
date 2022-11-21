@@ -157,7 +157,7 @@ final class DashboardScoresProjectionRepositoryIntegration extends TestCase
 
     private function assertCountRatesByDate(int $expectedCount, TimePeriod $timePeriod, ConsolidationDate $date): void
     {
-        $path = \sprintf('\'$."%s"."%s"\'', $timePeriod, $date->format());
+        $path = sprintf('\'$."%s"."%s"\'', $timePeriod, $date->format());
 
         $query = <<<SQL
 SELECT COUNT(*) AS nb_rates
@@ -165,7 +165,7 @@ FROM pim_data_quality_insights_dashboard_scores_projection
 WHERE JSON_CONTAINS_PATH(scores, 'one', $path)
 SQL;
 
-        $count = \intval($this->db->executeQuery($query)->fetchOne());
+        $count = intval($this->db->executeQuery($query)->fetchOne());
 
         $this->assertSame($expectedCount, $count);
     }
@@ -183,7 +183,7 @@ SQL;
             'code' => DashboardProjectionCode::CATALOG
         ]);
 
-        $averageRanks = \json_decode($stmt->fetchOne(), true);
+        $averageRanks = json_decode($stmt->fetchOne(), true);
 
         $this->assertEquals($expectedAverageRanks, $averageRanks);
     }

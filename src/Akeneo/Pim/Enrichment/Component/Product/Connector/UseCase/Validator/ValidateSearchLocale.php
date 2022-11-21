@@ -39,7 +39,7 @@ final class ValidateSearchLocale
             $localeCodes[] = $searchLocaleCode;
         }
 
-        $localeCodes = \array_unique($localeCodes);
+        $localeCodes = array_unique($localeCodes);
         $errors = [];
         foreach ($localeCodes as $localeCode) {
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
@@ -49,9 +49,9 @@ final class ValidateSearchLocale
         }
 
         if (!empty($errors)) {
-            $plural = \count($errors) > 1 ?
+            $plural = count($errors) > 1 ?
                 'Locales "%s" do not exist or are not activated.' : 'Locale "%s" does not exist or is not activated.';
-            throw new InvalidQueryException(\sprintf($plural, \implode(', ', $errors)));
+            throw new InvalidQueryException(sprintf($plural, implode(', ', $errors)));
         }
     }
 
@@ -66,22 +66,22 @@ final class ValidateSearchLocale
                     // Removing the support of locale for the completeness filter for the products
                     // would not be considered as a BC break.
                     if (isset($filter['locales'])) {
-                        if (!\is_array($filter['locales'])) {
+                        if (!is_array($filter['locales'])) {
                             throw new InvalidQueryException(
-                                \sprintf('Property "completeness" expects an array with the key "locales".')
+                                sprintf('Property "completeness" expects an array with the key "locales".')
                             );
                         }
                     }
                 } else {
-                    if (isset($filter['locale']) && !\is_string($filter['locale'])) {
+                    if (isset($filter['locale']) && !is_string($filter['locale'])) {
                         throw new InvalidQueryException(
-                            \sprintf('Property "%s" expects a string with the key "locale".', $propertyCode)
+                            sprintf('Property "%s" expects a string with the key "locale".', $propertyCode)
                         );
                     }
 
                     if (isset($filter['locales'])) {
                         throw new InvalidQueryException(
-                            \sprintf('Property "%s" expects an array with the key "locale".', $propertyCode)
+                            sprintf('Property "%s" expects an array with the key "locale".', $propertyCode)
                         );
                     }
                 }
@@ -99,7 +99,7 @@ final class ValidateSearchLocale
                 }
 
                 if (isset($filter['locales'])) {
-                    $localeCodes = \array_merge($localeCodes, $filter['locales']);
+                    $localeCodes = array_merge($localeCodes, $filter['locales']);
                 }
             }
         }

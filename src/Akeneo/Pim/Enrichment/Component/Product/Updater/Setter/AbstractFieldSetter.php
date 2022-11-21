@@ -19,6 +19,6 @@ abstract class AbstractFieldSetter implements FieldSetterInterface
      */
     public function supportsField($field)
     {
-        return \in_array($field, $this->supportedFields, true);
+        return in_array($field, $this->supportedFields, true);
     }
 }

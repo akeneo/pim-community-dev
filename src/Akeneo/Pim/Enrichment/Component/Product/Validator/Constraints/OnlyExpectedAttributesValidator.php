@@ -46,7 +46,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
         $familyAttributeCodes = $family->getAttributeCodes();
         $levelAttributes = $this->attributesProvider->getAttributes($entity);
 
-        $levelAttributeCodes = \array_map(
+        $levelAttributeCodes = array_map(
             function ($attribute) {
                 return $attribute->getCode();
             },
@@ -54,7 +54,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
         );
 
         foreach ($entity->getValuesForVariation()->getAttributeCodes() as $modelAttributeCode) {
-            if (!\in_array($modelAttributeCode, $familyAttributeCodes)) {
+            if (!in_array($modelAttributeCode, $familyAttributeCodes)) {
                 $this->context->buildViolation(
                     OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY,
                     [
@@ -66,7 +66,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
                 continue;
             }
 
-            if (!\in_array($modelAttributeCode, $levelAttributeCodes, true)) {
+            if (!in_array($modelAttributeCode, $levelAttributeCodes, true)) {
                 $this->context->buildViolation(
                     OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED,
                     [

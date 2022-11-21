@@ -252,7 +252,7 @@ class Product implements ArrayConverterInterface
 
         $identifierCode = $this->attributeRepository->getIdentifierCode();
         if (!isset($convertedItem['values'][$identifierCode])) {
-            throw new \LogicException(\sprintf('Unable to find the column "%s"', $identifierCode));
+            throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
         }
 
         $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
@@ -278,33 +278,33 @@ class Product implements ArrayConverterInterface
      */
     protected function validateOptionalFields(array $item): void
     {
-        $optionalFields = \array_merge(
+        $optionalFields = array_merge(
             ['uuid', 'family', 'enabled', 'categories', 'groups', 'parent'],
             $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
 
         // index $optionalFields by keys to improve performances
-        $optionalFields = \array_combine($optionalFields, $optionalFields);
+        $optionalFields = array_combine($optionalFields, $optionalFields);
         $unknownFields = [];
 
-        foreach (\array_keys($item) as $field) {
+        foreach (array_keys($item) as $field) {
             if (!isset($optionalFields[$field])) {
                 $unknownFields[] = $field;
             }
         }
 
         $nonLocalizableOrScopableFields = $this->filterNonLocalizableOrScopableFields($unknownFields);
-        $unknownFields = \array_diff($unknownFields, $nonLocalizableOrScopableFields);
+        $unknownFields = array_diff($unknownFields, $nonLocalizableOrScopableFields);
 
         $messages = [];
-        if (0 < \count($unknownFields)) {
-            $messages[] = \count($unknownFields) > 1 ?
-                \sprintf('The fields "%s" do not exist.', \implode(', ', $unknownFields)) :
-                \sprintf('The field "%s" does not exist.', $unknownFields[0]);
+        if (0 < count($unknownFields)) {
+            $messages[] = count($unknownFields) > 1 ?
+                sprintf('The fields "%s" do not exist.', implode(', ', $unknownFields)) :
+                sprintf('The field "%s" does not exist.', $unknownFields[0]);
         }
         foreach ($nonLocalizableOrScopableFields as $nonLocalizableOrScopableField) {
-            $messages[] = \sprintf(
+            $messages[] = sprintf(
                 'The field "%s" needs an additional locale and/or a channel information; ' .
                     'in order to do that, please set the code as follow: ' .
                     '\'%s-[locale_code]-[channel_code]\'.',
@@ -313,8 +313,8 @@ class Product implements ArrayConverterInterface
             );
         }
 
-        if (\count($messages) > 0) {
-            throw new StructureArrayConversionException(\join(' ', $messages));
+        if (count($messages) > 0) {
+            throw new StructureArrayConversionException(join(' ', $messages));
         }
     }
 
@@ -328,9 +328,9 @@ class Product implements ArrayConverterInterface
         $stringFields = ['family', 'categories', 'groups'];
 
         foreach ($item as $field => $value) {
-            if (\in_array($field, $stringFields) && !\is_string($value)) {
+            if (in_array($field, $stringFields) && !is_string($value)) {
                 throw new DataArrayConversionException(
-                    \sprintf('The field "%s" should contain a string, "%s" provided', $field, $value)
+                    sprintf('The field "%s" should contain a string, "%s" provided', $field, $value)
                 );
             }
         }
@@ -342,7 +342,7 @@ class Product implements ArrayConverterInterface
     protected function getOptionalAssociationFields(): array
     {
         if (empty($this->optionalAssocFields)) {
-            $this->optionalAssocFields = \array_merge(
+            $this->optionalAssocFields = array_merge(
                 $this->assocColumnsResolver->resolveAssociationColumns(),
                 $this->assocColumnsResolver->resolveQuantifiedAssociationColumns()
             );
@@ -361,7 +361,7 @@ class Product implements ArrayConverterInterface
     private function filterNonLocalizableOrScopableFields(array $attributeCodes): array
     {
         $result = [];
-        if (\count($attributeCodes) === 0) {
+        if (count($attributeCodes) === 0) {
             return $result;
         }
 
@@ -386,20 +386,20 @@ class Product implements ArrayConverterInterface
 
     private function filterAssociationsFields(array $mappedItem): array
     {
-        $isGroupAssociationPattern = \sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
-        $isProductAssociationPattern = \sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
-        $isProductUuidAssociationPattern = \sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_UUID_ASSOCIATION_SUFFIX);
-        $isProductModelAssociationPattern = \sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
-        $isProductAssociationQuantityPattern = \sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
-        $isProductModelAssociationQuantityPattern = \sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+        $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
+        $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+        $isProductUuidAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_UUID_ASSOCIATION_SUFFIX);
+        $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
+        $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+        $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
 
-        foreach (\array_keys($mappedItem) as $field) {
-            $isGroup = (1 === \preg_match($isGroupAssociationPattern, $field));
-            $isProduct = (1 === \preg_match($isProductAssociationPattern, $field));
-            $isProductUuid = (1 === \preg_match($isProductUuidAssociationPattern, $field));
-            $isProductModel = (1 === \preg_match($isProductModelAssociationPattern, $field));
-            $isProductQuantity = (1 === \preg_match($isProductAssociationQuantityPattern, $field));
-            $isProductModelQuantity = (1 === \preg_match($isProductModelAssociationQuantityPattern, $field));
+        foreach (array_keys($mappedItem) as $field) {
+            $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
+            $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
+            $isProductUuid = (1 === preg_match($isProductUuidAssociationPattern, $field));
+            $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
+            $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
+            $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
             if ($isGroup || $isProduct || $isProductUuid || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
                 unset($mappedItem[$field]);
             }
@@ -410,8 +410,8 @@ class Product implements ArrayConverterInterface
 
     private function filterQualityScoreFields(array $mappedItem): array
     {
-        return \array_filter($mappedItem, function ($field) {
-            return 0 !== \strpos($field, \sprintf('%s-', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX));
+        return array_filter($mappedItem, function ($field) {
+            return 0 !== strpos($field, sprintf('%s-', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX));
         }, ARRAY_FILTER_USE_KEY);
     }
 }

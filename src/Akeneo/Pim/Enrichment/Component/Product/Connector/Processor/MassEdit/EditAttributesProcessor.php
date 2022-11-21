@@ -175,8 +175,8 @@ class EditAttributesProcessor extends AbstractProcessor
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
             new DataInvalidItem(
-                \array_merge(
-                    $entity instanceof ProductInterface && \get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
+                array_merge(
+                    $entity instanceof ProductInterface && get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
                         ? ['uuid' => $entity->getUuid()->toString()]
                         : ['id' => $entity->getId()],
                     [

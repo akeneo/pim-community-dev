@@ -103,17 +103,17 @@ class IndexProductCommand extends Command
         } elseif (!empty($input->getArgument('identifiers'))) {
             $requestedIdentifiers = $input->getArgument('identifiers');
             $existingUuids = $this->getExistingProductUuids($requestedIdentifiers);
-            $nonExistingIdentifiers = \array_diff($requestedIdentifiers, \array_keys($existingUuids));
+            $nonExistingIdentifiers = array_diff($requestedIdentifiers, array_keys($existingUuids));
             if (!empty($nonExistingIdentifiers)) {
                 $output->writeln(
-                    \sprintf(
+                    sprintf(
                         '<error>Some products were not found for the given identifiers: %s</error>',
-                        \implode(', ', $nonExistingIdentifiers)
+                        implode(', ', $nonExistingIdentifiers)
                     )
                 );
             }
-            $chunkedProductUuids = \array_chunk($existingUuids, $batchSize);
-            $productCount = \count($existingUuids);
+            $chunkedProductUuids = array_chunk($existingUuids, $batchSize);
+            $productCount = count($existingUuids);
         } else {
             $output->writeln(
                 '<error>Please specify a list of product identifiers to index or use the flag --all to index all products</error>'
@@ -125,7 +125,7 @@ class IndexProductCommand extends Command
         $numberOfIndexedProducts = $this->doIndex($chunkedProductUuids, new ProgressBar($output, $productCount));
 
         $output->writeln('');
-        $output->writeln(\sprintf('<info>%d products indexed</info>', $numberOfIndexedProducts));
+        $output->writeln(sprintf('<info>%d products indexed</info>', $numberOfIndexedProducts));
 
         return 0;
     }
@@ -137,8 +137,8 @@ class IndexProductCommand extends Command
         $progressBar->start();
         foreach ($chunkedProductUuids as $productUuids) {
             $this->productAndAncestorsIndexer->indexFromProductUuids($productUuids);
-            $indexedProductCount += \count($productUuids);
-            $progressBar->advance(\count($productUuids));
+            $indexedProductCount += count($productUuids);
+            $progressBar->advance(count($productUuids));
         }
         $progressBar->finish();
 
@@ -172,9 +172,9 @@ SQL;
                 return;
             }
 
-            $lastUuidAsBytes = \end($rows);
+            $lastUuidAsBytes = end($rows);
 
-            yield \array_map(fn (string $uuid): UuidInterface => Uuid::fromBytes($uuid), $rows);
+            yield array_map(fn (string $uuid): UuidInterface => Uuid::fromBytes($uuid), $rows);
         }
     }
 
@@ -192,7 +192,7 @@ SQL;
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         )->fetchAllKeyValue();
 
-        return \array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids);
+        return array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids);
     }
 
     /**
@@ -202,7 +202,7 @@ SQL;
     {
         if (!$this->productAndProductModelClient->hasIndex()) {
             throw new \RuntimeException(
-                \sprintf(
+                sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
                     $this->productAndProductModelClient->getIndexName()
                 )
@@ -237,10 +237,10 @@ SQL;
                 return;
             }
 
-            $lastUuidAsBytes = \end($rows)['uuid'];
+            $lastUuidAsBytes = end($rows)['uuid'];
 
-            $existingMysqlIdentifiers = \array_column($rows, '_id');
-            $existingMysqlUpdated = \array_column($rows, 'updated');
+            $existingMysqlIdentifiers = array_column($rows, '_id');
+            $existingMysqlUpdated = array_column($rows, 'updated');
 
             $results = $this->productAndProductModelClient->search([
                 'query' => [
@@ -261,14 +261,14 @@ SQL;
                 'size' => $batchSize
             ]);
 
-            $esIdentifiers = \array_map(function ($doc) {
+            $esIdentifiers = array_map(function ($doc) {
                 return $doc['_id'];
             }, $results["hits"]["hits"]);
 
-            $diff = \array_reduce(
+            $diff = array_reduce(
                 $rows,
                 function ($carry, $item) use ($esIdentifiers) {
-                    if (!\in_array($item['_id'], $esIdentifiers)) {
+                    if (!in_array($item['_id'], $esIdentifiers)) {
                         $carry[] = Uuid::fromBytes($item['uuid']);
                     }
 

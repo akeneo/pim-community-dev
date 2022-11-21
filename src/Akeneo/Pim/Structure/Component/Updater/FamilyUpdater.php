@@ -75,11 +75,11 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function validateDataType($field, $data)
     {
-        if (\in_array($field, ['code', 'attribute_as_label', 'attribute_as_image'])) {
-            if (null !== $data && !\is_scalar($data)) {
+        if (in_array($field, ['code', 'attribute_as_label', 'attribute_as_image'])) {
+            if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
-        } elseif (\in_array($field, ['attributes', 'labels'])) {
+        } elseif (in_array($field, ['attributes', 'labels'])) {
             $this->validateScalarArray($field, $data);
         } elseif ('attribute_requirements' === $field) {
             $this->validateAttributeRequirements($data);
@@ -98,15 +98,15 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function validateScalarArray($field, $data)
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
         }
 
         foreach ($data as $value) {
-            if (null !== $value && !\is_scalar($value)) {
+            if (null !== $value && !is_scalar($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    \sprintf('one of the %s is not a scalar', $field),
+                    sprintf('one of the %s is not a scalar', $field),
                     static::class,
                     $data
                 );
@@ -120,23 +120,23 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function validateAttributeRequirements($data)
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected('attribute_requirements', static::class, $data);
         }
         foreach ($data as $channel => $attributes) {
-            if (!\is_array($attributes)) {
+            if (!is_array($attributes)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     'attribute_requirements',
-                    \sprintf('the channel "%s" is not an array', $channel),
+                    sprintf('the channel "%s" is not an array', $channel),
                     static::class,
                     $data
                 );
             }
             foreach ($attributes as $attribute) {
-                if (null !== $attribute && !\is_scalar($attribute)) {
+                if (null !== $attribute && !is_scalar($attribute)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         'attribute_requirements',
-                        \sprintf('one of the attributes in the channel "%s" is not a scalar', $channel),
+                        sprintf('one of the attributes in the channel "%s" is not a scalar', $channel),
                         static::class,
                         $data
                     );
@@ -234,9 +234,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
         }
         foreach ($family->getAttributeRequirements() as $requirement) {
             $channelCode = $requirement->getChannelCode();
-            if (\array_key_exists($channelCode, $newRequirements)) {
+            if (array_key_exists($channelCode, $newRequirements)) {
                 $attributeCode = $requirement->getAttributeCode();
-                $key = \array_search($attributeCode, $newRequirements[$channelCode], true);
+                $key = array_search($attributeCode, $newRequirements[$channelCode], true);
                 if (false === $key) {
                     $family->removeAttributeRequirement($requirement);
                 } elseif (true === $requirement->isRequired()) {

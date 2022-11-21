@@ -181,8 +181,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
                 $completenessOfNonRequiredAttributesStatus,
                 ['total_number_of_attributes' => 7]
             ))
-            ->add(
-                $this->generateCriterionEvaluation(
+            ->add($this->generateCriterionEvaluation(
                 $productId,
                 'consistency_spelling',
                 CriterionEvaluationStatus::DONE,
@@ -190,7 +189,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
                 $evaluateSpellingStatus,
                 $evaluateSpellingData
             )
-            );
+        );
     }
 
     private function givenProductCriteriaEvaluationsWithoutCompleteness(ProductUuid $productId): CriterionEvaluationCollection
@@ -219,8 +218,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         ];
 
         return (new CriterionEvaluationCollection())
-            ->add(
-                $this->generateCriterionEvaluation(
+            ->add($this->generateCriterionEvaluation(
                 $productId,
                 'consistency_spelling',
                 CriterionEvaluationStatus::DONE,
@@ -228,7 +226,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
                 $evaluateSpellingStatus,
                 $evaluateSpellingData
             )
-            );
+        );
     }
 
     private function generateCriterionEvaluation(ProductUuid $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, CriterionEvaluationResultStatusCollection $resultStatusCollection, array $resultData)

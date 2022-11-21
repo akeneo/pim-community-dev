@@ -16,7 +16,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         GetAttributeTypes $getAttributeTypes,
         ValueUserIntentFactory $valueUserIntentFactory1,
         ValueUserIntentFactory $valueUserIntentFactory2,
@@ -30,7 +30,7 @@ class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
         $this->shouldImplement(UserIntentFactory::class);
     }
 
-    public function it_returns_user_intents(
+    function it_returns_user_intents(
         GetAttributeTypes $getAttributeTypes,
         ValueUserIntentFactory $valueUserIntentFactory1,
         ValueUserIntentFactory $valueUserIntentFactory2,

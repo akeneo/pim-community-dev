@@ -36,11 +36,11 @@ class Range extends BaseRange
      */
     public function __construct($options = null)
     {
-        if (isset($options['min']) && \is_numeric($options['min'])) {
-            $options['min'] = \floatval($options['min']);
+        if (isset($options['min']) && is_numeric($options['min'])) {
+            $options['min'] = floatval($options['min']);
         }
-        if (isset($options['max']) && \is_numeric($options['max'])) {
-            $options['max'] = \floatval($options['max']);
+        if (isset($options['max']) && is_numeric($options['max'])) {
+            $options['max'] = floatval($options['max']);
         }
 
         parent::__construct($options);

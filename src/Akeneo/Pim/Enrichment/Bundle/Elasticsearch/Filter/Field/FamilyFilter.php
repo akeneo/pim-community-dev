@@ -115,7 +115,7 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
 
             if (null === $family) {
                 throw new ObjectNotFoundException(
-                    \sprintf('Object "family" with code "%s" does not exist', $value)
+                    sprintf('Object "family" with code "%s" does not exist', $value)
                 );
             }
             $familyCodes[] = $family->getCode();

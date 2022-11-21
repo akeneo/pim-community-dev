@@ -22,7 +22,7 @@ class AssociationType extends AbstractSimpleArrayConverter implements ArrayConve
         switch ($property) {
             case 'labels':
                 foreach ($data as $localeCode => $label) {
-                    $labelKey = \sprintf('label-%s', $localeCode);
+                    $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
                 break;

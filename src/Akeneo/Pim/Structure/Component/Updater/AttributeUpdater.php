@@ -107,24 +107,24 @@ class AttributeUpdater implements ObjectUpdaterInterface
      */
     protected function validateDataType($field, $data)
     {
-        if (\in_array($field, ['labels', 'available_locales', 'allowed_extensions', 'guidelines'])) {
-            if (!\is_array($data)) {
+        if (in_array($field, ['labels', 'available_locales', 'allowed_extensions', 'guidelines'])) {
+            if (!is_array($data)) {
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
 
             foreach ($data as $value) {
-                if (null !== $value && !\is_scalar($value)) {
+                if (null !== $value && !is_scalar($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        \sprintf('one of the "%s" values is not a scalar', $field),
+                        sprintf('one of the "%s" values is not a scalar', $field),
                         static::class,
                         $data
                     );
                 }
             }
-        } elseif (\in_array(
+        } elseif (in_array(
             $field,
-            \array_merge([
+            array_merge([
                 'code',
                 'type',
                 'group',
@@ -151,11 +151,11 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 'required',
             ], $this->properties)
         )) {
-            if (null !== $data && !\is_scalar($data)) {
+            if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
         } elseif ('table_configuration' === $field) {
-            if (!\is_array($data)) {
+            if (!is_array($data)) {
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
         } else {
@@ -197,7 +197,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $attribute->setDateMax($date);
                 break;
             case 'allowed_extensions':
-                $attribute->setAllowedExtensions(\implode(',', $data));
+                $attribute->setAllowedExtensions(implode(',', $data));
                 break;
             case 'guidelines':
                 foreach ($data as $localeCode => $localeGuidelines) {
@@ -212,7 +212,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $attribute->setRawTableConfiguration($data);
                 break;
             default:
-                if (\in_array($field, $this->properties)) {
+                if (in_array($field, $this->properties)) {
                     $attribute->setProperty($field, $data);
                 } else {
                     $this->setValue($attribute, $field, $data);
@@ -357,7 +357,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
             throw InvalidPropertyException::dateExpected($field, 'yyyy-mm-dd', static::class, $data);
         }
 
-        if (!\preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
             throw InvalidPropertyException::dateExpected($field, 'yyyy-mm-dd', static::class, $data);
         }
     }
@@ -378,6 +378,6 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
     private function isFieldIgnored(string $field): bool
     {
-        return \in_array($field, $this->ignoredFields);
+        return in_array($field, $this->ignoredFields);
     }
 }

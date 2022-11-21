@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  */
 final class SetFamilySpec extends ObjectBehavior
 {
-    public function it_can_be_constructed_with_family_code()
+    function it_can_be_constructed_with_family_code()
     {
         $this->beConstructedWith('accessories');
         $this->shouldBeAnInstanceOf(SetFamily::class);

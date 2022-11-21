@@ -48,7 +48,7 @@ class ProductIndexer implements ProductIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $chunks = \array_chunk($productUuids, self::BATCH_SIZE);
+        $chunks = array_chunk($productUuids, self::BATCH_SIZE);
         foreach ($chunks as $productUuidsChunk) {
             $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductUuids(
                 $productUuidsChunk
@@ -67,7 +67,7 @@ class ProductIndexer implements ProductIndexerInterface
             return;
         }
 
-        $this->productAndProductModelClient->bulkDelete(\array_map(
+        $this->productAndProductModelClient->bulkDelete(array_map(
             fn (UuidInterface $productUuid): string => self::PRODUCT_IDENTIFIER_PREFIX . $productUuid->toString(),
             $productUuids
         ));

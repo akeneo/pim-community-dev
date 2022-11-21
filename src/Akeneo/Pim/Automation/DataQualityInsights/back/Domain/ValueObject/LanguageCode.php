@@ -15,7 +15,7 @@ final class LanguageCode
 
     public function __construct(string $code)
     {
-        if (\preg_match('~^[a-z]{2}(_[A-Z]{2})?$~', $code) === 0) {
+        if (preg_match('~^[a-z]{2}(_[A-Z]{2})?$~', $code) === 0) {
             throw new \InvalidArgumentException('A language code must be a two letter code (ex: "en", "fr") or a valid locale (ex: "pt_BR").');
         }
 

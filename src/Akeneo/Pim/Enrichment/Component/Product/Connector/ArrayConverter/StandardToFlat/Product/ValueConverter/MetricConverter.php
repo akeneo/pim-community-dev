@@ -45,7 +45,7 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
                 $value['locale'],
                 $value['scope']
             );
-            $flatUnitName = \sprintf('%s-unit', $flatName);
+            $flatUnitName = sprintf('%s-unit', $flatName);
 
             if (null === $value['data']['amount']) {
                 $convertedItem[$flatName] = null;

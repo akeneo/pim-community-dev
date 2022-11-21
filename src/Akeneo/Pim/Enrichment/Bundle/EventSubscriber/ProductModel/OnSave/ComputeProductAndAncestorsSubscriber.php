@@ -56,15 +56,15 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
     public function onProductModelSaveAll(GenericEvent $event): void
     {
         $productModels = $event->getSubject();
-        if (!\is_array($productModels)) {
+        if (!is_array($productModels)) {
             return;
         }
 
-        if (!\current($productModels) instanceof ProductModelInterface) {
+        if (!current($productModels) instanceof ProductModelInterface) {
             return;
         }
 
-        $this->computeAndIndexFromProductModelCodes(\array_map(
+        $this->computeAndIndexFromProductModelCodes(array_map(
             function (ProductModelInterface $productModel) {
                 return $productModel->getCode();
             },

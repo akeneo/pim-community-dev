@@ -61,7 +61,7 @@ class FamilyVariantRemover implements RemoverInterface
 
         if ($this->hasEntityWithFamilyVariant($familyVariant)) {
             throw new \LogicException(
-                \sprintf(
+                sprintf(
                     'Family variant "%s", could not be removed as it is used by some entities with family variants.',
                     $familyVariant->getCode()
                 )

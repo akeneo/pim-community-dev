@@ -26,7 +26,7 @@ class MultiSelectProductValueRenderer implements ProductValueRenderer
 
         $optionCodes = $value->getData();
 
-        return \join(', ', \array_map(fn ($optionCode): string => $this->getOptionLabel($attribute, $optionCode, $localeCode), $optionCodes));
+        return join(', ', array_map(fn ($optionCode): string => $this->getOptionLabel($attribute, $optionCode, $localeCode), $optionCodes));
     }
 
     public function supportsAttributeType(string $attributeType): bool
@@ -39,12 +39,12 @@ class MultiSelectProductValueRenderer implements ProductValueRenderer
         $option = $this->attributeOptionRepository->findOneByIdentifier($attribute->getCode() . '.' . $optionCode);
 
         if (null === $option) {
-            return \sprintf('[%s]', $optionCode);
+            return sprintf('[%s]', $optionCode);
         }
 
         $option->setLocale($localeCode);
         $translation = $option->getTranslation();
 
-        return null !== $translation->getValue() ? $translation->getValue() : \sprintf('[%s]', $option->getCode());
+        return null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
     }
 }

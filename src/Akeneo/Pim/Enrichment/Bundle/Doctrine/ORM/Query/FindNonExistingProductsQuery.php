@@ -34,7 +34,7 @@ SQL;
             ['product_identifiers' => Connection::PARAM_STR_ARRAY]
         )->fetchFirstColumn();
 
-        return \array_values(\array_diff($productIdentifiers, $results));
+        return array_values(array_diff($productIdentifiers, $results));
     }
 
     public function byProductUuids(array $productUuids): array
@@ -55,6 +55,6 @@ SQL;
             ['product_uuids' => Connection::PARAM_STR_ARRAY]
         )->fetchFirstColumn();
 
-        return \array_values(\array_diff($productUuids, $results));
+        return array_values(array_diff($productUuids, $results));
     }
 }

@@ -35,7 +35,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $convertedItem = $this->convertQuantifiedAssociations($data, $convertedItem);
                 break;
             case 'categories':
-                $convertedItem[$property] = \implode(',', $data);
+                $convertedItem[$property] = implode(',', $data);
                 break;
             case 'uuid':
                 $convertedItem = $this->convertUuid($data, $convertedItem, $options['with_uuid'] ?? true);
@@ -60,7 +60,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 }
                 break;
             case 'quality_scores':
-                if (\is_array($data)) {
+                if (is_array($data)) {
                     $convertedItem = $convertedItem + $this->qualityScoreConverter->convert($data);
                 }
                 break;
@@ -85,14 +85,14 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      */
     protected function convertGroups($data, array $convertedItem)
     {
-        if (!\array_key_exists('groups', $convertedItem)) {
+        if (!array_key_exists('groups', $convertedItem)) {
             $convertedItem['groups'] = '';
         }
 
-        $groups = \is_array($data) ? \implode(',', $data) : (string) $data;
+        $groups = is_array($data) ? implode(',', $data) : (string) $data;
         if ('' !== $groups) {
             if ('' !== $convertedItem['groups']) {
-                $convertedItem['groups'] .= \sprintf(',%s', $groups);
+                $convertedItem['groups'] .= sprintf(',%s', $groups);
             } else {
                 $convertedItem['groups'] = $groups;
             }
@@ -128,8 +128,8 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     {
         foreach ($data as $assocName => $associations) {
             foreach ($associations as $assocType => $entities) {
-                $propertyName = \sprintf('%s-%s', $assocName, $assocType);
-                $convertedItem[$propertyName] = \implode(',', $entities);
+                $propertyName = sprintf('%s-%s', $assocName, $assocType);
+                $convertedItem[$propertyName] = implode(',', $entities);
             }
         }
 
@@ -181,9 +181,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     {
         foreach ($data as $associationTypeCode => $quantifiedAssociations) {
             foreach ($quantifiedAssociations as $entityType => $quantifiedLinks) {
-                $propertyName = \sprintf('%s-%s', $associationTypeCode, $entityType);
-                $convertedItem[$propertyName] = \implode(',', \array_column($quantifiedLinks, 'identifier'));
-                $convertedItem[\sprintf('%s-quantity', $propertyName)] = \implode('|', \array_column($quantifiedLinks, 'quantity'));
+                $propertyName = sprintf('%s-%s', $associationTypeCode, $entityType);
+                $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
+                $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
             }
         }
 

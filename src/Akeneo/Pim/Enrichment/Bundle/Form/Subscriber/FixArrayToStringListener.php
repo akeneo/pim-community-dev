@@ -21,8 +21,8 @@ class FixArrayToStringListener implements EventSubscriberInterface
     public function preBind(FormEvent $event)
     {
         $value = $event->getData();
-        if (\is_array($value)) {
-            $event->setData(\implode($this->delimiter, $value));
+        if (is_array($value)) {
+            $event->setData(implode($this->delimiter, $value));
         }
     }
 

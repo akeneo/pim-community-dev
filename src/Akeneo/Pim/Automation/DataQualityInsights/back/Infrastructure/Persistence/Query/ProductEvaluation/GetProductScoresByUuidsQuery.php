@@ -47,7 +47,7 @@ INNER JOIN pim_data_quality_insights_product_score AS product_score
 WHERE product.uuid IN(:productUuids);
 SQL;
 
-        $uuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $stmt = $this->dbConnection->executeQuery(
             $query,

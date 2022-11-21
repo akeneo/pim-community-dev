@@ -34,7 +34,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
     {
         $productAndProductModelIdentifiersCursor = $queryParameters->productQueryBuilder()->execute();
 
-        $identifiers = \iterator_to_array($productAndProductModelIdentifiersCursor);
+        $identifiers = iterator_to_array($productAndProductModelIdentifiersCursor);
         $productSearchUuids = [];
         $productModelCodes = [];
 
@@ -62,7 +62,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
         );
         $productModelRows = $this->addAdditionalProductModelPropertiesRegistry->add($queryParameters, $productModelRows);
 
-        $rows = \array_merge($productRows, $productModelRows);
+        $rows = array_merge($productRows, $productModelRows);
         $sortedRows = [];
         foreach ($identifiers as $identifier) {
             foreach ($rows as $row) {

@@ -47,7 +47,7 @@ class TextAreaNormalizer extends AbstractProductValueNormalizer implements Norma
 
     private function clean(string $content): string
     {
-        $content = \str_replace(["\r", "\n"], "", $content);
-        return \html_entity_decode($content);
+        $content = str_replace(["\r", "\n"], "", $content);
+        return html_entity_decode($content);
     }
 }

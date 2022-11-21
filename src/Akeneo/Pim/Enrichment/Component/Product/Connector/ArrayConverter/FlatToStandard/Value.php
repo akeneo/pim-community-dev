@@ -142,7 +142,7 @@ class Value implements ArrayConverterInterface
 
             if (null === $converter) {
                 throw new \LogicException(
-                    \sprintf(
+                    sprintf(
                         'No converters found for attribute type "%s"',
                         $attributeFieldInfo['attribute']->getType()
                     )
@@ -162,7 +162,7 @@ class Value implements ArrayConverterInterface
         }
 
         throw new \LogicException(
-            \sprintf('Unable to convert the given column "%s"', $column)
+            sprintf('Unable to convert the given column "%s"', $column)
         );
     }
 
@@ -181,8 +181,8 @@ class Value implements ArrayConverterInterface
         }
 
         foreach ($value as $code => $data) {
-            if (\array_key_exists($code, $item)) {
-                $item[$code] = \array_merge_recursive($item[$code], $data);
+            if (array_key_exists($code, $item)) {
+                $item[$code] = array_merge_recursive($item[$code], $data);
             } else {
                 $item[$code] = $data;
             }

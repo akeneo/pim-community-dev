@@ -20,13 +20,13 @@ final class CriterionEvaluationId
     public function __construct(?string $uuid = null)
     {
         if (empty($uuid)) {
-            $uuid = \strval(Uuid::uuid4());
+            $uuid = strval(Uuid::uuid4());
         }
         $this->uuid = $uuid;
     }
 
     public function __toString()
     {
-        return \strval($this->uuid);
+        return strval($this->uuid);
     }
 }

@@ -105,7 +105,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     protected function addConstraint(ClassMetadata $metadata, Constraint $constraint, AttributeInterface $attribute)
     {
         $targets = $constraint->getTargets();
-        if (!\is_array($targets)) {
+        if (!is_array($targets)) {
             $targets = [$targets];
         }
         foreach ($targets as $target) {

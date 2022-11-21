@@ -27,7 +27,7 @@ class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilt
 
         return !empty($channelCodes) &&
             $value->isScopable() &&
-            !\in_array($value->getScopeCode(), $channelCodes);
+            !in_array($value->getScopeCode(), $channelCodes);
     }
 
     /**

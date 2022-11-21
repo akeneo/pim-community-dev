@@ -83,19 +83,17 @@ final class CleanProductScoresCommandIntegration extends DataQualityInsightsTest
 
     private function assertCountProductsScores(int $expectedCount): void
     {
-        $countProductsScores = $this->dbConnection->executeQuery(
-            <<<SQL
+        $countProductsScores = $this->dbConnection->executeQuery(<<<SQL
 SELECT COUNT(*) FROM pim_data_quality_insights_product_score;
 SQL
         )->fetchOne();
 
-        $this->assertSame($expectedCount, \intval($countProductsScores), \sprintf('There should be %d product scores', $expectedCount));
+        $this->assertSame($expectedCount, intval($countProductsScores), sprintf('There should be %d product scores', $expectedCount));
     }
 
     private function assertProductScoreExists(UuidInterface $productUuid, \DateTimeImmutable $evaluatedAt): void
     {
-        $productScoreExists = $this->dbConnection->executeQuery(
-            <<<SQL
+        $productScoreExists = $this->dbConnection->executeQuery(<<<SQL
 SELECT 1 FROM pim_data_quality_insights_product_score
 WHERE product_uuid = :productUuid AND evaluated_at = :evaluatedAt;
 SQL,
@@ -105,7 +103,7 @@ SQL,
             ]
         )->fetchOne();
 
-        $this->assertSame('1', $productScoreExists, \sprintf('Product %s should have a score evaluated at %s', $productUuid->toString(), $evaluatedAt->format('Y-m-d')));
+        $this->assertSame('1', $productScoreExists, sprintf('Product %s should have a score evaluated at %s', $productUuid->toString(), $evaluatedAt->format('Y-m-d')));
     }
 
     private function insertProductScore(UuidInterface $productUuid, \DateTimeImmutable $evaluatedAt): void
@@ -134,12 +132,11 @@ SQL;
     {
         $indexes = $this->dbConnection->getSchemaManager()->listTableIndexes('pim_data_quality_insights_product_score');
 
-        if (\count($indexes['primary']?->getColumns()) > 1) {
+        if (count($indexes['primary']?->getColumns()) > 1) {
             return;
         }
 
-        $this->dbConnection->executeQuery(
-            <<<SQL
+        $this->dbConnection->executeQuery(<<<SQL
 ALTER TABLE pim_data_quality_insights_product_score 
     DROP PRIMARY KEY, 
     ADD PRIMARY KEY (product_uuid, evaluated_at);
@@ -149,8 +146,7 @@ SQL
 
     private function allowOnlyOneScorePerProduct(): void
     {
-        $this->dbConnection->executeQuery(
-            <<<SQL
+        $this->dbConnection->executeQuery(<<<SQL
 ALTER TABLE pim_data_quality_insights_product_score 
     DROP PRIMARY KEY, 
     ADD PRIMARY KEY (product_uuid);

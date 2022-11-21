@@ -212,7 +212,7 @@ class CountImpactedProducts
      */
     private function removeIdFilter(array $filers): array
     {
-        return \array_filter($filers, function ($condition) {
+        return array_filter($filers, function ($condition) {
             if ('id' === $condition['field']) {
                 return false;
             }
@@ -234,7 +234,7 @@ class CountImpactedProducts
         foreach ($filters as $keyCondition => $condition) {
             if ('id' === $condition['field']) {
                 foreach ($condition['value'] as $keyValue => $id) {
-                    if (0 === \strpos($id, 'product_model_')) {
+                    if (0 === strpos($id, 'product_model_')) {
                         $productModelIds[] = $id;
                     }
                 }
@@ -278,7 +278,7 @@ class CountImpactedProducts
      */
     private function getAttributeCodesWithIsEmptyOperator(array $rawFilters): array
     {
-        $attributeFilters = \array_filter(
+        $attributeFilters = array_filter(
             $rawFilters,
             function ($filter) {
                 $operator = $filter['operator'];
@@ -293,6 +293,6 @@ class CountImpactedProducts
             }
         );
 
-        return \array_column($attributeFilters, 'field');
+        return array_column($attributeFilters, 'field');
     }
 }

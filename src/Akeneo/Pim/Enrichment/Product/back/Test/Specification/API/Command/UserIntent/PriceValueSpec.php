@@ -13,22 +13,22 @@ use PhpSpec\ObjectBehavior;
  */
 class PriceValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('100', 'EUR');
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(PriceValue::class);
     }
 
-    public function it_returns_the_amount()
+    function it_returns_the_amount()
     {
         $this->amount()->shouldReturn('100');
     }
 
-    public function it_returns_the_currency()
+    function it_returns_the_currency()
     {
         $this->currency()->shouldReturn('EUR');
     }

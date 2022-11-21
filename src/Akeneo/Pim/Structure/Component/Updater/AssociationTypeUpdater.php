@@ -82,30 +82,30 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
     protected function validateDataType($field, $data)
     {
         if ('labels' === $field) {
-            if (!\is_array($data)) {
+            if (!is_array($data)) {
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
 
             foreach ($data as $value) {
-                if (null !== $value && !\is_scalar($value)) {
+                if (null !== $value && !is_scalar($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        \sprintf('one of the "%s" values is not a scalar', $field),
+                        sprintf('one of the "%s" values is not a scalar', $field),
                         static::class,
                         $data
                     );
                 }
             }
         } elseif ('code' === $field) {
-            if (null !== $data && !\is_scalar($data)) {
+            if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
         } elseif ('is_two_way' === $field) {
-            if (null !== $data && !\is_bool($data)) {
+            if (null !== $data && !is_bool($data)) {
                 throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
             }
         } elseif ('is_quantified' === $field) {
-            if (null !== $data && !\is_bool($data)) {
+            if (null !== $data && !is_bool($data)) {
                 throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
             }
         } else {

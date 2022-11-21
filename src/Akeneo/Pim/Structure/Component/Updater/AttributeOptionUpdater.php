@@ -78,12 +78,12 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
     protected function validateDataType($field, $data)
     {
         if ('labels' === $field) {
-            if (!\is_array($data)) {
+            if (!is_array($data)) {
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
 
             foreach ($data as $localeCode => $label) {
-                if (null !== $label && !\is_scalar($label)) {
+                if (null !== $label && !is_scalar($label)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         'labels',
                         'one of the labels is not a scalar',
@@ -92,8 +92,8 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
                     );
                 }
             }
-        } elseif (\in_array($field, ['attribute', 'code'])) {
-            if (null !== $data && !\is_scalar($data)) {
+        } elseif (in_array($field, ['attribute', 'code'])) {
+            if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
         } elseif ('sort_order' === $field) {

@@ -27,11 +27,11 @@ class CompletenessCalculator
     {
         $productMasks = $this->getCompletenessProductMasks->fromProductUuids($productUuids);
 
-        $familyCodes = \array_map(function (CompletenessProductMask $product) {
+        $familyCodes = array_map(function (CompletenessProductMask $product) {
             return $product->familyCode();
         }, $productMasks);
 
-        $requiredAttributesMasks = $this->getRequiredAttributesMasks->fromFamilyCodes(\array_unique(\array_filter($familyCodes)));
+        $requiredAttributesMasks = $this->getRequiredAttributesMasks->fromFamilyCodes(array_unique(array_filter($familyCodes)));
 
         $result = [];
         foreach ($productMasks as $productMask) {

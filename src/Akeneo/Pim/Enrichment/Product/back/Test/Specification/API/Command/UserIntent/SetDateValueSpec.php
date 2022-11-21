@@ -14,33 +14,33 @@ use PhpSpec\ObjectBehavior;
  */
 class SetDateValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', new \DateTime("2022-03-04T09:35:24+00:00"));
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetDateValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    public function it_returns_the_attribute_code()
+    function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('name');
     }
 
-    public function it_returns_the_locale_code()
+    function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    public function it_returns_the_channel_code()
+    function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    public function it_returns_the_value()
+    function it_returns_the_value()
     {
         $this->value()->shouldBeLike(new \DateTime("2022-03-04T09:35:24+00:00"));
     }

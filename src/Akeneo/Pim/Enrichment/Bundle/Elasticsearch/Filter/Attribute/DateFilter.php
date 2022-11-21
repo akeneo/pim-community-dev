@@ -94,7 +94,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
 
                 break;
             case Operators::BETWEEN:
-                $values = \array_values($value);
+                $values = array_values($value);
                 $clause = [
                     'range' => [
                         $attributePath => [
@@ -108,7 +108,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
 
                 break;
             case Operators::NOT_BETWEEN:
-                $values = \array_values($value);
+                $values = array_values($value);
                 $betweenClause = [
                     'range' => [
                         $attributePath => [
@@ -207,14 +207,14 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 break;
             case Operators::BETWEEN:
             case Operators::NOT_BETWEEN:
-                if (!\is_array($value)) {
+                if (!is_array($value)) {
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
-                if (2 !== \count($value)) {
+                if (2 !== count($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        \sprintf('should contain 2 strings with the format "%s"', static::HUMAN_DATETIME_FORMAT),
+                        sprintf('should contain 2 strings with the format "%s"', static::HUMAN_DATETIME_FORMAT),
                         static::class,
                         $value
                     );

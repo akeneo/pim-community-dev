@@ -15,34 +15,34 @@ use PhpSpec\ObjectBehavior;
  */
 class SetPriceValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $priceValue = new PriceValue('100', 'USD');
         $this->beConstructedWith('net_price', 'ecommerce', 'en_US', $priceValue);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetPriceValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    public function it_returns_the_attribute_code()
+    function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('net_price');
     }
 
-    public function it_returns_the_locale_code()
+    function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    public function it_returns_the_channel_code()
+    function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    public function it_returns_the_price_value()
+    function it_returns_the_price_value()
     {
         $priceValue = new PriceValue('100', 'USD');
         $this->priceValue()->shouldBeLike($priceValue);

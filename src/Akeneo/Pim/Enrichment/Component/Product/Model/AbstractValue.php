@@ -71,7 +71,7 @@ abstract class AbstractValue implements ValueInterface
      */
     public function hasData(): bool
     {
-        return !\is_null($this->getData());
+        return !is_null($this->getData());
     }
 
     /**

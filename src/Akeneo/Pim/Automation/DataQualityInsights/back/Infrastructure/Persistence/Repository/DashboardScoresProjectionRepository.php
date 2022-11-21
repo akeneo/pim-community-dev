@@ -88,7 +88,7 @@ SQL;
         $this->db->executeQuery($query, [
             'type' => $ratesProjection->getType(),
             'code' => $ratesProjection->getCode(),
-            'scores' => \json_encode($ratesProjection->getRanksDistributionsPerTimePeriod())
+            'scores' => json_encode($ratesProjection->getRanksDistributionsPerTimePeriod())
         ]);
 
         $this->saveAverageRanks($ratesProjection);
@@ -100,14 +100,14 @@ SQL;
 
         /** @var Write\DashboardPurgeDate $purgeDate */
         foreach ($purgeDates as $purgeDate) {
-            $pathsToRemove[] = \sprintf('\'$."%s"."%s"\'', \strval($purgeDate->getPeriod()), $purgeDate->getDate()->format());
+            $pathsToRemove[] = sprintf('\'$."%s"."%s"\'', strval($purgeDate->getPeriod()), $purgeDate->getDate()->format());
         }
 
         if (empty($pathsToRemove)) {
             return;
         }
 
-        $pathsToRemove = \implode(', ', $pathsToRemove);
+        $pathsToRemove = implode(', ', $pathsToRemove);
 
         $query = <<<SQL
 UPDATE pim_data_quality_insights_dashboard_scores_projection
@@ -136,7 +136,7 @@ SQL;
         $this->db->executeQuery($query, [
             'type' => $ratesProjection->getType(),
             'code' => $ratesProjection->getCode(),
-            'scores' => \json_encode($scores),
+            'scores' => json_encode($scores),
             'consolidated_at' => $ratesProjection->getConsolidationDate()->format('Y-m-d H:i:s')
         ]);
     }

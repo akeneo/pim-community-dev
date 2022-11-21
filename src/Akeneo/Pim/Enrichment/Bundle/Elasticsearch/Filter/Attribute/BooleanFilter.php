@@ -133,7 +133,7 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {
-        if (!\is_bool($value)) {
+        if (!is_bool($value)) {
             throw InvalidPropertyTypeException::booleanExpected($attribute->getCode(), static::class, $value);
         }
     }

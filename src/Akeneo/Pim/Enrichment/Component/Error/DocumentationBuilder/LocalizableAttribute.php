@@ -55,7 +55,7 @@ class LocalizableAttribute implements DocumentationBuilderInterface
                         'pim_enrich_channel_index'
                     ),
                     'attribute_edit_route' => new RouteMessageParameter(
-                        \sprintf('%s attributes settings', $attributeCode),
+                        sprintf('%s attributes settings', $attributeCode),
                         'pim_enrich_attribute_edit',
                         ['code' => $attributeCode]
                     )

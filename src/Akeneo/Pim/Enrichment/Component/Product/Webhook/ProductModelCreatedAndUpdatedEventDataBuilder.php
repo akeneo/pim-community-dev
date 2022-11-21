@@ -102,7 +102,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
             ->fromProductModelCodes($codes, $userId, null, null, null)
             ->connectorProductModels();
 
-        $products = \array_fill_keys($codes, null);
+        $products = array_fill_keys($codes, null);
         foreach ($result as $product) {
             $products[$product->code()] = $product;
         }

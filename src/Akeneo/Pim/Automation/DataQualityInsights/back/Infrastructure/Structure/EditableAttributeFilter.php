@@ -25,7 +25,7 @@ class EditableAttributeFilter extends \FilterIterator
             return true;
         }
 
-        $properties = \unserialize($attribute['properties']);
+        $properties = unserialize($attribute['properties']);
         $isReadable = isset($properties['is_read_only']) && $properties['is_read_only'] === true;
 
         return !$isReadable;

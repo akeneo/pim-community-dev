@@ -28,7 +28,7 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
             AttributeTypes::BACKEND_TYPE_DECIMAL
         ];
 
-        return \in_array($attribute->getBackendType(), $availableTypes);
+        return in_array($attribute->getBackendType(), $availableTypes);
     }
 
     /**

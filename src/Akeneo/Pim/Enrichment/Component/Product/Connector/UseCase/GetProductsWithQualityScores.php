@@ -37,7 +37,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
 
         $productsQualityScores = $this->getProductsQualityScores($connectorProductList);
 
-        $productsWithQualityScores = \array_map(function (ConnectorProduct $product) use ($productsQualityScores, $channel, $locales) {
+        $productsWithQualityScores = array_map(function (ConnectorProduct $product) use ($productsQualityScores, $channel, $locales) {
             if (isset($productsQualityScores[$product->uuid()->toString()])) {
                 $productQualityScores = $this->filterProductQualityScores($productsQualityScores[$product->uuid()->toString()], $channel, $locales);
                 return $product->buildWithQualityScores($productQualityScores);
@@ -53,7 +53,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
     {
         return new ConnectorProductList(
             $connectorProductList->totalNumberOfProducts(),
-            \array_map(
+            array_map(
                 fn (ConnectorProduct $product) => $product->buildWithQualityScores(new QualityScoreCollection([])),
                 $connectorProductList->connectorProducts()
             )
@@ -62,7 +62,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
 
     private function getProductsQualityScores(ConnectorProductList $connectorProductList): array
     {
-        $productUuids = \array_map(
+        $productUuids = array_map(
             fn (ConnectorProduct $connectorProduct) => $connectorProduct->uuid(),
             $connectorProductList->connectorProducts()
         );
@@ -82,7 +82,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
                 continue;
             }
             foreach ($scoresLocales as $scoreLocale => $score) {
-                if (empty($locales) || \in_array($scoreLocale, $locales)) {
+                if (empty($locales) || in_array($scoreLocale, $locales)) {
                     $filteredQualityScores[$scoreChannel][$scoreLocale] = $score;
                 }
             }

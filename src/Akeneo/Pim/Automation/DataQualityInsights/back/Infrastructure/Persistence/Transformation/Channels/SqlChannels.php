@@ -53,8 +53,8 @@ final class SqlChannels implements ChannelsInterface
         )->fetchOne();
 
         if ($channels) {
-            $this->channelCodesByIds = \json_decode($channels, true);
-            $this->channelIdsByCodes = \array_flip($this->channelCodesByIds);
+            $this->channelCodesByIds = json_decode($channels, true);
+            $this->channelIdsByCodes = array_flip($this->channelCodesByIds);
         }
 
         $this->channelsLoaded = true;

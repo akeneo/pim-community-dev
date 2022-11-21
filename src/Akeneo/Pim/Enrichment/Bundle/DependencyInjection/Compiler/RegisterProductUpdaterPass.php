@@ -58,7 +58,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
         $registry = $container->getDefinition(self::SETTER_REGISTRY);
         $setters = $container->findTaggedServiceIds(self::SETTER_TAG);
 
-        foreach (\array_keys($setters) as $setterId) {
+        foreach (array_keys($setters) as $setterId) {
             $registry->addMethodCall('register', [new Reference($setterId)]);
         }
     }
@@ -71,7 +71,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
         $registry = $container->getDefinition(self::COPIER_REGISTRY);
         $copiers = $container->findTaggedServiceIds(self::COPIER_TAG);
 
-        foreach (\array_keys($copiers) as $copierId) {
+        foreach (array_keys($copiers) as $copierId) {
             $registry->addMethodCall('register', [new Reference($copierId)]);
         }
     }
@@ -84,7 +84,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
         $registry = $container->getDefinition(self::ADDER_REGISTRY);
         $adders = $container->findTaggedServiceIds(self::ADDER_TAG);
 
-        foreach (\array_keys($adders) as $adderId) {
+        foreach (array_keys($adders) as $adderId) {
             $registry->addMethodCall('register', [new Reference($adderId)]);
         }
     }
@@ -97,7 +97,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
         $registry = $container->getDefinition(self::REMOVER_REGISTRY);
         $removers = $container->findTaggedServiceIds(self::REMOVER_TAG);
 
-        foreach (\array_keys($removers) as $removerId) {
+        foreach (array_keys($removers) as $removerId) {
             $registry->addMethodCall('register', [new Reference($removerId)]);
         }
     }

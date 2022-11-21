@@ -48,13 +48,13 @@ class AttributeOptionsExistValidator extends ConstraintValidator
         }
 
         $existingOptionCodes = $this->getExistingOptionCodesIndexedByAttributeCodes($optionValues);
-        \array_walk_recursive($existingOptionCodes, function (string &$value) {
-            $value = \strtolower($value);
+        array_walk_recursive($existingOptionCodes, function (string &$value) {
+            $value = strtolower($value);
         });
 
         foreach ($optionValues as $key => $value) {
             if ($value instanceof OptionValueInterface) {
-                if (!\in_array(\strtolower($value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []), true)) {
+                if (!in_array(strtolower($value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []), true)) {
                     $this->context->buildViolation(
                         $constraint->message,
                         [
@@ -62,21 +62,21 @@ class AttributeOptionsExistValidator extends ConstraintValidator
                             '%invalid_option%' => $value->getData(),
                         ]
                     )
-                        ->atPath(\sprintf('[%s]', $key))
+                        ->atPath(sprintf('[%s]', $key))
                         ->setCode(AttributeOptionsExist::ATTRIBUTE_OPTION_DOES_NOT_EXIST)
                         ->addViolation();
                 }
             } elseif ($value instanceof OptionsValueInterface) {
-                $notExistingOptionCodes = \array_diff(\array_map('strtolower', $value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []));
+                $notExistingOptionCodes = array_diff(array_map('strtolower', $value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []));
                 if (!empty($notExistingOptionCodes)) {
                     $this->context->buildViolation(
                         $constraint->messagePlural,
                         [
                             '%attribute_code%' => $value->getAttributeCode(),
-                            '%invalid_options%' => \implode(', ', $notExistingOptionCodes),
+                            '%invalid_options%' => implode(', ', $notExistingOptionCodes),
                         ]
                     )
-                        ->atPath(\sprintf('[%s]', $key))
+                        ->atPath(sprintf('[%s]', $key))
                         ->setCode(AttributeOptionsExist::ATTRIBUTE_OPTIONS_DO_NOT_EXIST)
                         ->addViolation();
                 }
@@ -97,7 +97,7 @@ class AttributeOptionsExistValidator extends ConstraintValidator
             if ($value instanceof OptionValueInterface) {
                 $optionCodesIndexedByAttributeCode[$attributeCode][] = $value->getData();
             } elseif ($value instanceof OptionsValueInterface) {
-                $optionCodesIndexedByAttributeCode[$attributeCode] = \array_merge(
+                $optionCodesIndexedByAttributeCode[$attributeCode] = array_merge(
                     $optionCodesIndexedByAttributeCode[$attributeCode],
                     $value->getData()
                 );
@@ -105,7 +105,7 @@ class AttributeOptionsExistValidator extends ConstraintValidator
         }
 
         return $this->getExistingAttibuteOptionCodes->fromOptionCodesByAttributeCode(
-            \array_filter($optionCodesIndexedByAttributeCode)
+            array_filter($optionCodesIndexedByAttributeCode)
         );
     }
 }

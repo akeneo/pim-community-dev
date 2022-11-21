@@ -55,7 +55,7 @@ class PropertyCopier implements PropertyCopierInterface
             throw new InvalidObjectException(
                 ClassUtils::getClass($fromEntityWithValues),
                 EntityWithValuesInterface::class,
-                \sprintf(
+                sprintf(
                     'Expects a "%s", "%s" and "%s" provided.',
                     EntityWithValuesInterface::class,
                     ClassUtils::getClass($fromEntityWithValues),
@@ -66,7 +66,7 @@ class PropertyCopier implements PropertyCopierInterface
 
         $copier = $this->copierRegistry->getCopier($fromField, $toField);
         if (null === $copier) {
-            throw new \LogicException(\sprintf('No copier found for fields "%s" and "%s"', $fromField, $toField));
+            throw new \LogicException(sprintf('No copier found for fields "%s" and "%s"', $fromField, $toField));
         }
 
         if ($copier instanceof AttributeCopierInterface) {
@@ -82,9 +82,9 @@ class PropertyCopier implements PropertyCopierInterface
         } elseif ($copier instanceof FieldCopierInterface) {
             $copier->copyFieldData($fromEntityWithValues, $toEntityWithValues, $fromField, $toField, $options);
         } else {
-            throw new \RuntimeException(\sprintf(
+            throw new \RuntimeException(sprintf(
                 "The copier must implements AttributeCopierInterface or FieldCopierInterface, '%s' given",
-                \get_class($copier)
+                get_class($copier)
             ));
         }
 

@@ -69,7 +69,7 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
             );
 
             foreach ($value['data'] as $currency) {
-                $flatCurrencyName = \sprintf('%s-%s', $flatName, $currency['currency']);
+                $flatCurrencyName = sprintf('%s-%s', $flatName, $currency['currency']);
                 $convertedItem[$flatCurrencyName] = (string) $currency['amount'];
             }
         }

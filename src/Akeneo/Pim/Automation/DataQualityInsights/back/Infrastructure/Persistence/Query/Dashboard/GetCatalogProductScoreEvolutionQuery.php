@@ -86,8 +86,8 @@ SQL;
             return $productScoreEvolution;
         }
 
-        $scores = \json_decode($result, true);
-        if (empty($scores) || !\array_key_exists('monthly', $scores)) {
+        $scores = json_decode($result, true);
+        if (empty($scores) || !array_key_exists('monthly', $scores)) {
             return $productScoreEvolution;
         }
 

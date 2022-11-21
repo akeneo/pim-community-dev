@@ -68,19 +68,17 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
 
     private function assertCountProductsScores(int $expectedCount): void
     {
-        $countProductsScores = $this->get('database_connection')->executeQuery(
-            <<<SQL
+        $countProductsScores = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT COUNT(*) FROM pim_data_quality_insights_product_score;
 SQL
         )->fetchOne();
 
-        $this->assertSame($expectedCount, \intval($countProductsScores));
+        $this->assertSame($expectedCount, intval($countProductsScores));
     }
 
     private function assertProductScoreExists(ProductScores $expectedProductScore): void
     {
-        $productScore = $this->get('database_connection')->executeQuery(
-            <<<SQL
+        $productScore = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT * FROM pim_data_quality_insights_product_score score
     JOIN pim_catalog_product product ON product.uuid = score.product_uuid
 WHERE product.uuid = :productUuid AND evaluated_at = :evaluatedAt;
@@ -94,10 +92,10 @@ SQL,
         $this->assertNotEmpty($productScore);
 
         $expectedScores = $this->formatScoresForComparison($expectedProductScore->getScores());
-        $this->assertEquals($expectedScores, \json_decode($productScore['scores'], true));
+        $this->assertEquals($expectedScores, json_decode($productScore['scores'], true));
 
         $expectedScoresPartialCriteria = $this->formatScoresForComparison($expectedProductScore->getScoresPartialCriteria());
-        $this->assertEquals($expectedScoresPartialCriteria, \json_decode($productScore['scores_partial_criteria'], true));
+        $this->assertEquals($expectedScoresPartialCriteria, json_decode($productScore['scores_partial_criteria'], true));
     }
 
     private function formatScoresForComparison(ChannelLocaleRateCollection $scores): array

@@ -73,20 +73,20 @@ class RemoveFamilyFromJobInstanceFiltersOnFamilyDeletionSubscriber implements Ev
     private function isFamilyInFilter(string $familyCode, array $filter): bool
     {
         return 'family' === $filter['field']
-            && \is_array($filter['value'])
-            && \in_array($familyCode, $filter['value']);
+            && is_array($filter['value'])
+            && in_array($familyCode, $filter['value']);
     }
 
     private function removeFamilyCodeFromRawParameters(string $familyCode, array $rawParameters, int $filterIndex): array
     {
         $filter = $rawParameters['filters']['data'][$filterIndex];
-        $updatedFilterValue = \array_diff($filter['value'], [$familyCode]);
+        $updatedFilterValue = array_diff($filter['value'], [$familyCode]);
 
         if (empty($updatedFilterValue)) {
             unset($rawParameters['filters']['data'][$filterIndex]);
-            $rawParameters['filters']['data'] = \array_values($rawParameters['filters']['data']);
+            $rawParameters['filters']['data'] = array_values($rawParameters['filters']['data']);
         } else {
-            $rawParameters['filters']['data'][$filterIndex]['value'] = \array_values($updatedFilterValue);
+            $rawParameters['filters']['data'][$filterIndex]['value'] = array_values($updatedFilterValue);
         }
 
         return $rawParameters;

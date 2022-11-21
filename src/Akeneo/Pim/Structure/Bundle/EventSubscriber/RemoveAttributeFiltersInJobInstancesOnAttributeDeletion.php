@@ -50,7 +50,7 @@ class RemoveAttributeFiltersInJobInstancesOnAttributeDeletion implements EventSu
             $rawParameters = $jobInstance->getRawParameters();
             if (isset($rawParameters['filters']['structure']['attributes'])) {
                 $jobAttributeFilters = $rawParameters['filters']['structure']['attributes'];
-                $newAttributeFilter = \array_values(\array_diff($jobAttributeFilters, [$subject->getCode()]));
+                $newAttributeFilter = array_values(array_diff($jobAttributeFilters, [$subject->getCode()]));
 
                 $rawParameters['filters']['structure']['attributes'] = $newAttributeFilter;
                 $jobInstance->setRawParameters($rawParameters);

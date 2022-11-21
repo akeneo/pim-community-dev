@@ -39,7 +39,7 @@ class FilterStructureAttributeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, FilterStructureAttribute::class);
         }
 
-        if (null === $attributes || !\count($attributes)) {
+        if (null === $attributes || !count($attributes)) {
             return;
         }
 
@@ -50,7 +50,7 @@ class FilterStructureAttributeValidator extends ConstraintValidator
             if (null === $attribute) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('%attributeCode%', $attributeCode)
-                    ->atPath(\sprintf('[%d]', $errorCount))
+                    ->atPath(sprintf('[%d]', $errorCount))
                     ->addViolation();
 
                 $errorCount++;

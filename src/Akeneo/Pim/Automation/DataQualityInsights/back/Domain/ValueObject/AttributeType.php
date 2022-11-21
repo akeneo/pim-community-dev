@@ -34,7 +34,7 @@ final class AttributeType
 
     public function equals(AttributeType $attributeType): bool
     {
-        return $this->type === \strval($attributeType);
+        return $this->type === strval($attributeType);
     }
 
     public static function text(): self

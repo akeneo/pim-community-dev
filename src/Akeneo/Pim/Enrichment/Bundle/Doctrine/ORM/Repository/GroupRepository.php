@@ -21,7 +21,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     {
         $identifier = isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id';
 
-        $selectDQL = \sprintf(
+        $selectDQL = sprintf(
             'o.%s as id, COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', o.code, \']\')) as text',
             $identifier
         );
@@ -44,7 +44,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         if (!empty($ids)) {
             $qb
                 ->andWhere(
-                    $qb->expr()->in(\sprintf('o.%s', $identifier), ':ids')
+                    $qb->expr()->in(sprintf('o.%s', $identifier), ':ids')
                 )
                 ->setParameter('ids', $ids);
         }
@@ -78,8 +78,8 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         $isAssociatedExpr = 'CASE WHEN g.id IN (:associatedIds) THEN true ELSE false END';
 
         $qb
-            ->addSelect(\sprintf('%s AS groupLabel', $groupLabelExpr))
-            ->addSelect(\sprintf('%s AS typeLabel', $typeLabelExpr))
+            ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
+            ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
             ->addSelect('translation.label')
             ->addSelect($isCheckecExpr.' AS is_checked')
             ->addSelect($isAssociatedExpr.' AS is_associated');

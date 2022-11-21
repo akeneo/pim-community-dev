@@ -55,7 +55,7 @@ class GroupFactory implements SimpleFactoryInterface
         if (null !== $groupTypeCode) {
             $groupType = $this->groupTypeRepository->findOneByIdentifier($groupTypeCode);
             if (null === $groupType) {
-                throw new \InvalidArgumentException(\sprintf('Group type with code "%s" was not found', $groupTypeCode));
+                throw new \InvalidArgumentException(sprintf('Group type with code "%s" was not found', $groupTypeCode));
             }
             $group->setType($groupType);
         }

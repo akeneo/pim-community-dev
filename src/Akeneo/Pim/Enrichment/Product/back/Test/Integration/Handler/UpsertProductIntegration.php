@@ -1559,8 +1559,8 @@ final class UpsertProductIntegration extends TestCase
 
     protected function getFileInfoKey(string $path): string
     {
-        if (!\is_file($path)) {
-            throw new \Exception(\sprintf('The path "%s" does not exist.', $path));
+        if (!is_file($path)) {
+            throw new \Exception(sprintf('The path "%s" does not exist.', $path));
         }
 
         $fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
@@ -1584,12 +1584,12 @@ final class UpsertProductIntegration extends TestCase
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
             $path = $fixtureDirectory . DIRECTORY_SEPARATOR . $name;
-            if (\is_file($path) && false !== \realpath($path)) {
-                return \realpath($path);
+            if (is_file($path) && false !== realpath($path)) {
+                return realpath($path);
             }
         }
 
-        throw new \Exception(\sprintf('The fixture "%s" does not exist.', $name));
+        throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
     }
 
     private function createAttributeOptions(string $attributeCode, string $optionCode, array $labels): void
@@ -1601,7 +1601,7 @@ final class UpsertProductIntegration extends TestCase
             'labels' => $labels,
         ]);
         $constraints = $this->get('validator')->validate($attributeOption);
-        if (\count($constraints) > 0) {
+        if (count($constraints) > 0) {
             throw new \InvalidArgumentException((string)$constraints);
         }
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);

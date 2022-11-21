@@ -35,7 +35,7 @@ class StatusFilter extends AbstractFieldFilter implements FieldFilterInterface
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if (!\is_bool($value)) {
+        if (!is_bool($value)) {
             throw InvalidPropertyTypeException::booleanExpected($field, static::class, $value);
         }
 

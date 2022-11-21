@@ -54,7 +54,7 @@ class MetricNormalizer implements AxisValueLabelsNormalizer
 
         $localizedMetric = $this->metricLocalizer->localize($metric, $context);
 
-        return \sprintf(
+        return sprintf(
             '%s %s',
             $localizedMetric['amount'],
             $this->localizeUnit($measurementFamilyCode, $localizedMetric['unit'], $locale)

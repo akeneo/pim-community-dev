@@ -65,11 +65,11 @@ class FileValidator extends ConstraintValidator
             return;
         }
         $extension = $this->getExtension($fileInfo);
-        if (!\in_array($extension, $constraint->allowedExtensions)) {
+        if (!in_array($extension, $constraint->allowedExtensions)) {
             $this->context->buildViolation(
                 $constraint->extensionsMessage,
                 [
-                    '%extensions%' => \implode(', ', $constraint->allowedExtensions),
+                    '%extensions%' => implode(', ', $constraint->allowedExtensions),
                     '%type%' => $extension,
                     '%attribute%' => $constraint->attributeCode,
                 ]
@@ -135,14 +135,14 @@ class FileValidator extends ConstraintValidator
         }
 
         // Convert size to the same measure, but round to 2 decimals
-        $sizeAsString = (string)\round($size / $coef, 2);
+        $sizeAsString = (string)round($size / $coef, 2);
 
         // If the size and limit produce the same string output
         // (due to rounding), reduce the coefficient
         while ($sizeAsString === $limitAsString) {
             $coef /= $coefFactor;
             $limitAsString = (string)($limit / $coef);
-            $sizeAsString = (string)\round($size / $coef, 2);
+            $sizeAsString = (string)round($size / $coef, 2);
         }
 
         return [$sizeAsString, $limitAsString, self::$suffices[$coef]];
@@ -156,7 +156,7 @@ class FileValidator extends ConstraintValidator
      */
     protected static function moreDecimalsThan($double, $numberOfDecimals)
     {
-        return \strlen((string)$double) > \strlen(\round($double, $numberOfDecimals));
+        return strlen((string)$double) > strlen(round($double, $numberOfDecimals));
     }
 
     /**
@@ -169,7 +169,7 @@ class FileValidator extends ConstraintValidator
             return;
         }
 
-        if (!\array_key_exists($this->getExtension($fileInfo), $this->extensionToMimeTypeMapping)) {
+        if (!array_key_exists($this->getExtension($fileInfo), $this->extensionToMimeTypeMapping)) {
             return;
         }
 
@@ -179,12 +179,12 @@ class FileValidator extends ConstraintValidator
             $fileInfo->getUploadedFile()->getMimeType() :
             $fileInfo->getMimeType();
 
-        if (null !== $mimeType && !\in_array($mimeType, $mappedMimeTypes)) {
+        if (null !== $mimeType && !in_array($mimeType, $mappedMimeTypes)) {
             $this->context->buildViolation(
                 $constraint->mimeTypeMessage,
                 [
                     '%extension%' => $this->getExtension($fileInfo),
-                    '%types%' => \implode(', ', $mappedMimeTypes),
+                    '%types%' => implode(', ', $mappedMimeTypes),
                     '%type%' => $mimeType
                 ]
             )->addViolation();
@@ -194,7 +194,7 @@ class FileValidator extends ConstraintValidator
     private function getExtension(FileInfoInterface $fileInfo): string
     {
         return null !== $fileInfo->getUploadedFile() ?
-            \strtolower($fileInfo->getUploadedFile()->getClientOriginalExtension()) :
-            \strtolower($fileInfo->getExtension());
+            strtolower($fileInfo->getUploadedFile()->getClientOriginalExtension()) :
+            strtolower($fileInfo->getExtension());
     }
 }

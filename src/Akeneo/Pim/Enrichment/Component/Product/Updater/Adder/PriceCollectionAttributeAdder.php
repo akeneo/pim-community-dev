@@ -61,7 +61,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     ): void {
         $options = $this->resolver->resolve($options);
 
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
@@ -110,17 +110,17 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      */
     protected function addNewPrices(PriceCollectionInterface $previousPrices, array $newPrices)
     {
-        $newCurrencies = \array_filter(\array_map(function (array $price): ?string {
+        $newCurrencies = array_filter(array_map(function (array $price): ?string {
             return $price['currency'] ?? null;
         }, $newPrices));
 
         $standardizedPreviousPrices = [];
         foreach ($previousPrices as $previousPrice) {
-            if (!\in_array($previousPrice->getCurrency(), $newCurrencies)) {
+            if (!in_array($previousPrice->getCurrency(), $newCurrencies)) {
                 $standardizedPreviousPrices[] = $this->normalizer->normalize($previousPrice, 'standard');
             }
         }
 
-        return \array_merge($standardizedPreviousPrices, $newPrices);
+        return array_merge($standardizedPreviousPrices, $newPrices);
     }
 }

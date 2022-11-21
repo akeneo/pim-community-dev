@@ -29,7 +29,7 @@ class MetricComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return \in_array($type, $this->types);
+        return in_array($type, $this->types);
     }
 
     /**
@@ -41,7 +41,7 @@ class MetricComparator implements ComparatorInterface
             'amount' => null,
             'unit'   => null,
         ]];
-        $originals = \array_merge($default, $originals);
+        $originals = array_merge($default, $originals);
 
         if (!isset($data['data']['amount']) && !isset($originals['data']['amount'])) {
             return null;
@@ -54,7 +54,7 @@ class MetricComparator implements ComparatorInterface
                 'data' => null,
             ];
         }
-        if (!\is_numeric($data['data']['amount'])) {
+        if (!is_numeric($data['data']['amount'])) {
             return $data;
         }
 
@@ -62,7 +62,7 @@ class MetricComparator implements ComparatorInterface
         $tmpData['data']['amount'] = (float) $tmpData['data']['amount'];
         $originals['data']['amount'] = (float) $originals['data']['amount'];
 
-        $diff = \array_diff_assoc((array) $tmpData['data'], (array) $originals['data']);
+        $diff = array_diff_assoc((array) $tmpData['data'], (array) $originals['data']);
 
         if (!empty($diff)) {
             return $data;

@@ -14,46 +14,46 @@ use PhpSpec\ObjectBehavior;
  */
 class SetSimpleReferenceEntityValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('attribute_name', null, null, 'Akeneo');
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetSimpleReferenceEntityValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    public function it_returns_the_attribute_code()
+    function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('attribute_name');
     }
 
-    public function it_returns_the_locale_code()
+    function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn(null);
     }
 
-    public function it_returns_the_channel_code()
+    function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn(null);
     }
 
-    public function it_returns_the_record_code()
+    function it_returns_the_record_code()
     {
         $this->recordCode()->shouldReturn('Akeneo');
     }
 
-    public function it_cannot_be_instantiated_with_an_empty_record_code()
+    function it_cannot_be_instantiated_with_an_empty_record_code()
     {
         $this->beConstructedWith('attribute_name', null, null, '');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_can_be_instantiated_with_0_as_record_code()
+    function it_can_be_instantiated_with_0_as_record_code()
     {
-        $this->beConstructedWith('attribute_name', null, null, '0');
+        $this->beConstructedWith('attribute_name',null, null, '0');
         $this->shouldNotThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

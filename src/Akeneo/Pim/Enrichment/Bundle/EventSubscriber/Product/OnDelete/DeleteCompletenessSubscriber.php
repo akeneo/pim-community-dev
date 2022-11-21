@@ -51,10 +51,10 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
 
     public function deleteForAllProducts(RemoveEvent $event)
     {
-        $products = \array_values($event->getSubject());
+        $products = array_values($event->getSubject());
         $productIds = $event->getSubjectId();
 
-        if (!\is_array($products) || !\is_array($productIds)) {
+        if (!is_array($products) || !is_array($productIds)) {
             return;
         }
         $productUuids = [];
@@ -75,7 +75,7 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
     {
         return $product instanceof ProductInterface
             // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-            && \get_class($product) != 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
+            && get_class($product) != 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
     }
 
     private function checkEventUnitary(RemoveEvent $event): bool

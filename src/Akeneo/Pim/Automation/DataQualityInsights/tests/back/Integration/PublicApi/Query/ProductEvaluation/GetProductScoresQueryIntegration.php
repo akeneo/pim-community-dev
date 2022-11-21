@@ -10,10 +10,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
@@ -72,8 +72,7 @@ final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
         $this->assertEqualsCanonicalizing($expectedQualityScoreCollection, $qualityScoreCollection);
     }
 
-    private function loadProductScores()
-    {
+    private function loadProductScores() {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
@@ -118,7 +117,7 @@ final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
             ),
         ];
 
-        $this->get(ProductScoreRepository::class)->saveAll(\array_values($productsScores));
+        $this->get(ProductScoreRepository::class)->saveAll(array_values($productsScores));
 
         return [$productA, $productB, $productC, $productD];
     }

@@ -37,7 +37,7 @@ final class PurgeOutdatedDataCommand extends Command
             'd',
             InputOption::VALUE_REQUIRED,
             'Date from which the purge will be launched (Y-m-d)',
-            \date('Y-m-d')
+            date('Y-m-d')
         );
     }
 
@@ -46,7 +46,7 @@ final class PurgeOutdatedDataCommand extends Command
         $purgeDate = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getOption('date'));
 
         if (!$purgeDate instanceof \DateTimeImmutable) {
-            throw new \InvalidArgumentException(\sprintf('The purge date "%s" is invalid.', $input->getOption('date')));
+            throw new \InvalidArgumentException(sprintf('The purge date "%s" is invalid.', $input->getOption('date')));
         }
 
         if ($purgeDate > new \DateTimeImmutable('now')) {

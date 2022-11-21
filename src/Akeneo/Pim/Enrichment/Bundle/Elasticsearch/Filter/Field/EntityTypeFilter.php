@@ -48,23 +48,23 @@ class EntityTypeFilter extends AbstractFieldFilter implements FieldFilterInterfa
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if (!\in_array($field, $this->supportedFields)) {
+        if (!in_array($field, $this->supportedFields)) {
             throw new \InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Unsupported field name for entity filter, only "%s" are supported, "%s" given',
-                    \implode(',', $this->supportedFields),
+                    implode(',', $this->supportedFields),
                     $field
                 )
             );
         }
 
-        if (!\in_array($operator, $this->supportedOperators)) {
+        if (!in_array($operator, $this->supportedOperators)) {
             throw InvalidOperatorException::notSupported($operator, static::class);
         }
 
         $this->assertIsString($field, $value);
 
-        $value = \str_replace('\\', '\\\\', $value);
+        $value = str_replace('\\', '\\\\', $value);
 
         $this->searchQueryBuilder->addFilter(
             [

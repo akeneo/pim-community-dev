@@ -70,7 +70,7 @@ final class PayloadFormatValidator extends ConstraintValidator
             return;
         }
 
-        $codesToFetch = \array_diff($attributeCodes, \array_keys($this->attributeTypeByCodes));
+        $codesToFetch = array_diff($attributeCodes, array_keys($this->attributeTypeByCodes));
         $this->attributeTypeByCodes += $this->attributeRepository->getAttributeTypeByCodes($codesToFetch);
     }
 

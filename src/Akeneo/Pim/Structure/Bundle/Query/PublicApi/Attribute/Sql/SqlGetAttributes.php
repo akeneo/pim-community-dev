@@ -59,24 +59,24 @@ SQL;
         $attributes = [];
 
         foreach ($rawResults as $rawAttribute) {
-            $properties = \unserialize($rawAttribute['properties']);
+            $properties = unserialize($rawAttribute['properties']);
 
             $attributes[$rawAttribute['code']] = new Attribute(
                 $rawAttribute['code'],
                 $rawAttribute['attribute_type'],
                 $properties,
-                \boolval($rawAttribute['is_localizable']),
-                \boolval($rawAttribute['is_scopable']),
+                boolval($rawAttribute['is_localizable']),
+                boolval($rawAttribute['is_scopable']),
                 $rawAttribute['metric_family'],
                 $rawAttribute['default_metric_unit'],
-                \boolval($rawAttribute['decimals_allowed']),
+                boolval($rawAttribute['decimals_allowed']),
                 $rawAttribute['backend_type'],
-                \json_decode($rawAttribute['available_locale_codes']),
-                \boolval($rawAttribute['useable_as_grid_filter'])
+                json_decode($rawAttribute['available_locale_codes']),
+                boolval($rawAttribute['useable_as_grid_filter'])
             );
         }
 
-        return \array_replace(\array_fill_keys($attributeCodes, null), $attributes);
+        return array_replace(array_fill_keys($attributeCodes, null), $attributes);
     }
 
     public function forCode(string $attributeCode): ?Attribute
@@ -87,7 +87,7 @@ SQL;
             return null;
         }
 
-        return \array_pop($forCodes);
+        return array_pop($forCodes);
     }
 
     public function forType(string $attributeType): array

@@ -41,7 +41,7 @@ final class GroupFieldClearer implements ClearerInterface
 
         Assert::true(
             $this->supportsProperty($property),
-            \sprintf('The clearer does not handle the "%s" property.', $property)
+            sprintf('The clearer does not handle the "%s" property.', $property)
         );
 
         $entity->setGroups(new ArrayCollection());

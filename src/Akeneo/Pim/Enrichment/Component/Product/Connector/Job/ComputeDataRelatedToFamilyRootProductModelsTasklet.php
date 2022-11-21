@@ -135,7 +135,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
                 $productModelsToSave[] = $productModel;
             }
 
-            if (0 === (\count($productModelsToSave) + \count($skippedProductModels)) % $this->batchSize) {
+            if (0 === (count($productModelsToSave) + count($skippedProductModels)) % $this->batchSize) {
                 $this->saveProductsModel($productModelsToSave);
                 $productModelsToSave = [];
                 $skippedProductModels = [];
@@ -176,8 +176,8 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
         }
 
         $this->productModelSaver->saveAll($productModels);
-        $this->stepExecution->incrementSummaryInfo('process', \count($productModels));
-        $this->stepExecution->incrementProcessedItems(\count($productModels));
+        $this->stepExecution->incrementSummaryInfo('process', count($productModels));
+        $this->stepExecution->incrementProcessedItems(count($productModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 

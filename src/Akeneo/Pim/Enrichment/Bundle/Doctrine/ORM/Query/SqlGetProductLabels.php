@@ -43,7 +43,7 @@ SQL;
 
         $labels = [];
         foreach ($results as $result) {
-            $values = \json_decode($result['raw_values'], true);
+            $values = json_decode($result['raw_values'], true);
 
             $productIdentifier = $result['identifier'];
             $labelCode = $result['label_code'];
@@ -86,7 +86,7 @@ SQL;
 
         $labels = [];
         foreach ($results as $result) {
-            $values = \json_decode($result['raw_values'], true);
+            $values = json_decode($result['raw_values'], true);
 
             $productUuid = $result['uuid'];
             $labelCode = $result['label_code'];

@@ -18,18 +18,18 @@ use PhpSpec\ObjectBehavior;
  */
 final class SetSimpleReferenceDataValueApplierSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $updater)
+    function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetSimpleReferenceDataValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_set_simple_reference_data_user_intent(ObjectUpdaterInterface $updater): void
+    function it_applies_set_simple_reference_data_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $setSimpleReferenceDataValue = new SetSimpleReferenceDataValue(
@@ -57,7 +57,7 @@ final class SetSimpleReferenceDataValueApplierSpec extends ObjectBehavior
         $this->apply($setSimpleReferenceDataValue, $product, 1);
     }
 
-    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('apply', [new SetEnabled(true), new Product(), 1]);

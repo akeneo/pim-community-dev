@@ -28,7 +28,7 @@ class IdentifierResult
     {
         if ($type !== ProductInterface::class && $type !== ProductModelInterface::class) {
             throw new \InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Type of identifier result should be either "%s" or "%s". "%s" given',
                     ProductInterface::class,
                     ProductModelInterface::class,

@@ -64,7 +64,7 @@ class ProductPdfRenderer implements RendererInterface
 
         $imagePaths = $this->getImagePaths($object, $context['locale'], $context['scope']);
 
-        $params = \array_merge(
+        $params = array_merge(
             $context,
             [
                 'product' => $object,
@@ -115,7 +115,7 @@ class ProductPdfRenderer implements RendererInterface
 
         $attributeCodes = $product->getUsedAttributeCodes();
         if ($product->getFamily()) {
-            $attributeCodes = \array_unique(\array_merge($attributeCodes, $product->getFamily()->getAttributeCodes()));
+            $attributeCodes = array_unique(array_merge($attributeCodes, $product->getFamily()->getAttributeCodes()));
         }
 
         foreach ($attributeCodes as $attributeCode) {

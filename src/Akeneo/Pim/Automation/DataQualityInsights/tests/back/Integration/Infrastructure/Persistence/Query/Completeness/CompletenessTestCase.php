@@ -21,7 +21,7 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
 {
     protected function givenFamilies(array $familiesData): void
     {
-        $families = \array_map(function ($familyData) {
+        $families = array_map(function ($familyData) {
             $family = $this->get('pim_catalog.factory.family')->create();
             $this->get('pim_catalog.updater.family')->update(
                 $family,
@@ -33,7 +33,7 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
             );
 
             $errors = $this->get('validator')->validate($family);
-            Assert::count($errors, 0, \sprintf('Family "%s" is invalid', $familyData['code']));
+            Assert::count($errors, 0, sprintf('Family "%s" is invalid', $familyData['code']));
 
             return $family;
         }, $familiesData);
@@ -54,7 +54,7 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
 
     protected function givenAttributes(array $attributesData): void
     {
-        $attributes = \array_map(function ($attributeData) {
+        $attributes = array_map(function ($attributeData) {
             $attribute = $this->get('pim_catalog.factory.attribute')->create();
             $this->get('pim_catalog.updater.attribute')->update(
                 $attribute,
@@ -80,7 +80,7 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
 
     protected function givenCurrencyForChannel(array $channelsData): void
     {
-        $channels = \array_map(function ($channelData) {
+        $channels = array_map(function ($channelData) {
             $channel = $this->get('pim_catalog.repository.channel')->findOneBy(['code' => $channelData['code']]);
             $this->get('pim_catalog.updater.channel')->update(
                 $channel,
@@ -100,7 +100,7 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
 
     protected function givenChannels(array $channelsData): void
     {
-        $channels = \array_map(function ($channelData) {
+        $channels = array_map(function ($channelData) {
             $channel = $this->get('pim_catalog.factory.channel')->create();
             $this->get('pim_catalog.updater.channel')->update(
                 $channel,

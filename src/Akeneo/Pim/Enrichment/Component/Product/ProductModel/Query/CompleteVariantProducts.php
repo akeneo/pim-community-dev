@@ -69,9 +69,9 @@ class CompleteVariantProducts
      */
     private function numberOfProducts(): int
     {
-        return \count(
-            \array_unique(
-                \array_column($this->completenesses, 'product_identifier')
+        return count(
+            array_unique(
+                array_column($this->completenesses, 'product_identifier')
             )
         );
     }

@@ -33,7 +33,7 @@ class IsNumericValidator extends ConstraintValidator
         if (null === $value) {
             return;
         }
-        if (!\is_numeric($value)) {
+        if (!is_numeric($value)) {
             $violation = $this->context->buildViolation(
                 $constraint->message,
                 [

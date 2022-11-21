@@ -29,7 +29,7 @@ class BooleanComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return \in_array($type, $this->types);
+        return in_array($type, $this->types);
     }
 
     /**
@@ -38,7 +38,7 @@ class BooleanComparator implements ComparatorInterface
     public function compare($data, $originals)
     {
         $default = ['locale' => null, 'scope' => null, 'data' => null];
-        $originals = \array_merge($default, $originals);
+        $originals = array_merge($default, $originals);
 
         $isNull = null === $originals['data'] && null === $data['data'];
         $isEquals = $originals['data'] === $data['data'];

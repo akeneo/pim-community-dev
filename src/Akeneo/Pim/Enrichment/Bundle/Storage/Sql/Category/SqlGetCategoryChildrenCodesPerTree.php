@@ -54,7 +54,7 @@ SQL;
 
         $results = [];
         while ($result = $stmt->fetchAssociative()) {
-            $childrenCodes = \array_unique(\json_decode($result['children_codes'], true));
+            $childrenCodes = array_unique(json_decode($result['children_codes'], true));
 
             $results[$result['code']] = $this->categoryCodeFilter->filter($childrenCodes);
         }
@@ -91,7 +91,7 @@ SQL;
 
         $results = [];
         while ($result = $stmt->fetchAssociative()) {
-            $childrenCodes = \array_unique(\json_decode($result['children_codes'], true));
+            $childrenCodes = array_unique(json_decode($result['children_codes'], true));
 
             $results[$result['code']] = $this->categoryCodeFilter->filter($childrenCodes);
         }

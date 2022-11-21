@@ -49,7 +49,7 @@ final class TransformCommonCriterionResultDataIds implements TransformResultData
     {
         return $this->transformChannelLocaleDataIds->transformToCodes($resultAttributeIdsData, function (array $attributeData) {
             $attributeCodesData = [];
-            $attributesCodes = $this->attributes->getCodesByIds(\array_keys($attributeData));
+            $attributesCodes = $this->attributes->getCodesByIds(array_keys($attributeData));
 
             foreach ($attributeData as $attributeId => $data) {
                 $attributeCode = $attributesCodes[$attributeId] ?? null;

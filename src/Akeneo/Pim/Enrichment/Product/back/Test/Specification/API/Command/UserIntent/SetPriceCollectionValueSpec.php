@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
  */
 class SetPriceCollectionValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith(
             'msrp',
@@ -28,28 +28,28 @@ class SetPriceCollectionValueSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetPriceCollectionValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    public function it_returns_the_attribute_code()
+    function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('msrp');
     }
 
-    public function it_returns_the_locale_code()
+    function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    public function it_returns_the_channel_code()
+    function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    public function it_returns_the_price_values()
+    function it_returns_the_price_values()
     {
         $priceValues = [
             new PriceValue(20, "EUR"),
@@ -66,7 +66,7 @@ class SetPriceCollectionValueSpec extends ObjectBehavior
         $this->priceValues()->shouldReturn($priceValues);
     }
 
-    public function it_cannot_be_instantiated_with_other_values_than_price_values()
+    function it_cannot_be_instantiated_with_other_values_than_price_values()
     {
         $this->beConstructedWith(
             'msrp',

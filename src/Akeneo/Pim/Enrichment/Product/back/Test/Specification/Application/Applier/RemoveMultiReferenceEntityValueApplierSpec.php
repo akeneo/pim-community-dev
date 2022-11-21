@@ -17,18 +17,18 @@ use Prophecy\Argument;
 
 class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $updater)
+    function let(ObjectUpdaterInterface $updater)
     {
         $this->beConstructedWith($updater);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(RemoveMultiReferenceEntityValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_remove_multi_reference_entity_user_intent(
+    function it_applies_remove_multi_reference_entity_user_intent(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
         ValueInterface $formerRecordCodes
@@ -68,7 +68,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         $this->apply($removeMultiReferenceEntityValue, $product, 1);
     }
 
-    public function it_removes_the_last_records(
+    function it_removes_the_last_records(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
         ValueInterface $formerRecordCodes
@@ -101,7 +101,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         $this->apply($removeMultiReferenceEntityValue, $product, 1);
     }
 
-    public function it_does_nothing_when_product_has_no_record_to_remove(
+    function it_does_nothing_when_product_has_no_record_to_remove(
         ObjectUpdaterInterface $updater,
         ProductInterface $product
     ) {
@@ -118,7 +118,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         $this->apply($removeMultiReferenceEntityValue, $product, 1);
     }
 
-    public function it_does_nothing_when_product_does_not_have_the_record_to_remove(
+    function it_does_nothing_when_product_does_not_have_the_record_to_remove(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
         ValueInterface $formerRecordCodes
@@ -137,7 +137,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         $this->apply($removeMultiReferenceEntityValue, $product, 1);
     }
 
-    public function it_throws_an_exception_when_user_intent_is_not_supported()
+    function it_throws_an_exception_when_user_intent_is_not_supported()
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

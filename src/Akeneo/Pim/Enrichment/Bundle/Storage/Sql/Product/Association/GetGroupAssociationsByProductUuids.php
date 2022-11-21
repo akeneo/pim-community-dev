@@ -39,7 +39,7 @@ final class GetGroupAssociationsByProductUuids
 
         Assert::allIsInstanceOf($productUuids, UuidInterface::class);
 
-        $uuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $query = <<<SQL
 SELECT
@@ -100,12 +100,12 @@ SQL;
 
         $results = [];
         foreach ($rows as $row) {
-            $associations = \json_decode($row['associations'], true);
+            $associations = json_decode($row['associations'], true);
 
             $filteredAssociations = [];
             foreach ($associations as $associationType => $productAssociations) {
-                $association = \array_values(\array_filter($productAssociations));
-                \sort($association);
+                $association = array_values(array_filter($productAssociations));
+                sort($association);
                 $filteredAssociations[$associationType]['groups'] = $association;
             }
 

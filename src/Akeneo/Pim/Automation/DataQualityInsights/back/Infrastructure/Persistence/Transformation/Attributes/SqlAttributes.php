@@ -31,12 +31,12 @@ class SqlAttributes implements AttributesInterface
     public function getCodesByIds(array $attributesIds): array
     {
         // Because LRUCache can only be used with string keys
-        $attributesIds = \array_map(function ($attributeId) {
+        $attributesIds = array_map(function ($attributeId) {
             return $this->castAttributeIdIntToString($attributeId);
         }, $attributesIds);
 
         $rawAttributesCodes = $this->attributeCodesByIds->getForKeys($attributesIds, function ($attributesIds) {
-            $attributesIds = \array_map(function ($attributeId) {
+            $attributesIds = array_map(function ($attributeId) {
                 return $this->castAttributeIdStringToInt($attributeId);
             }, $attributesIds);
             $attributesCodes = $this->dbConnection->executeQuery(
@@ -45,7 +45,7 @@ class SqlAttributes implements AttributesInterface
                 ['ids' => Connection::PARAM_INT_ARRAY]
             )->fetchOne();
 
-            return !$attributesCodes ? [] : \json_decode($attributesCodes, true);
+            return !$attributesCodes ? [] : json_decode($attributesCodes, true);
         });
 
         $attributesCodes = [];
@@ -58,7 +58,7 @@ class SqlAttributes implements AttributesInterface
 
     public function getIdsByCodes(array $attributesCodes): array
     {
-        $attributesCodes = \array_map(fn ($attributeCode) => \strval($attributeCode), $attributesCodes);
+        $attributesCodes = array_map(fn ($attributeCode) => strval($attributeCode), $attributesCodes);
 
         return $this->attributeIdsByCodes->getForKeys($attributesCodes, function ($attributesCodes) {
             $attributesIds = $this->dbConnection->executeQuery(
@@ -67,17 +67,17 @@ class SqlAttributes implements AttributesInterface
                 ['codes' => Connection::PARAM_STR_ARRAY]
             )->fetchOne();
 
-            return !$attributesIds ? [] : \json_decode($attributesIds, true);
+            return !$attributesIds ? [] : json_decode($attributesIds, true);
         });
     }
 
     private function castAttributeIdIntToString(int $attributeId): string
     {
-        return \sprintf('a_%d', $attributeId);
+        return sprintf('a_%d', $attributeId);
     }
 
     private function castAttributeIdStringToInt(string $attributeId): int
     {
-        return \intval(\substr($attributeId, 2));
+        return intval(substr($attributeId, 2));
     }
 }

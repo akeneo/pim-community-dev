@@ -39,7 +39,7 @@ class SearchAttributeOptionsResult
     {
         return [
             'matches_count' => $this->matchesCount,
-            'items' => \array_map(
+            'items' => array_map(
                 static fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                 $this->items,
             ),

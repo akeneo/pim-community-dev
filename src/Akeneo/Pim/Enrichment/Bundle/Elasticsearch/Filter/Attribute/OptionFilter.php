@@ -140,20 +140,20 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         }
 
         $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers($attribute->getCode(), $values);
-        $optionCodes = \array_map(
+        $optionCodes = array_map(
             function ($attributeOptions) {
                 return $attributeOptions['code'];
             },
             $attributeOptions
         );
 
-        $unexistingValues = \array_udiff($values, $optionCodes, 'strcasecmp');
-        if (\count($unexistingValues) > 0) {
+        $unexistingValues = array_udiff($values, $optionCodes, 'strcasecmp');
+        if (count($unexistingValues) > 0) {
             throw new ObjectNotFoundException(
-                \sprintf(
+                sprintf(
                     'Object "%s" with code "%s" does not exist',
                     $attribute->getBackendType(),
-                    \reset($unexistingValues)
+                    reset($unexistingValues)
                 )
             );
         }

@@ -33,7 +33,7 @@ SQL;
             ['product_model_codes' => Connection::PARAM_STR_ARRAY]
         )->fetchFirstColumn();
 
-        $nonExistingProductModelCodes = \array_values(\array_diff($productModelCodes, $results));
+        $nonExistingProductModelCodes = array_values(array_diff($productModelCodes, $results));
 
         return $nonExistingProductModelCodes;
     }

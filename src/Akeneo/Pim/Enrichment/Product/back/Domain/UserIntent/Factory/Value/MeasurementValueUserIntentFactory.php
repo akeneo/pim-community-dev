@@ -35,16 +35,16 @@ class MeasurementValueUserIntentFactory implements ValueUserIntentFactory
         if (!\is_array($data['data'])) {
             throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $data['data']);
         }
-        if (!\array_key_exists('amount', $data['data'])) {
+        if (!array_key_exists('amount', $data['data'])) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'amount', static::class, $data);
         }
-        if (!\array_key_exists('unit', $data['data'])) {
+        if (!array_key_exists('unit', $data['data'])) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'unit', static::class, $data);
         }
-        if (!\is_string($data['data']['unit'])) {
+        if (!is_string($data['data']['unit'])) {
             throw InvalidPropertyTypeException::stringExpected($attributeCode, 'unit', $data['data']['unit']);
         }
-        if (null !== $data['data']['amount'] && (!\is_scalar($data['data']['amount']) || \is_bool($data['data']['amount']))) {
+        if (null !== $data['data']['amount'] && (!is_scalar($data['data']['amount']) || \is_bool($data['data']['amount']))) {
             throw InvalidPropertyTypeException::scalarExpected($attributeCode, 'amount', $data['data']['unit']);
         }
         if (null === $data['data']['amount'] || '' === $data['data']['amount']) {

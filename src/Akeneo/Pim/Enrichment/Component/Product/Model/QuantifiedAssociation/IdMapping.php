@@ -27,7 +27,7 @@ final class IdMapping
         }
 
         $this->idsToIdentifiers = $mapping;
-        $this->identifiersToIds = \array_flip($mapping);
+        $this->identifiersToIds = array_flip($mapping);
     }
 
     public static function createFromMapping(array $mapping): self

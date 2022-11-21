@@ -14,18 +14,18 @@ use PhpSpec\ObjectBehavior;
 
 class ClearValueApplierSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $updater): void
+    function let(ObjectUpdaterInterface $updater): void
     {
         $this->beConstructedWith($updater);
     }
 
-    public function it_is_initializable(): void
+    function it_is_initializable(): void
     {
         $this->shouldHaveType(ClearValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    public function it_applies_clear_value_user_intent(ObjectUpdaterInterface $updater): void
+    function it_applies_clear_value_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $clearValue = new ClearValue('code', 'ecommerce', 'en_US');
@@ -48,7 +48,7 @@ class ClearValueApplierSpec extends ObjectBehavior
         $this->apply($clearValue, $product, 1);
     }
 
-    public function it_throws_an_exception_when_user_intent_is_not_supported(): void
+    function it_throws_an_exception_when_user_intent_is_not_supported(): void
     {
         $product = new Product();
         $setEnabledUserIntent = new SetEnabled(true);

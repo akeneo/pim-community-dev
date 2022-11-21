@@ -53,14 +53,14 @@ class ListProductsByUuidController
         $query = new ListProductsQuery();
 
         if ($request->query->has('attributes')) {
-            $query->attributeCodes = \explode(',', $request->query->get('attributes'));
+            $query->attributeCodes = explode(',', $request->query->get('attributes'));
         }
         if ($request->query->has('locales')) {
-            $query->localeCodes = \explode(',', $request->query->get('locales'));
+            $query->localeCodes = explode(',', $request->query->get('locales'));
         }
         if ($request->query->has('search')) {
-            $query->search = \json_decode($request->query->get('search'), true);
-            if (!\is_array($query->search)) {
+            $query->search = json_decode($request->query->get('search'), true);
+            if (!is_array($query->search)) {
                 throw new BadRequestHttpException('Search query parameter should be valid JSON.');
             }
         }
@@ -87,11 +87,11 @@ class ListProductsByUuidController
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (BadRequest400Exception $e) {
-            $message = \json_decode($e->getMessage(), true);
+            $message = json_decode($e->getMessage(), true);
             if (
                 null !== $message && isset($message['error']['root_cause'][0]['type'])
                 && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
-                && 0 === \strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
+                && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
             ) {
                 throw new DocumentedHttpException(
                     Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
@@ -115,7 +115,7 @@ class ListProductsByUuidController
         ];
 
         if ($query->search !== []) {
-            $queryParameters['search'] = \json_encode($query->search);
+            $queryParameters['search'] = json_encode($query->search);
         }
         if (null !== $query->channelCode) {
             $queryParameters['scope'] = $query->channelCode;
@@ -124,10 +124,10 @@ class ListProductsByUuidController
             $queryParameters['search_scope'] = $query->searchChannelCode;
         }
         if (null !== $query->localeCodes) {
-            $queryParameters['locales'] = \join(',', $query->localeCodes);
+            $queryParameters['locales'] = join(',', $query->localeCodes);
         }
         if (null !== $query->attributeCodes) {
-            $queryParameters['attributes'] = \join(',', $query->attributeCodes);
+            $queryParameters['attributes'] = join(',', $query->attributeCodes);
         }
         if (true === $query->withAttributeOptionsAsBoolean()) {
             $queryParameters['with_attribute_options'] = 'true';
@@ -160,7 +160,7 @@ class ListProductsByUuidController
             );
         } else {
             $connectorProducts = $connectorProductList->connectorProducts();
-            $lastProduct = \end($connectorProducts);
+            $lastProduct = end($connectorProducts);
 
             $parameters = [
                 'query_parameters' => $queryParameters,

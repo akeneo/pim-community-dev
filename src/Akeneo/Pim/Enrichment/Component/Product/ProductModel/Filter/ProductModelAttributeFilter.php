@@ -53,7 +53,7 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
      */
     public function filter(array $standardProductModel): array
     {
-        if (\array_key_exists('values', $standardProductModel) && \is_array($standardProductModel['values'])) {
+        if (array_key_exists('values', $standardProductModel) && is_array($standardProductModel['values'])) {
             foreach ($standardProductModel['values'] as $code => $value) {
                 if (null === $this->attributeRepository->findOneByIdentifier($code)) {
                     throw UnknownPropertyException::unknownProperty($code);
@@ -61,7 +61,7 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
             }
         }
 
-        if (!\array_key_exists('code', $standardProductModel)) {
+        if (!array_key_exists('code', $standardProductModel)) {
             return $standardProductModel;
         }
 
@@ -70,7 +70,7 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
             $standardProductModel['family_variant'] = $productModel->getFamilyVariant()->getCode();
         }
 
-        if (null !== $productModel && null !== $productModel->getParent() && !\array_key_exists('parent', $standardProductModel)) {
+        if (null !== $productModel && null !== $productModel->getParent() && !array_key_exists('parent', $standardProductModel)) {
             $standardProductModel['parent'] = $productModel->getParent()->getCode();
             $standardProductModel['family_variant'] = $productModel->getFamilyVariant()->getCode();
         }
@@ -112,7 +112,7 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
     private function keepOnlyAttributes(array $flatProductModel, Collection $attributesToKeep): array
     {
         foreach ($flatProductModel['values'] as $attributeName => $value) {
-            $shortAttributeName = \explode('-', (string) $attributeName);
+            $shortAttributeName = explode('-', (string) $attributeName);
             $shortAttributeName = $shortAttributeName[0];
 
             $keepedAttributeCodes = $attributesToKeep->exists(

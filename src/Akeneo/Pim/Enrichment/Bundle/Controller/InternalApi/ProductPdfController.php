@@ -70,7 +70,7 @@ class ProductPdfController
             200,
             [
                 'content-type'        => 'application/pdf',
-                'content-disposition' => \sprintf(
+                'content-disposition' => sprintf(
                     'attachment; filename=%s-%s.pdf',
                     $product->getIdentifier() ?? $product->getUuid()->toString(),
                     $renderingDate->format('Y-m-d_H-i-s')
@@ -94,7 +94,7 @@ class ProductPdfController
 
         if (null === $product) {
             throw new NotFoundHttpException(
-                \sprintf('Product with uuid %s could not be found.', $uuid)
+                sprintf('Product with uuid %s could not be found.', $uuid)
             );
         }
 

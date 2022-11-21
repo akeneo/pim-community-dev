@@ -69,7 +69,7 @@ class ReindexFormerAncestorsSubscriber implements EventSubscriberInterface
     public function reIndexAll(GenericEvent $event): void
     {
         $products = $event->getSubject();
-        if (empty($this->formerParentCodes) || !\reset($products) instanceof ProductInterface) {
+        if (empty($this->formerParentCodes) || !reset($products) instanceof ProductInterface) {
             return;
         }
 
@@ -82,7 +82,7 @@ class ReindexFormerAncestorsSubscriber implements EventSubscriberInterface
             }
         }
 
-        $this->reindexFromProductModelCodes(\array_values(\array_unique($formerParentCodes)));
+        $this->reindexFromProductModelCodes(array_values(array_unique($formerParentCodes)));
     }
 
     private function reindexFromProductModelCodes(array $productModelCodes): void
@@ -92,6 +92,6 @@ class ReindexFormerAncestorsSubscriber implements EventSubscriberInterface
         }
         $rootProductModelCodes = $this->getAncestorProductModelCodes->fromProductModelCodes($productModelCodes);
 
-        $this->productModelIndexer->indexFromProductModelCodes(\array_merge($productModelCodes, $rootProductModelCodes));
+        $this->productModelIndexer->indexFromProductModelCodes(array_merge($productModelCodes, $rootProductModelCodes));
     }
 }

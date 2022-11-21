@@ -29,7 +29,7 @@ class ScalarComparator implements ComparatorInterface
      */
     public function supports($column)
     {
-        return \in_array($column, $this->columns);
+        return in_array($column, $this->columns);
     }
 
     /**
@@ -37,7 +37,7 @@ class ScalarComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        if (\is_array($data)) {
+        if (is_array($data)) {
             return $data;
         }
 

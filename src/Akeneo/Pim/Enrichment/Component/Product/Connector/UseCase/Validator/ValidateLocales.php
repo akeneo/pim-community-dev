@@ -39,7 +39,7 @@ final class ValidateLocales
             return;
         }
 
-        $localeCodes = \array_map('trim', $localeCodes);
+        $localeCodes = array_map('trim', $localeCodes);
         $errors = [];
         foreach ($localeCodes as $localeCode) {
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
@@ -49,18 +49,18 @@ final class ValidateLocales
         }
 
         if (!empty($errors)) {
-            $plural = \count($errors) > 1 ?
+            $plural = count($errors) > 1 ?
                 'Locales "%s" do not exist or are not activated.' : 'Locale "%s" does not exist or is not activated.';
-            throw new InvalidQueryException(\sprintf($plural, \implode(', ', $errors)));
+            throw new InvalidQueryException(sprintf($plural, implode(', ', $errors)));
         }
 
         if (null !== $channelCode) {
             $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-            $diff = \array_diff($localeCodes, $channel->getLocaleCodes());
+            $diff = array_diff($localeCodes, $channel->getLocaleCodes());
             if ($diff) {
-                $plural = \sprintf(\count($diff) > 1 ? 'Locales "%s" are' : 'Locale "%s" is', \implode(', ', $diff));
+                $plural = sprintf(count($diff) > 1 ? 'Locales "%s" are' : 'Locale "%s" is', implode(', ', $diff));
                 throw new InvalidQueryException(
-                    \sprintf('%s not activated for the scope "%s".', $plural, $channel->getCode())
+                    sprintf('%s not activated for the scope "%s".', $plural, $channel->getCode())
                 );
             }
         }

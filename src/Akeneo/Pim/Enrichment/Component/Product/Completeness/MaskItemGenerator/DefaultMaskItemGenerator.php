@@ -16,7 +16,7 @@ class DefaultMaskItemGenerator implements MaskItemGeneratorForAttributeType
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
         return [
-            \sprintf(
+            sprintf(
                 '%s-%s-%s',
                 $attributeCode,
                 $channelCode,

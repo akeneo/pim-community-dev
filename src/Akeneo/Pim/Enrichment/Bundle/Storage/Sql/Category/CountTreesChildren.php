@@ -37,7 +37,7 @@ SQL;
 
         $treesChildren = [];
         while ($tree = $stmt->fetchAssociative()) {
-            $treesChildren[$tree['code']] = \intval($tree['count_children']);
+            $treesChildren[$tree['code']] = intval($tree['count_children']);
         }
 
         return $treesChildren;

@@ -78,9 +78,9 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $results[self::FIELD_GROUPS] = $this->normalizeGroups($object->getGroupCodes());
         $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());
         $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
-        $results = \array_merge($results, $this->normalizeAssociations($object->getAssociations()));
-        $results = \array_merge($results, $this->quantifiedAssociationsNormalized->normalize($object, $format, $context));
-        $results = \array_replace($results, $this->normalizeValues($object, $format, $context));
+        $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
+        $results = array_merge($results, $this->quantifiedAssociationsNormalized->normalize($object, $format, $context));
+        $results = array_replace($results, $this->normalizeValues($object, $format, $context));
         $results[self::FIELD_ENABLED] = (int) $object->isEnabled();
 
         return $results;
@@ -91,7 +91,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ProductInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -114,12 +114,12 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValues = \array_replace(
+            $normalizedValues = array_replace(
                 $normalizedValues,
                 $this->normalizer->normalize($value, $format, $context)
             );
         }
-        \ksort($normalizedValues);
+        ksort($normalizedValues);
 
         return $normalizedValues;
     }
@@ -170,10 +170,10 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $suffix = '';
 
         if ($value->isLocalizable()) {
-            $suffix = \sprintf('-%s', $value->getLocaleCode());
+            $suffix = sprintf('-%s', $value->getLocaleCode());
         }
         if ($value->isScopable()) {
-            $suffix .= \sprintf('-%s', $value->getScopeCode());
+            $suffix .= sprintf('-%s', $value->getScopeCode());
         }
 
         return $value->getAttributeCode().$suffix;
@@ -200,7 +200,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function normalizeGroups(array $groups = []): string
     {
-        return \implode(static::ITEM_SEPARATOR, $groups);
+        return implode(static::ITEM_SEPARATOR, $groups);
     }
 
     /**
@@ -212,7 +212,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function normalizeCategories(array $categories = []): string
     {
-        return \implode(static::ITEM_SEPARATOR, $categories);
+        return implode(static::ITEM_SEPARATOR, $categories);
     }
 
     /**
@@ -255,9 +255,9 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 $productModels[] = $productModel->getCode();
             }
 
-            $results[$columnPrefix . '-groups'] = \implode(',', $groups);
-            $results[$columnPrefix . '-products'] = \implode(',', $products);
-            $results[$columnPrefix . '-product_models'] = \implode(',', $productModels);
+            $results[$columnPrefix . '-groups'] = implode(',', $groups);
+            $results[$columnPrefix . '-products'] = implode(',', $products);
+            $results[$columnPrefix . '-product_models'] = implode(',', $productModels);
         }
 
         return $results;
@@ -272,7 +272,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function resolveContext(array $context): array
     {
-        return \array_merge(
+        return array_merge(
             [
                 'scopeCode'     => null,
                 'localeCodes'   => [],

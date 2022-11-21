@@ -31,7 +31,7 @@ class NumberConverter extends AbstractValueConverter
     {
         if ('' === $value) {
             $data = null;
-        } elseif (!$attributeFieldInfo['attribute']->isDecimalsAllowed() && \preg_match('|^\d+$|', $value)) {
+        } elseif (!$attributeFieldInfo['attribute']->isDecimalsAllowed() && preg_match('|^\d+$|', $value)) {
             $data = (int) $value;
         } else {
             $data = $value;

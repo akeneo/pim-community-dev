@@ -85,7 +85,7 @@ final class UpsertProductCommand
      */
     public static function createFromCollection(int $userId, string $productIdentifier, array $userIntents): self
     {
-        @\trigger_error(
+        @trigger_error(
             \sprintf(
                 '%s is deprecated and will be removed, please use createWithIdentifier() or createWithUuid() instead',
                 __METHOD__

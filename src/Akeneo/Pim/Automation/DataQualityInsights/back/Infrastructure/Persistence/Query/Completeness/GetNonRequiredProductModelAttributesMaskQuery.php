@@ -77,11 +77,11 @@ GROUP BY family.code, channel_code, locale_code;
             return null;
         }
 
-        $masksPerChannelAndLocale = \array_map(function (array $row) {
+        $masksPerChannelAndLocale = array_map(function (array $row) {
             return new RequiredAttributesMaskForChannelAndLocale(
                 $row['channel_code'],
                 $row['locale_code'],
-                \json_decode($row['mask'], true)
+                json_decode($row['mask'], true)
             );
         }, $rows);
 

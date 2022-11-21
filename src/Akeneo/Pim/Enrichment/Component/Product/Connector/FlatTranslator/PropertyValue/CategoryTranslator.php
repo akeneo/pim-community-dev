@@ -34,15 +34,15 @@ class CategoryTranslator implements FlatPropertyValueTranslatorInterface
                 continue;
             }
 
-            $categoryCodes = \explode(',', $value);
+            $categoryCodes = explode(',', $value);
             $categoriesLabelized = [];
 
             foreach ($categoryCodes as $categoryCode) {
                 $categoriesLabelized[] = $categoryTranslations[$categoryCode] ??
-                    \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $categoryCode);
+                    sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $categoryCode);
             }
 
-            $result[$valueIndex] = \implode(',', $categoriesLabelized);
+            $result[$valueIndex] = implode(',', $categoriesLabelized);
         }
 
         return $result;
@@ -55,9 +55,9 @@ class CategoryTranslator implements FlatPropertyValueTranslatorInterface
             if (empty($value)) {
                 continue;
             }
-            $categoryCodes = \array_merge($categoryCodes, \explode(',', $value));
+            $categoryCodes = array_merge($categoryCodes, explode(',', $value));
         }
 
-        return \array_unique($categoryCodes);
+        return array_unique($categoryCodes);
     }
 }

@@ -15,18 +15,18 @@ use PhpSpec\ObjectBehavior;
  */
 class FamilyUserIntentFactorySpec extends ObjectBehavior
 {
-    public function it_returns_a_set_family()
+    function it_returns_a_set_family()
     {
         $this->create('family', 'accessories')->shouldBeLike([new SetFamily('accessories')]);
     }
 
-    public function it_returns_a_remove_family()
+    function it_returns_a_remove_family()
     {
         $this->create('family', null)->shouldBeLike([new RemoveFamily()]);
         $this->create('family', '')->shouldBeLike([new RemoveFamily()]);
     }
 
-    public function it_throws_an_exception_if_data_is_not_valid()
+    function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', ['family', 12]);

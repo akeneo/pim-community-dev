@@ -70,11 +70,11 @@ final class RanksDistributionCollection implements \IteratorAggregate
     {
         $mappedRanksDistributions = [];
         foreach ($channelLocaleRanksDistributions as $channel => $localeRanksDistributions) {
-            if (!\is_array($localeRanksDistributions)) {
+            if (!is_array($localeRanksDistributions)) {
                 throw new \InvalidArgumentException('The ranks distributions per locale are malformed');
             }
             foreach ($localeRanksDistributions as $locale => $ranksDistribution) {
-                if (!\is_array($ranksDistribution) && !$ranksDistribution instanceof RanksDistribution) {
+                if (!is_array($ranksDistribution) && !$ranksDistribution instanceof RanksDistribution) {
                     throw new \InvalidArgumentException('The ranks distributions are malformed');
                 }
                 $mappedRanksDistributions[$channel][$locale] = $callback($ranksDistribution);

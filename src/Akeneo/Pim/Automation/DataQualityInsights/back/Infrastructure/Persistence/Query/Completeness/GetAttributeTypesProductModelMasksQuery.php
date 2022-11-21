@@ -20,7 +20,7 @@ class GetAttributeTypesProductModelMasksQuery implements GetProductModelAttribut
     public function __construct(Connection $connection, array $attributeTypes)
     {
         $this->connection = $connection;
-        $this->attributeTypes = \array_map(fn ($code) => (string)$code, $attributeTypes);
+        $this->attributeTypes = array_map(fn ($code) => (string)$code, $attributeTypes);
     }
 
     public function execute(ProductModelId $productModelId): ?RequiredAttributesMask
@@ -105,11 +105,11 @@ SQL;
             return null;
         }
 
-        $masksPerChannelAndLocale = \array_map(function (array $row) {
+        $masksPerChannelAndLocale = array_map(function (array $row) {
             return new RequiredAttributesMaskForChannelAndLocale(
                 $row['channel_code'],
                 $row['locale_code'],
-                \json_decode($row['mask'], true)
+                json_decode($row['mask'], true)
             );
         }, $rows);
 

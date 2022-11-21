@@ -32,13 +32,13 @@ class KeyIndicatorFilter extends AbstractFieldFilter implements FieldFilterInter
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if (!\is_bool($value)) {
+        if (!is_bool($value)) {
             throw InvalidPropertyTypeException::booleanExpected($field, static::class, $value);
         }
 
         $clause = [
             'term' => [
-                \sprintf('data_quality_insights.key_indicators.%s.%s.%s', $channel, $locale, $this->keyIndicatorIdentifier) => $value,
+                sprintf('data_quality_insights.key_indicators.%s.%s.%s', $channel, $locale, $this->keyIndicatorIdentifier) => $value,
             ],
         ];
 

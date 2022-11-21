@@ -23,7 +23,8 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         CreateCriteriaEvaluations       $createCriteriaEvaluations,
         LoggerInterface                 $logger,
         ProductEntityIdFactoryInterface $idFactory
-    ) {
+    )
+    {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createCriteriaEvaluations,
@@ -53,7 +54,8 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createCriteriaEvaluations,
         ProductModelInterface $productModel
-    ) {
+    )
+    {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
         $createCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
@@ -64,7 +66,8 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createCriteriaEvaluations,
         ProductModelInterface $productModel
-    ): void {
+    ): void
+    {
         $dataQualityInsightsFeature->isEnabled()->shouldNotBeCalled();
         $createCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
@@ -77,7 +80,8 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         $createCriteriaEvaluations,
         $idFactory,
         ProductModelInterface $productModel
-    ) {
+    )
+    {
         $productModelId = 12345;
         $productModelIdCollection = ProductModelIdCollection::fromStrings([(string)$productModelId]);
 
@@ -95,7 +99,8 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         $logger,
         $idFactory,
         ProductModelInterface $productModel
-    ) {
+    )
+    {
         $productModelId = 12345;
         $productModelIdCollection = ProductModelIdCollection::fromStrings([(string)$productModelId]);
 

@@ -19,7 +19,7 @@ final class InMemoryLocales implements LocalesInterface
     public function __construct(array $localesIdsByCodes)
     {
         $this->localesIdsByCodes = $localesIdsByCodes;
-        $this->localesCodesByIds = \array_flip($localesIdsByCodes);
+        $this->localesCodesByIds = array_flip($localesIdsByCodes);
     }
 
     public function getIdByCode(string $code): ?int

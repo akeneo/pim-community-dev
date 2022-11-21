@@ -9,13 +9,13 @@ use PhpSpec\ObjectBehavior;
 
 class ProductIdentifierSpec extends ObjectBehavior
 {
-    public function it_cannot_be_constructed_with_an_empty_string()
+    function it_cannot_be_constructed_with_an_empty_string()
     {
         $this->beConstructedThrough('fromString', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_can_be_constructed_from_a_string()
+    function it_can_be_constructed_from_a_string()
     {
         $this->beConstructedThrough('fromString', ['foo']);
         $this->shouldHaveType(ProductIdentifier::class);

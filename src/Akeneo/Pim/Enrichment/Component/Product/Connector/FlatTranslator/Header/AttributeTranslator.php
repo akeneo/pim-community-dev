@@ -61,7 +61,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
     {
         $attributeColumns = $this->attributeColumnsResolver->resolveAttributeColumns();
 
-        return \in_array($columnName, $attributeColumns);
+        return in_array($columnName, $attributeColumns);
     }
 
     public function warmup(array $columnNames, string $locale): void
@@ -77,7 +77,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         $attributeCode = $attribute->getCode();
 
         $columnLabelized = $this->attributeTranslations[$attributeCode] ??
-            \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $attributeCode);
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $attributeCode);
 
         $extraInformation = [];
         if ($attribute->isLocalizable()) {
@@ -85,7 +85,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
             $extraInformation[] = $this->languageTranslator->translate(
                 $localeCode,
                 $locale,
-                \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $localeCode)
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $localeCode)
             );
         }
 
@@ -94,11 +94,11 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
             $channelTranslations = $this->getChannelTranslations($locale);
 
             $extraInformation[] = $channelTranslations[$channelCode] ??
-                \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $channelCode);
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $channelCode);
         }
 
         if (!empty($extraInformation)) {
-            $columnLabelized = \sprintf('%s (%s)', $columnLabelized, \implode(', ', $extraInformation));
+            $columnLabelized = sprintf('%s (%s)', $columnLabelized, implode(', ', $extraInformation));
         }
 
         if ($attribute->getType() === AttributeTypes::PRICE_COLLECTION) {
@@ -106,18 +106,18 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
             $currencyLabelized = $this->currencyTranslator->translate(
                 $currencyCode,
                 $locale,
-                \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $currencyCode)
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $currencyCode)
             );
 
-            $columnLabelized = \sprintf('%s (%s)', $columnLabelized, $currencyLabelized);
-        } elseif ($attribute->getType() === AttributeTypes::METRIC && false !== \strpos($columnName, '-unit')) {
+            $columnLabelized = sprintf('%s (%s)', $columnLabelized, $currencyLabelized);
+        } elseif ($attribute->getType() === AttributeTypes::METRIC && false !== strpos($columnName, '-unit')) {
             $metricLabelized = $this->labelTranslator->translate(
                 'pim_common.unit',
                 $locale,
-                \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'unit')
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'unit')
             );
 
-            $columnLabelized = \sprintf('%s (%s)', $columnLabelized, $metricLabelized);
+            $columnLabelized = sprintf('%s (%s)', $columnLabelized, $metricLabelized);
         }
 
         return $columnLabelized;
@@ -143,13 +143,13 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
             }
         }
 
-        return \array_unique($attributeCodes);
+        return array_unique($attributeCodes);
     }
 
     private function isAttributeColumn(string $column): bool
     {
         $attributeColumns = $this->attributeColumnsResolver->resolveAttributeColumns();
 
-        return \in_array($column, $attributeColumns);
+        return in_array($column, $attributeColumns);
     }
 }

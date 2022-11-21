@@ -27,7 +27,7 @@ class TranslationNormalizer implements NormalizerInterface
      */
     public function normalize($translatable, $format = null, array $context = [])
     {
-        $context = \array_merge(
+        $context = array_merge(
             [
                 'field_name' => 'label',
                 'locales'    => [],
@@ -39,7 +39,7 @@ class TranslationNormalizer implements NormalizerInterface
 
         $translations = [];
         foreach ($translatable as $localeCode => $translation) {
-            if (empty($localCodes) || \in_array($localeCode, $localCodes)) {
+            if (empty($localCodes) || in_array($localeCode, $localCodes)) {
                 $translations[$property . self::LABEL_SEPARATOR . $localeCode] = $translation;
             }
         }
@@ -58,6 +58,6 @@ class TranslationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return \is_array($data) && \in_array($format, $this->supportedFormats) && isset($data['labels']);
+        return is_array($data) && in_array($format, $this->supportedFormats) && isset($data['labels']);
     }
 }

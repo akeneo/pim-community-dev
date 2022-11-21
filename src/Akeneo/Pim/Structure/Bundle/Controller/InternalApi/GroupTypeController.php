@@ -135,7 +135,7 @@ class GroupTypeController
 
         $groupType = $this->getGroupTypeOr404($identifier);
 
-        $data = \json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
 
         $this->updater->update($groupType, $data);
 
@@ -204,7 +204,7 @@ class GroupTypeController
 
         if (null === $groupType) {
             throw new NotFoundHttpException(
-                \sprintf('Group type with code "%s" not found', $code)
+                sprintf('Group type with code "%s" not found', $code)
             );
         }
 
@@ -227,7 +227,7 @@ class GroupTypeController
         }
 
         $groupType = $this->groupTypeFactory->create();
-        $this->updater->update($groupType, \json_decode($request->getContent(), true));
+        $this->updater->update($groupType, json_decode($request->getContent(), true));
         $violations = $this->validator->validate($groupType);
 
         $normalizedViolations = [];
@@ -239,7 +239,7 @@ class GroupTypeController
             );
         }
 
-        if (\count($normalizedViolations) > 0) {
+        if (count($normalizedViolations) > 0) {
             return new JsonResponse(['values' => $normalizedViolations], Response::HTTP_BAD_REQUEST);
         }
 

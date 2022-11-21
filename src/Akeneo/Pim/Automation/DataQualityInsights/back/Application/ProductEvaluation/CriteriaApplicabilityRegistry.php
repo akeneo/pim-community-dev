@@ -19,14 +19,14 @@ class CriteriaApplicabilityRegistry
         $this->criterionApplicabilityServices = [];
         foreach ($criterionApplicabilityServices as $criterionApplicabilityService) {
             if ($criterionApplicabilityService instanceof EvaluateCriterionApplicabilityInterface) {
-                $this->criterionApplicabilityServices[\strval($criterionApplicabilityService->getCode())] = $criterionApplicabilityService;
+                $this->criterionApplicabilityServices[strval($criterionApplicabilityService->getCode())] = $criterionApplicabilityService;
             }
         }
     }
 
     public function get(CriterionCode $code): ?EvaluateCriterionApplicabilityInterface
     {
-        return $this->criterionApplicabilityServices[\strval($code)] ?? null;
+        return $this->criterionApplicabilityServices[strval($code)] ?? null;
     }
 
     /**
@@ -34,8 +34,8 @@ class CriteriaApplicabilityRegistry
      */
     public function getCriterionCodes(): array
     {
-        return \array_map(function (string $code) {
+        return array_map(function (string $code) {
             return new CriterionCode($code);
-        }, \array_keys($this->criterionApplicabilityServices));
+        }, array_keys($this->criterionApplicabilityServices));
     }
 }

@@ -35,7 +35,7 @@ final class PeriodicTasksParameters implements ConstraintCollectionProviderInter
     public function getDefaultValues(): array
     {
         return [
-            self::DATE_FIELD => \date(self::DATE_FORMAT),
+            self::DATE_FIELD => date(self::DATE_FORMAT),
         ];
     }
 

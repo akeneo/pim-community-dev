@@ -52,7 +52,7 @@ class MetricValue extends AbstractValue implements MetricValueInterface
     public function __toString(): string
     {
         if (null !== $this->data && (null !== $data = $this->data->getData())) {
-            return \sprintf('%.4F %s', $data, $this->data->getUnit());
+            return sprintf('%.4F %s', $data, $this->data->getUnit());
         }
 
         return '';

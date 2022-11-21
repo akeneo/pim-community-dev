@@ -49,7 +49,7 @@ final class AttributeContext implements Context
             }
 
             if (isset($attributeData['available_locales'])) {
-                $attributeData['available_locales'] = \array_filter(\explode(',', $attributeData['available_locales']));
+                $attributeData['available_locales'] = array_filter(explode(',', $attributeData['available_locales']));
             }
 
             if (isset($attributeData['table_configuration'])) {

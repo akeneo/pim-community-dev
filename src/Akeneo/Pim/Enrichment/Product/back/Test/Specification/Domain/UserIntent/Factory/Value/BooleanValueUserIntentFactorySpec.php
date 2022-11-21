@@ -11,12 +11,12 @@ use PhpSpec\ObjectBehavior;
 
 class BooleanValueUserIntentFactorySpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(BooleanValueUserIntentFactory::class);
     }
 
-    public function it_returns_set_boolean_user_intent()
+    function it_returns_set_boolean_user_intent()
     {
         $this->create(AttributeTypes::BOOLEAN, 'a_bool', [
             'data' => true,
@@ -25,7 +25,7 @@ class BooleanValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetBooleanValue('a_bool', null, null, true));
     }
 
-    public function it_returns_clear_value()
+    function it_returns_clear_value()
     {
         $this->create(AttributeTypes::BOOLEAN, 'a_bool', [
             'data' => null,
@@ -40,7 +40,7 @@ class BooleanValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new ClearValue('a_bool', 'ecommerce', 'fr_FR'));
     }
 
-    public function it_throws_an_exception_if_data_is_not_valid()
+    function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', [AttributeTypes::BOOLEAN, 'a_bool', ['value']]);

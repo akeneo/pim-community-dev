@@ -30,7 +30,7 @@ class AssociationTranslator
         $associationsColumns = $this->associationColumnsResolver->resolveAssociationColumns();
         $quantifiedAssociationsColumns = $this->associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns();
 
-        return \in_array($columnName, \array_merge($associationsColumns, $quantifiedAssociationsColumns));
+        return in_array($columnName, array_merge($associationsColumns, $quantifiedAssociationsColumns));
     }
 
     public function translate(string $columnName, array $values, string $locale, string $channel): array
@@ -57,17 +57,17 @@ class AssociationTranslator
             return $this->getGroupTranslations->byGroupCodesAndLocale($codes, $locale);
         }
 
-        throw new \LogicException(\sprintf('Unsupported column to translate associations "%s"', $columnName));
+        throw new \LogicException(sprintf('Unsupported column to translate associations "%s"', $columnName));
     }
 
     private function extractCodes(array $values): array
     {
         $codes = [];
         foreach ($values as $value) {
-            $codes = \array_merge($codes, \explode(',', $value));
+            $codes = array_merge($codes, explode(',', $value));
         }
 
-        return \array_unique($codes);
+        return array_unique($codes);
     }
 
     private function doTranslate(array $values, array $translations): array
@@ -79,15 +79,15 @@ class AssociationTranslator
                 continue;
             }
 
-            $codes = \explode(',', $value);
+            $codes = explode(',', $value);
             $labelized = [];
 
             foreach ($codes as $code) {
                 $labelized[] = $translations[$code] ??
-                    \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $code);
+                    sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $code);
             }
 
-            $result[$valueIndex] = \implode(',', $labelized);
+            $result[$valueIndex] = implode(',', $labelized);
         }
 
         return $result;
@@ -95,21 +95,21 @@ class AssociationTranslator
 
     private function isProductModelAssocation(string $columnName): bool
     {
-        return false !== \strpos($columnName, self::PRODUCT_MODELS_COLUMN_SUFFIX);
+        return false !== strpos($columnName, self::PRODUCT_MODELS_COLUMN_SUFFIX);
     }
 
     private function isProductAssociation(string $columnName): bool
     {
-        return false !== \strpos($columnName, self::PRODUCTS_COLUMN_SUFFIX);
+        return false !== strpos($columnName, self::PRODUCTS_COLUMN_SUFFIX);
     }
 
     private function isProductUuidAssociation(string $columnName): bool
     {
-        return false !== \strpos($columnName, self::PRODUCT_UUIDS_COLUMN_SUFFIX);
+        return false !== strpos($columnName, self::PRODUCT_UUIDS_COLUMN_SUFFIX);
     }
 
     private function isGroupAssociation(string $columnName): bool
     {
-        return \str_ends_with($columnName, self::GROUPS_ASSOCIATIONS_SUFFIX);
+        return str_ends_with($columnName, self::GROUPS_ASSOCIATIONS_SUFFIX);
     }
 }

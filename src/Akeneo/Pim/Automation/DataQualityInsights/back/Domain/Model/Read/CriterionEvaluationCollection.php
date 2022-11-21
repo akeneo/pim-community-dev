@@ -20,14 +20,14 @@ final class CriterionEvaluationCollection implements \IteratorAggregate, \Counta
 
     public function add(CriterionEvaluation $criterionEvaluation): self
     {
-        $this->criteriaEvaluations[\strval($criterionEvaluation->getCriterionCode())] = $criterionEvaluation;
+        $this->criteriaEvaluations[strval($criterionEvaluation->getCriterionCode())] = $criterionEvaluation;
 
         return $this;
     }
 
     public function get(CriterionCode $criterionCode): ?CriterionEvaluation
     {
-        return $this->criteriaEvaluations[\strval($criterionCode)] ?? null;
+        return $this->criteriaEvaluations[strval($criterionCode)] ?? null;
     }
 
     public function getCriterionRates(CriterionCode $criterionCode): ?ChannelLocaleRateCollection
@@ -52,7 +52,7 @@ final class CriterionEvaluationCollection implements \IteratorAggregate, \Counta
 
     public function count(): int
     {
-        return \count($this->criteriaEvaluations);
+        return count($this->criteriaEvaluations);
     }
 
     public function isEmpty(): bool

@@ -34,15 +34,15 @@ class GroupTranslator implements FlatPropertyValueTranslatorInterface
                 continue;
             }
 
-            $groupCodes = \explode(',', $value);
+            $groupCodes = explode(',', $value);
             $groupsLabelized = [];
 
             foreach ($groupCodes as $groupCode) {
                 $groupsLabelized[] = $groupTranslations[$groupCode] ??
-                    \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $groupCode);
+                    sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $groupCode);
             }
 
-            $result[$valueIndex] = \implode(',', $groupsLabelized);
+            $result[$valueIndex] = implode(',', $groupsLabelized);
         }
 
         return $result;
@@ -55,9 +55,9 @@ class GroupTranslator implements FlatPropertyValueTranslatorInterface
             if (empty($value)) {
                 continue;
             }
-            $groupCodes = \array_merge($groupCodes, \explode(',', $value));
+            $groupCodes = array_merge($groupCodes, explode(',', $value));
         }
 
-        return \array_unique($groupCodes);
+        return array_unique($groupCodes);
     }
 }

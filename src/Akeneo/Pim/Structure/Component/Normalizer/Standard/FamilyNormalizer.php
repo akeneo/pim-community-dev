@@ -95,7 +95,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
             $normalizedAttributes[] = $attribute->getCode();
         }
 
-        \sort($normalizedAttributes);
+        sort($normalizedAttributes);
 
         return $normalizedAttributes;
     }

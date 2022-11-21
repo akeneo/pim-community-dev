@@ -28,7 +28,7 @@ final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluat
     {
         $productModelIdCollection = $this->factory->createCollection([(string)$productId]);
         $upToDateProducts = $this->forEntityIdCollection($productModelIdCollection);
-        return !\is_null($upToDateProducts);
+        return !is_null($upToDateProducts);
     }
 
     public function forEntityIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductModelIdCollection
@@ -58,11 +58,11 @@ SQL;
 
         $result = $stmt->fetchAllAssociative();
 
-        if (!\is_array($result)) {
+        if (!is_array($result)) {
             return null;
         }
 
-        $ids = \array_map(function ($resultRow) {
+        $ids = array_map(function ($resultRow) {
             return $resultRow['id'];
         }, $result);
 

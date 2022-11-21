@@ -9,18 +9,18 @@ use PhpSpec\ObjectBehavior;
 
 class EnabledUserIntentFactorySpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(EnabledUserIntentFactory::class);
     }
 
-    public function it_returns_a_set_enabled_user_intent()
+    function it_returns_a_set_enabled_user_intent()
     {
         $this->create('enabled', true)
             ->shouldBeLike([new SetEnabled(true)]);
     }
 
-    public function it_throws_an_error_when_data_is_invalid()
+    function it_throws_an_error_when_data_is_invalid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', ['enabled', 10]);

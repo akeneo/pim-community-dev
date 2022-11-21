@@ -14,38 +14,38 @@ use PhpSpec\ObjectBehavior;
  */
 class SetMeasurementValueSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('power', 'ecommerce', 'en_US', '100', 'KILOWATT');
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(SetMeasurementValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-    public function it_returns_the_attribute_code()
+    function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('power');
     }
 
-    public function it_returns_the_locale_code()
+    function it_returns_the_locale_code()
     {
         $this->localeCode()->shouldReturn('en_US');
     }
 
-    public function it_returns_the_channel_code()
+    function it_returns_the_channel_code()
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    public function it_returns_the_amount()
+    function it_returns_the_amount()
     {
         $this->amount()->shouldReturn('100');
     }
 
-    public function it_returns_the_unit()
+    function it_returns_the_unit()
     {
         $this->unit()->shouldReturn('KILOWATT');
     }

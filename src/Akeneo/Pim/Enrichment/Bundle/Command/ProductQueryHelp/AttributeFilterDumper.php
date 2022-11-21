@@ -45,7 +45,7 @@ class AttributeFilterDumper implements DumperInterface
 
         $rows = [];
         foreach ($attributes as $attribute) {
-            $rows = \array_merge($rows, $this->getFilterInformationForAttribute($attribute, $attributeFilters));
+            $rows = array_merge($rows, $this->getFilterInformationForAttribute($attribute, $attributeFilters));
         }
 
         $table = new Table($output);
@@ -91,10 +91,10 @@ class AttributeFilterDumper implements DumperInterface
         $isScopable = $attribute->isScopable() ? 'yes' : 'no';
 
         $newEntries = [];
-        if (\array_key_exists($attributeType, $attributeFilters)) {
+        if (array_key_exists($attributeType, $attributeFilters)) {
             foreach ($attributeFilters[$attributeType] as $filter) {
-                $class = \get_class($filter);
-                $operators = \implode(', ', $filter->getOperators());
+                $class = get_class($filter);
+                $operators = implode(', ', $filter->getOperators());
 
                 $newEntries[] = [
                     $field,
@@ -112,8 +112,8 @@ class AttributeFilterDumper implements DumperInterface
         if ($attribute->isBackendTypeReferenceData()) {
             foreach ($this->registry->getAttributeFilters() as $filter) {
                 if ($filter->supportsAttribute($attribute)) {
-                    $class = \get_class($filter);
-                    $operators = \implode(', ', $filter->getOperators());
+                    $class = get_class($filter);
+                    $operators = implode(', ', $filter->getOperators());
 
                     $newEntries[] = [
                         $field,

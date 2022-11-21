@@ -74,10 +74,10 @@ class EntityWithValuesFilter implements FilterInterface
                 if (null !== $data) {
                     $result = $this->mergeValueToResult($result, $data);
                 }
-            } elseif (\in_array($code, $this->entityFields)) {
+            } elseif (in_array($code, $this->entityFields)) {
                 $fields[$code] = $value;
             } else {
-                throw new \LogicException(\sprintf('Cannot filter value of field "%s"', $code));
+                throw new \LogicException(sprintf('Cannot filter value of field "%s"', $code));
             }
         }
 
@@ -99,7 +99,7 @@ class EntityWithValuesFilter implements FilterInterface
      */
     protected function compareAttribute(array $originalValues, array $values): ?array
     {
-        $this->cacheAttributeTypeByCodes(\array_keys($values));
+        $this->cacheAttributeTypeByCodes(array_keys($values));
 
         $result = [];
         foreach ($values as $code => $value) {
@@ -110,7 +110,7 @@ class EntityWithValuesFilter implements FilterInterface
             $comparator = $this->comparatorRegistry->getAttributeComparator($this->attributeTypeByCodes[$code]);
 
             foreach ($value as $data) {
-                if (!\is_array($data)) {
+                if (!is_array($data)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $code,
                         'one of the values is not an array',
@@ -191,8 +191,8 @@ class EntityWithValuesFilter implements FilterInterface
     protected function mergeValueToResult(array $collection, array $value): array
     {
         foreach ($value as $code => $data) {
-            if (\array_key_exists($code, $collection)) {
-                $collection[$code] = \array_merge_recursive($collection[$code], $data);
+            if (array_key_exists($code, $collection)) {
+                $collection[$code] = array_merge_recursive($collection[$code], $data);
             } else {
                 $collection[$code] = $data;
             }
@@ -209,7 +209,7 @@ class EntityWithValuesFilter implements FilterInterface
      */
     protected function buildKey(array $data, $code): string
     {
-        return \sprintf('%s-%s-%s', $code, $data['locale'], $data['scope']);
+        return sprintf('%s-%s-%s', $code, $data['locale'], $data['scope']);
     }
 
     /**
@@ -217,7 +217,7 @@ class EntityWithValuesFilter implements FilterInterface
      */
     private function cacheAttributeTypeByCodes(array $codes): void
     {
-        $codesToFetch = \array_diff($codes, \array_keys($this->attributeTypeByCodes));
+        $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
 
         // we can have numeric keys here, we can't use array_merge :(
         $this->attributeTypeByCodes += $this->attributeRepository->getAttributeTypeByCodes($codesToFetch);

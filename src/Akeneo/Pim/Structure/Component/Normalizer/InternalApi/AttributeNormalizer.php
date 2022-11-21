@@ -66,7 +66,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $dateMin = null === $attribute->getDateMin() ? null : $attribute->getDateMin()->format('Y-m-d');
         $dateMax = null === $attribute->getDateMax() ? null : $attribute->getDateMax()->format('Y-m-d');
 
-        $normalizedAttribute = \array_merge(
+        $normalizedAttribute = array_merge(
             $this->normalizer->normalize($attribute, 'standard', $context),
             [
                 'empty_value'        => $this->emptyValueProvider->getEmptyValue($attribute),
@@ -100,7 +100,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AttributeInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool

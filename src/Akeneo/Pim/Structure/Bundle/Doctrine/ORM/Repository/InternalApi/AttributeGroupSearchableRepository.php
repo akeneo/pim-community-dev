@@ -92,7 +92,7 @@ class AttributeGroupSearchableRepository implements SearchableRepositoryInterfac
 
         $options = $this->resolveOptions($options);
 
-        if (null !== $search && \strlen($search)) {
+        if (null !== $search && strlen($search)) {
             $qb->leftJoin('ag.translations', 'agt');
             $qb->where('ag.code like :search')->setParameter('search', "%{$search}%");
             if (null !== $localeCode = $options['locale']) {

@@ -61,7 +61,7 @@ class CheckRequirementsCommand extends Command
         foreach ($this->configurationRegistry->all() as $configuration) {
             $output->writeln('');
             $output->writeln(
-                \sprintf('<comment>Checking configuration of "%s"...</comment>', $configuration->getName())
+                sprintf('<comment>Checking configuration of "%s"...</comment>', $configuration->getName())
             );
 
             foreach ($this->getCheckers() as $checker) {
@@ -101,7 +101,7 @@ class CheckRequirementsCommand extends Command
         } else {
             $output->write('<error>[KO]</error>    ');
             $output->writeln($checker->getDescription());
-            $output->writeln(\sprintf('<error>%s</error>', $checker->getFailure()));
+            $output->writeln(sprintf('<error>%s</error>', $checker->getFailure()));
 
             if ($checker->isBlockingOnFailure()) {
                 exit(-1);

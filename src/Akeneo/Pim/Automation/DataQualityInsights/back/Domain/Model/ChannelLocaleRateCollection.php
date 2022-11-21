@@ -42,7 +42,7 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
         $rateCollection->rates = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
             $rawRates,
             function ($rawRate) {
-                return new Rate(\intval($rawRate));
+                return new Rate(intval($rawRate));
             }
         );
 
@@ -65,7 +65,7 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
             $normalizedRates,
             function (array $normalizedRate) {
                 Assert::keyExists($normalizedRate, 'value', 'The normalized rate is malformed');
-                return new Rate(\intval($normalizedRate['value']));
+                return new Rate(intval($normalizedRate['value']));
             }
         );
 

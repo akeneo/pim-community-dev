@@ -12,17 +12,17 @@ use PhpSpec\ObjectBehavior;
 
 class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
 {
-    public function let(QuantifiedAssociationsStructureValidator $quantifiedAssociationsStructureValidator)
+    function let(QuantifiedAssociationsStructureValidator $quantifiedAssociationsStructureValidator)
     {
         $this->beConstructedWith($quantifiedAssociationsStructureValidator);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(QuantifiedAssociationUserIntentFactory::class);
     }
 
-    public function it_returns_quantified_association_user_intents()
+    function it_returns_quantified_association_user_intents()
     {
         $this->create('quantified_associations', [
             'QUANTIFIED_ASS' => [

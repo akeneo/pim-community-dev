@@ -24,7 +24,7 @@ class FieldSplitter extends BaseFieldSplitter
      */
     public function splitUnitValue($value)
     {
-        return '' === $value ? [] : \explode(AttributeColumnInfoExtractor::UNIT_SEPARATOR, $value);
+        return '' === $value ? [] : explode(AttributeColumnInfoExtractor::UNIT_SEPARATOR, $value);
     }
 
     /**
@@ -40,9 +40,9 @@ class FieldSplitter extends BaseFieldSplitter
     {
         $tokens = [];
         if ('' !== $value) {
-            $tokens = \explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $value);
-            \array_walk($tokens, function (&$token) {
-                $token = \trim($token);
+            $tokens = explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $value);
+            array_walk($tokens, function (&$token) {
+                $token = trim($token);
             });
         }
 
@@ -63,23 +63,23 @@ class FieldSplitter extends BaseFieldSplitter
         $prices = [];
         if ('' !== $value) {
             // Strip quotation marks
-            $cleanedValue = \preg_replace('/["]/', '', $value);
+            $cleanedValue = preg_replace('/["]/', '', $value);
 
             // Replace these types of commas with semicolon:
             // Commas after currency type: 'EUR, ...'
             // Commas between numbers and currency symbols: '123.00, $199...'
             // Dots used as separators: '123,100 EUR.199 USD'
-            $matches = \preg_replace('/
+            $matches = preg_replace('/
                 (?:,(?<=[a-z],)
                 |(?=,?\s?\p{Sc}),)
                 |(?:.(?<=[a-z]\.))
              /ixm', '\1;', $cleanedValue);
 
             // Get an array of values by exploding semicolon delimited values
-            $prices = \explode(';', $matches);
+            $prices = explode(';', $matches);
 
             if (empty($matches)) {
-                if (!\is_array($value)) {
+                if (!is_array($value)) {
                     return [$value];
                 }
 
@@ -87,8 +87,8 @@ class FieldSplitter extends BaseFieldSplitter
             }
 
 
-            \array_walk($prices, function (&$price) {
-                $price = \trim($price);
+            array_walk($prices, function (&$price) {
+                $price = trim($price);
             });
         }
 

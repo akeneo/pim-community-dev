@@ -28,7 +28,7 @@ final class CalculateProductCompleteness implements CalculateProductCompleteness
     public function calculate(ProductEntityIdInterface $productUuid): CompletenessCalculationResult
     {
         if (!$productUuid instanceof ProductUuid) {
-            throw new \InvalidArgumentException(\sprintf('Invalid product uuid: %s', (string) $productUuid));
+            throw new \InvalidArgumentException(sprintf('Invalid product uuid: %s', (string) $productUuid));
         }
 
         $result = new CompletenessCalculationResult();
