@@ -76,7 +76,7 @@ class TemplateSpec extends ObjectBehavior
                     new AttributeCode('attribute_image_code'),
                     AttributeOrder::fromInteger(4),
                     AttributeIsRequired::fromBoolean(true),
-                    AttributeIsScopable::fromBoolean(false),
+                    AttributeIsScopable::fromBoolean(true),
                     AttributeIsLocalizable::fromBoolean(false),
                     LabelCollection::fromArray(['fr_FR' => 'attribute_image_libelle']),
                     $templateUuid,
