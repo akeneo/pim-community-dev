@@ -36,16 +36,16 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given the ':attributeCode' identifier generator
+     * @Given the ':generatorCode' identifier generator
      */
-    public function theIdentifierGenerator(string $attributeCode): void
+    public function theIdentifierGenerator(string $generatorCode): void
     {
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
-            IdentifierGeneratorCode::fromString($attributeCode),
+            IdentifierGeneratorCode::fromString($generatorCode),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
         );
@@ -114,7 +114,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 'updatedGenerator'
             ));
@@ -133,7 +133,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 'unknown',
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -152,7 +152,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'unknown', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -171,7 +171,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 $target,
                 '-'
             ));
@@ -190,7 +190,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -209,7 +209,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -288,7 +288,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                     ['type' => 'free_text', 'string' => 'abcdef20'],
                     ['type' => 'free_text', 'string' => 'abcdef21'],
                 ],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -310,7 +310,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                     ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
                     ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
                 ],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -329,7 +329,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'free_text', 'string' => $freetextContent]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -348,7 +348,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'free_text']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -367,7 +367,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -386,7 +386,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'auto_number', 'numberMin' => -2, 'digitsMin' => 3]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -405,7 +405,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'auto_number', 'numberMin' => 4]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -424,7 +424,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'auto_number', 'digitsMin' => -2, 'numberMin' => 4]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -443,7 +443,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'auto_number', 'digitsMin' => 22, 'numberMin' => 4]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -462,7 +462,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 $delimiter
             ));
@@ -481,7 +481,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 null,
             ));

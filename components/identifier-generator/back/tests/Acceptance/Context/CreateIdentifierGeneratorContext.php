@@ -55,7 +55,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @Given the ':attributeCode' text attribute
      */
-    public function theOtherTextAttribute(string $attributeCode): void
+    public function theTextAttribute(string $attributeCode): void
     {
         $identifierAttribute = new Attribute();
         $identifierAttribute->setType(AttributeTypes::TEXT);
@@ -85,7 +85,7 @@ final class CreateIdentifierGeneratorContext implements Context
             IdentifierGeneratorCode::fromString('abcdef'),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
         );
@@ -126,7 +126,7 @@ final class CreateIdentifierGeneratorContext implements Context
             'abcdef',
             [],
             [['type' => 'free_text', 'string' => 'abcdef']],
-            ['fr' => 'Générateur'],
+            ['fr_FR' => 'Générateur'],
             'sku',
             '-'
         ));
@@ -142,7 +142,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -161,7 +161,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 $target,
                 '-'
             ));
@@ -180,7 +180,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -199,7 +199,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [['type' => 'unknown', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -240,7 +240,7 @@ final class CreateIdentifierGeneratorContext implements Context
                     ['type' => 'free_text', 'string' => 'abcdef20'],
                     ['type' => 'free_text', 'string' => 'abcdef21'],
                 ],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -262,7 +262,7 @@ final class CreateIdentifierGeneratorContext implements Context
                     ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
                     ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
                 ],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -281,7 +281,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [['type' => 'free_text', 'string' => $freetextContent]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -300,7 +300,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [['type' => 'free_text']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -319,7 +319,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -338,7 +338,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [['type' => 'auto_number', 'numberMin' => 4]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -357,7 +357,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'abcdef',
                 [],
                 [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
@@ -452,7 +452,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 $code,
                 [],
                 [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
+                ['fr_FR' => 'Générateur'],
                 'sku',
                 '-'
             ));
