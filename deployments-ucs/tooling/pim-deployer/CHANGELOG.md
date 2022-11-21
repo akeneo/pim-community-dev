@@ -1,3 +1,10 @@
+# 1.3.0
+## Update helm version
+
+| Tools            | Previous Version | New Version          |
+|------------------|------------------|----------------------|
+| sdk-cloud        | 400.0.0          | 410.0.0              |
+
 # 1.2.0
 ## Update helm version
 
