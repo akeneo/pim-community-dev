@@ -1,11 +1,8 @@
 security:
     firewalls:
         main:
-            http_basic:
-                realm:      "Secured REST Area"
             provider:       pim_user
             form_login:
                 check_path: pim_user_security_check
             logout:         false
             remember_me:    false
-            anonymous:      true

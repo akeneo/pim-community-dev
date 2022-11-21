@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
+class LoginRateLimitListenerSpec extends ObjectBehavior
 {
     const ACCOUNT_LOCK_DURATION = 2;
     const ALLOWED_FAILED_ATTEMPTS = 10;

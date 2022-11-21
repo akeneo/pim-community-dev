@@ -58,7 +58,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\UserManagement\Bundle\EventListener\RateLimitLoginThrottlingListener:
+    Akeneo\UserManagement\Bundle\EventListener\LoginRateLimitListener:
         arguments:
             - '@pim_user.manager'
             - '%pim_user.account_lock.duration%'
