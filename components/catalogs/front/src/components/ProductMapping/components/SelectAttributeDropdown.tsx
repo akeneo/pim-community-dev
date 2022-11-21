@@ -2,7 +2,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Dropdown, Field, GroupsIllustration, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteAttributes} from '../hooks/useInfiniteAttributes';
-import {Attribute} from '../../models/Attribute';
+import {Attribute} from '../../../models/Attribute';
 import {useAttribute} from '../../../hooks/useAttribute';
 import styled from 'styled-components';
 
