@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -28,9 +29,8 @@ final class UpdateGeneratorHandler
         $this->validator->validate($command);
 
         $identifierGenerator = $this->identifierGeneratorRepository->get($command->code);
-        if (null === $identifierGenerator) { // Already check by constraint
-            return;
-        }
+        Assert::notNull($identifierGenerator, sprintf("Identifier generator \"%s\" does not exist or you do not have permission to access it.", $command->code));
+
         $identifierGenerator->setDelimiter(Delimiter::fromString($command->delimiter));
         $identifierGenerator->setLabelCollection(LabelCollection::fromNormalized($command->labels));
         $identifierGenerator->setTarget(Target::fromString($command->target));
