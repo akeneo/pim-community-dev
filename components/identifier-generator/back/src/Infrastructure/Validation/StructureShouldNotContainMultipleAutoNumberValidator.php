@@ -25,10 +25,10 @@ final class StructureShouldNotContainMultipleAutoNumberValidator extends Constra
         $countAutonumber = 0;
         foreach ($structure as $property) {
             if (!\is_array($property)) {
-                return;
+                continue;
             }
             if (!\array_key_exists('type', $property)) {
-                return;
+                continue;
             }
             if (AutoNumber::type() === $property['type']) {
                 ++$countAutonumber;
