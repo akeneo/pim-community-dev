@@ -274,6 +274,7 @@ pim_enrich.mass_edit.family:
     select:
       label: Triar famílies
     choose:
+      title: Accions massives familiars
       label_count: "]0, Inf[Selecciona l'acció"
     configure:
       label: Configurar
