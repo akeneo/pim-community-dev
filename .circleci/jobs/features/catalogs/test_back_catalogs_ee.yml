@@ -15,7 +15,7 @@ jobs:
             -   start_test_containers
             -   run:
                     name: Linter back
-                    command: PIM_CONTEXT=catalogs APP_ENV=test make catalogs-lint-back
+                    command: PIM_CONTEXT=catalogs APP_ENV=test make catalogs-lint-back-ee
             -   run:
                     name: Integration back
                     command: PIM_CONTEXT=catalogs APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 make catalogs-integration-back
