@@ -70,15 +70,15 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier generator with autoNumber number min negative
     When I try to update an identifier generator with an auto number with '-2' as number min and '3' as min digits
-    Then I should get an error on update with message 'structure[0][numberMin]: This value should be either positive or zero.'
+    Then I should get an error on update with message 'structure[0][numberMin]: This value should be greater than or equal to 0.'
 
   Scenario: Cannot update an identifier generator with autoNumber digits min negative
     When I try to update an identifier generator with an auto number with '4' as number min and '-2' as min digits
-    Then I should get an error on update with message 'structure[0][digitsMin]: This value should be positive.'
+    Then I should get an error on update with message 'structure[0][digitsMin]: This value should be greater than or equal to 1.'
 
   Scenario: Cannot update an identifier generator with autoNumber digits min too big
     When I try to update an identifier generator with an auto number with '4' as number min and '22' as min digits
-    Then I should get an error on update with message 'structure[0][digitsMin]: This value should be less than 15.'
+    Then I should get an error on update with message 'structure[0][digitsMin]: This value should be less than or equal to 15.'
 
   # Label
   Scenario: Can update an identifier generator without label

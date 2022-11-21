@@ -82,17 +82,17 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with autoNumber number min negative
     When I try to create an identifier generator with an auto number with '-2' as number min and '3' as min digits
-    Then I should get an error with message 'structure[0][numberMin]: This value should be either positive or zero.'
+    Then I should get an error with message 'structure[0][numberMin]: This value should be greater than or equal to 0.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with autoNumber digits min negative
     When I try to create an identifier generator with an auto number with '4' as number min and '-2' as min digits
-    Then I should get an error with message 'structure[0][digitsMin]: This value should be positive.'
+    Then I should get an error with message 'structure[0][digitsMin]: This value should be greater than or equal to 1.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with autoNumber digits min too big
     When I try to create an identifier generator with an auto number with '4' as number min and '22' as min digits
-    Then I should get an error with message 'structure[0][digitsMin]: This value should be less than 15.'
+    Then I should get an error with message 'structure[0][digitsMin]: This value should be less than or equal to 15.'
     And the identifier should not be created
 
   # Label
