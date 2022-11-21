@@ -1,4 +1,5 @@
 import {Comment} from './read/Comment';
+import {ImportStatus} from "./ImportStatus";
 
 export type ProductFile = {
     identifier: string;
@@ -6,6 +7,7 @@ export type ProductFile = {
     uploadedAt: string;
     contributor: string;
     supplier: string;
+    importStatus: ImportStatus;
     retailerComments: Comment[];
     supplierComments: Comment[];
 };

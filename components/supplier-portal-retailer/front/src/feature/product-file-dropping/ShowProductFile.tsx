@@ -5,6 +5,7 @@ import {useHistory, useParams} from 'react-router';
 import {Discussion, ProductFileImportConfigurationsModal} from './components';
 import {useProductFile} from './hooks/useProductFile';
 import styled from 'styled-components';
+import {ProductFileImportStatus} from "./components/ProductFileImportStatus";
 
 const StatusContainer = styled.div`
     margin-top: 15px;
@@ -55,7 +56,7 @@ const ShowProductFile = () => {
                 <PageHeader.Content>
                     <StatusContainer>
                         <StatusLabel>Status:&nbsp;</StatusLabel>
-                        <span>Completed (@todo)</span>
+                        <ProductFileImportStatus importStatus={productFile.importStatus}/>
                     </StatusContainer>
                 </PageHeader.Content>
             </PageHeader>
