@@ -40,7 +40,7 @@ security:
 
         app_scopes_update:
             pattern:                        ^/connect/apps/v1/scopes/update
-#            fos_oauth:                      true
+            fos_oauth:                      true
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
             provider:                       pim_user_api
@@ -52,7 +52,7 @@ security:
         api:
             pattern:                        ^/api
             stateless:                      true
-#            fos_oauth:                      true
+            fos_oauth:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
             provider:                       pim_user_api
 
