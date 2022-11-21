@@ -48,6 +48,7 @@ class NotifyProductsAreEnrichedHandler
                 $productIsEnriched->channelCode(),
                 $productIsEnriched->localeCode(),
                 $productIsEnriched->enrichedAt(),
+                $productIsEnriched->authorId()
             );
         }
 

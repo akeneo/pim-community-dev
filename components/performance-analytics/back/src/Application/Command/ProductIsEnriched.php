@@ -24,6 +24,7 @@ class ProductIsEnriched
         private ChannelCode $channelCode,
         private LocaleCode $localeCode,
         private \DateTimeImmutable $enrichedAt,
+        private ?string $authorId,
     ) {
     }
 
@@ -45,5 +46,10 @@ class ProductIsEnriched
     public function localeCode(): LocaleCode
     {
         return $this->localeCode;
+    }
+
+    public function authorId(): ?string
+    {
+        return $this->authorId;
     }
 }

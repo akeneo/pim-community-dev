@@ -31,6 +31,7 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             ChannelCode::fromString('ecommerce'),
             LocaleCode::fromString('en_US'),
             new \DateTimeImmutable(),
+            '1',
         ]);
     }
 
@@ -47,6 +48,7 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             ChannelCode::fromString('ecommerce'),
             LocaleCode::fromString('en_US'),
             new \DateTimeImmutable('2022-01-05 00:00:00'),
+            '1',
         ]);
 
         $this->normalize()->shouldReturn([
@@ -58,6 +60,7 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             'channel_code' => 'ecommerce',
             'locale_code' => 'en_US',
             'enriched_at' => '2022-01-05T00:00:00+00:00',
+            'author_id' => '1',
         ]);
     }
 
@@ -76,6 +79,7 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             ChannelCode::fromString('ecommerce'),
             LocaleCode::fromString('en_US'),
             new \DateTimeImmutable('2022-01-05 00:00:00'),
+            '1',
         ]);
 
         $this->normalize()->shouldReturn([
@@ -87,6 +91,7 @@ class ProductWasEnrichedMessageSpec extends ObjectBehavior
             'channel_code' => 'ecommerce',
             'locale_code' => 'en_US',
             'enriched_at' => '2022-01-05T00:00:00+00:00',
+            'author_id' => '1',
         ]);
     }
 

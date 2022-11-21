@@ -35,7 +35,7 @@ class NotifyProductsAreEnrichedSpec extends ObjectBehavior
     public function it_cannot_be_constructed_with_bad_array()
     {
         $this->beConstructedWith([
-            new ProductIsEnriched(Uuid::uuid4(), ChannelCode::fromString('ecommerce'), LocaleCode::fromString('en_US'), new \DateTimeImmutable()),
+            new ProductIsEnriched(Uuid::uuid4(), ChannelCode::fromString('ecommerce'), LocaleCode::fromString('en_US'), new \DateTimeImmutable(), '1'),
             new \stdClass(),
         ]);
 
@@ -46,8 +46,8 @@ class NotifyProductsAreEnrichedSpec extends ObjectBehavior
     {
         $enrichedAt = new \DateTimeImmutable();
         $list = [
-            new ProductIsEnriched(Uuid::uuid4(), ChannelCode::fromString('ecommerce'), LocaleCode::fromString('en_US'), $enrichedAt),
-            new ProductIsEnriched(Uuid::uuid4(), ChannelCode::fromString('ecommerce'), LocaleCode::fromString('fr_FR'), $enrichedAt),
+            new ProductIsEnriched(Uuid::uuid4(), ChannelCode::fromString('ecommerce'), LocaleCode::fromString('en_US'), $enrichedAt, '1'),
+            new ProductIsEnriched(Uuid::uuid4(), ChannelCode::fromString('ecommerce'), LocaleCode::fromString('fr_FR'), $enrichedAt, '1'),
         ];
         $this->beConstructedWith($list);
 
@@ -62,10 +62,10 @@ class NotifyProductsAreEnrichedSpec extends ObjectBehavior
         $uuid3 = Uuid::uuid4();
 
         $this->beConstructedWith([
-            new ProductIsEnriched($uuid1, ChannelCode::fromString('ecommerce'), LocaleCode::fromString('en_US'), $enrichedAt),
-            new ProductIsEnriched($uuid2, ChannelCode::fromString('ecommerce'), LocaleCode::fromString('en_US'), $enrichedAt),
-            new ProductIsEnriched($uuid1, ChannelCode::fromString('ecommerce'), LocaleCode::fromString('fr_FR'), $enrichedAt),
-            new ProductIsEnriched($uuid3, ChannelCode::fromString('ecommerce'), LocaleCode::fromString('fr_FR'), $enrichedAt),
+            new ProductIsEnriched($uuid1, ChannelCode::fromString('ecommerce'), LocaleCode::fromString('en_US'), $enrichedAt, '1'),
+            new ProductIsEnriched($uuid2, ChannelCode::fromString('ecommerce'), LocaleCode::fromString('en_US'), $enrichedAt, '1'),
+            new ProductIsEnriched($uuid1, ChannelCode::fromString('ecommerce'), LocaleCode::fromString('fr_FR'), $enrichedAt, '1'),
+            new ProductIsEnriched($uuid3, ChannelCode::fromString('ecommerce'), LocaleCode::fromString('fr_FR'), $enrichedAt, '1'),
         ]);
 
         $this->getProductUuids()->shouldReturn([$uuid1, $uuid2, $uuid3]);

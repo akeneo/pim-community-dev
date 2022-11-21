@@ -24,7 +24,8 @@ final class ProductWasEnrichedMessage implements Message
         private Product $product,
         private ChannelCode $channelCode,
         private LocaleCode $localeCode,
-        private \DateTimeImmutable $enrichedAt
+        private \DateTimeImmutable $enrichedAt,
+        private ?string $authorId,
     ) {
     }
 
@@ -32,13 +33,15 @@ final class ProductWasEnrichedMessage implements Message
         Product $product,
         ChannelCode $channelCode,
         LocaleCode $localeCode,
-        \DateTimeImmutable $enrichedAt
+        \DateTimeImmutable $enrichedAt,
+        ?string $authorId,
     ): ProductWasEnrichedMessage {
         return new self(
             $product,
             $channelCode,
             $localeCode,
-            $enrichedAt
+            $enrichedAt,
+            $authorId
         );
     }
 
@@ -56,6 +59,7 @@ final class ProductWasEnrichedMessage implements Message
             'channel_code' => $this->channelCode->toString(),
             'locale_code' => $this->localeCode->toString(),
             'enriched_at' => $this->enrichedAt->format('c'),
+            'author_id' => $this->authorId,
         ];
     }
 

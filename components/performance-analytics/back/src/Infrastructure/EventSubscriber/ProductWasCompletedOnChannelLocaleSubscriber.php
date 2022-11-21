@@ -71,7 +71,8 @@ final class ProductWasCompletedOnChannelLocaleSubscriber implements EventSubscri
                 $productWasCompletedOnChannelLocale->productUuid()->uuid(),
                 ChannelCode::fromString($productWasCompletedOnChannelLocale->channelCode()),
                 LocaleCode::fromString($productWasCompletedOnChannelLocale->localeCode()),
-                $productWasCompletedOnChannelLocale->completedAt()
+                $productWasCompletedOnChannelLocale->completedAt(),
+                $productWasCompletedOnChannelLocale->authorId()
             );
         }
 

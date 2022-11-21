@@ -79,18 +79,21 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('fr_FR'),
                 $enrichedAt,
+                '1'
             ),
             ProductWasEnrichedMessage::fromProperties(
                 $product1,
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('en_US'),
                 $enrichedAt,
+                '1'
             ),
             ProductWasEnrichedMessage::fromProperties(
                 $product2,
                 ChannelCode::fromString('mobile'),
                 LocaleCode::fromString('en_US'),
                 $enrichedAt,
+                '1'
             ),
         ];
 
@@ -101,19 +104,22 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
                 $productUuid1,
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('fr_FR'),
-                $enrichedAt
+                $enrichedAt,
+                '1'
             ),
             new ProductIsEnriched(
                 $productUuid1,
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('en_US'),
-                $enrichedAt
+                $enrichedAt,
+                '1'
             ),
             new ProductIsEnriched(
                 $productUuid2,
                 ChannelCode::fromString('mobile'),
                 LocaleCode::fromString('en_US'),
-                $enrichedAt
+                $enrichedAt,
+                '1'
             ),
         ]));
     }
@@ -145,6 +151,7 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('fr_FR'),
                 $enrichedAt,
+                '1'
             ),
         ];
 
@@ -156,13 +163,15 @@ class NotifyProductsAreEnrichedHandlerSpec extends ObjectBehavior
                 $productUuid1,
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('fr_FR'),
-                $enrichedAt
+                $enrichedAt,
+                '1'
             ),
             new ProductIsEnriched(
                 $productUuid2,
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('en_GB'),
-                $enrichedAt
+                $enrichedAt,
+                '1'
             ),
         ]));
     }

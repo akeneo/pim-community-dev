@@ -84,19 +84,22 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
                 $product1->getUuid(),
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('en_US'),
-                new \DateTimeImmutable('2022-01-30')
+                new \DateTimeImmutable('2022-01-30'),
+                '1'
             ),
             new ProductIsEnriched(
                 $product1->getUuid(),
                 ChannelCode::fromString('ecommerce'),
                 LocaleCode::fromString('fr_FR'),
-                new \DateTimeImmutable('2022-01-30')
+                new \DateTimeImmutable('2022-01-30'),
+                '1'
             ),
             new ProductIsEnriched(
                 $product2->getUuid(),
                 ChannelCode::fromString('mobile'),
                 LocaleCode::fromString('fr_FR'),
-                new \DateTimeImmutable('2022-02-28')
+                new \DateTimeImmutable('2022-02-28'),
+                '1'
             ),
         ]);
 
@@ -123,6 +126,7 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
             'channel_code' => 'ecommerce',
             'locale_code' => 'en_US',
             'enriched_at' => '2022-01-30T00:00:00+00:00',
+            'author_id' => '1',
         ], $message1);
 
         $message2 = \json_decode($messages[1]->data(), true);
@@ -137,6 +141,7 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
             'channel_code' => 'ecommerce',
             'locale_code' => 'fr_FR',
             'enriched_at' => '2022-01-30T00:00:00+00:00',
+            'author_id' => '1',
         ], $message2);
 
         $message3 = \json_decode($messages[2]->data(), true);
@@ -151,6 +156,7 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
             'channel_code' => 'mobile',
             'locale_code' => 'fr_FR',
             'enriched_at' => '2022-02-28T00:00:00+00:00',
+            'author_id' => '1',
         ], $message3);
     }
 

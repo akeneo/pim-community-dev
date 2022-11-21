@@ -55,10 +55,10 @@ final class ProductWasCompletedOnChannelLocaleSubscriberSpec extends ObjectBehav
         $completedAt = new \DateTimeImmutable('2022-01-15 12:09:34');
 
         $event = new ProductWasCompletedOnChannelLocaleCollection([
-            new ProductWasCompletedOnChannelLocale($productUuid1, $completedAt, 'ecommerce', 'en_US'),
-            new ProductWasCompletedOnChannelLocale($productUuid1, $completedAt, 'mobile', 'en_US'),
+            new ProductWasCompletedOnChannelLocale($productUuid1, $completedAt, 'ecommerce', 'en_US', '1'),
+            new ProductWasCompletedOnChannelLocale($productUuid1, $completedAt, 'mobile', 'en_US', '1'),
 
-            new ProductWasCompletedOnChannelLocale($productUuid2, $completedAt, 'ecommerce', 'en_US'),
+            new ProductWasCompletedOnChannelLocale($productUuid2, $completedAt, 'ecommerce', 'en_US', '1'),
         ]);
 
         $notifyProductsAreEnrichedHandler->__invoke(
@@ -67,19 +67,22 @@ final class ProductWasCompletedOnChannelLocaleSubscriberSpec extends ObjectBehav
                     $uuid1,
                     ChannelCode::fromString('ecommerce'),
                     LocaleCode::fromString('en_US'),
-                    $completedAt
+                    $completedAt,
+                    '1'
                 ),
                 new ProductIsEnriched(
                     $uuid1,
                     ChannelCode::fromString('mobile'),
                     LocaleCode::fromString('en_US'),
-                    $completedAt
+                    $completedAt,
+                    '1'
                 ),
                 new ProductIsEnriched(
                     $uuid2,
                     ChannelCode::fromString('ecommerce'),
                     LocaleCode::fromString('en_US'),
-                    $completedAt
+                    $completedAt,
+                    '1'
                 ),
             ])
         )->shouldBeCalledOnce();
@@ -97,6 +100,7 @@ final class ProductWasCompletedOnChannelLocaleSubscriberSpec extends ObjectBehav
                 new \DateTimeImmutable('2022-01-15 12:09:34'),
                 'ecommerce',
                 'en_US',
+                '1'
             ),
         ]);
 
@@ -121,6 +125,7 @@ final class ProductWasCompletedOnChannelLocaleSubscriberSpec extends ObjectBehav
                 new \DateTimeImmutable('2022-01-15 12:09:34'),
                 'ecommerce',
                 'en_US',
+                '1'
             ),
         ]);
 
