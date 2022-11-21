@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.55 (2022-11-21)
+
 ## Bug fixes
 
 - PIM-10732: Fix 'Export media' parameter in asset export profile is missing in 6.0
