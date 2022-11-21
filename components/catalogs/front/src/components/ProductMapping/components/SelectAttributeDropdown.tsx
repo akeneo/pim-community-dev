@@ -41,7 +41,7 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
 
     return (
         <>
-            <SelectAttributeDropdownField label="My field label">
+            <SelectAttributeDropdownField label="Pim source">
                 <Dropdown>
                     <SelectInput onMouseDown={handlePreventSelect}
                         emptyResultLabel=''

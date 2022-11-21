@@ -10,10 +10,11 @@ import {Attribute} from '../../models/Attribute';
 type Props = {
     target: string|null;
     source: Source|null;
+    targetLabel: string|null;
     onChange: (value : Source) => void;
 };
 
-export const SourcePanel: FC<Props> = ({target, source, onChange}) => {
+export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange}) => {
     const translate = useTranslate();
     const handleSourceSelection = useCallback((value: Attribute) => {
         onChange({
@@ -29,7 +30,7 @@ export const SourcePanel: FC<Props> = ({target, source, onChange}) => {
             {target && (
                 <>
                     <SectionTitle>
-                        <SectionTitle.Title>{target}</SectionTitle.Title>
+                        <SectionTitle.Title>{targetLabel}</SectionTitle.Title>
                     </SectionTitle>
                     <SectionTitle>
                         <Tag tint="purple">1</Tag>
