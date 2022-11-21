@@ -36,41 +36,20 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an unknown identifier generator
+     * @Given the ':attributeCode' identifier generator
      */
-    public function iTryToUpdateAnUnknownIdentifierGenerator(): void
+    public function theIdentifierGenerator(string $attributeCode): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                'unknown',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $violations) {
-            $this->violations = $violations;
-        }
-    }
-
-    /**
-     * @When I update the identifier generator
-     */
-    public function iUpdateTheIdentifierGenerator(): void
-    {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr' => 'Générateur'],
-                'sku',
-                'updatedGenerator'
-            ));
-        } catch (ViolationsException $violations) {
-            $this->violations = $violations;
-        }
+        $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
+            IdentifierGeneratorCode::fromString($attributeCode),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            Target::fromString('sku'),
+            Delimiter::fromString('-'),
+        );
+        $this->generatorRepository->save($identifierGenerator);
     }
 
     /**
@@ -100,23 +79,6 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given the ':attributeCode' identifier generator
-     */
-    public function theIdentifierGenerator(string $attributeCode): void
-    {
-        $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
-            IdentifierGeneratorCode::fromString($attributeCode),
-            Conditions::fromArray([]),
-            Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr' => 'Générateur']),
-            Target::fromString('sku'),
-            Delimiter::fromString('-'),
-        );
-        $this->generatorRepository->save($identifierGenerator);
-    }
-
-    /**
      * @Then /^I should get an error on update with message '(?P<message>[^']*)'$/
      */
     public function iShouldGetAnErrorOnUpdateWithMessage(string $message): void
@@ -126,11 +88,58 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given I should not get any update error
+     * @Then I should not get any update error
      */
     public function iShouldNotGetAnyUpdateError(): void
     {
         Assert::null($this->violations);
+    }
+
+    /**
+     * @Then The identifier generator is updated in the repository and delimiter is null
+     */
+    public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndDelimiterIsNull(): void
+    {
+        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        Assert::eq(null, $identifierGenerator->delimiter()->asString());
+    }
+
+    /**
+     * @When I update the identifier generator
+     */
+    public function iUpdateTheIdentifierGenerator(): void
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                [],
+                [['type' => 'free_text', 'string' => 'abcdef']],
+                ['fr' => 'Générateur'],
+                'sku',
+                'updatedGenerator'
+            ));
+        } catch (ViolationsException $violations) {
+            $this->violations = $violations;
+        }
+    }
+
+    /**
+     * @When I try to update an unknown identifier generator
+     */
+    public function iTryToUpdateAnUnknownIdentifierGenerator(): void
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                'unknown',
+                [],
+                [['type' => 'free_text', 'string' => 'abcdef']],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $violations) {
+            $this->violations = $violations;
+        }
     }
 
     /**
@@ -181,6 +190,25 @@ final class UpdateIdentifierGeneratorContext implements Context
                 self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
                 [],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with an auto number with '(?P<numberMin>[^']*)' as number min and '(?P<digitsMin>[^']*)' as min digits$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAnAutoNumberWithNumberMinAndDigitsMin(int $numberMin, int $digitsMin): void
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                [],
+                [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]],
                 ['fr' => 'Générateur'],
                 'sku',
                 '-'
@@ -259,6 +287,28 @@ final class UpdateIdentifierGeneratorContext implements Context
                     ['type' => 'free_text', 'string' => 'abcdef19'],
                     ['type' => 'free_text', 'string' => 'abcdef20'],
                     ['type' => 'free_text', 'string' => 'abcdef21'],
+                ],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to update an identifier generator with multiple auto number in structure
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithMultipleAutoNumberInStructure(): void
+    {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                [],
+                [
+                    ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
+                    ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
                 ],
                 ['fr' => 'Générateur'],
                 'sku',
@@ -438,14 +488,5 @@ final class UpdateIdentifierGeneratorContext implements Context
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
         }
-    }
-
-    /**
-     * @Then The identifier generator is updated in the repository and delimiter is null
-     */
-    public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndDelimiterIsNull(): void
-    {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq(null, $identifierGenerator->delimiter()->asString());
     }
 }
