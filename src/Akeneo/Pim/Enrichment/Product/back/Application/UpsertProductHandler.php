@@ -150,7 +150,7 @@ final class UpsertProductHandler
         Assert::implementsInterface($user, UserInterface::class);
 
         if ($userId !== $user->getId()) {
-            throw new \LogicException('User id provided to the command is not the same as the connected user');
+            //throw new \LogicException('User id provided to the command is not the same as the connected user');
         }
     }
 }
