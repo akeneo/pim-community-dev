@@ -41,6 +41,7 @@ pim_enrich.entity.product:
       title: Selecciona l'acció
       choose_family: Trieu una família
       choose_family_variant: Triar una variant familiar
+      helper: L'identificador és ara un camp opcional. <a class="AknMessageBox-link" href="{{ link }}" target="_blank">Llegiu més</a> sobre aquest canvi i els possibles impactes per als vostres productes.
     variant_navigation:
       common: Comú
     status:
@@ -220,6 +221,7 @@ pim_enrich.entity.category:
       columns:
         label: Etiqueta de l'arbre
         number_of_categories: Nombre de categories
+        actions: Accions
         count_categories: ']-Inf, 1]{{ count }} categoria|]1, Inf[{{ count }} categories'
     tree:
       not_found: No s'ha trobat l'arbre de categories
@@ -436,6 +438,8 @@ pim_datagrid:
         all_attributes: Tots els atributs
         with_codes: Amb codis
         with_labels: Amb etiquetes
+        without_uuid: Sense UUID
+        with_uuid: Amb UUID
         without_media: Sense multimèdia
         with_media: Amb multimèdia
       flash:
