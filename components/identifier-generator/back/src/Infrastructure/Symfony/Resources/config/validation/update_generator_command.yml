@@ -25,15 +25,15 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
                             - Optional:
                                 - NotBlank: ~
                                 - Length:
-                                        max: 100
+                                    max: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText::LENGTH_LIMIT
                                 - Type: string
                         numberMin:
                             - Optional:
-                                - PositiveOrZero: ~
+                                - GreaterThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_NUMBER_MIN
                         digitsMin:
                             - Optional:
-                                - Positive: ~
-                                - LessThan: 15
+                                - GreaterThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MIN
+                                - LessThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MAX
         labels:
             - All:
                 - Length:
