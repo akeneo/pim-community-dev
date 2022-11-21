@@ -41,7 +41,7 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
 
     return (
         <>
-            <SelectAttributeDropdownField label="Pim source">
+            <SelectAttributeDropdownField label={translate('akeneo_catalogs.product_mapping.source.select_source.label')}>
                 <Dropdown>
                     <SelectInput onMouseDown={handlePreventSelect}
                         emptyResultLabel=''
@@ -58,20 +58,20 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
                             <Dropdown.Header>
                                 <Search
                                     onSearchChange={setSearch}
-                                    placeholder={translate('akeneo_catalogs.product_selection.add_criteria.search')}
+                                    placeholder={translate('akeneo_catalogs.product_mapping.source.select_source.search')}
                                     searchValue={search}
-                                    title={translate('akeneo_catalogs.product_selection.add_criteria.search')}
+                                    title={translate('akeneo_catalogs.product_mapping.source.select_source.search')}
                                 />
                             </Dropdown.Header>
                             <Dropdown.ItemCollection
                                 noResultIllustration={<GroupsIllustration />}
-                                noResultTitle={translate('akeneo_catalogs.product_selection.add_criteria.no_results')}
+                                noResultTitle={translate('akeneo_catalogs.product_mapping.source.select_source.no_results')}
                                 onNextPage={fetchNextPage}
                             >
                                 {/* attributes */}
                                 {(attributes?.length ?? 0) > 0 && (
                                     <Dropdown.Section>
-                                        {translate('akeneo_catalogs.product_selection.add_criteria.section_attributes')}
+                                        {translate('akeneo_catalogs.product_mapping.source.select_source.section_attributes')}
                                     </Dropdown.Section>
                                 )}
                                 {attributes?.map(attribute => (
