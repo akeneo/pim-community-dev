@@ -65,7 +65,7 @@ class ComputeAndPersistProductCompletenesses
         $now = $this->clock->now();
         /** @var \Akeneo\UserManagement\Component\Model\UserInterface $user */
         $user = $this->tokenStorage->getToken()?->getUser();
-        $authorId = is_null($user) ? null : (string) $user->getId();
+        $authorId = null !== $user?->getId() ? (string) $user->getId() : null;
 
         $productCompletedOnChannelLocaleEvents = [];
         foreach ($newProductsCompletenessCollections as $uuid => $newProductCompletenessCollection) {
