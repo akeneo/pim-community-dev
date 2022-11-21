@@ -474,14 +474,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         $assetCodeToKeep = AssetCode::fromString('michel');
 
         foreach ([...$assetCodesToDelete, $assetCodeToKeep] as $assetCode) {
-            $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
-            $asset = Asset::create(
-                $identifier,
-                $assetFamilyIdentifier,
-                $assetCode,
-                ValueCollection::fromValues([])
-            );
-            $this->repository->create($asset);
+            $this->createEmptyAsset($assetFamilyIdentifier, $assetCode);
         }
 
         $this->flushAssetEvent();
@@ -497,24 +490,67 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_a_asset_by_code_and_entity_identifier()
+    public function it_mass_deletes_assets_by_asset_family_identifier_and_codes_with_insensitive_case()
+    {
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('DeSiGnEr');
+
+        $this->createEmptyAsset($assetFamilyIdentifier, AssetCode::fromString('StArCk'));
+        $this->createEmptyAsset($assetFamilyIdentifier, AssetCode::fromString('dYsOn'));
+        $this->createEmptyAsset($assetFamilyIdentifier, AssetCode::fromString('michel'));
+
+        $this->flushAssetEvent();
+        Assert::assertEquals(3, $this->repository->count());
+
+        $this->repository->deleteByAssetFamilyAndCodes(
+            AssetFamilyIdentifier::fromString('dEsIgNeR'),
+            [
+                AssetCode::fromString('sTaRcK'),
+                AssetCode::fromString('DySoN')
+            ]
+        );
+
+        $this->eventDispatcherMock->assertEventDispatched(AssetsDeletedEvent::class);
+
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
+        Assert::assertEquals(1, $this->repository->count());
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_an_asset_by_code_and_entity_identifier()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $assetCode = AssetCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
-        $asset = Asset::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            $assetCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($asset);
+
+        $this->createEmptyAsset($assetFamilyIdentifier, $assetCode);
 
         $this->repository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
 
         $this->eventDispatcherMock->assertEventDispatched(AssetDeletedEvent::class);
         $this->expectException(AssetNotFoundException::class);
         $this->repository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_an_asset_by_code_and_entity_identifier_with_insensitive_case()
+    {
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('dEsIgNeR');
+        $this->createEmptyAsset($assetFamilyIdentifier, AssetCode::fromString('sTaRcK'));
+
+        $this->repository->deleteByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('deSigner'),
+            AssetCode::fromString('staRck')
+        );
+
+        $this->eventDispatcherMock->assertEventDispatched(AssetDeletedEvent::class);
+        $this->expectException(AssetNotFoundException::class);
+        $this->repository->deleteByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString('DeSiGnEr'),
+            AssetCode::fromString('StArCk')
+        );
     }
 
     /**
@@ -527,6 +563,19 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
 
         $this->expectException(AssetNotFoundException::class);
         $this->repository->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $unknownCode);
+    }
+
+    private function createEmptyAsset(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode)
+    {
+        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+        $asset = Asset::create(
+            $identifier,
+            $assetFamilyIdentifier,
+            $assetCode,
+            ValueCollection::fromValues([])
+        );
+
+        $this->repository->create($asset);
     }
 
     private function resetDB(): void

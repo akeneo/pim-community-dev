@@ -196,7 +196,8 @@ SQL;
             ]
         );
 
-        $assetCodeDeleted = array_filter($assetCodes, fn ($assetCode) => array_key_exists($assetCode->normalize(), $identifiers));
+        $identifiers = array_change_key_case($identifiers, CASE_LOWER);
+        $assetCodeDeleted = array_filter($assetCodes, fn ($assetCode) => array_key_exists(strtolower($assetCode->normalize()), $identifiers));
 
         $this->eventDispatcher->dispatch(
             new AssetsDeletedEvent(
@@ -228,9 +229,10 @@ SQL;
             throw new AssetNotFoundException();
         }
 
+        $identifiers = array_change_key_case($identifiers, CASE_LOWER);
         $this->eventDispatcher->dispatch(
             new AssetDeletedEvent(
-                $identifiers[$code->normalize()],
+                $identifiers[strtolower($code->normalize())],
                 $code,
                 $assetFamilyIdentifier
             )
