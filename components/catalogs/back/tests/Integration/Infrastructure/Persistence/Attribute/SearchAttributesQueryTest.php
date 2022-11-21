@@ -30,16 +30,21 @@ class SearchAttributesQueryTest extends IntegrationTestCase
     {
         $this->loadAttributes();
 
-        $result = $this->query->execute(null, 1, 100, [
-            'identifier',
-            'text',
-            'textarea',
-            'simpleselect',
-            'multiselect',
-            'number',
-            'metric',
-            'boolean',
-            'date']
+        $result = $this->query->execute(
+            null,
+            1,
+            100,
+            [
+                'identifier',
+                'text',
+                'textarea',
+                'simpleselect',
+                'multiselect',
+                'number',
+                'metric',
+                'boolean',
+                'date'
+            ]
         );
 
         $this->assertEquals([

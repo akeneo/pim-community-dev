@@ -31,7 +31,7 @@ class GetAttributesAction
         $search = $request->query->get('search', null);
         $page = (int) $request->query->get('page', 1);
         $limit = (int) $request->query->get('limit', 20);
-        $types = array_filter(explode(',', $request->query->get('types', '')));
+        $types = \array_filter(\explode(',', (string) $request->query->get('types', '')));
 
         if ($page < 1 || $limit < 1) {
             throw new BadRequestHttpException('Page and limit must be positive.');
