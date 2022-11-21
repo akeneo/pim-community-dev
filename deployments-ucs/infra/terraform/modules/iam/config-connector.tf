@@ -42,6 +42,7 @@ resource "google_project_iam_custom_role" "configconnector_role" {
     "compute.disks.create",
     "compute.disks.delete",
     "compute.disks.get",
+    "compute.disks.resize",
     "compute.disks.setLabels",
     "compute.instances.detachDisk",
     "compute.instances.get",
