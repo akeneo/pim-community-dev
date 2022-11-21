@@ -96,6 +96,9 @@ class GetMappedProductsPerformance extends PerformanceTestCase
 
         $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', $productMappingTargetSourceAssociations);
 
+        // first call to be sure the cache is warmed up
+        $client->request('GET', '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products');
+
         $profile = $this->assertBlackfire($this->config, function () use ($client): void {
             $client->request('GET', '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products');
         });
