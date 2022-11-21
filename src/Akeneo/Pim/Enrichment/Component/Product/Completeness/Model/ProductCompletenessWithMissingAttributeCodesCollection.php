@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocale;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -56,6 +57,7 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
     public function buildProductWasCompletedOnChannelLocaleEvents(
         \DateTimeImmutable $completedAt,
         ?ProductCompletenessCollection $previousProductCompletenessCollection,
+        ?string $authorId,
     ): array {
         $events = [];
         $productUuid = ProductUuid::fromString($this->productId);
@@ -71,7 +73,8 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
                     $productUuid,
                     $completedAt,
                     $newProductCompleteness->channelCode(),
-                    $newProductCompleteness->localeCode()
+                    $newProductCompleteness->localeCode(),
+                    $authorId
                 );
             }
         }
