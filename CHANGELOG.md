@@ -94,6 +94,7 @@
 - PIM-10726: Fix ProjectsRecalculationLauncher
 - PIM-10713: Hide Shared Catalog Export Profile under a Serenity FT
 - PIM-10694: Fix the PM darfts/proposals are displayed on all the PMs, and not only on the corresponding PM
+- PIM-10712: Fix table values xlsx import when providing product identifier as a number 
 
 ## Improvements
 
