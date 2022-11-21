@@ -844,15 +844,14 @@ jobs:
                       if [ -n "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
                         FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
                       fi
-                      TENANT_STATUS_CODE=0
                       JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
                       JSON_BODY_STRING=${JSON_BODY_STRING:1}
 
                       FUNCTION_URL=$(gcloud beta functions describe ${FUNCTION_NAME} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
                       echo ${FUNCTION_URL}
                       echo ${JSON_BODY_STRING}
-                      curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
-
+                      curl --fail-with-body -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING}
+                    
                       # Better to store the password in CircleCI or other mecanisme
                       ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
@@ -874,8 +873,6 @@ jobs:
                       echo "user : admin"
                       echo "password : ${ARGOCD_PASSWORD}"
                       echo "============================"
-
-                      exit ${TENANT_STATUS_CODE}
             - run:
                   name: Persist env vars for next jobs
                   command: |
