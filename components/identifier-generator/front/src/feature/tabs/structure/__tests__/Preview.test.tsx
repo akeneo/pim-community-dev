@@ -1,11 +1,11 @@
 import React from 'react';
 import {render, screen} from '../../../tests/test-utils';
-import {PROPERTY_NAMES} from '../../../models';
+import {PROPERTY_NAMES, Structure} from '../../../models';
 import {Preview} from '../Preview';
 
 describe('Preview', () => {
   it('displays the preview', () => {
-    const structure = [
+    const structure: Structure = [
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: '42'},
     ];

@@ -350,4 +350,42 @@ final class CreateIdentifierGeneratorContext implements Context
             $this->violations = $exception;
         }
     }
+
+    /**
+     * @When I try to create an identifier generator with an empty delimiter
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAnEmptyDelimiter(): void
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'free_text', 'string' => 'abcdef']],
+                [],
+                'sku',
+                ''
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I create an identifier generator with delimiter null
+     */
+    public function iCreateAnIdentifierGeneratorWithDelimiterNull(): void
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'free_text', 'string' => 'abcdef']],
+                [],
+                'sku',
+                null,
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
 }

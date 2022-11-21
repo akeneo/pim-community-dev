@@ -1,7 +1,7 @@
 import {useMutation} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
 import {IdentifierGenerator} from '../models';
-import {Violation} from '../validators/Violation';
+import {Violation} from '../validators';
 import {UseMutateFunction} from 'react-query/types/react/types';
 
 type HookResponse = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {FreeText} from '../../models';
+import {FreeText} from '../../../models';
 
 type FreeTextLineProps = {
   freeTextProperty: FreeText;

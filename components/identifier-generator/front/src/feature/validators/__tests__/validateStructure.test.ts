@@ -1,7 +1,7 @@
 import {validateStructure} from '../validateStructure';
 import {PROPERTY_NAMES, Structure} from '../../models';
 
-describe('StructureValidator', () => {
+describe('validateStructure', () => {
   it('should not add violation for valid structure', () => {
     expect(
       validateStructure(
@@ -14,6 +14,20 @@ describe('StructureValidator', () => {
         'structure'
       )
     ).toHaveLength(0);
+  });
+
+  it('should not add violations for structure properties', () => {
+    expect(
+      validateStructure(
+        [
+          {
+            type: PROPERTY_NAMES.FREE_TEXT,
+            string: '',
+          },
+        ],
+        'structure'
+      )
+    ).toHaveLength(1);
   });
 
   it('should add a violation when there are no properties', () => {
