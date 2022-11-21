@@ -53,14 +53,6 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given an existing identifier generator
-     */
-    public function anExistingIdentifierGenerator(): void
-    {
-        $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-    }
-
-    /**
      * @Then The identifier generator is updated in the repository
      */
     public function identifierGeneratorIsUpdatedInTheRepository(): void

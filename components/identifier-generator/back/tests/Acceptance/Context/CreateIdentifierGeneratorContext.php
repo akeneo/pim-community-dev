@@ -39,26 +39,12 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given the ':attributeCode' identifier attribute
+     * @Given the ':attributeCode' attribute of type ':attributeType'
      */
-    public function theIdentifierAttribute(string $attributeCode): void
+    public function theAttribute(string $attributeCode, string $attributeType): void
     {
         $identifierAttribute = new Attribute();
-        $identifierAttribute->setType(AttributeTypes::IDENTIFIER);
-        $identifierAttribute->setCode($attributeCode);
-        $identifierAttribute->setScopable(false);
-        $identifierAttribute->setLocalizable(false);
-        $identifierAttribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXT);
-        $this->attributeRepository->save($identifierAttribute);
-    }
-
-    /**
-     * @Given the ':attributeCode' text attribute
-     */
-    public function theTextAttribute(string $attributeCode): void
-    {
-        $identifierAttribute = new Attribute();
-        $identifierAttribute->setType(AttributeTypes::TEXT);
+        $identifierAttribute->setType($attributeType);
         $identifierAttribute->setCode($attributeCode);
         $identifierAttribute->setScopable(false);
         $identifierAttribute->setLocalizable(false);

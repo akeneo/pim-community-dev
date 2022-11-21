@@ -2,8 +2,8 @@
 Feature: Create Identifier Generator
 
   Background:
-    Given the 'sku' identifier attribute
-    And the 'name' text attribute
+    Given the 'sku' attribute of type 'pim_catalog_identifier'
+    And the 'name' attribute of type 'pim_catalog_text'
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator

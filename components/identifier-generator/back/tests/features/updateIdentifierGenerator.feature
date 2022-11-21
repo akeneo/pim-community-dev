@@ -2,8 +2,8 @@
 Feature: Update Identifier Generator
 
   Background:
-    Given the 'sku' identifier attribute
-    And the 'name' text attribute
+    Given the 'sku' attribute of type 'pim_catalog_identifier'
+    And the 'name' attribute of type 'pim_catalog_text'
     And the 'default' identifier generator
 
   Scenario: Can update a valid identifier generator
