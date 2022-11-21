@@ -13,6 +13,7 @@ use Webmozart\Assert\Assert;
  */
 final class AutoNumber implements PropertyInterface
 {
+    public const LIMIT_NUMBER_MIN = 0;
     public const LIMIT_DIGITS_MIN = 1;
     public const LIMIT_DIGITS_MAX = 15;
 
@@ -20,7 +21,7 @@ final class AutoNumber implements PropertyInterface
         private readonly int $numberMin,
         private readonly int $digitsMin,
     ) {
-        Assert::greaterThanEq($numberMin, 0);
+        Assert::greaterThanEq($numberMin, self::LIMIT_NUMBER_MIN);
         Assert::greaterThanEq($digitsMin, self::LIMIT_DIGITS_MIN);
         Assert::lessThanEq($digitsMin, self::LIMIT_DIGITS_MAX);
     }
