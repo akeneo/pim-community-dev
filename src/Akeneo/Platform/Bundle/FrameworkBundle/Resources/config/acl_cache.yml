@@ -1,0 +1,8 @@
+services:
+  Akeneo\Platform\Bundle\FrameworkBundle\AclCache\FetchSamplePercentageFromBucket:
+    arguments:
+      - '%env(GOOGLE_CLOUD_PROJECT)%'
+
+  Akeneo\Platform\Bundle\FrameworkBundle\AclCache\FetchSamplePercentageFromApcu:
+    arguments:
+      - '@Akeneo\Platform\Bundle\FrameworkBundle\AclCache\FetchSamplePercentageFromBucket'

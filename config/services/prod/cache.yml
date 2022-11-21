@@ -1,10 +1,24 @@
-parameters:
-    oro_security.acl.cache.class: 'Doctrine\Common\Cache\MemcachedCache'
-
 services:
     security.acl.cache.doctrine.cache_impl:
         public: false
-        class: '%oro_security.acl.cache.class%'
+        class: 'Akeneo\Platform\Bundle\FrameworkBundle\AclCache\SampleRouterCache'
+        arguments:
+            - '@security.acl_cache_array'
+            - '@security.acl_cache_memcache'
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\AclCache\FetchSamplePercentageFromBucket'
+
+    Akeneo\Platform\Bundle\FrameworkBundle\AclCache\AddAclCacheHeaderResponseListener:
+        arguments:
+            - '@security.acl.cache.doctrine.cache_impl'
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: injectAkeneoAclCacheHeader }
+
+    security.acl_cache_array:
+        class: 'Doctrine\Common\Cache\ArrayCache'
+
+    security.acl_cache_memcache:
+        public: false
+        class: 'Doctrine\Common\Cache\MemcachedCache'
         calls:
             - method: setMemcached
               arguments:
