@@ -33,7 +33,7 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
    */
   configure() {
     const promise = $.Deferred();
-
+    this.referenceEntities = [];
     referenceEntityFetcher.fetchAll().then((referenceEntities: ReferenceEntityListItem[]) => {
       this.referenceEntities = referenceEntities;
       promise.resolve();
@@ -46,9 +46,18 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
    * {@inheritdoc}
    */
   renderInput(templateContext: any) {
+    const formDataValue = Property.accessProperty(this.getFormData(), this.fieldName);
+    const value = this.referenceEntities.find(
+      (referenceEntity: ReferenceEntityListItem) =>
+        referenceEntity
+          .getIdentifier()
+          .stringValue()
+          .toLowerCase() === formDataValue?.toLowerCase()
+    );
+
     return template({
       ...templateContext,
-      value: Property.accessProperty(this.getFormData(), this.fieldName),
+      value: value?.getIdentifier().stringValue(),
       choices: this.getChoices(),
       multiple: false,
       readOnly: this.isReadOnly(),
