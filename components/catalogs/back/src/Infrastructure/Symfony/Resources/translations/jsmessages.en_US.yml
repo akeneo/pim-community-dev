@@ -115,6 +115,12 @@ akeneo_catalogs:
                 illustration_title: No catalog target available
         source:
             title: Select source
+            select_source:
+                label: Pim source
+                search: Search criterion
+                no_results: no matches found
+                section_system: system
+                section_attributes: attributes
             placeholder:
                 title: Select source
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.
