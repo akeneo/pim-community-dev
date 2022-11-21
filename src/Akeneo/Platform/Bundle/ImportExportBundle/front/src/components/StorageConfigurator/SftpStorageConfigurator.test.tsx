@@ -273,10 +273,45 @@ test('it displays a public key field', async () => {
     );
   });
 
-  const publicKeyField = screen.getByLabelText('pim_import_export.form.job_instance.storage_form.public_key.label');
-
+  const publicKeyField = screen.getByTestId('publicKey');
   expect(publicKeyField).toBeInTheDocument();
-  expect(publicKeyField).toHaveValue('-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----');
+  expect(publicKeyField).toHaveDisplayValue('-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----');
+});
+
+test('it copy to clipboard a public key', async () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.com',
+    port: 22,
+    login_type: 'private_key',
+    username: '',
+    password: '',
+  };
+
+  const onStorageChange = jest.fn();
+
+  Object.assign(navigator, {
+    clipboard: {
+      writeText: () => {},
+    },
+  });
+  jest.spyOn(navigator.clipboard, 'writeText');
+
+  await act(async () => {
+    renderWithProviders(
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
+    );
+  });
+  userEvent.click(screen.getByTestId('copyToClipboard'));
+  expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+    '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----'
+  );
 });
 
 test('it allows user to fill username field', async () => {

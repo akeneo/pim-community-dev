@@ -184,8 +184,12 @@ const SftpStorageConfigurator = ({
       ) : (
         <Field label={translate('pim_import_export.form.job_instance.storage_form.public_key.label')}>
           <CopyableInputContainer>
-            <CopyableInput disabled={true} value={publicKey ?? ''} />
-            <CopyableIcon size={16} onClick={() => publicKey && copyToClipboard(publicKey)} />
+            <CopyableInput disabled={true} data-testid="publicKey" value={publicKey ?? ''} />
+            <CopyableIcon
+              size={16}
+              data-testid="copyToClipboard"
+              onClick={() => publicKey && copyToClipboard(publicKey)}
+            />
           </CopyableInputContainer>
         </Field>
       )}
