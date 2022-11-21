@@ -137,7 +137,7 @@ class TemplateSpec extends ObjectBehavior
                     'type' => 'image',
                     'order' => 4,
                     'is_required' => true,
-                    'is_scopable' => false,
+                    'is_scopable' => true,
                     'is_localizable' => false,
                     'labels' => ['fr_FR' => 'attribute_image_libelle'],
                     'template_uuid' => $expectedTemplateUuid,
