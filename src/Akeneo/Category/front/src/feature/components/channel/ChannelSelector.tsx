@@ -10,7 +10,7 @@ const ChannelSpan = forwardRef<HTMLSpanElement, ChannelProps>(
     ({code, label, ...rest}: ChannelProps, forwardedRef: Ref<HTMLSpanElement>) => {
       return (
           <span ref={forwardedRef} {...rest}>
-          {label || "["+code+"]"}
+          {label || `[${code}]`}
         </span>
       );
     }
@@ -38,7 +38,7 @@ const ChannelSelector = ({value, values, onChange}: ChannelSelectorProps) => {
   return (
     <Dropdown>
       <SwitcherButton inline onClick={() => {open();}} label={translate('pim_common.channel')}>
-        <ChannelSpan code={"["+selectedChannel.code+"]"} label={selectedChannel.labels[catalogLocale]} />
+        <ChannelSpan code={`[${selectedChannel.code}]`} label={selectedChannel.labels[catalogLocale]} />
       </SwitcherButton>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>

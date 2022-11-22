@@ -62,6 +62,11 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   const [channel, setChannel] = useState(catalogChannel);
   const translate = useTranslate();
 
+  const handleChannelChange = (value: string): void => {
+    setLocale(value);
+    userContext.set('catalogLocale', value, {});
+  };
+
   const handleChange = useCallback(
     (attribute: Attribute) => (value: AttributeInputValue) => {
       if (isImageAttributeInputValue(value)) {
@@ -143,10 +148,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
         <LocaleSelector
           value={locale}
           values={Object.values(locales)}
-          onChange={value => {
-            setLocale(value);
-            userContext.set('catalogLocale', value, {});
-          }}
+          onChange={handleChannelChange}
         />
       </SectionTitle>
       {attributeFields}
