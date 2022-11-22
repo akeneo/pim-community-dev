@@ -102,11 +102,11 @@ jobs:
                     command: sudo chown -R 1000:1000 ../project
             -   run:
                     name: Pull docker images
-                    command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
+                    command: docker-compose pull php httpd mysql elasticsearch object-storage pubsub-emulator
             -   run:
                     name: Start containers
                     command: |
-                        APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                        APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database
@@ -132,11 +132,11 @@ jobs:
                     command: sudo chown -R 1000:1000 ../project
             -   run:
                     name: Pull docker images
-                    command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
+                    command: docker-compose pull php httpd mysql elasticsearch object-storage pubsub-emulator
             -   run:
                     name: Start containers
                     command: |
-                        APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                        APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database
@@ -163,7 +163,7 @@ jobs:
                     name: Start containers
                     command: |
                         docker load -i php-pim-image.tar
-                        APP_ENV=behat docker-compose -f docker-compose.yml -f src/Akeneo/Connectivity/Connection/tests/docker-compose.yml up -d --remove-orphans fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator
+                        APP_ENV=behat docker-compose -f docker-compose.yml -f src/Akeneo/Connectivity/Connection/tests/docker-compose.yml up -d --remove-orphans httpd mysql elasticsearch httpd object-storage selenium pubsub-emulator
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database
