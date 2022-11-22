@@ -95,7 +95,7 @@ RUN apt-get update && \
         default-mysql-client \
         git \
         perceptualdiff \
-        php8.0-xdebug \
+        php8.1-xdebug \
         procps \
         unzip && \
     apt-get clean && \
@@ -106,8 +106,7 @@ COPY tria/docker/build/xdebug.ini /etc/php/8.1/fpm/conf.d/99-akeneo-xdebug.ini
 COPY tria/docker/build/blackfire.ini /etc/php/8.1/cli/conf.d/99-akeneo-blackfire.ini
 COPY tria/docker/build/blackfire.ini /etc/php/8.1/fpm/conf.d/99-akeneo-blackfire.ini
 
-# TODO RAB-1083: remove fixed version when https://github.com/composer/composer/issues/11073 is resolved
-COPY --from=composer:2.4.1 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 
 RUN mkdir -p /var/www/.composer && chown www-data:www-data /var/www/.composer
