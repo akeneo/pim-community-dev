@@ -27,6 +27,7 @@ interface Props {
   template: Template;
   onAttributeValueChange: (
     attribute: Attribute,
+    channel: string | null,
     locale: string | null,
     attributeValue: CategoryAttributeValueData
   ) => void;
@@ -54,15 +55,20 @@ function mustChangeBeSkipped(
 }
 
 export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange}: Props) => {
+  const translate = useTranslate();
+  const {locales, channels} = useContext(EditCategoryContext);
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
   const [locale, setLocale] = useState(catalogLocale);
-  const {locales, channels} = useContext(EditCategoryContext);
-  const catalogChannel = userContext.get('catalogChannel');
+  const catalogChannel = userContext.get('catalogScope');
   const [channel, setChannel] = useState(catalogChannel);
-  const translate = useTranslate();
 
   const handleChannelChange = (value: string): void => {
+    setChannel(value);
+    userContext.set('catalogScope', value, {});
+  };
+
+  const handleLocaleChange = (value: string): void => {
     setLocale(value);
     userContext.set('catalogLocale', value, {});
   };
@@ -70,19 +76,19 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   const handleChange = useCallback(
     (attribute: Attribute) => (value: AttributeInputValue) => {
       if (isImageAttributeInputValue(value)) {
-        onAttributeValueChange(attribute, locale, convertFileInfoToCategoryImageAttributeValueData(value));
+        onAttributeValueChange(attribute, channel, locale, convertFileInfoToCategoryImageAttributeValueData(value));
         return;
       }
 
       // attribute has textual type
-      const currentValue = getAttributeValue(attributeValues, attribute, locale);
+      const currentValue = getAttributeValue(attributeValues, attribute, channel, locale);
       if (mustChangeBeSkipped(value, currentValue!, attribute)) {
         return;
       }
 
-      onAttributeValueChange(attribute, locale, value);
+      onAttributeValueChange(attribute, channel, locale, value);
     },
-    [attributeValues, locale, onAttributeValueChange]
+    [attributeValues, channel, locale, onAttributeValueChange]
   );
 
   const handlers = useMemo(() => {
@@ -104,8 +110,9 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       );
     }
 
+    const effectiveChannelCode = attribute.is_scopable ? channel : null;
     const effectiveLocaleCode = attribute.is_localizable ? locale : null;
-    const compositeKey = buildCompositeKey(attribute, effectiveLocaleCode);
+    const compositeKey = buildCompositeKey(attribute, effectiveChannelCode, effectiveLocaleCode);
 
     let value = attributeValues[compositeKey];
 
@@ -124,7 +131,8 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
 
     return (
       <AttributeField
-        locale={locale}
+        channel={attribute.is_scopable ? channel : ''}
+        locale={attribute.is_localizable ? locale : ''}
         value={dataForInput}
         onChange={handlers[attribute.code]}
         key={attribute.uuid}
@@ -140,15 +148,12 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
         <ChannelSelector
             value={channel}
             values={Object.values(channels)}
-            onChange={value => {
-              setChannel(value);
-              userContext.set('catalogChannel', value, {});
-            }}
+            onChange={handleChannelChange}
         />
         <LocaleSelector
           value={locale}
           values={Object.values(locales)}
-          onChange={handleChannelChange}
+          onChange={handleLocaleChange}
         />
       </SectionTitle>
       {attributeFields}

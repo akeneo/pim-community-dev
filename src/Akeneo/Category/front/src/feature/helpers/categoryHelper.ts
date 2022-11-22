@@ -51,9 +51,10 @@ export function categoriesAreEqual(c1: EnrichCategory, c2: EnrichCategory): bool
 export function getAttributeValue(
   attributes: CategoryAttributes,
   attribute: Attribute,
+  channelCode: ChannelCode,
   localeCode: LocaleCode
 ): CategoryAttributeValueData | undefined {
-  const compositeKey = buildCompositeKey(attribute, localeCode);
+  const compositeKey = buildCompositeKey(attribute, channelCode, localeCode);
   const value = attributes[compositeKey];
   return value ? value.data : undefined;
 }
@@ -112,11 +113,11 @@ function buildCategoryAttributeValues(attribute: Attribute, channels: ChannelCod
   for (const channel of applicableChannels) {
     for (const locale of applicableLocales) {
       const key = buildCompositeKey(attribute, channel, locale);
-      const keyNoLocale = locale === null ? key : buildCompositeKey(attribute, null);
+      const keyNoLocale = locale === null ? key : buildCompositeKey(attribute);
       attributesValues[key] = {
         data: attributeDefaultValues[attribute.type],
-        channel,
-        locale,
+        channel: channel,
+        locale: locale,
         attribute_code: keyNoLocale,
       };
     }

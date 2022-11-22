@@ -11,6 +11,7 @@ const Field960 = styled(Field)`
 
 const unMemoizedBuildRichTextFieldAttribute: AttributeFieldBuilder<AttributeInputValue> = attribute => {
   const Component: React.FC<AttributeFieldProps<AttributeInputValue>> = ({
+    channel,
     locale,
     value,
     onChange,
@@ -24,7 +25,7 @@ const unMemoizedBuildRichTextFieldAttribute: AttributeFieldBuilder<AttributeInpu
     // it loops internally on its state for the value and ignores external modifications of the value
     // we have to force react to rebuild it when changing the value (when locale is changed for instance)
     return (
-      <Field960 label={getLabelFromAttribute(attribute, locale)} locale={locale}>
+      <Field960 label={getLabelFromAttribute(attribute, locale)} channel={channel} locale={locale}>
         <TextAreaInput key={locale} isRichText name={attribute.code} value={value} onChange={onChange} />
       </Field960>
     );

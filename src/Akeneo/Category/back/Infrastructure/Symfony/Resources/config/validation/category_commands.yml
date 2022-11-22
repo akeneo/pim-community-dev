@@ -12,7 +12,7 @@ Akeneo\Category\Api\Command\UpsertCategoryCommand:
                   max: 100
         userIntents:
             - Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUnique: ~
-            - Akeneo\Category\Infrastructure\Validation\LocalizeValueUserIntentsShouldBeUnique: ~
+            - Akeneo\Category\Infrastructure\Validation\ValueUserIntentsShouldBeUnique: ~
             - Valid:
                   traverse: true
 

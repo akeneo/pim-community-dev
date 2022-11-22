@@ -31,6 +31,7 @@ const ChannelSelector = ({value, values, onChange}: ChannelSelectorProps) => {
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
   const [isOpen, open, close] = useBooleanState(false);
+  console.log(values);
   const selectedChannel: Channel = values.find(channel => channel.code === value) || values[0];
 
   const handleChange = (channelCode: ChannelCode) => onChange?.(channelCode);
