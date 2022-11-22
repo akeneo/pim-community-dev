@@ -65,7 +65,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
 
   const handleChannelChange = (value: string): void => {
     setChannel(value);
-    userContext.set('catalogChannel', value, {});
+    userContext.set('catalogScope', value, {});
   };
 
   const handleLocaleChange = (value: string): void => {
