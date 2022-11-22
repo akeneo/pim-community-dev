@@ -27,15 +27,12 @@ akeneo_catalogs:
       channel:
         label: Canal
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione su canal
       locale:
         label: Configuración regional
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione su configuración regional
       currency:
         label: Moneda
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione su moneda
   product_selection:
     empty: Añada criterios de selección para crear su selección de productos
     more_information: Consulte nuestro Centro de ayuda para obtener más información.
@@ -63,18 +60,15 @@ akeneo_catalogs:
       family:
         label: Familia
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione sus familias
       completeness:
         label: Completitud
       attribute_option:
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione sus opciones
       category:
         label: Categoría
         remove: Eliminar categoría
         category_tree: Árbol de categoría
       measurement:
-        search: Seleccione su unidad
         no_results: No se encontraron coincidencias
       boolean:
         yes: Yes

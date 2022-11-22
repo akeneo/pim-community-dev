@@ -13,28 +13,28 @@ use PhpSpec\ObjectBehavior;
  */
 class FreeTextSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedThrough('fromString', ['ABC']);
     }
 
-    public function it_is_a_free_text()
+    public function it_is_a_free_text(): void
     {
         $this->shouldBeAnInstanceOf(FreeText::class);
     }
 
-    public function it_cannot_be_instantiated_with_an_empty_string()
+    public function it_cannot_be_instantiated_with_an_empty_string(): void
     {
         $this->beConstructedThrough('fromString', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_returns_a_free_text()
+    public function it_returns_a_free_text(): void
     {
         $this->asString()->shouldReturn('ABC');
     }
 
-    public function it_normalize_a_free_text()
+    public function it_normalize_a_free_text(): void
     {
         $this->normalize()->shouldReturn([
             'type' => 'free_text',
@@ -42,7 +42,7 @@ class FreeTextSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_creates_from_normalized()
+    public function it_creates_from_normalized(): void
     {
         $this->fromNormalized([
             'type' => 'free_text',
@@ -50,7 +50,7 @@ class FreeTextSpec extends ObjectBehavior
         ])->shouldBeLike(FreeText::fromString('ABC'));
     }
 
-    public function it_throws_an_exception_when_type_is_bad()
+    public function it_throws_an_exception_when_type_is_bad(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'bad',
@@ -59,7 +59,7 @@ class FreeTextSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_when_type_key_is_missing()
+    public function it_throws_an_exception_when_type_key_is_missing(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'string' => 'ABC',
@@ -67,7 +67,7 @@ class FreeTextSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_from_normalized_with_empty_string()
+    public function it_throws_an_exception_from_normalized_with_empty_string(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'free_text',

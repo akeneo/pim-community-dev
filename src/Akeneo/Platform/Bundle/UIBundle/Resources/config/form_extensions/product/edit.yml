@@ -162,6 +162,14 @@ extensions:
         config:
             entity: pim_enrich.entity.product.label
 
+    pim-product-edit-form-uuid:
+        module: pim/product-edit-form/meta/uuid
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        position: 60
+        config:
+            label: pim_enrich.entity.product.module.meta.uuid
+
     pim-product-edit-form-family:
         module: pim/product-edit-form/meta/family
         parent: pim-product-edit-form-meta

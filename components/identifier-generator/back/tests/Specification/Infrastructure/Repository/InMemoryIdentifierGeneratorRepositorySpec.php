@@ -27,7 +27,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->shouldImplement(IdentifierGeneratorRepository::class);
     }
 
-    public function it_can_save_identifier_generators()
+    public function it_can_save_identifier_generators(): void
     {
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
@@ -96,7 +96,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         ]);
     }
 
-    public function it_can_retrieve_an_identifier_generator_with_its_code()
+    public function it_can_retrieve_an_identifier_generator_with_its_code(): void
     {
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
@@ -112,12 +112,12 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->get('aabbcc')->shouldBeLike($identifierGenerator);
     }
 
-    public function it_returns_null_if_identifier_generator_is_not_found()
+    public function it_returns_null_if_identifier_generator_is_not_found(): void
     {
         $this->get('unknown')->shouldReturn(null);
     }
 
-    public function it_counts_identifier_generators()
+    public function it_counts_identifier_generators(): void
     {
         $this->count()->shouldReturn(0);
 
@@ -135,7 +135,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->count()->shouldReturn(1);
     }
 
-    public function it_can_delete_an_identifier_generator()
+    public function it_can_delete_an_identifier_generator(): void
     {
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
@@ -158,7 +158,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
 
         $this->count()->shouldReturn(0);
     }
-    public function it_can_retrieve_all_identifiers_generators()
+    public function it_can_retrieve_all_identifiers_generators(): void
     {
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),

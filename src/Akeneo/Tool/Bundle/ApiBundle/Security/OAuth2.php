@@ -42,7 +42,7 @@ class OAuth2 extends BaseOAuth2
             if ($data instanceof User) {
                 $this->eventDispatcher->dispatch(
                     new ApiAuthenticationEvent(
-                        $data->getUsername(),
+                        $data->getUserIdentifier(),
                         $this->getClientIdFromPublicId($accessToken->getClientId())
                     )
                 );

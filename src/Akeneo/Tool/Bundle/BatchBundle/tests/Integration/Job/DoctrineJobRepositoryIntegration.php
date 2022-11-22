@@ -175,12 +175,13 @@ class DoctrineJobRepositoryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function selectJobExecution(int $id): array
-    {
+    private function selectJobExecution(int $id): array {
         $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
         $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution where id = :id');
         $stmt->bindParam('id', $id);
-        return $stmt->executeQuery()->fetchAssociative();
+        $stmt->execute();
+        return $stmt->fetch();
+
     }
 
     private function createJobInstance(string $jobName): JobInstance

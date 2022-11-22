@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {SkeletonPlaceholder} from 'akeneo-design-system';
+import {AkeneoThemedProps, getColor, Table} from 'akeneo-design-system';
 
 const FormContainer = styled.div`
   display: flex;
@@ -20,23 +20,32 @@ const FullPageCenteredContent = styled.div`
   }
 `;
 
-const Skeleton = styled(SkeletonPlaceholder)`
-  width: 100%;
-  height: 50px;
+const TitleCell = styled(Table.Cell)`
+  font-style: italic;
+  color: ${getColor('brand', 100)};
 `;
 
-const SkeletonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
+const InputContainer = styled.div`
+  max-width: 10vw;
+`;
+
+const TwoColumns = styled.div<{withoutSecondColumn: boolean} & AkeneoThemedProps>`
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: ${({withoutSecondColumn}) => (withoutSecondColumn ? 'auto' : 'auto 300px')};
+  grid-template-rows: 1fr;
+  grid-column-gap: 30px;
+  & > * > * {
+    margin-top: 10px;
+  }
 `;
 
 const Styled = {
   FormContainer,
-  Skeleton,
-  SkeletonContainer,
   FullPageCenteredContent,
+  InputContainer,
+  TitleCell,
+  TwoColumns,
 };
 
 export {Styled};

@@ -28,9 +28,3 @@ services:
             - '%akeneo_storage_utils.mapping_overrides%'
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
-
-    # wraps the default dbal connection factory to replace it with an in memory one during execution of low level system commands like cache warm up
-    connection_factory.skip_system_commands:
-        class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\SkipSystemCommandsConnectionFactory
-        decorates: doctrine.dbal.connection_factory
-        arguments: ['@.inner']

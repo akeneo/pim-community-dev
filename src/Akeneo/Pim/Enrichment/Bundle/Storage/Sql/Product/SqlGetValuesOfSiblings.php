@@ -63,7 +63,7 @@ SQL;
                 'parentId' => $entity->getParent()->getId(),
                 'identifier' => $identifier,
             ]
-        )->fetchAllAssociative();
+        );
 
         foreach ($rows as $row) {
             $rawValues = json_decode($row['raw_values'], true) ?? [];

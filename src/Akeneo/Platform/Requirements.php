@@ -23,7 +23,7 @@ class Requirements extends SymfonyRequirements
      */
     public function __construct(string $baseDirectory)
     {
-        parent::__construct($baseDirectory);
+        parent::__construct();
 
         $communityRequirements = new PimRequirements($baseDirectory);
 

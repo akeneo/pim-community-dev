@@ -2,10 +2,12 @@ import React from 'react';
 import {pimTheme} from 'akeneo-design-system';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {IdentifierGeneratorApp} from '@akeneo-pim-community/identifier-generator';
+import {IdentifierGeneratorApp, IdentifierGeneratorContext} from '@akeneo-pim-community/identifier-generator';
 import {ThemeProvider} from 'styled-components';
+import {identifierGeneratorDependencies} from "../dependencies";
 
 const mediator = require('oro/mediator');
+const __ = require('oro/translator');
 
 class IdentifierGeneratorController extends ReactController {
   private static container = document.createElement('div');
@@ -13,9 +15,11 @@ class IdentifierGeneratorController extends ReactController {
   reactElementToMount() {
     return (
       <ThemeProvider theme={pimTheme}>
-        <DependenciesProvider>
-          <IdentifierGeneratorApp />
-        </DependenciesProvider>
+          <DependenciesProvider>
+            <IdentifierGeneratorContext.Provider value={identifierGeneratorDependencies}>
+              <IdentifierGeneratorApp />
+            </IdentifierGeneratorContext.Provider>
+          </DependenciesProvider>
       </ThemeProvider>
     );
   }
@@ -39,7 +43,7 @@ class IdentifierGeneratorController extends ReactController {
   }
 
   canLeave() {
-    return true;
+    return !identifierGeneratorDependencies.unsavedChanges.hasUnsavedChanges || confirm(__('pim_ui.flash.unsaved_changes'));
   }
 }
 

@@ -1,4 +1,24 @@
 akeneo.category:
+  tree_list:
+    column:
+      category_templates: Templates de catégorie
   attributes: Attributs
   edition_form:
     unsaved_changes: Vous perdrez les modifications apportées à la catégorie si vous quittez la page.
+  tree:
+    create: Créer un arbre
+    delete: Supprimer l'arbre
+  template:
+    create: Activer le template
+    edit: Afficher le template
+    notification_success: "Le template a été activé avec succès.\n"
+    attribute:
+      type:
+        text: Texte
+        textarea: Zone de texte
+        richtext: Éditeur de texte enrichi
+        image: Image
+  template_list:
+    columns:
+      code: Code
+      type: Type

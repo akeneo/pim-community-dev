@@ -101,4 +101,11 @@ final class IdentifierGenerator
             'delimiter' => $this->delimiter?->asString(),
         ];
     }
+
+    public function match(ProductProjection $productProjection): bool
+    {
+        $identifierValue = $productProjection->identifier();
+
+        return (null === $identifierValue || '' === $identifierValue);
+    }
 }

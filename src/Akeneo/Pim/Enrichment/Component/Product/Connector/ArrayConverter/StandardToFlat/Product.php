@@ -25,12 +25,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     /**
      * {@inheritdoc}
      */
-    protected function convertProperty($property, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options): array
     {
         switch ($property) {
-            case 'uuid':
-                // TODO CPM-592: export the uuid if the with_uuid option is true
-                break;
             case 'associations':
                 $convertedItem = $this->convertAssociations($data, $convertedItem);
                 break;
@@ -39,6 +36,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 break;
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
+                break;
+            case 'uuid':
+                $convertedItem = $this->convertUuid($data, $convertedItem, $options['with_uuid'] ?? true);
                 break;
             case 'enabled':
                 $convertedItem[$property] = false === $data || null === $data ? '0' : '1';
@@ -185,6 +185,15 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
                 $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
             }
+        }
+
+        return $convertedItem;
+    }
+
+    protected function convertUuid($data, array $convertedItem, bool $exportUuid): array
+    {
+        if ($exportUuid) {
+            return $convertedItem + ['uuid' => (string) $data];
         }
 
         return $convertedItem;

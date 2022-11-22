@@ -22,8 +22,45 @@ pim_identifier_generator:
         create:
             success: 'The identifier generator "{{ code }}" was successfully created'
             error: 'The identifier generator could not be created'
+        update:
+            success: 'The identifier generator "{{ code }}" was successfully updated'
+            error: 'The identifier generator could not be updated'
+        delete:
+            success: 'The identifier generator "{{ code }}" was successfully deleted'
+            error: 'The identifier generator could not be deleted'
     list:
         identifier: 'Identifier'
         first_generator: 'Create your first identifier generator!'
         check_help_center: 'Check out our help center for more information.'
-        create_info: 'It is only possible to create one Identifier Generator for the moment. You will soon be able to configure multiple generators matching all your usecases. '
+        helper: 'Here, you will be able to build an identifier generator profile for your products. Please note that new and existing references will be impacted by this change. A unique profile is available for the moment, you will be able to create multiple identifier generators soon.'
+        max_generator:
+            title: 'It is only possible to create one Identifier Generator for the moment.'
+            info: 'You will soon be able to configure multiple generators matching all your usecases.'
+        confirmation: 'Are you sure you want to delete this property?'
+    selection:
+        helper: 'Please note that 100% of your products with an empty identifier will be impacted. You will soon be able to create multiple generators with different product selections.'
+    structure:
+        helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at {{link}}.'
+        helper_link: 'this article'
+        title: 'Identifier Structure'
+        add_element: 'Add new property'
+        property_type:
+            sections:
+                system: 'System'
+            free_text: 'Free text'
+        settings:
+            free_text:
+                title: 'Free text settings'
+                string_label: 'Define your text'
+            auto_number:
+                title: 'Auto number'
+                digitsMin_label: 'Min digits'
+                numberMin_label: 'Min number'
+        empty:
+            title: 'Create your identifier structure'
+            text: 'Click on "Add new property" on the top right'
+            link_text: 'Check out our Help center for more information.'
+    deletion:
+        operations: 'Operations'
+        confirmation: 'Are you sure you want to delete this identifier generator?'
+        type: 'Please type "{{ code }}"'

@@ -3,7 +3,6 @@
 namespace Oro\Bundle\SecurityBundle\DependencyInjection\Compiler;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
-use Oro\Bundle\SecurityBundle\Acl\Cache\AclCache;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,8 +25,6 @@ class AclConfigurationPass implements CompilerPassInterface
 
     const ACL_EXTENSION_SELECTOR = 'oro_security.acl.extension_selector';
     const ACL_EXTENSION_TAG = 'oro_security.acl.extension';
-
-    const DEFAULT_ACL_CACHE_CLASS = AclCache::class;
 
     const DOCTRINE_CONVERTER = 'sensio_framework_extra.converter.doctrine.orm';
     const DOCTRINE_CONVERTER_CLASS = 'Oro\Bundle\SecurityBundle\Request\ParamConverter\DoctrineParamConverter';
@@ -84,8 +81,7 @@ class AclConfigurationPass implements CompilerPassInterface
     {
         if ($container->hasDefinition(self::DEFAULT_ACL_CACHE)) {
             $cacheDef = $container->getDefinition(self::DEFAULT_ACL_CACHE);
-            //change cache class
-            $cacheDef->setClass(self::DEFAULT_ACL_CACHE_CLASS);
+
             // substitute the ACL Permission Granting Strategy
             if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
                 $cacheDef->replaceArgument(1, new Reference(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY));

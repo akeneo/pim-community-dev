@@ -1,8 +1,19 @@
 # 6.0.x
 
+# 6.0.54 (2022-11-18)
+
+## Bug fixes
+
+- PIM-10688: Fix error on toLocaleLowerCase for select attribute options
+
+# 6.0.53 (2022-11-10)
+
+# 6.0.52 (2022-11-08)
+
 ## Bug fixes
 
 - PIM-10664 Fix expand/collapse arrow disappearing after category creation
+- PIM-10699: Fix "All" is exported allong with the user groups on the user export
 
 # 6.0.51 (2022-11-03)
 

@@ -19,7 +19,7 @@ class CreationForm extends ElementDecorator
     public function setLabel(string $label): void
     {
         $labelField = $this->spin(function () {
-            return $this->find('css', 'input[name="label"]');
+            return $this->element->find('css', 'input[name="label"]');
         }, 'Cannot find the label field');
         $labelField->setValue($label);
     }
@@ -27,7 +27,7 @@ class CreationForm extends ElementDecorator
     public function setFlowType(string $flowType): void
     {
         $flowTypeField = $this->spin(function () {
-            return $this->find('css', '.select2-container.flowType');
+            return $this->element->find('css', '.select2-container.flowType');
         }, 'Cannot find the flow type field');
 
         $flowTypeField = $this->decorate(
@@ -40,7 +40,7 @@ class CreationForm extends ElementDecorator
     public function save(): void
     {
         $this->spin(function () {
-            $this->find('css', '.AknButton--apply')->click();
+            $this->element->find('css', '.AknButton--apply')->click();
 
             return true;
         }, 'Cannot click on the save button.');

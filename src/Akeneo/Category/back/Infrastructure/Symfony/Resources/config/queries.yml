@@ -3,6 +3,12 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
     arguments:
       - '@database_connection'
+      -
+
+  Akeneo\Category\Application\Query\GetCategoriesInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
+    arguments:
+      - '@database_connection'
 
   Akeneo\Category\Domain\Query\GetCategoryTreesInterface:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreesSql
