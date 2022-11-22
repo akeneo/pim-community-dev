@@ -22,9 +22,9 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemoryImpl;
 use PhpSpec\ObjectBehavior;
 
@@ -53,22 +53,22 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
     function it_creates_a_list_of_value_intent_based_on_values_field(GetAttributeInMemoryImpl $getAttributeInMemory): void
     {
         $data = [
-            'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
+            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Meta shoes',
                 'locale' => 'en_US',
-                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
+                'attribute_code' => 'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
             ],
-            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . ValueCollection::SEPARATOR . 'en_US' => [
+            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Description',
                 'locale' => 'en_US',
-                'attribute_code' => 'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+                'attribute_code' => 'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
             ],
-            'color' . ValueCollection::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af' . ValueCollection::SEPARATOR . 'en_US' => [
+            'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'red',
                 'locale' => 'en_US',
-                'attribute_code' => 'color' . ValueCollection::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
+                'attribute_code' => 'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
             ],
-            'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . ValueCollection::SEPARATOR . 'en_US' => [
+            'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => [
                     'size' => 168107,
                     'extension' => 'jpg',
@@ -77,7 +77,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                     'original_filename' => 'shoes.jpg'
                 ],
                 'locale' => 'en_US',
-                'attribute_code' => 'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
+                'attribute_code' => 'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
             ]
         ];
 
@@ -130,10 +130,10 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         ]);
 
         $identifiers = [
-            'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
-            'color' . ValueCollection::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af',
-            'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
+            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af',
+            'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
         ];
 
         $getAttributeInMemory->byIdentifiers($identifiers)
@@ -180,15 +180,15 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
     function it_does_not_add_value_user_intent_when_corresponding_attribute_type_no_found(GetAttributeInMemoryImpl $getAttributeInMemory): void
     {
         $data = [
-            'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
+            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Meta shoes',
                 'locale' => 'en_US',
-                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
+                'attribute_code' => 'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
             ],
-            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . ValueCollection::SEPARATOR . 'en_US' => [
+            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Description',
                 'locale' => 'en_US',
-                'attribute_code' => 'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+                'attribute_code' => 'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
             ]
         ];
 
@@ -208,8 +208,8 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         ]);
 
         $identifiers = [
-            'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
         ];
 
         $getAttributeInMemory->byIdentifiers($identifiers)
