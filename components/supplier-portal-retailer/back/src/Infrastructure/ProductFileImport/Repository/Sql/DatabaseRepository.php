@@ -16,29 +16,11 @@ final class DatabaseRepository implements ProductFileImportRepository
 
     public function save(ProductFileImport $productFileImport): void
     {
-        $sql = <<<SQL
-            REPLACE INTO akeneo_supplier_portal_product_file_imported_by_job_execution (
-                product_file_identifier,
-                job_execution_id,
-                import_status,
-                finished_at
-            ) VALUES (
-                :productFileIdentifier,
-                :jobExecutionId,
-                :jobExecutionResult,
-                :finishedAt
-            )
-SQL;
-
-        $this->connection->executeStatement(
-            $sql,
-            [
-                'productFileIdentifier' => $productFileImport->productFileIdentifier(),
-                'jobExecutionId' => $productFileImport->importExecutionId(),
-                'jobExecutionResult' => $productFileImport->fileImportStatus(),
-                'finishedAt' => $productFileImport->finishedAt(),
-            ],
-        );
+        if ($this->importJobExist($productFileImport)) {
+            $this->updateProductFileImport($productFileImport);
+        } else {
+            $this->createProductFileImport($productFileImport);
+        }
     }
 
     public function findByImportExecutionId(int $importExecutionId): ?ProductFileImport
@@ -68,6 +50,63 @@ SQL;
             null !== $productFileImport['finished_at'] ? new \DateTimeImmutable(
                 $productFileImport['finished_at'],
             ) : null,
+        );
+    }
+
+    private function importJobExist(ProductFileImport $productFileImport): bool
+    {
+        $sql = <<<SQL
+            SELECT 1
+            FROM akeneo_supplier_portal_product_file_imported_by_job_execution
+            WHERE product_file_identifier = :productFileIdentifier;
+SQL;
+        return (bool) $this
+            ->connection
+            ->executeQuery($sql, ['productFileIdentifier' => $productFileImport->productFileIdentifier(),])
+            ->fetchOne();
+    }
+
+    private function updateProductFileImport(ProductFileImport $productFileImport): void
+    {
+        $sql = <<<SQL
+            UPDATE akeneo_supplier_portal_product_file_imported_by_job_execution 
+            SET import_status = :jobExecutionResult, finished_at = :finishedAt, job_execution_id = :jobExecutionId
+            WHERE product_file_identifier = :productFileIdentifier
+SQL;
+        $this->connection->executeStatement(
+            $sql,
+            [
+                'productFileIdentifier' => $productFileImport->productFileIdentifier(),
+                'jobExecutionId' => $productFileImport->importExecutionId(),
+                'jobExecutionResult' => $productFileImport->fileImportStatus(),
+                'finishedAt' => $productFileImport->finishedAt(),
+            ],
+        );
+    }
+
+    private function createProductFileImport(ProductFileImport $productFileImport): void
+    {
+        $sql = <<<SQL
+            INSERT INTO akeneo_supplier_portal_product_file_imported_by_job_execution (
+                product_file_identifier,
+                job_execution_id,
+                import_status,
+                finished_at
+            ) VALUES (
+                :productFileIdentifier,
+                :jobExecutionId,
+                :jobExecutionResult,
+                :finishedAt
+            )
+SQL;
+        $this->connection->executeStatement(
+            $sql,
+            [
+                'productFileIdentifier' => $productFileImport->productFileIdentifier(),
+                'jobExecutionId' => $productFileImport->importExecutionId(),
+                'jobExecutionResult' => $productFileImport->fileImportStatus(),
+                'finishedAt' => $productFileImport->finishedAt(),
+            ],
         );
     }
 }
