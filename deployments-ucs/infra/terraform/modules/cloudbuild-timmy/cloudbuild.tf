@@ -13,12 +13,12 @@ resource "google_cloudbuild_trigger" "pr-trigger" {
     }
   }
 
- substitutions = {
-    _CLUSTER_ENV             = var.env
-    _GOOGLE_CLUSTER_REGION   = var.region
-    _GOOGLE_PROJECT_ID       = var.target_project_id
-    _TARGET_IMPERSONATE      = "${var.impersonate}@${var.target_project_id}.iam.gserviceaccount.com"
- }
+  substitutions = {
+    _CLUSTER_ENV           = var.env
+    _GOOGLE_CLUSTER_REGION = var.region
+    _GOOGLE_PROJECT_ID     = var.target_project_id
+    _TARGET_IMPERSONATE    = "${var.impersonate}@${var.target_project_id}.iam.gserviceaccount.com"
+  }
 
   include_build_logs = "INCLUDE_BUILD_LOGS_WITH_STATUS"
 }
@@ -42,12 +42,12 @@ resource "google_cloudbuild_trigger" "master-trigger" {
     approval_required = true
   }
 
- substitutions = {
-    _CLUSTER_ENV             = var.env
-    _GOOGLE_CLUSTER_REGION   = var.region
-    _GOOGLE_PROJECT_ID       = var.target_project_id
-    _TARGET_IMPERSONATE      = "${var.impersonate}@${var.target_project_id}.iam.gserviceaccount.com"
- }
+  substitutions = {
+    _CLUSTER_ENV           = var.env
+    _GOOGLE_CLUSTER_REGION = var.region
+    _GOOGLE_PROJECT_ID     = var.target_project_id
+    _TARGET_IMPERSONATE    = "${var.impersonate}@${var.target_project_id}.iam.gserviceaccount.com"
+  }
 
   include_build_logs = "INCLUDE_BUILD_LOGS_WITH_STATUS"
 }

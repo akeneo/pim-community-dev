@@ -10,18 +10,22 @@ locals {
     "serviceAccount:argocd@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
     "serviceAccount:gke-sa@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
     "serviceAccount:cluster-bootstrap@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
+
+    "serviceAccount:argocd@akecld-prd-pim-saas-demo.iam.gserviceaccount.com",
+    "serviceAccount:gke-sa@akecld-prd-pim-saas-demo.iam.gserviceaccount.com",
+    "serviceAccount:cluster-bootstrap@akecld-prd-pim-saas-demo.iam.gserviceaccount.com",
   ]
   child_projects = [
     "akecld-prd-pim-saas-dev",
     "akecld-prd-pim-saas-sandbox",
-    "akecld-prd-pim-saas-demo",
+    "akecld-prd-pim-saas-demo"
   ]
   cloudbuild_github_repository = "pim-enterprise-dev"
   cloudbuild_github_branch     = "master"
   region                       = "europe-west1"
   multi_region                 = "EU"
   shared_dns_zone              = "pim.akeneo.cloud"
-  regions                      = [ "europe-west1", "europe-west3", "us-central1", "australia-southeast1" ]
+  regions                      = ["europe-west1", "europe-west3", "us-central1", "australia-southeast1"]
 }
 
 module "secrets" {
@@ -32,17 +36,19 @@ module "secrets" {
       name = "DATADOG_API_KEY"
       members = [
         "serviceAccount:${local.main_sa}",
-        "serviceAccount:ci-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-demo.iam.gserviceaccount.com",
       ]
       labels = {
         usage = "datadog"
       }
     },
-     {
+    {
       name = "DATADOG_APP_KEY"
       members = [
         "serviceAccount:${local.main_sa}",
-        "serviceAccount:ci-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-demo.iam.gserviceaccount.com",
       ]
       labels = {
         usage = "datadog"

@@ -1,13 +1,13 @@
 #!/bin/bash
 
-GOOGLE_CLOUD_PROJECT="akecld-prd-pim-saas-dev"
-GOOGLE_CLOUD_FIRESTORE_PROJECT="akecld-prd-pim-fire-eur-dev"
-GOOGLE_DOMAIN="ci.pim.akeneo.cloud"
-GOOGLE_CLUSTER_NAME="akecld-prd-pim-saas-dev-europe-west1"
-GOOGLE_CLUSTER_REGION="europe-west1"
-GOOGLE_ZONE="europe-west1-b"
+GOOGLE_CLOUD_PROJECT="akecld-prd-pim-saas-demo"
+GOOGLE_CLOUD_FIRESTORE_PROJECT="akecld-prd-pim-fire-eur-demo"
+GOOGLE_DOMAIN="demo.pim.akeneo.cloud"
+GOOGLE_CLUSTER_NAME="akecld-prd-pim-saas-demo-europe-west3"
+GOOGLE_CLUSTER_REGION="europe-west3"
+GOOGLE_ZONE="europe-west3-b"
 LOCATION="EU"
-PREFIX_CLUSTER="eur-w-1"
+PREFIX_CLUSTER="eur-w-3"
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 $SCRIPT_DIR/generate_values_file.sh \

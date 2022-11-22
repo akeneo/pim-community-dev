@@ -1,3 +1,8 @@
+locals {
+  network_data           = jsondecode(data.google_secret_manager_secret_version.network_config.secret_data)[var.region]
+  master_ipv4_cidr_block = var.master_ipv4_cidr_block == null ? local.network_data.extra_ranges[var.master_ipv4_cidr_block_name] : var.master_ipv4_cidr_block
+}
+
 resource "google_project_iam_member" "gke_container_dev" {
   for_each = toset(var.cluster_developers)
   project  = var.project
@@ -10,7 +15,7 @@ resource "google_project_iam_member" "gke_container_dev" {
 #tfsec:ignore:google-gke-enforce-pod-security-policy
 resource "google_container_cluster" "gke" {
   project                  = var.project
-  name                     = "${data.google_project.current.project_id}-${var.region}"
+  name                     = var.name == null ? "${data.google_project.current.project_id}-${var.region}" : var.name
   location                 = var.region
   network                  = data.google_compute_network.shared_vpc.self_link
   subnetwork               = data.google_compute_subnetwork.gke.self_link
@@ -30,13 +35,14 @@ resource "google_container_cluster" "gke" {
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
-    master_ipv4_cidr_block  = var.master_ipv4_cidr_block ## TODO: replace when fixed
-    #master_ipv4_cidr_block = jsondecode(
-    #  data.google_secret_manager_secret_version.network_config.secret_data
-    #)[each.value].extra_ranges.gke
+    master_ipv4_cidr_block  = local.master_ipv4_cidr_block
     master_global_access_config {
       enabled = var.enable_master_global_access
     }
+  }
+
+  default_snat_status {
+    disabled = true
   }
 
   master_authorized_networks_config {
@@ -59,6 +65,17 @@ resource "google_container_cluster" "gke" {
     }
     config_connector_config {
       enabled = var.enable_config_connector
+    }
+  }
+
+  dynamic "maintenance_policy" {
+    for_each = toset(var.maintenance_policy != null ? [true] : [])
+    content {
+      recurring_window {
+        start_time = var.maintenance_policy.start_time
+        end_time   = var.maintenance_policy.end_time
+        recurrence = var.maintenance_policy.recurrence
+      }
     }
   }
 

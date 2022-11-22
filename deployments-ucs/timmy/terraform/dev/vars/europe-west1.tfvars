@@ -1,6 +1,6 @@
 region                = "europe-west1"
 bucket_location       = "EU"
 firestore_project_id  = "akecld-prd-pim-fire-eur-dev"
-region_prefix         = "eur-w-1b"
+region_prefix         = "eur-w-1"
 google_zone           = "europe-west1-b"
 shared_project_id     = "akecld-prd-pim-saas-shared"

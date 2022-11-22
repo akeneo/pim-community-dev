@@ -1,4 +1,5 @@
 resource "google_cloudbuild_trigger" "pr-trigger" {
+  count           = var.trigger_on_pr ? 1 : 0
   name            = "${var.trigger_name}-plan"
   project         = var.project_id
   service_account = "projects/${var.project_id}/serviceAccounts/${var.cloudbuild_service_account}"

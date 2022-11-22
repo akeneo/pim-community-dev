@@ -580,6 +580,7 @@ jobs:
 
               CLOUD_FUNCTION_NAME="${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-srnt-job-publisher-${IMAGE_TAG_DATE}"
               CLOUD_FUNCTION_BUCKET="${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-srnt-job-publisher-${IMAGE_TAG_DATE}"
+              CLOUD_FUNCTION_GSA="pim-cloud-function@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> $BASH_ENV
@@ -604,6 +605,7 @@ jobs:
               echo export SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB=${SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB} >> $BASH_ENV
               echo export CLOUD_FUNCTION_NAME=${CLOUD_FUNCTION_NAME} >> $BASH_ENV
               echo export CLOUD_FUNCTION_BUCKET=${CLOUD_FUNCTION_BUCKET} >> $BASH_ENV
+              echo export CLOUD_FUNCTION_GSA=${CLOUD_FUNCTION_GSA} >> $BASH_ENV
         - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${PIM_NAMESPACE}"
@@ -647,6 +649,7 @@ jobs:
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscriptionJobQueueScheduledJob "${SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.serviceAccountEmail "${CLOUD_FUNCTION_GSA}"CLOUD_FUNCTION_GSA
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.jobsPrefix "${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-pim-job"
 
               ## Charts
@@ -840,9 +843,9 @@ jobs:
                         exit 0
                       fi
 
-                      FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-timmy-create-tenant
+                      FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-timmy-create-tenant
                       if [ -n "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
-                        FUNCTION_NAME=${GOOGLE_ZONE_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
+                        FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
                       fi
                       TENANT_STATUS_CODE=0
                       JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'

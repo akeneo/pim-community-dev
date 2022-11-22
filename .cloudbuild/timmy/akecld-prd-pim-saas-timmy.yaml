@@ -23,7 +23,7 @@ steps:
           echo "*************** TERRAFORM PLAN ******************"
           echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
           echo "*************************************************"
-          terraform init -backend-config=./backends/${_GOOGLE_CLUSTER_REGION}.hcl -reconfigure  -no-color
+          terraform init -backend-config="prefix=timmy/${_GOOGLE_PROJECT_ID}/${_GOOGLE_CLUSTER_REGION}" -reconfigure  -no-color
           terraform workspace select ${BRANCH_NAME} || terraform workspace new ${BRANCH_NAME}
           terraform  plan -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME}
         else
@@ -47,7 +47,7 @@ steps:
             echo "*************** TERRAFORM APPLY ******************"
             echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
             echo "*************************************************"
-            terraform init -backend-config=./backends/${_GOOGLE_CLUSTER_REGION}.hcl -reconfigure  -no-color
+            terraform init -backend-config="prefix=timmy/${_GOOGLE_PROJECT_ID}/${_GOOGLE_CLUSTER_REGION}" -reconfigure  -no-color
             terraform workspace select ${BRANCH_NAME} || terraform workspace new ${BRANCH_NAME}
             terraform  apply -input=false -auto-approve  -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME} -no-color
           else

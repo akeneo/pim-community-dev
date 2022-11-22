@@ -1,0 +1,65 @@
+steps:
+- id: 'tf sec'
+  name: 'aquasec/tfsec'
+  entrypoint: 'sh'
+  dir: deployments-ucs/infra/terraform/pim-saas-env/${_MODULE}
+  args:
+  - '-c'
+  - |
+      tfsec . -m MEDIUM
+- id: 'tf init'
+  name: 'hashicorp/terraform:1.1.3'
+  entrypoint: 'sh'
+  dir: deployments-ucs/infra/terraform/pim-saas-env/${_MODULE}
+  args:
+  - '-c'
+  - |
+      echo "*************** TERRAFORM INIT *******************"
+      echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
+      echo "**************************************************"
+      terraform init -no-color -reconfigure -backend-config="bucket=${_TF_BUCKET}" -backend-config="prefix=${_BACKEND_PREFIX}"
+- id: 'tf plan'
+  name: 'hashicorp/terraform:1.1.3'
+  entrypoint: 'sh'
+  dir: deployments-ucs/infra/terraform/pim-saas-env/${_MODULE}
+  args:
+  - '-c'
+  - |
+      echo "*************** TERRAFORM PLAN *******************"
+      echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
+      echo "**************************************************"
+      terraform plan -no-color -var-file=../../${_ENV}/all.tfvars -var-file=../../${_ENV}/${_MODULE}.tfvars || exit 1
+- id: 'tf apply'
+  name: 'hashicorp/terraform:1.1.3'
+  entrypoint: 'sh'
+  dir: deployments-ucs/infra/terraform/pim-saas-env/${_MODULE}
+  args:
+  - '-c'
+  - |
+      if [ "${_TF_APPLY}" == "true" ]; then
+        echo "*************** TERRAFORM APPLY ******************"
+        echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
+        echo "**************************************************"
+        terraform apply -no-color -auto-approve -var-file=../../${_ENV}/all.tfvars -var-file=../../${_ENV}/${_MODULE}.tfvars || exit 1
+      fi
+- id: 'gke gateway'
+  name: "${_PIM_DEPLOYER_IMAGE}"
+  dir: "deployments-ucs"
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+      if [ "${_TF_APPLY}" == "true" ]; then
+        # Set cluster authentication
+        gcloud config set auth/impersonate_service_account ${_TARGET_IMPERSONATE}
+        gcloud config set project ${_GOOGLE_PROJECT_ID}
+        gcloud container clusters get-credentials ${_CLUSTER_NAME} --project=${_GOOGLE_PROJECT_ID} --region=${_REGION}
+        gcloud container clusters update ${_CLUSTER_NAME} --region=${_REGION} --project ${_GOOGLE_PROJECT_ID} --gateway-api=standard
+      fi
+options:
+  env:
+    - 'TF_IN_AUTOMATION=true'
+    - 'GOOGLE_IMPERSONATE_SERVICE_ACCOUNT=${_TARGET_IMPERSONATE}'
+    - 'TF_VAR_region=${_REGION}'
+    - 'TF_VAR_name=${_CLUSTER_NAME}'
+logsBucket: '${_LOGS_BUCKET}'

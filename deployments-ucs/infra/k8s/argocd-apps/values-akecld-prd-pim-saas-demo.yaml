@@ -1,0 +1,13 @@
+spec:
+  destination:
+    googleProject: akecld-prd-pim-saas-demo
+    publicDomains: 
+    - demo.pim.akeneo.cloud
+    privateDomains: 
+    - pim-saas-demo.demo.local
+argocd:
+  privateDomain: pim-saas-demo.demo.local
+  publicDomain: demo.pim.akeneo.cloud
+gateways:
+  externalHttp:
+    gatewayClassName: gke-l7-gxlb

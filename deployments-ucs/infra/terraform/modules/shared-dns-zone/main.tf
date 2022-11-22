@@ -27,13 +27,16 @@ resource "google_project_iam_custom_role" "forward_role" {
   title       = "DNS Forwading role"
   description = "DNS Forwading role"
   permissions = [
+    "dns.changes.create",
+    "dns.changes.get",
+    "dns.changes.list",
     "dns.managedZones.get",
     "dns.managedZones.list",
     "dns.resourceRecordSets.create",
     "dns.resourceRecordSets.delete",
     "dns.resourceRecordSets.get",
     "dns.resourceRecordSets.list",
-    "dns.resourceRecordSets.update"
+    "dns.resourceRecordSets.update",
   ]
 }
 

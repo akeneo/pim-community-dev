@@ -300,7 +300,7 @@ pim:
     bucket: null # Generated
     sourceCodeZip: publisher-pim-job.zip
     timeZone: "Europe/Paris"
-    serviceAccountEmail: pim-cloud-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
+    serviceAccountEmail: null # Generated
   tenantContextEncryption:
     enabled: true
     encryptionKeySecretName: TENANT_CONTEXT_ENCRYPTION_KEY

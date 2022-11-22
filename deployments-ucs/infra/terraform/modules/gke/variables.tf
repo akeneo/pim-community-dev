@@ -3,6 +3,12 @@ variable "project" {
   type        = string
 }
 
+variable "name" {
+  description = "Name of the cluster"
+  type        = string
+  default     = null
+}
+
 variable "host_project_id" {
   description = "project_id of the host project which host the shared VPC"
   type        = string
@@ -118,4 +124,21 @@ variable "min_master_version" {
 variable "master_ipv4_cidr_block" {
   type        = string
   description = "Master subnet, to be removed"
+  default     = null
+}
+
+variable "master_ipv4_cidr_block_name" {
+  type        = string
+  description = "Master subnet name"
+  default     = "gke"
+}
+
+variable "maintenance_policy" {
+  type = object({
+    start_time = string
+    end_time   = string
+    recurence  = string
+  })
+  description = "Maintenance policy"
+  default     = null
 }

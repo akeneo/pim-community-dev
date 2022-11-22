@@ -67,7 +67,14 @@ jobs:
                   rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west1.sh
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west3.sh
+
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
+
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west3.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-us-central1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-australia-southeast1.sh
+
                   cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 
                   # tenant

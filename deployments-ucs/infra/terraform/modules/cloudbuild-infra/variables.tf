@@ -1,8 +1,3 @@
-variable "project_id" {
-  type        = string
-  description = "Default Project ID"
-}
-
 variable "trigger_name" {
   type        = string
   description = "Name for the trigger (should be unique in the same cloud build project)"
@@ -28,21 +23,57 @@ variable "cloudbuild_github_org" {
 variable "cloudbuild_github_repository" {
   type        = string
   description = "Github repository"
+  default     = "pim-enterprise-dev"
 }
 
 variable "cloudbuild_github_branch" {
   type        = string
   description = "Github branch"
+  default     = "master"
+}
+
+variable "cloudbuild_project_id" {
+  type    = string
+  default = "akecld-prd-pim-saas-shared"
 }
 
 variable "cloudbuild_service_account" {
   type        = string
   description = "The service account used for all user-controlled operations including triggers.patch, triggers.run, builds.create, and builds.cancel."
+  default     = null
 }
 
+variable "logs_bucket" {
+  type        = string
+  description = "Logs bucket url"
+}
+
+variable "substitutions" {
+  type        = map(string)
+  description = "Substitutions"
+  default     = {}
+}
+
+variable "approval_required" {
+  type        = bool
+  description = "Approval required"
+  default     = true
+}
+
+variable "trigger_on_push" {
+  type        = bool
+  description = "Trigger on push to branch"
+  default     = true
+}
 
 variable "trigger_on_pr" {
   type        = bool
-  description = "Enable trigers on PR"
-  default     = true
+  description = "Trigger on PR to branch"
+  default     = false
+}
+
+variable "tags" {
+  type        = list(string)
+  description = "List of trigger tags"
+  default     = []
 }
