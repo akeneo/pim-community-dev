@@ -103,9 +103,9 @@ module "timmy_create_tenant" {
 
   secret_environment_variables = [
     {
-      key        = local.argocd_password_secret_name
+      key        = "ARGOCD_PASSWORD"
       project_id = var.project_id
-      secret     = "ARGOCD_PASSWORD"
+      secret     = local.argocd_password_secret_name
       version    = "latest"
     },
     {
@@ -156,9 +156,9 @@ module "timmy_delete_tenant" {
 
   secret_environment_variables = [
     {
-      key        = local.argocd_password_secret_name
+      key        = "ARGOCD_PASSWORD"
       project_id = var.project_id
-      secret     = "ARGOCD_PASSWORD"
+      secret     = local.argocd_password_secret_name
       version    = "latest"
     },
   ]
