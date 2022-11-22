@@ -155,3 +155,21 @@ services:
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
+
+    Akeneo\Catalogs\Infrastructure\Command\PerformanceFixtureCommand:
+        arguments:
+            $channelFactory: '@pim_catalog.factory.channel'
+            $channelUpdater: '@pim_catalog.updater.channel'
+            $channelSaver: '@pim_catalog.saver.channel'
+            $attributeFactory: '@pim_catalog.factory.attribute'
+            $attributeUpdater: '@pim_catalog.updater.attribute'
+            $attributeSaver: '@pim_catalog.saver.attribute'
+            $productMessageBus: '@pim_enrich.product.message_bus'
+            $tokenStorage: '@security.token_storage'
+            $esClient: '@akeneo_elasticsearch.client.product_and_product_model'
+            $productRepository: '@pim_catalog.repository.product'
+            $userFactory: '@pim_user.factory.user'
+            $userUpdater: '@pim_user.updater.user'
+            $userSaver: '@pim_user.saver.user'
+            $validator: '@validator'
+

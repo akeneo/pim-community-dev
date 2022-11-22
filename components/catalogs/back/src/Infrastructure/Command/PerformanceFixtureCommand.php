@@ -3,24 +3,30 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Command;
 
-use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Saver\ChannelSaverInterface;
+use Akeneo\Channel\Infrastructure\Component\Updater\ChannelUpdater;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
-use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
+use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
+use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Factory\UserFactory;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Akeneo\UserManagement\Component\Updater\UserUpdater;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
@@ -28,15 +34,16 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PerformanceFixtureCommand extends Command implements ContainerAwareInterface
+class PerformanceFixtureCommand extends Command
 {
     private const NUMBER_OF_PRODUCTS = 100;
     private const NUMBER_OF_MAPPED_ATTRIBUTES = 100;
@@ -45,11 +52,24 @@ class PerformanceFixtureCommand extends Command implements ContainerAwareInterfa
     protected static $defaultDescription = 'Do not run this command in production env. Installs fixtures for dev only.';
 
     public function __construct(
-        private ContainerInterface $container,
         private ConnectedAppFactory $connectedAppFactory,
         private CommandBus $commandBus,
         private UserRepositoryInterface $userRepository,
         private Connection $connection,
+        private SimpleFactoryInterface $channelFactory,
+        private ChannelUpdater $channelUpdater,
+        private ChannelSaverInterface $channelSaver,
+        private AttributeFactory $attributeFactory,
+        private AttributeUpdater $attributeUpdater,
+        private AttributeSaver $attributeSaver,
+        private MessageBusInterface $productMessageBus,
+        private TokenStorageInterface $tokenStorage,
+        private Client $esClient,
+        private ProductRepositoryInterface $productRepository,
+        private UserFactory $userFactory,
+        private UserUpdater $userUpdater,
+        private SaverInterface $userSaver,
+        private ValidatorInterface $validator,
     ) {
         parent::__construct();
     }
@@ -193,14 +213,14 @@ class PerformanceFixtureCommand extends Command implements ContainerAwareInterfa
     protected function createChannel(string $code, array $locales = [], array $currencies = ['USD']): void
     {
         /** @var ChannelInterface $channel */
-        $channel = $this->container->get('pim_catalog.factory.channel')->create();
-        $this->container->get('pim_catalog.updater.channel')->update($channel, [
+        $channel = $this->channelFactory->create();
+        $this->channelUpdater->update($channel, [
             'code' => $code,
             'locales' => $locales,
             'currencies' => $currencies,
             'category_tree' => 'master',
         ]);
-        $this->container->get('pim_catalog.saver.channel')->save($channel);
+        $this->channelSaver->save($channel);
     }
 
     protected function createAttribute(array $data): void
@@ -209,56 +229,15 @@ class PerformanceFixtureCommand extends Command implements ContainerAwareInterfa
             'group' => 'other',
         ], $data);
 
-        $options = $data['options'] ?? [];
-        unset($data['options']);
-
-        $attribute = $this->container->get('pim_catalog.factory.attribute')->create();
-        $this->container->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $this->container->get('pim_catalog.saver.attribute')->save($attribute);
-
-        if ([] !== $options) {
-            $this->createAttributeOptions($attribute, $options);
-        }
-    }
-
-    private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
-    {
-        $factory = $this->container->get('pim_catalog.factory.attribute_option');
-        $locales = \array_map(
-            static fn ($locale) => $locale['code'],
-            $this->container->get(GetLocalesQueryInterface::class)->execute()
-        );
-
-        $options = [];
-
-        foreach ($codes as $i => $code) {
-            /** @var AttributeOptionInterface $option */
-            $option = $factory->create();
-            $option->setCode(\strtolower(\trim(\preg_replace('/[^A-Za-z0-9-]+/', '_', $code))));
-            $option->setAttribute($attribute);
-            $option->setSortOrder($i);
-
-            foreach ($locales as $locale) {
-                $value = new AttributeOptionValue();
-                $value->setOption($option);
-                $value->setLocale($locale);
-                $value->setLabel($code);
-
-                $option->addOptionValue($value);
-            }
-
-            $options[] = $option;
-        }
-
-        $this->container->get('pim_catalog.saver.attribute_option')->saveAll($options);
+        $attribute = $this->attributeFactory->create();
+        $this->attributeUpdater->update($attribute, $data);
+        $this->attributeSaver->save($attribute);
     }
 
     protected function createProduct(string|UuidInterface $identifier, array $intents = [], ?int $userId = null): AbstractProduct
     {
-        $bus = $this->container->get('pim_enrich.product.message_bus');
-
         if (null === $userId) {
-            $user = $this->container->get('security.token_storage')->getToken()?->getUser();
+            $user = $this->tokenStorage->getToken()?->getUser();
             \assert($user instanceof UserInterface);
             $userId = $user->getId();
         }
@@ -282,11 +261,11 @@ class PerformanceFixtureCommand extends Command implements ContainerAwareInterfa
                 ),
             );
 
-        $bus->dispatch($command);
+        $this->productMessageBus->dispatch($command);
 
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->esClient->refreshIndex();
 
-        return $this->container->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        return $this->productRepository->findOneByIdentifier($identifier);
     }
 
     protected function createUser(string $username, ?array $groups = null, ?array $roles = null): UserInterface
@@ -307,13 +286,13 @@ class PerformanceFixtureCommand extends Command implements ContainerAwareInterfa
             $userPayload['roles'] = $roles;
         }
 
-        $user = $this->container->get('pim_user.factory.user')->create();
-        $this->container->get('pim_user.updater.user')->update($user, $userPayload);
+        $user = $this->userFactory->create();
+        $this->userUpdater->update($user, $userPayload);
 
-        $violations = $this->container->get('validator')->validate($user);
+        $violations = $this->validator->validate($user);
         Assert::count($violations, 0);
 
-        $this->container->get('pim_user.saver.user')->save($user);
+        $this->userSaver->save($user);
 
         return $user;
     }
@@ -326,10 +305,5 @@ class PerformanceFixtureCommand extends Command implements ContainerAwareInterfa
                 'id' => Uuid::fromString($id)->getBytes(),
             ]
         );
-    }
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 }
