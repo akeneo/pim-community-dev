@@ -13,7 +13,7 @@ describe('TimeToEnrichDashboard', () => {
     expect(await screen.findByText('10')).toBeInTheDocument();
 
     act(() => {
-      userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.open_control_panel'));
+      userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.configure'));
     });
 
     expect(screen.getByText('akeneo.performance_analytics.control_panel.close_control_panel')).toBeInTheDocument();
@@ -22,22 +22,20 @@ describe('TimeToEnrichDashboard', () => {
   it('validates the control panel filters', async () => {
     await renderWithProviders(<TimeToEnrichDashboard />);
 
-    userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.open_control_panel'));
+    userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.configure'));
 
     const validateFiltersButton = screen.getByTestId('validate-filters');
     act(() => {
       userEvent.click(validateFiltersButton);
     });
 
-    expect(
-      await screen.findByText('akeneo.performance_analytics.control_panel.open_control_panel')
-    ).toBeInTheDocument();
+    expect(await screen.findByText('akeneo.performance_analytics.control_panel.configure')).toBeInTheDocument();
   });
 
   it('changes the filter period value', async () => {
     await renderWithProviders(<TimeToEnrichDashboard />);
 
-    userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.open_control_panel'));
+    userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.configure'));
 
     const [metricInput, aggregationInput, periodInput] = await screen.findAllByRole('textbox');
     expect(metricInput).toBeInTheDocument();
@@ -55,15 +53,13 @@ describe('TimeToEnrichDashboard', () => {
       userEvent.click(validateFiltersButton);
     });
 
-    expect(
-      await screen.findByText('akeneo.performance_analytics.control_panel.open_control_panel')
-    ).toBeInTheDocument();
+    expect(await screen.findByText('akeneo.performance_analytics.control_panel.configure')).toBeInTheDocument();
   });
 
   it('renders the dashboard with opened control panel', async () => {
     await renderWithProviders(<TimeToEnrichDashboard />);
 
-    const openControlPanelButton = screen.getByText('akeneo.performance_analytics.control_panel.open_control_panel');
+    const openControlPanelButton = screen.getByText('akeneo.performance_analytics.control_panel.configure');
     expect(openControlPanelButton).toBeInTheDocument();
 
     expect(screen.queryByText('akeneo.performance_analytics.control_panel.title')).not.toBeInTheDocument();
@@ -77,6 +73,6 @@ describe('TimeToEnrichDashboard', () => {
     expect(
       await screen.findByText('akeneo.performance_analytics.control_panel.close_control_panel')
     ).toBeInTheDocument();
-    expect(screen.queryByText('akeneo.performance_analytics.control_panel.open_control_panel')).not.toBeInTheDocument();
+    expect(screen.queryByText('akeneo.performance_analytics.control_panel.configure')).not.toBeInTheDocument();
   });
 });

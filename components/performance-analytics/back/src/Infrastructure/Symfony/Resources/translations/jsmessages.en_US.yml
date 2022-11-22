@@ -7,14 +7,15 @@ akeneo.performance_analytics:
         tooltip_compared_period: compared to the previous period
         tooltip_compared_period_same: Same compared to the previous period
     control_panel:
-        title: Control panel
+        title: Configure analytics
+        configure: Configure
         open_control_panel: Open control panel
         close_control_panel: Close control panel
-        metric_title: What do we compare?
-        period_title: On which period?
+        metric_title: Display
+        period_title: From
         grouped_by: grouped by
-        compare_title: Compared to what?
-        filtered_on_title: Filtered on?
+        compare_title: Compared to
+        filtered_on_title: Filtered by
         select_input:
             metrics:
                 time_to_enrich: Time to enrich

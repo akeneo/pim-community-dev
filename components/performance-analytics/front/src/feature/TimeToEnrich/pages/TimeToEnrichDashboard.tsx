@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {AddingValueIllustration, Information, SectionTitle, Button} from 'akeneo-design-system';
+import {AddingValueIllustration, Information, SectionTitle, Button, PanelCloseIcon} from 'akeneo-design-system';
 import {TimeToEnrichChartLegend, TimeToEnrichControlPanel, TimeToEnrichHistoricalChart} from '../components';
 import {getEndDate, getPeriodType, getStartDate, TimeToEnrich, TimeToEnrichFilters} from '../models';
 import {AkeneoSpinner, defaultFilters, useFetchers} from '../../Common';
@@ -67,7 +67,11 @@ const TimeToEnrichDashboard: FC = () => {
         </SectionTitle.Title>
         <SectionTitle.Spacer />
         <Button ghost={true} size={'small'} level={'secondary'} onClick={handleControlPanelClick}>
-          {!isControlPanelOpen && <>{translate('akeneo.performance_analytics.control_panel.open_control_panel')}</>}
+          {!isControlPanelOpen && (
+            <>
+              {translate('akeneo.performance_analytics.control_panel.configure')} <PanelCloseIcon size={20} />
+            </>
+          )}
           {isControlPanelOpen && <>{translate('akeneo.performance_analytics.control_panel.close_control_panel')}</>}
         </Button>
       </SectionTitle>
