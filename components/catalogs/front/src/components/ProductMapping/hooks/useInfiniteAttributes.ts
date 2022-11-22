@@ -34,16 +34,18 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
             const _page = pageParam?.number || 1;
             const _search = search || pageParam?.search || '';
 
-            const response = await fetch(
-                `/rest/catalogs/attributes?page=${_page}&limit=${limit}&search=${_search}&types=${ALLOWED_ATTRIBUTE_TYPES.join(
-                    ','
-                )}`,
-                {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                }
-            );
+            const queryParameters = new URLSearchParams({
+                page: _page.toString(),
+                limit: limit.toString(),
+                search: _search,
+                types: ALLOWED_ATTRIBUTE_TYPES.join(','),
+            }).toString();
+
+            const response = await fetch('/rest/catalogs/attributes?' + queryParameters, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
 
             const attributes: Attribute[] = await response.json();
 

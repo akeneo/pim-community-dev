@@ -73,7 +73,7 @@ test('it displays an existing product mapping', async () => {
                     productMapping={productMapping}
                     productMappingSchema={productMappingSchema}
                     errors={{}}
-                    onChange={values => null}
+                    onChange={() => null}
                 />
             </QueryClientProvider>
         </ThemeProvider>
@@ -167,7 +167,7 @@ test('it displays error pills when mapping is incorrect', async () => {
                     productMapping={productMapping}
                     productMappingSchema={productMappingSchema}
                     errors={mappingErrors}
-                    onChange={values => null}
+                    onChange={() => null}
                 />
             </QueryClientProvider>
         </ThemeProvider>
@@ -192,6 +192,13 @@ test('it updates the state when a source is selected', async () => {
             json: {
                 code: 'erp_name',
                 label: 'pim erp name',
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/variation_name',
+            json: {
+                code: 'variation_name',
+                label: 'Variation name',
             },
         },
         {
@@ -281,7 +288,7 @@ test('it updates the state when a source is selected', async () => {
     fireEvent.click(await screen.findByText('pim erp name'));
     expect(await screen.findByText('akeneo_catalogs.product_mapping.source.title')).toBeInTheDocument();
     fireEvent.mouseDown(await screen.findByTestId('product-mapping-select-attribute'));
-    expect(await screen.findByTitle('akeneo_catalogs.product_selection.add_criteria.search')).toBeInTheDocument();
+    expect(await screen.findByTitle('akeneo_catalogs.product_mapping.source.select_source.search')).toBeInTheDocument();
     fireEvent.click(await screen.findByText('Variant Name'));
 
     expect(onChange).toHaveBeenCalledWith({

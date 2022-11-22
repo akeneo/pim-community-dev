@@ -19,7 +19,6 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
-    const [isInvalid] = useState<boolean>(false);
     const {data: attributes, fetchNextPage} = useInfiniteAttributes({search});
     const {data: attribute} = useAttribute(code);
 
@@ -49,7 +48,6 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
                         value={attribute?.label ?? (code.length > 0 ? `[${code}]` : '')}
                         onChange={() => null}
                         clearable={false}
-                        invalid={isInvalid}
                         data-testid='product-mapping-select-attribute'
                     ></SelectInput>
                     {isOpen && (
