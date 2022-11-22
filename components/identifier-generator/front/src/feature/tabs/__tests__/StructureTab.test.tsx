@@ -2,6 +2,7 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
 import {StructureTab} from '../StructureTab';
 import {PROPERTY_NAMES, Structure} from '../../models';
+import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../structure/AddPropertyButton');
 
@@ -51,7 +52,7 @@ describe('StructureTab', () => {
     expect(screen.getAllByText('original value')).toHaveLength(2); // Preview + Line
     fireEvent.click(screen.getAllByText('original value')[1]);
     expect(screen.getByText('pim_identifier_generator.structure.settings.free_text.title')).toBeInTheDocument();
-    expect(screen.getByTitle('original value')).toBeInTheDocument;
+    expect(screen.getByTitle('original value')).toBeInTheDocument();
     fireEvent.change(screen.getByTitle('original value'), {target: {value: 'updated value'}});
     expect(onStructureChange).toBeCalledWith(expect.any(Array));
   });
@@ -60,12 +61,7 @@ describe('StructureTab', () => {
     const onStructureChange = jest.fn();
     render(
       <StructureTab
-        initialStructure={[
-          {
-            type: PROPERTY_NAMES.FREE_TEXT,
-            string: 'original value',
-          },
-        ]}
+        initialStructure={initialGenerator.structure}
         delimiter={null}
         onStructureChange={onStructureChange}
       />
@@ -96,5 +92,38 @@ describe('StructureTab', () => {
     expect(screen.getByText('pim_identifier_generator.list.confirmation')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_common.cancel'));
     expect(screen.queryByText('pim_identifier_generator.list.confirmation')).not.toBeInTheDocument();
+  });
+
+  it('should not display add property button when limit is reached', () => {
+    render(
+      <StructureTab
+        initialStructure={[
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+        ]}
+        delimiter={null}
+        onStructureChange={jest.fn()}
+      />
+    );
+    expect(screen.queryByText('AddPropertyButtonMock')).not.toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.structure.limit_reached')).toBeInTheDocument();
   });
 });

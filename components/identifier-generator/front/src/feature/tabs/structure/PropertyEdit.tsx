@@ -14,13 +14,13 @@ export type PropertyEditFieldsProps<T extends Property> = React.FC<{
   onChange: (property: T) => void;
 }>;
 
+const components = {
+  [PROPERTY_NAMES.FREE_TEXT]: FreeTextEdit,
+  [PROPERTY_NAMES.AUTO_NUMBER]: AutoNumberEdit,
+};
+
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {
   const translate = useTranslate();
-
-  const components = {
-    [PROPERTY_NAMES.FREE_TEXT]: FreeTextEdit,
-    [PROPERTY_NAMES.AUTO_NUMBER]: AutoNumberEdit,
-  };
 
   const Component = components[selectedProperty.type] as PropertyEditFieldsProps<Property>;
 
