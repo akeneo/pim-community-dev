@@ -22,7 +22,7 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange}) 
             locale: null,
             scope: null
         });
-    }, [target, onChange]);
+    }, [onChange]);
 
     return (
         <>

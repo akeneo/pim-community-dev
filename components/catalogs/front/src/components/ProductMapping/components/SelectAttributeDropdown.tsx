@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useMemo, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {Dropdown, Field, GroupsIllustration, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteAttributes} from '../hooks/useInfiniteAttributes';
@@ -19,7 +19,7 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
-    const [isInvalid, setIsInvalid] = useState<boolean>(false);
+    const [isInvalid] = useState<boolean>(false);
     const {data: attributes, fetchNextPage} = useInfiniteAttributes({search});
     const {data: attribute} = useAttribute(code);
 
@@ -31,8 +31,7 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
         [onChange]
     );
 
-    const handlePreventSelect = useCallback(
-        (e) => {
+    const handlePreventSelect = useCallback(e => {
             e.preventDefault();
             setIsOpen(true);
         },

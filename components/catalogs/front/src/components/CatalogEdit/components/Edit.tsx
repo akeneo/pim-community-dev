@@ -70,7 +70,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
     /* istanbul ignore next */
     const handleMappingChange = useCallback(
         value => {
-            dispatch({type: CatalogFormActions.SET_PRODUCT_MAPPING, value: value})
+            dispatch({type: CatalogFormActions.SET_PRODUCT_MAPPING, value: value});
         },
         [dispatch]
     );
