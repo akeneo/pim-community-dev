@@ -36,7 +36,7 @@ const useEditCategoryForm = (categoryId: number) => {
   const [applyPermissionsOnChildren, setApplyPermissionsOnChildren] = useState(true);
 
   const [historyVersion, setHistoryVersion] = useState<number>(0);
-  const {setCanLeavePage, locales} = useContext(EditCategoryContext);
+  const {setCanLeavePage, channels, locales} = useContext(EditCategoryContext);
 
   const isModified =
     useCategoryResult.status === 'fetched' &&
@@ -82,7 +82,7 @@ const useEditCategoryForm = (categoryId: number) => {
     const response = await saveEditCategoryForm(router, categoryEdited, {
       applyPermissionsOnChildren,
       populateResponseCategory: (category: EnrichCategory) =>
-        populateCategory(category, template!, Object.keys(locales)),
+        populateCategory(category, template!, Object.keys(channels), Object.keys(locales)),
     });
 
     if (response.success) {
@@ -99,6 +99,7 @@ const useEditCategoryForm = (categoryId: number) => {
     initializeEditionState,
     translate,
     notify,
+    channels,
     locales,
     template,
   ]);
