@@ -35,7 +35,7 @@ class SetTextApplierSpec extends ObjectBehavior
             value: 'Meta shoes',
             uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
             code: 'seo_meta_description',
-            channel: null,
+            channel: 'ecommerce',
             locale: 'en_US'
         );
 
@@ -51,6 +51,7 @@ class SetTextApplierSpec extends ObjectBehavior
         $userIntent = new SetText(
             '69e251b3-b876-48b5-9c09-92f54bfb528d',
             'seo_meta_description',
+            'ecommerce',
             'en_US',
             'New Meta shoes'
         );
@@ -60,7 +61,7 @@ class SetTextApplierSpec extends ObjectBehavior
                 value: 'New Meta shoes',
                 uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 code: 'seo_meta_description',
-                channel: null,
+                channel: 'ecommerce',
                 locale: 'en_US'
             )
         ]);

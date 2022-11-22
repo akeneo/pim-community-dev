@@ -44,8 +44,8 @@ class LocalizeValueUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         $this->validate([
             new SetLabel('fr_FR', 'libelle'),
             new SetLabel('en_US', 'label'),
-            new SetTextArea('uuid', 'code', 'en_US', 'value'),
-            new SetTextArea('uuid', 'title', 'en_US', 'Title'),
+            new SetTextArea('uuid', 'code', 'ecommerce', 'en_US', 'value'),
+            new SetTextArea('uuid', 'title', 'ecommerce', 'en_US', 'Title'),
         ], new LocalizeValueUserIntentsShouldBeUnique());
     }
 
@@ -61,9 +61,9 @@ class LocalizeValueUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         $this->validate([
             new SetLabel('locale', 'libelle'),
             new SetLabel('locale', 'label'),
-            new SetTextArea('uuid', 'code', 'same_code_locale', 'value'),
-            new SetTextArea('uuid-uuid', 'title', 'en_US', 'Title'),
-            new SetTextArea('uuid', 'code', 'same_code_locale', 'other value'),
+            new SetTextArea('uuid', 'code', 'ecommerce', 'same_code_locale', 'value'),
+            new SetTextArea('uuid-uuid', 'title', 'ecommerce', 'en_US', 'Title'),
+            new SetTextArea('uuid', 'code', 'ecommerce', 'same_code_locale', 'other value'),
         ], new LocalizeValueUserIntentsShouldBeUnique());
     }
 }

@@ -14,6 +14,8 @@ interface ValueImageUserIntent extends UserIntent
 
     public function attributeCode(): string;
 
+    public function channelCode(): ?string;
+
     public function localeCode(): ?string;
 
     /**

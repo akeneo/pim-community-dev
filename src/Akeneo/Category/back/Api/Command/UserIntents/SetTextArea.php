@@ -11,10 +11,11 @@ namespace Akeneo\Category\Api\Command\UserIntents;
 final class SetTextArea implements ValueUserIntent
 {
     public function __construct(
-        private string $attributeUuid,
-        private string $attributeCode,
-        private ?string $localeCode,
-        private string $value,
+        private readonly string $attributeUuid,
+        private readonly string $attributeCode,
+        private readonly ?string $channelCode,
+        private readonly ?string $localeCode,
+        private readonly string $value,
     ) {
     }
 
@@ -26,6 +27,11 @@ final class SetTextArea implements ValueUserIntent
     public function attributeCode(): string
     {
         return $this->attributeCode;
+    }
+
+    public function channelCode(): ?string
+    {
+        return $this->channelCode;
     }
 
     public function localeCode(): ?string

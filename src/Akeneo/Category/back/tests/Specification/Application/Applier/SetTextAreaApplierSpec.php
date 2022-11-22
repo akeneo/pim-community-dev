@@ -33,7 +33,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             value: "Meta".PHP_EOL." shoes",
             uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
             code: 'seo_meta_description',
-            channel: null,
+            channel: 'ecommerce',
             locale: 'en_US'
         );
 
@@ -49,6 +49,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
         $userIntent = new SetTextArea(
             '69e251b3-b876-48b5-9c09-92f54bfb528d',
             'seo_meta_description',
+            'ecommerce',
             'en_US',
             "New Meta".PHP_EOL." shoes"
         );
@@ -58,7 +59,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
                 value: "New Meta".PHP_EOL." shoes",
                 uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 code: 'seo_meta_description',
-                channel: null,
+                channel: 'ecommerce',
                 locale: 'en_US'
             )
         ]);
