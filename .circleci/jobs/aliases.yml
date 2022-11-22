@@ -32,7 +32,7 @@ envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
   CLUSTER_NAME_NEXT: "akecld-prd-pim-saas-dev-europe-west3"
   GOOGLE_CLUSTER_REGION_NEXT: "europe-west3"
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
-GOOGLE_REGION_PREFIX_NEXT: "eur-w-3"
+  GOOGLE_REGION_PREFIX_NEXT: "eur-w-3"
 
 dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent # cloudDeployer version used in prod (used for lastest release deployement)
   docker:
