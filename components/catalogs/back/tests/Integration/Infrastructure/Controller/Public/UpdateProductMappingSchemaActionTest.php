@@ -56,7 +56,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
+            $this->getProductMappingSchemaV002(),
         );
 
         $response = $this->client->getResponse();
@@ -67,7 +67,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')
         );
         Assert::assertJsonStringEqualsJsonString(
-            $this->getValidSchemaData(),
+            $this->getProductMappingSchemaV002(),
             \json_encode($productMappingSchema, JSON_THROW_ON_ERROR)
         );
     }
@@ -89,7 +89,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
+            $this->getProductMappingSchemaV002(),
         );
 
         $response = $this->client->getResponse();
@@ -111,7 +111,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
+            $this->getProductMappingSchemaV002(),
         );
 
         $response = $this->client->getResponse();
@@ -139,7 +139,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
+            $this->getProductMappingSchemaV002(),
         );
 
         $response = $this->client->getResponse();
@@ -201,7 +201,10 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         Assert::assertEquals(422, $response->getStatusCode());
     }
 
-    public function testItCreateTheProductMapping(): void
+    /**
+     * @dataProvider validVersionedProductMappingSchemaProvider
+     */
+    public function testItCreatesTheProductMapping(string $productMappingSchema, $expectedProductMapping): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
@@ -221,34 +224,60 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
+            $productMappingSchema,
         );
 
         /** @var Catalog $catalog */
         $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $expectedProductMapping = [
-            'uuid' => [
-                'source' => 'uuid',
-                'locale' => null,
-                'scope' => null,
-            ],
-            'name' => [
-                'source' => null,
-                'locale' => null,
-                'scope' => null,
-            ],
-            'body_html' => [
-                'source' => null,
-                'locale' => null,
-                'scope' => null,
-            ],
-        ];
-
         Assert::assertEquals($expectedProductMapping, $catalog->getProductMapping());
     }
 
-    public function testItUpdateTheProductMapping(): void
+    public function validVersionedProductMappingSchemaProvider(): array
+    {
+        return [
+            'v0.0.1' => [
+                'productMappingSchema' => $this->getProductMappingSchemaV001(),
+                'expectedProductMapping' => [
+                    'name' => [
+                        'source' => null,
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                    'body_html' => [
+                        'source' => null,
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+            'v0.0.2' => [
+                'productMappingSchema' => $this->getProductMappingSchemaV002(),
+                'expectedProductMapping' => [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                    'name' => [
+                        'source' => null,
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                    'body_html' => [
+                        'source' => null,
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider validVersionedProductMappingSchemaProviderWithMoreAndLessTargets
+     */
+    public function testItUpdatesTheProductMapping(string $productMappingSchema, $expectedProductMapping): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
@@ -288,26 +317,8 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaDataWithMoreAndLessTargets(),
+            $productMappingSchema,
         );
-
-        $expectedProductMapping = [
-            'uuid' => [
-                'source' => 'uuid',
-                'locale' => null,
-                'scope' => null,
-            ],
-            'name' => [
-                'source' => 'Title',
-                'locale' => 'en_US',
-                'scope' => 'ecommerce',
-            ],
-            'name_from_erp' => [
-                'source' => null,
-                'locale' => null,
-                'scope' => null,
-            ],
-        ];
 
         /** @var Catalog $catalog */
         $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
@@ -315,7 +326,72 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         Assert::assertEquals($expectedProductMapping, $catalog->getProductMapping());
     }
 
-    private function getValidSchemaData(): string
+    public function validVersionedProductMappingSchemaProviderWithMoreAndLessTargets(): array
+    {
+        return [
+            'v0.0.1' => [
+                'productMappingSchema' => $this->getProductMappingSchemaV001WithMoreAndLessTargets(),
+                'expectedProductMapping' => [
+                    'name' => [
+                        'source' => 'Title',
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                    ],
+                    'name_from_erp' => [
+                        'source' => null,
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+            'v0.0.2' => [
+                'productMappingSchema' => $this->getProductMappingSchemaV002WithMoreAndLessTargets(),
+                'expectedProductMapping' => [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                    'name' => [
+                        'source' => 'Title',
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                    ],
+                    'name_from_erp' => [
+                        'source' => null,
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    private function getProductMappingSchemaV001(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "body_html": {
+              "title": "Description",
+              "description": "Product description in raw HTML",
+              "type": "string"
+            }
+          }
+        }
+        JSON_WRAP;
+    }
+
+    private function getProductMappingSchemaV002(): string
     {
         return <<<'JSON_WRAP'
         {
@@ -342,7 +418,31 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         JSON_WRAP;
     }
 
-    private function getValidSchemaDataWithMoreAndLessTargets(): string
+    private function getProductMappingSchemaV001WithMoreAndLessTargets(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "name_from_erp": {
+              "title": "ERP Name",
+              "description": "Name from the ERP",
+              "type": "string"
+            }
+          }
+        }
+        JSON_WRAP;
+    }
+
+    private function getProductMappingSchemaV002WithMoreAndLessTargets(): string
     {
         return <<<'JSON_WRAP'
         {
