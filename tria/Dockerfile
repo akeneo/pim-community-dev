@@ -161,7 +161,7 @@ RUN mkdir var && \
         --no-dev \
         --prefer-dist \
         --optimize-autoloader && \
-    composer dump-env prod && \
+    COMPOSER_ALLOW_SUPERUSER=1 composer dump-env prod  && \
     bin/console pim:installer:assets --clean && \
     yarnpkg install && \
     yarnpkg run update-extensions && \
