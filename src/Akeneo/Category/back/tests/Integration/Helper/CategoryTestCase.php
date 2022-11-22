@@ -237,7 +237,7 @@ class CategoryTestCase extends TestCase
                 new AttributeCode('banner_image'),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(true),
-                AttributeIsScopable::fromBoolean(false),
+                AttributeIsScopable::fromBoolean(true),
                 AttributeIsLocalizable::fromBoolean(false),
                 LabelCollection::fromArray(['en_US' => 'Banner image']),
                 $templateUuid,
