@@ -118,7 +118,9 @@ class GetProductsAction
 
         return new JsonResponse([
             'products' => $this->normalizeProductsList($products, $columnCollection, $catalog),
-            'family' => $catalog['code'] //TODO: will be changed when we will have multiple families per job configuration
+            'family' => $catalog['code'], //TODO: will be changed when we will have multiple families per job configuration
+            'catalog' => $catalog['uuid'],
+            'marketingChannel' => $catalog['connected_channel_code']
         ]);
     }
 
@@ -135,9 +137,11 @@ class GetProductsAction
             return [
                 'identifier' => sprintf('product_%s', $connectorProduct->uuid()),
                 'type' => null === $connectorProduct->parentProductModelCode() ? 'simple' : 'child',
-                'rootParentCode' => $connectorProduct->parentProductModelCode() ?? null,
+                'rootParentCode' => $connectorProduct->parentProductModelCode() ? sprintf('product_model_%s', $connectorProduct->parentProductModelCode()) : null,
                 'values' => $values,
                 'family' => $catalog['code'], //TODO: will be changed when we will have multiple families per job configuration
+                'catalog' => $catalog['uuid'],
+                'marketingChannel' => $catalog['connected_channel_code'],
             ];
         }, $connectorProducts);
 
