@@ -23,6 +23,7 @@ catalogs-fixtures:
 
 .PHONY: catalogs-tests
 catalogs-tests:
+	$(MAKE) catalogs-cs-back
 	$(MAKE) catalogs-lint-back
 	$(MAKE) catalogs-coupling-back
 	$(MAKE) catalogs-coverage-back
@@ -43,16 +44,31 @@ ifneq ($(CI),true)
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 endif
-	$(PHP_RUN) vendor/bin/rector process $(RECTOR_ARGS) --dry-run \
-		--config=$(CATALOGS_PATH)/back/rector.php
-	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run \
-		--config=$(CATALOGS_PATH)/back/.php_cs.php
 	$(PHP_RUN) vendor/bin/phpstan analyse \
 		--configuration $(CATALOGS_PATH)/back/phpstan.neon \
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
 	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) -c $(CATALOGS_PATH)/back/psalm.xml
 	$(PHP_RUN) bin/console lint:container
+
+.PHONY: catalogs-lint-back-ee
+catalogs-lint-back:
+ifneq ($(CI),true)
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+endif
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--configuration $(CATALOGS_PATH)/back/phpstan.neon \
+		--level=8 \
+		$(CATALOGS_PATH)/back/src
+	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) -c $(CATALOGS_PATH)/back/psalm.xml
+
+.PHONY: catalogs-cs-back
+catalogs-cs-back:
+	$(PHP_RUN) vendor/bin/rector process $(RECTOR_ARGS) --dry-run \
+		--config=$(CATALOGS_PATH)/back/rector.php
+	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run \
+		--config=$(CATALOGS_PATH)/back/.php_cs.php
 
 .PHONY: catalogs-coupling-back
 catalogs-coupling-back:

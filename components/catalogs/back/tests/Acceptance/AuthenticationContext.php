@@ -95,6 +95,7 @@ class AuthenticationContext implements Context
     private function addAllPermissionsUserGroup(string $group): void
     {
         $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
             group: $group,
             permissions: [
@@ -109,6 +110,7 @@ class AuthenticationContext implements Context
             ]
         );
         $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
             group: $group,
             permissions: [
@@ -123,6 +125,7 @@ class AuthenticationContext implements Context
             ]
         );
         $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
             group: $group,
             permissions: [

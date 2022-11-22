@@ -16,7 +16,8 @@ final class ProductWasCompletedOnChannelLocale
         private ProductUuid $productUuid,
         private \DateTimeImmutable $completedAt,
         private string $channelCode,
-        private string $localeCode
+        private string $localeCode,
+        private ?string $authorId
     ) {
     }
 
@@ -38,5 +39,10 @@ final class ProductWasCompletedOnChannelLocale
     public function localeCode(): string
     {
         return $this->localeCode;
+    }
+
+    public function authorId(): ?string
+    {
+        return $this->authorId;
     }
 }

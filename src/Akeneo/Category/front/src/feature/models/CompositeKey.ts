@@ -1,4 +1,4 @@
-import {LocaleCode} from '@akeneo-pim-community/shared';
+import {LocaleCode, ChannelCode} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
 
 // a composite key points on some attribute value in a category data structure
@@ -10,9 +10,13 @@ export type CompositeKeyWithoutLocale = string;
 
 const COMPOSITE_KEY_SEPARATOR = '|';
 
-export function buildCompositeKey(attribute: Attribute, localeCode: LocaleCode | null = null): CompositeKey {
+export function buildCompositeKey(attribute: Attribute, channelCode: ChannelCode | null = null, localeCode: LocaleCode | null = null): CompositeKey {
   const {code, uuid} = attribute;
   const components = [code, uuid];
+
+  if (channelCode && attribute.is_scopable) {
+    components.push(channelCode);
+  }
 
   if (localeCode && attribute.is_localizable) {
     components.push(localeCode);
