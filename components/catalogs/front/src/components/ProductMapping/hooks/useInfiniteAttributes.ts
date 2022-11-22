@@ -1,5 +1,5 @@
 import {useCallback} from 'react';
-import {useInfiniteQuery} from 'react-query';
+import {useInfiniteQuery, useQueryClient} from 'react-query';
 import {Attribute} from '../../../models/Attribute';
 
 type PageParam = {
@@ -30,6 +30,8 @@ const ALLOWED_ATTRIBUTE_TYPES = [
 
 export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {}): Result => {
 
+    const queryClient = useQueryClient();
+
     const fetchAttributes = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
@@ -43,6 +45,11 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
             });
 
             const attributes: Attribute[] = await response.json();
+
+            Object.entries(attributes).forEach(
+                ([, attribute]) => queryClient.setQueryData(['attribute', attribute.code], attribute)
+            );
+
             return {
                 data: attributes,
                 page: {
@@ -51,7 +58,7 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
                 },
             };
         },
-        [search, limit]
+        [search, limit, queryClient]
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(['attributes', {search: search, limit: limit, types: ALLOWED_ATTRIBUTE_TYPES}], fetchAttributes, {

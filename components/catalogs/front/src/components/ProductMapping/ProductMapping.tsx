@@ -46,7 +46,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         setSelectedTarget(targetCode);
         setSelectedTargetLabel(productMappingSchema?.properties[targetCode]?.title ?? targetCode);
         setSelectedSource(source);
-    }, [selectedTarget]);
+    }, [productMappingSchema]);
 
     const handleSourceUpdate = useCallback((source: Source) => {
         if (selectedTarget !== null) {
@@ -56,7 +56,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             });
             setSelectedSource(source);
         }
-    }, [selectedTarget, onChange]);
+    }, [selectedTarget, onChange, productMapping]);
 
     const targets = Object.entries(productMapping ?? {});
 
