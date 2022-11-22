@@ -22,7 +22,7 @@ workflows:
                     - build_ucs
           - test_deploy_timmy:
                 requires:
-                    - checkout
+                    - test_unit_timmy
           - test_deploy_ucs_tenant:
                 requires:
                     - test_deploy_ucs_pim
@@ -93,6 +93,13 @@ workflows:
                 name: checkout_without_build
                 requires:
                     - ready_to_build_without_build?
+          - test_unit_timmy:
+              requires:
+                - build_ucs
+          - test_unit_timmy:
+                name: test_unit_timmy_without_build
+                requires:
+                  - build_ucs_without_build
           - build_ucs_env_vars:
                 name: build_ucs_without_build
                 requires:
@@ -104,7 +111,7 @@ workflows:
           - test_deploy_timmy:
                 name: test_deploy_timmy_without_build
                 requires:
-                    - checkout_without_build
+                    - test_unit_timmy_without_build
           - test_deploy_ucs_tenant:
                 name: test_deploy_ucs_tenant_without_build
                 requires:
