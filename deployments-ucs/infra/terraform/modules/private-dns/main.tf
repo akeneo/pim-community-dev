@@ -1,4 +1,3 @@
-#tfsec:ignore:google-dns-enable-dnssec No dnssec for private zones
 resource "google_dns_managed_zone" "private_zone" {
   project     = var.project_id
   name        = replace(var.zone_name, ".", "-")
@@ -23,4 +22,7 @@ resource "google_dns_managed_zone" "private_zone" {
     enable_logging = false
   }
 
+  dnssec_config {
+    state = "off"
+  }
 }
