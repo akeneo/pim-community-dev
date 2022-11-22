@@ -135,6 +135,40 @@ class TableValuesSpec extends ObjectBehavior
         ]);
     }
 
+    function it_denormalizes_a_table_row_with_numeric_codes(
+        TableConfigurationRepository $tableConfigurationRepository,
+        GetAttributes $getAttributes
+    ) {
+        $tableConfigurationRepository->getByAttributeCode('100')->shouldBeCalled()->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('10'), 'code' => '10', 'is_required_for_completeness' => true]),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('30'), 'code' => '20']),
+                BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('30'), 'code' => '30']),
+            ])
+        );
+        $getAttributes->forCode('100')->shouldBeCalled()->willReturn($this->getTableAttribute('100', false, false));
+
+        // xlsx import files may return numeric codes
+        $item = [
+            'product' => 11111,
+            'attribute' => 100,
+            10 => '12',
+            20 => 50,
+            30 => 0,
+        ];
+        $this->convert($item)->shouldBe([
+            'entity' => '11111',
+            'attribute_code' => '100',
+            'locale' => null,
+            'scope' => null,
+            'row_values' => [
+                '10' => '12',
+                '20' => 50,
+                '30' => false,
+            ],
+        ]);
+    }
+
     function it_denormalizes_a_localizable_table_row(GetAttributes $getAttributes)
     {
         $item = [

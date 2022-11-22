@@ -50,7 +50,7 @@ final class TableValues implements ArrayConverterInterface
         $this->fieldsRequirementChecker->checkFieldsPresence($item, [$this->entityType, self::ATTRIBUTE_COLUMN]);
         $this->fieldsRequirementChecker->checkFieldsFilling($item, [$this->entityType, self::ATTRIBUTE_COLUMN]);
 
-        $attributeParts = \explode('-', $item[self::ATTRIBUTE_COLUMN]);
+        $attributeParts = \explode('-', (string) $item[self::ATTRIBUTE_COLUMN]);
         $attribute = $this->getAttributes->forCode($attributeParts[0]);
 
         if (null === $attribute) {
@@ -74,7 +74,7 @@ final class TableValues implements ArrayConverterInterface
         }
 
         return [
-            'entity' => $item[$this->entityType],
+            'entity' => (string) $item[$this->entityType],
             'attribute_code' => $attribute->code(),
             'locale' => $locale,
             'scope' => $scope,
@@ -93,12 +93,12 @@ final class TableValues implements ArrayConverterInterface
         $unknownColumns = [];
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->code());
         foreach ($rowValues as $columnCode => $value) {
-            if ('' === $value) {
+            if ('' === \trim((string) $value)) {
                 unset($rowValues[$columnCode]);
                 continue;
             }
 
-            $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
+            $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString((string) $columnCode));
             if ($column instanceof BooleanColumn) {
                 if (\trim((string) $value) === '1') {
                     $rowValues[$columnCode] = true;
