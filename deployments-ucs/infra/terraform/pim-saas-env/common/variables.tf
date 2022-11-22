@@ -2,6 +2,10 @@ variable "project_id" {
   type = string
 }
 
+variable "regions" {
+  type = list(string)
+}
+
 variable "firestore_locations" {
   type = map(string)
 }

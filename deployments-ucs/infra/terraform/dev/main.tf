@@ -40,29 +40,31 @@ module "firestore_us" {
 module "secrets" {
   source     = "../modules/secrets"
   project_id = local.project_id
-  secrets = [
+  secrets    = [
     {
-      name = "ARGOCD_USERNAME"
-      members = [
-        "serviceAccount:${module.iam.portal_function_sa_email}"
-      ]
-
-      labels = {
-        usage = "argocd"
-      }
-    },
-    {
-      name = "ARGOCD_PASSWORD"
+      name    = "EUROPE_WEST1_ARGOCD_PASSWORD"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ],
 
       labels = {
-        usage = "argocd"
+        usage  = "argocd"
+        region = "europe-west1"
       }
     },
     {
-      name = "MAILER_API_KEY"
+      name    = "EUROPE_WEST3_ARGOCD_PASSWORD"
+      members = [
+        "serviceAccount:${module.iam.portal_function_sa_email}"
+      ],
+
+      labels = {
+        usage  = "argocd"
+        region = "europe-west3"
+      }
+    },
+    {
+      name    = "MAILER_API_KEY"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -71,7 +73,7 @@ module "secrets" {
       }
     },
     {
-      name = "TIMMY_PORTAL"
+      name    = "TIMMY_PORTAL"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -80,7 +82,7 @@ module "secrets" {
       }
     },
     {
-      name = "TENANT_CONTEXT_ENCRYPTION_KEY"
+      name    = "TENANT_CONTEXT_ENCRYPTION_KEY"
       members = [
         "serviceAccount:${module.iam.pim_sa_email}"
       ]
