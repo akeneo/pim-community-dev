@@ -137,7 +137,6 @@ module "timmy_create_tenant" {
     SOURCE_REPO_URL                = "https://github.com/akeneo/pim-saas-k8s-artifacts.git"
     TENANT_CONTEXT_COLLECTION_NAME = var.tenant_context_collection_name
   }
-
 }
 
 module "timmy_delete_tenant" {
@@ -240,11 +239,12 @@ module "timmy_cloudscheduler" {
 }
 
 module "timmy_datadog" {
-  source                     = "../modules/datadog"
-  project_id                 = var.project_id
-  datadog_api_key            = local.datadog_api_key
-  datadog_app_key            = local.datadog_app_key
-  region                     = var.region
+  source             = "../modules/datadog"
+  project_id         = var.project_id
+  datadog_api_key    = local.datadog_api_key
+  datadog_app_key    = local.datadog_app_key
+  region             = var.region
+  prefix_branch_name = local.prefix_branch_name
 }
 
 terraform {

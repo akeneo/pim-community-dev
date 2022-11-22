@@ -74,5 +74,5 @@ module "datadog_pubsub_destination" {
   log_sink_writer_identity = "serviceAccount:${data.google_service_account.timmy_datadog_gcp_integration.email}"
   project_id               = var.project_id
   push_endpoint            = "https://gcp-intake.logs.datadoghq.eu/v1/input/${var.datadog_api_key}/"
-  topic_name               = "${var.region}-timmy-datadog-sink"
+  topic_name               = substr("${var.region}${var.prefix_branch_name}-timmy-datadog-sink", 0, 63)
 }

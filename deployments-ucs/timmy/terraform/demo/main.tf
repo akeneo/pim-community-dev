@@ -239,11 +239,12 @@ module "timmy_cloudscheduler" {
 }
 
 module "timmy_datadog" {
-  source                     = "../modules/datadog"
-  project_id                 = var.project_id
-  datadog_api_key            = local.datadog_api_key
-  datadog_app_key            = local.datadog_app_key
-  region                     = var.region
+  source             = "../modules/datadog"
+  project_id         = var.project_id
+  datadog_api_key    = local.datadog_api_key
+  datadog_app_key    = local.datadog_app_key
+  region             = var.region
+  prefix_branch_name = local.prefix_branch_name
 
 }
 

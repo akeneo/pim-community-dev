@@ -14,3 +14,7 @@ variable "datadog_app_key" {
 variable "region" {
   type = string
 }
+
+variable "prefix_branch_name" {
+  type = string
+}
