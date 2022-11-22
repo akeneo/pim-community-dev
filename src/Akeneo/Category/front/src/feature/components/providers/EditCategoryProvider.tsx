@@ -1,7 +1,7 @@
 import React, {createContext, FC, useEffect} from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {fromPairs} from 'lodash/fp';
-import {Locale, Channel, useFeatureFlags, useFetch, useRoute} from '@akeneo-pim-community/shared';
+import {Channel, Locale, useFeatureFlags, useFetch, useRoute} from '@akeneo-pim-community/shared';
 
 type SetCanLeavePage = (canLeavePage: boolean) => void;
 

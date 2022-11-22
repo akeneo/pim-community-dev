@@ -2,6 +2,7 @@ import React, {useCallback, useState, useMemo, useContext} from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Helper} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {ChannelSelector} from "./channel";
 import {
   Attribute,
   buildCompositeKey,
@@ -56,8 +57,15 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
   const [locale, setLocale] = useState(catalogLocale);
-  const {locales} = useContext(EditCategoryContext);
+  const {locales, channels} = useContext(EditCategoryContext);
+  const catalogChannel = userContext.get('catalogChannel');
+  const [channel, setChannel] = useState(catalogChannel);
   const translate = useTranslate();
+
+  const handleChannelChange = (value: string): void => {
+    setLocale(value);
+    userContext.set('catalogLocale', value, {});
+  };
 
   const handleChange = useCallback(
     (attribute: Attribute) => (value: AttributeInputValue) => {
@@ -129,13 +137,18 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       <SectionTitle>
         <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
+        <ChannelSelector
+            value={channel}
+            values={Object.values(channels)}
+            onChange={value => {
+              setChannel(value);
+              userContext.set('catalogChannel', value, {});
+            }}
+        />
         <LocaleSelector
           value={locale}
           values={Object.values(locales)}
-          onChange={value => {
-            setLocale(value);
-            userContext.set('catalogLocale', value, {});
-          }}
+          onChange={handleChannelChange}
         />
       </SectionTitle>
       {attributeFields}
