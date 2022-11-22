@@ -19,19 +19,41 @@ use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
 use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\PerformanceAnalytics\Domain\PeriodType;
+use Webmozart\Assert\Assert;
 
 final class GetHistoricalTimeToEnrich
 {
+    /**
+     * @param ChannelCode[]|null $channelCodesFilter
+     * @param LocaleCode[]|null $localeCodesFilter
+     * @param FamilyCode[]|null $familyCodesFilter
+     * @param CategoryCode[]|null $categoryCodesFilter
+     */
     public function __construct(
         private \DateTimeImmutable $startDate,
         private \DateTimeImmutable $endDate,
         private PeriodType $aggregationPeriodType,
         private AggregationType $aggregationType,
-        private ?ChannelCode $channelFilter = null,
-        private ?LocaleCode $localeFilter = null,
-        private ?FamilyCode $familyFilter = null,
-        private ?CategoryCode $categoryFilter = null
+        private ?array $channelCodesFilter = null,
+        private ?array $localeCodesFilter = null,
+        private ?array $familyCodesFilter = null,
+        private ?array $categoryCodesFilter = null
     ) {
+        if ($this->channelCodesFilter) {
+            Assert::allIsInstanceOf($this->channelCodesFilter, ChannelCode::class);
+        }
+
+        if ($this->localeCodesFilter) {
+            Assert::allIsInstanceOf($this->localeCodesFilter, LocaleCode::class);
+        }
+
+        if ($this->familyCodesFilter) {
+            Assert::allIsInstanceOf($this->familyCodesFilter, FamilyCode::class);
+        }
+
+        if ($this->categoryCodesFilter) {
+            Assert::allIsInstanceOf($this->categoryCodesFilter, CategoryCode::class);
+        }
     }
 
     public function startDate(): \DateTimeImmutable
@@ -54,23 +76,35 @@ final class GetHistoricalTimeToEnrich
         return $this->aggregationType;
     }
 
-    public function channelFilter(): ?ChannelCode
+    /**
+     * @return ChannelCode[]|null
+     */
+    public function channelCodesFilter(): ?array
     {
-        return $this->channelFilter;
+        return $this->channelCodesFilter;
     }
 
-    public function localeFilter(): ?LocaleCode
+    /**
+     * @return LocaleCode[]|null
+     */
+    public function localeCodesFilter(): ?array
     {
-        return $this->localeFilter;
+        return $this->localeCodesFilter;
     }
 
-    public function familyFilter(): ?FamilyCode
+    /**
+     * @return FamilyCode[]|null
+     */
+    public function familyCodesFilter(): ?array
     {
-        return $this->familyFilter;
+        return $this->familyCodesFilter;
     }
 
-    public function categoryFilter(): ?CategoryCode
+    /**
+     * @return CategoryCode[]|null
+     */
+    public function categoryCodesFilter(): ?array
     {
-        return $this->categoryFilter;
+        return $this->categoryCodesFilter;
     }
 }

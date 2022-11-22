@@ -75,6 +75,8 @@ final class GetHistoricalTimeToEnrichActionIntegration extends ActionIntegration
             [['start_date' => '2022-09-30', 'end_date' => '2022-09-29', 'period_type' => 'day', 'aggregation_type' => 'families']],
             [['start_date' => '2022-09-30', 'end_date' => '2022-10-01', 'period_type' => 'day']],
             [['start_date' => '2022-09-30', 'end_date' => '2022-10-01', 'period_type' => 'day', 'aggregation_type' => 'unknown']],
+            [['start_date' => '2022-09-30', 'end_date' => '2022-10-01', 'period_type' => 'day', 'aggregation_type' => 'families', 'channels' => 'mobile,']],
+            [['start_date' => '2022-09-30', 'end_date' => '2022-10-01', 'period_type' => 'day', 'aggregation_type' => 'families', 'channels' => []]],
         ];
     }
 

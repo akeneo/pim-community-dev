@@ -17,6 +17,10 @@ use Akeneo\PerformanceAnalytics\Application\Exception\InvalidQueryException;
 use Akeneo\PerformanceAnalytics\Application\Query\GetHistoricalTimeToEnrich;
 use Akeneo\PerformanceAnalytics\Application\Query\GetHistoricalTimeToEnrichHandler;
 use Akeneo\PerformanceAnalytics\Domain\AggregationType;
+use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
+use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
+use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
+use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\PerformanceAnalytics\Domain\PeriodType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -89,11 +93,40 @@ final class GetHistoricalTimeToEnrichAction
             throw new BadRequestHttpException('The "aggregation_type" parameter is not a valid aggregation type.');
         }
 
+        $filters = [];
+        foreach (['channels', 'locales', 'families', 'categories'] as $filterName) {
+            if (null !== $request->get($filterName) && '' !== $request->get($filterName)) {
+                if (!is_string($request->get($filterName))) {
+                    throw new BadRequestHttpException(sprintf('The "%s" parameter should be a string.', $filterName));
+                }
+
+                $filters[$filterName] = explode(',', $request->get($filterName));
+                try {
+                    $filters[$filterName] = array_map(fn (string $code) => match ($filterName) {
+                        'channels' => ChannelCode::fromString($code),
+                        'locales' => LocaleCode::fromString($code),
+                        'families' => FamilyCode::fromString($code),
+                        'categories' => CategoryCode::fromString($code),
+                    }, $filters[$filterName]);
+                } catch (\Exception) {
+                    throw new BadRequestHttpException(sprintf('The "%s" parameter is not valid.', $filterName));
+                }
+            }
+        }
+
         return new GetHistoricalTimeToEnrich(
             $startDate,
             $endDate,
             $periodType,
-            $aggregationType
+            $aggregationType,
+            /* @phpstan-ignore-next-line */
+            $filters['channels'] ?? null,
+            /* @phpstan-ignore-next-line */
+            $filters['locales'] ?? null,
+            /* @phpstan-ignore-next-line */
+            $filters['families'] ?? null,
+            /* @phpstan-ignore-next-line */
+            $filters['categories'] ?? null
         );
     }
 }

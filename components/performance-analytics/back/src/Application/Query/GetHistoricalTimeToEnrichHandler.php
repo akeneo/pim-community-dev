@@ -34,10 +34,10 @@ final class GetHistoricalTimeToEnrichHandler
             $getHistoricalTimeToEnrich->endDate(),
             $getHistoricalTimeToEnrich->aggregationPeriodType(),
             $getHistoricalTimeToEnrich->aggregationType(),
-            $getHistoricalTimeToEnrich->channelFilter(),
-            $getHistoricalTimeToEnrich->localeFilter(),
-            $getHistoricalTimeToEnrich->familyFilter(),
-            $getHistoricalTimeToEnrich->categoryFilter()
+            $getHistoricalTimeToEnrich->channelCodesFilter(),
+            $getHistoricalTimeToEnrich->localeCodesFilter(),
+            $getHistoricalTimeToEnrich->familyCodesFilter(),
+            $getHistoricalTimeToEnrich->categoryCodesFilter()
         );
     }
 }

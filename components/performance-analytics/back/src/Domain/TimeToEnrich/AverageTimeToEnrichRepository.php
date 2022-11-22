@@ -26,15 +26,19 @@ interface AverageTimeToEnrichRepository
      * This method is created for historical TTE use case. To handle other TTE use cases,
      * maybe we can refactor it or create a new search method...
      * See later what is the best solution.
+     * @param ChannelCode[]|null $channelCodesFilter
+     * @param LocaleCode[]|null $localeCodesFilter
+     * @param FamilyCode[]|null $familyCodesFilter
+     * @param CategoryCode[]|null $categoryCodesFilter
      */
     public function search(
         \DateTimeImmutable $startDate,
         \DateTimeImmutable $endDate,
         PeriodType $aggregationPeriodType,
         AggregationType $aggregationType,
-        ?ChannelCode $channelFilter = null,
-        ?LocaleCode $localeFilter = null,
-        ?FamilyCode $familyFilter = null,
-        ?CategoryCode $categoryFilter = null
+        ?array $channelCodesFilter = null,
+        ?array $localeCodesFilter = null,
+        ?array $familyCodesFilter = null,
+        ?array $categoryCodesFilter = null
     ): AverageTimeToEnrichCollection;
 }

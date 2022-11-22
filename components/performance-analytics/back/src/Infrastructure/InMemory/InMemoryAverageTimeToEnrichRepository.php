@@ -14,10 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\PerformanceAnalytics\Infrastructure\InMemory;
 
 use Akeneo\PerformanceAnalytics\Domain\AggregationType;
-use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
-use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
-use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
-use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\PerformanceAnalytics\Domain\Period\Day;
 use Akeneo\PerformanceAnalytics\Domain\Period\Month;
 use Akeneo\PerformanceAnalytics\Domain\Period\Week;
@@ -30,15 +26,18 @@ use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\TimeToEnrichValue;
 
 class InMemoryAverageTimeToEnrichRepository implements AverageTimeToEnrichRepository
 {
+    /**
+     * {@inheritdoc}
+     */
     public function search(
         \DateTimeImmutable $startDate,
         \DateTimeImmutable $endDate,
         PeriodType $aggregationPeriodType,
         AggregationType $aggregationType,
-        ?ChannelCode $channelFilter = null,
-        ?LocaleCode $localeFilter = null,
-        ?FamilyCode $familyFilter = null,
-        ?CategoryCode $categoryFilter = null
+        ?array $channelCodesFilter = null,
+        ?array $localeCodesFilter = null,
+        ?array $familyCodesFilter = null,
+        ?array $categoryCodesFilter = null
     ): AverageTimeToEnrichCollection {
         $averageTimeToEnrichList = match ($aggregationPeriodType) {
             PeriodType::DAY => $this->generateRandomTimeToEnrichListByDay($startDate, $endDate),
