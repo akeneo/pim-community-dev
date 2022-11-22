@@ -12,9 +12,9 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -137,7 +137,7 @@ abstract class Attribute
      */
     public function getIdentifier(): string
     {
-        return $this->getCode().ValueCollection::SEPARATOR.$this->getUuid();
+        return $this->getCode().AbstractValue::SEPARATOR.$this->getUuid();
     }
 
     public function getAdditionalProperties(): AttributeAdditionalProperties
