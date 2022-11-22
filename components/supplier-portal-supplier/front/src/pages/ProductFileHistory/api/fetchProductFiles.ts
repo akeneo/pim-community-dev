@@ -61,6 +61,7 @@ const fetchProductFiles = async (page: number): Promise<ProductFiles> => {
             comments: comments,
             supplierLastReadAt: item.supplierLastReadAt,
             displayNewMessageIndicatorPill: displayNewMessageIndicatorPill,
+            importStatus: item.importStatus,
         };
     });
 

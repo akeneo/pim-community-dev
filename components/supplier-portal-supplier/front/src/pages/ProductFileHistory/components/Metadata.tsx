@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {ProductFile} from '../model/ProductFile';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
+import {ProductFileImportStatus} from './ProductFileImportStatus';
 
 const Metadata = ({productFile}: {productFile: ProductFile}) => {
     const intl = useIntl();
@@ -43,6 +44,14 @@ const Metadata = ({productFile}: {productFile: ProductFile}) => {
                 <FormattedMessage defaultMessage="Contributor: " id="G/2O1m" />
                 <ContributorValue>{productFile.contributor}</ContributorValue>
             </ContributorLabel>
+
+            <ImportStatusLabel>
+                <FormattedMessage defaultMessage="Status : " id="Cvsd0U" />
+                <ProductFileImportStatus
+                    importStatus={productFile.importStatus}
+                    hasComments={0 < productFile.comments.length}
+                />
+            </ImportStatusLabel>
         </div>
     );
 };
@@ -88,6 +97,14 @@ const UploadDateLabel = styled.div`
 `;
 
 const ContributorLabel = styled.div`
+    margin-top: 24px;
+    margin-left: 30px;
+    font-size: 13px;
+    line-height: 14px;
+    color: ${getColor('grey140')};
+`;
+
+const ImportStatusLabel = styled.div`
     margin-top: 24px;
     margin-left: 30px;
     font-size: 13px;

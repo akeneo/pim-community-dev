@@ -1,5 +1,5 @@
 import {Comment} from './read/Comment';
-import {ImportStatus} from "./ImportStatus";
+import {ImportStatus} from './ImportStatus';
 
 export type ProductFile = {
     identifier: string;

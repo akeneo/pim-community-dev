@@ -1,4 +1,4 @@
-import {ImportStatus} from "./ImportStatus";
+import {ImportStatus} from './ImportStatus';
 
 export type ProductFileRow = {
     identifier: string;

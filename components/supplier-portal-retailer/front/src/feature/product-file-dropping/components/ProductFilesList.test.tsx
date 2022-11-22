@@ -2,9 +2,9 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ProductFilesList} from './ProductFilesList';
-import {ProductFileRow} from '../hooks';
+import {ProductFileRow} from '../models/ProductFileRow';
 import userEvent from '@testing-library/user-event';
-import {ImportStatus} from '../models/ProductFileRow';
+import {ImportStatus} from '../models/ImportStatus';
 
 const productFilesList: ProductFileRow[] = [
     {

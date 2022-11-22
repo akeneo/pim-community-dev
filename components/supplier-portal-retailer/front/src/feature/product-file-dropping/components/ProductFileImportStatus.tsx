@@ -1,7 +1,7 @@
 import React from 'react';
 import {Badge} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {ImportStatus} from "../models/ImportStatus";
+import {ImportStatus} from '../models/ImportStatus';
 
 type Props = {importStatus: ImportStatus};
 const ProductFileImportStatus = ({importStatus}: Props) => {
