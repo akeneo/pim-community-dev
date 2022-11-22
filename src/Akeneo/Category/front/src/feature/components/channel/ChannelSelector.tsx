@@ -8,7 +8,7 @@ import {
   SwitcherButton,
   useBooleanState
 } from 'akeneo-design-system';
-import React from 'react';
+import React, {forwardRef, Ref} from 'react';
 import styled, {css} from "styled-components";
 
 const DropdownContainer = styled(Dropdown)`
@@ -17,7 +17,17 @@ const DropdownContainer = styled(Dropdown)`
   color: ${getColor('grey', 120)};
 `;
 
-const HighlightChannel = styled(Dropdown.Item)<{selected?: boolean} & AkeneoThemedProps>`
+const ChannelSpan = forwardRef<HTMLSpanElement, ChannelProps>(
+    ({code, label, ...rest}: ChannelProps, forwardedRef: Ref<HTMLSpanElement>) => {
+      return (
+          <span ref={forwardedRef} {...rest}>
+          {label || code}
+        </span>
+      );
+    }
+);
+
+const HighlightChannel = styled(ChannelSpan)<{selected?: boolean} & AkeneoThemedProps>`
   ${({selected}) =>
     selected &&
     css`
@@ -29,7 +39,14 @@ const HighlightChannel = styled(Dropdown.Item)<{selected?: boolean} & AkeneoThem
 
 const ChannelDropdownItem = styled(Dropdown.Item)`
   justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
 `;
+
+type ChannelProps = {
+  code: string;
+  label: string;
+};
 
 type ChannelSelectorProps = {
   value: ChannelCode;
@@ -47,7 +64,7 @@ const ChannelSelector = ({value, values, completeValues, onChange}: ChannelSelec
   return (
     <DropdownContainer>
       <SwitcherButton inline onClick={() => {open();}} label={translate('pim_common.channel')}>
-        <HighlightChannel code={selectedChannel.code} languageLabel={selectedChannel.labels['en_US']} />
+        <HighlightChannel code={"["+selectedChannel.code+"]"} label={selectedChannel.labels['en_US']} />
       </SwitcherButton>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>
@@ -66,13 +83,11 @@ const ChannelSelector = ({value, values, completeValues, onChange}: ChannelSelec
                     }}
                   >
                     <HighlightChannel
-                      code={channel.code}
+                      code={"["+channel.code+"]"}
                       label={channel.labels['en_US']}
+                      selected={channel.code === value}
                       key={channel.code}
-                    >
-                      {channel.labels['en_US'] || "["+channel.code+"]"}
-                    </ HighlightChannel>
-
+                    />
                     {completeValues && !completeValues.includes(channel.code) && (
                         <Pill level="warning" data-testid={`ChannelSelector.incomplete.${channel.code}`} />
                     )}
