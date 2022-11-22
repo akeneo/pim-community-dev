@@ -1,4 +1,5 @@
 locals {
+  argocd_password_secret_name          = "${upper(replace(var.region, "-", "_"))}_ARGOCD_PASSWORD"
   argocd_url                           = "https://argocd-${var.region}.${var.domain}"
   cloudscheduler_service_account_email = "timmy-deployment@${var.project_id}.iam.gserviceaccount.com"
   function_service_account_email       = "timmy-cloud-function@${var.project_id}.iam.gserviceaccount.com"
@@ -102,7 +103,7 @@ module "timmy_create_tenant" {
 
   secret_environment_variables = [
     {
-      key        = "ARGOCD_PASSWORD"
+      key        = local.argocd_password_secret_name
       project_id = var.project_id
       secret     = "ARGOCD_PASSWORD"
       version    = "latest"
@@ -155,7 +156,7 @@ module "timmy_delete_tenant" {
 
   secret_environment_variables = [
     {
-      key        = "ARGOCD_PASSWORD"
+      key        = local.argocd_password_secret_name
       project_id = var.project_id
       secret     = "ARGOCD_PASSWORD"
       version    = "latest"
