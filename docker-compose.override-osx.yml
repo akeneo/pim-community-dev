@@ -10,7 +10,7 @@ services:
     volumes:
       - 'nfsmount:/srv/pim'
 
-  fpm:
+  httpd:
     environment:
       XDEBUG_CONFIG: 'client_host=docker.for.mac.localhost client_port=9003'
     volumes:
@@ -19,10 +19,6 @@ services:
   node:
     volumes:
       - 'nfsmount:/srv/pim'
-
-  httpd:
-    volumes:
-      - 'nfsmount:/srv/pim:ro'
 
 volumes:
   nfsmount:
