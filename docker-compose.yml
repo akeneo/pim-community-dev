@@ -23,7 +23,8 @@ services:
       - 'pim'
 
   httpd:
-    image: 'akeneo/pim-php-dev:8.1'
+    #image: 'akeneo/pim-php-dev:8.1'
+    build: .
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'

@@ -101,6 +101,8 @@ jobs:
                       docker load -i php-pim-image.tar
                       APP_ENV=prod C='httpd mysql elasticsearch httpd object-storage pubsub-emulator' make up
                       docker/wait_docker_up.sh
+                      docker-compose ps
+                      docker-compose logs httpd
             - run:
                   name: Install database
                   command: APP_ENV=prod O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
