@@ -51,9 +51,10 @@ test('it fetches attributes & paginates criterion factories', async () => {
         wrapper: ReactQueryWrapper,
     });
 
-
-
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/attributes?page=1&limit=2&search=&types='+ALLOWED_ATTRIBUTE_TYPES.join(','), expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/attributes?page=1&limit=2&search=&types=' + ALLOWED_ATTRIBUTE_TYPES.join(','),
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: true,
         isError: false,
@@ -169,7 +170,7 @@ test('it searches with a string', async () => {
     await waitForNextUpdate();
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes?page=1&limit=2&search=Description&types='+ALLOWED_ATTRIBUTE_TYPES.join(','),
+        '/rest/catalogs/attributes?page=1&limit=2&search=Description&types=' + ALLOWED_ATTRIBUTE_TYPES.join(','),
         expect.any(Object)
     );
     expect(result.current).toMatchObject({

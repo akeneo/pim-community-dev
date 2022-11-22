@@ -4,20 +4,12 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {SourcePanel} from './SourcePanel';
-import {mockFetchResponses} from '../../../../tests/mockFetchResponses';
-import {ProductMapping} from '../ProductMapping';
-
 
 test('it display an placeholder if there is no target selected', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
-                <SourcePanel
-                    target={null}
-                    targetLabel={null}
-                    source={null}
-                    onChange={jest.fn()}
-                ></SourcePanel>
+                <SourcePanel target={null} targetLabel={null} source={null} onChange={jest.fn()}></SourcePanel>
             </QueryClientProvider>
         </ThemeProvider>
     );
@@ -25,16 +17,11 @@ test('it display an placeholder if there is no target selected', () => {
     expect(screen.getByText('akeneo_catalogs.product_mapping.source.placeholder.title')).toBeInTheDocument();
 });
 
-test('it display the target as a title', async () => {
+test('it display the target as a title', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
-                <SourcePanel
-                    target='erp_name'
-                    targetLabel='ERP name'
-                    source={null}
-                    onChange={jest.fn()}
-                ></SourcePanel>
+                <SourcePanel target='erp_name' targetLabel='ERP name' source={null} onChange={jest.fn()}></SourcePanel>
             </QueryClientProvider>
         </ThemeProvider>
     );

@@ -24,12 +24,9 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-const ALLOWED_ATTRIBUTE_TYPES = [
-    'text',
-];
+const ALLOWED_ATTRIBUTE_TYPES = ['text'];
 
 export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {}): Result => {
-
     const queryClient = useQueryClient();
 
     const fetchAttributes = useCallback(
@@ -38,16 +35,20 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
             const _search = search || pageParam?.search || '';
 
             const response = await fetch(
-                `/rest/catalogs/attributes?page=${_page}&limit=${limit}&search=${_search}&types=${ALLOWED_ATTRIBUTE_TYPES.join(',')}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-            });
+                `/rest/catalogs/attributes?page=${_page}&limit=${limit}&search=${_search}&types=${ALLOWED_ATTRIBUTE_TYPES.join(
+                    ','
+                )}`,
+                {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                }
+            );
 
             const attributes: Attribute[] = await response.json();
 
-            Object.entries(attributes).forEach(
-                ([, attribute]) => queryClient.setQueryData(['attribute', attribute.code], attribute)
+            Object.entries(attributes).forEach(([, attribute]) =>
+                queryClient.setQueryData(['attribute', attribute.code], attribute)
             );
 
             return {
@@ -61,16 +62,20 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
         [search, limit, queryClient]
     );
 
-    const query = useInfiniteQuery<Page, Error, Page>(['attributes', {search: search, limit: limit, types: ALLOWED_ATTRIBUTE_TYPES}], fetchAttributes, {
-        keepPreviousData: true,
-        getNextPageParam: last =>
-            last.data.length >= limit
-                ? {
-                    number: last.page.number + 1,
-                    search: search,
-                }
-                : undefined,
-    });
+    const query = useInfiniteQuery<Page, Error, Page>(
+        ['attributes', {search: search, limit: limit, types: ALLOWED_ATTRIBUTE_TYPES}],
+        fetchAttributes,
+        {
+            keepPreviousData: true,
+            getNextPageParam: last =>
+                last.data.length >= limit
+                    ? {
+                          number: last.page.number + 1,
+                          search: search,
+                      }
+                    : undefined,
+        }
+    );
 
     const hasNextPage = (!query.isFetching && !query.isLoading && query.hasNextPage) || false;
 

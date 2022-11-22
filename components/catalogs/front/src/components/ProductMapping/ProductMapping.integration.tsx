@@ -73,7 +73,7 @@ test('it displays an existing product mapping', async () => {
                     productMapping={productMapping}
                     productMappingSchema={productMappingSchema}
                     errors={{}}
-                    onChange={(values) => {}}
+                    onChange={values => null}
                 />
             </QueryClientProvider>
         </ThemeProvider>
@@ -167,7 +167,7 @@ test('it displays error pills when mapping is incorrect', async () => {
                     productMapping={productMapping}
                     productMappingSchema={productMappingSchema}
                     errors={mappingErrors}
-                    onChange={(values) => {}}
+                    onChange={values => null}
                 />
             </QueryClientProvider>
         </ThemeProvider>
@@ -175,7 +175,6 @@ test('it displays error pills when mapping is incorrect', async () => {
 
     expect(await screen.findAllByTestId('error-pill')).toHaveLength(2);
 });
-
 
 test('it updates the state when a source is selected', async () => {
     const onChange = jest.fn();
@@ -199,27 +198,27 @@ test('it updates the state when a source is selected', async () => {
             url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
             json: [
                 {
-                    "code":"name",
-                    "label":"Name",
-                    "type":"pim_catalog_text",
-                    "scopable":false,
-                    "localizable":false
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
                 },
                 {
-                    "code":"variation_name",
-                    "label":"Variant Name",
-                    "type":"pim_catalog_text",
-                    "scopable":false,
-                    "localizable":false
+                    code: 'variation_name',
+                    label: 'Variant Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
                 },
                 {
-                    "code":"ean",
-                    "label":"EAN",
-                    "type":"pim_catalog_text",
-                    "scopable":false,
-                    "localizable":false
+                    code: 'ean',
+                    label: 'EAN',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
                 },
-            ]
+            ],
         },
     ]);
 
@@ -249,14 +248,18 @@ test('it updates the state when a source is selected', async () => {
     const productMappingSchema = {
         properties: {
             uuid: {
+                type: 'string',
             },
             name: {
+                type: 'string',
             },
             body_html: {
                 title: 'Description',
+                type: 'string',
             },
             erp_name: {
                 title: 'ERP',
+                type: 'string',
             },
         },
     };

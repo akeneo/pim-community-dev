@@ -38,25 +38,31 @@ type Props = {
 export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema, errors, onChange}) => {
     const translate = useTranslate();
 
-    const [selectedTarget, setSelectedTarget] = useState<string|null>(null);
-    const [selectedTargetLabel, setSelectedTargetLabel] = useState<string|null>(null);
-    const [selectedSource, setSelectedSource] = useState<Source|null>(null);
+    const [selectedTarget, setSelectedTarget] = useState<string | null>(null);
+    const [selectedTargetLabel, setSelectedTargetLabel] = useState<string | null>(null);
+    const [selectedSource, setSelectedSource] = useState<Source | null>(null);
 
-    const handleClick = useCallback((targetCode, source) => {
-        setSelectedTarget(targetCode);
-        setSelectedTargetLabel(productMappingSchema?.properties[targetCode]?.title ?? targetCode);
-        setSelectedSource(source);
-    }, [productMappingSchema]);
-
-    const handleSourceUpdate = useCallback((source: Source) => {
-        if (selectedTarget !== null) {
-            onChange({
-                ...productMapping,
-                [selectedTarget]: source,
-            });
+    const handleClick = useCallback(
+        (targetCode, source) => {
+            setSelectedTarget(targetCode);
+            setSelectedTargetLabel(productMappingSchema?.properties[targetCode]?.title ?? targetCode);
             setSelectedSource(source);
-        }
-    }, [selectedTarget, onChange, productMapping]);
+        },
+        [productMappingSchema]
+    );
+
+    const handleSourceUpdate = useCallback(
+        (source: Source) => {
+            if (selectedTarget !== null) {
+                onChange({
+                    ...productMapping,
+                    [selectedTarget]: source,
+                });
+                setSelectedSource(source);
+            }
+        },
+        [selectedTarget, onChange, productMapping]
+    );
 
     const targets = Object.entries(productMapping ?? {});
 
