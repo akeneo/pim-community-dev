@@ -36,3 +36,14 @@ akeneo_catalogs:
                 unknown: 'The currency "{{ currency_name }}" has been deactivated. Please check your currencies settings or remove this filter.'
             locale:
                 unknown: 'The locale "{{ locale_name }}" has been deactivated. Please check your locale settings or remove this filter.'
+        product_mapping:
+            source:
+                channel:
+                    not_empty: 'This channel must be empty.'
+                    empty: 'This channel must not be empty.'
+                    unknown: 'This channel has been deactivated. Please check your channel settings or remove this source.'
+                locale:
+                    not_empty: 'This locale must be empty.'
+                    empty: 'This locale must not be empty.'
+                    unknown: 'This locale does not exist.'
+                    disabled: 'This locale is disabled for this channel. Please check your channel settings or remove this source.'

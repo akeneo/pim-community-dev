@@ -1,6 +1,6 @@
 import React, {FC, memo} from 'react';
 import styled from 'styled-components';
-import {getColor, Table} from 'akeneo-design-system';
+import {getColor, Pill, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourceLabel} from './SourceLabel';
 
@@ -13,15 +13,19 @@ const PlaceholderCell = styled(Table.Cell)`
     color: ${getColor('grey', 100)};
     font-style: italic;
 `;
+const ErrorPill = styled(Pill)`
+    margin-left: 10px;
+`;
 
 type Props = {
     targetCode: string;
     targetLabel: string | undefined;
     sourceCode: string | null;
     onClick: (targetCode: string) => void;
+    hasError: boolean;
 };
 
-export const TargetSourceAssociation: FC<Props> = memo(({targetCode, targetLabel, sourceCode, onClick}) => {
+export const TargetSourceAssociation: FC<Props> = memo(({targetCode, targetLabel, sourceCode, onClick, hasError}) => {
     const translate = useTranslate();
 
     return (
@@ -35,6 +39,7 @@ export const TargetSourceAssociation: FC<Props> = memo(({targetCode, targetLabel
             {sourceCode && (
                 <Table.Cell>
                     <SourceLabel sourceCode={sourceCode} />
+                    {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
                 </Table.Cell>
             )}
         </Table.Row>
