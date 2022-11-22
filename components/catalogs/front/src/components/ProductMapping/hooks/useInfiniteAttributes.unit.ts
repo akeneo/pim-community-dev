@@ -4,7 +4,6 @@ jest.unmock('./useInfiniteAttributes');
 
 import {act, renderHook} from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
-import {mocked} from 'ts-jest/utils';
 import {Attribute} from '../../../models/Attribute';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 
