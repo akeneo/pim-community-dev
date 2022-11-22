@@ -687,6 +687,7 @@ jobs:
               echo "argocd app sync successfull"
 
               echo "============================"
+              echo "Argocd access:"
               echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
               echo "user : admin"
               echo "password : ${ARGOCD_PASSWORD}"
@@ -831,6 +832,7 @@ jobs:
                       echo "argocd app sync successfull"
 
                       echo "============================"
+                      echo "Argocd access:"
                       echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
                       echo "user : admin"
                       echo "password : ${ARGOCD_PASSWORD}"
@@ -873,12 +875,26 @@ jobs:
                       echo "argocd app sync successfull"
 
                       echo "============================"
+                      echo "Argocd access:"
                       echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
                       echo "user : admin"
                       echo "password : ${ARGOCD_PASSWORD}"
                       echo "============================"
 
                       exit ${TENANT_STATUS_CODE}
+            - run:
+                  name: Display login information
+                  command: |
+                      # Get back the creadential to login to the pim
+                      TENANT_FQDN=$(kubectl describe application ${TENANT_ID} -n argocd | grep common.fqdn -A 1 | awk 'NR==2' | awk '{print $2}')
+                      TENANT_LOGIN=$(kubectl describe application ${TENANT_ID} -n argocd | grep pim.defaultAdminUser.login -A 1 | awk 'NR==2' | awk '{print $2}')
+                      TENANT_PASSWORD=$(kubectl describe application ${TENANT_ID} -n argocd | grep pim.defaultAdminUser.password -A 1 | awk 'NR==2' | awk '{print $2}')
+
+                      echo "============================"
+                      echo "url : https://${TENANT_FQDN}"
+                      echo "user : ${TENANT_LOGIN}"
+                      echo "password : ${TENANT_PASSWORD}"
+                      echo "============================"
             - run:
                   name: Persist env vars for next jobs
                   command: |
