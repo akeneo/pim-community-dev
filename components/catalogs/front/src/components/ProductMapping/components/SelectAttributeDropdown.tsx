@@ -12,7 +12,7 @@ const SelectAttributeDropdownField = styled(Field)`
 
 type Props = {
     code: string;
-    onChange: (value : Attribute) => void;
+    onChange: (value: Attribute) => void;
 };
 
 export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
@@ -32,17 +32,18 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
     );
 
     const handlePreventSelect = useCallback(e => {
-            e.preventDefault();
-            setIsOpen(true);
-        },
-        []
-    );
+        e.preventDefault();
+        setIsOpen(true);
+    }, []);
 
     return (
         <>
-            <SelectAttributeDropdownField label={translate('akeneo_catalogs.product_mapping.source.select_source.label')}>
+            <SelectAttributeDropdownField
+                label={translate('akeneo_catalogs.product_mapping.source.select_source.label')}
+            >
                 <Dropdown>
-                    <SelectInput onMouseDown={handlePreventSelect}
+                    <SelectInput
+                        onMouseDown={handlePreventSelect}
                         emptyResultLabel=''
                         openLabel=''
                         value={attribute?.label ?? (code.length > 0 ? `[${code}]` : '')}
@@ -50,33 +51,45 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
                         clearable={false}
                         invalid={isInvalid}
                         data-testid='product-mapping-select-attribute'
-                    >
-                    </SelectInput>
+                    ></SelectInput>
                     {isOpen && (
-                        <Dropdown.Overlay onClose={() => setIsOpen(false)} verticalPosition='down' dropdownOpenerVisible={true} fullWidth={true}>
+                        <Dropdown.Overlay
+                            onClose={() => setIsOpen(false)}
+                            verticalPosition='down'
+                            dropdownOpenerVisible={true}
+                            fullWidth={true}
+                        >
                             <Dropdown.Header>
                                 <Search
                                     onSearchChange={setSearch}
-                                    placeholder={translate('akeneo_catalogs.product_mapping.source.select_source.search')}
+                                    placeholder={translate(
+                                        'akeneo_catalogs.product_mapping.source.select_source.search'
+                                    )}
                                     searchValue={search}
                                     title={translate('akeneo_catalogs.product_mapping.source.select_source.search')}
                                 />
                             </Dropdown.Header>
                             <Dropdown.ItemCollection
                                 noResultIllustration={<GroupsIllustration />}
-                                noResultTitle={translate('akeneo_catalogs.product_mapping.source.select_source.no_results')}
+                                noResultTitle={translate(
+                                    'akeneo_catalogs.product_mapping.source.select_source.no_results'
+                                )}
                                 onNextPage={fetchNextPage}
                             >
                                 {/* attributes */}
                                 {(attributes?.length ?? 0) > 0 && (
                                     <Dropdown.Section>
-                                        {translate('akeneo_catalogs.product_mapping.source.select_source.section_attributes')}
+                                        {translate(
+                                            'akeneo_catalogs.product_mapping.source.select_source.section_attributes'
+                                        )}
                                     </Dropdown.Section>
                                 )}
                                 {attributes?.map(attribute => (
-                                    <Dropdown.Item key={attribute.code}
-                                                   onClick={() => handleAttributeSelection(attribute)}
-                                                   isActive={attribute.code === code}>
+                                    <Dropdown.Item
+                                        key={attribute.code}
+                                        onClick={() => handleAttributeSelection(attribute)}
+                                        isActive={attribute.code === code}
+                                    >
                                         {attribute.label}
                                     </Dropdown.Item>
                                 ))}

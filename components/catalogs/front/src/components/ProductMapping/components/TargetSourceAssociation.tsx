@@ -23,27 +23,29 @@ type Props = {
     targetCode: string;
     targetLabel: string | undefined;
     source: Source | null;
-    onClick: (targetCode: string, source: Source|null) => void;
+    onClick: (targetCode: string, source: Source | null) => void;
     hasError: boolean;
 };
 
-export const TargetSourceAssociation: FC<Props> = memo(({isSelected, targetCode, targetLabel, source, onClick, hasError}) => {
-    const translate = useTranslate();
+export const TargetSourceAssociation: FC<Props> = memo(
+    ({isSelected, targetCode, targetLabel, source, onClick, hasError}) => {
+        const translate = useTranslate();
 
-    return (
-        <Table.Row key={targetCode} onClick={() => onClick(targetCode, source)} isSelected={isSelected} >
-            <TargetCell>{targetLabel ?? targetCode}</TargetCell>
-            {(null === source || null === source.source) && (
-                <PlaceholderCell>
-                    {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
-                </PlaceholderCell>
-            )}
-            {null !== source && source.source && (
-                <Table.Cell>
-                    <SourceLabel sourceCode={source.source} />
-                    {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
-                </Table.Cell>
-            )}
-        </Table.Row>
-    );
-});
+        return (
+            <Table.Row key={targetCode} onClick={() => onClick(targetCode, source)} isSelected={isSelected}>
+                <TargetCell>{targetLabel ?? targetCode}</TargetCell>
+                {(null === source || null === source.source) && (
+                    <PlaceholderCell>
+                        {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
+                    </PlaceholderCell>
+                )}
+                {null !== source && source.source && (
+                    <Table.Cell>
+                        <SourceLabel sourceCode={source.source} />
+                        {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
+                    </Table.Cell>
+                )}
+            </Table.Row>
+        );
+    }
+);

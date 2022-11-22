@@ -8,9 +8,7 @@ import {mocked} from 'ts-jest/utils';
 import {Attribute} from '../../../models/Attribute';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 
-const ALLOWED_ATTRIBUTE_TYPES = [
-    'text',
-];
+const ALLOWED_ATTRIBUTE_TYPES = ['text'];
 
 test('it fetches attributes & paginates', async () => {
     const attributes: Attribute[] = [
@@ -43,7 +41,10 @@ test('it fetches attributes & paginates', async () => {
         wrapper: ReactQueryWrapper,
     });
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/attributes?page=1&limit=2&search=&types='+ALLOWED_ATTRIBUTE_TYPES.join(','), expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/attributes?page=1&limit=2&search=&types=' + ALLOWED_ATTRIBUTE_TYPES.join(','),
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: true,
         isError: false,
@@ -130,17 +131,14 @@ test('it searches with a string', async () => {
         ])
     );
 
-    const {result, waitForNextUpdate} = renderHook(
-        () => useInfiniteAttributes({search: 'Description', limit: 2}),
-        {
-            wrapper: ReactQueryWrapper,
-        }
-    );
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributes({search: 'Description', limit: 2}), {
+        wrapper: ReactQueryWrapper,
+    });
 
     await waitForNextUpdate();
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes?page=1&limit=2&search=Description&types='+ALLOWED_ATTRIBUTE_TYPES.join(','),
+        '/rest/catalogs/attributes?page=1&limit=2&search=Description&types=' + ALLOWED_ATTRIBUTE_TYPES.join(','),
         expect.any(Object)
     );
     expect(result.current).toMatchObject({

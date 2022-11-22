@@ -34,12 +34,14 @@ const ProductMappingWrapper: FC<
 > = ({catalogId, productMapping, onChange, errors}) => {
     const {data: productMappingSchema} = useProductMappingSchema(catalogId);
 
-    return <ProductMapping
-        productMapping={productMapping}
-        productMappingSchema={productMappingSchema}
-        onChange={onChange}
-        errors={errors}
-    />;
+    return (
+        <ProductMapping
+            productMapping={productMapping}
+            productMappingSchema={productMappingSchema}
+            onChange={onChange}
+            errors={errors}
+        />
+    );
 };
 
 const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
