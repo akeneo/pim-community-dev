@@ -28,9 +28,10 @@ export interface UseCategoryResponseKO extends UseCategoryResponseCommon {
 export type UseCategoryResponse = UseCategoryResponsePending | UseCategoryResponseOK | UseCategoryResponseKO;
 
 const useCategory = (categoryId: number): UseCategoryResponse => {
-  const {locales} = useContext(EditCategoryContext);
+  const {channels, locales} = useContext(EditCategoryContext);
 
   const localeCodes = useMemo(() => Object.keys(locales), [locales]);
+  const channelCodes = useMemo(() => Object.keys(channels), [channels]);
 
   const url = useRoute('pim_enriched_category_rest_get', {
     id: categoryId.toString(),
@@ -49,8 +50,8 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
   });
 
   const populatedCategory = useMemo(() => {
-    return category && template ? populateCategory(category, template, localeCodes) : null;
-  }, [category, template, localeCodes]);
+    return category && template ? populateCategory(category, template, channelCodes, localeCodes) : null;
+  }, [category, template, channelCodes, localeCodes]);
 
   if (categoryFetchingStatus === 'error') {
     return {load, status: 'error', error: categoryFetchingError!};
