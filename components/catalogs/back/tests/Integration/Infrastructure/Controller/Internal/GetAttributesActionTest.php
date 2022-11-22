@@ -94,8 +94,20 @@ class GetAttributesActionTest extends IntegrationTestCase
             'localizable' => false,
         ]);
         $this->createAttribute([
+            'code' => 'variation_name',
+            'type' => 'pim_catalog_text',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
             'code' => 'clothing_size',
             'type' => 'pim_catalog_simpleselect',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'collection',
+            'type' => 'pim_catalog_multiselect',
             'scopable' => false,
             'localizable' => false,
         ]);
@@ -103,7 +115,7 @@ class GetAttributesActionTest extends IntegrationTestCase
         $client->request(
             'GET',
             '/rest/catalogs/attributes',
-            ['types' => 'simpleselect'],
+            ['types' => 'text,simpleselect'],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -116,11 +128,27 @@ class GetAttributesActionTest extends IntegrationTestCase
         $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals([
-            'code' => 'clothing_size',
-            'label' => '[clothing_size]',
-            'type' => 'pim_catalog_simpleselect',
-            'scopable' => false,
-            'localizable' => false,
-        ], $attributes[0]);
+            [
+                'code' => 'name',
+                'label' => '[name]',
+                'type' => 'pim_catalog_text',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'variation_name',
+                'label' => '[variation_name]',
+                'type' => 'pim_catalog_text',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'clothing_size',
+                'label' => '[clothing_size]',
+                'type' => 'pim_catalog_simpleselect',
+                'scopable' => false,
+                'localizable' => false,
+            ]
+        ], $attributes);
     }
 }
