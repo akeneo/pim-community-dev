@@ -245,7 +245,6 @@ module "timmy_datadog" {
   datadog_api_key            = local.datadog_api_key
   datadog_app_key            = local.datadog_app_key
   region                     = var.region
-
 }
 
 terraform {
