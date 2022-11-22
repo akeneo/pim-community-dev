@@ -91,6 +91,7 @@
 - PIM-10721: Fix error 500 when trying to patch product with null or "" as data for record
 - PIM-10663: Fix API allows proposing changes and accepting proposals on read-only attributes
 - PIM-10717: Accept boolean value in PLRs
+- PIM-10731: Fix desindexation issue on the asset deletion with the code on the wRoNg CaSe
 - PIM-10726: Fix ProjectsRecalculationLauncher
 - PIM-10713: Hide Shared Catalog Export Profile under a Serenity FT
 - PIM-10694: Fix the PM darfts/proposals are displayed on all the PMs, and not only on the corresponding PM
