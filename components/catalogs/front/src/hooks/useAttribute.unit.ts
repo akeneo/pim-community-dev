@@ -1,5 +1,3 @@
-import {useChannel} from '../components/ProductSelection/hooks/useChannel';
-
 jest.unmock('./useAttribute');
 
 import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
