@@ -51,6 +51,7 @@ steps:
           echo "No files for ${PROJECT_ID}. Exiting"
         fi
       fi
+
 logsBucket: 'gs://${PROJECT_ID}-cloudbuild-logs'
 substitutions:
   _ENV: shared

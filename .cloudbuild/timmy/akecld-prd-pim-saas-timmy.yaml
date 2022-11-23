@@ -1,5 +1,7 @@
 steps:
-  - name: aquasec/tfsec
+  - id: tf sec
+    name: aquasec/tfsec
+    entrypoint: sh
     args:
       - '-c'
       - |
@@ -9,9 +11,9 @@ steps:
         else
           echo "No files for deployments-ucs/timmy/terraform/${_CLUSTER_ENV}. Exiting"
         fi
-    id: tf sec
+  - id: tf plan
+    name: 'hashicorp/terraform:1.1.3'
     entrypoint: sh
-  - name: 'hashicorp/terraform:1.1.3'
     env:
       - TF_IN_AUTOMATION=true
       - 'GOOGLE_IMPERSONATE_SERVICE_ACCOUNT=${_TARGET_IMPERSONATE}'
@@ -29,9 +31,9 @@ steps:
         else
           echo "No files for ${_GOOGLE_PROJECT_ID}. Exiting"
         fi
-    id: tf plan
+  - id: tf apply
+    name: 'hashicorp/terraform:1.1.3'
     entrypoint: sh
-  - name: 'hashicorp/terraform:1.1.3'
     env:
       - TF_IN_AUTOMATION=true
       - 'GOOGLE_IMPERSONATE_SERVICE_ACCOUNT=${_TARGET_IMPERSONATE}'
@@ -53,6 +55,5 @@ steps:
             echo "No files for ${_GOOGLE_PROJECT_ID}. Exiting"
           fi
         fi
-    id: tf apply
-    entrypoint: sh
+
 logsBucket: 'gs://${_GOOGLE_PROJECT_ID}-cloudbuild-logs'

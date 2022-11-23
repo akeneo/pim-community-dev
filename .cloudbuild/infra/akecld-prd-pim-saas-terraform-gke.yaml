@@ -56,6 +56,7 @@ steps:
         gcloud container clusters get-credentials ${_CLUSTER_NAME} --project=${_GOOGLE_PROJECT_ID} --region=${_REGION}
         gcloud container clusters update ${_CLUSTER_NAME} --region=${_REGION} --project ${_GOOGLE_PROJECT_ID} --gateway-api=standard
       fi
+
 options:
   env:
     - 'TF_IN_AUTOMATION=true'

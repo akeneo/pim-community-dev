@@ -42,6 +42,7 @@ steps:
         echo "**************************************************"
         terraform apply -no-color -auto-approve -var-file=../../${_ENV}/all.tfvars -var-file=../../${_ENV}/${_MODULE}.tfvars || exit 1
       fi
+
 options:
   env:
     - 'TF_IN_AUTOMATION=true'

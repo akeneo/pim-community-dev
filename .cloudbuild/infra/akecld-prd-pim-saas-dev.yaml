@@ -53,6 +53,7 @@ steps:
           echo "No files for ${_TARGET_PROJECT_ID}. Exiting"
         fi
       fi
+
 logsBucket: 'gs://${_TARGET_PROJECT_ID}-cloudbuild-logs'
 substitutions:
   _ENV: dev

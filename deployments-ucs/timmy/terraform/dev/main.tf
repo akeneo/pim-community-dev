@@ -5,24 +5,6 @@ locals {
   function_service_account_email       = "timmy-cloud-function@${var.project_id}.iam.gserviceaccount.com"
   portal_hostname                      = "wiremock-${var.region}.${var.domain}"
   prefix_branch_name                   = var.branch_name == "master" ? "" : "-${var.branch_name}"
-  datadog_api_key                      = data.google_secret_manager_secret_version.datadog_api_key.secret_data
-  datadog_app_key                      = data.google_secret_manager_secret_version.datadog_app_key.secret_data
-}
-
-data "google_secret_manager_secret_version" "datadog_api_key" {
-  secret  = "DATADOG_API_KEY"
-  project = var.shared_project_id
-}
-
-data "google_secret_manager_secret_version" "datadog_app_key" {
-  secret  = "DATADOG_APP_KEY"
-  project = var.shared_project_id
-}
-
-provider "datadog" {
-  api_key = local.datadog_api_key
-  app_key = local.datadog_app_key
-  api_url = "https://api.datadoghq.eu/"
 }
 
 module "bucket" {
@@ -248,9 +230,6 @@ terraform {
     archive = {
       source  = "hashicorp/archive"
       version = "= 2.2.0"
-    }
-    datadog = {
-      source  = "datadog/datadog"
     }
     google = {
       source  = "hashicorp/google"

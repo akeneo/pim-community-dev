@@ -14,7 +14,7 @@ steps:
             exit 1
           fi
         done
-  
+
   - id: configure gcloud
     name: "${_PIM_DEPLOYER_IMAGE}"
     dir: "deployments-ucs"
@@ -26,7 +26,7 @@ steps:
         gcloud config set auth/impersonate_service_account ${_TARGET_IMPERSONATE}
         gcloud config set project ${_GOOGLE_PROJECT_ID}
         gcloud container clusters get-credentials ${_CLUSTER_NAME} --project=${_GOOGLE_PROJECT_ID} --region=${_REGION}
-  
+
   - id: configure argocd values
     name: "${_PIM_DEPLOYER_IMAGE}"
     dir: "deployments-ucs"
@@ -63,7 +63,7 @@ steps:
 
         # Append the values file to use for the argocd apps (pim-saas-service)
         VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '(.applications.[] | select(.name != "infra-apps").source.helm.valueFiles) += env(VALUES)' argocd-apps/values.yaml
-  
+
   - id: Update helm
     name: "${_PIM_DEPLOYER_IMAGE}"
     dir: "deployments-ucs"
