@@ -18,7 +18,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     public const SUPPORTED_TYPES = [
         PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_binary_image_thumbnail_category',
         PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_binary_image_thumbnail_small_category',
-        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_binary_image_preview_category'
+        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_binary_image_preview_category',
     ];
     protected ?array $defaultImages = null;
 
@@ -43,9 +43,10 @@ class DefaultImageProvider implements DefaultImageProviderInterface
             $this->cacheManager->store(
                 $this->filterManager->applyFilter($binary, $filter),
                 $fileKey,
-                $filter
+                $filter,
             );
         }
+
         return $this->cacheManager->resolve($fileKey, $filter);
     }
 
@@ -64,7 +65,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     }
 
     /**
-     * Ensure $defaultImages parameter validity
+     * Ensure $defaultImages parameter validity.
      */
     private function configureDefaultImagesOptions(OptionsResolver $resolver): void
     {

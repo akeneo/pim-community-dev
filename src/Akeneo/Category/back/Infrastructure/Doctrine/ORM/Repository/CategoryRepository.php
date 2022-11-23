@@ -12,15 +12,13 @@ use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 /**
- * Category repository
+ * Category repository.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryRepository extends NestedTreeRepository implements
-    IdentifiableObjectRepositoryInterface,
-    CategoryRepositoryInterface
+class CategoryRepository extends NestedTreeRepository implements IdentifiableObjectRepositoryInterface, CategoryRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -251,7 +249,7 @@ class CategoryRepository extends NestedTreeRepository implements
                 }
 
                 $qb->andWhere(
-                    $qb->expr()->in('node.' . $config['parent'], $ancestorsIds)
+                    $qb->expr()->in('node.'.$config['parent'], $ancestorsIds),
                 );
 
                 if (!empty($grantedCategoryIds)) {
@@ -281,8 +279,8 @@ class CategoryRepository extends NestedTreeRepository implements
                 // Node does not exist, and none of his children has
                 // already been in the loop, so we create it.
                 $vectorMap[$node->getId()] = [
-                    'item'         => $node,
-                    $childrenIndex => []
+                    'item' => $node,
+                    $childrenIndex => [],
                 ];
             } else {
                 // Node already existing in the map because a child has been
@@ -296,13 +294,13 @@ class CategoryRepository extends NestedTreeRepository implements
                     // The parent does not exist in the map, create its
                     // children property
                     $vectorMap[$node->getParent()->getId()] = [
-                        $childrenIndex => []
+                        $childrenIndex => [],
                     ];
                 }
 
-                $vectorMap[$node->getParent()->getId()][$childrenIndex][] =& $vectorMap[$node->getId()];
+                $vectorMap[$node->getParent()->getId()][$childrenIndex][] = &$vectorMap[$node->getId()];
             } else {
-                $tree[$node->getId()] =& $vectorMap[$node->getId()];
+                $tree[$node->getId()] = &$vectorMap[$node->getId()];
             }
         }
 
@@ -321,17 +319,17 @@ class CategoryRepository extends NestedTreeRepository implements
                 $nodeEntry = $vectorMap[$nodeId];
 
                 if (isset($nodeEntry['item'])) {
-                    //$nodesByLevel[$nodeEntry['item']->getLevel()][] = $nodeIds[$i];
+                    // $nodesByLevel[$nodeEntry['item']->getLevel()][] = $nodeIds[$i];
                 } else {
-                    $tree =& $vectorMap[$nodeId][$childrenIndex];
+                    $tree = &$vectorMap[$nodeId][$childrenIndex];
                 }
-                $nodeIt++;
+                ++$nodeIt;
             }
             // $tree still empty there, means we need to pick the lowest level nodes as tree roots
             if (empty($tree)) {
                 $lowestLevel = min(array_keys($nodesByLevel));
                 foreach ($nodesByLevel[$lowestLevel] as $nodeId) {
-                    $tree[$nodeId] =& $vectorMap[$nodeId];
+                    $tree[$nodeId] = &$vectorMap[$nodeId];
                 }
             }
         }
@@ -387,10 +385,10 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Shortcut to get all children query builder
+     * Shortcut to get all children query builder.
      *
-     * @param CategoryInterface $category    the requested node
-     * @param bool              $includeNode true to include actual node in query result
+     * @param CategoryInterface $category the requested node
+     * @param bool $includeNode true to include actual node in query result
      *
      * @return QueryBuilder
      */

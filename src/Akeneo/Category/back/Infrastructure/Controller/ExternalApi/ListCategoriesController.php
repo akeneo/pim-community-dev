@@ -27,13 +27,11 @@ class ListCategoriesController extends AbstractController
         private ParameterValidatorInterface $parameterValidator,
         private FeatureFlags $featureFlags,
         private GetCategoriesInterface $getCategories,
-        private array $apiConfiguration
+        private array $apiConfiguration,
     ) {
     }
 
     /**
-     * @param Request $request
-     * @return Response|JsonResponse
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      *
      * @AclAncestor("pim_api_category_list")
@@ -65,14 +63,14 @@ class ListCategoriesController extends AbstractController
         if (null === $searchFilters) {
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
-        //TODO: Take limit, offset & order into account. https://akeneo.atlassian.net/browse/GRF-538
+        // TODO: Take limit, offset & order into account. https://akeneo.atlassian.net/browse/GRF-538
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $order = ['root' => 'ASC', 'left' => 'ASC'];
         try {
-            //TODO: Call Filtering service (to be created) instead. https://akeneo.atlassian.net/browse/GRF-538
+            // TODO: Call Filtering service (to be created) instead. https://akeneo.atlassian.net/browse/GRF-538
             $categories = $this->getCategories->byCodes(
                 $searchFilters,
-                $request->query->getBoolean('with_enriched_attributes')
+                $request->query->getBoolean('with_enriched_attributes'),
             );
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
@@ -98,7 +96,7 @@ class ListCategoriesController extends AbstractController
         $paginatedCategories = $this->paginator->paginate(
             $normalizedCategories,
             $parameters,
-            $count
+            $count,
         );
 
         return new JsonResponse($paginatedCategories);

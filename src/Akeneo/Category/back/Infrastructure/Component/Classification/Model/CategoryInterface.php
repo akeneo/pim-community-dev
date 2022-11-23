@@ -5,7 +5,7 @@ namespace Akeneo\Category\Infrastructure\Component\Classification\Model;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Category interface
+ * Category interface.
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -99,32 +99,28 @@ interface CategoryInterface
     public function isRoot();
 
     /**
-     * Add a child to this category
-     *
-     * @param CategoryInterface $child
+     * Add a child to this category.
      *
      * @return CategoryInterface
      */
     public function addChild(CategoryInterface $child);
 
     /**
-     * Remove a child from this category
-     *
-     * @param CategoryInterface $child
+     * Remove a child from this category.
      *
      * @return CategoryInterface
      */
     public function removeChild(CategoryInterface $child);
 
     /**
-     * Predicate to know if this category has children
+     * Predicate to know if this category has children.
      *
      * @return bool
      */
     public function hasChildren();
 
     /**
-     * Get children of this category
+     * Get children of this category.
      *
      * @return Collection
      */

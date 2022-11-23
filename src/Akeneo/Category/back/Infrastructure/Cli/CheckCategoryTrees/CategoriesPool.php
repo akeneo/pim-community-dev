@@ -11,7 +11,7 @@ class CategoriesPool
         $this->categories = [];
 
         foreach ($dbModels as $dbModel) {
-            $id = (int)$dbModel['id'];
+            $id = (int) $dbModel['id'];
             $this->categories[$id] = new Category($dbModel);
         }
     }

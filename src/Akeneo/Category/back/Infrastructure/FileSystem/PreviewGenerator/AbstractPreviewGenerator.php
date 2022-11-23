@@ -29,7 +29,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         protected FilterManager $filterManager,
         protected DefaultImageProviderInterface $defaultImageProvider,
         protected LoggerInterface $logger,
-        protected ?array $supportedMimeTypes = []
+        protected ?array $supportedMimeTypes = [],
     ) {
     }
 
@@ -53,9 +53,9 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
             $this->logger->notice(
                 'The preview generator for type requires a base64 encoded input.',
                 [
-                    'data'      => $data,
+                    'data' => $data,
                     'attribute' => $attribute->normalize(),
-                ]
+                ],
             );
 
             return $this->getDefaultImageUrl($type);
@@ -84,9 +84,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                 $mimeType = $binary->getMimeType();
 
                 if (!$this->supportsMimeType($mimeType)) {
-                    throw new CouldNotGeneratePreviewException(
-                        sprintf('The mime type "%s" is not supported for the preview type "%s"', $mimeType, $previewType)
-                    );
+                    throw new CouldNotGeneratePreviewException(sprintf('The mime type "%s" is not supported for the preview type "%s"', $mimeType, $previewType));
                 }
 
                 $file = $this->filterManager->applyFilter($binary, $previewType);
@@ -100,13 +98,13 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
             $this->logger->notice(
                 'Exception when trying to create a thumbnail',
                 [
-                    'data'        => $data,
-                    'attribute'   => $attribute->normalize(),
-                    'exception'   => [
-                        'type'    => $exception::class,
+                    'data' => $data,
+                    'attribute' => $attribute->normalize(),
+                    'exception' => [
+                        'type' => $exception::class,
                         'message' => $exception->getMessage(),
                     ],
-                ]
+                ],
             );
 
             throw new CouldNotGeneratePreviewException($exception->getMessage());
@@ -114,10 +112,10 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
             $this->logger->notice(
                 'Exception when trying to create a thumbnail',
                 [
-                    'data'        => $data,
-                    'attribute'   => $attribute->normalize(),
-                    'exception'   => [
-                        'type'    => $exception::class,
+                    'data' => $data,
+                    'attribute' => $attribute->normalize(),
+                    'exception' => [
+                        'type' => $exception::class,
                         'message' => $exception->getMessage(),
                     ],
                 ],
@@ -139,9 +137,9 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
             $this->logger->notice(
                 'The preview generator for type requires a base64 encoded input.',
                 [
-                    'data'      => $data,
+                    'data' => $data,
                     'attribute' => $attribute->normalize(),
-                ]
+                ],
             );
 
             return;
@@ -158,19 +156,19 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
             $this->logger->notice(
                 'Exception when trying to remove a thumbnail',
                 [
-                    'data'        => $data,
-                    'attribute'   => $attribute->normalize(),
-                    'exception'   => [
-                        'type'    => $exception::class,
+                    'data' => $data,
+                    'attribute' => $attribute->normalize(),
+                    'exception' => [
+                        'type' => $exception::class,
                         'message' => $exception->getMessage(),
                     ],
-                ]
+                ],
             );
         }
     }
 
     /**
-     * Check whether the given string is correctly encoded in base64
+     * Check whether the given string is correctly encoded in base64.
      */
     private function isBase64Encoded(string $data): bool
     {
@@ -182,8 +180,6 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
     /**
      * Create an unique filename for the given url.
      * The file extension is calculated from the preview type configuration.
-     *
-     *
      */
     private function createCacheFilename(string $url, string $type): string
     {
@@ -198,7 +194,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
             $hashedFilename[0],
             $hashedFilename[1],
             $hashedFilename[2],
-            $hashedFilename[3]
+            $hashedFilename[3],
         );
 
         return sprintf('%s%s%s', $path, $hashedFilename, $fileExtension);
