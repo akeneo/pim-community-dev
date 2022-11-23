@@ -6,16 +6,16 @@ import {
   validateLabelCollection,
   validateStructure,
   validateTarget,
-  Validator,
+  Violation,
 } from './';
 
-const validateIdentifierGenerator: Validator<IdentifierGenerator> = (identifierGenerator, path) => [
-  ...validateIdentifierGeneratorCode(identifierGenerator.code, `${path}code`),
-  ...validateTarget(identifierGenerator.target, `${path}target`),
-  ...validateLabelCollection(identifierGenerator.labels, `${path}labels`),
-  ...validateStructure(identifierGenerator.structure, `${path}structure`),
-  ...validateConditions(identifierGenerator.conditions, `${path}conditions`),
-  ...validateDelimiter(identifierGenerator.delimiter, `${path}delimiter`),
+const validateIdentifierGenerator = (identifierGenerator: IdentifierGenerator): Violation[] => [
+  ...validateIdentifierGeneratorCode(identifierGenerator.code, 'code'),
+  ...validateTarget(identifierGenerator.target, 'target'),
+  ...validateLabelCollection(identifierGenerator.labels, 'labels'),
+  ...validateStructure(identifierGenerator.structure, 'structure'),
+  ...validateConditions(identifierGenerator.conditions, 'conditions'),
+  ...validateDelimiter(identifierGenerator.delimiter, 'delimiter'),
 ];
 
 export {validateIdentifierGenerator};
