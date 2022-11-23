@@ -13,7 +13,7 @@ use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
@@ -87,7 +87,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
     {
         // Get uuids
         $categoryAttributeUuids = array_map(function (string $keyWithLocale) {
-            $uuid = explode(ValueCollection::SEPARATOR, $keyWithLocale)[1];
+            $uuid = explode(AbstractValue::SEPARATOR, $keyWithLocale)[1];
 
             return AttributeUuid::fromString($uuid);
         }, $localeCompositeKeys);
@@ -130,7 +130,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
      */
     private function addValueUserIntent(AttributeType $attributeType, array $value): UserIntent
     {
-        $identifiers = explode(ValueCollection::SEPARATOR, $value['attribute_code']);
+        $identifiers = explode(AbstractValue::SEPARATOR, $value['attribute_code']);
         if (count($identifiers) !== 2) {
             throw new \InvalidArgumentException(sprintf('Cannot set value user intent %s : no identifier found', $attributeType));
         }

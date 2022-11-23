@@ -7,6 +7,7 @@ namespace Akeneo\Category\Application\Applier;
 use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextAreaValue;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
@@ -25,12 +26,13 @@ class SetRichTextApplier implements UserIntentApplier
         }
 
         $attributes = $category->getAttributes() ?? ValueCollection::fromArray([]);
-        $attributes->setValue(
-            $userIntent->attributeUuid(),
-            $userIntent->attributeCode(),
-            $userIntent->localeCode(),
-            $userIntent->value(),
-        );
+        $attributes->setValue(TextAreaValue::fromApplier(
+            value: $userIntent->value(),
+            uuid: $userIntent->attributeUuid(),
+            code: $userIntent->attributeCode(),
+            channel: null,
+            locale: $userIntent->localeCode(),
+        ));
 
         $category->setAttributes($attributes);
     }

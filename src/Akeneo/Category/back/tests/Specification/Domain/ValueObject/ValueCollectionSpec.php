@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Domain\ValueObject;
 
+use Akeneo\Category\Domain\Model\Attribute\AttributeText;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
-use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -14,262 +15,217 @@ use PhpSpec\ObjectBehavior;
  */
 class ValueCollectionSpec extends ObjectBehavior
 {
-    public function it_get_value(): void
+    public function it_gets_value(): void
     {
-        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
-        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'en_US';
+        $givenValues = [
+            TextValue::fromApplier(
+                value: 'Meta shoes',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
+        ];
 
-        $this->beConstructedThrough('fromArray', [[
-            'attribute_codes' => [$compositeKey],
-            $localeCompositeKey => [
-                'data' => 'Meta shoes',
-                'locale' => 'en_US',
-                'attribute_code' => $compositeKey
-            ]
-        ]]);
+        $this->beConstructedThrough('fromArray', [$givenValues]);
         $this->shouldHaveType(ValueCollection::class);
 
-        $expectedValue = [
-            'data' => 'Meta shoes',
-            'locale' => 'en_US',
-            'attribute_code' => $compositeKey
-        ];
+        $expectedValue = TextValue::fromApplier(
+            value: 'Meta shoes',
+            uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            code: 'seo_meta_description',
+            channel: 'ecommerce',
+            locale: 'en_US'
+        );
 
         $this->getValue(
             attributeCode: 'seo_meta_description',
             attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            localeCode: 'en_US'
+            localeCode: 'en_US',
+            channel: 'ecommerce'
         )->shouldBeLike($expectedValue);
     }
 
     public function it_returns_null_when_value_not_found(): void
     {
-        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
-        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'en_US';
+        $givenValues = [
+            TextValue::fromApplier(
+                value: 'Meta shoes',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
+        ];
 
-        $this->beConstructedThrough('fromArray', [[
-            'attribute_codes' => [$compositeKey],
-            $localeCompositeKey => [
-                'data' => 'Meta shoes',
-                'locale' => 'en_US',
-                'attribute_code' => $compositeKey
-            ]
-        ]]);
+        $this->beConstructedThrough('fromArray', [$givenValues]);
         $this->shouldHaveType(ValueCollection::class);
 
         $this->getValue(
             attributeCode: 'seo_keyword',
             attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            localeCode: 'fr_FR'
+            localeCode: 'fr_FR',
+            channel: 'ecommerce'
         )->shouldBeLike(null);
     }
 
-    public function it_create_value_on_empty_value_collection_when_set_value(): void
+    public function it_creates_value_on_empty_value_collection_when_setting_value(): void
     {
         $this->beConstructedThrough('fromArray', [[]]);
         $this->shouldHaveType(ValueCollection::class);
 
-        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
-        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'en_US';
-
         $expectedData = ValueCollection::fromArray([
-            'attribute_codes' => [$compositeKey],
-            $localeCompositeKey => [
-                'data' => 'Meta shoes',
-                'locale' => 'en_US',
-                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
-            ]
+            TextValue::fromApplier(
+                value: 'Meta shoes',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
         ]);
 
-        $this->setValue(
-            attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            attributeCode: 'seo_meta_description',
-            localeCode: 'en_US',
-            value: 'Meta shoes'
-        )->shouldBeLike($expectedData);
+        $setValue = TextValue::fromApplier(
+            value: 'Meta shoes',
+            uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            code: 'seo_meta_description',
+            channel: 'ecommerce',
+            locale: 'en_US'
+        );
+
+        $this->setValue($setValue)->shouldBeLike($expectedData);
     }
 
-    public function it_add_value_when_set_value(): void
+    public function it_adds_value_when_setting_value(): void
     {
-        $initValueCollection = [
-            'attribute_codes' => [
-                'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
-            ],
-            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . ValueCollection::SEPARATOR . 'en_US' => [
-                'data' => 'Description',
-                'locale' => 'en_US',
-                'attribute_code' => 'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
-            ],
+        $givenValues = [
+            TextValue::fromApplier(
+                value: 'Description',
+                uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+                code: 'description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
         ];
-        $this->beConstructedThrough('fromArray', [$initValueCollection]);
+
+        $this->beConstructedThrough('fromArray', [$givenValues]);
         $this->shouldHaveType(ValueCollection::class);
 
         $expectedValues = ValueCollection::fromArray(
             [
-                'attribute_codes' => [
-                    'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
-                    'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
-                ],
-                'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . ValueCollection::SEPARATOR . 'en_US' => [
-                    'data' => 'Description',
-                    'locale' => 'en_US',
-                    'attribute_code' => 'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
-                ],
-                'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
-                    'data' => 'Meta shoes',
-                    'locale' => 'en_US',
-                    'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
-                ]
+                TextValue::fromApplier(
+                    value: 'Description',
+                    uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+                    code: 'description',
+                    channel: 'ecommerce',
+                    locale: 'en_US'
+                ),
+                TextValue::fromApplier(
+                    value: 'Meta shoes',
+                    uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                    code: 'seo_meta_description',
+                    channel: 'ecommerce',
+                    locale: 'en_US'
+                )
             ]
         );
 
         $this->setValue(
-            attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            attributeCode: 'seo_meta_description',
-            localeCode: 'en_US',
-            value: 'Meta shoes'
+            TextValue::fromApplier(
+                value: 'Meta shoes',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
         )->shouldBeLike($expectedValues);
     }
 
-    public function it_could_not_have_duplicate_attribute_codes_when_set_value(): void
+    public function it_could_not_have_duplicate_attribute_codes_when_setting_value(): void
     {
-        $duplicateUuid = '840fcd1a-f66b-4f0c-9bbd-596629732950';
-        $duplicateCode = 'description';
+        $givenValue = TextValue::fromApplier(
+            value: 'My description',
+            uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            code: 'description',
+            channel: 'ecommerce',
+            locale: 'en_US'
+        );
 
-        $initValueCollection = [
-            'attribute_codes' => [
-                $duplicateCode . ValueCollection::SEPARATOR . $duplicateUuid,
-            ],
-            $duplicateCode . ValueCollection::SEPARATOR . $duplicateUuid . ValueCollection::SEPARATOR . 'en_US' => [
-                'data' => 'My description',
-                'locale' => 'en_US',
-                'attribute_code' => $duplicateCode . ValueCollection::SEPARATOR . $duplicateUuid
-            ],
-        ];
-        $this->beConstructedThrough('fromArray', [$initValueCollection]);
+        $this->beConstructedThrough('fromArray', [[$givenValue]]);
         $this->shouldHaveType(ValueCollection::class);
 
-        $expectedValues = ValueCollection::fromArray($initValueCollection);
-
-        $this->setValue(
-            attributeUuid: $duplicateUuid,
-            attributeCode: $duplicateCode,
-            localeCode: 'en_US',
-            value: 'My description'
-        )->shouldBeLike($expectedValues);
+        $this->setValue($givenValue)->shouldHaveCount(1);
     }
 
-    public function it_update_values_on_duplicate_locale_composite_key_when_set_value(): void
+    public function it_updates_values_on_duplicate_key_when_setting_value(): void
     {
-        $uuid = '840fcd1a-f66b-4f0c-9bbd-596629732950';
-        $code = 'description';
-        $locale = 'en_US';
-        $compositeKey = $code . ValueCollection::SEPARATOR . $uuid;
-
-        $duplicateLocaleCompositeKey = $code
-            . ValueCollection::SEPARATOR . $uuid
-            . ValueCollection::SEPARATOR . $locale;
-
         $newValue = 'New Description Value';
 
-        $initValueCollection = [
-            'attribute_codes' => [$compositeKey],
-            $duplicateLocaleCompositeKey => [
-                'data' => 'Description',
-                'locale' => $locale,
-                'attribute_code' => $compositeKey
-            ],
-        ];
-        $this->beConstructedThrough('fromArray', [$initValueCollection]);
+        $givenValue = TextValue::fromApplier(
+            value: 'Description',
+            uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            code: 'description',
+            channel: 'ecommerce',
+            locale: 'en_US'
+        );
+        $this->beConstructedThrough('fromArray', [[$givenValue]]);
         $this->shouldHaveType(ValueCollection::class);
 
-        $expectedValues = ValueCollection::fromArray(
-            [
-                'attribute_codes' => [$compositeKey],
-                $duplicateLocaleCompositeKey => [
-                    'data' => $newValue,
-                    'locale' => $locale,
-                    'attribute_code' => $compositeKey
-                ],
+        $expectedValues = ValueCollection::fromArray([
+            TextValue::fromApplier(
+                value: $newValue,
+                uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+                code: 'description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
         ]);
 
         $this->setValue(
-            attributeUuid: $uuid,
-            attributeCode: $code,
-            localeCode: $locale,
-            value: $newValue
+            TextValue::fromApplier(
+                value: $newValue,
+                uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+                code: 'description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
         )->shouldBeLike($expectedValues);
     }
 
-    public function it_create_composite_key_with_locale_when_set_value(): void
+    public function it_normalizes(): void
     {
-        $expectedCompositeKey = 'seo_meta_description'
-            . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950';
+        $givenDescriptionValue = TextValue::fromApplier(
+            value: 'Nice shoes',
+            uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            code: 'description',
+            channel: 'ecommerce',
+            locale: 'en_US'
+        );
 
-        $expectedLocaleCompositeKey = $expectedCompositeKey
-            . ValueCollection::SEPARATOR . 'en_US';
-
-        $expectedValueCollection = ValueCollection::fromArray([
-            'attribute_codes' => [$expectedCompositeKey],
-            $expectedLocaleCompositeKey => [
-                'data' => 'My meta SEO Description Value',
-                'locale' => 'en_US',
-                'attribute_code' => $expectedCompositeKey
-            ],
-        ]);
-        $this->beConstructedThrough('fromArray', [[]]);
-        $this->shouldHaveType(ValueCollection::class);
-
-        $this->setValue(
-            attributeUuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
-            attributeCode: 'seo_meta_description',
-            localeCode: 'en_US',
-            value: 'My meta SEO Description Value'
-        )->shouldBeLike($expectedValueCollection);
-    }
-
-    public function it_create_composite_key_with_no_locale_when_set_value(): void
-    {
-        $expectedCompositeKey = 'seo_meta_description'
-            . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950';
-
-        $expectedValueCollection = ValueCollection::fromArray([
-            'attribute_codes' => [$expectedCompositeKey],
-            $expectedCompositeKey => [
-                'data' => 'My meta SEO Description Value',
-                'locale' => null,
-                'attribute_code' => $expectedCompositeKey
-            ],
-        ]);
-        $this->beConstructedThrough('fromArray', [[]]);
-        $this->shouldHaveType(ValueCollection::class);
-
-        $this->setValue(
-            attributeUuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
-            attributeCode: 'seo_meta_description',
-            localeCode: null,
-            value: 'My meta SEO Description Value'
-        )->shouldBeLike($expectedValueCollection);
-    }
-
-    public function it_normalizes_without_attribute_codes_key_value(): void
-    {
-        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950';
-        $this->beConstructedThrough('fromArray', [[
-            'attribute_codes' => [$compositeKey],
-            $compositeKey => [
-                'data' => 'My meta SEO Description Value',
-                'locale' => null,
-                'attribute_code' => $compositeKey
-            ],
-        ]]);
+        $givenSeoDescriptionValue = TextValue::fromApplier(
+            value: 'Meta shoes',
+            uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            code: 'seo_meta_description',
+            channel: 'ecommerce',
+            locale: 'en_US'
+        );
+        $this->beConstructedThrough('fromArray', [[$givenDescriptionValue, $givenSeoDescriptionValue]]);
 
         $normalizedValueCollection = [
-            $compositeKey => [
-                'data' => 'My meta SEO Description Value',
-                'locale' => null,
-                'attribute_code' => $compositeKey
-            ]
+            'description|840fcd1a-f66b-4f0c-9bbd-596629732950|ecommerce|en_US' => [
+                'data' => 'Nice shoes',
+                'type' => 'text',
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'attribute_code' => 'description|840fcd1a-f66b-4f0c-9bbd-596629732950'
+            ],
+            'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_US' => [
+                'data' => 'Meta shoes',
+                'type' => 'text',
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'attribute_code' => 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ],
+
         ];
 
         $this->normalize()->shouldBeLike($normalizedValueCollection);
@@ -277,39 +233,104 @@ class ValueCollectionSpec extends ObjectBehavior
 
     public function it_gets_all_values(): void
     {
-        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950';
-        $this->beConstructedThrough('fromArray', [[
-            'attribute_codes' => [$compositeKey],
-            $compositeKey => [
-                'data' => 'My meta SEO Description Value',
-                'locale' => null,
-                'attribute_code' => $compositeKey
-            ],
-        ]]);
+        $givenDescriptionValue = TextValue::fromApplier(
+            value: 'Nice shoes',
+            uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            code: 'description',
+            channel: 'ecommerce',
+            locale: 'en_US'
+        );
 
-        $getValues = [
-            'attribute_codes' => [$compositeKey],
-            $compositeKey => [
-                'data' => 'My meta SEO Description Value',
-                'locale' => null,
-                'attribute_code' => $compositeKey
+        $givenSeoDescriptionValue = TextValue::fromApplier(
+            value: 'Meta shoes',
+            uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            code: 'seo_meta_description',
+            channel: 'ecommerce',
+            locale: 'en_US'
+        );
+
+        $this->beConstructedThrough('fromArray', [[$givenDescriptionValue, $givenSeoDescriptionValue]]);
+
+        $expectedValues = [
+            $givenDescriptionValue,
+            $givenSeoDescriptionValue
+        ];
+
+        $this->getValues()->shouldBeLike($expectedValues);
+    }
+
+    public function it_throws_invalid_argument_exception_when_creating_value_with_wrong_format(AttributeText $givenValue): void
+    {
+        $this->beConstructedThrough('fromArray', [[$givenValue]]);
+        $this->shouldHaveType(ValueCollection::class);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_invalid_argument_exception_when_creating_value_with_duplicate_value(): void
+    {
+        $givenDuplicateValues = [
+            TextValue::fromApplier(
+                value: 'description',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: null,
+                locale: 'en_US'
+            ),
+            TextValue::fromApplier(
+                value: 'other description',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: null,
+                locale: 'en_US'
+            ),
+        ];
+        $this->beConstructedThrough('fromArray', [$givenDuplicateValues]);
+        $this->shouldHaveType(ValueCollection::class);
+        $this->shouldThrow(new \InvalidArgumentException(
+            "Duplicate value for seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|en_US"
+        ))->duringInstantiation();
+    }
+
+    public function it_creates_value_collection_from_database()
+    {
+        $givenDatabaseValues = [
+            'attribute_codes' => [
+                'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ],
+            'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_us' => [
+                'data' => 'Meta shoes',
+                'type' => 'text',
+                'channel' => null,
+                'locale' => 'en_US',
+                'attribute_code' => 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
             ]
         ];
 
-        $this->getValues()->shouldBeLike($getValues);
-    }
+        $expectedValue = TextValue::fromApplier(
+            value: 'Meta shoes',
+            uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            code: 'seo_meta_description',
+            channel: null,
+            locale: 'en_US'
+        );
 
-    public function it_throw_structure_array_conversion_exception_when_create_value_with_wrong_format(): void
-    {
-        $this->beConstructedThrough('fromArray', [[
-            'attribute_codes' => [],
-            'seo_meta_description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' => [
-                'data' => 'My meta SEO Description Value',
-                'locale' => null,
-                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
-            ],
-        ]]);
+        $this->beConstructedThrough('fromDatabase', [$givenDatabaseValues]);
         $this->shouldHaveType(ValueCollection::class);
-        $this->shouldThrow(StructureArrayConversionException::class)->duringInstantiation();
+
+        $this->getValues()->shouldHaveCount(1);
+
+        $this->getValue(
+            'seo_meta_description',
+            '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            null,
+            'en_US',
+        )->shouldBeLike($expectedValue);
+
+        $this->getValue(
+            'seo_meta_description',
+            '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            null,
+            'en_US',
+        )->shouldBeAnInstanceOf(TextValue::class);
     }
 }

@@ -72,7 +72,7 @@ class TemplateBuilder
                     new AttributeCode('hero_banner'),
                     AttributeOrder::fromInteger(2),
                     AttributeIsRequired::fromBoolean(true),
-                    AttributeIsScopable::fromBoolean(false),
+                    AttributeIsScopable::fromBoolean(true),
                     AttributeIsLocalizable::fromBoolean(false),
                     LabelCollection::fromArray(['en_US' => 'Hero Banner']),
                     $templateUuid,

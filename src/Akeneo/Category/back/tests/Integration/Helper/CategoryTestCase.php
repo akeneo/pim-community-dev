@@ -30,13 +30,12 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
-use Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory;
 use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Exception;
@@ -136,8 +135,10 @@ class CategoryTestCase extends TestCase
         ?array $templateAttributes = null,
     ): Template {
         $getTemplate = new GetTemplateInMemory();
+        $generatedTemplateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+
         /** @var Template $defaultTemplate */
-        $defaultTemplate = $getTemplate->byUuid(TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'));
+        $defaultTemplate = $getTemplate->byUuid($generatedTemplateUuid);
 
         if ($templateUuid === null) {
             $templateUuid = $defaultTemplate->getUuid();
@@ -164,7 +165,7 @@ class CategoryTestCase extends TestCase
         }
 
         if ($templateAttributes === null) {
-            $templateAttributes = $this->get(GetAttributeInMemory::class)->byTemplateUuid($templateUuid);
+            $templateAttributes = $this->givenAttributes($generatedTemplateUuid);
         } else {
             $attributes = [];
             foreach ($templateAttributes as $attribute) {
@@ -245,7 +246,7 @@ class CategoryTestCase extends TestCase
                 new AttributeCode('banner_image'),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(true),
-                AttributeIsScopable::fromBoolean(false),
+                AttributeIsScopable::fromBoolean(true),
                 AttributeIsLocalizable::fromBoolean(false),
                 LabelCollection::fromArray(['en_US' => 'Banner image']),
                 $templateUuid,
@@ -296,20 +297,24 @@ SQL;
         $this->get('database_connection')->executeQuery($query, [
             'value_collection' => json_encode([
                 'attribute_codes' => [
-                    'title'.ValueCollection::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
-                    'photo'.ValueCollection::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
+                    'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                    'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
                 ],
-                'title'.ValueCollection::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.ValueCollection::SEPARATOR.'en_US' => [
+                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.'en_US' => [
                     'data' => 'All the shoes you need!',
+                    'type' => 'text',
+                    'channel' => null,
                     'locale' => 'en_US',
-                    'attribute_code' => 'title'.ValueCollection::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                    'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
                 ],
-                'title'.ValueCollection::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.ValueCollection::SEPARATOR.'fr_FR' => [
+                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.'fr_FR' => [
                     'data' => 'Les chaussures dont vous avez besoin !',
+                    'type' => 'text',
+                    'channel' => null,
                     'locale' => 'fr_FR',
-                    'attribute_code' => 'title'.ValueCollection::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                    'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
                 ],
-                'photo'.ValueCollection::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c' => [
+                'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c' => [
                     'data' => [
                         'size' => 168107,
                         'extension' => 'jpg',
@@ -317,8 +322,10 @@ SQL;
                         'mime_type' => 'image/jpeg',
                         'original_filename' => 'shoes.jpg',
                     ],
+                    'type' => 'image',
+                    'channel' => null,
                     'locale' => null,
-                    'attribute_code' => 'photo'.ValueCollection::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
+                    'attribute_code' => 'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
                 ],
             ], JSON_THROW_ON_ERROR),
             'code' => $code,

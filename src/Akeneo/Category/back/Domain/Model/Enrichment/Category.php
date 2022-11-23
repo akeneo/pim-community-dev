@@ -57,7 +57,7 @@ class Category
             rootId: $category['root_id'] ? new CategoryId((int) $category['root_id']) : null,
             updated: $category['updated'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $category['updated']) : null,
             attributes: $category['value_collection'] ?
-                ValueCollection::fromArray(json_decode($category['value_collection'], true)) : null,
+                ValueCollection::fromDatabase(json_decode($category['value_collection'], true)) : null,
             permissions: isset($category['permissions']) && $category['permissions'] ?
                 PermissionCollection::fromArray(json_decode($category['permissions'], true)) : null,
         );
@@ -102,6 +102,23 @@ class Category
     public function getAttributes(): ?ValueCollection
     {
         return $this->attributes;
+    }
+
+    /**
+     * @return array<string> (example: [seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d])
+     */
+    public function getAttributeCodes(): array
+    {
+        if (null === $this->attributes) {
+            return [];
+        }
+
+        $attributeCodes = [];
+        foreach ($this->attributes as $attributeValues) {
+            $attributeCodes[] = $attributeValues->getKey();
+        }
+
+        return array_values(array_unique($attributeCodes));
     }
 
     public function getPermissions(): ?PermissionCollection

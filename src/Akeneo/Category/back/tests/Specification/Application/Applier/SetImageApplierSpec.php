@@ -9,6 +9,10 @@ use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Application\Applier\SetImageApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplier;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageValue;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\LocaleValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
@@ -30,17 +34,20 @@ class SetImageApplierSpec extends ObjectBehavior
 
     function it_applies_set_image_user_intent(): void
     {
-        $compositeKey = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
-        $localeCompositeKey = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid' . ValueCollection::SEPARATOR . 'locale_code';
-
-        $attributes = ValueCollection::fromArray([
-            'attribute_codes' => [$compositeKey],
-            $localeCompositeKey => [
-                'data' => 'value',
-                'locale' => 'locale_code',
-                'attribute_code' => $compositeKey
-            ]
-        ]);
+        $givenImageValue = ImageValue::fromApplier(
+            value: [
+                'size' => 168107,
+                'extension' => 'jpg',
+                'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                'mime_type' => 'image/jpeg',
+                'original_filename' => 'shoes.jpg'
+            ],
+            uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            code: 'hero_banner',
+            locale: 'en_US',
+            channel: null
+        );
+        $attributes = ValueCollection::fromArray([$givenImageValue]);
 
         $category = new Category(
             id: new CategoryId(1),
@@ -51,31 +58,32 @@ class SetImageApplierSpec extends ObjectBehavior
         );
 
         $userIntent = new SetImage(
-            'uuid',
-            'attribute_code',
-            'locale_code',
-            [
+            attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            attributeCode: 'hero_banner',
+            localeCode: 'en_US',
+            value: [
                 'size' => 168107,
-                'extension' => 'jpg',
-                'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
-                'mime_type' => 'image/jpeg',
-                'original_filename' => 'shoes.jpg'
+                'extension' => 'png',
+                'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.png',
+                'mime_type' => 'image/png',
+                'original_filename' => 'shoes.png'
             ]
         );
 
         $expectedAttributes = ValueCollection::fromArray([
-            'attribute_codes' => [$compositeKey],
-            $localeCompositeKey => [
-                'data' => [
+            ImageValue::fromApplier(
+                value: [
                     'size' => 168107,
-                    'extension' => 'jpg',
-                    'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
-                    'mime_type' => 'image/jpeg',
-                    'original_filename' => 'shoes.jpg'
+                    'extension' => 'png',
+                    'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.png',
+                    'mime_type' => 'image/png',
+                    'original_filename' => 'shoes.png'
                 ],
-                'locale' => 'locale_code',
-                'attribute_code' => $compositeKey
-            ]
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'hero_banner',
+                locale: 'en_US',
+                channel: null
+            )
         ]);
 
         $this->apply($userIntent, $category);
