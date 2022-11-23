@@ -55,13 +55,13 @@ function mustChangeBeSkipped(
 }
 
 export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange}: Props) => {
+  const translate = useTranslate();
+  const {locales, channels} = useContext(EditCategoryContext);
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
   const [locale, setLocale] = useState(catalogLocale);
-  const {locales, channels} = useContext(EditCategoryContext);
   const catalogChannel = userContext.get('catalogScope');
   const [channel, setChannel] = useState(catalogChannel);
-  const translate = useTranslate();
 
   const handleChannelChange = (value: string): void => {
     setChannel(value);
@@ -81,14 +81,14 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       }
 
       // attribute has textual type
-      const currentValue = getAttributeValue(attributeValues, attribute, locale);
+      const currentValue = getAttributeValue(attributeValues, attribute, channel, locale);
       if (mustChangeBeSkipped(value, currentValue!, attribute)) {
         return;
       }
 
       onAttributeValueChange(attribute, channel, locale, value);
     },
-    [attributeValues, locale, channel, onAttributeValueChange]
+    [attributeValues, channel, locale, onAttributeValueChange]
   );
 
   const handlers = useMemo(() => {

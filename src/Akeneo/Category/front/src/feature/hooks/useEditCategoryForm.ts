@@ -126,18 +126,19 @@ const useEditCategoryForm = (categoryId: number) => {
   };
 
   const onChangeAttribute = useCallback(
-    (attribute: Attribute, localeCode: string | null, attributeValue: CategoryAttributeValueData) => {
+    (attribute: Attribute, channelCode: string | null, localeCode: string | null, attributeValue: CategoryAttributeValueData) => {
       if (categoryEdited === null) {
         return;
       }
 
-      const compositeKey = buildCompositeKey(attribute, localeCode);
-      const compositeKeyWithoutLocale = buildCompositeKey(attribute);
+      const compositeKey = buildCompositeKey(attribute, channelCode, localeCode);
+      const compositeKeyWithoutChannelAndLocale = buildCompositeKey(attribute);
 
       const value = {
         data: attributeValue,
+        channel: attribute.is_scopable ? channelCode : null,
         locale: attribute.is_localizable ? localeCode : null,
-        attribute_code: compositeKeyWithoutLocale,
+        attribute_code: compositeKeyWithoutChannelAndLocale,
       };
 
       const newCategoryEdited = set(['attributes', compositeKey], value, categoryEdited);

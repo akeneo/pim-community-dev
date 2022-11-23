@@ -44,6 +44,4 @@ class SqlCategoryTemplateSaverIntegration extends CategoryTestCase
         $this->assertEquals($templateModel->getCode(),$insertedTemplate->getCode());
         $this->assertEquals($templateModel->getLabelCollection(),$insertedTemplate->getLabelCollection());
     }
-
-
 }

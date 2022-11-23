@@ -31,6 +31,7 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
                 [
                     [
                         "data" => "",
+                        "channel" => "ecommerce",
                         "locale" => "fr_FR",
                         "attribute_code" => $compositeKey
                     ],
@@ -48,6 +49,7 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
                 [
                     $localeCompositeKey => [
                         "data" => "",
+                        "channel" => "ecommerce",
                         "locale" => "fr_FR",
                         "attribute_code" => $compositeKey
                     ],
@@ -64,6 +66,7 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
             ->duringCheck(
                 [
                     $localeCompositeKey => [
+                        "channel" => "ecommerce",
                         "locale" => "fr_FR",
                         "attribute_code" => $compositeKey
                     ],
@@ -81,7 +84,41 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
                 [
                     $localeCompositeKey => [
                         "data" => "",
+                        "channel" => "ecommerce",
                         "locale" => "fr_FR",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_key_channel_is_missing(): void
+    {
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'ecommerce';
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "Shoes",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_key_channel_is_empty(): void
+    {
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'ecommerce';
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "Shoes",
+                        "channel" => "",
                         "attribute_code" => $compositeKey
                     ],
                 ]

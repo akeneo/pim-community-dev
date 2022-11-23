@@ -28,7 +28,7 @@ class SetImageApplier implements UserIntentApplier
                 value: $userIntent->value(),
                 uuid: $userIntent->attributeUuid(),
                 code: $userIntent->attributeCode(),
-                channel: null,
+                channel: $userIntent->channelCode(),
                 locale: $userIntent->localeCode(),
             ),
         );

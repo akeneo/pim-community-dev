@@ -58,11 +58,11 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $expectedTextValue = $category->getAttributes()->getValue(
             attributeCode: 'title',
             attributeUuid: '87939c45-1d85-4134-9579-d594fff65030',
-            channel: null,
+            channel: 'ecommerce',
             localeCode: 'fr_FR'
         );
         $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
-        $this->assertNull($expectedTextValue->getChannel());
+        $this->assertSame('ecommerce', $expectedTextValue->getChannel()?->getValue());
         $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
 
         /** @var ImageValue $expectedImageValue */
@@ -100,11 +100,11 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $expectedTextValue = $category->getAttributes()->getValue(
             attributeCode: 'title',
             attributeUuid: '87939c45-1d85-4134-9579-d594fff65030',
-            channel: null,
+            channel: 'ecommerce',
             localeCode: 'fr_FR'
         );
         $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
-        $this->assertNull($expectedTextValue->getChannel());
+        $this->assertSame('ecommerce', $expectedTextValue->getChannel()?->getValue());
         $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
 
         /** @var ImageValue $expectedImageValue */

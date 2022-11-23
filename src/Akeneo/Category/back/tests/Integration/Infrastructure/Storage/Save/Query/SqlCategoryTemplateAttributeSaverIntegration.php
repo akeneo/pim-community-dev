@@ -47,6 +47,4 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
             array_keys($insertedTemplate->getAttributeCollection()->getAttributes())
         );
     }
-
-
 }

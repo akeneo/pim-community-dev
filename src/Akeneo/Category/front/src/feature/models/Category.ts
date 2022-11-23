@@ -1,4 +1,4 @@
-import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
+import {LabelCollection, ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
 import {CompositeKeyWithoutLocale} from './CompositeKey';
 import {CategoryAttributeType} from './Attribute';
@@ -36,6 +36,7 @@ export interface CategoryAttributes {
 
 export interface CategoryAttributeValueWrapper {
   data: CategoryAttributeValueData;
+  channel: ChannelCode | null;
   locale: LocaleCode | null;
   attribute_code: CompositeKeyWithoutLocale;
 }
