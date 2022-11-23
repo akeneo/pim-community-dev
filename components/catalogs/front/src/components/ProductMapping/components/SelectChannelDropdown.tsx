@@ -25,7 +25,7 @@ export const SelectChannelDropdown: FC<Props> = ({source, onChange, error}) => {
     const channels = useUniqueEntitiesByCode<Channel>(selected ? [selected] : [], results);
 
     return (
-        <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.title')}>
+        <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.channel.label')}>
             <SelectInput
                 value={source.scope}
                 onChange={newChannel => onChange({...source, scope: newChannel})}

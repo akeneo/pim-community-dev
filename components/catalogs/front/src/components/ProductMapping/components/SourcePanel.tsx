@@ -8,6 +8,8 @@ import {Attribute} from '../../../models/Attribute';
 import {SelectChannelDropdown} from './SelectChannelDropdown';
 import {useAttribute} from '../../../hooks/useAttribute';
 import {SourceErrors} from '../models/SourceErrors';
+import {SelectLocaleDropdown} from './SelectLocaleDropdown';
+import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 
 type Props = {
     target: string | null;
@@ -54,12 +56,18 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                         <SectionTitle>
                             <Tag tint='purple'>2</Tag>
                             <SectionTitle.Title level='secondary'>
-                                {translate('akeneo_catalogs.product_mapping.source.parameters')}
+                                {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
                             </SectionTitle.Title>
                         </SectionTitle>
                     )}
                     {source !== null && attribute?.scopable && (
                         <SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} />
+                    )}
+                    {source !== null && attribute?.localizable && !attribute?.scopable && (
+                        <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                    )}
+                    {source !== null && attribute?.localizable && attribute?.scopable && (
+                        <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
                     )}
                 </>
             )}

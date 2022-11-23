@@ -128,6 +128,7 @@ akeneo_catalogs:
                 locale:
                     label: Locale
                     placeholder: Select a locale
+                    scope_required: Please select a channel first
             select_source:
                 label: Pim source
                 search: Search criterion
