@@ -31,7 +31,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
     private const TIMEOUT = 10;
 
     public function __construct(
-        private Encrypter $encrypter,
+        private readonly Encrypter $encrypter,
     ) {
     }
 
@@ -42,17 +42,15 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         }
 
         $encryptionKey = $this->getEncryptionKey($storage);
+        $password = $storage->getPassword() ? $this->encrypter->decrypt($storage->getPassword(), $encryptionKey) : null;
 
         $connection = $this->createConnectionProvider(
             loginType: $storage->getLoginType(),
             host: $storage->getHost(),
             username: $storage->getUsername(),
-            password: $this->encrypter->decrypt($storage->getPassword(), $encryptionKey),
+            password: $password,
             privateKey: $storage->getPrivateKey(),
             port: $storage->getPort(),
-            useAgent: self::USE_AGENT,
-            timeout: self::TIMEOUT,
-            maxTries: self::MAX_RETRIES,
             hostFingerprint: $storage->getFingerprint(),
         );
 
@@ -77,9 +75,6 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
             password: $storage->getPassword(),
             privateKey: $storage->getPrivateKey(),
             port: $storage->getPort(),
-            useAgent: self::USE_AGENT,
-            timeout: self::TIMEOUT,
-            maxTries: self::MAX_RETRIES,
             hostFingerprint: $storage->getFingerprint(),
         );
     }
@@ -101,14 +96,11 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         ?string $password,
         ?string $privateKey,
         int $port,
-        bool $useAgent,
-        int $timeout,
-        int $maxTries,
         ?string $hostFingerprint,
     ): SftpConnectionProvider {
         return match ($loginType) {
-            SftpStorage::LOGIN_TYPE_PASSWORD => $this->createConnectionProviderWithPassword($host, $username, $password, $port),
-            SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->createConnectionProviderWithPrivateKey($host, $username, $privateKey, $port),
+            SftpStorage::LOGIN_TYPE_PASSWORD => $this->createConnectionProviderWithPassword($host, $username, $password, $port, $hostFingerprint),
+            SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->createConnectionProviderWithPrivateKey($host, $username, $privateKey, $port, $hostFingerprint),
             default => throw new \LogicException(sprintf('Unsupported login type "%s"', $loginType)),
         };
     }
@@ -118,17 +110,19 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         string $username,
         string $password,
         int $port,
+        ?string $hostFingerprint,
     ): SftpConnectionProvider {
         return new SftpConnectionProvider(
-            $host,
-            $username,
-            $password,
-            null,
-            null,
-            $port,
-            self::USE_AGENT,
-            self::TIMEOUT,
-            self::MAX_RETRIES,
+            host: $host,
+            username: $username,
+            password: $password,
+            privateKey: null,
+            passphrase: null,
+            port: $port,
+            useAgent: self::USE_AGENT,
+            timeout: self::TIMEOUT,
+            maxTries: self::MAX_RETRIES,
+            hostFingerprint: $hostFingerprint,
         );
     }
 
@@ -137,17 +131,19 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         string $username,
         string $privateKey,
         int $port,
+        ?string $hostFingerprint,
     ): SftpConnectionProvider {
         return new SftpConnectionProvider(
-            $host,
-            $username,
-            null,
-            $privateKey,
-            null,
-            $port,
-            self::USE_AGENT,
-            self::TIMEOUT,
-            self::MAX_RETRIES,
+            host: $host,
+            username: $username,
+            password: null,
+            privateKey: $privateKey,
+            passphrase: null,
+            port: $port,
+            useAgent: self::USE_AGENT,
+            timeout: self::TIMEOUT,
+            maxTries: self::MAX_RETRIES,
+            hostFingerprint: $hostFingerprint,
         );
     }
 }
