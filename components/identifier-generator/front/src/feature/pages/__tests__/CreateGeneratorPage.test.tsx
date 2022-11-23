@@ -82,6 +82,6 @@ describe('CreateGeneratorPage', () => {
       fireEvent.click(screen.getByText('Main button'));
     });
 
-    expect(screen.getByText('structure The structure must contain at least one property')).toBeInTheDocument();
+    expect(screen.getByText('structure The structure must contain at least 1 property')).toBeInTheDocument();
   });
 });
