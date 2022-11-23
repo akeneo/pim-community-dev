@@ -52,7 +52,7 @@ endif
 	$(PHP_RUN) bin/console lint:container
 
 .PHONY: catalogs-lint-back-ee
-catalogs-lint-back:
+catalogs-lint-back-ee:
 ifneq ($(CI),true)
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
