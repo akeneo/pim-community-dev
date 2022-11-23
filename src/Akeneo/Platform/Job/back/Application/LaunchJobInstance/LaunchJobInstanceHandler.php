@@ -30,6 +30,7 @@ class LaunchJobInstanceHandler implements LaunchJobInstanceHandlerInterface
                 'type' => ManualUploadStorage::TYPE,
                 'file_path' => $filePath,
             ],
+            'is_user_authenticated' => true,
         ];
 
         $username = $this->tokenStorage->getToken()?->getUser()?->getUserIdentifier();
