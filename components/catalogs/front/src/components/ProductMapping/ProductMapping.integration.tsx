@@ -144,19 +144,19 @@ test('it displays error pills when mapping is incorrect', async () => {
 
     const mappingErrors = {
         uuid: {
-            source: null,
-            locale: null,
-            scope: null,
+            source: undefined,
+            locale: undefined,
+            scope: undefined,
         },
         name: {
-            source: null,
-            locale: null,
+            source: undefined,
+            locale: undefined,
             scope: 'This channel must be empty.',
         },
         body_html: {
-            source: null,
+            source: undefined,
             locale: 'This locale must not be empty.',
-            scope: null,
+            scope: undefined,
         },
     };
 
