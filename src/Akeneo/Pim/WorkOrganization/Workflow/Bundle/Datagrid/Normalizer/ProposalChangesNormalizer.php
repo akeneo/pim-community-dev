@@ -78,11 +78,13 @@ class ProposalChangesNormalizer
             $canEditAttribute = $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute);
 
             foreach ($changes as $change) {
-                if (!$this->canViewLocale($attribute, $change['locale'])) {
+                $locale = $change['locale'];
+                $scope = $change['scope'];
+                $status = $entityWithValuesDraft->getReviewStatusForChange($attributeCode, $locale, $scope);
+                if (!$this->canViewLocale($attribute, $locale) || $status === EntityWithValuesDraftInterface::CHANGE_DRAFT) {
                     continue;
                 }
-
-                $canReview = $canEditAttribute && $isDraftOwner && $this->canEditLocale($attribute, $change['locale']);
+                $canReview = $canEditAttribute && $isDraftOwner && $this->canEditLocale($attribute, $locale);
 
                 /** @var array $present */
                 $present = $this->changesExtension->presentChange($entityWithValuesDraft, $change, $attributeCode);
@@ -91,8 +93,8 @@ class ProposalChangesNormalizer
                     $present['attributeLabel'] = $attribute->getLabel();
                     $present['attributeType'] = $attribute->getType();
                     $present['attributeReferenceDataName'] = $attribute->getReferenceDataName();
-                    $present['scope'] = $change['scope'];
-                    $present['locale'] = $change['locale'];
+                    $present['scope'] = $scope;
+                    $present['locale'] = $locale;
                     $present['canReview'] = $canReview;
                     if (!isset($proposalChanges[$attributeCode])) {
                         $proposalChanges[$attributeCode] = [];

@@ -325,6 +325,44 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         $result['changes']['name'][0]['canReview']->shouldEqual(false);
     }
 
+    function it_return_to_review_only(
+        PresenterRegistry $presenterRegistry,
+        AuthorizationCheckerInterface $authorizationChecker,
+        AttributeRepositoryInterface $attributeRepository,
+        ProductDraftChangesPermissionHelper $permissionHelper,
+        ValueCollectionWithoutEmptyValuesProvider $valueCollectionWithoutEmptyValuesProvider,
+        EntityWithValuesDraftInterface $entityWithValuesDraft,
+        EntityWithValuesInterface $entityWithValues,
+        AttributeInterface $attribute,
+        LocaleRepositoryInterface $localeRepository,
+        LocaleInterface $locale
+    ) {
+        $context = ['locales' => ['en_US']];
+        $this->setupInProgressDraft(
+            $context,
+            $entityWithValuesDraft,
+            $entityWithValues,
+            $authorizationChecker,
+            $attribute,
+            $permissionHelper,
+            $attributeRepository,
+            $valueCollectionWithoutEmptyValuesProvider,
+            $presenterRegistry,
+            $localeRepository,
+            $locale,
+            [
+                'localizable' => true,
+                'edit_locale' => false,
+            ]
+        );
+        $entityWithValuesDraft->getReviewStatusForChange('12345', "en_US", null)->willReturn('draft');
+
+        $result = $this->normalize($entityWithValuesDraft, $context);
+        $changes =  $result['changes'];
+        $changes->shouldHaveKey('name');
+        $changes->shouldNotHaveKey('12345');
+    }
+
     private function setupInProgressDraft(
         array $context,
         EntityWithValuesDraftInterface $entityWithValuesDraft,
@@ -357,6 +395,7 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         $entityWithValuesDraft->getAuthor()->willReturn('mary');
         $entityWithValuesDraft->getReviewStatusForChange('name', Argument::any(), Argument::any())->willReturn('to_review');
         $entityWithValuesDraft->getReviewStatusForChange('12345', null, null)->willReturn('to_review');
+        $entityWithValuesDraft->getReviewStatusForChange('12345', "en_US", null)->willReturn('to_review');
 
         $entityWithValues->getIdentifier()->willReturn('product_69');
 
