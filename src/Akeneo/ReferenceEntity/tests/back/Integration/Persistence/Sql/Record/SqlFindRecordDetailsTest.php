@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -47,20 +47,10 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindRecordDetailsInterface */
-    private $findRecordDetailsQuery;
-
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
-
-    /** @var RecordIdentifier */
-    private $recordIdentifier;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    private FindRecordDetailsInterface $findRecordDetailsQuery;
+    private RecordRepositoryInterface $recordRepository;
+    private AttributeRepositoryInterface $attributeRepository;
+    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
 
     public function setUp(): void
     {
@@ -77,23 +67,32 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_null_when_there_is_no_records()
+    public function it_returns_null_when_there_is_no_records(): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown_reference_entity');
-        $recordCode = RecordCode::fromString('unknown_record_code');
-        $this->assertNull($this->findRecordDetailsQuery->find($referenceEntityIdentifier, $recordCode));
+        $starckCode = RecordCode::fromString('unknown_record_code');
+        $this->assertNull($this->findRecordDetailsQuery->find($referenceEntityIdentifier, $starckCode));
     }
 
     /**
      * @test
      */
-    public function it_returns_the_record_details()
+    public function it_returns_empty_array_when_there_is_no_records(): void
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown_reference_entity');
+        $this->assertEmpty($this->findRecordDetailsQuery->findByCodes($referenceEntityIdentifier, [RecordCode::fromString('unknown')]));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_record_details(): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
 
-        $recordCode = RecordCode::fromString('starck');
-        $actualStarck = $this->findRecordDetailsQuery->find($referenceEntityIdentifier, $recordCode);
+        $starckCode = RecordCode::fromString('starck');
+        $actualStarck = $this->findRecordDetailsQuery->find($referenceEntityIdentifier, $starckCode);
         $nameAttribute = $this->attributeRepository->getByIdentifier(
             AttributeIdentifier::create('designer', 'name', 'fingerprint')
         );
@@ -170,9 +169,9 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
             ->setKey('test/image_2.jpg');
 
         $expectedStarck = new RecordDetails(
-            $this->recordIdentifier,
+            RecordIdentifier::create((string) $referenceEntityIdentifier, (string) $starckCode, 'fingerprint'),
             $referenceEntityIdentifier,
-            $recordCode,
+            $starckCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
             new \DateTimeImmutable(),
             new \DateTimeImmutable(),
@@ -182,6 +181,184 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         );
 
         $this->assertRecordDetails($expectedStarck, $actualStarck);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_multiple_record_details(): void
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+
+        $actualRecords = $this->findRecordDetailsQuery->findByCodes(
+            $referenceEntityIdentifier,
+            [
+                RecordCode::fromString('starck'),
+                RecordCode::fromString('daniel'),
+            ],
+        );
+
+        $nameAttribute = $this->attributeRepository->getByIdentifier(
+            AttributeIdentifier::create('designer', 'name', 'fingerprint')
+        );
+        $descriptionAttribute = $this->attributeRepository->getByIdentifier(
+            AttributeIdentifier::create('designer', 'description', 'fingerprint')
+        );
+        $labelAttribute = $this->attributeRepository->getByIdentifier(
+            $referenceEntity->getAttributeAsLabelReference()->getIdentifier()
+        );
+        $imageAttribute = $this->attributeRepository->getByIdentifier(
+            $referenceEntity->getAttributeAsImageReference()->getIdentifier()
+        );
+
+        $expectedStarckValues = [
+            [
+                'data' => null,
+                'locale' => 'de_DE',
+                'channel' => null,
+                'attribute' => $descriptionAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => $descriptionAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'fr_FR',
+                'channel' => null,
+                'attribute' => $descriptionAttribute->normalize(),
+            ],
+            [
+                'data' => 'Hello',
+                'locale' => null,
+                'channel' => null,
+                'attribute' => $nameAttribute->normalize(),
+            ],
+            [
+                'data' => 'Philippe Starck',
+                'locale' => 'fr_FR',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'de_DE',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => [
+                    'filePath' => 'test/image_2.jpg',
+                    'originalFilename' => 'image_2.jpg',
+                    'size' => 100,
+                    'mimeType' => 'image/jpg',
+                    'extension' => '.jpg'
+                ],
+                'locale' => null,
+                'channel' => null,
+                'attribute' => $imageAttribute->normalize(),
+            ],
+        ];
+
+        $expectedDanielValues = [
+            [
+                'data' => null,
+                'locale' => 'de_DE',
+                'channel' => null,
+                'attribute' => $descriptionAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => $descriptionAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'fr_FR',
+                'channel' => null,
+                'attribute' => $descriptionAttribute->normalize(),
+            ],
+            [
+                'data' => 'Hello',
+                'locale' => null,
+                'channel' => null,
+                'attribute' => $nameAttribute->normalize(),
+            ],
+            [
+                'data' => 'Daniel Twocigs',
+                'locale' => 'fr_FR',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'de_DE',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => [
+                    'filePath' => 'test/image_2.jpg',
+                    'originalFilename' => 'image_2.jpg',
+                    'size' => 100,
+                    'mimeType' => 'image/jpg',
+                    'extension' => '.jpg'
+                ],
+                'locale' => null,
+                'channel' => null,
+                'attribute' => $imageAttribute->normalize(),
+            ],
+        ];
+
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename('image_2.jpg')
+            ->setKey('test/image_2.jpg');
+
+        $expectedRecords = [
+            'daniel' => new RecordDetails(
+                RecordIdentifier::create((string) $referenceEntityIdentifier, 'daniel', 'fingerprint'),
+                $referenceEntityIdentifier,
+                RecordCode::fromString('daniel'),
+                LabelCollection::fromArray(['fr_FR' => 'Daniel Twocigs']),
+                new \DateTimeImmutable(),
+                new \DateTimeImmutable(),
+                Image::fromFileInfo($imageInfo),
+                $expectedDanielValues,
+                true,
+            ),
+            'starck' => new RecordDetails(
+                RecordIdentifier::create((string) $referenceEntityIdentifier, 'starck', 'fingerprint'),
+                $referenceEntityIdentifier,
+                RecordCode::fromString('starck'),
+                LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
+                new \DateTimeImmutable(),
+                new \DateTimeImmutable(),
+                Image::fromFileInfo($imageInfo),
+                $expectedStarckValues,
+                true,
+            ),
+        ];
+
+        foreach ($actualRecords as $index => $actualRecord) {
+            $this->assertRecordDetails($expectedRecords[$index], $actualRecord);
+        }
     }
 
     private function resetDB(): void
@@ -203,11 +380,17 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         );
         $referenceEntityRepository->create($referenceEntity);
         $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $labelValue = Value::create(
+        $starckLabelValue = Value::create(
             $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-            TextData::fromString('Philippe Starck')
+            TextData::fromString('Philippe Starck'),
+        );
+        $danielLabelValue = Value::create(
+            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('Daniel Twocigs'),
         );
         $imageValue = Value::create(
             $referenceEntity->getAttributeAsImageReference()->getIdentifier(),
@@ -259,9 +442,6 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         );
         $this->attributeRepository->create($localizedTextAttribute);
 
-        $starckCode = RecordCode::fromString('starck');
-        $this->recordIdentifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $starckCode);
-
         $imageInfo = new FileInfo();
         $imageInfo
             ->setOriginalFilename('image_2.jpg')
@@ -269,11 +449,19 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 
         $this->recordRepository->create(
             Record::create(
-                $this->recordIdentifier,
+                RecordIdentifier::create((string) $referenceEntityIdentifier, 'starck', 'fingerprint'),
                 $referenceEntityIdentifier,
-                $starckCode,
-                ValueCollection::fromValues([$labelValue, $imageValue, $value])
-            )
+                RecordCode::fromString('starck'),
+                ValueCollection::fromValues([$starckLabelValue, $imageValue, $value])
+            ),
+        );
+        $this->recordRepository->create(
+            Record::create(
+                RecordIdentifier::create((string) $referenceEntityIdentifier, 'daniel', 'fingerprint'),
+                $referenceEntityIdentifier,
+                RecordCode::fromString('daniel'),
+                ValueCollection::fromValues([$danielLabelValue, $imageValue, $value])
+            ),
         );
     }
 

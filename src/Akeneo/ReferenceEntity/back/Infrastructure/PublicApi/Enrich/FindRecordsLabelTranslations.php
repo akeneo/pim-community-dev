@@ -7,7 +7,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLabelsByCodes;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

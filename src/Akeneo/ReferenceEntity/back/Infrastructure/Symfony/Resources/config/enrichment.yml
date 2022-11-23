@@ -9,6 +9,11 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes'
 
+    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_attribute_value_public_api:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsAttributeValue
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
+
     pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers:
         class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\FindAllExistentRecordsForReferenceEntityIdentifiers'
         arguments:

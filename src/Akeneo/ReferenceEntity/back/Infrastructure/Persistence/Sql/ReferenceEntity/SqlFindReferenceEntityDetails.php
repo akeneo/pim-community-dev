@@ -19,7 +19,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReferenc
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
@@ -120,7 +119,7 @@ SQL;
             $file = new FileInfo();
             $file->setKey($fileKey);
             $file->setOriginalFilename($originalFilename);
-            $entityImage=Image::fromFileInfo($file);
+            $entityImage = Image::fromFileInfo($file);
         }
 
         $labelsByActivatedLocales = $this->getLabelsByActivatedLocales($labels, $activatedLocales);

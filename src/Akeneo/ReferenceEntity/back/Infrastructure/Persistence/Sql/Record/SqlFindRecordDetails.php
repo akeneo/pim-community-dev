@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,7 +27,7 @@ use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class SqlFindRecordDetails implements FindRecordDetailsInterface
 {
@@ -36,7 +36,7 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
         private RecordDetailsHydratorInterface $recordDetailsHydrator,
         private GenerateEmptyValuesInterface $generateEmptyValues,
         private FindValueKeyCollectionInterface $findValueKeyCollection,
-        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
     ) {
     }
 
@@ -45,16 +45,29 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
      */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails
     {
-        $result = $this->fetchResult($referenceEntityIdentifier, $recordCode);
+        $recordsDetails = $this->findByCodes($referenceEntityIdentifier, [$recordCode]);
 
-        if (empty($result)) {
-            return null;
-        }
-
-        return $this->hydrateRecordDetails($result);
+        return $recordsDetails[(string) $recordCode] ?? null;
     }
 
-    private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): array
+    /**
+     * {@inheritdoc}
+     */
+    public function findByCodes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    {
+        return array_reduce(
+            $this->fetchResults($referenceEntityIdentifier, $recordCodes),
+            function (array $indexedRecordsDetails, array $normalizedRecordDetails) {
+                $recordDetails = $this->hydrateRecordDetails($normalizedRecordDetails);
+                $indexedRecordsDetails[(string) $recordDetails->code] = $recordDetails;
+
+                return $indexedRecordsDetails;
+            },
+            [],
+        );
+    }
+
+    private function fetchResults(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
     {
         $query = <<<SQL
         SELECT
@@ -69,23 +82,30 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
         FROM akeneo_reference_entity_record AS record
         INNER JOIN akeneo_reference_entity_reference_entity AS reference
             ON reference.identifier = record.reference_entity_identifier
-        WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
+        WHERE code IN (:codes) AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, [
-            'code' => (string) $recordCode,
-            'reference_entity_identifier' => (string) $referenceEntityIdentifier,
-        ]);
-        $result = $statement->fetchAssociative();
+        $statement = $this->sqlConnection->executeQuery(
+            $query,
+            [
+                'codes' => $recordCodes,
+                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+            ],
+            [
+                'codes' => Connection::PARAM_STR_ARRAY,
+            ],
+        );
+        $result = $statement->fetchAllAssociative();
         $statement->free();
 
         return $result ?: [];
     }
 
-    private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
+    private function getReferenceEntityIdentifier(array $result): ReferenceEntityIdentifier
     {
         if (!isset($result['reference_entity_identifier'])) {
             throw new \LogicException('The record should have a reference entity identifier');
         }
+
         $normalizedReferenceEntityIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $result['reference_entity_identifier'],
             $this->sqlConnection->getDatabasePlatform()
@@ -94,7 +114,7 @@ SQL;
         return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
     }
 
-    private function hydrateRecordDetails($result): RecordDetails
+    private function hydrateRecordDetails(array $result): RecordDetails
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
         $valueKeyCollection = $this->findValueKeyCollection->find($referenceEntityIdentifier);
@@ -105,7 +125,7 @@ SQL;
             $result,
             $emptyValues,
             $valueKeyCollection,
-            $attributesIndexedByIdentifier
+            $attributesIndexedByIdentifier,
         );
     }
 }

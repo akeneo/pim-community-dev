@@ -18,7 +18,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindReferenceEntityAttributeAsLabel;
 use Doctrine\DBAL\Connection;
-use PDO;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

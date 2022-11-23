@@ -24,8 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
  */
 class InMemoryFindRecordDetails implements FindRecordDetailsInterface
 {
-    /** @var RecordDetails[] */
-    private $results;
+    private array $results;
 
     public function __construct()
     {
@@ -46,8 +45,27 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
      */
     public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $recordCode
+        RecordCode $recordCode,
     ): ?RecordDetails {
         return $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $recordCode)] ?? null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByCodes(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        array $recordCodes,
+    ): array {
+        $matchingRecordsDetails = [];
+
+        foreach ($recordCodes as $recordCode) {
+            $key = sprintf('%s____%s', $referenceEntityIdentifier, $recordCode);
+            if (array_key_exists($key, $this->results)) {
+                $matchingRecordsDetails[$recordCode] = $this->results[$key];
+            }
+        }
+
+        return $matchingRecordsDetails;
     }
 }
