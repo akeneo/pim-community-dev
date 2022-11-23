@@ -93,10 +93,10 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
         ]);
 
         $productUuid = ProductUuid::fromUuid($uuid);
-        $this->buildProductWasCompletedOnChannelLocaleEvents($changedAt, $previousCompletenessCollection)
+        $this->buildProductWasCompletedOnChannelLocaleEvents($changedAt, $previousCompletenessCollection, '1')
             ->shouldBeLike([
-                new ProductWasCompletedOnChannelLocale($productUuid, $changedAt, 'ecommerce', 'en_US'),
-                new ProductWasCompletedOnChannelLocale($productUuid, $changedAt, 'ecommerce', 'de_DE'),
+                new ProductWasCompletedOnChannelLocale($productUuid, $changedAt, 'ecommerce', 'en_US', '1'),
+                new ProductWasCompletedOnChannelLocale($productUuid, $changedAt, 'ecommerce', 'de_DE', '1'),
             ]);
     }
 
@@ -115,7 +115,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
             new ProductCompleteness('mobile', 'en_US', 10, 2),
         ]);
 
-        $this->buildProductWasCompletedOnChannelLocaleEvents($changedAt, $previousCompletenessCollection)
+        $this->buildProductWasCompletedOnChannelLocaleEvents($changedAt, $previousCompletenessCollection, '1')
             ->shouldReturn([]);
     }
 }

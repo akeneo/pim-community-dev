@@ -16,31 +16,31 @@ use PhpSpec\ObjectBehavior;
  */
 class StructureSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $freeText = FreeText::fromString('ABC');
         $autoNumber = AutoNumber::fromValues(5, 2);
         $this->beConstructedThrough('fromArray', [[$freeText, $autoNumber]]);
     }
 
-    public function it_is_a_structure()
+    public function it_is_a_structure(): void
     {
         $this->shouldBeAnInstanceOf(Structure::class);
     }
 
-    public function it_throws_an_exception_when_en_empty_array()
+    public function it_throws_an_exception_when_en_empty_array(): void
     {
         $this->beConstructedThrough('fromArray', [[]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_when_an_array_value_is_not_an_property()
+    public function it_throws_an_exception_when_an_array_value_is_not_an_property(): void
     {
         $this->beConstructedThrough('fromArray', [[5, '']]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_has_properties_values()
+    public function it_has_properties_values(): void
     {
         $properties = $this->getProperties();
         $properties->shouldHaveCount(2);
@@ -48,7 +48,7 @@ class StructureSpec extends ObjectBehavior
         $properties[1]->shouldBeAnInstanceOf(PropertyInterface::class);
     }
 
-    public function it_normalize_a_structure()
+    public function it_normalize_a_structure(): void
     {
         $this->normalize()->shouldReturn([
             [
@@ -63,7 +63,7 @@ class StructureSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_creates_from_normalized()
+    public function it_creates_from_normalized(): void
     {
         $this->fromNormalized([
             [

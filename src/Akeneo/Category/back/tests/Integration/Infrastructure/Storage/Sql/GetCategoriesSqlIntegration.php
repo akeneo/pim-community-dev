@@ -6,7 +6,8 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 
@@ -115,18 +116,16 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         );
 
         // we check that existing categories attributes were fetched
-        $this->assertSame(
-            [
-                "data" => "Les chaussures dont vous avez besoin !",
-                "locale" => "fr_FR",
-                "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
-            ],
-            $shoesCategory->getAttributes()->getValue(
-                'title',
-                '87939c45-1d85-4134-9579-d594fff65030',
-                'fr_FR'
-            )
+        $expectedTextValue = TextValue::fromApplier(
+            value: 'Les chaussures dont vous avez besoin !',
+            uuid: '87939c45-1d85-4134-9579-d594fff65030',
+            code: 'title',
+            channel: null,
+            locale: 'fr_FR'
         );
+        $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
+        $this->assertNull($expectedTextValue->getChannel());
+        $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
 
         $this->assertNull($socksCategory->getAttributes());
     }

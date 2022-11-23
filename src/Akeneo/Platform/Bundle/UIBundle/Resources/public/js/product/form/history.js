@@ -28,7 +28,7 @@ define([
     expandedVersions: [],
     actions: {},
     events: {
-      'click .expanded .AknGrid-bodyCell': 'toggleVersion',
+      'click .expanded .AknGrid-bodyCell.AknGrid-bodyCell--clickable': 'toggleVersion',
     },
 
     /**

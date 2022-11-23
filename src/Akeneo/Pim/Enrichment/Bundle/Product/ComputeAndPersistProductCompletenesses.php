@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnCh
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -29,6 +30,7 @@ class ComputeAndPersistProductCompletenesses
         private GetProductCompletenesses $getProductCompletenesses,
         private EventDispatcherInterface $eventDispatcher,
         private Clock $clock,
+        private TokenStorageInterface $tokenStorage,
     ) {
     }
 
@@ -61,6 +63,10 @@ class ComputeAndPersistProductCompletenesses
         array $previousProductsCompletenessCollections
     ): ?ProductWasCompletedOnChannelLocaleCollection {
         $now = $this->clock->now();
+        /** @var \Akeneo\UserManagement\Component\Model\UserInterface $user */
+        $user = $this->tokenStorage->getToken()?->getUser();
+        $authorId = null !== $user?->getId() ? (string) $user->getId() : null;
+
         $productCompletedOnChannelLocaleEvents = [];
         foreach ($newProductsCompletenessCollections as $uuid => $newProductCompletenessCollection) {
             $previousProductCompletenessCollection = $previousProductsCompletenessCollections[$uuid] ?? null;
@@ -69,7 +75,8 @@ class ComputeAndPersistProductCompletenesses
                 ...$productCompletedOnChannelLocaleEvents,
                 ...$newProductCompletenessCollection->buildProductWasCompletedOnChannelLocaleEvents(
                     $now,
-                    $previousProductCompletenessCollection
+                    $previousProductCompletenessCollection,
+                    $authorId
                 )
             ];
         }

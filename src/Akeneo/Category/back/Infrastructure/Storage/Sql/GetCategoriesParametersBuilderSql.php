@@ -23,8 +23,7 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         int $limit,
         int $offset,
         bool $isEnrichedAttributes
-    ): array
-    {
+    ): array {
         $parameters['sqlWhere'] = $this->buildSearchFilter($categoryCodes);
         $parameters['sqlLimitOffset'] = $this->buildLimitOffset($limit, $offset);
         $parameters['params'] = [
@@ -52,7 +51,7 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
     private function buildLimitOffset(int $limit, int $offset): string
     {
         $sqlLimitAndOffset = sprintf('LIMIT %d', $limit);
-        if ($offset !== 0){
+        if ($offset !== 0) {
             $sqlLimitAndOffset .= sprintf(' OFFSET %d', $offset);
         }
 

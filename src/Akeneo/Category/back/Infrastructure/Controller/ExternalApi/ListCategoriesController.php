@@ -70,10 +70,10 @@ class ListCategoriesController extends AbstractController
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         try {
             $queryParameters = $this->parametersBuilder->build(
-                    $searchFilters,
-                    $queryParameters['limit'],
-                    $offset,
-                    $request->query->getBoolean('with_enriched_attributes')
+                $searchFilters,
+                $queryParameters['limit'],
+                $offset,
+                $request->query->getBoolean('with_enriched_attributes')
             );
             $categories = $this->getCategories->execute($queryParameters);
         } catch (\InvalidArgumentException $exception) {

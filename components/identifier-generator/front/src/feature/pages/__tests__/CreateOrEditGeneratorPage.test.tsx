@@ -1,24 +1,15 @@
 import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
 import {CreateOrEditGeneratorPage} from '../';
-import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 import {createMemoryHistory} from 'history';
 import {Router} from 'react-router';
+import {IdentifierGeneratorContext} from '../../context/IdentifierGeneratorContext';
+import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../DeleteGeneratorModal');
 jest.mock('../../tabs/GeneralPropertiesTab');
+jest.mock('../../tabs/SelectionTab');
 jest.mock('../../tabs/StructureTab');
-
-const initialGenerator: IdentifierGenerator = {
-  code: 'initialCode',
-  labels: {
-    en_US: 'Initial Label',
-  },
-  conditions: [],
-  structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
-  delimiter: null,
-  target: 'sku',
-};
 
 describe('CreateOrEditGeneratorPage', () => {
   it('should switch tabs', () => {
@@ -36,7 +27,7 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('GeneratorPropertiesMock')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.product_selection'));
-    expect(screen.getByText('Not implemented YET')).toBeInTheDocument();
+    expect(screen.getByText('SelectionTabMock')).toBeInTheDocument();
     expect(screen.getByText('[]')).toBeInTheDocument(); // conditions
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
@@ -83,6 +74,7 @@ describe('CreateOrEditGeneratorPage', () => {
     render(
       <Router history={history}>
         <CreateOrEditGeneratorPage
+          isMainButtonDisabled={false}
           initialGenerator={initialGenerator}
           validationErrors={[]}
           mainButtonCallback={jest.fn()}
@@ -102,13 +94,24 @@ describe('CreateOrEditGeneratorPage', () => {
   });
 
   it('should update a generate on structure change', () => {
+    const mockSetHasUnsavedChanges = jest.fn();
+    const identifierGeneratorDependencies = {
+      unsavedChanges: {
+        hasUnsavedChanges: false,
+        setHasUnsavedChanges: mockSetHasUnsavedChanges,
+      },
+    };
+
     render(
-      <CreateOrEditGeneratorPage
-        initialGenerator={initialGenerator}
-        validationErrors={[]}
-        mainButtonCallback={jest.fn()}
-        isNew={false}
-      />
+      <IdentifierGeneratorContext.Provider value={identifierGeneratorDependencies}>
+        <CreateOrEditGeneratorPage
+          isMainButtonDisabled={false}
+          initialGenerator={initialGenerator}
+          validationErrors={[]}
+          mainButtonCallback={jest.fn()}
+          isNew={false}
+        />
+      </IdentifierGeneratorContext.Provider>
     );
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
@@ -116,5 +119,10 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('[{"type":"free_text","string":"AKN"}]')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update Free Text'));
     expect(screen.getByText('[{"type":"free_text","string":"Updated string"}]')).toBeInTheDocument();
+
+    expect(mockSetHasUnsavedChanges).toHaveBeenCalledWith(true);
+
+    fireEvent.click(screen.getByText('Revert Free Text'));
+    expect(mockSetHasUnsavedChanges).toHaveBeenCalledWith(false);
   });
 });

@@ -1,18 +1,37 @@
 import React from 'react';
 import {Property, PROPERTY_NAMES} from '../../models';
-import {FreeTextEdit} from './edit/FreeTextEdit';
+import {AutoNumberEdit, FreeTextEdit} from './edit/';
+import {SectionTitle} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type PropertyEditProps = {
   selectedProperty: Property;
-  onChange: (propertyWithId: Property) => void;
+  onChange: (property: Property) => void;
 };
 
+export type PropertyEditFieldsProps<T extends Property> = React.FC<{
+  selectedProperty: T;
+  onChange: (property: T) => void;
+}>;
+
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {
+  const translate = useTranslate();
+
+  const components = {
+    [PROPERTY_NAMES.FREE_TEXT]: FreeTextEdit,
+    [PROPERTY_NAMES.AUTO_NUMBER]: AutoNumberEdit,
+  };
+
+  const Component = components[selectedProperty.type] as PropertyEditFieldsProps<Property>;
+
   return (
     <>
-      {PROPERTY_NAMES.FREE_TEXT === selectedProperty.type && (
-        <FreeTextEdit selectedProperty={selectedProperty} onChange={onChange} />
-      )}
+      <SectionTitle>
+        <SectionTitle.Title>
+          {translate(`pim_identifier_generator.structure.settings.${selectedProperty.type}.title`)}
+        </SectionTitle.Title>
+      </SectionTitle>
+      <Component selectedProperty={selectedProperty} onChange={onChange} />
     </>
   );
 };
