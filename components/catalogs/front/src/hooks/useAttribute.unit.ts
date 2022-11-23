@@ -1,3 +1,5 @@
+import {useChannel} from '../components/ProductSelection/hooks/useChannel';
+
 jest.unmock('./useAttribute');
 
 import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
@@ -40,6 +42,26 @@ test('it fetches the API response', async () => {
             scopable: false,
             localizable: false,
         },
+        error: null,
+    });
+});
+
+test('it returns undefined when no code provided', async () => {
+    const {result, waitForNextUpdate} = renderHook(() => useAttribute(''), {wrapper: ReactQueryWrapper});
+
+    expect(result.current).toMatchObject({
+        isLoading: true,
+        isError: false,
+        data: undefined,
+        error: null,
+    });
+
+    await waitForNextUpdate();
+
+    expect(result.current).toMatchObject({
+        isLoading: false,
+        isError: false,
+        data: undefined,
         error: null,
     });
 });

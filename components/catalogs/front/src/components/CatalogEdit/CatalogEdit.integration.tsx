@@ -21,6 +21,17 @@ const openDropdown = (selector: string): void => {
 };
 
 test('it can enable a catalog', async () => {
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/a134c164-9343-4796-9b4e-e2c04ba3765a',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            json: {},
+        },
+    ]);
+
     const dispatch = jest.fn();
     const form = {
         values: {
@@ -50,6 +61,17 @@ test('it can enable a catalog', async () => {
 
 test('it can change criteria in the product selection', async () => {
     mocked(generateRandomId).mockReturnValue('rdn');
+
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/a134c164-9343-4796-9b4e-e2c04ba3765a',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            json: {},
+        },
+    ]);
 
     const dispatch = jest.fn();
     const form = {
@@ -118,6 +140,14 @@ test('it can add a product value filter on the channel', async () => {
         {
             url: '/rest/catalogs/attributes?page=1&limit=20&search=',
             json: [],
+        },
+        {
+            url: '/rest/catalogs/a134c164-9343-4796-9b4e-e2c04ba3765a',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            json: {},
         },
     ]);
 

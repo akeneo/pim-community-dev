@@ -30,7 +30,7 @@ const TargetCell = styled(Table.Cell)`
 
 type Props = {
     productMapping: ProductMappingType;
-    productMappingSchema?: ProductMappingSchema;
+    productMappingSchema: ProductMappingSchema | undefined;
     errors: ProductMappingErrors;
     onChange: (values: ProductMappingType) => void;
 };

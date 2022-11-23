@@ -5,7 +5,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {SourcePanel} from './SourcePanel';
 
-test('it display an placeholder if there is no target selected', () => {
+test('it displays a placeholder if there is no target selected', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
@@ -17,7 +17,7 @@ test('it display an placeholder if there is no target selected', () => {
     expect(screen.getByText('akeneo_catalogs.product_mapping.source.placeholder.title')).toBeInTheDocument();
 });
 
-test('it display the target as a title', () => {
+test('it displays the target as a title', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>

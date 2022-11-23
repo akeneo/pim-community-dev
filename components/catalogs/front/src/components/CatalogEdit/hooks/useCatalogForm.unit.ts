@@ -361,6 +361,7 @@ test('it validates the catalog on first load', () => {
                     },
                 },
                 product_value_filters: {channels: ['ecommerce', 'print']},
+                product_mapping: {},
             },
             errors: [
                 {
@@ -390,6 +391,9 @@ test('it remove all errors when we delete a product selection criteria', () => {
                 },
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
+            owner_username: 'willy',
+            product_mapping: {},
+            has_product_mapping_schema: false,
         },
         error: null,
     }));
@@ -420,6 +424,7 @@ test('it remove all errors when we delete a product selection criteria', () => {
                 enabled: true,
                 product_selection_criteria: {},
                 product_value_filters: {channels: ['ecommerce', 'print']},
+                product_mapping: {},
             },
             errors: [],
         },
