@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount\Write\Model;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorAccountTest extends TestCase
@@ -12,9 +13,9 @@ final class ContributorAccountTest extends TestCase
     /** @test */
     public function itCreatesAContributorAccount(): void
     {
-        $contributorAccount = ContributorAccount::createdAtFromEmail(
+        $contributorAccount = ContributorAccount::fromEmail(
             'contributor@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:57:18'))->now(),
         );
         $this->assertEquals('contributor@example.com', $contributorAccount->email());
         $this->assertNull($contributorAccount->getPassword());
@@ -54,9 +55,9 @@ final class ContributorAccountTest extends TestCase
     /** @test */
     public function itUpdatesTheContributorAccountPassword(): void
     {
-        $contributorAccount = ContributorAccount::createdAtFromEmail(
+        $contributorAccount = ContributorAccount::fromEmail(
             'contributor@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:57:18'))->now(),
         );
 
         $contributorAccount->setPassword('P@$$w0rdfoo');
@@ -72,21 +73,18 @@ final class ContributorAccountTest extends TestCase
         $contributorAccount = ContributorAccount::hydrate(
             'd52dc837-3122-48cf-aee9-4405dce82600',
             'contributor@example.com',
-            (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
+            '2022-09-07 08:57:18',
             'P@$$w0rdfoo',
             'foo',
-            (new \DateTimeImmutable())->modify('-2 days')->format('Y-m-d H:i:s'),
+            '2022-09-05 08:57:18',
             null,
             true,
         );
 
-        $contributorAccount->resetPasswordAt(new \DateTimeImmutable());
+        $contributorAccount->resetPasswordAt((new FrozenClock('2022-09-07 08:57:18'))->now());
 
         static::assertNull($contributorAccount->getPassword());
-        static::assertSame(
-            (new \DateTimeImmutable())->format('d'),
-            (new \DateTimeImmutable($contributorAccount->accessTokenCreatedAt()))->format('d'),
-        );
+        static::assertSame('2022-09-07 08:57:18', $contributorAccount->accessTokenCreatedAt());
         static::assertNotSame('foo', $contributorAccount->accessToken());
     }
 
@@ -96,20 +94,17 @@ final class ContributorAccountTest extends TestCase
         $contributorAccount = ContributorAccount::hydrate(
             'd52dc837-3122-48cf-aee9-4405dce82600',
             'contributor@example.com',
-            (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
+            '2022-09-07 08:57:18',
             'P@$$w0rdfoo',
             'foo',
-            (new \DateTimeImmutable())->modify('-2 days')->format('Y-m-d H:i:s'),
+            '2022-09-05 08:57:18',
             null,
             true,
         );
 
-        $contributorAccount->renewAccessTokenAt(new \DateTimeImmutable());
+        $contributorAccount->renewAccessTokenAt((new FrozenClock('2022-09-07 08:57:18'))->now());
 
-        static::assertSame(
-            (new \DateTimeImmutable())->format('d'),
-            (new \DateTimeImmutable($contributorAccount->accessTokenCreatedAt()))->format('d'),
-        );
+        static::assertSame('2022-09-07 08:57:18', $contributorAccount->accessTokenCreatedAt());
         static::assertNotSame('foo', $contributorAccount->accessToken());
     }
 }

@@ -8,6 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class SupplierTest extends TestCase
@@ -37,7 +38,7 @@ final class SupplierTest extends TestCase
         $supplier->update(
             'Supplier label',
             ['bar@bar.bar'],
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
         $expectedEvents = $supplier->events();

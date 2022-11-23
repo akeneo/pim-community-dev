@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Succe
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\SuccessMetrics\Subscriber\LogOnContributorAdded;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
 
@@ -24,7 +25,7 @@ final class LogOnContributorAddedTest extends TestCase
                 $supplierIdentifier,
                 'contributor@example.com',
                 'los_pollos_hermanos',
-                new \DateTimeImmutable(),
+                (new FrozenClock('2022-09-07 08:54:38'))->now(),
             ),
         );
 

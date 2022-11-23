@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount\Read\Model;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorAccountTest extends TestCase
@@ -16,7 +17,7 @@ final class ContributorAccountTest extends TestCase
             '9f4c017c-7682-4f83-9099-dd9afcada1a2',
             'burger@example.com',
             'foo',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
         static::assertSame(
@@ -30,28 +31,31 @@ final class ContributorAccountTest extends TestCase
         );
     }
 
-    public function itDoesTellThatTheAccessTokenIsValid(): void
+    /** @test */
+    public function itTellsIfTheAccessTokenIsValid(): void
     {
         $sut = new ContributorAccount(
             '9f4c017c-7682-4f83-9099-dd9afcada1a2',
             'burger@example.com',
             'foo',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
-        static::assertTrue($sut->isAccessTokenValid($sut->accessTokenCreatedAt));
+        $now = (new FrozenClock('2022-09-12 08:12:00'))->now();
+        static::assertTrue($sut->isAccessTokenValid($now));
     }
 
-    public function itDoesTellThatTheTheAccessTokenIsNotValidAnymore(): void
+    /** @test */
+    public function itTellsIfTheTheAccessTokenIsNotValidAnymore(): void
     {
-        $expiredAccessToken = (new \DateTimeImmutable())->modify('- 15 days');
         $sut = new ContributorAccount(
             '9f4c017c-7682-4f83-9099-dd9afcada1a2',
             'burger@example.com',
             'foo',
-            $expiredAccessToken,
+            (new FrozenClock('2022-08-28 08:54:38'))->now(),
         );
 
-        static::assertFalse($sut->isAccessTokenValid($sut->accessTokenCreatedAt));
+        $now = (new FrozenClock('2022-09-12 08:12:00'))->now();
+        static::assertFalse($sut->isAccessTokenValid($now));
     }
 }

@@ -17,10 +17,10 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itSavesAContributorAccount(): void
     {
         $repository = $this->get(ContributorAccountRepository::class);
-        $contributorAccount = ContributorAccount::createdAtFromEmail('burger@example.com', new \DateTimeImmutable());
+        $contributorAccount = ContributorAccount::fromEmail('burger@example.com', new \DateTimeImmutable());
         $contributorAccount->setPassword('P@$$w0rd');
         $repository->save($contributorAccount);
-        $repository->save(ContributorAccount::createdAtFromEmail('jambon@example.com', new \DateTimeImmutable()));
+        $repository->save(ContributorAccount::fromEmail('jambon@example.com', new \DateTimeImmutable()));
 
         $savedContributorAccount = $this->findContributorAccount('burger@example.com');
 
@@ -37,7 +37,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itSavesAContributorAccountConsent(): void
     {
         $repository = $this->get(ContributorAccountRepository::class);
-        $contributorAccount = ContributorAccount::createdAtFromEmail('burger@example.com', new \DateTimeImmutable());
+        $contributorAccount = ContributorAccount::fromEmail('burger@example.com', new \DateTimeImmutable());
         $contributorAccount->consent();
         $repository->save($contributorAccount);
 
@@ -61,7 +61,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             true,
         );
         $repository->save($contributorAccount);
-        $repository->save(ContributorAccount::createdAtFromEmail('jambon@example.com', new \DateTimeImmutable()));
+        $repository->save(ContributorAccount::fromEmail('jambon@example.com', new \DateTimeImmutable()));
 
         static::assertSame(
             'contributor@example.com',
@@ -84,7 +84,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             true,
         );
         $repository->save($contributorAccount);
-        $repository->save(ContributorAccount::createdAtFromEmail('contributor2@example.com', new \DateTimeImmutable()));
+        $repository->save(ContributorAccount::fromEmail('contributor2@example.com', new \DateTimeImmutable()));
 
         static::assertSame(
             'contributor@example.com',
@@ -117,9 +117,9 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itDeletesAContributorAccountByEmail(): void
     {
         $repository = $this->get(ContributorAccountRepository::class);
-        $repository->save(ContributorAccount::createdAtFromEmail('contributor1@example.com', new \DateTimeImmutable()));
-        $repository->save(ContributorAccount::createdAtFromEmail('contributor2@example.com', new \DateTimeImmutable()));
-        $repository->save(ContributorAccount::createdAtFromEmail('contributor3@example.com', new \DateTimeImmutable()));
+        $repository->save(ContributorAccount::fromEmail('contributor1@example.com', new \DateTimeImmutable()));
+        $repository->save(ContributorAccount::fromEmail('contributor2@example.com', new \DateTimeImmutable()));
+        $repository->save(ContributorAccount::fromEmail('contributor3@example.com', new \DateTimeImmutable()));
 
         $repository->deleteByEmail('contributor2@example.com');
 

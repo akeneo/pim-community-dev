@@ -7,6 +7,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifi
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\CreateContributorAccount\CreateContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\CreateContributorAccount\CreateContributorAccountHandler;
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 class CreateContributorAccountOnContributorAddedTest extends TestCase
@@ -23,7 +24,7 @@ class CreateContributorAccountOnContributorAddedTest extends TestCase
     /** @test */
     public function itCreatesAContributorAccountWhenSupplierPortalIsActivated(): void
     {
-        $contributorCreatedAt = new \DateTimeImmutable();
+        $contributorCreatedAt = (new FrozenClock('2022-09-07 08:54:38'))->now();
         $contributorAddedEvent = new ContributorAdded(
             Identifier::fromString('4ccdd6c6-a631-48fe-967c-269bcf04e8e0'),
             'contrib1@example.com',

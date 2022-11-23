@@ -10,10 +10,18 @@ use PHPUnit\Framework\TestCase;
 final class SystemClockTest extends TestCase
 {
     /** @test */
-    public function itInstanciatesADateTimeImmutableObjectUsingTheUTCTimezone(): void
+    public function itInstanciatesAnImmutableDateTime(): void
     {
         $sut = new SystemClock();
 
-        static::assertSame($sut->now()->getTimezone()->getName(), 'UTC');
+        static::assertInstanceOf(\DateTimeImmutable::class, $sut->now());
+    }
+
+    /** @test */
+    public function itInstanciatesADateTimeWithUTCTimezone(): void
+    {
+        $sut = new SystemClock();
+
+        static::assertSame('UTC', $sut->now()->getTimezone()->getName());
     }
 }

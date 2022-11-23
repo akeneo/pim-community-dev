@@ -10,6 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\Produc
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -43,7 +44,7 @@ final class CommentProductFileHandlerForSupplierTest extends TestCase
             '13e9a59b-eecc-4f91-9833-6c649aac2d59',
             'jimmy@supplier.com',
             'Here is a comment',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         ));
     }
 }

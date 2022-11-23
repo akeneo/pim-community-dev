@@ -17,7 +17,7 @@ class CreateContributorAccountHandler
 
     public function __invoke(CreateContributorAccount $command): void
     {
-        $contributorAccount = ContributorAccount::createdAtFromEmail(
+        $contributorAccount = ContributorAccount::fromEmail(
             $command->contributorEmail,
             $command->createdAt,
         );

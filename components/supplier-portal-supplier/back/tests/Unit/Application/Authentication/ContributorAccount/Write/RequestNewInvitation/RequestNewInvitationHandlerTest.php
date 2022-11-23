@@ -11,6 +11,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Writ
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class RequestNewInvitationHandlerTest extends TestCase
@@ -42,16 +43,17 @@ final class RequestNewInvitationHandlerTest extends TestCase
         ;
 
         $sut = new RequestNewInvitationHandler($contributorAccountRepository, $mockSendWelcomeEmail);
+        $requestedAt = (new FrozenClock('2022-09-07 08:54:38'))->now();
         ($sut)(new RequestNewInvitation(
             $contributorEmail,
-            new \DateTimeImmutable(),
+            $requestedAt,
         ));
         $updatedContributorAccount = $contributorAccountRepository->findByEmail(Email::fromString($contributorEmail));
 
         static::assertNotSame($oldContributorAccountAccessToken, $updatedContributorAccount->accessToken());
         static::assertSame(
-            (new \DateTimeImmutable())->format('d'),
-            (new \DateTimeImmutable($updatedContributorAccount->accessTokenCreatedAt()))->format('d'),
+            $requestedAt->format('Y-m-d H:i:s'),
+            $updatedContributorAccount->accessTokenCreatedAt(),
         );
     }
 
@@ -65,7 +67,7 @@ final class RequestNewInvitationHandlerTest extends TestCase
         static::expectException(ContributorAccountDoesNotExist::class);
         ($sut)(new RequestNewInvitation(
             'unknown@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         ));
     }
 }

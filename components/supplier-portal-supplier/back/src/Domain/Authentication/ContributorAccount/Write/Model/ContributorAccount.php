@@ -22,7 +22,7 @@ class ContributorAccount
     ) {
     }
 
-    public static function createdAtFromEmail(string $email, \DateTimeImmutable $createdAt): self
+    public static function fromEmail(string $email, \DateTimeImmutable $createdAt): self
     {
         return new self(
             Identifier::generate(),

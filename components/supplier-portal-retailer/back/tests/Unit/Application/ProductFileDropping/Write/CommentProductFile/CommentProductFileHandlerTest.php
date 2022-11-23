@@ -11,6 +11,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\Produc
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as ProductFileInMemoryRepository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class CommentProductFileHandlerTest extends TestCase
@@ -28,7 +29,7 @@ final class CommentProductFileHandlerTest extends TestCase
             '6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287',
             'julia@roberts.com',
             'Your product file is awesome!',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
         (new CommentProductFileHandler($productFileRepository))($command);
@@ -55,7 +56,7 @@ final class CommentProductFileHandlerTest extends TestCase
             '6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287',
             'julia@roberts.com',
             'Your product file is awesome!',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
         (new CommentProductFileHandler($productFileRepository))($command);

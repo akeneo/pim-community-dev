@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 
 final class ResetPassword
 {
-    public function __construct(public readonly string $email, public \DateTimeImmutable $resetAt)
+    public function __construct(public readonly string $email, public readonly \DateTimeImmutable $resetAt)
     {
     }
 }

@@ -8,6 +8,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Writ
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class InMemoryRepositoryTest extends TestCase
@@ -17,13 +18,13 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $contributorAccountRepository = new InMemoryRepository();
 
-        $contributorAccountRepository->save(ContributorAccount::createdAtFromEmail(
+        $contributorAccountRepository->save(ContributorAccount::fromEmail(
             'momoss@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         ));
-        $contributorAccountRepository->save(ContributorAccount::createdAtFromEmail(
+        $contributorAccountRepository->save(ContributorAccount::fromEmail(
             'contributor@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:57:18'))->now(),
         ));
 
         $contributorAccount = $contributorAccountRepository->findByEmail(Email::fromString('momoss@example.com'));
@@ -36,9 +37,9 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $contributorAccountRepository = new InMemoryRepository();
 
-        $contributorAccountRepository->save(ContributorAccount::createdAtFromEmail(
+        $contributorAccountRepository->save(ContributorAccount::fromEmail(
             'momoss@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         ));
 
         $this->assertNull($contributorAccountRepository->findByEmail(Email::fromString('yolo@example.com')));
@@ -49,14 +50,14 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $contributorAccountRepository = new InMemoryRepository();
 
-        $testContributor = ContributorAccount::createdAtFromEmail(
+        $testContributor = ContributorAccount::fromEmail(
             'test@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
         $contributorAccountRepository->save($testContributor);
-        $contributorAccountRepository->save(ContributorAccount::createdAtFromEmail(
+        $contributorAccountRepository->save(ContributorAccount::fromEmail(
             'contributor@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:57:18'))->now(),
         ));
 
         $contributorAccount = $contributorAccountRepository->find(
@@ -71,9 +72,9 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $contributorAccountRepository = new InMemoryRepository();
 
-        $testContributor = ContributorAccount::createdAtFromEmail(
+        $testContributor = ContributorAccount::fromEmail(
             'test@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:57:18'))->now(),
         );
         $contributorAccountRepository->save($testContributor);
 
@@ -88,17 +89,17 @@ final class InMemoryRepositoryTest extends TestCase
     public function itDeletesAContributorAccountByEmail(): void
     {
         $repository = new InMemoryRepository();
-        $repository->save(ContributorAccount::createdAtFromEmail(
+        $repository->save(ContributorAccount::fromEmail(
             'contributor1@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:57:18'))->now(),
         ));
-        $repository->save(ContributorAccount::createdAtFromEmail(
+        $repository->save(ContributorAccount::fromEmail(
             'contributor2@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-08 08:57:18'))->now(),
         ));
-        $repository->save(ContributorAccount::createdAtFromEmail(
+        $repository->save(ContributorAccount::fromEmail(
             'contributor3@example.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-09 08:57:18'))->now(),
         ));
 
         $repository->deleteByEmail('contributor2@example.com');

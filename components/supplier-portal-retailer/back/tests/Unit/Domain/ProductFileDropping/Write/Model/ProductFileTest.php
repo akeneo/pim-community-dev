@@ -10,6 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\Produc
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Comment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class ProductFileTest extends TestCase
@@ -41,14 +42,13 @@ final class ProductFileTest extends TestCase
     {
         $productFile = $this->buildProductFile(Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2'));
 
-        $firstCommentCreatedAt = new \DateTimeImmutable();
+        $firstCommentCreatedAt = (new FrozenClock('2022-09-07 08:54:38'))->now();
         $productFile->addNewRetailerComment(
             'Your product file is garbage!',
             'julia@roberts.com',
             $firstCommentCreatedAt,
         );
-        $secondCommentCreatedAt = (new \DateTimeImmutable())
-            ->add(\DateInterval::createFromDateString('+1 second'))
+        $secondCommentCreatedAt = (new FrozenClock('2022-09-07 08:54:39'))->now()
         ;
         $productFile->addNewRetailerComment(
             'I\'m kidding, it\'s awesome!',
@@ -70,12 +70,17 @@ final class ProductFileTest extends TestCase
     {
         $productFile = $this->buildProductFile(
             Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2'),
-            [Comment::hydrate('Your product file is garbage!', 'julia@roberts.com', new \DateTimeImmutable())],
+            [
+                Comment::hydrate(
+                    'Your product file is garbage!',
+                    'julia@roberts.com',
+                    (new FrozenClock('2022-09-07 08:54:38'))->now(),
+                ),
+            ],
             [],
         );
-        $secondCommentCreatedAt = (new \DateTimeImmutable())
-            ->add(\DateInterval::createFromDateString('+1 second'))
-        ;
+
+        $secondCommentCreatedAt = (new FrozenClock('2022-09-07 08:54:39'))->now();
         $productFile->addNewRetailerComment(
             'I\'m kidding, it\'s awesome!',
             'julia@roberts.com',
@@ -94,15 +99,13 @@ final class ProductFileTest extends TestCase
     {
         $productFile = $this->buildProductFile(Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2'));
 
-        $firstCommentCreatedAt = new \DateTimeImmutable();
+        $firstCommentCreatedAt = (new FrozenClock('2022-09-07 08:54:38'))->now();
         $productFile->addNewSupplierComment(
             'Here are the products I\'ve got for you.',
             'jimmy@punchline.com',
             $firstCommentCreatedAt,
         );
-        $secondCommentCreatedAt = (new \DateTimeImmutable())
-            ->add(\DateInterval::createFromDateString('+1 second'))
-        ;
+        $secondCommentCreatedAt = (new FrozenClock('2022-09-07 08:54:39'))->now();
         $productFile->addNewSupplierComment(
             'I\'m gonna submit an other product file to you.',
             'jimmy@punchline.com',
@@ -130,11 +133,15 @@ final class ProductFileTest extends TestCase
         $productFile = $this->buildProductFile(
             Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2'),
             [],
-            [Comment::hydrate('Here are the products I\'ve got for you.', 'jimmy@punchline.com', new \DateTimeImmutable())],
+            [
+                Comment::hydrate(
+                    'Here are the products I\'ve got for you.',
+                    'jimmy@punchline.com',
+                    (new FrozenClock('2022-09-07 08:54:38'))->now(),
+                ),
+            ],
         );
-        $secondCommentCreatedAt = (new \DateTimeImmutable())
-            ->add(\DateInterval::createFromDateString('+1 second'))
-        ;
+        $secondCommentCreatedAt = (new FrozenClock('2022-09-07 08:54:39'))->now();
         $productFile->addNewSupplierComment(
             'I\'m gonna submit an other product file to you.',
             'jimmy@punchline.com',
@@ -153,7 +160,11 @@ final class ProductFileTest extends TestCase
     {
         $comments = [];
         for ($i = 0; 50 > $i; $i++) {
-            $comments[] = Comment::hydrate('Your product file is garbage!', 'julia@roberts.com', new \DateTimeImmutable());
+            $comments[] = Comment::hydrate(
+                'Your product file is garbage!',
+                'julia@roberts.com',
+                (new FrozenClock('2022-09-07 08:54:38'))->now(),
+            );
         }
         $productFile = $this->buildProductFile(
             Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2'),
@@ -166,7 +177,7 @@ final class ProductFileTest extends TestCase
         $productFile->addNewSupplierComment(
             'Comment that throws an error',
             'julia@roberts.com',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
     }
 
@@ -197,7 +208,11 @@ final class ProductFileTest extends TestCase
         $productFileBuilder = new ProductFileBuilder();
         $productFile = $productFileBuilder->build();
 
-        $productFile->addNewRetailerComment('content', 'julia@roberts.com', new \DateTimeImmutable('2022-09-07 00:00:00'));
+        $productFile->addNewRetailerComment(
+            'content',
+            'julia@roberts.com',
+            (new FrozenClock('2022-09-07 00:00:00'))->now(),
+        );
 
         self::assertTrue($productFile->hasComments());
     }
