@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {IdentifierGenerator} from '../models';
 import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {useSaveGenerator} from '../hooks/useSaveGenerator';
@@ -18,6 +18,10 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
   const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
   const {save, isLoading, error} = useSaveGenerator();
   const identifierGeneratorContext = useIdentifierGeneratorContext();
+  const errors = useMemo(
+    () => (validationErrors.length > 0 ? validationErrors : error || []),
+    [error, validationErrors]
+  );
 
   const onSave = useCallback(
     (generator: IdentifierGenerator) => {
@@ -52,7 +56,7 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
       initialGenerator={initialGenerator}
       mainButtonCallback={onSave}
       isMainButtonDisabled={isLoading}
-      validationErrors={validationErrors || error}
+      validationErrors={errors}
       isNew={false}
     />
   );
