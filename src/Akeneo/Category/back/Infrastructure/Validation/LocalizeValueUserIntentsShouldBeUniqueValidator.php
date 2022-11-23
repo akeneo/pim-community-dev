@@ -17,7 +17,6 @@ use Webmozart\Assert\Assert;
  */
 final class LocalizeValueUserIntentsShouldBeUniqueValidator extends ConstraintValidator
 {
-
     /**
      * @param array<UserIntent> $value
      */
@@ -43,7 +42,7 @@ final class LocalizeValueUserIntentsShouldBeUniqueValidator extends ConstraintVa
         $existingIntents = [];
         foreach ($localizeUserIntents as $localizeIntent) {
             $className = get_class($localizeIntent);
-            $identifier = $localizeIntent->attributeCode() . AbstractValue::SEPARATOR . $localizeIntent->attributeUuid();
+            $identifier = $localizeIntent->attributeCode().AbstractValue::SEPARATOR.$localizeIntent->attributeUuid();
             $intentLocale = $localizeIntent->localeCode() ?? '<all_locales>';
 
             if (\in_array($intentLocale, $existingIntents[$className][$identifier] ?? [])) {

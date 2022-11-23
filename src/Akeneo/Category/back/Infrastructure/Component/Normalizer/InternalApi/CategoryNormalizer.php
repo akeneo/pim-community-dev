@@ -13,15 +13,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var array $supportedFormats */
+    /** @var array */
     protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */
     protected $categoryNormalizer;
 
-    /**
-     * @param NormalizerInterface $categoryNormalizer
-     */
     public function __construct(NormalizerInterface $categoryNormalizer)
     {
         $this->categoryNormalizer = $categoryNormalizer;

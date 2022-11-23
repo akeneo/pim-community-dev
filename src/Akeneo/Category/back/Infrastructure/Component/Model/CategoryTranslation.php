@@ -5,7 +5,7 @@ namespace Akeneo\Category\Infrastructure\Component\Model;
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 
 /**
- * Category translation entity
+ * Category translation entity.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

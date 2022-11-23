@@ -19,7 +19,7 @@ class GetCategoryController
 {
     public function __construct(
         private SecurityFacade $securityFacade,
-        private GetCategoryInterface $getCategory
+        private GetCategoryInterface $getCategory,
     ) {
     }
 

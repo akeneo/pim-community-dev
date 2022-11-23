@@ -41,11 +41,11 @@ class GetCategoryTemplateSql implements GetTemplate
         $result = $this->connection->executeQuery(
             $query,
             [
-                'template_uuid' => $uuid->toBytes()
+                'template_uuid' => $uuid->toBytes(),
             ],
             [
-                'template_uuid' => \PDO::PARAM_STR
-            ]
+                'template_uuid' => \PDO::PARAM_STR,
+            ],
         )->fetchAssociative();
 
         $template = null;

@@ -3,7 +3,7 @@
 namespace Akeneo\Category\Infrastructure\Component\Classification\Repository;
 
 /**
- * Item category repository interface
+ * Item category repository interface.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -12,7 +12,7 @@ namespace Akeneo\Category\Infrastructure\Component\Classification\Repository;
 interface ItemCategoryRepositoryInterface
 {
     /**
-     * Return the number of times the item is present in each tree
+     * Return the number of times the item is present in each tree.
      *
      * @param mixed $item The item to look for in the trees
      *
@@ -23,20 +23,16 @@ interface ItemCategoryRepositoryInterface
     public function getItemCountByTree($item);
 
     /**
-     * Count items linked to category ids
-     *
-     * @param array $categoryIds
+     * Count items linked to category ids.
      *
      * @return int
      */
     public function getItemsCountInCategory(array $categoryIds = []);
 
     /**
-     * Return categories linked to an item
+     * Return categories linked to an item.
      *
      * @param mixed $item
-     *
-     * @return array
      */
     public function findCategoriesItem($item): array;
 }

@@ -50,11 +50,11 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
         $results = $this->connection->executeQuery(
             $query,
             [
-                'template_uuid' => $uuid->toBytes()
+                'template_uuid' => $uuid->toBytes(),
             ],
             [
-                'template_uuid' => \PDO::PARAM_STR
-            ]
+                'template_uuid' => \PDO::PARAM_STR,
+            ],
         )->fetchAllAssociative();
 
         return AttributeCollection::fromArray(array_map(static function ($results) {
@@ -73,7 +73,7 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
     {
         $placeholders = \implode(
             ',',
-            \array_fill(0, \count($attributeUuids), 'UUID_TO_BIN(?)')
+            \array_fill(0, \count($attributeUuids), 'UUID_TO_BIN(?)'),
         );
 
         $sql = <<< SQL
@@ -134,7 +134,7 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
         $attribute = $this->connection->executeQuery(
             $query,
             ['code' => (string) $attributeCode],
-            ['code' => \PDO::PARAM_STR]
+            ['code' => \PDO::PARAM_STR],
         )->fetchAssociative();
 
         return Attribute::fromDatabase($attribute);
