@@ -1,14 +1,6 @@
-terraform {
-  required_providers {
-    datadog = {
-      source = "datadog/datadog"
-    }
-  }
-}
-
 data "google_service_account" "timmy_datadog_gcp_integration" {
   project    = var.project_id
-  account_id = "timmy-app-datadog"
+  account_id = var.datadog_gcp_integration_id
 }
 
 resource "google_service_account_key" "datadog_monitoring" {
@@ -24,8 +16,18 @@ resource "datadog_integration_gcp" "gcp_project_integration" {
   client_id      = data.google_service_account.timmy_datadog_gcp_integration.unique_id
 }
 
+module "datadog_pubsub_destination" {
+  source                   = "terraform-google-modules/log-export/google//modules/pubsub"
+  create_push_subscriber   = true
+  create_subscriber        = false
+  log_sink_writer_identity = "serviceAccount:${var.datadog_gcp_integration_email}"
+  project_id               = var.project_id
+  push_endpoint            = "https://gcp-intake.logs.datadoghq.eu/v1/input/${var.datadog_api_key}/"
+  topic_name               = "${var.project_id}-timmy-datadog-sink"
+}
+
 resource "google_logging_project_sink" "timmy_log_export_sink" {
-  name                   = "${var.region}-timmy-app-datadog-log-sink"
+  name                   = "timmy-app-datadog-log-sink"
   destination            = module.datadog_pubsub_destination.destination_uri
   project                = var.project_id
   filter                 = "resource.type=cloud_function NOT resource.labels.function_name!~\".timmy.\" "
@@ -42,7 +44,7 @@ resource "datadog_logs_custom_pipeline" "timmy_app_cloud_function" {
   filter {
     query = "project_id:${var.project_id} source:gcp.cloud.function"
   }
-  name       = "${var.project_id}-${var.region} Timmy-app Cloud Functionn logs processor"
+  name       = "${var.project_id} Timmy-app Cloud Functionn logs processor"
   is_enabled = true
   processor {
     status_remapper {
@@ -67,12 +69,10 @@ resource "datadog_logs_custom_pipeline" "timmy_app_cloud_function" {
   }
 }
 
-module "datadog_pubsub_destination" {
-  source                   = "terraform-google-modules/log-export/google//modules/pubsub"
-  create_push_subscriber   = true
-  create_subscriber        = false
-  log_sink_writer_identity = "serviceAccount:${data.google_service_account.timmy_datadog_gcp_integration.email}"
-  project_id               = var.project_id
-  push_endpoint            = "https://gcp-intake.logs.datadoghq.eu/v1/input/${var.datadog_api_key}/"
-  topic_name               = substr("${var.region}${var.prefix_branch_name}-timmy-datadog-sink", 0, 63)
+terraform {
+  required_providers {
+    datadog = {
+      source = "datadog/datadog"
+    }
+  }
 }

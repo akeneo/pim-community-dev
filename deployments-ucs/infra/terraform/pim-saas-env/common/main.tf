@@ -1,3 +1,18 @@
+locals {
+  datadog_api_key = data.google_secret_manager_secret_version.datadog_api_key.secret_data
+  datadog_app_key = data.google_secret_manager_secret_version.datadog_app_key.secret_data
+}
+
+data "google_secret_manager_secret_version" "datadog_api_key" {
+  secret  = "DATADOG_API_KEY"
+  project = var.shared_project_id
+}
+
+data "google_secret_manager_secret_version" "datadog_app_key" {
+  secret  = "DATADOG_APP_KEY"
+  project = var.shared_project_id
+}
+
 module "iam" {
   source                = "../../modules/iam"
   project_id            = var.project_id
@@ -93,7 +108,29 @@ module "cloudarmor" {
   enable_rate_limiting_api = false
 }
 
+module "timmy_datadog" {
+  source                        = "../../modules/datadog"
+  project_id                    = var.project_id
+  datadog_api_key               = local.datadog_api_key
+  datadog_app_key               = local.datadog_app_key
+  datadog_gcp_integration_id    = module.iam.datadog_gcp_integration_id
+  datadog_gcp_integration_email = module.iam.datadog_gcp_integration_email
+}
+
+provider "datadog" {
+  api_key = local.datadog_api_key
+  app_key = local.datadog_app_key
+  api_url = "https://api.datadoghq.eu/"
+}
+
 terraform {
   backend "gcs" {}
+
+  required_providers {
+    datadog = {
+      source  = "datadog/datadog"
+    }
+  }
+
   required_version = "= 1.1.3"
 }

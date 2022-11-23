@@ -4,24 +4,6 @@ locals {
   cloudscheduler_service_account_email = "timmy-deployment@${var.project_id}.iam.gserviceaccount.com"
   function_service_account_email       = "timmy-cloud-function@${var.project_id}.iam.gserviceaccount.com"
   prefix_branch_name                   = var.branch_name == "master" ? "" : "-${var.branch_name}"
-  datadog_api_key                      = data.google_secret_manager_secret_version.datadog_api_key.secret_data
-  datadog_app_key                      = data.google_secret_manager_secret_version.datadog_app_key.secret_data
-}
-
-data "google_secret_manager_secret_version" "datadog_api_key" {
-  secret  = "DATADOG_API_KEY"
-  project = var.shared_project_id
-}
-
-data "google_secret_manager_secret_version" "datadog_app_key" {
-  secret  = "DATADOG_APP_KEY"
-  project = var.shared_project_id
-}
-
-provider "datadog" {
-  api_key = local.datadog_api_key
-  app_key = local.datadog_app_key
-  api_url = "https://api.datadoghq.eu/"
 }
 
 module "bucket" {
@@ -239,16 +221,6 @@ module "timmy_cloudscheduler" {
   time_zone                  = "Europe/Paris"
 }
 
-module "timmy_datadog" {
-  source             = "../modules/datadog"
-  project_id         = var.project_id
-  datadog_api_key    = local.datadog_api_key
-  datadog_app_key    = local.datadog_app_key
-  region             = var.region
-  prefix_branch_name = local.prefix_branch_name
-
-}
-
 terraform {
   backend "gcs" {
     bucket = "akecld-terraform-pim-saas-demo"
@@ -258,9 +230,6 @@ terraform {
     archive = {
       source  = "hashicorp/archive"
       version = "= 2.2.0"
-    }
-    datadog = {
-      source  = "datadog/datadog"
     }
     google = {
       source  = "hashicorp/google"

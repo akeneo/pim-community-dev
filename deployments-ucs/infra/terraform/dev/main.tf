@@ -13,6 +13,18 @@ locals {
   private_zone            = "pim-saas-dev.dev.local"
   ci_zone                 = "ci.pim.akeneo.cloud"
   shared_zone_name        = "pim-akeneo-cloud"
+  datadog_api_key         = data.google_secret_manager_secret_version.datadog_api_key.secret_data
+  datadog_app_key         = data.google_secret_manager_secret_version.datadog_app_key.secret_data
+}
+
+data "google_secret_manager_secret_version" "datadog_api_key" {
+  secret  = "DATADOG_API_KEY"
+  project = local.shared_project_id
+}
+
+data "google_secret_manager_secret_version" "datadog_app_key" {
+  secret  = "DATADOG_APP_KEY"
+  project = local.shared_project_id
 }
 
 module "iam" {
@@ -238,10 +250,32 @@ module "cloudarmor" {
   enable_rate_limiting_api = false
 }
 
+module "timmy_datadog" {
+  source                        = "../modules/datadog"
+  project_id                    = local.project_id
+  datadog_api_key               = local.datadog_api_key
+  datadog_app_key               = local.datadog_app_key
+  datadog_gcp_integration_id    = module.iam.datadog_gcp_integration_id
+  datadog_gcp_integration_email = module.iam.datadog_gcp_integration_email
+}
+
+provider "datadog" {
+  api_key = local.datadog_api_key
+  app_key = local.datadog_app_key
+  api_url = "https://api.datadoghq.eu/"
+}
+
 terraform {
   backend "gcs" {
     bucket = "akecld-terraform-pim-saas-dev"
     prefix = "infra/pim-saas/akecld-prd-pim-saas-dev"
   }
+
+  required_providers {
+    datadog = {
+      source  = "datadog/datadog"
+    }
+  }
+
   required_version = "= 1.1.3"
 }
