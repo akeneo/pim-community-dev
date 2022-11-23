@@ -29,6 +29,6 @@ akeneo.category:
 
     template_list:
         columns:
-            header: Header
+            header: Label
             code: Code
             type: Type

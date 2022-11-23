@@ -69,7 +69,7 @@ class TemplateBuilderSpec extends ObjectBehavior
         $template->getLabelCollection()->getTranslation('en_US')->shouldReturn('Category code template');
 
         $descriptionAttribute = $template->getAttributeCollection()->getAttributeByCode('description');
-        $descriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
+        $descriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::RICH_TEXT);
         $descriptionAttribute->getOrder()->intValue()->shouldReturn(1);
         $descriptionAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Description');
 

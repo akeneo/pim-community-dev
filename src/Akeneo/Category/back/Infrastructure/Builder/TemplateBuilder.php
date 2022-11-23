@@ -56,7 +56,7 @@ class TemplateBuilder
             $this->generateTemplateLabelCollection($categoryTree->getLabels()),
             $categoryTree->getId(),
             AttributeCollection::fromArray([
-                AttributeTextArea::create(
+                AttributeRichText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('description'),
                     AttributeOrder::fromInteger(1),
