@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {IdentifierGenerator} from '../models';
 import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import {useCreateIdentifierGenerator} from '../hooks';
 import {useIdentifierGeneratorContext} from '../context';
 import {useQueryClient} from 'react-query';
+import {validateIdentifierGenerator, Violation} from '../validators';
 
 type CreateGeneratorProps = {
   initialGenerator: IdentifierGenerator;
@@ -16,6 +17,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
   const translate = useTranslate();
   const history = useHistory();
   const queryClient = useQueryClient();
+  const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
   const {mutate, error, isLoading} = useCreateIdentifierGenerator();
   const identifierGeneratorContext = useIdentifierGeneratorContext();
 
@@ -24,6 +26,13 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
   }, [identifierGeneratorContext.unsavedChanges]);
 
   const onSave = (generator: IdentifierGenerator) => {
+    const validationErrors = validateIdentifierGenerator(generator);
+    if (validationErrors.length > 0) {
+      setValidationErrors(validationErrors);
+      return;
+    }
+    setValidationErrors([]);
+
     mutate(generator, {
       onError: error => {
         // @ts-ignore
@@ -47,7 +56,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
       isMainButtonDisabled={isLoading}
       initialGenerator={initialGenerator}
       mainButtonCallback={onSave}
-      validationErrors={error?.violations || []}
+      validationErrors={validationErrors || error?.violations || []}
       isNew={true}
     />
   );
