@@ -4,6 +4,7 @@ import {Styled} from './Styled';
 import {useUiLocales} from '../hooks';
 import {LabelCollection} from '../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {LabelTranslationsSkeleton} from './LabelTranslationsSkeleton';
 
 type LabelTranslationsProps = {
   labelCollection: LabelCollection;
@@ -12,7 +13,7 @@ type LabelTranslationsProps = {
 
 const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, onLabelsChange}) => {
   const translate = useTranslate();
-  const {data: locales = [], error} = useUiLocales();
+  const {data: locales = [], error, isLoading} = useUiLocales();
   const [value, setValue] = useState<LabelCollection>(labelCollection);
 
   const onLabelChange = useCallback(
@@ -31,6 +32,7 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
         </SectionTitle.Title>
       </SectionTitle>
       <Styled.FormContainer>
+        {isLoading && !error && <LabelTranslationsSkeleton />}
         {error && <Helper level="error">{translate('pim_error.general')}</Helper>}
         {locales.map(locale => (
           <Field label={locale.label} key={locale.code} locale={locale.code}>
