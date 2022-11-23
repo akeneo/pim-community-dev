@@ -20,6 +20,7 @@ describe('TimeToEnrichControlPanel', () => {
           locales: [],
         }}
         onFiltersChange={() => {}}
+        onIsControlPanelOpenChange={() => {}}
       />
     );
 
@@ -27,9 +28,11 @@ describe('TimeToEnrichControlPanel', () => {
   });
 
   it('hides the control panel', async () => {
+    const handleIsControlPanelOpenChange = jest.fn();
+
     await renderWithProviders(
       <TimeToEnrichControlPanel
-        isOpen={false}
+        isOpen={true}
         filters={{
           metric: Metric.TIME_TO_ENRICH,
           period: PredefinedPeriod.LAST_12_WEEKS,
@@ -40,9 +43,16 @@ describe('TimeToEnrichControlPanel', () => {
           locales: [],
         }}
         onFiltersChange={() => {}}
+        onIsControlPanelOpenChange={handleIsControlPanelOpenChange}
       />
     );
-    expect(screen.queryByText('akeneo.performance_analytics.control_panel.title')).not.toBeInTheDocument();
+
+    const closeControlPanelButton = screen.getByTestId('close-control-panel');
+    act(() => {
+      userEvent.click(closeControlPanelButton);
+    });
+
+    expect(handleIsControlPanelOpenChange).toHaveBeenCalledWith(false);
   });
 
   it('validates the control panel filters', async () => {
@@ -61,6 +71,7 @@ describe('TimeToEnrichControlPanel', () => {
           locales: [],
         }}
         onFiltersChange={handleFiltersChange}
+        onIsControlPanelOpenChange={() => {}}
       />
     );
     expect(screen.queryByText('akeneo.performance_analytics.control_panel.title')).toBeInTheDocument();
@@ -97,6 +108,7 @@ describe('TimeToEnrichControlPanel', () => {
           locales: [],
         }}
         onFiltersChange={handleFiltersChange}
+        onIsControlPanelOpenChange={() => {}}
       />
     );
 
@@ -121,6 +133,7 @@ describe('TimeToEnrichControlPanel', () => {
           locales: [],
         }}
         onFiltersChange={handleFiltersChange}
+        onIsControlPanelOpenChange={() => {}}
       />
     );
 
@@ -180,6 +193,7 @@ describe('TimeToEnrichControlPanel', () => {
           locales: [],
         }}
         onFiltersChange={handleFiltersChange}
+        onIsControlPanelOpenChange={() => {}}
       />
     );
 

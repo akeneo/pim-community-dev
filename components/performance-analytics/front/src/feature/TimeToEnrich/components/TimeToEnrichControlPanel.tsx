@@ -6,6 +6,7 @@ import {
   Collapse,
   IconButton,
   CheckIcon,
+  CloseIcon,
   pimTheme,
 } from 'akeneo-design-system';
 import styled from 'styled-components';
@@ -73,10 +74,11 @@ const InlineField = styled.div`
 type Props = {
   isOpen: boolean;
   onFiltersChange: (filters: TimeToEnrichFilters) => void;
+  onIsControlPanelOpenChange: (isOpen: boolean) => void;
   filters: TimeToEnrichFilters;
 };
 
-const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, filters}: Props) => {
+const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpenChange, filters}: Props) => {
   const [isCompareFilterCollapsed, toggleCompareFilterCollapse] = useState<boolean>(true);
   const [isPeriodFilterCollapsed, togglePeriodFilterCollapse] = useState<boolean>(true);
   const [isComparisonFilterCollapsed, toggleComparisonFilterCollapse] = useState<boolean>(true);
@@ -86,6 +88,10 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, filters}: Props) => 
 
   const handleFiltersChange = () => {
     onFiltersChange(controlPanelFilters);
+  };
+
+  const handleIsControlPanelOpenChange = () => {
+    onIsControlPanelOpenChange(!isOpen);
   };
 
   const handleControlPanelFilters = (newFilter: object) => {
@@ -107,6 +113,13 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, filters}: Props) => 
             <CheckIcon color={pimTheme.color.purple100} onClick={handleFiltersChange} data-testid="validate-filters" />
           }
           onClick={function noRefCheck() {}}
+          title={translate('akeneo.performance_analytics.control_panel.close_control_panel')}
+        />
+        <IconButton
+          ghost
+          icon={<CloseIcon color={pimTheme.color.purple100} />}
+          onClick={handleIsControlPanelOpenChange}
+          data-testid="close-control-panel"
           title={translate('akeneo.performance_analytics.control_panel.close_control_panel')}
         />
       </ControlPanelSectionTitle>

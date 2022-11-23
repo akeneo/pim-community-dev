@@ -16,7 +16,7 @@ describe('TimeToEnrichDashboard', () => {
       userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.configure'));
     });
 
-    expect(screen.getByText('akeneo.performance_analytics.control_panel.close_control_panel')).toBeInTheDocument();
+    expect(screen.getByText('akeneo.performance_analytics.control_panel.title')).toBeInTheDocument();
   });
 
   it('validates the control panel filters', async () => {
@@ -69,10 +69,29 @@ describe('TimeToEnrichDashboard', () => {
     });
 
     expect(await screen.findByText('akeneo.performance_analytics.control_panel.title')).toBeInTheDocument();
-
-    expect(
-      await screen.findByText('akeneo.performance_analytics.control_panel.close_control_panel')
-    ).toBeInTheDocument();
     expect(screen.queryByText('akeneo.performance_analytics.control_panel.configure')).not.toBeInTheDocument();
+  });
+
+  it('hides the control panel from the dashboard', async () => {
+    await renderWithProviders(<TimeToEnrichDashboard />);
+
+    const openControlPanelButton = screen.getByText('akeneo.performance_analytics.control_panel.configure');
+    expect(openControlPanelButton).toBeInTheDocument();
+
+    expect(screen.queryByText('akeneo.performance_analytics.control_panel.title')).not.toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(openControlPanelButton);
+    });
+
+    expect(await screen.findByText('akeneo.performance_analytics.control_panel.title')).toBeInTheDocument();
+    expect(screen.queryByText('akeneo.performance_analytics.control_panel.configure')).not.toBeInTheDocument();
+
+    const closeControlPanelButton = screen.getByTestId('close-control-panel');
+    act(() => {
+      userEvent.click(closeControlPanelButton);
+    });
+
+    expect(screen.queryByText('akeneo.performance_analytics.control_panel.configure')).toBeInTheDocument();
   });
 });

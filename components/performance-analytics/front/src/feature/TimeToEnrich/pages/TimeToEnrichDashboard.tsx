@@ -43,8 +43,6 @@ const TimeToEnrichDashboard: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(filters)]);
 
-  const handleControlPanelClick = () => setIsControlPanelOpen(!isControlPanelOpen);
-
   const handleFiltersChange = (newFilters: TimeToEnrichFilters) => {
     setIsControlPanelOpen(false);
     setFilters(newFilters);
@@ -65,15 +63,24 @@ const TimeToEnrichDashboard: FC = () => {
         <SectionTitle.Title level="secondary">
           <TimeToEnrichChartLegend filters={filters} />
         </SectionTitle.Title>
-        <SectionTitle.Spacer />
-        <Button ghost={true} size={'small'} level={'secondary'} onClick={handleControlPanelClick}>
-          {!isControlPanelOpen && (
-            <>
-              {translate('akeneo.performance_analytics.control_panel.configure')} <PanelCloseIcon size={20} />
-            </>
-          )}
-          {isControlPanelOpen && <>{translate('akeneo.performance_analytics.control_panel.close_control_panel')}</>}
-        </Button>
+
+        {!isControlPanelOpen && (
+          <>
+            <SectionTitle.Spacer />
+            <Button
+              ghost={true}
+              size={'small'}
+              level={'secondary'}
+              onClick={() => {
+                setIsControlPanelOpen(true);
+              }}
+            >
+              <>
+                {translate('akeneo.performance_analytics.control_panel.configure')} <PanelCloseIcon size={20} />
+              </>
+            </Button>
+          </>
+        )}
       </SectionTitle>
       {(!referenceTimeToEnrichList || !comparisonTimeToEnrichList || isLoading) && <AkeneoSpinner />}
       {referenceTimeToEnrichList && comparisonTimeToEnrichList && (
@@ -83,7 +90,12 @@ const TimeToEnrichDashboard: FC = () => {
         />
       )}
 
-      <TimeToEnrichControlPanel isOpen={isControlPanelOpen} onFiltersChange={handleFiltersChange} filters={filters} />
+      <TimeToEnrichControlPanel
+        isOpen={isControlPanelOpen}
+        onFiltersChange={handleFiltersChange}
+        onIsControlPanelOpenChange={(value: boolean) => setIsControlPanelOpen(value)}
+        filters={filters}
+      />
     </Container>
   );
 };
