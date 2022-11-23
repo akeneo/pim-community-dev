@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/sh
 set -e
 
 MAX_COUNTER=120
