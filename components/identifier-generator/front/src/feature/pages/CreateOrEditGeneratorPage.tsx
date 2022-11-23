@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
+import {Button, Helper, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
 import {Conditions, Delimiter, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
-import {validateIdentifierGenerator, Violation} from '../validators/';
+import {Violation} from '../validators';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
@@ -20,11 +20,11 @@ const Container = styled.div`
 `;
 
 type CreateOrEditGeneratorProps = {
-  isMainButtonDisabled: boolean;
-  initialGenerator: IdentifierGenerator;
-  mainButtonCallback: (identifierGenerator: IdentifierGenerator) => void;
-  validationErrors: Violation[];
-  isNew: boolean;
+  initialGenerator: IdentifierGenerator,
+  mainButtonCallback: (identifierGenerator: IdentifierGenerator) => void,
+  validationErrors: Violation[],
+  isNew: boolean,
+  isMainButtonDisabled: boolean
 };
 
 const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
@@ -44,6 +44,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
+  const hasStructureErrors = validationErrors.filter(item => item?.path?.includes('structure'))?.length > 0;
 
   useEffect(() => {
     setGenerator(initialGenerator);
@@ -90,8 +91,6 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     onChangeGenerator(updatedGenerator);
   };
 
-  const isGeneratorValid = validateIdentifierGenerator(generator, '').length === 0;
-
   return (
     <>
       <Header>
@@ -103,7 +102,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
               </SecondaryActions.Item>
             </SecondaryActions>
           )}
-          <Button disabled={isMainButtonDisabled || !isGeneratorValid} onClick={onSave}>
+          <Button onClick={onSave} disabled={isMainButtonDisabled}>
             {translate('pim_common.save')}
           </Button>
         </PageHeader.Actions>
@@ -119,7 +118,6 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             ))}
           </Helper>
         )}
-
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === GeneratorTab.GENERAL} onClick={changeTab(GeneratorTab.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
@@ -132,6 +130,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           </TabBar.Tab>
           <TabBar.Tab isActive={currentTab === GeneratorTab.STRUCTURE} onClick={changeTab(GeneratorTab.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
+            {hasStructureErrors && <Pill level="danger"/>}
           </TabBar.Tab>
         </TabBar>
         {currentTab === GeneratorTab.GENERAL && (
