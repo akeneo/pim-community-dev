@@ -71,7 +71,7 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
 SQL;
     }
 
-    private function isIdenticalLabel(Category $category, string $localeCode, string | null $label): bool
+    private function isIdenticalLabel(Category $category, string $localeCode, string|null $label): bool
     {
         $existingLabels = $this->getCategory->byCode((string) $category->getCode())?->getLabels()?->getTranslations();
 
