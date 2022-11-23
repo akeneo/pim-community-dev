@@ -24,8 +24,8 @@ class GetCategoryTemplateByCategoryTreeSql implements GetCategoryTemplateByCateg
     }
 
     /**
-     * @param CategoryId $categoryTreeId
      * @return ?Template
+     *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
@@ -49,7 +49,7 @@ class GetCategoryTemplateByCategoryTreeSql implements GetCategoryTemplateByCateg
             ['category_id' => \PDO::PARAM_INT],
         )->fetchAssociative();
 
-        $template =null;
+        $template = null;
         if ($result) {
             $template = new Template(
                 TemplateUuid::fromString($result['uuid']),
@@ -60,8 +60,8 @@ class GetCategoryTemplateByCategoryTreeSql implements GetCategoryTemplateByCateg
                             $result['labels'],
                             true,
                             512,
-                            JSON_THROW_ON_ERROR
-                        )
+                            JSON_THROW_ON_ERROR,
+                        ),
                     )
                     : LabelCollection::fromArray([]),
                 new CategoryId((int) $result['category_tree_id']),

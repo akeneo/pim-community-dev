@@ -13,7 +13,7 @@ jobs:
                     command: make catalogs-coupling-back
             -   run:
                     name: Lint back
-                    command: make catalogs-cs-back catalogs-lint-back
+                    command: make catalogs-cs-back catalogs-lint-back catalogs-check-configuration-back
             -   run:
                     name: Unit back
                     command: make catalogs-unit-back catalogs-mutation-unit-back

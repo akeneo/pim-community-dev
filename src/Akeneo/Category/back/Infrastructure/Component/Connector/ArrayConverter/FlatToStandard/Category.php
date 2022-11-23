@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 /**
- * Category Flat Converter
+ * Category Flat Converter.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -17,9 +17,6 @@ class Category implements ArrayConverterInterface
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
 
-    /**
-     * @param FieldsRequirementChecker $fieldChecker
-     */
     public function __construct(FieldsRequirementChecker $fieldChecker)
     {
         $this->fieldChecker = $fieldChecker;
@@ -62,9 +59,9 @@ class Category implements ArrayConverterInterface
     }
 
     /**
-     * @param array  $convertedItem
+     * @param array $convertedItem
      * @param string $field
-     * @param mixed  $data
+     * @param mixed $data
      *
      * @return array
      */

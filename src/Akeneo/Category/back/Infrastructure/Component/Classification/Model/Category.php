@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Implementation of CategoryInterface
+ * Implementation of CategoryInterface.
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -201,6 +201,6 @@ class Category implements CategoryInterface
      */
     public function isRoot()
     {
-        return (null === $this->getParent());
+        return null === $this->getParent();
     }
 }

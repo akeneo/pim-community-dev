@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, Table} from 'akeneo-design-system';
+import {AkeneoThemedProps, getColor, SkeletonPlaceholder, Table} from 'akeneo-design-system';
 
 const FormContainer = styled.div`
   display: flex;
@@ -40,12 +40,23 @@ const TwoColumns = styled.div<{withoutSecondColumn: boolean} & AkeneoThemedProps
   }
 `;
 
+const TranslationsLabelSkeleton = styled(SkeletonPlaceholder)`
+  max-width: 460px;
+`;
+const TranslationsTextFieldSkeleton = styled(SkeletonPlaceholder)`
+  margin-top: 8px;
+  max-width: 460px;
+  height: 38px;
+`;
+
 const Styled = {
   FormContainer,
   FullPageCenteredContent,
   InputContainer,
   TitleCell,
   TwoColumns,
+  TranslationsLabelSkeleton,
+  TranslationsTextFieldSkeleton,
 };
 
 export {Styled};

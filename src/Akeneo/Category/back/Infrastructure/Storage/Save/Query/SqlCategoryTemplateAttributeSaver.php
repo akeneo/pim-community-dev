@@ -23,21 +23,11 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
     ) {
     }
 
-    /**
-     * @param TemplateUuid $templateUuid
-     * @param AttributeCollection $attributeCollection
-     * @return void
-     */
     public function insert(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
     {
         $this->insertAttributes($attributeCollection->getAttributes());
     }
 
-    /**
-     * @param TemplateUuid $templateUuid
-     * @param AttributeCollection $attributeCollection
-     * @return void
-     */
     public function update(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
     {
         // TODO: Implement update() method.
@@ -45,7 +35,9 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
 
     /**
      * @param array<Attribute> $attributes
+     *
      * @return void
+     *
      * @throws Exception
      * @throws \Doctrine\DBAL\Driver\Exception
      */
@@ -53,7 +45,7 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
     {
         $placeholders = \implode(
             ',',
-            \array_fill(0, \count($attributes), '(UUID_TO_BIN(?), ?, UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?, ?)')
+            \array_fill(0, \count($attributes), '(UUID_TO_BIN(?), ?, UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?, ?)'),
         );
         $statement = $this->connection->prepare(
             <<<SQL

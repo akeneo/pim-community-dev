@@ -5,7 +5,7 @@ namespace Akeneo\Category\Infrastructure\Component\Model;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 
 /**
- * Category translation interface
+ * Category translation interface.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 interface CategoryTranslationInterface extends TranslationInterface
 {
     /**
-     * Set label
+     * Set label.
      *
      * @param string $label
      *
@@ -23,7 +23,7 @@ interface CategoryTranslationInterface extends TranslationInterface
     public function setLabel($label);
 
     /**
-     * Get the label
+     * Get the label.
      *
      * @return string
      */

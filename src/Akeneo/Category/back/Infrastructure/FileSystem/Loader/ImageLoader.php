@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Akeneo\Category\Infrastructure\FileSystem\Loader;
 
 use League\Flysystem\FilesystemReader;
@@ -21,7 +20,7 @@ class ImageLoader implements LoaderInterface
 {
     public function __construct(
         protected MimeTypesInterface $extensionGuesser,
-        protected FilesystemReader $filesystem
+        protected FilesystemReader $filesystem,
     ) {
     }
 
@@ -40,7 +39,7 @@ class ImageLoader implements LoaderInterface
         return new Binary(
             $this->filesystem->read($path),
             $mimeType,
-            $extension
+            $extension,
         );
     }
 
