@@ -48,13 +48,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
             }
         }
 
-        throw new \RuntimeException(
-            sprintf(
-                'There was no generator found to get the preview of attribute "%s" with type "%s"',
-                $attribute->getCode(),
-                $type
-            )
-        );
+        throw new \RuntimeException(sprintf('There was no generator found to get the preview of attribute "%s" with type "%s"', $attribute->getCode(), $type));
     }
 
     public function remove(string $data, Attribute $attribute, string $type)
@@ -65,12 +59,6 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
             }
         }
 
-        throw new \RuntimeException(
-            sprintf(
-                'There was no generator found to remove the preview of attribute "%s" with type "%s"',
-                $attribute->getCode(),
-                $type
-            )
-        );
+        throw new \RuntimeException(sprintf('There was no generator found to remove the preview of attribute "%s" with type "%s"', $attribute->getCode(), $type));
     }
 }

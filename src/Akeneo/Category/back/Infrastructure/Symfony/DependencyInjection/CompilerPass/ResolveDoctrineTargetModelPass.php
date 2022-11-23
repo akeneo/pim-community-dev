@@ -9,7 +9,7 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**
- * Resolves doctrine ORM Target entities
+ * Resolves doctrine ORM Target entities.
  *
  * @author    Weasels
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

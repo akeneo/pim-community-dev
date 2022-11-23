@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Component\Manager;
@@ -32,6 +33,6 @@ class PositionResolver implements PositionResolverInterface
      */
     private function getCategoryPositionAmongChildren(CategoryInterface $category, array $children): int
     {
-        return (int)($children[$category->getCode()]['row_num'] ?? 1);
+        return (int) ($children[$category->getCode()]['row_num'] ?? 1);
     }
 }

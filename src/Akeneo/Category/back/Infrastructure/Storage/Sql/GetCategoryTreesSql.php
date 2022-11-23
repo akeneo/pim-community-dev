@@ -23,7 +23,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
         return $this->execute();
     }
 
-    public function byIds(array $categryTreeIds): ? array
+    public function byIds(array $categryTreeIds): ?array
     {
         $condition['sqlAnd'] = 'AND category.id IN (:ids)';
         $condition['params'] = ['ids' => $categryTreeIds];
@@ -68,7 +68,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
         $results = $this->connection->executeQuery(
             $sqlQuery,
             $sqlParams,
-            $sqlTypes
+            $sqlTypes,
         )->fetchAllAssociative();
 
         if (empty($results)) {

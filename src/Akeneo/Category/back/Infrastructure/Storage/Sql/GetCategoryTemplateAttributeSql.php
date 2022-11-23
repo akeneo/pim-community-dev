@@ -47,11 +47,11 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
         $results = $this->connection->executeQuery(
             $query,
             [
-                'template_uuid' => $uuid->toBytes()
+                'template_uuid' => $uuid->toBytes(),
             ],
             [
-                'template_uuid' => \PDO::PARAM_STR
-            ]
+                'template_uuid' => \PDO::PARAM_STR,
+            ],
         )->fetchAllAssociative();
 
         return AttributeCollection::fromArray(array_map(static function ($results) {

@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Type for category form
+ * Type for category form.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -28,7 +28,7 @@ class CategoryType extends AbstractType
     protected $subscribers = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $dataClass
      * @param string $translationDataClass
@@ -58,9 +58,7 @@ class CategoryType extends AbstractType
     }
 
     /**
-     * Add label field
-     *
-     * @param FormBuilderInterface $builder
+     * Add label field.
      */
     protected function addLabelField(FormBuilderInterface $builder)
     {
@@ -68,11 +66,11 @@ class CategoryType extends AbstractType
             'label',
             TranslatableFieldType::class,
             [
-                'field'             => 'label',
+                'field' => 'label',
                 'translation_class' => $this->translationDataClass,
-                'entity_class'      => $this->dataClass,
-                'property_path'     => 'translations'
-            ]
+                'entity_class' => $this->dataClass,
+                'property_path' => 'translations',
+            ],
         );
     }
 
@@ -83,8 +81,8 @@ class CategoryType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'  => $this->dataClass
-            ]
+                'data_class' => $this->dataClass,
+            ],
         );
     }
 
@@ -97,9 +95,7 @@ class CategoryType extends AbstractType
     }
 
     /**
-     * Add an event subscriber
-     *
-     * @param EventSubscriberInterface $subscriber
+     * Add an event subscriber.
      */
     public function addEventSubscriber(EventSubscriberInterface $subscriber)
     {
