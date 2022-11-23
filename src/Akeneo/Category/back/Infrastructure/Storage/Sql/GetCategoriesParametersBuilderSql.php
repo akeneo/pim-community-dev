@@ -22,22 +22,23 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         array $categoryCodes,
         int $limit,
         int $offset,
-        bool $isEnrichedAttributes
+        bool $isEnrichedAttributes,
     ): array {
         $parameters['sqlWhere'] = $this->buildSearchFilter($categoryCodes);
         $parameters['sqlLimitOffset'] = $this->buildLimitOffset($limit, $offset);
         $parameters['params'] = [
             'category_codes' => $categoryCodes,
-            'with_enriched_attributes' => $isEnrichedAttributes ?: false
+            'with_enriched_attributes' => $isEnrichedAttributes ?: false,
         ];
         $parameters['types'] = [
             'category_codes' => Connection::PARAM_STR_ARRAY,
-            'with_enriched_attributes' => \PDO::PARAM_BOOL
+            'with_enriched_attributes' => \PDO::PARAM_BOOL,
         ];
 
         return $parameters;
     }
-    //TODO: Will be replaced in https://akeneo.atlassian.net/browse/GRF-376
+
+    // TODO: Will be replaced in https://akeneo.atlassian.net/browse/GRF-376
     private function buildSearchFilter(array $searchParameter): string
     {
         if (empty($searchParameter)) {
@@ -45,6 +46,7 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         } else {
             $sqlWhere = 'category.code IN (:category_codes)';
         }
+
         return $sqlWhere;
     }
 

@@ -13,7 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Checks whether categories tree are sane or corrupted
- *  - checks that (lft,right,lvl) is consistent with (parent_id,root_id) <- considered uncorrupted
+ *  - checks that (lft,right,lvl) is consistent with (parent_id,root_id) <- considered uncorrupted.
+ *
  * @author    Weasels
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -53,7 +54,7 @@ class CheckCategoryTrees extends Command
                 'm',
                 InputArgument::OPTIONAL,
                 'Max level for tree dumping',
-                1
+                1,
             )
             ->addOption(
                 'reorder',
@@ -69,13 +70,13 @@ class CheckCategoryTrees extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOptionDumpCorruptions = !!$input->getOption('dump-corruptions');
-        $inputOptionDumpFixedOrder = !!$input->getOption('dump-fixed-order');
+        $inputOptionDumpCorruptions = (bool) $input->getOption('dump-corruptions');
+        $inputOptionDumpFixedOrder = (bool) $input->getOption('dump-fixed-order');
         $inputArgumentMaxLevel = $input->getOption('max-level');
-        $inputOptionReorder = !!$input->getOption('reorder');
+        $inputOptionReorder = (bool) $input->getOption('reorder');
 
         if ($inputOptionReorder) {
-            $output->writeln("Will update! Ctrl-C now if not intended.");
+            $output->writeln('Will update! Ctrl-C now if not intended.');
         }
 
         $output->writeln('Fetching all categories');
@@ -96,7 +97,7 @@ class CheckCategoryTrees extends Command
             $fixedTree = $root->reorder();
             $corruptions = $root->diff($fixedTree);
 
-            $rootHasCorruptions = !!count($corruptions);
+            $rootHasCorruptions = (bool) count($corruptions);
             if ($rootHasCorruptions) {
                 if ($inputOptionDumpCorruptions) {
                     $output->writeln($corruptions);
@@ -111,7 +112,7 @@ class CheckCategoryTrees extends Command
             $hasCorruptions |= $rootHasCorruptions;
 
             $output->writeln(
-                "Root id={$root->getId()} code={$root->getCode()} is {$corruptionStatus}"
+                "Root id={$root->getId()} code={$root->getCode()} is {$corruptionStatus}",
             );
 
             if ($rootHasCorruptions && $inputOptionReorder) {

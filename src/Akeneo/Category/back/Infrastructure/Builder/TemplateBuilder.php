@@ -3,7 +3,6 @@
 namespace Akeneo\Category\Infrastructure\Builder;
 
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
-use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
@@ -31,22 +30,21 @@ use Ramsey\Uuid\Uuid;
 class TemplateBuilder
 {
     public function __construct(
-        private GetCategoryInterface $getCategory
+        private GetCategoryInterface $getCategory,
     ) {
     }
 
     /**
      * @param Code $categoryTreeCode
      * @param string $templateCode
-     * @param LabelCollection $templateLabelCollection
-     * @return Template
+     *
      * @throws \Exception
      */
     public function generateTemplate(
         CategoryId $categoryTreeId,
         TemplateCode $templateCode,
-        LabelCollection $templateLabelCollection
-    ) : Template {
+        LabelCollection $templateLabelCollection,
+    ): Template {
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
         $templateUuid = TemplateUuid::fromUuid(Uuid::uuid4());
 
@@ -65,7 +63,7 @@ class TemplateBuilder
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'Description']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -76,7 +74,7 @@ class TemplateBuilder
                     AttributeIsLocalizable::fromBoolean(false),
                     LabelCollection::fromArray(['en_US' => 'Hero Banner']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -87,7 +85,7 @@ class TemplateBuilder
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Title']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -98,7 +96,7 @@ class TemplateBuilder
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -109,31 +107,27 @@ class TemplateBuilder
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Keywords']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
-            ])
+            ]),
         );
     }
 
     /**
-     * Generate a template code by adding '_template' at the end of given category tree code
-     * @param Code $categoryTreeCode
-     * @return TemplateCode
+     * Generate a template code by adding '_template' at the end of given category tree code.
      */
-    private function generateTemplateCode(Code $categoryTreeCode) : TemplateCode
+    private function generateTemplateCode(Code $categoryTreeCode): TemplateCode
     {
-        return new TemplateCode((string) $categoryTreeCode . '_template');
+        return new TemplateCode((string) $categoryTreeCode.'_template');
     }
 
     /**
-     * Generate a template label by adding ' template' at the end of given category tree 'en_US' label
-     * @param LabelCollection $categoryTreeLabelCollection
-     * @return LabelCollection
+     * Generate a template label by adding ' template' at the end of given category tree 'en_US' label.
      */
-    private function generateTemplateLabelCollection(LabelCollection $categoryTreeLabelCollection) : LabelCollection
+    private function generateTemplateLabelCollection(LabelCollection $categoryTreeLabelCollection): LabelCollection
     {
         return LabelCollection::fromArray([
-            'en_US' => $categoryTreeLabelCollection->getTranslation('en_US') . ' template'
+            'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
         ]);
     }
 }

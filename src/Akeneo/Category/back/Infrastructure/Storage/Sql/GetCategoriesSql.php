@@ -22,6 +22,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
      * @param array<int, mixed>|array<string, mixed> $parameters
      *
      * @return array<Category>
+     *
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
      */
@@ -57,7 +58,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
         $results = $this->connection->executeQuery(
             $sqlQuery,
             $parameters['params'],
-            $parameters['types']
+            $parameters['types'],
         )->fetchAllAssociative();
 
         if (!$results) {
@@ -68,6 +69,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
         foreach ($results as $rawCategory) {
             $retrievedCategories[] = Category::fromDatabase($rawCategory);
         }
+
         return $retrievedCategories;
     }
 }

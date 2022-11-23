@@ -12,30 +12,29 @@ use Doctrine\ORM\QueryBuilder;
  */
 interface CategoryFilterableRepositoryInterface
 {
-    const JOIN_ALIAS = 'CategoryFilterableRepositoryInterface';
+    public const JOIN_ALIAS = 'CategoryFilterableRepositoryInterface';
 
     /**
-     * Apply a filter by unclassified (not placed in any categories)
+     * Apply a filter by unclassified (not placed in any categories).
      *
      * @param mixed $qb query builder to update
      */
     public function applyFilterByUnclassified($qb);
 
     /**
-     * Apply a filter by category ids
-     *
+     * Apply a filter by category ids.
      *
      * @param QueryBuilder|ProductQueryBuilderInterface $qb query builder to update
      * @param array $categoryIds category ids
-     * @param bool  $include     if yes, get item in those categories, if false
-     *                           items NOT in those categories
+     * @param bool $include if yes, get item in those categories, if false
+     *                      items NOT in those categories
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true);
 
     /**
-     * Apply filter by category ids or unclassified
+     * Apply filter by category ids or unclassified.
      *
-     * @param mixed $qb          query builder to update
+     * @param mixed $qb query builder to update
      * @param array $categoryIds category ids
      */
     public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds);

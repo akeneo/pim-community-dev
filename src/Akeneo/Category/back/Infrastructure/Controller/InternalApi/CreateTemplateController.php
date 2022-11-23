@@ -8,12 +8,10 @@ use Akeneo\Category\Application\ActivateTemplate;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
-use Akeneo\Category\Infrastructure\Builder\TemplateBuilder;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -25,15 +23,13 @@ class CreateTemplateController
     public function __construct(
         private SecurityFacade $securityFacade,
         private GetCategoryInterface $getCategory,
-        private ActivateTemplate $activateTemplate
+        private ActivateTemplate $activateTemplate,
     ) {
     }
 
     /**
-     * @param Request $request
      * @param string $templateCode
-     * @param int $categoryTreeId
-     * @return JsonResponse
+     *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */

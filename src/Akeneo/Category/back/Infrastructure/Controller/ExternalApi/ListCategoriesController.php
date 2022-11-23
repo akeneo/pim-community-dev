@@ -29,13 +29,11 @@ class ListCategoriesController extends AbstractController
         private readonly FeatureFlags $featureFlags,
         private readonly GetCategoriesParametersBuilder $parametersBuilder,
         private readonly GetCategoriesInterface $getCategories,
-        private readonly array $apiConfiguration
+        private readonly array $apiConfiguration,
     ) {
     }
 
     /**
-     * @param Request $request
-     * @return Response|JsonResponse
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      *
      * @AclAncestor("pim_api_category_list")
@@ -73,7 +71,7 @@ class ListCategoriesController extends AbstractController
                 $searchFilters,
                 $queryParameters['limit'],
                 $offset,
-                $request->query->getBoolean('with_enriched_attributes')
+                $request->query->getBoolean('with_enriched_attributes'),
             );
             $categories = $this->getCategories->execute($queryParameters);
         } catch (\InvalidArgumentException $exception) {
@@ -100,7 +98,7 @@ class ListCategoriesController extends AbstractController
         $paginatedCategories = $this->paginator->paginate(
             $normalizedCategories,
             $parameters,
-            $count
+            $count,
         );
 
         return new JsonResponse($paginatedCategories);
