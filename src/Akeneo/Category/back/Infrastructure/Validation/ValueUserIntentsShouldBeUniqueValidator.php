@@ -43,7 +43,7 @@ final class ValueUserIntentsShouldBeUniqueValidator extends ConstraintValidator
         $existingIntents = [];
         foreach ($valueUserIntents as $valueUserIntent) {
             $className = get_class($valueUserIntent);
-            $identifier = $valueUserIntent->attributeCode() . AbstractValue::SEPARATOR . $valueUserIntent->attributeUuid();
+            $identifier = $valueUserIntent->attributeCode().AbstractValue::SEPARATOR.$valueUserIntent->attributeUuid();
             $intentAttributeCode = $valueUserIntent->attributeCode();
             $intentChannel = $valueUserIntent->channelCode() ?? '<all_channels>';
             $intentLocale = $valueUserIntent->localeCode() ?? '<all_locales>';
