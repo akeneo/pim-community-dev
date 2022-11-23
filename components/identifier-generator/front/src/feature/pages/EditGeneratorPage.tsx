@@ -1,10 +1,11 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {IdentifierGenerator} from '../models';
 import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {useSaveGenerator} from '../hooks/useSaveGenerator';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {useQueryClient} from 'react-query';
 import {useIdentifierGeneratorContext} from '../context';
+import {validateIdentifierGenerator, Violation} from '../validators';
 
 type EditGeneratorProps = {
   initialGenerator: IdentifierGenerator;
@@ -14,11 +15,18 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
   const queryClient = useQueryClient();
   const notify = useNotify();
   const translate = useTranslate();
+  const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
   const {save, isLoading, error} = useSaveGenerator();
   const identifierGeneratorContext = useIdentifierGeneratorContext();
 
   const onSave = useCallback(
     (generator: IdentifierGenerator) => {
+      const validationErrors = validateIdentifierGenerator(generator);
+      if (validationErrors.length > 0) {
+        setValidationErrors(validationErrors);
+        return;
+      }
+      setValidationErrors([]);
       save(generator, {
         onError: () => {
           notify(
@@ -44,7 +52,7 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
       initialGenerator={initialGenerator}
       mainButtonCallback={onSave}
       isMainButtonDisabled={isLoading}
-      validationErrors={error}
+      validationErrors={validationErrors || error}
       isNew={false}
     />
   );
