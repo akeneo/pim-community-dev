@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
+import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
 import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {validateIdentifierGenerator, Violation} from '../validators/';
@@ -8,6 +8,14 @@ import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
 import {useIdentifierGeneratorContext} from '../context';
+import styled from 'styled-components';
+
+// TODO: replace this component by PageContent when there we delete the warning message (DO NOT USE...)
+const Container = styled.div`
+  padding: 0 40px;
+  overflow: auto;
+  height: calc(100vh - 190px);
+`;
 
 enum Tabs {
   GENERAL,
@@ -90,7 +98,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           </Button>
         </PageHeader.Actions>
       </Header>
-      <PageContent>
+      <Container>
         {validationErrors.length > 0 && (
           <Helper level="error">
             {validationErrors.map(({path, message}) => (
@@ -126,7 +134,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             onStructureChange={onStructureChange}
           />
         )}
-      </PageContent>
+      </Container>
       {isDeleteGeneratorModalOpen && generatorCodeToDelete && (
         <DeleteGeneratorModal generatorCode={generatorCodeToDelete} onClose={closeModal} onDelete={redirectToList} />
       )}
