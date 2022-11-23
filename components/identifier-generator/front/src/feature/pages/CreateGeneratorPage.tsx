@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {IdentifierGenerator} from '../models';
 import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
@@ -20,43 +20,50 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
   const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
   const {mutate, error, isLoading} = useCreateIdentifierGenerator();
   const identifierGeneratorContext = useIdentifierGeneratorContext();
+  const errors = useMemo(
+    () => (validationErrors.length > 0 ? validationErrors : error?.violations || []),
+    [error.violations, validationErrors]
+  );
 
   useEffect(() => {
     identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(true);
   }, [identifierGeneratorContext.unsavedChanges]);
 
-  const onSave = (generator: IdentifierGenerator) => {
-    const validationErrors = validateIdentifierGenerator(generator);
-    if (validationErrors.length > 0) {
-      setValidationErrors(validationErrors);
-      return;
-    }
-    setValidationErrors([]);
+  const onSave = useCallback(
+    (generator: IdentifierGenerator) => {
+      const validationErrors = validateIdentifierGenerator(generator);
+      if (validationErrors.length > 0) {
+        setValidationErrors(validationErrors);
+        return;
+      }
+      setValidationErrors([]);
 
-    mutate(generator, {
-      onError: error => {
-        // @ts-ignore
-        if (error.violations) {
-          notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
-        } else {
-          notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));
-        }
-      },
-      onSuccess: ({code}: IdentifierGenerator) => {
-        queryClient.invalidateQueries('getIdentifierGenerator');
-        notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success', {code}));
-        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(false);
-        history.push(`/${code}`);
-      },
-    });
-  };
+      mutate(generator, {
+        onError: error => {
+          // @ts-ignore
+          if (error.violations) {
+            notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
+          } else {
+            notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));
+          }
+        },
+        onSuccess: ({code}: IdentifierGenerator) => {
+          queryClient.invalidateQueries('getIdentifierGenerator');
+          notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success', {code}));
+          identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(false);
+          history.push(`/${code}`);
+        },
+      });
+    },
+    [history, mutate, notify, queryClient, translate]
+  );
 
   return (
     <CreateOrEditGeneratorPage
       isMainButtonDisabled={isLoading}
       initialGenerator={initialGenerator}
       mainButtonCallback={onSave}
-      validationErrors={validationErrors || error?.violations || []}
+      validationErrors={errors}
       isNew={true}
     />
   );
