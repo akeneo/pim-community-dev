@@ -12,7 +12,7 @@ class JobFileStorerTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->jobFileStorer = $this->get(\Akeneo\Platform\Job\Domain\JobFileStorerInterface::class);
+        $this->jobFileStorer = $this->get(\Akeneo\Platform\Job\Application\LaunchJobInstance\JobFileStorerInterface::class);
     }
 
     public function test_it_stores_a_job_files(): void

@@ -26,6 +26,5 @@ services:
         arguments:
             - '@Akeneo\Platform\Job\Domain\JobFileStorerInterface'
             - '@Akeneo\Platform\Job\Application\LaunchJobInstance\GenerateJobExecutionUrlInterface'
-            - '@pim_connector.launcher.authenticated_job_launcher'
-            - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'

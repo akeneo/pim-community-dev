@@ -3,22 +3,19 @@
 namespace Akeneo\Platform\Job\Application\LaunchJobInstance;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
-use Akeneo\Platform\Job\Domain\JobFileStorerInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceHandlerInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceResult;
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class LaunchJobInstanceHandler implements LaunchJobInstanceHandlerInterface
 {
     public function __construct(
-        private JobFileStorerInterface $jobFileStorer,
-        private GenerateJobExecutionUrlInterface $generateJobExecutionUrl,
-        private JobLauncherInterface $jobLauncher,
-        private JobInstanceRepository $jobInstanceRepository,
-        private TokenStorageInterface $tokenStorage,
+        private readonly JobFileStorerInterface $jobFileStorer,
+        private readonly GenerateJobExecutionUrlInterface $generateJobExecutionUrl,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly PublishJobToQueueInterface $publishJobToQueue,
     ) {
     }
 
@@ -28,18 +25,20 @@ class LaunchJobInstanceHandler implements LaunchJobInstanceHandlerInterface
         $file = $launchJobInstanceCommand->file;
 
         $filePath = $this->jobFileStorer->store($code, $file->getFileName(), $file->getResource());
-        $storageConfig = [
+        $jobConfig = [
             'storage' => [
                 'type' => ManualUploadStorage::TYPE,
                 'file_path' => $filePath,
             ],
         ];
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($code);
-        $defaultJobConfig = $jobInstance->getRawParameters();
 
-        $user = $this->tokenStorage->getToken()?->getUser();
+        $username = $this->tokenStorage->getToken()?->getUser()?->getUserIdentifier();
 
-        $jobExecution = $this->jobLauncher->launch($jobInstance, $user, array_merge($defaultJobConfig, $storageConfig));
+        $jobExecution = $this->publishJobToQueue->publish(
+            jobInstanceCode: $code,
+            config: $jobConfig,
+            username: $username,
+        );
 
         return new LaunchJobInstanceResult(
             $jobExecution->getId(),
