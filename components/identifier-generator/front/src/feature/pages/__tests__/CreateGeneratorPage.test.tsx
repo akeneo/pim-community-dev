@@ -73,4 +73,15 @@ describe('CreateGeneratorPage', () => {
       expectCall();
     });
   });
+
+  it('should check generator validation on save', () => {
+    render(<CreateGeneratorPage initialGenerator={{...initialGenerator, structure: []}} />);
+    expect(screen.getByText('CreateOrEditGeneratorPage')).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(screen.getByText('Main button'));
+    });
+
+    expect(screen.getByText('structure The structure must contain at least 1 property')).toBeInTheDocument();
+  });
 });
