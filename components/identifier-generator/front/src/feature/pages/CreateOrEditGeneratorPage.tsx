@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Button, Helper, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
@@ -20,11 +20,11 @@ const Container = styled.div`
 `;
 
 type CreateOrEditGeneratorProps = {
-  initialGenerator: IdentifierGenerator,
-  mainButtonCallback: (identifierGenerator: IdentifierGenerator) => void,
-  validationErrors: Violation[],
-  isNew: boolean,
-  isMainButtonDisabled: boolean
+  isMainButtonDisabled: boolean;
+  initialGenerator: IdentifierGenerator;
+  mainButtonCallback: (identifierGenerator: IdentifierGenerator) => void;
+  validationErrors: Violation[];
+  isNew: boolean;
 };
 
 const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
@@ -44,7 +44,12 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
-  const hasStructureErrors = validationErrors.filter(item => item?.path?.includes('structure'))?.length > 0;
+  const hasStructureErrors = useMemo(
+    () =>
+      validationErrors.filter(item => item?.path?.includes('structure') || item?.path?.includes('delimiter'))?.length >
+      0,
+    [validationErrors]
+  );
 
   useEffect(() => {
     setGenerator(initialGenerator);
@@ -111,10 +116,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         {validationErrors.length > 0 && (
           <Helper level="error">
             {validationErrors.map(({path, message}) => (
-              <div key={`${path || ''}${message}`}>
-                {path && `${path}: `}
-                {message}
-              </div>
+              <div key={`${path || ''}${message}`}>{message}</div>
             ))}
           </Helper>
         )}
@@ -130,7 +132,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           </TabBar.Tab>
           <TabBar.Tab isActive={currentTab === GeneratorTab.STRUCTURE} onClick={changeTab(GeneratorTab.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
-            {hasStructureErrors && <Pill level="danger"/>}
+            {hasStructureErrors && <Pill level="danger" />}
           </TabBar.Tab>
         </TabBar>
         {currentTab === GeneratorTab.GENERAL && (

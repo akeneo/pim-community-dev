@@ -65,7 +65,7 @@ describe('CreateOrEditGeneratorPage', () => {
       />
     );
 
-    expect(screen.getByText('a path: a message')).toBeInTheDocument();
+    expect(screen.getByText('a message')).toBeInTheDocument();
     expect(screen.getByText('another message')).toBeInTheDocument();
   });
 
