@@ -22,26 +22,28 @@ class GetCategoriesSql implements GetCategoriesInterface
      * @param array<string> $categoryCodes
      *
      * @return array<Category>
+     *
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
      */
-    //TODO: To refactor when filtering service is created. https://akeneo.atlassian.net/browse/GRF-538
+    // TODO: To refactor when filtering service is created. https://akeneo.atlassian.net/browse/GRF-538
     public function byCodes(array $categoryCodes, bool $isEnrichedAttributes): array
     {
         $condition['sqlWhere'] = $this->searchFilter($categoryCodes);
         $condition['sqlGroupBy'] = 'GROUP BY category.code';
         $condition['params'] = [
             'category_codes' => $categoryCodes,
-            'with_enriched_attributes' => $isEnrichedAttributes ?: false
+            'with_enriched_attributes' => $isEnrichedAttributes ?: false,
             ];
         $condition['types'] = [
             'category_codes' => Connection::PARAM_STR_ARRAY,
-            'with_enriched_attributes' => \PDO::PARAM_BOOL
+            'with_enriched_attributes' => \PDO::PARAM_BOOL,
             ];
 
         return $this->execute($condition);
     }
-    //TODO: Will be replaced by filtering service. https://akeneo.atlassian.net/browse/GRF-538
+
+    // TODO: Will be replaced by filtering service. https://akeneo.atlassian.net/browse/GRF-538
     public function searchFilter(array $searchParameter): string
     {
         if (empty($searchParameter)) {
@@ -49,13 +51,13 @@ class GetCategoriesSql implements GetCategoriesInterface
         } else {
             $sqlWhere = 'category.code IN (:category_codes)';
         }
+
         return $sqlWhere;
     }
 
     /**
-     * @param array $condition
-     *
      * @return array<Category>
+     *
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
      */
@@ -90,7 +92,7 @@ class GetCategoriesSql implements GetCategoriesInterface
         $results = $this->connection->executeQuery(
             $sqlQuery,
             $condition['params'],
-            $condition['types']
+            $condition['types'],
         )->fetchAllAssociative();
 
         if (!$results) {
@@ -101,6 +103,7 @@ class GetCategoriesSql implements GetCategoriesInterface
         foreach ($results as $rawCategory) {
             $retrievedCategories[] = Category::fromDatabase($rawCategory);
         }
+
         return $retrievedCategories;
     }
 }

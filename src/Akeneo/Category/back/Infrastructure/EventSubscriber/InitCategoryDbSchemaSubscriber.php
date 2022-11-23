@@ -18,7 +18,7 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InstallerEvents::POST_DB_CREATE => 'initDbSchema'
+            InstallerEvents::POST_DB_CREATE => 'initDbSchema',
         ];
     }
 

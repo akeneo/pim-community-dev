@@ -42,7 +42,7 @@ class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
             [
                 'template_uuid' => \PDO::PARAM_STR,
                 'category_tree_id' => \PDO::PARAM_INT,
-            ]
+            ],
         );
     }
 

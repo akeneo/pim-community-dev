@@ -60,12 +60,12 @@ class UpdateCategoryController
 
         try {
             $command = UpsertCategoryCommand::create(
-                (string)$category->getCode(),
-                $filteredUserIntents
+                (string) $category->getCode(),
+                $filteredUserIntents,
             );
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $e) {
-            //Todo: Handle violations exceptions when all stubbed services have been replaced by real ones
+            // Todo: Handle violations exceptions when all stubbed services have been replaced by real ones
             // The data structure to be returned to the UI must allow to display the violation messages
             // next to the violating attribute
             // (so at minimum : a mapping from the attribute code to a i18n key for the error message)
@@ -75,19 +75,19 @@ class UpdateCategoryController
                     'errors' => [
                         'attributes' => [
                             [
-                                'path'=> ['attribute','somecode'],
-                                'locale'=> 'fr_FR', // optional
-                                'message'=> [
+                                'path' => ['attribute', 'somecode'],
+                                'locale' => 'fr_FR', // optional
+                                'message' => [
                                     'key' => 'i18n key for some constraint violation message, maybe with some {{a}} arguments',
                                     'args' => [
-                                        "a" => 123
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
+                                        'a' => 123,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
-                Response::HTTP_BAD_REQUEST
+                Response::HTTP_BAD_REQUEST,
             );
         }
         $category = $this->getCategory->byId($id);

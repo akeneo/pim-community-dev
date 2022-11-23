@@ -13,7 +13,7 @@ use Liip\ImagineBundle\Model\Binary;
 interface DefaultImageProviderInterface
 {
     /**
-     * Return the url of the default image corresponding to the specified file type
+     * Return the url of the default image corresponding to the specified file type.
      *
      * @param $fileType string type, defined in Akeneo\Pim\Enrichment\Bundle\File\FileTypes
      * @param $filter   string filter name
@@ -21,7 +21,7 @@ interface DefaultImageProviderInterface
     public function getImageUrl(string $fileType, string $filter): string;
 
     /**
-     * Return a Binary instance that embed the image corresponding to the specified file type
+     * Return a Binary instance that embed the image corresponding to the specified file type.
      *
      * @throws \InvalidArgumentException
      */

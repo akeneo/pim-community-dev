@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * A normalizer to transform a category entity into a flat array
+ * A normalizer to transform a category entity into a flat array.
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /**  @var string[] */
+    /** @var string[] */
     protected $supportedFormats = ['flat'];
 
     /** @var NormalizerInterface */
@@ -24,13 +24,9 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /** @var NormalizerInterface */
     protected $translationNormalizer;
 
-    /**
-     * @param NormalizerInterface $standardNormalizer
-     * @param NormalizerInterface $translationNormalizer
-     */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        NormalizerInterface $translationNormalizer
+        NormalizerInterface $translationNormalizer,
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;

@@ -10,37 +10,30 @@ use Doctrine\Persistence\ObjectRepository;
 use Gedmo\Tree\RepositoryInterface as TreeRepositoryInterface;
 
 /**
- * Category repository interface
+ * Category repository interface.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface CategoryRepositoryInterface extends
-    TreeRepositoryInterface,
-    IdentifiableObjectRepositoryInterface,
-    ObjectRepository
+interface CategoryRepositoryInterface extends TreeRepositoryInterface, IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * Get a collection of categories based on the array of id provided
-     *
-     * @param array $categoryIds
+     * Get a collection of categories based on the array of id provided.
      *
      * @return Collection of categories
      */
     public function getCategoriesByIds(array $categoryIds = []);
 
     /**
-     * Get a collection of categories based on the array of code provided
-     *
-     * @param array $categoryCodes
+     * Get a collection of categories based on the array of code provided.
      *
      * @return Collection of categories
      */
     public function getCategoriesByCodes(array $categoryCodes = []);
 
     /**
-     * Get a tree filled with children and their parents
+     * Get a tree filled with children and their parents.
      *
      * @param array $parentsIds parent ids
      *
@@ -49,20 +42,20 @@ interface CategoryRepositoryInterface extends
     public function getTreeFromParents(array $parentsIds);
 
     /**
-     * Shortcut to get all children ids
+     * Shortcut to get all children ids.
      *
-     * @param CategoryInterface $parent      the parent
-     * @param bool              $includeNode true to include actual node in query result
+     * @param CategoryInterface $parent the parent
+     * @param bool $includeNode true to include actual node in query result
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false);
 
     /**
-     * Shortcut to get all children codes
+     * Shortcut to get all children codes.
      *
-     * @param CategoryInterface $parent      the parent
-     * @param bool              $includeNode true to include actual node in query result
+     * @param CategoryInterface $parent the parent
+     * @param bool $includeNode true to include actual node in query result
      *
      * @return string[]
      */
@@ -71,14 +64,12 @@ interface CategoryRepositoryInterface extends
     /**
      * Return the categories IDs from their codes. The categories are not hydrated.
      *
-     * @param array $codes
-     *
      * @return array
      */
     public function getCategoryIdsByCodes(array $codes);
 
     /**
-     * Get children from a parent id
+     * Get children from a parent id.
      *
      * @param int $parentId
      *
@@ -87,9 +78,6 @@ interface CategoryRepositoryInterface extends
     public function getChildrenByParentId($parentId);
 
     /**
-     * @param CategoryInterface $parent
-     * @param array             $grantedCategoryIds
-     *
      * @return array
      */
     public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = []);
@@ -98,9 +86,9 @@ interface CategoryRepositoryInterface extends
      * Get children tree from a parent id.
      * If the select node id is provided, the tree will be returned
      * down to the node specified by select node id. Otherwise, the
-     * whole tree will be returned
+     * whole tree will be returned.
      *
-     * @param int  $parentId
+     * @param int $parentId
      * @param bool $selectNodeId
      *
      * @return array
@@ -111,7 +99,7 @@ interface CategoryRepositoryInterface extends
      * Based on the Gedmo\Tree\RepositoryUtils\buildTreeArray, but with
      * keeping the node as object and able to manage nodes in different branches
      * (the original implementation works with only depth and associate all
-     * nodes of depth D+1 to the last node of depth D.)
+     * nodes of depth D+1 to the last node of depth D.).
      *
      * @param array $nodes Must be sorted by increasing depth
      *
@@ -120,7 +108,7 @@ interface CategoryRepositoryInterface extends
     public function buildTreeNode(array $nodes);
 
     /**
-     * Get the Tree path of Nodes by given $node
+     * Get the Tree path of Nodes by given $node.
      *
      * @param object $node
      *
@@ -134,26 +122,21 @@ interface CategoryRepositoryInterface extends
     public function getTrees();
 
     /**
-     * Get trees of granted categories
-     *
-     * @param array $grantedCategoryIds
+     * Get trees of granted categories.
      *
      * @return array
      */
     public function getGrantedTrees(array $grantedCategoryIds = []);
 
     /**
-     * Check if a parent node is an ancestor of a child node
-     *
-     * @param CategoryInterface $parentNode
-     * @param CategoryInterface $childNode
+     * Check if a parent node is an ancestor of a child node.
      *
      * @return bool
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode);
 
     /**
-     * Return the categories sorted by tree and ordered
+     * Return the categories sorted by tree and ordered.
      *
      * @return array
      */
@@ -164,8 +147,8 @@ interface CategoryRepositoryInterface extends
      * and ancestors sibligns are filled too, in order to be able to display the tree
      * directly without loading other data.
      *
-     * @param CategoryInterface $root       Tree root category
-     * @param Collection        $categories Collection of categories
+     * @param CategoryInterface $root Tree root category
+     * @param Collection $categories Collection of categories
      *
      * @return array Multi-dimensional array representing the tree
      */
