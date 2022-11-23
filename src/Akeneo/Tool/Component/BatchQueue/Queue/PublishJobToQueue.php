@@ -44,7 +44,7 @@ class PublishJobToQueue implements PublishJobToQueueInterface
         bool $noLog = false,
         ?string $username = null,
         ?array $emails = [],
-    ): void {
+    ): JobExecution {
         $jobInstance = $this->getJobInstance($jobInstanceCode);
         $jobExecution = $this->createJobExecutionHandler->createFromJobInstance($jobInstance, $config, $username);
         $options = $this->getOptions($noLog, $emails);
@@ -59,6 +59,8 @@ class PublishJobToQueue implements PublishJobToQueueInterface
         $this->jobExecutionQueue->publish($jobExecutionMessage);
 
         $this->dispatchJobExecutionEvent($jobExecution);
+
+        return $jobExecution;
     }
 
     private function getJobInstance(string $jobInstanceCode): JobInstance

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\FileStorage;
 
+use Akeneo\Platform\Job\Application\LaunchJobInstance\JobFileStorerInterface;
 use Akeneo\Platform\Job\Infrastructure\FileStorage\JobFileStorer;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
@@ -12,7 +13,7 @@ class JobFileStorerTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->jobFileStorer = $this->get(\Akeneo\Platform\Job\Domain\JobFileStorerInterface::class);
+        $this->jobFileStorer = $this->get(JobFileStorerInterface::class);
     }
 
     public function test_it_stores_a_job_files(): void
