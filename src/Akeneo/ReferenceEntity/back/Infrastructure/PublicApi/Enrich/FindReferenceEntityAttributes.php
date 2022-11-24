@@ -28,7 +28,7 @@ class FindReferenceEntityAttributes implements FindReferenceEntityAttributesInte
     /**
      * {@inheritdoc}
      */
-    public function findByCode(string $referenceEntityCode): array
+    public function findByCode(string $referenceEntityCode, ?array $types = null): array
     {
         $referenceEntityDetails = $this->findReferenceEntityDetails->find(
             ReferenceEntityIdentifier::fromString($referenceEntityCode),
@@ -38,9 +38,23 @@ class FindReferenceEntityAttributes implements FindReferenceEntityAttributesInte
             return [];
         }
 
+        $filteredAttributes = $this->filterOnTypes($referenceEntityDetails->attributes, $types);
+
         return array_map(
             static fn (DomainAttributeDetails $attributeDetails) => AttributeDetails::fromDomain($attributeDetails),
-            $referenceEntityDetails->attributes,
+            $filteredAttributes,
+        );
+    }
+
+    private function filterOnTypes(array $attributes, ?array $types): array
+    {
+        if (null === $types) {
+            return $attributes;
+        }
+
+        return array_filter(
+            $attributes,
+            static fn (DomainAttributeDetails $attribute) => in_array($attribute->type, $types),
         );
     }
 }

@@ -16,7 +16,11 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich;
 interface FindReferenceEntityAttributesInterface
 {
     /**
+     * Returns an array of the requested Reference Entity attributes, optionally filtered on type
+     *
+     * @param ?array<string> $types
+     *
      * @return AttributeDetails[]
      */
-    public function findByCode(string $referenceEntityCode): array;
+    public function findByCode(string $referenceEntityCode, ?array $types = null): array;
 }

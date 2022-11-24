@@ -52,7 +52,7 @@ class FindReferenceEntityAttributesTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_finds_reference_entity_details(): void
+    public function it_finds_reference_entity_attributes(): void
     {
         $normalizedReferenceEntityAttributes = array_map(
             static fn ($attribute) => $attribute->normalize(),
@@ -115,6 +115,54 @@ class FindReferenceEntityAttributesTest extends SqlIntegrationTestCase
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'option_collection',
+            ],
+        ];
+
+        Assert::assertEqualsCanonicalizing($expectedNormalizedAttributes, $normalizedReferenceEntityAttributes);
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_reference_entity_attributes_filtered_on_type(): void
+    {
+        $normalizedReferenceEntityAttributes = array_map(
+            static fn ($attribute) => $attribute->normalize(),
+            $this->findReferenceEntityAttributes->findByCode('designer', ['text', 'image']),
+        );
+
+        $expectedNormalizedAttributes = [
+            [
+                'identifier' => $this->referenceEntityLabelIdentifier,
+                'code' => 'label',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => true,
+                'type' => 'text',
+            ],
+            [
+                'identifier' => $this->referenceEntityImageIdentifier,
+                'code' => 'image',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => false,
+                'type' => 'image',
+            ],
+            [
+                'identifier' => 'text_attribute_designer_fingerprint',
+                'code' => 'text_attribute',
+                'labels' => [],
+                'value_per_channel' => true,
+                'value_per_locale' => true,
+                'type' => 'text',
+            ],
+            [
+                'identifier' => 'image_attribute_designer_fingerprint',
+                'code' => 'image_attribute',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => false,
+                'type' => 'image',
             ],
         ];
 
