@@ -26,3 +26,6 @@ framework:
         pools:
             name:
                 adapter: cache.adapter.apcu
+    http_client:
+        default_options:
+            max_redirects: 7
