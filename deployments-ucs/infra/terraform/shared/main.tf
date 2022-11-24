@@ -205,5 +205,13 @@ terraform {
     bucket = "akecld-terraform-pim-saas-shared"
     prefix = "infra/pim-saas/akecld-prd-pim-saas-shared"
   }
-  required_version = "= 1.1.3"
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "4.44.1"
+    }
+  }
+
+  required_version = "1.1.3"
 }

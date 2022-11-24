@@ -273,9 +273,14 @@ terraform {
 
   required_providers {
     datadog = {
-      source  = "datadog/datadog"
+      source  = "DataDog/datadog"
+      version = "3.18.0"
+    }
+    google = {
+      source  = "hashicorp/google"
+      version = "4.44.1"
     }
   }
 
-  required_version = "= 1.1.3"
+  required_version = "1.1.3"
 }

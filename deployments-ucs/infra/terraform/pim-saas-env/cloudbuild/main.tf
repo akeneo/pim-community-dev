@@ -10,3 +10,16 @@ resource "google_storage_bucket" "cloudbuild_logs" {
 
   uniform_bucket_level_access = true
 }
+
+terraform {
+  backend "gcs" {}
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "4.44.1"
+    }
+  }
+
+  required_version = "1.1.3"
+}

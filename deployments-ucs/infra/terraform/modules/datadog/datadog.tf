@@ -68,11 +68,3 @@ resource "datadog_logs_custom_pipeline" "timmy_app_cloud_function" {
     }
   }
 }
-
-terraform {
-  required_providers {
-    datadog = {
-      source = "datadog/datadog"
-    }
-  }
-}
