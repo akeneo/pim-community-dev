@@ -11,10 +11,7 @@ namespace Akeneo\Category\ServiceApi;
 class Category
 {
     /**
-     * @param int $id
-     * @param string $code
      * @param array<string, string>|null $labels
-     * @param int|null $parent
      * @param array<string, array<string, mixed>>|null $attributes
      * @param array<string, array<int>>|null $permissions
      */

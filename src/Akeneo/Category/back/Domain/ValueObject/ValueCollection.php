@@ -14,6 +14,7 @@ use Webmozart\Assert\Assert;
  * @implements \IteratorAggregate<int, ValueCollection>
  *
  * @phpstan-import-type ImageData from ImageDataValue
+ *
  * @phpstan-type NormalizedValue array{data: string|ImageData|null, channel: string|null, locale: string|null, attribute_code: string}
  */
 final class ValueCollection implements \IteratorAggregate, \Countable

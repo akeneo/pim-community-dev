@@ -90,11 +90,11 @@ class SystemAwareResolver implements ContainerAwareInterface
         switch (true) {
             case preg_match(static::TWIG_TEMPLATE, $val, $match):
                 break;
-            // static call class:method or class::const
+                // static call class:method or class::const
             case preg_match(static::PARAMETER_REGEX, $val, $match):
                 $val = $this->container->getParameter($match[1]);
                 break;
-            // static call class:method or class::const
+                // static call class:method or class::const
             case preg_match(static::STATIC_METHOD_REGEX, $val, $match):
                 // with class as param
                 $class = $this->container->getParameter($match[1]);
@@ -117,11 +117,11 @@ class SystemAwareResolver implements ContainerAwareInterface
                     }
                 }
                 break;
-            // service method call @service->method, @service->method(argument), @service->method(@other.service->method)
+                // service method call @service->method, @service->method(argument), @service->method(@other.service->method)
             case preg_match(static::SERVICE_METHOD, $val, $match):
                 $val = $this->executeMethod($val, [$datagridName, $key, $this->parentNode]);
                 break;
-            // service pass @service
+                // service pass @service
             case preg_match(static::SERVICE, $val, $match):
                 $service = $match[1];
                 $val = $this->container->get($service);
