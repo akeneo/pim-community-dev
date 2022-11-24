@@ -131,8 +131,8 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
 
     return (
       <AttributeField
-        channel={attribute.is_scopable ? channel : ''}
-        locale={attribute.is_localizable ? locale : ''}
+        channel={channel}
+        locale={locale}
         value={dataForInput}
         onChange={handlers[attribute.code]}
         key={attribute.uuid}
