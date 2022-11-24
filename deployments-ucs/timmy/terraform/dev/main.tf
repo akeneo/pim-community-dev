@@ -3,8 +3,13 @@ locals {
   argocd_url                           = "https://argocd-${var.region}.${var.domain}"
   cloudscheduler_service_account_email = "timmy-deployment@${var.project_id}.iam.gserviceaccount.com"
   function_service_account_email       = "timmy-cloud-function@${var.project_id}.iam.gserviceaccount.com"
-  portal_hostname                      = "wiremock-${var.region}.${var.domain}"
   prefix_branch_name                   = var.branch_name == "master" ? "" : "-${var.branch_name}"
+  function_labels                      = merge(var.function_labels, {
+    application = "timmy"
+    branch_name = var.branch_name
+    environment = "dev"
+    region      = var.region
+  })
 }
 
 module "bucket" {
@@ -51,16 +56,14 @@ module "timmy_request_portal" {
     FUNCTION_URL_TIMMY_CREATE_TENANT = module.timmy_create_tenant.uri
     FUNCTION_URL_TIMMY_DELETE_TENANT = module.timmy_delete_tenant.uri
     GCP_PROJECT_ID                   = var.project_id
-    // TODO: switch to https when PH-202 is released
     HTTP_SCHEMA                      = "https"
     LOG_LEVEL                        = "debug"
     NODE_ENV                         = "production"
-    // TODO: replace portal hostnames with the private entry once PH-202 is released
-    PORTAL_HOSTNAME                  = "portal-dev3-sandbox.ip.akeneo.com"
-    PORTAL_LOGIN_HOSTNAME            = "connect-sandbox.ip.akeneo.com"
-    TENANT_CONTINENT                 = "europe-west3"
-    TENANT_EDITION_FLAGS             = "serenity_instance,growth_edition_instance"
-    TENANT_ENVIRONMENT               = "sandbox"
+    PORTAL_HOSTNAME                  = var.portal_hostname
+    PORTAL_LOGIN_HOSTNAME            = var.portal_login_hostname
+    TENANT_CONTINENT                 = var.portal_tenant_continent
+    TENANT_EDITION_FLAGS             = var.portal_tenant_edition_flags
+    TENANT_ENVIRONMENT               = var.portal_tenant_environment
   }
 }
 

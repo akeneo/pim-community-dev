@@ -11,56 +11,114 @@ variable "enable_timmy_cloudscheduler" {
 }
 
 variable "region" {
-  type = string
+  description = "The region where to deploy Timmy"
+  type        = string
 }
 
 variable "bucket_location" {
-  type = string
+  description = "The location of the bucket used by Timmy"
+  type        = string
 }
 
 variable "firestore_project_id" {
-  type = string
+  description = "The project ID where the firestore is located"
+  type        = string
 }
 
 variable "region_prefix" {
-  type = string
+  description = "The region prefix to use for cloud function"
+  type        = string
 }
 
 variable "google_zone" {
-  type = string
+  description = "The Google zone where to provision MySQL storage"
+  type        = string
 }
 
 variable "domain" {
-  type    = string
-  default = "ci.pim.akeneo.cloud"
+  description = "The domain to use for the tenant deployments"
+  type        = string
+  default     = "ci.pim.akeneo.cloud"
 }
 
 variable "function_labels" {
-  type    = map(string)
-  default = {
+  description = "The labels to add to the cloud functions"
+  type        = map(string)
+  default     = {
     application = "timmy"
   }
 }
 
 variable "network_project_id" {
-  type    = string
-  default = "akecld-prd-shared-infra"
+  description = "The Google project ID where the network is defined"
+  type        = string
+  default     = "akecld-prd-shared-infra"
 }
 
 variable "project_id" {
-  type    = string
-  default = "akecld-prd-pim-saas-dev"
+  description = "The Google project ID where to deploy the cloud functions"
+  type        = string
+  default     = "akecld-prd-pim-saas-dev"
 }
 
 variable "shared_project_id" {
+  description = "The GCP project ID of the shared project to centralize common components to all projects"
   type    = string
 }
 
 variable "tenant_context_collection_name" {
-  type    = string
-  default = "tenant_contexts"
+  description = "The name of the tenant context collection in firestore"
+  type        = string
+  default     = "tenant_contexts"
 }
 
 variable "branch_name" {
-  type = string
+  description = "The branch name that the Timmy deployment uses"
+  type        = string
+}
+
+variable "portal_hostname" {
+  description = "The portal hostname to use to request tenants"
+  type        = string
+  default     = "portal-dev3-sandbox.ip.akeneo.com"
+}
+
+variable "portal_login_hostname" {
+  description = "The hostname to use to login to the portal"
+  type        = string
+  default     = "connect-sandbox.ip.akeneo.com"
+}
+
+variable "portal_tenant_continent" {
+  description = "The continent to use to filter tenants from the portal"
+  type        = string
+}
+
+variable "portal_tenant_environment" {
+  description = "The environment to use to filter tenants from the portal"
+  type        = string
+  default     = "sandbox"
+}
+
+variable "portal_tenant_edition_flags" {
+  description = "The tenant edition flags to use to filter tenants from the portal (use comma to separe multiple edition flags)"
+  type        = string
+  default     = "serenity_instance,growth_edition_instance"
+}
+
+variable "log_level" {
+  description = "The cloud function log level to use"
+  type        = string
+  default     = "debug"
+}
+
+variable "time_zone" {
+  description = "The time zone to use for the cloud-scheduler"
+  type        = string
+}
+
+variable "schedule" {
+  description = "The cron to use for the cloud-scheduler"
+  type        = string
+  default     = "*/2 * * * *"
 }
