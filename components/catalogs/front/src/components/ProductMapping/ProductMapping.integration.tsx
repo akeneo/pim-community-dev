@@ -45,6 +45,11 @@ const assertChannelSourceParameterIsNotDisplayed = () => {
     expect(screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.channel.label')).not.toBeInTheDocument();
 };
 
+const assertSourceLocaleContainsNoEntries = () => {
+    openDropdown('source-parameter-locale-dropdown');
+    expect(screen.queryByText('akeneo_catalogs.common.select.no_matches')).toBeInTheDocument();
+};
+
 const localesPayload = {
     url: '/rest/catalogs/locales?page=1&limit=20',
     json: [
@@ -260,6 +265,9 @@ test('it updates the state when a source is selected', async () => {
             json: {
                 code: 'title',
                 label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
         },
         {
@@ -267,13 +275,19 @@ test('it updates the state when a source is selected', async () => {
             json: {
                 code: 'erp_name',
                 label: 'pim erp name',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
         },
         {
             url: '/rest/catalogs/attributes/variation_name',
             json: {
                 code: 'variation_name',
-                label: 'Variation name',
+                label: 'Variant Name',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
             },
         },
         {
@@ -359,12 +373,11 @@ test('it updates the state when a source is selected', async () => {
         </ThemeProvider>
     );
 
-    expect(await screen.findByText('pim erp name')).toBeInTheDocument();
-    fireEvent.click(await screen.findByText('pim erp name'));
-    expect(await screen.findByText('akeneo_catalogs.product_mapping.source.title')).toBeInTheDocument();
-    fireEvent.mouseDown(await screen.findByTestId('product-mapping-select-attribute'));
-    expect(await screen.findByTitle('akeneo_catalogs.product_mapping.source.select_source.search')).toBeInTheDocument();
-    fireEvent.click(await screen.findByText('Variant Name'));
+    await clickOnMappingTarget('pim erp name');
+    await selectAttributeAsSource('Variant Name');
+
+    assertChannelSourceParameterIsNotDisplayed();
+    assertLocaleSourceParameterIsNotDisplayed();
 
     expect(onChange).toHaveBeenCalledWith({
         uuid: {
@@ -699,6 +712,385 @@ test('it updates the state when a locale is selected for an attribute with value
             source: 'variation_name',
             locale: 'en_US',
             scope: null,
+        },
+    });
+});
+
+test('it updates the state when a locale and channel is selected for an attribute with value per locale and per channel', async () => {
+    const onChange = jest.fn();
+
+    mockFetchResponses([
+        localesPayload,
+        channelsPayload,
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/erp_name',
+            json: {
+                code: 'erp_name',
+                label: 'pim erp name',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/variation_name',
+            json: {
+                code: 'variation_name',
+                label: 'Variation name',
+                type: 'pim_catalog_text',
+                scopable: true,
+                localizable: true,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            json: [
+                {
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'variation_name',
+                    label: 'Variant Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: true,
+                },
+                {
+                    code: 'ean',
+                    label: 'EAN',
+                    type: 'pim_catalog_text',
+                    scopable: true,
+                    localizable: true,
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce',
+            json: {
+                'code': 'ecommerce',
+                'label': 'Ecommerce'
+            },
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce/locales',
+            json: [
+                {
+                    code: 'fr_FR',
+                    label: 'French (France)',
+                },
+                {
+                    code: 'en_US',
+                    label: 'English (United States)',
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        body_html: {
+            source: null,
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        erp_name: {
+            source: 'erp_name',
+            locale: null,
+            scope: null,
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+            body_html: {
+                title: 'Description',
+                type: 'string',
+            },
+            erp_name: {
+                title: 'ERP',
+                type: 'string',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                    onChange={onChange}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('pim erp name');
+    await selectAttributeAsSource('Variant Name');
+
+    assertSourceLocaleContainsNoEntries();
+    await selectSourceChannel('Ecommerce');
+    await selectSourceLocale('English (United States)');
+
+    expect(onChange).toHaveBeenCalledWith({
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        body_html: {
+            source: null,
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        erp_name: {
+            source: 'variation_name',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+    });
+});
+
+test('it resets source locale when channel changes for an attribute with value per channel and per locale', async () => {
+    const onChange = jest.fn();
+
+    mockFetchResponses([
+        localesPayload,
+        channelsPayload,
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/erp_name',
+            json: {
+                code: 'erp_name',
+                label: 'pim erp name',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/variation_name',
+            json: {
+                code: 'variation_name',
+                label: 'Variation name',
+                type: 'pim_catalog_text',
+                scopable: true,
+                localizable: true,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            json: [
+                {
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'variation_name',
+                    label: 'Variant Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: true,
+                },
+                {
+                    code: 'ean',
+                    label: 'EAN',
+                    type: 'pim_catalog_text',
+                    scopable: true,
+                    localizable: true,
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce',
+            json: {
+                'code': 'ecommerce',
+                'label': 'Ecommerce'
+            },
+        },
+        {
+            url: '/rest/catalogs/channels/mobile',
+            json: {
+                'code': 'mobile',
+                'label': 'Mobile'
+            },
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce/locales',
+            json: [
+                {
+                    code: 'fr_FR',
+                    label: 'French (France)',
+                },
+                {
+                    code: 'en_US',
+                    label: 'English (United States)',
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/channels/mobile/locales',
+            json: [
+                {
+                    code: 'de_DE',
+                    label: 'German (Germany)',
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        body_html: {
+            source: null,
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        erp_name: {
+            source: 'erp_name',
+            locale: null,
+            scope: null,
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+            body_html: {
+                title: 'Description',
+                type: 'string',
+            },
+            erp_name: {
+                title: 'ERP',
+                type: 'string',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                    onChange={onChange}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('pim erp name');
+    await selectAttributeAsSource('Variant Name');
+    await selectSourceChannel('Ecommerce');
+    await selectSourceLocale('English (United States)');
+
+    expect(onChange).toHaveBeenCalledWith({
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        body_html: {
+            source: null,
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        erp_name: {
+            source: 'variation_name',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+    });
+
+    await selectSourceChannel('Mobile');
+
+    expect(onChange).toHaveBeenCalledWith({
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        body_html: {
+            source: null,
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        erp_name: {
+            source: 'variation_name',
+            locale: null,
+            scope: 'mobile',
         },
     });
 });

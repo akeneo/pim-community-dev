@@ -26,10 +26,10 @@ export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error}
                 onChange={newLocale => onChange({...source, locale: newLocale})}
                 clearable={false}
                 invalid={error !== undefined}
-                emptyResultLabel={translate('akeneo_catalogs.product_mapping.source.parameters.locale.scope_required')}
+                emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                 openLabel={translate('akeneo_catalogs.common.select.open')}
                 placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.locale.placeholder')}
-                data-testid='source-parameter-channel-locale-dropdown'
+                data-testid='source-parameter-locale-dropdown'
             >
                 {locales?.map(locale => (
                     <SelectInput.Option key={locale.code} title={locale.label} value={locale.code}>

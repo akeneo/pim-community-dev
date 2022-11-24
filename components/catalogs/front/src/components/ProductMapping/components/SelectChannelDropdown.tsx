@@ -28,7 +28,7 @@ export const SelectChannelDropdown: FC<Props> = ({source, onChange, error}) => {
         <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.channel.label')}>
             <SelectInput
                 value={source.scope}
-                onChange={newChannel => onChange({...source, scope: newChannel})}
+                onChange={newChannel => onChange({...source, scope: newChannel, locale: null})}
                 onNextPage={fetchNextPage}
                 clearable={false}
                 invalid={error !== undefined}

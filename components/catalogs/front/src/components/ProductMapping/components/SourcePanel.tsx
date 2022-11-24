@@ -52,14 +52,12 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                         onChange={handleSourceSelection}
                         error={errors?.source}
                     ></SelectAttributeDropdown>
-                    {source !== null && (
-                        <SectionTitle>
-                            <Tag tint='purple'>2</Tag>
-                            <SectionTitle.Title level='secondary'>
-                                {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
-                            </SectionTitle.Title>
-                        </SectionTitle>
-                    )}
+                    <SectionTitle>
+                        <Tag tint='purple'>2</Tag>
+                        <SectionTitle.Title level='secondary'>
+                            {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
+                        </SectionTitle.Title>
+                    </SectionTitle>
                     {source !== null && attribute?.scopable && (
                         <SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} />
                     )}
