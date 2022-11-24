@@ -6,10 +6,7 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogQuery;
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
@@ -26,14 +23,12 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client = null;
-    private ?CommandBus $commandBus;
     private ?QueryBus $queryBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
         $this->queryBus = self::getContainer()->get(QueryBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
@@ -44,18 +39,20 @@ class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
         $this->client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
-        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
-        ));
-        $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'name' => [
-                'source' => 'title',
-                'scope' => 'ecommerce',
-                'locale' => 'en_US',
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            productMappingSchema: $this->getValidSchemaData(),
+            catalogProductMapping: [
+                'name' => [
+                    'source' => 'title',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ],
             ],
-        ]);
+        );
 
         $this->client->request(
             'DELETE',
@@ -87,11 +84,11 @@ class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([]);
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi',
-        ));
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
 
         $this->client->request(
             'DELETE',
@@ -135,11 +132,11 @@ class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
             'write_catalogs',
         ]);
         $this->createUser('magendo');
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'magendo',
-        ));
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'magendo',
+        );
 
         $this->client->request(
             'DELETE',

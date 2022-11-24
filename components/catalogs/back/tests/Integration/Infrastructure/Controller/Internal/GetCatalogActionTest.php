@@ -19,13 +19,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class GetCatalogActionTest extends IntegrationTestCase
 {
     public ?object $tokenStorage;
-    private ?CommandBus $commandBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
         $this->tokenStorage = self::getContainer()->get(TokenStorageInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
@@ -35,14 +33,15 @@ class GetCatalogActionTest extends IntegrationTestCase
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
 
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
-            'Store FR',
-            'admin',
-        ));
-        $this->setCatalogProductValueFilters('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
-            'channel' => ['print', 'ecommerce'],
-        ]);
+        $this->createCatalog(
+            id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            name: 'Store FR',
+            ownerUsername: 'admin',
+            isEnabled: false,
+            catalogProductValueFilters: [
+                'channel' => ['print', 'ecommerce'],
+            ],
+        );
 
         $client->request(
             'GET',
