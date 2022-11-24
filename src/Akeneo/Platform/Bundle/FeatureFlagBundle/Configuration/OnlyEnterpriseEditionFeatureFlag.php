@@ -11,7 +11,7 @@ namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
-final class EnterpriseEditionOnlyFeatureFlag implements FeatureFlag
+final class OnlyEnterpriseEditionFeatureFlag implements FeatureFlag
 {
     private const EDITIONS = [
         'flexibility_instance',
