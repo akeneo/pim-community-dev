@@ -131,17 +131,9 @@ final class GetMappedProductsHandler
      */
     private function getProductAttributeValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string
     {
-        $value = '';
         $scope ??= '<all_channels>';
         $locale ??= '<all_locales>';
 
-        if (\array_key_exists($attributeCode, $product['raw_values']) &&
-            \array_key_exists($scope, $product['raw_values'][$attributeCode]) &&
-            \array_key_exists($locale, $product['raw_values'][$attributeCode][$scope])
-        ) {
-            $value = $product['raw_values'][$attributeCode][$scope][$locale];
-        }
-
-        return $value;
+        return $product['raw_values'][$attributeCode][$scope][$locale] ?? '';
     }
 }
