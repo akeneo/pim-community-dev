@@ -14,8 +14,8 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
 
-    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_details_public_api:
-        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityDetails
+    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_attributes_public_api:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityAttributes
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details'
 

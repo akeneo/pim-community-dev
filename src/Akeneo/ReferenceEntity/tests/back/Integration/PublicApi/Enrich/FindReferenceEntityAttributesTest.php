@@ -28,20 +28,22 @@ use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityDetailsInterface;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityAttributesInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
-class FindReferenceEntityDetailsTest extends SqlIntegrationTestCase
+class FindReferenceEntityAttributesTest extends SqlIntegrationTestCase
 {
-    private FindReferenceEntityDetailsInterface $findReferenceEntityDetails;
+    private FindReferenceEntityAttributesInterface $findReferenceEntityAttributes;
+    private string $referenceEntityLabelIdentifier = '';
+    private string $referenceEntityImageIdentifier = '';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findReferenceEntityDetails = $this->get(
-            'akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_details_public_api'
+        $this->findReferenceEntityAttributes = $this->get(
+            'akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_attributes_public_api'
         );
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
         $this->loadReferenceEntityWithAttributes();
@@ -52,117 +54,93 @@ class FindReferenceEntityDetailsTest extends SqlIntegrationTestCase
      */
     public function it_finds_reference_entity_details(): void
     {
-        $referenceEntityDetails = $this->findReferenceEntityDetails->findByCode('designer');
+        $normalizedReferenceEntityAttributes = array_map(
+            static fn ($attribute) => $attribute->normalize(),
+            $this->findReferenceEntityAttributes->findByCode('designer'),
+        );
 
-        $expectedNormalizedDetails = [
-            'code' => 'designer',
-            'labels' => [
-                'en_US' => 'Designer',
-                'fr_FR' => 'Concepteur',
+        $expectedNormalizedAttributes = [
+            [
+                'identifier' => $this->referenceEntityLabelIdentifier,
+                'code' => 'label',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => true,
+                'type' => 'text',
             ],
-            'record_count' => 0,
-            'attributes' => [
-                [
-                    'code' => 'label',
-                    'reference_entity_code' => 'designer',
-                    'type' => 'text',
-                    'labels' => [],
-                    'is_required' => false,
-                    'value_per_locale' => true,
-                    'value_per_channel' => false,
-                    'order' => 0,
-                ],
-                [
-                    'code' => 'image',
-                    'reference_entity_code' => 'designer',
-                    'type' => 'image',
-                    'labels' => [],
-                    'is_required' => false,
-                    'value_per_locale' => false,
-                    'value_per_channel' => false,
-                    'order' => 1,
-                ],
-                [
-                    'code' => 'text_attribute',
-                    'reference_entity_code' => 'designer',
-                    'type' => 'text',
-                    'labels' => [],
-                    'is_required' => true,
-                    'value_per_locale' => true,
-                    'value_per_channel' => true,
-                    'order' => 10,
-                ],
-                [
-                    'code' => 'number_attribute',
-                    'reference_entity_code' => 'designer',
-                    'type' => 'number',
-                    'labels' => [],
-                    'is_required' => true,
-                    'value_per_locale' => false,
-                    'value_per_channel' => false,
-                    'order' => 20,
-                ],
-                [
-                    'code' => 'image_attribute',
-                    'reference_entity_code' => 'designer',
-                    'type' => 'image',
-                    'labels' => [],
-                    'is_required' => true,
-                    'value_per_locale' => false,
-                    'value_per_channel' => false,
-                    'order' => 30,
-                ],
-                [
-                    'code' => 'option_attribute',
-                    'reference_entity_code' => 'designer',
-                    'type' => 'option',
-                    'labels' => [],
-                    'is_required' => true,
-                    'value_per_locale' => false,
-                    'value_per_channel' => false,
-                    'order' => 40,
-                ],
-                [
-                    'code' => 'option_collection_attribute',
-                    'reference_entity_code' => 'designer',
-                    'type' => 'option_collection',
-                    'labels' => [],
-                    'is_required' => true,
-                    'value_per_locale' => false,
-                    'value_per_channel' => false,
-                    'order' => 50,
-                ],
+            [
+                'identifier' => $this->referenceEntityImageIdentifier,
+                'code' => 'image',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => false,
+                'type' => 'image',
+            ],
+            [
+                'identifier' => 'text_attribute_designer_fingerprint',
+                'code' => 'text_attribute',
+                'labels' => [],
+                'value_per_channel' => true,
+                'value_per_locale' => true,
+                'type' => 'text',
+            ],
+            [
+                'identifier' => 'number_attribute_designer_fingerprint',
+                'code' => 'number_attribute',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => false,
+                'type' => 'number',
+            ],
+            [
+                'identifier' => 'image_attribute_designer_fingerprint',
+                'code' => 'image_attribute',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => false,
+                'type' => 'image',
+            ],
+            [
+                'identifier' => 'option_attribute_designer_fingerprint',
+                'code' => 'option_attribute',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => false,
+                'type' => 'option',
+            ],
+            [
+                'identifier' => 'option_collection_at_designer_fingerprint',
+                'code' => 'option_collection_attribute',
+                'labels' => [],
+                'value_per_channel' => false,
+                'value_per_locale' => false,
+                'type' => 'option_collection',
             ],
         ];
 
-        Assert::assertEquals($expectedNormalizedDetails, $referenceEntityDetails->normalize());
+        Assert::assertEqualsCanonicalizing($expectedNormalizedAttributes, $normalizedReferenceEntityAttributes);
     }
 
     /**
      * @test
      */
-    public function it_returns_null_when_not_found(): void
+    public function it_returns_empty_array_when_reference_entity_not_found(): void
     {
-        $referenceEntityDetails = $this->findReferenceEntityDetails->findByCode('unknown');
+        $referenceEntityAttributes = $this->findReferenceEntityAttributes->findByCode('unknown');
 
-        Assert::assertNull($referenceEntityDetails);
+        Assert::assertEmpty($referenceEntityAttributes);
     }
 
     private function loadReferenceEntityWithAttributes(): void
     {
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $referenceEntity = ReferenceEntity::create(
-            $referenceEntityIdentifier,
-            [
-                'fr_FR' => 'Concepteur',
-                'en_US' => 'Designer',
-            ],
-            Image::createEmpty(),
-        );
+        $referenceEntity = ReferenceEntity::create($referenceEntityIdentifier, [], Image::createEmpty());
         $referenceEntityRepository->create($referenceEntity);
+        /** @var ReferenceEntity $referenceEntity */
         $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $this->referenceEntityLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier()->normalize();
+        $this->referenceEntityImageIdentifier = $referenceEntity->getAttributeAsImageReference()->getIdentifier()->normalize();
         $this->createTextAttribute((string) $referenceEntityIdentifier, 'text_attribute', 10, true, true);
         $this->createNumberAttribute((string) $referenceEntityIdentifier, 'number_attribute', 20, false, false);
         $this->createImageAttribute((string) $referenceEntityIdentifier, 'image_attribute', 30, false, false);

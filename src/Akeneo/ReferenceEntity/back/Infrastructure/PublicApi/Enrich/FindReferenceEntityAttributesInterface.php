@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich;
 
-interface FindReferenceEntityDetailsInterface
+interface FindReferenceEntityAttributesInterface
 {
-    public function findByCode(string $referenceEntityCode): ?ReferenceEntityDetails;
+    /**
+     * @return AttributeDetails[]
+     */
+    public function findByCode(string $referenceEntityCode): array;
 }
