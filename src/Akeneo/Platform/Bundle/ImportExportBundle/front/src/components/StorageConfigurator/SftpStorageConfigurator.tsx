@@ -1,9 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Field, Helper, NumberInput, Button, CheckIcon, getColor} from 'akeneo-design-system';
+import {
+  Field,
+  Helper,
+  NumberInput,
+  Button,
+  CheckIcon,
+  getColor,
+  getFontSize,
+  SelectInput,
+  CopyIcon,
+} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
-import {StorageConfiguratorProps, isSftpStorage} from './model';
+import {StorageConfiguratorProps, isSftpStorage, isValidLoginType, STORAGE_LOGIN_TYPES} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
+import {useGetPublicKey} from '../../hooks/useGetPublicKey';
 
 const CheckStorageForm = styled.div`
   display: flex;
@@ -16,6 +27,47 @@ const CheckStorageConnection = styled.div`
   align-items: center;
   gap: 8.5px;
   color: ${getColor('green', 100)};
+`;
+
+const CopyableInputContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const CopyableInput = styled.input`
+  width: 100%;
+  height: 40px;
+  border: 1px solid ${getColor('grey', 80)};
+  border-radius: 2px;
+  box-sizing: border-box;
+  background: ${getColor('grey', 20)};
+  color: ${getColor('grey', 100)};
+  font-size: ${getFontSize('default')};
+  line-height: 40px;
+  padding: 0 35px 0 15px;
+  outline-style: none;
+  cursor: not-allowed;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:focus-within {
+    box-shadow: 0 0 0 2px ${getColor('blue', 40)};
+  }
+
+  &::placeholder {
+    opacity: 1;
+    color: ${getColor('grey', 100)};
+  }
+`;
+
+const CopyableIcon = styled(CopyIcon)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 12px;
+  color: ${getColor('grey', 100)};
+  cursor: pointer;
 `;
 
 const SftpStorageConfigurator = ({
@@ -31,6 +83,10 @@ const SftpStorageConfigurator = ({
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
   const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
+  const publicKey = useGetPublicKey();
+
+  const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
+  const copyToClipboard = (publicKey: string) => canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
 
   return (
     <>
@@ -49,7 +105,7 @@ const SftpStorageConfigurator = ({
         value={storage.host}
         label={translate('pim_import_export.form.job_instance.storage_form.host.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.host.placeholder')}
-        onChange={host => onStorageChange({...storage, host})}
+        onChange={(host: string) => onStorageChange({...storage, host: host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
       <TextField
@@ -57,7 +113,7 @@ const SftpStorageConfigurator = ({
         value={storage.fingerprint ?? ''}
         label={translate('pim_import_export.form.job_instance.storage_form.fingerprint.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.fingerprint.placeholder')}
-        onChange={fingerprint =>
+        onChange={(fingerprint: string) =>
           onStorageChange({...storage, fingerprint: '' === fingerprint ? undefined : fingerprint})
         }
         errors={filterErrors(validationErrors, '[fingerprint]')}
@@ -72,7 +128,7 @@ const SftpStorageConfigurator = ({
         <NumberInput
           min={1}
           max={65535}
-          onChange={port => onStorageChange({...storage, port: parseInt(port, 10)})}
+          onChange={(port: string) => onStorageChange({...storage, port: parseInt(port, 10)})}
           invalid={0 < portValidationErrors.length}
           value={storage.port.toString()}
           placeholder={translate('pim_import_export.form.job_instance.storage_form.port.placeholder')}
@@ -83,6 +139,25 @@ const SftpStorageConfigurator = ({
           </Helper>
         ))}
       </Field>
+      <Field label={translate('pim_import_export.form.job_instance.storage_form.login_type.label')}>
+        <SelectInput
+          value={storage.login_type}
+          onChange={login_type => {
+            if (isValidLoginType(login_type)) {
+              onStorageChange({...storage, login_type});
+            }
+          }}
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          clearable={false}
+        >
+          {STORAGE_LOGIN_TYPES.map(loginType => (
+            <SelectInput.Option value={loginType} key={loginType}>
+              {translate(`pim_import_export.form.job_instance.storage_form.login_type.${loginType}`)}
+            </SelectInput.Option>
+          ))}
+        </SelectInput>
+      </Field>
       <TextField
         value={storage.username}
         required={true}
@@ -91,15 +166,27 @@ const SftpStorageConfigurator = ({
         onChange={(username: string) => onStorageChange({...storage, username})}
         errors={filterErrors(validationErrors, '[username]')}
       />
-      <TextField
-        value={storage.password}
-        required={true}
-        type="password"
-        label={translate('pim_import_export.form.job_instance.storage_form.password.label')}
-        placeholder={translate('pim_import_export.form.job_instance.storage_form.password.placeholder')}
-        onChange={(password: string) => onStorageChange({...storage, password})}
-        errors={filterErrors(validationErrors, '[password]')}
-      />
+      {storage.login_type === 'password' ? (
+        <TextField
+          value={storage.password ?? ''}
+          required={true}
+          type="password"
+          label={translate('pim_import_export.form.job_instance.storage_form.password.label')}
+          onChange={(password: string) => onStorageChange({...storage, password})}
+          errors={filterErrors(validationErrors, '[password]')}
+        />
+      ) : (
+        <Field label={translate('pim_import_export.form.job_instance.storage_form.public_key.label')}>
+          <CopyableInputContainer>
+            <CopyableInput disabled={true} data-testid="publicKey" value={publicKey ?? ''} />
+            <CopyableIcon
+              size={16}
+              data-testid="copyToClipboard"
+              onClick={() => publicKey && copyToClipboard(publicKey)}
+            />
+          </CopyableInputContainer>
+        </Field>
+      )}
       <CheckStorageForm>
         <CheckStorageConnection>
           <Button onClick={checkReliability} disabled={!canCheckConnection} level="primary">
