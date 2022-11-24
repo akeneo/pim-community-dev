@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useMemo, useContext} from 'react';
+import React, {useCallback, useMemo, useContext} from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Helper} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
@@ -29,6 +29,8 @@ interface Props {
     locale: string | null,
     attributeValue: CategoryAttributeValueData
   ) => void;
+  locale: string;
+  setLocale: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FormContainer = styled.div`
@@ -52,10 +54,8 @@ function mustChangeBeSkipped(
   );
 }
 
-export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange}: Props) => {
+export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange, locale, setLocale}: Props) => {
   const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
-  const [locale, setLocale] = useState(catalogLocale);
   const {locales} = useContext(EditCategoryContext);
   const translate = useTranslate();
 
@@ -127,7 +127,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   return (
     <FormContainer>
       <SectionTitle>
-        <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <LocaleSelector
           value={locale}

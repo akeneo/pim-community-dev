@@ -7,6 +7,7 @@ akeneo.category:
         error:
             unhandled_attribute_type: Could not find attribute field builder for attribute type "{{type}}"
         template:
+            title: Template
             fetching_failed: An error occurred while fetching template
         unsaved_changes: You will lose changes to the category if you leave the page.
     tree:
@@ -28,6 +29,6 @@ akeneo.category:
 
     template_list:
         columns:
-            header: Header
+            header: Label
             code: Code
             type: Type
