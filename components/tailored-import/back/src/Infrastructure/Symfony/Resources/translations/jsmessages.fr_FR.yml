@@ -71,6 +71,15 @@ akeneo.tailored_import:
         comma: Virgule (,)
         semicolon: Point-virgule (;)
         pipe: Barre verticale (|)
+      search_and_replace:
+        title: Rechercher et Remplacer
+        what:
+          header: Rechercher
+          placeholder: Rechercher la valeur à remplacer
+        with:
+          header: Remplacer la valeur par
+          placeholder: Définissez votre valeur de remplacement
+        case_sensitive: Sensible à la casse
       simple_select_replacement:
         title: Remplacement des listes à choix unique
         option_labels: Options du PIM
@@ -236,6 +245,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: Le type d'opération {{ operation_type }} est incompatible avec votre attribut utilisé en tant que destination.
       missing_required_operations: "Une ou plusieurs opérations sont manquantes : {{ missing_required_operations }}"
+      max_replacements_reached: Vous ne pouvez pas ajouter plus de {{ limit }} valeurs à remplacer.
 pim_information:
   import:
     title: Découvrez le mapping avec l'import sur mesure
