@@ -1,11 +1,12 @@
 services:
     Akeneo\PerformanceAnalytics\Infrastructure\PubSub\Client:
+        lazy: true
         arguments:
             - !service
                 class: Google\Cloud\PubSub\PubSubClient
                 arguments:
                     -   transport: 'grpc'
-                        keyFilePath: '%env(string:default:defaultKeyFilePath:PERFORMANCE_ANALYTICS_GOOGLE_APPLICATION_CREDENTIALS)%'
+                        keyFilePath: '%env(string:default::PERFORMANCE_ANALYTICS_GOOGLE_APPLICATION_CREDENTIALS)%'
             - '%env(bool:PUBSUB_AUTO_SETUP_PERFORMANCE_ANALYTICS)%'
 
     akeneo.performance_analytics.queue.enriched_products:

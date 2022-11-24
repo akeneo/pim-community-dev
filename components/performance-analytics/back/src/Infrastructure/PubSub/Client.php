@@ -18,7 +18,7 @@ use Google\Cloud\PubSub\PubSubClient;
 use Google\Cloud\PubSub\Topic;
 use Webmozart\Assert\Assert;
 
-final class Client
+class Client
 {
     private PubSubClient $pubSubClient;
     /** @var array<string, Topic> */
