@@ -32,6 +32,12 @@ services:
             - '%env(string:PIM_EDITION)%'
         public: true
 
+    akeneo.feature_flag.service.only_enterprise_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnterpriseEditionOnlyFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
+
     akeneo.feature_flag.service.only_flexibility_on_premise_feature:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyFlexibilityOnPremiseFeatureFlag
         arguments:
