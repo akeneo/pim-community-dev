@@ -88,10 +88,11 @@ jobs:
 
                   cd /tmp/pim-saas-k8s-artifacts
                   git add -A
-                  git commit -m "Update with release ${RELEASE_NAME}"
-                  # Should the master branch be protected?
-                  git push
-
+                  # git diff for commit only when changes are present
+                  if ! git diff-index --quiet HEAD; then
+                    git commit -m "Update with release ${RELEASE_NAME}"
+                    # Should the master branch be protected?
+                    git push
+                  fi
                   # Tag the repo with the release number
                   git tag -a ${RELEASE_NAME} -m "Update with release ${RELEASE_NAME}"
-                  git push origin --tags

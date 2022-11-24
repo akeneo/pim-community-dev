@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 POSITIONAL_ARGS=()
 
@@ -66,6 +67,9 @@ echo "GOOGLE_ZONE                       = ${GOOGLE_ZONE}"
 echo "LOCATION                          = ${LOCATION}"
 echo "PREFIX_CLUSTER                    = ${GOOGLE_ZONE}"
 
+SCRIPT_FILE_PATH=$(realpath "$0")
+SCRIPT_DIRECTORY_PATH=$(dirname "${SCRIPT_FILE_PATH}")
+PIM_SAAS_SERVICE_DIRECTORY_PATH=$(realpath "${SCRIPT_DIRECTORY_PATH}/../pim-saas-service")
 
 TENANT_CONTEXT="${GOOGLE_CLUSTER_REGION}/pim/tenant_contexts"
 TOPIC_BUSINESS_EVENT="${PREFIX_CLUSTER}-srnt-business-event" # Should we really set the srnt in it?
@@ -95,10 +99,6 @@ yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/Chart.yaml appVersion ${RELEASE_NAME}
 TENANT_NAME="ucs" # Should be removed
 FQDN="ucs.${GOOGLE_DOMAIN}" # Should be removed
 WORKLOAD_IDENTITY_KSA="ksa-workload-identity" # Do we really need to change this value ? Or does the CI change it
-
-SCRIPT_FILE_PATH=$(realpath "$0")
-SCRIPT_DIRECTORY_PATH=$(dirname "${SCRIPT_FILE_PATH}")
-PIM_SAAS_SERVICE_DIRECTORY_PATH=$(realpath "${SCRIPT_DIRECTORY_PATH}/../pim-saas-service")
 
 VALUES_FILE="${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml"
 
