@@ -1,3 +1,12 @@
+# 1.3.1
+## Split image to prod and dev
+
+| Tools (dev)      | Previous Version | New Version          |
+|------------------|------------------|----------------------|
+| curl             | N/A              | 7.80 (latest apk)    |
+| argocd           | N/A              | v2.5.0               |
+| terraform        | N/A              | 1.1.3                |
+
 # 1.3.0
 ## Update helm version
 
