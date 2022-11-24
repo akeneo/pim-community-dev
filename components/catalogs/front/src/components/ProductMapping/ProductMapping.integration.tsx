@@ -314,3 +314,163 @@ test('it updates the state when a source is selected', async () => {
         },
     });
 });
+test('it updates the state when a locale is selected', async () => {
+    const onChange = jest.fn();
+
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/erp_name',
+            json: {
+                code: 'erp_name',
+                label: 'pim erp name',
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/variation_name',
+            json: {
+                code: 'variation_name',
+                label: 'Variation name',
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            json: [
+                {
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'variation_name',
+                    label: 'Variant Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: true,
+                },
+                {
+                    code: 'ean',
+                    label: 'EAN',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/locales?page=1&limit=20',
+            json: [
+                {
+                    code: 'de_DE',
+                    label: 'German (Germany)',
+                },
+                {
+                    code: 'en_US',
+                    label: 'English (United States)',
+                },
+                {
+                    code: 'fr_FR',
+                    label: 'French (France)',
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        body_html: {
+            source: null,
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        erp_name: {
+            source: 'erp_name',
+            locale: 'en_US',
+            scope: null,
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+            body_html: {
+                title: 'Description',
+                type: 'string',
+            },
+            erp_name: {
+                title: 'ERP',
+                type: 'string',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                    onChange={onChange}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(await screen.findByText('pim erp name')).toBeInTheDocument();
+    fireEvent.click(await screen.findByText('pim erp name'));
+    expect(await screen.findByText('akeneo_catalogs.product_mapping.source.title')).toBeInTheDocument();
+    fireEvent.mouseDown(await screen.findByTestId('product-mapping-select-attribute'));
+    expect(await screen.findByTitle('akeneo_catalogs.product_mapping.source.select_source.search')).toBeInTheDocument();
+    fireEvent.click(await screen.findByText('Variant Name'));
+    expect(await screen.findByText('akeneo_catalogs.product_mapping.source.parameters.locale.label')).toBeInTheDocument();
+    expect(await screen.findByTestId('source-parameter-locale-dropdown')).toBeInTheDocument();
+    fireEvent.click(await screen.findByTestId('source-parameter-locale-dropdown'));
+    expect(await screen.findByText('English')).toBeInTheDocument();
+    fireEvent.click(await screen.findByText('English (United States'));
+
+    expect(onChange).toHaveBeenCalledWith({
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        body_html: {
+            source: null,
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+        erp_name: {
+            source: 'variation_name',
+            locale: 'en_US',
+            scope: null,
+        },
+    });
+});

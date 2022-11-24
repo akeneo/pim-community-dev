@@ -11,7 +11,6 @@ type Result = {
 
 export const useLocalesByCodes = (codes: string[]): Result => {
     return useQuery<Locale[], ResultError, Locale[]>(['locales', [...codes].sort().join('')], async () => {
-
         const concatCodes = codes.join(',');
 
         if (concatCodes === '') {
