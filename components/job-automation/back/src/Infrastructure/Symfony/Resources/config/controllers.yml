@@ -19,3 +19,9 @@ services:
     public: true
     arguments:
       - '@akeneo.job_automation.infrastructure.public_api.list_users_handler'
+
+  akeneo.job_automation.controllers.get_public_key_action:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetPublicKeyAction
+    public: true
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Application\GetAsymmetricKeys\GetAsymmetricKeysHandler'

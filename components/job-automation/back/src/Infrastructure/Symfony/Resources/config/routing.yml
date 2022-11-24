@@ -12,3 +12,8 @@ pimee_job_automation_get_users:
   path: /rest/job_automation/users
   defaults: { _controller: akeneo.job_automation.controllers.get_users_action }
   methods: [GET]
+
+pimee_job_automation_get_public_key:
+  path: /rest/job_automation/public_key
+  defaults: { _controller: akeneo.job_automation.controllers.get_public_key_action }
+  methods: [ GET ]

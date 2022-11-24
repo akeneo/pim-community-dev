@@ -35,13 +35,16 @@ $rules = [
     $builder->only(
         [
             'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\Types\Types',
             'Symfony\Component',
             'Symfony\Contract',
             'Psr\Log\LoggerInterface',
+            'phpseclib3\Crypt\RSA',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Platform\Bundle\NotificationBundle',
             'Akeneo\Platform\JobAutomation\Domain',
             'Akeneo\Platform\JobAutomation\Application',

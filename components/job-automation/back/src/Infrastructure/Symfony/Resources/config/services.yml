@@ -49,3 +49,13 @@ services:
 
     akeneo.job_automation.infrastructure.public_api.list_users_handler:
         alias: Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface
+
+    Akeneo\Platform\JobAutomation\Infrastructure\AsymmetricKeysGenerator:
+        arguments:
+            - '%openssl_config_path%'
+
+    Akeneo\Platform\JobAutomation\Infrastructure\Installer\JobInstaller:
+        arguments:
+            - '@Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler'
+        tags:
+            - { name: kernel.event_subscriber }

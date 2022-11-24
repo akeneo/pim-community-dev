@@ -7,7 +7,6 @@ namespace Akeneo\Platform\JobAutomation\Test\Integration\Infrastructure\Query;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotify;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersByIdQueryInterface;
-use Akeneo\UserManagement\ServiceApi\User\User;
 
 class FindUsersByIdQueryTest extends IntegrationTestCase
 {

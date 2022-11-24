@@ -9,3 +9,12 @@ services:
     arguments:
       - '@akeneo.job_automation.query.find_users_to_notify'
       - '@Akeneo\Platform\JobAutomation\Domain\Publisher\PublisherInterface'
+
+  Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler:
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Infrastructure\AsymmetricKeysGenerator'
+      - '@Akeneo\Platform\JobAutomation\Infrastructure\Query\SaveAsymmetricKeysQueryInterface'
+
+  Akeneo\Platform\JobAutomation\Application\GetAsymmetricKeys\GetAsymmetricKeysHandler:
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface'

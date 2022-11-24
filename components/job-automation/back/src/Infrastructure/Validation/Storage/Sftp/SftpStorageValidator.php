@@ -16,6 +16,7 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\FilePath;
 use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage as SftpStorageModel;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -34,16 +35,25 @@ final class SftpStorageValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, SftpStorage::class);
         }
 
-        $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
+        $validator = $this->context->getValidator()->inContext($this->context);
+
+        $validator->validate($value, new Collection([
             'fields' => [
                 'type' => new EqualTo(SftpStorageModel::TYPE),
                 'file_path' => new FilePath($constraint->getFilePathSupportedFileExtensions()),
                 'host' => [new NotBlank(), new Hostname()],
                 'fingerprint' => new Optional(new Fingerprint()),
                 'port' => [new NotBlank(), new GreaterThanOrEqual(1), new LessThanOrEqual(65535)],
+                'login_type' => [new NotBlank(), new Choice(['choices' => SftpStorageModel::LOGIN_TYPES])],
                 'username' => new NotBlank(),
-                'password' => new NotBlank(),
+                'password' => new Optional(),
             ],
         ]));
+
+        if (SftpStorageModel::LOGIN_TYPE_PASSWORD === $value['login_type']) {
+            $validator->atPath('[password]')->validate($value['password'] ?? null, [
+                new NotBlank(),
+            ]);
+        }
     }
 }
