@@ -13,18 +13,22 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Controller;
 
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\GetReferenceEntityAttributesQuery;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\AttributeDetails;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityAttributesInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class GetReferenceEntityAttributesAction
 {
     public function __construct(
         private FindReferenceEntityAttributesInterface $findReferenceEntityAttributes,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $violationNormalizer,
     ) {
     }
 
@@ -34,12 +38,15 @@ final class GetReferenceEntityAttributesAction
             return new RedirectResponse('/');
         }
 
-        $referenceEntityCode = $request->get('reference_entity_code');
-        if (null === $referenceEntityCode) {
-            throw new BadRequestHttpException('Missing reference entity code');
+        $violations = $this->validator->validate($request, new GetReferenceEntityAttributesQuery());
+        if (0 < $violations->count()) {
+            return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
-        $referenceEntityAttributes = $this->findReferenceEntityAttributes->findByCode($referenceEntityCode);
+        $referenceEntityCode = $request->get('reference_entity_code');
+        $types = $request->get('types');
+
+        $referenceEntityAttributes = $this->findReferenceEntityAttributes->findByCode($referenceEntityCode, $types);
 
         return new JsonResponse(array_map(
             static fn (AttributeDetails $attribute) => $attribute->normalize(),

@@ -10,3 +10,5 @@ services:
         public: true
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_attributes_public_api'
+            - '@validator'
+            - '@serializer'
