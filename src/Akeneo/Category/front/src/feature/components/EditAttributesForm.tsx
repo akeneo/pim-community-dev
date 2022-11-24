@@ -127,7 +127,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   return (
     <FormContainer>
       <SectionTitle>
-        <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <LocaleSelector
           value={locale}
