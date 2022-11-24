@@ -204,7 +204,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
         ]], $productFiles[0]->supplierComments);
         static::assertNull($productFiles[0]->retailerLastReadAt);
         static::assertSame('2022-09-07 00:00:00', $productFiles[0]->supplierLastReadAt);
-        static::assertNull($productFiles[0]->importStatus);
+        static::assertSame(ProductFileImportStatus::TO_IMPORT->value, $productFiles[0]->importStatus);
     }
 
     /** @test */

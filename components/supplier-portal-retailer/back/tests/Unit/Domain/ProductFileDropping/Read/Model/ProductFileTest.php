@@ -35,7 +35,7 @@ final class ProductFileTest extends TestCase
                 'supplierComments' => [],
                 'retailerLastReadAt' => null,
                 'supplierLastReadAt' => null,
-                'importStatus' => null,
+                'importStatus' => ProductFileImportStatus::TO_IMPORT->value,
             ],
             $sut->toArray(),
         );
