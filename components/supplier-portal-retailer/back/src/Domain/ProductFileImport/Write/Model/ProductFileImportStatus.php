@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model;
 
 enum ProductFileImportStatus: string
 {
+    case TO_IMPORT = 'to_import';
     case IN_PROGRESS = 'in_progress';
     case COMPLETED = 'completed';
     case FAILED = 'failed';

@@ -34,6 +34,7 @@ const useProductFiles = (supplierIdentifier: string, page: number): [ProductFile
                 uploadedAt: item.uploadedAt,
                 contributor: item.uploadedByContributor,
                 hasUnreadComments: item.hasUnreadComments,
+                importStatus: item.importStatus,
             };
         });
         setProductFiles(productFiles);

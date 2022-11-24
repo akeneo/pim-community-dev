@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {ProductFilesList} from '../../../product-file-dropping/components/ProductFilesList';
+import {ProductFilesList} from '../../../product-file-dropping/components';
 import {useProductFiles} from '../../hooks';
 
 type Props = {

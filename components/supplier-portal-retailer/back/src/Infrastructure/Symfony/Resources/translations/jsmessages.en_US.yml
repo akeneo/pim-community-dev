@@ -121,7 +121,12 @@ supplier_portal:
                     unknown_error:
                         title: An unexpected error happen on our side.
                         content: Please retry later
-
+            import:
+                status:
+                    to_import: to import
+                    in_progress: in progress
+                    completed: completed
+                    failed: failed
         pim_notification:
             button_label: See the product files
 

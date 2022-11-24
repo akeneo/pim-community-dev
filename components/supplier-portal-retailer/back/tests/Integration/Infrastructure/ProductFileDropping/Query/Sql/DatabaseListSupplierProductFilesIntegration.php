@@ -6,6 +6,9 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
@@ -342,6 +345,58 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
         $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
 
         static::assertFalse($productFiles[0]->hasUnreadComments);
+    }
+
+    /** @test */
+    public function itReturnsTheProductFileImportStatus(): void
+    {
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->build(),
+        );
+        $supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
+        );
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($supplier)
+                ->build(),
+        );
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
+
+        static::assertSame(ProductFileImportStatus::TO_IMPORT->value, $productFiles[0]->importStatus);
+    }
+
+    /** @test */
+    public function itReturnsTheProductFileImportStatusInProgress(): void
+    {
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->build(),
+        );
+        $supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
+        );
+        $productFile = (new ProductFileBuilder())
+            ->uploadedBySupplier($supplier)
+            ->build();
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save($productFile);
+
+        $productFileImport = ProductFileImport::start($productFile, 666);
+        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
+
+        static::assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFiles[0]->importStatus);
     }
 
     private function addLastReadAtByRetailer(string $productFileIdentifier, \DateTimeImmutable $lastReadAt): void

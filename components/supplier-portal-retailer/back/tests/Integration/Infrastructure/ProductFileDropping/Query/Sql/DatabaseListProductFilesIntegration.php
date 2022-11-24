@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
@@ -233,6 +237,39 @@ final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
         $productFiles = $this->get(ListProductFiles::class)();
 
         static::assertFalse($productFiles[0]->hasUnreadComments);
+    }
+
+    /** @test */
+    public function itReturnsTheDefaultProductFileImportStatus(): void
+    {
+        $this->get(ProductFileRepository::class)->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFiles = $this->get(ListProductFiles::class)();
+
+        static::assertSame(ProductFileImportStatus::TO_IMPORT->value, $productFiles[0]->importStatus);
+    }
+
+    /** @test */
+    public function itReturnsTheProductFileImportStatus(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFile = $productFileRepository->find(Identifier::fromString('5d001a43-a42d-4083-8673-b64bb4ecd26f'));
+
+        $productFileImport = ProductFileImport::start($productFile, 666);
+        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
+
+        $productFiles = $this->get(ListProductFiles::class)();
+
+        static::assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFiles[0]->importStatus);
     }
 
     private function addLastReadAtByRetailer(string $productFileIdentifier, \DateTimeImmutable $lastReadAt): void

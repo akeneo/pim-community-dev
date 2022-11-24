@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {EmptyProductFilesList} from './EmptyProductFilesList';
 import {ProductFileRow} from '../models/ProductFileRow';
 import {useHistory} from 'react-router';
+import {ProductFileImportStatus} from './ProductFileImportStatus';
 
 export const PRODUCT_FILES_PER_PAGE = 25;
 
@@ -57,6 +58,9 @@ const ProductFilesList = ({
                                     {translate('supplier_portal.product_file_dropping.supplier_files.columns.supplier')}
                                 </Table.HeaderCell>
                             )}
+                            <Table.HeaderCell>
+                                {translate('supplier_portal.product_file_dropping.supplier_files.columns.status')}
+                            </Table.HeaderCell>
                             <Table.HeaderCell></Table.HeaderCell>
                             <Table.HeaderCell></Table.HeaderCell>
                         </Table.Header>
@@ -81,6 +85,9 @@ const ProductFilesList = ({
                                                 {productFile.hasOwnProperty('supplier') && productFile.supplier}
                                             </Table.Cell>
                                         )}
+                                        <Table.Cell>
+                                            <ProductFileImportStatus importStatus={productFile.importStatus} />
+                                        </Table.Cell>
                                         <HasUnreadCommentsCell>
                                             {productFile.hasUnreadComments && (
                                                 <StyledPill data-testid="unread-comments-pill" level="primary" />

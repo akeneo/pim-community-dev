@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 
 final class UpdateProductFileImportStatusFromJobStatus implements UpdateProductFileImportStatus
 {
-    public function __construct(private readonly ProductFileImportRepository $productFileImportRepository)
+    public function __construct(private ProductFileImportRepository $productFileImportRepository)
     {
     }
 
