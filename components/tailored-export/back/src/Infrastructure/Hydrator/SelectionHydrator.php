@@ -230,8 +230,7 @@ class SelectionHydrator
                 $selectionConfiguration['locale'],
                 $attribute->properties()['reference_data_name'],
             ),
-            ReferenceEntityAttributeSelectionInterface::TYPE =>
-            match ($selectionConfiguration['attribute_type']) {
+            ReferenceEntityAttributeSelectionInterface::TYPE => match ($selectionConfiguration['attribute_type']) {
                 ReferenceEntityTextAttributeSelection::TYPE => new ReferenceEntityTextAttributeSelection(
                     $attribute->properties()['reference_data_name'],
                     $selectionConfiguration['attribute_code'],

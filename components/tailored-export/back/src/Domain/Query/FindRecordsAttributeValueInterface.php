@@ -17,7 +17,7 @@ interface FindRecordsAttributeValueInterface
 {
     /**
      * @param array<string> $recordCodes
-     * 
+     *
      * @return array<string, string|array|null>
      */
     public function find(
