@@ -39,7 +39,7 @@ const Label = styled.div`
   flex: 1;
   text-transform: uppercase;
   color: ${getColor('grey', 140)};
-  font-size: ${getFontSize('small')};
+  font-size: ${getFontSize('default')};
   display: flex;
   align-items: center;
   gap: 10px;
