@@ -63,8 +63,6 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
             $qb->setFirstResult($offset);
         }
 
-        $test = $qb->setMaxResults($limit)
-            ->getQuery()->getSQL();
         return $qb->setMaxResults($limit)
             ->getQuery()
             ->execute();
