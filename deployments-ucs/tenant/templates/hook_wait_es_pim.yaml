@@ -23,9 +23,9 @@ spec:
       restartPolicy: Never
       containers:
         - name: wait-es-pim
-          image: {{ template "pim.imageNameAndTag" . }}
-          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ["bash", "/scripts-dir/hook-wait-es-pim.sh"]
+          image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
+          imagePullPolicy: {{ .Values.image.curl.pullPolicy | quote }}
+          command: ["sh", "/scripts-dir/hook-wait-es-pim.sh"]
           volumeMounts:
             {{- if .Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key

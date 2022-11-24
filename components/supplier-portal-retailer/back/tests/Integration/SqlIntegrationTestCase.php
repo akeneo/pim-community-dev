@@ -90,6 +90,6 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
                 ->connection
                 ->executeQuery($sql, ['code' => 'supplier_portal_xlsx_supplier_import'])
                 ->fetchOne()
-            ;
+        ;
     }
 }

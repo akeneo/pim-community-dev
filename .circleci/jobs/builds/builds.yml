@@ -765,5 +765,9 @@ jobs:
                   cp -r /tmp/pim-enterprise-dev/deployments-ucs/timmy /tmp/pim-saas-k8s-artifacts/timmy
 
                   git add -A
-                  git commit -m "Update with release ${RELEASE_NAME}"
-                  git push --set-upstream origin ${CIRCLE_BRANCH}
+                  # git diff for commit only when changes are present
+                  if ! git diff-index --quiet HEAD; then
+                    git commit -m "Update with release ${RELEASE_NAME}"
+                    # Should the master branch be protected?
+                    git push --set-upstream origin ${CIRCLE_BRANCH}
+                  fi

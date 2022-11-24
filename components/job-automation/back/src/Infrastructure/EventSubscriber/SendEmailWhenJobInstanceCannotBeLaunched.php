@@ -37,16 +37,11 @@ final class SendEmailWhenJobInstanceCannotBeLaunched implements EventSubscriberI
 
     public function notifyUsers(CouldNotLaunchAutomatedJobEvent $event): void
     {
-        switch ($event->reason) {
-            case CouldNotLaunchAutomatedJobEvent::INVALID_JOB_REASON:
-                $this->notifyUsersInvalidJobInstance($event);
-                break;
-            case CouldNotLaunchAutomatedJobEvent::INTERNAL_ERROR_REASON:
-                $this->notifyUsersInternalError($event);
-                break;
-            default:
-                throw new \RuntimeException(sprintf('Unable to notify users for this reason : %s', $event->reason));
-        }
+        match ($event->reason) {
+            CouldNotLaunchAutomatedJobEvent::INVALID_JOB_REASON => $this->notifyUsersInvalidJobInstance($event),
+            CouldNotLaunchAutomatedJobEvent::INTERNAL_ERROR_REASON => $this->notifyUsersInternalError($event),
+            default => throw new \RuntimeException(sprintf('Unable to notify users for this reason : %s', $event->reason)),
+        };
     }
 
     public function notifyUsersInvalidJobInstance(CouldNotLaunchAutomatedJobEvent $event): void

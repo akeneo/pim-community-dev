@@ -100,7 +100,7 @@ class DatabaseRepository implements ContributorAccountRepository
                 (bool) $result['consent'],
             )
             : null
-            ;
+        ;
     }
 
     public function deleteByEmail(string $email): void

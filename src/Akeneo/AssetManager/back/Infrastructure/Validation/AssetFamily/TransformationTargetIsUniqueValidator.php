@@ -64,7 +64,7 @@ class TransformationTargetIsUniqueValidator extends ConstraintValidator
         return array_key_exists('attribute', $target)
             && array_key_exists('channel', $target)
             && array_key_exists('locale', $target)
-            ;
+        ;
     }
 
     /**
