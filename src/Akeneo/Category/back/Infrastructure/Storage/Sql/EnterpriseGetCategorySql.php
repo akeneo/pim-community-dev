@@ -48,6 +48,12 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
                 JOIN pim_catalog_category_translation category_translation ON category_translation.foreign_key = category.id
                 WHERE $sqlWhere
             ),
+            template as (
+                SELECT category.code as category_code, BIN_TO_UUID(category_template_uuid) as template_uuid
+                FROM pim_catalog_category_tree_template template_category
+                JOIN pim_catalog_category category ON category.root = template_category.category_tree_id
+                WHERE $sqlWhere
+            ),
             permissions_view as (
                 SELECT pca.category_id, JSON_ARRAYAGG(pca.user_group_id) as user_groups
                 FROM pim_catalog_category category
@@ -77,6 +83,7 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
                 category.updated,
                 translation.translations,
                 category.value_collection,
+                template.template_uuid,
                 JSON_OBJECT(
                     'view', permissions_view.user_groups, 
                     'edit', permissions_edit.user_groups, 
@@ -84,6 +91,7 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
                 ) as permissions
             FROM pim_catalog_category category
             LEFT JOIN translation ON translation.code = category.code
+            LEFT JOIN template ON category.code = template.category_code
             LEFT JOIN permissions_view ON permissions_view.category_id = category.id
             LEFT JOIN permissions_edit ON permissions_edit.category_id = category.id
             LEFT JOIN permissions_own ON permissions_own.category_id = category.id
