@@ -47,7 +47,8 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
                 rc.retailer_comments,
                 sc.supplier_comments,
                 comments_read_by_retailer.last_read_at as retailer_last_read_at,
-                comments_read_by_supplier.last_read_at as supplier_last_read_at
+                comments_read_by_supplier.last_read_at as supplier_last_read_at,
+                product_file_import.import_status
             FROM akeneo_supplier_portal_supplier_product_file product_file
             LEFT JOIN retailer_comments rc
                 ON identifier = rc.product_file_identifier
@@ -57,6 +58,8 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
                 ON product_file.identifier = comments_read_by_retailer.product_file_identifier
             LEFT JOIN akeneo_supplier_portal_product_file_comments_read_by_supplier comments_read_by_supplier 
                 ON product_file.identifier = comments_read_by_supplier.product_file_identifier
+            LEFT JOIN akeneo_supplier_portal_product_file_imported_by_job_execution AS product_file_import
+                ON product_file_import.product_file_identifier = product_file.identifier
             WHERE uploaded_by_supplier = :supplierIdentifier
             ORDER BY uploaded_at DESC
             LIMIT :limit
@@ -71,6 +74,7 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
                 $file['uploaded_by_contributor'],
                 $supplierIdentifier,
                 $file['uploaded_at'],
+                $file['import_status'],
                 $file['retailer_comments']
                     ? \array_filter(\json_decode(
                         $file['retailer_comments'],

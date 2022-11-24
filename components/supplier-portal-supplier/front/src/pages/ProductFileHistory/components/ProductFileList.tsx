@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
 import {ConversationalHelper} from '../../../components';
 import {ProductFilePanel} from './ProductFilePanel';
+import {ProductFileImportStatus} from './ProductFileImportStatus';
 
 type Props = {
     productFiles: ProductFile[];
@@ -155,6 +156,9 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                                 <Table.HeaderCell>
                                     <FormattedMessage defaultMessage="File name" id="ppAn7O" />
                                 </Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    <FormattedMessage defaultMessage="Status" id="tzMNF3" />
+                                </Table.HeaderCell>
                                 <Table.HeaderCell></Table.HeaderCell>
                                 <Table.HeaderCell></Table.HeaderCell>
                                 <Table.HeaderCell></Table.HeaderCell>
@@ -179,6 +183,12 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                                             <Table.Cell>{productFile.contributor}</Table.Cell>
                                             <Table.Cell>
                                                 <FilenameCell>{productFile.filename}</FilenameCell>
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <ProductFileImportStatus
+                                                    importStatus={productFile.importStatus}
+                                                    hasComments={0 < productFile.comments.length}
+                                                />
                                             </Table.Cell>
                                             <StyledActionCell>
                                                 {productFile.displayNewMessageIndicatorPill && (

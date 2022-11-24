@@ -1,5 +1,6 @@
 import {apiFetch} from '../../../api/apiFetch';
 import {fetchProductFiles} from './fetchProductFiles';
+import {ImportStatus} from '../model/ImportStatus';
 
 jest.mock('../../../api/apiFetch');
 
@@ -13,6 +14,7 @@ test('it calls the backend and returns the list of product files', async () => {
                 uploadedByContributor: 'a@a.a',
                 uploadedBySupplier: '7afca148-ee9c-4e00-8f28-9ce13c745600',
                 uploadedAt: '2022-10-20T14:19:34+00:00',
+                importStatus: ImportStatus.TO_IMPORT,
                 retailerComments: [],
                 supplierComments: [
                     {
@@ -41,6 +43,7 @@ test('it calls the backend and returns the list of product files', async () => {
                 filename: 'suppliers_export.xlsx',
                 contributor: 'a@a.a',
                 uploadedAt: '2022-10-20T14:19:34+00:00',
+                importStatus: ImportStatus.TO_IMPORT,
                 comments: [
                     {
                         authorEmail: 'a@a.a',

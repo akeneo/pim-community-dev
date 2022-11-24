@@ -3,6 +3,7 @@ import {fireEvent, screen} from '@testing-library/react';
 import {renderWithProviders} from '../../../tests';
 import {ProductFileList} from './ProductFileList';
 import {ProductFile} from '../model/ProductFile';
+import {ImportStatus} from '../model/ImportStatus';
 
 const productFiles: ProductFile[] = [
     {
@@ -12,6 +13,8 @@ const productFiles: ProductFile[] = [
         uploadedAt: '2022-07-28T14:57:37+00:00',
         comments: [],
         displayNewMessageIndicatorPill: false,
+        supplierLastReadAt: null,
+        importStatus: ImportStatus.TO_IMPORT,
     },
     {
         identifier: '8be6446b-befb-4d9f-aa94-0dfd390df690',
@@ -20,6 +23,8 @@ const productFiles: ProductFile[] = [
         uploadedAt: '2022-07-28T14:58:38+00:00',
         comments: [],
         displayNewMessageIndicatorPill: false,
+        supplierLastReadAt: null,
+        importStatus: ImportStatus.TO_IMPORT,
     },
 ];
 
@@ -27,11 +32,12 @@ test('it renders a paginated list of product files', async () => {
     const productFileList: ProductFile[] = [...Array(25)].map((_, index) => ({
         identifier: `file${index}`,
         filename: `product-file-${index}.xlsx`,
-        path: `test/${index}-product-file.xlsx`,
         contributor: 'contributor@los-pollos-hermanos.com',
         uploadedAt: '2022-10-19T14:57:37+00:00',
-        retailerComments: [],
-        supplierComments: [],
+        comments: [],
+        supplierLastReadAt: null,
+        displayNewMessageIndicatorPill: false,
+        importStatus: ImportStatus.TO_IMPORT,
     }));
 
     renderWithProviders(

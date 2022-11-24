@@ -1,3 +1,5 @@
+import {ImportStatus} from './ImportStatus';
+
 export type ProductFile = {
     identifier: string;
     filename: string;
@@ -6,4 +8,5 @@ export type ProductFile = {
     comments: [];
     supplierLastReadAt: string | null;
     displayNewMessageIndicatorPill: boolean;
+    importStatus: ImportStatus;
 };

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model;
 
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+
 final class ProductFile
 {
     public function __construct(
@@ -13,11 +15,13 @@ final class ProductFile
         public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
+        public ?string $importStatus,
         public array $retailerComments = [],
         public array $supplierComments = [],
         public ?string $retailerLastReadAt = null,
         public ?string $supplierLastReadAt = null,
     ) {
+        $this->importStatus = $importStatus ?? ProductFileImportStatus::TO_IMPORT->value;
     }
 
     public function toArray(): array
@@ -33,6 +37,7 @@ final class ProductFile
             'supplierComments' => $this->supplierComments,
             'retailerLastReadAt' => $this->retailerLastReadAt,
             'supplierLastReadAt' => $this->supplierLastReadAt,
+            'importStatus' => $this->importStatus,
         ];
     }
 }

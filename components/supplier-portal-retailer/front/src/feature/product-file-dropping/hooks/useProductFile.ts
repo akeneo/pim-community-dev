@@ -29,6 +29,7 @@ const useProductFile = (productFileIdentifier: string) => {
             uploadedAt: responseBody.uploadedAt,
             supplier: responseBody.uploadedBySupplier,
             contributor: responseBody.uploadedByContributor,
+            importStatus: responseBody.importStatus,
             retailerComments: responseBody.retailerComments.map(
                 (comment: {author_email: string; content: string; created_at: string}): Comment => {
                     return {

@@ -3,6 +3,7 @@ import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../../tests';
 import {ProductFileHistory} from './ProductFileHistory';
 import * as hook from './hooks/useProductFiles';
+import {ImportStatus} from './model/ImportStatus';
 
 beforeEach(() => {
     // @ts-ignore
@@ -14,6 +15,8 @@ beforeEach(() => {
                 path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-suppliers_export.xlsx',
                 contributor: 'contributor@example.com',
                 uploadedAt: '2022-07-28 14:57:38',
+                comments: [],
+                importStatus: ImportStatus.TO_IMPORT,
             },
             {
                 identifier: '8be6446b-befb-4d9f-aa94-0dfd390df690',
@@ -21,6 +24,8 @@ beforeEach(() => {
                 path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-suppliers_export.xlsx',
                 contributor: 'contributor@example.com',
                 uploadedAt: '2022-07-28 14:57:38',
+                comments: [],
+                importStatus: ImportStatus.TO_IMPORT,
             },
         ],
         total: 2,
