@@ -353,3 +353,57 @@ test('it validates the catalog on first load', () => {
         false,
     ]);
 });
+
+test('it remove all errors when we delete a product selection criteria', () => {
+    mocked(useCatalog).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: {
+            id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
+            name: 'Store US',
+            enabled: true,
+            product_selection_criteria: [
+                {
+                    field: 'color',
+                    operator: Operator.IN_LIST,
+                    value: ['blue', 'red'],
+                },
+            ],
+            product_value_filters: {channels: ['ecommerce', 'print']},
+        },
+        error: null,
+    }));
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [
+            {
+                propertyPath: '[color]',
+                message: 'blue does not exists.',
+            },
+        ],
+        error: null,
+    }));
+
+    const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
+
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    const [form, save, isDirty] = result.current;
+
+    act(() => {
+        form && form.dispatch({type: CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA, value: {}});
+    });
+
+    expect(result.current).toMatchObject([
+        {
+            values: {
+                enabled: true,
+                product_selection_criteria: {},
+                product_value_filters: {channels: ['ecommerce', 'print']},
+            },
+            errors: [],
+        },
+        expect.any(Function),
+        true,
+    ]);
+});

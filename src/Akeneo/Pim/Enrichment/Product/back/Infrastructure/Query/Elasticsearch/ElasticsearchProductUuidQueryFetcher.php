@@ -65,7 +65,7 @@ final class ElasticsearchProductUuidQueryFetcher implements ProductUuidQueryFetc
             return new ProductResults([], 0);
         }
 
-        $sort = ['_id' => 'asc'];
+        $sort = ['id' => 'asc'];
         if (isset($esQuery['sort'])) {
             $sort = \array_merge($esQuery['sort'], $sort);
         }

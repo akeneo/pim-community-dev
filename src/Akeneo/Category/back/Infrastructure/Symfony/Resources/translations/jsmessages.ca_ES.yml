@@ -1,3 +1,32 @@
 akeneo.category:
+  tree_list:
+    column:
+      category_templates: Plantilles de categoria
+  attributes: Atributs
   edition_form:
+    error:
+      unhandled_attribute_type: No s'ha pogut trobar el creador de camps d'atribut per al tipus d'atribut "{{type}}"
+    template:
+      fetching_failed: S'ha produït un error en obtenir la plantilla
     unsaved_changes: Perdreu els canvis a la categoria si abandoneu la pàgina.
+  tree:
+    create: Crear arbre
+    delete: Esborra l'arbre
+  template:
+    create: Activa la plantilla
+    edit: Veure plantilla
+    delete: Esborrar plantilla
+    notification_success: La plantilla s'ha activat correctament
+    notification_error: No s'ha pogut activar la plantilla
+    attribute:
+      description_title: Descripció Configuració
+      type:
+        text: Text
+        textarea: Àrea de Text
+        richtext: Text enriquit
+        image: Imatge
+  template_list:
+    columns:
+      header: Capçalera
+      code: Codi
+      type: Tipus

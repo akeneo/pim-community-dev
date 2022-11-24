@@ -58,8 +58,8 @@ services:
 
     Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\RefreshVersioningSubscriber:
         arguments:
-            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
-            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
         tags:
             - { name: 'kernel.event_subscriber' }
 

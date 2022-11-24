@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ConditionsSpec extends ObjectBehavior
 {
-    public function it_cannot_be_instantiated_with_something_else_than_a_condition()
+    public function it_cannot_be_instantiated_with_something_else_than_a_condition(): void
     {
         $this->beConstructedThrough('fromArray', [[new \stdClass()]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

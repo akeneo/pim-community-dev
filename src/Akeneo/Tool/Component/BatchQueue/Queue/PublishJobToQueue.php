@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -34,7 +34,7 @@ class PublishJobToQueue implements PublishJobToQueueInterface
         private JobExecutionMessageFactory $jobExecutionMessageFactory,
         private EventDispatcherInterface $eventDispatcher,
         private BatchLogHandler $batchLogHandler,
-        private CreateJobExecutionHandler $createJobExecutionHandler,
+        private CreateJobExecutionHandlerInterface $createJobExecutionHandler,
     ) {
     }
 
@@ -44,7 +44,7 @@ class PublishJobToQueue implements PublishJobToQueueInterface
         bool $noLog = false,
         ?string $username = null,
         ?array $emails = [],
-    ): void {
+    ): JobExecution {
         $jobInstance = $this->getJobInstance($jobInstanceCode);
         $jobExecution = $this->createJobExecutionHandler->createFromJobInstance($jobInstance, $config, $username);
         $options = $this->getOptions($noLog, $emails);
@@ -59,6 +59,8 @@ class PublishJobToQueue implements PublishJobToQueueInterface
         $this->jobExecutionQueue->publish($jobExecutionMessage);
 
         $this->dispatchJobExecutionEvent($jobExecution);
+
+        return $jobExecution;
     }
 
     private function getJobInstance(string $jobInstanceCode): JobInstance

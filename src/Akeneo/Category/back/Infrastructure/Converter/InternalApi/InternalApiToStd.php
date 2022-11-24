@@ -27,14 +27,14 @@ use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
 class InternalApiToStd implements ConverterInterface
 {
     public function __construct(
-        private InternalApiRequirementChecker $checker
+        private InternalApiRequirementChecker $checker,
     ) {
     }
 
     /**
      * @param InternalApi $data
      *
-     * @retrun StandardInternalApi
+     * @return StandardInternalApi
      *
      * @throws ArrayConversionException
      */

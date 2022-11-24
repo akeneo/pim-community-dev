@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToDeleteIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToFetchIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToUpdateIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -57,6 +58,27 @@ SQL;
             ]);
         } catch (Exception $e) {
             throw new UnableToSaveIdentifierGeneratorException(sprintf('Cannot save the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
+        }
+    }
+
+    public function update(IdentifierGenerator $identifierGenerator): void
+    {
+        $query = <<<SQL
+UPDATE pim_catalog_identifier_generator SET target=:target, delimiter=:delimiter, labels=:labels, conditions=:conditions, structure=:structure
+WHERE code=:code;
+SQL;
+
+        try {
+            $this->connection->executeStatement($query, [
+                'code' => $identifierGenerator->code()->asString(),
+                'target' => $identifierGenerator->target()->asString(),
+                'delimiter' => $identifierGenerator->delimiter()?->asString(),
+                'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
+                'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
+                'structure' => json_encode($identifierGenerator->structure()->normalize()),
+            ]);
+        } catch (Exception $e) {
+            throw new UnableToUpdateIdentifierGeneratorException(sprintf('Cannot update the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
         }
     }
 

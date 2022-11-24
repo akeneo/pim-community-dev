@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\RecomputeProductScoresParameters;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -53,7 +54,7 @@ final class RecomputeProductsScores extends Command
 
         $jobInstance = $this->getJobInstance();
         $user = new User(UserInterface::SYSTEM_USER_NAME, null);
-        $this->queueJobLauncher->launch($jobInstance, $user, ['lastProductId' => 0]);
+        $this->queueJobLauncher->launch($jobInstance, $user, [RecomputeProductScoresParameters::LAST_PRODUCT_UUID => '']);
 
         $output->writeln('The job that re-compute products scores has been launched.');
 

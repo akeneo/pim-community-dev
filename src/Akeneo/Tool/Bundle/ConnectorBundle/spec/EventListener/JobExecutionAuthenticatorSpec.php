@@ -38,8 +38,8 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
     }
 
     function it_authenticates_user_with_token(
-        $userProvider,
-        $tokenStorage,
+        UserProviderInterface $userProvider,
+        TokenStorageInterface $tokenStorage,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
@@ -63,7 +63,7 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
     }
 
     function it_does_not_authenticate_user_when_user_is_null(
-        $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
@@ -80,7 +80,7 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
     }
 
     function it_does_authenticates_user_when_no_job_parameters(
-        $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         UserInterface $user
@@ -96,7 +96,7 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
     }
 
     function it_does_not_authenticates_user_when_it_is_not_configured_in_job_parameters(
-        $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
@@ -115,7 +115,7 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
     }
 
     function it_does_not_authenticates_user_when_it_is_not_activated_in_job_parameters(
-        $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
@@ -135,8 +135,8 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
     }
 
     function it_throws_exception_if_username_is_not_found(
-        $userProvider,
-        $tokenStorage,
+        UserProviderInterface $userProvider,
+        TokenStorageInterface $tokenStorage,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         JobParameters $jobParameters,

@@ -9,10 +9,10 @@ use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
-use Akeneo\Category\Domain\Query\GetAttribute;
+use Akeneo\Category\Domain\Query\GetAttributeInMemory;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
@@ -24,7 +24,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 final class ValueUserIntentFactory implements UserIntentFactory
 {
-    public function __construct(private GetAttribute $getAttribute)
+    public function __construct(private GetAttributeInMemory $getAttributeInMemory)
     {
     }
 
@@ -72,7 +72,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
     {
         $compositeKeys = $this->extractCompositeKeys(array_keys($attributes));
 
-        return $this->getAttribute->byIdentifiers($compositeKeys);
+        return $this->getAttributeInMemory->byIdentifiers($compositeKeys);
     }
 
     /**
@@ -86,9 +86,9 @@ final class ValueUserIntentFactory implements UserIntentFactory
     {
         // Get keys, check unicity and rebuild it
         $compositeKeys = array_map(function ($keyWithLocale) {
-            $exploded = explode(ValueCollection::SEPARATOR, $keyWithLocale);
+            $exploded = explode(AbstractValue::SEPARATOR, $keyWithLocale);
             // build the composite key ('code|uuid') and return it
-            return $exploded[0].ValueCollection::SEPARATOR.$exploded[1];
+            return $exploded[0].AbstractValue::SEPARATOR.$exploded[1];
         }, $localeCompositeKeys);
 
         return array_unique($compositeKeys);
@@ -129,7 +129,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
      */
     private function addValueUserIntent(AttributeType $attributeType, array $value): UserIntent
     {
-        $identifiers = explode(ValueCollection::SEPARATOR, $value['attribute_code']);
+        $identifiers = explode(AbstractValue::SEPARATOR, $value['attribute_code']);
         if (count($identifiers) !== 2) {
             throw new \InvalidArgumentException(sprintf('Cannot set value user intent %s : no identifier found', $attributeType));
         }

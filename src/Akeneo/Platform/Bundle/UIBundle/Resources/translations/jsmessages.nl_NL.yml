@@ -257,6 +257,7 @@ pim_common:
   parent: Bovenliggende
   groups: Groepen
   products: Producten
+  product_uuids: Producten
   product_models: Productmodellen
   more: Meer
   public_view: Openbare weergave

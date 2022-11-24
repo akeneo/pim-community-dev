@@ -41,6 +41,7 @@ $rules = [
             'Symfony\Component\Console\Input\ArrayInput',
             'Symfony\Component\Console\Output\BufferedOutput',
             'Symfony\Component\DependencyInjection\ParameterBag\ParameterBag',
+            'Symfony\Component\Yaml\Yaml',
             'Webmozart\Assert\Assert',
         ]
     )->in('Pim\Upgrade\Schema'),

@@ -26,6 +26,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -161,6 +162,8 @@ abstract class IntegrationTestCase extends WebTestCase
             $scopes,
         );
 
+        $this->addAllPermissionsUserGroup('app_shopifi');
+
         /** @var KernelBrowser $client */
         $client = self::getContainer()->get(KernelBrowser::class);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
@@ -188,6 +191,66 @@ abstract class IntegrationTestCase extends WebTestCase
         $client->getCookieJar()->set($cookie);
 
         return $client;
+    }
+
+    private function addAllPermissionsUserGroup(string $group): void
+    {
+        $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
+            group: $group,
+            permissions: [
+                'own' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+    }
+
+    private function callPermissionsSaver(string $service, string $group, array $permissions): void
+    {
+        if (self::getContainer()->has($service)) {
+            self::getContainer()->get($service)->save($group, $permissions);
+        }
     }
 
     protected function assertViolationsListContains(
@@ -444,6 +507,22 @@ abstract class IntegrationTestCase extends WebTestCase
         $category = self::getContainer()->get('pim_catalog.factory.category')->create();
         self::getContainer()->get('pim_catalog.updater.category')->update($category, $data);
         self::getContainer()->get('pim_catalog.saver.category')->save($category);
+    }
+
+    protected function createGroup(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $group = self::getContainer()->get('pim_catalog.factory.group')->create();
+        self::getContainer()->get('pim_catalog.updater.group')->update($group, $data);
+        self::getContainer()->get('pim_catalog.saver.group')->save($group);
+    }
+
+    protected function createGroupType(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $groupType = self::getContainer()->get('pim_catalog.factory.group_type')->create();
+        self::getContainer()->get('pim_catalog.updater.group_type')->update($groupType, $data);
+        self::getContainer()->get('pim_catalog.saver.group_type')->save($groupType);
     }
 
     protected function enableCurrency(string $code): void

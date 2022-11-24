@@ -1,6 +1,6 @@
 import {validateIdentifierGeneratorCode} from '../validateIdentifierGeneratorCode';
 
-describe('IdentifierGeneratorCodeValidator', () => {
+describe('validateIdentifierGeneratorCode', () => {
   it('should not add violation for valid code', () => {
     expect(validateIdentifierGeneratorCode('aValidCode', 'code')).toHaveLength(0);
   });

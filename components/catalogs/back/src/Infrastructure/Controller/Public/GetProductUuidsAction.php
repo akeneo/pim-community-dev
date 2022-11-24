@@ -63,7 +63,7 @@ class GetProductUuidsAction
         } catch (CatalogDisabledException) {
             return new JsonResponse(
                 [
-                    'message' => \sprintf(
+                    'error' => \sprintf(
                         'No products to synchronize. The catalog %s has been disabled on the PIM side.' .
                         ' Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.',
                         $catalog->getId()
@@ -137,7 +137,7 @@ class GetProductUuidsAction
                         'limit' => $limit,
                         'updated_after' => $updatedAfter,
                         'updated_before' => $updatedBefore,
-                    ]),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
                 'first' => [
                     'href' => $this->router->generate('akeneo_catalogs_public_get_product_uuids', [
@@ -145,7 +145,7 @@ class GetProductUuidsAction
                         'limit' => $limit,
                         'updated_after' => $updatedAfter,
                         'updated_before' => $updatedBefore,
-                    ]),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
             ],
             '_embedded' => [
@@ -161,7 +161,7 @@ class GetProductUuidsAction
                     'limit' => $limit,
                     'updated_after' => $updatedAfter,
                     'updated_before' => $updatedBefore,
-                ]),
+                ], RouterInterface::ABSOLUTE_URL),
             ];
         }
 

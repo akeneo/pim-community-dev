@@ -75,7 +75,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->rows->rewind();
     }
@@ -85,11 +85,11 @@ class FlatFileIterator implements FileIteratorInterface
      *
      * @throws InvalidItemException
      */
-    public function current()
+    public function current(): mixed
     {
         $data = $this->rows->current();
 
-        if (!$this->valid() || null === $data || empty($data)) {
+        if (!$this->valid() || empty($data)) {
             $this->rewind();
 
             return null;
@@ -105,7 +105,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->rows->next();
     }
@@ -113,7 +113,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): string|int|bool|null|float
     {
         return $this->rows->key();
     }
@@ -121,7 +121,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->rows->valid();
     }

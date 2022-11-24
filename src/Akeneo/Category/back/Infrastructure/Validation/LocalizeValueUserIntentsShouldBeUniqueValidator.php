@@ -6,7 +6,7 @@ namespace Akeneo\Category\Infrastructure\Validation;
 
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Api\Command\UserIntents\ValueUserIntent;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -17,7 +17,6 @@ use Webmozart\Assert\Assert;
  */
 final class LocalizeValueUserIntentsShouldBeUniqueValidator extends ConstraintValidator
 {
-
     /**
      * @param array<UserIntent> $value
      */
@@ -43,7 +42,7 @@ final class LocalizeValueUserIntentsShouldBeUniqueValidator extends ConstraintVa
         $existingIntents = [];
         foreach ($localizeUserIntents as $localizeIntent) {
             $className = get_class($localizeIntent);
-            $identifier = $localizeIntent->attributeCode() . ValueCollection::SEPARATOR . $localizeIntent->attributeUuid();
+            $identifier = $localizeIntent->attributeCode().AbstractValue::SEPARATOR.$localizeIntent->attributeUuid();
             $intentLocale = $localizeIntent->localeCode() ?? '<all_locales>';
 
             if (\in_array($intentLocale, $existingIntents[$className][$identifier] ?? [])) {

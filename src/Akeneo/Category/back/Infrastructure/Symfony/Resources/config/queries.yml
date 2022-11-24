@@ -3,13 +3,49 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
     arguments:
       - '@database_connection'
+      -
+
+  Akeneo\Category\Application\Query\GetCategoriesInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetCategoryTreesInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreesSql
+    arguments:
+      - '@database_connection'
 
   Akeneo\Category\Application\Query\GetTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\GetAttribute:
-    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory
+  Akeneo\Category\Application\Query\CheckTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\CheckTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateAttributeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetAttributeInMemory:
+    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemoryImpl
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateByCategoryTreeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreeByCategoryTemplateSql
     arguments:
       - '@database_connection'

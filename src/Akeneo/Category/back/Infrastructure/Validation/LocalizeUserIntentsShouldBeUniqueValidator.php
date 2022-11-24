@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Validation;
 
 use Akeneo\Category\Api\Command\UserIntents\LocalizeUserIntent;
-use Akeneo\Category\Api\Command\UserIntents\SetLabel;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -17,11 +16,8 @@ use Webmozart\Assert\Assert;
  */
 final class LocalizeUserIntentsShouldBeUniqueValidator extends ConstraintValidator
 {
-
     /**
      * @param array<UserIntent> $value
-     * @param Constraint $constraint
-     * @return void
      */
     public function validate($value, Constraint $constraint): void
     {
@@ -34,8 +30,6 @@ final class LocalizeUserIntentsShouldBeUniqueValidator extends ConstraintValidat
 
     /**
      * @param UserIntent[] $value
-     * @param Constraint $constraint
-     * @return void
      */
     private function validUniqueConstraint(array $value, Constraint $constraint): void
     {

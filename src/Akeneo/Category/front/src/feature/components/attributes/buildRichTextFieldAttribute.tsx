@@ -1,6 +1,6 @@
-import React, {memo, useEffect} from 'react';
+import React from 'react';
 import {Field, TextAreaInput} from 'akeneo-design-system';
-import {AttributeFieldBuilder, AttributeInputValue, AttributeFieldProps} from './types';
+import {AttributeFieldBuilder, AttributeFieldProps, AttributeInputValue} from './types';
 import {getLabelFromAttribute} from './templateAttributesFactory';
 import styled from 'styled-components';
 import {memoize} from 'lodash/fp';

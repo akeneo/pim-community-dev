@@ -13,23 +13,23 @@ use PhpSpec\ObjectBehavior;
  */
 class TargetSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedThrough('fromString', ['sku']);
     }
 
-    public function it_is_a_target()
+    public function it_is_a_target(): void
     {
         $this->shouldBeAnInstanceOf(Target::class);
     }
 
-    public function it_cannot_be_instantiated_with_an_empty_string()
+    public function it_cannot_be_instantiated_with_an_empty_string(): void
     {
         $this->beConstructedThrough('fromString', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_returns_a_target()
+    public function it_returns_a_target(): void
     {
         $this->asString()->shouldReturn('sku');
     }

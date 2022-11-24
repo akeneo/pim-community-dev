@@ -286,6 +286,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: El redirect_uri és obligatori.
           must_be_url: El redirect_uri no és una url vàlida.
+        scope:
+          too_long: La llista d'abast no ha de contenir més de 1000 caràcters.
   connections: Connexions
   secondary_actions:
     title: Altres accions
@@ -477,6 +479,7 @@ akeneo_connectivity.connection:
       url: URL
       secret: Secret
       enabled: Activada la subscripció a l'esdeveniment
+      is_using_uuid: Utilitzeu l'UUID del producte en lloc de l'identificador del producte?
       test: Test
     error:
       wrong_url: Aquest valor no és una URL valida.
@@ -584,5 +587,8 @@ pim_permissions:
 pim_notification:
   types:
     connected_app_authorizations: Aplicacions autoritzades connectades
+    disabled_catalog: Catàleg d'aplicacions desactivat
   connected_app_authorizations:
     button_label: Obre l'aplicació
+  disabled_catalog:
+    button_label: Configuració del catàleg

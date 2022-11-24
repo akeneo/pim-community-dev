@@ -24,10 +24,19 @@ final class LocaleAndChannelShouldBeConsistentValidator extends ConstraintValida
     ) {
     }
 
+    /**
+     * @param ValueUserIntent[] $valueUserIntents
+     */
     public function validate($valueUserIntents, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, LocaleAndChannelShouldBeConsistent::class);
         Assert::isArray($valueUserIntents);
+        /**
+         * TODO to remove when false negative will be fixed
+         * Call to static method Webmozart\Assert\Assert::allImplementsInterface() with array<Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent> and
+        'Akeneo\\Pim\\Enrichment\\Product\\API\\Command\\UserIntent\\ValueUserIntent' will always evaluate to false.
+         * @phpstan-ignore-next-line
+         */
         Assert::allImplementsInterface($valueUserIntents, ValueUserIntent::class);
 
         $attributes = $this->getAttributes->forCodes(\array_map(

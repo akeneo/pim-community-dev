@@ -10,8 +10,11 @@ namespace Akeneo\Test\Category\Integration\Infrastructure\FileSystem\PreviewGene
 
 use Akeneo\Category\Application\Handler\StoreUploadedFile;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
@@ -39,9 +42,12 @@ class BinaryImageGeneratorIntegration extends TestCase
             AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
             new AttributeCode('banner_image'),
             AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeIsScopable::fromBoolean(true),
             AttributeIsLocalizable::fromBoolean(false),
             LabelCollection::fromArray(['en_US' => 'Banner image']),
-            TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330')
+            TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'),
+            AttributeAdditionalProperties::fromArray([])
         );
         $this->fileInfo = $this->storeAkeneoImage();
     }

@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Category\Application\Applier;
 use Akeneo\Category\Api\Command\UserIntents\SetLabel;
 use Akeneo\Category\Application\Applier\SetLabelApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplier;
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;

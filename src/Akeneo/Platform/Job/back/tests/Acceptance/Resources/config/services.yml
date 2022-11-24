@@ -10,3 +10,12 @@ services:
 
   akeneo_platform.saver.job_instance:
     class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobInstanceSaver
+
+  Akeneo\Platform\Job\Application\LaunchJobInstance\GenerateJobExecutionUrlInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryGenerateJobExecutionUrl
+
+  Akeneo\Platform\Job\Application\LaunchJobInstance\JobFileStorerInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobFileStorer
+
+  akeneo_batch_queue.queue.publish_job_to_queue:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryPublishJobToQueue

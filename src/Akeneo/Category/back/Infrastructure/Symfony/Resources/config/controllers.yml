@@ -49,6 +49,16 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetTemplate'
+            - '@Akeneo\Category\Application\Query\GetAttribute'
+            - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory'
+
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Application\ActivateTemplate'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController:
         public: true
@@ -60,6 +70,17 @@ services:
     Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
         public: true
         arguments:
-            - '@Akeneo\Category\Domain\Query\GetAttribute'
+            - '@Akeneo\Category\Domain\Query\GetAttributeInMemory'
             - '@pim_category.infrastructure.registry.preview_generator'
             - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
+
+    Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
+        public: true
+        arguments:
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@feature_flags'
+            - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
+            - '%pim_api.configuration%'
+        calls:
+            - [ 'setContainer', [ '@service_container' ] ]

@@ -23,11 +23,12 @@ class ExportProductsByNumberIntegration extends AbstractExportTestCase
         $this->createProduct('product_3');
     }
 
-    public function testProductExportByFilteringOnANumber()
+    public function testProductExportByFilteringOnANumber(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_number_integer
-product_1;;1;;;100
+uuid;sku;categories;enabled;family;groups;a_number_integer
+{$product1->getUuid()->toString()};product_1;;1;;;100
 
 CSV;
 
@@ -45,6 +46,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

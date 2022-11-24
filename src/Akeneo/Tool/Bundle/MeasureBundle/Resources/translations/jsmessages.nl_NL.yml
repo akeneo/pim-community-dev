@@ -5,10 +5,6 @@ pim_title:
   akeneo_measurements_settings_any: Metingen
 measurements:
   label_translations: Label vertalingen in taal van de gebruikersinterface
-  helper:
-    title: Welkom bij de maten!
-    text: Hier kunt u uw eigen maatfamilies met hun eenheden creëren of eenheden toevoegen aan de bestaande families van de maten.
-    link: Wil je meer weten? Kijk dan hier!
   search:
     placeholder: Zoek op naam of code.
   family:

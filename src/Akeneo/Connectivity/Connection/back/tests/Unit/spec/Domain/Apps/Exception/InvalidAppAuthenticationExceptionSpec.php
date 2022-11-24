@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Domain\Apps\Exception;
@@ -41,8 +42,10 @@ class InvalidAppAuthenticationExceptionSpec extends ObjectBehavior
         $this->getConstraintViolationList()->shouldReturn($constraintViolationList);
     }
 
-    public function it_initializes_empty_message(): void
-    {
+    public function it_initializes_empty_message(
+        ConstraintViolationListInterface $constraintViolationList
+    ): void {
+        $constraintViolationList->count()->willReturn(0);
         $this->getMessage()->shouldReturn('');
     }
 

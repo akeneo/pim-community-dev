@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Domain\Query\GetAttribute;
+use Akeneo\Category\Domain\Query\GetAttributeInMemory;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\CouldNotGeneratePreviewException;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorInterface;
-use Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +15,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 
 /**
- * Fetches the binary preview of the image
+ * Fetches the binary preview of the image.
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -37,7 +36,7 @@ class ImagePreviewController
     private const ROOT_FLAG = '__root__';
 
     public function __construct(
-        private GetAttribute $getAttribute,
+        private GetAttributeInMemory $getAttribute,
         private PreviewGeneratorInterface $previewGenerator,
         private LoaderInterface $imageLoader,
     ) {
@@ -46,7 +45,7 @@ class ImagePreviewController
     public function __invoke(
         Request $request,
         string $attributeCode,
-        string $type
+        string $type,
     ): Response {
         $data = $request->get('data');
         if (null === $data) {
@@ -73,7 +72,7 @@ class ImagePreviewController
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            self::THUMBNAIL_FILENAME
+            self::THUMBNAIL_FILENAME,
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'image/jpeg');

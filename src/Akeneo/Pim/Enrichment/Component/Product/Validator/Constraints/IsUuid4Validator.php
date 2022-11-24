@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -23,11 +24,12 @@ class IsUuid4Validator extends ConstraintValidator
 
         Assert::isInstanceOf($value, UuidInterface::class);
 
-        /** @var $value UuidInterface */
-        if ($value->getVersion() !== 4) {
+        /** @var UuidInterface $value */
+        $fields = $value->getFields();
+        if (!$fields instanceof FieldsInterface || $fields->getVersion() !== 4) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ uuid }}', $value->toString())
-                ->setParameter('{{ version }}', strval($value->getVersion()))
+                ->setParameter('{{ version }}', $fields instanceof FieldsInterface ? strval($fields->getVersion()): null)
                 ->addViolation();
         }
     }

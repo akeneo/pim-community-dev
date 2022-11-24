@@ -55,7 +55,7 @@ class MetricPresenterSpec extends ObjectBehavior
             ->willReturn('Kilogram');
         $numberFactory->create(['attribute' => 'weight', 'locale' => 'en_US'])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12,000.34');
-        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
+        $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(true);
         $this
             ->present(['amount' => 12000.34, 'unit' => 'KILOGRAM'], [
                 'attribute' => 'weight',

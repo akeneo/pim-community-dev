@@ -46,5 +46,7 @@ class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends Constraint
                 return $unit;
             }
         }
+
+        return [];
     }
 }

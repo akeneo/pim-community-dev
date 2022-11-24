@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -39,11 +39,11 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
             if (!$this->isIdenticalLabel($categoryModel, $localeCode, $label)) {
                 $queries .= $this->buildUpsertQuery($loopIndex);
 
-                $params['label' . $loopIndex] = $label;
-                $params['locale' . $loopIndex] = $localeCode;
+                $params['label'.$loopIndex] = $label;
+                $params['locale'.$loopIndex] = $localeCode;
 
-                $types['label' . $loopIndex] = \PDO::PARAM_STR;
-                $types['locale' . $loopIndex] = \PDO::PARAM_STR;
+                $types['label'.$loopIndex] = \PDO::PARAM_STR;
+                $types['locale'.$loopIndex] = \PDO::PARAM_STR;
 
                 ++$loopIndex;
             }

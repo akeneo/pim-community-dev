@@ -20,3 +20,11 @@ services:
             - '@akeneo_batch.job.job_parameters_validator'
             - '@validator'
             - '@akeneo_platform.saver.job_instance'
+
+    Akeneo\Platform\Job\Application\LaunchJobInstance\LaunchJobInstanceHandler:
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Job\Application\LaunchJobInstance\JobFileStorerInterface'
+            - '@Akeneo\Platform\Job\Application\LaunchJobInstance\GenerateJobExecutionUrlInterface'
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'

@@ -33,7 +33,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
         IsCategoryTreeLinkedToUser $isCategoryTreeLinkedToUser,
-        IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel
+        IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel,
     ) {
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->categoryRepository = $categoryRepository;
@@ -47,10 +47,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
     public function update($category, array $data, array $options = [])
     {
         if (!$category instanceof CategoryInterface) {
-            throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($category),
-                CategoryInterface::class
-            );
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($category), CategoryInterface::class);
         }
 
         foreach ($data as $field => $value) {
@@ -65,7 +62,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
      * Validate the data type of a field.
      *
      * @param string $field
-     * @param mixed  $data
+     * @param mixed $data
      *
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
@@ -79,12 +76,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
 
             foreach ($data as $localeCode => $label) {
                 if (null !== $label && !is_scalar($label)) {
-                    throw InvalidPropertyTypeException::validArrayStructureExpected(
-                        'labels',
-                        'one of the labels is not a scalar',
-                        static::class,
-                        $data
-                    );
+                    throw InvalidPropertyTypeException::validArrayStructureExpected('labels', 'one of the labels is not a scalar', static::class, $data);
                 }
             }
         } elseif (in_array($field, ['code', 'parent'])) {
@@ -97,9 +89,8 @@ class CategoryUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param CategoryInterface $category
-     * @param string            $field
-     * @param mixed             $data
+     * @param string $field
+     * @param mixed $data
      *
      * @throws InvalidPropertyException
      * @throws UnknownPropertyException
@@ -122,8 +113,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param CategoryInterface $category
-     * @param string            $data
+     * @param string $data
      *
      * @throws InvalidPropertyException
      */
@@ -137,27 +127,15 @@ class CategoryUpdater implements ObjectUpdaterInterface
 
         $categoryParent = $this->categoryRepository->findOneByIdentifier($data);
         if (null === $categoryParent) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                'parent',
-                'category code',
-                'The category does not exist',
-                static::class,
-                $data
-            );
+            throw InvalidPropertyException::validEntityCodeExpected('parent', 'category code', 'The category does not exist', static::class, $data);
         }
 
         if (null !== $category->getId() && $category->isRoot()) {
             if (true === $this->isCategoryTreeLinkedToUser->byCategoryTreeId($category->getId())) {
-                throw InvalidPropertyException::expected(
-                    sprintf('You can\'t move a category tree linked to a user.', $data),
-                    static::class
-                );
+                throw InvalidPropertyException::expected("You can't move a category tree linked to a user.", static::class);
             }
             if (true === $this->isCategoryTreeLinkedToChannel->byCategoryTreeId($category->getId())) {
-                throw InvalidPropertyException::expected(
-                    sprintf('You can\'t move a category tree linked to a channel.', $data),
-                    static::class
-                );
+                throw InvalidPropertyException::expected("You can't move a category tree linked to a channel.", static::class);
             }
         }
 

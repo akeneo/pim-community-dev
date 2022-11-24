@@ -1,6 +1,6 @@
 import {validateLabelCollection} from '../validateLabelCollection';
 
-describe('LabelCollectionValidator', () => {
+describe('validateLabelCollection', () => {
   it('should not add violation for valid label collection', () => {
     expect(
       validateLabelCollection(

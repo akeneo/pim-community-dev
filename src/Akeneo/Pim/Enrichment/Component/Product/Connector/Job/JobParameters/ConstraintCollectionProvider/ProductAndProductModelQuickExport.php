@@ -69,6 +69,12 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
+        $constraintFields['with_uuid'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
         $constraintFields['file_locale'] = [
             new ActivatedLocale(['groups' => ['Default', 'FileConfiguration']]),
             new Callback(function ($value, ExecutionContextInterface $context) {

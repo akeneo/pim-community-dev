@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  */
 class LabelCollectionSpec extends ObjectBehavior
 {
-    public function it_throws_an_exception_when_an_array_key_is_not_string()
+    public function it_throws_an_exception_when_an_array_key_is_not_string(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => 'Sugar',
@@ -22,7 +22,7 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_when_an_array_key_is_an_empty_string()
+    public function it_throws_an_exception_when_an_array_key_is_an_empty_string(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => 'Sugar',
@@ -31,7 +31,7 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_when_a_value_is_not_a_string()
+    public function it_throws_an_exception_when_a_value_is_not_a_string(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => 'Sugar',
@@ -40,14 +40,14 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_can_be_instantiated_with_a_stdclass()
+    public function it_can_be_instantiated_with_a_stdclass(): void
     {
         $this->beConstructedThrough('fromNormalized', [new \stdClass()]);
 
         $this->normalize()->shouldBeLike((object) []);
     }
 
-    public function it_normalizes_labels()
+    public function it_normalizes_labels(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => 'Sugar',
@@ -56,14 +56,14 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->normalize()->shouldBe(['en_US' => 'Sugar']);
     }
 
-    public function it_normalizes_empty_label()
+    public function it_normalizes_empty_label(): void
     {
         $this->beConstructedThrough('fromNormalized', [[]]);
 
         $this->normalize()->shouldBeLike((object) []);
     }
 
-    public function it_can_be_merged_with_other_labels()
+    public function it_can_be_merged_with_other_labels(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => 'Sugar',
@@ -78,7 +78,7 @@ class LabelCollectionSpec extends ObjectBehavior
         ]));
     }
 
-    public function it_can_be_merged_with_an_empty_array()
+    public function it_can_be_merged_with_an_empty_array(): void
     {
         $this->beConstructedThrough(
             'fromNormalized',
@@ -96,7 +96,7 @@ class LabelCollectionSpec extends ObjectBehavior
         $newLabels->normalize()->shouldReturn(['en_US' => 'Sugar']);
     }
 
-    public function it_returns_a_label()
+    public function it_returns_a_label(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => 'Sugar',

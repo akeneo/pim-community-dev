@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: Local de l'arxiu
             help: Definiu la configuració regional en què es mostren les etiquetes
+          with_uuid:
+            title: Amb l'UUID del producte
+            help: Exporteu l'UUID del producte i dels productes associats
+          with_uuid_for_models:
+            title: Amb l'UUID del producte
+            help: Exporteu l'UUID del producte associat en lloc del seu identificador
       file_path: Ruta de l'arxiu
       storage_form:
         title: Emmagatzematge
@@ -158,16 +164,35 @@ pim_import_export:
           local: Local
           sftp: SFTP
           none: No s'ha configurat emmagatzematge
-        file_path.label: Ruta de l'arxiu
-        host.label: Host
-        port.label: Port
-        username.label: Iniciar Sessió
-        password.label: Contrasenya
+        file_path:
+          label: Ruta de l'arxiu
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: example.com
+        fingerprint:
+          label: Host fingerprint (optional)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Necessitem una suma de comprovació hash SHA-512 o MD5 amb la notació de dos punts per a l'empremta digital de l'amfitrió.
+        port:
+          label: Port
+          placeholder: 22
+        username:
+          label: Iniciar Sessió
+          placeholder: Enter your login
+        password:
+          label: Contrasenya
+          placeholder: Introduïu la vostra contrasenya
       validation:
+        storage:
+          unavailable_type: Aquest emmagatzematge no està disponible, només hi ha {{ available_types }} disponibles.
         file_path:
           unsupported_extension: Extensió d'arxiu no admesa
+        fingerprint:
+          invalid_encoding: L'empremta digital de l'amfitrió ha de ser un hash de suma de comprovació SHA-512 o MD5 vàlid amb la notació de dos punts.
       connection_checker:
         label: Provar configuració de connexió
+        exception: No es pot establir la connexió, comproveu la vostra configuració.
   batch_status:
     1: Acabat
     2: Començant

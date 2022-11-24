@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Types\Types;
 
 /**
- * Save values from model into pim_catolog_category table:
+ * Save values from model into pim_catalog_category table:
  * The values are inserted if the id is new, they are updated if the id already exists.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -27,7 +28,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
 
     /**
      * @throws Exception
-     * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function execute(Category $categoryModel): void
     {
@@ -51,9 +51,9 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             ;
         SQL;
 
-        $attributeValues = $categoryModel->getAttributes();
+        $attributeValues = $categoryModel->getAttributes()?->normalize();
         if (null !== $attributeValues) {
-            $attributeValues = json_encode($attributeValues->getValues());
+            $attributeValues['attribute_codes'] = $categoryModel->getAttributeCodes();
         }
 
         $this->connection->executeQuery(
@@ -74,8 +74,8 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lvl' => \PDO::PARAM_INT,
                 'lft' => \PDO::PARAM_INT,
                 'rgt' => \PDO::PARAM_INT,
-                'value_collection' => \PDO::PARAM_STR,
-            ]
+                'value_collection' => Types::JSON,
+            ],
         );
 
         // We cannot access newly auto incremented id during the insert query. We have to update root in a second query
@@ -93,7 +93,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             [
                 'category_code' => \PDO::PARAM_STR,
                 'root' => \PDO::PARAM_INT,
-            ]
+            ],
         );
     }
 
@@ -112,21 +112,21 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 ;
             SQL;
 
-        $attributeValues = $categoryModel->getAttributes();
+        $attributeValues = $categoryModel->getAttributes()?->normalize();
         if (null !== $attributeValues) {
-            $attributeValues = json_encode($attributeValues->getValues());
+            $attributeValues['attribute_codes'] = $categoryModel->getAttributeCodes();
         }
 
         $this->connection->executeQuery(
             $query,
             [
                 'category_code' => (string) $categoryModel->getCode(),
-                'value_collection' => $attributeValues
+                'value_collection' => $attributeValues,
             ],
             [
                 'category_code' => \PDO::PARAM_STR,
-                'value_collection' => \PDO::PARAM_STR
-            ]
+                'value_collection' => Types::JSON,
+            ],
         );
     }
 }

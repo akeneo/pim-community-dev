@@ -26,6 +26,11 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
         $this->generators[$identifierGenerator->code()->asString()] = $identifierGenerator;
     }
 
+    public function update(IdentifierGenerator $identifierGenerator): void
+    {
+        $this->generators[$identifierGenerator->code()->asString()] = $identifierGenerator;
+    }
+
     /**
      * {@inheritdoc}
      */

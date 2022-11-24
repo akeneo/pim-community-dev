@@ -30,7 +30,7 @@ class CategoriesSettings extends ReactController {
   }
 
   routeGuardToUnmount() {
-    return /pim_enrich_categorytree_(index|tree|edit)/;
+    return /pim_category_template_edit|pim_enrich_categorytree_(index|tree|edit)/;
   }
 
   renderRoute() {

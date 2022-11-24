@@ -12,7 +12,7 @@ use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditAclFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
+use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type StandardInternalApi from InternalAPIToStd
+ * @phpstan-import-type StandardInternalApi from InternalApiToStd
  */
 class UpdateCategoryController
 {
@@ -52,7 +52,7 @@ class UpdateCategoryController
 
         // Transform request to a user intent list
         $data = $request->toArray();
-        /** @var  StandardInternalApi $formattedData */
+        /** @var StandardInternalApi $formattedData */
         $formattedData = $this->internalApiToStandardConverter->convert($data);
         $filteredData = $this->categoryEditAclFilter->filterCollection($formattedData);
         $userIntents = $this->standardFormatToUserIntents->convert($filteredData);
@@ -60,12 +60,12 @@ class UpdateCategoryController
 
         try {
             $command = UpsertCategoryCommand::create(
-                (string)$category->getCode(),
-                $filteredUserIntents
+                (string) $category->getCode(),
+                $filteredUserIntents,
             );
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $e) {
-            //Todo: Handle violations exceptions when all stubbed services have been replaced by real ones
+            // Todo: Handle violations exceptions when all stubbed services have been replaced by real ones
             // The data structure to be returned to the UI must allow to display the violation messages
             // next to the violating attribute
             // (so at minimum : a mapping from the attribute code to a i18n key for the error message)
@@ -75,19 +75,19 @@ class UpdateCategoryController
                     'errors' => [
                         'attributes' => [
                             [
-                                'path'=> ['attribute','somecode'],
-                                'locale'=> 'fr_FR', // optional
-                                'message'=> [
+                                'path' => ['attribute', 'somecode'],
+                                'locale' => 'fr_FR', // optional
+                                'message' => [
                                     'key' => 'i18n key for some constraint violation message, maybe with some {{a}} arguments',
                                     'args' => [
-                                        "a" => 123
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
+                                        'a' => 123,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
-                Response::HTTP_BAD_REQUEST
+                Response::HTTP_BAD_REQUEST,
             );
         }
         $category = $this->getCategory->byId($id);
