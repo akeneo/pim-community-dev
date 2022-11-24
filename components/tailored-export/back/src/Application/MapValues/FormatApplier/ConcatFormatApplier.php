@@ -31,9 +31,9 @@ class ConcatFormatApplier
     }
 
     /**
-     * @throws \InvalidArgumentException
-     *
      * @return string[]
+     *
+     * @throws \InvalidArgumentException
      */
     private function getFormattedValues(
         ElementCollection $elementCollection,

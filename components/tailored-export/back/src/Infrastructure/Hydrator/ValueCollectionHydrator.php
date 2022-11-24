@@ -38,19 +38,12 @@ class ValueCollectionHydrator
         foreach ($allSources as $source) {
             $value = $this->valueHydrator->hydrate($productOrProductModel, $source);
 
-            switch (true) {
-                case $source instanceof AttributeSource:
-                    $valueCollection->add($value, $source->getCode(), $source->getChannel(), $source->getLocale());
-                    break;
-                case $source instanceof PropertySource:
-                    $valueCollection->add($value, $source->getName(), null, null);
-                    break;
-                case $source instanceof AssociationTypeSource:
-                    $valueCollection->add($value, $source->getCode(), null, null);
-                    break;
-                default:
-                    throw new \InvalidArgumentException('Unsupported source');
-            }
+            match (true) {
+                $source instanceof AttributeSource => $valueCollection->add($value, $source->getCode(), $source->getChannel(), $source->getLocale()),
+                $source instanceof PropertySource => $valueCollection->add($value, $source->getName(), null, null),
+                $source instanceof AssociationTypeSource => $valueCollection->add($value, $source->getCode(), null, null),
+                default => throw new \InvalidArgumentException('Unsupported source'),
+            };
         }
 
         return $valueCollection;

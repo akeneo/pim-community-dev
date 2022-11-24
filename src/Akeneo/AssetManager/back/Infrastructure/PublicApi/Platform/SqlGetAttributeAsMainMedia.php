@@ -55,7 +55,7 @@ SQL;
                     (bool) $result['value_per_channel'],
                     (bool) $result['value_per_locale'],
                 );
-            break;
+                break;
             case MediaLinkAttribute::ATTRIBUTE_TYPE:
                 $additionalProperties = json_decode($result['additional_properties'], true);
                 $this->attributesAsMainMedia[$assetFamilyCode] = new MediaLinkAsMainMedia(
@@ -64,7 +64,7 @@ SQL;
                     $additionalProperties['prefix'] ?? '',
                     $additionalProperties['suffix'] ?? '',
                 );
-            break;
+                break;
             default:
                 throw new \InvalidArgumentException('Unsupported attribute type as main media');
         }
