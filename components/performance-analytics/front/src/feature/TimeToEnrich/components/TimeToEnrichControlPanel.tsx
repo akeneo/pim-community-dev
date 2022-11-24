@@ -8,6 +8,7 @@ import {
   CheckIcon,
   CloseIcon,
   pimTheme,
+  Helper,
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -23,6 +24,7 @@ import {
   SelectPeriodInput,
   SelectComparisonInput,
   SelectMetricInput,
+  Metric,
 } from '../../Common';
 import {TimeToEnrichFilters} from '../models';
 
@@ -42,6 +44,7 @@ const Container = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
 
 const ControlPanelSectionTitle = styled(SectionTitle)`
   border-bottom-color: ${getColor('purple', 100)};
+  margin-bottom: 10px;
 `;
 
 const ControlPanelTitle = styled(SectionTitle.Title)`
@@ -69,6 +72,10 @@ const InlineLabel = styled.div`
 const InlineField = styled.div`
   overflow: hidden;
   flex: 1;
+`;
+
+const HelperHighlight = styled.span`
+  font-weight: bold;
 `;
 
 type Props = {
@@ -123,6 +130,15 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
           title={translate('akeneo.performance_analytics.control_panel.close_control_panel')}
         />
       </ControlPanelSectionTitle>
+
+      {controlPanelFilters.metric === Metric.TIME_TO_ENRICH && (
+        <Helper level="info">
+          <HelperHighlight>
+            {translate('akeneo.performance_analytics.control_panel.select_input.metrics.time_to_enrich')}{' '}
+          </HelperHighlight>
+          {translate('akeneo.performance_analytics.control_panel.time_to_enrich_helper')}
+        </Helper>
+      )}
 
       <Collapse
         collapseButtonLabel={isCompareFilterCollapsed ? translate('pim_common.close') : translate('pim_common.open')}

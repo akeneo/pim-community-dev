@@ -16,9 +16,10 @@ akeneo.performance_analytics:
         grouped_by: grouped by
         compare_title: Compared to
         filtered_on_title: Filtered by
+        time_to_enrich_helper: is the measure of the time spent from the creation of the product in the PIM to 100% completeness.
         select_input:
             metrics:
-                time_to_enrich: Time to enrich
+                time_to_enrich: Time-to-enrich
             aggregations:
                 families: Families
                 categories: Categories
