@@ -40,7 +40,7 @@ use Doctrine\DBAL\Driver\Exception;
 class CategoryTestCase extends TestCase
 {
     /**
-     * @param array<string, string>|null $labels
+     * @param array<string, string|null>|null $labels
      *
      * @throws Exception
      * @throws \Doctrine\DBAL\Exception
