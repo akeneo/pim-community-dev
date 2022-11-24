@@ -5,3 +5,8 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.platform.search_records'
 
+    akeneo.tailored_export.controller.get_reference_entity_attributes_actions:
+        class: 'Akeneo\Platform\TailoredExport\Infrastructure\Controller\GetReferenceEntityAttributesAction'
+        public: true
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_attributes_public_api'

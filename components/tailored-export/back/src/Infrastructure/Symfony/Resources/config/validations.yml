@@ -20,6 +20,7 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QualityScore\QualityScoreSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint: ~

@@ -17,16 +17,22 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOper
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryRecordRepository;
 use PHPUnit\Framework\Assert;
 
 final class HandleReferenceEntityValueTest extends AttributeTestCase
 {
+    public function setUp(): void
+    {
+        $this->loadRecords();
+    }
+
     /**
      * @dataProvider provider
      */
@@ -37,8 +43,6 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
         array $expected
     ): void {
         $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
-        $this->loadRecords();
-
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
@@ -61,6 +65,18 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
                 'selection' => new ReferenceEntityLabelSelection('en_US', 'designer'),
                 'value' => new ReferenceEntityValue('starck'),
                 'expected' => [self::TARGET_NAME => 'Starck'],
+            ],
+            'it selects the record "description" text attribute' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityTextAttributeSelection('designer', 'description', 'ecommerce', 'de_DE'),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => 'Bezeichnung'],
+            ],
+            'it selects the record "name" text attribute' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityTextAttributeSelection('designer', 'name', null, null),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => 'Nom'],
             ],
             'it fallbacks on the record code when the label is not found' => [
                 'operations' => [],
@@ -109,8 +125,13 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
 
     private function loadRecords(): void
     {
-        /** @var InMemoryFindRecordLabels $recordLabelsRepository */
-        $recordLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
-        $recordLabelsRepository->addRecordLabel('designer', 'starck', 'en_US', 'Starck');
+        /** @var InMemoryRecordRepository $recordRepository */
+        $recordRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
+        $recordRepository->addRecordLabel('designer', 'starck', 'en_US', 'Starck');
+
+        /** @var InMemoryRecordRepository $recordRepository */
+        $recordRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface');
+        $recordRepository->addAttributeValue('designer', 'starck', 'description', 'Bezeichnung', 'ecommerce', 'de_DE');
+        $recordRepository->addAttributeValue('designer', 'starck', 'name', 'Nom');
     }
 }
