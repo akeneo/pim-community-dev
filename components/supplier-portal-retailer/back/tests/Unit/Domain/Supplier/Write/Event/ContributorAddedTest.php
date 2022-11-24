@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Supplier\Write\Event;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorAddedTest extends TestCase
@@ -17,6 +18,7 @@ final class ContributorAddedTest extends TestCase
             Identifier::fromString('5781bb4b-a3c6-4224-b6b3-eccd73f669b1'),
             'foo@foo.foo',
             'los_pollos_hermanos',
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
         static::assertSame(

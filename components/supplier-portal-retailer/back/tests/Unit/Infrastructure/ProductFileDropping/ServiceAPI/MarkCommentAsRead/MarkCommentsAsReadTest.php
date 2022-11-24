@@ -10,6 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\Pr
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\MarkCommentsAsRead\Exception\ProductFileDoesNotExist as ProductFileDoesNotExistServiceApi;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\MarkCommentsAsRead\MarkCommentsAsRead;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\MarkCommentsAsRead\MarkCommentsAsReadCommand;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class MarkCommentsAsReadTest extends TestCase
@@ -20,18 +21,19 @@ final class MarkCommentsAsReadTest extends TestCase
         $commandHandler = $this->createMock(MarkCommentsAsReadBySupplierHandler::class);
         $serviceAPI = new MarkCommentsAsRead($commandHandler);
 
+        $lastReadAt = (new FrozenClock('2022-10-20 02:38:45'))->now();
         $commandHandler
             ->expects($this->once())
             ->method('__invoke')
             ->with(new MarkCommentsAsReadBySupplier(
                 'e77c4413-a6d5-49e6-a102-8042cf5bd439',
-                new \DateTimeImmutable('2022-10-20 02:38:45'),
+                $lastReadAt,
             ));
 
         ($serviceAPI)(
             new MarkCommentsAsReadCommand(
                 'e77c4413-a6d5-49e6-a102-8042cf5bd439',
-                new \DateTimeImmutable('2022-10-20 02:38:45'),
+                $lastReadAt,
             )
         );
     }
@@ -50,7 +52,7 @@ final class MarkCommentsAsReadTest extends TestCase
         try {
             ($serviceAPI)(new MarkCommentsAsReadCommand(
                 'e77c4413-a6d5-49e6-a102-8042cf5bd439',
-                new \DateTimeImmutable('2022-10-20 02:38:45'),
+                (new FrozenClock('2022-09-07 08:54:38'))->now(),
             ));
         } catch (\Exception $e) {
             $this->assertInstanceOf(ProductFileDoesNotExistServiceApi::class, $e);

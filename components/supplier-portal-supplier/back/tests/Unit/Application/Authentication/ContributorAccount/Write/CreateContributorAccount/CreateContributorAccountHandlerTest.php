@@ -11,6 +11,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Writ
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 class CreateContributorAccountHandlerTest extends TestCase
@@ -22,7 +23,10 @@ class CreateContributorAccountHandlerTest extends TestCase
         $repository = new InMemoryRepository();
         $sut = new CreateContributorAccountHandler($repository, $eventDispatcherStub);
 
-        ($sut)(new CreateContributorAccount('contributor@example.com'));
+        ($sut)(new CreateContributorAccount(
+            'contributor@example.com',
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
+        ));
 
         $createdContributorAccount = $repository->findByEmail(Email::fromString('contributor@example.com'));
         $this->assertInstanceOf(ContributorAccount::class, $createdContributorAccount);

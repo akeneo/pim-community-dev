@@ -12,6 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\Ma
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFile;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFileCommand;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\InvalidComment;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class CommentProductFileTest extends TestCase
@@ -115,7 +116,7 @@ final class CommentProductFileTest extends TestCase
             'e77c4413-a6d5-49e6-a102-8042cf5bd439',
             'jimmy@megasupplier.com',
             'Here are your products',
-            new \DateTimeImmutable(),
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
     }
 }

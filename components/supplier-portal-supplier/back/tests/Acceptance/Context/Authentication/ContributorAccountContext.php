@@ -47,7 +47,10 @@ final class ContributorAccountContext implements Context
      */
     public function thereIsAContributorAccount(string $email): void
     {
-        $this->contributorAccountRepository->save(ContributorAccount::fromEmail($email));
+        $this->contributorAccountRepository->save(ContributorAccount::fromEmail(
+            $email,
+            new \DateTimeImmutable(),
+        ));
     }
 
     /**

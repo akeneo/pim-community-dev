@@ -2,6 +2,7 @@
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\ContributorAccountCreated;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
@@ -23,7 +24,10 @@ class SendWelcomeEmailOnContributorAccountCreatedTest extends TestCase
     /** @test */
     public function itCallsTheSendWelcomeEmailService(): void
     {
-        $contributorAccount = ContributorAccount::fromEmail('jeanjacques@example.com');
+        $contributorAccount = ContributorAccount::fromEmail(
+            'jeanjacques@example.com',
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
+        );
         $event = new ContributorAccountCreated($contributorAccount);
 
         $sendWelcomeEmailSpy = $this->createMock(SendWelcomeEmail::class);

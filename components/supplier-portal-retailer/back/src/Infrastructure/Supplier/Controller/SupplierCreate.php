@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier\CreateSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier\CreateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\SystemClock;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,7 @@ final class SupplierCreate
                 $supplierCode,
                 $supplierLabel,
                 [],
+                (new SystemClock())->now(),
             ));
         } catch (SupplierAlreadyExistsException) {
             return new JsonResponse(null, Response::HTTP_CONFLICT);

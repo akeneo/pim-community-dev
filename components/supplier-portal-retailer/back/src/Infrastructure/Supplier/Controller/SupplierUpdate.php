@@ -9,6 +9,7 @@ use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\Upd
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\SystemClock;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +37,12 @@ final class SupplierUpdate
 
         try {
             ($this->updateSupplierHandler)(
-                new UpdateSupplier($identifier, $requestContent['label'], $availableContributorEmails)
+                new UpdateSupplier(
+                    $identifier,
+                    $requestContent['label'],
+                    $availableContributorEmails,
+                    (new SystemClock())->now(),
+                )
             );
         } catch (InvalidData $e) {
             $errors = [];

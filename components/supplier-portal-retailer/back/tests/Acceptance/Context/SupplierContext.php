@@ -15,6 +15,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContri
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\SystemClock;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -75,7 +76,12 @@ final class SupplierContext implements Context
     public function iCreateASupplierWithACodeAndALabel(string $code, ?string $label = null): void
     {
         try {
-            ($this->createSupplierHandler)(new CreateSupplier($code, $label ?: $code, []));
+            ($this->createSupplierHandler)(new CreateSupplier(
+                $code,
+                $label ?: $code,
+                [],
+                (new SystemClock())->now(),
+            ));
         } catch (SupplierAlreadyExistsException $e) {
             $this->lastException = $e;
         }
@@ -112,7 +118,12 @@ final class SupplierContext implements Context
     public function iUpdateTheSupplierLabelWith(string $code, string $label): void
     {
         $supplier = $this->supplierRepository->findByCode($code);
-        ($this->updateSupplierHandler)(new UpdateSupplier($supplier->identifier(), $label, $supplier->contributors()));
+        ($this->updateSupplierHandler)(new UpdateSupplier(
+            $supplier->identifier(),
+            $label,
+            $supplier->contributors(),
+            (new SystemClock())->now(),
+        ));
     }
 
     /**
@@ -128,6 +139,7 @@ final class SupplierContext implements Context
                     $supplier->identifier(),
                     str_repeat('a', 201),
                     $supplier->contributors(),
+                    (new SystemClock())->now(),
                 )
             );
         } catch (InvalidData $e) {
@@ -148,6 +160,7 @@ final class SupplierContext implements Context
                     $supplier->identifier(),
                     '',
                     $supplier->contributors(),
+                    (new SystemClock())->now(),
                 )
             );
         } catch (InvalidData $e) {
@@ -169,6 +182,7 @@ final class SupplierContext implements Context
                     $supplier->identifier(),
                     $supplier->label(),
                     [$longEmail],
+                    (new SystemClock())->now(),
                 )
             );
         } catch (InvalidData $e) {
@@ -188,6 +202,7 @@ final class SupplierContext implements Context
                     $supplier->identifier(),
                     $supplier->label(),
                     '' !== $contributors ? explode(';', $contributors) : [],
+                    (new SystemClock())->now(),
                 )
             );
         } catch (InvalidData $e) {

@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\ProductFileImport\Writ
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 class ProductFileImportTest extends TestCase
@@ -36,11 +37,11 @@ class ProductFileImportTest extends TestCase
         $this->assertNull($productFileImport->finishedAt());
         $this->assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFileImport->fileImportStatus());
 
-        $completedAt = new \DateTimeImmutable();
+        $completedAt = (new FrozenClock('2022-09-07 08:54:38'))->now();
         $productFileImport->completedAt($completedAt);
 
         $this->assertSame(ProductFileImportStatus::COMPLETED->value, $productFileImport->fileImportStatus());
-        $this->assertSame($completedAt->format('Y-m-d H:i:s'), $productFileImport->finishedAt());
+        $this->assertSame('2022-09-07 08:54:38', $productFileImport->finishedAt());
     }
 
     /** @test */
@@ -54,11 +55,11 @@ class ProductFileImportTest extends TestCase
         $this->assertNull($productFileImport->finishedAt());
         $this->assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFileImport->fileImportStatus());
 
-        $failedAt = new \DateTimeImmutable();
+        $failedAt = (new FrozenClock('2022-09-07 08:54:38'))->now();
         $productFileImport->failedAt($failedAt);
 
         $this->assertSame(ProductFileImportStatus::FAILED->value, $productFileImport->fileImportStatus());
-        $this->assertSame($failedAt->format('Y-m-d H:i:s'), $productFileImport->finishedAt());
+        $this->assertSame('2022-09-07 08:54:38', $productFileImport->finishedAt());
     }
 
     /** @test */
@@ -66,19 +67,18 @@ class ProductFileImportTest extends TestCase
     {
         $productFileIdentifier = '44ce8069-8da1-4986-872f-311737f46f02';
         $jobExecutionId = 666;
-        $importStatus = ProductFileImportStatus::IN_PROGRESS->value;
-        $finishedAt = new \DateTimeImmutable();
+        $importStatus = ProductFileImportStatus::COMPLETED->value;
 
         $productFileImport = ProductFileImport::hydrate(
             $productFileIdentifier,
             $jobExecutionId,
             $importStatus,
-            $finishedAt,
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
         $this->assertSame($productFileIdentifier, $productFileImport->productFileIdentifier());
         $this->assertSame($jobExecutionId, $productFileImport->importExecutionId());
-        $this->assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFileImport->fileImportStatus());
-        $this->assertSame($finishedAt->format('Y-m-d H:i:s'), $productFileImport->finishedAt());
+        $this->assertSame(ProductFileImportStatus::COMPLETED->value, $productFileImport->fileImportStatus());
+        $this->assertSame('2022-09-07 08:54:38', $productFileImport->finishedAt());
     }
 }

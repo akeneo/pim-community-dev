@@ -10,6 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\SystemClock;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -51,6 +52,7 @@ final class CreateSupplierHandlerTest extends TestCase
             'supplier_code',
             'Supplier label',
             ['contributor1@example.com', 'contributor2@example.com'],
+            (new SystemClock())->now(),
         ));
 
         $supplier = $supplierRepository->findByCode('supplier_code');
@@ -80,6 +82,7 @@ final class CreateSupplierHandlerTest extends TestCase
             'supplier_code',
             'Supplier label',
             ['contributor1@example.com', 'contributor2@example.com'],
+            (new SystemClock())->now(),
         ));
 
         static::assertTrue($logger->hasInfo([
@@ -119,6 +122,7 @@ final class CreateSupplierHandlerTest extends TestCase
             'code',
             'label',
             [],
+            (new SystemClock())->now(),
         ));
     }
 }

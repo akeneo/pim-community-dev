@@ -17,7 +17,10 @@ class CreateContributorAccountHandler
 
     public function __invoke(CreateContributorAccount $command): void
     {
-        $contributorAccount = ContributorAccount::fromEmail($command->contributorEmail);
+        $contributorAccount = ContributorAccount::fromEmail(
+            $command->contributorEmail,
+            $command->createdAt,
+        );
 
         $this->contributorAccountRepository->save($contributorAccount);
 

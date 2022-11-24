@@ -11,6 +11,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Writ
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class ResetPasswordHandlerTest extends TestCase
@@ -35,7 +36,10 @@ final class ResetPasswordHandlerTest extends TestCase
         $oldPassword = $contributorAccount->getPassword();
 
         $sut = new ResetPasswordHandler($contributorAccountRepository, $eventDispatcherStub);
-        ($sut)(new ResetPassword($contributorEmail));
+        ($sut)(new ResetPassword(
+            $contributorEmail,
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
+        ));
 
         $newContributorAccount = $contributorAccountRepository->findByEmail(Email::fromString($contributorEmail));
 
@@ -56,7 +60,10 @@ final class ResetPasswordHandlerTest extends TestCase
 
         $contributorAccountRepository->expects(self::never())->method('save')->withAnyParameters();
 
-        ($sut)(new ResetPassword('test@example.com'));
+        ($sut)(new ResetPassword(
+            'test@example.com',
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
+        ));
 
         static::assertCount(0, $dispatchedEvents);
     }

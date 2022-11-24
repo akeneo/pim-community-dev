@@ -12,6 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierDoesN
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -24,11 +25,13 @@ final class UpdateSupplierHandlerTest extends TestCase
     public function itUpdatesASupplierWithoutAnyError(): void
     {
         $identifier = Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
+        $updatedAt = (new FrozenClock('2022-09-07 08:54:38'))->now();
 
         $command = new UpdateSupplier(
             (string) $identifier,
             'Updated label',
             ['contributor1@example.com', 'contributor2@example.com'],
+            $updatedAt,
         );
 
         $validatorSpy = $this->getValidatorSpyWithNoError($command);
@@ -48,8 +51,22 @@ final class UpdateSupplierHandlerTest extends TestCase
             ->expects($this->exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [new ContributorAdded($identifier, 'contributor1@example.com', 'code')],
-                [new ContributorAdded($identifier, 'contributor2@example.com', 'code')],
+                [
+                    new ContributorAdded(
+                        $identifier,
+                        'contributor1@example.com',
+                        'code',
+                        $updatedAt,
+                    ),
+                ],
+                [
+                    new ContributorAdded(
+                        $identifier,
+                        'contributor2@example.com',
+                        'code',
+                        $updatedAt,
+                    ),
+                ],
             );
 
         $handler = new UpdateSupplierHandler(
@@ -77,6 +94,7 @@ final class UpdateSupplierHandlerTest extends TestCase
             (string) $identifier,
             str_repeat('a', 201),
             ['contributor1@example.com', 'invalidEmail', 'contributor2@example.com'],
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
         $violationsSpy = $this->createMock(ConstraintViolationList::class);
@@ -106,6 +124,7 @@ final class UpdateSupplierHandlerTest extends TestCase
             (string) $identifier,
             'Updated label',
             ['contributor1@example.com', 'contributor2@example.com'],
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
         );
 
         $this->expectExceptionObject(new SupplierDoesNotExist());

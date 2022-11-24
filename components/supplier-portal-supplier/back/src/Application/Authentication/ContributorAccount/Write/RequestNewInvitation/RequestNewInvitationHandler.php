@@ -27,7 +27,7 @@ final class RequestNewInvitationHandler
             throw new ContributorAccountDoesNotExist();
         }
 
-        $contributorAccount->renewAccessToken();
+        $contributorAccount->renewAccessTokenAt($requestNewInvitation->requestedAt);
 
         $this->contributorAccountRepository->save($contributorAccount);
 

@@ -17,20 +17,20 @@ class ContributorAccount
         private ?AccessToken $accessToken,
         private ?\DateTimeInterface $accessTokenCreatedAt,
         private ?\DateTimeInterface $lastLoggedAt,
-        //Consent to Akeneo Privacy Policy / terms & conditions
+        // Consent to Akeneo Privacy Policy / terms & conditions
         private bool $consent,
     ) {
     }
 
-    public static function fromEmail(string $email): self
+    public static function fromEmail(string $email, \DateTimeImmutable $createdAt): self
     {
         return new self(
             Identifier::generate(),
             Email::fromString($email),
-            new \DateTimeImmutable(),
+            $createdAt,
             null,
             AccessToken::generate(),
-            new \DateTimeImmutable(),
+            $createdAt,
             null,
             false,
         );
@@ -102,17 +102,17 @@ class ContributorAccount
         return null === $this->password ? null : (string) $this->password;
     }
 
-    public function resetPassword(): void
+    public function resetPasswordAt(\DateTimeImmutable $resetAt): void
     {
         $this->password = null;
         $this->accessToken = AccessToken::generate();
-        $this->accessTokenCreatedAt = new \DateTimeImmutable();
+        $this->accessTokenCreatedAt = $resetAt;
     }
 
-    public function renewAccessToken(): void
+    public function renewAccessTokenAt(\DateTimeImmutable $renewedAt): void
     {
         $this->accessToken = AccessToken::generate();
-        $this->accessTokenCreatedAt = new \DateTimeImmutable();
+        $this->accessTokenCreatedAt = $renewedAt;
     }
 
     public function hasConsent(): bool

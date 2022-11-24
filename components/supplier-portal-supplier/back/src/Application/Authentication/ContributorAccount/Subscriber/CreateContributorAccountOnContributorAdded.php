@@ -22,6 +22,9 @@ class CreateContributorAccountOnContributorAdded implements EventSubscriberInter
 
     public function contributorAdded(ContributorAdded $contributorAdded): void
     {
-        ($this->createContributorAccountHandler)(new CreateContributorAccount($contributorAdded->contributorEmail()));
+        ($this->createContributorAccountHandler)(new CreateContributorAccount(
+            $contributorAdded->contributorEmail(),
+            $contributorAdded->createdAt(),
+        ));
     }
 }

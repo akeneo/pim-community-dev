@@ -10,6 +10,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Writ
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
+use Akeneo\SupplierPortal\Supplier\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -22,7 +23,10 @@ class DeleteContributorAccountHandlerTest extends TestCase
         $repository = new InMemoryRepository();
         $sut = new DeleteContributorAccountHandler($repository, $eventDispatcherStub, new NullLogger());
 
-        $repository->save(WriteContributorAccount::fromEmail('contributor@example.com'));
+        $repository->save(WriteContributorAccount::fromEmail(
+            'contributor@example.com',
+            (new FrozenClock('2022-09-07 08:54:38'))->now(),
+        ));
 
         $this->assertInstanceOf(WriteContributorAccount::class, $repository->findByEmail(Email::fromString('contributor@example.com')));
 

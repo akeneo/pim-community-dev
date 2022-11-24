@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping\Write\CommentProductFile;
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFile;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 final class CommentProductFileTest extends TestCase
@@ -15,7 +16,7 @@ final class CommentProductFileTest extends TestCase
         $commentProductFileReflectionClass = new \ReflectionClass(CommentProductFile::class);
         $properties = $commentProductFileReflectionClass->getProperties();
 
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = (new FrozenClock('2022-09-07 08:54:38'))->now();
         $sut = new CommentProductFile(
             '9c89942b-4be9-463b-90d8-69c9f000500c',
             'julia@roberts.com',

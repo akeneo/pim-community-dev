@@ -4,7 +4,7 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 
 class CreateContributorAccount
 {
-    public function __construct(public string $contributorEmail)
+    public function __construct(public string $contributorEmail, public \DateTimeImmutable $createdAt)
     {
     }
 }
