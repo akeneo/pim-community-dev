@@ -44,6 +44,7 @@ class GetTemplateController
 
         $attributeCollection = $this->getAttribute->byTemplateUuid(TemplateUuid::fromString($templateUuid));
         $template->setAttributeCollection($attributeCollection);
+
         return new JsonResponse($template->normalize(), Response::HTTP_OK);
     }
 

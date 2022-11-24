@@ -52,11 +52,11 @@ final class ListProductsByUuidQueryHandler
                 $query->searchChannelCode
             );
         } catch (
-        UnsupportedFilterException
-        | PropertyException
-        | InvalidOperatorException
-        | ObjectNotFoundException
-        $e
+            UnsupportedFilterException
+            | PropertyException
+            | InvalidOperatorException
+            | ObjectNotFoundException
+            $e
         ) {
             throw new InvalidQueryException($e->getMessage(), $e->getCode(), $e);
         }

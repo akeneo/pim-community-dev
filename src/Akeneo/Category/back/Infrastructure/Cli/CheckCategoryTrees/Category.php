@@ -33,12 +33,12 @@ class Category
         $this->id = $dbModel['id'];
         $this->code = $dbModel['code'];
 
-        $this->parentId = $dbModel['parent_id'] === null ? null : (int)$dbModel['parent_id'];
-        $this->rootId = $dbModel['root'] === null ? null : (int)$dbModel['root'];
+        $this->parentId = $dbModel['parent_id'] === null ? null : (int) $dbModel['parent_id'];
+        $this->rootId = $dbModel['root'] === null ? null : (int) $dbModel['root'];
 
-        $this->lvl = (int)$dbModel['lvl'];
-        $this->lft = (int)$dbModel['lft'];
-        $this->rgt = (int)$dbModel['rgt'];
+        $this->lvl = (int) $dbModel['lvl'];
+        $this->lft = (int) $dbModel['lft'];
+        $this->rgt = (int) $dbModel['rgt'];
 
         $this->isLinked = false;
         $this->parent = null;
@@ -188,25 +188,25 @@ class Category
                 sprintf(
                     'Children count mismatch (has:%s, expected:%s)',
                     count($this->children),
-                    count($category->getChildren())
-                )
+                    count($category->getChildren()),
+                ),
             );
         }
 
-        for ($i = 0; $i < count($this->children); $i++) {
+        for ($i = 0; $i < count($this->children); ++$i) {
             if ($category->getChildAt($i)) {
                 $childrenDiffErrors = $this->children[$i]->diff($category->getChildAt($i));
 
                 $childrenDiffErrorsWithContext = array_map(
                     function ($childDiff) use ($i) {
-                        return "Child at index {$i}: ${childDiff}";
+                        return "Child at index $i: $childDiff";
                     },
-                    $childrenDiffErrors
+                    $childrenDiffErrors,
                 );
 
                 $diffs = array_merge(
                     $diffs,
-                    $childrenDiffErrorsWithContext
+                    $childrenDiffErrorsWithContext,
                 );
             }
         }
@@ -222,10 +222,11 @@ class Category
             foreach ($this->children as $child) {
                 $rows = array_merge(
                     $rows,
-                    $child->dumpNodes($level + 1)
+                    $child->dumpNodes($level + 1),
                 );
             }
         }
+
         return $rows;
     }
 
@@ -239,7 +240,7 @@ class Category
                 'rgt' => $this->rgt,
             ],
             [
-                'id' => $this->id
+                'id' => $this->id,
             ],
         );
 

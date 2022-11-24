@@ -19,19 +19,17 @@ class CategoryController
 {
     public function __construct(
         protected CategoryRepositoryInterface $repository,
-        protected CategoryExtension           $twigExtension,
-        protected NormalizerInterface         $normalizer,
-        protected CollectionFilterInterface   $collectionFilter
+        protected CategoryExtension $twigExtension,
+        protected NormalizerInterface $normalizer,
+        protected CollectionFilterInterface $collectionFilter,
     ) {
     }
 
     /**
-     * List children categories
+     * List children categories.
      *
      * @param Request $request The request object
      * @param int $identifier The parent category identifier
-     *
-     * @return JsonResponse
      */
     public function listSelectedChildrenAction(Request $request, $identifier): JsonResponse
     {
@@ -45,12 +43,12 @@ class CategoryController
         if (0 !== $selectedCategories->count()) {
             $tree = $this->twigExtension->listCategoriesResponse(
                 $this->repository->getFilledTree($parent, $selectedCategories),
-                $selectedCategories
+                $selectedCategories,
             );
         } else {
             $tree = $this->twigExtension->listCategoriesResponse(
                 $this->repository->getFilledTree($parent, new ArrayCollection([$parent])),
-                new ArrayCollection()
+                new ArrayCollection(),
             );
         }
 
@@ -63,22 +61,20 @@ class CategoryController
     }
 
     /**
-     * List root categories
-     *
-     * @return JsonResponse
+     * List root categories.
      */
     public function listAction(): JsonResponse
     {
         $categories = $this->repository->findBy(
             [
                 'parent' => null,
-            ]
+            ],
         );
 
         $categories = $this->collectionFilter->filterCollection($categories, 'pim.internal_api.product_category.view');
 
         return new JsonResponse(
-            $this->normalizer->normalize($categories, 'internal_api')
+            $this->normalizer->normalize($categories, 'internal_api'),
         );
     }
 

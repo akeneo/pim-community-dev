@@ -13,7 +13,7 @@
         <tbody>
             <% _.each(versions, function(version) { %>
                 <tr data-version="<%- version.version %>" data-version-id="<%- version.id %>" class="AknGrid-bodyRow entity-version <%- expandedVersions.find(item => item == version.version) ? 'AknGrid-bodyRow--expanded' : '' %>">
-                    <td class="AknGrid-bodyCell">
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--clickable">
                         <div class="version-expander AknGrid-expand <%- expandedVersions.find(item => item == version.version) ? 'AknGrid-expand--expanded' : '' %>"></div>
                     </td>
                     <td class="AknGrid-bodyCell version" data-column="version"><span class="AknButton AknButton--grey AknButton--round"><%- version.version %></span></td>

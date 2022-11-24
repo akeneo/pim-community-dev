@@ -64,7 +64,7 @@ class GetCategorySql implements GetCategoryInterface
         $result = $this->connection->executeQuery(
             $sqlQuery,
             $condition['params'],
-            $condition['types']
+            $condition['types'],
         )->fetchAssociative();
 
         if (!$result) {

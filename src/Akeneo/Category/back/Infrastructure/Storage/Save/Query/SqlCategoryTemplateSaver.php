@@ -45,7 +45,7 @@ class SqlCategoryTemplateSaver implements CategoryTemplateSaver
                 'uuid' => \PDO::PARAM_STR,
                 'code' => \PDO::PARAM_STR,
                 'labels' => Types::JSON,
-            ]
+            ],
         );
     }
 

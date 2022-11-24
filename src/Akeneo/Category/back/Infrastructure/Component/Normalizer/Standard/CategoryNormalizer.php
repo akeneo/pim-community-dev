@@ -20,9 +20,6 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
 
     private DateTimeNormalizer $dateTimeNormalizer;
 
-    /**
-     * @param TranslationNormalizer $translationNormalizer
-     */
     public function __construct(TranslationNormalizer $translationNormalizer, DateTimeNormalizer $dateTimeNormalizer)
     {
         $this->translationNormalizer = $translationNormalizer;

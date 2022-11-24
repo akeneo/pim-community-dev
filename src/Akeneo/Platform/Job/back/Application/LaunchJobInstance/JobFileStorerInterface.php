@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Platform\Job\Domain;
+namespace Akeneo\Platform\Job\Application\LaunchJobInstance;
 
 interface JobFileStorerInterface
 {

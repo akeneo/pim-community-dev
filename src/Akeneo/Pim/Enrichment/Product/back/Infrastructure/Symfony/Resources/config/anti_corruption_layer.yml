@@ -3,3 +3,4 @@ services:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLGetAttributeTypes
         arguments:
             - '@pim_catalog.repository.attribute'
+    

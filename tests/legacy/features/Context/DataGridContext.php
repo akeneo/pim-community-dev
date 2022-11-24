@@ -1264,8 +1264,8 @@ class DataGridContext extends PimContext implements PageObjectAware
         );
 
         if (
-                ('' !== $not && in_array($viewLabel, $availableViews)) ||
-                ('' === $not && !in_array($viewLabel, $availableViews))
+            ('' !== $not && in_array($viewLabel, $availableViews)) ||
+            ('' === $not && !in_array($viewLabel, $availableViews))
         ) {
             throw $this->createExpectationException(
                 sprintf(

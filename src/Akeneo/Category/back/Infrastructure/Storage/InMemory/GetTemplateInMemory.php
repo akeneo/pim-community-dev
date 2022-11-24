@@ -48,18 +48,18 @@ class GetTemplateInMemory implements GetTemplate
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'Description']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
                     new AttributeCode('banner_image'),
                     AttributeOrder::fromInteger(2),
                     AttributeIsRequired::fromBoolean(true),
-                    AttributeIsScopable::fromBoolean(false),
+                    AttributeIsScopable::fromBoolean(true),
                     AttributeIsLocalizable::fromBoolean(false),
                     LabelCollection::fromArray(['en_US' => 'Banner image']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromString('4873080d-32a3-42a7-ae5c-1be518e40f3d'),
@@ -70,7 +70,7 @@ class GetTemplateInMemory implements GetTemplate
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Title']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
@@ -81,7 +81,7 @@ class GetTemplateInMemory implements GetTemplate
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromString('4ba33f06-de92-4366-8322-991d1bad07b9'),
@@ -92,10 +92,11 @@ class GetTemplateInMemory implements GetTemplate
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Keywords']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
-            ])
+            ]),
         );
+
         return $template;
     }
 }

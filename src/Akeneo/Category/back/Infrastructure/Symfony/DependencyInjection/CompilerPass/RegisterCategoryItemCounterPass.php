@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Compiler pass to register category counter to a registry
+ * Compiler pass to register category counter to a registry.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterCategoryItemCounterPass implements CompilerPassInterface
 {
-    const CATEGORY_TAG = 'pim_enrich.doctrine.counter.category_item';
+    public const CATEGORY_TAG = 'pim_enrich.doctrine.counter.category_item';
 
-    const CATEGORY_REGISTRY = 'pim_enrich.doctrine.counter.category_registry';
+    public const CATEGORY_REGISTRY = 'pim_enrich.doctrine.counter.category_registry';
 
     /**
      * {@inheritdoc}
@@ -36,8 +36,8 @@ class RegisterCategoryItemCounterPass implements CompilerPassInterface
                     'register',
                     [
                         new Reference($serviceId),
-                        $attribute['type']
-                    ]
+                        $attribute['type'],
+                    ],
                 );
             }
         }

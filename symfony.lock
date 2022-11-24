@@ -384,9 +384,6 @@
     "phenx/php-svg-lib": {
         "version": "v0.3.3"
     },
-    "php-cs-fixer/diff": {
-        "version": "v1.3.0"
-    },
     "php-parallel-lint/php-parallel-lint": {
         "version": "v1.3.1"
     },

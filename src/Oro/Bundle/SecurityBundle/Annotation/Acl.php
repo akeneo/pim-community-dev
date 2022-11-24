@@ -200,6 +200,6 @@ class Acl implements \Serializable
             $this->label,
             $this->order,
             $this->visible,
-            ) = unserialize($serialized);
+        ) = unserialize($serialized);
     }
 }

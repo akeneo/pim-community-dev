@@ -10,60 +10,54 @@ use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Category interface
+ * Category interface.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface CategoryInterface extends
-    BaseCategoryInterface,
-    TranslatableInterface,
-    ReferableInterface,
-    VersionableInterface
+interface CategoryInterface extends BaseCategoryInterface, TranslatableInterface, ReferableInterface, VersionableInterface
 {
     /**
-     * Predicate to know if this category has product(s) linked
+     * Predicate to know if this category has product(s) linked.
      *
      * @return bool
      */
     public function hasProducts();
 
     /**
-     * Get products for this category node
+     * Get products for this category node.
      *
      * @return ProductInterface[]
      */
     public function getProducts();
 
     /**
-     * Predicate to know if this category has product model(s) linked
-     *
-     * @return bool
+     * Predicate to know if this category has product model(s) linked.
      */
     public function hasProductModels(): bool;
 
     /**
-     * Get product models for this category node
+     * Get product models for this category node.
      *
      * @return Collection of ProductModelInterface
      */
     public function getProductModels(): Collection;
 
     /**
-     * Returns the channels linked to the category
+     * Returns the channels linked to the category.
      */
     public function getChannels(): Collection;
 
     public function getLabel(): string;
 
     /**
-     * Set updated datetime
+     * Set updated datetime.
      */
     public function setUpdated(\DateTime $updated): self;
 
     /**
-     * Get updated datetime
+     * Get updated datetime.
      */
     public function getUpdated(): \DateTime;
 }
