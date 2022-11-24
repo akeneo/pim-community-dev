@@ -42,6 +42,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
         $category = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
+            templateUuid: null,
             labels: LabelCollection::fromArray([]),
             attributes: $attributes
         );

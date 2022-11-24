@@ -14,7 +14,6 @@ import {
 import {
   FullScreenError,
   getLabel,
-  PageContent,
   PageHeader,
   PimView,
   UnsavedChanges,
@@ -30,7 +29,13 @@ import {CategoryToDelete, useCountProductsBeforeDeleteCategory, useDeleteCategor
 import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {EditAttributesForm, EditPermissionsForm, EditPropertiesForm} from '../components';
+import {
+  EditAttributesForm,
+  EditPermissionsForm,
+  EditPropertiesForm,
+  TemplateTitle,
+  CategoryPageContent,
+} from '../components';
 
 type Params = {
   categoryId: string;
@@ -49,6 +54,10 @@ const CategoryEditPage: FC = () => {
   const router = useRouter();
   const userContext = useUserContext();
 
+  // locales
+  const uiLocale = userContext.get('uiLocale');
+  const [catalogLocale, setCatalogLocale] = useState(userContext.get('catalogLocale'));
+
   // features
   const featureFlags = useFeatureFlags();
   const permissionsAreEnabled = featureFlags.isEnabled('permission');
@@ -62,20 +71,6 @@ const CategoryEditPage: FC = () => {
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const [tree, setTree] = useState<EnrichCategory | null>(null);
-
-  // ui state
-  const [activeTab, setActiveTab] = useSessionStorageState<string>(
-    isGranted('pim_enrich_product_category_edit_attributes') ? Tabs.ATTRIBUTE : Tabs.PROPERTY,
-    'pim_category_activeTab'
-  );
-  const [isCurrent, switchTo] = useTabBar(activeTab);
-  const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
-  const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
-
-  const handleSwitchTo = useCallback((tab: string) => {
-    setActiveTab(tab);
-    switchTo(tab);
-  }, []);
 
   const {
     category,
@@ -91,9 +86,23 @@ const CategoryEditPage: FC = () => {
     historyVersion,
   } = useEditCategoryForm(parseInt(categoryId));
 
-  useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
+  // ui state
+  const [activeTab, setActiveTab] = useSessionStorageState<string>(
+    isGranted('pim_enrich_product_category_edit_attributes') ? Tabs.ATTRIBUTE : Tabs.PROPERTY,
+    'pim_category_activeTab'
+  );
+  const [isCurrent, switchTo] = useTabBar(activeTab);
+  const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
+  const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
 
-  const uiLocale = userContext.get('uiLocale');
+  const handleSwitchTo = useCallback(
+    (tab: string) => {
+      setActiveTab(tab);
+      switchTo(tab);
+    },
+    [setActiveTab, switchTo]
+  );
+  useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
@@ -147,10 +156,15 @@ const CategoryEditPage: FC = () => {
   }, [category, userContext]);
 
   useEffect(() => {
-    if (activeTab === Tabs.ATTRIBUTE && !isGranted('pim_enrich_product_category_edit_attributes')) {
+    if (category === null) return;
+
+    if (
+      activeTab === Tabs.ATTRIBUTE &&
+      (!isGranted('pim_enrich_product_category_edit_attributes') || !category.template_uuid)
+    ) {
       handleSwitchTo(Tabs.PROPERTY);
     }
-  }, [activeTab]);
+  }, [category, activeTab]);
 
   if (categoryFetchingStatus === 'error') {
     return (
@@ -179,6 +193,11 @@ const CategoryEditPage: FC = () => {
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
+        {template && (
+          <PageHeader.Content>
+            <TemplateTitle template={template} locale={catalogLocale} />
+          </PageHeader.Content>
+        )}
         <PageHeader.UserActions>
           <PimView
             viewName="pim-menu-user-navigation"
@@ -236,9 +255,9 @@ const CategoryEditPage: FC = () => {
         <PageHeader.Title>{categoryLabel ?? categoryId}</PageHeader.Title>
         <PageHeader.State>{thereAreUnsavedChanges && <UnsavedChanges />}</PageHeader.State>
       </PageHeader>
-      <PageContent>
+      <CategoryPageContent>
         <TabBar moreButtonTitle={'More'}>
-          {isGranted('pim_enrich_product_category_edit_attributes') && (
+          {isGranted('pim_enrich_product_category_edit_attributes') && template && (
             <TabBar.Tab isActive={isCurrent(Tabs.ATTRIBUTE)} onClick={() => handleSwitchTo(Tabs.ATTRIBUTE)}>
               {translate('akeneo.category.attributes')}
             </TabBar.Tab>
@@ -269,6 +288,8 @@ const CategoryEditPage: FC = () => {
               attributeValues={category.attributes}
               template={template}
               onAttributeValueChange={onChangeAttribute}
+              locale={catalogLocale}
+              setLocale={setCatalogLocale}
             />
           )}
         {isCurrent(Tabs.PROPERTY) && category && (
@@ -289,7 +310,7 @@ const CategoryEditPage: FC = () => {
             version={historyVersion}
           />
         )}
-      </PageContent>
+      </CategoryPageContent>
       {isDeleteCategoryModalOpen && categoryToDelete !== null && (
         <DeleteCategoryModal
           categoryLabel={categoryToDelete.label}

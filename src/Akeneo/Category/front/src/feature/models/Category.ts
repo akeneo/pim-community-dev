@@ -13,6 +13,7 @@ export type Category = {
 export type EnrichCategory = {
   id: number;
   isRoot: boolean;
+  template_uuid: string | null;
   root: EnrichCategory | null;
   properties: CategoryProperties;
   attributes: CategoryAttributes;
