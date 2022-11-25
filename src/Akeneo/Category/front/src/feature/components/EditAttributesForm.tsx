@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useMemo, useContext} from 'react';
+import React, {useCallback, useMemo, useContext} from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Helper} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
@@ -143,7 +143,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   return (
     <FormContainer>
       <SectionTitle>
-        <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <ChannelSelector
             value={channel}

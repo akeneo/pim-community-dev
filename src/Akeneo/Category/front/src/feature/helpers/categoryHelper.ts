@@ -69,7 +69,7 @@ export function getAttributeValue(
  */
 function populateCategoryAttributes(
   category: EnrichCategory,
-  template: Template,
+  template: Template | null | undefined,
   channels: ChannelCode[],
   locales: LocaleCode[]
 ): EnrichCategory {
@@ -128,7 +128,12 @@ function buildCategoryAttributeValues(attribute: Attribute, channels: ChannelCod
 /**
  * Ensures no category field is null and ensures attributes values are populated.
  */
-export function populateCategory(category: EnrichCategory, template: Template, channels: ChannelCode[], locales: LocaleCode[]): EnrichCategory {
+export function populateCategory(
+  category: EnrichCategory,
+  template: Template | null | undefined,
+  channels: ChannelCode[],
+  locales: LocaleCode[]
+): EnrichCategory {
   let populated = cloneDeep(category);
   if (category.permissions === null) {
     populated.permissions = {view: [], edit: [], own: []};

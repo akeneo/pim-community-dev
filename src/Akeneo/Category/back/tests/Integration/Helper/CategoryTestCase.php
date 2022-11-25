@@ -11,6 +11,9 @@ namespace Akeneo\Category\back\tests\Integration\Helper;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
@@ -40,7 +43,7 @@ use Doctrine\DBAL\Driver\Exception;
 class CategoryTestCase extends TestCase
 {
     /**
-     * @param array<string, string>|null $labels
+     * @param array<string, string|null>|null $labels
      *
      * @throws Exception
      * @throws \Doctrine\DBAL\Exception
@@ -57,6 +60,7 @@ class CategoryTestCase extends TestCase
         $categoryModelToCreate = new Category(
             id: $categoryId,
             code: new Code($code),
+            templateUuid: null,
             labels: LabelCollection::fromArray($labels),
             parentId: $parentId,
         );
@@ -72,10 +76,11 @@ class CategoryTestCase extends TestCase
                 : new CategoryId($categoryBase->getParentId()->getValue());
 
         $categoryModelWithId = new Category(
-            new CategoryId($categoryBase->getId()->getValue()),
-            new Code((string) $categoryBase->getCode()),
-            $categoryModelToCreate->getLabels(),
-            $parentId,
+            id: new CategoryId($categoryBase->getId()->getValue()),
+            code: new Code((string) $categoryBase->getCode()),
+            templateUuid: null,
+            labels: $categoryModelToCreate->getLabels(),
+            parentId: $parentId,
         );
         $this->get(UpsertCategoryTranslations::class)->execute($categoryModelWithId);
 
@@ -88,10 +93,11 @@ class CategoryTestCase extends TestCase
 
         // Instantiates a new Category model based on data fetched in database
         return new Category(
-            new CategoryId($categoryBase->getId()->getValue()),
-            new Code((string) $categoryBase->getCode()),
-            LabelCollection::fromArray($categoryTranslations),
-            $createdParentId,
+            id: new CategoryId($categoryBase->getId()->getValue()),
+            code: new Code((string) $categoryBase->getCode()),
+            templateUuid: null,
+            labels: LabelCollection::fromArray($categoryTranslations),
+            parentId: $createdParentId,
         );
     }
 
@@ -103,6 +109,7 @@ class CategoryTestCase extends TestCase
         $category = new Category(
             id: null,
             code: $code,
+            templateUuid: null,
         );
         $this->get(UpsertCategoryBase::class)->execute($category);
 
@@ -128,8 +135,10 @@ class CategoryTestCase extends TestCase
         ?array $templateAttributes = null,
     ): Template {
         $getTemplate = new GetTemplateInMemory();
+        $generatedTemplateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+
         /** @var Template $defaultTemplate */
-        $defaultTemplate = $getTemplate->byUuid(TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'));
+        $defaultTemplate = $getTemplate->byUuid($generatedTemplateUuid);
 
         if ($templateUuid === null) {
             $templateUuid = $defaultTemplate->getUuid();
@@ -156,7 +165,7 @@ class CategoryTestCase extends TestCase
         }
 
         if ($templateAttributes === null) {
-            $templateAttributes = $defaultTemplate->getAttributeCollection();
+            $templateAttributes = $this->givenAttributes($generatedTemplateUuid);
         } else {
             $attributes = [];
             foreach ($templateAttributes as $attribute) {
@@ -205,7 +214,7 @@ class CategoryTestCase extends TestCase
         );
     }
 
-    protected function givenTemplate(string $templateUuidRaw, ?CategoryId $categoryId): Template
+    protected function givenTemplateWithAttributes(string $templateUuidRaw, ?CategoryId $categoryId): Template
     {
         $templateUuid = TemplateUuid::fromString($templateUuidRaw);
 
@@ -321,6 +330,22 @@ SQL;
             ], JSON_THROW_ON_ERROR),
             'code' => $code,
         ]);
+    }
+
+    protected function useTemplateFunctionalCatalog(string $templateUuid, string $productCode): void
+    {
+        $category = $this->createOrUpdateCategory(
+            code: $productCode,
+            labels: ['en_US' => 'socks'],
+        );
+
+        $template = $this->givenTemplateWithAttributes($templateUuid, $category->getId());
+        $this->get(CategoryTemplateSaver::class)->insert($template);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($template);
+        $this->get(CategoryTemplateAttributeSaver::class)->insert(
+            $template->getUuid(),
+            $template->getAttributeCollection(),
+        );
     }
 
     protected function getConfiguration()

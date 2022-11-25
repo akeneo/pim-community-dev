@@ -22,7 +22,12 @@ class SetLabelApplierSpec extends ObjectBehavior
 
     public function it_applies_set_label_user_intent(): void
     {
-        $category = new Category(new CategoryId(1), new Code('my_category'), LabelCollection::fromArray([]), null);
+        $category = new Category(
+            id: new CategoryId(1),
+            code: new Code('my_category'),
+            templateUuid: null,
+            labels: LabelCollection::fromArray([]),
+            parentId: null);
 
         $setLabelEN = new SetLabel('en_US', 'The label');
         $setLabelFR = new SetLabel('fr_FR', 'Le label');

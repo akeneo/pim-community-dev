@@ -129,7 +129,6 @@ final class GetMappedProductsAction
     {
         $last = \end($mappedProducts);
 
-
         $result = [
             '_links' => [
                 'self' => [

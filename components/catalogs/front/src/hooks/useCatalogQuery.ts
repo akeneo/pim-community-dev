@@ -1,6 +1,7 @@
 import {useQuery} from 'react-query';
 import {AnyCriterionState} from '../components/ProductSelection';
 import {ProductValueFiltersValues} from '../components/ProductValueFilters';
+import {ProductMapping} from '../components/ProductMapping/models/ProductMapping';
 
 type Data = {
     id: string;
@@ -9,6 +10,8 @@ type Data = {
     owner_username: string;
     product_selection_criteria: AnyCriterionState[];
     product_value_filters: ProductValueFiltersValues;
+    product_mapping: ProductMapping;
+    has_product_mapping_schema: boolean;
 };
 type Error = string | null;
 type Result = {

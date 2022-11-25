@@ -14,21 +14,16 @@ import {
   Template,
 } from '../models';
 import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
+import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
   const notify = useNotify();
   const translate = useTranslate();
 
-  const useCategoryResult = useCategory(categoryId);
-  const {status: categoryFetchingStatus, load: loadCategory} = useCategoryResult;
+  const {load: loadCategory, category: fetchedCategory, status: categoryStatus} = useCategory(categoryId);
 
-  let fetchedCategory: EnrichCategory | null = null;
-  let template: Template | null = null;
-  if (useCategoryResult.status === 'fetched') {
-    fetchedCategory = useCategoryResult.category;
-    template = useCategoryResult.template;
-  }
+  const {data: template, status: templateStatus} = useTemplateByTemplateUuid(fetchedCategory?.template_uuid ?? null);
 
   const [category, setCategory] = useState<EnrichCategory | null>(null);
   const [categoryEdited, setCategoryEdited] = useState<EnrichCategory | null>(null);
@@ -39,25 +34,24 @@ const useEditCategoryForm = (categoryId: number) => {
   const {setCanLeavePage, channels, locales} = useContext(EditCategoryContext);
 
   const isModified =
-    useCategoryResult.status === 'fetched' &&
-    !!category &&
-    !!categoryEdited &&
-    !categoriesAreEqual(category, categoryEdited);
+    categoryStatus === 'fetched' && !!category && !!categoryEdited && !categoriesAreEqual(category, categoryEdited);
 
-  const initializeEditionState = useCallback(function (c: EnrichCategory) {
-    setCategory(c);
-    setCategoryEdited(cloneDeep(c));
+  const initializeEditionState = useCallback(function (category: EnrichCategory, template: Template | null, channels, locales) {
+    const populated = populateCategory(category, template, Object.keys(channels), Object.keys(locales));
+    setCategory(populated);
+    setCategoryEdited(cloneDeep(populated));
   }, []);
 
   // fetching the category
   useEffect(() => {
     loadCategory();
-  }, [categoryId, loadCategory]);
+  }, [categoryId]);
 
   // initializing category edition state
   useEffect(() => {
-    fetchedCategory && initializeEditionState(fetchedCategory);
-  }, [fetchedCategory, initializeEditionState]);
+    if (fetchedCategory === null) return;
+    initializeEditionState(fetchedCategory, template ?? null, channels, locales);
+  }, [fetchedCategory, template, locales]);
 
   useEffect(() => {
     setCanLeavePage(!isModified);
@@ -82,11 +76,11 @@ const useEditCategoryForm = (categoryId: number) => {
     const response = await saveEditCategoryForm(router, categoryEdited, {
       applyPermissionsOnChildren,
       populateResponseCategory: (category: EnrichCategory) =>
-        populateCategory(category, template!, Object.keys(channels), Object.keys(locales)),
+        populateCategory(category, template, Object.keys(channels), Object.keys(locales)),
     });
 
     if (response.success) {
-      initializeEditionState(response.category);
+      initializeEditionState(response.category, template ?? null, channels, locales);
       setHistoryVersion((prevVersion: number) => prevVersion + 1);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
@@ -152,7 +146,8 @@ const useEditCategoryForm = (categoryId: number) => {
   );
 
   return {
-    categoryFetchingStatus,
+    categoryFetchingStatus: categoryStatus,
+    templateFetchingStatus: templateStatus,
     category: categoryEdited,
     template,
     applyPermissionsOnChildren,

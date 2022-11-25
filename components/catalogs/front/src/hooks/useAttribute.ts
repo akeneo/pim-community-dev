@@ -11,6 +11,10 @@ type Result = {
 
 export const useAttribute = (code: string): Result => {
     return useQuery<Attribute, Error, Attribute>(['attribute', code], async () => {
+        if ('' === code) {
+            return undefined;
+        }
+
         const response = await fetch(`/rest/catalogs/attributes/${code}`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',

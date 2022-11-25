@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Job\Test\Acceptance\FakeServices;
 
-use Akeneo\Platform\Job\Domain\JobFileStorerInterface;
+use Akeneo\Platform\Job\Application\LaunchJobInstance\JobFileStorerInterface;
 
 class InMemoryJobFileStorer implements JobFileStorerInterface
 {

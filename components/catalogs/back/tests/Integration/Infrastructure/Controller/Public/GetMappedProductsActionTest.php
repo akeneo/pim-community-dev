@@ -40,33 +40,43 @@ class GetMappedProductsActionTest extends IntegrationTestCase
     public function testItGetsPaginatedMappedProductsByCatalogId(): void
     {
         $this->logAs('admin');
+
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_text',
             'scopable' => true,
             'localizable' => true,
         ]);
-
         $this->createAttribute([
             'code' => 'description',
             'type' => 'pim_catalog_text',
             'scopable' => true,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'size',
+            'type' => 'pim_catalog_text',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
 
         $this->createChannel('print', ['en_US', 'fr_FR']);
 
         $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
-            new SetTextValue('name', 'print', 'en_US', 'Blue print'),
+            new SetTextValue('name', 'print', 'en_US', 'Blue name'),
+            new SetTextValue('name', 'print', 'fr_FR', 'Nom Bleu'),
             new SetTextValue('description', 'print', null, 'Blue description'),
+            new SetTextValue('size', null, null, 'Blue size'),
         ]);
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
-            new SetTextValue('name', 'print', 'en_US', 'Green print'),
+            new SetTextValue('name', 'print', 'en_US', 'Green name'),
             new SetTextValue('description', 'print', null, 'Green description'),
+            new SetTextValue('size', null, null, 'Green size'),
         ]);
         $this->createProduct(Uuid::fromString('9fe842c4-6185-470b-b9a8-abc2306b0e4b'), [
-            new SetTextValue('name', 'print', 'en_US', 'Red print'),
+            new SetTextValue('name', 'print', 'en_US', 'Red name'),
             new SetTextValue('description', 'print', null, 'Red description'),
+            new SetTextValue('size', null, null, 'Red size'),
         ]);
 
         $this->client = $this->getAuthenticatedPublicApiClient([
@@ -101,6 +111,11 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 'scope' => 'print',
                 'locale' => null,
             ],
+            'size_label' => [
+                'source' => 'size',
+                'scope' => null,
+                'locale' => null,
+            ],
         ]);
 
         $this->client->request(
@@ -120,13 +135,15 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $expectedMappedProducts = [
             [
                 'uuid' => '00380587-3893-46e6-a8c2-8fee6404cc9e',
-                'title' => 'Green print',
+                'title' => 'Green name',
                 'short_description' => 'Green description',
+                'size_label' => 'Green size',
             ],
             [
                 'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
-                'title' => 'Blue print',
+                'title' => 'Blue name',
                 'short_description' => 'Blue description',
+                'size_label' => 'Blue size',
             ],
         ];
 
@@ -155,8 +172,9 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $expectedMappedProducts2 = [
             [
                 'uuid' => '9fe842c4-6185-470b-b9a8-abc2306b0e4b',
-                'title' => 'Red print',
+                'title' => 'Red name',
                 'short_description' => 'Red description',
+                'size_label' => 'Red size',
             ],
         ];
 
@@ -303,6 +321,9 @@ class GetMappedProductsActionTest extends IntegrationTestCase
               "type": "string"
             },
             "short_description": {
+              "type": "string"
+            },
+            "size_label": {
               "type": "string"
             }
           }

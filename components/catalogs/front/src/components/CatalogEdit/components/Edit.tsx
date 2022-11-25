@@ -13,11 +13,35 @@ import {getTabsValidationStatus} from '../utils/getTabsValidationStatus';
 import {ProductValueFilters} from '../../ProductValueFilters';
 import {mapProductValueFiltersErrors} from '../utils/mapProductValueFiltersErrors';
 import {ProductMapping} from '../../ProductMapping';
+import {ProductMapping as ProductMappingType} from '../../ProductMapping/models/ProductMapping';
+import {useProductMappingSchema} from '../../../hooks/useProductMappingSchema';
+import {mapProductMappingSourceErrors} from '../utils/mapProductMappingSourceErrors';
+import {ProductMappingErrors} from '../../ProductMapping/models/ProductMappingErrors';
 
 type Props = {
     id: string;
     values: CatalogFormValues;
     errors: CatalogFormErrors;
+};
+
+const ProductMappingWrapper: FC<
+    PropsWithChildren<{
+        catalogId: string;
+        productMapping: ProductMappingType;
+        errors: ProductMappingErrors;
+        onChange: (values: ProductMappingType) => void;
+    }>
+> = ({catalogId, productMapping, onChange, errors}) => {
+    const {data: productMappingSchema} = useProductMappingSchema(catalogId);
+
+    return (
+        <ProductMapping
+            productMapping={productMapping}
+            productMappingSchema={productMappingSchema}
+            onChange={onChange}
+            errors={errors}
+        />
+    );
 };
 
 const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
@@ -43,6 +67,13 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
     /* istanbul ignore next */
     const handleFilterValuesChange = useCallback(
         value => dispatch({type: CatalogFormActions.SET_PRODUCT_VALUE_FILTERS, value: value}),
+        [dispatch]
+    );
+    /* istanbul ignore next */
+    const handleMappingChange = useCallback(
+        value => {
+            dispatch({type: CatalogFormActions.SET_PRODUCT_MAPPING, value: value});
+        },
         [dispatch]
     );
 
@@ -72,7 +103,14 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
                     errors={mapProductValueFiltersErrors(errors)}
                 />
             )}
-            {isCurrent(Tabs.PRODUCT_MAPPING) && <ProductMapping />}
+            {isCurrent(Tabs.PRODUCT_MAPPING) && (
+                <ProductMappingWrapper
+                    catalogId={id}
+                    productMapping={values.product_mapping}
+                    onChange={handleMappingChange}
+                    errors={mapProductMappingSourceErrors(errors, Object.keys(values.product_mapping))}
+                />
+            )}
         </>
     );
 };
