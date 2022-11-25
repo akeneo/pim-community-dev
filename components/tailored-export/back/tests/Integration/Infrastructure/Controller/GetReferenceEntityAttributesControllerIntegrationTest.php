@@ -34,7 +34,12 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
 
     public function test_it_returns_reference_entity_attributes(): void
     {
-        $response = $this->callGetReferenceEntityAttributesRoute('designer');
+        $response = $this->callGetReferenceEntityAttributesRoute(
+            ['reference_entity_code' => 'designer'],
+            [
+                'types' => ['text', 'image'],
+            ]
+        );
         $responseContent = json_decode($response->getContent(), true);
 
         Assert::assertSame([], $responseContent);
@@ -43,8 +48,11 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
 
     public function test_it_throws_if_reference_entity_code_is_missing(): void
     {
-        $response = $this->callGetReferenceEntityAttributesRoute(null);
-        Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
+        $response = $this->callGetReferenceEntityAttributesRoute([
+            'reference_entity_code' => 'designer',
+        ]);
+
+        Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     /**
@@ -55,13 +63,9 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
         return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
 
-    private function callGetReferenceEntityAttributesRoute(?string $referenceEntityCode): Response
+    private function callGetReferenceEntityAttributesRoute(array $routeArguments, array $params = []): Response
     {
-        $this->webClientHelper->callApiRoute(
-            $this->client,
-            self::ROUTE,
-            ['reference_entity_code' => $referenceEntityCode],
-        );
+        $this->webClientHelper->callApiRoute($this->client, self::ROUTE, $routeArguments, 'POST', $params);
 
         return $this->client->getResponse();
     }
