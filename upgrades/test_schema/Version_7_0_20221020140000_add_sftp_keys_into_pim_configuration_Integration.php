@@ -19,7 +19,7 @@ class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration_Integratio
     {
         $this->dropKeysIfExist();
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->checkOpenIdKeysExist();
+        $this->checkKeysExist();
     }
 
     public function getConfiguration()
