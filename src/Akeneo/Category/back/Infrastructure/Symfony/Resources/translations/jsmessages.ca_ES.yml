@@ -27,6 +27,5 @@ akeneo.category:
         image: Imatge
   template_list:
     columns:
-      header: Capçalera
       code: Codi
       type: Tipus
