@@ -40,7 +40,7 @@ implements ContainerAwareInterface
             new ParameterBag()
         );
 
-        $client = new Client($builder, $configurationLoader, $hosts, $index);
+        $client = new Client($builder, $this->container->get('event_dispatcher'), $configurationLoader, $hosts, $index);
         $client->createIndex();
     }
 

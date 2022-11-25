@@ -104,6 +104,7 @@ class Version_7_0_20221027152057_add_id_field_to_connection_error_index_mapping_
         $loader = new Loader([$newConfigFile], $this->get(ParameterBagInterface::class));
         $client = new Client(
             $this->get('akeneo_elasticsearch.client_builder'),
+            $this->get('event_dispatcher'),
             $loader,
             [$this->getParameter('index_hosts')],
             $this->connectionErrorClient->getIndexName()

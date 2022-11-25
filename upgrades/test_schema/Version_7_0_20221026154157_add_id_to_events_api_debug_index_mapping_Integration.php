@@ -110,6 +110,7 @@ class Version_7_0_20221026154157_add_id_to_events_api_debug_index_mapping_Integr
         $loader = new Loader([$newConfigFile], $this->get(ParameterBagInterface::class));
         $client = new Client(
             $this->get('akeneo_elasticsearch.client_builder'),
+            $this->get('event_dispatcher'),
             $loader,
             [$this->getParameter('index_hosts')],
             $this->eventsApiDebugClient->getIndexName()

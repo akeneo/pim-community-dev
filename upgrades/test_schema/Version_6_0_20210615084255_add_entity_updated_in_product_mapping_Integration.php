@@ -68,6 +68,7 @@ final class Version_6_0_20210615084255_add_entity_updated_in_product_mapping_Int
         $loader = new Loader([$newConfigFile], $this->get(ParameterBagInterface::class));
         $client = new Client(
             $this->get('akeneo_elasticsearch.client_builder'),
+            $this->get('event_dispatcher'),
             $loader,
             [$this->getParameter('index_hosts')],
             $this->productAndProductModelClient->getIndexName()
