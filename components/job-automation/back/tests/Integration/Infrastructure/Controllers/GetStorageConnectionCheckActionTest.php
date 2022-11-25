@@ -32,7 +32,7 @@ final class GetStorageConnectionCheckActionTest extends ControllerIntegrationTes
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
 
         /** @var GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler */
-        $generateAsymmetricKeysHandler = $this->get('Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler');
+        $generateAsymmetricKeysHandler = $this->get('akeneo.job_automation.handler.generate_asymmetric_keys');
         $generateAsymmetricKeysHandler->handle();
     }
 

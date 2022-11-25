@@ -1,6 +1,6 @@
 services:
   Akeneo\Platform\JobAutomation\Infrastructure\Hydrator\SftpStorageHydrator:
     arguments:
-      - '@Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface'
+      - '@akeneo.job_automation.query.get_asymmetric_keys'
     tags:
       - { name: pim_import_export.hydrator.storage }

@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Test\Integration\Infrastructure\Query;
 
-use Akeneo\Platform\JobAutomation\Domain\Query\SaveAsymmetricKeysQueryInterface;
+use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
+use Akeneo\Platform\JobAutomation\Infrastructure\Query\SaveAsymmetricKeysQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-class SaveAsymmetricKeysQueryIntegration extends TestCase
+class SaveAsymmetricKeysQueryIntegrationTest extends TestCase
 {
-    private SaveAsymmetricKeysQueryInterface $query;
+    private SaveAsymmetricKeysQuery $query;
     private Connection $connection;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->get(SaveAsymmetricKeysQueryInterface::class);
+        $this->query = $this->get('akeneo.job_automation.query.save_asymmetric_keys');
         $this->connection = $this->get('database_connection');
     }
 

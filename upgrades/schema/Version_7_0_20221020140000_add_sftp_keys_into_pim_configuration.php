@@ -8,9 +8,10 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use phpseclib3\Crypt\RSA;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration extends AbstractMigration
+class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration extends AbstractMigration implements ContainerAwareInterface
 {
     private ContainerInterface $container;
 

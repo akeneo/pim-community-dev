@@ -10,11 +10,13 @@ services:
       - '@akeneo.job_automation.query.find_users_to_notify'
       - '@Akeneo\Platform\JobAutomation\Domain\Publisher\PublisherInterface'
 
-  Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler:
+  akeneo.job_automation.handler.generate_asymmetric_keys:
+    class: Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler
     arguments:
       - '@Akeneo\Platform\JobAutomation\Infrastructure\AsymmetricKeysGenerator'
-      - '@Akeneo\Platform\JobAutomation\Infrastructure\Query\SaveAsymmetricKeysQueryInterface'
+      - '@akeneo.job_automation.query.save_asymmetric_keys'
 
-  Akeneo\Platform\JobAutomation\Application\GetAsymmetricKeys\GetAsymmetricKeysHandler:
+  akeneo.job_automation.handler.get_asymmetric_keys_handler:
+    class: Akeneo\Platform\JobAutomation\Application\GetAsymmetricKeys\GetAsymmetricKeysHandler
     arguments:
-      - '@Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface'
+      - '@akeneo.job_automation.query.get_asymmetric_keys'

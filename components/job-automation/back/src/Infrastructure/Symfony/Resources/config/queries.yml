@@ -26,12 +26,12 @@ services:
       - '@akeneo.job_automation.query.find_users_by_id'
       - '@akeneo.job_automation.query.find_users_by_usergroup_id'
 
-  Akeneo\Platform\JobAutomation\Infrastructure\Query\SaveAsymmetricKeysQueryInterface:
+  akeneo.job_automation.query.save_asymmetric_keys:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Query\SaveAsymmetricKeysQuery
     arguments:
       - '@database_connection'
 
-  Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface:
+  akeneo.job_automation.query.get_asymmetric_keys:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Query\GetAsymmetricKeysQuery
     arguments:
       - '@database_connection'
