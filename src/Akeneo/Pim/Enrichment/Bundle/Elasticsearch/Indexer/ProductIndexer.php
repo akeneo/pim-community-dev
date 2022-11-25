@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -24,11 +25,15 @@ use Ramsey\Uuid\UuidInterface;
 class ProductIndexer implements ProductIndexerInterface
 {
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
-    private const BATCH_SIZE = 500;
+    // 4MB of raw values can product a query of 25MB (x7) for the indexation, due to the encoding of UTF-8 characters
+    // also, it's possible to consume two times the memory, if you manipulate copy the values into another variable,
+    // hence a conservative ratio of x14
+    private const MEMORY_RATIO = 14;
 
     public function __construct(
         private Client $productAndProductModelClient,
-        private GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
+        private GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
+        private ChunkProductUuids $chunkProductUuids
     ) {
     }
 
@@ -48,7 +53,8 @@ class ProductIndexer implements ProductIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $chunks = array_chunk($productUuids, self::BATCH_SIZE);
+        $maxMemoryPerChunk = (int) floor($this->memoryLimitAsBytes()/ self::MEMORY_RATIO);
+        $chunks =$this->chunkProductUuids->byRawValuesSize($productUuids, $maxMemoryPerChunk);
         foreach ($chunks as $productUuidsChunk) {
             $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductUuids(
                 $productUuidsChunk
@@ -71,5 +77,30 @@ class ProductIndexer implements ProductIndexerInterface
             fn (UuidInterface $productUuid): string => self::PRODUCT_IDENTIFIER_PREFIX . $productUuid->toString(),
             $productUuids
         ));
+    }
+
+    private function memoryLimitAsBytes(): int
+    {
+        $limit = ini_get('memory_limit');
+        if (false === $limit) {
+            return 512 * 1024 * 1024;
+        }
+
+        if ($limit === '-1') {
+            return 512 * 1024 * 1024 * 1024;
+        }
+
+        $lastCharacter = substr($limit, -1);
+        if ($lastCharacter === 'K') {
+            return  (int) substr($limit, 0, -1) * 1024;
+        }
+        if ($lastCharacter === 'M') {
+            return  (int) substr($limit, 0, -1) * 1024 * 1024;
+        }
+        if ($lastCharacter === 'G') {
+            return  (int) substr($limit, 0, -1) * 1024 * 1024 * 1024;
+        }
+
+        return (int) $limit;
     }
 }

@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
  */
 class ChunkProductModelCodes
 {
-    public function __construct(private readonly Connection $dbConnection)
+    public function __construct(private Connection $dbConnection)
     {
     }
 
@@ -28,7 +28,7 @@ class ChunkProductModelCodes
         // DISTINCT is trick to force to materialize the CTE before ordering the results
         $query = <<<SQL
             WITH product_model_size as (
-                SELECT DISTINCT code, JSON_STORAGE_SIZE(raw_values) as size 
+                SELECT /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */ DISTINCT code, JSON_STORAGE_SIZE(raw_values) as size 
                 FROM pim_catalog_product_model
                 WHERE code IN (:codes)
             )

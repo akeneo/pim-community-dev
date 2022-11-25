@@ -10,6 +10,7 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductUuids'
 
     pim_catalog.elasticsearch.indexer.product_model:
         class: '%pim_catalog.elasticsearch.indexer.product_model_indexer.class%'
@@ -17,6 +18,7 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductModelCodes'
 
     akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer'

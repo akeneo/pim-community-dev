@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -24,17 +25,14 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
-    private const BATCH_SIZE = 500;
-
-    private Client $productAndProductModelClient;
-    private GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection;
+    /** @see ProductIndexer::MEMORY_RATIO */
+    private const MEMORY_RATIO = 14;
 
     public function __construct(
-        Client $productAndProductModelClient,
-        GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection
+        private Client $productAndProductModelClient,
+        private GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection,
+        private ChunkProductModelCodes $chunkProductModelCodes
     ) {
-        $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->getElasticsearchProductModelProjection = $getElasticsearchProductModelProjection;
     }
 
     /**
@@ -60,7 +58,9 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $chunks = array_chunk($productModelCodes, self::BATCH_SIZE);
+        $maxMemoryPerChunk = (int) floor($this->memoryLimitAsBytes()/ self::MEMORY_RATIO);
+        $chunks =$this->chunkProductModelCodes->byRawValuesSize($productModelCodes, $maxMemoryPerChunk);
+
         foreach ($chunks as $productModelCodesChunk) {
             $elasticsearchProductModelProjections =
                 $this->getElasticsearchProductModelProjection->fromProductModelCodes($productModelCodesChunk);
@@ -116,5 +116,30 @@ class ProductModelIndexer implements ProductModelIndexerInterface
                 ],
             ],
         ]);
+    }
+
+    private function memoryLimitAsBytes(): int
+    {
+        $limit = ini_get('memory_limit');
+        if (false === $limit) {
+            return 512 * 1024 * 1024;
+        }
+
+        if ($limit === '-1') {
+            return 512 * 1024 * 1024 * 1024;
+        }
+
+        $lastCharacter = substr($limit, -1);
+        if ($lastCharacter === 'K') {
+            return  (int) substr($limit, 0, -1) * 1024;
+        }
+        if ($lastCharacter === 'M') {
+            return  (int) substr($limit, 0, -1) * 1024 * 1024;
+        }
+        if ($lastCharacter === 'G') {
+            return  (int) substr($limit, 0, -1) * 1024 * 1024 * 1024;
+        }
+
+        return (int) $limit;
     }
 }

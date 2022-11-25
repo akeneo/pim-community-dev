@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
  */
 class ChunkProductUuids
 {
-    public function __construct(private readonly Connection $dbConnection)
+    public function __construct(private Connection $dbConnection)
     {
     }
 
@@ -30,7 +30,7 @@ class ChunkProductUuids
         // DISTINCT is trick to force to materialize the CTE before ordering the results
         $query = <<<SQL
             WITH product_size as (
-                SELECT DISTINCT uuid, JSON_STORAGE_SIZE(raw_values) as size 
+                SELECT /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */ DISTINCT uuid, JSON_STORAGE_SIZE(raw_values) as size 
                 FROM pim_catalog_product
                 WHERE uuid IN (:uuids)
             )
