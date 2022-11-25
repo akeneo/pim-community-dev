@@ -465,3 +465,8 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductUuids:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductUuids'
+        arguments:
+            - '@database_connection'
