@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -35,16 +35,19 @@ final class LiveblocksController
     private function authorize(string $roomId, string $userId, array $userInfo): JsonResponse
     {
         $response = $this->httpClient->request(
-            'POST', sprintf('https://api.liveblocks.io/v2/rooms/%s/authorize', urlencode($roomId)), [
-            'headers' => [
-                'Authorization' => 'Bearer ' . self::SECRET_KEY,
-                'Content-Type' => 'application/json'
-            ],
-            'json' => [
-                'userId' => $userId,
-                'userInfo' => $userInfo
+            'POST',
+            sprintf('https://api.liveblocks.io/v2/rooms/%s/authorize', urlencode($roomId)),
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . self::SECRET_KEY,
+                    'Content-Type' => 'application/json'
+                ],
+                'json' => [
+                    'userId' => $userId,
+                    'userInfo' => $userInfo
+                ]
             ]
-        ]);
+        );
 
         return new JsonResponse($response->getContent(), $response->getStatusCode());
     }

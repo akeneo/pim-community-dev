@@ -13,9 +13,9 @@ export function Avatar(props: Props) {
   const pictureUrl =
     props.picture !== null
       ? Routing.generate('pim_enrich_media_show', {
-        filename: encodeURIComponent(props.picture),
-        filter: 'thumbnail_small',
-      })
+          filename: encodeURIComponent(props.picture),
+          filter: 'thumbnail_small',
+        })
       : 'bundles/pimui/images/info-user.png';
 
   return (
