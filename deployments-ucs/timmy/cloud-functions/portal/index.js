@@ -216,6 +216,35 @@ async function updateInstanceStatusInPortal(branchName, tenant_name, instanceId,
     return await instance.patch(`console/instances/${instanceId}/status/${status}`);
 }
 
+async function deleteInstanceInPortal(branchName, tenantName, instanceId) {
+  const instance = axios.create({
+    baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME, branchName) + '/api/v2/',
+    timeout: 10000,
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  instance.interceptors.response.use((response) => {
+    return response;
+  }, async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      token = await refreshAccessToken(branchName);
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+      return instance(originalRequest);
+    }
+
+    return Promise.reject(error);
+  });
+
+  logger.info(`Delete the \`${tenantName}\` instance (id=${instanceId}) in the portal`);
+  return await instance.delete(`console/instances/${instanceId}`);
+}
+
 module.exports = { requiredEnvironmentVariables, prefixUrlWithBranchName };
 
 functions.http('requestPortal', (req, res) => {
@@ -325,9 +354,9 @@ functions.http('requestPortal', (req, res) => {
         logger.info(`Successfully deleted the tenant \`${tenant_name}\` (id=${instanceId})`);
 
         try {
-          await updateInstanceStatusInPortal(branchName, tenant_name, instanceId, TENANT_STATUS.DELETED);
+          await deleteInstanceInPortal(branchName, tenant_name, instanceId);
         } catch(error) {
-          logger.error(`Failed to update tenant \`${tenant_name}\` (id=${instanceId}) status to ${TENANT_STATUS.DELETED} in the portal: ${JSON.stringify(error)}`);
+          logger.error(`Failed to delete tenant \`${tenant_name}\` (id=${instanceId}) in the portal: ${JSON.stringify(error)}`);
         }
 
       } catch (error) {
