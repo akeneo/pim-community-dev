@@ -56,6 +56,6 @@ services:
 
     Akeneo\Platform\JobAutomation\Infrastructure\Installer\JobInstaller:
         arguments:
-            - '@Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler'
+            - '@akeneo.job_automation.handler.generate_asymmetric_keys'
         tags:
             - { name: kernel.event_subscriber }

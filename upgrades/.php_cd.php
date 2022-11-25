@@ -31,6 +31,7 @@ $rules = [
             'Psr\Container\ContainerInterface',
             'Webmozart\Assert\Assert',
             'Psr\Log\LoggerInterface',
+            'phpseclib3\Crypt\RSA',
         ]
     )->in('Pim\Upgrade\Schema'),
 ];

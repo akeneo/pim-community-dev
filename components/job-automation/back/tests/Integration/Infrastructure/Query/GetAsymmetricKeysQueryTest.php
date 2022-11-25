@@ -21,7 +21,7 @@ class GetAsymmetricKeysQueryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->get(GetAsymmetricKeysQueryInterface::class);
+        $this->query = $this->get('akeneo.job_automation.query.get_asymmetric_keys');
         $this->connection = $this->get('database_connection');
     }
 

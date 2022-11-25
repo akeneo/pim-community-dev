@@ -24,4 +24,4 @@ services:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetPublicKeyAction
     public: true
     arguments:
-      - '@Akeneo\Platform\JobAutomation\Application\GetAsymmetricKeys\GetAsymmetricKeysHandler'
+      - '@akeneo.job_automation.handler.get_asymmetric_keys_handler'
