@@ -22,7 +22,7 @@ const ChannelSelector = ({value, values, onChange}: ChannelSelectorProps) => {
   return (
     <Dropdown>
       <SwitcherButton inline onClick={() => {open();}} label={translate('pim_common.channel')}>
-        <span>{selectedChannel && getLabel(selectedChannel.labels, catalogLocale, `${selectedChannel.code}`)}</span>
+        <span data-testid={`ChannelSelector.selection`}>{selectedChannel && getLabel(selectedChannel.labels, catalogLocale, `${selectedChannel.code}`)}</span>
       </SwitcherButton>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>
