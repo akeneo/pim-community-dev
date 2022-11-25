@@ -46,6 +46,7 @@ const CommentList = ({comments}: Props) => {
                             authorEmail={comment.authorEmail}
                             content={comment.content}
                             createdAt={comment.createdAt}
+                            isUnread={comment.isUnread}
                         />
                     ))}
             </FlexColumn>

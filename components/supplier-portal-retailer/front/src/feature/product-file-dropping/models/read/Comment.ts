@@ -3,4 +3,5 @@ export type Comment = {
     content: string;
     createdAt: string;
     outgoing: boolean;
+    isUnread: boolean;
 };

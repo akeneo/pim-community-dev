@@ -10,4 +10,5 @@ export type ProductFile = {
     importStatus: ImportStatus;
     retailerComments: Comment[];
     supplierComments: Comment[];
+    hasUnreadComments: boolean;
 };

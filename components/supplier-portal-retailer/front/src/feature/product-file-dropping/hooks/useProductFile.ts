@@ -23,6 +23,22 @@ const useProductFile = (productFileIdentifier: string) => {
         }
 
         const responseBody = await response.json();
+        const lastReadAtTimestamp: number | null =
+            null !== responseBody.retailerLastReadAt ? Date.parse(responseBody.retailerLastReadAt) : null;
+
+        let hasUnreadComments: boolean = false;
+        if (0 < responseBody.supplierComments.length) {
+            if (null === lastReadAtTimestamp) {
+                hasUnreadComments = true;
+            } else {
+                const lastComment: any = responseBody.supplierComments.slice(-1)[0];
+                const lastCommentTimestamp: number = Date.parse(lastComment.created_at);
+                if (lastCommentTimestamp > lastReadAtTimestamp) {
+                    hasUnreadComments = true;
+                }
+            }
+        }
+
         const productFile = {
             identifier: responseBody.identifier,
             originalFilename: responseBody.originalFilename,
@@ -30,6 +46,7 @@ const useProductFile = (productFileIdentifier: string) => {
             supplier: responseBody.uploadedBySupplier,
             contributor: responseBody.uploadedByContributor,
             importStatus: responseBody.importStatus,
+            hasUnreadComments: hasUnreadComments,
             retailerComments: responseBody.retailerComments.map(
                 (comment: {author_email: string; content: string; created_at: string}): Comment => {
                     return {
@@ -37,16 +54,19 @@ const useProductFile = (productFileIdentifier: string) => {
                         content: comment.content,
                         createdAt: comment.created_at,
                         outgoing: true,
+                        isUnread: false,
                     };
                 }
             ),
             supplierComments: responseBody.supplierComments.map(
                 (comment: {author_email: string; content: string; created_at: string}): Comment => {
+                    const commentDate: number = Date.parse(comment.created_at);
                     return {
                         authorEmail: comment.author_email,
                         content: comment.content,
                         createdAt: comment.created_at,
                         outgoing: false,
+                        isUnread: null !== lastReadAtTimestamp ? commentDate >= lastReadAtTimestamp : true,
                     };
                 }
             ),

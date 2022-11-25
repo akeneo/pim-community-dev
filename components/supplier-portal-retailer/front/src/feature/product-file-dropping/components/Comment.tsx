@@ -1,5 +1,5 @@
 import React from 'react';
-import {AkeneoThemedProps, DialogIcon, getColor, onboarderTheme} from 'akeneo-design-system';
+import {AkeneoThemedProps, DialogIcon, getColor, onboarderTheme, Pill} from 'akeneo-design-system';
 import {useDateFormatter} from '@akeneo-pim-community/shared';
 import styled, {css} from 'styled-components';
 
@@ -8,6 +8,49 @@ type Props = {
     authorEmail: string;
     content: string;
     createdAt: string;
+    isUnread: boolean;
+};
+
+const Comment = ({outgoing, authorEmail, content, createdAt, isUnread}: Props) => {
+    const dateFormatter = useDateFormatter();
+
+    return (
+        <CommentRow>
+            <CommentRowContent outgoing={outgoing}>
+                <FlexGrow outgoing={outgoing}>
+                    <FlexRow>
+                        <IconContainer outgoing={outgoing}>
+                            {isUnread ? (
+                                <StyledPill level="primary" data-testid="unreadIcon" />
+                            ) : (
+                                <DialogIcon
+                                    color={outgoing ? onboarderTheme.color.grey140 : onboarderTheme.color.brand140}
+                                />
+                            )}
+                        </IconContainer>
+                        <ContentContainer>
+                            <FlexColumn>
+                                <AuthorEmailAndDate>
+                                    <span>{authorEmail}</span>,&nbsp;
+                                    <span>
+                                        {dateFormatter(createdAt, {
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            month: '2-digit',
+                                            year: 'numeric',
+                                        })}
+                                    </span>
+                                </AuthorEmailAndDate>
+                                <Content>"{content}"</Content>
+                            </FlexColumn>
+                        </ContentContainer>
+                    </FlexRow>
+                </FlexGrow>
+                <FillerContainer></FillerContainer>
+            </CommentRowContent>
+        </CommentRow>
+    );
 };
 
 const CommentRow = styled.div`
@@ -19,6 +62,10 @@ const IconContainer = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     margin: 14px 12.5px;
     border-right: 1px solid;
     padding-right: 12.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
     ${({outgoing}) =>
         !outgoing
             ? css`
@@ -86,42 +133,8 @@ const Content = styled.div`
     flex: 1 1 100%;
 `;
 
-const Comment = ({outgoing, authorEmail, content, createdAt}: Props) => {
-    const dateFormatter = useDateFormatter();
-
-    return (
-        <CommentRow>
-            <CommentRowContent outgoing={outgoing}>
-                <FlexGrow outgoing={outgoing}>
-                    <FlexRow>
-                        <IconContainer outgoing={outgoing}>
-                            <DialogIcon
-                                color={outgoing ? onboarderTheme.color.grey140 : onboarderTheme.color.brand140}
-                            />
-                        </IconContainer>
-                        <ContentContainer>
-                            <FlexColumn>
-                                <AuthorEmailAndDate>
-                                    <span>{authorEmail}</span>,&nbsp;
-                                    <span>
-                                        {dateFormatter(createdAt, {
-                                            day: '2-digit',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                            month: '2-digit',
-                                            year: 'numeric',
-                                        })}
-                                    </span>
-                                </AuthorEmailAndDate>
-                                <Content>"{content}"</Content>
-                            </FlexColumn>
-                        </ContentContainer>
-                    </FlexRow>
-                </FlexGrow>
-                <FillerContainer></FillerContainer>
-            </CommentRowContent>
-        </CommentRow>
-    );
-};
+const StyledPill = styled(Pill)`
+    background-color: ${onboarderTheme.color.brand100};
+`;
 
 export {Comment};

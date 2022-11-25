@@ -9,6 +9,7 @@ const backendResponse = {
     uploadedAt: '2022-07-22 16:50:45',
     uploadedByContributor: 'jimmy@supplier.com',
     uploadedBySupplier: '3d845092-0356-4895-8863-99a9a6ff172f',
+    importStatus: 'in_progress',
     retailerComments: [
         {
             content: 'This file is outdated, please send 2022 version instead.',
@@ -23,6 +24,7 @@ const backendResponse = {
             created_at: '2022-09-22T10:32:00+00:00',
         },
     ],
+    retailerLastReadAt: '2022-09-22T06:00:00+00:00',
 };
 
 test('it loads a product file', async () => {
@@ -37,18 +39,21 @@ test('it loads a product file', async () => {
 
     await act(async () => await waitForNextUpdate());
 
-    expect(result.current[0]).toEqual({
+    expect(result.current[0]).toStrictEqual({
         identifier: 'cd2c0741-0b27-4484-a927-b5e53c8f715c',
         originalFilename: 'file.xlsx',
         uploadedAt: '2022-07-22 16:50:45',
         contributor: 'jimmy@supplier.com',
         supplier: '3d845092-0356-4895-8863-99a9a6ff172f',
+        hasUnreadComments: true,
+        importStatus: 'in_progress',
         retailerComments: [
             {
                 content: 'This file is outdated, please send 2022 version instead.',
                 authorEmail: 'julia@akeneo.com',
                 createdAt: '2022-09-22T04:08:00+00:00',
                 outgoing: true,
+                isUnread: false,
             },
         ],
         supplierComments: [
@@ -57,6 +62,7 @@ test('it loads a product file', async () => {
                 authorEmail: 'jimmy@supplier.com',
                 createdAt: '2022-09-22T10:32:00+00:00',
                 outgoing: false,
+                isUnread: true,
             },
         ],
     });
