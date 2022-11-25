@@ -110,3 +110,9 @@ akeneo_data_quality_insights_find_families:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\FindFamiliesController
         _feature: data_quality_insights
     methods: [GET]
+
+liveblocks_auth:
+    path: /liveblocks/auth/{roomId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\LiveblocksController
+    methods: [POST]

@@ -77,3 +77,9 @@ services:
         arguments:
             - '@pim_enrich.repository.family.search'
             - '@pim_internal_api_serializer'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\LiveblocksController:
+        public: true
+        arguments:
+            - '@http_client'
+            - '@pim_user.context.user'

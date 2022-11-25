@@ -1,16 +1,29 @@
-import {createClient, Json} from '@liveblocks/client';
-import { createRoomContext } from '@liveblocks/react';
+import {createClient} from '@liveblocks/client';
+import {createRoomContext} from '@liveblocks/react';
+const Routing = require('routing');
+
 const client = createClient({
-    publicApiKey: 'pk_dev_G4kaySINOe1hRVzJvUMR0oh6YjmCOV5Hb_u3ZuBfQNlo6bL-jZBwcemOmSPLqC-K',
+  authEndpoint: async (room: string) => {
+    const response = await fetch(Routing.generate('liveblocks_auth', {roomId: room}), {
+      method: 'POST',
+      headers: {
+        Authentication: 'token',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return await JSON.parse(await response.json());
+  },
 });
+
 type UserMeta = {
-    id?: string;
-    info?: Json;
+  id: string;
+  info: {
+    name: string;
+    picture: string;
+  };
 };
 
 export const {
-    suspense: {
-        RoomProvider,
-        useOthers,
-    },
+  suspense: {RoomProvider, useOthers, useSelf},
 } = createRoomContext<UserMeta>(client);
