@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Command;
 
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppRemover;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -84,6 +86,52 @@ class CatalogFixtureCommand extends Command
                 $user->getUserIdentifier(),
             ));
 
+            $catalogWithMappingId = Uuid::uuid4()->toString();
+
+            $this->commandBus->execute(new CreateCatalogCommand(
+                $catalogWithMappingId,
+                'Store with Mapping',
+                $user->getUserIdentifier(),
+            ));
+
+            $productMapping = [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'name' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'description' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'erp_name' => [
+                    'source' => 'erp_name',
+                    'scope' => null,
+                    'locale' => 'en_US',
+                ],
+                'meta_title' => [
+                    'source' => 'meta_title',
+                    'scope' => null,
+                    'locale' => 'en_US',
+                ],
+            ];
+
+            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
+
+            /** @var object $productMappingSchema */
+            $productMappingSchema = \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR);
+
+            $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
+                $catalogWithMappingId,
+                $productMappingSchema,
+            ));
+
             $this->connection->commit();
 
             return self::SUCCESS;
@@ -94,5 +142,56 @@ class CatalogFixtureCommand extends Command
 
             return self::FAILURE;
         }
+    }
+
+    /**
+     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null}> $productMapping
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function setCatalogProductMapping(string $id, array $productMapping): void
+    {
+        $this->connection->executeQuery(
+            'UPDATE akeneo_catalog SET product_mapping = :productMapping WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+                'productMapping' => $productMapping,
+            ],
+            [
+                'productMapping' => Types::JSON,
+            ]
+        );
+    }
+
+    private function getProductMappingSchemaRaw(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "erp_name": {
+              "type": "string",
+              "title": "Erp name"
+            },
+            "meta_title": {
+              "type": "string",
+              "title": "Meta title"
+            }
+          }
+        }
+        JSON_WRAP;
     }
 }
