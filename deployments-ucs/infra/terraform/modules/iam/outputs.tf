@@ -25,5 +25,5 @@ output "datadog_gcp_integration_email" {
 
 output "datadog_gcp_integration_id" {
   description = "Datadog GCP integration service account id"
-  value       = google_service_account.timmy_datadog_gcp_integration.account_id
+  value       = google_service_account.timmy_datadog_gcp_integration.unique_id
 }

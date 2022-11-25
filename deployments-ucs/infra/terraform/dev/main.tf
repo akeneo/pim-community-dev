@@ -259,6 +259,24 @@ module "timmy_datadog" {
   datadog_gcp_integration_email = module.iam.datadog_gcp_integration_email
 }
 
+module "timmy_datadog_firestore_eur" {
+  source                             = "../modules/datadog"
+  project_id                         = "akecld-prd-pim-fire-eur-dev"
+  datadog_api_key                    = local.datadog_api_key
+  datadog_app_key                    = local.datadog_app_key
+  datadog_gcp_integration_id         = module.firestore_eur.datadog_gcp_integration_id
+  datadog_gcp_integration_email      = module.firestore_eur.datadog_gcp_integration_email
+}
+
+module "timmy_datadog_firestore_us" {
+  source                             = "../modules/datadog"
+  project_id                         = "akecld-prd-pim-fire-us-dev"
+  datadog_api_key                    = local.datadog_api_key
+  datadog_app_key                    = local.datadog_app_key
+  datadog_gcp_integration_id         = module.firestore_us.datadog_gcp_integration_id
+  datadog_gcp_integration_email      = module.firestore_us.datadog_gcp_integration_email
+}
+
 provider "datadog" {
   api_key = local.datadog_api_key
   app_key = local.datadog_app_key
