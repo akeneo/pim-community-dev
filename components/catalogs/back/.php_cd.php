@@ -89,6 +89,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Query',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
+            'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids',
 
             // used in Persistence\Category
             'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',

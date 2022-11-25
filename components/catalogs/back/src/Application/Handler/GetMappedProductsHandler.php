@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
@@ -19,15 +19,14 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
- * @phpstan-import-type Product from GetProductsQueryInterface
- * @phpstan-import-type ProductValue from GetProductsQueryInterface
+ * @phpstan-import-type RawProduct from GetRawProductsQueryInterface
  */
 final class GetMappedProductsHandler
 {
     public function __construct(
         private GetCatalogQueryInterface $getCatalogQuery,
         private CatalogsMappingStorageInterface $catalogsMappingStorage,
-        private GetProductsQueryInterface $getProductsQuery,
+        private GetRawProductsQueryInterface $getRawProductsQuery,
     ) {
     }
 
@@ -46,7 +45,7 @@ final class GetMappedProductsHandler
             throw new CatalogDisabledException();
         }
 
-        $products = $this->getProductsQuery->execute(
+        $products = $this->getRawProductsQuery->execute(
             $catalog,
             $query->getSearchAfter(),
             $query->getLimit(),
@@ -58,7 +57,7 @@ final class GetMappedProductsHandler
     }
 
     /**
-     * @param array<Product> $products
+     * @param array<RawProduct> $products
      *
      * @return array<MappedProduct>
      */
@@ -68,7 +67,7 @@ final class GetMappedProductsHandler
         $productMapping = $catalog->getProductMapping();
 
         return \array_map(
-            /** @param Product $product */
+            /** @param RawProduct $product */
             function (array $product) use ($productMappingSchema, $productMapping): array {
                 $mappedProduct = [];
 
@@ -77,7 +76,7 @@ final class GetMappedProductsHandler
                     $sourceValue = '';
 
                     if ('uuid' === $target) {
-                        $sourceValue = $product['uuid'];
+                        $sourceValue = $product['uuid']->toString();
                     } elseif (\array_key_exists($target, $productMapping)) {
                         $sourceValue = $this->getProductAttributeValue(
                             $product,
@@ -128,18 +127,13 @@ final class GetMappedProductsHandler
     }
 
     /**
-     * @param Product $product
+     * @param RawProduct $product
      */
     private function getProductAttributeValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string
     {
-        if (null !== $attributeCode && \array_key_exists($attributeCode, $product['values'])) {
-            /** @var ProductValue $attributeValues */
-            foreach ($product['values'][$attributeCode] as $attributeValues) {
-                if ($attributeValues['locale'] === $locale && $attributeValues['scope'] === $scope) {
-                    return (string) $attributeValues['data'];
-                }
-            }
-        }
-        return '';
+        $scope ??= '<all_channels>';
+        $locale ??= '<all_locales>';
+
+        return $product['raw_values'][$attributeCode][$scope][$locale] ?? '';
     }
 }
