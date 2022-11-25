@@ -10,6 +10,7 @@ const backendResponse = {
             uploadedByContributor: 'a@a.a',
             hasUnreadComments: false,
             importStatus: 'in_progress',
+            originalFilename: 'file1.xlsx',
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
@@ -18,6 +19,7 @@ const backendResponse = {
             uploadedByContributor: 'a@a.a',
             hasUnreadComments: true,
             importStatus: 'in_progress',
+            originalFilename: 'file2.xlsx',
         },
     ],
     total: 2,
@@ -45,6 +47,7 @@ test('it loads the product files', async () => {
             contributor: 'a@a.a',
             hasUnreadComments: false,
             importStatus: 'in_progress',
+            filename: 'file1.xlsx',
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
@@ -52,6 +55,7 @@ test('it loads the product files', async () => {
             contributor: 'a@a.a',
             hasUnreadComments: true,
             importStatus: 'in_progress',
+            filename: 'file2.xlsx',
         },
     ]);
     expect(result.current[1]).toBe(backendResponse.total);

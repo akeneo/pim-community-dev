@@ -51,6 +51,9 @@ const ProductFilesList = ({
                                 {translate('supplier_portal.product_file_dropping.supplier_files.columns.upload_date')}
                             </Table.HeaderCell>
                             <Table.HeaderCell>
+                                {translate('supplier_portal.product_file_dropping.supplier_files.columns.filename')}
+                            </Table.HeaderCell>
+                            <Table.HeaderCell>
                                 {translate('supplier_portal.product_file_dropping.supplier_files.columns.contributor')}
                             </Table.HeaderCell>
                             {displaySupplierColumn && (
@@ -79,6 +82,9 @@ const ProductFilesList = ({
                                         onClick={() => goToProductFile(productFile.identifier)}
                                     >
                                         <Table.Cell>{uploadedDate}</Table.Cell>
+                                        <Table.Cell>
+                                            <FilenameCell>{productFile.filename}</FilenameCell>
+                                        </Table.Cell>
                                         <Table.Cell>{productFile.contributor}</Table.Cell>
                                         {displaySupplierColumn && (
                                             <Table.Cell>
@@ -142,6 +148,11 @@ const StyledPill = styled(Pill)`
 
 const HasUnreadCommentsCell = styled(Table.Cell)`
     width: 10px;
+`;
+
+const FilenameCell = styled.span`
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 export {ProductFilesList};
