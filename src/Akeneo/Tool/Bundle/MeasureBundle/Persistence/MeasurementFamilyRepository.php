@@ -12,7 +12,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
@@ -103,7 +103,7 @@ SQL;
             'code' => $excludedMeasurementFamilyCode->normalize(),
         ]);
 
-        return (int) $statement->fetch(\PDO::FETCH_COLUMN);
+        return (int) $statement->fetchOne();
     }
 
     public function clear(): void

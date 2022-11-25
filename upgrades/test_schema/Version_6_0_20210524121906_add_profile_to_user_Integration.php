@@ -38,7 +38,7 @@ class Version_6_0_20210524121906_add_profile_to_user_Integration extends TestCas
 
     private function updatedColumnExists(): bool
     {
-        $columns = $this->getConnection()->getSchemaManager()->listTableColumns('oro_user');
+        $columns = $this->getConnection()->createSchemaManager()->listTableColumns('oro_user');
 
         return isset($columns['profile']);
     }

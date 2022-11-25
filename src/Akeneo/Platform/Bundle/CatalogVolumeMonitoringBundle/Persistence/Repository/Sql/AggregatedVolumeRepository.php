@@ -42,6 +42,6 @@ SQL;
         $stmt->bindValue('volume', $aggregatedVolume->getVolume(), Types::JSON);
         $stmt->bindValue('aggregatedAt', $aggregatedVolume->aggregatedAt(), Types::DATETIME_MUTABLE);
 
-        $stmt->execute();
+        $stmt->executeStatement();
     }
 }

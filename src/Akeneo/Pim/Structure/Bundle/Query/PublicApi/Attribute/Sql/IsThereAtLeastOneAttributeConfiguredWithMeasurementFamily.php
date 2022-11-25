@@ -31,6 +31,6 @@ WHERE metric_family = :metric_family
 AND attribute_type = 'pim_catalog_metric';
 SQL;
         $stmt = $this->connection->executeQuery($query, ['metric_family' => $metricFamilyCode]);
-        return $this->connection->convertToPHPValue($stmt->fetch(\PDO::FETCH_COLUMN), Types::BOOLEAN);
+        return $this->connection->convertToPHPValue($stmt->fetchOne(), Types::BOOLEAN);
     }
 }

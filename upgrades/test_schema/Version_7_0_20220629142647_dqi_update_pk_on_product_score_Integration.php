@@ -27,7 +27,7 @@ final class Version_7_0_20220629142647_dqi_update_pk_on_product_score_Integratio
 
     private function getPrimaryKeyColumnName(): array
     {
-        $indexes = $this->get('database_connection')->getSchemaManager()->listTableIndexes('pim_data_quality_insights_product_score');
+        $indexes = $this->get('database_connection')->createSchemaManager()->listTableIndexes('pim_data_quality_insights_product_score');
         $this->assertArrayHasKey('primary', $indexes);
         $pkIndex = $indexes['primary'];
 

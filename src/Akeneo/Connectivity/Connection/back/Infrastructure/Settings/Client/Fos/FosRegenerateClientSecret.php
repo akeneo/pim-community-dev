@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateClientSecretInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
-use Doctrine\DBAL\Driver\Connection as DbalConnection;
+use Doctrine\DBAL\Connection as DbalConnection;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Util\Random;
 

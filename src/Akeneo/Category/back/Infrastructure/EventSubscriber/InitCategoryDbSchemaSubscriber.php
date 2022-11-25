@@ -32,7 +32,7 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
 
     private function addValueCollectionInCategoryTable()
     {
-        $columns = $this->dbalConnection->getSchemaManager()->listTableColumns('pim_catalog_category');
+        $columns = $this->dbalConnection->createSchemaManager()->listTableColumns('pim_catalog_category');
         if (array_key_exists('value_collection', $columns)) {
             return;
         }

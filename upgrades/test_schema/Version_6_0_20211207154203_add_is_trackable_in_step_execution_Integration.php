@@ -62,7 +62,7 @@ class Version_6_0_20211207154203_add_is_trackable_in_step_execution_Integration 
 
     private function columnExists(): bool
     {
-        $columns = $this->connection->getSchemaManager()->listTableColumns('akeneo_batch_step_execution');
+        $columns = $this->connection->createSchemaManager()->listTableColumns('akeneo_batch_step_execution');
 
         return array_key_exists('is_trackable', $columns);
     }
