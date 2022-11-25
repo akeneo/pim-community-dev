@@ -470,3 +470,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductUuids'
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductModelCodes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductModelCodes'
+        arguments:
+            - '@database_connection'

@@ -55,7 +55,7 @@ class ChunkProductUuidsIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function givenProductsWithRawValuesSize(array $productSizes)
+    private function givenProductsWithRawValuesSize(array $productSizes): array
     {
         $uuids = [];
         $dbalConnection = $this->get('database_connection');
