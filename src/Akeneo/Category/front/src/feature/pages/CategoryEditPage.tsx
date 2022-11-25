@@ -288,8 +288,6 @@ const CategoryEditPage: FC = () => {
               attributeValues={category.attributes}
               template={template}
               onAttributeValueChange={onChangeAttribute}
-              locale={catalogLocale}
-              setLocale={setCatalogLocale}
             />
           )}
         {isCurrent(Tabs.PROPERTY) && category && (

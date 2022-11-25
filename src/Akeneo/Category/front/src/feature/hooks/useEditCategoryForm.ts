@@ -31,13 +31,13 @@ const useEditCategoryForm = (categoryId: number) => {
   const [applyPermissionsOnChildren, setApplyPermissionsOnChildren] = useState(true);
 
   const [historyVersion, setHistoryVersion] = useState<number>(0);
-  const {setCanLeavePage, locales} = useContext(EditCategoryContext);
+  const {setCanLeavePage, channels, locales} = useContext(EditCategoryContext);
 
   const isModified =
     categoryStatus === 'fetched' && !!category && !!categoryEdited && !categoriesAreEqual(category, categoryEdited);
 
-  const initializeEditionState = useCallback(function (category: EnrichCategory, template: Template | null, locales) {
-    const populated = populateCategory(category, template, Object.keys(locales));
+  const initializeEditionState = useCallback(function (category: EnrichCategory, template: Template | null, channels, locales) {
+    const populated = populateCategory(category, template, Object.keys(channels), Object.keys(locales));
     setCategory(populated);
     setCategoryEdited(cloneDeep(populated));
   }, []);
@@ -50,7 +50,7 @@ const useEditCategoryForm = (categoryId: number) => {
   // initializing category edition state
   useEffect(() => {
     if (fetchedCategory === null) return;
-    initializeEditionState(fetchedCategory, template ?? null, locales);
+    initializeEditionState(fetchedCategory, template ?? null, channels, locales);
   }, [fetchedCategory, template, locales]);
 
   useEffect(() => {
@@ -76,11 +76,11 @@ const useEditCategoryForm = (categoryId: number) => {
     const response = await saveEditCategoryForm(router, categoryEdited, {
       applyPermissionsOnChildren,
       populateResponseCategory: (category: EnrichCategory) =>
-        populateCategory(category, template, Object.keys(locales)),
+        populateCategory(category, template, Object.keys(channels), Object.keys(locales)),
     });
 
     if (response.success) {
-      initializeEditionState(response.category, template ?? null, locales);
+      initializeEditionState(response.category, template ?? null, channels, locales);
       setHistoryVersion((prevVersion: number) => prevVersion + 1);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
@@ -93,6 +93,7 @@ const useEditCategoryForm = (categoryId: number) => {
     initializeEditionState,
     translate,
     notify,
+    channels,
     locales,
     template,
   ]);
@@ -119,18 +120,19 @@ const useEditCategoryForm = (categoryId: number) => {
   };
 
   const onChangeAttribute = useCallback(
-    (attribute: Attribute, localeCode: string | null, attributeValue: CategoryAttributeValueData) => {
+    (attribute: Attribute, channelCode: string | null, localeCode: string | null, attributeValue: CategoryAttributeValueData) => {
       if (categoryEdited === null) {
         return;
       }
 
-      const compositeKey = buildCompositeKey(attribute, localeCode);
-      const compositeKeyWithoutLocale = buildCompositeKey(attribute);
+      const compositeKey = buildCompositeKey(attribute, channelCode, localeCode);
+      const compositeKeyWithoutChannelAndLocale = buildCompositeKey(attribute);
 
       const value = {
         data: attributeValue,
+        channel: attribute.is_scopable ? channelCode : null,
         locale: attribute.is_localizable ? localeCode : null,
-        attribute_code: compositeKeyWithoutLocale,
+        attribute_code: compositeKeyWithoutChannelAndLocale,
       };
 
       const newCategoryEdited = set(['attributes', compositeKey], value, categoryEdited);

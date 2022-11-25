@@ -29,14 +29,14 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
 
         $categoryCode = 'myCategory';
         $baseCompositeKey = 'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
-        $expectedCompositeKey = $baseCompositeKey . AbstractValue::SEPARATOR . 'en_US';
+        $expectedCompositeKey = $baseCompositeKey . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US';
 
         $expectedData = ValueCollection::fromArray([
             TextValue::fromApplier(
                 value: 'Meta shoes',
                 uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 code: 'seo_meta_description',
-                channel: null,
+                channel: 'ecommerce',
                 locale: 'en_US'
             )
         ]);
@@ -75,7 +75,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $categoryInserted = $this->insertBaseCategory($categoryCode);
 
         $baseCompositeKey = 'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
-        $expectedCompositeKey = $baseCompositeKey . AbstractValue::SEPARATOR . 'en_US';
+        $expectedCompositeKey = $baseCompositeKey . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US';
 
         $expectedParentId = new CategoryId($categoryInserted->getId()->getValue());
 
@@ -85,7 +85,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
                 value: 'Meta shoes',
                 uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 code: 'seo_meta_description',
-                channel: null,
+                channel: 'ecommerce',
                 locale: 'en_US'
             )
         ]);

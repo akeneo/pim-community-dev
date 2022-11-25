@@ -38,11 +38,13 @@ class AttributeApiRequirementChecker implements RequirementChecker
     {
         foreach ($attributeValues as $key => $value) {
             self::assertKeyExist($value, 'data');
+            self::assertKeyExist($value, 'channel');
             self::assertKeyExist($value, 'locale');
             self::assertKeyExist($value, 'attribute_code');
 
             try {
                 Assert::stringNotEmpty($key);
+                Assert::nullOrStringNotEmpty($value['channel']);
                 Assert::nullOrStringNotEmpty($value['locale']);
                 Assert::notEmpty($value['attribute_code']);
             } catch (\InvalidArgumentException $exception) {

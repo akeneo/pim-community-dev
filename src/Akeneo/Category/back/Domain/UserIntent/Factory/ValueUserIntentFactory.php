@@ -79,7 +79,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
     /**
      * Get a list of category attribute uuids from a local composite key list.
      *
-     * @param array<string> $localeCompositeKeys (example: ['code|uuid|locale'])
+     * @param array<string> $localeCompositeKeys (example: ['code|uuid|channel|locale'])
      *
      * @return AttributeUuid[]
      */
@@ -104,6 +104,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
      *      mime_type: string,
      *      original_filename: string,
      *     } | string | null,
+     *     channel: string|null,
      *     locale: string|null,
      *     attribute_code: string
      * } $value
@@ -124,6 +125,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
      *      mime_type: string,
      *      original_filename: string,
      *     } | string | null,
+     *     channel: string|null,
      *     locale: string|null,
      *     attribute_code: string
      * } $value
@@ -138,10 +140,10 @@ final class ValueUserIntentFactory implements UserIntentFactory
         $code = $identifiers[0];
 
         return match ((string) $attributeType) {
-            AttributeType::TEXTAREA => new SetTextArea($uuid, $code, $value['locale'], $value['data']),
-            AttributeType::RICH_TEXT => new SetRichText($uuid, $code, $value['locale'], $value['data']),
-            AttributeType::TEXT => new SetText($uuid, $code, $value['locale'], $value['data']),
-            AttributeType::IMAGE => new SetImage($uuid, $code, $value['locale'], $value['data']),
+            AttributeType::TEXTAREA => new SetTextArea($uuid, $code, $value['channel'], $value['locale'], $value['data']),
+            AttributeType::RICH_TEXT => new SetRichText($uuid, $code, $value['channel'], $value['locale'], $value['data']),
+            AttributeType::TEXT => new SetText($uuid, $code, $value['channel'], $value['locale'], $value['data']),
+            AttributeType::IMAGE => new SetImage($uuid, $code, $value['channel'], $value['locale'], $value['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }

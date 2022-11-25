@@ -44,8 +44,8 @@ class SetImageApplierSpec extends ObjectBehavior
             ],
             uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
             code: 'hero_banner',
+            channel: 'ecommerce',
             locale: 'en_US',
-            channel: null
         );
         $attributes = ValueCollection::fromArray([$givenImageValue]);
 
@@ -60,6 +60,7 @@ class SetImageApplierSpec extends ObjectBehavior
         $userIntent = new SetImage(
             attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
             attributeCode: 'hero_banner',
+            channelCode: 'ecommerce',
             localeCode: 'en_US',
             value: [
                 'size' => 168107,
@@ -81,8 +82,8 @@ class SetImageApplierSpec extends ObjectBehavior
                 ],
                 uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 code: 'hero_banner',
-                locale: 'en_US',
-                channel: null
+                channel: 'ecommerce',
+                locale: 'en_US'
             )
         ]);
 

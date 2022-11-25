@@ -1,5 +1,5 @@
 import {clone, cloneDeep, identity, isEqual, sortBy} from 'lodash/fp';
-import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
+import {LabelCollection, LocaleCode, ChannelCode} from '@akeneo-pim-community/shared';
 import {
   Attribute,
   attributeDefaultValues,
@@ -51,9 +51,10 @@ export function categoriesAreEqual(c1: EnrichCategory, c2: EnrichCategory): bool
 export function getAttributeValue(
   attributes: CategoryAttributes,
   attribute: Attribute,
+  channelCode: ChannelCode,
   localeCode: LocaleCode
 ): CategoryAttributeValueData | undefined {
-  const compositeKey = buildCompositeKey(attribute, localeCode);
+  const compositeKey = buildCompositeKey(attribute, channelCode, localeCode);
   const value = attributes[compositeKey];
   return value ? value.data : undefined;
 }
@@ -62,12 +63,14 @@ export function getAttributeValue(
  * return a copy of the given category where all attributes defined in template are valued
  * @param category the category to populate
  * @param template the template describing the attribute of this category
+ * @param channels the channels to consider when generating default values
  * @param locales the locales to consider when generating default values
  * @return the populated category
  */
 function populateCategoryAttributes(
   category: EnrichCategory,
   template: Template | null | undefined,
+  channels: ChannelCode[],
   locales: LocaleCode[]
 ): EnrichCategory {
   const fixedCategory = clone(category);
@@ -81,7 +84,7 @@ function populateCategoryAttributes(
     if (fixedCategory.attributes.hasOwnProperty(code)) return;
 
     fixedCategory.attributes = {
-      ...buildCategoryAttributeValues(attribute, locales),
+      ...buildCategoryAttributeValues(attribute, channels, locales),
       // attributes values coming from the category in arguments must take precedence over generared ones
       ...fixedCategory.attributes,
     };
@@ -99,20 +102,25 @@ function populateCategoryAttributes(
  * Generate a CategoryAttributes structure for a given attribute in the requested locales.
  * If the attribute in not localizable, then only one attribute value will be generated.
  * @param attribute the attribute for which we want to geenrate values
+ * @param channels the channels to consider to build attribute values
  * @param locales the locales to consider to build attribute values
  * @returns the attributes values
  */
-function buildCategoryAttributeValues(attribute: Attribute, locales: LocaleCode[]): CategoryAttributes {
+function buildCategoryAttributeValues(attribute: Attribute, channels: ChannelCode[], locales: LocaleCode[]): CategoryAttributes {
   const attributesValues = {};
+  const applicableChannels = attribute.is_scopable ? channels : [null];
   const applicableLocales = attribute.is_localizable ? locales : [null];
-  for (const locale of applicableLocales) {
-    const key = buildCompositeKey(attribute, locale);
-    const keyNoLocale = locale === null ? key : buildCompositeKey(attribute, null);
-    attributesValues[key] = {
-      data: attributeDefaultValues[attribute.type],
-      locale,
-      attribute_code: keyNoLocale,
-    };
+  for (const channel of applicableChannels) {
+    for (const locale of applicableLocales) {
+      const key = buildCompositeKey(attribute, channel, locale);
+      const keyNoLocale = locale === null ? key : buildCompositeKey(attribute);
+      attributesValues[key] = {
+        data: attributeDefaultValues[attribute.type],
+        channel: channel,
+        locale: locale,
+        attribute_code: keyNoLocale,
+      };
+    }
   }
   return attributesValues;
 }
@@ -123,6 +131,7 @@ function buildCategoryAttributeValues(attribute: Attribute, locales: LocaleCode[
 export function populateCategory(
   category: EnrichCategory,
   template: Template | null | undefined,
+  channels: ChannelCode[],
   locales: LocaleCode[]
 ): EnrichCategory {
   let populated = cloneDeep(category);
@@ -133,7 +142,7 @@ export function populateCategory(
     populated.properties.labels = {};
   }
 
-  populated = populateCategoryAttributes(populated, template, locales);
+  populated = populateCategoryAttributes(populated, template, channels, locales);
 
   return populated;
 }
