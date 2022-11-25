@@ -28,14 +28,14 @@ final class LiveblocksController
 
         return $this->authorize($roomId, (string) $user->getId(), [
             'name' => $user->getFullName(),
-            'picture' => $user->getAvatar()
+            'picture' => $user->getAvatar() ? $user->getAvatar()->getKey() : null
         ]);
     }
 
     private function authorize(string $roomId, string $userId, array $userInfo): JsonResponse
     {
         $response = $this->httpClient->request(
-            'POST', sprintf('https://api.liveblocks.io/v2/rooms/13710067/authorize', urlencode($roomId)), [
+            'POST', sprintf('https://api.liveblocks.io/v2/rooms/%s/authorize', urlencode($roomId)), [
             'headers' => [
                 'Authorization' => 'Bearer ' . self::SECRET_KEY,
                 'Content-Type' => 'application/json'

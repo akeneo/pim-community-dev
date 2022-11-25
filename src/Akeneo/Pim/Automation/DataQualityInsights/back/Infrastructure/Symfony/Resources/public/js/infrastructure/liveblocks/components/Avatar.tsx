@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import {getFontSize} from 'akeneo-design-system';
 
-const IMAGE_SIZE = 48;
+const Routing = require('pim/router');
 
 interface Props {
   picture: string;
@@ -9,49 +10,30 @@ interface Props {
 }
 
 export function Avatar(props: Props) {
+  const pictureUrl =
+    props.picture !== null
+      ? Routing.generate('pim_enrich_media_show', {
+        filename: encodeURIComponent(props.picture),
+        filter: 'thumbnail_small',
+      })
+      : 'bundles/pimui/images/info-user.png';
+
   return (
-    <AvatarDiv data-tooltip={props.name}>
-      <AvatarImg
-        src={props.picture ?? 'bundles/pimui/images/info-user.png'}
-        height={IMAGE_SIZE}
-        width={IMAGE_SIZE}
-      />
-    </AvatarDiv>
+    <Container>
+      <Image src={pictureUrl ?? 'bundles/pimui/images/info-user.png'} title={props.name} />
+    </Container>
   );
 }
 
-const AvatarDiv = styled.div`
+const Container = styled.div`
   display: flex;
-  place-content: center;
-  position: relative;
-  border: 4px solid #fff;
-  border-radius: 9999px;
-  width: 56px;
-  height: 56px;
-  background-color: #9ca3af;
-  margin-left: -0.75rem;
-
-  ::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    opacity: 0;
-    transition: opacity 0.15s ease;
-    padding: 5px 10px;
-    color: white;
-    font-size: 0.75rem;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    z-index: 1;
-    background: black;
-    white-space: nowrap;
-  }
-
-  :hover:before {
-    opacity: 1;
-  }
+  align-items: center;
+  font-size: ${getFontSize('big')};
+  gap: 1ch;
 `;
 
-const AvatarImg = styled.img`
-  border-radius: 9999px;
+const Image = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
 `;
