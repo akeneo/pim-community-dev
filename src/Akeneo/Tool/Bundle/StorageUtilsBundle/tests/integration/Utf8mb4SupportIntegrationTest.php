@@ -26,16 +26,16 @@ class Utf8mb4SupportIntegrationTest extends TestCase
     {
         parent::setup();
         $this->connection = $this->get('doctrine.orm.entity_manager')->getConnection();
-        $this->schemaManager = $this->connection->getSchemaManager();
+        $this->schemaManager = $this->connection->createSchemaManager();
     }
 
-    public function testUtf8mb4Support() : void
+    public function testUtf8mb4Support(): void
     {
         if ($this->schemaManager->tablesExist([self::TEST_TABLE_NAME])) {
             $this->schemaManager->dropTable(self::TEST_TABLE_NAME);
         }
 
-        $schema = $this->schemaManager->createSchema();
+        $schema = $this->schemaManager->introspectSchema();
 
         $myTestTable = $schema->createTable(self::TEST_TABLE_NAME);
         $myTestTable->addColumn('id', 'integer');
@@ -50,12 +50,12 @@ class Utf8mb4SupportIntegrationTest extends TestCase
         );
         $myTestTableSql = reset($myTestTableSql);
 
-        $this->connection->exec($myTestTableSql);
+        $this->connection->executeStatement($myTestTableSql);
 
         $insertCount = $this->connection->insert(
             self::TEST_TABLE_NAME,
             [
-                'id' =>1,
+                'id' => 1,
                 'name' => '𝌆'
             ]
         );
@@ -63,14 +63,14 @@ class Utf8mb4SupportIntegrationTest extends TestCase
         $this->assertEquals(1, $insertCount);
 
         $resultFromDb = $this->connection->fetchOne(
-            "SELECT name FROM ".self::TEST_TABLE_NAME." WHERE name = ?",
+            "SELECT name FROM " . self::TEST_TABLE_NAME . " WHERE name = ?",
             ["𝌆"]
         );
 
         $this->assertEquals("𝌆", $resultFromDb);
     }
 
-    public function tearDown() : void
+    public function tearDown(): void
     {
         if ($this->schemaManager->tablesExist([self::TEST_TABLE_NAME])) {
             $this->schemaManager->dropTable(self::TEST_TABLE_NAME);

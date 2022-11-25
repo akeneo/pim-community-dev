@@ -44,7 +44,7 @@ class DatabaseSchemaHandler
      */
     public function reset()
     {
-        $schemaManager = $this->dbConnection->getSchemaManager();
+        $schemaManager = $this->dbConnection->createSchemaManager();
         $tables = array_merge($schemaManager->listTableNames(), ['pim_session']);
 
         $purger = new DBALPurger(

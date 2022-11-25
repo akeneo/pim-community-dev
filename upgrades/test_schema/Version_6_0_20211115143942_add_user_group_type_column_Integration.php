@@ -61,7 +61,7 @@ class Version_6_0_20211115143942_add_user_group_type_column_Integration extends 
 
     private function typeColumnExists(): bool
     {
-        $columns = $this->connection->getSchemaManager()->listTableColumns('oro_access_group');
+        $columns = $this->connection->createSchemaManager()->listTableColumns('oro_access_group');
 
         return isset($columns['type']);
     }
@@ -72,7 +72,7 @@ class Version_6_0_20211115143942_add_user_group_type_column_Integration extends 
 SELECT name, type
 FROM oro_access_group
 SQL;
-        $data = $this->connection->executeQuery($query)->fetchAll();
+        $data = $this->connection->executeQuery($query)->fetchAllAssociative();
 
         return array_column($data, 'type', 'name');
     }

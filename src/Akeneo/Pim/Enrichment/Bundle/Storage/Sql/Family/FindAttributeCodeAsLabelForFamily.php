@@ -28,7 +28,7 @@ class FindAttributeCodeAsLabelForFamily implements FindAttributeCodeAsLabelForFa
           INNER JOIN pim_catalog_attribute a ON f.label_attribute_id = a.id
         WHERE (f.code = :code)
 SQL;
-        $result = $this->connection->executeQuery($sql, ['code' => $code])->fetch(\PDO::FETCH_COLUMN);
+        $result = $this->connection->executeQuery($sql, ['code' => $code])->fetchOne();
 
         if (!is_string($result)) {
             return null;

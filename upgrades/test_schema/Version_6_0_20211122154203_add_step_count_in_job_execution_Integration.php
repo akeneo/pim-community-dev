@@ -80,7 +80,7 @@ class Version_6_0_20211122154203_add_step_count_in_job_execution_Integration ext
 
     private function columnExists(): bool
     {
-        $columns = $this->connection->getSchemaManager()->listTableColumns('akeneo_batch_job_execution');
+        $columns = $this->connection->createSchemaManager()->listTableColumns('akeneo_batch_job_execution');
 
         return isset($columns['step_count']);
     }
@@ -107,7 +107,7 @@ class Version_6_0_20211122154203_add_step_count_in_job_execution_Integration ext
         return (int) $this->connection->executeQuery(
             'SELECT id FROM akeneo_batch_job_instance WHERE code = :code',
             ['code' => $code],
-        )->fetchColumn();
+        )->fetchOne();
     }
 
     private function selectJobExecutions(): array

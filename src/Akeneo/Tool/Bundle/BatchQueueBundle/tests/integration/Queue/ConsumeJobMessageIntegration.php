@@ -213,7 +213,7 @@ class ConsumeJobMessageIntegration extends TestCase
         return $this->getConnection()->executeQuery(
             'SELECT status, exit_code, health_check_time from akeneo_batch_job_execution where id = :id',
             ['id' => $jobExecution->getId()]
-        )->fetch();
+        )->fetchAssociative();
     }
 
     protected function getConnection(): Connection
