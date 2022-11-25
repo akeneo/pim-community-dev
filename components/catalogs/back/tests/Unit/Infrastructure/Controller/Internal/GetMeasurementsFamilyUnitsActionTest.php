@@ -45,7 +45,7 @@ class GetMeasurementsFamilyUnitsActionTest extends TestCase
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             ),
-            'code'
+        'code'
         );
     }
 }
