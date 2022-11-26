@@ -101,9 +101,6 @@ akeneo_catalogs:
         label: フィルタ
         option:
           all: すべて
-      table:
-        target: ターゲット
-        source: ソース
     source:
       placeholder:
         title: ソースを選択
