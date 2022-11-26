@@ -101,9 +101,6 @@ akeneo_catalogs:
         label: 필터
         option:
           all: 모두
-      table:
-        target: 대상
-        source: 소스
     source:
       placeholder:
         title: 소스 선택

@@ -101,9 +101,6 @@ akeneo_catalogs:
         label: 筛选器
         option:
           all: 所有
-      table:
-        target: 目标
-        source: 源
     source:
       placeholder:
         title: 选择源
