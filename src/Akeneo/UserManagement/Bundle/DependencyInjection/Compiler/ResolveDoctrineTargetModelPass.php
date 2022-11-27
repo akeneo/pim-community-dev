@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\DependencyInjection\Compiler;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
@@ -21,6 +22,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     {
         return [
             UserInterface::class => 'pim_user.entity.user.class',
+            GroupInterface::class => 'pim_user.entity.group.class',
         ];
     }
 }
