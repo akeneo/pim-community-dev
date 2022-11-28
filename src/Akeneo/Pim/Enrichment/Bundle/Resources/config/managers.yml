@@ -11,4 +11,3 @@ services:
     Akeneo\Category\Infrastructure\Component\Manager\PositionResolver:
         arguments:
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes'
-            - '@feature_flags'
