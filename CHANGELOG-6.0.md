@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.56 (2022-11-28)
+
 ## Bug fixes
 
 PIM-10734: Assets export fails because of a failed warning messages
