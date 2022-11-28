@@ -96,6 +96,7 @@ supplier_portal:
                     content: Sorry about this inconvenience, please try again in a few moments.
             tabs:
                 discussion: Discussion
+                general_information: General information
             discussion:
                 import_file_button_label: Import file
                 info: Send comments when you need to exchange information with your suppliers.
@@ -108,6 +109,12 @@ supplier_portal:
                 max_comment_length_reached: The comment should not exceed 255 characters.
                 max_number_of_comments_reached: You've reached the comment limit.
                 product_file_does_not_exist_anymore: Sorry this product file has been automatically deleted after 90 days and cannot be accessed anymore.
+            general_information:
+                title: General information
+                supplier: Supplier
+                contributor: Contributor
+                upload_date: Upload date
+                import_date: Import date
             product_files_modal:
                 title: Product file
                 subtitle: Select the tailored import profile
