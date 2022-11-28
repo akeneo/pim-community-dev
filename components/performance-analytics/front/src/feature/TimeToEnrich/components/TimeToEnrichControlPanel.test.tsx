@@ -55,43 +55,6 @@ describe('TimeToEnrichControlPanel', () => {
     expect(handleIsControlPanelOpenChange).toHaveBeenCalledWith(false);
   });
 
-  it('validates the control panel filters', async () => {
-    const handleFiltersChange = jest.fn();
-
-    await renderWithProviders(
-      <TimeToEnrichControlPanel
-        isOpen={true}
-        filters={{
-          metric: Metric.TIME_TO_ENRICH,
-          period: PredefinedPeriod.LAST_12_WEEKS,
-          aggregation: Aggregation.FAMILIES,
-          comparison: PredefinedComparison.SAME_PERIOD_LAST_YEAR,
-          families: [],
-          channels: [],
-          locales: [],
-        }}
-        onFiltersChange={handleFiltersChange}
-        onIsControlPanelOpenChange={() => {}}
-      />
-    );
-    expect(screen.queryByText('akeneo.performance_analytics.control_panel.title')).toBeInTheDocument();
-
-    const validateFiltersButton = screen.getByTestId('validate-filters');
-    act(() => {
-      userEvent.click(validateFiltersButton);
-    });
-
-    expect(handleFiltersChange).toHaveBeenCalledWith({
-      metric: Metric.TIME_TO_ENRICH,
-      period: PredefinedPeriod.LAST_12_WEEKS,
-      aggregation: Aggregation.FAMILIES,
-      comparison: PredefinedComparison.SAME_PERIOD_LAST_YEAR,
-      families: [],
-      channels: [],
-      locales: [],
-    });
-  });
-
   it('displays an aggregation dropdown when the selection aggregation is families', async () => {
     const handleFiltersChange = jest.fn();
 
@@ -137,49 +100,34 @@ describe('TimeToEnrichControlPanel', () => {
       />
     );
 
-    const [metricInput, aggregationInput, periodInput, comparisonInput] = await screen.findAllByRole('textbox');
+    const [metricInput, aggregationInput] = await screen.findAllByRole('textbox');
     expect(metricInput).toBeInTheDocument();
     expect(aggregationInput).toBeInTheDocument();
 
-    fireEvent.click(aggregationInput);
-    userEvent.click(
-      screen.getByText('akeneo.performance_analytics.control_panel.select_input.aggregations.' + Aggregation.CATEGORIES)
-    );
-
-    fireEvent.click(periodInput);
-    userEvent.click(
-      screen.getByText(
-        'akeneo.performance_analytics.control_panel.select_input.periods.' + PredefinedPeriod.LAST_12_MONTHS
-      )
-    );
-
-    fireEvent.click(comparisonInput);
-    userEvent.click(
-      screen.getByText(
-        'akeneo.performance_analytics.control_panel.select_input.comparisons.' +
-          PredefinedComparison.SAME_PERIOD_JUST_BEFORE
-      )
-    );
-
-    const validateFiltersButton = screen.getByTestId('validate-filters');
     act(() => {
-      userEvent.click(validateFiltersButton);
+      fireEvent.click(aggregationInput);
+    });
+
+    act(() => {
+      fireEvent.click(
+        screen.getByText(
+          'akeneo.performance_analytics.control_panel.select_input.aggregations.' + Aggregation.CATEGORIES
+        )
+      );
     });
 
     expect(handleFiltersChange).toHaveBeenCalledWith({
       metric: Metric.TIME_TO_ENRICH,
-      period: PredefinedPeriod.LAST_12_MONTHS,
+      period: PredefinedPeriod.LAST_12_WEEKS,
       aggregation: Aggregation.CATEGORIES,
-      comparison: PredefinedComparison.SAME_PERIOD_JUST_BEFORE,
+      comparison: PredefinedComparison.SAME_PERIOD_LAST_YEAR,
       families: [],
       channels: [],
       locales: [],
     });
   });
 
-  it('calls onChange handler on multi select input', async () => {
-    const handleFiltersChange = jest.fn();
-
+  it('selects options on multi select input', async () => {
     await renderWithProviders(
       <TimeToEnrichControlPanel
         isOpen={true}
@@ -192,7 +140,7 @@ describe('TimeToEnrichControlPanel', () => {
           channels: [],
           locales: [],
         }}
-        onFiltersChange={handleFiltersChange}
+        onFiltersChange={() => {}}
         onIsControlPanelOpenChange={() => {}}
       />
     );
@@ -207,19 +155,8 @@ describe('TimeToEnrichControlPanel', () => {
     userEvent.click(await screen.findByText('[family_10]'));
     userEvent.click(await screen.findByText('French'));
 
-    const validateFiltersButton = screen.getByTestId('validate-filters');
-    act(() => {
-      userEvent.click(validateFiltersButton);
-    });
-
-    expect(handleFiltersChange).toHaveBeenCalledWith({
-      metric: Metric.TIME_TO_ENRICH,
-      period: PredefinedPeriod.LAST_12_WEEKS,
-      aggregation: Aggregation.FAMILIES,
-      comparison: PredefinedComparison.SAME_PERIOD_LAST_YEAR,
-      families: ['family_10'],
-      channels: ['ecommerce'],
-      locales: ['fr_FR'],
-    });
+    expect(await screen.findByText('[ecommerce]')).toBeInTheDocument();
+    expect(await screen.findByText('[family_10]')).toBeInTheDocument();
+    expect(await screen.findByText('French')).toBeInTheDocument();
   });
 });

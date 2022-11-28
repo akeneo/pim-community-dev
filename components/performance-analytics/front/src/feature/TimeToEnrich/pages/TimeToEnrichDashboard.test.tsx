@@ -19,43 +19,6 @@ describe('TimeToEnrichDashboard', () => {
     expect(screen.getByText('akeneo.performance_analytics.control_panel.title')).toBeInTheDocument();
   });
 
-  it('validates the control panel filters', async () => {
-    await renderWithProviders(<TimeToEnrichDashboard />);
-
-    userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.configure'));
-
-    const validateFiltersButton = screen.getByTestId('validate-filters');
-    act(() => {
-      userEvent.click(validateFiltersButton);
-    });
-
-    expect(await screen.findByText('akeneo.performance_analytics.control_panel.configure')).toBeInTheDocument();
-  });
-
-  it('changes the filter period value', async () => {
-    await renderWithProviders(<TimeToEnrichDashboard />);
-
-    userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.configure'));
-
-    const [metricInput, aggregationInput, periodInput] = await screen.findAllByRole('textbox');
-    expect(metricInput).toBeInTheDocument();
-    expect(aggregationInput).toBeInTheDocument();
-
-    fireEvent.click(periodInput);
-    userEvent.click(
-      screen.getByText(
-        'akeneo.performance_analytics.control_panel.select_input.periods.' + PredefinedPeriod.LAST_12_MONTHS
-      )
-    );
-
-    const validateFiltersButton = screen.getByTestId('validate-filters');
-    act(() => {
-      userEvent.click(validateFiltersButton);
-    });
-
-    expect(await screen.findByText('akeneo.performance_analytics.control_panel.configure')).toBeInTheDocument();
-  });
-
   it('renders the dashboard with opened control panel', async () => {
     await renderWithProviders(<TimeToEnrichDashboard />);
 
@@ -93,5 +56,40 @@ describe('TimeToEnrichDashboard', () => {
     });
 
     expect(screen.queryByText('akeneo.performance_analytics.control_panel.configure')).toBeInTheDocument();
+  });
+
+  it('changes the control panel filters', async () => {
+    await renderWithProviders(<TimeToEnrichDashboard />);
+
+    const openControlPanelButton = screen.getByText('akeneo.performance_analytics.control_panel.configure');
+    expect(openControlPanelButton).toBeInTheDocument();
+
+    expect(screen.queryByText('akeneo.performance_analytics.control_panel.title')).not.toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(openControlPanelButton);
+    });
+
+    const [metricInput, aggregationInput, periodInput] = await screen.findAllByRole('textbox');
+    expect(metricInput).toBeInTheDocument();
+    expect(aggregationInput).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(periodInput);
+    });
+
+    act(() => {
+      fireEvent.click(
+        screen.getByText(
+          'akeneo.performance_analytics.control_panel.select_input.periods.' + PredefinedPeriod.LAST_12_MONTHS
+        )
+      );
+    });
+
+    expect(
+      screen.getAllByText(
+        'akeneo.performance_analytics.control_panel.select_input.periods.' + PredefinedPeriod.LAST_12_MONTHS
+      ).length
+    ).toBe(2);
   });
 });

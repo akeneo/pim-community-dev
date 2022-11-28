@@ -20,6 +20,7 @@ const TimeToEnrichDashboard: FC = () => {
   const translate = useTranslate();
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async (filters: TimeToEnrichFilters): Promise<TimeToEnrich[]> => {
       return await fetcher.timeToEnrich.fetchHistoricalTimeToEnrich(
         getStartDate(filters),
@@ -44,12 +45,13 @@ const TimeToEnrichDashboard: FC = () => {
   }, [JSON.stringify(filters)]);
 
   const handleFiltersChange = (newFilters: TimeToEnrichFilters) => {
-    setIsControlPanelOpen(false);
     setFilters(newFilters);
   };
 
   return (
     <Container isControlPanelOpen={isControlPanelOpen}>
+      {isLoading && <AkeneoSpinner />}
+
       <Information illustration={<AddingValueIllustration />} title={<>Insights</>}>
         <p>
           Your average time-to-activate is <b>4 days</b> and decreased from 4% over the last 12 weeks.
@@ -82,7 +84,6 @@ const TimeToEnrichDashboard: FC = () => {
           </>
         )}
       </SectionTitle>
-      {(!referenceTimeToEnrichList || !comparisonTimeToEnrichList || isLoading) && <AkeneoSpinner />}
       {referenceTimeToEnrichList && comparisonTimeToEnrichList && (
         <TimeToEnrichHistoricalChart
           referenceTimeToEnrichList={referenceTimeToEnrichList}

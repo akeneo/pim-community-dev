@@ -5,7 +5,6 @@ import {
   SectionTitle,
   Collapse,
   IconButton,
-  CheckIcon,
   CloseIcon,
   pimTheme,
   Helper,
@@ -90,22 +89,10 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
   const [isPeriodFilterCollapsed, togglePeriodFilterCollapse] = useState<boolean>(true);
   const [isComparisonFilterCollapsed, toggleComparisonFilterCollapse] = useState<boolean>(true);
   const [isFilteredOnCollapsed, toggleFilteredOnFilterCollapse] = useState<boolean>(true);
-  const [controlPanelFilters, setControlPanelFilters] = useState<TimeToEnrichFilters>(filters);
   const translate = useTranslate();
-
-  const handleFiltersChange = () => {
-    onFiltersChange(controlPanelFilters);
-  };
 
   const handleIsControlPanelOpenChange = () => {
     onIsControlPanelOpenChange(!isOpen);
-  };
-
-  const handleControlPanelFilters = (newFilter: object) => {
-    setControlPanelFilters(controlPanelFilters => ({
-      ...controlPanelFilters,
-      ...newFilter,
-    }));
   };
 
   return (
@@ -116,14 +103,6 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
         {/*<SystemIcon color={pimTheme.color.purple100} size={24} />*/}
         <IconButton
           ghost
-          icon={
-            <CheckIcon color={pimTheme.color.purple100} onClick={handleFiltersChange} data-testid="validate-filters" />
-          }
-          onClick={function noRefCheck() {}}
-          title={translate('akeneo.performance_analytics.control_panel.close_control_panel')}
-        />
-        <IconButton
-          ghost
           icon={<CloseIcon color={pimTheme.color.purple100} />}
           onClick={handleIsControlPanelOpenChange}
           data-testid="close-control-panel"
@@ -131,7 +110,7 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
         />
       </ControlPanelSectionTitle>
 
-      {controlPanelFilters.metric === Metric.TIME_TO_ENRICH && (
+      {filters.metric === Metric.TIME_TO_ENRICH && (
         <Helper level="info">
           <HelperHighlight>
             {translate('akeneo.performance_analytics.control_panel.select_input.metrics.time_to_enrich')}{' '}
@@ -147,18 +126,18 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
         isOpen={isCompareFilterCollapsed}
       >
         <Field>
-          <SelectMetricInput filters={Metrics} value={controlPanelFilters.metric} onChange={() => {}} />
+          <SelectMetricInput filters={Metrics} value={filters.metric} onChange={() => {}} />
         </Field>
         <InlineFieldLabel>
           <InlineLabel>{translate('akeneo.performance_analytics.control_panel.grouped_by')}</InlineLabel>
           <InlineField>
             <SelectAggregationInput
               filters={Aggregations}
-              value={controlPanelFilters.aggregation}
+              value={filters.aggregation}
               onChange={(aggregation: string) => {
                 let updatedAggregation: {};
                 updatedAggregation = {aggregation: aggregation};
-                handleControlPanelFilters(updatedAggregation);
+                onFiltersChange({...filters, ...updatedAggregation});
               }}
             />
           </InlineField>
@@ -174,11 +153,11 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
         <Field>
           <SelectPeriodInput
             filters={PredefinedPeriods}
-            value={controlPanelFilters.period}
+            value={filters.period}
             onChange={(period: string) => {
               let updatedPeriod: {};
               updatedPeriod = {period: period};
-              handleControlPanelFilters(updatedPeriod);
+              onFiltersChange({...filters, ...updatedPeriod});
             }}
           />
         </Field>
@@ -193,11 +172,11 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
         <Field>
           <SelectComparisonInput
             filters={PredefinedComparisons}
-            value={controlPanelFilters.comparison}
+            value={filters.comparison}
             onChange={(comparison: string) => {
               let updatedComparison: {};
               updatedComparison = {comparison: comparison};
-              handleControlPanelFilters(updatedComparison);
+              onFiltersChange({...filters, ...updatedComparison});
             }}
           />
         </Field>
@@ -214,7 +193,7 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
             onChange={(families: string[]) => {
               let updatedFamilies: {};
               updatedFamilies = {families: families};
-              handleControlPanelFilters(updatedFamilies);
+              onFiltersChange({...filters, ...updatedFamilies});
             }}
           />
         </Field>
@@ -223,7 +202,7 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
             onChange={(channels: string[]) => {
               let updatedChannels: {};
               updatedChannels = {channels: channels};
-              handleControlPanelFilters(updatedChannels);
+              onFiltersChange({...filters, ...updatedChannels});
             }}
           />
         </Field>
@@ -232,7 +211,7 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
             onChange={(locales: string[]) => {
               let updatedLocales: {};
               updatedLocales = {locales: locales};
-              handleControlPanelFilters(updatedLocales);
+              onFiltersChange({...filters, ...updatedLocales});
             }}
           />
         </Field>
