@@ -38,7 +38,7 @@ class RegisterIdentifierFiltersSpec extends ObjectBehavior
         $this->beConstructedWith($getAttributes, $getAttributeTranslations, $userContext, $requestParams, $requestStack);
     }
 
-    public function it_add_attribute_identifier_as_filters(
+    public function it_adds_attribute_identifier_as_filters(
         BuildBefore $buildBefore,
         DatagridConfiguration $datagridConfiguration,
         GetAttributes $getAttributes,
@@ -90,6 +90,7 @@ class RegisterIdentifierFiltersSpec extends ObjectBehavior
                         'field_options' => [
                             'attr' => [
                                 'choice_list' => true,
+                                'empty_choice' => true,
                             ],
                         ],
                     ],
@@ -100,7 +101,7 @@ class RegisterIdentifierFiltersSpec extends ObjectBehavior
         $this->buildBefore($buildBefore);
     }
 
-    public function it_callback_to_attribute_code_if_label_is_not_found(
+    public function it_falls_back_to_attribute_code_if_label_is_not_found(
         BuildBefore $buildBefore,
         DatagridConfiguration $datagridConfiguration,
         UserInterface $user,
@@ -152,6 +153,7 @@ class RegisterIdentifierFiltersSpec extends ObjectBehavior
                         'field_options' => [
                             'attr' => [
                                 'choice_list' => true,
+                                'empty_choice' => true,
                             ],
                         ],
                     ],
