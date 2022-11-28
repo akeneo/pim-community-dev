@@ -88,8 +88,7 @@ class ListCategoriesController extends AbstractController
 
         $count = null;
         if ($request->query->getBoolean('with_count') === true) {
-            // TODO: Adapt $count to match currently existing behavior. https://akeneo.atlassian.net/browse/GRF-538
-            $count = sizeof($categories);
+            $count = $this->getCategories->count($queryParameters['sqlWhere']);
         }
 
         $normalizedCategories = [];
