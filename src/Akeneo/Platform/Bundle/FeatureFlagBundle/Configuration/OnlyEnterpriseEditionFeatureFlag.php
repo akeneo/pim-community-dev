@@ -25,6 +25,6 @@ final class OnlyEnterpriseEditionFeatureFlag implements FeatureFlag
 
     public function isEnabled(): bool
     {
-        return !in_array($this->edition, self::EDITIONS);
+        return in_array($this->edition, self::EDITIONS);
     }
 }
