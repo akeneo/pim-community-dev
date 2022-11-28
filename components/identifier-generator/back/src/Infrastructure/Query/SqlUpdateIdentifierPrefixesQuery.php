@@ -37,6 +37,11 @@ final class SqlUpdateIdentifierPrefixesQuery
         $identifierAttributes = [$this->attributeRepository->getIdentifier()];
         $newPrefixes = [];
         foreach ($products as $product) {
+            // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+            if (get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+                continue;
+            }
+
             foreach ($identifierAttributes as $identifierAttribute) {
                 $identifier = $product->getValue($identifierAttribute->getCode())?->getData();
                 if (null === $identifier) {
