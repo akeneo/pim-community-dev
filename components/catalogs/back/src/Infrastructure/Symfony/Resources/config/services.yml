@@ -151,3 +151,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
+
+    Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayloadValidator:
+        arguments:
+            $maxCriteriaPerCatalog: '%max_criteria_per_catalog%'

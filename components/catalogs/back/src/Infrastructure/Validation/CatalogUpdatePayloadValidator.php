@@ -39,6 +39,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
 {
     public function __construct(
         private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
+        private int $maxCriteriaPerCatalog,
     ) {
     }
 
@@ -59,6 +60,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
      */
     private function getConstraints(): array
     {
+        $maxCriteriaPerCatalog = $this->maxCriteriaPerCatalog;
         return [
             new Assert\Collection([
                 'fields' => [
@@ -67,9 +69,14 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                     ]),
                     'product_selection_criteria' => [
                         new Assert\Type('array'),
-                        new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
+                        new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context) use ($maxCriteriaPerCatalog): void {
                             if (!\is_array($array)) {
                                 return;
+                            }
+
+                            if (count($array) > $maxCriteriaPerCatalog) {
+                                $context->buildViolation('Too many criteria.')
+                                    ->addViolation();
                             }
 
                             if (\count(\array_filter(\array_keys($array), 'is_string')) > 0) {
