@@ -47,15 +47,14 @@ const assertLocaleSourceParameterIsNotDisplayed = () => {
     ).not.toBeInTheDocument();
 };
 
+const assertLocaleSourceParameterIsDisplayed = () => {
+    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.locale.label')).toBeInTheDocument();
+};
+
 const assertChannelSourceParameterIsNotDisplayed = () => {
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.channel.label')
     ).not.toBeInTheDocument();
-};
-
-const assertSourceLocaleContainsNoEntries = () => {
-    openDropdown('source-parameter-locale-dropdown');
-    expect(screen.queryByText('akeneo_catalogs.common.select.no_matches')).toBeInTheDocument();
 };
 
 const localesPayload = {
@@ -774,7 +773,7 @@ test('it updates the state when a locale and channel is selected for an attribut
                     code: 'variation_name',
                     label: 'Variant Name',
                     type: 'pim_catalog_text',
-                    scopable: false,
+                    scopable: true,
                     localizable: true,
                 },
                 {
@@ -866,8 +865,9 @@ test('it updates the state when a locale and channel is selected for an attribut
     await clickOnMappingTarget('pim erp name');
     await selectAttributeAsSource('Variant Name');
 
-    assertSourceLocaleContainsNoEntries();
+    assertLocaleSourceParameterIsNotDisplayed();
     await selectSourceChannel('Ecommerce');
+    assertLocaleSourceParameterIsDisplayed();
     await selectSourceLocale('English (United States)');
 
     expect(onChange).toHaveBeenCalledWith({

@@ -33,6 +33,11 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
         [onChange]
     );
 
+    const shouldDisplayChannel = source !== null && attribute?.scopable;
+    const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
+    const shouldDisplayChannelLocale =
+        source !== null && source.scope !== null && attribute?.localizable && attribute?.scopable;
+
     return (
         <>
             {target === null && <SourcePlaceholder />}
@@ -58,13 +63,13 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                             {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
                         </SectionTitle.Title>
                     </SectionTitle>
-                    {source !== null && attribute?.scopable && (
+                    {shouldDisplayChannel && (
                         <SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} />
                     )}
-                    {source !== null && attribute?.localizable && !attribute?.scopable && (
+                    {shouldDisplayLocale && (
                         <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
                     )}
-                    {source !== null && attribute?.localizable && attribute?.scopable && (
+                    {shouldDisplayChannelLocale && (
                         <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
                     )}
                 </>
