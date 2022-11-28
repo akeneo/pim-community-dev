@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 final class SqlUpdateIdentifierPrefixesQuery
 {
@@ -19,12 +22,15 @@ final class SqlUpdateIdentifierPrefixesQuery
     /**
      * @param ProductInterface[] $products
      */
-    public function updateFromProducts(array $products)
+    public function updateFromProducts(array $products): void
     {
         $this->deletePreviousPrefixes($products);
         $this->insertNewPrefixes($products);
     }
 
+    /**
+     * @param ProductInterface[] $products
+     */
     private function insertNewPrefixes(array $products): void
     {
         /** @var AttributeInterface[] $identifierAttributes */
@@ -32,67 +38,41 @@ final class SqlUpdateIdentifierPrefixesQuery
         $newPrefixes = [];
         foreach ($products as $product) {
             foreach ($identifierAttributes as $identifierAttribute) {
-                $newPrefixes[] = $this->getPrefixesAndNumbers(
-                    $product->getValue($identifierAttribute->getCode())?->getData(),
-                    $identifierAttribute->getId(),
-                    $product->getUuid()->toString()
-                );
+                $identifier = $product->getValue($identifierAttribute->getCode())?->getData();
+                if (null === $identifier) {
+                    continue;
+                }
+
+                Assert::string($identifier);
+                $productIdentifier = new ProductIdentifier($identifier);
+                foreach ($productIdentifier->getPrefixes() as $prefix => $number) {
+                    $newPrefixes[] = [
+                        $product->getUuid()->toString(),
+                        $identifierAttribute->getId(),
+                        $prefix,
+                        $number,
+                    ];
+                }
             }
         }
 
-        $flatNewPrefixes = \array_merge_recursive($newPrefixes);
-
-        if (\count($flatNewPrefixes) === 0) {
+        if (\count($newPrefixes) === 0) {
             return;
         }
 
-        $values = [];
-        foreach ($flatNewPrefixes as $newPrefix) {
-            $values[] = \sprintf('(UUID_TO_BIN("%s"), %d, "%s", %d)', ...$newPrefix);
-        };
-
-        $valuesStr = \implode(',', $values);
+        $valuesStr = \implode(
+            ',',
+            array_map(
+                fn (array $value): string => \sprintf('(UUID_TO_BIN("%s"), %d, "%s", %d)', ...$value),
+                $newPrefixes
+            )
+        );
 
         $insertSql = <<<SQL
 INSERT INTO pim_catalog_identifier_generator_prefixes (`product_uuid`, `attribute_id`, `prefix`, `number`) VALUES ${valuesStr}
 SQL;
 
         $this->connection->executeQuery($insertSql);
-    }
-
-    /**
-     * Returns the prefix and their associated number
-     * Ex: "AKN-2012" will return ["AKN-" => 2012, "AKN-2" => 12, "AKN-20" => 12, "AKN-201" => 2]
-     */
-    private function getPrefixesAndNumbers(?string $identifier, int $attributeId, string $productUuid)
-    {
-        if (null === $identifier) {
-            return [];
-        }
-        $results = [];
-        for ($i = 0; $i < strlen($identifier); $i++) {
-            $charAtI = substr($identifier, $i, 1);
-            if (is_numeric($charAtI)) {
-                $prefix = substr($identifier, 0, $i);
-                $results[] = [$productUuid, $attributeId, $prefix, $this->getAllBeginningNumbers(substr($identifier, $i))];
-            }
-        }
-        return $results;
-    }
-
-    /**
-     * Returns all the beginning numbers from a string
-     * Ex: "251-toto" will return 251
-     */
-    private function getAllBeginningNumbers(string $identifierFromAnInteger)
-    {
-        $result = '';
-        $i = 0;
-        while (is_numeric(substr($identifierFromAnInteger, $i, 1))) {
-            $result = $result . substr($identifierFromAnInteger, $i, 1);
-            $i++;
-        }
-        return \intval($result);
     }
 
     /**
@@ -105,11 +85,12 @@ DELETE FROM pim_catalog_identifier_generator_prefixes WHERE product_uuid IN (:pr
 SQL;
 
         $productUuidsAsBytes = \array_map(
-            fn (ProductInterface $product): string => Uuid::fromString($product->getUuid())->getBytes(),
+            fn (ProductInterface $product): string => $product->getUuid()->getBytes(),
             $products
         );
 
-        $this->connection->executeQuery($deleteSql,
+        $this->connection->executeQuery(
+            $deleteSql,
             ['product_uuids' => $productUuidsAsBytes],
             ['product_uuids' => Connection::PARAM_STR_ARRAY]
         );
