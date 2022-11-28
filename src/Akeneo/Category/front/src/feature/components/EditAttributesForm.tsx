@@ -62,6 +62,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   const [locale, setLocale] = useState(catalogLocale);
   const catalogChannel = userContext.get('catalogScope');
   const [channel, setChannel] = useState(catalogChannel);
+  const channelList = useMemo(() => Object.values(channels), [channels]);
 
   const handleChannelChange = (value: string): void => {
     setChannel(value);
@@ -146,9 +147,9 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <ChannelSelector
-            value={channel}
-            values={Object.values(channels)}
-            onChange={handleChannelChange}
+          value={channel}
+          values={channelList}
+          onChange={handleChannelChange}
         />
         <LocaleSelector
           value={locale}
