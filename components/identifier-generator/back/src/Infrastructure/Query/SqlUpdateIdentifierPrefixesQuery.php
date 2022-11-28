@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Webmozart\Assert\Assert;
 
 final class SqlUpdateIdentifierPrefixesQuery
@@ -65,6 +66,8 @@ final class SqlUpdateIdentifierPrefixesQuery
             return;
         }
 
+        $placeholders = implode(',', array_fill(0, \count($newPrefixes), '(UUID_TO_BIN(?),?,?,?)'));
+
         $valuesStr = \implode(
             ',',
             array_map(
@@ -74,10 +77,19 @@ final class SqlUpdateIdentifierPrefixesQuery
         );
 
         $insertSql = <<<SQL
-INSERT INTO pim_catalog_identifier_generator_prefixes (`product_uuid`, `attribute_id`, `prefix`, `number`) VALUES ${valuesStr}
+INSERT INTO pim_catalog_identifier_generator_prefixes (`product_uuid`, `attribute_id`, `prefix`, `number`) VALUES ${placeholders}
 SQL;
 
-        $this->connection->executeQuery($insertSql);
+        $placeholderIndex = 1;
+        $statement = $this->connection->prepare($insertSql);
+        foreach ($newPrefixes as $newPrefix) {
+            $statement->bindValue($placeholderIndex++, $newPrefix[0], ParameterType::STRING);
+            $statement->bindValue($placeholderIndex++, $newPrefix[1], ParameterType::INTEGER);
+            $statement->bindValue($placeholderIndex++, $newPrefix[2], ParameterType::STRING);
+            $statement->bindValue($placeholderIndex++, $newPrefix[3], ParameterType::INTEGER);
+        }
+
+        $statement->executeQuery();
     }
 
     /**
