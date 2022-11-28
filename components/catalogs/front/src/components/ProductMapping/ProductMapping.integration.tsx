@@ -26,23 +26,31 @@ const selectAttributeAsSource = async (attributeName: string) => {
 };
 
 const selectSourceLocale = async (locale: string) => {
-    expect(await screen.findByText('akeneo_catalogs.product_mapping.source.parameters.locale.label')).toBeInTheDocument();
+    expect(
+        await screen.findByText('akeneo_catalogs.product_mapping.source.parameters.locale.label')
+    ).toBeInTheDocument();
     openDropdown('source-parameter-locale-dropdown');
     fireEvent.click(await screen.findByText(locale));
 };
 
 const selectSourceChannel = async (channel: string) => {
-    expect(await screen.findByText('akeneo_catalogs.product_mapping.source.parameters.channel.label')).toBeInTheDocument();
+    expect(
+        await screen.findByText('akeneo_catalogs.product_mapping.source.parameters.channel.label')
+    ).toBeInTheDocument();
     openDropdown('source-parameter-channel-dropdown');
     fireEvent.click(await screen.findByText(channel));
 };
 
 const assertLocaleSourceParameterIsNotDisplayed = () => {
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.locale.label')).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.locale.label')
+    ).not.toBeInTheDocument();
 };
 
 const assertChannelSourceParameterIsNotDisplayed = () => {
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.channel.label')).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.channel.label')
+    ).not.toBeInTheDocument();
 };
 
 const assertSourceLocaleContainsNoEntries = () => {
@@ -72,16 +80,16 @@ const channelsPayload = {
     url: '/rest/catalogs/channels?page=1&limit=20',
     json: [
         {
-            'code': 'mobile',
-            'label': 'Mobile'
+            code: 'mobile',
+            label: 'Mobile',
         },
         {
-            'code': 'print',
-            'label': 'Print'
+            code: 'print',
+            label: 'Print',
         },
         {
-            'code': 'ecommerce',
-            'label': 'Ecommerce'
+            code: 'ecommerce',
+            label: 'Ecommerce',
         },
     ],
 };
@@ -468,8 +476,8 @@ test('it updates the state when a channel is selected for an attribute with valu
         {
             url: '/rest/catalogs/channels/ecommerce',
             json: {
-                'code': 'ecommerce',
-                'label': 'Ecommerce'
+                code: 'ecommerce',
+                label: 'Ecommerce',
             },
         },
     ]);
@@ -781,8 +789,8 @@ test('it updates the state when a locale and channel is selected for an attribut
         {
             url: '/rest/catalogs/channels/ecommerce',
             json: {
-                'code': 'ecommerce',
-                'label': 'Ecommerce'
+                code: 'ecommerce',
+                label: 'Ecommerce',
             },
         },
         {
@@ -951,15 +959,15 @@ test('it resets source locale when channel changes for an attribute with value p
         {
             url: '/rest/catalogs/channels/ecommerce',
             json: {
-                'code': 'ecommerce',
-                'label': 'Ecommerce'
+                code: 'ecommerce',
+                label: 'Ecommerce',
             },
         },
         {
             url: '/rest/catalogs/channels/mobile',
             json: {
-                'code': 'mobile',
-                'label': 'Mobile'
+                code: 'mobile',
+                label: 'Mobile',
             },
         },
         {

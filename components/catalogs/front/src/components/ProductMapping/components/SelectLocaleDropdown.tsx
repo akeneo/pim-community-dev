@@ -5,7 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
 import {Source} from '../models/Source';
 import {useInfiniteLocales} from '../../ProductValueFilters/hooks/useInfiniteLocales';
-import {useLocalesByCodes} from '../../ProductValueFilters/hooks/useLocalesByCodes';
+import {useLocalesByCodes} from '../../../hooks/useLocalesByCodes';
 import {Locale} from '../../ProductValueFilters/models/Locale';
 
 const DropdownField = styled(Field)`
