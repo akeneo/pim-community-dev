@@ -18,7 +18,7 @@ import {Styled} from './styles';
 import {Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
-import {StructureTabs} from '../models/structureTabs';
+import {GeneratorTab} from '../models/generatorTab';
 import {useStructureTabs} from '../hooks/useStructureTabs';
 
 type ListPageProps = {
@@ -41,7 +41,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const isGeneratorListEmpty = useMemo(() => generators.length === 0, [generators]);
 
   useEffect(() => {
-    setCurrentTab(StructureTabs.GENERAL);
+    setCurrentTab(GeneratorTab.GENERAL);
   }, [setCurrentTab]);
 
   const getCurrentLabel = useCallback(

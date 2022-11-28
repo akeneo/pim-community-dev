@@ -1,19 +1,20 @@
 import {useEffect, useState} from 'react';
-import {StructureTabs} from '../models/structureTabs';
+import {GeneratorTab} from '../models';
 
 type StructureTabsType = {
-  currentTab: StructureTabs;
-  setCurrentTab: (value: StructureTabs) => void;
+  currentTab: GeneratorTab;
+  setCurrentTab: (value: GeneratorTab) => void;
 };
 const useStructureTabs = (): StructureTabsType => {
-  const [currentTab, setCurrentTab] = useState(() => {
+  const [currentTab, setCurrentTab] = useState<GeneratorTab>(() => {
     const localStorageItem = localStorage.getItem('identifier-generator.currentTab');
-    if (localStorageItem === null) return StructureTabs.GENERAL;
-    return Number(localStorageItem) as StructureTabs;
+    if (localStorageItem === null) return GeneratorTab.GENERAL;
+    const index = Object.values(GeneratorTab).findIndex(value => value === localStorageItem);
+    return index !== -1 ? (localStorageItem as GeneratorTab) : GeneratorTab.GENERAL;
   });
 
   useEffect(() => {
-    localStorage.setItem('identifier-generator.currentTab', JSON.stringify(currentTab));
+    localStorage.setItem('identifier-generator.currentTab', currentTab);
   }, [currentTab]);
 
   return {currentTab, setCurrentTab};

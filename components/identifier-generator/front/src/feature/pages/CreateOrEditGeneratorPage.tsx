@@ -9,8 +9,8 @@ import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
 import {useIdentifierGeneratorContext} from '../context';
 import styled from 'styled-components';
-import {StructureTabs} from '../models/structureTabs';
-import {useStructureTabs} from '../hooks/useStructureTabs';
+import {GeneratorTab} from '../models';
+import {useStructureTabs} from '../hooks';
 
 // TODO: replace this component by PageContent when there we delete the warning message (DO NOT USE...)
 const Container = styled.div`
@@ -111,26 +111,26 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         )}
 
         <TabBar moreButtonTitle={translate('pim_common.more')}>
-          <TabBar.Tab isActive={currentTab === StructureTabs.GENERAL} onClick={changeTab(StructureTabs.GENERAL)}>
+          <TabBar.Tab isActive={currentTab === GeneratorTab.GENERAL} onClick={changeTab(GeneratorTab.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
           </TabBar.Tab>
           <TabBar.Tab
-            isActive={currentTab === StructureTabs.PRODUCT_SELECTION}
-            onClick={changeTab(StructureTabs.PRODUCT_SELECTION)}
+            isActive={currentTab === GeneratorTab.PRODUCT_SELECTION}
+            onClick={changeTab(GeneratorTab.PRODUCT_SELECTION)}
           >
             {translate('pim_identifier_generator.tabs.product_selection')}
           </TabBar.Tab>
-          <TabBar.Tab isActive={currentTab === StructureTabs.STRUCTURE} onClick={changeTab(StructureTabs.STRUCTURE)}>
+          <TabBar.Tab isActive={currentTab === GeneratorTab.STRUCTURE} onClick={changeTab(GeneratorTab.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
           </TabBar.Tab>
         </TabBar>
-        {currentTab === StructureTabs.GENERAL && (
+        {currentTab === GeneratorTab.GENERAL && (
           <GeneralPropertiesTab generator={generator} onGeneratorChange={onChangeGenerator} />
         )}
-        {currentTab === StructureTabs.PRODUCT_SELECTION && (
+        {currentTab === GeneratorTab.PRODUCT_SELECTION && (
           <SelectionTab target={generator.target} conditions={generator.conditions} />
         )}
-        {currentTab === StructureTabs.STRUCTURE && (
+        {currentTab === GeneratorTab.STRUCTURE && (
           <StructureTab
             initialStructure={generator.structure}
             delimiter={generator.delimiter}
