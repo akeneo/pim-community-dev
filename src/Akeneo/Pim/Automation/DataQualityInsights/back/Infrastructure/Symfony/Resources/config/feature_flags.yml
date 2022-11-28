@@ -11,5 +11,5 @@ services:
     akeneo.pim.automation.data_quality_insights.all_criteria.feature:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature
         arguments:
-            - '@akeneo.feature_flag.service.only_serenity_feature'
+            - '@akeneo.feature_flag.service.only_enterprise_edition_feature'
             - '@feature_flags'
