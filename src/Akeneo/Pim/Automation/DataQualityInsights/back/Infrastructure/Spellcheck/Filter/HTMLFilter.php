@@ -119,12 +119,10 @@ class HTMLFilter
                         case self::CTX_TAG_NAME:
                             $context = self::CTX_TAG_ATTRS;
                             break;
-
                     }
                     break;
 
-                case '=' === $char
-                    && (self::CTX_ATTR_NAME === $context || self::CTX_TAG_ATTRS === $context):
+                case '=' === $char && (self::CTX_ATTR_NAME === $context || self::CTX_TAG_ATTRS === $context):
                     $expecting = self::CTX_ATTR_VALUE;
                     $char = ' ';
                     break;
@@ -154,11 +152,10 @@ class HTMLFilter
                             $char = ' ';
                             break;
 
-                        /** @noinspection PhpMissingBreakStatementInspection */
                         case self::CTX_TAG_ATTRS:
                             $context = self::CTX_ATTR_NAME;
                             $attrName = null;
-                        // no break needed
+                            // no break needed
                         case self::CTX_ATTR_NAME:
                             $attrName .= $char;
                             $char = ' ';

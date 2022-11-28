@@ -101,9 +101,6 @@ akeneo_catalogs:
         label: Filtro
         option:
           all: Tutto
-      table:
-        target: Destinazione
-        source: Origine
     source:
       placeholder:
         title: Seleziona origine

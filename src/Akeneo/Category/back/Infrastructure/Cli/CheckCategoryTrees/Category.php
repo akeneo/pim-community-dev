@@ -199,7 +199,7 @@ class Category
 
                 $childrenDiffErrorsWithContext = array_map(
                     function ($childDiff) use ($i) {
-                        return "Child at index {$i}: ${childDiff}";
+                        return "Child at index $i: $childDiff";
                     },
                     $childrenDiffErrors,
                 );

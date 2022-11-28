@@ -3,10 +3,22 @@ jest.unmock('./useInfiniteAttributeCriterionFactories');
 import {act, renderHook} from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
 import {mocked} from 'ts-jest/utils';
-import {Attribute} from '../models/Attribute';
+import {Attribute} from '../../../models/Attribute';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 import {useInfiniteAttributeCriterionFactories} from './useInfiniteAttributeCriterionFactories';
 import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
+
+const ALLOWED_ATTRIBUTE_TYPES = [
+    'identifier',
+    'text',
+    'textarea',
+    'simpleselect',
+    'multiselect',
+    'number',
+    'metric',
+    'boolean',
+    'date',
+];
 
 test('it fetches attributes & paginates criterion factories', async () => {
     const attributes: Attribute[] = [
@@ -39,7 +51,10 @@ test('it fetches attributes & paginates criterion factories', async () => {
         wrapper: ReactQueryWrapper,
     });
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/attributes?page=1&limit=2&search=', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/attributes?page=1&limit=2&search=&types=' + ALLOWED_ATTRIBUTE_TYPES.join('%2C'),
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: true,
         isError: false,
@@ -155,7 +170,7 @@ test('it searches with a string', async () => {
     await waitForNextUpdate();
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes?page=1&limit=2&search=Description',
+        '/rest/catalogs/attributes?page=1&limit=2&search=Description&types=' + ALLOWED_ATTRIBUTE_TYPES.join('%2C'),
         expect.any(Object)
     );
     expect(result.current).toMatchObject({

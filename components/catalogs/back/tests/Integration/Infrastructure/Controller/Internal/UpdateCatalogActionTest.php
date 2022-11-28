@@ -58,6 +58,13 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                 'product_value_filters' => [
                     'channels' => ['ecommerce'],
                 ],
+                'product_mapping' => [
+                    'Product uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                ],
             ]),
         );
 
@@ -75,6 +82,13 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         ]);
         $this->assertCatalogHasProductValueFilters('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
             'channels' => ['ecommerce'],
+        ]);
+        $this->assertCatalogHasProductMapping('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
+            'Product uuid' => [
+                'source' => 'uuid',
+                'scope' => null,
+                'locale' => null,
+            ],
         ]);
     }
 
@@ -102,6 +116,13 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                 'product_value_filters' => [
                     'channels' => ['ecommerce'],
                 ],
+                'product_mapping' => [
+                    'Product uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                ],
             ]),
         );
         $response = $client->getResponse();
@@ -128,8 +149,21 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
             \json_encode([
-                [
-                    'field' => 'wrong-criteria',
+                'enabled' => true,
+                'product_selection_criteria' => [
+                    [
+                        'field' => 'wrong-criteria',
+                    ],
+                ],
+                'product_value_filters' => [
+                    'channels' => ['ecommerce'],
+                ],
+                'product_mapping' => [
+                    'Product uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
                 ],
             ]),
         );
@@ -140,6 +174,56 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         Assert::assertEquals(422, $response->getStatusCode());
         Assert::assertArrayHasKey('message', $payload);
         Assert::assertArrayHasKey('errors', $payload);
+        Assert::assertCount(1, $payload['errors']);
+    }
+
+    public function testItGetsUnprocessableEntityWithWrongTargetSourceAssociation(): void
+    {
+        $client = $this->getAuthenticatedInternalApiClient('shopifi');
+
+        $this->createCatalog(
+            id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
+
+        $client->request(
+            'PATCH',
+            '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+            \json_encode([
+                'enabled' => true,
+                'product_selection_criteria' => [
+                    [
+                        'field' => 'enabled',
+                        'operator' => '!=',
+                        'value' => true,
+                    ],
+                ],
+                'product_value_filters' => [
+                    'channels' => ['ecommerce'],
+                ],
+                'product_mapping' => [
+                    'Product uuid' => [
+                        'source' => 'uuid',
+                        'scope' => 'ecommerce',
+                        'locale' => null,
+                    ],
+                ],
+            ]),
+        );
+
+        $response = $client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals(422, $response->getStatusCode());
+        Assert::assertArrayHasKey('message', $payload);
+        Assert::assertArrayHasKey('errors', $payload);
+        Assert::assertCount(1, $payload['errors']);
     }
 
     private function assertCatalogIsEnabled(string $id): void
@@ -176,6 +260,21 @@ class UpdateCatalogActionTest extends IntegrationTestCase
     {
         $query = <<<SQL
         SELECT catalog.product_value_filters
+        FROM akeneo_catalog catalog
+        WHERE id = :id
+        SQL;
+
+        $row = $this->connection->executeQuery($query, [
+            'id' => Uuid::fromString($id)->getBytes(),
+        ])->fetchOne();
+
+        $this->assertEquals($expected, \json_decode($row, true, 512, JSON_THROW_ON_ERROR));
+    }
+
+    private function assertCatalogHasProductMapping(string $id, array $expected): void
+    {
+        $query = <<<SQL
+        SELECT catalog.product_mapping
         FROM akeneo_catalog catalog
         WHERE id = :id
         SQL;

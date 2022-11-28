@@ -41,8 +41,8 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->getValue(
             attributeCode: 'seo_meta_description',
             attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            channel: 'ecommerce',
             localeCode: 'en_US',
-            channel: 'ecommerce'
         )->shouldBeLike($expectedValue);
     }
 
@@ -64,8 +64,8 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->getValue(
             attributeCode: 'seo_keyword',
             attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            channel: 'ecommerce',
             localeCode: 'fr_FR',
-            channel: 'ecommerce'
         )->shouldBeLike(null);
     }
 
@@ -273,21 +273,21 @@ class ValueCollectionSpec extends ObjectBehavior
                 value: 'description',
                 uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 code: 'seo_meta_description',
-                channel: null,
+                channel: 'ecommerce',
                 locale: 'en_US'
             ),
             TextValue::fromApplier(
                 value: 'other description',
                 uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 code: 'seo_meta_description',
-                channel: null,
+                channel: 'ecommerce',
                 locale: 'en_US'
             ),
         ];
         $this->beConstructedThrough('fromArray', [$givenDuplicateValues]);
         $this->shouldHaveType(ValueCollection::class);
         $this->shouldThrow(new \InvalidArgumentException(
-            "Duplicate value for seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|en_US"
+            "Duplicate value for seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_US"
         ))->duringInstantiation();
     }
 
@@ -300,7 +300,7 @@ class ValueCollectionSpec extends ObjectBehavior
             'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_us' => [
                 'data' => 'Meta shoes',
                 'type' => 'text',
-                'channel' => null,
+                'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
             ]
@@ -310,7 +310,7 @@ class ValueCollectionSpec extends ObjectBehavior
             value: 'Meta shoes',
             uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
             code: 'seo_meta_description',
-            channel: null,
+            channel: 'ecommerce',
             locale: 'en_US'
         );
 
@@ -322,14 +322,14 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->getValue(
             'seo_meta_description',
             '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            null,
+            'ecommerce',
             'en_US',
         )->shouldBeLike($expectedValue);
 
         $this->getValue(
             'seo_meta_description',
             '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            null,
+            'ecommerce',
             'en_US',
         )->shouldBeAnInstanceOf(TextValue::class);
     }

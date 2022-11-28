@@ -101,9 +101,6 @@ akeneo_catalogs:
         label: Filteren
         option:
           all: Alle
-      table:
-        target: Doel
-        source: Bron
     source:
       placeholder:
         title: Bron selecteren

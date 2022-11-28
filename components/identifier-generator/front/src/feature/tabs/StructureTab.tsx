@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {AttributesIllustration, Helper, Link, SectionTitle, uuid} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton, Preview, PropertiesList, PropertyEdit} from './structure';
@@ -14,43 +14,44 @@ type StructureTabProps = {
 
 type PropertyId = string;
 type StructureWithIdentifiers = (Property & {id: PropertyId})[];
+const LIMIT_NUMBER = 20;
 
 const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter, onStructureChange}) => {
   const translate = useTranslate();
   const [selectedPropertyId, setSelectedPropertyId] = useState<PropertyId | undefined>();
-  const [structure, setStructure] = useState<StructureWithIdentifiers>(
-    initialStructure.map(property => {
-      return {
+  const structure = useMemo(
+    () =>
+      initialStructure.map(property => ({
         id: uuid(),
         ...property,
-      };
-    })
+      })),
+    [initialStructure]
   );
+  const selectedProperty = useMemo(
+    () => structure.find(propertyWithId => propertyWithId.id === selectedPropertyId),
+    [selectedPropertyId, structure]
+  );
+  const isLimitReached = useMemo(() => structure.length === LIMIT_NUMBER, [structure.length]);
 
   const onPropertyChange = (property: Property) => {
     if (selectedProperty) {
       const updatedPropertyIndex = structure.findIndex(p => selectedProperty.id === p.id);
-      structure[updatedPropertyIndex] = {...property, id: selectedProperty.id};
-      setStructure(structure);
-      onStructureChange(structure);
+      const clonedStructure = [...structure];
+      clonedStructure[updatedPropertyIndex] = {...property, id: selectedProperty.id};
+      onStructureChange(clonedStructure);
     }
   };
 
   const onAddProperty = (property: Property) => {
     const newPropertyId = uuid();
-    structure.push({...property, id: newPropertyId});
-    setStructure(structure);
-    onStructureChange(structure);
+    onStructureChange([...structure, {...property, id: newPropertyId}]);
     setSelectedPropertyId(newPropertyId);
   };
 
   const onDeleteProperty = (propertyId: PropertyId) => {
     const newStructure = structure.filter(property => property.id !== propertyId);
-    setStructure(newStructure);
     onStructureChange(newStructure);
   };
-
-  const selectedProperty = structure.find(propertyWithId => propertyWithId.id === selectedPropertyId);
 
   return (
     <>
@@ -66,16 +67,17 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
           <SectionTitle>
             <SectionTitle.Title>{translate('pim_identifier_generator.structure.title')}</SectionTitle.Title>
             <SectionTitle.Spacer />
-            <AddPropertyButton onAddProperty={onAddProperty} />
+            {!isLimitReached && <AddPropertyButton onAddProperty={onAddProperty} />}
           </SectionTitle>
           {structure.length > 0 && (
             <>
+              {isLimitReached && <Helper>{translate('pim_identifier_generator.structure.limit_reached')}</Helper>}
               <Preview structure={structure} delimiter={delimiter} />
               <PropertiesList
                 structure={structure}
                 onSelect={setSelectedPropertyId}
                 selectedId={selectedPropertyId}
-                onChange={setStructure}
+                onChange={onStructureChange}
                 onDelete={onDeleteProperty}
               />
             </>

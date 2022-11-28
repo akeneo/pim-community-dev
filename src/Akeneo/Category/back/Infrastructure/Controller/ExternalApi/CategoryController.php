@@ -97,9 +97,9 @@ class CategoryController
     /**
      * @param string $code
      *
-     * @throws NotFoundHttpException
-     *
      * @return JsonResponse
+     *
+     * @throws NotFoundHttpException
      *
      * @AclAncestor("pim_api_category_list")
      */
@@ -180,10 +180,10 @@ class CategoryController
     }
 
     /**
+     * @return Response
+     *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
-     *
-     * @return Response
      *
      * @AclAncestor("pim_api_category_edit")
      */
@@ -203,9 +203,9 @@ class CategoryController
     }
 
     /**
-     * @throws HttpException
-     *
      * @return Response
+     *
+     * @throws HttpException
      *
      * @AclAncestor("pim_api_category_edit")
      */
@@ -220,10 +220,10 @@ class CategoryController
     /**
      * @param string $code
      *
+     * @return Response
+     *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
-     *
-     * @return Response
      *
      * @AclAncestor("pim_api_category_edit")
      */
@@ -261,9 +261,9 @@ class CategoryController
      *
      * @param string $content content of a request to decode
      *
-     * @throws BadRequestHttpException
-     *
      * @return array
+     *
+     * @throws BadRequestHttpException
      */
     protected function getDecodedContent($content)
     {

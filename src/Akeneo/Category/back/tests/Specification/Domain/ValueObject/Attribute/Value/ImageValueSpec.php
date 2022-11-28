@@ -29,8 +29,8 @@ class ImageValueSpec extends ObjectBehavior
             $givenImageDataValue,
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'hero_banner',
+            'ecommerce',
             'en_US',
-            null
         ]);
 
         $this->shouldHaveType(ImageValue::class);
@@ -51,7 +51,7 @@ class ImageValueSpec extends ObjectBehavior
         $givenArray = [
             'data' => $givenImageDataValue,
             'type' => 'image',
-            'channel' => null,
+            'channel' => 'ecommerce',
             'locale' => 'en_US',
             'attribute_code' => 'hero_banner|02274dac-e99a-4e1d-8f9b-794d4c3ba330'
         ];
@@ -75,7 +75,7 @@ class ImageValueSpec extends ObjectBehavior
         $givenArray = [
             'data' => $givenImageDataValue,
             'type' => 'image',
-            'channel' => null,
+            'channel' => 'ecommerce',
             'locale' => 'en_US',
             'attribute_code' => ''
         ];

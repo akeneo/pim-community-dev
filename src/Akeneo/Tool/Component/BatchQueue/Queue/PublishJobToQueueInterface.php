@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+
 interface PublishJobToQueueInterface
 {
-    public function publish(string $jobInstanceCode, array $config, bool $noLog = false, ?string $username = null, ?array $emails = []): void;
+    public function publish(string $jobInstanceCode, array $config, bool $noLog = false, ?string $username = null, ?array $emails = []): JobExecution;
 }

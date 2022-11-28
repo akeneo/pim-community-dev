@@ -103,6 +103,7 @@
 - PIM-10720: Fix price versioning normalizer to round numbers
 - PIM-10724: Fix textarea template so that first break line is not considered as break in html
 - PIM-10730: Fix mass actions for quantified associations rendering
+- PIM:10741: Fix diff indexation of product models
 
 ## Improvements
 

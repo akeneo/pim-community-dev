@@ -20,13 +20,25 @@ const openDropdown = (selector: string): void => {
     fireEvent.focus(input);
 };
 
-test('it can enable a catalog', () => {
+test('it can enable a catalog', async () => {
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/a134c164-9343-4796-9b4e-e2c04ba3765a',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            json: {},
+        },
+    ]);
+
     const dispatch = jest.fn();
     const form = {
         values: {
             enabled: true,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         dispatch: dispatch,
         errors: [],
@@ -42,13 +54,24 @@ test('it can enable a catalog', () => {
         </ThemeProvider>
     );
 
-    fireEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.settings'));
-    fireEvent.click(screen.getByText('akeneo_catalogs.settings.inputs.yes'));
+    fireEvent.click(await screen.findByText('akeneo_catalogs.catalog_edit.tabs.settings'));
+    fireEvent.click(await screen.findByText('akeneo_catalogs.settings.inputs.yes'));
     expect(dispatch).toHaveBeenCalledWith({type: CatalogFormActions.SET_ENABLED, value: true});
 });
 
 test('it can change criteria in the product selection', async () => {
     mocked(generateRandomId).mockReturnValue('rdn');
+
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/a134c164-9343-4796-9b4e-e2c04ba3765a',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            json: {},
+        },
+    ]);
 
     const dispatch = jest.fn();
     const form = {
@@ -56,6 +79,7 @@ test('it can change criteria in the product selection', async () => {
             enabled: true,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         dispatch: dispatch,
         errors: [],
@@ -117,6 +141,14 @@ test('it can add a product value filter on the channel', async () => {
             url: '/rest/catalogs/attributes?page=1&limit=20&search=',
             json: [],
         },
+        {
+            url: '/rest/catalogs/a134c164-9343-4796-9b4e-e2c04ba3765a',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            json: {},
+        },
     ]);
 
     const dispatch = jest.fn();
@@ -125,6 +157,7 @@ test('it can add a product value filter on the channel', async () => {
             enabled: true,
             product_selection_criteria: {},
             product_value_filters: {},
+            product_mapping: {},
         },
         dispatch: dispatch,
         errors: [],

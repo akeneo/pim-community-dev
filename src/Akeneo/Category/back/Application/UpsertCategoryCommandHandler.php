@@ -12,7 +12,6 @@ use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -34,7 +33,7 @@ class UpsertCategoryCommandHandler
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function __invoke(UpsertCategoryCommand $command): void
     {
@@ -44,7 +43,7 @@ class UpsertCategoryCommandHandler
 
         $isCreation = null === $category;
         if ($isCreation) {
-            throw new Exception('Command to create a category is in progress.');
+            throw new \Exception('Command to create a category is in progress.');
         }
 
         $this->updateCategory($category, $command);

@@ -114,6 +114,6 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
     {
         return method_exists($subject, 'getUuid')
             && get_class($subject) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
-            ;
+        ;
     }
 }

@@ -160,11 +160,29 @@ pim_import_export:
           none: Aucun stockage configuré
         file_path:
           label: Chemin du fichier
+        host:
+          label: Hôte
+          placeholder: exemple.fr
+        fingerprint:
+          label: Empreinte digitale de l'hôte (facultatif)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: L'empreinte du serveur nécessite un format SHA512 ou MD5 séparé par ":"
+        port:
+          label: Port
+          placeholder: 22
+        username:
+          label: Identifiant
+          placeholder: Saisissez votre identifiant
+        password:
+          label: Mot de passe
+          placeholder: Saisissez votre mot de passe
       validation:
         storage:
           unavailable_type: 'Ce stockage n''est pas disponible, seuls les types suivants sont disponibles: {{ available_types }}.'
         file_path:
           unsupported_extension: Extension de fichier non prise en charge
+        fingerprint:
+          invalid_encoding: L'empreinte du serveur doit être au format SHA512 ou MD5 séparé par ":"
       connection_checker:
         label: Tester les paramètres de connexion
         exception: La connexion ne peut pas être établie, veuillez vérifier vos paramètres.

@@ -3,6 +3,6 @@ services:
       tags:
         - { name: validator.constraint_validator }
 
-  Akeneo\Category\Infrastructure\Validation\LocalizeValueUserIntentsShouldBeUniqueValidator:
+  Akeneo\Category\Infrastructure\Validation\ValueUserIntentsShouldBeUniqueValidator:
     tags:
       - { name: validator.constraint_validator }

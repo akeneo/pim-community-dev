@@ -7,6 +7,7 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -36,6 +37,11 @@ class GetCategorySql implements GetCategoryInterface
         return $this->execute($condition);
     }
 
+    /**
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \JsonException
+     */
     private function execute(array $condition): ?Category
     {
         $sqlWhere = $condition['sqlWhere'];
@@ -46,6 +52,12 @@ class GetCategorySql implements GetCategoryInterface
                 FROM pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE $sqlWhere
+            ),
+            template as (
+                SELECT category.code as category_code, BIN_TO_UUID(category_template_uuid) as template_uuid
+                FROM pim_catalog_category_tree_template template_category
+                JOIN pim_catalog_category category ON category.root = template_category.category_tree_id
+                WHERE $sqlWhere
             )
             SELECT
                 category.id,
@@ -54,10 +66,12 @@ class GetCategorySql implements GetCategoryInterface
                 category.root as root_id,
                 category.updated,
                 translation.translations,
-                category.value_collection
+                category.value_collection,
+                template.template_uuid
             FROM 
                 pim_catalog_category category
                 LEFT JOIN translation ON translation.code = category.code
+                LEFT JOIN template ON category.code = template.category_code
             WHERE $sqlWhere
         SQL;
 

@@ -13,13 +13,7 @@ use Akeneo\Category\Domain\Model\Enrichment\Category as CategoryDomain;
 class ExternalApiCategory
 {
     /**
-     * @param string $code
-     * @param int|null $parentId
-     * @param string|null $parentCode
-     * @param string|null $updated
      * @param array<string, string>|null $labels
-     * @param int|null $position
-     * @param string|null $templateCode
      * @param array<string, array<string, mixed>>|null $values
      */
     public function __construct(

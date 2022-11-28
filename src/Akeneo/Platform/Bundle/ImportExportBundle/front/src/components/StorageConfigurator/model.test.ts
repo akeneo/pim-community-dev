@@ -23,6 +23,7 @@ const sftpStorage: SftpStorage = {
   type: 'sftp',
   host: 'example.com',
   port: 22,
+  login_type: 'password',
   username: 'test',
   password: 'test',
   file_path: '/tmp/test.xlsx',

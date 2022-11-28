@@ -44,6 +44,7 @@ final class GetCatalogErrorsAction
             'enabled' => $catalogDomain->isEnabled(),
             'product_selection_criteria' => $catalogDomain->getProductSelectionCriteria(),
             'product_value_filters' => $catalogDomain->getProductValueFilters(),
+            'product_mapping' => $catalogDomain->getProductMapping(),
         ];
 
         $violations = $this->validator->validate($catalogNormalized, [

@@ -68,6 +68,24 @@ class UpsertCategoryTranslationsSqlIntegration extends CategoryTestCase
         $this->assertEquals('chemises', $translations['fr_FR']);
     }
 
+    public function testInsertEmptyTranslationsInDatabase(): void
+    {
+        $categoryCode = 'myCategory';
+        $createdCategory = $this->createOrUpdateCategory(
+            code: $categoryCode,
+            labels: [
+                'en_US' => null,
+                'de_DE' => null,
+                'fr_FR' => null,
+            ]
+        );
+
+        $this->assertNotEmpty($createdCategory->getLabels());
+        $this->assertNull($createdCategory->getLabels()->getTranslation('en_US'));
+        $this->assertNull($createdCategory->getLabels()->getTranslation('de_DE'));
+        $this->assertNull($createdCategory->getLabels()->getTranslation('fr_FR'));
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

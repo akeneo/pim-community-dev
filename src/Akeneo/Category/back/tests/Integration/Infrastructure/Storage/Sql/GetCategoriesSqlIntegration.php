@@ -120,11 +120,11 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
             value: 'Les chaussures dont vous avez besoin !',
             uuid: '87939c45-1d85-4134-9579-d594fff65030',
             code: 'title',
-            channel: null,
+            channel: 'ecommerce',
             locale: 'fr_FR'
         );
         $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
-        $this->assertNull($expectedTextValue->getChannel());
+        $this->assertSame('ecommerce', $expectedTextValue->getChannel()?->getValue());
         $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
 
         $this->assertNull($socksCategory->getAttributes());

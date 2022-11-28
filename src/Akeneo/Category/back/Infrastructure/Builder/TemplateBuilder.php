@@ -3,8 +3,8 @@
 namespace Akeneo\Category\Infrastructure\Builder;
 
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
+use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
@@ -54,7 +54,7 @@ class TemplateBuilder
             $this->generateTemplateLabelCollection($categoryTree->getLabels()),
             $categoryTree->getId(),
             AttributeCollection::fromArray([
-                AttributeTextArea::create(
+                AttributeRichText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('description'),
                     AttributeOrder::fromInteger(1),
@@ -67,12 +67,12 @@ class TemplateBuilder
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
-                    new AttributeCode('hero_banner'),
+                    new AttributeCode('banner_image'),
                     AttributeOrder::fromInteger(2),
                     AttributeIsRequired::fromBoolean(true),
                     AttributeIsScopable::fromBoolean(true),
                     AttributeIsLocalizable::fromBoolean(false),
-                    LabelCollection::fromArray(['en_US' => 'Hero Banner']),
+                    LabelCollection::fromArray(['en_US' => 'Banner image']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
                 ),

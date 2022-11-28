@@ -35,7 +35,7 @@ class TextAreaValueSpec extends ObjectBehavior
         $givenArray = [
             'data' => "Meta <p>shoes</p>",
             'type' => 'textarea',
-            'channel' => null,
+            'channel' => 'ecommerce',
             'locale' => 'en_US',
             'attribute_code' => ''
         ];
@@ -51,7 +51,7 @@ class TextAreaValueSpec extends ObjectBehavior
         $givenArray = [
             'data' => "Meta <p>shoes</p>",
             'type' => 'textarea',
-            'channel' => null,
+            'channel' => 'ecommerce',
             'locale' => 'en_US',
             'attribute_code' => ''
         ];
