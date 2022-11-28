@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithMetadataAndComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileWithMetadataAndComments;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetProductFileWithComments implements GetProductFileWithComments
+final class DatabaseGetProductFileWithMetadataAndComments implements GetProductFileWithMetadataAndComments
 {
     public function __construct(private Connection $connection)
     {
     }
 
-    public function __invoke(string $productFileIdentifier): ?ProductFile
+    public function __invoke(string $productFileIdentifier): ?ProductFileWithMetadataAndComments
     {
         $sql = <<<SQL
             WITH retailer_comments AS (
@@ -47,7 +47,8 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
                 rc.retailer_comments,
                 sc.supplier_comments,
                 product_file_import.import_status,
-                comments_read_by_retailer.last_read_at as retailer_last_read_at
+                comments_read_by_retailer.last_read_at as retailer_last_read_at,
+                product_file_import.finished_at
             FROM akeneo_supplier_portal_supplier_product_file product_file
             LEFT JOIN retailer_comments rc
                 ON identifier = rc.product_file_identifier
@@ -69,7 +70,7 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             return null;
         }
 
-        return new ProductFile(
+        return new ProductFileWithMetadataAndComments(
             $productFileWithComments['identifier'],
             $productFileWithComments['original_filename'],
             null,
@@ -77,6 +78,7 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             $productFileWithComments['uploaded_by_supplier'],
             $productFileWithComments['uploaded_at'],
             $productFileWithComments['import_status'],
+            $productFileWithComments['finished_at'],
             $productFileWithComments['retailer_comments']
                 ? \array_filter(\json_decode(
                     $productFileWithComments['retailer_comments'],
