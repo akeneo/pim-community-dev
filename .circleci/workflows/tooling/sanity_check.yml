@@ -2,38 +2,6 @@ orbs:
     slack: circleci/slack@3.4.2
 
 workflows:
-    on_demand_deployment_validation:
-        when:
-            not:
-                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-        jobs:
-            - deployment_validation:
-                  name: "Start test ?"
-                  type: approval
-                  filters:
-                      branches:
-                          only:
-                              - master
-            - cypress/install:
-                  name: "Cypress install"
-                  install-command: npm install
-                  working_directory: ./deployments/test/e2e/
-                  cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
-                  requires:
-                      - "Start test ?"
-                  post-install:
-                    - run:
-                        name: Get the required file commands.js from pim-community-dev
-                        command: wget https://raw.githubusercontent.com/akeneo/pim-community-dev/master/cypress/support/commands.js -O ./deployments/test/e2e/cypress/support/commands.js
-            - cypress_e2e:
-                  name: "[srnt] Execute e2e tests"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["srnt"]
-                          PFID: ["srnt-c3po"]
-                  requires:
-                    - "Cypress install"
-
     on_demand_compliancy_checker:
         when:
             not:

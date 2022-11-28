@@ -1,7 +1,0 @@
-{
-    "fixturesFolder": false,
-    "videoUploadOnPasses": false,
-    "env": {
-        "DEPLOYMENT_TEST": true
-    }
-}

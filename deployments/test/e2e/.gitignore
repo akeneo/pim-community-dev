@@ -1,4 +1,0 @@
-cypress/support/commands.js
-cypress/downloads/**
-cypress/screenshots/**
-cypress/videos/**

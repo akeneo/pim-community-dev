@@ -528,15 +528,3 @@ test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM con
 .PHONY: test_helm_generated_k8s_files
 test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
 	bash $(DEPLOYMENT_DIR)/bin/test_helm_generated_k8s_files.sh
-
-get-pim-community-cypress-command:
-	cd $(DEPLOYMENT_DIR)/test/e2e/ && wget https://raw.githubusercontent.com/akeneo/pim-community-dev/master/cypress/support/commands.js -O ./cypress/support/commands.js
-
-.PHONY: test_deployment_e2e
-test_deployment_e2e: get-pim-community-cypress-command #Doc: Test srnt (c3po)/grth(r2d2) instances
-ifeq ($(TYPE),grth)
-	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress --headless --config baseUrl="https://r2d2.demo.cloud.akeneo.com/" --env PRODUCT_TYPE=${TYPE},PIM_VERSION=${PIM_VERSION}
-endif
-ifeq ($(TYPE),srnt)
-	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress --headless --config baseUrl="https://c3po.demo.cloud.akeneo.com/" --env PRODUCT_TYPE=${TYPE},PIM_VERSION=${PIM_VERSION}
-endif
