@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Component\Manager;
 
-use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -15,22 +13,17 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
  */
 class PositionResolver implements PositionResolverInterface
 {
-    public function __construct(
-        private readonly GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes,
-        private readonly FeatureFlags $featureFlags,
-    ) {
+    public function __construct(private GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes)
+    {
     }
 
-    public function getPosition(CategoryInterface|Category $category): int
+    public function getPosition(CategoryInterface $category): int
     {
         if ($category->isRoot()) {
             return 1;
         }
 
-        $parentId = $this->featureFlags->isEnabled('enriched_category') && $category instanceof Category ?
-            $category->getParentId()->getValue() : $category->getParent()->getId();
-
-        $children = $this->getDirectChildrenCategoryCodes->execute($parentId);
+        $children = $this->getDirectChildrenCategoryCodes->execute($category->getParent()->getId());
 
         return $this->getCategoryPositionAmongChildren($category, $children);
     }
@@ -38,8 +31,8 @@ class PositionResolver implements PositionResolverInterface
     /**
      * @param array<string, array{code: string, row_num: int}> $children
      */
-    private function getCategoryPositionAmongChildren(CategoryInterface|Category $category, array $children): int
+    private function getCategoryPositionAmongChildren(CategoryInterface $category, array $children): int
     {
-        return (int) ($children[(string) $category->getCode()]['row_num'] ?? 1);
+        return (int) ($children[$category->getCode()]['row_num'] ?? 1);
     }
 }

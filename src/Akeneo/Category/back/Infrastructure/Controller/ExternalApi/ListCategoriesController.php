@@ -2,9 +2,9 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
+use Akeneo\Category\Application\Handler\GetPositionInterface;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
-use Akeneo\Category\Infrastructure\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
@@ -30,7 +30,7 @@ class ListCategoriesController extends AbstractController
         private readonly FeatureFlags $featureFlags,
         private readonly GetCategoriesParametersBuilder $parametersBuilder,
         private readonly GetCategoriesInterface $getCategories,
-        private readonly PositionResolverInterface $positionResolver,
+        private readonly GetPositionInterface $getPosition,
         private readonly array $apiConfiguration,
     ) {
     }
@@ -97,7 +97,7 @@ class ListCategoriesController extends AbstractController
             $categoryApi = ExternalApiCategory::fromDomainModel($category);
 
             if ($request->query->getBoolean('with_position')) {
-                $categoryApi->setPosition($this->positionResolver->getPosition($category));
+                $categoryApi->setPosition(($this->getPosition)($category));
             }
 
             $normalizedCategories[] = $categoryApi->normalize();

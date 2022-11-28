@@ -19,12 +19,9 @@ use PhpSpec\ObjectBehavior;
  */
 class PositionResolverSpec extends ObjectBehavior
 {
-    function let(
-        GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes,
-        FeatureFlags $featureFlags
-    )
+    function let(GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes)
     {
-        $this->beConstructedWith($getDirectChildrenCategoryCodes, $featureFlags);
+        $this->beConstructedWith($getDirectChildrenCategoryCodes);
     }
 
     function it_is_initializable()
@@ -40,9 +37,8 @@ class PositionResolverSpec extends ObjectBehavior
         $this->getPosition($category)->shouldReturn(1);
     }
 
-    function it_gets_position_with_enriched_category_feature_disabled(
+    function it_gets_position(
         GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes,
-        FeatureFlags $featureFlags,
         CategoryInterface $category,
         CategoryInterface $categoryParent
     ) {
@@ -54,38 +50,12 @@ class PositionResolverSpec extends ObjectBehavior
             'categoryC' => ['row_num' => 3],
         ];
 
-        $featureFlags->isEnabled('enriched_category')->willReturn(false);
-
         $category->getCode()->willReturn($aCategoryCode);
         $category->isRoot()->willReturn(false);
         $category->getParent()->willReturn($categoryParent);
         $categoryParent->getId()->willReturn($aCategoryParentId);
 
         $getDirectChildrenCategoryCodes->execute($aCategoryParentId)->willReturn($aListOfParentCategoryChildren);
-
-        $this->getPosition($category)->shouldReturn(3);
-    }
-
-    function it_gets_position_with_enriched_category_feature_enabled(
-        GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes,
-        FeatureFlags $featureFlags,
-        Category $category
-    ) {
-        $aCategoryCode = new Code('categoryC');
-        $aCategoryParentId = new CategoryId(1);
-        $aListOfParentCategoryChildren = [
-            'categoryA' => ['row_num' => 1],
-            'categoryB' => ['row_num' => 2],
-            'categoryC' => ['row_num' => 3],
-        ];
-
-        $featureFlags->isEnabled('enriched_category')->willReturn(true);
-
-        $category->getCode()->willReturn($aCategoryCode);
-        $category->isRoot()->willReturn(false);
-        $category->getParentId()->willReturn($aCategoryParentId);
-
-        $getDirectChildrenCategoryCodes->execute($aCategoryParentId->getValue())->willReturn($aListOfParentCategoryChildren);
 
         $this->getPosition($category)->shouldReturn(3);
     }

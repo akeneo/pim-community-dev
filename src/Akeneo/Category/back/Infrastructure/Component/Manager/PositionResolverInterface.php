@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Component\Manager;
 
-use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 
 /**
@@ -13,5 +12,5 @@ use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterf
  */
 interface PositionResolverInterface
 {
-    public function getPosition(CategoryInterface|Category $category): int;
+    public function getPosition(CategoryInterface $category): int;
 }
