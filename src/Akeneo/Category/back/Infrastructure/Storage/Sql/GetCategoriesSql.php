@@ -12,59 +12,24 @@ use Doctrine\DBAL\Connection;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCategoriesSql implements GetCategoriesInterface
+final class GetCategoriesSql implements GetCategoriesInterface
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
     }
 
     /**
-     * @param array<string> $categoryCodes
+     * @param array<int, mixed>|array<string, mixed> $parameters
      *
      * @return array<Category>
      *
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
      */
-    // TODO: To refactor when filtering service is created. https://akeneo.atlassian.net/browse/GRF-538
-    public function byCodes(array $categoryCodes, bool $isEnrichedAttributes): array
+    public function execute(array $parameters): array
     {
-        $condition['sqlWhere'] = $this->searchFilter($categoryCodes);
-        $condition['sqlGroupBy'] = 'GROUP BY category.code';
-        $condition['params'] = [
-            'category_codes' => $categoryCodes,
-            'with_enriched_attributes' => $isEnrichedAttributes ?: false,
-            ];
-        $condition['types'] = [
-            'category_codes' => Connection::PARAM_STR_ARRAY,
-            'with_enriched_attributes' => \PDO::PARAM_BOOL,
-            ];
-
-        return $this->execute($condition);
-    }
-
-    // TODO: Will be replaced by filtering service. https://akeneo.atlassian.net/browse/GRF-538
-    public function searchFilter(array $searchParameter): string
-    {
-        if (empty($searchParameter)) {
-            $sqlWhere = '1=1';
-        } else {
-            $sqlWhere = 'category.code IN (:category_codes)';
-        }
-
-        return $sqlWhere;
-    }
-
-    /**
-     * @return array<Category>
-     *
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \JsonException
-     */
-    private function execute(array $condition): array
-    {
-        $sqlWhere = $condition['sqlWhere'];
-        $sqlGroupBy = $condition['sqlGroupBy'] ?? '';
+        $sqlWhere = $parameters['sqlWhere'];
+        $sqlLimitOffset = $parameters['sqlLimitOffset'];
 
         $sqlQuery = <<<SQL
             WITH translation as (
@@ -72,7 +37,7 @@ class GetCategoriesSql implements GetCategoriesInterface
                 FROM pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE $sqlWhere
-                $sqlGroupBy
+                GROUP BY category.code
             )
             SELECT
                 category.id,
@@ -86,13 +51,14 @@ class GetCategoriesSql implements GetCategoriesInterface
                 pim_catalog_category category
                 LEFT JOIN translation ON translation.code = category.code
             WHERE $sqlWhere
-            $sqlGroupBy
+            ORDER BY category.root, category.lft
+            $sqlLimitOffset
         SQL;
 
         $results = $this->connection->executeQuery(
             $sqlQuery,
-            $condition['params'],
-            $condition['types'],
+            $parameters['params'],
+            $parameters['types'],
         )->fetchAllAssociative();
 
         if (!$results) {

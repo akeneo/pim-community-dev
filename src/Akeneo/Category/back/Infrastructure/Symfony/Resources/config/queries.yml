@@ -3,7 +3,6 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
     arguments:
       - '@database_connection'
-      -
 
   Akeneo\Category\Application\Query\GetCategoriesInterface:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
@@ -48,3 +47,6 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreeByCategoryTemplateSql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoriesParametersBuilder:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesParametersBuilderSql

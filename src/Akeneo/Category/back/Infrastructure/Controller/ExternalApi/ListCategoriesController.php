@@ -3,6 +3,8 @@
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
+use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
+use Akeneo\Category\Infrastructure\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
@@ -23,11 +25,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class ListCategoriesController extends AbstractController
 {
     public function __construct(
-        private PaginatorInterface $paginator,
-        private ParameterValidatorInterface $parameterValidator,
-        private FeatureFlags $featureFlags,
-        private GetCategoriesInterface $getCategories,
-        private array $apiConfiguration,
+        private readonly PaginatorInterface $paginator,
+        private readonly ParameterValidatorInterface $parameterValidator,
+        private readonly FeatureFlags $featureFlags,
+        private readonly GetCategoriesParametersBuilder $parametersBuilder,
+        private readonly GetCategoriesInterface $getCategories,
+        private readonly PositionResolverInterface $positionResolver,
+        private readonly array $apiConfiguration,
     ) {
     }
 
@@ -63,15 +67,15 @@ class ListCategoriesController extends AbstractController
         if (null === $searchFilters) {
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
-        // TODO: Take limit, offset & order into account. https://akeneo.atlassian.net/browse/GRF-538
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $order = ['root' => 'ASC', 'left' => 'ASC'];
         try {
-            // TODO: Call Filtering service (to be created) instead. https://akeneo.atlassian.net/browse/GRF-538
-            $categories = $this->getCategories->byCodes(
+            $queryParameters = $this->parametersBuilder->build(
                 $searchFilters,
+                $queryParameters['limit'],
+                $offset,
                 $request->query->getBoolean('with_enriched_attributes'),
             );
+            $categories = $this->getCategories->execute($queryParameters);
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
@@ -90,7 +94,13 @@ class ListCategoriesController extends AbstractController
 
         $normalizedCategories = [];
         foreach ($categories as $category) {
-            $normalizedCategories[] = ExternalApiCategory::fromDomainModel($category)->normalize();
+            $categoryApi = ExternalApiCategory::fromDomainModel($category);
+
+            if ($request->query->getBoolean('with_position')) {
+                $categoryApi->setPosition($this->positionResolver->getPosition($category));
+            }
+
+            $normalizedCategories[] = $categoryApi->normalize();
         }
 
         $paginatedCategories = $this->paginator->paginate(
