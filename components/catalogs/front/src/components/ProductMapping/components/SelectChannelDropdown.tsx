@@ -5,7 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteChannels} from '../../../hooks/useInfiniteChannels';
 import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
 import {Channel} from '../../../models/Channel';
-import {useChannel} from '../../ProductSelection/hooks/useChannel';
+import {useChannel} from '../../../hooks/useChannel';
 import {Source} from '../models/Source';
 
 const DropdownField = styled(Field)`
