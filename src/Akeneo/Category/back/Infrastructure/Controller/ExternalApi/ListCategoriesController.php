@@ -4,6 +4,7 @@ namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
+use Akeneo\Category\Infrastructure\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
@@ -29,6 +30,7 @@ class ListCategoriesController extends AbstractController
         private readonly FeatureFlags $featureFlags,
         private readonly GetCategoriesParametersBuilder $parametersBuilder,
         private readonly GetCategoriesInterface $getCategories,
+        private readonly PositionResolverInterface $positionResolver,
         private readonly array $apiConfiguration,
     ) {
     }
@@ -71,7 +73,7 @@ class ListCategoriesController extends AbstractController
                 $searchFilters,
                 $queryParameters['limit'],
                 $offset,
-                $request->query->getBoolean('with_enriched_attributes'),
+                $request->query->getBoolean('with_position'),
             );
             $categories = $this->getCategories->execute($queryParameters);
         } catch (\InvalidArgumentException $exception) {
@@ -92,7 +94,13 @@ class ListCategoriesController extends AbstractController
 
         $normalizedCategories = [];
         foreach ($categories as $category) {
-            $normalizedCategories[] = ExternalApiCategory::fromDomainModel($category)->normalize();
+            $categoryApi = ExternalApiCategory::fromDomainModel($category);
+
+            if ($request->query->getBoolean('with_position')) {
+                $categoryApi->setPosition($this->positionResolver->getPosition($category));
+            }
+
+            $normalizedCategories[] = $categoryApi->normalize();
         }
 
         $paginatedCategories = $this->paginator->paginate(
