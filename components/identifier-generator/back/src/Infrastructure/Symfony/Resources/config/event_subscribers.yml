@@ -10,6 +10,6 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler'
       - '@validator'
-      - '@pim_catalog.validator.mapping.product_value_metadata_factory'
+      - '@validator.builder'
     tags:
       - { name: kernel.event_subscriber }
