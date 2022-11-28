@@ -2,7 +2,7 @@ import React from 'react';
 import {Breadcrumb, ImportXlsxIllustration, Pill, TabBar, useTabBar, onboarderTheme} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {useHistory, useParams} from 'react-router';
-import {Discussion, ProductFileImportConfigurationsModal} from './components';
+import {Discussion, GeneralInformation, ProductFileImportConfigurationsModal} from './components';
 import {useProductFile} from './hooks/useProductFile';
 import styled from 'styled-components';
 import {ProductFileImportStatus} from './components/ProductFileImportStatus';
@@ -10,7 +10,7 @@ import {ProductFileImportStatus} from './components/ProductFileImportStatus';
 const ShowProductFile = () => {
     const translate = useTranslate();
     const history = useHistory();
-    const [isCurrent, switchTo] = useTabBar('discussion');
+    const [isCurrent, switchTo] = useTabBar('general_information');
     const {productFileIdentifier} = useParams<{productFileIdentifier: string}>();
     const [productFile, saveComment, validationError] = useProductFile(productFileIdentifier);
 
@@ -54,6 +54,12 @@ const ShowProductFile = () => {
             </PageHeader>
             <PageContent>
                 <TabBar moreButtonTitle="More">
+                    <TabBar.Tab
+                        isActive={isCurrent('general_information')}
+                        onClick={() => switchTo('general_information')}
+                    >
+                        {translate('supplier_portal.product_file_dropping.supplier_files.tabs.general_information')}
+                    </TabBar.Tab>
                     <TabBar.Tab isActive={isCurrent('discussion')} onClick={() => switchTo('discussion')}>
                         {translate('supplier_portal.product_file_dropping.supplier_files.tabs.discussion')}
                         {productFile.hasUnreadComments && <StyledPill level="primary" />}
@@ -62,6 +68,7 @@ const ShowProductFile = () => {
                 {isCurrent('discussion') && (
                     <Discussion productFile={productFile} saveComment={saveComment} validationError={validationError} />
                 )}
+                {isCurrent('general_information') && <GeneralInformation productFile={productFile} />}
             </PageContent>
         </>
     );
