@@ -375,7 +375,7 @@ test('it validates the catalog on first load', () => {
     ]);
 });
 
-test('it remove all errors when we delete a product selection criteria', () => {
+test('it remove the product selection criteria errors when we update a selection criteria', () => {
     mocked(useCatalog).mockImplementation(() => ({
         isLoading: false,
         isError: false,
@@ -402,8 +402,12 @@ test('it remove all errors when we delete a product selection criteria', () => {
         isError: false,
         data: [
             {
-                propertyPath: '[color]',
-                message: 'blue does not exists.',
+                propertyPath: '[product_selection_criteria][0][color]',
+                message: 'Invalid criteria',
+            },
+            {
+                propertyPath: '[product_mapping][name][title]',
+                message: 'Invalid source value',
             },
         ],
         error: null,
@@ -426,7 +430,12 @@ test('it remove all errors when we delete a product selection criteria', () => {
                 product_value_filters: {channels: ['ecommerce', 'print']},
                 product_mapping: {},
             },
-            errors: [],
+            errors: [
+                {
+                    propertyPath: '[product_mapping][name][title]',
+                    message: 'Invalid source value',
+                },
+            ],
         },
         expect.any(Function),
         true,
@@ -494,5 +503,113 @@ test('it returns the product mapping when catalog is loaded', () => {
         },
         expect.any(Function),
         false,
+    ]);
+});
+
+
+test('it remove the product mapping errors when we update a product mapping source', () => {
+    mocked(useCatalog).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: {
+            id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
+            name: 'Store US',
+            enabled: true,
+            product_selection_criteria: [
+                {
+                    field: 'color',
+                    operator: Operator.IN_LIST,
+                    value: ['blue', 'red'],
+                },
+            ],
+            product_value_filters: {},
+            owner_username: 'willy',
+            product_mapping: {
+                uuid: {
+                    source: 'uuid',
+                    locale: null,
+                    scope: null,
+                },
+                name: {
+                    source: 'title',
+                    locale: null,
+                    scope: null,
+                },
+            },
+            has_product_mapping_schema: true,
+        },
+        error: null,
+    }));
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [
+            {
+                propertyPath: '[product_selection][0][color]',
+                message: 'Invalid criteria',
+            },
+            {
+                propertyPath: '[product_mapping][name][title]',
+                message: 'Invalid source value',
+            },
+        ],
+        error: null,
+    }));
+
+    const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
+
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    const [form] = result.current;
+
+    act(() => {
+        form && form.dispatch({type: CatalogFormActions.SET_PRODUCT_MAPPING, value: {
+                uuid: {
+                    source: 'uuid',
+                    locale: null,
+                    scope: null,
+                },
+                name: {
+                    source: 'variation_name',
+                    locale: null,
+                    scope: null,
+                },
+            }}
+        );
+    });
+
+    expect(result.current).toMatchObject([
+        {
+            values: {
+                enabled: true,
+                product_selection_criteria: {
+                    a: {
+                        field: 'color',
+                        operator: 'IN',
+                        value: ['blue', 'red'],
+                    },
+                },
+                product_value_filters: {},
+                product_mapping: {
+                    uuid: {
+                        source: 'uuid',
+                        locale: null,
+                        scope: null,
+                    },
+                    name: {
+                        source: 'variation_name',
+                        locale: null,
+                        scope: null,
+                    },
+                },
+            },
+            errors: [
+                {
+                    propertyPath: '[product_selection][0][color]',
+                    message: 'Invalid criteria',
+                },
+            ],
+        },
+        expect.any(Function),
+        true,
     ]);
 });
