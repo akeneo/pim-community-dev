@@ -40,14 +40,15 @@ ifeq ($(USE_EDITION_FLAG),true)
 	TYPE := srnt
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/..)
 	BUCKET := serenity-edition-dev
-
+	PFID := srnt-$(INSTANCE_NAME)
 #We don't hardcode TYPE_LONG to keep proper edition specific PRODUCT_REFERENCE_TYPE & PRODUCT_REFERENCE_CODE
+else
+	PFID ?= $(TYPE)-$(INSTANCE_NAME)
 endif
 
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
 PRODUCT_REFERENCE_CODE ?= $(TYPE_LONG)_$(ENV_NAME)
 
-PFID ?= $(TYPE)-$(INSTANCE_NAME)
 CI ?= false
 ACTIVATE_MONITORING ?= true
 
@@ -189,12 +190,9 @@ create-ci-values: $(INSTANCE_DIR)
 	@echo "=========================================================="
 	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then cp $(DEPLOYMENT_DIR)/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml; fi
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-ifeq ($(TYPE),srnt)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
-ifeq ($(TYPE),grth)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
+
+
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev

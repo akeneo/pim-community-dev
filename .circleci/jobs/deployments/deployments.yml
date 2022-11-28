@@ -55,13 +55,13 @@ jobs:
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
-            - store_artifacts:
-                path: /tmp/migration-logs.json
-                destination: migration-logs.json
             - get_datadog_migration_logs:
                 pfid: ${TYPE}-${INSTANCE_NAME}
             - validate_migration:
                 instance: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
             - run:
                   name: Test PIM connexion on kubernetes
                   command: make -C deployments/ test-prod
@@ -125,40 +125,31 @@ jobs:
                       TYPE=<<parameters.PRODUCT_TYPE>>
                       echo export TYPE=${TYPE} >> $BASH_ENV
 
-                      # Need to hardcode grth latest version because with the end of GE2SRNT migration they won't exist anymore and can't be retrivied by the script
-                      if [[ "$TYPE" == "grth" ]]
-                        then
-                            LATEST_RELEASE=growth-v20220927160459
-                        else
-                            LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
-                      fi
+                      LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
 
                       if [[ -z "${LATEST_RELEASE}" ]]; then
                           echo "Could not retrieve latest deployed release"
                           exit 1
                       fi
+
                       INSTANCE_NAME_PREFIX=pimup
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                      PFID=${TYPE}-${INSTANCE_NAME}
 
                       echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                      echo export PFID=${PFID} >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Latest image tag: ${LATEST_RELEASE}"
-                      echo "PFID: ${PFID}"
             - show_datadog_logs_links:
                 pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Pull Terraform modules from last release
                   command: |
                       case ${TYPE} in
-                        srnt) BUCKET="serenity-edition-dev" ;;
-                        grth) BUCKET="growth-edition-dev" ;;
+                        srnt | grth) BUCKET="serenity-edition-dev" ;;
                         tria) BUCKET="trial-edition-dev"  ;;
                       esac
 
@@ -173,17 +164,16 @@ jobs:
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ deploy-instance
                       IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ commit-instance
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
             - store_artifacts:
                 path: /tmp/migration-logs.json
                 destination: migration-logs.json
-            - get_datadog_migration_logs:
-                pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Persist env vars for next jobs
                   command: |
                       echo export TYPE=${TYPE} >> persisted_env_vars
                       echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
-                      echo export PFID="${PFID}" >> persisted_env_vars
             - run:
                   name: Remove env on kubernetes
                   command: |
@@ -255,13 +245,13 @@ jobs:
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
-            - store_artifacts:
-                path: /tmp/migration-logs.json
-                destination: migration-logs.json
             - get_datadog_migration_logs:
                 pfid: ${TYPE}-${INSTANCE_NAME}
             - validate_migration:
                 instance: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
             - run:
                   name: Persist env vars for next jobs
                   command: |
@@ -370,13 +360,13 @@ jobs:
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
-            - store_artifacts:
-                path: /tmp/migration-logs.json
-                destination: migration-logs.json
             - get_datadog_migration_logs:
                 pfid: ${TYPE}-${INSTANCE_NAME}
             - validate_migration:
                 instance: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
             - run:
                   name: Test PIM connexion on kubernetes
                   command: make -C deployments/ test-prod
@@ -495,13 +485,13 @@ jobs:
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
-            - store_artifacts:
-                path: /tmp/migration-logs.json
-                destination: migration-logs.json
             - get_datadog_migration_logs:
                 pfid: ${TYPE}-${INSTANCE_NAME}
             - validate_migration:
                 instance: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
             - run:
                   name: Persist env vars for next jobs
                   command: |

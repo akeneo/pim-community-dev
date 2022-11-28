@@ -62,7 +62,9 @@ jobs:
                   command: make -C deployments/ test-prod
             - run:
                   name: Check that upgrader pod ran
-                  command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+                  command: |
+                      [ "$USE_EDITION_FLAG" = true ] && TYPE=srnt
+                      kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
             - run:
                   name: Check PIM version installed
                   command: |
@@ -81,7 +83,9 @@ jobs:
                   when: on_fail
             - run:
                   name: Check if upgrader failed
-                  command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+                  command: |
+                      [ "$USE_EDITION_FLAG" = true ] && TYPE=srnt
+                      kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
                   when: on_fail
             - run:
                   name: Prepare infrastructure artifacts

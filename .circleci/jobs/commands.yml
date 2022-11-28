@@ -144,7 +144,7 @@ commands:
         - run:
             name: DATADOG deployment Livetail logs page
             command: |
-              if [ "$USE_EDITION_FLAG" = true ] ; then TYPE=srnt ; fi
+              [ "$USE_EDITION_FLAG" = true ] && TYPE=srnt
               echo "Instance logs :"
               echo "<<parameters.dd_domain>>/logs/livetail?query=kube_namespace%3A<<parameters.pfid>>"
               <<# parameters.display_migration_link >>
@@ -205,10 +205,12 @@ commands:
           - run:
               name: Get timings of migrations from Datadog
               command: |
+                [ "$USE_EDITION_FLAG" = true ] && TYPE=srnt
                 bash << parameters.pim_root_folder >>/deployments/bin/get_migration_data.sh -i << parameters.instance >> -o timings || true
           - run:
               name: Get memory consumption of migrations from Datadog
               command: |
+                [ "$USE_EDITION_FLAG" = true ] && TYPE=srnt
                 bash << parameters.pim_root_folder >>/deployments/bin/get_migration_data.sh -i << parameters.instance >> -o memory || true
 
     set_docker_gcp_mirror:
