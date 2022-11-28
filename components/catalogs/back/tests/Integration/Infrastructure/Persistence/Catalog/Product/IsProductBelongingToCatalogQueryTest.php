@@ -31,15 +31,18 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
         $this->logAs('shopifi');
 
         $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->createCatalog($catalogId, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogId);
-        $this->setCatalogProductSelection($catalogId, [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: $catalogId,
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
         $tshirtBlue = $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
         $this->createProduct('tshirt-red', [new SetEnabled(true)]);
 
@@ -55,15 +58,18 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
         $this->logAs('shopifi');
 
         $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->createCatalog($catalogId, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogId);
-        $this->setCatalogProductSelection($catalogId, [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: $catalogId,
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
         $tshirt = $this->createProduct('tshirt-blue', [new SetEnabled(false)]);
         $this->createProduct('tshirt-red', [new SetEnabled(true)]);
 

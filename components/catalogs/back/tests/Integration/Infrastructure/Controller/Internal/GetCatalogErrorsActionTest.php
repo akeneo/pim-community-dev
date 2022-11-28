@@ -31,22 +31,21 @@ class GetCatalogErrorsActionTest extends IntegrationTestCase
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store US',
             ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'color',
+                    'operator' => Operator::IN_LIST,
+                    'value' => ['blue'],
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
         );
 
         $this->createAttribute([
             'code' => 'color',
             'type' => 'pim_catalog_simpleselect',
             'options' => [],
-        ]);
-
-        $this->setCatalogProductSelection('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
-            [
-                'field' => 'color',
-                'operator' => Operator::IN_LIST,
-                'value' => ['blue'],
-                'scope' => null,
-                'locale' => null,
-            ],
         ]);
 
         $client->request(
