@@ -54,7 +54,7 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
         ]);
     }
 
-    public function testGetDirectChildrenOfARootCategory()
+    public function testGetDirectChildrenOfARootCategory(): void
     {
         $categoryId = $this->fetchCategoryId('master_catalog');
         $children = $this->getDirectChildrenCategoryCodes->execute($categoryId);
@@ -65,7 +65,7 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
         $this->assertCategoryCodeIsInPosition($children, 'audio_video', 3);
     }
 
-    public function testGetDirectChildrenOfALeafCategory()
+    public function testGetDirectChildrenOfALeafCategory(): void
     {
         $categoryId = $this->fetchCategoryId('audio_video');
         $children = $this->getDirectChildrenCategoryCodes->execute($categoryId);
@@ -73,7 +73,7 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
         Assert::assertCount(0, $children);
     }
 
-    public function testGetDirectChildrenOfACategory()
+    public function testGetDirectChildrenOfACategory(): void
     {
         $categoryId = $this->fetchCategoryId('webcams');
         $children = $this->getDirectChildrenCategoryCodes->execute($categoryId);
@@ -84,7 +84,7 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
         $this->assertCategoryCodeIsInPosition($children, 'webcam3', 3);
     }
 
-    public function testGetDirectChildrenOfIsolatedCategory()
+    public function testGetDirectChildrenOfIsolatedCategory(): void
     {
         $categoryId = $this->fetchCategoryId('isolated_catalog');
         $children = $this->getDirectChildrenCategoryCodes->execute($categoryId);
@@ -97,6 +97,9 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
         return (int) $this->get('database_connection')->fetchOne('SELECT id FROM pim_catalog_category WHERE code= :code', ['code' => $code]);
     }
 
+    /**
+     * @param array<string, array{code: string, row_num: int}> $children
+     */
     private function assertCategoryCodeIsInPosition(array $children, string $categoryCode, int $position): void
     {
         Assert::assertEquals($position, $children[$categoryCode]['row_num']);
