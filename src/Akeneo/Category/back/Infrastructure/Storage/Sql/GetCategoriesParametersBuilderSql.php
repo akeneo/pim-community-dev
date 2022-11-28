@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Handler\SearchFilters;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Doctrine\DBAL\Connection;
+
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -13,27 +15,31 @@ use Doctrine\DBAL\Connection;
  */
 class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilder
 {
+    private function __construct(
+        private readonly SearchFilters $searchFilters
+    ) {
+    }
+
     /**
      * @param array<string> $categoryCodes
      *
      * @return array<string, string>
      */
     public function build(
-        array $categoryCodes,
+        array $searchFilters,
         int $limit,
         int $offset,
         bool $isEnrichedAttributes,
     ): array {
-        $parameters['sqlWhere'] = $this->buildSearchFilter($categoryCodes);
+        $parameters['sqlWhere'] = $this->searchFilters->build($searchFilters);
         $parameters['sqlLimitOffset'] = $this->buildLimitOffset($limit, $offset);
         $parameters['params'] = [
-            'category_codes' => $categoryCodes,
             'with_enriched_attributes' => $isEnrichedAttributes ?: false,
         ];
         $parameters['types'] = [
-            'category_codes' => Connection::PARAM_STR_ARRAY,
             'with_enriched_attributes' => \PDO::PARAM_BOOL,
         ];
+        //TODO handle parameters and type for searchFilters
 
         return $parameters;
     }

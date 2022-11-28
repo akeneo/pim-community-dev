@@ -11,9 +11,9 @@ namespace Akeneo\Category\Application\Query;
 interface GetCategoriesParametersBuilder
 {
     /**
-     * @param array<string> $categoryCodes
+     * @param array<string> $searchFilters
      *
      * @return array<string, string>
      */
-    public function build(array $categoryCodes, int $limit, int $offset, bool $isEnrichedAttributes): array;
+    public function build(array $searchFilters, int $limit, int $offset, bool $isEnrichedAttributes): array;
 }

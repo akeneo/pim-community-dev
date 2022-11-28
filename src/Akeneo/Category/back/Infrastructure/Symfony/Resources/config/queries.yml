@@ -50,3 +50,5 @@ services:
 
   Akeneo\Category\Application\Query\GetCategoriesParametersBuilder:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesParametersBuilderSql
+    arguments:
+      - '@Akeneo\Category\Application\Handler\SearchFilters'
