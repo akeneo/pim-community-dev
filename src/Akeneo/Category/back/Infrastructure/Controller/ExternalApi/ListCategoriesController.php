@@ -73,7 +73,7 @@ class ListCategoriesController extends AbstractController
                 $searchFilters,
                 $queryParameters['limit'],
                 $offset,
-                $request->query->getBoolean('with_position'),
+                $request->query->getBoolean('with_enriched_attributes'),
             );
             $categories = $this->getCategories->execute($queryParameters);
         } catch (\InvalidArgumentException $exception) {
