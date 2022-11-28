@@ -4,9 +4,9 @@ import {Field, Locale as LocaleLabel, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
 import {Source} from '../models/Source';
-import {useInfiniteLocales} from '../../ProductValueFilters/hooks/useInfiniteLocales';
+import {useInfiniteLocales} from '../../../hooks/useInfiniteLocales';
 import {useLocalesByCodes} from '../../../hooks/useLocalesByCodes';
-import {Locale} from '../../ProductValueFilters/models/Locale';
+import {Locale} from '../../../models/Locale';
 
 const DropdownField = styled(Field)`
     margin-top: 10px;
