@@ -42,7 +42,7 @@ akeneo.tailored_import:
       locale_should_not_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持つようになりました。ロケールを作成するか、別のターゲットを選択してください。
       channel_should_not_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持つようになりました。チャンネルを作成するか、別のターゲットを選択してください。
       locale_should_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持たなくなりました。ロケールを削除して再作成するか、別のターゲットを選択してください。
-      channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。チャンネルを削除して再作成するか、別のターゲットを選択してください。
+      channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。属性を削除して再作成するか、別のターゲットを選択してください。
       invalid_specific_locale: 属性 {{ attribute_code }} はロケール固有です。別のロケールを選択してください。
     file_key:
       does_not_exist: ファイル {{ file_key }} が見つかりませんでした。
