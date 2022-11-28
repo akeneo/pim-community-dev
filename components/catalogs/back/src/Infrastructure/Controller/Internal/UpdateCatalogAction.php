@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Domain\ProductSelectionCriteria;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -72,7 +73,7 @@ final class UpdateCatalogAction
             $catalog->getName(),
             $catalog->getOwnerUsername(),
             $payload['enabled'],
-            $payload['product_selection_criteria'],
+            new ProductSelectionCriteria($payload['product_selection_criteria']),
             $payload['product_value_filters'],
             $payload['product_mapping'],
         ));

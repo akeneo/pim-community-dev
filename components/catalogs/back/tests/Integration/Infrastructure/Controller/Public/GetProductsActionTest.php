@@ -168,17 +168,21 @@ class GetProductsActionTest extends IntegrationTestCase
             'options' => ['red', 'blue'],
         ]);
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogIdUS);
-        $this->setCatalogProductSelection($catalogIdUS, [
-            [
-                'field' => 'color',
-                'operator' => Operator::IN_LIST,
-                'value' => ['red'],
-                'scope' => null,
-                'locale' => null,
+        $this->createCatalog(
+            id: $catalogIdUS,
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'color',
+                    'operator' => Operator::IN_LIST,
+                    'value' => ['red'],
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ],
-        ]);
+        );
+
         $this->removeAttributeOption('color.red');
 
         $this->client->request(

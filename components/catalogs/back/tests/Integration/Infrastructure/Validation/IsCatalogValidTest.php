@@ -7,7 +7,6 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogQuery;
 use Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
@@ -35,17 +34,20 @@ class IsCatalogValidTest extends IntegrationTestCase
         ]);
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->createUser('shopifi');
-        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogIdUS);
-        $this->setCatalogProductSelection($catalogIdUS, [
-            [
-                'field' => 'color',
-                'operator' => Operator::IN_LIST,
-                'value' => ['red'],
-                'scope' => null,
-                'locale' => null,
+        $this->createCatalog(
+            id: $catalogIdUS,
+            name:'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'color',
+                    'operator' => Operator::IN_LIST,
+                    'value' => ['red'],
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ],
-        ]);
+        );
 
         $isCatalogValid = ($this->isCatalogValid)($this->getCatalogDomain($catalogIdUS));
         $this->assertTrue($isCatalogValid);
@@ -60,17 +62,20 @@ class IsCatalogValidTest extends IntegrationTestCase
         ]);
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->createUser('shopifi');
-        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogIdUS);
-        $this->setCatalogProductSelection($catalogIdUS, [
-            [
-                'field' => 'color',
-                'operator' => Operator::IN_LIST,
-                'value' => ['red'],
-                'scope' => null,
-                'locale' => null,
+        $this->createCatalog(
+            id: $catalogIdUS,
+            name:'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'color',
+                    'operator' => Operator::IN_LIST,
+                    'value' => ['red'],
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ],
-        ]);
+        );
         $this->removeAttributeOption('color.red');
 
         $isCatalogValid = ($this->isCatalogValid)($this->getCatalogDomain($catalogIdUS));

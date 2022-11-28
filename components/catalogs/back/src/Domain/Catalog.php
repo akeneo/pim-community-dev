@@ -8,14 +8,6 @@ namespace Akeneo\Catalogs\Domain;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ProductSelectionCriterion array{
- *      field: string,
- *      operator: string,
- *      value?: mixed,
- *      scope?: string,
- *      locale?: string,
- * }
- *
  * @phpstan-type ProductValueFilters array{
  *      channels?: array<string>,
  *      locales?: array<string>,
@@ -27,11 +19,13 @@ namespace Akeneo\Catalogs\Domain;
  *          locale: string|null,
  *          scope: string|null,
  * }>
+ *
+ * @phpstan-import-type ProductSelectionCriterion from ProductSelectionCriteria
  */
 final class Catalog
 {
     /**
-     * @param array<array-key, ProductSelectionCriterion> $productSelectionCriteria
+     * @param ProductSelectionCriteria $productSelectionCriteria
      * @param ProductValueFilters $productValueFilters
      * @param ProductMapping $productMapping
      */
@@ -40,7 +34,7 @@ final class Catalog
         private string $name,
         private string $ownerUsername,
         private bool $enabled,
-        private array $productSelectionCriteria,
+        private ProductSelectionCriteria $productSelectionCriteria,
         private array $productValueFilters,
         private array $productMapping,
     ) {
@@ -66,10 +60,7 @@ final class Catalog
         return $this->enabled;
     }
 
-    /**
-     * @return array<ProductSelectionCriterion>
-     */
-    public function getProductSelectionCriteria(): array
+    public function getProductSelectionCriteria(): ProductSelectionCriteria
     {
         return $this->productSelectionCriteria;
     }
@@ -108,7 +99,7 @@ final class Catalog
             'name' => $this->getName(),
             'enabled' => $this->isEnabled(),
             'owner_username' => $this->getOwnerUsername(),
-            'product_selection_criteria' => $this->getProductSelectionCriteria(),
+            'product_selection_criteria' => $this->getProductSelectionCriteria()->toArray(),
             'product_value_filters' => $this->getProductValueFilters(),
             'product_mapping' => $this->getProductMapping(),
         ];

@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Domain\Operator;
+use Akeneo\Catalogs\Domain\ProductSelectionCriteria;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 
 /**
@@ -28,13 +29,13 @@ final class CreateCatalogHandler
                 $command->getName(),
                 $command->getOwnerUsername(),
                 false,
-                [
+                new ProductSelectionCriteria([
                     [
                         'field' => 'enabled',
                         'operator' => Operator::EQUALS,
                         'value' => true,
                     ],
-                ],
+                ]),
                 [],
                 [],
             )

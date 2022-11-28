@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Domain\ProductSelectionCriteria;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
@@ -82,7 +83,7 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             $row['name'],
             $row['owner_username'],
             (bool) $row['is_enabled'],
-            $productSelectionCriteria,
+            new ProductSelectionCriteria($productSelectionCriteria),
             $productValueFilters,
             $productMapping,
         );

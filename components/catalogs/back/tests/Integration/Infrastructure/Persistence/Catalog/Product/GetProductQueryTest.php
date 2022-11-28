@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog\Pr
 
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Domain\Operator;
+use Akeneo\Catalogs\Domain\ProductSelectionCriteria;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
@@ -42,7 +43,7 @@ class GetProductQueryTest extends IntegrationTestCase
             'Store US',
             'owner',
             true,
-            [],
+            new ProductSelectionCriteria(),
             [],
             [],
         );
@@ -116,11 +117,13 @@ class GetProductQueryTest extends IntegrationTestCase
             'Store US',
             'owner',
             true,
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
-            ],
+            new ProductSelectionCriteria([
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ]),
             ['channels' => ['ecommerce']],
             [],
         );
@@ -203,11 +206,13 @@ class GetProductQueryTest extends IntegrationTestCase
             'Store US',
             'owner',
             true,
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
-            ],
+            new ProductSelectionCriteria([
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ]),
             ['locales' => ['en_US', 'fr_FR']],
             [],
         );
@@ -296,11 +301,13 @@ class GetProductQueryTest extends IntegrationTestCase
             'Store US',
             'owner',
             true,
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
-            ],
+            new ProductSelectionCriteria([
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ]),
             ['currencies' => ['USD', 'EUR']],
             [],
         );
@@ -396,11 +403,11 @@ class GetProductQueryTest extends IntegrationTestCase
             'Store US',
             'owner',
             true,
-            [
+            new ProductSelectionCriteria([[
                 'field' => 'enabled',
                 'operator' => Operator::EQUALS,
                 'value' => true,
-            ],
+            ]]),
             [
                 'channels' => ['print'],
                 'locales' => ['en_US'],

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Domain\ProductSelectionCriteria;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\UpsertCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -61,7 +62,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'Store US',
             'test',
             false,
-            $productSelectionCriteria,
+            new ProductSelectionCriteria($productSelectionCriteria),
             $productValueFilters,
             $productMapping,
         ));
@@ -106,7 +107,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'Store US',
             'test',
             false,
-            [$enabledCriterion],
+            new ProductSelectionCriteria([$enabledCriterion]),
             $productValueFiltersChannel,
             [],
         ));
@@ -116,7 +117,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'Store US [NEW]',
             'test',
             true,
-            [$enabledCriterion, $disabledCriterion],
+            new ProductSelectionCriteria([$enabledCriterion, $disabledCriterion]),
             $productValueFiltersLocale,
             $productMapping,
         ));
@@ -191,7 +192,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'Store US',
             'test',
             false,
-            [3 => $enabledCriterion, 2 => $disabledCriterion],
+            new ProductSelectionCriteria([3 => $enabledCriterion, 2 => $disabledCriterion]),
             [],
             [],
         ));

@@ -16,6 +16,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterio
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeSimpleSelectCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeTextareaCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeTextCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\ProductSelectionCriteria;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\CategoriesCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\CompletenessCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\EnabledCriterion;
@@ -65,49 +66,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                     'enabled' => new Assert\Required([
                         new Assert\Type('boolean'),
                     ]),
-                    'product_selection_criteria' => [
-                        new Assert\Type('array'),
-                        new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
-                            if (!\is_array($array)) {
-                                return;
-                            }
-
-                            if (\count(\array_filter(\array_keys($array), 'is_string')) > 0) {
-                                $context->buildViolation('Invalid array structure.')
-                                    ->addViolation();
-                            }
-                        }),
-                        new Assert\All([
-                            new Assert\Callback(function (mixed $criterion, ExecutionContextInterface $context): void {
-                                if (!\is_array($criterion)) {
-                                    return;
-                                }
-
-                                if (!isset($criterion['field']) || !\is_string($criterion['field'])) {
-                                    $context->buildViolation('Missing field value')
-                                        ->atPath('[field]')
-                                        ->addViolation();
-
-                                    return;
-                                }
-
-                                $constraint = $this->getCriterionConstraint($criterion['field']);
-
-                                if (null === $constraint) {
-                                    $context->buildViolation('Invalid field value')
-                                        ->atPath('[field]')
-                                        ->addViolation();
-
-                                    return;
-                                }
-
-                                $context
-                                    ->getValidator()
-                                    ->inContext($this->context)
-                                    ->validate($criterion, $constraint);
-                            }),
-                        ]),
-                    ],
+                    'product_selection_criteria' => new ProductSelectionCriteria(),
                     'product_value_filters' => [
                         new Assert\Collection([
                             'channels' => new Assert\Optional([
@@ -187,36 +146,6 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                 'allowExtraFields' => false,
             ]),
         ];
-    }
-
-    private function getCriterionConstraint(string $field): Constraint|null
-    {
-        $constraint = match ($field) {
-            'categories' => new CategoriesCriterion(),
-            'completeness' => new CompletenessCriterion(),
-            'enabled' => new EnabledCriterion(),
-            'family' => new FamilyCriterion(),
-            default => null
-        };
-
-        if (null !== $constraint) {
-            return $constraint;
-        }
-
-        $attribute = $this->findOneAttributeByCodeQuery->execute($field);
-
-        return match ($attribute['type'] ?? null) {
-            'pim_catalog_identifier' => new AttributeIdentifierCriterion(),
-            'pim_catalog_text' => new AttributeTextCriterion(),
-            'pim_catalog_textarea' => new AttributeTextareaCriterion(),
-            'pim_catalog_simpleselect' => new AttributeSimpleSelectCriterion(),
-            'pim_catalog_multiselect' => new AttributeMultiSelectCriterion(),
-            'pim_catalog_number' => new AttributeNumberCriterion(),
-            'pim_catalog_metric' => new AttributeMeasurementCriterion(),
-            'pim_catalog_boolean' => new AttributeBooleanCriterion(),
-            'pim_catalog_date' => new AttributeDateCriterion(),
-            default => null,
-        };
     }
 
     private function getMappingSourceConstraint(string $source): Constraint|null

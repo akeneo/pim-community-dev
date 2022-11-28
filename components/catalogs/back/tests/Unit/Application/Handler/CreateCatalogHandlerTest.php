@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Test\Unit\Application\Handler;
 use Akeneo\Catalogs\Application\Handler\CreateCatalogHandler;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Domain\ProductSelectionCriteria;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use PHPUnit\Framework\TestCase;
 
@@ -39,13 +40,13 @@ class CreateCatalogHandlerTest extends TestCase
                     'Store US',
                     'shopifi',
                     false,
-                    [
+                    new ProductSelectionCriteria([
                         [
                             'field' => 'enabled',
                             'operator' => '=',
                             'value' => true,
                         ],
-                    ],
+                    ]),
                     [],
                     [],
                 )

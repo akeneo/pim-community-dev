@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Test\Acceptance;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Domain\ProductSelectionCriteria;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
@@ -137,13 +138,13 @@ class ApiContext implements Context
                 'Store US',
                 $connectedAppUserIdentifier,
                 true,
-                [
+                new ProductSelectionCriteria([
                     [
                         'field' => 'enabled',
                         'operator' => '=',
                         'value' => true,
                     ],
-                ],
+                ]),
                 [],
                 [],
             )
@@ -705,13 +706,13 @@ class ApiContext implements Context
                 'Store US',
                 $connectedAppUserIdentifier,
                 true,
-                [
+                new ProductSelectionCriteria([
                     [
                         'field' => 'enabled',
                         'operator' => '=',
                         'value' => true,
                     ],
-                ],
+                ]),
                 [],
                 [],
             )

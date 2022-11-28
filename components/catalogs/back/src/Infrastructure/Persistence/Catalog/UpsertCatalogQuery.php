@@ -56,7 +56,7 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
                 'name' => $catalog->getName(),
                 'owner_username' => $catalog->getOwnerUsername(),
                 'is_enabled' => $catalog->isEnabled(),
-                'product_selection_criteria' => \array_values($catalog->getProductSelectionCriteria()),
+                'product_selection_criteria' => \array_values($catalog->getProductSelectionCriteria()->toArray()),
                 'product_value_filters' => $catalog->getProductValueFilters(),
                 'product_mapping' => $catalog->getProductMapping(),
             ],
