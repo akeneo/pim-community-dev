@@ -39,6 +39,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
