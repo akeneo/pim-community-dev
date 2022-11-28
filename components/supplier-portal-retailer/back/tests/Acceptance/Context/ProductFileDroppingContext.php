@@ -12,7 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCom
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithMetadataAndComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
@@ -35,7 +35,7 @@ final class ProductFileDroppingContext implements Context
         private InMemorySupplierRepository $supplierRepository,
         private InMemoryProductFileRepository $productFileRepository,
         private CommentProductFileHandler $commentProductFileHandler,
-        private GetProductFileWithComments $getProductFileWithComments,
+        private GetProductFileWithMetadataAndComments $getProductFileWithComments,
         private CommentProductFileHandlerForSupplier $commentProductFileHandlerForSupplier,
         private MarkCommentsAsReadBySupplierHandler $markCommentsAsReadBySupplierHandler,
         private MarkCommentsAsReadByRetailerHandler $markCommentsAsReadByRetailerHandler,

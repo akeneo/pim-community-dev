@@ -25,7 +25,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\GetProductFile:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithMetadataAndComments'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\MarkCommentsAsRead:
         public: true
@@ -170,8 +170,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFileWithComments
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithMetadataAndComments:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFileWithMetadataAndComments
         arguments:
             - '@database_connection'
 

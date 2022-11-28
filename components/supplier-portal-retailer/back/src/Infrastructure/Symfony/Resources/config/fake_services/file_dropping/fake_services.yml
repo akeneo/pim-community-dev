@@ -3,8 +3,8 @@ services:
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory\InMemoryGetProductFileWithComments
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithMetadataAndComments:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory\InMemoryGetProductFileWithMetadataAndComments
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
 
