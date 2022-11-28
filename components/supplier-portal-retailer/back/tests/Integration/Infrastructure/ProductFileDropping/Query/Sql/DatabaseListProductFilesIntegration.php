@@ -272,6 +272,53 @@ final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
         static::assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFiles[0]->importStatus);
     }
 
+    /** @test */
+    public function itCanSearchForProductFiles(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file1.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file2.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+
+        $productFiles = $this->get(ListProductFiles::class)(1, 'file1');
+        static::assertCount(1, $productFiles);
+        static::assertSame('file1.xlsx', $productFiles[0]->originalFilename);
+    }
+
+    /** @test */
+    public function itCanSearchForProductFilesAndHandleThePagination(): void
+    {
+        for ($i = 0; 40 > $i; $i++) {
+            ($this->get(ProductFileRepository::class))->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->withOriginalFilename('file.xlsx')
+                    ->build(),
+            );
+        }
+        for ($i = 0; 5 > $i; $i++) {
+            ($this->get(ProductFileRepository::class))->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->withOriginalFilename('burger.xlsx')
+                    ->build(),
+            );
+        }
+
+        static::assertCount(15, $this->get(ListProductFiles::class)(2, 'file'));
+
+        static::assertEmpty($this->get(ListProductFiles::class)(3, 'file'));
+    }
+
     private function addLastReadAtByRetailer(string $productFileIdentifier, \DateTimeImmutable $lastReadAt): void
     {
         $sql = <<<SQL

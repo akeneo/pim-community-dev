@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierProductFilesCount;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
@@ -12,17 +12,12 @@ use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
-final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCase
+final class DatabaseGetSupplierProductFilesCountIntegration extends SqlIntegrationTestCase
 {
-    /** @test */
-    public function itReturns0IfThereIsNoFile(): void
+    protected function setUp(): void
     {
-        static::assertSame(0, $this->get(GetProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
-    }
+        parent::setUp();
 
-    /** @test */
-    public function itReturnsTheTotalNumberOfProductFiles(): void
-    {
         $supplierRepository = $this->get(Repository::class);
         $supplierRepository->save(
             (new SupplierBuilder())
@@ -38,7 +33,6 @@ final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCa
         );
 
         $productFileRepository = $this->get(ProductFileRepository::class);
-
         $supplierOne = new Supplier(
             '44ce8069-8da1-4986-872f-311737f46f00',
             'supplier_1',
@@ -48,6 +42,7 @@ final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCa
             $productFileRepository->save(
                 (new ProductFileBuilder())
                     ->uploadedBySupplier($supplierOne)
+                    ->withOriginalFilename('file'.$i)
                     ->build(),
             );
         }
@@ -64,7 +59,23 @@ final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCa
                     ->build(),
             );
         }
+    }
 
-        static::assertSame(15, $this->get(GetProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
+    /** @test */
+    public function itReturns0IfThereIsNoFile(): void
+    {
+        static::assertSame(0, $this->get(GetSupplierProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f01'));
+    }
+
+    /** @test */
+    public function itReturnsTheNumberOfProductFilesForASupplierWithoutSearch(): void
+    {
+        static::assertSame(15, $this->get(GetSupplierProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
+    }
+
+    /** @test */
+    public function itReturnsTheNumberOfProductFilesForASupplierWithSearch(): void
+    {
+        static::assertSame(7, $this->get(GetSupplierProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00', '1'));
     }
 }

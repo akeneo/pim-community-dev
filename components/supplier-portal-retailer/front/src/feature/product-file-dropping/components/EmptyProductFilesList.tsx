@@ -12,13 +12,17 @@ const Container = styled.div`
     margin-top: 0;
 `;
 
-const EmptyProductFilesList = () => {
+type Props = {
+    message: string;
+};
+
+const EmptyProductFilesList = ({message}: Props) => {
     const translate = useTranslate();
 
     return (
         <Container>
             <CityIllustration size={256} />
-            <NoFilesText>{translate('supplier_portal.product_file_dropping.supplier_files.no_files')}</NoFilesText>
+            <NoFilesText>{translate(message)}</NoFilesText>
         </Container>
     );
 };

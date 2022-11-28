@@ -8,5 +8,5 @@ interface ListProductFiles
 {
     public const NUMBER_OF_PRODUCT_FILES_PER_PAGE = 25;
 
-    public function __invoke(int $page = 1): array;
+    public function __invoke(int $page = 1, string $search = ''): array;
 }

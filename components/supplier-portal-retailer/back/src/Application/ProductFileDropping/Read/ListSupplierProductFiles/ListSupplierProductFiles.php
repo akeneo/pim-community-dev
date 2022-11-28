@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\Li
 
 final class ListSupplierProductFiles
 {
-    public function __construct(public string $supplierIdentifier, public int $page)
+    public function __construct(public readonly string $supplierIdentifier, public readonly int $page, public readonly string $search)
     {
     }
 }
