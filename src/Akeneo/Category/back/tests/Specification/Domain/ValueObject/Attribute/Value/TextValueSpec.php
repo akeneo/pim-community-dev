@@ -35,7 +35,7 @@ class TextValueSpec extends ObjectBehavior
         $givenArray = [
             'data' => 'Meta shoes',
             'type' => 'text',
-            'channel' => null,
+            'channel' => 'ecommerce',
             'locale' => 'en_US',
             'attribute_code' => 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
         ];
@@ -51,7 +51,7 @@ class TextValueSpec extends ObjectBehavior
         $givenArray = [
             'data' => 'Meta shoes',
             'type' => 'text',
-            'channel' => null,
+            'channel' => 'ecommerce',
             'locale' => 'en_US',
             'attribute_code' => ''
         ];

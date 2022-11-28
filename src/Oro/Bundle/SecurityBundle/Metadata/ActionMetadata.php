@@ -126,6 +126,6 @@ class ActionMetadata implements AclClassInfo, \Serializable
             $this->isEnabledAtCreation,
             $this->order,
             $this->visible,
-            ) = unserialize($serialized);
+        ) = unserialize($serialized);
     }
 }

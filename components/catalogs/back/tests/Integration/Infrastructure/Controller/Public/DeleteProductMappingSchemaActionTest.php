@@ -46,6 +46,11 @@ class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
             ownerUsername: 'shopifi',
             productMappingSchema: $this->getValidSchemaData(),
             catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
                 'name' => [
                     'source' => 'title',
                     'scope' => 'ecommerce',

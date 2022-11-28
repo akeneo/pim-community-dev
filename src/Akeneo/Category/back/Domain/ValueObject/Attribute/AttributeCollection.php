@@ -11,12 +11,12 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AttributeCollection
+class AttributeCollection implements \Countable
 {
     /**
      * @param array<Attribute> $attributes
      */
-    private function __construct(private ?array $attributes)
+    private function __construct(private array $attributes)
     {
         Assert::allIsInstanceOf($attributes, Attribute::class);
     }
@@ -91,5 +91,10 @@ class AttributeCollection
             static fn (Attribute $attribute) => $attribute->normalize(),
             $this->attributes,
         );
+    }
+
+    public function count(): int
+    {
+        return count($this->attributes);
     }
 }

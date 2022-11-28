@@ -4,7 +4,6 @@ akeneo.category:
       category_code:
         wrong_format: Categoriecode mag alleen letters, cijfers en liggende streepjes bevatten.
         line_feed: Categoriecode mag geen tekens voor nieuwe regel bevatten
-      duplicated_localize_user_intents: De waarde voor de taal {{ locale }} wordt meerdere keren bijgewerkt.
       value:
         text_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
         textarea_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens

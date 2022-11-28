@@ -107,9 +107,6 @@ akeneo_catalogs:
         label: Filtre
         option:
           all: Tot
-      table:
-        target: Objectiu
-        source: Font
     source:
       placeholder:
         title: Seleccionar font

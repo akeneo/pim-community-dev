@@ -101,9 +101,6 @@ akeneo_catalogs:
         label: Affichage
         option:
           all: Toutes
-      table:
-        target: Cible
-        source: Source
     source:
       placeholder:
         title: Sélectionner une source 

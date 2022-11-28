@@ -33,7 +33,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
             value: "<p>Meta shoes</p>",
             uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
             code: 'seo_meta_description',
-            channel: null,
+            channel: 'ecommerce',
             locale: 'en_US'
         );
 
@@ -42,6 +42,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
         $category = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
+            templateUuid: null,
             labels: LabelCollection::fromArray([]),
             attributes: $attributes
         );
@@ -49,6 +50,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
         $userIntent = new SetRichText(
             '69e251b3-b876-48b5-9c09-92f54bfb528d',
             'seo_meta_description',
+            'ecommerce',
             'en_US',
             "<p>New Meta shoes</p>"
         );
@@ -58,7 +60,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
                 value: "<p>New Meta shoes</p>",
                 uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 code: 'seo_meta_description',
-                channel: null,
+                channel: 'ecommerce',
                 locale: 'en_US'
             )
         ]);

@@ -44,10 +44,12 @@ pim_identifier_generator:
         helper_link: 'this article'
         title: 'Identifier Structure'
         add_element: 'Add new property'
+        limit_reached: 'You have reached the limit of 20 properties'
         property_type:
             sections:
                 system: 'System'
             free_text: 'Free text'
+            auto_number: 'Auto Number'
         settings:
             free_text:
                 title: 'Free text settings'

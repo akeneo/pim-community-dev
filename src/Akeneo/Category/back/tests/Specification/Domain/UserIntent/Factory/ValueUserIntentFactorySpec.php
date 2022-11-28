@@ -25,7 +25,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemoryImpl;
+use Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateAttributeSql;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -34,9 +34,9 @@ use PhpSpec\ObjectBehavior;
  */
 class ValueUserIntentFactorySpec extends ObjectBehavior
 {
-    function let(GetAttributeInMemoryImpl $getAttributeInMemory)
+    function let(GetCategoryTemplateAttributeSql $getAttribute)
     {
-        $this->beConstructedWith($getAttributeInMemory);
+        $this->beConstructedWith($getAttribute);
     }
 
     function it_is_initializable(): void
@@ -50,25 +50,28 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         $this->getSupportedFieldNames()->shouldReturn(['values']);
     }
 
-    function it_creates_a_list_of_value_intent_based_on_values_field(GetAttributeInMemoryImpl $getAttributeInMemory): void
+    function it_creates_a_list_of_value_intent_based_on_values_field(GetCategoryTemplateAttributeSql $getAttribute): void
     {
         $data = [
-            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . AbstractValue::SEPARATOR . 'en_US' => [
+            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Meta shoes',
+                'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => 'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
             ],
-            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . 'en_US' => [
+            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Description',
+                'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => 'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
             ],
-            'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af' . AbstractValue::SEPARATOR . 'en_US' => [
+            'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'red',
+                'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => 'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
             ],
-            'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . AbstractValue::SEPARATOR . 'en_US' => [
+            'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => [
                     'size' => 168107,
                     'extension' => 'jpg',
@@ -76,6 +79,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                     'mime_type' => 'image/jpeg',
                     'original_filename' => 'shoes.jpg'
                 ],
+                'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => 'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
             ]
@@ -129,42 +133,43 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             ),
         ]);
 
-        $identifiers = [
-            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
-            'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af',
-            'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
+        $uuids = [
+            AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
+            AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
+            AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
+            AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc')
         ];
 
-        $getAttributeInMemory->byIdentifiers($identifiers)
+        $getAttribute->byUuids($uuids)
             ->shouldBeCalledOnce()
             ->willReturn($attributes);
 
-        $this->create(
-            'values',
-            $data
-        )->shouldBeLike([
+        $expectedUseIntents = [
             new SetTextArea(
                 '69e251b3-b876-48b5-9c09-92f54bfb528d',
                 'seo_meta_description',
+                'ecommerce',
                 'en_US',
                 'Meta shoes'
             ),
             new SetRichText(
                 '840fcd1a-f66b-4f0c-9bbd-596629732950',
                 'description',
+                'ecommerce',
                 'en_US',
                 'Description'
             ),
             new SetText(
                 '38439aaf-66a2-4b24-854e-29d7a467c7af',
                 'color',
+                'ecommerce',
                 'en_US',
                 'red'
             ),
             new SetImage(
                 'e0326684-0dff-44be-8283-9262deb9e4bc',
                 'banner',
+                'ecommerce',
                 'en_US',
                 [
                     'size' => 168107,
@@ -174,19 +179,26 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                     'original_filename' => 'shoes.jpg'
                 ]
             ),
-        ]);
+        ];
+        $this->create(
+            'values',
+            $data
+        )->shouldBeLike($expectedUseIntents);
     }
 
-    function it_does_not_add_value_user_intent_when_corresponding_attribute_type_no_found(GetAttributeInMemoryImpl $getAttributeInMemory): void
-    {
+    function it_does_not_add_value_user_intent_when_corresponding_attribute_type_no_found(
+        GetCategoryTemplateAttributeSql $getAttribute
+    ) : void {
         $data = [
-            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . AbstractValue::SEPARATOR . 'en_US' => [
+            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Meta shoes',
+                'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => 'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
             ],
-            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . 'en_US' => [
+            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Description',
+                'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => 'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
             ]
@@ -207,12 +219,12 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             )
         ]);
 
-        $identifiers = [
-            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
-            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+        $uuids = [
+            AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
+            AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
         ];
 
-        $getAttributeInMemory->byIdentifiers($identifiers)
+        $getAttribute->byUuids($uuids)
             ->shouldBeCalledOnce()
             ->willReturn($valueCollection);
 

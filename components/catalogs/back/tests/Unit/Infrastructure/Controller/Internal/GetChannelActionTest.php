@@ -48,7 +48,7 @@ class GetChannelActionTest extends TestCase
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             ),
-            'unknown_channel_code',
+        'unknown_channel_code',
         );
     }
 
@@ -66,7 +66,7 @@ class GetChannelActionTest extends TestCase
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             ),
-            'some_channel_code',
+        'some_channel_code',
         );
 
         self::assertInstanceOf(JsonResponse::class, $response);

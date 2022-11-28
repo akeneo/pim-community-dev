@@ -63,8 +63,8 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     public function supportsNormalization($data, $format = null): bool
     {
         return (
-                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
-            ) && $data instanceof FamilyInterface;
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
+        ) && $data instanceof FamilyInterface;
     }
 
     public function hasCacheableSupportsMethod(): bool

@@ -62,6 +62,13 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                 'locales' => ['en_US'],
                 'currencies' => ['EUR', 'USD'],
             ],
+            'product_mapping' => [
+                'Product uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
         ], new CatalogUpdatePayload());
 
         $this->assertEmpty($violations);
@@ -98,6 +105,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                 ]
             ],
             'product_value_filters' => [],
+            'product_mapping' => [],
         ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
@@ -114,9 +122,24 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
             'enabled' => false,
             'product_selection_criteria' => [$criterion],
             'product_value_filters' => [],
+            'product_mapping' => [],
         ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
+    }
+
+    public function invalidFieldDataProvider(): array
+    {
+        return [
+            'invalid field value' => [
+                'criterion' => [
+                    'field' => 'some_random_field',
+                    'operator' => '<=',
+                    'value' => false,
+                ],
+                'expectedMessage' => 'Invalid field value',
+            ],
+        ];
     }
 
     /**
@@ -130,6 +153,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
             'enabled' => false,
             'product_selection_criteria' => [],
             'product_value_filters' => $filters,
+            'product_mapping' => [],
         ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
@@ -165,16 +189,51 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
         ];
     }
 
-    public function invalidFieldDataProvider(): array
+    public function testItReturnsViolationsWhenProductMappingIsNotAssociativeArray(): void
+    {
+        $violations = $this->validator->validate([
+            'enabled' => true,
+            'product_selection_criteria' => [],
+            'product_value_filters' => [],
+            'product_mapping' => [
+                [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        ], new CatalogUpdatePayload());
+
+        $this->assertViolationsListContains($violations, 'Invalid array structure.');
+    }
+
+    /**
+     * @dataProvider invalidSourceDataProvider
+     */
+    public function testItReturnsViolationsWhenProductMappingIsInvalid(
+        array $source,
+        string $expectedMessage
+    ): void {
+        $violations = $this->validator->validate([
+            'enabled' => false,
+            'product_selection_criteria' => [],
+            'product_value_filters' => [],
+            'product_mapping' => [$source],
+        ], new CatalogUpdatePayload());
+
+        $this->assertViolationsListContains($violations, $expectedMessage);
+    }
+
+    public function invalidSourceDataProvider(): array
     {
         return [
-            'invalid field value' => [
-                'criterion' => [
-                    'field' => 'some_random_field',
-                    'operator' => '<=',
-                    'value' => false,
+            'invalid source value' => [
+                'source' => [
+                    'source' => 'unknown_attribute',
+                    'scope' => null,
+                    'locale' => null,
                 ],
-                'expectedMessage' => 'Invalid field value',
+                'expectedMessage' => 'Invalid source value',
             ],
         ];
     }

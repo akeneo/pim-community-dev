@@ -49,7 +49,7 @@ class GetCategoryChildrenActionTest extends TestCase
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             ),
-            'master',
+        'master',
         );
 
         self::assertInstanceOf(JsonResponse::class, $response);
@@ -73,7 +73,7 @@ class GetCategoryChildrenActionTest extends TestCase
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             ),
-            'master',
+        'master',
         );
 
         self::assertInstanceOf(JsonResponse::class, $response);
@@ -94,7 +94,7 @@ class GetCategoryChildrenActionTest extends TestCase
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             ),
-            'master',
+        'master',
         );
     }
 }

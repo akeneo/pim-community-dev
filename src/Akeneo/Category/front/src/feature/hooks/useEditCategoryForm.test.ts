@@ -1,11 +1,11 @@
 import {set} from 'lodash/fp';
 import {act} from 'react-test-renderer';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {useCategory, UseCategoryResponseOK} from './useCategory';
+import {useCategory, CategoryResponse} from './useCategory';
 import {useEditCategoryForm} from './useEditCategoryForm';
 import {saveEditCategoryForm} from '../infrastructure';
 import {CategoryPermissions, EnrichCategory} from '../models';
 import {categoriesAreEqual, permissionsAreEqual} from '../helpers';
+import {categoryRenderHookWithProviders} from '../../tests/CategoryRenderHook';
 
 const aCategory: EnrichCategory = {
   id: 6,
@@ -59,8 +59,8 @@ const aCategory: EnrichCategory = {
   permissions: {view: [1, 2, 3], edit: [1, 2], own: [1]},
 };
 
-const mockedUseCategoryResult = (): UseCategoryResponseOK => {
-  return {load: async () => {}, status: 'fetched', category: aCategory};
+const mockedUseCategoryResult = (): CategoryResponse => {
+  return {load: async () => {}, status: 'fetched', category: aCategory, error: null};
 };
 
 jest.mock('./useCategory');
@@ -74,7 +74,8 @@ describe('useEditCategoryForm', () => {
   let categoryResult = mockedUseCategoryResult();
 
   const renderUseEditCategoryForm = (categoryId: number) => {
-    return renderHookWithProviders(() => useEditCategoryForm(categoryId));
+    // return renderHookWithProviders(() => useEditCategoryForm(categoryId));
+    return categoryRenderHookWithProviders(() => useEditCategoryForm(categoryId));
   };
 
   beforeEach(() => {

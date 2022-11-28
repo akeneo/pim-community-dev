@@ -6,6 +6,7 @@ import {memoize} from 'lodash/fp';
 
 const unMemoizedBuildTextAreaFieldAttribute: AttributeFieldBuilder<AttributeInputValue> = attribute => {
   const Component: React.FC<AttributeFieldProps<AttributeInputValue>> = ({
+    channel,
     locale,
     value,
     onChange,
@@ -15,7 +16,7 @@ const unMemoizedBuildTextAreaFieldAttribute: AttributeFieldBuilder<AttributeInpu
     }
 
     return (
-      <Field label={getLabelFromAttribute(attribute, locale)} locale={locale}>
+      <Field label={getLabelFromAttribute(attribute, locale)} channel={channel} locale={locale}>
         <TextAreaInput name={attribute.code} value={value} onChange={onChange} />
       </Field>
     );

@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAn
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -50,14 +51,6 @@ class IndexProductModelCommand extends Command
         $this->productModelDescendantAndAncestorsIndexer = $productModelDescendantAndAncestorsIndexer;
         $this->connection = $connection;
         $this->batchEsStateHandler = new BackoffElasticSearchStateHandler();
-    }
-
-    /**
-     * @return ProductModelDescendantsAndAncestorsIndexer
-     */
-    public function getProductModelDescendantAndAncestorsIndexer(): ProductModelDescendantsAndAncestorsIndexer
-    {
-        return $this->productModelDescendantAndAncestorsIndexer;
     }
 
     /**
@@ -248,7 +241,6 @@ SQL;
 
             $formerId = (int)end($rows)['id'];
             $existingMysqlIdentifiers = array_column($rows, '_id');
-            $existingMysqlUpdated = array_column($rows, 'updated');
 
             $results = $this->productAndProductModelClient->search([
                'query' => [
@@ -258,22 +250,34 @@ SQL;
                                'values' => $existingMysqlIdentifiers
                            ]
                        ],
-                       'filter' => [
-                           'terms' => [
-                               'entity_updated' => $existingMysqlUpdated
-                           ]
-                       ]
-                   ]
+                   ],
                ],
-                '_source' => false,
+                '_source' => ['id', 'entity_updated'],
                 'size' => $batchSize
             ]);
 
-            $esIdentifiers = array_map(function ($doc) {
-                return $doc['_id'];
-            }, $results['hits']['hits']);
+            $updatedById = [];
+            foreach ($results['hits']['hits'] as $hit) {
+                $updatedById[$hit['_source']['id']] = $hit['_source']['entity_updated'];
+            }
 
-            $diff = array_diff($existingMysqlIdentifiers, $esIdentifiers);
+            $diff = \array_map(
+                static fn (array $row): string => $row['code'],
+                \array_filter(
+                    $rows,
+                    function (array $row) use ($updatedById): bool {
+                        if (!isset($updatedById[$row['_id']])) {
+                            // the model is not indexed at all
+                            return true;
+                        }
+                        // if the PM is indexed, compare the update date in the index and in the DB
+                        $updateDateInIndex = new \DateTimeImmutable($updatedById[$row['_id']]);
+                        $updateDateInDb = new \DateTimeImmutable($row['updated']);
+
+                        return $updateDateInDb != $updateDateInIndex;
+                    }
+                )
+            );
 
             yield $diff;
         }

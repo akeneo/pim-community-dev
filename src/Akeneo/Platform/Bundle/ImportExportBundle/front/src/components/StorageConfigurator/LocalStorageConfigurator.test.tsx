@@ -58,6 +58,7 @@ test('it throws an exception when passing a non-local storage', () => {
     file_path: '/tmp/file.xlsx',
     host: 'localhost',
     port: 22,
+    login_type: 'password',
     username: 'root',
     password: 'root',
   };

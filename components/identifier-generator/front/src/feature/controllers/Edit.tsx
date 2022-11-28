@@ -7,7 +7,7 @@ import {IdentifierGeneratorNotFound} from '../errors';
 import {Styled} from '../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
-const Edit: React.FC<{}> = () => {
+const Edit: React.FC = () => {
   const translate = useTranslate();
   const {identifierGeneratorCode} = useParams<{identifierGeneratorCode: string}>();
   const {data: identifierGenerator, error} = useGetIdentifierGenerator(identifierGeneratorCode);

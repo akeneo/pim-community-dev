@@ -14,34 +14,25 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
  */
 final class SearchAttributesQuery implements SearchAttributesQueryInterface
 {
-    private const ALLOWED_TYPES = [
-        'pim_catalog_identifier',
-        'pim_catalog_text',
-        'pim_catalog_textarea',
-        'pim_catalog_simpleselect',
-        'pim_catalog_multiselect',
-        'pim_catalog_number',
-        'pim_catalog_metric',
-        'pim_catalog_boolean',
-        'pim_catalog_date',
-    ];
-
     public function __construct(
         private SearchableRepositoryInterface $searchableAttributeRepository,
     ) {
     }
 
     /**
+     * @param array<string> $types
      * @return array<array{code: string, label: string, type: string, scopable: bool, localizable: bool, measurement_family?: string, default_measurement_unit?: string}>
      */
-    public function execute(?string $search = null, int $page = 1, int $limit = 20): array
+    public function execute(?string $search = null, int $page = 1, int $limit = 20, array $types = []): array
     {
+        $types = \array_map(fn ($type) => \sprintf('pim_catalog_%s', $type), $types);
+
         $attributes = $this->searchableAttributeRepository->findBySearch(
             $search,
             [
                 'limit' => $limit,
                 'page' => $page,
-                'types' => self::ALLOWED_TYPES,
+                'types' => empty($types) ? null : $types,
             ],
         );
 

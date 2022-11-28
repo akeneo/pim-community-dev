@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {CriterionModule} from '../../models/Criterion';
 import {AttributeDateCriterionState} from './types';
-import {useAttribute} from '../../hooks/useAttribute';
+import {useAttribute} from '../../../../hooks/useAttribute';
 import {ErrorHelpers} from '../../components/ErrorHelpers';
 import {AttributeDateOperatorInput} from './AttributeDateOperatorInput';
 import {AttributeDateValueSingleInput} from './AttributeDateValueSingleInput';

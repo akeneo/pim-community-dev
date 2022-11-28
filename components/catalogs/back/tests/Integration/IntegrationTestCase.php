@@ -479,6 +479,18 @@ abstract class IntegrationTestCase extends WebTestCase
         if ([] !== $options) {
             $this->createAttributeOptions($attribute, $options);
         }
+
+        /**
+         * The AbstractAttribute model is stateful and the getTranslation rely on an internal $locale to returns the
+         * translation. When you update the translation, the AbstractAttribute keeps in memory the last locale you
+         * updated.
+         * As Doctrine keeps in UOW objects, when you search for an attribute it translates the label according to the
+         * last locale you updated.
+         * If in your test you update the en_US, then fr_FR, you'll have the attribute label automatically translated
+         * in french no matter what you asked.
+         * Clearing the UOW allows us to have a clean attribute during the Doctrine hydration and the good translation.
+         */
+        self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
