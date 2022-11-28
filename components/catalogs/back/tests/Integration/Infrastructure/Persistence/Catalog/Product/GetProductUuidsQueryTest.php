@@ -10,7 +10,6 @@ use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -28,7 +27,6 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->connection = self::getContainer()->get(Connection::class);
         $this->getCatalogQuery = self::getContainer()->get(GetCatalogQueryInterface::class);
         $this->query = self::getContainer()->get(GetProductUuidsQueryInterface::class);
     }

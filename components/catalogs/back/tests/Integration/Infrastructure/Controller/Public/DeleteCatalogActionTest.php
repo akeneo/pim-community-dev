@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -23,8 +22,6 @@ class DeleteCatalogActionTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
