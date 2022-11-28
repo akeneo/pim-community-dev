@@ -1,4 +1,4 @@
-import { sleep } from 'k6';
+import {expect} from 'https://jslib.k6.io/k6chaijs/4.3.4.1/index.js';
 import http from 'k6/http';
 import encoding from 'k6/encoding';
 
@@ -18,7 +18,7 @@ export const options = {
   },
 };
 
-export function setup() {
+function getCredentials() {
   // Create authentication request and return access_token
   const headers = {
     headers: {
@@ -27,30 +27,35 @@ export function setup() {
     },
   };
   const data = {
-    "username" : `${__ENV.API_USERNAME}`,
-    "password" : `${__ENV.API_PASSWORD}`,
+    "username": `${__ENV.API_USERNAME}`,
+    "password": `${__ENV.API_PASSWORD}`,
     "grant_type": "password"
   };
 
-  const res = http.post(`${url}/api/oauth/v1/token`, JSON.stringify(data), headers);
-  sleep(1);
-  console.log(`${res.status} ${res.body}`);
-  console.log(`${credentials} : ${encodedCredentials}`);
+  const response = http.post(`${url}/api/oauth/v1/token`, JSON.stringify(data), headers);
 
-  const access_token = res.json().access_token;
-  return access_token;
+  expect(response.status, `API status code on authentication`).to.be.equal(200);
+
+  return response.json();
 }
 
-export default function (access_token) {
-  // Call API produtcts
+function defaultHeaders(access_token) {
+
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${access_token}`,
+  };
+}
+
+export default function () {
+  // Create authentication request and return access_token
+  const creds = getCredentials();
+  let access_token = creds.access_token;
+
+  // Call API products
   const headers = {
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${access_token}`,
-    },
+    headers: defaultHeaders(access_token)
   };
 
-  const res = http.get(`${url}/api/rest/v1/products`, headers);
-  sleep(1);
-  console.log(`${res.status} ${res.body}`);
+  const response = http.get(`${url}/api/rest/v1/products`, headers);
 }

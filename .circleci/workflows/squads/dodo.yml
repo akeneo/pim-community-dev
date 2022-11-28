@@ -9,8 +9,17 @@ workflows:
           - prepare_load_tests:
               name: "Prepare load tests"
               PFID: << pipeline.parameters.instance >>
-          - execute_load_tests:
-              name: "Execute load tests"
-              TEST: << pipeline.parameters.test >>
+          - execute_load_tests_k6:
+              name: "Execute load tests (API)"
+              TEST: << pipeline.parameters.k6_test >>
+              DURATION: << pipeline.parameters.k6_duration >>
+              VUS: << pipeline.parameters.k6_vus >>
+              requires:
+                - "Prepare load tests"
+          - execute_load_tests_pim_cli:
+              name: "Execute load tests (CLI / Pim Jobs)"
+              PFID: << pipeline.parameters.instance >>
+              LOAD_PARALLELISM: << pipeline.parameters.load_parallelism >>
+              LOAD_DURATION: << pipeline.parameters.load_duration >>
               requires:
                 - "Prepare load tests"

@@ -31,22 +31,19 @@ jobs:
             PARAM_PFID="<< parameters.PFID >>"
             PFID=${PARAM_PFID:-${PFID}}
             echo "PFID : ${PFID}"
-            MYSQL_PASSWORD=$(kubectl get secret -n ${PFID} mysql-secret -o jsonpath='{.data}' | jq -r '."root_password.txt"' | base64 -d)
-            kubectl exec -n ${PFID} deployment.apps/mysql -- mysql -u root -p${MYSQL_PASSWORD} akeneo_pim -N -e 'select name from oro_access_group where name in ("admin", "it support", "ecommerce") limit 1;' > oro_access_group.txt
-            ORO_ACCESS_GROUP=$(cat oro_access_group.txt)
-            echo "USER GROUP : ${ORO_ACCESS_GROUP}"
 
-            FQDN=$(kubectl get ingress --no-headers --namespace=${PFID} | head -n 1 | awk '{ print $3 }')
+            FQDN=$(kubectl get ingress --namespace=${PFID} -l component=pim-api-ingress -o jsonpath={.items[0].spec.rules[0].host})
             POD_PIM_WEB=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-web | awk 'NR==1{print $1}')
             LOWER_RANGE=100   # inclusive
             UPPER_RANGE=1000   # exclusive
             RANDOM_NUMBER=$(( RANDOM * ( UPPER_RANGE - LOWER_RANGE) / 32767 + LOWER_RANGE ))
-            kubectl exec -it -n ${PFID} ${POD_PIM_WEB} -- /bin/bash -c "bin/console akeneo:connectivity-connection:create akeneo_api_k6_dst_${RANDOM_NUMBER} --flow-type data_destination --user-group=\"${ORO_ACCESS_GROUP}\"" > /tmp/api_connection_info
-            API_CLIENT_ID=$(cat /tmp/api_connection_info | grep "Client ID: " | awk -F': ' '{printf $2}' | tr -d '\r')
-            API_SECRET=$(cat /tmp/api_connection_info | grep "Secret: " | awk -F': ' '{printf $2}' | tr -d '\r')
-            API_USERNAME=$(cat /tmp/api_connection_info | grep "Username: " | awk -F': ' '{printf $2}' | tr -d '\r')
+            kubectl exec -it -n ${PFID} ${POD_PIM_WEB} -- /bin/bash -c "bin/console akeneo:connectivity-connection:create akeneo_api_k6_dst_${RANDOM_NUMBER} --flow-type data_destination --user-group=Manager" > /tmp/api_connection_info
+            API_CLIENT_ID=$(awk -F': ' '/Client ID: / {printf $2}' /tmp/api_connection_info | tr -d '\r')
+            API_SECRET=$(awk -F': ' '/Secret: / {printf $2}' /tmp/api_connection_info | tr -d '\r')
+            API_USERNAME=$(awk -F': ' '/Username: / {printf $2}' /tmp/api_connection_info | tr -d '\r')
             API_PASSWORD=$(cat /tmp/api_connection_info | grep "Password: " | awk -F': ' '{printf $2}' | tr -d '\r')
-
+            
+            echo export PFID=${PFID} >> $BASH_ENV
             echo export FQDN=${FQDN} >> $BASH_ENV
             echo export API_CLIENT_ID=${API_CLIENT_ID} >> $BASH_ENV
             echo export API_SECRET=${API_SECRET} >> $BASH_ENV
@@ -55,6 +52,7 @@ jobs:
       - run:
           name: Persist env vars for next jobs
           command: |
+            echo export PFID=${PFID} >> persisted_env_vars
             echo export FQDN=${FQDN} >> persisted_env_vars
             echo export API_CLIENT_ID=${API_CLIENT_ID} >> persisted_env_vars
             echo export API_SECRET=${API_SECRET} >> persisted_env_vars
@@ -69,7 +67,7 @@ jobs:
   #    Use k6 to run perf sanity checks on dev instances
   #    Need prepare_load_tests job before him
   #    This job can be trigged after a deployment, clone, migration or upgrade job
-  execute_load_tests:
+  execute_load_tests_k6:
     parameters:
       # Here to allow dynamic job declaration
       SOURCE_PFID:
@@ -87,7 +85,7 @@ jobs:
     machine:
       image: *executor-machine
     resource_class: medium
-    parallelism: 3
+    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -95,13 +93,18 @@ jobs:
       - restore_persisted_env_vars
       - run:
           name: Run k6 load tests
+          no_output_timeout: 5h
           command: |
             mkdir /tmp/k6-artifacts
-            TEST=$(circleci tests glob "deployments/test/loadtests/<< parameters.TEST >>.js" | circleci tests split)
+            TEST=$(circleci tests glob "tests/loadtests/<< parameters.TEST >>.js" | circleci tests split)
+            if [[ -z ${TEST} ]]; then
+              echo "No tests found, aborting"
+              exit 1
+            fi
 
-            echo "Test : $TEST"
-            docker run --rm -i grafana/k6 run - <$TEST --env FQDN=${FQDN} --env API_CLIENT_ID=${API_CLIENT_ID} --env API_SECRET=${API_SECRET} --env API_USERNAME=${API_USERNAME} --env API_PASSWORD=${API_PASSWORD} --env K6_DURATION=<< parameters.DURATION >> --env K6_VUS=<< parameters.VUS >> --out json=full.json > /tmp/k6-artifacts/$(basename $TEST).log
-            echo "Test : $TEST"
+            echo "Test : ${TEST}"
+            docker run --rm -i grafana/k6 run - <${TEST} --env FQDN=${FQDN} --env API_CLIENT_ID=${API_CLIENT_ID} --env API_SECRET=${API_SECRET} --env API_USERNAME=${API_USERNAME} --env API_PASSWORD=${API_PASSWORD} --env K6_DURATION=<< parameters.DURATION >> --env K6_VUS=<< parameters.VUS >> --out json=full.json > /tmp/k6-artifacts/$(basename ${TEST}).log
+            echo "Test : ${TEST}"
           when: always
       - run:
           name: K6 logs
@@ -201,3 +204,50 @@ jobs:
           when: always
       - store_artifacts:
           path: /tmp/k6-artifacts
+
+  execute_load_tests_pim_cli:
+    parameters:
+      PFID:
+        type: string
+        default: ""
+      LOAD_PARALLELISM:
+        type: string
+        default: "5"
+      LOAD_DURATION:
+        type: string
+        default: "600"
+    environment:
+      <<: *envVarsDeployDev
+    <<: *dockerCloudDeployerNext
+    resource_class: small
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - set_gcloud_config_dev
+      - restore_persisted_env_vars
+      - run:
+          name: Create k8s job to execute consuming PIM processes
+          no_output_timeout: 5h
+          command: |
+            echo "Try to retrieve the PIM Docker image deployed into the namespace '${PFID}'"
+            DOCKER_IMAGE=$(kubectl --namespace=${PFID} get pods --no-headers -l component=pim-web --output jsonpath="{.items[0].spec.containers[0].image}")
+            echo "PIM Docker image used in this namespace = '${DOCKER_IMAGE}'"
+
+            # Replace placeholder values into job's definition file
+            sed -i "s|#load_parallelims#|<< parameters.LOAD_PARALLELISM >>|g" tests/loadtests/load_tests_job.yml
+            sed -i "s|#pim_docker_image#|${DOCKER_IMAGE}|g" tests/loadtests/load_tests_job.yml
+            sed -i "s|#load_duration#|<< parameters.LOAD_DURATION >>|g" tests/loadtests/load_tests_job.yml
+            # Display job's definition file before applying it
+            echo "Final content of the file tests/loadtests/load_tests_job.yml"
+            cat tests/loadtests/load_tests_job.yml
+
+            echo "Delete job to ensure the job it is not already present"
+            kubectl --namespace=${PFID} delete --ignore-not-found=true jobs/load-tests
+
+            echo "Apply the 'load-tests' job to execute consuming PIM processes"
+            kubectl --namespace=${PFID} apply --wait=true -f tests/loadtests/load_tests_job.yml
+
+            # Wait for job to be deleted when specified time is up
+            kubectl --namespace=${PFID} wait --timeout=-1s --for=delete job/load-tests
+          when: always

@@ -12,7 +12,7 @@ services:
       API_PASSWORD: '${API_PASSWORD:-mock-api-password}'
       K6_DURATION: '${K6_DURATION:-10s}'
       K6_VUS: '${K6_VUS:-10}'
-    command: 'run /srv/k6/crud-products.js'
+    command: 'run /srv/k6/${COMMAND:-crud-products}.js'
     volumes:
       - './:/srv/k6'
     ####################################################

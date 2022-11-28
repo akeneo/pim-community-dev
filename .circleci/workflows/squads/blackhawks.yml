@@ -238,6 +238,31 @@ workflows:
                   requires:
                       - checkout
             # Currently useless, because we scale down all pods in dev and we did not test it long enough
+            - execute_load_tests_k6:
+                  name: "[grth] Execute load tests << matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-grth
+                          DURATION: ["5m"]
+                  requires:
+                      - "[grth] Prepare laod tests << matrix.SOURCE_PFID >>"
+            - test_upgrade_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+            - execute_load_tests_k6:
+                  name: "[grth] Execute load tests << matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-grth
+                          DURATION: ["5m"]
+                  requires:
+                      - "[grth] Prepare laod tests << matrix.SOURCE_PFID >>"
+                      - "[grth] test_upgrade_from-<< matrix.SOURCE_PFID >>"
             - test_clone_from_customer_db:
                   name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
                   matrix:
@@ -254,7 +279,7 @@ workflows:
                   requires:
                       - "[srnt] test_clone_from-<< matrix.PFID >>"
             # Currently useless, because we scale down all pods in dev and we did not test it long enough
-            - execute_load_tests:
+            - execute_load_tests_k6:
                   name: "[srnt] Execute load tests << matrix.SOURCE_PFID >>"
                   matrix:
                       parameters:
@@ -270,7 +295,7 @@ workflows:
                           SOURCE_PFID: *client-to-clone-srnt
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
-            - execute_load_tests:
+            - execute_load_tests_k6:
                   name: "[srnt] Execute load tests << matrix.SOURCE_PFID >>"
                   matrix:
                       parameters:

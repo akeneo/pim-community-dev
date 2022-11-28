@@ -16,6 +16,21 @@ parameters:
     ge2ee_script_release:
       default: ""
       type: string
+    k6_test:
+        default: "*"
+        type: string
+    k6_duration:
+        default: "10m"
+        type: string
+    k6_vus:
+        default: "10"
+        type: string
+    load_parallelism:
+        default: "5"
+        type: string
+    load_duration:
+        default: "600"
+        type: string
 
 setup: true
 
