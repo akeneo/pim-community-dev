@@ -230,16 +230,24 @@ class SelectionHydrator
                 $selectionConfiguration['locale'],
                 $attribute->properties()['reference_data_name'],
             ),
-            ReferenceEntityAttributeSelectionInterface::TYPE => match ($selectionConfiguration['attribute_type']) {
-                ReferenceEntityTextAttributeSelection::TYPE => new ReferenceEntityTextAttributeSelection(
-                    $attribute->properties()['reference_data_name'],
-                    $selectionConfiguration['attribute_code'],
-                    $selectionConfiguration['channel'],
-                    $selectionConfiguration['locale'],
-                ),
-                default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Reference Entity attribute', $selectionConfiguration['attribute_type'])),
-            },
+            ReferenceEntityAttributeSelectionInterface::TYPE => $this->createReferenceEntityAttributeSelection(
+                $selectionConfiguration,
+                $attribute->properties()['reference_data_name'],
+            ),
             default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
+    }
+
+    private function createReferenceEntityAttributeSelection(array $selectionConfiguration, string $referenceEntityCode): SelectionInterface
+    {
+        return match ($selectionConfiguration['attribute_type']) {
+            ReferenceEntityTextAttributeSelection::TYPE => new ReferenceEntityTextAttributeSelection(
+                $referenceEntityCode,
+                $selectionConfiguration['attribute_code'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Reference Entity attribute', $selectionConfiguration['attribute_type'])),
         };
     }
 

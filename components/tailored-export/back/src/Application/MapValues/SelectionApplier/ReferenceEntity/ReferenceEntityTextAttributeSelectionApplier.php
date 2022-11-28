@@ -41,7 +41,7 @@ class ReferenceEntityTextAttributeSelectionApplier implements SelectionApplierIn
             $selection->getLocale(),
         );
 
-        return $recordValues[$value->getRecordCode()] ?? '';
+        return $recordValues[strtolower($value->getRecordCode())] ?? '';
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

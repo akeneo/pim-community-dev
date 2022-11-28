@@ -22,7 +22,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryRecordRepository;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
@@ -104,8 +104,8 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
 
     private function loadRecords(): void
     {
-        /** @var InMemoryRecordRepository $recordRepository */
-        $recordRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
-        $recordRepository->addRecordLabel('color', 'blue', 'en_US', 'Blue');
+        /** @var InMemoryFindRecordLabels $findRecordLabels */
+        $findRecordLabels = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
+        $findRecordLabels->addRecordLabel('color', 'blue', 'en_US', 'Blue');
     }
 }

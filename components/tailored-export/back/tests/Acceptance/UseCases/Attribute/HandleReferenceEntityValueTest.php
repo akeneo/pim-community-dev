@@ -23,7 +23,8 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryRecordRepository;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsAttributeValue;
 use PHPUnit\Framework\Assert;
 
 final class HandleReferenceEntityValueTest extends AttributeTestCase
@@ -125,13 +126,13 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
 
     private function loadRecords(): void
     {
-        /** @var InMemoryRecordRepository $recordRepository */
-        $recordRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
-        $recordRepository->addRecordLabel('designer', 'starck', 'en_US', 'Starck');
+        /** @var InMemoryFindRecordLabels $findRecordLabels */
+        $findRecordLabels = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
+        $findRecordLabels->addRecordLabel('designer', 'starck', 'en_US', 'Starck');
 
-        /** @var InMemoryRecordRepository $recordRepository */
-        $recordRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface');
-        $recordRepository->addAttributeValue('designer', 'starck', 'description', 'Bezeichnung', 'ecommerce', 'de_DE');
-        $recordRepository->addAttributeValue('designer', 'starck', 'name', 'Nom');
+        /** @var InMemoryFindRecordsAttributeValue $findRecordsAttributeValue */
+        $findRecordsAttributeValue = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface');
+        $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'description', 'Bezeichnung', 'ecommerce', 'de_DE');
+        $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'name', 'Nom');
     }
 }
