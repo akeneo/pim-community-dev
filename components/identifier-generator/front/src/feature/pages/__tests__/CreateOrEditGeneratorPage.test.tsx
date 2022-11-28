@@ -5,6 +5,7 @@ import {createMemoryHistory} from 'history';
 import {Router} from 'react-router';
 import {IdentifierGeneratorContext} from '../../context/IdentifierGeneratorContext';
 import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 
 jest.mock('../DeleteGeneratorModal');
 jest.mock('../../tabs/GeneralPropertiesTab');
@@ -124,5 +125,40 @@ describe('CreateOrEditGeneratorPage', () => {
 
     fireEvent.click(screen.getByText('Revert Free Text'));
     expect(mockSetHasUnsavedChanges).toHaveBeenCalledWith(false);
+  });
+
+  it('should update generator on initialGenerator change', () => {
+    const {rerender} = render(
+      <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
+        initialGenerator={initialGenerator}
+        mainButtonCallback={jest.fn()}
+        validationErrors={[]}
+        isNew={false}
+      />
+    );
+
+    expect(screen.getByText('pim_identifier_generator.tabs.identifier_structure')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
+    expect(screen.getByText('StructureTabMock')).toBeInTheDocument();
+    expect(screen.getByText('[{"type":"free_text","string":"AKN"}]')).toBeInTheDocument();
+
+    const updatedGenerator: IdentifierGenerator = {
+      ...initialGenerator,
+      structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'Updated string'}],
+    };
+
+    rerender(
+      <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
+        initialGenerator={updatedGenerator}
+        mainButtonCallback={jest.fn()}
+        validationErrors={[]}
+        isNew={false}
+      />
+    );
+    expect(screen.getByText('pim_identifier_generator.tabs.identifier_structure')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
+    expect(screen.getByText('[{"type":"free_text","string":"Updated string"}]')).toBeInTheDocument();
   });
 });
