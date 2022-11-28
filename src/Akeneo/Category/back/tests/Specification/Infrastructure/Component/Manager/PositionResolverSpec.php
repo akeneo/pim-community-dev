@@ -3,14 +3,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Component\Manager;
 
-use Akeneo\Category\Domain\Model\Enrichment\Category;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Manager\PositionResolver;
 use Akeneo\Category\Infrastructure\Component\Manager\PositionResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use PhpSpec\ObjectBehavior;
 
 /**
