@@ -639,7 +639,7 @@ jobs:
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscriptionJobQueueScheduledJob "${SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.serviceAccountEmail "${CLOUD_FUNCTION_GSA}"CLOUD_FUNCTION_GSA
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.serviceAccountEmail "${CLOUD_FUNCTION_GSA}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.jobsPrefix "${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-pim-job"
 
               ## Charts
