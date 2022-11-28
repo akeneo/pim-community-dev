@@ -75,13 +75,13 @@ akeneo.tailored_import:
         title: Enkelvoudige selectie vervanging
         option_labels: Optielabels
       simple_reference_entity_replacement:
-        title: Vervanging van referentie-entiteit door enkele link
+        title: Vervanging van waarden referentie-entiteiten voor attributen met een enkele link
         option_labels: Recordlabels
       multi_select_replacement:
         title: Meervoudige selectie vervanging
         option_labels: Optielabels
       multi_reference_entity_replacement:
-        title: Vervanging van referentie-entiteit door meerdere links
+        title: Vervanging van waarden referentie-entiteiten voor attributen met meerdere links
         option_labels: Recordlabels
       categories_replacement:
         title: Vervanging van categorieën
