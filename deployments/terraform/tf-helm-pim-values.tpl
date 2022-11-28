@@ -33,6 +33,10 @@ elasticsearch:
       cluster.routing.allocation.disk.watermark.low: .97
       cluster.routing.allocation.disk.watermark.high: .98
       cluster.routing.allocation.disk.watermark.flood_stage: .99
+%{ if pim.type == "tria" }
+    plugins: null
+  keystore: null
+%{ endif }
   master:
     podAnnotations:
       app.kubernetes.io/name: elasticsearch
@@ -100,6 +104,16 @@ pim:
     replicas: ${pim.web.replicas}
   api:
     replicas: ${pim.api.replicas}
+%{ if pim.type == "tria" }
+# Disable admin for free_trial SSO
+  hook:
+    addAdmin:
+      enabled: false
+%{ if pim.use_edition_flag }
+# Set Catalog for free_trial
+  defaultCatalog: tria/src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
+%{ endif }
+%{ endif }
 
 mysql:
   mysql:
@@ -113,10 +127,10 @@ mysql:
   extraAnnotations:
     app.kubernetes.io/name: mysql
     app.kubernetes.io/component: database
+
 %{ if pim.type == "tria" }
 free_trial:
   enabled: true
-  pim.defaultCatalog : src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
   akeneo_connect_saml_entity_id: ${ft_catalog.akeneo_connect.saml.entity_id}
   akeneo_connect_saml_certificate: ${ft_catalog.akeneo_connect.saml.certificate}
   akeneo_connect_saml_sp_certificate_base64: ${ft_catalog.akeneo_connect.saml.sp_certificate_base64}
@@ -126,9 +140,7 @@ free_trial:
   ft_catalog_api_client_id: ${ft_catalog.api_client_id}
   ft_catalog_api_password: ${ft_catalog.api_password}
   ft_catalog_api_secret: ${ft_catalog.api_secret}
-  # Disable ES Snashot for free_trial
-  elasticsearch.keystore: null
-  elasticsearch.cluster.plugins: null
+###
 %{ endif }
 
 performance_analytics:
