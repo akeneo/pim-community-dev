@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Domain\TimeToEnrich;
 
-use Akeneo\PerformanceAnalytics\Domain\AggregationType;
 use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
 use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
@@ -35,7 +34,6 @@ interface AverageTimeToEnrichRepository
         \DateTimeImmutable $startDate,
         \DateTimeImmutable $endDate,
         PeriodType $aggregationPeriodType,
-        AggregationType $aggregationType,
         ?array $channelCodesFilter = null,
         ?array $localeCodesFilter = null,
         ?array $familyCodesFilter = null,

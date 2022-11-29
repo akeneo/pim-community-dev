@@ -57,7 +57,6 @@ const FakeFetcherProvider: FC = ({children}) => {
           startDate: string,
           endDate: string,
           periodType: string,
-          aggregationType: string,
           filters: {
             families: FamilyCode[];
             channels: ChannelCode[];

@@ -8,7 +8,6 @@ type FetcherValue = {
       startDate: string,
       endDate: string,
       periodType: string,
-      aggregationType: string,
       filters: {
         families: FamilyCode[];
         channels: ChannelCode[];

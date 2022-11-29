@@ -15,8 +15,10 @@ namespace Akeneo\PerformanceAnalytics\Domain;
 
 enum PeriodType: string
 {
-    case DAY = 'day';
+    // Not supported yet
+    // case DAY = 'day';
+    // case YEAR = 'year';
+
     case WEEK = 'week';
     case MONTH = 'month';
-    case YEAR = 'year';
 }

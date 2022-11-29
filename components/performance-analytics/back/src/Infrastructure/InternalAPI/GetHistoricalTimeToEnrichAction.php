@@ -16,7 +16,6 @@ namespace Akeneo\PerformanceAnalytics\Infrastructure\InternalAPI;
 use Akeneo\PerformanceAnalytics\Application\Exception\InvalidQueryException;
 use Akeneo\PerformanceAnalytics\Application\Query\GetHistoricalTimeToEnrich;
 use Akeneo\PerformanceAnalytics\Application\Query\GetHistoricalTimeToEnrichHandler;
-use Akeneo\PerformanceAnalytics\Domain\AggregationType;
 use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
 use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
@@ -84,15 +83,6 @@ final class GetHistoricalTimeToEnrichAction
             throw new BadRequestHttpException('The "period_type" parameter is not a valid period type.');
         }
 
-        if (!is_string($request->get('aggregation_type'))) {
-            throw new BadRequestHttpException('The "aggregation_type" parameter is required and should be a string.');
-        }
-        try {
-            $aggregationType = AggregationType::from($request->get('aggregation_type'));
-        } catch (\Throwable) {
-            throw new BadRequestHttpException('The "aggregation_type" parameter is not a valid aggregation type.');
-        }
-
         $filters = [];
         foreach (['channels', 'locales', 'families', 'categories'] as $filterName) {
             if (null !== $request->get($filterName) && '' !== $request->get($filterName)) {
@@ -118,7 +108,6 @@ final class GetHistoricalTimeToEnrichAction
             $startDate,
             $endDate,
             $periodType,
-            $aggregationType,
             /* @phpstan-ignore-next-line */
             $filters['channels'] ?? null,
             /* @phpstan-ignore-next-line */

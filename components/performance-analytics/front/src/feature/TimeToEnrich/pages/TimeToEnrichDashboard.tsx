@@ -26,7 +26,6 @@ const TimeToEnrichDashboard: FC = () => {
         getStartDate(filters),
         getEndDate(filters),
         getPeriodType(filters),
-        filters.aggregation,
         {
           families: filters.families,
           channels: filters.channels,

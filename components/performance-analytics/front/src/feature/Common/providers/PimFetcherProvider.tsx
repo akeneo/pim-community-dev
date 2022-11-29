@@ -13,7 +13,6 @@ const PimFetcherProvider: FC = ({children}) => {
           startDate: string,
           endDate: string,
           periodType: string,
-          aggregationType: string,
           filters: {
             families: FamilyCode[];
             channels: ChannelCode[];
@@ -27,7 +26,6 @@ const PimFetcherProvider: FC = ({children}) => {
                 start_date: startDate,
                 end_date: endDate,
                 period_type: periodType,
-                aggregation_type: aggregationType,
                 families: filters?.families?.join(','),
                 channels: filters?.channels?.join(','),
                 locales: filters?.locales?.join(','),

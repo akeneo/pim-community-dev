@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Application\Query;
 
-use Akeneo\PerformanceAnalytics\Domain\AggregationType;
 use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
 use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
@@ -33,7 +32,6 @@ final class GetHistoricalTimeToEnrich
         private \DateTimeImmutable $startDate,
         private \DateTimeImmutable $endDate,
         private PeriodType $aggregationPeriodType,
-        private AggregationType $aggregationType,
         private ?array $channelCodesFilter = null,
         private ?array $localeCodesFilter = null,
         private ?array $familyCodesFilter = null,
@@ -69,11 +67,6 @@ final class GetHistoricalTimeToEnrich
     public function aggregationPeriodType(): PeriodType
     {
         return $this->aggregationPeriodType;
-    }
-
-    public function aggregationType(): AggregationType
-    {
-        return $this->aggregationType;
     }
 
     /**
