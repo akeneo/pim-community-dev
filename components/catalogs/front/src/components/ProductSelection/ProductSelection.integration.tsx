@@ -133,7 +133,7 @@ test('it updates the state when a criterion is removed', async () => {
 
 test('it shows a warning and lock the add button when the criteria limit is reached', async () => {
     const criteria = []
-    for (let criterionIndex=0; criterionIndex < maxCriteriaPerCatalog; criterionIndex++) {
+    for (let criterionIndex=0; criterionIndex < MAX_CRITERIA_PER_CATALOG; criterionIndex++) {
         criteria[criterionIndex] = {
             field: 'enabled',
             operator: Operator.EQUALS,
@@ -158,7 +158,7 @@ test('it shows a warning and lock the add button when the criteria limit is reac
 
 test('it doesn\'t show a warning and doesn\'t lock the add button when the criteria limit is not reached', async () => {
     const criteria = []
-    for (let criterionIndex=0; criterionIndex < maxCriteriaPerCatalog - 1; criterionIndex++) {
+    for (let criterionIndex=0; criterionIndex < MAX_CRITERIA_PER_CATALOG - 1; criterionIndex++) {
         criteria[criterionIndex] = {
             field: 'enabled',
             operator: Operator.EQUALS,

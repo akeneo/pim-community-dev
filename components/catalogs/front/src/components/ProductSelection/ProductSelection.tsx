@@ -41,14 +41,14 @@ const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
 
     return (
         <ProductSelectionContext.Provider value={dispatch}>
-            { rows.length >= maxCriteriaPerCatalog ?
+            { rows.length >= MAX_CRITERIA_PER_CATALOG ?
                 <Helper level={'warning'}>
-                    {translate('akeneo_catalogs.product_selection.criteria.max_reached').replace('{0}', maxCriteriaPerCatalog.toString())}
+                    {translate('akeneo_catalogs.product_selection.criteria.max_reached').replace('{0}', MAX_CRITERIA_PER_CATALOG.toString())}
                 </Helper>
                 : null
             }
             <Header>
-                <AddCriterionDropdown isDisabled={rows.length >= maxCriteriaPerCatalog} />
+                <AddCriterionDropdown isDisabled={rows.length >= MAX_CRITERIA_PER_CATALOG} />
             </Header>
             {rows.length ? rows : <Empty />}
         </ProductSelectionContext.Provider>
