@@ -74,7 +74,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                                 return;
                             }
 
-                            if (count($array) > $maxCriteriaPerCatalog) {
+                            if (\count($array) > $maxCriteriaPerCatalog) {
                                 $context->buildViolation('Too many criteria.')
                                     ->addViolation();
                             }
