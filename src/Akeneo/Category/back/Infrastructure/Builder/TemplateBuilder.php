@@ -132,6 +132,7 @@ class TemplateBuilder
                 'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
             ];
         }
+
         return LabelCollection::fromArray($translations);
     }
 }

@@ -558,7 +558,7 @@ JSON;
 
     public function getStandardizedAttributesValues(): string
     {
-        $attributes = <<<JSON
+        return <<<JSON
 {
     "photo|8587cda6-58c8-47fa-9278-033e1d8c735c": {
         "data": {
@@ -589,7 +589,6 @@ JSON;
     }
 }
 JSON;
-        return $attributes;
     }
 
     private function assertSameResponse(string $expectedJson, Response $actualResponse): void
