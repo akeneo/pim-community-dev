@@ -287,7 +287,7 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/categories?search=["master"]&with_enriched_attributes=true');
 
-        $categories = $this->getStandardizedCategorieswithAttributesValues();
+        $categories = $this->getStandardizedCategorieswithAttributesValues(true);
         $expected = <<<JSON
 {
     "_links": {
@@ -534,8 +534,10 @@ JSON;
     /**
      * @return array<string, mixed>
      */
-    public function getStandardizedCategorieswithAttributesValues(): array
+    public function getStandardizedCategorieswithAttributesValues(bool $withEnrichedValues): array
     {
+        $template = ($withEnrichedValues) ? "\"template\": null," : "";
+        $values = ($withEnrichedValues) ? "\"values\": {$this->getStandardizedAttributesValues()}" : "";
         $categories['master'] = <<<JSON
 {
     "_links": {
@@ -547,8 +549,8 @@ JSON;
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
     "labels": null,
-    "template": null,
-    "values": {$this->getStandardizedAttributesValues()}
+    {$template}
+    {$values}
 }
 JSON;
 
