@@ -68,7 +68,7 @@ const GeneralInformation = ({productFile}: Props) => {
                                 'supplier_portal.product_file_dropping.supplier_files.general_information.supplier'
                             )}
                         </StyledLabel>
-                        <StyledValue>{productFile.supplier}</StyledValue>
+                        <StyledValue>{productFile.supplierLabel}</StyledValue>
                     </FlexColumnContainer>
                 </FirstColumn>
                 <SecondColumn>

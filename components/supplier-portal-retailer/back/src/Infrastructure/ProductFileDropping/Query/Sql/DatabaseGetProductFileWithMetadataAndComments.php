@@ -39,7 +39,7 @@ final class DatabaseGetProductFileWithMetadataAndComments implements GetProductF
                 WHERE product_file_identifier = :productFileIdentifier
             )
             SELECT
-                identifier,
+                product_file.identifier,
                 original_filename,
                 uploaded_by_contributor,
                 uploaded_by_supplier,
@@ -48,17 +48,20 @@ final class DatabaseGetProductFileWithMetadataAndComments implements GetProductF
                 sc.supplier_comments,
                 product_file_import.import_status,
                 comments_read_by_retailer.last_read_at as retailer_last_read_at,
-                product_file_import.finished_at
+                product_file_import.finished_at,
+                supplier.label AS supplier_label
             FROM akeneo_supplier_portal_supplier_product_file product_file
             LEFT JOIN retailer_comments rc
-                ON identifier = rc.product_file_identifier
+                ON product_file.identifier = rc.product_file_identifier
             LEFT JOIN supplier_comments sc
-                ON identifier = sc.product_file_identifier
+                ON product_file.identifier = sc.product_file_identifier
             LEFT JOIN akeneo_supplier_portal_product_file_imported_by_job_execution AS product_file_import
                 ON product_file_import.product_file_identifier = product_file.identifier
             LEFT JOIN akeneo_supplier_portal_product_file_comments_read_by_retailer comments_read_by_retailer 
                 ON product_file.identifier = comments_read_by_retailer.product_file_identifier
-            WHERE identifier = :productFileIdentifier;
+            INNER JOIN akeneo_supplier_portal_supplier supplier
+                ON uploaded_by_supplier = supplier.identifier
+            WHERE product_file.identifier = :productFileIdentifier;
         SQL;
 
         $productFileWithComments = $this->connection->executeQuery(
@@ -79,6 +82,7 @@ final class DatabaseGetProductFileWithMetadataAndComments implements GetProductF
             $productFileWithComments['uploaded_at'],
             $productFileWithComments['import_status'],
             $productFileWithComments['finished_at'],
+            $productFileWithComments['supplier_label'],
             $productFileWithComments['retailer_comments']
                 ? \array_filter(\json_decode(
                     $productFileWithComments['retailer_comments'],

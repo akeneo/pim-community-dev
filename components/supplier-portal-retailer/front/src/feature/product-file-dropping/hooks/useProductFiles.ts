@@ -35,6 +35,7 @@ const useProductFiles = (page: number): [ProductFileRow[], number] => {
                 hasUnreadComments: item.hasUnreadComments,
                 importStatus: item.importStatus,
                 importedAt: item.importDate,
+                supplierLabel: item.supplierLabel,
                 filename: item.originalFilename,
             };
         });

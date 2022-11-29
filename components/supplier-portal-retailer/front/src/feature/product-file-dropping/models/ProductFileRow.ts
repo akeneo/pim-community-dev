@@ -8,5 +8,6 @@ export type ProductFileRow = {
     hasUnreadComments: boolean;
     importStatus: ImportStatus;
     importedAt: string;
+    supplierLabel: string;
     filename: string;
 };

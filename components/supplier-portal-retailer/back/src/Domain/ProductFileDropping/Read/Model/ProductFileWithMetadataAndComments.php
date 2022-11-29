@@ -17,6 +17,7 @@ final class ProductFileWithMetadataAndComments
         public readonly ?string $uploadedAt,
         public ?string $importStatus,
         public readonly ?string $importDate,
+        public readonly ?string $supplierLabel,
         public readonly array $retailerComments = [],
         public readonly array $supplierComments = [],
         public readonly ?string $retailerLastReadAt = null,
@@ -40,6 +41,7 @@ final class ProductFileWithMetadataAndComments
             'supplierLastReadAt' => $this->supplierLastReadAt,
             'importStatus' => $this->importStatus,
             'importDate' => $this->importDate,
+            'supplierLabel' => $this->supplierLabel,
         ];
     }
 }

@@ -11,6 +11,8 @@ const backendResponse = {
             uploadedBySupplier: 'test',
             hasUnreadComments: true,
             importStatus: 'in_progress',
+            importDate: '2022-07-23 16:50:45',
+            supplierLabel: 'Los Pollos Hermanos',
             originalFilename: 'file1.xlsx',
         },
         {
@@ -21,6 +23,8 @@ const backendResponse = {
             uploadedBySupplier: 'test',
             hasUnreadComments: false,
             importStatus: 'in_progress',
+            importDate: '2022-06-16 16:50:45',
+            supplierLabel: 'Los Pollos Hermanos',
             originalFilename: 'file2.xlsx',
         },
     ],
@@ -48,6 +52,8 @@ test('it loads the product files', async () => {
             supplier: 'test',
             hasUnreadComments: true,
             importStatus: 'in_progress',
+            importedAt: '2022-07-23 16:50:45',
+            supplierLabel: 'Los Pollos Hermanos',
             filename: 'file1.xlsx',
         },
         {
@@ -57,6 +63,8 @@ test('it loads the product files', async () => {
             supplier: 'test',
             hasUnreadComments: false,
             importStatus: 'in_progress',
+            importedAt: '2022-06-16 16:50:45',
+            supplierLabel: 'Los Pollos Hermanos',
             filename: 'file2.xlsx',
         },
     ]);

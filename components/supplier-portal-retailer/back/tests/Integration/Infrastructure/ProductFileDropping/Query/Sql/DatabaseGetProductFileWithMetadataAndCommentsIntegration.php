@@ -72,6 +72,7 @@ final class DatabaseGetProductFileWithMetadataAndCommentsIntegration extends Sql
             'supplierLastReadAt' => null,
             'importStatus' => ProductFileImportStatus::TO_IMPORT->value,
             'importDate' => null,
+            'supplierLabel' => 'Supplier label',
         ], $productFile->toArray());
     }
 

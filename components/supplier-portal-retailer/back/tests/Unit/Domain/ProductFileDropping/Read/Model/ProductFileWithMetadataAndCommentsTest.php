@@ -22,6 +22,7 @@ final class ProductFileWithMetadataAndCommentsTest extends TestCase
             '2022-07-12 14:55:46',
             null,
             null,
+            'Los Pollos Hermanos',
         );
 
         static::assertSame(
@@ -38,6 +39,7 @@ final class ProductFileWithMetadataAndCommentsTest extends TestCase
                 'supplierLastReadAt' => null,
                 'importStatus' => ProductFileImportStatus::TO_IMPORT->value,
                 'importDate' => null,
+                'supplierLabel' => 'Los Pollos Hermanos',
             ],
             $sut->toArray(),
         );
