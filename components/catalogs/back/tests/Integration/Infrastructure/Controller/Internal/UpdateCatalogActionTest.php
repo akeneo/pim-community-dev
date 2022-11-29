@@ -136,7 +136,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
-            \json_encode($params),
+            \json_encode($params, JSON_THROW_ON_ERROR),
         );
 
         $response = $client->getResponse();
@@ -153,7 +153,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
-            \json_encode($params),
+            \json_encode($params, JSON_THROW_ON_ERROR),
         );
 
         $response = $client->getResponse();
