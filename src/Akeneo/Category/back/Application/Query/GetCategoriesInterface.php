@@ -18,4 +18,9 @@ interface GetCategoriesInterface
      * @return array<Category>
      */
     public function execute(array $parameters): array;
+
+    /**
+     * @param array<string, string> $parameters
+     */
+    public function count(array $parameters): int|null;
 }
