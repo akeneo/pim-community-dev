@@ -285,17 +285,17 @@ JSON;
         $this->updateCategoryWithValues('master');
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}&with_enriched_attributes=true');
+        $client->request('GET', 'api/rest/v1/categories?search=["master"]&with_enriched_attributes=true');
 
         $categories = $this->getStandardizedCategorieswithAttributesValues();
         $expected = <<<JSON
 {
     "_links": {
         "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D&with_enriched_attributes=true"
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=0&sqlWhere=category.code%20IN%20%28:category_codes%29&sqlLimitOffset=LIMIT%2010&params%5Bcategory_codes%5D%5B0%5D=master&params%5Bwith_enriched_attributes%5D=1&types%5Bcategory_codes%5D=102&types%5Bwith_enriched_attributes%5D=5"
         },
         "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D&with_enriched_attributes=true"
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=0&sqlWhere=category.code%20IN%20%28:category_codes%29&sqlLimitOffset=LIMIT%2010&params%5Bcategory_codes%5D%5B0%5D=master&params%5Bwith_enriched_attributes%5D=1&types%5Bcategory_codes%5D=102&types%5Bwith_enriched_attributes%5D=5"
         }
     },
     "current_page": 1,
@@ -546,8 +546,9 @@ JSON;
     "code": "master",
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position" : 1,
-    "labels": {},
+    "position": null,
+    "labels": null,
+    "template": null,
     "values": {$this->getStandardizedAttributesValues()}
 }
 JSON;
@@ -559,10 +560,6 @@ JSON;
     {
         $attributes = <<<JSON
 {
-    "attribute_codes": [
-        "title|87939c45-1d85-4134-9579-d594fff65030",
-        "photo|8587cda6-58c8-47fa-9278-033e1d8c735c"
-    ],
     "photo|8587cda6-58c8-47fa-9278-033e1d8c735c": {
         "data": {
             "size": 168107,
