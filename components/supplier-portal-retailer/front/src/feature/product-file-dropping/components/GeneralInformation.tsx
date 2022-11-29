@@ -109,7 +109,13 @@ const GeneralInformation = ({productFile}: Props) => {
                                 'supplier_portal.product_file_dropping.supplier_files.general_information.import_date'
                             )}
                         </StyledLabel>
-                        <StyledValue>{productFile.importedAt}</StyledValue>
+                        <StyledValue>
+                            {null !== productFile.importedAt
+                                ? productFile.importedAt
+                                : translate(
+                                      'supplier_portal.product_file_dropping.supplier_files.general_information.not_imported_yet'
+                                  )}
+                        </StyledValue>
                     </FlexColumnContainer>
                 </SecondColumn>
             </FlexMainContainer>

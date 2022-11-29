@@ -115,6 +115,7 @@ supplier_portal:
                 contributor: Contributor
                 upload_date: Upload date
                 import_date: Import date
+                not_imported_yet: Not imported yet
             product_files_modal:
                 title: Product file
                 subtitle: Select the tailored import profile
