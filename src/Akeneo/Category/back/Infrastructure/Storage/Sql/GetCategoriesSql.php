@@ -73,16 +73,25 @@ final class GetCategoriesSql implements GetCategoriesInterface
         return $retrievedCategories;
     }
 
-    public function count(string $searchFilters): int|null
+    /**
+     * @param array<int, mixed>|array<string, mixed> $parameters
+     */
+    public function count(array $parameters): int|null
     {
+        $sqlWhere = $parameters['sqlWhere'];
+
         $sqlQuery = <<<SQL
             SELECT COUNT(category.id)
             FROM 
                 pim_catalog_category category
-            WHERE $searchFilters
+            WHERE $sqlWhere
         SQL;
 
-        $result = $this->connection->executeQuery($sqlQuery)->fetchOne();
+        $result = $this->connection->executeQuery(
+            $sqlQuery,
+            $parameters['params'],
+            $parameters['types'],
+        )->fetchOne();
 
         return $result ? (int) $result : null;
     }

@@ -19,5 +19,8 @@ interface GetCategoriesInterface
      */
     public function execute(array $parameters): array;
 
-    public function count(string $searchFilters): int|null;
+    /**
+     * @param array<string, string> $parameters
+     */
+    public function count(array $parameters): int|null;
 }
