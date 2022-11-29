@@ -64,4 +64,4 @@ services:
             - '%pim_user.account_lock.duration%'
             - '%pim_user.account_lock.max_consecutive_failures%'
         tags:
-           - {name: 'kernel.event_subscriber', dispatcher: 'security.event_dispatcher.main'}
+           - { name: 'kernel.event_subscriber', dispatcher: 'security.event_dispatcher.main' }
