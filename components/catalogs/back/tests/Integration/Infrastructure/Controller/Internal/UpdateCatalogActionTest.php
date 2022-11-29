@@ -143,7 +143,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         Assert::assertEquals(422, $response->getStatusCode());
 
 
-        array_shift($criteria);
+        \array_shift($criteria);
         $params['product_selection_criteria'] = $criteria;
         $client->request(
             'PATCH',
