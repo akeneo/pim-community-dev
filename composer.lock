@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd47837fa98532d1b65a00b0d1ffc641",
+    "content-hash": "9230311d10827ae74edda812622bd70c",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
-            "version": "v3.0.0-alpha1",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/FOSOAuthServerBundle.git",
-                "reference": "a8345541657ad15eec857c0fb582953e54ebf8c3"
+                "reference": "79b0dd80d3c3a94b09ae55727aa8b99f00decc29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/FOSOAuthServerBundle/zipball/a8345541657ad15eec857c0fb582953e54ebf8c3",
-                "reference": "a8345541657ad15eec857c0fb582953e54ebf8c3",
+                "url": "https://api.github.com/repos/akeneo/FOSOAuthServerBundle/zipball/79b0dd80d3c3a94b09ae55727aa8b99f00decc29",
+                "reference": "79b0dd80d3c3a94b09ae55727aa8b99f00decc29",
                 "shasum": ""
             },
             "require": {
                 "friendsofsymfony/oauth2-php": "~1.1",
-                "php": "^8.0",
+                "php": "^7.2 || ^8.0",
                 "symfony/dependency-injection": "^4.4 || ^5.1",
                 "symfony/framework-bundle": "^4.4 || ^5.1",
                 "symfony/security-bundle": "^4.4 || ^5.1",
@@ -91,9 +91,9 @@
                 "server"
             ],
             "support": {
-                "source": "https://github.com/akeneo/FOSOAuthServerBundle/tree/v3.0.0-alpha1"
+                "source": "https://github.com/akeneo/FOSOAuthServerBundle/tree/v2.0.0"
             },
-            "time": "2022-11-24T14:50:08+00:00"
+            "time": "2021-09-06T14:20:35+00:00"
         },
         {
             "name": "ass/xmlsecurity",
@@ -18689,9 +18689,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "akeneo/oauth-server-bundle": 15
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
