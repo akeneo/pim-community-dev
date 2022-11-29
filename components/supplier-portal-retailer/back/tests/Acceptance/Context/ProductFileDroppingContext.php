@@ -35,7 +35,7 @@ final class ProductFileDroppingContext implements Context
         private InMemorySupplierRepository $supplierRepository,
         private InMemoryProductFileRepository $productFileRepository,
         private CommentProductFileHandler $commentProductFileHandler,
-        private GetProductFileWithMetadataAndComments $getProductFileWithComments,
+        private GetProductFileWithMetadataAndComments $getProductFileWithMedataAndComments,
         private CommentProductFileHandlerForSupplier $commentProductFileHandlerForSupplier,
         private MarkCommentsAsReadBySupplierHandler $markCommentsAsReadBySupplierHandler,
         private MarkCommentsAsReadByRetailerHandler $markCommentsAsReadByRetailerHandler,
@@ -300,7 +300,7 @@ final class ProductFileDroppingContext implements Context
      */
     public function theProductFileContainsTheRetailerComment(string $content): void
     {
-        $productFile = ($this->getProductFileWithComments)($this->productFileIdentifier);
+        $productFile = ($this->getProductFileWithMedataAndComments)($this->productFileIdentifier);
 
         Assert::assertCount(1, $productFile->retailerComments);
         Assert::assertSame($content, $productFile->retailerComments[0]->content());
@@ -311,7 +311,7 @@ final class ProductFileDroppingContext implements Context
      */
     public function theProductFileContainsTheSupplierComment(string $content): void
     {
-        $productFile = ($this->getProductFileWithComments)($this->productFileIdentifier);
+        $productFile = ($this->getProductFileWithMedataAndComments)($this->productFileIdentifier);
 
         Assert::assertCount(1, $productFile->supplierComments);
         Assert::assertSame($content, $productFile->supplierComments[0]->content());
