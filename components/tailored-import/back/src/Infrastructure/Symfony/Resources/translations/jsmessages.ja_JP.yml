@@ -75,13 +75,13 @@ akeneo.tailored_import:
         title: シンプルな選択の置換
         option_labels: オプションのラベル
       simple_reference_entity_replacement:
-        title: 参照エンティティの単一リンクの置換
+        title: 参照エンティティ単一リンクの置換
         option_labels: レコードラベル
       multi_select_replacement:
         title: 複数の選択の置換
         option_labels: オプションのラベル
       multi_reference_entity_replacement:
-        title: 参照エンティティの複数リンクの置換
+        title: 参照エンティティ複数リンクの置換
         option_labels: レコードラベル
       categories_replacement:
         title: カテゴリの置換

@@ -75,13 +75,13 @@ akeneo.tailored_import:
         title: Zastąpienie pojedynczego wyboru
         option_labels: Etykiety opcji
       simple_reference_entity_replacement:
-        title: Zastąpienie pojedynczego linku do obiektu referencyjnego
+        title: Zastąpienie obiektu referencyjnego z pojedynczym linkiem
         option_labels: Etykiety rekordów
       multi_select_replacement:
         title: Zastąpienie wielokrotnego wyboru
         option_labels: Etykiety opcji
       multi_reference_entity_replacement:
-        title: Zastąpienie wielu linków do obiektu referencyjnego
+        title: Zastąpienie obiektów referencyjnych z wieloma linkami
         option_labels: Etykiety rekordów
       categories_replacement:
         title: Zastąpienie katagorii

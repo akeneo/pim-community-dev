@@ -71,17 +71,27 @@ akeneo.tailored_import:
         comma: Coma (,)
         semicolon: Punto y coma (;)
         pipe: Barra (|)
+      search_and_replace:
+        title: Buscar y reemplazar
+        helper: Puede añadir hasta 10 reemplazos.
+        what:
+          header: Buscar
+          placeholder: Buscar el valor para reemplazar
+        with:
+          header: Reemplazar por
+          placeholder: Defina su valor de reemplazo
+        case_sensitive: Distingue mayúsculas y minúsculas
       simple_select_replacement:
         title: Reemplazo de selección simple
         option_labels: Etiquetas de opciones
       simple_reference_entity_replacement:
-        title: Sustitución del enlace único de la entidad de referencia
+        title: Sustitución de entidad de referencia de enlaces únicos
         option_labels: Etiquetas de registro
       multi_select_replacement:
         title: Reemplazo de selección múltiple
         option_labels: Etiquetas de opciones
       multi_reference_entity_replacement:
-        title: Reemplazo de múltiples enlaces de la entidad de referencia
+        title: Sustitución de entidad de referencia de enlaces múltiples
         option_labels: Etiquetas de registro
       categories_replacement:
         title: Reemplazo de categorías
@@ -236,6 +246,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: El tipo de operación {{ operation_type }} es incompatible con su tipo de destino.
       missing_required_operations: "Falta(n) operación(es) obligatoria(s): {{ missing_required_operations }}"
+      max_replacements_reached: Solo puedes añadir hasta {{ limit }} reemplazos.
 pim_information:
   import:
     title: Descubra las asignaciones con la Importación a medida

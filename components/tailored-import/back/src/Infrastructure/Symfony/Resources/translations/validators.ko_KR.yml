@@ -42,7 +42,7 @@ akeneo.tailored_import:
       locale_should_not_be_blank: 이제 특성 {{ attribute_code }}에 로케일별 값이 있습니다. 생성하거나 다른 대상을 선택하십시오.
       channel_should_not_be_blank: 이제 특성 {{ attribute_code }}에 채널별 값이 있습니다. 생성하거나 다른 대상을 선택하십시오.
       locale_should_be_blank: 특성 {{ attribute_code }}에 로케일별 값이 더 이상 없습니다. 특성을 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
-      channel_should_be_blank: 특성 {{ attribute_code }}에 채널별 값이 더 이상 없습니다. 특성을 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
+      channel_should_be_blank: 특성 {{ attribute_code }}에 채널별 값이 더 이상 없습니다. 이 특성을 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
       invalid_specific_locale: 특성 {{ attribute_code }}은(는) 특정 로케일에 한정됩니다. 다른 로케일을 선택하십시오.
     file_key:
       does_not_exist: '{{ file_key }} 파일을 찾을 수 없습니다.'
