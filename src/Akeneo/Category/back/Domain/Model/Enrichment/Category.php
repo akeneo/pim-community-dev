@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Domain\Model\Enrichment;
 
 use Akeneo\Category\Domain\ValueObject\CategoryId;
+use Akeneo\Category\Domain\ValueObject\CategoryPosition;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\PermissionCollection;
@@ -25,6 +26,7 @@ class Category
         private ?CategoryId $parentId = null,
         private ?CategoryId $rootId = null,
         private ?\DateTimeImmutable $updated = null,
+        private ?CategoryPosition $position = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
     ) {
@@ -56,6 +58,7 @@ class Category
             parentId: $category['parent_id'] ? new CategoryId((int) $category['parent_id']) : null,
             rootId: $category['root_id'] ? new CategoryId((int) $category['root_id']) : null,
             updated: $category['updated'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $category['updated']) : null,
+            position: $category['position'] ? new CategoryPosition((int) $category['position']) : null,
             attributes: $category['value_collection'] ?
                 ValueCollection::fromDatabase(json_decode($category['value_collection'], true)) : null,
             permissions: isset($category['permissions']) && $category['permissions'] ?
@@ -91,6 +94,11 @@ class Category
     public function getUpdated(): ?\DateTimeImmutable
     {
         return $this->updated;
+    }
+
+    public function getPosition(): ?CategoryPosition
+    {
+        return $this->position;
     }
 
     public function isRoot(): bool

@@ -15,5 +15,5 @@ interface GetCategoriesParametersBuilder
      *
      * @return array<string, string>
      */
-    public function build(array $categoryCodes, int $limit, int $offset, bool $isEnrichedAttributes): array;
+    public function build(array $categoryCodes, int $limit, int $offset, bool $withPosition, bool $isEnrichedAttributes): array;
 }

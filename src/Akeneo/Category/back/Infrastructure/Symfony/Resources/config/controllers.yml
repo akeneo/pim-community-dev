@@ -83,7 +83,6 @@ services:
             - '@feature_flags'
             - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
             - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
-            - '@Akeneo\Category\Application\Handler\GetPositionInterface'
             - '%pim_api.configuration%'
         calls:
             - [ 'setContainer', [ '@service_container' ] ]

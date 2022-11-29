@@ -22,16 +22,19 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         array $categoryCodes,
         int $limit,
         int $offset,
+        bool $withPosition,
         bool $isEnrichedAttributes,
     ): array {
         $parameters['sqlWhere'] = $this->buildSearchFilter($categoryCodes);
         $parameters['sqlLimitOffset'] = $this->buildLimitOffset($limit, $offset);
         $parameters['params'] = [
             'category_codes' => $categoryCodes,
+            'with_position' => $withPosition ?: false,
             'with_enriched_attributes' => $isEnrichedAttributes ?: false,
         ];
         $parameters['types'] = [
             'category_codes' => Connection::PARAM_STR_ARRAY,
+            'with_position' => \PDO::PARAM_BOOL,
             'with_enriched_attributes' => \PDO::PARAM_BOOL,
         ];
 

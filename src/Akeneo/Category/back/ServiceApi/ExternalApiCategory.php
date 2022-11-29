@@ -64,11 +64,6 @@ class ExternalApiCategory
         return $this->position;
     }
 
-    public function setPosition(int $position): void
-    {
-        $this->position = $position;
-    }
-
     public function getTemplateCode(): ?string
     {
         return $this->templateCode;
@@ -92,6 +87,7 @@ class ExternalApiCategory
             parentId: $category->getParentId()?->getValue(),
             updated: $category->getUpdated()?->format('c'),
             labels: $category->getLabels()?->normalize(),
+            position: $category->getPosition()?->getValue(),
             values: $category->getAttributes()?->normalize(),
         );
     }
