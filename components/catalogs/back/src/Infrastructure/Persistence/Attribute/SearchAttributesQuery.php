@@ -44,6 +44,8 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
                     'type' => $attribute->getType(),
                     'scopable' => $attribute->isScopable(),
                     'localizable' => $attribute->isLocalizable(),
+                    'attribute_group_code' => $attribute->getGroup()->getCode(),
+                    'attribute_group_label' => $attribute->getGroup()->getLabel(),
                 ];
 
                 if ('pim_catalog_metric' === $attribute->getType()) {

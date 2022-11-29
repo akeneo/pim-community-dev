@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
@@ -465,9 +466,7 @@ abstract class IntegrationTestCase extends WebTestCase
      */
     protected function createAttribute(array $data): void
     {
-        $data = \array_merge([
-            'group' => 'other',
-        ], $data);
+        $data['group'] ??= 'other';
 
         $options = $data['options'] ?? [];
         unset($data['options']);
@@ -523,6 +522,29 @@ abstract class IntegrationTestCase extends WebTestCase
         }
 
         self::getContainer()->get('pim_catalog.saver.attribute_option')->saveAll($options);
+    }
+
+    /**
+     *     * @param array{
+     *     code: string,
+     *     sort_order?: integer,
+     *     attributes?: array<string>,
+     *     labels?: array<string, string>,
+     * } $data
+     */
+    protected function createAttributeGroup(array $data): void
+    {
+        $attributeGroup = self::getContainer()->get('pim_catalog.repository.attribute_group')
+            ->findOneByIdentifier($data['code']);
+
+        if (null === $attributeGroup) {
+            $attributeGroup = self::getContainer()->get('pim_catalog.factory.attribute_group')->create();
+            ;
+        }
+
+        /** @var AttributeGroupInterface $attributeGroup */
+        self::getContainer()->get('pim_catalog.updater.attribute_group')->update($attributeGroup, $data);
+        self::getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
     }
 
     protected function createChannel(string $code, array $locales = [], array $currencies = ['USD']): void
