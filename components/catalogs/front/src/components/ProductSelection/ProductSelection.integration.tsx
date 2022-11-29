@@ -11,7 +11,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 
 jest.mock('./utils/generateRandomId');
 
-const maxCriteriaPerCatalog = 25;
+const MAX_CRITERIA_PER_CATALOG = 25;
 
 test('it display an empty message if there is no criteria', () => {
     render(
