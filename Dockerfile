@@ -108,8 +108,7 @@ COPY docker/build/xdebug.ini /etc/php/8.1/fpm/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/blackfire.ini /etc/php/8.1/cli/conf.d/99-akeneo-blackfire.ini
 COPY docker/build/blackfire.ini /etc/php/8.1/fpm/conf.d/99-akeneo-blackfire.ini
 
-# TODO RAB-1083: remove fixed version when https://github.com/composer/composer/issues/11073 is resolved
-COPY --from=composer:2.4.1 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 
 RUN mkdir -p /var/www/.composer && chown www-data:www-data /var/www/.composer
@@ -164,7 +163,7 @@ RUN mkdir var && \
         --no-dev \
         --prefer-dist \
         --optimize-autoloader && \
-    composer dump-env prod && \
+    COMPOSER_ALLOW_SUPERUSER=1 composer dump-env prod && \
     bin/console pim:installer:assets --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run update-extensions && \
