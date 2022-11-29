@@ -546,7 +546,6 @@ JSON;
     "code": "master",
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position": null,
     "labels": null,
     "template": null,
     "values": {$this->getStandardizedAttributesValues()}

@@ -95,12 +95,12 @@ class ListCategoriesController extends AbstractController
         $normalizedCategories = [];
         foreach ($categories as $category) {
             $categoryApi = ExternalApiCategory::fromDomainModel($category);
-
-            if ($request->query->getBoolean('with_position')) {
+            $withPosition = $request->query->getBoolean('with_position');
+            if ($withPosition) {
                 $categoryApi->setPosition(($this->getPosition)($category));
             }
 
-            $normalizedCategories[] = $categoryApi->normalize();
+            $normalizedCategories[] = $categoryApi->normalize($withPosition);
         }
 
         $paginatedCategories = $this->paginator->paginate(
