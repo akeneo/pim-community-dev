@@ -96,6 +96,8 @@ pim_datagrid:
       label: Currency
     metric_filter:
       label: Unit
+    uuid:
+      label: Uuid
 
   cells:
     credientials:

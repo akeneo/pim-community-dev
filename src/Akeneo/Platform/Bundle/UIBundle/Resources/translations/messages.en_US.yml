@@ -484,6 +484,8 @@ pim_datagrid:
             label: Parent
         identifier:
             label: Identifier
+        uuid:
+            label: Uuid
 
 # Versioning / history
 Change History: Change history
