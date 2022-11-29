@@ -44,7 +44,7 @@ export const SelectChannelDropdown: FC<Props> = ({source, onChange, error}) => {
                 ))}
             </SelectInput>
             {undefined !== error && (
-                <Helper inline level="error">
+                <Helper inline level='error'>
                     {error}
                 </Helper>
             )}

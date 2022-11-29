@@ -375,7 +375,7 @@ test('it validates the catalog on first load', () => {
     ]);
 });
 
-test('it remove the product selection criteria errors when we update a selection criteria', () => {
+test('it removes the product selection criteria errors when we update a selection criteria', () => {
     mocked(useCatalog).mockImplementation(() => ({
         isLoading: false,
         isError: false,
@@ -506,8 +506,7 @@ test('it returns the product mapping when catalog is loaded', () => {
     ]);
 });
 
-
-test('it remove the product mapping errors when we update a product mapping source', () => {
+test('it removes the product mapping errors when we update a product mapping source', () => {
     mocked(useCatalog).mockImplementation(() => ({
         isLoading: false,
         isError: false,
@@ -562,19 +561,22 @@ test('it remove the product mapping errors when we update a product mapping sour
     const [form] = result.current;
 
     act(() => {
-        form && form.dispatch({type: CatalogFormActions.SET_PRODUCT_MAPPING, value: {
-                uuid: {
-                    source: 'uuid',
-                    locale: null,
-                    scope: null,
+        form &&
+            form.dispatch({
+                type: CatalogFormActions.SET_PRODUCT_MAPPING,
+                value: {
+                    uuid: {
+                        source: 'uuid',
+                        locale: null,
+                        scope: null,
+                    },
+                    name: {
+                        source: 'variation_name',
+                        locale: null,
+                        scope: null,
+                    },
                 },
-                name: {
-                    source: 'variation_name',
-                    locale: null,
-                    scope: null,
-                },
-            }}
-        );
+            });
     });
 
     expect(result.current).toMatchObject([
