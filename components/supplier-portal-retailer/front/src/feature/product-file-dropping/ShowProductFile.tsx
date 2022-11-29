@@ -10,7 +10,7 @@ import {ProductFileImportStatus} from './components/ProductFileImportStatus';
 const ShowProductFile = () => {
     const translate = useTranslate();
     const history = useHistory();
-    const [isCurrent, switchTo] = useTabBar('general_information');
+    const [isCurrent, switchTo] = useTabBar('discussion');
     const {productFileIdentifier} = useParams<{productFileIdentifier: string}>();
     const [productFile, saveComment, validationError] = useProductFile(productFileIdentifier);
 
@@ -54,6 +54,9 @@ const ShowProductFile = () => {
             </PageHeader>
             <PageContent>
                 <TabBar moreButtonTitle="More">
+                    <TabBar.Tab isActive={isCurrent('discussion')} onClick={() => switchTo('discussion')}>
+                        {translate('supplier_portal.product_file_dropping.supplier_files.tabs.discussion')}
+                    </TabBar.Tab>
                     <TabBar.Tab
                         isActive={isCurrent('general_information')}
                         onClick={() => switchTo('general_information')}
