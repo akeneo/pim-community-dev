@@ -16,13 +16,13 @@ const FlexMainContainer = styled.div`
 const FirstColumn = styled.div`
     display: flex;
     flex-direction: row;
-    flex-grow: 0.3;
+    flex: 0 0 40%;
 `;
 
 const SecondColumn = styled.div`
     display: flex;
     flex-direction: row;
-    flex-grow: 0.7;
+    flex: 0 0 60%;
 `;
 
 const FlexColumnContainer = styled.div`
