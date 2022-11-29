@@ -102,7 +102,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         );
 
         $criteria = [];
-        $numberOfCriteria = self::getContainer()->getParameter('max_criteria_per_catalog') + 1;
+        $numberOfCriteria = self::getContainer()->getParameter('akeneo_catalog.max_criteria_per_catalog') + 1;
         for($i=0; $i < $numberOfCriteria; $i++) {
             $criteria[] = [
                 'field' => 'enabled',
