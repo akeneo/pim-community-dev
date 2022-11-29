@@ -8,6 +8,10 @@ type Props = {
     productFile: ProductFile;
 };
 
+const StyledSectionTitle = styled(SectionTitle)`
+    margin-top: 20px;
+`;
+
 const FlexMainContainer = styled.div`
     display: flex;
     margin-top: 25px;
@@ -51,11 +55,11 @@ const GeneralInformation = ({productFile}: Props) => {
 
     return (
         <>
-            <SectionTitle>
+            <StyledSectionTitle>
                 <SectionTitle.Title>
                     {translate('supplier_portal.product_file_dropping.supplier_files.general_information.title')}
                 </SectionTitle.Title>
-            </SectionTitle>
+            </StyledSectionTitle>
 
             <FlexMainContainer>
                 <FirstColumn>
