@@ -23,7 +23,7 @@ type Props = {
     errors: ProductSelectionErrors;
 };
 
-const maxCriteriaPerCatalog = 25;
+const MAX_CRITERIA_PER_CATALOG = 25;
 
 const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
     const [values, dispatch] = useReducer(ProductSelectionReducer, criteria);
