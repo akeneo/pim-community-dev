@@ -14,7 +14,7 @@ use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 
 abstract class ApiCategoryTestCase extends ApiTestCase
 {
-    protected function activateEnrichedFeatureFlag(): void
+    protected function enableEnrichedCategoryFeature(): void
     {
         $featureFlags = $this->get('feature_flags');
         $featureFlags->enable('enriched_category');

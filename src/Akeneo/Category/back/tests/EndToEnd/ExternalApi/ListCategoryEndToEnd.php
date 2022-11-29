@@ -281,7 +281,7 @@ JSON;
 
     public function testListCategoriesWithValues(): void
     {
-        $this->activateEnrichedFeatureFlag();
+        $this->enableEnrichedCategoryFeature();
         $this->updateCategoryWithValues('master');
         $client = $this->createAuthenticatedClient();
 
