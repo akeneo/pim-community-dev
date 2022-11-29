@@ -20,6 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -161,6 +162,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     private function getProductConstraints(ProductInterface $product): array
     {
         $metadata = $this->metadataFactory->getMetadataFor($product);
+        Assert::isInstanceOf($metadata, ClassMetadataInterface::class);
         $propertiesMetadata = $metadata->getPropertyMetadata('identifier');
         $constraints = [new UniqueProductEntity()];
         foreach ($propertiesMetadata as $propertyMetadata) {
@@ -178,6 +180,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     private function getValueConstraints(ScalarValue $value): array
     {
         $metadata = $this->metadataFactory->getMetadataFor($value);
+        Assert::isInstanceOf($metadata, ClassMetadataInterface::class);
         $membersMetadata = $metadata->getPropertyMetadata('data');
         $constraints = [];
         foreach ($membersMetadata as $memberMetadata) {
