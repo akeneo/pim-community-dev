@@ -19,6 +19,7 @@ pim_menu:
         connect_connection_settings: Connection settings
         marketplace: App Store
         connected_apps: Connected Apps
+        open_app: Open app
 
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: App Store
