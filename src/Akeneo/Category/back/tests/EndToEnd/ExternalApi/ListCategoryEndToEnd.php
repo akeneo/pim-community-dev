@@ -4,11 +4,10 @@ namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListCategoryEndToEnd extends ApiTestCase
+class ListCategoryEndToEnd extends ApiCategoryTestCase
 {
     /**
      * @group critical
@@ -280,6 +279,37 @@ JSON;
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
+    public function testListCategoriesWithValues(): void
+    {
+        $this->activateEnrichedFeatureFlag();
+        $this->updateCategoryWithValues('master');
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}&with_enriched_attributes=true');
+
+        $categories = $this->getStandardizedCategorieswithAttributesValues();
+        $expected = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D&with_enriched_attributes=true"
+        },
+        "first": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D&with_enriched_attributes=true"
+        }
+    },
+    "current_page": 1,
+    "_embedded": {
+        "items": [
+            {$categories['master']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertSameResponse($expected, $client->getResponse());
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -499,6 +529,70 @@ JSON;
 JSON;
 
         return $categories;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getStandardizedCategorieswithAttributesValues(): array
+    {
+        $categories['master'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories/master"
+        }
+    },
+    "code": "master",
+    "parent": null,
+    "updated" : "2016-06-14T13:12:50+02:00",
+    "position" : 1,
+    "labels": {},
+    "values": {$this->getStandardizedAttributesValues()}
+}
+JSON;
+
+        return $categories;
+    }
+
+    public function getStandardizedAttributesValues(): string
+    {
+        $attributes = <<<JSON
+{
+    "attribute_codes": [
+        "title|87939c45-1d85-4134-9579-d594fff65030",
+        "photo|8587cda6-58c8-47fa-9278-033e1d8c735c"
+    ],
+    "photo|8587cda6-58c8-47fa-9278-033e1d8c735c": {
+        "data": {
+            "size": 168107,
+            "extension": "jpg",
+            "file_path": "8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg",
+            "mime_type": "image/jpeg",
+            "original_filename": "shoes.jpg"
+        },
+        "type": "image",
+        "locale": null,
+        "channel": null,
+        "attribute_code": "photo|8587cda6-58c8-47fa-9278-033e1d8c735c"
+    },
+    "title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|en_US": {
+        "data": "All the shoes you need!",
+        "type": "text",
+        "locale": "en_US",
+        "channel": "ecommerce",
+        "attribute_code": "title|87939c45-1d85-4134-9579-d594fff65030"
+    },
+    "title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|fr_FR": {
+        "data": "Les chaussures dont vous avez besoin !",
+        "type": "text",
+        "locale": "fr_FR",
+        "channel": "ecommerce",
+        "attribute_code": "title|87939c45-1d85-4134-9579-d594fff65030"
+    }
+}
+JSON;
+        return $attributes;
     }
 
     private function assertSameResponse(string $expectedJson, Response $actualResponse): void
