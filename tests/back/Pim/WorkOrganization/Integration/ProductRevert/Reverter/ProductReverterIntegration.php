@@ -61,10 +61,27 @@ class ProductReverterIntegration extends TestCase
     public function testRevertProductFields()
     {
         $product = $this->getProductBuilder()->createProduct('versioned-product');
+        $productToAssociate = $this->getProductBuilder()->createProduct('associated-product');
         $this->getProductSaver()->save($product);
+        $this->getProductSaver()->save($productToAssociate);
+
+        // create a quantified association
+        $factory = $this->get('pim_catalog.factory.association_type');
+        $quantifiedAssociationUpdater = $this->get('pim_catalog.updater.association_type');
+        $quantifiedAssociationSaver = $this->get('pim_catalog.saver.association_type');
+
+        $associationType = $factory->create();
+        $quantifiedAssociationUpdater->update($associationType,  ['code' => 'QUANTIFIED_ASSOC', 'is_quantified' => true]);
+        $quantifiedAssociationSaver->save($associationType);
 
         $updates = [
             'groups' => ['groupB'],
+            'quantified_associations' => [
+                "QUANTIFIED_ASSOC" => [
+                    "products" => [["uuid"=>$productToAssociate->getUuid()->toString(),"quantity"=>1]],
+                    "product_models" => []
+                ]
+            ]
         ];
         $this->getProductUpdater()->update($product, $updates);
         $this->getProductSaver()->save($product);
