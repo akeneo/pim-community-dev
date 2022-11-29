@@ -127,7 +127,7 @@ class TemplateBuilder
     private function generateTemplateLabelCollection(?LabelCollection $categoryTreeLabelCollection): LabelCollection
     {
         $translations = [];
-        if($categoryTreeLabelCollection) {
+        if ($categoryTreeLabelCollection) {
             $translations = [
                 'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
             ];
