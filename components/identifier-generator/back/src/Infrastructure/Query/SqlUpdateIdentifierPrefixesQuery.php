@@ -68,14 +68,6 @@ final class SqlUpdateIdentifierPrefixesQuery
 
         $placeholders = implode(',', array_fill(0, \count($newPrefixes), '(UUID_TO_BIN(?),?,?,?)'));
 
-        $valuesStr = \implode(
-            ',',
-            array_map(
-                fn (array $value): string => \sprintf('(UUID_TO_BIN("%s"), %d, "%s", %d)', ...$value),
-                $newPrefixes
-            )
-        );
-
         $insertSql = <<<SQL
 INSERT INTO pim_catalog_identifier_generator_prefixes (`product_uuid`, `attribute_id`, `prefix`, `number`) VALUES ${placeholders}
 SQL;
@@ -83,9 +75,9 @@ SQL;
         $placeholderIndex = 1;
         $statement = $this->connection->prepare($insertSql);
         foreach ($newPrefixes as $newPrefix) {
-            $statement->bindValue($placeholderIndex++, $newPrefix[0], ParameterType::STRING);
+            $statement->bindValue($placeholderIndex++, $newPrefix[0]);
             $statement->bindValue($placeholderIndex++, $newPrefix[1], ParameterType::INTEGER);
-            $statement->bindValue($placeholderIndex++, $newPrefix[2], ParameterType::STRING);
+            $statement->bindValue($placeholderIndex++, $newPrefix[2]);
             $statement->bindValue($placeholderIndex++, $newPrefix[3], ParameterType::INTEGER);
         }
 
