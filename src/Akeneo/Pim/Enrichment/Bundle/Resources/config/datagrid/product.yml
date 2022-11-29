@@ -330,3 +330,12 @@ datagrid:
                         field_options:
                             choices:
                                 'pim_datagrid.filters.entity_type.ungrouped': 'product'
+                uuid:
+                    type: product_value_string
+                    ftype: uuid
+                    label: 'pim_datagrid.filters.uuid.label'
+                    data_name: uuid
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true

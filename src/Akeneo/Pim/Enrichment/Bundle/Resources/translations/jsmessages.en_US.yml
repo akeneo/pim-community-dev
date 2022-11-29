@@ -509,6 +509,8 @@ pim_datagrid:
             label: Parent
         identifier:
             label: Identifier
+        uuid:
+            label: Uuid
     search: Search by {{ label }}
 
 batch_jobs:
