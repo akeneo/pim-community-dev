@@ -34,8 +34,6 @@ class ListCategoriesController extends AbstractController
     }
 
     /**
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
-     *
      * @AclAncestor("pim_api_category_list")
      */
     public function __invoke(Request $request): JsonResponse|Response
@@ -61,9 +59,10 @@ class ListCategoriesController extends AbstractController
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
-        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true, 512, JSON_THROW_ON_ERROR);
-        if (null === $searchFilters) {
-            throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
+        try {
+            $searchFilters = json_decode($queryParameters['search'] ?? '[]', true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new BadRequestHttpException(sprintf('The search query parameter must be a valid JSON: %s', $e->getMessage()));
         }
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         try {

@@ -42,7 +42,10 @@ class Category
      *     updated: string|null,
      *     value_collection: string|null,
      *     permissions: string|null,
-     *     template_uuid: string|null
+     *     template_uuid: string|null,
+     *     lft: int|null,
+     *     rgt: int|null,
+     *     lvl: int|null
      * } $category
      */
     public static function fromDatabase(array $category): self
@@ -62,7 +65,7 @@ class Category
                 ValueCollection::fromDatabase(json_decode($category['value_collection'], true)) : null,
             permissions: isset($category['permissions']) && $category['permissions'] ?
                 PermissionCollection::fromArray(json_decode($category['permissions'], true)) : null,
-            position: new Position((int) $category['lft'],(int) $category['rgt'],(int) $category['lvl']),
+            position: new Position((int) $category['lft'], (int) $category['rgt'], (int) $category['lvl']),
         );
     }
 

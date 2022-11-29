@@ -18,3 +18,4 @@ services:
     class: Akeneo\Category\Infrastructure\Handler\SearchFiltersSql
     arguments:
       - '@Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator'
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
