@@ -279,6 +279,11 @@ JSON;
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
+    /**
+     * @group enriched_category
+     * @return void
+     * @throws \JsonException
+     */
     public function testListCategoriesWithValues(): void
     {
         $this->enableEnrichedCategoryFeature();
