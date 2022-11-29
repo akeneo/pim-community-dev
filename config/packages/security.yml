@@ -51,8 +51,8 @@ security:
 
         api:
             pattern:                        ^/api
-            stateless:                      true
             fos_oauth:                      true
+            stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
             provider:                       pim_user_api
 
@@ -75,9 +75,9 @@ security:
     access_control:
         - { path: ^/user/(login|reset-request|send-email|check-email)$, roles: PUBLIC_ACCESS }
         - { path: ^/user/reset/*, roles: PUBLIC_ACCESS }
-        - { path: ^/api/rest/v1$, role: PUBLIC_ACCESS }
-        - { path: ^/api/, role: pim_api_overall_access }
-        - { path: ^/ , roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/rest/v1$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/, roles: pim_api_overall_access }
+        - { path: ^/ , roles: IS_AUTHENTICATED_REMEMBERED }
 
 acl:
     connection: default

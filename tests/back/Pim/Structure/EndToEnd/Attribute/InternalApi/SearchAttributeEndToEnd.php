@@ -4,8 +4,6 @@ namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -33,7 +31,7 @@ class SearchAttributeEndToEnd extends ApiTestCase
 JSON;
 
         // GET
-        $client = self::createSearchAttributeClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', self::ENDPOINT_URL, $params);
         $response = $client->getResponse();
 
@@ -41,7 +39,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $client = self::createSearchAttributeClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('POST', self::ENDPOINT_URL, $params);
         $response = $client->getResponse();
 
@@ -69,7 +67,7 @@ JSON;
 JSON;
 
         // GET
-        $client = self::createSearchAttributeClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', self::ENDPOINT_URL, $params);
         $response = $client->getResponse();
 
@@ -77,7 +75,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $client = self::createSearchAttributeClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('POST', self::ENDPOINT_URL, $params);
         $response = $client->getResponse();
 
@@ -102,7 +100,7 @@ JSON;
 JSON;
 
         // GET
-        $client = self::createSearchAttributeClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', self::ENDPOINT_URL, $params);
         $response = $client->getResponse();
 
@@ -110,7 +108,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $client = self::createSearchAttributeClient();
+        $client = $this->createAuthenticatedClient();
         $client->request('POST', self::ENDPOINT_URL, $params);
         $response = $client->getResponse();
 
@@ -124,16 +122,6 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
-    }
-
-    private static function createSearchAttributeClient(): KernelBrowser
-    {
-        static::ensureKernelShutdown();
-
-        return self::createClient([], [
-            'PHP_AUTH_USER' => self::PASSWORD,
-            'PHP_AUTH_PW'   => self::USERNAME,
-        ]);
     }
 
     private function getStandardizedAttributes(): array
