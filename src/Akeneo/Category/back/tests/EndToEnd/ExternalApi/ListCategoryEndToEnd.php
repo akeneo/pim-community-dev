@@ -292,10 +292,10 @@ JSON;
 {
     "_links": {
         "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=0&sqlWhere=category.code%20IN%20%28:category_codes%29&sqlLimitOffset=LIMIT%2010&params%5Bcategory_codes%5D%5B0%5D=master&params%5Bwith_enriched_attributes%5D=1&types%5Bcategory_codes%5D=102&types%5Bwith_enriched_attributes%5D=5"
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D"
         },
         "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=0&sqlWhere=category.code%20IN%20%28:category_codes%29&sqlLimitOffset=LIMIT%2010&params%5Bcategory_codes%5D%5B0%5D=master&params%5Bwith_enriched_attributes%5D=1&types%5Bcategory_codes%5D=102&types%5Bwith_enriched_attributes%5D=5"
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D"
         }
     },
     "current_page": 1,

@@ -69,13 +69,13 @@ class ListCategoriesController extends AbstractController
         }
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         try {
-            $queryParameters = array_merge($defaultParameters, $this->parametersBuilder->build(
+            $sqlParameters = $this->parametersBuilder->build(
                 $searchFilters,
                 $queryParameters['limit'],
                 $offset,
                 $request->query->getBoolean('with_enriched_attributes'),
-            ));
-            $categories = $this->getCategories->execute($queryParameters);
+            );
+            $categories = $this->getCategories->execute($sqlParameters);
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
