@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useReducer} from 'react';
-import {getColor} from 'akeneo-design-system';
+import {getColor, Helper} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {ProductSelectionReducer} from './reducers/ProductSelectionReducer';
 import {ProductSelectionContext} from './contexts/ProductSelectionContext';
@@ -8,6 +8,7 @@ import {Empty} from './components/Empty';
 import {ProductSelectionValues} from './models/ProductSelectionValues';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import {ProductSelectionErrors} from './models/ProductSelectionErrors';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Header = styled.div`
     border-bottom: 1px solid ${getColor('grey', 60)};
@@ -22,8 +23,11 @@ type Props = {
     errors: ProductSelectionErrors;
 };
 
+const maxCriteriaPerCatalog = 25;
+
 const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
     const [values, dispatch] = useReducer(ProductSelectionReducer, criteria);
+    const translate = useTranslate();
 
     useEffect(() => {
         if (criteria !== values) {
@@ -37,8 +41,14 @@ const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
 
     return (
         <ProductSelectionContext.Provider value={dispatch}>
+            { rows.length >= maxCriteriaPerCatalog ?
+                <Helper level={'warning'}>
+                    {translate('akeneo_catalogs.product_selection.criteria.max_reached').replace('{0}', maxCriteriaPerCatalog.toString())}
+                </Helper>
+                : null
+            }
             <Header>
-                <AddCriterionDropdown />
+                <AddCriterionDropdown isDisabled={rows.length >= maxCriteriaPerCatalog} />
             </Header>
             {rows.length ? rows : <Empty />}
         </ProductSelectionContext.Provider>

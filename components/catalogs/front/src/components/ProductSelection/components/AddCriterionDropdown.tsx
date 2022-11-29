@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useMemo, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AnyCriterionState} from '../models/Criterion';
@@ -9,7 +9,12 @@ import {generateRandomId} from '../utils/generateRandomId';
 import {useInfiniteAttributeCriterionFactories} from '../hooks/useInfiniteAttributeCriterionFactories';
 import {CriterionFactory} from '../models/CriterionFactory';
 
-const AddCriterionDropdown: FC<{}> = () => {
+
+type Props = {
+    isDisabled: boolean;
+};
+
+const AddCriterionDropdown: FC<Props> = ({isDisabled}) => {
     const translate = useTranslate();
     const dispatch = useProductSelectionContext();
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -33,10 +38,15 @@ const AddCriterionDropdown: FC<{}> = () => {
         },
         [dispatch]
     );
+    useEffect(() => {
+        if (isDisabled) {
+            setIsOpen(false);
+        }
+    }, [isDisabled]);
 
     return (
         <Dropdown>
-            <Button onClick={() => setIsOpen(true)} ghost={true} level='tertiary'>
+            <Button onClick={() => setIsOpen(true)} ghost={true} level='tertiary' disabled={isDisabled}>
                 {translate('akeneo_catalogs.product_selection.add_criteria.label')}
             </Button>
             {isOpen && (
