@@ -20,16 +20,7 @@ final class Version_7_0_20221129093347_add_cascade_on_prefixes_Integration exten
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_can_be_reexecuted(): void
-    {
-        Assert::assertTrue($this->hasCascadeDelete('FK_PRODUCTUUID'));
-        Assert::assertTrue($this->hasCascadeDelete('FK_ATTRIBUTEID'));
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
-        Assert::assertTrue($this->hasCascadeDelete('FK_PRODUCTUUID'));
-        Assert::assertTrue($this->hasCascadeDelete('FK_ATTRIBUTEID'));
-    }
-
-    public function test_it_adds_cascale(): void
+    public function test_it_adds_cascade(): void
     {
         $this->rollback();
         Assert::assertFalse($this->hasCascadeDelete('FK_PRODUCTUUID'));
