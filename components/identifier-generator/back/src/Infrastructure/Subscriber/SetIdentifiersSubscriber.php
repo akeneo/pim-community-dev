@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;

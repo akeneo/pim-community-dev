@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception;
+namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
 
