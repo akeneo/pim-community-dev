@@ -45,14 +45,9 @@ final class GetReferenceEntityAttributesQueryValidatorTest extends AbstractValid
     public function validRequest(): array
     {
         return [
-            'valid request with filter on types' => [
-                new Request([], [
-                    'types' => ['text', 'image'],
-                ]),
-            ],
-            'valid request without filter on types' => [
-                new Request([], [
-                    'types' => null,
+            'valid request ' => [
+                new Request([
+                    'reference_entity_code' => 'designer',
                 ]),
             ],
         ];
@@ -61,17 +56,10 @@ final class GetReferenceEntityAttributesQueryValidatorTest extends AbstractValid
     public function invalidRequest(): array
     {
         return [
-            'invalid request with no types' => [
-                'This field is missing.',
-                '[types]',
-                new Request([], []),
-            ],
-            'invalid request with unexpected property' => [
-                'This field was not expected.',
-                '[unexpected_property]',
-                new Request([], [
-                    'unexpected_property' => 'unexpected_value',
-                ]),
+            'invalid request with no Reference Entity code' => [
+                'This value should not be blank.',
+                '[reference_entity_code]',
+                new Request([]),
             ],
         ];
     }

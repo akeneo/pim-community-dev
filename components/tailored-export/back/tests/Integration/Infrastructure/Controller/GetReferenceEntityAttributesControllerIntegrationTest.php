@@ -27,7 +27,6 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
     private const ROUTE = 'pimee_tailored_export_get_reference_entity_attributes_action';
     private WebClientHelper $webClientHelper;
     private string $referenceEntityLabelIdentifier = '';
-    private string $referenceEntityImageIdentifier = '';
 
     public function setUp(): void
     {
@@ -38,12 +37,9 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
         $this->createReferenceEntity('designer');
     }
 
-    public function test_it_returns_reference_entity_attributes(): void
+    public function test_it_returns_supported_reference_entity_attributes(): void
     {
-        $response = $this->callGetReferenceEntityAttributesRoute(
-            ['reference_entity_code' => 'designer'],
-            ['types' => ['text', 'image']],
-        );
+        $response = $this->callGetReferenceEntityAttributesRoute(['reference_entity_code' => 'designer']);
         $responseContent = json_decode($response->getContent(), true);
 
         Assert::assertSame([
@@ -55,25 +51,8 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
                 'value_per_locale' => true,
                 'type' => 'text',
             ],
-            [
-                'identifier' => $this->referenceEntityImageIdentifier,
-                'code' => 'image',
-                'labels' => [],
-                'value_per_channel' => false,
-                'value_per_locale' => false,
-                'type' => 'image',
-            ],
         ], $responseContent);
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
-    }
-
-    public function test_it_throws_if_reference_entity_code_is_missing(): void
-    {
-        $response = $this->callGetReferenceEntityAttributesRoute([
-            'reference_entity_code' => 'designer',
-        ]);
-
-        Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     /**
@@ -84,9 +63,9 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
         return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
 
-    private function callGetReferenceEntityAttributesRoute(array $routeArguments, array $params = []): Response
+    private function callGetReferenceEntityAttributesRoute(array $routeArguments): Response
     {
-        $this->webClientHelper->callApiRoute($this->client, self::ROUTE, $routeArguments, 'POST', $params);
+        $this->webClientHelper->callApiRoute($this->client, self::ROUTE, $routeArguments, 'GET');
 
         return $this->client->getResponse();
     }
@@ -103,6 +82,5 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
         /** @var ReferenceEntity $referenceEntity */
         $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
         $this->referenceEntityLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier()->normalize();
-        $this->referenceEntityImageIdentifier = $referenceEntity->getAttributeAsImageReference()->getIdentifier()->normalize();
     }
 }

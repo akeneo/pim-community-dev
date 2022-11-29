@@ -15,8 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -33,13 +32,11 @@ class GetReferenceEntityAttributesQueryValidator extends ConstraintValidator
             return;
         }
 
-        $this->context->getValidator()->inContext($this->context)->validate($value->request->all(), new Collection([
-            'types' => [
-                new Type('array'),
-                new All([
-                    new Type('string'),
-                ]),
-            ],
-        ]));
+        $this->context->getValidator()->inContext($this->context)
+            ->atPath('[reference_entity_code]')
+            ->validate(
+                $value->get('reference_entity_code'),
+                [new Type('string'), new NotBlank()],
+            );
     }
 }

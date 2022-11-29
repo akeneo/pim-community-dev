@@ -25,10 +25,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class GetReferenceEntityAttributesAction
 {
+    /**
+     * @param array<string> $supportedAttributeTypes
+     */
     public function __construct(
         private FindReferenceEntityAttributesInterface $findReferenceEntityAttributes,
         private ValidatorInterface $validator,
         private NormalizerInterface $violationNormalizer,
+        private array $supportedAttributeTypes,
     ) {
     }
 
@@ -43,10 +47,10 @@ final class GetReferenceEntityAttributesAction
             return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
-        $referenceEntityCode = $request->get('reference_entity_code');
-        $types = $request->get('types');
-
-        $referenceEntityAttributes = $this->findReferenceEntityAttributes->findByCode($referenceEntityCode, $types);
+        $referenceEntityAttributes = $this->findReferenceEntityAttributes->findByCode(
+            $request->get('reference_entity_code'),
+            $this->supportedAttributeTypes,
+        );
 
         return new JsonResponse(array_map(
             static fn (AttributeDetails $attribute) => $attribute->normalize(),
