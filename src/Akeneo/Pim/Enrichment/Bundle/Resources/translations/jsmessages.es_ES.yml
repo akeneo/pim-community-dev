@@ -41,6 +41,7 @@ pim_enrich.entity.product:
       title: Seleccione su acción
       choose_family: Seleccionar familia
       choose_family_variant: Elija una variante de familia
+      helper: El identificador es ahora un campo opcional. <a class="AknMessageBox-link" href="{{ link }}" target="_blank">Lea más</a> sobre este cambio y los posibles impactos para sus productos.
     variant_navigation:
       common: Común
     status:
@@ -70,6 +71,7 @@ pim_enrich.entity.product:
     meta:
       updated: Última actualización
       groups: Grupos
+      uuid: UUID
     show_group:
       title: Group {{ group }}
       view_group: Ver grupo
@@ -220,6 +222,7 @@ pim_enrich.entity.category:
       columns:
         label: Etiqueta de árbol
         number_of_categories: Número de categorías
+        actions: Acciones
         count_categories: ']-Inf, 1]{{ count }} categoría|]1, Inf[{{ count }} categorías'
     tree:
       not_found: Árbol de categorías no encontrado
@@ -436,6 +439,8 @@ pim_datagrid:
         all_attributes: Todos los atributos
         with_codes: Con códigos
         with_labels: Con etiquetas
+        without_uuid: Sin UUID
+        with_uuid: Con UUID
         without_media: Sin media
         with_media: Con media
       flash:
