@@ -10,6 +10,8 @@ const backendResponse = {
     uploadedByContributor: 'jimmy@supplier.com',
     uploadedBySupplier: '3d845092-0356-4895-8863-99a9a6ff172f',
     importStatus: 'in_progress',
+    importDate: '2022-07-23 16:50:45',
+    supplierLabel: 'Los Pollos Hermanos',
     retailerComments: [
         {
             content: 'This file is outdated, please send 2022 version instead.',
@@ -47,6 +49,8 @@ test('it loads a product file', async () => {
         supplier: '3d845092-0356-4895-8863-99a9a6ff172f',
         hasUnreadComments: true,
         importStatus: 'in_progress',
+        importedAt: '2022-07-23 16:50:45',
+        supplierLabel: 'Los Pollos Hermanos',
         retailerComments: [
             {
                 content: 'This file is outdated, please send 2022 version instead.',

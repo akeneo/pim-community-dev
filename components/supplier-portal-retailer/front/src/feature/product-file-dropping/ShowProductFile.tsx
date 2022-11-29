@@ -56,16 +56,13 @@ const ShowProductFile = () => {
                 <TabBar moreButtonTitle="More">
                     <TabBar.Tab isActive={isCurrent('discussion')} onClick={() => switchTo('discussion')}>
                         {translate('supplier_portal.product_file_dropping.supplier_files.tabs.discussion')}
+                        {productFile.hasUnreadComments && <StyledPill level="primary" />}
                     </TabBar.Tab>
                     <TabBar.Tab
                         isActive={isCurrent('general_information')}
                         onClick={() => switchTo('general_information')}
                     >
                         {translate('supplier_portal.product_file_dropping.supplier_files.tabs.general_information')}
-                    </TabBar.Tab>
-                    <TabBar.Tab isActive={isCurrent('discussion')} onClick={() => switchTo('discussion')}>
-                        {translate('supplier_portal.product_file_dropping.supplier_files.tabs.discussion')}
-                        {productFile.hasUnreadComments && <StyledPill level="primary" />}
                     </TabBar.Tab>
                 </TabBar>
                 {isCurrent('discussion') && (
