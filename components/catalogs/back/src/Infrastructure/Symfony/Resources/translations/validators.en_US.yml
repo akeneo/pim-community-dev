@@ -38,6 +38,8 @@ akeneo_catalogs:
                 unknown: 'The locale "{{ locale_name }}" has been deactivated. Please check your locale settings or remove this filter.'
         product_mapping:
             source:
+                invalid: 'Invalid source value'
+                unknown: 'Unknown source value'
                 channel:
                     not_empty: 'This channel must be empty.'
                     empty: 'This channel must not be empty.'

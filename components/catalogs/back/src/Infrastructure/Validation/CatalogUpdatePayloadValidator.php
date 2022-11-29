@@ -158,7 +158,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                                 }
 
                                 if (!\is_string($sourceAssociation['source'])) {
-                                    $context->buildViolation('Unknown source value')
+                                    $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.unknown')
                                         ->atPath('[source]')
                                         ->addViolation();
 
@@ -168,7 +168,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                                 $constraint = $this->getMappingSourceConstraint($sourceAssociation['source']);
 
                                 if (null === $constraint) {
-                                    $context->buildViolation('Invalid source value')
+                                    $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.invalid')
                                         ->atPath('[source]')
                                         ->addViolation();
 
