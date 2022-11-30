@@ -73,15 +73,6 @@ final class MetricValueFactory implements ValueFactory
             );
         }
 
-        if (!is_numeric($data['amount'])) {
-            throw InvalidPropertyTypeException::validArrayStructureExpected(
-                $attribute->code(),
-                sprintf('key "amount" has to be a numeric, "%s" given', gettype($data['amount'])),
-                static::class,
-                $data
-            );
-        }
-
         if (!is_string($data['unit'])) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->code(),
