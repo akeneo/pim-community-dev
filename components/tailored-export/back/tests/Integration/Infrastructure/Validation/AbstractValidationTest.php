@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Platform\TailoredExport\Test\Integration\IntegrationTestCase;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -55,7 +56,12 @@ abstract class AbstractValidationTest extends IntegrationTestCase
 
     protected function assertNoViolation(ConstraintViolationListInterface $violationList): void
     {
-        $this->assertCount(0, $violationList, 'Violation list should be empty');
+        $propertyPathFound = array_map(
+            static fn (ConstraintViolationInterface $violation) => $violation->getPropertyPath(),
+            iterator_to_array($violationList),
+        );
+
+        $this->assertCount(0, $violationList, sprintf('Violation list should be empty, found on following path "%s"', implode(', ', $propertyPathFound)));
     }
 
     protected function getValidator(): ValidatorInterface

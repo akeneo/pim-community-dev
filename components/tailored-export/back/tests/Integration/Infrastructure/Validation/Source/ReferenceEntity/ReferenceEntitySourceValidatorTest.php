@@ -72,40 +72,6 @@ class ReferenceEntitySourceValidatorTest extends AbstractValidationTest
                     'operations' => [],
                 ],
             ],
-            'a valid reference entity "description" attribute selection' => [
-                [
-                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
-                    'code' => 'ref_entity_single_code',
-                    'type' => 'attribute',
-                    'channel' => null,
-                    'locale' => null,
-                    'selection' => [
-                        'type' => 'attribute',
-                        'attribute_identifier' => 'description_1234',
-                        'attribute_type' => 'text',
-                        'channel' => 'ecommerce',
-                        'locale' => 'en_US',
-                    ],
-                    'operations' => [],
-                ],
-            ],
-            'a valid reference entity "name" attribute selection' => [
-                [
-                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
-                    'code' => 'ref_entity_single_code',
-                    'type' => 'attribute',
-                    'channel' => null,
-                    'locale' => null,
-                    'selection' => [
-                        'type' => 'attribute',
-                        'attribute_identifier' => 'name_1234',
-                        'attribute_type' => 'text',
-                        'channel' => null,
-                        'locale' => null,
-                    ],
-                    'operations' => [],
-                ],
-            ],
             'a valid reference entity selection with default value' => [
                 [
                     'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
@@ -141,22 +107,6 @@ class ReferenceEntitySourceValidatorTest extends AbstractValidationTest
                     'locale' => null,
                     'selection' => [
                         'type' => 'invalid_type',
-                    ],
-                    'operations' => [],
-                ],
-            ],
-            'an invalid selection property' => [
-                'This field was not expected.',
-                '[selection][unknown_property]',
-                [
-                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
-                    'code' => 'attribute_code',
-                    'type' => 'attribute',
-                    'channel' => null,
-                    'locale' => null,
-                    'selection' => [
-                        'type' => 'code',
-                        'unknown_property' => 'foo',
                     ],
                     'operations' => [],
                 ],
