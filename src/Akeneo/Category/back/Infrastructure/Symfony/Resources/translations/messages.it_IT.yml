@@ -11,3 +11,4 @@ pim_enrich:
       history: Visualizza lo storico della categoria
       template: Gestisci modello categoria
       edit_attributes: Modifica attributi categoria
+      order_trees: Ordina/riordina le categorie
