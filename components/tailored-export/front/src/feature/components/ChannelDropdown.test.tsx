@@ -1,67 +1,11 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import {Channel, renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
+import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import userEvent from '@testing-library/user-event';
 import {ChannelDropdown} from './ChannelDropdown';
+import {channels} from 'feature/tests';
 
-const channels: Channel[] = [
-  {
-    code: 'ecommerce',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'fr_FR',
-        label: 'fr_FR',
-        region: 'FR',
-        language: 'fr',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-  {
-    code: 'print',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'fr_FR',
-        label: 'fr_FR',
-        region: 'FR',
-        language: 'fr',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-];
-
-test('it display channel dropdown', () => {
+test('it displays channel dropdown', () => {
   renderWithProviders(
     <ChannelDropdown value="ecommerce" channels={channels} validationErrors={[]} onChange={jest.fn()} />
   );
