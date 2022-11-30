@@ -24,4 +24,10 @@ final class MonthSpec extends ObjectBehavior
         $this->shouldImplement(Period::class);
         $this->toString()->shouldReturn('2022-09');
     }
+
+    public function it_can_be_created_from_a_string()
+    {
+        $this->beConstructedThrough('fromString', ['2022-09']);
+        $this->toString()->shouldReturn('2022-09');
+    }
 }

@@ -24,34 +24,34 @@ final class AverageTimeToEnrichSpec extends ObjectBehavior
 {
     public function it_normalizes_average_tte_from_family(): void
     {
-        $timeToEnrichValue = TimeToEnrichValue::fromValue(2.1);
+        $timeToEnrichValue = TimeToEnrichValue::fromHours(50.4);
         $this->beConstructedThrough('fromFamilyAndTimeToEnrichValue', [FamilyCode::fromString('shoes'), $timeToEnrichValue]);
         $this->normalize()->shouldReturn([
             'code' => 'shoes',
-            'value' => 2.1,
+            'value' => 2.10,
         ]);
     }
 
     public function it_normalizes_average_tte_from_category(): void
     {
-        $timeToEnrichValue = TimeToEnrichValue::fromValue(2.1);
+        $timeToEnrichValue = TimeToEnrichValue::fromHours(50.4);
         $this->beConstructedThrough('fromCategoryAndTimeToEnrichValue', [CategoryCode::fromString('webcam'), $timeToEnrichValue]);
         $this->normalize()->shouldReturn([
             'code' => 'webcam',
-            'value' => 2.1,
+            'value' => 2.10,
         ]);
     }
 
     public function it_normalizes_average_tte_from_period(): void
     {
         $period = Week::fromDate(new \DateTimeImmutable('2022-09-10'));
-        $timeToEnrichValue = TimeToEnrichValue::fromValue(2.1);
+        $timeToEnrichValue = TimeToEnrichValue::fromHours(50.4);
         $this->beConstructedThrough('fromPeriodAndTimeToEnrichValue', [$period, $timeToEnrichValue]);
         $this->shouldHaveType(AverageTimeToEnrich::class);
 
         $this->normalize()->shouldReturn([
             'code' => '2022-W36',
-            'value' => 2.1,
+            'value' => 2.10,
         ]);
     }
 }

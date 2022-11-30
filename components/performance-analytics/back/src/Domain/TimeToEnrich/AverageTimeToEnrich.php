@@ -47,7 +47,7 @@ final class AverageTimeToEnrich
     {
         return [
             'code' => $this->aggregationCode,
-            'value' => $this->timeToEnrichValue->value(),
+            'value' => $this->timeToEnrichValue->inDays(),
         ];
     }
 

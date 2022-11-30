@@ -23,20 +23,12 @@ final class GetHistoricalTimeToEnrichHandler
     {
     }
 
-    public function __invoke(GetHistoricalTimeToEnrich $getHistoricalTimeToEnrich): AverageTimeToEnrichCollection
+    public function __invoke(GetHistoricalTimeToEnrich $query): AverageTimeToEnrichCollection
     {
-        if ($getHistoricalTimeToEnrich->startDate() > $getHistoricalTimeToEnrich->endDate()) {
+        if ($query->averageTimeToEnrichQuery()->startDate() > $query->averageTimeToEnrichQuery()->endDate()) {
             throw new InvalidQueryException('Start date can not be superior to end date.');
         }
 
-        return $this->averageTimeToEnrichRepository->search(
-            $getHistoricalTimeToEnrich->startDate(),
-            $getHistoricalTimeToEnrich->endDate(),
-            $getHistoricalTimeToEnrich->aggregationPeriodType(),
-            $getHistoricalTimeToEnrich->channelCodesFilter(),
-            $getHistoricalTimeToEnrich->localeCodesFilter(),
-            $getHistoricalTimeToEnrich->familyCodesFilter(),
-            $getHistoricalTimeToEnrich->categoryCodesFilter()
-        );
+        return $this->averageTimeToEnrichRepository->search($query->averageTimeToEnrichQuery());
     }
 }

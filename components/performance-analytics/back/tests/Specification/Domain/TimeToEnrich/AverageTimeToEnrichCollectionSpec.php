@@ -25,11 +25,11 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $timeToEnrich1 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-01-01')),
-            TimeToEnrichValue::fromValue(1)
+            TimeToEnrichValue::fromHours(24)
         );
         $timeToEnrich2 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-02-01')),
-            TimeToEnrichValue::fromValue(3)
+            TimeToEnrichValue::fromHours(72)
         );
 
         $this->beConstructedThrough('fromList', [[$timeToEnrich1, $timeToEnrich2]]);
@@ -44,7 +44,7 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $timeToEnrich1 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-01-01')),
-            TimeToEnrichValue::fromValue(1)
+            TimeToEnrichValue::fromHours(24)
         );
         $timeToEnrich2 = new \stdClass();
 
@@ -70,11 +70,11 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $timeToEnrich1 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-01-01')),
-            TimeToEnrichValue::fromValue(1)
+            TimeToEnrichValue::fromHours(24)
         );
         $timeToEnrich2 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-02-01')),
-            TimeToEnrichValue::fromValue(3)
+            TimeToEnrichValue::fromHours(72)
         );
 
         $this->beConstructedThrough('fromList', [new \ArrayIterator([$timeToEnrich1, $timeToEnrich2])]);
@@ -94,11 +94,11 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $timeToEnrich1 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-01-01')),
-            TimeToEnrichValue::fromValue(1)
+            TimeToEnrichValue::fromHours(24)
         );
         $timeToEnrich2 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-02-01')),
-            TimeToEnrichValue::fromValue(3)
+            TimeToEnrichValue::fromHours(72)
         );
 
         $this->beConstructedThrough('fromList', [yield from [$timeToEnrich1, $timeToEnrich2]]);

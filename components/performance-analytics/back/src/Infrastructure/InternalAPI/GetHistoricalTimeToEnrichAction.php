@@ -21,6 +21,7 @@ use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
 use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\PerformanceAnalytics\Domain\PeriodType;
+use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,7 +105,7 @@ final class GetHistoricalTimeToEnrichAction
             }
         }
 
-        return new GetHistoricalTimeToEnrich(
+        return new GetHistoricalTimeToEnrich(new AverageTimeToEnrichQuery(
             $startDate,
             $endDate,
             $periodType,
@@ -116,6 +117,6 @@ final class GetHistoricalTimeToEnrichAction
             $filters['families'] ?? null,
             /* @phpstan-ignore-next-line */
             $filters['categories'] ?? null
-        );
+        ));
     }
 }

@@ -13,91 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Application\Query;
 
-use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
-use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
-use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
-use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
-use Akeneo\PerformanceAnalytics\Domain\PeriodType;
-use Webmozart\Assert\Assert;
+use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichQuery;
 
 final class GetHistoricalTimeToEnrich
 {
-    /**
-     * @param ChannelCode[]|null $channelCodesFilter
-     * @param LocaleCode[]|null $localeCodesFilter
-     * @param FamilyCode[]|null $familyCodesFilter
-     * @param CategoryCode[]|null $categoryCodesFilter
-     */
     public function __construct(
-        private \DateTimeImmutable $startDate,
-        private \DateTimeImmutable $endDate,
-        private PeriodType $aggregationPeriodType,
-        private ?array $channelCodesFilter = null,
-        private ?array $localeCodesFilter = null,
-        private ?array $familyCodesFilter = null,
-        private ?array $categoryCodesFilter = null
+        private readonly AverageTimeToEnrichQuery $query
     ) {
-        if ($this->channelCodesFilter) {
-            Assert::allIsInstanceOf($this->channelCodesFilter, ChannelCode::class);
-        }
-
-        if ($this->localeCodesFilter) {
-            Assert::allIsInstanceOf($this->localeCodesFilter, LocaleCode::class);
-        }
-
-        if ($this->familyCodesFilter) {
-            Assert::allIsInstanceOf($this->familyCodesFilter, FamilyCode::class);
-        }
-
-        if ($this->categoryCodesFilter) {
-            Assert::allIsInstanceOf($this->categoryCodesFilter, CategoryCode::class);
-        }
     }
 
-    public function startDate(): \DateTimeImmutable
+    public function averageTimeToEnrichQuery(): AverageTimeToEnrichQuery
     {
-        return $this->startDate;
-    }
-
-    public function endDate(): \DateTimeImmutable
-    {
-        return $this->endDate;
-    }
-
-    public function aggregationPeriodType(): PeriodType
-    {
-        return $this->aggregationPeriodType;
-    }
-
-    /**
-     * @return ChannelCode[]|null
-     */
-    public function channelCodesFilter(): ?array
-    {
-        return $this->channelCodesFilter;
-    }
-
-    /**
-     * @return LocaleCode[]|null
-     */
-    public function localeCodesFilter(): ?array
-    {
-        return $this->localeCodesFilter;
-    }
-
-    /**
-     * @return FamilyCode[]|null
-     */
-    public function familyCodesFilter(): ?array
-    {
-        return $this->familyCodesFilter;
-    }
-
-    /**
-     * @return CategoryCode[]|null
-     */
-    public function categoryCodesFilter(): ?array
-    {
-        return $this->categoryCodesFilter;
+        return $this->query;
     }
 }
