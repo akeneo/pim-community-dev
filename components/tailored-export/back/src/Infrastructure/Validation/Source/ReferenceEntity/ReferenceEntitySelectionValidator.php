@@ -42,7 +42,7 @@ class ReferenceEntitySelectionValidator extends ConstraintValidator
                     ),
                     'channel' => new Optional(new Type('string')),
                     'locale' => new Optional(new Type('string')),
-                    'attribute_code' => new Optional(new Type('string')),
+                    'attribute_identifier' => new Optional(new Type('string')),
                     'attribute_type' => new Optional(new Type('string')),
                 ],
             ],

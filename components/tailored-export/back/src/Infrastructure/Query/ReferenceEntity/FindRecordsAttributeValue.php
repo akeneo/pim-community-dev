@@ -29,14 +29,14 @@ class FindRecordsAttributeValue implements FindRecordsAttributeValueInterface
     public function find(
         string $referenceEntityCode,
         array $recordCodes,
-        string $referenceEntityAttributeCode,
+        string $referenceEntityAttributeIdentifier,
         ?string $channel = null,
         ?string $locale = null,
     ): array {
         return $this->findRecordsAttributeValue->find(
             $referenceEntityCode,
             $recordCodes,
-            $referenceEntityAttributeCode,
+            $referenceEntityAttributeIdentifier,
             $channel,
             $locale,
         );

@@ -36,7 +36,7 @@ class ReferenceEntityTextAttributeSelectionApplier implements SelectionApplierIn
         $recordValues = $this->findRecordsAttributeValue->find(
             $selection->getReferenceEntityCode(),
             [$value->getRecordCode()],
-            $selection->getReferenceEntityAttributeCode(),
+            $selection->getReferenceEntityAttributeIdentifier(),
             $selection->getChannel(),
             $selection->getLocale(),
         );

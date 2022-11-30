@@ -14,12 +14,12 @@ final class InMemoryFindRecordsAttributeValue implements FindRecordsAttributeVal
     public function addAttributeValue(
         string $referenceEntityCode,
         string $recordCode,
-        string $referenceEntityAttributeCode,
+        string $referenceEntityAttributeIdentifier,
         string $value,
         ?string $channel = null,
         ?string $locale = null,
     ): void {
-        $this->rawValues[$referenceEntityCode][$recordCode][$referenceEntityAttributeCode][$channel ?? self::NULL_VALUE][$locale ?? self::NULL_VALUE] = $value;
+        $this->rawValues[$referenceEntityCode][$recordCode][$referenceEntityAttributeIdentifier][$channel ?? self::NULL_VALUE][$locale ?? self::NULL_VALUE] = $value;
     }
 
     /**
@@ -28,13 +28,13 @@ final class InMemoryFindRecordsAttributeValue implements FindRecordsAttributeVal
     public function find(
         string $referenceEntityCode,
         array $recordCodes,
-        string $referenceEntityAttributeCode,
+        string $referenceEntityAttributeIdentifier,
         ?string $channel = null,
         ?string $locale = null,
     ): array {
         $results = [];
         foreach ($recordCodes as $recordCode) {
-            $value = $this->rawValues[$referenceEntityCode][$recordCode][$referenceEntityAttributeCode][$channel ?? self::NULL_VALUE][$locale ?? self::NULL_VALUE] ?? null;
+            $value = $this->rawValues[$referenceEntityCode][$recordCode][$referenceEntityAttributeIdentifier][$channel ?? self::NULL_VALUE][$locale ?? self::NULL_VALUE] ?? null;
 
             if (null !== $value) {
                 $results[$recordCode] = $value;

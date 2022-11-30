@@ -30,7 +30,7 @@ class FindRecordsAttributeValue implements FindRecordsAttributeValueInterface
     public function find(
         string $referenceEntityCode,
         array $recordCodes,
-        string $referenceEntityAttributeCode,
+        string $referenceEntityAttributeIdentifier,
         ?string $channel = null,
         ?string $locale = null,
     ): array {
@@ -45,7 +45,7 @@ class FindRecordsAttributeValue implements FindRecordsAttributeValueInterface
         foreach ($recordsDetails as $recordDetails) {
             $attributeValue = current(array_filter(
                 $recordDetails->values,
-                static fn (array $value) => $value['attribute']['code'] === $referenceEntityAttributeCode
+                static fn (array $value) => $value['attribute']['identifier'] === $referenceEntityAttributeIdentifier
                     && $value['channel'] === $channel
                     && $value['locale'] === $locale,
             ));

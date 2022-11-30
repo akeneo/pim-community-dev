@@ -243,7 +243,7 @@ class SelectionHydrator
         return match ($selectionConfiguration['attribute_type']) {
             ReferenceEntityTextAttributeSelection::TYPE => new ReferenceEntityTextAttributeSelection(
                 $referenceEntityCode,
-                $selectionConfiguration['attribute_code'],
+                $selectionConfiguration['attribute_identifier'],
                 $selectionConfiguration['channel'],
                 $selectionConfiguration['locale'],
             ),

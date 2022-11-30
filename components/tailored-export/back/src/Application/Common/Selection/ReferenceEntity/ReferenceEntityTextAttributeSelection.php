@@ -19,7 +19,7 @@ final class ReferenceEntityTextAttributeSelection implements ReferenceEntityAttr
 
     public function __construct(
         private string $referenceEntityCode,
-        private string $referenceEntityAttributeCode,
+        private string $referenceEntityAttributeIdentifier,
         private ?string $channel,
         private ?string $locale,
     ) {
@@ -40,8 +40,8 @@ final class ReferenceEntityTextAttributeSelection implements ReferenceEntityAttr
         return $this->referenceEntityCode;
     }
 
-    public function getReferenceEntityAttributeCode(): string
+    public function getReferenceEntityAttributeIdentifier(): string
     {
-        return $this->referenceEntityAttributeCode;
+        return $this->referenceEntityAttributeIdentifier;
     }
 }

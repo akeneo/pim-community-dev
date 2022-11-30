@@ -81,7 +81,7 @@ class ReferenceEntitySourceValidatorTest extends AbstractValidationTest
                     'locale' => null,
                     'selection' => [
                         'type' => 'attribute',
-                        'attribute_code' => 'description',
+                        'attribute_identifier' => 'description_1234',
                         'attribute_type' => 'text',
                         'channel' => 'ecommerce',
                         'locale' => 'en_US',
@@ -98,7 +98,7 @@ class ReferenceEntitySourceValidatorTest extends AbstractValidationTest
                     'locale' => null,
                     'selection' => [
                         'type' => 'attribute',
-                        'attribute_code' => 'name',
+                        'attribute_identifier' => 'name_1234',
                         'attribute_type' => 'text',
                         'channel' => null,
                         'locale' => null,
