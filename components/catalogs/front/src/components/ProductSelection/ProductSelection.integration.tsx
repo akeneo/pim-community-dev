@@ -8,6 +8,7 @@ import {generateRandomId} from './utils/generateRandomId';
 import {mocked} from 'ts-jest/utils';
 import {StatusCriterionState} from './criteria/StatusCriterion';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import {ProductSelectionErrors} from './models/ProductSelectionErrors';
 
 jest.mock('./utils/generateRandomId');
 
@@ -46,6 +47,48 @@ test('it renders a list of criteria', async () => {
     );
 
     expect(await screen.findAllByText('akeneo_catalogs.product_selection.criteria.status.label')).toHaveLength(2);
+});
+
+test('it renders a list of criteria with validation errors', async () => {
+    const criteria = {
+        qxgJvh: {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
+        } as StatusCriterionState,
+        w9WgXc: {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: false,
+        } as StatusCriterionState,
+    };
+
+    const errors: ProductSelectionErrors = {
+        qxgJvh: {
+            field: undefined,
+            operator: undefined,
+            value: undefined,
+            locale: undefined,
+            scope: undefined,
+        },
+        w9WgXc: {
+            field: undefined,
+            operator: undefined,
+            value: 'Some random error message',
+            locale: undefined,
+            scope: undefined,
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductSelection criteria={criteria} onChange={jest.fn()} errors={errors} />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(await screen.findByText('Some random error message')).toBeInTheDocument();
 });
 
 test('it updates the state when a criterion is added', async () => {
