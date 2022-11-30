@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Audit\UpdateAuditData;
+use Doctrine\DBAL\Exception\ConnectionException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,16 +18,30 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class UpdateAuditDataCommand extends Command
 {
+    private const MYSQL_IS_UNAVAILABLE_ERROR_CODE = 2002;
+
     protected static $defaultName = 'akeneo:connectivity-audit:update-data';
 
-    public function __construct(private UpdateAuditData $updateAuditData)
-    {
+    public function __construct(
+        private UpdateAuditData $updateAuditData,
+        private LoggerInterface $logger,
+    ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->updateAuditData->execute();
+        try {
+            $this->updateAuditData->execute();
+        } catch (ConnectionException $exception) {
+            if ($exception->getPrevious()?->getCode() === self::MYSQL_IS_UNAVAILABLE_ERROR_CODE) {
+                $this->logger->warning('Mysql is unavailable', ['exception' => $exception]);
+
+                return Command::FAILURE;
+            }
+
+            throw $exception;
+        }
 
         return Command::SUCCESS;
     }
