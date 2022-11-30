@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlUpdateIdentifierPrefixesQuery;
+use Akeneo\Pim\Automation\IdentifierGenerator\API\Query\UpdateIdentifierPrefixesQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -25,7 +25,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         private EntityManagerInterface $objectManager,
         private EventDispatcherInterface $eventDispatcher,
         private ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
-        private SqlUpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        private UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
     ) {
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\API\Query\UpdateIdentifierPrefixesQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -12,7 +13,11 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Webmozart\Assert\Assert;
 
-final class SqlUpdateIdentifierPrefixesQuery
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixesQuery
 {
     public function __construct(
         private AttributeRepositoryInterface $attributeRepository,
@@ -28,7 +33,7 @@ final class SqlUpdateIdentifierPrefixesQuery
         $onlyProducts = array_filter(
             $products,
             // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-            fn (ProductInterface $product): bool => get_class($product) ===
+            fn (ProductInterface $product): bool => get_class($product) !==
                 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
         );
         if (\count($onlyProducts) > 0) {
