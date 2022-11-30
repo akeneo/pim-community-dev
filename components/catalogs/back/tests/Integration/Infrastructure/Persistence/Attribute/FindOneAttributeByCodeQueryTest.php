@@ -41,6 +41,8 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_text',
             'scopable' => false,
             'localizable' => false,
+            'attribute_group_code' => 'other',
+            'attribute_group_label' => '[other]',
         ], $result);
     }
 
@@ -61,6 +63,8 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_metric',
             'scopable' => false,
             'localizable' => false,
+            'attribute_group_code' => 'other',
+            'attribute_group_label' => '[other]',
             'measurement_family' => 'Weight',
             'default_measurement_unit' => 'KILOGRAM',
         ], $result);
