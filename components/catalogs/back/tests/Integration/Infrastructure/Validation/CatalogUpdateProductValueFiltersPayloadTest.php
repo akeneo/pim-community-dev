@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CatalogUpdateProductValueFiltersPayloadTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
+    private ?CommandBus $commandBus;
 
     protected function setUp(): void
     {

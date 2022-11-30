@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -13,6 +14,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-type ProductMappingSchema array{
+ *      properties: array<string, array{type: string}>
+ * }
+ * @phpstan-import-type ProductMapping from Catalog
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
@@ -36,12 +42,14 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ProductMappingRespectsSchema::class);
         }
 
-        if (!\is_array($value) || (!empty($array) && \array_is_list($value))) {
+        if (!\is_array($value) || (!empty($value) && \array_is_list($value))) {
             return;
         }
 
+        /** @var ProductMappingSchema $schema */
         $schema = \json_decode($this->fetchProductMappingSchema($constraint->productMappingSchemaFile), true, 512, JSON_THROW_ON_ERROR);
 
+        /** @var ProductMapping $value */
         if (!$this->validateTargetsList($value, $schema)) {
             return;
         }
@@ -62,6 +70,10 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         return $productMappingSchema;
     }
 
+    /**
+     * @param ProductMapping $value
+     * @param ProductMappingSchema $schema
+     */
     private function validateTargetsList(array $value, array $schema): bool
     {
         $missingTargets = \array_diff_key($schema['properties'], $value);
@@ -85,6 +97,10 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         return true;
     }
 
+    /**
+     * @param ProductMapping $value
+     * @param ProductMappingSchema $schema
+     */
     private function validateTargetsTypes(array $value, array $schema): void
     {
         foreach ($value as $targetCode => $sourceAssociation) {
