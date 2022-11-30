@@ -15,7 +15,7 @@ final class Version_7_0_20221129093347_add_cascade_on_prefixes extends AbstractM
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Adds DELETE CASCADE on pim_catalog_identifier_generator_prefixes foreign keys';
     }
 
     public function up(Schema $schema): void
