@@ -207,7 +207,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        if (null === $data['amount'] || !is_numeric($data['amount'])) {
+        if (!is_numeric($data['amount'])) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->getCode(),
                 sprintf('key "amount" has to be a numeric, "%s" given', gettype($data['amount'])),
