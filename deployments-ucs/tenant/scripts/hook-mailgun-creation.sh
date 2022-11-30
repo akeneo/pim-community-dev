@@ -20,6 +20,14 @@ fi
 
 RESULT_FILE=/tmp/curl_mailgun_creation_response.txt
 
+alreadyExists=$(curl -s https://api.mailgun.net/v3/domains/${MAILGUN_DOMAIN}/credentials --user "api:${MAILGUN_API_KEY}" \
+  --retry 5 --retry-delay 5 --retry-max-time 40 | jq -r --arg MAILGUN_LOGIN ${MAILGUN_LOGIN} \
+  '[.items[].login] | any(index($MAILGUN_LOGIN))')
+
+if [[ "${alreadyExists}" == "true" ]]; then
+  exit 0
+fi
+
 http_response=$(curl -s https://api.mailgun.net/v3/domains/${MAILGUN_DOMAIN}/credentials \
         -o ${RESULT_FILE} \
         -w "%{http_code}" \

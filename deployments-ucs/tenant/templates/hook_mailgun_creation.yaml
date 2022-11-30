@@ -23,7 +23,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: mailgun-creation
-          image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
+          image: {{ .Values.image.curljqzip.repository }}:{{ .Values.image.curljqzip.tag }}
           imagePullPolicy: {{ .Values.image.curl.pullPolicy | quote }}
           command: ["sh", "/scripts-dir/hook-mailgun-creation.sh"]
           env:
