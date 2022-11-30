@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSchema;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMappingSchema;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -12,10 +12,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductSchema
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductSchemaValidator
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMappingSchema
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMappingSchemaValidator
  */
-class ProductSchemaValidatorTest extends IntegrationTestCase
+class ProductMappingSchemaValidatorTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
 
@@ -33,7 +33,7 @@ class ProductSchemaValidatorTest extends IntegrationTestCase
     {
         $violations = $this->validator->validate(
             \json_decode($schema, false, 512, JSON_THROW_ON_ERROR),
-            new ProductSchema()
+            new ProductMappingSchema()
         );
 
         $this->assertEmpty($violations);
@@ -46,7 +46,7 @@ class ProductSchemaValidatorTest extends IntegrationTestCase
     {
         $violations = $this->validator->validate(
             \json_decode($schema, false, 512, JSON_THROW_ON_ERROR),
-            new ProductSchema()
+            new ProductMappingSchema()
         );
 
         $this->assertCount(1, $violations);

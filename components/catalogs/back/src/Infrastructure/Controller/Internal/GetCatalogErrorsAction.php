@@ -48,7 +48,9 @@ final class GetCatalogErrorsAction
         ];
 
         $violations = $this->validator->validate($catalogNormalized, [
-            new CatalogUpdatePayload(),
+            new CatalogUpdatePayload(
+                productMappingSchemaFile: \sprintf('%s_product.json', $catalog->getId())
+            ),
         ]);
 
         $normalizedViolations = $violations->count() > 0 ? $this->normalizer->normalize($violations) : [];

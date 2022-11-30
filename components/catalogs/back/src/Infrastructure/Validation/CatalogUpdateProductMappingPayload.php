@@ -12,14 +12,14 @@ use Symfony\Component\Validator\Constraint;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class CatalogUpdatePayload extends Constraint
+final class CatalogUpdateProductMappingPayload extends Constraint
 {
-    public ?string $productMappingSchemaFile;
+    public string $productMappingSchemaFile;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(?string $productMappingSchemaFile = null, $options = null, array $groups = null, $payload = null)
+    public function __construct(string $productMappingSchemaFile, $options = null, array $groups = null, $payload = null)
     {
         parent::__construct($options, $groups, $payload);
 

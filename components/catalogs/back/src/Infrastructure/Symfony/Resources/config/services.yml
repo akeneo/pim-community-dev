@@ -17,6 +17,7 @@ services:
             - '../../../../Domain/'
             - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
+            - '../../../../Infrastructure/Validation'
 
     Akeneo\Catalogs\Application\Handler\:
         resource: '../../../../Application/Handler/'
@@ -64,6 +65,13 @@ services:
             - '@Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
 
+    # Validation
+    Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface: ~
+
+    Akeneo\Catalogs\Infrastructure\Validation\:
+        resource: '../../../Validation/**/*Validator.php'
+
+    # Persistence
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\IsCatalogsNumberLimitReachedQuery:
         arguments:
             $limit: '%akeneo_catalog.max_number_of_catalogs_per_user%'
@@ -148,6 +156,7 @@ services:
         arguments:
             - '@pim_catalog.repository.currency'
 
+    # Storage
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'

@@ -54,7 +54,9 @@ final class UpdateCatalogAction
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $violations = $this->validator->validate($payload, [
-            new CatalogUpdatePayload(),
+            new CatalogUpdatePayload(
+                productMappingSchemaFile: \sprintf('%s_product.json', $catalog->getId())
+            ),
         ]);
 
         if ($violations->count() > 0) {

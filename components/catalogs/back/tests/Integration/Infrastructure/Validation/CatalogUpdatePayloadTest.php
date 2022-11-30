@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -12,25 +15,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayloadValidator
  */
 class CatalogUpdatePayloadTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
+    private ?CommandBus $commandBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
+        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
-        $this->purgeData();
+        $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItValidates(): void
+    public function testItValidatesWithoutMapping(): void
     {
-        $this->purgeDataAndLoadMinimalCatalog();
-
         $violations = $this->validator->validate([
             'enabled' => false,
             'product_selection_criteria' => [
@@ -38,23 +41,6 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'field' => 'enabled',
                     'operator' => '=',
                     'value' => true,
-                ],
-                [
-                    'field' => 'completeness',
-                    'operator' => '>',
-                    'value' => 80,
-                    'scope' => 'ecommerce',
-                    'locale' => 'en_US',
-                ],
-                [
-                    'field' => 'categories',
-                    'operator' => 'IN',
-                    'value' => ['master'],
-                ],
-                [
-                    'field' => 'categories',
-                    'operator' => 'UNCLASSIFIED',
-                    'value' => [],
                 ],
             ],
             'product_value_filters' => [
@@ -62,179 +48,70 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                 'locales' => ['en_US'],
                 'currencies' => ['EUR', 'USD'],
             ],
+            'product_mapping' => [],
+        ], new CatalogUpdatePayload());
+
+        $this->assertEmpty($violations);
+    }
+
+    public function testItValidatesWithMapping(): void
+    {
+        $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
+        $this->commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            'admin',
+        ));
+        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
+        ));
+
+        $violations = $this->validator->validate([
+            'enabled' => false,
+            'product_selection_criteria' => [
+                [
+                    'field' => 'enabled',
+                    'operator' => '=',
+                    'value' => true,
+                ],
+            ],
+            'product_value_filters' => [],
             'product_mapping' => [
-                'Product uuid' => [
+                'uuid' => [
                     'source' => 'uuid',
                     'scope' => null,
                     'locale' => null,
                 ],
             ],
-        ], new CatalogUpdatePayload());
+        ], new CatalogUpdatePayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
 
         $this->assertEmpty($violations);
     }
 
     public function testItReturnsViolationsWithMissingValues(): void
     {
-        $violations = $this->validator->validate([], new CatalogUpdatePayload());
+        $violations = $this->validator->validate([], new CatalogUpdatePayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
 
         $this->assertViolationsListContains($violations, 'This field is missing.');
     }
 
-    public function testItReturnsViolationsWhenProductSelectionCriteriaIsAssociativeArray(): void
+    private function getValidSchemaData(): string
     {
-        $violations = $this->validator->validate([
-            'enabled' => true,
-            'product_selection_criteria' => [
-                'foo' => [
-                    'field' => 'enabled',
-                    'operator' => '=',
-                    'value' => true,
-                ],
-                [
-                    'field' => 'family',
-                    'operator' => 'EMPTY',
-                    'value' => [],
-                ],
-                [
-                    'field' => 'completeness',
-                    'operator' => '>',
-                    'value' => 80,
-                    'scope' => 'ecommerce',
-                    'locale' => 'en_US',
-                ]
-            ],
-            'product_value_filters' => [],
-            'product_mapping' => [],
-        ], new CatalogUpdatePayload());
-
-        $this->assertViolationsListContains($violations, 'Invalid array structure.');
-    }
-
-    /**
-     * @dataProvider invalidFieldDataProvider
-     */
-    public function testItReturnsViolationsWhenProductSelectionCriterionIsInvalid(
-        array $criterion,
-        string $expectedMessage
-    ): void {
-        $violations = $this->validator->validate([
-            'enabled' => false,
-            'product_selection_criteria' => [$criterion],
-            'product_value_filters' => [],
-            'product_mapping' => [],
-        ], new CatalogUpdatePayload());
-
-        $this->assertViolationsListContains($violations, $expectedMessage);
-    }
-
-    public function invalidFieldDataProvider(): array
-    {
-        return [
-            'invalid field value' => [
-                'criterion' => [
-                    'field' => 'some_random_field',
-                    'operator' => '<=',
-                    'value' => false,
-                ],
-                'expectedMessage' => 'Invalid field value',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidProductValueFiltersProvider
-     */
-    public function testItReturnsViolationsWhenProductValueFiltersAreInvalid(
-        array $filters,
-        string $expectedMessage
-    ): void {
-        $violations = $this->validator->validate([
-            'enabled' => false,
-            'product_selection_criteria' => [],
-            'product_value_filters' => $filters,
-            'product_mapping' => [],
-        ], new CatalogUpdatePayload());
-
-        $this->assertViolationsListContains($violations, $expectedMessage);
-    }
-
-    public function invalidProductValueFiltersProvider(): array
-    {
-        return [
-            'channel is not a valid array' => [
-                'filters' => ['channels' => 'ecommerce'],
-                'expectedMessage' => 'This value should be of type array.',
-            ],
-            'channel does not exist' => [
-                'filters' => ['channels' => ['removed_channel']],
-                'expectedMessage' => 'The channel "removed_channel" has been deactivated. Please check your channel settings or remove this filter.',
-            ],
-            'locale is not a valid array' => [
-                'filters' => ['locales' => 'en_US'],
-                'expectedMessage' => 'This value should be of type array.',
-            ],
-            'locale is not activated' => [
-                'filters' => ['locales' => ['removed_locale']],
-                'expectedMessage' => 'The locale "removed_locale" has been deactivated. Please check your locale settings or remove this filter.',
-            ],
-            'currency is not a valid array' => [
-                'filters' => ['currencies' => 'USD'],
-                'expectedMessage' => 'This value should be of type array.',
-            ],
-            'currency is not activated' => [
-                'filters' => ['currencies' => ['AUD']],
-                'expectedMessage' => 'The currency "AUD" has been deactivated. Please check your currencies settings or remove this filter.',
-            ],
-        ];
-    }
-
-    public function testItReturnsViolationsWhenProductMappingIsNotAssociativeArray(): void
-    {
-        $violations = $this->validator->validate([
-            'enabled' => true,
-            'product_selection_criteria' => [],
-            'product_value_filters' => [],
-            'product_mapping' => [
-                [
-                    'source' => 'uuid',
-                    'scope' => null,
-                    'locale' => null,
-                ],
-            ],
-        ], new CatalogUpdatePayload());
-
-        $this->assertViolationsListContains($violations, 'Invalid array structure.');
-    }
-
-    /**
-     * @dataProvider invalidSourceDataProvider
-     */
-    public function testItReturnsViolationsWhenProductMappingIsInvalid(
-        array $source,
-        string $expectedMessage
-    ): void {
-        $violations = $this->validator->validate([
-            'enabled' => false,
-            'product_selection_criteria' => [],
-            'product_value_filters' => [],
-            'product_mapping' => [$source],
-        ], new CatalogUpdatePayload());
-
-        $this->assertViolationsListContains($violations, $expectedMessage);
-    }
-
-    public function invalidSourceDataProvider(): array
-    {
-        return [
-            'invalid source value' => [
-                'source' => [
-                    'source' => 'unknown_attribute',
-                    'scope' => null,
-                    'locale' => null,
-                ],
-                'expectedMessage' => 'This attribute has been deleted.',
-            ],
-        ];
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            }
+          }
+        }
+        JSON_WRAP;
     }
 }
