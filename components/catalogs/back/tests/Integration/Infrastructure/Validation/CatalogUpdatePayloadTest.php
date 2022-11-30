@@ -81,42 +81,41 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
         $this->assertViolationsListContains($violations, 'This field is missing.');
     }
 
-    public function testItReturnsViolationsWithTooManyCriteria(): void
+    /**
+     * @dataProvider numberOfProductSelectionCriteriaDataProvider
+     */
+    public function testItValidatesTheNumberOfProductSelectionCriteria(int $number, bool $allowed): void
     {
-        $this->purgeDataAndLoadMinimalCatalog();
-
-        $criteria = [];
-        $numberOfCriteria = self::getContainer()->getParameter('akeneo_catalog.max_criteria_per_catalog') + 1;
-        for($i=0; $i < $numberOfCriteria; $i++) {
-            $criteria[] = [
+        $violations = $this->validator->validate([
+            'enabled' => true,
+            'product_selection_criteria' => \array_map(fn () => [
                 'field' => 'enabled',
-                'operator' => '!=',
+                'operator' => '=',
                 'value' => true,
-            ];
+            ], \range(1, $number)),
+            'product_value_filters' => [],
+            'product_mapping' => [],
+        ], new CatalogUpdatePayload());
+
+        if ($allowed) {
+            $this->assertEmpty($violations);
+        } else {
+            $this->assertViolationsListContains($violations, 'Too many criteria.');
         }
-        $params = ['enabled' => false,
-            'product_selection_criteria' => $criteria,
-            'product_value_filters' => [
-                'channels' => ['ecommerce'],
-                'locales' => ['en_US'],
-                'currencies' => ['EUR', 'USD'],
+    }
+
+    public function numberOfProductSelectionCriteriaDataProvider(): array
+    {
+        return [
+            'valid with 25 product selection criteria' => [
+                'number' => 25,
+                'allowed' => true,
             ],
-            'product_mapping' => [
-                'Product uuid' => [
-                    'source' => 'uuid',
-                    'scope' => null,
-                    'locale' => null,
-                ],
+            'not valid with 26 product selection criteria' => [
+                'number' => 26,
+                'allowed' => false,
             ],
         ];
-
-        $violations = $this->validator->validate($params, new CatalogUpdatePayload());
-        $this->assertViolationsListContains($violations, 'Too many criteria.');
-
-        \array_shift($params['product_selection_criteria']);
-        $violations = $this->validator->validate($params, new CatalogUpdatePayload());
-        $this->assertEmpty($violations);
-
     }
 
     public function testItReturnsViolationsWhenProductSelectionCriteriaIsAssociativeArray(): void
