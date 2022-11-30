@@ -16,8 +16,7 @@ abstract class ApiCategoryTestCase extends ApiTestCase
 {
     protected function enableEnrichedCategoryFeature(): void
     {
-        $featureFlags = $this->get('feature_flags');
-        $featureFlags->enable('enriched_category');
+        $this->get('feature_flags')->enable('enriched_category');
     }
 
     protected function updateCategoryWithValues(string $code): void
