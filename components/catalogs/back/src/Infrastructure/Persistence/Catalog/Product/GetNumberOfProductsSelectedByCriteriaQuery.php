@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Exception\InvalidProductSelectionCriteriaException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetNumberOfProductsSelectedByCriteriaQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 
 /**
@@ -26,7 +27,7 @@ class GetNumberOfProductsSelectedByCriteriaQuery implements GetNumberOfProductsS
     public function execute(array $productSelectionCriteria): int
     {
         $pqbOptions = [
-            'filters' => GetPQBFilters::fromProductSelectionCriteria($productSelectionCriteria),
+            'filters' => FormatProductSelectionCriteria::toPQBFilters($productSelectionCriteria),
             'limit' => 0,
         ];
 
