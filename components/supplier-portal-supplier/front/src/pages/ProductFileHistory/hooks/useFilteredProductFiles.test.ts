@@ -31,7 +31,7 @@ test('it returns all product files by default', () => {
     expect(result.current).toStrictEqual(productFiles);
 });
 
-test('we can search product files by name', async () => {
+test('it filters product files by name', async () => {
     const {result} = renderHookWithProviders(() => useFilteredProductFiles(productFiles, 'shoe'));
     expect(result.current).toStrictEqual([
         {

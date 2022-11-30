@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, screen} from '@testing-library/react';
+import {fireEvent, screen, waitFor} from '@testing-library/react';
 import {renderWithProviders} from '../../../tests';
 import {ProductFileList} from './ProductFileList';
 import {ProductFile} from '../model/ProductFile';
@@ -73,12 +73,25 @@ test('it refreshes the comment panel content when clicking on another product fi
     expect(screen.getAllByText('07/28/2022, 02:58 PM')).toHaveLength(2);
 });
 
-test('it displays the number of product files', () => {
+test('it displays the total number of product files as first renderer', () => {
     renderWithProviders(
         <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
     );
 
     expect(screen.getByText('2 results')).toBeInTheDocument();
+});
+
+test('it displays the number of product files depending on the search result', async () => {
+    renderWithProviders(
+        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+    );
+    const searchInput = screen.getByPlaceholderText('Search');
+
+    fireEvent.change(searchInput, {target: {value: 'file-2'}});
+
+    await waitFor(() => {
+        expect(screen.getByText('1 result')).toBeInTheDocument();
+    });
 });
 
 test('it displays the comment panel content when clicking on a product file row', () => {
