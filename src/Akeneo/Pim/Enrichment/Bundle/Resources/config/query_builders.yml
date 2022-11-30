@@ -17,6 +17,7 @@ parameters:
     pim_catalog.query.filter.attribute_dumper.class:              Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\AttributeFilterDumper
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver
 
+    pim_catalog.query.elasticsearch.filter.label_identifier_or_uuid.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\LabelIdentifierOrUuidFilter
     pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
     pim_catalog.query.elasticsearch.filter.identifier_field.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.id.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdFilter
@@ -273,7 +274,18 @@ services:
     pim_catalog.query.elasticsearch.filter.label_or_identifier:
         class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
         arguments:
-            - ['label_or_identifier']
+            - [ 'label_or_identifier' ]
+            - [ 'CONTAINS' ]
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.label_identifier_or_uuid:
+        class: '%pim_catalog.query.elasticsearch.filter.label_identifier_or_uuid.class%'
+        arguments:
+            - 'product_'
+            - ['label_identifier_or_uuid']
             - ['CONTAINS']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
