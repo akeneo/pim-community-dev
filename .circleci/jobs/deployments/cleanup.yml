@@ -103,6 +103,9 @@ jobs:
             PRODUCT_TYPE:
                 type: string
                 default: "srnt"
+            CLUSTER_NEXT:
+                type: boolean
+                default: false
         environment:
             <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
@@ -110,6 +113,11 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - when:
+                  condition:
+                      equal: [true, << parameters.CLUSTER_NEXT >> ]
+                  steps:
+                      - modify_cluster
             - set_gcloud_config_pim_saas_dev
             - restore_persisted_env_vars
             - restore_persisted_timmy_env_vars

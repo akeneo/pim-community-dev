@@ -497,7 +497,7 @@ functions.http('createTenant', (req, res) => {
       'ARGOCD_USERNAME',
       'GCP_FIRESTORE_PROJECT_ID',
       'GCP_PROJECT_ID',
-      'GOOGLE_ZONE',
+      'GOOGLE_ZONES',
       'LOG_LEVEL',
       'MAILER_API_KEY',
       'MAILER_DOMAIN',
@@ -558,6 +558,9 @@ functions.http('createTenant', (req, res) => {
         logger.debug(`mysqlUserPassword: ${mysqlUserPassword}`);
         const mysqlRootPassword = generatePassword()
         logger.debug(`mysqlRootPassword: ${mysqlRootPassword}`);
+        const zones = process.env.GOOGLE_ZONES.split(",");
+        const googleZone = zones[Math.floor(Math.random()*zones.length)]
+        logger.debug(`googleZone: ${googleZone}`);
 
         // Deep merge of the request json body and the computed json object
         const parameters = merge(body, {
@@ -576,7 +579,7 @@ functions.http('createTenant', (req, res) => {
           common: {
             gcpProjectID: process.env.GCP_PROJECT_ID,
             gcpFireStoreProjectID: process.env.GCP_FIRESTORE_PROJECT_ID,
-            googleZone: process.env.GOOGLE_ZONE,
+            googleZone: googleZone,
             fqdn: fqdn,
             dnsCloudDomain: dnsCloudDomain,
             workloadIdentityKSA: `${tenantName}-ksa-workload-identity`,
@@ -670,7 +673,7 @@ functions.http('createTenant', (req, res) => {
             common: {
               class: "ssd-retain-csi",
               persistentDisks: [
-                `projects/${process.env.GCP_PROJECT_ID}/zones/${process.env.GOOGLE_ZONE}/disks/${tenantId}-mysql`
+                `projects/${process.env.GCP_PROJECT_ID}/zones/${googleZone}/disks/${tenantId}-mysql`
               ]
             }
           },

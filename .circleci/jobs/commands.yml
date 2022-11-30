@@ -45,6 +45,7 @@ commands:
                       gcloud container clusters get-credentials ${CLUSTER_NAME} --project=${GOOGLE_PROJECT_ID} --region=${GOOGLE_CLUSTER_REGION}
                       echo ${GCLOUD_SERVICE_KEY_PIM_SAAS_DEV} > ${HOME}/gcloud-service-key.json
                       echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+                      echo 'export GOOGLE_IMPERSONATE_SERVICE_ACCOUNT="main-service-account@${GOOGLE_PROJECT_ID}.iam.gserviceaccount.com"' >> $BASH_ENV
                       export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
                       gcloud auth configure-docker ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev --quiet
 
@@ -87,9 +88,14 @@ commands:
                       GOOGLE_COMPUTE_ZONE=${GOOGLE_COMPUTE_ZONE_NEXT}
                       CLUSTER_NAME=${CLUSTER_NAME_NEXT}
                       GOOGLE_CLUSTER_ZONE=${CLUSTER_NAME_NEXT}
+                      GOOGLE_CLUSTER_REGION=${GOOGLE_CLUSTER_REGION_NEXT}
+                      GOOGLE_REGION_PREFIX=${GOOGLE_REGION_PREFIX_NEXT}
                       echo export GOOGLE_COMPUTE_ZONE=${GOOGLE_COMPUTE_ZONE} >> $BASH_ENV
                       echo export CLUSTER_NAME=${CLUSTER_NAME} >> $BASH_ENV
                       echo export GOOGLE_CLUSTER_ZONE=${GOOGLE_CLUSTER_ZONE} >> $BASH_ENV
+                      echo export GOOGLE_CLUSTER_REGION=${GOOGLE_CLUSTER_REGION} >> $BASH_ENV
+                      echo export GOOGLE_REGION_PREFIX=${GOOGLE_REGION_PREFIX} >> $BASH_ENV
+
 
     install_terrafrom:
         description: "Install Terraform "

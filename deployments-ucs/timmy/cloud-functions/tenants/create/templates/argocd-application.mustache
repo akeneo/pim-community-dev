@@ -133,6 +133,8 @@ spec:
           value: "{{{mysql.mysql.resources.requests.memory}}}"
         - name: mysql.mysql.resources.limits.memory
           value: "{{{mysql.mysql.resources.limits.memory}}}"
+        - name: mysql.mysql.nodeSelector.topology\.kubernetes\.io/zone
+          value: "{{{common.googleZone}}}"
         - name: mysql.common.persistentDisks.0
           value: "{{{mysql.common.persistentDisks.0}}}"
         - name: mysql.common.class

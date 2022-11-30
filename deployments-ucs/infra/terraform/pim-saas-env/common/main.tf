@@ -32,9 +32,9 @@ module "firestore" {
 module "secrets" {
   source     = "../../modules/secrets"
   project_id = var.project_id
-  secrets    = concat([
+  secrets = concat([
     {
-      name    = "MAILER_API_KEY"
+      name = "MAILER_API_KEY"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -43,7 +43,7 @@ module "secrets" {
       }
     },
     {
-      name    = "TIMMY_PORTAL"
+      name = "TIMMY_PORTAL"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -52,7 +52,7 @@ module "secrets" {
       }
     },
     {
-      name    = "TENANT_CONTEXT_ENCRYPTION_KEY"
+      name = "TENANT_CONTEXT_ENCRYPTION_KEY"
       members = [
         "serviceAccount:${module.iam.pim_sa_email}",
         "serviceAccount:${module.iam.portal_function_sa_email}"
@@ -61,19 +61,19 @@ module "secrets" {
         usage = "tenant-context-encryption-key"
       }
     }
-  ], flatten([
-  for region in var.regions : {
+    ], flatten([
+      for region in var.regions : {
 
-    name    = "${upper(replace(region, "-",  "_"))}_ARGOCD_PASSWORD"
-    members = [
-      "serviceAccount:${module.iam.portal_function_sa_email}"
-    ],
+        name = "${upper(replace(region, "-", "_"))}_ARGOCD_PASSWORD"
+        members = [
+          "serviceAccount:${module.iam.portal_function_sa_email}"
+        ],
 
-    labels = {
-      usage  = "argocd"
-      region = region
-    }
-  }
+        labels = {
+          usage  = "argocd"
+          region = region
+        }
+      }
   ]))
 }
 

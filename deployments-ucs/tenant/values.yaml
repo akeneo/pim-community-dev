@@ -111,6 +111,14 @@ elasticsearch:
       requests:
         cpu: "20m"
         memory: "1024Mi"
+    nodeSelector:
+      component: elasticsearch
+    antiAffinityKey: "topology.kubernetes.io/zone"
+    tolerations:
+      - key: "component"
+        operator: "Equal"
+        value: "elasticsearch"
+        effect: "NoExecute"
   master:
     replicas: 2
     persistence:
@@ -125,6 +133,14 @@ elasticsearch:
         memory: "768Mi"
     updateStrategy:
       type: RollingUpdate
+    nodeSelector:
+      component: elasticsearch
+    antiAffinityKey: "topology.kubernetes.io/zone"
+    tolerations:
+      - key: "component"
+        operator: "Equal"
+        value: "elasticsearch"
+        effect: "NoExecute"
   data:
     replicas: 2
     persistence:
@@ -142,6 +158,14 @@ elasticsearch:
     hooks:
       drain:
         enabled: false
+    nodeSelector:
+      component: elasticsearch
+    antiAffinityKey: "topology.kubernetes.io/zone"
+    tolerations:
+      - key: "component"
+        operator: "Equal"
+        value: "elasticsearch"
+        effect: "NoExecute"
   snapshots:
     retention: 15
     repository: pim_gcs_repository
@@ -210,6 +234,12 @@ mysql:
     nodeSelector:
       role: mysql-server
       component: mysql
+    antiAffinityKey: "topology.kubernetes.io/zone"
+    tolerations:
+      - key: "component"
+        operator: "Equal"
+        value: "mysql"
+        effect: "NoExecute"
     dataDiskPath: "/var/lib/mysql/"
     serviceName: pim-mysql
     defaultUser: akeneo_pim

@@ -52,9 +52,9 @@ module "firestore_us" {
 module "secrets" {
   source     = "../modules/secrets"
   project_id = local.project_id
-  secrets    = [
+  secrets = [
     {
-      name    = "EUROPE_WEST1_ARGOCD_PASSWORD"
+      name = "EUROPE_WEST1_ARGOCD_PASSWORD"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ],
@@ -65,7 +65,7 @@ module "secrets" {
       }
     },
     {
-      name    = "EUROPE_WEST3_ARGOCD_PASSWORD"
+      name = "EUROPE_WEST3_ARGOCD_PASSWORD"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ],
@@ -76,7 +76,7 @@ module "secrets" {
       }
     },
     {
-      name    = "MAILER_API_KEY"
+      name = "MAILER_API_KEY"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -85,7 +85,7 @@ module "secrets" {
       }
     },
     {
-      name    = "TIMMY_PORTAL"
+      name = "TIMMY_PORTAL"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -94,7 +94,7 @@ module "secrets" {
       }
     },
     {
-      name    = "TENANT_CONTEXT_ENCRYPTION_KEY"
+      name = "TENANT_CONTEXT_ENCRYPTION_KEY"
       members = [
         "serviceAccount:${module.iam.pim_sa_email}"
       ]
@@ -139,6 +139,14 @@ module "gke_europe_west1" {
       min_node_count    = 1
       max_node_count    = 60
       max_pods_per_node = 64
+    },
+    "elasticsearch" = {
+      name              = "elasticsearch"
+      preemptible       = false
+      machine_type      = "n1-standard-8"
+      min_node_count    = 1
+      max_node_count    = 60
+      max_pods_per_node = 64
     }
   }
 
@@ -149,18 +157,29 @@ module "gke_europe_west1" {
     "mysql" = {
       component = "mysql",
       role      = "mysql-server"
+    },
+    "elasticsearch" = {
+      component = "elasticsearch",
+      role      = "elasticsearch"
     }
   }
 
   node_pools_taints = {
     default = [],
-    mysql   = []
-  }
-
-  node_locations = {
-    mysql = {
-      "europe-west1" = ["europe-west1-b"]
-    }
+    mysql = [
+      {
+        key    = "component"
+        value  = "mysql"
+        effect = "NO_EXECUTE"
+      }
+    ],
+    elasticsearch = [
+      {
+        key    = "component"
+        value  = "elasticsearch"
+        effect = "NO_EXECUTE"
+      }
+    ]
   }
 }
 
@@ -193,6 +212,14 @@ module "gke_europe_west3" {
       min_node_count    = 1
       max_node_count    = 60
       max_pods_per_node = 64
+    },
+    "elasticsearch" = {
+      name              = "elasticsearch"
+      preemptible       = false
+      machine_type      = "n1-standard-8"
+      min_node_count    = 1
+      max_node_count    = 60
+      max_pods_per_node = 64
     }
   }
 
@@ -203,18 +230,29 @@ module "gke_europe_west3" {
     "mysql" = {
       component = "mysql",
       role      = "mysql-server"
+    },
+    "elasticsearch" = {
+      component = "elasticsearch",
+      role      = "elasticsearch"
     }
   }
 
   node_pools_taints = {
     default = [],
-    mysql   = []
-  }
-
-  node_locations = {
-    mysql = {
-      "europe-west3" = ["europe-west3-b"]
-    }
+    mysql = [
+      {
+        key    = "component"
+        value  = "mysql"
+        effect = "NO_EXECUTE"
+      }
+    ],
+    elasticsearch = [
+      {
+        key    = "component"
+        value  = "elasticsearch"
+        effect = "NO_EXECUTE"
+      }
+    ],
   }
 }
 
@@ -260,21 +298,21 @@ module "timmy_datadog" {
 }
 
 module "timmy_datadog_firestore_eur" {
-  source                             = "../modules/datadog"
-  project_id                         = "akecld-prd-pim-fire-eur-dev"
-  datadog_api_key                    = local.datadog_api_key
-  datadog_app_key                    = local.datadog_app_key
-  datadog_gcp_integration_id         = module.firestore_eur.datadog_gcp_integration_id
-  datadog_gcp_integration_email      = module.firestore_eur.datadog_gcp_integration_email
+  source                        = "../modules/datadog"
+  project_id                    = "akecld-prd-pim-fire-eur-dev"
+  datadog_api_key               = local.datadog_api_key
+  datadog_app_key               = local.datadog_app_key
+  datadog_gcp_integration_id    = module.firestore_eur.datadog_gcp_integration_id
+  datadog_gcp_integration_email = module.firestore_eur.datadog_gcp_integration_email
 }
 
 module "timmy_datadog_firestore_us" {
-  source                             = "../modules/datadog"
-  project_id                         = "akecld-prd-pim-fire-us-dev"
-  datadog_api_key                    = local.datadog_api_key
-  datadog_app_key                    = local.datadog_app_key
-  datadog_gcp_integration_id         = module.firestore_us.datadog_gcp_integration_id
-  datadog_gcp_integration_email      = module.firestore_us.datadog_gcp_integration_email
+  source                        = "../modules/datadog"
+  project_id                    = "akecld-prd-pim-fire-us-dev"
+  datadog_api_key               = local.datadog_api_key
+  datadog_app_key               = local.datadog_app_key
+  datadog_gcp_integration_id    = module.firestore_us.datadog_gcp_integration_id
+  datadog_gcp_integration_email = module.firestore_us.datadog_gcp_integration_email
 }
 
 provider "datadog" {

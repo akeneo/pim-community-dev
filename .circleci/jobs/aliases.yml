@@ -7,16 +7,24 @@ envVarsDeployDev: &envVarsDeployDev
   GOOGLE_PROJECT_ID: "akecld-saas-dev"
   GOOGLE_COMPUTE_ZONE: "europe-west3-a"
   CLUSTER_NAME: "europe-west3-a"
+  GOOGLE_CLUSTER_REGION: "europe-west3"
+  GOOGLE_REGION_PREFIX: ""
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
   CLUSTER_NAME_NEXT: "europe-west3-b"
+  GOOGLE_CLUSTER_REGION_NEXT: "europe-west3"
+  GOOGLE_REGION_PREFIX_NEXT: ""
 
 envVarsDeployPreprod: &envVarsDeployPreprod
   ENV_NAME: "preprod"
   GOOGLE_PROJECT_ID: "akecld-saas-preprod"
   GOOGLE_COMPUTE_ZONE: "europe-west3-a"
   CLUSTER_NAME: "europe-west3-a"
+  GOOGLE_CLUSTER_REGION: "europe-west3"
+  GOOGLE_REGION_PREFIX: ""
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
   CLUSTER_NAME_NEXT: "europe-west3-b"
+  GOOGLE_CLUSTER_REGION_NEXT: "europe-west3"
+  GOOGLE_REGION_PREFIX_NEXT: ""
 
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
   ENV_NAME: "dev"

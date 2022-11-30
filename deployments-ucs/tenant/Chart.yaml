@@ -6,10 +6,10 @@ version: 0.0.0
 appVersion: 0.0.0
 dependencies:
   - name: mysql
-    version: "2.1.1"
+    version: "2.2.0"
     repository: gs://akeneo-pim-saas-charts-prod/
   - name: elasticsearch
-    version: "1.32.44"
+    version: "1.33.0"
     repository: gs://akeneo-pim-saas-charts-prod/
   - name: memcached
     version: "6.1.4"

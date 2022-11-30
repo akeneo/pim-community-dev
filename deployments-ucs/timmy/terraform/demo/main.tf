@@ -69,6 +69,11 @@ module "timmy_request_portal" {
   }
 }
 
+data "google_compute_zones" "google_compute_zones" {
+    project = var.project_id
+    region  = var.region
+}
+
 module "timmy_create_tenant" {
   source      = "../modules/cloudfunction"
   project_id  = var.project_id
@@ -119,7 +124,7 @@ module "timmy_create_tenant" {
     ARGOCD_USERNAME                = "admin"
     GCP_FIRESTORE_PROJECT_ID       = var.firestore_project_id
     GCP_PROJECT_ID                 = var.project_id
-    GOOGLE_ZONE                    = var.google_zone
+    GOOGLE_ZONES                   = join(",", data.google_compute_zones.google_compute_zones.names)
     LOG_LEVEL                      = var.log_level
     MAILER_BASE_URL                = "smtp://smtp.mailgun.org:2525"
     MAILER_DOMAIN                  = "mg.cloud.akeneo.com"

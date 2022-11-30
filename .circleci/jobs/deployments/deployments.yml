@@ -552,7 +552,6 @@ jobs:
               GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_PROJECT_ID_FIRESTORE}
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
               TENANT_CONTEXT_COLLECTION_NAME="${GOOGLE_CLUSTER_REGION}/${PIM_NAMESPACE}/tenant_contexts"
-              GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
               LOCATION=EU
               FQDN="${TENANT_NAME}.${GOOGLE_DOMAIN}"
               WORKLOAD_IDENTITY_KSA="${CIRCLE_BRANCH_LOWER}-ksa-workload-identity"
@@ -579,7 +578,6 @@ jobs:
               echo export GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_CLOUD_FIRESTORE_PROJECT} >> $BASH_ENV
               echo export GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT} >> $BASH_ENV
               echo export TENANT_CONTEXT_COLLECTION_NAME=${TENANT_CONTEXT_COLLECTION_NAME}  >> $BASH_ENV
-              echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
               echo export LOCATION=${LOCATION} >> $BASH_ENV
               echo export FQDN=${FQDN} >> $BASH_ENV
               echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
@@ -619,7 +617,6 @@ jobs:
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml global.extraLabels.tenant_name "${TENANT_NAME}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.gcpFireStoreProjectID "${GOOGLE_CLOUD_FIRESTORE_PROJECT}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.googleZone "${GOOGLE_ZONE}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.location "${LOCATION}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.fqdn "${FQDN}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"

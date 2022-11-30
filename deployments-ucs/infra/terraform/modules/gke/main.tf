@@ -96,7 +96,7 @@ resource "google_container_node_pool" "gke" {
   initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(each.value, "min_node_count", 1) : null
   node_count         = lookup(each.value, "autoscaling", true) ? null : lookup(each.value, "node_count", 1)
   max_pods_per_node  = lookup(each.value, "max_pods_per_node", 110)
-  node_locations     = lookup(lookup(var.node_locations, each.value.name, tomap({})), var.region, null)
+  node_locations     = var.node_locations == null ? null : lookup(lookup(var.node_locations, each.value.name, tomap({})), var.region, null)
 
   node_config {
     preemptible     = lookup(each.value, "preemptible", false)

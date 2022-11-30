@@ -31,6 +31,14 @@ module "gke" {
       min_node_count    = 1
       max_node_count    = 60
       max_pods_per_node = 64
+    },
+    "elasticsearch" = {
+      name              = "elasticsearch"
+      preemptible       = false
+      machine_type      = "n1-highmem-16"
+      min_node_count    = 1
+      max_node_count    = 60
+      max_pods_per_node = 64
     }
   }
 
@@ -41,18 +49,29 @@ module "gke" {
     "mysql" = {
       component = "mysql",
       role      = "mysql-server"
+    },
+    "elasticsearch" = {
+      component = "elasticsearch",
+      role      = "elasticsearch"
     }
   }
 
   node_pools_taints = {
     default = [],
-    mysql   = []
-  }
-
-  node_locations = {
-    mysql = {
-      "${var.region}" = formatlist("%s-%s", var.region, var.mysql_zones)
-    }
+    mysql = [
+      {
+        key    = "component"
+        value  = "mysql"
+        effect = "NO_EXECUTE"
+      }
+    ],
+    elasticsearch = [
+      {
+        key    = "component"
+        value  = "elasticsearch"
+        effect = "NO_EXECUTE"
+      }
+    ]
   }
 }
 
