@@ -30,13 +30,9 @@ final class GetNumberOfProductsSelectedByCriteriaAction
             return new RedirectResponse('/');
         }
 
-        $productSelectionCriteriaRaw = $request->query->get('productSelectionCriteria');
-        if (!\is_string($productSelectionCriteriaRaw)) {
-            throw new BadRequestHttpException();
-        }
-        $productSelectionCriteria = \json_decode($productSelectionCriteriaRaw, true, 512, JSON_THROW_ON_ERROR);
+        $productSelectionCriteria = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($productSelectionCriteria)) {
-            throw new BadRequestHttpException('productSelectionCriteria must be an array.');
+            throw new BadRequestHttpException('The product selection criteria must be an array.');
         }
 
         try {

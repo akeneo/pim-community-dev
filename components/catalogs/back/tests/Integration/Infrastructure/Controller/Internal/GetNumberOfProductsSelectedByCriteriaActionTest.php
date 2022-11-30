@@ -30,21 +30,20 @@ class GetNumberOfProductsSelectedByCriteriaActionTest extends IntegrationTestCas
         $this->createProduct('tshirt-yellow', [new SetEnabled(false)]);
 
         $client->request(
-            'GET',
+            'POST',
             '/rest/catalogs/product-selection-criteria/product/count',
-            [
-                'productSelectionCriteria' => \json_encode([
-                    [
-                        'field' => 'enabled',
-                        'operator' => Operator::EQUALS,
-                        'value' => true,
-                    ],
-                ]),
-            ],
+            [],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
+            \json_encode([
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ])
         );
 
         $response = $client->getResponse();
@@ -59,21 +58,20 @@ class GetNumberOfProductsSelectedByCriteriaActionTest extends IntegrationTestCas
         $client = $this->getAuthenticatedInternalApiClient('admin');
 
         $client->request(
-            'GET',
+            'POST',
             '/rest/catalogs/product-selection-criteria/product/count',
-            [
-                'productSelectionCriteria' => \json_encode([
-                    [
-                        'field' => '',
-                        'operator' => Operator::EQUALS,
-                        'value' => true,
-                    ],
-                ]),
-            ],
+            [],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
+            \json_encode([
+                [
+                    'field' => '',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ])
         );
 
         $response = $client->getResponse();
