@@ -11,3 +11,4 @@ pim_enrich:
       history: 查看类别历史记录
       template: 管理类别模板
       edit_attributes: 编辑类别属性
+      order_trees: 对类别进行排序/重新排序

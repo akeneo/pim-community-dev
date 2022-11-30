@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: Impostazione locale file
             help: Definisci l'impostazione locale in cui visualizzare le etichette
+          with_uuid:
+            title: Con UUID prodotto
+            help: Esporta UUID del prodotto e dei prodotti associati
+          with_uuid_for_models:
+            title: Con UUID prodotto
+            help: Esporta UUID del prodotto associato invece del suo identificatore
       file_path: Percorso del file
       storage_form:
         title: Storage
@@ -160,11 +166,36 @@ pim_import_export:
           none: Nessuno storage configurato
         file_path:
           label: Percorso del file
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: esempio.it
+        fingerprint:
+          label: Fingerprint dell'host (facoltativo)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Il fingerprint dell'host deve essere una somma di controllo crittografata SHA-512 o MD5, nella notazione con i due punti.
+        port:
+          label: Porta
+          placeholder: 22
+        username:
+          label: Login
+          placeholder: Inserisci il tuo nome utente
+        password:
+          label: Password
+          placeholder: Inserisci la password
+        public_key:
+          label: Chiave pubblica
+        login_type:
+          label: Metodo di autenticazione
+          password: Nome utente e password
+          private_key: Chiave privata
       validation:
         storage:
           unavailable_type: Questo storage non è disponibile. Sono disponibili solo {{ available_types }}.
         file_path:
           unsupported_extension: Estensione del file non supportata
+        fingerprint:
+          invalid_encoding: Il fingerprint dell'host deve essere una somma di controllo crittografata SHA-512 o MD5 valida, nella notazione con i due punti.
       connection_checker:
         label: Prova impostazioni di connessione
         exception: Impossibile stabilire la connessione, controlla le impostazioni.
