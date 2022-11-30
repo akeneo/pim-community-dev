@@ -25,12 +25,12 @@ test('it displays an empty message if there is no criteria', () => {
 
 test('it renders a list of criteria', async () => {
     const criteria = {
-        a: {
+        qxgJvh: {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
         } as StatusCriterionState,
-        b: {
+        w9WgXc: {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: false,
@@ -49,7 +49,7 @@ test('it renders a list of criteria', async () => {
 });
 
 test('it updates the state when a criterion is added', async () => {
-    mocked(generateRandomId).mockReturnValue('a');
+    mocked(generateRandomId).mockReturnValue('qxgJvh');
 
     const onChange = jest.fn();
 
@@ -66,7 +66,7 @@ test('it updates the state when a criterion is added', async () => {
 
     expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.status.label')).toBeInTheDocument();
     expect(onChange).toHaveBeenCalledWith({
-        a: {
+        qxgJvh: {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
@@ -76,7 +76,7 @@ test('it updates the state when a criterion is added', async () => {
 
 test('it updates the state when a criterion changes', async () => {
     const criteria = {
-        a: {
+        qxgJvh: {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
@@ -98,7 +98,7 @@ test('it updates the state when a criterion changes', async () => {
     fireEvent.click(screen.getByText('akeneo_catalogs.product_selection.criteria.status.disabled'));
 
     expect(onChange).toHaveBeenCalledWith({
-        a: {
+        qxgJvh: {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: false,
@@ -108,7 +108,7 @@ test('it updates the state when a criterion changes', async () => {
 
 test('it updates the state when a criterion is removed', async () => {
     const criteria = {
-        a: {
+        qxgJvh: {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
