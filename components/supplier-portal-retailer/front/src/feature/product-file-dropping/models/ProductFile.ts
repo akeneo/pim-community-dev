@@ -8,6 +8,8 @@ export type ProductFile = {
     contributor: string;
     supplier: string;
     importStatus: ImportStatus;
+    importedAt: string;
+    supplierLabel: string;
     retailerComments: Comment[];
     supplierComments: Comment[];
     hasUnreadComments: boolean;

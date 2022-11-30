@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithMetadataAndComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileImportBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 
-final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegrationTestCase
+final class DatabaseGetProductFileWithMetadataAndCommentsIntegration extends SqlIntegrationTestCase
 {
     protected function setUp(): void
     {
@@ -31,7 +34,9 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
     /** @test */
     public function itGetsNullIfThereIsNoProductFileForTheGivenIdentifier(): void
     {
-        static::assertNull($this->get(GetProductFileWithComments::class)('82a69bc5-111b-4b79-9fc1-2421e1d304e7'));
+        static::assertNull(
+            $this->get(GetProductFileWithMetadataAndComments::class)('82a69bc5-111b-4b79-9fc1-2421e1d304e7'),
+        );
     }
 
     /** @test */
@@ -52,25 +57,25 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
                 ->build(),
         );
 
-        $productFile = $this->get(GetProductFileWithComments::class)('5d001a43-a42d-4083-8673-b64bb4ecd26f');
+        $productFile = $this->get(GetProductFileWithMetadataAndComments::class)('5d001a43-a42d-4083-8673-b64bb4ecd26f');
 
         static::assertSame([
             'identifier' => '5d001a43-a42d-4083-8673-b64bb4ecd26f',
             'originalFilename' => 'file.xlsx',
-            'path' => null,
             'uploadedByContributor' => 'contributor@contributor.com',
             'uploadedBySupplier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
             'uploadedAt' => '2022-09-07 08:54:38',
             'retailerComments' => [],
             'supplierComments' => [],
             'retailerLastReadAt' => null,
-            'supplierLastReadAt' => null,
             'importStatus' => ProductFileImportStatus::TO_IMPORT->value,
+            'importDate' => null,
+            'supplierLabel' => 'Supplier label',
         ], $productFile->toArray());
     }
 
     /** @test */
-    public function itGetsAProductFileWithItsComments(): void
+    public function itGetsAProductFileWithMetadataAndComments(): void
     {
         $productFile = (new ProductFileBuilder())
             ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
@@ -84,6 +89,12 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
             ->withContributorEmail('contributor@contributor.com')
             ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
             ->build();
+        $productFileImport = (new ProductFileImportBuilder())
+            ->withProductFile($productFile)
+            ->importedAt((new FrozenClock('2022-09-08 08:54:38'))->now())
+            ->withImportExecutionId(2)
+            ->withImportStatus(ProductFileImportStatus::COMPLETED)
+            ->build();
         $productFile->addNewRetailerComment(
             'Your product file is awesome!',
             'julia@roberts.com',
@@ -95,6 +106,7 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
             new \DateTimeImmutable('2022-09-07 00:00:01'),
         );
         ($this->get(ProductFileRepository::class))->save($productFile);
+        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
 
         $sql = <<<SQL
             INSERT INTO `akeneo_supplier_portal_product_file_comments_read_by_retailer` (
@@ -109,13 +121,15 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
             ],
         );
 
-        $productFile = $this->get(GetProductFileWithComments::class)('5d001a43-a42d-4083-8673-b64bb4ecd26f');
+        $productFile = $this->get(GetProductFileWithMetadataAndComments::class)('5d001a43-a42d-4083-8673-b64bb4ecd26f');
 
         static::assertSame('5d001a43-a42d-4083-8673-b64bb4ecd26f', $productFile->identifier);
         static::assertSame('file.xlsx', $productFile->originalFilename);
         static::assertSame('contributor@contributor.com', $productFile->uploadedByContributor);
         static::assertSame('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', $productFile->uploadedBySupplier);
         static::assertSame('2022-09-07 08:54:38', $productFile->uploadedAt);
+        static::assertSame(ProductFileImportStatus::COMPLETED->value, $productFile->importStatus);
+        static::assertSame('2022-09-08 08:54:38', $productFile->importDate);
         static::assertEquals([
             [
                 'content' => 'Your product file is awesome!',

@@ -4,3 +4,4 @@ export * from './Discussion';
 export * from './CommentList';
 export * from './Comment';
 export * from './ProductFileImportConfigurationsModal';
+export * from './GeneralInformation';
