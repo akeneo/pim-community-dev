@@ -88,6 +88,7 @@ supplier_portal:
         supplier: Proveedor
         status: Estado
         download: Descargar icono
+        filename: Nombre del archivo
       notification:
         error_loading_supplier_files:
           title: No podemos mostrar los archivos del producto.
@@ -105,12 +106,34 @@ supplier_portal:
         empty_content: El comentario no debe estar vacío.
         max_comment_length_reached: El comentario no debe exceder de 255 caracteres.
         max_number_of_comments_reached: Ha alcanzado el límite de comentarios.
+        product_file_does_not_exist_anymore: Lo sentimos, este archivo de producto ha sido eliminado automáticamente después de 90 días y ya no se puede acceder.
+      product_files_modal:
+        title: Archivo de producto
+        subtitle: Seleccionar el perfil de importación personalizado
+        import_field_label: Importar
+        select_import_placeholder: Seleccionar una importación personalizada
+        import_button_label: Importar ahora
+        error_loading_product_import_profiles:
+          title: No podemos mostrar los perfiles de importación a medida.
+          content: Lamentamos este inconveniente, inténtelo de nuevo en unos momentos.
+        error_launching_product_import:
+          missing_file: Este archivo ya no existe.
+          unknown_error:
+            title: Ocurrió un error inesperado por nuestra parte.
+            content: Vuelva a intentarlo más tarde
+      import:
+        status:
+          to_import: para importar
+          in_progress: en curso
+          completed: completada
+          failed: ha fallado
     pim_notification:
       button_label: Ver las fichas de los productos
 pim_title:
   supplier_portal_retailer_supplier_list: Proveedores
   supplier_portal_retailer_supplier_edit: Editar un proveedor
   supplier_portal_retailer_product_files_list: Archivos de productos
+  supplier_portal_retailer_product_files_show: Archivo de producto
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Importación de Proveedores de Portal de proveedores en XLSX
 pim_notification:
   supplier_portal:

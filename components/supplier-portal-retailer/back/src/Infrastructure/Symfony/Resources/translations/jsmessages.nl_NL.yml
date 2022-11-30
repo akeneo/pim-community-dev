@@ -88,6 +88,7 @@ supplier_portal:
         supplier: Leverancier
         status: Status
         download: Downloadpictogram
+        filename: Bestandsnaam
       notification:
         error_loading_supplier_files:
           title: We kunnen de productbestanden niet weergeven.
@@ -105,12 +106,34 @@ supplier_portal:
         empty_content: De reactie mag niet leeg zijn.
         max_comment_length_reached: De reactie mag niet meer dan 255 tekens bevatten.
         max_number_of_comments_reached: Je hebt de limiet voor reacties bereikt.
+        product_file_does_not_exist_anymore: Dit productbestand is na 90 dagen automatisch verwijderd en is niet meer toegankelijk.
+      product_files_modal:
+        title: Productbestand
+        subtitle: Selecteer het op maat gemaakte importprofiel
+        import_field_label: Importeren
+        select_import_placeholder: Selecteer een op maat gemaakte import
+        import_button_label: Nu importeren
+        error_loading_product_import_profiles:
+          title: We kunnen de op maat gemaakte importprofielen niet weergeven.
+          content: Excuses voor dit ongemak. Probeer het over enkele ogenblikken opnieuw.
+        error_launching_product_import:
+          missing_file: Dit bestand bestaat niet meer.
+          unknown_error:
+            title: Er is een onverwachte fout opgetreden aan onze kant.
+            content: Probeer het later opnieuw
+      import:
+        status:
+          to_import: te importeren
+          in_progress: in uitvoering
+          completed: voltooid
+          failed: mislukt
     pim_notification:
       button_label: Productbestanden bekijken
 pim_title:
   supplier_portal_retailer_supplier_list: Leveranciers
   supplier_portal_retailer_supplier_edit: Een leverancier bewerken
   supplier_portal_retailer_product_files_list: Productbestanden
+  supplier_portal_retailer_product_files_show: Productbestand
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import van leveranciers uit Supplier Portal in XLSX
 pim_notification:
   supplier_portal:
