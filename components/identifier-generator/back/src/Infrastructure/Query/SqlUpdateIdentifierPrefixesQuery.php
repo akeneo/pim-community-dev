@@ -25,8 +25,16 @@ final class SqlUpdateIdentifierPrefixesQuery
      */
     public function updateFromProducts(array $products): void
     {
-        $this->deletePreviousPrefixes($products);
-        $this->insertNewPrefixes($products);
+        $onlyProducts = array_filter(
+            $products,
+            // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+            fn (ProductInterface $product): bool => get_class($product) ===
+                'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
+        );
+        if (\count($onlyProducts) > 0) {
+            $this->deletePreviousPrefixes($onlyProducts);
+            $this->insertNewPrefixes($onlyProducts);
+        }
     }
 
     /**
@@ -38,11 +46,6 @@ final class SqlUpdateIdentifierPrefixesQuery
         $identifierAttributes = [$this->attributeRepository->getIdentifier()];
         $newPrefixes = [];
         foreach ($products as $product) {
-            // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-            if (get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
-                continue;
-            }
-
             foreach ($identifierAttributes as $identifierAttribute) {
                 $identifier = $product->getValue($identifierAttribute->getCode())?->getData();
                 if (null === $identifier) {
