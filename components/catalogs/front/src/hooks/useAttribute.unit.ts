@@ -13,6 +13,8 @@ test('it fetches the API response', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'marketing',
+            attribute_group_label: 'Marketing',
         })
     );
 
@@ -39,6 +41,8 @@ test('it fetches the API response', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'marketing',
+            attribute_group_label: 'Marketing',
         },
         error: null,
     });
