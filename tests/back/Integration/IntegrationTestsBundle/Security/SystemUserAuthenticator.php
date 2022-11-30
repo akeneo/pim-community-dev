@@ -41,7 +41,7 @@ final class SystemUserAuthenticator
             $user->addRole($role);
         }
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
     }
 }
