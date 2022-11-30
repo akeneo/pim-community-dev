@@ -19,7 +19,6 @@ pim_menu:
         connect_connection_settings: Connection settings
         marketplace: App Store
         connected_apps: Connected Apps
-        open_app: Open app
 
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: App Store
@@ -149,6 +148,8 @@ akeneo_connectivity.connection:
                 flash:
                     error: Sorry, an error occured while fetching the connected apps list.
             edit:
+                header:
+                    open_app: Open App
                 not_found: App not found
                 tabs:
                     settings: Settings

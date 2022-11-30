@@ -85,7 +85,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 disabled={!canOpenApp}
                 target='_blank'
             >
-                <Translate id='pim_menu.item.open_app' />
+                <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app' />
             </Button>
         );
     };
