@@ -83,13 +83,10 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
 
         try {
-            $familyCode = $this->getFamilyCode($item);
-            $item['family'] = $familyCode;
-
             $item = $this->productAttributeFilter->filter($item);
             $filteredItem = $this->filterItemData($item);
 
-            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $uuid);
+            $product = $this->findProductToImport->fromFlatData($identifier, $uuid);
         } catch (AccessDeniedException $e) {
             throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
         }
@@ -195,30 +192,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $uuid = $item['uuid'] ?? null;
 
         return ('' !== $uuid) ? $uuid : null;
-    }
-
-    /**
-     * @param array $item
-     *
-     * @return string
-     */
-    protected function getFamilyCode(array $item): string
-    {
-        if (key_exists('family', $item)) {
-            return $item['family'];
-        }
-
-        $product = $this->repository->findOneByIdentifier($item['identifier']);
-        if (null === $product) {
-            return '';
-        }
-
-        $family = $product->getFamily();
-        if (null === $family) {
-            return '';
-        }
-
-        return $family->getCode();
     }
 
     /**

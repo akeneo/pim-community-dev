@@ -209,6 +209,9 @@ class ColumnsMerger
     private function collectQuantifiedIdentifierAssociationData(array $collectedQuantifiedAssociations, string $fieldName, $fieldValue): array
     {
         list($associationTypeCode, $productType) = explode('-', $fieldName);
+        if ('product_uuids' === $productType) {
+            $productType = 'products';
+        }
         if (!isset($collectedQuantifiedAssociations[$associationTypeCode])) {
             $collectedQuantifiedAssociations[$associationTypeCode] = ['products' => [], 'product_models' => []];
         }

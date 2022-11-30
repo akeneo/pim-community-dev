@@ -30,7 +30,6 @@ class FindProductToImport
      */
     public function fromFlatData(
         ?string $productIdentifierCode,
-        string $familyCode,
         ?string $uuid = null,
     ): ProductInterface {
         $product = null;
@@ -42,7 +41,7 @@ class FindProductToImport
         }
 
         if (null === $product) {
-            $product = $this->productBuilder->createProduct($productIdentifierCode, $familyCode, $uuid);
+            $product = $this->productBuilder->createProduct($productIdentifierCode, null, $uuid);
         }
 
         return $product;

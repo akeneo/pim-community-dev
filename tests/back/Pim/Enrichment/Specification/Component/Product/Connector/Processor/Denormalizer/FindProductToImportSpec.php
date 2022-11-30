@@ -34,7 +34,7 @@ class FindProductToImportSpec extends ObjectBehavior
         $product = new Product('102376d1-c00d-464c-a189-829f04835c77');
         $productRepository->findOneByUuid($product->getUuid())->willReturn($product);
 
-        $this->fromFlatData('product_identifier', 'family', '102376d1-c00d-464c-a189-829f04835c77')->shouldReturn($product);
+        $this->fromFlatData('product_identifier', '102376d1-c00d-464c-a189-829f04835c77')->shouldReturn($product);
     }
 
     function it_finds_product_from_identifier_if_uuid_is_null(
@@ -43,7 +43,7 @@ class FindProductToImportSpec extends ObjectBehavior
     ) {
         $productRepository->findOneByIdentifier('product_identifier')->willReturn($product);
 
-        $this->fromFlatData('product_identifier', 'family', null)->shouldReturn($product);
+        $this->fromFlatData('product_identifier', null)->shouldReturn($product);
     }
 
     function it_creates_a_new_product_if_provided_uuid_does_not_exist(
@@ -55,10 +55,10 @@ class FindProductToImportSpec extends ObjectBehavior
         $productRepository->findOneByUuid($uuid)->shouldBeCalled()->willReturn(null);
         $productRepository->findOneByIdentifier('product_identifier')->shouldNotBeCalled();
 
-        $productBuilder->createProduct('product_identifier', 'family', '102376d1-c00d-464c-a189-829f04835c77')
+        $productBuilder->createProduct('product_identifier', null, '102376d1-c00d-464c-a189-829f04835c77')
             ->shouldBeCalled()->willReturn($product);
 
-        $this->fromFlatData('product_identifier', 'family', '102376d1-c00d-464c-a189-829f04835c77')->shouldReturn($product);
+        $this->fromFlatData('product_identifier', '102376d1-c00d-464c-a189-829f04835c77')->shouldReturn($product);
     }
 
     function it_creates_product_with_identifier(
@@ -67,9 +67,9 @@ class FindProductToImportSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
-        $productBuilder->createProduct('product_identifier', 'family', null)->willReturn($product);
+        $productBuilder->createProduct('product_identifier', null, null)->willReturn($product);
 
-        $this->fromFlatData('product_identifier', 'family', null)->shouldReturn($product);
+        $this->fromFlatData('product_identifier', null)->shouldReturn($product);
     }
 
     function it_creates_a_product_with_uuid(
@@ -80,10 +80,10 @@ class FindProductToImportSpec extends ObjectBehavior
         $uuid = Uuid::fromString('102376d1-c00d-464c-a189-829f04835c77');
         $productRepository->findOneByUuid($uuid)->shouldBeCalled()->willReturn(null);
 
-        $productBuilder->createProduct(null, 'family', '102376d1-c00d-464c-a189-829f04835c77')
+        $productBuilder->createProduct(null, null, '102376d1-c00d-464c-a189-829f04835c77')
             ->shouldBeCalled()->willReturn($product);
 
-        $this->fromFlatData(null, 'family', '102376d1-c00d-464c-a189-829f04835c77')->shouldReturn($product);
+        $this->fromFlatData(null, '102376d1-c00d-464c-a189-829f04835c77')->shouldReturn($product);
     }
 
     function it_creates_a_product_without_identifier_nor_uuid(
@@ -94,9 +94,9 @@ class FindProductToImportSpec extends ObjectBehavior
         $productRepository->findOneByUuid(Argument::any())->shouldNotBeCalled();
         $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
-        $productBuilder->createProduct(null, '', null)
+        $productBuilder->createProduct(null, null, null)
                        ->shouldBeCalled()->willReturn($product);
 
-        $this->fromFlatData(null, '', null)->shouldReturn($product);
+        $this->fromFlatData(null, null)->shouldReturn($product);
     }
 }

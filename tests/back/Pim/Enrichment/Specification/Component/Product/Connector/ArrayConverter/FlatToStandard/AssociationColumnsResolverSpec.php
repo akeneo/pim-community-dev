@@ -50,8 +50,10 @@ class AssociationColumnsResolverSpec extends ObjectBehavior
         $this->resolveQuantifiedAssociationColumns()->shouldReturn(
             [
                 "ASSOC_TYPE_1-products",
+                "ASSOC_TYPE_1-product_uuids",
                 "ASSOC_TYPE_1-product_models",
                 "ASSOC_TYPE_2-products",
+                "ASSOC_TYPE_2-product_uuids",
                 "ASSOC_TYPE_2-product_models",
                 "ASSOC_TYPE_1-products-quantity",
                 "ASSOC_TYPE_1-product_models-quantity",

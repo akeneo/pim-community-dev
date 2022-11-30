@@ -12,11 +12,13 @@ use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Product association import processor
@@ -87,12 +89,13 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
             $item
         );
 
-        if (!isset($item['identifier'])) {
-            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        if (!isset($item['identifier']) && !isset($item['uuid'])) {
+            $this->skipItemWithMessage($item, 'The UUID or identifier must be filled');
         }
 
-        $product = $this->findProduct($item['identifier'], $item);
+        $product = $this->findProduct($item['identifier'] ?? null, $item['uuid'] ?? null, $item);
         if (null === $product) {
+            // TODO: message with uuid
             $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $item['identifier']));
         }
 
@@ -151,16 +154,15 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         $this->updater->update($product, $item);
     }
 
-    /**
-     * @param string $identifier
-     * @param array  $item
-     *
-     * @return null|ProductInterface
-     */
-    public function findProduct(string $identifier, array $item): ?ProductInterface
+    protected function findProduct(?string $identifier, ?string $uuid, array $item): ?ProductInterface
     {
         try {
-            return $this->repository->findOneByIdentifier($identifier);
+            if (null !== $uuid) {
+                Assert::methodExists($this->repository, 'findOneByUuid');
+                return $this->repository->findOneByUuid(Uuid::fromString($uuid));
+            } elseif (null !== $identifier) {
+                return $this->repository->findOneByIdentifier($identifier);
+            }
         } catch (AccessDeniedException $e) {
             $this->skipItemWithMessage($item, $e->getMessage(), $e);
         }

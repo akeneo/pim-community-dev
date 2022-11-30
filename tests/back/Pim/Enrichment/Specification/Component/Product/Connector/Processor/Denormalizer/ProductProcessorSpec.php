@@ -70,14 +70,15 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product(
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $productToImport,
-        $addParent,
-        $mediaStorer,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        StepExecution $stepExecution,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
+        RemoveParentInterface $removeParent,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -92,7 +93,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -176,14 +177,14 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product_with_its_uuid(
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $productToImport,
-        $addParent,
-        $mediaStorer,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        StepExecution $stepExecution,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         JobParameters $jobParameters
     ) {
@@ -198,7 +199,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', $product->getUuid()->toString())->willReturn($product);
+        $productToImport->fromFlatData('tshirt', $product->getUuid()->toString())
+            ->shouldBeCalled()->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -283,14 +285,14 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product_with_filtered_values(
-        $productToImport,
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $addParent,
-        $mediaStorer,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        StepExecution $stepExecution,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -305,7 +307,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -390,14 +392,14 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product_without_filtered_values(
-        $productToImport,
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $addParent,
-        $mediaStorer,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        StepExecution $stepExecution,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -412,7 +414,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -495,14 +497,14 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_skips_a_product_when_update_fails(
-        $productToImport,
-        $productUpdater,
-        $productDetacher,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $addParent,
-        $mediaStorer,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        StepExecution $stepExecution,
+        ObjectDetacherInterface $productDetacher,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -517,7 +519,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $addParent->to($product, '')->willReturn($product);
@@ -605,15 +607,17 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_skips_a_product_when_object_is_invalid(
-        $productToImport,
-        $productUpdater,
-        $productValidator,
-        $productDetacher,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $addParent,
-        $mediaStorer,
+        IdentifiableObjectRepositoryInterface $productRepository,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        StepExecution $stepExecution,
+        ObjectDetacherInterface $productDetacher,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
+        RemoveParentInterface $removeParent,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -628,7 +632,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
 
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $addParent->to($product, '')->willReturn($product);
@@ -721,14 +725,14 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_skips_a_product_when_there_is_nothing_to_update(
-        $productToImport,
-        $productUpdater,
-        $productDetacher,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $addParent,
-        $mediaStorer,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        StepExecution $stepExecution,
+        ObjectDetacherInterface $productDetacher,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -743,7 +747,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
         $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
         $addParent->to($product, '')->willReturn($product);
 
@@ -823,7 +827,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    function it_skips_a_product_when_uuid_is_not_valid($stepExecution, JobParameters $jobParameters)
+    function it_skips_a_product_when_uuid_is_not_valid(StepExecution $stepExecution, JobParameters $jobParameters)
     {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
@@ -862,14 +866,14 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product_and_does_not_change_his_state(
-        $productToImport,
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $addParent,
-        $mediaStorer,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        StepExecution $stepExecution,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -884,7 +888,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -969,14 +973,14 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_creates_a_product_with_sku_and_family_columns(
-        $productToImport,
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $addParent,
-        $mediaStorer,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        StepExecution $stepExecution,
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter,
+        MediaStorer $mediaStorer,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -991,7 +995,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -1036,102 +1040,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
-    function it_fetches_family_of_the_product_if_the_column_is_not_set(
-        $productRepository,
-        $productToImport,
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $stepExecution,
-        $productAttributeFilter,
-        $addParent,
-        $mediaStorer,
-        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
-        ProductInterface $product,
-        ProductInterface $productInDB,
-        JobParameters $jobParameters,
-        FamilyInterface $family
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enabledComparison')->willReturn(true);
-        $jobParameters->get('familyColumn')->willReturn('family');
-        $jobParameters->get('categoriesColumn')->willReturn('categories');
-        $jobParameters->get('groupsColumn')->willReturn('groups');
-        $jobParameters->get('enabled')->willReturn(true);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-        $jobParameters->get('convertVariantToSimple')->willReturn(false);
-
-        $productRepository->findOneByIdentifier('tshirt')->willReturn($productInDB);
-        $productInDB->getFamily()->willReturn($family);
-        $family->getCode()->willReturn('Tshirt');
-
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
-
-        $addParent->to($product, '')->willReturn($product);
-
-        $originalItem = [
-            'identifier' => 'tshirt',
-            'values' => [
-                'sku' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'tshirt',
-                    ],
-                ],
-                'not_in_family' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'test',
-                    ],
-                ],
-            ],
-            'enabled' => true,
-        ];
-
-        $filteredAttributesItem = [
-            'identifier' => 'tshirt',
-            'family' => 'Tshirt',
-            'values' => [
-                'sku' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'tshirt',
-                    ],
-                ],
-            ],
-            'enabled' => true,
-        ];
-
-        $productAttributeFilter->filter(Argument::type('array'))->willReturn($filteredAttributesItem);
-
-        $filteredData = [
-            'family' => 'Tshirt',
-            'enabled' => true,
-            'values' => [],
-        ];
-
-        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
-
-        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
-
-        $cleanLineBreaksInTextAttributes->cleanStandardFormat($filteredData)->willReturn($filteredData);
-        $productUpdater
-            ->update($product, $filteredData)
-            ->shouldBeCalled();
-
-        $productValidator
-            ->validate($product)
-            ->willReturn(new ConstraintViolationList());
-
-        $this
-            ->process($originalItem)
-            ->shouldReturn($product);
-    }
-
     function it_converts_a_variant_product_to_simple_product_when_the_job_parameter_is_true(
         FindProductToImport $productToImport,
         StepExecution $stepExecution,
@@ -1159,7 +1067,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $productAttributeFilter->filter($item)->willReturn($filteredItem);
         $product->isVariant()->willReturn(true);
-        $productToImport->fromFlatData('my_sku', 'clothing', null)->willReturn($product);
+        $productToImport->fromFlatData('my_sku', null)->shouldBeCalled()->willReturn($product);
         $cleanLineBreaksInTextAttributes->cleanStandardFormat(['parent' => ''])
             ->willReturn(['parent' => '']);
 
@@ -1200,7 +1108,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'family' => 'clothing',
             'enabled' => true,
         ])->shouldBeCalled()->willReturn($filteredItem);
-        $productToImport->fromFlatData('my_sku', 'clothing', null)->willReturn($product);
+        $productToImport->fromFlatData('my_sku', null)->shouldBeCalled()->willReturn($product);
         $cleanLineBreaksInTextAttributes->cleanStandardFormat(['enabled' => true])->willReturn(['enabled' => true]);
 
         $removeParent->from($product)->shouldNotBeCalled();
@@ -1233,7 +1141,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', null)->shouldBeCalled()->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 

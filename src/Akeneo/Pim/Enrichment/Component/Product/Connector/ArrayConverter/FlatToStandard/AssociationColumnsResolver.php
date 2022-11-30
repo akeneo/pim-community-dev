@@ -112,6 +112,7 @@ class AssociationColumnsResolver
             foreach ($assocTypes as $assocType) {
                 if ($assocType->isQuantified()) {
                     $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_UUID_ASSOCIATION_SUFFIX;
                     $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX;
                 }
             }

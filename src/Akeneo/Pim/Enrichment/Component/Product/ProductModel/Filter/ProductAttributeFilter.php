@@ -77,12 +77,13 @@ class ProductAttributeFilter implements AttributeFilterInterface
             return $this->keepOnlyAttributes($standardProduct, $attributes);
         }
 
-        if (isset($standardProduct['family'])) {
-            if (null !== $family = $this->familyRepository->findOneByIdentifier($standardProduct['family'])) {
-                $attributes = $family->getAttributes();
+        $family = \array_key_exists('family', $standardProduct)
+            ? $this->familyRepository->findOneByIdentifier($standardProduct['family'])
+            : $product?->getFamily();
+        if (null !== $family) {
+            $attributes = $family->getAttributes();
 
-                return $this->keepOnlyAttributes($standardProduct, $attributes);
-            }
+            return $this->keepOnlyAttributes($standardProduct, $attributes);
         }
 
         return $standardProduct;

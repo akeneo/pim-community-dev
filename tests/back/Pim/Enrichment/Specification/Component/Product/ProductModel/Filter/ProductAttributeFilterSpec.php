@@ -438,4 +438,86 @@ class ProductAttributeFilterSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_filters_product_family_attributes(
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        FamilyInterface $family,
+        ProductInterface $product,
+        Collection $familyAttributes,
+        Collection $familyAttributeCodes,
+        AttributeInterface $attribute
+    ) {
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('123')->willReturn($attribute);
+
+        $familyRepository->findOneByIdentifier('Summer Tshirt')->willReturn($family);
+        $family->getAttributes()->willReturn($familyAttributes);
+        $familyAttributes->map(Argument::any())->willReturn($familyAttributeCodes);
+        $familyAttributeCodes->toArray()->willReturn(['sku', 'description']);
+
+        $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
+        $product->getFamily()->willReturn($family);
+
+        $product->isVariant()->willReturn(false);
+
+        $expected = [
+            'identifier' => 'tshirt',
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'tshirt',
+                    ],
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'mobile',
+                        'data' => 'My awesome description',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->filter(
+            [
+                'identifier' => 'tshirt',
+                'values' => [
+                    'sku' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'tshirt',
+                        ],
+                    ],
+                    'name' => [
+                        [
+                            'locale' => 'en_US',    
+                            'scope' => null,
+                            'data' => 'My very awesome T-shirt',
+                        ],
+                    ],
+                    'description' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'mobile',
+                            'data' => 'My awesome description',
+                        ],
+                    ],
+                    '123' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'mobile',
+                            'data' => 'Data for 123',
+                        ],
+                    ],
+                ],
+            ]
+        )->shouldReturn($expected);
+    }
 }
