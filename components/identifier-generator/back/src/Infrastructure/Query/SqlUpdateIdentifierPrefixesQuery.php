@@ -19,6 +19,9 @@ use Webmozart\Assert\Assert;
  */
 final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixesQuery
 {
+    /** @var AttributeInterface[]|null */
+    private ?array $identifierAttributesCache;
+
     public function __construct(
         private AttributeRepositoryInterface $attributeRepository,
         private Connection $connection,
@@ -47,11 +50,9 @@ final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixes
      */
     private function insertNewPrefixes(array $products): void
     {
-        /** @var AttributeInterface[] $identifierAttributes */
-        $identifierAttributes = [$this->attributeRepository->getIdentifier()];
         $newPrefixes = [];
         foreach ($products as $product) {
-            foreach ($identifierAttributes as $identifierAttribute) {
+            foreach ($this->getIdentifierAttributes() as $identifierAttribute) {
                 $identifier = $product->getValue($identifierAttribute->getCode())?->getData();
                 if (null === $identifier) {
                     continue;
@@ -61,7 +62,7 @@ final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixes
                 $productIdentifier = new ProductIdentifier($identifier);
                 foreach ($productIdentifier->getPrefixes() as $prefix => $number) {
                     $newPrefixes[] = [
-                        $product->getUuid()->toString(),
+                        $product->getUuid()->getBytes(),
                         $identifierAttribute->getId(),
                         $prefix,
                         $number,
@@ -74,7 +75,7 @@ final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixes
             return;
         }
 
-        $placeholders = implode(',', array_fill(0, \count($newPrefixes), '(UUID_TO_BIN(?),?,?,?)'));
+        $placeholders = implode(',', array_fill(0, \count($newPrefixes), '(?,?,?,?)'));
 
         $insertSql = <<<SQL
 INSERT INTO pim_catalog_identifier_generator_prefixes (`product_uuid`, `attribute_id`, `prefix`, `number`) VALUES ${placeholders}
@@ -83,7 +84,7 @@ SQL;
         $placeholderIndex = 1;
         $statement = $this->connection->prepare($insertSql);
         foreach ($newPrefixes as $newPrefix) {
-            $statement->bindValue($placeholderIndex++, $newPrefix[0]);
+            $statement->bindValue($placeholderIndex++, $newPrefix[0], ParameterType::BINARY);
             $statement->bindValue($placeholderIndex++, $newPrefix[1], ParameterType::INTEGER);
             $statement->bindValue($placeholderIndex++, $newPrefix[2]);
             $statement->bindValue($placeholderIndex++, $newPrefix[3], ParameterType::INTEGER);
@@ -111,5 +112,17 @@ SQL;
             ['product_uuids' => $productUuidsAsBytes],
             ['product_uuids' => Connection::PARAM_STR_ARRAY]
         );
+    }
+
+    /**
+     * @return AttributeInterface[]
+     */
+    private function getIdentifierAttributes(): array
+    {
+        if (null === $this->identifierAttributesCache) {
+            $this->identifierAttributesCache = [$this->attributeRepository->getIdentifier()];
+        }
+
+        return $this->identifierAttributesCache;
     }
 }
