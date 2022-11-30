@@ -11,7 +11,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 
 jest.mock('./utils/generateRandomId');
 
-test('it display an empty message if there is no criteria', () => {
+test('it displays an empty message if there is no criteria', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
