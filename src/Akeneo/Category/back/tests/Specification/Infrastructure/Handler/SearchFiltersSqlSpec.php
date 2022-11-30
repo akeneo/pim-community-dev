@@ -1,0 +1,249 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Specification\Akeneo\Category\Infrastructure\Handler;
+
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\CategoryId;
+use Akeneo\Category\Domain\ValueObject\Code;
+use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
+use Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\ValueObject\Position;
+
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class SearchFiltersSqlSpec extends ObjectBehavior
+{
+    function let(
+        ExternalApiSearchFiltersValidator $searchFiltersValidator,
+        GetCategoryInterface $getCategory,
+    ) {
+        $this->beConstructedWith(
+            $searchFiltersValidator,
+            $getCategory,
+        );
+    }
+
+    function it_generates_where_by_parent(
+        ExternalApiSearchFiltersValidator $searchFiltersValidator,
+        GetCategoryInterface $getCategory,
+    )
+    {
+        $value = '3';
+        $searchFilters = [
+            'parent' => [
+                [
+                    'operator' => '=',
+                    'value' => $value,
+                ]
+            ],
+        ];
+
+        $category = new Category(
+            id: new CategoryId(1),
+            code: new Code('test'),
+            templateUuid: null,
+            rootId: new CategoryId(4),
+            position: new Position(1, 3, 0),
+        );
+        $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
+        $getCategory->byCode(Argument::any())->willReturn($category);
+
+        $params = [
+            'category_lft' => $category->getPosition()->left,
+            'category_rgt' => $category->getPosition()->right,
+            'category_root' => $category->getRootId()->getValue(),
+        ];
+        $types = [
+            'category_lft' => \PDO::PARAM_INT,
+            'category_rgt' => \PDO::PARAM_INT,
+            'category_root' => \PDO::PARAM_INT,
+        ];
+        $expected = new ExternalApiSqlParameters(
+            sqlWhere: 'category.lft > 1 AND category.rgt < 3 AND category.root = 4',
+            params: $params,
+            types: $types,
+        );
+        $this->build($searchFilters)->shouldReturn($expected);
+    }
+
+    function it_generates_where_is_root_true(
+        ExternalApiSearchFiltersValidator $searchFiltersValidator,
+    )
+    {
+        $value =  true;
+        $searchFilters = [
+            'is_root' => [
+                [
+                    'operator' => '=',
+                    'value' => $value,
+                ]
+            ],
+        ];
+
+        $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
+        $expected = new ExternalApiSqlParameters(
+            sqlWhere: 'category.parent_id IS NULL',
+            params: null,
+            types: null,
+        );
+        $this->build($searchFilters)->shouldReturn($expected);
+    }
+
+    function it_generates_where_by_is_root_false(
+        ExternalApiSearchFiltersValidator $searchFiltersValidator,
+    )
+    {
+        $value =  false;
+        $searchFilters = [
+            'is_root' => [
+                [
+                    'operator' => '=',
+                    'value' => $value,
+                ]
+            ],
+        ];
+
+        $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
+        $expected = new ExternalApiSqlParameters(
+            sqlWhere: 'category.parent_id IS NOT NULL',
+            params: null,
+            types: null,
+        );
+        $this->build($searchFilters)->shouldReturn($expected);
+    }
+
+    function it_generates_where_by_parent_and_is_root(
+        ExternalApiSearchFiltersValidator $searchFiltersValidator,
+        GetCategoryInterface $getCategory,
+    )
+    {
+        $parentValue = '3';
+        $isRootValue =  true;
+        $searchFilters = [
+            'parent' => [
+                [
+                    'operator' => '=',
+                    'value' => $parentValue,
+                ]
+            ],
+            'is_root' => [
+                [
+                    'operator' => '=',
+                    'value' => $isRootValue,
+                ]
+            ],
+        ];
+
+        $category = new Category(
+            id: new CategoryId(1),
+            code: new Code('test'),
+            templateUuid: null,
+            rootId: new CategoryId(4),
+            position: new Position(1, 3, 0),
+        );
+        $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
+        $getCategory->byCode(Argument::any())->willReturn($category);
+
+        $params = [
+            'category_lft' => $category->getPosition()->left,
+            'category_rgt' => $category->getPosition()->right,
+            'category_root' => $category->getRootId()->getValue(),
+        ];
+        $types = [
+            'category_lft' => \PDO::PARAM_INT,
+            'category_rgt' => \PDO::PARAM_INT,
+            'category_root' => \PDO::PARAM_INT,
+        ];
+        $expected = new ExternalApiSqlParameters(
+            sqlWhere: 'category.lft > 1 AND category.rgt < 3 AND category.root = 4 AND category.parent_id IS NULL',
+            params: $params,
+            types: $types,
+        );
+        $this->build($searchFilters)->shouldReturn($expected);
+    }
+
+    function it_generates_where_in_codes(
+        ExternalApiSearchFiltersValidator $searchFiltersValidator,
+    )
+    {
+        $values = ['master', 'category1'];
+        $searchFilters = [
+            'code' => [
+                [
+                    'operator' => 'IN',
+                    'value' => $values,
+                ]
+            ],
+        ];
+
+        $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
+
+        $params = [
+            'code_0' => $values,
+        ];
+        $types = [
+            'code_0' => \PDO::PARAM_STR,
+        ];
+        $expected = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN :code_0',
+            params: $params,
+            types: $types,
+        );
+        $this->build($searchFilters)->shouldReturn($expected);
+    }
+
+    function it_generates_where_for_greater_than_date(
+        ExternalApiSearchFiltersValidator $searchFiltersValidator,
+    )
+    {
+        $value = '2019-06-09T12:00:00+00:00';
+        $searchFilters = [
+            'updated' => [
+                [
+                    'operator' => '>',
+                    'value' => $value,
+                ]
+            ],
+        ];
+
+        $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
+
+        $params = [
+            'updated_0' => $value,
+        ];
+        $types = [
+            'updated_0' => \PDO::PARAM_STR,
+        ];
+        $expected = new ExternalApiSqlParameters(
+            sqlWhere: 'category.updated > :updated_0',
+            params: $params,
+            types: $types,
+        );
+        $this->build($searchFilters)->shouldReturn($expected);
+    }
+
+    function it_throws_exception_on_bad_operator(
+        ExternalApiSearchFiltersValidator $searchFiltersValidator,
+    )
+    {
+        $value = '2019-06-09T12:00:00+00:00';
+        $searchFilters = [
+            'updated' => [
+                [
+                    'operator' => '!=',
+                    'value' => $value,
+                ]
+            ],
+        ];
+
+        $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
+        $this->shouldThrow(\InvalidArgumentException::class)->duringbuild($searchFilters);
+    }
+}
