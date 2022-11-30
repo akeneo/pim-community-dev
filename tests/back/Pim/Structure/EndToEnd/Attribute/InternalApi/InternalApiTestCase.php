@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oro\Bundle\PimDataGridBundle\tests\Integration\Controller;
+namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
@@ -15,11 +15,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-abstract class ControllerIntegrationTestCase extends WebTestCase
+/**
+ * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+abstract class InternalApiTestCase extends WebTestCase
 {
     protected KernelBrowser $client;
     protected CatalogInterface $catalog;
-    private RouterInterface $router;
+    protected RouterInterface $router;
 
     abstract protected function getConfiguration(): Configuration;
 
@@ -53,33 +58,18 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $this->ensureKernelShutdown();
     }
 
-    public function callRoute(
-        KernelBrowser $client,
+    protected function callRoute(
         string $route,
         array $routeArguments = [],
         string $method = 'GET',
         array $headers = [],
         array $parameters = [],
         string $content = null
-    ): void {
+    ): Response {
         $url = $this->router->generate($route, $routeArguments);
-        $client->request($method, $url, $parameters, [], $headers, $content);
-    }
+        $this->client->request($method, $url, $parameters, [], $headers, $content);
 
-    protected function callApiRoute(
-        KernelBrowser $client,
-        string $route,
-        array $routeArguments = [],
-        string $method = 'GET',
-        array $parameters = [],
-        string $content = null
-    ): void {
-        $headers = [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE' => 'application/json',
-        ];
-        $url = $this->router->generate($route, $routeArguments);
-        $client->request($method, $url, $parameters, [], $headers, $content);
+        return $this->client->getResponse();
     }
 
     protected function logIn(string $username): void
@@ -100,16 +90,14 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
-    /**
-     * Create a token with a user with all access.
-     */
-    private function createUser(string $username): User
+    protected function createUser(string $username, string $password = 'fake'): User
     {
         $user = $this->get('pim_user.factory.user')->create();
         $user->setId(uniqid());
         $user->setUsername($username);
         $user->setEmail(sprintf('%s@example.com', uniqid()));
-        $user->setPassword('fake');
+        $user->setPlainPassword($password);
+        $this->get('pim_user.manager')->updatePassword($user);
 
         $groups = $this->get('pim_user.repository.group')->findAll();
         foreach ($groups as $group) {

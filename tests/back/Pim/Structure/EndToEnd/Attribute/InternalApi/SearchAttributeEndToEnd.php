@@ -3,15 +3,20 @@
 namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @group ce
  */
-class SearchAttributeEndToEnd extends ApiTestCase
+class SearchAttributeEndToEnd extends InternalApiTestCase
 {
-    const ENDPOINT_URL = 'rest/attribute/';
+    const ENDPOINT_ROUTE = 'pim_enrich_attribute_rest_index';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->logIn('admin');
+    }
 
     /**
      * Search attributes by identifiers with query param '?identifiers='.
@@ -31,19 +36,15 @@ class SearchAttributeEndToEnd extends ApiTestCase
 JSON;
 
         // GET
-        $client = $this->createAuthenticatedClient();
-        $client->request('GET', self::ENDPOINT_URL, $params);
-        $response = $client->getResponse();
+        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertStatusCode($response, Response::HTTP_OK);
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $client = $this->createAuthenticatedClient();
-        $client->request('POST', self::ENDPOINT_URL, $params);
-        $response = $client->getResponse();
+        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params, 'POST');
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertStatusCode($response, Response::HTTP_OK);
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
@@ -67,19 +68,15 @@ JSON;
 JSON;
 
         // GET
-        $client = $this->createAuthenticatedClient();
-        $client->request('GET', self::ENDPOINT_URL, $params);
-        $response = $client->getResponse();
+        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertStatusCode($response, Response::HTTP_OK);
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $client = $this->createAuthenticatedClient();
-        $client->request('POST', self::ENDPOINT_URL, $params);
-        $response = $client->getResponse();
+        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params, 'POST');
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertStatusCode($response, Response::HTTP_OK);
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
@@ -100,19 +97,15 @@ JSON;
 JSON;
 
         // GET
-        $client = $this->createAuthenticatedClient();
-        $client->request('GET', self::ENDPOINT_URL, $params);
-        $response = $client->getResponse();
+        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertStatusCode($response, Response::HTTP_OK);
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $client = $this->createAuthenticatedClient();
-        $client->request('POST', self::ENDPOINT_URL, $params);
-        $response = $client->getResponse();
+        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params, 'POST');
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertStatusCode($response, Response::HTTP_OK);
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
