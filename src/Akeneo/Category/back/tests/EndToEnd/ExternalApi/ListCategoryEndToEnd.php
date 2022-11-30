@@ -246,7 +246,7 @@ JSON;
 
     public function testListCategoriesWithPosition(): void
     {
-        $categories = $this->getStandardizedCategorieswithPositionInformation();
+        $categories = $this->getStandardizedCategorieswithPositionInformation(true, false);
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories?with_position=true');
@@ -292,7 +292,7 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/categories?search=["master"]&with_enriched_attributes=true');
 
-        $categories = $this->getStandardizedCategorieswithAttributesValues(true);
+        $categories = $this->getStandardizedCategorieswithPositionInformation(false,true);
         $expected = <<<JSON
 {
     "_links": {
@@ -429,8 +429,12 @@ JSON;
     /**
      * @return array<string, mixed>
      */
-    public function getStandardizedCategorieswithPositionInformation(): array
+    public function getStandardizedCategorieswithPositionInformation(bool $withPosition, bool $withEnrichedValues): array
     {
+        $template = ($withEnrichedValues) ? ", \"template\": null" : "";
+        $values = ($withEnrichedValues) ? ", \"values\": {$this->getStandardizedAttributesValues()}" : "";
+
+        $positionMaster = ($withPosition) ? "\"position\" : 1," : "";
         $categories['master'] = <<<JSON
 {
     "_links": {
@@ -441,10 +445,13 @@ JSON;
     "code": "master",
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position" : 1,
+    {$positionMaster}
     "labels": {}
+    {$template}
+    {$values}
 }
 JSON;
+        $positionCategoryA = ($withPosition) ? "\"position\" : 1," : "";
         $categories['categoryA'] = <<<JSON
 {
     "_links": {
@@ -455,13 +462,16 @@ JSON;
     "code": "categoryA",
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position" : 1,
+    {$positionCategoryA}
     "labels": {
         "en_US": "Category A",
         "fr_FR": "Catégorie A"
     }
+    {$template}
+    {$values}
 }
 JSON;
+        $positionCategoryA1 = ($withPosition) ? "\"position\" : 1," : "";
         $categories['categoryA1'] = <<<JSON
 {
     "_links": {
@@ -472,10 +482,13 @@ JSON;
     "code": "categoryA1",
     "parent": "categoryA",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position" : 1,
+    {$positionCategoryA1}
     "labels": {}
+    {$template}
+    {$values}
 }
 JSON;
+        $positionCategoryA2 = ($withPosition) ? "\"position\" : 2," : "";
         $categories['categoryA2'] = <<<JSON
 {
     "_links": {
@@ -486,10 +499,13 @@ JSON;
     "code": "categoryA2",
     "parent": "categoryA",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position" : 2,
+    {$positionCategoryA2}
     "labels": {}
+    {$template}
+    {$values}
 }
 JSON;
+        $positionCategoryB = ($withPosition) ? "\"position\" : 2," : "";
         $categories['categoryB'] = <<<JSON
 {
     "_links": {
@@ -500,10 +516,13 @@ JSON;
     "code": "categoryB",
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position" : 2,
+    {$positionCategoryB}
     "labels": {}
+    {$template}
+    {$values}
 }
 JSON;
+        $positionCategoryC = ($withPosition) ? "\"position\" : 3," : "";
         $categories['categoryC'] = <<<JSON
 {
     "_links": {
@@ -514,10 +533,13 @@ JSON;
     "code": "categoryC",
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position" : 3,
+    {$positionCategoryC}
     "labels": {}
+    {$template}
+    {$values}
 }
 JSON;
+        $positionCategoryMasterChina = ($withPosition) ? "\"position\" : 1," : "";
         $categories['master_china'] = <<<JSON
 {
     "_links": {
@@ -528,32 +550,8 @@ JSON;
     "code": "master_china",
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
-    "position" : 1,
+    {$positionCategoryMasterChina}
     "labels": {}
-}
-JSON;
-
-        return $categories;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getStandardizedCategorieswithAttributesValues(bool $withEnrichedValues): array
-    {
-        $template = ($withEnrichedValues) ? "\"template\": null," : "";
-        $values = ($withEnrichedValues) ? "\"values\": {$this->getStandardizedAttributesValues()}" : "";
-        $categories['master'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/master"
-        }
-    },
-    "code": "master",
-    "parent": null,
-    "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {},
     {$template}
     {$values}
 }
