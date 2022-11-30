@@ -73,6 +73,7 @@ security:
                 samesite:                   'lax'
 
     access_control:
+        - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/user/(login|reset-request|send-email|check-email)$, roles: PUBLIC_ACCESS }
         - { path: ^/user/reset/*, roles: PUBLIC_ACCESS }
         - { path: ^/api/rest/v1$, roles: PUBLIC_ACCESS }
