@@ -65,6 +65,7 @@ pim_asset_manager:
         file_size_exceeded: '此文件超出属性的最大文件大小设定。'
         should_exist: '找不到文件"%file_path%"。'
         target_readonly: '您不能更新"%attribute_code%"的值，因为它是一个转换的目标。'
+        invalid_filename: '文件 "%file_path%" 包含无效字符。'
       option:
         code_does_not_exist: '此属性不存在代码为"%option_code%"的选项'
       option_collection:

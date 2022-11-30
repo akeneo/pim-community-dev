@@ -5,6 +5,12 @@ pim_common:
   result_count: "{0}0 resultaten|{1}1 resultaat|]1, Inf[{{ itemsCount }} resultaten"
   items_selected: "{0}0 items geselecteerd|{1}1 item geselecteerd|]1, Inf[{{ itemsCount }} items geselecteerd"
 shared_catalog:
+  content:
+    attributes:
+      helper:
+        text: De volgorde van de attributen in de catalogus is identiek aan de ingestelde volgorde in de instellingen voor attribuutgroepen.
+        link:
+          text: Klik hier om meer te lezen over attribuutgroepen.
   recipients:
     add: Voeg hier gebruikers e-mailadressen toe
     placeholder: bert@akeneo.com

@@ -65,6 +65,7 @@ pim_asset_manager:
         file_size_exceeded: 'Het bestand is groter dan de ingestelde maximale bestandsgrootte voor het attribuut.'
         should_exist: 'Het bestand "%file_path%" is niet gevonden.'
         target_readonly: 'U kunt de waarde van "%attribute_code%" niet bijwerken omdat deze als doelveld voor een transformatie is ingesteld.'
+        invalid_filename: 'Het bestand %file_path% bevat ongeldige tekens.'
       option:
         code_does_not_exist: 'De optie met code "%option_code%" bestaat niet voor dit attribuut'
       option_collection:

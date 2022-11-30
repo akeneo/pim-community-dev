@@ -5,6 +5,12 @@ pim_common:
   result_count: "{0}0 个结果|{1}1 个结果|]1, Inf[{{ itemsCount }} 个结果"
   items_selected: "{0}0 个选定条目|{1}1 个选定条目|]1, Inf[{{ itemsCount }} 个选定条目"
 shared_catalog:
+  content:
+    attributes:
+      helper:
+        text: 目录中属性的顺序将与属性组设置中设置的顺序相同。
+        link:
+          text: 点击此处阅读更多关于属性组的信息。
   recipients:
     add: 在此处添加用户电子邮件
     placeholder: betty@akeneo.com

@@ -65,6 +65,7 @@ pim_asset_manager:
         file_size_exceeded: 'このファイルは、該当の属性に設定された最大ファイルサイズを超過しています。'
         should_exist: 'ファイル「%file_path%」は検出されませんでした。'
         target_readonly: '変換のターゲットである値「%attribute_code%」はアップデートできません。'
+        invalid_filename: 'ファイル "%file_path%" に無効な文字が含まれています。'
       option:
         code_does_not_exist: '「%option_code%」を持つオプションはこの属性にありません'
       option_collection:

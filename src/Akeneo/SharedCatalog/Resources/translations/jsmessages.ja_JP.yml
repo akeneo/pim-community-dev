@@ -5,6 +5,12 @@ pim_common:
   result_count: "{0}0 件の結果|{1}1 件の結果|]1, Inf[{{ itemsCount }} 件の結果"
   items_selected: "{0}0 個のアイテムを選択済み|{1}1 個のアイテムを選択済み|]1, Inf[{{ itemsCount }} 個のアイテムを選択済み"
 shared_catalog:
+  content:
+    attributes:
+      helper:
+        text: カタログ内での属性の順序は、属性グループ設定で設定された順序と同じになります。
+        link:
+          text: 属性グループの詳細については、ここをクリックしてください。
   recipients:
     add: ユーザーのメールアドレスをここに追加
     placeholder: betty@akeneo.com
