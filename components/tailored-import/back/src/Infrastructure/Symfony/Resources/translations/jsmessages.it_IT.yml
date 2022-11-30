@@ -71,6 +71,16 @@ akeneo.tailored_import:
         comma: Virgola (,)
         semicolon: Punto e virgola (;)
         pipe: Barra verticale (|)
+      search_and_replace:
+        title: Cerca e sostituisci
+        helper: Puoi effettuare fino a 10 sostituzioni.
+        what:
+          header: Cerca
+          placeholder: Cerca il valore da sostituire
+        with:
+          header: Sostituisci con
+          placeholder: Indica il valore sostitutivo
+        case_sensitive: Distinzione maiuscole/minuscole
       simple_select_replacement:
         title: Sostituzione selezione semplice
         option_labels: Etichette opzioni
@@ -236,6 +246,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: Il tipo di operazione {{ operation_type }} è incompatibile con il tipo di destinazione.
       missing_required_operations: "Mancano una o più operazioni obbligatorie: {{ missing_required_operations }}"
+      max_replacements_reached: Puoi effettuare al massimo {{ limit }} sostituzioni.
 pim_information:
   import:
     title: Scopri la mappatura con importazione personalizzata
