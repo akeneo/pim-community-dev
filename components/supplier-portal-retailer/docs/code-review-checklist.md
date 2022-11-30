@@ -37,8 +37,8 @@ More information on [our test strategy documentation](./tests/introduction.md).
 ## Documentation
 
 - Does the technical documentation need to be updated?
-- Does comments are clear and useful? Concretely, do they explain the why and not the what?
+- Are comments clear and useful? Concretely, do they explain the why and not the what?
 
 ## Good Things
 
-- Don't hesitate to add a comment if you find a well done implem', a very clean code... a code review is not only focus on the problems but also share the good practices 🙂
+- Don't hesitate to add a comment if you find a well done implem', a very clean code... a code review does not only focus on the problems but also share the good practices 🙂
