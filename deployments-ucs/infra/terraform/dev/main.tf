@@ -120,7 +120,7 @@ module "gke_europe_west1" {
   cluster_developers     = local.admins
   viewer_members         = local.viewers
   admin_members          = local.admins
-  min_master_version     = "1.23"
+  min_master_version     = "1.24"
   master_ipv4_cidr_block = "192.168.192.128/28"
 
   node_pool_configs = {
@@ -193,7 +193,7 @@ module "gke_europe_west3" {
   cluster_developers     = local.admins
   viewer_members         = local.viewers
   admin_members          = local.admins
-  min_master_version     = "1.23"
+  min_master_version     = "1.24"
   master_ipv4_cidr_block = "192.168.193.64/28"
 
   node_pool_configs = {

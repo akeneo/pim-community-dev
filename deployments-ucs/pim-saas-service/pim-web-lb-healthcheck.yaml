@@ -1,0 +1,22 @@
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: pim-web-lb-healthcheck
+spec:
+  default:
+    checkIntervalSec: 10
+    timeoutSec: 10
+    healthyThreshold: 2
+    unhealthyThreshold: 3
+    type: HTTP
+    logConfig:
+      enabled: true
+    config:
+      healthCheck:
+        httpHealthCheck:
+          portSpecification: USE_SERVING_PORT
+          requestPath: /server-status
+  targetRef:
+    group: ""
+    kind: Service
+    name: pim-web

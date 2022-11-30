@@ -53,6 +53,26 @@ steps:
           echo "No files for ${_TARGET_PROJECT_ID}. Exiting"
         fi
       fi
+- id: 'gke gateway'
+  name: "gcr.io/cloud-builders/gcloud"
+  dir: "deployments-ucs"
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+      if [ "${BRANCH_NAME}" == "master" ]; then
+        # Set cluster authentication
+        gcloud config set auth/impersonate_service_account ${_TARGET_IMPERSONATE}
+        gcloud config set project ${_TARGET_PROJECT_ID}
+        gcloud container clusters list --format 'value(name,location)' | while read -r line; do
+          CLUSTER_NAME=$(echo $line|awk '{print $1}')
+          REGION=$(echo $line|awk '{print $2}')
+          gcloud container clusters get-credentials $${CLUSTER_NAME} --project=${_TARGET_PROJECT_ID} --region=$${REGION}
+          gcloud container update $${CLUSTER_NAME} --region=$${REGION} --project ${_TARGET_PROJECT_ID} --gateway-api=standard
+        done
+      else
+        echo "Not on branch master. Leaving ..."
+      fi
 
 logsBucket: 'gs://${_TARGET_PROJECT_ID}-cloudbuild-logs'
 substitutions:
