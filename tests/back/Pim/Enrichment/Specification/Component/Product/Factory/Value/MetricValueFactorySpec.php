@@ -120,19 +120,12 @@ final class MetricValueFactorySpec extends ObjectBehavior
             ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', ['foo' => 42, 'unit' => 'GRAM']]);
     }
 
-    function it_throws_an_exception_if_provided_data_has_non_numeric_amount(MetricFactory $metricFactory)
+    function it_should_not_throws_an_exception_if_provided_data_has_non_numeric_amount(MetricFactory $metricFactory)
     {
         $attribute = $this->getAttribute(false, false);
 
-        $exception = InvalidPropertyTypeException::validArrayStructureExpected(
-            'an_attribute',
-            sprintf('key "amount" has to be a numeric, "%s" given', 'string'),
-            MetricValueFactory::class,
-            ['amount' => 'aa', 'foo' => 42, 'unit' => 'GRAM']
-        );
-
         $this
-            ->shouldThrow($exception)
+            ->shouldNotThrow(InvalidPropertyTypeException::class)
             ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', ['amount' => 'aa', 'foo' => 42, 'unit' => 'GRAM']]);
     }
 
