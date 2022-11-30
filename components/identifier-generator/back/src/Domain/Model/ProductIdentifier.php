@@ -19,7 +19,7 @@ final class ProductIdentifier
      * Returns the prefixes and the associated number
      * For example, an identifier AKN-123-FOO will return these prefixes: [
      *   'AKN-' => 123,
-     *   'AKN-1' => 2retu3,
+     *   'AKN-1' => 23,
      *   'AKN-12' => 3,
      * ]
      *
@@ -32,7 +32,10 @@ final class ProductIdentifier
             $charAtI = substr($this->identifier, $i, 1);
             if (is_numeric($charAtI)) {
                 $prefix = substr($this->identifier, 0, $i);
-                $results[$prefix] = $this->getAllBeginningNumbers(substr($this->identifier, $i));
+                $beginningNumbers = $this->getAllBeginningNumbers(substr($this->identifier, $i));
+                if ($beginningNumbers < PHP_INT_MAX) {
+                    $results[$prefix] = $beginningNumbers;
+                }
             }
         }
 
