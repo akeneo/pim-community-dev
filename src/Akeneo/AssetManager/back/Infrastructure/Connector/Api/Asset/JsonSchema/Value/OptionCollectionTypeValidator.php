@@ -15,7 +15,10 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Valu
 
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValueValidatorInterface;
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -28,11 +31,26 @@ class OptionCollectionTypeValidator implements AssetValueValidatorInterface
      */
     public function validate(array $normalizedAsset): array
     {
-        $asset = Validator::arrayToObjectRecursive($normalizedAsset);
         $validator = new Validator();
-        $validator->validate($asset, $this->getJsonSchema());
+        $validator->setMaxErrors(50);
 
-        return $validator->getErrors();
+        $result = $validator->validate(
+            Helper::toJSON($normalizedAsset),
+            Helper::toJSON($this->getJsonSchema()),
+        );
+
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     public function forAttributeType(): string
