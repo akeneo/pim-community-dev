@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductSelectionCriteriaPayload;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -24,7 +23,6 @@ class CatalogUpdateProductSelectionCriteriaPayloadTest extends IntegrationTestCa
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -84,7 +82,8 @@ class CatalogUpdateProductSelectionCriteriaPayloadTest extends IntegrationTestCa
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
     }
 
-    public function testItReturnsViolationsWhenFieldIsInvalid(): void {
+    public function testItReturnsViolationsWhenFieldIsInvalid(): void
+    {
         $violations = $this->validator->validate([
             [
                 'field' => 'some_random_field',

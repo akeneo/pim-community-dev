@@ -81,7 +81,8 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
     }
 
-    public function testItReturnsViolationsWhenSourceIsInvalid(): void {
+    public function testItReturnsViolationsWhenSourceIsInvalid(): void
+    {
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_text',
@@ -105,13 +106,15 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
         $this->assertViolationsListContains($violations, 'Invalid source value');
     }
 
-    public function testItReturnsViolationsWhenTargetsAreMissing(): void {
+    public function testItReturnsViolationsWhenTargetsAreMissing(): void
+    {
         $violations = $this->validator->validate([], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
 
         $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "uuid", "name".');
     }
 
-    public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void {
+    public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
+    {
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_text',
@@ -140,7 +143,8 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
         $this->assertViolationsListContains($violations, 'The mapping is incorrect, following targets don\'t exist: "additional".');
     }
 
-    public function testItReturnsViolationsWhenSourceTypeIsIncorrect(): void {
+    public function testItReturnsViolationsWhenSourceTypeIsIncorrect(): void
+    {
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_number',
