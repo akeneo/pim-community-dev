@@ -15,6 +15,10 @@ test('it returns attribute options', async () => {
             url: '/rest/catalogs/attributes/clothing_size/options?locale=en_US&codes=xs%2Cs%2Cl&search=&page=1&limit=20',
             json: [OPTION_XS, OPTION_S],
         },
+        {
+            url: '/rest/catalogs/attributes/clothing_size/options?locale=en_US&codes=l&search=&page=1&limit=20',
+            json: [],
+        },
     ]);
 
     const {result, waitForValueToChange} = renderHook(
