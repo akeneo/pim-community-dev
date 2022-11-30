@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -38,7 +39,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         $pqbOptions = [
             'filters' => \array_merge(
                 $this->getUpdatedFilters($updatedAfter, $updatedBefore),
-                $this->getFilters($catalog)
+                FormatProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
             ),
             'limit' => $limit,
         ];
@@ -122,33 +123,6 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         }
 
         return [null, null];
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    private function getFilters(Catalog $catalog): array
-    {
-        $filters = [];
-        /** @var array<array-key, array{field: string, operator: string, value?: mixed, scope?: string|null, locale?: string|null}> $productSelectionCriteria */
-        $productSelectionCriteria = $catalog->getProductSelectionCriteria();
-        foreach ($productSelectionCriteria as $criterion) {
-            $filter = $criterion;
-
-            if (isset($criterion['scope'])) {
-                $filter['context']['scope'] = $criterion['scope'];
-            }
-
-            if (isset($criterion['locale'])) {
-                $filter['context']['locale'] = $criterion['locale'];
-            }
-
-            unset($filter['scope'], $filter['locale']);
-
-            $filters[] = $filter;
-        }
-
-        return $filters;
     }
 
     private function getUuidFromIdentifierResult(string $esId): string

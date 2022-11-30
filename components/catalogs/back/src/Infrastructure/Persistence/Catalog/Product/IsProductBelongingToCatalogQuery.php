@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -25,7 +26,7 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
     public function execute(Catalog $catalog, string $productUuid): bool
     {
         $pqb = $this->productQueryBuilderFactory->create([
-            'filters' => $this->getFilters($catalog),
+            'filters' => FormatProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
             'limit' => 1,
         ]);
         $pqb->addFilter('id', Operators::EQUALS, $productUuid);
@@ -34,31 +35,6 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
         $result = $results->current();
 
         return $results->count() === 1 && $this->getUuidFromIdentifierResult($result->getId()) === $productUuid;
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    private function getFilters(Catalog $catalog): array
-    {
-        $filters = [];
-        foreach ($catalog->getProductSelectionCriteria() as $criterion) {
-            $filter = $criterion;
-
-            if (isset($criterion['scope'])) {
-                $filter['context']['scope'] = $criterion['scope'];
-            }
-
-            if (isset($criterion['locale'])) {
-                $filter['context']['locale'] = $criterion['locale'];
-            }
-
-            unset($filter['scope'], $filter['locale']);
-
-            $filters[] = $filter;
-        }
-
-        return $filters;
     }
 
     private function getUuidFromIdentifierResult(string $esId): string
