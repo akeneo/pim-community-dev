@@ -29,9 +29,9 @@ class InMemoryAverageTimeToEnrichRepositorySpec extends ObjectBehavior
         );
         $averageTimeToEnrichList->shouldHaveType(AverageTimeToEnrichCollection::class);
         $averageTimeToEnrichList->normalize()->shouldHaveCount(5);
-        $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('period');
-        $averageTimeToEnrichList->normalize()[0]['period']->shouldBe('2022-W35');
-        $averageTimeToEnrichList->normalize()[3]['period']->shouldBe('2022-W38');
+        $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('code');
+        $averageTimeToEnrichList->normalize()[0]['code']->shouldBe('2022-W35');
+        $averageTimeToEnrichList->normalize()[3]['code']->shouldBe('2022-W38');
         $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('value');
     }
 
@@ -46,9 +46,9 @@ class InMemoryAverageTimeToEnrichRepositorySpec extends ObjectBehavior
 
         $averageTimeToEnrichList->shouldHaveType(AverageTimeToEnrichCollection::class);
         $averageTimeToEnrichList->normalize()->shouldHaveCount(4);
-        $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('period');
-        $averageTimeToEnrichList->normalize()[0]['period']->shouldBe('2022-09');
-        $averageTimeToEnrichList->normalize()[3]['period']->shouldBe('2022-12');
+        $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('code');
+        $averageTimeToEnrichList->normalize()[0]['code']->shouldBe('2022-09');
+        $averageTimeToEnrichList->normalize()[3]['code']->shouldBe('2022-12');
         $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('value');
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\PerformanceAnalytics\Domain\TimeToEnrich;
 
+use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
+use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
 use Akeneo\PerformanceAnalytics\Domain\Period\Week;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrich;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\TimeToEnrichValue;
@@ -20,22 +22,35 @@ use PhpSpec\ObjectBehavior;
 
 final class AverageTimeToEnrichSpec extends ObjectBehavior
 {
-    public function let()
+    public function it_normalizes_average_tte_from_family(): void
+    {
+        $timeToEnrichValue = TimeToEnrichValue::fromValue(2.1);
+        $this->beConstructedThrough('fromFamilyAndTimeToEnrichValue', [FamilyCode::fromString('shoes'), $timeToEnrichValue]);
+        $this->normalize()->shouldReturn([
+            'code' => 'shoes',
+            'value' => 2.1,
+        ]);
+    }
+
+    public function it_normalizes_average_tte_from_category(): void
+    {
+        $timeToEnrichValue = TimeToEnrichValue::fromValue(2.1);
+        $this->beConstructedThrough('fromCategoryAndTimeToEnrichValue', [CategoryCode::fromString('webcam'), $timeToEnrichValue]);
+        $this->normalize()->shouldReturn([
+            'code' => 'webcam',
+            'value' => 2.1,
+        ]);
+    }
+
+    public function it_normalizes_average_tte_from_period(): void
     {
         $period = Week::fromDate(new \DateTimeImmutable('2022-09-10'));
         $timeToEnrichValue = TimeToEnrichValue::fromValue(2.1);
         $this->beConstructedThrough('fromPeriodAndTimeToEnrichValue', [$period, $timeToEnrichValue]);
-    }
-
-    public function it_is_initializable(): void
-    {
         $this->shouldHaveType(AverageTimeToEnrich::class);
-    }
 
-    public function it_normalizes_average_tte(): void
-    {
         $this->normalize()->shouldReturn([
-            'period' => '2022-W36',
+            'code' => '2022-W36',
             'value' => 2.1,
         ]);
     }

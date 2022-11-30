@@ -2,14 +2,15 @@ import React, {ReactNode} from 'react';
 import {act, render} from '@testing-library/react';
 import {DefaultProviders} from '@akeneo-pim-community/shared';
 import {Family, FetcherContext} from '../Common';
+import {TimeToEnrich} from '../TimeToEnrich';
 
-const weeklyTimeToEnrich = [
+const weeklyTimeToEnrich: TimeToEnrich[] = [
   {
-    period: '2021-W45',
+    code: '2021-W45',
     value: 10,
   },
   {
-    period: '2021-W46',
+    code: '2021-W46',
     value: 20,
   },
 ];

@@ -56,11 +56,11 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             [
-                'period' => '2020-W53',
+                'code' => '2020-W53',
                 'value' => (float) 1,
             ],
             [
-                'period' => '2021-W05',
+                'code' => '2021-W05',
                 'value' => (float) 3,
             ],
         ]);
@@ -80,11 +80,11 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
         $this->beConstructedThrough('fromList', [new \ArrayIterator([$timeToEnrich1, $timeToEnrich2])]);
         $this->normalize()->shouldReturn([
             [
-                'period' => '2020-W53',
+                'code' => '2020-W53',
                 'value' => (float) 1,
             ],
             [
-                'period' => '2021-W05',
+                'code' => '2021-W05',
                 'value' => (float) 3,
             ],
         ]);
@@ -104,11 +104,11 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
         $this->beConstructedThrough('fromList', [yield from [$timeToEnrich1, $timeToEnrich2]]);
         $this->normalize()->shouldReturn([
             [
-                'period' => '2020-W53',
+                'code' => '2020-W53',
                 'value' => (float) 1,
             ],
             [
-                'period' => '2021-W05',
+                'code' => '2021-W05',
                 'value' => (float) 3,
             ],
         ]);

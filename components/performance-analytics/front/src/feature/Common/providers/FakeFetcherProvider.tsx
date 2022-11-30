@@ -69,7 +69,7 @@ const FakeFetcherProvider: FC = ({children}) => {
 
           while (cursorDate <= end) {
             timeToEnrichList.push({
-              period: cursorDate.format('YYYY-[W]WW'),
+              code: cursorDate.format('YYYY-[W]WW'),
               value: Math.floor(Math.random() * 100),
             });
             cursorDate.add(1, 'w');

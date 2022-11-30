@@ -27,9 +27,9 @@ final class GetHistoricalTimeToEnrichActionIntegration extends ActionIntegration
         $json = json_decode($response->getContent(), true);
 
         self::assertCount(6, $json);
-        self::assertArrayHasKey('period', $json[0]);
+        self::assertArrayHasKey('code', $json[0]);
         self::assertArrayHasKey('value', $json[0]);
-        self::assertSame('2022-01', $json[0]['period']);
+        self::assertSame('2022-01', $json[0]['code']);
     }
 
     public function testItReturnsHistoricalTimeToEnrichByWeek(): void
@@ -41,7 +41,7 @@ final class GetHistoricalTimeToEnrichActionIntegration extends ActionIntegration
         $json = json_decode($response->getContent(), true);
 
         self::assertCount(5, $json);
-        self::assertArrayHasKey('period', $json[0]);
+        self::assertArrayHasKey('code', $json[0]);
         self::assertArrayHasKey('value', $json[0]);
     }
 

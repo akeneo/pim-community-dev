@@ -50,9 +50,9 @@ const tooltipShouldBeDisplayedToTheLeft: (
     return false;
   }
 
-  const periods = referenceTimeToEnrichList?.map((timeToEnrich: TimeToEnrich) => timeToEnrich.period);
+  const periods = referenceTimeToEnrichList?.map((timeToEnrich: TimeToEnrich) => timeToEnrich.code);
 
-  return periods.indexOf(referenceTimeToEnrichList[datum._group]['period']) > periods.length / 2;
+  return periods.indexOf(referenceTimeToEnrichList[datum._group]['code']) > periods.length / 2;
 };
 
 const TimeToEnrichHistoricalChartTooltip: React.FC<Props> = ({
