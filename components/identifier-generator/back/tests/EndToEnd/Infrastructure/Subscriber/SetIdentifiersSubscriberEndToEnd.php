@@ -78,9 +78,39 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
     }
 
     /** @test */
-    public function it_should_not_generate_the_identifier_if_generated_identifier_is_invalid(): void
+    public function it_should_not_generate_the_identifier_if_generated_value_is_invalid(): void
     {
         $this->addRestrictionsOnIdentifierAttribute();
+
+        $productFromDatabase = $this->createProduct();
+        Assert::assertSame(null, $productFromDatabase->getIdentifier());
+        Assert::assertNull($productFromDatabase->getValue('sku'));
+    }
+
+    /** @test */
+    public function it_should_not_generate_the_identifier_if_generated_product_contains_invalid_character(): void
+    {
+        $this->updateToInvalidIdentifierGenerator(',');
+
+        $productFromDatabase = $this->createProduct();
+        Assert::assertSame(null, $productFromDatabase->getIdentifier());
+        Assert::assertNull($productFromDatabase->getValue('sku'));
+    }
+
+    /** @test */
+    public function it_should_not_generate_the_identifier_if_generated_product_contains_line_break(): void
+    {
+        $this->updateToInvalidIdentifierGenerator("\\\\n");
+
+        $productFromDatabase = $this->createProduct();
+        Assert::assertSame(null, $productFromDatabase->getIdentifier());
+        Assert::assertNull($productFromDatabase->getValue('sku'));
+    }
+
+    /** @test */
+    public function it_should_not_generate_the_identifier_if_generated_product_is_too_long(): void
+    {
+        $this->updateToInvalidIdentifierGenerator(\str_repeat('a', 257));
 
         $productFromDatabase = $this->createProduct();
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
@@ -151,5 +181,12 @@ SQL);
     private function getConnection(): Connection
     {
         return $this->get('database_connection');
+    }
+
+    private function updateToInvalidIdentifierGenerator(string $value): void
+    {
+        $this->getConnection()->executeQuery(<<<SQL
+UPDATE pim_catalog_identifier_generator SET structure='[{"type":"free_text", "string":"${value}"}]';
+SQL);
     }
 }
