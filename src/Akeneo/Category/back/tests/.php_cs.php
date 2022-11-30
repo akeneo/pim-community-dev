@@ -23,6 +23,5 @@ return (new PhpCsFixer\Config())
             ->in(__DIR__ . '/..')
             ->notName('*Spec.php')
             ->notName('*Integration.php')
-            ->exclude('Infrastructure')
             ->name('*.php')
     );

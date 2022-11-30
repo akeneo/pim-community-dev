@@ -1,5 +1,5 @@
 import React, {ReactNode, useCallback, useContext, useMemo} from 'react';
-import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {Template} from '../../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import styled from 'styled-components';

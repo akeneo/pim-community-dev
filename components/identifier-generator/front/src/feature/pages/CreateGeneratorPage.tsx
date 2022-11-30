@@ -1,49 +1,53 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {IdentifierGenerator} from '../models';
 import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
-import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {Violation} from '../validators/Violation';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {useHistory} from 'react-router-dom';
+import {useCreateIdentifierGenerator} from '../hooks';
+import {useIdentifierGeneratorContext} from '../context';
+import {useQueryClient} from 'react-query';
 
 type CreateGeneratorProps = {
   initialGenerator: IdentifierGenerator;
 };
 
 const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator}) => {
-  const router = useRouter();
   const notify = useNotify();
   const translate = useTranslate();
   const history = useHistory();
-  const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
+  const queryClient = useQueryClient();
+  const {mutate, error, isLoading} = useCreateIdentifierGenerator();
+  const identifierGeneratorContext = useIdentifierGeneratorContext();
 
-  const onSave = async (generator: IdentifierGenerator) => {
-    const response = await fetch(router.generate('akeneo_identifier_generator_rest_create'), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
+  useEffect(() => {
+    identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(true);
+  }, [identifierGeneratorContext.unsavedChanges]);
+
+  const onSave = (generator: IdentifierGenerator) => {
+    mutate(generator, {
+      onError: error => {
+        // @ts-ignore
+        if (error.violations) {
+          notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
+        } else {
+          notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));
+        }
       },
-      body: JSON.stringify(generator),
+      onSuccess: ({code}: IdentifierGenerator) => {
+        queryClient.invalidateQueries('getIdentifierGenerator');
+        notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success', {code}));
+        history.push(`/${code}`);
+      },
     });
-
-    if (response.status >= 400 && response.status < 500) {
-      const json = await response.json();
-      notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
-      setValidationErrors(json);
-    } else if (response.status === 201) {
-      notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success'));
-      history.push(`/${generator.code}`);
-    } else {
-      /* istanbul ignore next */
-      notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));
-    }
   };
 
   return (
     <CreateOrEditGeneratorPage
+      isMainButtonDisabled={isLoading}
       initialGenerator={initialGenerator}
       mainButtonCallback={onSave}
-      validationErrors={validationErrors}
+      validationErrors={error?.violations || []}
+      isNew={true}
     />
   );
 };

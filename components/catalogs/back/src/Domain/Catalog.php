@@ -22,7 +22,11 @@ namespace Akeneo\Catalogs\Domain;
  *      currencies?: array<string>,
  * }
  *
- * @phpstan-type ProductMapping array<string, array<mixed>>
+ * @phpstan-type ProductMapping array<string, array{
+ *          source: string|null,
+ *          locale: string|null,
+ *          scope: string|null,
+ * }>
  */
 final class Catalog
 {
@@ -87,7 +91,15 @@ final class Catalog
     }
 
     /**
-     * @return array{id: string, name: string, enabled: bool, owner_username: string, product_selection_criteria: array<ProductSelectionCriterion>, product_value_filters: ProductValueFilters}
+     * @return array{
+     *     id: string,
+     *     name: string,
+     *     enabled: bool,
+     *     owner_username: string,
+     *     product_selection_criteria: array<ProductSelectionCriterion>,
+     *     product_value_filters: ProductValueFilters,
+     *     product_mapping: ProductMapping
+     * }
      */
     public function normalize(): array
     {
@@ -98,6 +110,7 @@ final class Catalog
             'owner_username' => $this->getOwnerUsername(),
             'product_selection_criteria' => $this->getProductSelectionCriteria(),
             'product_value_filters' => $this->getProductValueFilters(),
+            'product_mapping' => $this->getProductMapping(),
         ];
     }
 }

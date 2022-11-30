@@ -7,8 +7,9 @@ Feature: Export updated variant products according to a date
   Scenario: Export only the variant products which parent has been updated since the last export
     Given a "catalog_modeling" catalog configuration
     And the following job "csv_catalog_modeling_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
-      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile","attributes":["collection","color"]},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_catalog_modeling_product_export"}]} |
+      | storage   | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"}                                                                                        |
+      | filters   | {"structure":{"locales":["en_US"],"scope":"mobile","attributes":["collection","color"]},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_catalog_modeling_product_export"}]} |
+      | with_uuid | no                                                                                                                                                               |
     And I am logged in as "Julia"
     When I am on the "csv_catalog_modeling_product_export" export job page
     And I launch the export job
@@ -26,4 +27,3 @@ Feature: Export updated variant products according to a date
       braided-hat-m;master_accessories_hats;1;accessories;model-braided-hat;;;;;;;;;;;;;;;;;summer_2017;battleship_grey
       braided-hat-xxxl;master_accessories_hats;1;accessories;model-braided-hat;;;;;;;;;;;;;;;;;summer_2017;battleship_grey
       """
-

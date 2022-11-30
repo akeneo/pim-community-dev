@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: Local de archivo
             help: Definir la configuración regional en la que se muestran las etiquetas
+          with_uuid:
+            title: Con UUID de producto
+            help: Exportar el UUID del producto y de los productos asociados
+          with_uuid_for_models:
+            title: Con UUID de producto
+            help: Exportar el UUID del producto asociado en lugar de su identificador
       file_path: Camino del fichero
       storage_form:
         title: Almacenamiento
@@ -158,16 +164,38 @@ pim_import_export:
           local: Local
           sftp: SFTP
           none: No hay almacenamiento configurado
-        file_path.label: Camino del fichero
-        host.label: Host
-        port.label: Puerto
-        username.label: Iniciar sesión
-        password.label: Contraseña
+        file_path:
+          label: Camino del fichero
+          placeholder: miarchivo.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: ejemplo.com
+        fingerprint:
+          label: Huella digital del host (opcional)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Requerimos una suma de comprobación hash SHA-512 o MD5 con notación de dos puntos para la huella digital del host.
+        port:
+          label: Puerto
+          placeholder: 22
+        username:
+          label: Iniciar sesión
+          placeholder: Introduzca su nombre de usuario
+        password:
+          label: Contraseña
+          placeholder: Introduzca su contraseña
+        public_key:
+          label: Clave pública
+        login_type:
+          label: Método de autenticación
+          password: Usuario y contraseña
+          private_key: Clave privada
       validation:
         storage:
           unavailable_type: Este almacenamiento no está disponible, solo lo está {{ available_types }}.
         file_path:
           unsupported_extension: Extensión de archivo no admitida
+        fingerprint:
+          invalid_encoding: La huella digital del host debe ser un hash válido SHA-512 o MD5 con notación de dos puntos.
       connection_checker:
         label: Probar ajustes de conexión
         exception: No se puede establecer la conexión, comprueba tu configuración.

@@ -22,19 +22,19 @@ use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
  *     values: array<string, array<AttributeValueApi>>
  * }
  * @phpstan-type PropertyApi array{code: string, labels: array<string, string>}
- * @phpstan-type AttributeValueApi array{data: string, locale: string|null, attribute_code: string}
+ * @phpstan-type AttributeValueApi array{data: string, channel: string|null, locale: string|null, attribute_code: string}
  */
 class InternalApiToStd implements ConverterInterface
 {
     public function __construct(
-        private InternalApiRequirementChecker $checker
+        private InternalApiRequirementChecker $checker,
     ) {
     }
 
     /**
      * @param InternalApi $data
      *
-     * @retrun StandardInternalApi
+     * @return StandardInternalApi
      *
      * @throws ArrayConversionException
      */

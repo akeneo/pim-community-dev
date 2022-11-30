@@ -41,7 +41,7 @@ class CategoryController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var  ValidatorInterface */
+    /** @var ValidatorInterface */
     protected $validator;
 
     /** @var SimpleFactoryInterface */
@@ -79,7 +79,7 @@ class CategoryController
         PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
         StreamResourceResponse $partialUpdateStreamResource,
-        array $apiConfiguration
+        array $apiConfiguration,
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -95,12 +95,11 @@ class CategoryController
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
-     *
-     * @throws NotFoundHttpException
+     * @param string $code
      *
      * @return JsonResponse
+     *
+     * @throws NotFoundHttpException
      *
      * @AclAncestor("pim_api_category_list")
      */
@@ -115,15 +114,13 @@ class CategoryController
         $categoryApi = $this->normalizer->normalize(
             $category,
             'external_api',
-            ['with_position' => $request->query->getBoolean('with_position')]
+            ['with_position' => $request->query->getBoolean('with_position')],
         );
 
         return new JsonResponse($categoryApi);
     }
 
     /**
-     * @param Request $request
-     *
      * @return JsonResponse
      *
      * @AclAncestor("pim_api_category_list")
@@ -137,8 +134,8 @@ class CategoryController
         }
 
         $defaultParameters = [
-            'page'       => 1,
-            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'page' => 1,
+            'limit' => $this->apiConfiguration['pagination']['limit_by_default'],
             'with_count' => 'false',
         ];
 
@@ -155,16 +152,16 @@ class CategoryController
                 $searchFilters,
                 $order,
                 $queryParameters['limit'],
-                $offset
+                $offset,
             );
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
 
         $parameters = [
-            'query_parameters'    => $queryParameters,
-            'list_route_name'     => 'pim_api_category_list',
-            'item_route_name'     => 'pim_api_category_get',
+            'query_parameters' => $queryParameters,
+            'list_route_name' => 'pim_api_category_list',
+            'item_route_name' => 'pim_api_category_get',
         ];
 
         $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
@@ -173,22 +170,20 @@ class CategoryController
             $this->normalizer->normalize(
                 $categories,
                 'external_api',
-                ['with_position' => $request->query->getBoolean('with_position')]
+                ['with_position' => $request->query->getBoolean('with_position')],
             ),
             $parameters,
-            $count
+            $count,
         );
 
         return new JsonResponse($paginatedCategories);
     }
 
     /**
-     * @param Request $request
+     * @return Response
      *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
-     *
-     * @return Response
      *
      * @AclAncestor("pim_api_category_edit")
      */
@@ -208,11 +203,9 @@ class CategoryController
     }
 
     /**
-     * @param Request $request
+     * @return Response
      *
      * @throws HttpException
-     *
-     * @return Response
      *
      * @AclAncestor("pim_api_category_edit")
      */
@@ -225,13 +218,12 @@ class CategoryController
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
+     * @param string $code
+     *
+     * @return Response
      *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
-     *
-     * @return Response
      *
      * @AclAncestor("pim_api_category_edit")
      */
@@ -269,9 +261,9 @@ class CategoryController
      *
      * @param string $content content of a request to decode
      *
-     * @throws BadRequestHttpException
-     *
      * @return array
+     *
+     * @throws BadRequestHttpException
      */
     protected function getDecodedContent($content)
     {
@@ -288,8 +280,8 @@ class CategoryController
      * Update a category. It throws an error 422 if a problem occurred during the update.
      *
      * @param CategoryInterface $category category to update
-     * @param array             $data     data of the request already decoded
-     * @param string            $anchor
+     * @param array $data data of the request already decoded
+     * @param string $anchor
      *
      * @throws DocumentedHttpException
      */
@@ -298,19 +290,13 @@ class CategoryController
         try {
             $this->updater->update($category, $data);
         } catch (PropertyException $exception) {
-            throw new DocumentedHttpException(
-                Documentation::URL . $anchor,
-                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
-                $exception
-            );
+            throw new DocumentedHttpException(Documentation::URL.$anchor, sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()), $exception);
         }
     }
 
     /**
      * Validate a category. It throws an error 422 with every violated constraints if
      * the validation failed.
-     *
-     * @param CategoryInterface $category
      *
      * @throws ViolationHttpException
      */
@@ -325,8 +311,7 @@ class CategoryController
     /**
      * Get a response with a location header to the created or updated resource.
      *
-     * @param CategoryInterface $category
-     * @param string            $status
+     * @param string $status
      *
      * @return Response
      */
@@ -336,7 +321,7 @@ class CategoryController
         $route = $this->router->generate(
             'pim_api_category_get',
             ['code' => $category->getCode()],
-            Router::ABSOLUTE_URL
+            Router::ABSOLUTE_URL,
         );
 
         $response->headers->set('Location', $route);
@@ -351,20 +336,14 @@ class CategoryController
      * The code in the request body is optional when we create a resource with PATCH.
      *
      * @param string $code code provided in the url
-     * @param array  $data body of the request already decoded
+     * @param array $data body of the request already decoded
      *
      * @throws UnprocessableEntityHttpException
      */
     protected function validateCodeConsistency($code, array $data)
     {
         if (isset($data['code']) && $code !== $data['code']) {
-            throw new UnprocessableEntityHttpException(
-                sprintf(
-                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
-                    $data['code'],
-                    $code
-                )
-            );
+            throw new UnprocessableEntityHttpException(sprintf('The code "%s" provided in the request body must match the code "%s" provided in the url.', $data['code'], $code));
         }
     }
 }

@@ -8,6 +8,7 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
+  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
@@ -33,6 +34,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
   const [displayCategoryTemplatesColumn, setDisplayCategoryTemplatesColumn] = useState<boolean>(false);
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
 
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
@@ -75,7 +78,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   };
 
   const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
-    createTemplate(categoryTree, router)
+    createTemplate(categoryTree, catalogLocale, router)
       .then(response => {
         response.json().then((template: Template) => {
           if (template) {

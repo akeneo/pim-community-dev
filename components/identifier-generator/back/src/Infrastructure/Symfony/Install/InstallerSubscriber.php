@@ -28,8 +28,7 @@ class InstallerSubscriber implements EventSubscriberInterface
 
     public function updateSchema(): void
     {
-        $this->connection->executeStatement(
-            <<<SQL
+        $this->connection->executeStatement(<<<SQL
             CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator (
                 `uuid` binary(16) PRIMARY KEY,
                 `code` VARCHAR(100) NOT NULL,
@@ -40,7 +39,17 @@ class InstallerSubscriber implements EventSubscriberInterface
                 `delimiter` VARCHAR(100),
                 UNIQUE INDEX unique_identifier_generator_code (code)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-            SQL
-        );
+            SQL);
+        $this->connection->executeStatement(<<<SQL
+            CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator_prefixes (
+                `product_uuid` binary(16) NOT NULL,
+                `attribute_id` INT NOT NULL,
+                `prefix` VARCHAR(255) NOT NULL,
+                `number` INT NOT NULL,
+                CONSTRAINT `FK_PRODUCTUUID` FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE,
+                CONSTRAINT `FK_ATTRIBUTEID` FOREIGN KEY (`attribute_id`) REFERENCES `pim_catalog_attribute` (`id`) ON DELETE CASCADE,
+                INDEX index_identifier_generator_prefixes (`attribute_id`, `prefix`, `number`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            SQL);
     }
 }

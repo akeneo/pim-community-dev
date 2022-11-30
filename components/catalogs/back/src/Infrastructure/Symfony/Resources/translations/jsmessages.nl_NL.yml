@@ -27,15 +27,12 @@ akeneo_catalogs:
       channel:
         label: Kanaal
         no_matches: Geen overeenkomsten gevonden
-        placeholder: Selecteer uw kanaal
       locale:
         label: Taal
         no_matches: Geen overeenkomsten gevonden
-        placeholder: Selecteer uw taal
       currency:
         label: Valuta
         no_matches: Geen overeenkomsten gevonden
-        placeholder: Selecteer uw valuta
   product_selection:
     empty: Voeg selectiecriteria toe om uw productselectie te maken
     more_information: Ga naar Hulp voor meer informatie.
@@ -63,18 +60,15 @@ akeneo_catalogs:
       family:
         label: Familie
         no_matches: Geen overeenkomsten gevonden
-        placeholder: Selecteer uw families
       completeness:
         label: Volledigheid
       attribute_option:
         no_matches: Geen overeenkomsten gevonden
-        placeholder: Selecteer uw opties
       category:
         label: Categorie
         remove: Categorie verwijderen
         category_tree: Categorieboom
       measurement:
-        search: Selecteer uw eenheid
         no_results: Geen overeenkomsten gevonden
       boolean:
         yes: Yes
@@ -107,9 +101,6 @@ akeneo_catalogs:
         label: Filteren
         option:
           all: Alle
-      table:
-        target: Doel
-        source: Bron
     source:
       placeholder:
         title: Bron selecteren

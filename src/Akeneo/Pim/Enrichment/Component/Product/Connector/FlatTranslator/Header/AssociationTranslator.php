@@ -9,25 +9,13 @@ use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
 class AssociationTranslator implements FlatHeaderTranslatorInterface
 {
-    /** @var AssociationColumnsResolver */
-    private $associationColumnsResolver;
-
-    /** @var LabelTranslatorInterface */
-    private $labelTranslator;
-
-    /** @var GetAssociationTypeTranslations */
-    private $getAssociationTypeTranslations;
-
-    private $associationTranslations = [];
+    private array $associationTranslations = [];
 
     public function __construct(
-        AssociationColumnsResolver $associationColumnsResolver,
-        LabelTranslatorInterface $labelTranslator,
-        GetAssociationTypeTranslations $getAssociationTypeTranslations
+        private readonly AssociationColumnsResolver $associationColumnsResolver,
+        private readonly LabelTranslatorInterface $labelTranslator,
+        private readonly GetAssociationTypeTranslations $getAssociationTypeTranslations
     ) {
-        $this->associationColumnsResolver = $associationColumnsResolver;
-        $this->labelTranslator = $labelTranslator;
-        $this->getAssociationTypeTranslations = $getAssociationTypeTranslations;
     }
 
     public function supports(string $columnName): bool

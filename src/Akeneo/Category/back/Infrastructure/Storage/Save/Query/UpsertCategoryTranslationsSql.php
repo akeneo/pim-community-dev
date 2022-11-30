@@ -39,11 +39,11 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
             if (!$this->isIdenticalLabel($categoryModel, $localeCode, $label)) {
                 $queries .= $this->buildUpsertQuery($loopIndex);
 
-                $params['label' . $loopIndex] = $label;
-                $params['locale' . $loopIndex] = $localeCode;
+                $params['label'.$loopIndex] = $label;
+                $params['locale'.$loopIndex] = $localeCode;
 
-                $types['label' . $loopIndex] = \PDO::PARAM_STR;
-                $types['locale' . $loopIndex] = \PDO::PARAM_STR;
+                $types['label'.$loopIndex] = \PDO::PARAM_STR;
+                $types['locale'.$loopIndex] = \PDO::PARAM_STR;
 
                 ++$loopIndex;
             }
@@ -71,7 +71,7 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
 SQL;
     }
 
-    private function isIdenticalLabel(Category $category, string $localeCode, string $label): bool
+    private function isIdenticalLabel(Category $category, string $localeCode, string|null $label): bool
     {
         $existingLabels = $this->getCategory->byCode((string) $category->getCode())?->getLabels()?->getTranslations();
 

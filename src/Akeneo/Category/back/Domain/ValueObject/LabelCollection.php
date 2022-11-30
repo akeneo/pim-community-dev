@@ -7,7 +7,9 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * @implements \IteratorAggregate<string, string>
+ *
  * @phpstan-type Locale string
  * @phpstan-type LocalizedLabels array<Locale, string>
  */
@@ -18,8 +20,8 @@ final class LabelCollection implements \IteratorAggregate
      */
     private function __construct(private ?array $translatedLabels)
     {
-        Assert::allString($translatedLabels);
-        Assert::allStringNotEmpty($translatedLabels);
+        Assert::nullOrIsArray($translatedLabels);
+        Assert::allStringNotEmpty(array_keys($translatedLabels));
     }
 
     /**

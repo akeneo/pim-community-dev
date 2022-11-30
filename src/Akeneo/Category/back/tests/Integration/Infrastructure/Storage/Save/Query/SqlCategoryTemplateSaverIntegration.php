@@ -27,7 +27,7 @@ class SqlCategoryTemplateSaverIntegration extends CategoryTestCase
         $category = $this->get(GetCategoryInterface::class)->byCode('master');
 
         $templateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
-        $templateModel = $this->givenTemplate($templateUuid, $category->getId());
+        $templateModel = $this->givenTemplateWithAttributes($templateUuid, $category->getId());
 
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
         $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
@@ -44,6 +44,4 @@ class SqlCategoryTemplateSaverIntegration extends CategoryTestCase
         $this->assertEquals($templateModel->getCode(),$insertedTemplate->getCode());
         $this->assertEquals($templateModel->getLabelCollection(),$insertedTemplate->getLabelCollection());
     }
-
-
 }

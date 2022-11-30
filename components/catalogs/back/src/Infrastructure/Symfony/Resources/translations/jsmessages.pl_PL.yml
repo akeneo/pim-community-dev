@@ -27,15 +27,12 @@ akeneo_catalogs:
       channel:
         label: Kanał
         no_matches: Nie znaleziono dopasowań
-        placeholder: Wybierz kanał
       locale:
         label: Wersja językowa
         no_matches: Nie znaleziono dopasowań
-        placeholder: Wybierz wersję językową
       currency:
         label: Waluta
         no_matches: Nie znaleziono dopasowań
-        placeholder: Wybierz walutę
   product_selection:
     empty: Dodaj kryteria wyboru, aby utworzyć wybór produktów
     more_information: Więcej informacji znajdziesz w naszej pomocy.
@@ -63,18 +60,15 @@ akeneo_catalogs:
       family:
         label: Rodzina
         no_matches: Nie znaleziono dopasowań
-        placeholder: Wybierz rodziny
       completeness:
         label: Kompletność
       attribute_option:
         no_matches: Nie znaleziono dopasowań
-        placeholder: Wybierz opcje
       category:
         label: Kategoria
         remove: Usuń kategorię
         category_tree: Drzewo kategorii
       measurement:
-        search: Wybierz jednostkę
         no_results: Nie znaleziono dopasowań
       boolean:
         yes: Yes
@@ -107,9 +101,6 @@ akeneo_catalogs:
         label: Filtr
         option:
           all: Wszystkie
-      table:
-        target: Cel
-        source: Źródło
     source:
       placeholder:
         title: Wybierz źródło

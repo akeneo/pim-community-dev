@@ -31,6 +31,4 @@ class SqlCategoryTreeTemplateSaverIntegration extends CategoryTestCase
 
         $this->assertEquals($category->getId(), $retrievedCategoryTree->getId());
     }
-
-
 }

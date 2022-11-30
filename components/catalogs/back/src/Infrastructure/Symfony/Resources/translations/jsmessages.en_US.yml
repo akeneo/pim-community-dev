@@ -27,15 +27,15 @@ akeneo_catalogs:
             channel:
                 label: Channel
                 no_matches: No matches found
-                placeholder: Select your channel
+                placeholder: Select a channel
             locale:
                 label: Locale
                 no_matches: No matches found
-                placeholder: Select your locale
+                placeholder: Select a locale
             currency:
                 label: Currency
                 no_matches: No matches found
-                placeholder: Select your Currency
+                placeholder: Select a currency
     product_selection:
         empty: Add selection criteria to create your product selection
         more_information: Check out our Help center for more information.
@@ -63,18 +63,18 @@ akeneo_catalogs:
             family:
                 label: Family
                 no_matches: No matches found
-                placeholder: Select your families
+                placeholder: Select a family
             completeness:
                 label: Completeness
             attribute_option:
                 no_matches: No matches found
-                placeholder: Select your options
+                placeholder: Select an option
             category:
                 label: Category
                 remove: Remove category
                 category_tree: Category tree
             measurement:
-                search: Select your unit
+                search: Unit
                 no_results: No matches found
             boolean:
                 yes: Yes
@@ -108,9 +108,19 @@ akeneo_catalogs:
                 option:
                     all: All
             table:
-                target: Target
-                source: Source
+                target: Catalog Target
+                source: Pim Source
+                placeholder: Define a content source
+            placeholder:
+                illustration_title: No catalog target available
         source:
+            title: Select source
+            select_source:
+                label: Pim source
+                search: Search criterion
+                no_results: no matches found
+                section_system: system
+                section_attributes: attributes
             placeholder:
                 title: Select source
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.

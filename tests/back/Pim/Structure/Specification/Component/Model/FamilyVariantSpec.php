@@ -45,8 +45,8 @@ class FamilyVariantSpec extends ObjectBehavior
         Collection $axes2,
         Collection $attribute1,
         Collection $attribute2,
-        \Iterator $iterator
     ) {
+        $iterator = new \ArrayIterator();
         $this->addVariantAttributeSet($variantAttributeSet1);
         $this->addVariantAttributeSet($variantAttributeSet2);
         $this->setFamily($family);

@@ -109,7 +109,7 @@ define([
             this.isQuantifiedAssociation(associationTypes, currentAssociationTypeCode)
           ) {
             this.renderQuantifiedAssociations({
-              products: value.products.map(identifier => ({identifier, quantity: 1})),
+              products: value.product_uuids.map(uuid => ({uuid, quantity: 1})),
               product_models: value.product_models.map(identifier => ({identifier, quantity: 1})),
             });
           } else {

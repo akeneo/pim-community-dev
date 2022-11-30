@@ -3,5 +3,4 @@ services:
         class: Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier
         arguments:
             - '@mailer'
-            - '%mailer_url%'
             - '@logger'

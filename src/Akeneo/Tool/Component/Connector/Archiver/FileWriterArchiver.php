@@ -125,8 +125,8 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                 $this->logger->warning(
                     'The remote file could not be read from the remote filesystem',
                     [
-                        'key' => $filesToArchive->sourceKey(),
-                        'storage' => $filesToArchive->sourceStorage(),
+                        'key' => $fileToArchive->sourceKey(),
+                        'storage' => $fileToArchive->sourceStorage(),
                         'exception' => [
                             'type' => \get_class($e),
                             'message' => $e->getMessage(),

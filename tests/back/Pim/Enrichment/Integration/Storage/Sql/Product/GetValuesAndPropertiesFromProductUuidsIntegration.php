@@ -9,8 +9,6 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -86,7 +84,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
 
     public function testSingleProductProperties()
     {
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $uuidProductA = $this->getProductUuid('productA');
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             $uuidProductA->toString() => [
@@ -110,7 +108,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
 
     public function testGroups()
     {
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $this->assertEquals(
             ['group1', 'group2'],
             $this->getQuery()->fetchByProductUuids([$uuidProductB])[$uuidProductB->toString()]['group_codes']
@@ -119,7 +117,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
 
     public function testVariantProductValues()
     {
-        $uuidVariantProductA = $this->getProductUuidFromIdentifier('VariantProductA');
+        $uuidVariantProductA = $this->getProductUuid('VariantProductA');
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             $uuidVariantProductA->toString() => [
@@ -181,7 +179,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
                 ]
             ]
         );
-        $uuidVariantProductWithEmptyValuesFromPM = $this->getProductUuidFromIdentifier('VariantProductWithEmptyValuesFromPM');
+        $uuidVariantProductWithEmptyValuesFromPM = $this->getProductUuid('VariantProductWithEmptyValuesFromPM');
         $results = $this->getQuery()->fetchByProductUuids([$uuidVariantProductWithEmptyValuesFromPM]);
 
         $expected = [
@@ -260,12 +258,5 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
             return $group;
         }, $groupCodes);
         $this->get('pim_catalog.saver.group')->saveAll($groups);
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
     }
 }

@@ -20,10 +20,11 @@ class SetImage implements ValueImageUserIntent
      * } | null $value
      */
     public function __construct(
-        private string $attributeUuid,
-        private string $attributeCode,
-        private ?string $localeCode,
-        private ?array $value,
+        private readonly string $attributeUuid,
+        private readonly string $attributeCode,
+        private readonly ?string $channelCode,
+        private readonly ?string $localeCode,
+        private readonly ?array $value,
     ) {
     }
 
@@ -35,6 +36,11 @@ class SetImage implements ValueImageUserIntent
     public function attributeCode(): string
     {
         return $this->attributeCode;
+    }
+
+    public function channelCode(): ?string
+    {
+        return $this->channelCode;
     }
 
     public function localeCode(): ?string

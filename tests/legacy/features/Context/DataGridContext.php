@@ -1213,7 +1213,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      *
      * @When /^I create the (private|public)?\s?view:$/
      */
-    public function iCreateTheView(string $viewType = '', TableNode $table): array
+    public function iCreateTheView(TableNode $table, string $viewType = ''): array
     {
         $this->getCurrentPage()->clickOnCreateViewButton();
 
@@ -1264,8 +1264,8 @@ class DataGridContext extends PimContext implements PageObjectAware
         );
 
         if (
-                ('' !== $not && in_array($viewLabel, $availableViews)) ||
-                ('' === $not && !in_array($viewLabel, $availableViews))
+            ('' !== $not && in_array($viewLabel, $availableViews)) ||
+            ('' === $not && !in_array($viewLabel, $availableViews))
         ) {
             throw $this->createExpectationException(
                 sprintf(

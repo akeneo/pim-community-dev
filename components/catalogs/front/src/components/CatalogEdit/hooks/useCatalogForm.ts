@@ -38,6 +38,7 @@ export const useCatalogForm = (id: string): Result => {
         enabled: false,
         product_selection_criteria: {},
         product_value_filters: {},
+        product_mapping: {},
     });
 
     const save = async () => {
@@ -66,13 +67,20 @@ export const useCatalogForm = (id: string): Result => {
                     case CatalogFormActions.INITIALIZE:
                         dispatch(action);
                         break;
+                    case CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA:
+                        if (Object.keys(values.product_selection_criteria).length > Object.keys(action.value).length) {
+                            setErrors([]);
+                        }
+                        setDirty(true);
+                        dispatch(action);
+                        break;
                     default:
                         setDirty(true);
                         dispatch(action);
                         break;
                 }
             },
-        [setDirty]
+        [setDirty, values, setErrors]
     );
 
     if (catalog.isLoading) {
@@ -90,6 +98,7 @@ export const useCatalogForm = (id: string): Result => {
                 enabled: catalog.data.enabled,
                 product_selection_criteria: indexify(catalog.data.product_selection_criteria),
                 product_value_filters: catalog.data.product_value_filters,
+                product_mapping: catalog.data.product_mapping,
             },
         });
 

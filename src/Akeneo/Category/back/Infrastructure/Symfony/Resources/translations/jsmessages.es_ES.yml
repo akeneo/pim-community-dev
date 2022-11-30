@@ -1,8 +1,33 @@
 akeneo.category:
+  tree_list:
+    column:
+      category_templates: Plantillas de categoría
   attributes: Atributos
   edition_form:
     error:
       unhandled_attribute_type: No se pudo encontrar el constructor de campos de atributos para el tipo de atributo «{{type}}»
     template:
+      title: Plantilla
       fetching_failed: Se ha producido un error al recuperar la plantilla
     unsaved_changes: Perderá los cambios en la categoría si abandona la página.
+  tree:
+    create: Crear árbol
+    delete: Eliminar árbol
+  template:
+    create: Activar plantilla
+    edit: Ver plantilla
+    delete: Eliminar plantilla
+    notification_success: Plantilla activada correctamente
+    notification_error: No se pudo activar la plantilla
+    attribute:
+      description_title: Ajustes de descripción
+      type:
+        text: Texto
+        textarea: Área de texto
+        richtext: Texto enriquecido
+        image: Imagen
+  template_list:
+    columns:
+      header: Etiqueta
+      code: Código
+      type: Tipo

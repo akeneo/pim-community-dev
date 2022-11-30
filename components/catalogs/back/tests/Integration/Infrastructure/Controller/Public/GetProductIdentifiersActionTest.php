@@ -62,7 +62,12 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
     public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsDisabled(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            isEnabled: false,
+        );
         $this->createProduct('tshirt-blue');
 
         $this->client->request(
@@ -81,7 +86,7 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
             'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals($expectedMessage, $payload['message']);
+        Assert::assertEquals($expectedMessage, $payload['error']);
     }
 
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
@@ -183,7 +188,7 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
             'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals($expectedMessage, $payload['message']);
+        Assert::assertEquals($expectedMessage, $payload['error']);
         Assert::assertEquals(false, $this->getCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c')->isEnabled());
     }
 }

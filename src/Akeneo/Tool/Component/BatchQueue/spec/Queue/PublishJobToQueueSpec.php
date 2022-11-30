@@ -57,7 +57,6 @@ class PublishJobToQueueSpec extends ObjectBehavior
 
     public function it_publishes_a_job_to_the_execution_queue(
         DoctrineJobRepository $jobRepository,
-        ValidatorInterface $validator,
         JobExecutionQueueInterface $jobExecutionQueue,
         JobExecutionMessageFactory $jobExecutionMessageFactory,
         EventDispatcherInterface $eventDispatcher,
@@ -88,6 +87,6 @@ class PublishJobToQueueSpec extends ObjectBehavior
         $jobExecutionQueue->publish($jobExecutionMessage)->shouldBeCalled();
         $eventDispatcher->dispatch(Argument::type(JobExecutionEvent::class), EventInterface::JOB_EXECUTION_CREATED)->shouldBeCalled();
 
-        $this->publish($batchCode, $config);
+        $this->publish($batchCode, $config)->shouldReturn($jobExecution);
     }
 }

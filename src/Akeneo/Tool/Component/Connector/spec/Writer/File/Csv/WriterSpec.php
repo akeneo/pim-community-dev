@@ -141,9 +141,9 @@ class WriterSpec extends ObjectBehavior
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
-        $flatRowBuffer->rewind()->willReturn();
+        $flatRowBuffer->rewind();
         $flatRowBuffer->valid()->willReturn(true, false);
-        $flatRowBuffer->next()->willReturn();
+        $flatRowBuffer->next();
         $flatRowBuffer->current()->willReturn([
             'id' => 0,
             'family' => 45

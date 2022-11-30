@@ -5,4 +5,6 @@ akeneo_connectivity.connection:
   acl.open_apps: Abrir aplicaciones
 pim_notification:
   connected_app_authorizations:
-    message: 'La aplicación <strong>%app_name%</strong> requiere una actualización de autorización. Abra la aplicación para proceder.'
+    message: 'La aplicación <strong>{{ app_name }}</strong> requiere una actualización de autorización. Abra la aplicación para proceder.'
+  disabled_catalog:
+    message: "Una o varias modificaciones en la configuración de su PIM han afectado al catálogo {{ catalog_name }}. Revise la selección de productos relacionados y habilite de nuevo el catálogo."

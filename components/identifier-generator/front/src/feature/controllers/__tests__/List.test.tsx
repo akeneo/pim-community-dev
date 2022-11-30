@@ -4,6 +4,9 @@ import {List} from '../';
 
 jest.mock('../../pages/CreateGeneratorModal');
 jest.mock('../../pages/CreateGeneratorPage');
+jest.mock('../../hooks/useGetIdentifierGenerators', () => ({
+  useGetIdentifierGenerators: () => ({data: [], isLoading: false}),
+}));
 
 describe('List', () => {
   it('should be in the index page on loading', () => {

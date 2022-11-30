@@ -27,15 +27,12 @@ akeneo_catalogs:
       channel:
         label: 渠道
         no_matches: 未找到匹配项
-        placeholder: 选择您的渠道
       locale:
         label: 区域
         no_matches: 未找到匹配项
-        placeholder: 选择区域
       currency:
         label: 货币
         no_matches: 未找到匹配项
-        placeholder: 选择货币
   product_selection:
     empty: 添加选择条件以创建您的产品选择
     more_information: 查看我们的“帮助中心”获取更多信息。
@@ -63,18 +60,15 @@ akeneo_catalogs:
       family:
         label: 品类
         no_matches: 未找到匹配项
-        placeholder: 选择品类
       completeness:
         label: 完成度
       attribute_option:
         no_matches: 未找到匹配项
-        placeholder: 选择选项
       category:
         label: 类别
         remove: 移除类别
         category_tree: 类别树
       measurement:
-        search: 选择单位
         no_results: 未找到匹配项
       boolean:
         yes: Yes
@@ -107,9 +101,6 @@ akeneo_catalogs:
         label: 筛选器
         option:
           all: 所有
-      table:
-        target: 目标
-        source: 源
     source:
       placeholder:
         title: 选择源

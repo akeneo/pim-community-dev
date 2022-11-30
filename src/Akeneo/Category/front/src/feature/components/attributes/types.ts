@@ -13,6 +13,7 @@ export type AttributeFieldBuilder<ValueType extends AttributeInputValue> = (
 ) => React.FC<AttributeFieldProps<ValueType>>;
 
 export type AttributeFieldProps<ValueType> = {
+  channel: string;
   locale: string;
   value: ValueType;
   onChange: (value: ValueType) => void;

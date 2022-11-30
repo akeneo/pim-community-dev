@@ -270,7 +270,7 @@ class DataQualityInsightsTestCase extends TestCase
 UPDATE pim_data_quality_insights_attribute_group_activation
 SET updated_at = :updatedAt WHERE attribute_group_code = :attributeGroupCode
 SQL
-            ,
+                ,
                 [
                 'updatedAt' => $updatedAt->format(Clock::TIME_FORMAT),
                 'attributeGroupCode' => $code,

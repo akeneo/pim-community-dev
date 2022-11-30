@@ -1,5 +1,32 @@
 # 6.0.x
 
+# 6.0.56 (2022-11-28)
+
+## Bug fixes
+
+PIM-10734: Assets export fails because of a failed warning messages
+
+# 6.0.55 (2022-11-21)
+
+# 6.0.54 (2022-11-18)
+
+## Bug fixes
+
+- PIM-10688: Fix error on toLocaleLowerCase for select attribute options
+
+# 6.0.53 (2022-11-10)
+
+# 6.0.52 (2022-11-08)
+
+## Bug fixes
+
+- PIM-10664 Fix expand/collapse arrow disappearing after category creation
+- PIM-10699: Fix "All" is exported allong with the user groups on the user export
+
+# 6.0.51 (2022-11-03)
+
+# 6.0.50 (2022-11-02)
+
 # 6.0.49 (2022-10-31)
 
 # 6.0.48 (2022-10-28)
@@ -27,6 +54,7 @@ PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
 
 ## Bug fixes
 
+- PIM-10631: increase the FOS OAuth scope column to VARCHAR(1000)
 - PIM-10435: [Backport] Fix search_after requests with codes using uppercase accented characters
 
 # 6.0.43 (2022-09-20)

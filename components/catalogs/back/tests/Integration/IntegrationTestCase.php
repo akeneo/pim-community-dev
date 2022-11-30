@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Test\Integration;
 
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
@@ -26,6 +27,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -161,6 +163,8 @@ abstract class IntegrationTestCase extends WebTestCase
             $scopes,
         );
 
+        $this->addAllPermissionsUserGroup('app_shopifi');
+
         /** @var KernelBrowser $client */
         $client = self::getContainer()->get(KernelBrowser::class);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
@@ -188,6 +192,66 @@ abstract class IntegrationTestCase extends WebTestCase
         $client->getCookieJar()->set($cookie);
 
         return $client;
+    }
+
+    private function addAllPermissionsUserGroup(string $group): void
+    {
+        $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            /** @noRector StringClassNameToClassConstantRector */
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
+            group: $group,
+            permissions: [
+                'own' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+    }
+
+    private function callPermissionsSaver(string $service, string $group, array $permissions): void
+    {
+        if (self::getContainer()->has($service)) {
+            self::getContainer()->get($service)->save($group, $permissions);
+        }
     }
 
     protected function assertViolationsListContains(
@@ -290,14 +354,37 @@ abstract class IntegrationTestCase extends WebTestCase
         return self::getContainer()->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
-    protected function createCatalog(string $id, string $name, string $ownerUsername): void
-    {
+    protected function createCatalog(
+        string $id,
+        string $name,
+        string $ownerUsername,
+        bool $isEnabled = true,
+        ?array $catalogProductSelection = null,
+        ?array $catalogProductValueFilters = null,
+        ?string $productMappingSchema = null,
+        ?array $catalogProductMapping = null,
+    ): void {
         $commandBus = self::getContainer()->get(CommandBus::class);
         $commandBus->execute(new CreateCatalogCommand(
             $id,
             $name,
             $ownerUsername,
         ));
+        if ($isEnabled) {
+            $this->enableCatalog($id);
+        }
+        if ($catalogProductSelection !== null) {
+            $this->setCatalogProductSelection($id, $catalogProductSelection);
+        }
+        if ($catalogProductValueFilters !== null) {
+            $this->setCatalogProductValueFilters($id, $catalogProductValueFilters);
+        }
+        if ($productMappingSchema !== null) {
+            $this->setProductMappingSchema($id, $productMappingSchema);
+        }
+        if ($catalogProductMapping !== null) {
+            $this->setCatalogProductMapping($id, $catalogProductMapping);
+        }
     }
 
     protected function enableCatalog(string $id): void
@@ -309,6 +396,15 @@ abstract class IntegrationTestCase extends WebTestCase
                 'id' => Uuid::fromString($id)->getBytes(),
             ]
         );
+    }
+
+    protected function setProductMappingSchema(string $id, string $productMappingSchema): void
+    {
+        $commandBus = self::getContainer()->get(CommandBus::class);
+        $commandBus->execute(new UpdateProductMappingSchemaCommand(
+            $id,
+            \json_decode($productMappingSchema, false, 512, JSON_THROW_ON_ERROR),
+        ));
     }
 
     protected function setCatalogProductSelection(string $id, array $criteria)
@@ -383,6 +479,18 @@ abstract class IntegrationTestCase extends WebTestCase
         if ([] !== $options) {
             $this->createAttributeOptions($attribute, $options);
         }
+
+        /**
+         * The AbstractAttribute model is stateful and the getTranslation rely on an internal $locale to returns the
+         * translation. When you update the translation, the AbstractAttribute keeps in memory the last locale you
+         * updated.
+         * As Doctrine keeps in UOW objects, when you search for an attribute it translates the label according to the
+         * last locale you updated.
+         * If in your test you update the en_US, then fr_FR, you'll have the attribute label automatically translated
+         * in french no matter what you asked.
+         * Clearing the UOW allows us to have a clean attribute during the Doctrine hydration and the good translation.
+         */
+        self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
@@ -444,6 +552,22 @@ abstract class IntegrationTestCase extends WebTestCase
         $category = self::getContainer()->get('pim_catalog.factory.category')->create();
         self::getContainer()->get('pim_catalog.updater.category')->update($category, $data);
         self::getContainer()->get('pim_catalog.saver.category')->save($category);
+    }
+
+    protected function createGroup(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $group = self::getContainer()->get('pim_catalog.factory.group')->create();
+        self::getContainer()->get('pim_catalog.updater.group')->update($group, $data);
+        self::getContainer()->get('pim_catalog.saver.group')->save($group);
+    }
+
+    protected function createGroupType(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $groupType = self::getContainer()->get('pim_catalog.factory.group_type')->create();
+        self::getContainer()->get('pim_catalog.updater.group_type')->update($groupType, $data);
+        self::getContainer()->get('pim_catalog.saver.group_type')->save($groupType);
     }
 
     protected function enableCurrency(string $code): void

@@ -11,6 +11,9 @@ namespace Akeneo\Category\back\tests\Integration\Helper;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
@@ -27,6 +30,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
@@ -39,7 +43,7 @@ use Doctrine\DBAL\Driver\Exception;
 class CategoryTestCase extends TestCase
 {
     /**
-     * @param array<string, string>|null $labels
+     * @param array<string, string|null>|null $labels
      *
      * @throws Exception
      * @throws \Doctrine\DBAL\Exception
@@ -56,6 +60,7 @@ class CategoryTestCase extends TestCase
         $categoryModelToCreate = new Category(
             id: $categoryId,
             code: new Code($code),
+            templateUuid: null,
             labels: LabelCollection::fromArray($labels),
             parentId: $parentId,
         );
@@ -71,10 +76,11 @@ class CategoryTestCase extends TestCase
                 : new CategoryId($categoryBase->getParentId()->getValue());
 
         $categoryModelWithId = new Category(
-            new CategoryId($categoryBase->getId()->getValue()),
-            new Code((string) $categoryBase->getCode()),
-            $categoryModelToCreate->getLabels(),
-            $parentId,
+            id: new CategoryId($categoryBase->getId()->getValue()),
+            code: new Code((string) $categoryBase->getCode()),
+            templateUuid: null,
+            labels: $categoryModelToCreate->getLabels(),
+            parentId: $parentId,
         );
         $this->get(UpsertCategoryTranslations::class)->execute($categoryModelWithId);
 
@@ -87,10 +93,11 @@ class CategoryTestCase extends TestCase
 
         // Instantiates a new Category model based on data fetched in database
         return new Category(
-            new CategoryId($categoryBase->getId()->getValue()),
-            new Code((string) $categoryBase->getCode()),
-            LabelCollection::fromArray($categoryTranslations),
-            $createdParentId,
+            id: new CategoryId($categoryBase->getId()->getValue()),
+            code: new Code((string) $categoryBase->getCode()),
+            templateUuid: null,
+            labels: LabelCollection::fromArray($categoryTranslations),
+            parentId: $createdParentId,
         );
     }
 
@@ -102,6 +109,7 @@ class CategoryTestCase extends TestCase
         $category = new Category(
             id: null,
             code: $code,
+            templateUuid: null,
         );
         $this->get(UpsertCategoryBase::class)->execute($category);
 
@@ -127,8 +135,10 @@ class CategoryTestCase extends TestCase
         ?array $templateAttributes = null,
     ): Template {
         $getTemplate = new GetTemplateInMemory();
+        $generatedTemplateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+
         /** @var Template $defaultTemplate */
-        $defaultTemplate = $getTemplate->byUuid(TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'));
+        $defaultTemplate = $getTemplate->byUuid($generatedTemplateUuid);
 
         if ($templateUuid === null) {
             $templateUuid = $defaultTemplate->getUuid();
@@ -155,7 +165,7 @@ class CategoryTestCase extends TestCase
         }
 
         if ($templateAttributes === null) {
-            $templateAttributes = $defaultTemplate->getAttributeCollection();
+            $templateAttributes = $this->givenAttributes($generatedTemplateUuid);
         } else {
             $attributes = [];
             foreach ($templateAttributes as $attribute) {
@@ -204,7 +214,7 @@ class CategoryTestCase extends TestCase
         );
     }
 
-    protected function givenTemplate(string $templateUuidRaw, ?CategoryId $categoryId): Template
+    protected function givenTemplateWithAttributes(string $templateUuidRaw, ?CategoryId $categoryId): Template
     {
         $templateUuid = TemplateUuid::fromString($templateUuidRaw);
 
@@ -236,7 +246,7 @@ class CategoryTestCase extends TestCase
                 new AttributeCode('banner_image'),
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(true),
-                AttributeIsScopable::fromBoolean(false),
+                AttributeIsScopable::fromBoolean(true),
                 AttributeIsLocalizable::fromBoolean(false),
                 LabelCollection::fromArray(['en_US' => 'Banner image']),
                 $templateUuid,
@@ -276,6 +286,66 @@ class CategoryTestCase extends TestCase
                 AttributeAdditionalProperties::fromArray([]),
             ),
         ]);
+    }
+
+    protected function updateCategoryWithValues(string $code): void
+    {
+        $query = <<<SQL
+UPDATE pim_catalog_category SET value_collection = :value_collection WHERE code = :code;
+SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'value_collection' => json_encode([
+                'attribute_codes' => [
+                    'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                    'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
+                ],
+                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.'ecommerce'.AbstractValue::SEPARATOR.'en_US' => [
+                    'data' => 'All the shoes you need!',
+                    'type' => 'text',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                ],
+                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.'ecommerce'.AbstractValue::SEPARATOR.'fr_FR' => [
+                    'data' => 'Les chaussures dont vous avez besoin !',
+                    'type' => 'text',
+                    'channel' => 'ecommerce',
+                    'locale' => 'fr_FR',
+                    'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                ],
+                'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c' => [
+                    'data' => [
+                        'size' => 168107,
+                        'extension' => 'jpg',
+                        'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                        'mime_type' => 'image/jpeg',
+                        'original_filename' => 'shoes.jpg',
+                    ],
+                    'type' => 'image',
+                    'channel' => null,
+                    'locale' => null,
+                    'attribute_code' => 'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
+                ],
+            ], JSON_THROW_ON_ERROR),
+            'code' => $code,
+        ]);
+    }
+
+    protected function useTemplateFunctionalCatalog(string $templateUuid, string $productCode): void
+    {
+        $category = $this->createOrUpdateCategory(
+            code: $productCode,
+            labels: ['en_US' => 'socks'],
+        );
+
+        $template = $this->givenTemplateWithAttributes($templateUuid, $category->getId());
+        $this->get(CategoryTemplateSaver::class)->insert($template);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($template);
+        $this->get(CategoryTemplateAttributeSaver::class)->insert(
+            $template->getUuid(),
+            $template->getAttributeCollection(),
+        );
     }
 
     protected function getConfiguration()

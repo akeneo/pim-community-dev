@@ -19,6 +19,7 @@ import {MediaPreviewType} from '../../models/MediaPreview';
 
 const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputValue> = attribute => {
   const Component: React.FC<AttributeFieldProps<AttributeInputValue>> = ({
+    channel,
     locale,
     value,
     onChange,
@@ -40,7 +41,7 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
     });
 
     return (
-      <Field label={getLabelFromAttribute(attribute, locale)}>
+      <Field channel={channel} label={getLabelFromAttribute(attribute, locale)}>
         <MediaFileInput
           value={imageInfo}
           onChange={onChange}

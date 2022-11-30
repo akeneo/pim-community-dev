@@ -43,7 +43,7 @@ class BinaryImageGeneratorIntegration extends TestCase
             new AttributeCode('banner_image'),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
-            AttributeIsScopable::fromBoolean(false),
+            AttributeIsScopable::fromBoolean(true),
             AttributeIsLocalizable::fromBoolean(false),
             LabelCollection::fromArray(['en_US' => 'Banner image']),
             TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'),

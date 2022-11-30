@@ -1,29 +1,35 @@
 import {useQuery} from 'react-query';
 import {Template} from '../models';
-import {useRoute} from '@akeneo-pim-community/shared';
-import {useCallback} from 'react';
-import {ResponseStatus} from '../models/ResponseStatus';
+import {FetchStatus, useRouter} from '@akeneo-pim-community/shared';
+import {useCallback, useMemo} from 'react';
 
 const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
 type Result = {
-  status: ResponseStatus;
+  status: FetchStatus;
   data: Template | undefined;
   error: any;
 };
 
-interface UseTemplateParameters {
-  uuid: string;
-  enabled?: boolean;
-}
+const getFetchingStatus = (status: 'idle' | 'loading' | 'error' | 'success'): FetchStatus => {
+  if (status === 'loading') return 'fetching';
+  if (status === 'success') return 'fetched';
+  return status;
+};
 
-export const useTemplateByTemplateUuid = ({uuid, enabled = true}: UseTemplateParameters): Result => {
-  const url = useRoute('pim_category_template_rest_get_by_template_uuid', {
-    templateUuid: uuid,
-  });
+export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
+  const router = useRouter();
+  const url = useMemo(() => {
+    if (uuid === null) {
+      return null;
+    }
+    return router.generate('pim_category_template_rest_get_by_template_uuid', {
+      templateUuid: uuid,
+    });
+  }, [router, uuid]);
 
   const fetchTemplate = useCallback(async () => {
-    if (uuid.length === 0) {
+    if (url === null || uuid === null || uuid.length === 0) {
       return {};
     }
 
@@ -33,9 +39,14 @@ export const useTemplateByTemplateUuid = ({uuid, enabled = true}: UseTemplatePar
   }, [uuid, url]);
 
   const options = {
-    enabled,
+    enabled: uuid !== null && url !== null,
     staleTime: TEMPLATE_FETCH_STALE_TIME,
   };
 
-  return useQuery<Template, any>(['template'], fetchTemplate, options);
+  const response = useQuery<Template, any>(['template'], fetchTemplate, options);
+
+  return {
+    ...response,
+    status: getFetchingStatus(response.status),
+  };
 };

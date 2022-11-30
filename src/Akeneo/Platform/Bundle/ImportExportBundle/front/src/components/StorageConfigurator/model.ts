@@ -4,8 +4,13 @@ import {LocalStorage, SftpStorage, Storage, StorageType, localStorageIsEnabled} 
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 
+type StorageLoginType = 'password' | 'private_key';
+
+const STORAGE_LOGIN_TYPES = ['password', 'private_key'];
+
 type StorageConfiguratorProps = {
   storage: Storage;
+  fileExtension: string;
   onStorageChange: (storage: Storage) => void;
   validationErrors: ValidationError[];
 };
@@ -29,6 +34,10 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
   return enabledStorageConfigurators;
 };
 
+const isValidLoginType = (loginType: string): loginType is StorageLoginType => {
+  return STORAGE_LOGIN_TYPES.includes(loginType);
+};
+
 const getStorageConfigurator = (
   storageType: StorageType,
   featureFlags: FeatureFlags
@@ -48,9 +57,10 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
     'host' in storage &&
     'port' in storage &&
     'username' in storage &&
-    'password' in storage
+    'login_type' in storage &&
+    isValidLoginType(storage.login_type)
   );
 };
 
-export type {StorageConfiguratorProps};
-export {isLocalStorage, isSftpStorage, getStorageConfigurator};
+export type {StorageConfiguratorProps, StorageLoginType};
+export {isLocalStorage, isSftpStorage, isValidLoginType, getStorageConfigurator, STORAGE_LOGIN_TYPES};

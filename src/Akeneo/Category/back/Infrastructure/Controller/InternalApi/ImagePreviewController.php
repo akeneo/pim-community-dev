@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Domain\Query\GetAttributeInMemory;
+use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\CouldNotGeneratePreviewException;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorInterface;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 
 /**
- * Fetches the binary preview of the image
+ * Fetches the binary preview of the image.
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -36,7 +37,7 @@ class ImagePreviewController
     private const ROOT_FLAG = '__root__';
 
     public function __construct(
-        private GetAttributeInMemory $getAttribute,
+        private GetAttribute $getAttribute,
         private PreviewGeneratorInterface $previewGenerator,
         private LoaderInterface $imageLoader,
     ) {
@@ -45,7 +46,7 @@ class ImagePreviewController
     public function __invoke(
         Request $request,
         string $attributeCode,
-        string $type
+        string $type,
     ): Response {
         $data = $request->get('data');
         if (null === $data) {
@@ -56,8 +57,7 @@ class ImagePreviewController
         $regenerate = $request->isMethod('POST');
 
         try {
-            $attributeCollection = $this->getAttribute->byIdentifiers([]);
-            $attribute = $attributeCollection->getAttributeByCode($attributeCode);
+            $attribute = $this->getAttribute->byCode(new AttributeCode($attributeCode));
             if ($regenerate) {
                 $this->previewGenerator->remove($data, $attribute, $type);
             }
@@ -72,7 +72,7 @@ class ImagePreviewController
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            self::THUMBNAIL_FILENAME
+            self::THUMBNAIL_FILENAME,
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'image/jpeg');

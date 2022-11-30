@@ -26,7 +26,7 @@ class DashboardPurgeDateCollection implements \IteratorAggregate
     /**
      * @inheritDoc
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->purgeDates);
     }

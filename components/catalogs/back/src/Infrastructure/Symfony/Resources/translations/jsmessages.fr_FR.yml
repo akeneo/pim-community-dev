@@ -27,15 +27,12 @@ akeneo_catalogs:
       channel:
         label: Canal
         no_matches: Aucun résultat trouvé
-        placeholder: Sélectionner un canal
       locale:
         label: Locale
         no_matches: Aucun résultat trouvé
-        placeholder: Sélectionnez une locale
       currency:
         label: Devise
         no_matches: Aucun résultat trouvé
-        placeholder: Sélectionnez une devise
   product_selection:
     empty: Ajouter des critères de sélection pour créer votre sélection de produits
     more_information: Consultez notre Help Center pour plus d'informations.
@@ -63,18 +60,15 @@ akeneo_catalogs:
       family:
         label: Famille
         no_matches: Aucun résultat trouvé
-        placeholder: Sélectionnez une famille
       completeness:
         label: Complétude
       attribute_option:
         no_matches: Aucun résultat trouvé
-        placeholder: Sélectionnez une option
       category:
         label: Catégorie
         remove: Supprimer la catégorie
         category_tree: Arbres
       measurement:
-        search: Unité
         no_results: Aucun résultat trouvé
       boolean:
         yes: Yes
@@ -107,9 +101,7 @@ akeneo_catalogs:
         label: Affichage
         option:
           all: Toutes
-      table:
-        target: Cible
-        source: Source
     source:
       placeholder:
         title: Sélectionner une source 
+        link: Consultez notre Help Center pour plus d'informations.

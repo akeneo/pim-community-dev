@@ -38,7 +38,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
         $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
-        $this->createCatalog($id, 'Store US', 'test');
+        $this->createCatalog($id, 'Store US', 'test', isEnabled: false);
 
         $this->setCatalogProductValueFilters(
             $id,

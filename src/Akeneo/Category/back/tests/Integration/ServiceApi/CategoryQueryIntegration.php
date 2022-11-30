@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\ServiceApi;
 
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Category\ServiceApi\Category;
 use Akeneo\Category\ServiceApi\CategoryQueryInterface;
@@ -36,20 +36,24 @@ SQL;
         $this->get('database_connection')->executeQuery($query, [
             'value_collection' => json_encode([
                 "attribute_codes" => [
-                    "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
-                    "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
+                    "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
+                    "photo" . AbstractValue::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
                 ],
-                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "en_US" => [
+                "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . AbstractValue::SEPARATOR . "en_US" => [
                     "data" => "All the shoes you need!",
+                    "type" => "text",
+                    "channel" => null,
                     "locale" => "en_US",
-                    "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
+                    "attribute_code" => "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
                 ],
-                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "fr_FR" => [
+                "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . AbstractValue::SEPARATOR . "fr_FR" => [
                     "data" => "Les chaussures dont vous avez besoin !",
+                    "type" => "text",
+                    "channel" => null,
                     "locale" => "fr_FR",
-                    "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
+                    "attribute_code" => "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
                 ],
-                "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c" => [
+                "photo" . AbstractValue::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c" => [
                     "data" => [
                         "size" => 168107,
                         "extension" => "jpg",
@@ -57,8 +61,10 @@ SQL;
                         "mime_type" => "image/jpeg",
                         "original_filename" => "shoes.jpg"
                     ],
+                    "type" => "image",
+                    "channel" => null,
                     "locale" => null,
-                    "attribute_code" => "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
+                    "attribute_code" => "photo" . AbstractValue::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
                 ]
             ], JSON_THROW_ON_ERROR),
             'code' => $this->category->getCode()

@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Category\Application\Converter\Checker;
 
 use Akeneo\Category\Application\Converter\Checker\AttributeApiRequirementChecker;
 use Akeneo\Category\Application\Converter\Checker\RequirementChecker;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
 
@@ -24,13 +24,14 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
 
     public function it_should_throw_an_exception_when_locale_composite_key_is_missing(): void
     {
-        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
         $this
             ->shouldThrow(StructureArrayConversionException::class)
             ->duringCheck(
                 [
                     [
                         "data" => "",
+                        "channel" => "ecommerce",
                         "locale" => "fr_FR",
                         "attribute_code" => $compositeKey
                     ],
@@ -40,7 +41,7 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
 
     public function it_should_throw_an_exception_when_locale_composite_key_is_empty(): void
     {
-        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
         $localeCompositeKey = "";
         $this
             ->shouldThrow(StructureArrayConversionException::class)
@@ -48,6 +49,7 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
                 [
                     $localeCompositeKey => [
                         "data" => "",
+                        "channel" => "ecommerce",
                         "locale" => "fr_FR",
                         "attribute_code" => $compositeKey
                     ],
@@ -57,13 +59,14 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
 
     public function it_should_throw_an_exception_when_attribute_key_data_is_missing(): void
     {
-        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
-        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'fr_FR';
         $this
             ->shouldThrow(StructureArrayConversionException::class)
             ->duringCheck(
                 [
                     $localeCompositeKey => [
+                        "channel" => "ecommerce",
                         "locale" => "fr_FR",
                         "attribute_code" => $compositeKey
                     ],
@@ -73,15 +76,49 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
 
     public function it_should_not_throw_an_exception_when_attribute_key_data_is_empty(): void
     {
-        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
-        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'fr_FR';
         $this
             ->shouldNotThrow()
             ->duringCheck(
                 [
                     $localeCompositeKey => [
                         "data" => "",
+                        "channel" => "ecommerce",
                         "locale" => "fr_FR",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_key_channel_is_missing(): void
+    {
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'ecommerce';
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "Shoes",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_key_channel_is_empty(): void
+    {
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'ecommerce';
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "Shoes",
+                        "channel" => "",
                         "attribute_code" => $compositeKey
                     ],
                 ]
@@ -90,8 +127,8 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
 
     public function it_should_throw_an_exception_when_attribute_key_locale_is_missing(): void
     {
-        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
-        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'fr_FR';
         $this
             ->shouldThrow(StructureArrayConversionException::class)
             ->duringCheck(
@@ -106,8 +143,8 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
 
     public function it_should_throw_an_exception_when_attribute_key_locale_is_empty(): void
     {
-        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
-        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'fr_FR';
         $this
             ->shouldThrow(StructureArrayConversionException::class)
             ->duringCheck(
@@ -123,8 +160,8 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
 
     public function it_should_throw_an_exception_when_attribute_code_key_is_missing(): void
     {
-        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
-        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $compositeKey = "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . AbstractValue::SEPARATOR . 'fr_FR';
         $this
             ->shouldThrow(StructureArrayConversionException::class)
             ->duringCheck(
@@ -140,8 +177,8 @@ class AttributeApiRequirementCheckerSpec extends ObjectBehavior
     public function it_should_throw_an_exception_when_attribute_code_key_is_empty(): void
     {
         $localeCompositeKey = "title"
-            . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
-            . ValueCollection::SEPARATOR . 'fr_FR';
+            . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
+            . AbstractValue::SEPARATOR . 'fr_FR';
 
         $this
             ->shouldThrow(StructureArrayConversionException::class)

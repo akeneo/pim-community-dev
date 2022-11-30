@@ -9,10 +9,11 @@ use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
-use Akeneo\Category\Domain\Query\GetAttributeInMemory;
+use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
@@ -24,7 +25,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 final class ValueUserIntentFactory implements UserIntentFactory
 {
-    public function __construct(private GetAttributeInMemory $getAttributeInMemory)
+    public function __construct(private GetAttribute $getAttribute)
     {
     }
 
@@ -47,7 +48,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
             throw InvalidPropertyTypeException::arrayExpected($fieldName, ValueUserIntentFactory::class, $data);
         }
 
-        $attributeCollection = $this->getAttributeCollectionByCodes($data);
+        $attributeCollection = $this->getAttributeCollectionByAttributeValues($data);
 
         $userIntents = [];
         if (!empty($data)) {
@@ -68,30 +69,30 @@ final class ValueUserIntentFactory implements UserIntentFactory
     /**
      * @param array<string, AttributeValueApi> $attributes
      */
-    private function getAttributeCollectionByCodes(array $attributes): AttributeCollection
+    private function getAttributeCollectionByAttributeValues(array $attributes): AttributeCollection
     {
-        $compositeKeys = $this->extractCompositeKeys(array_keys($attributes));
+        $categoryAttributeUuids = $this->extractCategoryAttributeUuids(array_keys($attributes));
 
-        return $this->getAttributeInMemory->byIdentifiers($compositeKeys);
+        return $this->getAttribute->byUuids($categoryAttributeUuids);
     }
 
     /**
-     * Get a list of composite key from the local composite key list given in parameter.
+     * Get a list of category attribute uuids from a local composite key list.
      *
-     * @param array<string> $localeCompositeKeys (example: ['code|uuid|locale'])
+     * @param array<string> $localeCompositeKeys (example: ['code|uuid|channel|locale'])
      *
-     * @return array<string> (example: ['code|uuid'])
+     * @return AttributeUuid[]
      */
-    private function extractCompositeKeys(array $localeCompositeKeys): array
+    private function extractCategoryAttributeUuids(array $localeCompositeKeys): array
     {
-        // Get keys, check unicity and rebuild it
-        $compositeKeys = array_map(function ($keyWithLocale) {
-            $exploded = explode(ValueCollection::SEPARATOR, $keyWithLocale);
-            // build the composite key ('code|uuid') and return it
-            return $exploded[0].ValueCollection::SEPARATOR.$exploded[1];
+        // Get uuids
+        $categoryAttributeUuids = array_map(function (string $keyWithLocale) {
+            $uuid = explode(AbstractValue::SEPARATOR, $keyWithLocale)[1];
+
+            return AttributeUuid::fromString($uuid);
         }, $localeCompositeKeys);
 
-        return array_unique($compositeKeys);
+        return array_unique($categoryAttributeUuids);
     }
 
     /**
@@ -103,6 +104,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
      *      mime_type: string,
      *      original_filename: string,
      *     } | string | null,
+     *     channel: string|null,
      *     locale: string|null,
      *     attribute_code: string
      * } $value
@@ -123,13 +125,14 @@ final class ValueUserIntentFactory implements UserIntentFactory
      *      mime_type: string,
      *      original_filename: string,
      *     } | string | null,
+     *     channel: string|null,
      *     locale: string|null,
      *     attribute_code: string
      * } $value
      */
     private function addValueUserIntent(AttributeType $attributeType, array $value): UserIntent
     {
-        $identifiers = explode(ValueCollection::SEPARATOR, $value['attribute_code']);
+        $identifiers = explode(AbstractValue::SEPARATOR, $value['attribute_code']);
         if (count($identifiers) !== 2) {
             throw new \InvalidArgumentException(sprintf('Cannot set value user intent %s : no identifier found', $attributeType));
         }
@@ -137,10 +140,10 @@ final class ValueUserIntentFactory implements UserIntentFactory
         $code = $identifiers[0];
 
         return match ((string) $attributeType) {
-            AttributeType::TEXTAREA => new SetTextArea($uuid, $code, $value['locale'], $value['data']),
-            AttributeType::RICH_TEXT => new SetRichText($uuid, $code, $value['locale'], $value['data']),
-            AttributeType::TEXT => new SetText($uuid, $code, $value['locale'], $value['data']),
-            AttributeType::IMAGE => new SetImage($uuid, $code, $value['locale'], $value['data']),
+            AttributeType::TEXTAREA => new SetTextArea($uuid, $code, $value['channel'], $value['locale'], $value['data']),
+            AttributeType::RICH_TEXT => new SetRichText($uuid, $code, $value['channel'], $value['locale'], $value['data']),
+            AttributeType::TEXT => new SetText($uuid, $code, $value['channel'], $value['locale'], $value['data']),
+            AttributeType::IMAGE => new SetImage($uuid, $code, $value['channel'], $value['locale'], $value['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }

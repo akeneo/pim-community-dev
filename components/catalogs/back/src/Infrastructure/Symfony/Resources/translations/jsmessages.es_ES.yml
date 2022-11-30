@@ -27,15 +27,15 @@ akeneo_catalogs:
       channel:
         label: Canal
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione su canal
+        placeholder: Seleccione un canal
       locale:
         label: Configuración regional
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione su configuración regional
+        placeholder: Seleccione una configuración regional
       currency:
         label: Moneda
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione su moneda
+        placeholder: Seleccione una moneda
   product_selection:
     empty: Añada criterios de selección para crear su selección de productos
     more_information: Consulte nuestro Centro de ayuda para obtener más información.
@@ -63,18 +63,18 @@ akeneo_catalogs:
       family:
         label: Familia
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione sus familias
+        placeholder: Seleccione una familia
       completeness:
         label: Completitud
       attribute_option:
         no_matches: No se encontraron coincidencias
-        placeholder: Seleccione sus opciones
+        placeholder: Seleccione una opción
       category:
         label: Categoría
         remove: Eliminar categoría
         category_tree: Árbol de categoría
       measurement:
-        search: Seleccione su unidad
+        search: Unidad
         no_results: No se encontraron coincidencias
       boolean:
         yes: Yes
@@ -108,8 +108,21 @@ akeneo_catalogs:
         option:
           all: Todo
       table:
-        target: Destino
-        source: Origen
+        target: Obetivo de catálogo
+        source: Fuente PIM
+        placeholder: Definir una fuente de contenido
+      placeholder:
+        illustration_title: No hay ningún objetivo de catálogo disponible
     source:
+      title: Seleccionar fuente
+      select_source:
+        label: Fuente PIM
+        search: Criterio de búsqueda
+        no_results: no se encontraron coincidencias
+        section_system: sistema
+        section_attributes: atributos
       placeholder:
         title: Seleccionar origen
+        illustration_title: Haga clic en un objetivo en el panel de la derecha para configurar la asignación de su catálogo.
+        subtitle: Entonces podrá hacer coincidir un atributo PIM con el objetivo seleccionado.
+        link: Consulte nuestro Centro de ayuda para obtener más información.

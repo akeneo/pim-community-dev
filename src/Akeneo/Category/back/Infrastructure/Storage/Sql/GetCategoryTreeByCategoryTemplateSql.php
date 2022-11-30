@@ -21,8 +21,8 @@ class GetCategoryTreeByCategoryTemplateSql implements GetCategoryTreeByCategoryT
     }
 
     /**
-     * @param TemplateUuid $templateUuid
      * @return ?Category
+     *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
@@ -56,11 +56,11 @@ class GetCategoryTreeByCategoryTemplateSql implements GetCategoryTreeByCategoryT
         $result = $this->connection->executeQuery(
             $query,
             [
-                'template_uuid' => $templateUuid->toBytes()
+                'template_uuid' => $templateUuid->toBytes(),
             ],
             [
-                'template_uuid' => \PDO::PARAM_STR
-            ]
+                'template_uuid' => \PDO::PARAM_STR,
+            ],
         )->fetchAssociative();
 
         $category = null;

@@ -6,7 +6,9 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Exception;
@@ -41,21 +43,100 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
                 is_localizable, 
                 additional_properties
             FROM pim_catalog_category_attribute
-            WHERE category_template_uuid=:template_uuid;
+            WHERE category_template_uuid=:template_uuid
+            ORDER BY attribute_order
         SQL;
 
         $results = $this->connection->executeQuery(
             $query,
             [
-                'template_uuid' => $uuid->toBytes()
+                'template_uuid' => $uuid->toBytes(),
             ],
             [
-                'template_uuid' => \PDO::PARAM_STR
-            ]
+                'template_uuid' => \PDO::PARAM_STR,
+            ],
         )->fetchAllAssociative();
 
         return AttributeCollection::fromArray(array_map(static function ($results) {
             return Attribute::fromDatabase($results);
         }, $results));
+    }
+
+    /**
+     * @param AttributeUuid[] $attributeUuids
+     *
+     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
+     * @throws \JsonException
+     */
+    public function byUuids(array $attributeUuids): AttributeCollection
+    {
+        $placeholders = \implode(
+            ',',
+            \array_fill(0, \count($attributeUuids), 'UUID_TO_BIN(?)'),
+        );
+
+        $sql = <<< SQL
+            SELECT BIN_TO_UUID(uuid) as uuid,
+                code, 
+                BIN_TO_UUID(category_template_uuid) as category_template_uuid,
+                labels, 
+                attribute_type, 
+                attribute_order, 
+                is_required, 
+                is_scopable, 
+                is_localizable, 
+                additional_properties
+            FROM pim_catalog_category_attribute
+            WHERE uuid IN ({$placeholders})
+        SQL;
+
+        $statement = $this->connection->prepare($sql);
+        $placeholderIndex = 0;
+        foreach ($attributeUuids as $uuid) {
+            $statement->bindValue(++$placeholderIndex, (string) $uuid, \PDO::PARAM_STR);
+        }
+
+        $categoryAttributes = $statement
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $attributes = array_map(static function ($attributes) {
+            return Attribute::fromDatabase($attributes);
+        }, $categoryAttributes);
+
+        return AttributeCollection::fromArray($attributes);
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \JsonException
+     * @throws Exception
+     */
+    public function byCode(AttributeCode $attributeCode): Attribute
+    {
+        $query = <<< SQL
+            SELECT 
+                BIN_TO_UUID(uuid) as uuid,
+                code, 
+                BIN_TO_UUID(category_template_uuid) as category_template_uuid,
+                labels, 
+                attribute_type, 
+                attribute_order, 
+                is_required, 
+                is_scopable, 
+                is_localizable, 
+                additional_properties
+            FROM pim_catalog_category_attribute
+            WHERE code = :code;
+        SQL;
+
+        $attribute = $this->connection->executeQuery(
+            $query,
+            ['code' => (string) $attributeCode],
+            ['code' => \PDO::PARAM_STR],
+        )->fetchAssociative();
+
+        return Attribute::fromDatabase($attribute);
     }
 }

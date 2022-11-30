@@ -80,6 +80,7 @@ pim_common:
     updated: Updated
     view: View
     yes: "Yes"
+    uuid: uuid
 
 pim_enrich:
     # ACLs
@@ -483,6 +484,8 @@ pim_datagrid:
             label: Parent
         identifier:
             label: Identifier
+        uuid:
+            label: Uuid
 
 # Versioning / history
 Change History: Change history

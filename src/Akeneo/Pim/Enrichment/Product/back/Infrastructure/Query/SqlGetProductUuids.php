@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
 
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

@@ -8,6 +8,7 @@ use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Application\Applier\SetRichTextApplier;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextAreaValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
@@ -28,46 +29,41 @@ class SetRichTextApplierSpec extends ObjectBehavior
 
     function it_updates_category_value_collection(): void
     {
-        $identifier = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
-        $valueKey = 'attribute_code'
-            . ValueCollection::SEPARATOR . 'uuid' .
-            ValueCollection::SEPARATOR . 'locale_code';
-
-        $attributes = ValueCollection::fromArray(
-            [
-                'attribute_codes' => [$identifier],
-                $valueKey => [
-                    'data' => 'value',
-                    'locale' => 'locale_code',
-                    'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
-                ]
-            ]
+        $givenRichTextValue = TextAreaValue::fromApplier(
+            value: "<p>Meta shoes</p>",
+            uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            code: 'seo_meta_description',
+            channel: 'ecommerce',
+            locale: 'en_US'
         );
+
+        $attributes = ValueCollection::fromArray([$givenRichTextValue]);
 
         $category = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
+            templateUuid: null,
             labels: LabelCollection::fromArray([]),
             attributes: $attributes
         );
 
         $userIntent = new SetRichText(
-            'uuid',
-            'attribute_code',
-            'locale_code',
-            'updated_value'
+            '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            'seo_meta_description',
+            'ecommerce',
+            'en_US',
+            "<p>New Meta shoes</p>"
         );
 
-        $expectedAttributes = ValueCollection::fromArray(
-            [
-                'attribute_codes' => [$identifier],
-                $valueKey => [
-                    'data' => 'updated_value',
-                    'locale' => 'locale_code',
-                    'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
-                ]
-            ]
-        );
+        $expectedAttributes = ValueCollection::fromArray([
+            TextAreaValue::fromApplier(
+                value: "<p>New Meta shoes</p>",
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
+        ]);
 
         $this->apply($userIntent, $category);
 

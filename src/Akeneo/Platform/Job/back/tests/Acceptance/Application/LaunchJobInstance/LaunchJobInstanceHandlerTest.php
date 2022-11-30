@@ -2,26 +2,23 @@
 
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\LaunchJobInstance;
 
-use Akeneo\Platform\Job\Application\CreateJobInstanceHandler;
 use Akeneo\Platform\Job\Application\LaunchJobInstance\LaunchJobInstanceHandler;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\File;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceResult;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
-use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryCreateJobExecutionHandler;
-use InvalidArgumentException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryPublishJobToQueue;
 
 class LaunchJobInstanceHandlerTest extends AcceptanceTestCase
 {
-    public $handler;
-    private InMemoryCreateJobExecutionHandler $createJobExecutionHandler;
+    public LaunchJobInstanceHandler $handler;
+    private InMemoryPublishJobToQueue $publishJobToQueue;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->handler = $this->get(LaunchJobInstanceHandler::class);
-        $this->createJobExecutionHandler = $this->get(\Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface::class);
+        $this->publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
     }
 
     /**
@@ -40,7 +37,7 @@ class LaunchJobInstanceHandlerTest extends AcceptanceTestCase
         $result = $this->handler->handle($launchCommand);
         fclose($file);
 
-        $jobExecutionId = $this->createJobExecutionHandler->getLastId();
+        $jobExecutionId = $this->publishJobToQueue->getLastId();
 
         $expected = new LaunchJobInstanceResult(
             $jobExecutionId,

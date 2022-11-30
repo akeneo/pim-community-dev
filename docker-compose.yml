@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   php:
-    image: 'akeneo/pim-php-dev:master'
+    image: 'akeneo/pim-php-dev:8.1'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
@@ -23,7 +23,7 @@ services:
       - 'pim'
 
   fpm:
-    image: 'akeneo/pim-php-dev:master'
+    image: 'akeneo/pim-php-dev:8.1'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
@@ -79,7 +79,7 @@ services:
       - 'pim'
 
   mysql:
-    image: 'mysql:8.0.26'
+    image: 'mysql:8.0.30'
     command: '--default-authentication-plugin=mysql_native_password --log_bin_trust_function_creators=1'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
@@ -94,7 +94,7 @@ services:
       - 'pim'
 
   elasticsearch:
-    image: 'elastic/elasticsearch:7.16.2'
+    image: 'elastic/elasticsearch:7.17.7'
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'

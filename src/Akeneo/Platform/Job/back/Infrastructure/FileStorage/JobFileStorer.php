@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Job\Infrastructure\FileStorage;
 
-use Akeneo\Platform\Job\Domain\JobFileStorerInterface;
+use Akeneo\Platform\Job\Application\LaunchJobInstance\JobFileStorerInterface;
 use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
 use League\Flysystem\FilesystemOperator;
 

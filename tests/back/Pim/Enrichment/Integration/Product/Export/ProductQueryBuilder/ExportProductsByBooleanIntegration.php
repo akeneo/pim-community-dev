@@ -38,11 +38,12 @@ class ExportProductsByBooleanIntegration extends AbstractExportTestCase
         ]);
     }
 
-    public function testProductExportWithBooleanFilterEqualsTrue()
+    public function testProductExportWithBooleanFilterEqualsTrue(): void
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_boolean_true');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_yes_no
-product_with_boolean_true;;1;;;1
+uuid;sku;categories;enabled;family;groups;a_yes_no
+{$product->getUuid()->toString()};product_with_boolean_true;;1;;;1
 
 CSV;
 
@@ -60,16 +61,18 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithBooleanFilterEqualsFalse()
+    public function testProductExportWithBooleanFilterEqualsFalse(): void
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_boolean_false');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_yes_no
-product_with_boolean_false;;1;;;0
+uuid;sku;categories;enabled;family;groups;a_yes_no
+{$product->getUuid()->toString()};product_with_boolean_false;;1;;;0
 
 CSV;
 
@@ -87,16 +90,18 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithLocalisableAndScopableBooleanFilter()
+    public function testProductExportWithLocalisableAndScopableBooleanFilter(): void
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_localisable_scopable_boolean');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_boolean_scopable_localizable-en_US-tablet
-product_with_localisable_scopable_boolean;;1;;;1
+uuid;sku;categories;enabled;family;groups;a_boolean_scopable_localizable-en_US-tablet
+{$product->getUuid()->toString()};product_with_localisable_scopable_boolean;;1;;;1
 
 CSV;
 
@@ -115,6 +120,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

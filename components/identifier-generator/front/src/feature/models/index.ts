@@ -8,3 +8,4 @@ export * from './labelCollection';
 export * from './structure';
 export * from './target';
 export * from './ui-locale';
+export * from './generatorTab';

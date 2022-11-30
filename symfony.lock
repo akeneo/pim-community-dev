@@ -147,9 +147,6 @@
     "dvdoug/behat-code-coverage": {
         "version": "v5.2.1"
     },
-    "egulias/email-validator": {
-        "version": "2.1.11"
-    },
     "elasticsearch/elasticsearch": {
         "version": "v7.2.2"
     },
@@ -387,9 +384,6 @@
     "phenx/php-svg-lib": {
         "version": "v0.3.3"
     },
-    "php-cs-fixer/diff": {
-        "version": "v1.3.0"
-    },
     "php-parallel-lint/php-parallel-lint": {
         "version": "v1.3.1"
     },
@@ -606,9 +600,6 @@
     "stella-maris/clock": {
         "version": "0.1.4"
     },
-    "swiftmailer/swiftmailer": {
-        "version": "v6.2.1"
-    },
     "symfony/acl-bundle": {
         "version": "v1.0.0"
     },
@@ -743,6 +734,18 @@
     "symfony/lock": {
         "version": "v4.3.5"
     },
+    "symfony/mailer": {
+        "version": "5.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.3",
+            "ref": "97a61eabb351d7f6cb7702039bcfe07fe9d7e03c"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
     "symfony/messenger": {
         "version": "4.3",
         "recipe": {
@@ -785,9 +788,6 @@
         "version": "v1.4.0"
     },
     "symfony/polyfill-ctype": {
-        "version": "v1.12.0"
-    },
-    "symfony/polyfill-iconv": {
         "version": "v1.12.0"
     },
     "symfony/polyfill-intl-grapheme": {
@@ -894,20 +894,6 @@
     },
     "symfony/string": {
         "version": "v5.1.2"
-    },
-    "symfony/swiftmailer-bundle": {
-        "version": "2.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "429afc6c6778a1fdddb52a4f708cd94ff2c9960f"
-        },
-        "files": [
-            "config/packages/dev/swiftmailer.yaml",
-            "config/packages/swiftmailer.yaml",
-            "config/packages/test/swiftmailer.yaml"
-        ]
     },
     "symfony/templating": {
         "version": "v4.3.4"
