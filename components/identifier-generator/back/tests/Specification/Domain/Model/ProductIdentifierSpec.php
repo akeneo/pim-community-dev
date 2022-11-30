@@ -19,7 +19,7 @@ class ProductIdentifierSpec extends ObjectBehavior
         $this->shouldHaveType(ProductIdentifier::class);
     }
 
-    function it_generates_psimple_refixes()
+    function it_generates_simple_prefixes()
     {
         $this->beConstructedWith('AKN-123');
         $this->getPrefixes()->shouldReturn([
