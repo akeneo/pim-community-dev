@@ -33,6 +33,7 @@ $rules = [
             'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
+            'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Structure\Family\ServiceAPI',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
@@ -78,6 +79,12 @@ $rules = [
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+        ]
+    )->in('Akeneo\Pim\Automation\IdentifierGenerator\API'),
 ];
 
 $config = new Configuration($rules, $finder);
