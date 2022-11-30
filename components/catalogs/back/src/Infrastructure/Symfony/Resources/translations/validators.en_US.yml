@@ -38,14 +38,14 @@ akeneo_catalogs:
                 unknown: 'The locale "{{ locale_name }}" has been deactivated. Please check your locale settings or remove this filter.'
         product_mapping:
             source:
-                invalid: 'Invalid source value'
+                invalid: 'This attribute has been deleted.'
                 unknown: 'Unknown source value'
                 channel:
                     not_empty: 'This channel must be empty.'
                     empty: 'This channel must not be empty.'
-                    unknown: 'This channel has been deactivated. Please check your channel settings or remove this source.'
+                    unknown: 'This channel has been deleted. Please check your channel settings or update this value..'
                 locale:
                     not_empty: 'This locale must be empty.'
                     empty: 'This locale must not be empty.'
-                    unknown: 'This locale does not exist.'
-                    disabled: 'This locale is disabled for this channel. Please check your channel settings or remove this source.'
+                    unknown: 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.'
+                    disabled: 'This locale is disabled. Please check your channels and locales settings or update this value..'
