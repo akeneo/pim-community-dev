@@ -7,8 +7,10 @@ import {
     IconButton,
     Pagination,
     Pill,
+    Search,
     SectionTitle,
     Table,
+    useDebounce,
 } from 'akeneo-design-system';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
@@ -16,6 +18,7 @@ import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter
 import {ConversationalHelper} from '../../../components';
 import {ProductFilePanel} from './ProductFilePanel';
 import {ProductFileImportStatus} from './ProductFileImportStatus';
+import {useFilteredProductFiles} from '../hooks/useFilteredProductFiles';
 
 type Props = {
     productFiles: ProductFile[];
@@ -100,6 +103,9 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
     const [currentProductFileIdentifier, setCurrentProductFileIdentifier] = useState<string | null>(null);
+    const [searchValue, setSearchValue] = useState('');
+    const debouncedSearch = useDebounce(searchValue, 100);
+    const filteredProductFiles = useFilteredProductFiles(productFiles, debouncedSearch);
 
     const closePanel = () => {
         setCurrentProductFileIdentifier(null);
@@ -134,12 +140,20 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                         <SectionTitle.Title>
                             <FormattedMessage defaultMessage="File history" id="E+F5l+" />
                         </SectionTitle.Title>
+                        <Search
+                            onSearchChange={setSearchValue}
+                            searchValue={searchValue}
+                            placeholder={intl.formatMessage({
+                                defaultMessage: 'Search',
+                                id: 'xmcVZ0',
+                            })}
+                        />
                         <StyledNumberOfProductFiles>
                             <FormattedMessage
                                 defaultMessage="{numberOfProductFiles, plural, one {# result} other {# results}}"
                                 id="OEGUss"
                                 values={{
-                                    numberOfProductFiles: productFiles.length,
+                                    numberOfProductFiles: filteredProductFiles.length,
                                 }}
                             />
                         </StyledNumberOfProductFiles>
@@ -164,7 +178,7 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                                 <Table.HeaderCell></Table.HeaderCell>
                             </Table.Header>
                             <Table.Body>
-                                {productFiles.map((productFile: ProductFile) => {
+                                {filteredProductFiles.map((productFile: ProductFile) => {
                                     return (
                                         <StyledTableRow
                                             data-testid={productFile.identifier}
