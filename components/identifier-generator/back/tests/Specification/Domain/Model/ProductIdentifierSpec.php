@@ -53,7 +53,7 @@ class ProductIdentifierSpec extends ObjectBehavior
         // 9223372036854775807123
         $this->beConstructedWith(\sprintf('%d123', PHP_INT_MAX));
         $this->getPrefixes()->shouldReturn([
-            // These next 3 lines should not appear as they are bigger than PHP_INT_MAX.
+            // These next 3 lines will not appear as numbers are bigger than PHP_INT_MAX.
             // '' => 9223372036854775807123,
             // '9' => 223372036854775807123,
             // '92' => 23372036854775807123,
