@@ -230,6 +230,7 @@ async function ensureArgoCdAppIsHealthy(token, appName, maxRetries = 60, retryIn
     DEGRADED: 'Degraded'
   };
 
+  let retriedAfterUnhealthy = false;
   let currentRetry = 1;
   let resp;
   let healthStatus;
@@ -261,7 +262,12 @@ async function ensureArgoCdAppIsHealthy(token, appName, maxRetries = 60, retryIn
 
       if (healthStatus === HEALTH_STATUS.DEGRADED) {
         const msg = resp['data']['status']['operationState']['message'];
-        return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}. Please check the ArgoCD application at ${url}/applications/${appName}`));
+        if (retriedAfterUnhealthy) {
+          return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}. Please check the ArgoCD application at ${url}/applications/${appName}`));
+        }
+        retriedAfterUnhealthy = true;
+        // Wait 30s if the status is unhealthy the first time
+        await sleep(1000 * 30);
       }
 
       currentRetry++;
