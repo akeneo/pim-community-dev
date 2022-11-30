@@ -8,7 +8,7 @@
 
 ## Software Design
 
-- Is the overall code well thought?
+- Is the overall code well thought out?
 - Are the namespaces of the new classes correct? Is the hexagonal architecture respected?
 - Are the names of the new classes explicit?
 - Is the service declaration made from an interface in the `domain`?
@@ -19,7 +19,7 @@
 
 ## Complexity
 
-- Is the code not more complicated than necessary?
+- Isn't the code more complicated than necessary?
 - Are there no premature optimizations for a potential future need?
 
 ## Tests
@@ -28,16 +28,16 @@ More information on [our test strategy documentation](./tests/introduction.md).
 
 ## Scaling
 
-- Does my code scale? You can check volumetry on metabase + ensure that limits are set.
+- Does the code scale? You can check volumetry on [Metabase](https://akeneo.metabaseapp.com/) + ensure that limits are set.
 
 ## Migration
 
-- Is there a migration? If yes, are they well named? Are they idempotent? Are they tested (integration)
+- Is there a migration? If yes, are they well named? Are they idempotent? Are they tested in integration as expected following the PIM rule?
 
 ## Documentation
 
-- Does technical documentation updated?
-- Does comments are clear and useful? Concretely, does they explains the why and not the what
+- Does the technical documentation need to be updated?
+- Does comments are clear and useful? Concretely, do they explain the why and not the what?
 
 ## Good Things
 
