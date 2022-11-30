@@ -27,15 +27,15 @@ final class ProductIdentifier
      */
     public function getPrefixes(): array
     {
+        $matches = [];
+        preg_match_all('/\d/', $this->identifier, $matches, PREG_OFFSET_CAPTURE);
+        $intPositions = \array_map(fn (array $match): int => $match[1], $matches[0]);
         $results = [];
-        for ($i = 0; $i < strlen($this->identifier); $i++) {
-            $charAtI = substr($this->identifier, $i, 1);
-            if (is_numeric($charAtI)) {
-                $prefix = substr($this->identifier, 0, $i);
-                $beginningNumbers = $this->getAllBeginningNumbers(substr($this->identifier, $i));
-                if ($beginningNumbers < PHP_INT_MAX) {
-                    $results[$prefix] = $beginningNumbers;
-                }
+        foreach ($intPositions as $intPosition) {
+            $beginningNumbers = $this->getAllBeginningNumbers(\substr($this->identifier, $intPosition));
+            if ($beginningNumbers < PHP_INT_MAX) {
+                $prefix = \substr($this->identifier, 0, $intPosition);
+                $results[$prefix] = $beginningNumbers;
             }
         }
 
@@ -45,6 +45,8 @@ final class ProductIdentifier
     /**
      * Returns all the beginning numbers from a string
      * Ex: "251-toto" will return 251
+     *
+     * Warning: if the number after the prefix is too big, it will return PHP_INT_MAX.
      */
     private function getAllBeginningNumbers(string $identifierFromAnInteger): int
     {
