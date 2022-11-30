@@ -149,7 +149,7 @@ SQL;
         return \intval($this->getConnection()->fetchOne($sql));
     }
 
-    private function deleteProduct(ProductInterface $product)
+    private function deleteProduct(ProductInterface $product): void
     {
         $this->getProductRemover()->remove($product);
     }
