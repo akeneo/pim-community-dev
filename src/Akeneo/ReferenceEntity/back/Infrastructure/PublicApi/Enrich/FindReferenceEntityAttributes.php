@@ -52,9 +52,9 @@ class FindReferenceEntityAttributes implements FindReferenceEntityAttributesInte
             return $attributes;
         }
 
-        return array_filter(
+        return array_values(array_filter(
             $attributes,
             static fn (DomainAttributeDetails $attribute) => in_array($attribute->type, $types),
-        );
+        ));
     }
 }

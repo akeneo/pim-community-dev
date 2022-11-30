@@ -15,6 +15,9 @@ final class InMemoryFindRecordLabels implements FindRecordLabelsInterface
         $this->recordLabels[$attributeCode][$optionCode][$locale] = $optionTranslation;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function byReferenceEntityCodeAndRecordCodes(string $referenceEntityCode, array $recordCodes, string $locale): array
     {
         return array_reduce($recordCodes, function ($carry, $recordCode) use ($referenceEntityCode, $locale) {

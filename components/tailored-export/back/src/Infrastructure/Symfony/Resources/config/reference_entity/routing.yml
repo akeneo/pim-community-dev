@@ -1,4 +1,9 @@
 pimee_tailored_export_get_records_action:
-  path: /rest/tailored-export/records/{reference_entity_code}
+  path: /rest/tailored-export/reference-entity/{reference_entity_code}/records
   defaults: { _controller: akeneo.tailored_export.controller.get_records_actions }
   methods: [POST]
+
+pimee_tailored_export_get_reference_entity_attributes_action:
+  path: /rest/tailored-export/reference-entity/{reference_entity_code}/attributes
+  defaults: { _controller: akeneo.tailored_export.controller.get_reference_entity_attributes_actions }
+  methods: [GET]

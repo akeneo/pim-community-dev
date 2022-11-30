@@ -30,10 +30,15 @@ abstract class AbstractValidationTest extends IntegrationTestCase
             $foundViolations[$violation->getPropertyPath()][] = $violation->getMessageTemplate();
         }
 
+        $propertyPathFound = array_keys($foundViolations);
         $this->assertArrayHasKey(
             $propertyPathExpected,
             $foundViolations,
-            sprintf('No violation found at path "%s"', $propertyPathExpected)
+            sprintf(
+                'No violation found at path "%s", found "%s"',
+                $propertyPathExpected,
+                implode(',', array_values($propertyPathFound)),
+            ),
         );
 
         $foundViolationMessages = $foundViolations[$propertyPathExpected];

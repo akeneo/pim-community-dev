@@ -62,6 +62,69 @@ workflows:
             - "test_back_tailored_import"
             - "[tria] Build"
 
+  raccoon_tailored_export_pull_request:
+    when:
+      not:
+        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+    jobs:
+      - start_tailored_export?:
+          type: approval
+          filters:
+            branches:
+              only:
+                - /RAB-.*/
+                - /RAC-.*/
+      - checkout:
+          requires:
+            - "start_tailored_export?"
+      - test_helm_generated_k8s_files:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: [ "srnt", "tria" ]
+          requires:
+            - checkout
+      - build_srnt_dev:
+          name: "[srnt] Build"
+          requires:
+            - "[srnt] Test helm generated k8s files"
+      - build_tria:
+          name: "[tria] Build"
+          requires:
+            - "[tria] Test helm generated k8s files"
+      - deploy_pr_environment?:
+          type: approval
+          filters:
+            branches:
+              only:
+                - /RAB-.*/
+                - /RAC-.*/
+      - build_srnt_prod:
+          requires:
+            - "deploy_pr_environment?"
+            - "[srnt] Test helm generated k8s files"
+      - deploy_pr_environment:
+          requires:
+            - "build_srnt_prod"
+          post-steps:
+            - slack/notify:
+                message: "<@felix.couprie> <https://akeneo.atlassian.net/browse/${CIRCLE_BRANCH}|${CIRCLE_BRANCH}> has been deployed here https://${INSTANCE_NAME}.dev.cloud.akeneo.com"
+                webhook: ${RACCOON_SLACK_WEBHOOK}
+                include_project_field: false
+                include_job_number_field: false
+                include_visit_job_action: false
+      - test_front_tailored_export:
+          requires:
+            - "[srnt] Build"
+      - test_back_tailored_export:
+          requires:
+            - "[srnt] Build"
+      - pull_request_success:
+          requires:
+            - "test_front_tailored_export"
+            - "test_back_tailored_export"
+            - "[tria] Build"
+
   raccoon_job_automation_pull_request:
     when:
       not:

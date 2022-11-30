@@ -43,8 +43,10 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\Qua
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Scalar\ScalarSelection;
@@ -228,7 +230,24 @@ class SelectionHydrator
                 $selectionConfiguration['locale'],
                 $attribute->properties()['reference_data_name'],
             ),
+            ReferenceEntityAttributeSelectionInterface::TYPE => $this->createReferenceEntityAttributeSelection(
+                $selectionConfiguration,
+                $attribute->properties()['reference_data_name'],
+            ),
             default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
+    }
+
+    private function createReferenceEntityAttributeSelection(array $selectionConfiguration, string $referenceEntityCode): SelectionInterface
+    {
+        return match ($selectionConfiguration['attribute_type']) {
+            ReferenceEntityTextAttributeSelection::TYPE => new ReferenceEntityTextAttributeSelection(
+                $referenceEntityCode,
+                $selectionConfiguration['attribute_code'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Reference Entity attribute', $selectionConfiguration['attribute_type'])),
         };
     }
 

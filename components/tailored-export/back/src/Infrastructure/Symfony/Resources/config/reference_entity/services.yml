@@ -1,16 +1,10 @@
 services:
-  Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface:
-    class: Akeneo\Platform\TailoredExport\Infrastructure\Query\ReferenceEntity\FindRecordLabels
-    arguments:
-      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
-
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntity\ReferenceEntityLabelSelectionApplier:
     public: true
     arguments:
       - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface'
     tags:
       - { name: akeneo.tailored_export.selection_applier }
-
 
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntity\ReferenceEntityCodeSelectionApplier:
     public: true

@@ -3,3 +3,8 @@ services:
     class: Akeneo\Platform\TailoredExport\Infrastructure\Query\ReferenceEntity\FindRecordLabels
     arguments:
       - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+
+  Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface:
+    class: Akeneo\Platform\TailoredExport\Infrastructure\Query\ReferenceEntity\FindRecordsAttributeValue
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_attribute_value_public_api'

@@ -1,0 +1,64 @@
+executor-machine: &executor-machine
+
+jobs:
+  test_front_tailored_export:
+    machine:
+      image: *executor-machine
+      docker_layer_caching: true
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Create yarn cache folder
+          command: mkdir -p  ~/.cache/yarn
+      - run:
+          name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+          command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+      - run:
+          name: Pull docker image for node
+          command: docker-compose pull node
+      - run:
+          name: Lint front
+          command: PIM_CONTEXT=tailored-export make lint-front
+      - run:
+          name: Unit front
+          command: PIM_CONTEXT=tailored-export make unit-front
+
+  test_back_tailored_export:
+    machine:
+      image: *executor-machine
+      docker_layer_caching: true
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Load php image
+          command: docker load -i php-pim-image.tar
+      - run:
+          name: Lint back
+          command: PIM_CONTEXT=tailored-export make lint-back
+      - run:
+          name: Coupling back
+          command: PIM_CONTEXT=tailored-export make coupling-back
+      - run:
+          name: Unit back
+          command: PIM_CONTEXT=tailored-export make unit-back
+      - run:
+          name: Acceptance back
+          command: PIM_CONTEXT=tailored-export make acceptance-back
+      - run:
+          name: Start containers
+          command: |
+            APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=test make database
+      - run:
+          name: Integration back
+          command: PIM_CONTEXT=tailored-export make integration-back
+      - store_test_results:
+          path: var/tests/phpunit
