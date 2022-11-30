@@ -9,7 +9,6 @@ import {generateRandomId} from '../utils/generateRandomId';
 import {useInfiniteAttributeCriterionFactories} from '../hooks/useInfiniteAttributeCriterionFactories';
 import {CriterionFactory} from '../models/CriterionFactory';
 
-
 type Props = {
     isDisabled: boolean;
 };

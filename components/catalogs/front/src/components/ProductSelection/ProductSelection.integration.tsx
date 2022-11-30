@@ -132,13 +132,13 @@ test('it updates the state when a criterion is removed', async () => {
 });
 
 test('it shows a warning and lock the add button when the criteria limit is reached', async () => {
-    const criteria = []
-    for (let criterionIndex=0; criterionIndex < MAX_CRITERIA_PER_CATALOG; criterionIndex++) {
+    const criteria = [];
+    for (let criterionIndex = 0; criterionIndex < MAX_CRITERIA_PER_CATALOG; criterionIndex++) {
         criteria[criterionIndex] = {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
-        }
+        };
     }
 
     const onChange = jest.fn();
@@ -153,17 +153,16 @@ test('it shows a warning and lock the add button when the criteria limit is reac
 
     expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.max_reached')).toBeInTheDocument();
     expect(await screen.findByText('akeneo_catalogs.product_selection.add_criteria.label')).toBeDisabled();
-
 });
 
-test('it doesn\'t show a warning and doesn\'t lock the add button when the criteria limit is not reached', async () => {
-    const criteria = []
-    for (let criterionIndex=0; criterionIndex < MAX_CRITERIA_PER_CATALOG - 1; criterionIndex++) {
+test("it doesn't show a warning and doesn't lock the add button when the criteria limit is not reached", async () => {
+    const criteria = [];
+    for (let criterionIndex = 0; criterionIndex < MAX_CRITERIA_PER_CATALOG - 1; criterionIndex++) {
         criteria[criterionIndex] = {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
-        }
+        };
     }
 
     const onChange = jest.fn();
