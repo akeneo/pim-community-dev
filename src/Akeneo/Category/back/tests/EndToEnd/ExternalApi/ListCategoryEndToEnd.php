@@ -281,7 +281,7 @@ JSON;
 
     /**
      * @group enriched_category
-     * @return void
+     *
      * @throws \JsonException
      */
     public function testListCategoriesWithValues(): void
@@ -290,9 +290,10 @@ JSON;
         $this->updateCategoryWithValues('master');
         $client = $this->createAuthenticatedClient();
 
+        // TODO replace with GRF-574 uri by /api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}
         $client->request('GET', 'api/rest/v1/categories?search=["master"]&with_enriched_attributes=true');
 
-        $categories = $this->getStandardizedCategorieswithPositionInformation(false,true);
+        $categories = $this->getStandardizedCategorieswithPositionInformation(false, true);
         $expected = <<<JSON
 {
     "_links": {
@@ -431,10 +432,10 @@ JSON;
      */
     public function getStandardizedCategorieswithPositionInformation(bool $withPosition, bool $withEnrichedValues): array
     {
-        $template = ($withEnrichedValues) ? ", \"template\": null" : "";
-        $values = ($withEnrichedValues) ? ", \"values\": {$this->getStandardizedAttributesValues()}" : "";
+        $template = ($withEnrichedValues) ? ', "template": null' : '';
+        $values = ($withEnrichedValues) ? ", \"values\": {$this->getStandardizedAttributesValues()}" : '';
 
-        $positionMaster = ($withPosition) ? "\"position\" : 1," : "";
+        $positionMaster = ($withPosition) ? '"position" : 1,' : '';
         $categories['master'] = <<<JSON
 {
     "_links": {
@@ -451,7 +452,7 @@ JSON;
     {$values}
 }
 JSON;
-        $positionCategoryA = ($withPosition) ? "\"position\" : 1," : "";
+        $positionCategoryA = ($withPosition) ? '"position" : 1,' : '';
         $categories['categoryA'] = <<<JSON
 {
     "_links": {
@@ -471,7 +472,7 @@ JSON;
     {$values}
 }
 JSON;
-        $positionCategoryA1 = ($withPosition) ? "\"position\" : 1," : "";
+        $positionCategoryA1 = ($withPosition) ? '"position" : 1,' : '';
         $categories['categoryA1'] = <<<JSON
 {
     "_links": {
@@ -488,7 +489,7 @@ JSON;
     {$values}
 }
 JSON;
-        $positionCategoryA2 = ($withPosition) ? "\"position\" : 2," : "";
+        $positionCategoryA2 = ($withPosition) ? '"position" : 2,' : '';
         $categories['categoryA2'] = <<<JSON
 {
     "_links": {
@@ -505,7 +506,7 @@ JSON;
     {$values}
 }
 JSON;
-        $positionCategoryB = ($withPosition) ? "\"position\" : 2," : "";
+        $positionCategoryB = ($withPosition) ? '"position" : 2,' : '';
         $categories['categoryB'] = <<<JSON
 {
     "_links": {
@@ -522,7 +523,7 @@ JSON;
     {$values}
 }
 JSON;
-        $positionCategoryC = ($withPosition) ? "\"position\" : 3," : "";
+        $positionCategoryC = ($withPosition) ? '"position" : 3,' : '';
         $categories['categoryC'] = <<<JSON
 {
     "_links": {
@@ -539,7 +540,7 @@ JSON;
     {$values}
 }
 JSON;
-        $positionCategoryMasterChina = ($withPosition) ? "\"position\" : 1," : "";
+        $positionCategoryMasterChina = ($withPosition) ? '"position" : 1,' : '';
         $categories['master_china'] = <<<JSON
 {
     "_links": {

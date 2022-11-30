@@ -118,9 +118,10 @@ class ExternalApiCategory
             'values' => $this->getValues(),
         ];
 
-        if($withPosition) {
+        if ($withPosition) {
             $normalizedCategory['position'] = $this->getPosition();
         }
+
         return $normalizedCategory;
     }
 }

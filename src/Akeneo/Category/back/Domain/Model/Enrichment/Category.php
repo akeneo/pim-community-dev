@@ -46,12 +46,12 @@ class Category
     public static function fromDatabase(array $category): self
     {
         $translations = $category['translations'] ? json_decode($category['translations'], true, 512, JSON_THROW_ON_ERROR) : [];
+
         return new self(
             id: new CategoryId((int) $category['id']),
             code: new Code($category['code']),
             templateUuid: isset($category['template_uuid']) ? TemplateUuid::fromString($category['template_uuid']) : null,
-            labels:
-                LabelCollection::fromArray($translations),
+            labels: LabelCollection::fromArray($translations),
             parentId: $category['parent_id'] ? new CategoryId((int) $category['parent_id']) : null,
             rootId: $category['root_id'] ? new CategoryId((int) $category['root_id']) : null,
             updated: $category['updated'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $category['updated']) : null,
