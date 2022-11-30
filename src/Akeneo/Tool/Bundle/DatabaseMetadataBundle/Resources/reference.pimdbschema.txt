@@ -759,7 +759,7 @@ pim_catalog_identifier_generator | delimiter | YES | varchar(100) |
 pim_catalog_identifier_generator_prefixes | product_uuid | NO | binary(16) | MUL
 pim_catalog_identifier_generator_prefixes | attribute_id | NO | int | MUL
 pim_catalog_identifier_generator_prefixes | prefix | NO | varchar(255) |
-pim_catalog_identifier_generator_prefixes | number | NO | int |
+pim_catalog_identifier_generator_prefixes | number | NO | bigint unsigned |
 pim_catalog_locale | id | NO | int | PRI
 pim_catalog_locale | code | NO | varchar(20) | UNI
 pim_catalog_locale | is_activated | NO | tinyint(1) |
