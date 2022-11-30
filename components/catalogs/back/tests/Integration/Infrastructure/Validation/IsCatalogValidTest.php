@@ -8,7 +8,6 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
@@ -18,6 +17,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 class IsCatalogValidTest extends IntegrationTestCase
 {
     private ?IsCatalogValidInterface $isCatalogValid;
+
     protected function setUp(): void
     {
         parent::setUp();

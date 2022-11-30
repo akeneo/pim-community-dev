@@ -55,7 +55,7 @@ final class UpdateCatalogAction
 
         $violations = $this->validator->validate($payload, [
             new CatalogUpdatePayload(
-                productMappingSchemaFile: \sprintf('%s_product.json', $catalog->getId())
+                productMappingSchemaFile: [] === $catalog->getProductMapping() ? null : \sprintf('%s_product.json', $catalog->getId())
             ),
         ]);
 
