@@ -49,7 +49,7 @@ final class GetCatalogErrorsAction
 
         $violations = $this->validator->validate($catalogNormalized, [
             new CatalogUpdatePayload(
-                productMappingSchemaFile: [] === $catalog->getProductMapping() ? null : \sprintf('%s_product.json', $catalog->getId())
+                productMappingSchemaFile: \sprintf('%s_product.json', $catalog->getId())
             ),
         ]);
 

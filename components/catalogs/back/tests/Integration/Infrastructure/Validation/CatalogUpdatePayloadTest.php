@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
+use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,12 +18,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CatalogUpdatePayloadTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
+    private ?CommandBus $commandBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
+        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }

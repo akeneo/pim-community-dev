@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductMappingPayload;
+use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -13,7 +14,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductMappingPayloadValidator
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespectsSchemaValidator
  */
 class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
 {
@@ -96,7 +96,7 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
             ]
         ], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
 
-        $this->assertViolationsListContains($violations, 'This attribute has been deleted.');
+        $this->assertViolationsListContains($violations, 'Invalid source value');
     }
 
     public function testItReturnsViolationsWhenTargetsAreMissing(): void
