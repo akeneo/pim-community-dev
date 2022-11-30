@@ -10,9 +10,9 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use PHPUnit\Framework\Assert;
 
 /**
- * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetNumberOfProductsSelectedByCriteriaAction
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\CountProductsSelectedByCriteriaAction
  */
-class GetNumberOfProductsSelectedByCriteriaActionTest extends IntegrationTestCase
+class CountProductsSelectedByCriteriaActionTest extends IntegrationTestCase
 {
     protected function setUp(): void
     {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Exception\InvalidProductSelectionCriteriaException;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetNumberOfProductsSelectedByCriteriaQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\CountProductsSelectedByCriteriaQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 
@@ -14,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetNumberOfProductsSelectedByCriteriaQuery implements GetNumberOfProductsSelectedByCriteriaQueryInterface
+class CountProductsSelectedByCriteriaQuery implements CountProductsSelectedByCriteriaQueryInterface
 {
     public function __construct(
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,

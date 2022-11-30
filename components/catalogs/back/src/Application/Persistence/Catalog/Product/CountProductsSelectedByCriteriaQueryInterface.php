@@ -14,7 +14,7 @@ use Akeneo\Catalogs\Domain\Catalog;
  *
  * @phpstan-import-type ProductSelectionCriterion from Catalog
  */
-interface GetNumberOfProductsSelectedByCriteriaQueryInterface
+interface CountProductsSelectedByCriteriaQueryInterface
 {
     /**
      * @param array<array-key, ProductSelectionCriterion> $productSelectionCriteria

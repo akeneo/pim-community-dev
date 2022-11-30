@@ -90,7 +90,7 @@ akeneo_catalogs_internal_get_product_mapping_schema:
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 
-akeneo_catalogs_internal_get_number_of_products_selected_by_criteria:
+akeneo_catalogs_internal_count_products_selected_by_criteria:
     path: '/rest/catalogs/product-selection-criteria/product/count'
-    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetNumberOfProductsSelectedByCriteriaAction
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\CountProductsSelectedByCriteriaAction
     methods: [ POST ]

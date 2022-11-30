@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Exception\InvalidProductSelectionCriteriaException;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetNumberOfProductsSelectedByCriteriaQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\CountProductsSelectedByCriteriaQueryInterface;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use PHPUnit\Framework\Assert;
 
-class GetNumberOfProductsSelectedByCriteriaQueryTest extends IntegrationTestCase
+class CountProductsSelectedByCriteriaQueryTest extends IntegrationTestCase
 {
-    private ?GetNumberOfProductsSelectedByCriteriaQueryInterface $getProductsCountQuery;
+    private ?CountProductsSelectedByCriteriaQueryInterface $getProductsCountQuery;
 
     protected function setUp(): void
     {
@@ -21,7 +21,7 @@ class GetNumberOfProductsSelectedByCriteriaQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->getProductsCountQuery = self::getContainer()->get(GetNumberOfProductsSelectedByCriteriaQueryInterface::class);
+        $this->getProductsCountQuery = self::getContainer()->get(CountProductsSelectedByCriteriaQueryInterface::class);
     }
 
     public function testItCountsTheNumberOfProductsInTheSelection(): void
