@@ -3,20 +3,17 @@
 namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @group ce
  */
-class SearchAttributeEndToEnd extends InternalApiTestCase
+class SearchAttributeEndToEnd extends ApiTestCase
 {
-    const ENDPOINT_ROUTE = 'pim_enrich_attribute_rest_index';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->logIn('admin');
-    }
+    const ENDPOINT_URL = 'rest/attribute/';
 
     /**
      * Search attributes by identifiers with query param '?identifiers='.
@@ -36,15 +33,19 @@ class SearchAttributeEndToEnd extends InternalApiTestCase
 JSON;
 
         // GET
-        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params);
+        $client = self::createSearchAttributeClient();
+        $client->request('GET', self::ENDPOINT_URL, $params);
+        $response = $client->getResponse();
 
-        $this->assertStatusCode($response, Response::HTTP_OK);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params, 'POST');
+        $client = self::createSearchAttributeClient();
+        $client->request('POST', self::ENDPOINT_URL, $params);
+        $response = $client->getResponse();
 
-        $this->assertStatusCode($response, Response::HTTP_OK);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
@@ -68,15 +69,19 @@ JSON;
 JSON;
 
         // GET
-        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params);
+        $client = self::createSearchAttributeClient();
+        $client->request('GET', self::ENDPOINT_URL, $params);
+        $response = $client->getResponse();
 
-        $this->assertStatusCode($response, Response::HTTP_OK);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params, 'POST');
+        $client = self::createSearchAttributeClient();
+        $client->request('POST', self::ENDPOINT_URL, $params);
+        $response = $client->getResponse();
 
-        $this->assertStatusCode($response, Response::HTTP_OK);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
@@ -97,15 +102,19 @@ JSON;
 JSON;
 
         // GET
-        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params);
+        $client = self::createSearchAttributeClient();
+        $client->request('GET', self::ENDPOINT_URL, $params);
+        $response = $client->getResponse();
 
-        $this->assertStatusCode($response, Response::HTTP_OK);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
 
         // POST
-        $response = $this->callRoute(self::ENDPOINT_ROUTE, $params, 'POST');
+        $client = self::createSearchAttributeClient();
+        $client->request('POST', self::ENDPOINT_URL, $params);
+        $response = $client->getResponse();
 
-        $this->assertStatusCode($response, Response::HTTP_OK);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
@@ -115,6 +124,16 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private static function createSearchAttributeClient(): KernelBrowser
+    {
+        static::ensureKernelShutdown();
+
+        return self::createClient([], [
+            'PHP_AUTH_USER' => self::PASSWORD,
+            'PHP_AUTH_PW'   => self::USERNAME,
+        ]);
     }
 
     private function getStandardizedAttributes(): array
