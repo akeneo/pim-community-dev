@@ -38,6 +38,10 @@ akeneo_catalogs:
                 placeholder: Select a currency
     product_selection:
         empty: Add selection criteria to create your product selection
+        count:
+            products: products
+            no_products: No products
+            error: Impossible to calculate the number of products
         more_information: Check out our Help center for more information.
         add_criteria:
             label: add selection criteria
