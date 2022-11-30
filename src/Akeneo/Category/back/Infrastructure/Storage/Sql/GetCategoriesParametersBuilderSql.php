@@ -27,33 +27,64 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         bool $isEnrichedAttributes,
     ): ExternalApiSqlParameters {
         if (empty($searchFilters)){
-            $parameters = new ExternalApiSqlParameters('1=1', null, null);
+            $sqlParameters = new ExternalApiSqlParameters('1=1');
         } else {
             $searchFiltersParameters = $this->searchFilters->build($searchFilters);
-            $parameters = new ExternalApiSqlParameters(
+            $sqlParameters = new ExternalApiSqlParameters(
                 $searchFiltersParameters['sqlWhere'],
                 $searchFiltersParameters['sqlParameters'],
                 $searchFiltersParameters['sqlTypes']
             );
         }
-        $parameters['sqlLimitOffset'] = $this->buildLimitOffset($limit, $offset);
-        $parameters['params'] = [
-            'with_enriched_attributes' => $isEnrichedAttributes ?: false,
-        ];
-        $parameters['types'] = [
-            'with_enriched_attributes' => \PDO::PARAM_BOOL,
-        ];
+        $sqlParameters = $this->buildLimitOffset($sqlParameters, $limit, $offset);
+        $sqlParameters = $this->buildWithEnrichedAttributes($sqlParameters, $isEnrichedAttributes);
 
-        return $parameters;
+        return $sqlParameters;
     }
 
-    private function buildLimitOffset(int $limit, int $offset): string
+    private function buildLimitOffset(
+        ExternalApiSqlParameters $sqlParameters,
+        int $limit,
+        int $offset
+    ): ExternalApiSqlParameters
     {
-        $sqlLimitAndOffset = sprintf('LIMIT :limit', $limit);
+        $sqlParametersParams = $sqlParameters->getParams();
+        $sqlParametersTypes = $sqlParameters->getTypes();
+
+        $sqlLimitAndOffset = 'LIMIT :limit';
+        $sqlParametersParams['limit'] = $limit;
+        $sqlParametersTypes['limit'] = \PDO::PARAM_INT;
         if ($offset !== 0) {
-            $sqlLimitAndOffset .= sprintf(' OFFSET :offset', $offset);
+            $sqlLimitAndOffset .= ' OFFSET :offset';
+            $sqlParametersParams['offset'] = $offset;
+            $sqlParametersTypes['offset'] = \PDO::PARAM_INT;
         }
 
-        return $sqlLimitAndOffset;
+        $sqlParameters
+            ->setLimitAndOffset($sqlLimitAndOffset)
+            ->setParams($sqlParametersParams)
+            ->setTypes($sqlParametersTypes)
+        ;
+
+        return $sqlParameters;
+    }
+
+    private function buildWithEnrichedAttributes(
+        ExternalApiSqlParameters $sqlParameters,
+        bool $isEnrichedAttributes
+    ): ExternalApiSqlParameters
+    {
+        $sqlParametersParams = $sqlParameters->getParams();
+        $sqlParametersTypes = $sqlParameters->getTypes();
+
+        $sqlParametersParams['with_enriched_attributes'] = $isEnrichedAttributes ?: false;
+        $sqlParametersTypes['with_enriched_attributes'] = \PDO::PARAM_BOOL;
+
+        $sqlParameters
+            ->setParams($sqlParametersParams)
+            ->setTypes($sqlParametersTypes)
+        ;
+
+        return $sqlParameters;
     }
 }

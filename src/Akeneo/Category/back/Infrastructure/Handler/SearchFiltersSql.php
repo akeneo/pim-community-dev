@@ -80,8 +80,6 @@ class SearchFiltersSql implements SearchFilters
             $sqlParameters,
             $sqlTypes
         );
-
-
     }
     private function addSqlAndIfNecessary(string $sqlWhere): string
     {

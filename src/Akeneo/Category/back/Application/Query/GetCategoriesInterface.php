@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Query;
 
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -13,9 +14,7 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
 interface GetCategoriesInterface
 {
     /**
-     * @param array<string, string> $parameters
-     *
      * @return array<Category>
      */
-    public function execute(array $parameters): array;
+    public function execute(ExternalApiSqlParameters $sqlParameters): array;
 }

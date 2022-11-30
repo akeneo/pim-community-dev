@@ -6,6 +6,7 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -19,17 +20,15 @@ final class GetCategoriesSql implements GetCategoriesInterface
     }
 
     /**
-     * @param array<int, mixed>|array<string, mixed> $parameters
-     *
      * @return array<Category>
      *
      * @throws \Doctrine\DBAL\Exception
-     * @throws \JsonException
+     * @throws \JsonException|\Doctrine\DBAL\Driver\Exception
      */
-    public function execute(array $parameters): array
+    public function execute(ExternalApiSqlParameters $sqlParameters): array
     {
-        $sqlWhere = $parameters['sqlWhere'];
-        $sqlLimitOffset = $parameters['sqlLimitOffset'];
+        $sqlWhere = $sqlParameters->getSqlWhere();
+        $sqlLimitOffset = $sqlParameters->getLimitAndOffset();
 
         $sqlQuery = <<<SQL
             WITH translation as (
@@ -57,8 +56,8 @@ final class GetCategoriesSql implements GetCategoriesInterface
 
         $results = $this->connection->executeQuery(
             $sqlQuery,
-            $parameters['params'],
-            $parameters['types'],
+            $sqlParameters->getParams(),
+            $sqlParameters->getTypes(),
         )->fetchAllAssociative();
 
         if (!$results) {
