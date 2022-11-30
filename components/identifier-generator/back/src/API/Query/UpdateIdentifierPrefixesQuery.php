@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\API\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
