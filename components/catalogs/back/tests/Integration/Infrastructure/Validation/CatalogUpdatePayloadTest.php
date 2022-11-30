@@ -81,6 +81,44 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
         $this->assertViolationsListContains($violations, 'This field is missing.');
     }
 
+    public function testItReturnsViolationsWithTooManyCriteria(): void
+    {
+        $this->purgeDataAndLoadMinimalCatalog();
+
+        $criteria = [];
+        $numberOfCriteria = self::getContainer()->getParameter('akeneo_catalog.max_criteria_per_catalog') + 1;
+        for($i=0; $i < $numberOfCriteria; $i++) {
+            $criteria[] = [
+                'field' => 'enabled',
+                'operator' => '!=',
+                'value' => true,
+            ];
+        }
+        $params = ['enabled' => false,
+            'product_selection_criteria' => $criteria,
+            'product_value_filters' => [
+                'channels' => ['ecommerce'],
+                'locales' => ['en_US'],
+                'currencies' => ['EUR', 'USD'],
+            ],
+            'product_mapping' => [
+                'Product uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        ];
+
+        $violations = $this->validator->validate($params, new CatalogUpdatePayload());
+        $this->assertViolationsListContains($violations, 'Too many criteria.');
+
+        \array_shift($params['product_selection_criteria']);
+        $violations = $this->validator->validate($params, new CatalogUpdatePayload());
+        $this->assertEmpty($violations);
+
+    }
+
     public function testItReturnsViolationsWhenProductSelectionCriteriaIsAssociativeArray(): void
     {
         $violations = $this->validator->validate([
