@@ -30,7 +30,9 @@ final class IsCatalogValid implements IsCatalogValidInterface
                 'product_mapping' => $catalog->getProductMapping(),
             ],
             [
-                new CatalogUpdatePayload(),
+                new CatalogUpdatePayload(
+                    productMappingSchemaFile: \sprintf('%s_product.json', $catalog->getId())
+                ),
             ]
         );
 
