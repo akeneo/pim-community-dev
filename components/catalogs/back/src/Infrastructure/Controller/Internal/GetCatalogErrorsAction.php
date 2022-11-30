@@ -35,21 +35,21 @@ final class GetCatalogErrorsAction
         }
 
         try {
-            $catalogDomain = $this->getCatalogQuery->execute($catalogId);
+            $catalog = $this->getCatalogQuery->execute($catalogId);
         } catch (CatalogNotFoundException) {
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
         $catalogNormalized = [
-            'enabled' => $catalogDomain->isEnabled(),
-            'product_selection_criteria' => $catalogDomain->getProductSelectionCriteria(),
-            'product_value_filters' => $catalogDomain->getProductValueFilters(),
-            'product_mapping' => $catalogDomain->getProductMapping(),
+            'enabled' => $catalog->isEnabled(),
+            'product_selection_criteria' => $catalog->getProductSelectionCriteria(),
+            'product_value_filters' => $catalog->getProductValueFilters(),
+            'product_mapping' => $catalog->getProductMapping(),
         ];
 
         $violations = $this->validator->validate($catalogNormalized, [
             new CatalogUpdatePayload(
-                productMappingSchemaFile: \sprintf('%s_product.json', $catalog->getId())
+                productMappingSchemaFile: [] === $catalog->getProductMapping() ? null : \sprintf('%s_product.json', $catalog->getId())
             ),
         ]);
 
