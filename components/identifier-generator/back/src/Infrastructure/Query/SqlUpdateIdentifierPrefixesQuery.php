@@ -26,6 +26,7 @@ final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixes
         private AttributeRepositoryInterface $attributeRepository,
         private Connection $connection,
     ) {
+        $this->identifierAttributesCache = null;
     }
 
     /**
