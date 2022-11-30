@@ -33,6 +33,7 @@ $rules = [
             'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
+            'Akeneo\Pim\Automation\IdentifierGenerator\API',
 
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
@@ -69,6 +70,12 @@ $rules = [
             'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+        ]
+    )->in('Akeneo\Pim\Automation\IdentifierGenerator\API'),
 ];
 
 $config = new Configuration($rules, $finder);
