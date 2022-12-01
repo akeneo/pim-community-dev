@@ -1,7 +1,13 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Source, Attribute} from '../../../models';
-import {DefaultValueOperation, isDefaultValueOperation, isReplacementOperation, ReplacementOperation} from '../common';
+import {
+  DefaultValueOperation,
+  isCodeLabelSelection,
+  isDefaultValueOperation,
+  isReplacementOperation,
+  ReplacementOperation,
+} from '../common';
 
 type ReferenceEntityOperations = {
   default_value?: DefaultValueOperation;
@@ -34,9 +40,10 @@ type ReferenceEntitySource = {
 };
 
 const isReferenceEntitySelection = (selection: any): selection is ReferenceEntitySelection => {
-  if (!('type' in selection)) return false;
-
-  return 'code' === selection.type || 'attribute' === selection.type;
+  // TODO RAB-1175
+  // if (!('type' in selection)) return false;
+  // return 'code' === selection.type || 'attribute' === selection.type;
+  return isCodeLabelSelection(selection);
 };
 
 const isDefaultReferenceEntitySelection = (selection?: ReferenceEntitySelection): boolean => 'code' === selection?.type;

@@ -62,12 +62,15 @@ test('it displays a reference entity configurator', () => {
     ...getDefaultReferenceEntitySource(attribute, null, null),
     uuid: expect.any(String),
     selection: {
-      type: 'attribute',
-      attribute_identifier: 'description_1234',
-      attribute_type: 'text',
-      reference_entity_code: 'brand',
-      channel: null,
-      locale: null,
+      // TODO RAB-1175
+      // type: 'attribute',
+      // attribute_identifier: 'description_1234',
+      // attribute_type: 'text',
+      // reference_entity_code: 'brand',
+      // channel: null,
+      // locale: null,
+      locale: 'en_US',
+      type: 'label',
     },
   });
 });
