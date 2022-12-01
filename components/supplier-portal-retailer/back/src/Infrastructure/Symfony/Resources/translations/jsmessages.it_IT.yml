@@ -88,6 +88,7 @@ supplier_portal:
         supplier: Fornitore
         status: Stato
         download: Icona download
+        filename: Nome del file
       notification:
         error_loading_supplier_files:
           title: Impossibile visualizzare i file di prodotto.
@@ -105,12 +106,34 @@ supplier_portal:
         empty_content: Il commento non può essere vuoto.
         max_comment_length_reached: Il commento non deve superare 255 caratteri.
         max_number_of_comments_reached: Hai raggiunto il numero massimo di commenti.
+        product_file_does_not_exist_anymore: Spiacenti,  questo file di prodotto è stato cancellato automaticamente dopo 90 giorni e non è più accessibile.
+      product_files_modal:
+        title: File di prodotto
+        subtitle: Seleziona il profilo di importazione personalizzato
+        import_field_label: Importa
+        select_import_placeholder: Seleziona un'importazione personalizzata
+        import_button_label: Importa ora
+        error_loading_product_import_profiles:
+          title: Impossibile visualizzare i profili di importazione personalizzati.
+          content: Ci scusiamo per l'inconveniente, ti invitiamo a riprovare tra qualche istante.
+        error_launching_product_import:
+          missing_file: Questo file non esiste più.
+          unknown_error:
+            title: Si è verificato un errore imprevisto nei nostri sistemi.
+            content: Riprova più tardi
+      import:
+        status:
+          to_import: da importare
+          in_progress: in corso
+          completed: completato
+          failed: fallito
     pim_notification:
       button_label: Vedi i file di prodotto
 pim_title:
   supplier_portal_retailer_supplier_list: Fornitori
   supplier_portal_retailer_supplier_edit: Modifica un fornitore
   supplier_portal_retailer_product_files_list: File di prodotto
+  supplier_portal_retailer_product_files_show: File di prodotto
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Importazione fornitore in Supplier Portal in XLSX
 pim_notification:
   supplier_portal:
