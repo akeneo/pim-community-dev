@@ -43,22 +43,17 @@ for TENANT in ${NS_LIST}; do
 
     if [ ${DELETE_TENANT} = true ]; then
         echo "---[TODELETE] Tenant ${TENANT} with status ${NS_STATUS} since ${NS_AGE}"
+        FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-timmy-delete-tenant
+        if [ ! -z "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
+            FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-delete-tenant
+        fi
+        JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\",\"tenant_name\":\"%s\"}\n" ${CIRCLE_BRANCH} ${TENANT} )
+        gcloud config unset auth/impersonate_service_account
+        DELETE_TENANT_STATUS_CODE=0
+        gcloud beta functions call ${FUNCTION_NAME} --region=${GOOGLE_CLUSTER_REGION}  --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
+        echo "      Timmy delete ${TENANT}"
 
-        # Check if application exists
-        APP_NAME=$(kubectl get application -n argocd | grep ${TENANT} | awk '{print $1}')
-        case "${APP_NAME}" in
-            ${TENANT}) echo "  Command debug:"
-            echo "      argocd app terminate-op ${TENANT} --core || true"
-            echo "      kubectl delete app ${TENANT} -n argocd"
-            echo "      kubectl delete ${TENANT}"
-            argocd app terminate-op ${TENANT} --core || true
-            kubectl delete app ${TENANT} -n argocd
-            kubectl delete ns ${TENANT}
-            ;;
-            *) echo "  Command debug:"
-            echo "      kubectl delete ${TENANT}"
-            kubectl delete ns ${TENANT}
-            ;;
-        esac
+        kubectl delete ns ${TENANT}
+        exit ${DELETE_TENANT_STATUS_CODE}
     fi
 done

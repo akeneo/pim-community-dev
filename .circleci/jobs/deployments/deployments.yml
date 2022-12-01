@@ -900,18 +900,18 @@ jobs:
             - run:
                   name: Remove env on kubernetes
                   command: |
-                      ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+                      FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-timmy-delete-tenant
+                      if [ ! -z "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
+                        FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-delete-tenant
+                      fi
+                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\",\"tenant_name\":\"%s\"}\n" ${CIRCLE_BRANCH} ${TENANT_NAME} )
+                      gcloud config unset auth/impersonate_service_account
+                      DELETE_TENANT_STATUS_CODE=0
+                      gcloud beta functions call ${FUNCTION_NAME} --region=${GOOGLE_CLUSTER_REGION}  --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
 
-                      # Login to argocd call k8s
-                      kubectl config set-context --current --namespace=argocd
-                      argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
-
-                      echo "      argocd app terminate-op ${TENANT_ID} --core || true"
-                      echo "      kubectl delete app ${TENANT_ID} -n argocd || true"
-                      echo "      kubectl delete ${TENANT_ID}"
-                      argocd app terminate-op ${TENANT_ID} --core || true
-                      kubectl delete app ${TENANT_ID} -n argocd || true
+                      echo "      Timmy delete ${TENANT_ID}"
                       kubectl delete ns ${TENANT_ID}
+                      exit ${DELETE_TENANT_STATUS_CODE}
                   when: on_fail
 
     test_deploy_timmy:
