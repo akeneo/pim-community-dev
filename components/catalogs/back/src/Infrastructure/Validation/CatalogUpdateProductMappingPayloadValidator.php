@@ -45,48 +45,50 @@ final class CatalogUpdateProductMappingPayloadValidator extends ConstraintValida
     private function getConstraints(CatalogUpdateProductMappingPayload $constraint): array
     {
         return [
-            new Assert\Type('array'),
-            new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
-                if (!\is_array($array) || empty($array)) {
-                    return;
-                }
-
-                if (\array_is_list($array)) {
-                    $context->buildViolation('Invalid array structure.')
-                        ->addViolation();
-                }
-            }),
-            new Assert\All([
-                new Assert\Callback(function (mixed $sourceAssociation, ExecutionContextInterface $context): void {
-                    if (!\is_array($sourceAssociation) || null === $sourceAssociation['source']) {
+            new Assert\Sequentially([
+                new Assert\Type('array'),
+                new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
+                    if (!\is_array($array) || empty($array)) {
                         return;
                     }
 
-                    if (!\is_string($sourceAssociation['source'])) {
-                        $context->buildViolation('Unknown source value')
-                            ->atPath('[source]')
+                    if (\array_is_list($array)) {
+                        $context->buildViolation('Invalid array structure.')
                             ->addViolation();
-
-                        return;
                     }
-
-                    $constraint = $this->getMappingSourceConstraint($sourceAssociation['source']);
-
-                    if (null === $constraint) {
-                        $context->buildViolation('Invalid source value')
-                            ->atPath('[source]')
-                            ->addViolation();
-
-                        return;
-                    }
-
-                    $context
-                        ->getValidator()
-                        ->inContext($this->context)
-                        ->validate($sourceAssociation, $constraint);
                 }),
-            ]),
-            new ProductMappingRespectsSchema($constraint->productMappingSchemaFile),
+                new ProductMappingRespectsSchema($constraint->productMappingSchemaFile),
+                new Assert\All([
+                    new Assert\Callback(function (mixed $sourceAssociation, ExecutionContextInterface $context): void {
+                        if (!\is_array($sourceAssociation) || null === $sourceAssociation['source']) {
+                            return;
+                        }
+
+                        if (!\is_string($sourceAssociation['source'])) {
+                            $context->buildViolation('Unknown source value')
+                                ->atPath('[source]')
+                                ->addViolation();
+
+                            return;
+                        }
+
+                        $constraint = $this->getMappingSourceConstraint($sourceAssociation['source']);
+
+                        if (null === $constraint) {
+                            $context->buildViolation('Invalid source value')
+                                ->atPath('[source]')
+                                ->addViolation();
+
+                            return;
+                        }
+
+                        $context
+                            ->getValidator()
+                            ->inContext($this->context)
+                            ->validate($sourceAssociation, $constraint);
+                    }),
+                ]),
+            ])
         ];
     }
 
