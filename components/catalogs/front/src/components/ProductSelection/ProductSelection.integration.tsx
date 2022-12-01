@@ -48,6 +48,7 @@ test('it renders a list of criteria', async () => {
     );
 
     expect(await screen.findAllByText('akeneo_catalogs.product_selection.criteria.status.label')).toHaveLength(2);
+    expect(await screen.findByText('akeneo_catalogs.product_selection.add_criteria.label')).toBeEnabled();
 });
 
 test('it updates the state when a criterion is added', async () => {
