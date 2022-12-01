@@ -251,9 +251,7 @@ workflows:
                 type: approval
                 filters:
                     branches:
-                        only:
-                            - /BH-.*/
-                            - /PH-.*/
+                        only: /PH-.*/
           - checkout:
                 requires:
                     - ready_to_build?
@@ -267,42 +265,44 @@ workflows:
                 requires:
                     - checkout
           - test_deploy_ucs_tenant:
+                name: deploy-<< matrix.tenant_name >>
+                matrix:
+                    parameters:
+                        tenant_name: ['ucs-perf-01', 'ucs-perf-02']
                 requires:
                     - test_deploy_timmy
                     - test_deploy_ucs_pim
-          - prepare_load_tests_ucs:
-                requires:
-                    - test_deploy_ucs_tenant
-          - execute_load_tests_ucs:
+
+          - delete_ucs_tenants?:
+                type: approval
+                filters:
+                    branches:
+                        only: /PH-.*/
+          - delete_ucs_tenant:
+                name: delete-<< matrix.tenant_name >>
                 matrix:
                     parameters:
-                        DURATION: ["5m"]
+                        tenant_name: ['ucs-perf-01', 'ucs-perf-02']
                 requires:
-                    - prepare_load_tests_ucs
-          - delete_ucs_tenant:
-                requires:
-                    - execute_load_tests_ucs
+                    - delete_ucs_tenants?
+                    - deploy-<< matrix.tenant_name >>
+
           - delete_ucs_pim?:
                 type: approval
                 filters:
                     branches:
-                        only:
-                            - /BH-.*/
-                            - /PH-.*/
-                requires:
-                    - test_deploy_ucs_pim
+                        only: /PH-.*/
           - delete_ucs_pim:
                 requires:
                     - delete_ucs_pim?
+                    - test_deploy_ucs_pim
+
           - delete_timmy?:
               type: approval
               filters:
                 branches:
-                  only:
-                    - /BH-.*/
-                    - /PH-.*/
-              requires:
-                - test_deploy_timmy
+                  only: /PH-.*/
           - delete_timmy:
                 requires:
                     - delete_timmy?
+                    - test_deploy_timmy

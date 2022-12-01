@@ -106,6 +106,9 @@ jobs:
             CLUSTER_NEXT:
                 type: boolean
                 default: false
+            tenant_name:
+                type: string
+                default: ''
         environment:
             <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
@@ -125,6 +128,9 @@ jobs:
                   name: Delete Tenant
                   no_output_timeout: 30m
                   command: |
+                      if [ ! << parameters.tenant_name >> = "" ]; then
+                        TENANT_NAME=<< parameters.tenant_name >>
+                      fi
                       FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-timmy-delete-tenant
                       if [ ! -z "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
                         FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-delete-tenant

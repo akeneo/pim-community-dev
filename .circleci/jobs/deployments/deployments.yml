@@ -598,7 +598,7 @@ jobs:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${PIM_NAMESPACE}"
         - run:
-            name: Create branch deployement
+            name: Create K8S artifact deployement branch
             command: |
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
@@ -652,7 +652,7 @@ jobs:
               yq d -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.syncPolicy.automated
 
               git add pim-saas-service
-              git commit -m "Update release version"
+              git commit -m "Update release version" || true
               git push --set-upstream origin ${CIRCLE_BRANCH}
         - run:
             name: Deploy PIM
@@ -680,7 +680,7 @@ jobs:
               echo "password : ${ARGOCD_PASSWORD}"
               echo "============================"
         - run:
-              name: Remove env on kubernetes
+              name: Remove env on kubernetes on failure
               command: |
                   ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
@@ -707,6 +707,9 @@ jobs:
             DEPLOY_PR:
                 type: boolean
                 default: false
+            tenant_name:
+                type: string
+                default: ''
         environment:
             <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
@@ -737,6 +740,9 @@ jobs:
                       else
                         TENANT_NAME_PREFIX="ucs-pr-ee"
                         TENANT_NAME=$(echo "${TENANT_NAME_PREFIX}-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
+                      fi
+                      if [ ! << parameters.tenant_name >> = "" ]; then
+                        TENANT_NAME=<< parameters.tenant_name >>
                       fi
                       TENANT_ID=${TYPE}-${TENANT_NAME}
                       FQDN="${TENANT_NAME}.${GOOGLE_DOMAIN}"
