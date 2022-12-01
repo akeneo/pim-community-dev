@@ -174,7 +174,7 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'scope' => 'ecommerce',
                     'locale' => 'kz_KZ',
                 ],
-                'expectedMessage' => 'This locale is disabled for this channel. Please check your channel settings or remove this source.',
+                'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
             'source with invalid scope' => [
                 'attribute' => [
@@ -189,7 +189,7 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'scope' => 'unknown_scope',
                     'locale' => null,
                 ],
-                'expectedMessage' => 'This channel has been deactivated. Please check your channel settings or remove this source.',
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
             ],
             'source with invalid locale' => [
                 'attribute' => [
@@ -204,7 +204,7 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'scope' => null,
                     'locale' => 'kz_KZ',
                 ],
-                'expectedMessage' => 'This locale does not exist.',
+                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
             ],
         ];
     }
