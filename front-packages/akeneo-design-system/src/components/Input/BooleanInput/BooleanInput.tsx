@@ -16,10 +16,10 @@ const BooleanButton = styled.button<
   } & AkeneoThemedProps
 >`
   ${CommonStyle}
-  height: ${({size}) => ('normal' === size ? 40 : 30)}px;
-  width: ${({size}) => ('normal' === size ? 60 : 48)}px;
+  height: ${({size}) => ('small' === size ? 30 : 40)}px;
+  width: ${({size}) => ('small' === size ? 48 : 60)}px;
   display: inline-block;
-  line-height: ${({size}) => ('normal' === size ? 36 : 26)}px;
+  line-height: ${({size}) => ('small' === size ? 26 : 36)}px;
   text-align: center;
   vertical-align: middle;
   overflow: hidden;
