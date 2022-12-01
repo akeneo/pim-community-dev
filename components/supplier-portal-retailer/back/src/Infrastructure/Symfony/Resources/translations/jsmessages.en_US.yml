@@ -83,6 +83,10 @@ supplier_portal:
             menu_item: Product files
             title: "]-Inf, 1]{{ count }} product file|]1, Inf[{{ count }} product files"
             no_files: There are no product files yet.
+            search:
+                placeholder: Search by file name
+                results_number: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
+                no_results: There are no product file matching this search.
             columns:
                 upload_date: Upload date
                 contributor: Contributor

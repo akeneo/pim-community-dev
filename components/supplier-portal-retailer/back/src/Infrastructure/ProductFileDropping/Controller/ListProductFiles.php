@@ -14,14 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 final class ListProductFiles
 {
     public function __construct(
-        private ListProductFilesHandler $listProductFilesHandler,
+        private readonly ListProductFilesHandler $listProductFilesHandler,
     ) {
     }
 
     public function __invoke(Request $request): JsonResponse
     {
         $productFiles = ($this->listProductFilesHandler)(
-            new ListProductFilesQuery($request->query->getInt('page', 1))
+            new ListProductFilesQuery($request->query->getInt('page', 1), trim($request->query->get('search', '')))
         );
 
         return new JsonResponse([
@@ -35,6 +35,7 @@ final class ListProductFiles
                 $productFiles->productFiles,
             ),
             'total' => $productFiles->totalProductFilesCount,
+            'total_search_results' => $productFiles->searchResultsCount,
             'items_per_page' => ListProductFilesPort::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
         ]);
     }

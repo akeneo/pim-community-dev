@@ -14,7 +14,7 @@ final class DatabaseListProductFiles implements ListProductFiles
     {
     }
 
-    public function __invoke(int $page = 1): array
+    public function __invoke(int $page = 1, string $search = ''): array
     {
         $page = max($page, 1);
 
@@ -36,6 +36,7 @@ final class DatabaseListProductFiles implements ListProductFiles
                 ON supplier_comments.product_file_identifier = product_file.identifier
             LEFT JOIN akeneo_supplier_portal_product_file_imported_by_job_execution AS product_file_import
                 ON product_file_import.product_file_identifier = product_file.identifier
+            WHERE product_file.original_filename LIKE :search
             GROUP BY product_file.identifier, uploaded_at, product_file_import.import_status
             ORDER BY uploaded_at DESC
             LIMIT :limit
@@ -54,10 +55,12 @@ final class DatabaseListProductFiles implements ListProductFiles
         ), $this->connection->executeQuery(
             $sql,
             [
+                'search' => "%$search%",
                 'offset' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
                 'limit' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
             ],
             [
+                'search' => \PDO::PARAM_STR,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ],

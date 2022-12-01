@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListSupplierProductFiles;
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListSupplierProductFiles\ListSupplierProductFiles as ListSupplierProductFilesQuery;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierProductFilesCount;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles;
 
 final class ListSupplierProductFilesHandler
 {
     public function __construct(
-        private ListSupplierProductFiles $listSupplierProductFiles,
-        private CountProductFiles $countProductFiles,
+        private readonly ListSupplierProductFiles $listSupplierProductFiles,
+        private readonly GetSupplierProductFilesCount $getSupplierProductFilesCount,
     ) {
     }
 
@@ -21,9 +21,10 @@ final class ListSupplierProductFilesHandler
         return new ProductFiles(
             ($this->listSupplierProductFiles)(
                 $listSupplierProductFiles->supplierIdentifier,
-                $listSupplierProductFiles->page
+                $listSupplierProductFiles->page,
+                $listSupplierProductFiles->search,
             ),
-            ($this->countProductFiles)(),
+            ($this->getSupplierProductFilesCount)($listSupplierProductFiles->supplierIdentifier, $listSupplierProductFiles->search),
         );
     }
 }

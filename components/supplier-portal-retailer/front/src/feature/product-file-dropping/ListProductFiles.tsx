@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Breadcrumb} from 'akeneo-design-system';
+import {Breadcrumb, useDebounce} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useProductFiles} from './hooks';
-import {ProductFilesList} from './components';
+import {EmptyProductFilesList, ProductFilesList} from './components';
 import {useHistory} from 'react-router';
 
 const ListProductFiles = () => {
     const translate = useTranslate();
-    const [page, setPage] = useState<number>(1);
-    const [productFiles, totalProductFiles] = useProductFiles(page);
+    const [page, setPage] = useState<number>(0);
+    const [searchValue, setSearchValue] = useState('');
+    const debouncedSearchValue = useDebounce(searchValue);
+    const [productFiles, totalProductFiles, totalSearchResults] = useProductFiles(page, debouncedSearchValue);
     const history = useHistory();
 
     useEffect(() => {
@@ -44,12 +46,18 @@ const ListProductFiles = () => {
                 </PageHeader.Title>
             </PageHeader>
             <StyledPageContent>
-                <ProductFilesList
-                    productFiles={productFiles}
-                    totalProductFiles={totalProductFiles}
-                    currentPage={page}
-                    onChangePage={setPage}
-                />
+                {0 === totalProductFiles ? (
+                    <EmptyProductFilesList message="supplier_portal.product_file_dropping.supplier_files.no_files" />
+                ) : (
+                    <ProductFilesList
+                        productFiles={productFiles}
+                        totalSearchResults={totalSearchResults}
+                        currentPage={page}
+                        onChangePage={setPage}
+                        searchValue={searchValue}
+                        onSearch={setSearchValue}
+                    />
+                )}
             </StyledPageContent>
         </>
     );
