@@ -1,12 +1,12 @@
 # More info here: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 ## Supplier Portal code base
-components/supplier-portal-supplier/ @akeneo/squad-suricates
-components/supplier-portal-retailer/ @akeneo/squad-suricates
+/components/supplier-portal-supplier/ @akeneo/squad-suricates
+/components/supplier-portal-retailer/ @akeneo/squad-suricates
 
 ## Supplier Portal CI
-.circleci/workflows/squads/suricates.yml @cha-ser @akeneo/squad-suricates
-.circleci/jobs/features/supplier-portal/ @cha-ser @akeneo/squad-suricates
+/.circleci/workflows/squads/suricates.yml @cha-ser @akeneo/squad-suricates
+/.circleci/jobs/features/supplier-portal/ @cha-ser @akeneo/squad-suricates
 
 ## Supplier Portal makefile
-make-file/supplier-portal.mk @akeneo/squad-suricates
+/make-file/supplier-portal.mk @akeneo/squad-suricates
