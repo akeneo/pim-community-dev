@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\DeleteCatalogQuery;
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -21,7 +19,6 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
 {
     private ?DeleteCatalogQuery $query;
     private ?Connection $connection;
-    private ?CommandBus $commandBus;
 
     protected function setUp(): void
     {
@@ -31,18 +28,13 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
 
         $this->connection = self::getContainer()->get(Connection::class);
         $this->query = self::getContainer()->get(DeleteCatalogQuery::class);
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
     }
 
     public function testItDeletesACatalog(): void
     {
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->createUser('test');
-        $this->commandBus->execute(new CreateCatalogCommand(
-            $id,
-            'Store US',
-            'test',
-        ));
+        $this->createCatalog($id, 'Store US', 'test');
 
         $this->assertCatalogExists($id);
 

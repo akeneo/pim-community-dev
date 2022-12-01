@@ -7,7 +7,7 @@ const initialGenerator: IdentifierGenerator = {
   },
   conditions: [],
   structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
-  delimiter: null,
+  delimiter: '-',
   target: 'sku',
 };
 

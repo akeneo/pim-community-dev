@@ -1,6 +1,33 @@
 akeneo.category:
+  tree_list:
+    column:
+      category_templates: Modelli di categoria
   attributes: Atributi
   edition_form:
     error:
       unhandled_attribute_type: Impossibile trovare il generatore del campo attributo per il tipo di attributo "{{type}}"
+    template:
+      title: Modello
+      fetching_failed: Si è verificato un errore durante il recupero del modello
     unsaved_changes: Se lasci la pagina, perderai le modifiche alla categoria.
+  tree:
+    create: Crea struttura
+    delete: Elimina struttura
+  template:
+    create: Attiva modello
+    edit: Visualizza modello
+    delete: Elimina modello
+    notification_success: Modello attivato correttamente
+    notification_error: Impossibile attivare il modello
+    attribute:
+      description_title: Impostazioni descrizione
+      type:
+        text: Testo
+        textarea: Area di testo
+        richtext: Testo formattato
+        image: Immagine
+  template_list:
+    columns:
+      header: Etichetta
+      code: Codice
+      type: Tipo

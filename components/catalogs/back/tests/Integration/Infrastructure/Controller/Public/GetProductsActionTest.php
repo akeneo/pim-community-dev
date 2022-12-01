@@ -72,7 +72,12 @@ class GetProductsActionTest extends IntegrationTestCase
         $this->createProduct('blue');
 
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            isEnabled: false,
+        );
 
         $this->client->request(
             'GET',

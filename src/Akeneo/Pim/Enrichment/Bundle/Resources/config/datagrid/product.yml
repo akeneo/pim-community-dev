@@ -299,10 +299,10 @@ datagrid:
                     ftype:     date
                     data_name: updated
                     label:     'pim_datagrid.filters.updated.label'
-                label_or_identifier:
-                    type: label_or_identifier
-                    label: 'pim_datagrid.filters.label_or_identifier.label'
-                    data_name: label_or_identifier
+                label_identifier_or_uuid:
+                    type: label_identifier_or_uuid
+                    label: 'pim_datagrid.filters.label_identifier_or_uuid.label'
+                    data_name: label_identifier_or_uuid
                 parent:
                     label:         'pim_datagrid.filters.parent.label'
                     data_name:     parent
@@ -330,3 +330,12 @@ datagrid:
                         field_options:
                             choices:
                                 'pim_datagrid.filters.entity_type.ungrouped': 'product'
+                uuid:
+                    type: product_value_string
+                    ftype: uuid
+                    label: 'pim_datagrid.filters.uuid.label'
+                    data_name: uuid
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true

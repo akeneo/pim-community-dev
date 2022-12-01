@@ -27,12 +27,15 @@ akeneo_catalogs:
       channel:
         label: Kanaal
         no_matches: Geen overeenkomsten gevonden
+        placeholder: Selecteer een kanaal
       locale:
         label: Taal
         no_matches: Geen overeenkomsten gevonden
+        placeholder: Selecteer een taal
       currency:
         label: Valuta
         no_matches: Geen overeenkomsten gevonden
+        placeholder: Selecteer een valuta
   product_selection:
     empty: Voeg selectiecriteria toe om uw productselectie te maken
     more_information: Ga naar Hulp voor meer informatie.
@@ -60,15 +63,18 @@ akeneo_catalogs:
       family:
         label: Familie
         no_matches: Geen overeenkomsten gevonden
+        placeholder: Selecteer een familie
       completeness:
         label: Volledigheid
       attribute_option:
         no_matches: Geen overeenkomsten gevonden
+        placeholder: Selecteer een optie
       category:
         label: Categorie
         remove: Categorie verwijderen
         category_tree: Categorieboom
       measurement:
+        search: Eenheid
         no_results: Geen overeenkomsten gevonden
       boolean:
         yes: Yes
@@ -101,6 +107,22 @@ akeneo_catalogs:
         label: Filteren
         option:
           all: Alle
+      table:
+        target: Doelcatalogus
+        source: Pim-bron
+        placeholder: Geef een bron voor de inhoud op
+      placeholder:
+        illustration_title: Geen doelcatalogus beschikbaar
     source:
+      title: Selecteer bron
+      select_source:
+        label: Pim-bron
+        search: Zoekcriterium
+        no_results: geen overeenkomsten gevonden
+        section_system: systeem
+        section_attributes: attributen
       placeholder:
         title: Bron selecteren
+        illustration_title: Klik op een doel in het rechterpaneel om de toewijzing van uw catalogus te configureren.
+        subtitle: Vervolgens kunt u een overeenkomend PIM-attribuut koppelen aan het geselecteerde doel.
+        link: Ga naar Hulp voor meer informatie.

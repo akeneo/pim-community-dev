@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -18,13 +16,13 @@ use PHPUnit\Framework\Assert;
  */
 class GetCatalogActionTest extends IntegrationTestCase
 {
-    private ?CommandBus $commandBus;
+    public ?object $tokenStorage;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
+        $this->tokenStorage = self::getContainer()->get(TokenStorageInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -33,14 +31,15 @@ class GetCatalogActionTest extends IntegrationTestCase
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
 
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
-            'Store FR',
-            'admin',
-        ));
-        $this->setCatalogProductValueFilters('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
-            'channel' => ['print', 'ecommerce'],
-        ]);
+        $this->createCatalog(
+            id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            name: 'Store FR',
+            ownerUsername: 'admin',
+            isEnabled: false,
+            catalogProductValueFilters: [
+                'channel' => ['print', 'ecommerce'],
+            ],
+        );
 
         $client->request(
             'GET',
@@ -77,19 +76,8 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItGetsCatalogWithProductMapping(): void
     {
-        $client = $this->getAuthenticatedInternalApiClient('admin');
-
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
-            'Store FR',
-            'admin',
-        ));
-        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
-            'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
-            \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
-        ));
-
-        $productMapping = [
+        $client = $this->getAuthenticatedInternalApiClient();
+        $catalogProductMapping = [
             'uuid' => [
                 'source' => 'uuid',
                 'scope' => null,
@@ -101,7 +89,14 @@ class GetCatalogActionTest extends IntegrationTestCase
                 'locale' => 'en_US',
             ],
         ];
-        $this->setCatalogProductMapping('ed30425c-d9cf-468b-8bc7-fa346f41dd07', $productMapping);
+
+        $this->createCatalog(
+            id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            name: 'Store FR',
+            ownerUsername: 'admin',
+            productMappingSchema: $this->getValidSchemaData(),
+            catalogProductMapping: $catalogProductMapping,
+        );
 
         $client->request(
             'GET',
@@ -119,7 +114,7 @@ class GetCatalogActionTest extends IntegrationTestCase
         Assert::assertEquals(200, $response->getStatusCode());
 
         Assert::assertJsonStringEqualsJsonString(
-            \json_encode($productMapping, JSON_THROW_ON_ERROR),
+            \json_encode($catalogProductMapping, JSON_THROW_ON_ERROR),
             \json_encode($payload['product_mapping'], JSON_THROW_ON_ERROR)
         );
         Assert::assertTrue($payload['has_product_mapping_schema']);

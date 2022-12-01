@@ -5,6 +5,7 @@ import {Router} from 'react-router-dom';
 import {act, fireEvent, waitFor} from '@testing-library/react';
 import {createMemoryHistory} from 'history';
 import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 jest.mock('../CreateOrEditGeneratorPage');
 
@@ -17,10 +18,14 @@ describe('CreateGeneratorPage', () => {
     });
 
     const history = createMemoryHistory();
+    const queryClient = new QueryClient();
+    const mockedQueryClient = jest.spyOn(queryClient, 'invalidateQueries');
     render(
-      <Router history={history}>
-        <CreateGeneratorPage initialGenerator={initialGenerator} />
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Router history={history}>
+          <CreateGeneratorPage initialGenerator={initialGenerator} />
+        </Router>
+      </QueryClientProvider>
     );
     expect(screen.getByText('CreateOrEditGeneratorPage')).toBeInTheDocument();
 
@@ -31,6 +36,7 @@ describe('CreateGeneratorPage', () => {
     await waitFor(() => history.length > 1);
     expectCall();
     expect(history.location.pathname).toBe('/initialCode');
+    expect(mockedQueryClient).toBeCalledWith('getIdentifierGenerator');
   });
 
   it('should display validation errors', async () => {

@@ -1,4 +1,9 @@
 akeneo_catalogs:
+    common:
+        select:
+            open: Open
+            remove: Remove
+            no_matches: No matches found
     catalog_list:
         catalogs_name: Catalog name
         status: Status
@@ -116,6 +121,14 @@ akeneo_catalogs:
                 illustration_title: No catalog target available
         source:
             title: Select source
+            parameters:
+                title: Source parameters
+                channel:
+                    label: Channel
+                    placeholder: Select a channel
+                locale:
+                    label: Locale
+                    placeholder: Select a locale
             select_source:
                 label: Pim source
                 search: Search criterion

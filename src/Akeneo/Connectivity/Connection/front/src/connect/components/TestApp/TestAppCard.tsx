@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 import styled from 'styled-components';
 import {TestApp} from '../../../model/app';
-import {AppIllustration, getColor, getFontSize, DeleteIcon, IconButton} from 'akeneo-design-system';
+import {getColor, getFontSize, DeleteIcon, IconButton} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {useHistory} from 'react-router';
 import {useRouter} from '../../../shared/router/use-router';
@@ -88,7 +88,12 @@ export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
     return (
         <CardContainer>
             <LogoContainer>
-                <AppIllustration width={100} height={100} />
+                <img
+                    src='/bundles/akeneoconnectivityconnection/img/app-illustration.png'
+                    alt='App Illustration'
+                    width={100}
+                    height={100}
+                />
             </LogoContainer>
             <TextInformation>
                 <Name>{testApp.name}</Name>

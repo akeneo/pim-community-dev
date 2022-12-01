@@ -29,9 +29,6 @@ class DisableCatalogQueryTest extends IntegrationTestCase
         $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
         $this->createCatalog($catalogIdFR, 'Store FR', 'shopifi');
 
-        $this->enableCatalog($catalogIdUS);
-        $this->enableCatalog($catalogIdFR);
-
         $this->disableCatalogQuery->execute($catalogIdUS);
 
         $this->assertCatalogIsDisabled($catalogIdUS);
@@ -42,7 +39,7 @@ class DisableCatalogQueryTest extends IntegrationTestCase
     {
         $this->createUser('shopifi');
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
+        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi', false);
 
         $this->disableCatalogQuery->execute($catalogIdUS);
 

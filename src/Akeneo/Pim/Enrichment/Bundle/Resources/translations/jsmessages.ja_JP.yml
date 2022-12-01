@@ -41,6 +41,7 @@ pim_enrich.entity.product:
       title: アクションを選択
       choose_family: ファミリーを選択
       choose_family_variant: ファミリーバリエーションを選択
+      helper: 識別子がオプションのフィールドになりました。このカタログと商品への考えられる影響について詳しくは、<a class="AknMessageBox-link" href="{{ link }}" target="_blank">こちらをご確認ください</a>。
     variant_navigation:
       common: 一般
     status:
@@ -70,6 +71,7 @@ pim_enrich.entity.product:
     meta:
       updated: 最終更新
       groups: グループ
+      uuid: UUID
     show_group:
       title: '{{ group }} グループ'
       view_group: 表示グループ
@@ -220,6 +222,7 @@ pim_enrich.entity.category:
       columns:
         label: ツリーのラベル
         number_of_categories: カテゴリ数
+        actions: アクション
         count_categories: ']-Inf, 1]{{ count }} 個のカテゴリ|]1, Inf[{{ count }} 個のカテゴリ'
     tree:
       not_found: カテゴリツリーが見つかりません
@@ -436,6 +439,8 @@ pim_datagrid:
         all_attributes: 属性全部
         with_codes: コー​​ドを含む
         with_labels: ラベルを含む
+        without_uuid: UUIDなし
+        with_uuid: UUIDあり
         without_media: メディアを含まない
         with_media: メディアを含む
       flash:
