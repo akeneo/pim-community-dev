@@ -44,6 +44,9 @@ final class GetCategoriesSql implements GetCategoriesInterface
                 category.parent_id,
                 category.root as root_id,
                 category.updated,
+                category.lft,
+                category.rgt,
+                category.lvl,
                 translation.translations,
                 IF(:with_enriched_attributes, category.value_collection, '') as value_collection
             FROM 

@@ -12,5 +12,10 @@ use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
  */
 interface GetCategoriesParametersBuilder
 {
+
+    /**
+     * @param array<string, mixed> $searchFilters
+     * @return ExternalApiSqlParameters
+     */
     public function build(array $searchFilters, int $limit, int $offset, bool $isEnrichedAttributes): ExternalApiSqlParameters;
 }
