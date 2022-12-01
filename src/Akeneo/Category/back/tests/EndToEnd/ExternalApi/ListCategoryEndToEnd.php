@@ -14,61 +14,56 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
      */
     public function testListAllPaginatedCategories(): void
     {
-        $categories = $this->getStandardizedCategories();
+        $categories = $this->getStandardizedCategorieswithPositionInformation(false, false);
         $firstPageClient = $this->createAuthenticatedClient();
         $firstPageClient->request('GET', 'api/rest/v1/categories?limit=4&page=1');
 
         $secondPageClient = $this->createAuthenticatedClient();
         $secondPageClient->request('GET', 'api/rest/v1/categories?limit=4&page=2');
 
-        $expectedFirstPage = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false"
-        },
-        "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false"
-        },
-        "next": {
-            "href": "http://localhost/api/rest/v1/categories?page=2&limit=4&with_count=false"
-        }
-    },
-    "current_page": 1,
-    "_embedded": {
-        "items": [
-            {$categories['master']},
-            {$categories['categoryA']},
-            {$categories['categoryA1']},
-            {$categories['categoryA2']}
-        ]
-    }
-}
-JSON;
-        $expectedSecondPage = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=2&limit=4&with_count=false"
-        },
-        "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false"
-        },
-        "previous": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false"
-        }
-    },
-    "current_page": 2,
-    "_embedded": {
-        "items": [
-            {$categories['categoryB']},
-            {$categories['categoryC']},
-            {$categories['master_china']}
-        ]
-    }
-}
-JSON;
-
+        $expectedFirstPage = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false",
+                ],
+                'first' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false",
+                ],
+                'next' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=2&limit=4&with_count=false",
+                ],
+            ],
+            'current_page' => 1,
+            '_embedded' => [
+                'items' => [
+                    $categories['master'],
+                    $categories['categoryA'],
+                    $categories['categoryA1'],
+                    $categories['categoryA2'],
+                ]
+            ]
+        ];
+        $expectedSecondPage = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=2&limit=4&with_count=false",
+                ],
+                'first' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false",
+                ],
+                'previous' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false",
+                ],
+            ],
+            'current_page' => 2,
+            '_embedded' => [
+                'items' => [
+                    $categories['categoryB'],
+                    $categories['categoryC'],
+                    $categories['master_china'],
+                ]
+            ]
+        ];
         $this->assertSameResponse($expectedFirstPage, $firstPageClient->getResponse());
         $this->assertSameResponse($expectedSecondPage, $secondPageClient->getResponse());
     }
@@ -91,125 +86,119 @@ JSON;
         $this->createCategory(['parent' => 'categoryA1', 'code' => 'categoryA1-1']);
         $this->createCategory(['parent' => 'categoryA1-1', 'code' => 'categoryA1-1-1']);
 
-        $categories = $this->getStandardizedCategories();
+        $categories = $this->getStandardizedCategorieswithPositionInformation(false, false);
         $search = '{"parent":[{"operator":"=","value":"categoryA"}]}';
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/categories?with_count=true&search='.$search);
 
-        $expected = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true&search={$searchEncoded}"
-        },
-        "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true&search={$searchEncoded}"
-        }
-    },
-    "current_page": 1,
-    "items_count": 4,
-    "_embedded": {
-        "items": [
-            {$categories['categoryA1']},
-            {
-                "_links": {
-                    "self": {
-                        "href": "http://localhost/api/rest/v1/categories/categoryA1-1"
-                    }
-                },
-                "code": "categoryA1-1",
-                "parent": "categoryA1",
-                "updated" : "2016-06-14T13:12:50+02:00",
-                "labels": {}
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": "http://localhost/api/rest/v1/categories/categoryA1-1-1"
-                    }
-                },
-                "code": "categoryA1-1-1",
-                "parent": "categoryA1-1",
-                "updated" : "2016-06-14T13:12:50+02:00",
-                "labels": {}
-            },
-            {$categories['categoryA2']}
-        ]
-    }
-}
-JSON;
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true&search={$searchEncoded}",
+                ],
+                'first' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true&search={$searchEncoded}",
+                ],
+            ],
+            'current_page' => 1,
+            'items_count' => 4,
+            '_embedded' => [
+                'items' => [
+                    $categories['categoryA1'],
+                    [
+                       '_links' => [
+                           'self' => [
+                               'href' => "http://localhost/api/rest/v1/categories/categoryA1-1",
+                           ]
+                       ],
+                        'code' => "categoryA1-1",
+                        'parent' => "categoryA1",
+                        'updated' => "2016-06-14T13:12:50+02:00",
+                        'labels' => [],
+                    ],
+                    [
+                        '_links' => [
+                            'self' => [
+                                'href' => "http://localhost/api/rest/v1/categories/categoryA1-1-1",
+                            ]
+                        ],
+                        'code' => "categoryA1-1-1",
+                        'parent' => "categoryA1-1",
+                        'updated' => "2016-06-14T13:12:50+02:00",
+                        'labels' => [],
+                    ],
+                    $categories['categoryA2'],
+                ]
+            ]
+        ];
 
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
     public function testListCategoriesWithCount(): void
     {
-        $categories = $this->getStandardizedCategories();
+        $categories = $this->getStandardizedCategorieswithPositionInformation(false, false);
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories?with_count=true');
 
-        $expected = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true"
-        },
-        "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true"
-        }
-    },
-    "current_page": 1,
-    "items_count": 7,
-    "_embedded": {
-        "items": [
-            {$categories['master']},
-            {$categories['categoryA']},
-            {$categories['categoryA1']},
-            {$categories['categoryA2']},
-            {$categories['categoryB']},
-            {$categories['categoryC']},
-            {$categories['master_china']}
-        ]
-    }
-}
-JSON;
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true",
+                ],
+                'first' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true",
+                ],
+            ],
+            'current_page' => 1,
+            'items_count' => 7,
+            '_embedded' => [
+                'items' => [
+                    $categories['master'],
+                    $categories['categoryA'],
+                    $categories['categoryA1'],
+                    $categories['categoryA2'],
+                    $categories['categoryB'],
+                    $categories['categoryC'],
+                    $categories['master_china'],
+                ]
+            ]
+        ];
 
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
     public function testListCategoriesByCodes(): void
     {
-        $categories = $this->getStandardizedCategories();
+        $categories = $this->getStandardizedCategorieswithPositionInformation(false, false);
         $search = '{"code":[{"operator":"IN","value":["master","categoryA2","master_china"]}]}';
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/categories?limit=5&page=1&with_count=true&search='.$search);
 
-        $expected = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=5&with_count=true&search={$searchEncoded}"
-        },
-        "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=5&with_count=true&search={$searchEncoded}"
-        }
-    },
-    "current_page": 1,
-    "items_count": 3,
-    "_embedded": {
-        "items": [
-            {$categories['master']},
-            {$categories['categoryA2']},
-            {$categories['master_china']}
-        ]
-    }
-}
-JSON;
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=5&with_count=true&search={$searchEncoded}",
+                ],
+                'first' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=5&with_count=true&search={$searchEncoded}",
+                ],
+            ],
+            'current_page' => 1,
+            'items_count' => 3,
+            '_embedded' => [
+                'items' => [
+                    $categories['master'],
+                    $categories['categoryA2'],
+                    $categories['master_china'],
+                ]
+            ]
+        ];
 
         $this->assertSameResponse($expected, $client->getResponse());
     }
@@ -251,30 +240,28 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/categories?with_position=true');
 
-        $expected = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true"
-        },
-        "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true"
-        }
-    },
-    "current_page": 1,
-    "_embedded": {
-        "items": [
-            {$categories['master']},
-            {$categories['categoryA']},
-            {$categories['categoryA1']},
-            {$categories['categoryA2']},
-            {$categories['categoryB']},
-            {$categories['categoryC']},
-            {$categories['master_china']}
-        ]
-    }
-}
-JSON;
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true",
+                ],
+                'first' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true",
+                ],
+            ],
+            'current_page' => 1,
+            '_embedded' => [
+                'items' => [
+                    $categories['master'],
+                    $categories['categoryA'],
+                    $categories['categoryA1'],
+                    $categories['categoryA2'],
+                    $categories['categoryB'],
+                    $categories['categoryC'],
+                    $categories['master_china'],
+                ]
+            ]
+        ];
 
         $this->assertSameResponse($expected, $client->getResponse());
     }
@@ -294,24 +281,24 @@ JSON;
         $client->request('GET', 'api/rest/v1/categories?search=["master"]&with_enriched_attributes=true');
 
         $categories = $this->getStandardizedCategorieswithPositionInformation(false, true);
-        $expected = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D"
-        },
-        "first": {
-            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D"
-        }
-    },
-    "current_page": 1,
-    "_embedded": {
-        "items": [
-            {$categories['master']}
-        ]
-    }
-}
-JSON;
+
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D",
+                ],
+                'first' => [
+                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D",
+                ],
+            ],
+            'current_page' => 1,
+            '_embedded' => [
+                'items' => [
+                    $categories['master'],
+                ]
+            ]
+        ];
+
 
         $this->assertSameResponse($expected, $client->getResponse());
     }
@@ -325,104 +312,120 @@ JSON;
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    public function getStandardizedCategories(): array
+    public function getStandardizedCategorieswithPositionInformation(bool $withPosition, bool $withEnrichedValues): array
     {
-        $categories['master'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/master"
+        $categories['master'] = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories/master",
+                ]
+            ],
+            'code' => "master",
+            'parent' => null,
+            'updated' => "2016-06-14T13:12:50+02:00",
+            'labels' => [],
+        ];
+
+        $categories['categoryA'] = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories/categoryA",
+                ]
+            ],
+            'code' => "categoryA",
+            'parent' => "master",
+            'updated' => "2016-06-14T13:12:50+02:00",
+            'labels' => [
+                'en_US' => "Category A",
+                'fr_FR' => "Catégorie A",
+            ],
+        ];
+
+        $categories['categoryA1'] = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories/categoryA1",
+                ]
+            ],
+            'code' => "categoryA1",
+            'parent' => "categoryA",
+            'updated' => "2016-06-14T13:12:50+02:00",
+            'labels' => [],
+        ];
+        $categories['categoryA2'] = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories/categoryA2",
+                ]
+            ],
+            'code' => "categoryA2",
+            'parent' => "categoryA",
+            'updated' => "2016-06-14T13:12:50+02:00",
+            'labels' => [],
+        ];
+
+        $categories['categoryB'] = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories/categoryB",
+                ]
+            ],
+            'code' => "categoryB",
+            'parent' => "master",
+            'updated' => "2016-06-14T13:12:50+02:00",
+            'labels' => [],
+        ];
+        $categories['categoryC'] = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories/categoryC",
+                ]
+            ],
+            'code' => "categoryC",
+            'parent' => "master",
+            'updated' => "2016-06-14T13:12:50+02:00",
+            'labels' => [],
+        ];
+        $categories['master_china'] = [
+            '_links' => [
+                'self' => [
+                    'href' => "http://localhost/api/rest/v1/categories/master_china",
+                ]
+            ],
+            'code' => "master_china",
+            'parent' => null,
+            'updated' => "2016-06-14T13:12:50+02:00",
+            'labels' => [],
+        ];
+
+        if($withPosition) {
+            $categories['master']['position']  = 1;
+            $categories['categoryA']['position']  = 1;
+            $categories['categoryA1']['position']  = 1;
+            $categories['categoryA2']['position']  = 2;
+            $categories['categoryB']['position']  = 2;
+            $categories['categoryC']['position']  = 3;
+            $categories['master_china']['position']  = 1;
         }
-    },
-    "code": "master",
-    "parent": null,
-    "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
-}
-JSON;
-        $categories['categoryA'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryA"
+
+        if($withEnrichedValues) {
+            $categories['master']['template'] = null;
+            $categories['master']['values'] = $this->getStandardizedAttributesValues();
+            $categories['categoryA']['template'] = null;
+            $categories['categoryA']['values'] = $this->getStandardizedAttributesValues();
+            $categories['categoryA1']['template'] = null;
+            $categories['categoryA1']['values'] = $this->getStandardizedAttributesValues();
+            $categories['categoryA2']['template'] = null;
+            $categories['categoryA2']['values'] = $this->getStandardizedAttributesValues();
+            $categories['categoryB']['template'] = null;
+            $categories['categoryB']['values'] = $this->getStandardizedAttributesValues();
+            $categories['categoryC']['template'] = null;
+            $categories['categoryC']['values'] = $this->getStandardizedAttributesValues();
+            $categories['master_china']['template'] = null;
+            $categories['master_china']['values'] = $this->getStandardizedAttributesValues();
         }
-    },
-    "code": "categoryA",
-    "parent": "master",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {
-        "en_US": "Category A",
-        "fr_FR": "Catégorie A"
-    }
-}
-JSON;
-        $categories['categoryA1'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryA1"
-        }
-    },
-    "code": "categoryA1",
-    "parent": "categoryA",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
-}
-JSON;
-        $categories['categoryA2'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryA2"
-        }
-    },
-    "code": "categoryA2",
-    "parent": "categoryA",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
-}
-JSON;
-        $categories['categoryB'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryB"
-        }
-    },
-    "code": "categoryB",
-    "parent": "master",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
-}
-JSON;
-        $categories['categoryC'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryC"
-        }
-    },
-    "code": "categoryC",
-    "parent": "master",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
-}
-JSON;
-        $categories['master_china'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/master_china"
-        }
-    },
-    "code": "master_china",
-    "parent": null,
-    "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
-}
-JSON;
 
         return $categories;
     }
@@ -430,183 +433,49 @@ JSON;
     /**
      * @return array<string, mixed>
      */
-    public function getStandardizedCategorieswithPositionInformation(bool $withPosition, bool $withEnrichedValues): array
+    public function getStandardizedAttributesValues(): array
     {
-        $template = ($withEnrichedValues) ? ', "template": null' : '';
-        $values = ($withEnrichedValues) ? ", \"values\": {$this->getStandardizedAttributesValues()}" : '';
-
-        $positionMaster = ($withPosition) ? '"position" : 1,' : '';
-        $categories['master'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/master"
-        }
-    },
-    "code": "master",
-    "parent": null,
-    "updated" : "2016-06-14T13:12:50+02:00",
-    {$positionMaster}
-    "labels": {}
-    {$template}
-    {$values}
-}
-JSON;
-        $positionCategoryA = ($withPosition) ? '"position" : 1,' : '';
-        $categories['categoryA'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryA"
-        }
-    },
-    "code": "categoryA",
-    "parent": "master",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    {$positionCategoryA}
-    "labels": {
-        "en_US": "Category A",
-        "fr_FR": "Catégorie A"
-    }
-    {$template}
-    {$values}
-}
-JSON;
-        $positionCategoryA1 = ($withPosition) ? '"position" : 1,' : '';
-        $categories['categoryA1'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryA1"
-        }
-    },
-    "code": "categoryA1",
-    "parent": "categoryA",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    {$positionCategoryA1}
-    "labels": {}
-    {$template}
-    {$values}
-}
-JSON;
-        $positionCategoryA2 = ($withPosition) ? '"position" : 2,' : '';
-        $categories['categoryA2'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryA2"
-        }
-    },
-    "code": "categoryA2",
-    "parent": "categoryA",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    {$positionCategoryA2}
-    "labels": {}
-    {$template}
-    {$values}
-}
-JSON;
-        $positionCategoryB = ($withPosition) ? '"position" : 2,' : '';
-        $categories['categoryB'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryB"
-        }
-    },
-    "code": "categoryB",
-    "parent": "master",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    {$positionCategoryB}
-    "labels": {}
-    {$template}
-    {$values}
-}
-JSON;
-        $positionCategoryC = ($withPosition) ? '"position" : 3,' : '';
-        $categories['categoryC'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/categoryC"
-        }
-    },
-    "code": "categoryC",
-    "parent": "master",
-    "updated" : "2016-06-14T13:12:50+02:00",
-    {$positionCategoryC}
-    "labels": {}
-    {$template}
-    {$values}
-}
-JSON;
-        $positionCategoryMasterChina = ($withPosition) ? '"position" : 1,' : '';
-        $categories['master_china'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/categories/master_china"
-        }
-    },
-    "code": "master_china",
-    "parent": null,
-    "updated" : "2016-06-14T13:12:50+02:00",
-    {$positionCategoryMasterChina}
-    "labels": {}
-    {$template}
-    {$values}
-}
-JSON;
-
-        return $categories;
+        return [
+            'photo|8587cda6-58c8-47fa-9278-033e1d8c735c' => [
+                'data' => [
+                    'size' => 168107,
+                    'extension' => "jpg",
+                    'file_path' => "8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg",
+                    'mime_type' => "image/jpeg",
+                    'original_filename' => "shoes.jpg",
+                ],
+                'type' => "image",
+                'locale' => null,
+                'channel' => null,
+                'attribute_code' => "photo|8587cda6-58c8-47fa-9278-033e1d8c735c"
+            ],
+            'title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|en_US' => [
+                'data' => "All the shoes you need!",
+                'type' => "text",
+                'locale' => "en_US",
+                'channel' => "ecommerce",
+                'attribute_code' => "title|87939c45-1d85-4134-9579-d594fff65030"
+            ],
+            'title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|fr_FR' => [
+                'data' => "Les chaussures dont vous avez besoin !",
+                'type' => "text",
+                'locale' => "fr_FR",
+                'channel' => "ecommerce",
+                'attribute_code' => "title|87939c45-1d85-4134-9579-d594fff65030"
+            ],
+        ];
     }
 
-    public function getStandardizedAttributesValues(): string
-    {
-        return <<<JSON
-{
-    "photo|8587cda6-58c8-47fa-9278-033e1d8c735c": {
-        "data": {
-            "size": 168107,
-            "extension": "jpg",
-            "file_path": "8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg",
-            "mime_type": "image/jpeg",
-            "original_filename": "shoes.jpg"
-        },
-        "type": "image",
-        "locale": null,
-        "channel": null,
-        "attribute_code": "photo|8587cda6-58c8-47fa-9278-033e1d8c735c"
-    },
-    "title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|en_US": {
-        "data": "All the shoes you need!",
-        "type": "text",
-        "locale": "en_US",
-        "channel": "ecommerce",
-        "attribute_code": "title|87939c45-1d85-4134-9579-d594fff65030"
-    },
-    "title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|fr_FR": {
-        "data": "Les chaussures dont vous avez besoin !",
-        "type": "text",
-        "locale": "fr_FR",
-        "channel": "ecommerce",
-        "attribute_code": "title|87939c45-1d85-4134-9579-d594fff65030"
-    }
-}
-JSON;
-    }
-
-    private function assertSameResponse(string $expectedJson, Response $actualResponse): void
+    private function assertSameResponse(array $expectedJson, Response $actualResponse): void
     {
         $this->assertSame(Response::HTTP_OK, $actualResponse->getStatusCode());
 
         $responseContent = json_decode($actualResponse->getContent(), true);
-        $expectedContent = json_decode($expectedJson, true);
 
         $this->normalizeCategories($responseContent['_embedded']['items']);
-        $this->normalizeCategories($expectedContent['_embedded']['items']);
+        $this->normalizeCategories($expectedJson['_embedded']['items']);
 
-        $this->assertEquals($expectedContent, $responseContent);
+        $this->assertEquals($expectedJson, $responseContent);
     }
 
     /**
