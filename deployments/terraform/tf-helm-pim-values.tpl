@@ -59,13 +59,6 @@ elasticsearch:
     heapSize: ${elasticsearch.data.heap_size}
     ${indent(4,replace(yamlencode({resources: "${elasticsearch.data.resources}"}),"\"",""))}
 
-memcached:
-  podAnnotations:
-    app.kubernetes.io/name: memcached
-    app.kubernetes.io/component: caching
-    <<: *global_extraLabels
-  ${indent(2,replace(yamlencode({resources: "${memcached.resources}"}),"\"",""))}
-
 common:
   gcpProjectID: ${google_cloud_project.id}
   googleZone: ${google_cloud_project.zone}

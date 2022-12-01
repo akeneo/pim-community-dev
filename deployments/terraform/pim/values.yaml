@@ -436,25 +436,6 @@ mysql:
       successThreshold: 1
       failureThreshold: 5
 
-memcached:
-  image:
-    tag: 1.6.12
-    pullPolicy: IfNotPresent
-  fullnameOverride: memcached
-  replicaCount: 1
-  resources:
-    limits:
-      memory: "32Mi"
-    requests:
-      cpu: "1m"
-      memory: "16Mi"
-  extraEnvVars:
-    - name: MEMCACHED_MAX_ITEM_SIZE
-      value: "64"
-  pdb:
-    create: true
-    minAvailable: 0
-
 elasticsearch:
   appVersion: 7.17.7
   image:
