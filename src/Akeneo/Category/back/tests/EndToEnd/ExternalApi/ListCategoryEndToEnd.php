@@ -14,7 +14,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
      */
     public function testListAllPaginatedCategories(): void
     {
-        $categories = $this->getStandardizedCategorieswithPositionInformation(false, false);
+        $categories = $this->getStandardizedCategories(false, false);
         $firstPageClient = $this->createAuthenticatedClient();
         $firstPageClient->request('GET', 'api/rest/v1/categories?limit=4&page=1');
 
@@ -86,7 +86,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->createCategory(['parent' => 'categoryA1', 'code' => 'categoryA1-1']);
         $this->createCategory(['parent' => 'categoryA1-1', 'code' => 'categoryA1-1-1']);
 
-        $categories = $this->getStandardizedCategorieswithPositionInformation(false, false);
+        $categories = $this->getStandardizedCategories(false, false);
         $search = '{"parent":[{"operator":"=","value":"categoryA"}]}';
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
@@ -139,7 +139,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
 
     public function testListCategoriesWithCount(): void
     {
-        $categories = $this->getStandardizedCategorieswithPositionInformation(false, false);
+        $categories = $this->getStandardizedCategories(false, false);
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories?with_count=true');
@@ -173,7 +173,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
 
     public function testListCategoriesByCodes(): void
     {
-        $categories = $this->getStandardizedCategorieswithPositionInformation(false, false);
+        $categories = $this->getStandardizedCategories(false, false);
         $search = '{"code":[{"operator":"IN","value":["master","categoryA2","master_china"]}]}';
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
@@ -235,7 +235,7 @@ JSON;
 
     public function testListCategoriesWithPosition(): void
     {
-        $categories = $this->getStandardizedCategorieswithPositionInformation(true, false);
+        $categories = $this->getStandardizedCategories(true, false);
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories?with_position=true');
@@ -280,7 +280,7 @@ JSON;
         // TODO replace with GRF-574 uri by /api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}
         $client->request('GET', 'api/rest/v1/categories?search=["master"]&with_enriched_attributes=true');
 
-        $categories = $this->getStandardizedCategorieswithPositionInformation(false, true);
+        $categories = $this->getStandardizedCategories(false, true);
 
         $expected = [
             '_links' => [
@@ -313,7 +313,7 @@ JSON;
     /**
      * @return array<string, mixed>
      */
-    public function getStandardizedCategorieswithPositionInformation(bool $withPosition, bool $withEnrichedValues): array
+    public function getStandardizedCategories(bool $withPosition, bool $withEnrichedValues): array
     {
         $categories['master'] = [
             '_links' => [
