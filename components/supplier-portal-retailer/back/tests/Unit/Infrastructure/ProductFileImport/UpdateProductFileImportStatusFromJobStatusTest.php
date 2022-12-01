@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileImport;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\ProductFileImportStatus;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Repository\InMemory\InMemoryRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\UpdateProductFileImportStatusFromJobStatus;

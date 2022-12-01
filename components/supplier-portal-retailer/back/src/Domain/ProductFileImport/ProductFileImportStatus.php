@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model;
+namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport;
 
 enum ProductFileImportStatus: string
 {
