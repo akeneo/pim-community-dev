@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 {
-    private const TYPE_MAPPING = [
+    private const ALLOWED_TYPE_ASSOCIATIONS = [
         'string' => [
             'pim_catalog_text',
         ],
@@ -114,7 +114,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                 continue;
             }
 
-            if (!\array_key_exists($schema['properties'][$targetCode]['type'], self::TYPE_MAPPING)) {
+            if (!\array_key_exists($schema['properties'][$targetCode]['type'], self::ALLOWED_TYPE_ASSOCIATIONS)) {
                 throw new \LogicException(\sprintf('Type "%s" is not supported.', $schema['properties'][$targetCode]['type']));
             }
 
@@ -125,7 +125,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             $attribute = $this->findOneAttributeByCodeQuery->execute($sourceAssociation['source']);
             $attributeType = $attribute['type'] ?? null;
 
-            if (null === $attributeType || !\in_array($attributeType, self::TYPE_MAPPING[$schema['properties'][$targetCode]['type']])) {
+            if (null === $attributeType || !\in_array($attributeType, self::ALLOWED_TYPE_ASSOCIATIONS[$schema['properties'][$targetCode]['type']])) {
                 $this->context
                     ->buildViolation(
                         'akeneo_catalogs.validation.product_mapping.schema.incorrect_type',
