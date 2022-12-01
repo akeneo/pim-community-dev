@@ -56,21 +56,22 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         $getCategory->byCode(Argument::any())->willReturn($category);
 
         $params = [
-            'category_lft' => $category->getPosition()->left,
-            'category_rgt' => $category->getPosition()->right,
-            'category_root' => $category->getRootId()->getValue(),
+            'left' => $category->getPosition()->left,
+            'right' => $category->getPosition()->right,
+            'root' => $category->getRootId()->getValue(),
         ];
         $types = [
-            'category_lft' => \PDO::PARAM_INT,
-            'category_rgt' => \PDO::PARAM_INT,
-            'category_root' => \PDO::PARAM_INT,
+            'left' => \PDO::PARAM_INT,
+            'right' => \PDO::PARAM_INT,
+            'root' => \PDO::PARAM_INT,
         ];
         $expected = new ExternalApiSqlParameters(
-            sqlWhere: 'category.lft > 1 AND category.rgt < 3 AND category.root = 4',
+            sqlWhere: 'category.lft > :left AND category.rgt < :right AND category.root = :root',
             params: $params,
             types: $types,
+            limitAndOffset: null,
         );
-        $this->build($searchFilters)->shouldReturn($expected);
+        $this->build($searchFilters)->shouldBeLike($expected);
     }
 
     function it_generates_where_is_root_true(
@@ -92,8 +93,9 @@ class SearchFiltersSqlSpec extends ObjectBehavior
             sqlWhere: 'category.parent_id IS NULL',
             params: null,
             types: null,
+            limitAndOffset: null,
         );
-        $this->build($searchFilters)->shouldReturn($expected);
+        $this->build($searchFilters)->shouldBeLike($expected);
     }
 
     function it_generates_where_by_is_root_false(
@@ -115,8 +117,9 @@ class SearchFiltersSqlSpec extends ObjectBehavior
             sqlWhere: 'category.parent_id IS NOT NULL',
             params: null,
             types: null,
+            limitAndOffset: null,
         );
-        $this->build($searchFilters)->shouldReturn($expected);
+        $this->build($searchFilters)->shouldBeLike($expected);
     }
 
     function it_generates_where_by_parent_and_is_root(
@@ -152,21 +155,22 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         $getCategory->byCode(Argument::any())->willReturn($category);
 
         $params = [
-            'category_lft' => $category->getPosition()->left,
-            'category_rgt' => $category->getPosition()->right,
-            'category_root' => $category->getRootId()->getValue(),
+            'left' => $category->getPosition()->left,
+            'right' => $category->getPosition()->right,
+            'root' => $category->getRootId()->getValue(),
         ];
         $types = [
-            'category_lft' => \PDO::PARAM_INT,
-            'category_rgt' => \PDO::PARAM_INT,
-            'category_root' => \PDO::PARAM_INT,
+            'left' => \PDO::PARAM_INT,
+            'right' => \PDO::PARAM_INT,
+            'root' => \PDO::PARAM_INT,
         ];
         $expected = new ExternalApiSqlParameters(
-            sqlWhere: 'category.lft > 1 AND category.rgt < 3 AND category.root = 4 AND category.parent_id IS NULL',
+            sqlWhere: 'category.lft > :left AND category.rgt < :right AND category.root = :root AND category.parent_id IS NULL',
             params: $params,
             types: $types,
+            limitAndOffset: null,
         );
-        $this->build($searchFilters)->shouldReturn($expected);
+        $this->build($searchFilters)->shouldBeLike($expected);
     }
 
     function it_generates_where_in_codes(
@@ -186,17 +190,18 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
 
         $params = [
-            'code_0' => $values,
+            'code_0' => "master,category1",
         ];
         $types = [
             'code_0' => \PDO::PARAM_STR,
         ];
         $expected = new ExternalApiSqlParameters(
-            sqlWhere: 'category.code IN :code_0',
+            sqlWhere: 'category.code IN (:code_0)',
             params: $params,
             types: $types,
+            limitAndOffset: null,
         );
-        $this->build($searchFilters)->shouldReturn($expected);
+        $this->build($searchFilters)->shouldBeLike($expected);
     }
 
     function it_generates_where_for_greater_than_date(
@@ -225,8 +230,9 @@ class SearchFiltersSqlSpec extends ObjectBehavior
             sqlWhere: 'category.updated > :updated_0',
             params: $params,
             types: $types,
+            limitAndOffset: null,
         );
-        $this->build($searchFilters)->shouldReturn($expected);
+        $this->build($searchFilters)->shouldBeLike($expected);
     }
 
     function it_throws_exception_on_bad_operator(

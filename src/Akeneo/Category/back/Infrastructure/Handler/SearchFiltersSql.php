@@ -78,7 +78,7 @@ class SearchFiltersSql implements SearchFilters
         return new ExternalApiSqlParameters(
             $sqlWhere,
             $sqlParameters,
-            $sqlTypes
+            $sqlTypes,
         );
 
 

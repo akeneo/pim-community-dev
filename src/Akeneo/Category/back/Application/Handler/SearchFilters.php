@@ -12,5 +12,5 @@ use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
  */
 interface SearchFilters
 {
-    public function build(array $searchFilters): array;
+    public function build(array $searchFilters): ExternalApiSqlParameters;
 }
