@@ -49,10 +49,10 @@ affinity: {}
 # example rules configuration to set TTL for arbitrary objects
 # see https://codeberg.org/hjacobs/kube-janitor for details
 rules:
-  - id: temporary-pr-namespaces
-    # delete all namespaces with a name starting with "srnt-ucs-pr-*
+  - id: temporary-pr-deployments
+    # delete all applications.argoproj.io with a name starting with "srnt-ucs-pr-*
     resources:
-      - namespaces
+      - applications.argoproj.io
     # this uses JMESPath's built-in "starts_with" function
     # see http://jmespath.org/specification.html#starts-with
     jmespath: "starts_with(metadata.name, 'srnt-ucs-pr')"
