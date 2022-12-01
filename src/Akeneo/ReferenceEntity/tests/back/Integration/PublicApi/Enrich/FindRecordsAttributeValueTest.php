@@ -49,6 +49,7 @@ use PHPUnit\Framework\Assert;
 class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
 {
     private FindRecordsAttributeValueInterface $findRecordsAttributeValue;
+    private AttributeIdentifier $labelAttributeIdentifier;
 
     public function setUp(): void
     {
@@ -74,7 +75,7 @@ class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
                 'dyson',
                 'unknown_record',
             ],
-            'label',
+            $this->labelAttributeIdentifier->normalize(),
             null,
             'fr_FR',
         );
@@ -93,7 +94,7 @@ class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
                 'dyson',
                 'starck',
             ],
-            'text_attribute',
+            'text_attribute_designer_fingerprint',
             'ecommerce',
             'fr_FR',
         );
@@ -111,7 +112,13 @@ class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
      */
     public function it_finds_provided_records_and_number_attribute_value(): void
     {
-        $records = $this->findRecordsAttributeValue->find('designer', ['starck', 'dyson'], 'number_attribute', null, null);
+        $records = $this->findRecordsAttributeValue->find(
+            'designer',
+            ['starck', 'dyson'],
+            'number_attribute_designer_fingerprint',
+            null,
+            null,
+        );
         Assert::assertEquals(
             [
                 'dyson' => '2',
@@ -126,7 +133,13 @@ class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
      */
     public function it_finds_provided_records_and_image_attribute_value(): void
     {
-        $records = $this->findRecordsAttributeValue->find('designer', ['starck', 'dyson'], 'image_attribute', null, null);
+        $records = $this->findRecordsAttributeValue->find(
+            'designer',
+            ['starck', 'dyson'],
+            'image_attribute_designer_fingerprint',
+            null,
+            null,
+        );
         Assert::assertEquals(
             [
                 'dyson' => [
@@ -147,7 +160,13 @@ class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
      */
     public function it_finds_provided_records_and_option_attribute_value(): void
     {
-        $records = $this->findRecordsAttributeValue->find('designer', ['starck', 'dyson'], 'option_attribute', null, null);
+        $records = $this->findRecordsAttributeValue->find(
+            'designer',
+            ['starck', 'dyson'],
+            'option_attribute_designer_fingerprint',
+            null,
+            null,
+        );
         Assert::assertEquals(
             [
                 'dyson' => 'red',
@@ -162,7 +181,13 @@ class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
      */
     public function it_finds_provided_records_and_option_collection_attribute_value(): void
     {
-        $records = $this->findRecordsAttributeValue->find('designer', ['starck', 'dyson'], 'option_collection_attribute', null, null);
+        $records = $this->findRecordsAttributeValue->find(
+            'designer',
+            ['starck', 'dyson'],
+            'option_col_attribute_designer_fingerprint',
+            null,
+            null,
+        );
         Assert::assertEquals(
             [
                 'dyson' => ['red', 'blue'],
@@ -190,23 +215,24 @@ class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
         );
         $referenceEntityRepository->create($referenceEntity);
         $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $this->labelAttributeIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
         $textAttributeEcommerceFR = $this->createTextAttribute((string) $referenceEntityIdentifier, 'text_attribute', 10, true, true);
         $numberAttribute = $this->createNumberAttribute((string) $referenceEntityIdentifier, 'number_attribute', 20, false, false);
         $imageAttribute = $this->createImageAttribute((string) $referenceEntityIdentifier, 'image_attribute', 30, false, false);
         $optionAttribute = $this->createOptionAttribute((string) $referenceEntityIdentifier, 'option_attribute', ['blue', 'red'], 40, false, false);
-        $optionCollectionAttribute = $this->createOptionCollectionAttribute((string) $referenceEntityIdentifier, 'option_collection_attribute', ['blue', 'red'], 50, false, false);
+        $optionCollectionAttribute = $this->createOptionCollectionAttribute((string) $referenceEntityIdentifier, 'option_col_attribute', ['blue', 'red'], 50, false, false);
 
         // Starck record
         $starckCode = RecordCode::fromString('starck');
         $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $starckCode);
         $labelValueFR = Value::create(
-            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            $this->labelAttributeIdentifier,
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Philippe Starck'),
         );
         $labelValueUS = Value::create(
-            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            $this->labelAttributeIdentifier,
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('Philippe Starck US'),
@@ -224,7 +250,7 @@ class FindRecordsAttributeValueTest extends SqlIntegrationTestCase
         $dysonCode = RecordCode::fromString('dyson');
         $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $dysonCode);
         $labelValueFR = Value::create(
-            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            $this->labelAttributeIdentifier,
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Dyson'),

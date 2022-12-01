@@ -23,7 +23,7 @@ interface FindRecordsAttributeValueInterface
     public function find(
         string $referenceEntityCode,
         array $recordCodes,
-        string $referenceEntityAttributeCode,
+        string $referenceEntityAttributeIdentifier,
         ?string $channel = null,
         ?string $locale = null,
     ): array;

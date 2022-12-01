@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraint;
 
 class ReferenceEntitySelectionConstraint extends Constraint
 {
+    public const ATTRIBUTE_NOT_FOUND = 'akeneo.tailored_export.validation.reference_entity.attribute_not_found';
+
     public function validatedBy(): string
     {
         return ReferenceEntitySelectionValidator::class;
