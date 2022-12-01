@@ -5,6 +5,12 @@ pim_common:
   result_count: "{0}0 wyników|{1}1 wynik|]1, Inf[{{ itemsCount }} wyników"
   items_selected: "{0}0 wybranych pozycji|{1}1 wybrana pozycja|]1, Inf[{{ itemsCount }} wybranych pozycji"
 shared_catalog:
+  content:
+    attributes:
+      helper:
+        text: Kolejność atrybutów w katalogu będzie identyczna z kolejnością określoną w ustawieniach grup atrybutów.
+        link:
+          text: Kliknij tutaj, aby dowiedzieć się więcej o grupach atrybutów.
   recipients:
     add: Dodaj tutaj adresy e-mail użytkowników
     placeholder: betty@akeneo.com

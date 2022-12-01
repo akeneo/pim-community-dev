@@ -71,6 +71,16 @@ akeneo.tailored_import:
         comma: Przecinek (,)
         semicolon: Średnik (;)
         pipe: Linia (|)
+      search_and_replace:
+        title: Znajdź i zamień
+        helper: Możesz dodać maksymalnie 10 zastąpień.
+        what:
+          header: Szukaj
+          placeholder: Szukaj wartości do zastąpienia
+        with:
+          header: Zastąp
+          placeholder: Zdefiniuj wartość zastępczą
+        case_sensitive: Wielkość liter ma znaczenie.
       simple_select_replacement:
         title: Zastąpienie pojedynczego wyboru
         option_labels: Etykiety opcji
@@ -236,6 +246,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: Typ operacji {{ operation_type }} jest niekompatybilny z Twoim typem celu.
       missing_required_operations: "Brakuje wymaganych operacji: {{ missing_required_operations }}"
+      max_replacements_reached: 'Maksymalna liczba dodanych zastąpień: {{ limit }}'
 pim_information:
   import:
     title: Odkryj mapowanie z dopasowanym importem

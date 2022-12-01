@@ -71,6 +71,16 @@ akeneo.tailored_import:
         comma: 쉼표(,)
         semicolon: 세미콜론(;)
         pipe: 수직선(|)
+      search_and_replace:
+        title: 검색 및 바꾸기
+        helper: 최대 10개의 대체 값을 추가할 수 있습니다.
+        what:
+          header: 검색
+          placeholder: 대체할 값 검색
+        with:
+          header: '다음으로 대체:'
+          placeholder: 대체 값 정의
+        case_sensitive: 대/소문자 구분
       simple_select_replacement:
         title: 간단한 선택 대체
         option_labels: 옵션 레이블
@@ -236,6 +246,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: 작업 유형 {{ operation_type }}이(가) 대상 유형과 호환되지 않습니다.
       missing_required_operations: "필수 작업이 누락되었습니다. {{ missing_required_operations }}"
+      max_replacements_reached: 최대 {{ limit }}개의 대체 값을 추가할 수 있습니다.
 pim_information:
   import:
     title: 맞춤화된 가져오기로 매핑 찾기
