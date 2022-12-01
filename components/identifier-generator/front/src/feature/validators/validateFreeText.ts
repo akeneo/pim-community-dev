@@ -8,7 +8,7 @@ const validateFreeText: Validator<FreeText> = (freeText, path) => {
   if (freeText.string.length === 0) {
     violations.push({
       path: `${path}.string`,
-      message: 'The text should not be empty',
+      message: 'Please fill in the text area to save this property',
     });
   }
 
