@@ -321,6 +321,7 @@ datagrid:
                         field_options:
                             attr:
                                 choice_list: true
+                                empty_choice: true
                 entity_type:
                     label: 'pim_datagrid.filters.entity_type.label'
                     data_name: entity_type
