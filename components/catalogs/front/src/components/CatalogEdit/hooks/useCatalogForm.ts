@@ -68,9 +68,14 @@ export const useCatalogForm = (id: string): Result => {
                         dispatch(action);
                         break;
                     case CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA:
-                        if (Object.keys(values.product_selection_criteria).length > Object.keys(action.value).length) {
-                            setErrors([]);
-                        }
+                        setErrors(
+                            errors.filter(error => !error.propertyPath.startsWith('[product_selection_criteria]'))
+                        );
+                        setDirty(true);
+                        dispatch(action);
+                        break;
+                    case CatalogFormActions.SET_PRODUCT_MAPPING:
+                        setErrors(errors.filter(error => !error.propertyPath.startsWith('[product_mapping]')));
                         setDirty(true);
                         dispatch(action);
                         break;
@@ -80,7 +85,7 @@ export const useCatalogForm = (id: string): Result => {
                         break;
                 }
             },
-        [setDirty, values, setErrors]
+        [setDirty, values, setErrors, errors]
     );
 
     if (catalog.isLoading) {

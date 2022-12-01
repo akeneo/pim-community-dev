@@ -1,6 +1,33 @@
 akeneo.category:
+  tree_list:
+    column:
+      category_templates: Categoriesjablonen
   attributes: Attributen
   edition_form:
     error:
       unhandled_attribute_type: Kan bouwer voor het attribuutveld voor attribuuttype "{{type}} " niet vinden
+    template:
+      title: Sjabloon
+      fetching_failed: Er is een fout opgetreden tijdens het ophalen van het sjabloon
     unsaved_changes: Als u deze pagina verlaat, worden de wijzigingen aan de categorie niet opgeslagen.
+  tree:
+    create: Boomstructuur maken
+    delete: Boomstructuur verwijderen
+  template:
+    create: Sjabloon activeren
+    edit: Sjabloon bekijken
+    delete: Sjabloon verwijderen
+    notification_success: Het sjabloon is geactiveerd
+    notification_error: Het sjabloon kon niet geactiveerd worden
+    attribute:
+      description_title: Instellingen van beschrijving
+      type:
+        text: Tekst
+        textarea: Tekstgebied
+        richtext: Tekst met opmaak
+        image: Afbeelding
+  template_list:
+    columns:
+      header: Label
+      code: Code
+      type: Type

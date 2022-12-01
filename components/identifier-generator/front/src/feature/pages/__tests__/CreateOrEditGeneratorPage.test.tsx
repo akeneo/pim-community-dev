@@ -94,7 +94,7 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(history.location.pathname).toBe('/');
   });
 
-  it('should update a generate on structure change', () => {
+  it('should update a generator on structure change', () => {
     const mockSetHasUnsavedChanges = jest.fn();
     const identifierGeneratorDependencies = {
       unsavedChanges: {
@@ -160,5 +160,23 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('pim_identifier_generator.tabs.identifier_structure')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
     expect(screen.getByText('[{"type":"free_text","string":"Updated string"}]')).toBeInTheDocument();
+  });
+
+  it('should update delimiter', () => {
+    render(
+      <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
+        initialGenerator={initialGenerator}
+        validationErrors={[]}
+        mainButtonCallback={jest.fn()}
+        isNew={false}
+      />
+    );
+
+    fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
+    expect(screen.getByText('StructureTabMock')).toBeInTheDocument();
+    expect(screen.getByText('Delimiter is -')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Update Delimiter'));
+    expect(screen.getByText('Delimiter is /')).toBeInTheDocument();
   });
 });

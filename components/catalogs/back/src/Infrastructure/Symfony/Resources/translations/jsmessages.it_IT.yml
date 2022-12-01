@@ -27,12 +27,15 @@ akeneo_catalogs:
       channel:
         label: Canale
         no_matches: Nessuna corrispondenza trovata
+        placeholder: Seleziona un canale
       locale:
         label: Impostazione locale
         no_matches: Nessuna corrispondenza trovata
+        placeholder: Seleziona un'impostazione locale
       currency:
         label: Valuta
         no_matches: Nessuna corrispondenza trovata
+        placeholder: Seleziona una valuta
   product_selection:
     empty: Aggiungi criteri di selezione per creare la tua selezione di prodotti
     more_information: Consulta il nostro Help Center per ulteriori informazioni.
@@ -60,15 +63,18 @@ akeneo_catalogs:
       family:
         label: Famiglia
         no_matches: Nessuna corrispondenza trovata
+        placeholder: Seleziona una famiglia
       completeness:
         label: Completamento
       attribute_option:
         no_matches: Nessuna corrispondenza trovata
+        placeholder: Seleziona un'opzione
       category:
         label: Categoria
         remove: Rimuovi categoria
         category_tree: Albero delle categorie
       measurement:
+        search: Unità di misura
         no_results: Nessuna corrispondenza trovata
       boolean:
         yes: Yes
@@ -101,6 +107,22 @@ akeneo_catalogs:
         label: Filtro
         option:
           all: Tutto
+      table:
+        target: Destinazione catalogo
+        source: Origine Pim
+        placeholder: Indica un'origine di contenuti
+      placeholder:
+        illustration_title: Non sono disponibili destinazioni nel catalogo
     source:
+      title: Seleziona origine
+      select_source:
+        label: Origine Pim
+        search: Criterio di ricerca
+        no_results: nessuna corrispondenza trovata
+        section_system: sistema
+        section_attributes: attributi
       placeholder:
         title: Seleziona origine
+        illustration_title: Fai clic su una destinazione nel pannello di destra per configurare la mappatura del catalogo.
+        subtitle: Successivamente potrai associare un attributo PIM alla destinazione selezionata.
+        link: Consulta il nostro Help Center per ulteriori informazioni.

@@ -31,24 +31,12 @@ class IndexProductCommand extends Command
 
     protected static $defaultName = 'pim:product:index';
 
-    /** @var ProductAndAncestorsIndexer */
-    private $productAndAncestorsIndexer;
-
-    /** @var Client */
-    private $productAndProductModelClient;
-
-    /** @var Connection */
-    private $connection;
-
     public function __construct(
-        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
-        Client $productAndProductModelClient,
-        Connection $connection
+        private readonly ProductAndAncestorsIndexer $productAndAncestorsIndexer,
+        private readonly Client $productAndProductModelClient,
+        private readonly Connection $connection,
     ) {
         parent::__construct();
-        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
-        $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->connection = $connection;
     }
 
     /**
@@ -240,7 +228,6 @@ SQL;
             $lastUuidAsBytes = end($rows)['uuid'];
 
             $existingMysqlIdentifiers = array_column($rows, '_id');
-            $existingMysqlUpdated = array_column($rows, 'updated');
 
             $results = $this->productAndProductModelClient->search([
                 'query' => [
@@ -250,31 +237,28 @@ SQL;
                                 'values' => $existingMysqlIdentifiers
                             ]
                         ],
-                        'filter' => [
-                            'terms' => [
-                                'entity_updated' => $existingMysqlUpdated
-                            ]
-                        ]
                     ]
                 ],
-                '_source' => false,
+                '_source' => ['id', 'entity_updated'],
                 'size' => $batchSize
             ]);
 
-            $esIdentifiers = array_map(function ($doc) {
-                return $doc['_id'];
-            }, $results["hits"]["hits"]);
+            $updatedById = [];
+            foreach ($results['hits']['hits'] as $hit) {
+                $updatedById[$hit['_source']['id']] = $hit['_source']['entity_updated'];
+            }
 
-            $diff = array_reduce(
-                $rows,
-                function ($carry, $item) use ($esIdentifiers) {
-                    if (!in_array($item['_id'], $esIdentifiers)) {
-                        $carry[] = Uuid::fromBytes($item['uuid']);
+            $diff = \array_map(
+                static fn (array $row): UuidInterface => Uuid::fromBytes($row['uuid']),
+                \array_filter(
+                    $rows,
+                    function (array $row) use ($updatedById): bool {
+                        $updateDateInIndex = new \DateTimeImmutable($updatedById[$row['_id']]);
+                        $updateDateInDb = new \DateTimeImmutable($row['updated']);
+
+                        return $updateDateInDb != $updateDateInIndex;
                     }
-
-                    return $carry;
-                },
-                []
+                )
             );
 
             yield $diff;

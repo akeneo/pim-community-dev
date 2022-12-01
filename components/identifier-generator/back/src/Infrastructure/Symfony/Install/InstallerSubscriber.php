@@ -45,7 +45,7 @@ class InstallerSubscriber implements EventSubscriberInterface
                 `product_uuid` binary(16) NOT NULL,
                 `attribute_id` INT NOT NULL,
                 `prefix` VARCHAR(255) NOT NULL,
-                `number` INT NOT NULL,
+                `number` BIGINT UNSIGNED NOT NULL,
                 CONSTRAINT `FK_PRODUCTUUID` FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE,
                 CONSTRAINT `FK_ATTRIBUTEID` FOREIGN KEY (`attribute_id`) REFERENCES `pim_catalog_attribute` (`id`) ON DELETE CASCADE,
                 INDEX index_identifier_generator_prefixes (`attribute_id`, `prefix`, `number`)

@@ -36,3 +36,14 @@ akeneo_catalogs:
         unknown: '货币“{{ currency_name }}”已停用。请检查您的货币设置或移除此筛选器。'
       locale:
         unknown: '此区域“{{ locale_name }}”已停用。请检查您的区域设置或移除此筛选器。'
+    product_mapping:
+      source:
+        channel:
+          not_empty: '此渠道必须为空。'
+          empty: '此渠道不能为空。'
+          unknown: '此渠道已停用。请检查您的渠道设置或移除此源。'
+        locale:
+          not_empty: '此区域必须为空。'
+          empty: '此区域不能为空。'
+          unknown: '此区域不存在。'
+          disabled: '此区域对该渠道禁用。请检查您的渠道设置或移除此源。'
