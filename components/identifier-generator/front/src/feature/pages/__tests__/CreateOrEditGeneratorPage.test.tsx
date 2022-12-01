@@ -179,6 +179,25 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('Delimiter is /')).toBeInTheDocument();
   });
 
+  it('should reset delimiter when all properties are removed', () => {
+    render(
+      <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
+        initialGenerator={initialGenerator}
+        validationErrors={[]}
+        mainButtonCallback={jest.fn()}
+        isNew={false}
+      />
+    );
+
+    fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
+    expect(screen.getByText('StructureTabMock')).toBeInTheDocument();
+    expect(screen.getByText('Delimiter is -')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Delete Free Text'));
+    expect(expect(screen.getByText('Delimiter is null')).toBeInTheDocument());
+  });
+
   it('should update conditions', () => {
     render(
       <CreateOrEditGeneratorPage
