@@ -6,8 +6,8 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
+use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 
@@ -50,16 +50,18 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testDoNotGetCategoryByCodes(): void
     {
-        $parameters['sqlWhere'] = 'category.code IN (:category_codes)';
-        $parameters['sqlLimitOffset'] = 'LIMIT 10';
-        $parameters['params'] = [
-            'category_codes' => ['wrong code'],
-            'with_enriched_attributes' => true
-        ];
-        $parameters['types'] = [
-            'category_codes' => Connection::PARAM_STR_ARRAY,
-            'with_enriched_attributes' => \PDO::PARAM_BOOL
-        ];
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['wrong code'],
+                'with_enriched_attributes' => true
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
         $category = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($category);
         $this->assertEmpty($category);
@@ -67,16 +69,26 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testGetCategoryByCodes(): void
     {
-        $parameters['sqlWhere'] = 'category.code IN (:category_codes)';
+        $parameters['sqlWhere'] = '';
         $parameters['sqlLimitOffset'] = 'LIMIT 10';
         $parameters['params'] = [
-            'category_codes' => ['socks', 'shoes'],
-            'with_enriched_attributes' => true
+
         ];
         $parameters['types'] = [
-            'category_codes' => Connection::PARAM_STR_ARRAY,
-            'with_enriched_attributes' => \PDO::PARAM_BOOL
+
         ];
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['socks', 'shoes'],
+                'with_enriched_attributes' => true,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
         $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($retrievedCategories);
         // we retrieve 2 out of the 3 existing categories
@@ -132,16 +144,18 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testGetCategoryByCodesWithoutEnrichedCategories(): void
     {
-        $parameters['sqlWhere'] = 'category.code IN (:category_codes)';
-        $parameters['sqlLimitOffset'] = 'LIMIT 10';
-        $parameters['params'] = [
-            'category_codes' => ['shoes'],
-            'with_enriched_attributes' => false
-        ];
-        $parameters['types'] = [
-            'category_codes' => Connection::PARAM_STR_ARRAY,
-            'with_enriched_attributes' => \PDO::PARAM_BOOL
-        ];
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['shoes'],
+                'with_enriched_attributes' => false,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
         $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($retrievedCategories);
         // we retrieve 1 out of the 3 existing categories
@@ -169,14 +183,16 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
     }
 
     public function testGetCategoryWithLimitSetToOneAndOffsetToTwo(): void{
-        $parameters['sqlWhere'] = '1=1';
-        $parameters['sqlLimitOffset'] = 'LIMIT 1 OFFSET 2';
-        $parameters['params'] = [
-            'with_enriched_attributes' => false
-        ];
-        $parameters['types'] = [
-            'with_enriched_attributes' => \PDO::PARAM_BOOL
-        ];
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: '1=1',
+            params: [
+                'with_enriched_attributes' => false,
+            ],
+            types : [
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 1 OFFSET 2',
+        );
         $retrievedCategory = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($retrievedCategory);
 
