@@ -18,6 +18,11 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
 
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory\InMemoryGetProductFilePathAndFileName
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\InMemory\InMemoryStreamStoredProductFile
 
@@ -25,3 +30,7 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseComputeCommentsReadDelay'
             - '@monolog.logger.supplier_portal'
+
+    #Spout
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePreview:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Spout\InMemory\InMemoryGetProductFilePreview
