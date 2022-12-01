@@ -2,6 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
+use Akeneo\Category\Application\Handler\GetPositionInterface;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
@@ -29,6 +30,7 @@ class ListCategoriesController extends AbstractController
         private readonly FeatureFlags $featureFlags,
         private readonly GetCategoriesParametersBuilder $parametersBuilder,
         private readonly GetCategoriesInterface $getCategories,
+        private readonly GetPositionInterface $getPosition,
         private readonly array $apiConfiguration,
     ) {
     }
@@ -65,14 +67,15 @@ class ListCategoriesController extends AbstractController
             throw new BadRequestHttpException(sprintf('The search query parameter must be a valid JSON: %s', $e->getMessage()));
         }
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
+        $withEnrichedAttributes = $request->query->getBoolean('with_enriched_attributes');
         try {
-            $queryParameters = $this->parametersBuilder->build(
+            $sqlParameters = $this->parametersBuilder->build(
                 $searchFilters,
                 $queryParameters['limit'],
                 $offset,
-                $request->query->getBoolean('with_enriched_attributes'),
+                $withEnrichedAttributes,
             );
-            $categories = $this->getCategories->execute($queryParameters);
+            $categories = $this->getCategories->execute($sqlParameters);
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
@@ -85,13 +88,18 @@ class ListCategoriesController extends AbstractController
 
         $count = null;
         if ($request->query->getBoolean('with_count') === true) {
-            // TODO: Adapt $count to match currently existing behavior. https://akeneo.atlassian.net/browse/GRF-538
-            $count = sizeof($categories);
+            $count = $this->getCategories->count($queryParameters);
         }
 
         $normalizedCategories = [];
         foreach ($categories as $category) {
-            $normalizedCategories[] = ExternalApiCategory::fromDomainModel($category)->normalize();
+            $categoryApi = ExternalApiCategory::fromDomainModel($category);
+            $withPosition = $request->query->getBoolean('with_position');
+            if ($withPosition) {
+                $categoryApi->setPosition(($this->getPosition)($category));
+            }
+
+            $normalizedCategories[] = $categoryApi->normalize($withPosition, $withEnrichedAttributes);
         }
 
         $paginatedCategories = $this->paginator->paginate(

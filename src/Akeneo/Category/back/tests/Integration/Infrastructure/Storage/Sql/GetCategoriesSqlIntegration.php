@@ -203,6 +203,32 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertSame('shoes', (string) $retrievedCategory[0]->getCode());
     }
 
+    public function testCountCategories(): void
+    {
+        $parameters = ['sqlWhere' => '1=1', 'params' => [], 'types' => []];
+        $numberOfCategories = $this->get(GetCategoriesInterface::class)->count($parameters);
+
+        $this->assertIsInt($numberOfCategories);
+        $this->assertSame(4, $numberOfCategories);
+    }
+
+    public function testCountCategoriesByCodes(): void
+    {
+        $parameters = [
+            'sqlWhere' => 'category.code IN (:category_codes)',
+            'params' => [
+                'category_codes' => ['socks', 'shoes']
+            ],
+            'types' => [
+                'category_codes' => Connection::PARAM_STR_ARRAY
+            ]
+        ];
+
+        $numberOfCategories = $this->get(GetCategoriesInterface::class)->count($parameters);
+        $this->assertIsInt($numberOfCategories);
+        $this->assertSame(2, $numberOfCategories);
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
