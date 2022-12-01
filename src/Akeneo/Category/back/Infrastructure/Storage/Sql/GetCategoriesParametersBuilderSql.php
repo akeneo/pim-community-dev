@@ -29,13 +29,9 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         if (empty($searchFilters)){
             $sqlParameters = new ExternalApiSqlParameters('1=1');
         } else {
-            $searchFiltersParameters = $this->searchFilters->build($searchFilters);
-            $sqlParameters = new ExternalApiSqlParameters(
-                $searchFiltersParameters['sqlWhere'],
-                $searchFiltersParameters['sqlParameters'],
-                $searchFiltersParameters['sqlTypes']
-            );
+            $sqlParameters = $this->searchFilters->build($searchFilters);
         }
+
         $sqlParameters = $this->buildLimitOffset($sqlParameters, $limit, $offset);
         $sqlParameters = $this->buildWithEnrichedAttributes($sqlParameters, $isEnrichedAttributes);
 

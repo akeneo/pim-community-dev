@@ -8,6 +8,7 @@ use Akeneo\Category\Application\Handler\SearchFilters;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 use Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator;
+use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -61,8 +62,8 @@ class SearchFiltersSql implements SearchFilters
                     case 'IN':
                         $sqlWhere = $this->addSqlAndIfNecessary($sqlWhere);
                         $sqlWhere .= "$SqlColumn IN (:$SqlParameter)";
-                        $sqlParameters[$SqlParameter] = implode(',', $criterion['value']);
-                        $sqlTypes[$SqlParameter] = \PDO::PARAM_STR;
+                        $sqlParameters[$SqlParameter] = $criterion['value'];
+                        $sqlTypes[$SqlParameter] = Connection::PARAM_STR_ARRAY;
                         break;
                     case '>':
                         $sqlWhere = $this->addSqlAndIfNecessary($sqlWhere);
