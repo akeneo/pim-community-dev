@@ -105,6 +105,6 @@ describe('EditGeneratorPage', () => {
       fireEvent.click(screen.getByText('pim_common.save'));
     });
 
-    expect(screen.getByText('The structure must contain at least 1 property')).toBeInTheDocument();
+    expect(screen.getByText('The structure must contain at least one property')).toBeInTheDocument();
   });
 });
