@@ -225,4 +225,67 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
         $productFiles = ($sut)('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7');
         static::assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFiles[0]->importStatus);
     }
+
+    /** @test */
+    public function itCanSearchForProductFiles(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file1.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file2.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+
+        $productFiles = $this->get(ListProductFilesForSupplier::class)(
+            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+            1,
+            'file1'
+        );
+        static::assertCount(1, $productFiles);
+        static::assertSame('file1.xlsx', $productFiles[0]->originalFilename);
+    }
+
+    /** @test */
+    public function itCanSearchForProductFilesAndHandleThePagination(): void
+    {
+        for ($i = 0; 25 > $i; $i++) {
+            ($this->get(ProductFileRepository::class))->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->withOriginalFilename('file.xlsx')
+                    ->build(),
+            );
+        }
+        for ($i = 0; 5 > $i; $i++) {
+            ($this->get(ProductFileRepository::class))->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->withOriginalFilename('burger.xlsx')
+                    ->build(),
+            );
+        }
+
+        static::assertCount(10, $this->get(ListProductFilesForSupplier::class)(
+            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+            2,
+            'file'
+        ));
+        static::assertCount(5, $this->get(ListProductFilesForSupplier::class)(
+            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+            3,
+            'file'
+        ));
+        static::assertEmpty($this->get(ListProductFilesForSupplier::class)(
+            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+            4,
+            'file'
+        ));
+    }
 }

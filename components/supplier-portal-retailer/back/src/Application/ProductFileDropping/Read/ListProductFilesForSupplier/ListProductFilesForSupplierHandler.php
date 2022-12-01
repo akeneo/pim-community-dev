@@ -28,7 +28,7 @@ class ListProductFilesForSupplierHandler
 
         return new ProductFiles(
             ($this->listProductFilesForSupplier)($supplier->identifier, $listProductFiles->page),
-            ($this->getProductFilesCount)($supplier->identifier),
+            ($this->getProductFilesCount)($supplier->identifier, $listProductFiles->search),
         );
     }
 }

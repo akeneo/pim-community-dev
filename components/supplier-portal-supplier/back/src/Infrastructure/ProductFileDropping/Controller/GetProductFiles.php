@@ -22,7 +22,8 @@ final class GetProductFiles
     public function __invoke(Request $request, #[CurrentUser] ContributorAccount $user): JsonResponse
     {
         $page = $request->query->getInt('page', 1);
-        $productFiles = ($this->getProductFiles)(new GetProductFilesQuery($user->getUserIdentifier(), $page));
+        $search = $request->query->get('search', '');
+        $productFiles = ($this->getProductFiles)(new GetProductFilesQuery($user->getUserIdentifier(), $page, $search));
 
         return new JsonResponse(
             [
