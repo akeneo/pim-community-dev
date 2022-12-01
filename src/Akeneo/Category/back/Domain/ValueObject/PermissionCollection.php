@@ -21,6 +21,40 @@ final class PermissionCollection
         return new self($permissions);
     }
 
+    /**
+     * @param array<int> $userGroupIds
+     */
+    public function addPermission(string $type, array $userGroupIds): self
+    {
+        if (array_key_exists($type, $this->permissions)) {
+            foreach ($userGroupIds as $userGroupId) {
+                if (!in_array($userGroupId, $this->permissions[$type])) {
+                    $this->permissions[$type][] = $userGroupId;
+                }
+            }
+        } else {
+            $this->permissions[$type] = $userGroupIds;
+        }
+
+        return new self($this->permissions);
+    }
+
+    /**
+     * @param array<int> $userGroupIds
+     */
+    public function removePermission(string $type, array $userGroupIds): self
+    {
+        if (array_key_exists($type, $this->permissions)) {
+            foreach ($userGroupIds as $userGroupId) {
+                if (in_array($userGroupId, $this->permissions[$type])) {
+                    unset($this->permissions[$type][$userGroupId]);
+                }
+            }
+        }
+
+        return new self($this->permissions);
+    }
+
     /** @return array<int> */
     public function getViewUserGroups(): array
     {

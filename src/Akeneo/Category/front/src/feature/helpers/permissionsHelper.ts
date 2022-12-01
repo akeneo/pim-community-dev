@@ -47,6 +47,18 @@ export function alterPermissionsConsistently(
   const {type, values} = changes;
   let consistentPermissions = cloneDeep(permissions);
   // the change that MUST be made
+  console.log('original', consistentPermissions);
+  console.log('changes', values);
+  const addedValues = values.filter((changedValue) => {
+    return !consistentPermissions[type].includes(changedValue);
+  });
+
+  const removedValues = consistentPermissions[type].filter((originalValue) => {
+    return !values.includes(originalValue);
+  });
+
+  console.log('addedValues', addedValues);
+  console.log('removedValues', removedValues);
   consistentPermissions[type] = values;
 
   // now adapting other permission level in accordance

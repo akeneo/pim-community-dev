@@ -22,3 +22,11 @@ services:
     Akeneo\Category\Application\Applier\SetImageApplier:
         tags:
             - { name: 'pim.category.user_intent_applier' }
+
+    Akeneo\Category\Application\Applier\AddPermissionApplier:
+        tags:
+            - { name: 'pim.category.user_intent_applier' }
+
+    Akeneo\Category\Application\Applier\RemovePermissionApplier:
+        tags:
+            - { name: 'pim.category.user_intent_applier' }
