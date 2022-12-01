@@ -10,6 +10,7 @@ use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
+use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Test\Integration\Configuration;
 
@@ -136,11 +137,11 @@ class GetCategorySqlIntegration extends CategoryTestCase
 
         $tiesCategory = $this->get(GetCategoryInterface::class)->byCode($ties->getCode());
         $this->assertInstanceOf(Category::class, $tiesCategory);
-        $this->assertNull($tiesCategory->getLabels());
+        $this->assertSame($tiesCategory->getLabels()->getTranslations(), []);
 
         $hatsCategory = $this->get(GetCategoryInterface::class)->byCode($hats->getCode());
         $this->assertInstanceOf(Category::class, $hatsCategory);
-        $this->assertNull($hatsCategory->getLabels());
+        $this->assertSame($hatsCategory->getLabels()->getTranslations(), []);
     }
 
     private function getLastCategoryId(): int
