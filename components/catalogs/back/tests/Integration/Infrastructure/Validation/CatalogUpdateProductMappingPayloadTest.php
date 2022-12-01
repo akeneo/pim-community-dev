@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductMappingPayload;
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -16,31 +13,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductMappingPayloadValidator
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespectsSchemaValidator
  */
 class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
-    private ?CommandBus $commandBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'admin',
-        ));
-        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
-        ));
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'admin',
+            productMappingSchema: $this->getValidSchemaData(),
+        );
     }
 
     public function testItValidates(): void

@@ -79,7 +79,10 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         $missingTargets = \array_diff_key($schema['properties'], $value);
         if (!empty($missingTargets)) {
             $this->context
-                ->buildViolation(\sprintf('The mapping is incomplete, following targets are missing: "%s".', \implode('", "', \array_keys($missingTargets))))
+                ->buildViolation(
+                    'akeneo_catalogs.validation.product_mapping.schema.missing_targets',
+                    ['{{ targets }}' => \sprintf('"%s"', \implode('", "', \array_keys($missingTargets)))]
+                )
                 ->addViolation();
 
             return false;
@@ -88,7 +91,10 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         $additionalTargets = \array_diff_key($value, $schema['properties']);
         if (!empty($additionalTargets)) {
             $this->context
-                ->buildViolation(\sprintf('The mapping is incorrect, following targets don\'t exist: "%s".', \implode('", "', \array_keys($additionalTargets))))
+                ->buildViolation(
+                    'akeneo_catalogs.validation.product_mapping.schema.additional_targets',
+                    ['{{ targets }}' => \sprintf('"%s"', \implode('", "', \array_keys($additionalTargets)))]
+                )
                 ->addViolation();
 
             return false;
@@ -121,8 +127,11 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 
             if (null === $attributeType || !\in_array($attributeType, self::TYPE_MAPPING[$schema['properties'][$targetCode]['type']])) {
                 $this->context
-                    ->buildViolation(\sprintf('The selected source type does not match the requirements: %s expected.', $schema['properties'][$targetCode]['type']))
-                    ->atPath($targetCode)
+                    ->buildViolation(
+                        'akeneo_catalogs.validation.product_mapping.schema.incorrect_type',
+                        ['{{ expected_type }}' => $schema['properties'][$targetCode]['type']]
+                    )
+                    ->atPath("[$targetCode][source]")
                     ->addViolation();
             }
         }

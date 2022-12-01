@@ -41,7 +41,6 @@ final class FilterContainsActivatedCurrencyValidator extends ConstraintValidator
                     'akeneo_catalogs.validation.product_value_filters.currencies.unknown',
                     ['{{ currency_name }}' => $value]
                 )
-                ->atPath('[currencies]')
                 ->addViolation();
         }
     }

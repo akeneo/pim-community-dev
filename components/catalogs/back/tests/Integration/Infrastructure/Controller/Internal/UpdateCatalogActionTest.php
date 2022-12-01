@@ -36,6 +36,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store US',
             ownerUsername: 'shopifi',
+            productMappingSchema: $this->getValidSchemaData(),
         );
 
         $client->request(
@@ -59,7 +60,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                     'channels' => ['ecommerce'],
                 ],
                 'product_mapping' => [
-                    'Product uuid' => [
+                    'uuid' => [
                         'source' => 'uuid',
                         'scope' => null,
                         'locale' => null,
@@ -84,7 +85,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             'channels' => ['ecommerce'],
         ]);
         $this->assertCatalogHasProductMapping('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
-            'Product uuid' => [
+            'uuid' => [
                 'source' => 'uuid',
                 'scope' => null,
                 'locale' => null,
@@ -117,7 +118,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                     'channels' => ['ecommerce'],
                 ],
                 'product_mapping' => [
-                    'Product uuid' => [
+                    'uuid' => [
                         'source' => 'uuid',
                         'scope' => null,
                         'locale' => null,
@@ -138,6 +139,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store US',
             ownerUsername: 'shopifi',
+            productMappingSchema: $this->getValidSchemaData(),
         );
 
         $client->request(
@@ -159,7 +161,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                     'channels' => ['ecommerce'],
                 ],
                 'product_mapping' => [
-                    'Product uuid' => [
+                    'uuid' => [
                         'source' => 'uuid',
                         'scope' => null,
                         'locale' => null,
@@ -185,6 +187,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store US',
             ownerUsername: 'shopifi',
+            productMappingSchema: $this->getValidSchemaData(),
         );
 
         $client->request(
@@ -208,7 +211,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                     'channels' => ['ecommerce'],
                 ],
                 'product_mapping' => [
-                    'Product uuid' => [
+                    'uuid' => [
                         'source' => 'uuid',
                         'scope' => 'ecommerce',
                         'locale' => null,
@@ -284,5 +287,24 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         ])->fetchOne();
 
         $this->assertEquals($expected, \json_decode($row, true, 512, JSON_THROW_ON_ERROR));
+    }
+
+    private function getValidSchemaData(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            }
+          }
+        }
+        JSON_WRAP;
     }
 }
