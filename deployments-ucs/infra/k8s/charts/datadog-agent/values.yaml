@@ -17,7 +17,7 @@ datadog:
       port: 8125
       useHostPort: true
       nonLocalTraffic: true
-    tags: "cloud_env:null cloud_service:ucs"
+    tags: null
   # Refer to tagging strategy:
   # https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     podLabelsAsTags: # Provide a mapping of Kubernetes Labels to Datadog Tags: cf https://raw.githubusercontent.com/helm/charts/master/stable/datadog/values.yaml

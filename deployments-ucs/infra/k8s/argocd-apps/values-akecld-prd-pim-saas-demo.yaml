@@ -11,3 +11,5 @@ argocd:
 gateways:
   externalHttp:
     gatewayClassName: gke-l7-gxlb
+datadog:
+  tags: "cloud_env: demo cloud_service: ucs"
