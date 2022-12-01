@@ -36,6 +36,10 @@ import {useArgs, updateArgs} from '@storybook/client-api';
     },
     size: {
       description: 'The size of the buttons',
+      table: {
+        defaultValue: {summary: 'normal'},
+      },
+      control: {type: 'select'}, options: ['normal', 'small'],
     },
   }}
   args={{
