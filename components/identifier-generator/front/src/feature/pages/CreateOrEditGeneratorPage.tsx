@@ -83,7 +83,11 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   const onStructureChange = (structure: Structure) => {
     const updatedGenerator = {...generator, structure};
-    onChangeGenerator(updatedGenerator);
+    if (structure.length === 0) {
+      onChangeGenerator({...updatedGenerator, delimiter: null});
+    } else {
+      onChangeGenerator(updatedGenerator);
+    }
   };
 
   const onConditionsChange = (conditions: Conditions) => {
@@ -115,9 +119,11 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
       <Container>
         {validationErrors.length > 0 && (
           <Helper level="error">
-            {validationErrors.map(({path, message}) => (
-              <div key={`${path || ''}${message}`}>{message}</div>
-            ))}
+            <ul>
+              {validationErrors.map(({path, message}) => (
+                <li key={`${path || ''}${message}`}>{message}</li>
+              ))}
+            </ul>
           </Helper>
         )}
         <TabBar moreButtonTitle={translate('pim_common.more')}>

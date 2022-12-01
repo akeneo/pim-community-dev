@@ -32,7 +32,7 @@ describe('validateStructure', () => {
 
   it('should add a violation when there are no properties', () => {
     expect(validateStructure([], 'structure')).toEqual([
-      {path: 'structure', message: 'The structure must contain at least 1 property'},
+      {path: 'structure', message: 'The structure must contain at least one property'},
     ]);
   });
 
