@@ -10,7 +10,6 @@ import {
     Search,
     SectionTitle,
     Table,
-    useDebounce,
 } from 'akeneo-design-system';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
@@ -18,13 +17,14 @@ import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter
 import {ConversationalHelper} from '../../../components';
 import {ProductFilePanel} from './ProductFilePanel';
 import {ProductFileImportStatus} from './ProductFileImportStatus';
-import {useFilteredProductFiles} from '../hooks/useFilteredProductFiles';
 
 type Props = {
     productFiles: ProductFile[];
-    totalProductFiles: number;
     currentPage: number;
     onChangePage: (pageNumber: number) => void;
+    searchValue: string;
+    onChangeSearch: (searchValue: string) => void;
+    totalSearchResults: number;
 };
 
 export const PRODUCT_FILES_PER_PAGE = 10;
@@ -99,13 +99,17 @@ const StyledPill = styled(Pill)`
     background-color: ${getColor('blue100')};
 `;
 
-const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChangePage}: Props) => {
+const ProductFileList = ({
+    productFiles,
+    currentPage,
+    onChangePage,
+    searchValue,
+    onChangeSearch,
+    totalSearchResults,
+}: Props) => {
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
     const [currentProductFileIdentifier, setCurrentProductFileIdentifier] = useState<string | null>(null);
-    const [searchValue, setSearchValue] = useState('');
-    const debouncedSearch = useDebounce(searchValue, 100);
-    const filteredProductFiles = useFilteredProductFiles(productFiles, debouncedSearch);
 
     const closePanel = () => {
         setCurrentProductFileIdentifier(null);
@@ -141,7 +145,7 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                             <FormattedMessage defaultMessage="File history" id="E+F5l+" />
                         </SectionTitle.Title>
                         <Search
-                            onSearchChange={setSearchValue}
+                            onSearchChange={onChangeSearch}
                             searchValue={searchValue}
                             placeholder={intl.formatMessage({
                                 defaultMessage: 'Search',
@@ -153,7 +157,7 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                                 defaultMessage="{numberOfProductFiles, plural, one {# result} other {# results}}"
                                 id="OEGUss"
                                 values={{
-                                    numberOfProductFiles: filteredProductFiles.length,
+                                    numberOfProductFiles: totalSearchResults,
                                 }}
                             />
                         </StyledNumberOfProductFiles>
@@ -178,7 +182,7 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                                 <Table.HeaderCell></Table.HeaderCell>
                             </Table.Header>
                             <Table.Body>
-                                {filteredProductFiles.map((productFile: ProductFile) => {
+                                {productFiles.map((productFile: ProductFile) => {
                                     return (
                                         <StyledTableRow
                                             data-testid={productFile.identifier}
@@ -244,9 +248,12 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                         </StyledTable>
                     </FlexRow>
                     <Pagination
-                        followPage={onChangePage}
-                        currentPage={currentPage}
-                        totalItems={totalProductFiles}
+                        followPage={(page: number) => {
+                            onChangePage(page);
+                            closePanel();
+                        }}
+                        currentPage={0 < totalSearchResults ? currentPage : 0}
+                        totalItems={totalSearchResults}
                         itemsPerPage={PRODUCT_FILES_PER_PAGE}
                     />
                 </ProductFilesContainer>

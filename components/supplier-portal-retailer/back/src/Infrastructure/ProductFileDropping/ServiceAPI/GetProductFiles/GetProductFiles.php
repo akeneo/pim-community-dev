@@ -28,6 +28,6 @@ final class GetProductFiles
         return new ProductFiles(array_map(
             fn (ProductFileReadModel $productFileReadModel) => ProductFile::fromReadModel($productFileReadModel),
             $productFiles->productFiles,
-        ), $productFiles->totalProductFilesCount);
+        ), $productFiles->totalProductFilesCount, $productFiles->totalSearchResultsCount);
     }
 }

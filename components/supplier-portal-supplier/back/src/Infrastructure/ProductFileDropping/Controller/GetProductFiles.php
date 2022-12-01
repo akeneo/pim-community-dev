@@ -23,7 +23,7 @@ final class GetProductFiles
     {
         $page = $request->query->getInt('page', 1);
         $search = $request->query->get('search', '');
-        $productFiles = ($this->getProductFiles)(new GetProductFilesQuery($user->getUserIdentifier(), $page, $search));
+        $productFiles = ($this->getProductFiles)(new GetProductFilesQuery($user->getUserIdentifier(), $page, trim($search)));
 
         return new JsonResponse(
             [
@@ -46,7 +46,8 @@ final class GetProductFiles
                     },
                     $productFiles->productFiles,
                 ),
-                'total' => $productFiles->numberTotalOfProductFiles,
+                'total_number_of_product_files' => $productFiles->numberTotalOfProductFiles,
+                'total_search_results' => $productFiles->numberTotalOfSearchResults,
             ],
             Response::HTTP_OK,
         );

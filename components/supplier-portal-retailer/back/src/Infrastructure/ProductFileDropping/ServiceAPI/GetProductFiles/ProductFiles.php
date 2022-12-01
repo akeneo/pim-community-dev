@@ -11,6 +11,7 @@ final class ProductFiles
     public function __construct(
         public array $productFiles,
         public int $numberTotalOfProductFiles,
+        public int $numberTotalOfSearchResults,
     ) {
         Assert::allIsInstanceOf($this->productFiles, ProductFile::class);
     }

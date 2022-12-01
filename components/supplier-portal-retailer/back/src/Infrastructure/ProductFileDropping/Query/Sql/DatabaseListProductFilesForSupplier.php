@@ -16,6 +16,8 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
 
     public function __invoke(string $supplierIdentifier, int $page = 1, string $search = ''): array
     {
+        $page = max($page, 1);
+
         $sql = <<<SQL
             WITH retailer_comments AS (
                 SELECT product_file_identifier, JSON_ARRAYAGG(
