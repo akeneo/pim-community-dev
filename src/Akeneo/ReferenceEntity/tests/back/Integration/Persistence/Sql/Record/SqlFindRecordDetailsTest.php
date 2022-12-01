@@ -361,6 +361,19 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         }
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_records_with_case_insensitivity(): void
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        $starckCode = RecordCode::fromString('StArCK');
+        $actualStarck = $this->findRecordDetailsQuery->find($referenceEntityIdentifier, $starckCode);
+
+        $this->assertEquals('starck', (string) $actualStarck->code);
+    }
+
     private function resetDB(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
