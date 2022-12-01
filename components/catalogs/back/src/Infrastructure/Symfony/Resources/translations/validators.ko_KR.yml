@@ -36,3 +36,14 @@ akeneo_catalogs:
         unknown: '통화 "{{ currency_name }}"은(는) 비활성화되었습니다. 통화 설정을 확인하거나 이 필터를 제거하십시오.'
       locale:
         unknown: '로케일 "{{ locale_name }}"은(는) 비활성화되었습니다. 로케일 설정을 확인하거나 이 필터를 제거하십시오.'
+    product_mapping:
+      source:
+        channel:
+          not_empty: '이 채널은 비어 있어야 합니다.'
+          empty: '이 채널은 비워둘 수 없습니다.'
+          unknown: '이 채널은 비활성화되었습니다. 채널 설정을 확인하거나 이 소스를 제거하십시오.'
+        locale:
+          not_empty: '이 로케일은 비어 있어야 합니다.'
+          empty: '이 로케일은 비워둘 수 없습니다.'
+          unknown: '이 로케일은 존재하지 않습니다.'
+          disabled: '이 로케일은 해당 채널에 대해 비활성화되었습니다. 채널 설정을 확인하거나 이 소스를 제거하십시오.'

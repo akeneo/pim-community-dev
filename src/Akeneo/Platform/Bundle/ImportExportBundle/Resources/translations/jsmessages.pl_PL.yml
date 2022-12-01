@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: Język pliku
             help: Zdefiniuj wersję językową, w której wyświetlane są etykiety
+          with_uuid:
+            title: Z UUID produktu
+            help: Eksportuj produkty i powiązane UUID produktów
+          with_uuid_for_models:
+            title: Z UUID produktów
+            help: Eksportuj powiązany UUID produktu zamiast jego identyfikatora
       file_path: Ścieżka do pliku
       storage_form:
         title: Pamięć
@@ -160,11 +166,36 @@ pim_import_export:
           none: Nie skonfigurowano pamięci
         file_path:
           label: Ścieżka do pliku
+          placeholder: mojplik.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: przyklad.pl
+        fingerprint:
+          label: Odcisk hosta (opcjonalny)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Odcisk hosta musi mieć postać skrótowej sumy kontrolnej SHA-512 lub MD5 w notacji z dwukropkami.
+        port:
+          label: Port
+          placeholder: 22
+        username:
+          label: Zaloguj się
+          placeholder: Wprowadź login
+        password:
+          label: Hasło
+          placeholder: Wprowadź hasło
+        public_key:
+          label: Klucz publiczny
+        login_type:
+          label: Metoda uwierzytelniania
+          password: Login i hasło
+          private_key: Klucz prywatny
       validation:
         storage:
           unavailable_type: 'Ta pamięć jest niedostępna, dostępne typy: {{ available_types }}.'
         file_path:
           unsupported_extension: Nieobsługiwane rozszerzenie pliku
+        fingerprint:
+          invalid_encoding: Odcisk hosta powinien być prawidłowym skrótem sumy kontrolnej SHA-512 lub MD5 z notacją z dwukropkiem.
       connection_checker:
         label: Przetestuj ustawienia połączenia
         exception: Nie można ustanowić połączenia, sprawdź ustawienia.

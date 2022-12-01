@@ -27,12 +27,15 @@ akeneo_catalogs:
       channel:
         label: 채널
         no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 채널 선택
       locale:
         label: 로케일
         no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 로케일 선택
       currency:
         label: 통화
         no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 통화 선택
   product_selection:
     empty: 선택 조건을 추가하여 제품 선택 만들기
     more_information: 자세한 내용은 도움말 센터를 확인하십시오.
@@ -60,15 +63,18 @@ akeneo_catalogs:
       family:
         label: 패밀리
         no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 패밀리 선택
       completeness:
         label: 완성도
       attribute_option:
         no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 옵션 선택
       category:
         label: 카테고리
         remove: 카테고리 제거
         category_tree: 카테고리 트리
       measurement:
+        search: 단위
         no_results: 일치 항목을 찾을 수 없음
       boolean:
         yes: Yes
@@ -101,6 +107,22 @@ akeneo_catalogs:
         label: 필터
         option:
           all: 모두
+      table:
+        target: 카탈로그 대상
+        source: PIM 소스
+        placeholder: 콘텐츠 소스 정의
+      placeholder:
+        illustration_title: 사용 가능한 카탈로그 대상이 없습니다.
     source:
+      title: 소스 선택
+      select_source:
+        label: PIM 소스
+        search: 검색 조건
+        no_results: 일치 항목이 없습니다.
+        section_system: 시스템
+        section_attributes: 특성
       placeholder:
         title: 소스 선택
+        illustration_title: 오른쪽 패널의 대상을 클릭하여 카탈로그 매핑을 구성하십시오.
+        subtitle: 그런 다음 PIM 특성을 선택한 대상과 일치시킬 수 있습니다.
+        link: 자세한 내용은 도움말 센터를 확인하십시오.

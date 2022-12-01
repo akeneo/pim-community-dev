@@ -1,6 +1,33 @@
 akeneo.category:
+  tree_list:
+    column:
+      category_templates: Szablony kategorii
   attributes: Atrybuty
   edition_form:
     error:
       unhandled_attribute_type: Nie znaleziono konstruktora pola atrybutu typu „{{type}}”
+    template:
+      title: Szablon
+      fetching_failed: Podczas pobierania szablonu wystąpił błąd.
     unsaved_changes: Jeśli opuścisz stronę, stracisz zmiany wprowadzone w kategorii.
+  tree:
+    create: Utwórz drzewo
+    delete: Usuń drzewo
+  template:
+    create: Aktywuj szablon
+    edit: Wyświetl szablon
+    delete: Usuń szablon
+    notification_success: Szablon został aktywowany.
+    notification_error: Nie można aktywować szablonu.
+    attribute:
+      description_title: Ustawienia opisu
+      type:
+        text: Tekst
+        textarea: Obszar tekstowy
+        richtext: Tekst sformatowany
+        image: Obraz
+  template_list:
+    columns:
+      header: Etykieta
+      code: Kod
+      type: Typ
