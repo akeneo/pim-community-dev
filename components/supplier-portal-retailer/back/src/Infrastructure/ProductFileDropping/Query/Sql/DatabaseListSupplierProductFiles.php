@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Quer
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileWithHasUnreadComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\ProductFileImportStatus;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
@@ -14,8 +15,12 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
     {
     }
 
-    public function __invoke(string $supplierIdentifier, int $page = 1, string $search = ''): array
-    {
+    public function __invoke(
+        string $supplierIdentifier,
+        int $page = 1,
+        string $search = '',
+        ?ProductFileImportStatus $status = null
+    ): array {
         $page = max($page, 1);
 
         $sql = <<<SQL
@@ -25,7 +30,7 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
                 uploaded_by_contributor,
                 uploaded_at,
                 IFNULL(COALESCE(last_comment_read_by_retailer.last_read_at, 0) < MAX(supplier_comments.created_at), 0) AS 'has_unread_comments',
-                product_file_import.import_status
+                COALESCE(product_file_import.import_status, :toImportStatus) AS 'product_file_import_status'
             FROM akeneo_supplier_portal_supplier_product_file AS product_file
             LEFT JOIN akeneo_supplier_portal_product_file_comments_read_by_retailer AS last_comment_read_by_retailer
                 ON last_comment_read_by_retailer.product_file_identifier = product_file.identifier
@@ -36,6 +41,7 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
             WHERE uploaded_by_supplier = :supplierIdentifier
             AND product_file.original_filename LIKE :search
             GROUP BY product_file.identifier, uploaded_at, product_file_import.import_status
+            HAVING product_file_import_status IN (:status)
             ORDER BY uploaded_at DESC
             LIMIT :limit
             OFFSET :offset
@@ -49,18 +55,25 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
             $supplierIdentifier,
             $file['uploaded_at'],
             (bool) $file['has_unread_comments'],
-            $file['import_status'],
+            $file['product_file_import_status'],
         ), $this->connection->executeQuery(
             $sql,
             [
                 'supplierIdentifier' => $supplierIdentifier,
                 'search' => "%$search%",
+                'toImportStatus' => ProductFileImportStatus::TO_IMPORT->value,
+                'status' => null === $status ? array_column(
+                    ProductFileImportStatus::cases(),
+                    'value'
+                ) : [$status->value],
                 'offset' => ListSupplierProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
                 'limit' => ListSupplierProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
             ],
             [
                 'supplierIdentifier' => \PDO::PARAM_STR,
                 'search' => \PDO::PARAM_STR,
+                'toImportStatus' => \PDO::PARAM_STR,
+                'status' => Connection::PARAM_STR_ARRAY,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ],
