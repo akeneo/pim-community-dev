@@ -96,7 +96,7 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
             ]
         ], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
 
-        $this->assertViolationsListContains($violations, 'Invalid source value');
+        $this->assertViolationsListContains($violations, 'This attribute has been deleted.');
     }
 
     public function testItReturnsViolationsWhenTargetsAreMissing(): void
