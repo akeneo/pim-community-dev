@@ -65,6 +65,7 @@ pim_asset_manager:
         file_size_exceeded: '이 파일은 특성에 대해 설정된 최대 파일 크기를 초과합니다.'
         should_exist: '''%file_path%'' 파일을 찾지 못했습니다.'
         target_readonly: '변환의 대상인 ''%attribute_code%''의 값을 업데이트할 수 없습니다.'
+        invalid_filename: '파일 "%file_path%"에 잘못된 문자가 포함되어 있습니다.'
       option:
         code_does_not_exist: '코드가 ''%option_code%''인 옵션이 이 특성에서 존재하지 않습니다.'
       option_collection:
