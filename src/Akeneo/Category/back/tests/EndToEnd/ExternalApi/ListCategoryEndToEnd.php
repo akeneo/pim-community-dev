@@ -24,13 +24,13 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $expectedFirstPage = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false',
                 ],
                 'first' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false',
                 ],
                 'next' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=2&limit=4&with_count=false",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=2&limit=4&with_count=false',
                 ],
             ],
             'current_page' => 1,
@@ -40,19 +40,19 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
                     $categories['categoryA'],
                     $categories['categoryA1'],
                     $categories['categoryA2'],
-                ]
-            ]
+                ],
+            ],
         ];
         $expectedSecondPage = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=2&limit=4&with_count=false",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=2&limit=4&with_count=false',
                 ],
                 'first' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false',
                 ],
                 'previous' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=4&with_count=false',
                 ],
             ],
             'current_page' => 2,
@@ -61,8 +61,8 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
                     $categories['categoryB'],
                     $categories['categoryC'],
                     $categories['master_china'],
-                ]
-            ]
+                ],
+            ],
         ];
         $this->assertSameResponse($expectedFirstPage, $firstPageClient->getResponse());
         $this->assertSameResponse($expectedSecondPage, $secondPageClient->getResponse());
@@ -110,28 +110,28 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
                     [
                        '_links' => [
                            'self' => [
-                               'href' => "http://localhost/api/rest/v1/categories/categoryA1-1",
-                           ]
+                               'href' => 'http://localhost/api/rest/v1/categories/categoryA1-1',
+                           ],
                        ],
-                        'code' => "categoryA1-1",
-                        'parent' => "categoryA1",
-                        'updated' => "2016-06-14T13:12:50+02:00",
+                        'code' => 'categoryA1-1',
+                        'parent' => 'categoryA1',
+                        'updated' => '2016-06-14T13:12:50+02:00',
                         'labels' => [],
                     ],
                     [
                         '_links' => [
                             'self' => [
-                                'href' => "http://localhost/api/rest/v1/categories/categoryA1-1-1",
-                            ]
+                                'href' => 'http://localhost/api/rest/v1/categories/categoryA1-1-1',
+                            ],
                         ],
-                        'code' => "categoryA1-1-1",
-                        'parent' => "categoryA1-1",
-                        'updated' => "2016-06-14T13:12:50+02:00",
+                        'code' => 'categoryA1-1-1',
+                        'parent' => 'categoryA1-1',
+                        'updated' => '2016-06-14T13:12:50+02:00',
                         'labels' => [],
                     ],
                     $categories['categoryA2'],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertSameResponse($expected, $client->getResponse());
@@ -147,10 +147,10 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $expected = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true',
                 ],
                 'first' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true',
                 ],
             ],
             'current_page' => 1,
@@ -164,8 +164,8 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
                     $categories['categoryB'],
                     $categories['categoryC'],
                     $categories['master_china'],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertSameResponse($expected, $client->getResponse());
@@ -196,8 +196,8 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
                     $categories['master'],
                     $categories['categoryA2'],
                     $categories['master_china'],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertSameResponse($expected, $client->getResponse());
@@ -243,10 +243,10 @@ JSON;
         $expected = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true',
                 ],
                 'first' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true',
                 ],
             ],
             'current_page' => 1,
@@ -259,8 +259,8 @@ JSON;
                     $categories['categoryB'],
                     $categories['categoryC'],
                     $categories['master_china'],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertSameResponse($expected, $client->getResponse());
@@ -285,20 +285,19 @@ JSON;
         $expected = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D',
                 ],
                 'first' => [
-                    'href' => "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D",
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D',
                 ],
             ],
             'current_page' => 1,
             '_embedded' => [
                 'items' => [
                     $categories['master'],
-                ]
-            ]
+                ],
+            ],
         ];
-
 
         $this->assertSameResponse($expected, $client->getResponse());
     }
@@ -319,98 +318,98 @@ JSON;
         $categories['master'] = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories/master",
-                ]
+                    'href' => 'http://localhost/api/rest/v1/categories/master',
+                ],
             ],
-            'code' => "master",
+            'code' => 'master',
             'parent' => null,
-            'updated' => "2016-06-14T13:12:50+02:00",
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
         ];
 
         $categories['categoryA'] = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories/categoryA",
-                ]
+                    'href' => 'http://localhost/api/rest/v1/categories/categoryA',
+                ],
             ],
-            'code' => "categoryA",
-            'parent' => "master",
-            'updated' => "2016-06-14T13:12:50+02:00",
+            'code' => 'categoryA',
+            'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
-                'en_US' => "Category A",
-                'fr_FR' => "Catégorie A",
+                'en_US' => 'Category A',
+                'fr_FR' => 'Catégorie A',
             ],
         ];
 
         $categories['categoryA1'] = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories/categoryA1",
-                ]
+                    'href' => 'http://localhost/api/rest/v1/categories/categoryA1',
+                ],
             ],
-            'code' => "categoryA1",
-            'parent' => "categoryA",
-            'updated' => "2016-06-14T13:12:50+02:00",
+            'code' => 'categoryA1',
+            'parent' => 'categoryA',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
         ];
         $categories['categoryA2'] = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories/categoryA2",
-                ]
+                    'href' => 'http://localhost/api/rest/v1/categories/categoryA2',
+                ],
             ],
-            'code' => "categoryA2",
-            'parent' => "categoryA",
-            'updated' => "2016-06-14T13:12:50+02:00",
+            'code' => 'categoryA2',
+            'parent' => 'categoryA',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
         ];
 
         $categories['categoryB'] = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories/categoryB",
-                ]
+                    'href' => 'http://localhost/api/rest/v1/categories/categoryB',
+                ],
             ],
-            'code' => "categoryB",
-            'parent' => "master",
-            'updated' => "2016-06-14T13:12:50+02:00",
+            'code' => 'categoryB',
+            'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
         ];
         $categories['categoryC'] = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories/categoryC",
-                ]
+                    'href' => 'http://localhost/api/rest/v1/categories/categoryC',
+                ],
             ],
-            'code' => "categoryC",
-            'parent' => "master",
-            'updated' => "2016-06-14T13:12:50+02:00",
+            'code' => 'categoryC',
+            'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
         ];
         $categories['master_china'] = [
             '_links' => [
                 'self' => [
-                    'href' => "http://localhost/api/rest/v1/categories/master_china",
-                ]
+                    'href' => 'http://localhost/api/rest/v1/categories/master_china',
+                ],
             ],
-            'code' => "master_china",
+            'code' => 'master_china',
             'parent' => null,
-            'updated' => "2016-06-14T13:12:50+02:00",
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
         ];
 
-        if($withPosition) {
-            $categories['master']['position']  = 1;
-            $categories['categoryA']['position']  = 1;
-            $categories['categoryA1']['position']  = 1;
-            $categories['categoryA2']['position']  = 2;
-            $categories['categoryB']['position']  = 2;
-            $categories['categoryC']['position']  = 3;
-            $categories['master_china']['position']  = 1;
+        if ($withPosition) {
+            $categories['master']['position'] = 1;
+            $categories['categoryA']['position'] = 1;
+            $categories['categoryA1']['position'] = 1;
+            $categories['categoryA2']['position'] = 2;
+            $categories['categoryB']['position'] = 2;
+            $categories['categoryC']['position'] = 3;
+            $categories['master_china']['position'] = 1;
         }
 
-        if($withEnrichedValues) {
+        if ($withEnrichedValues) {
             $categories['master']['template'] = null;
             $categories['master']['values'] = $this->getStandardizedAttributesValues();
             $categories['categoryA']['template'] = null;
@@ -439,33 +438,36 @@ JSON;
             'photo|8587cda6-58c8-47fa-9278-033e1d8c735c' => [
                 'data' => [
                     'size' => 168107,
-                    'extension' => "jpg",
-                    'file_path' => "8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg",
-                    'mime_type' => "image/jpeg",
-                    'original_filename' => "shoes.jpg",
+                    'extension' => 'jpg',
+                    'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                    'mime_type' => 'image/jpeg',
+                    'original_filename' => 'shoes.jpg',
                 ],
-                'type' => "image",
+                'type' => 'image',
                 'locale' => null,
                 'channel' => null,
-                'attribute_code' => "photo|8587cda6-58c8-47fa-9278-033e1d8c735c"
+                'attribute_code' => 'photo|8587cda6-58c8-47fa-9278-033e1d8c735c',
             ],
             'title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|en_US' => [
-                'data' => "All the shoes you need!",
-                'type' => "text",
-                'locale' => "en_US",
-                'channel' => "ecommerce",
-                'attribute_code' => "title|87939c45-1d85-4134-9579-d594fff65030"
+                'data' => 'All the shoes you need!',
+                'type' => 'text',
+                'locale' => 'en_US',
+                'channel' => 'ecommerce',
+                'attribute_code' => 'title|87939c45-1d85-4134-9579-d594fff65030',
             ],
             'title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|fr_FR' => [
-                'data' => "Les chaussures dont vous avez besoin !",
-                'type' => "text",
-                'locale' => "fr_FR",
-                'channel' => "ecommerce",
-                'attribute_code' => "title|87939c45-1d85-4134-9579-d594fff65030"
+                'data' => 'Les chaussures dont vous avez besoin !',
+                'type' => 'text',
+                'locale' => 'fr_FR',
+                'channel' => 'ecommerce',
+                'attribute_code' => 'title|87939c45-1d85-4134-9579-d594fff65030',
             ],
         ];
     }
 
+    /**
+     * @param array<string, mixed> $expectedJson
+     */
     private function assertSameResponse(array $expectedJson, Response $actualResponse): void
     {
         $this->assertSame(Response::HTTP_OK, $actualResponse->getStatusCode());
