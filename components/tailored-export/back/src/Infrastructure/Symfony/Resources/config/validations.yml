@@ -22,6 +22,7 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QualityScore\QualityScoreSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint: ~
