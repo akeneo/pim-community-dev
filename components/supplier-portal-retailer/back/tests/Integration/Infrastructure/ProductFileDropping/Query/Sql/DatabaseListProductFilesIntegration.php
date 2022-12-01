@@ -322,6 +322,58 @@ final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
         static::assertEmpty($this->get(ListProductFiles::class)(3, 'file'));
     }
 
+    /** @test */
+    public function itCanFilterProductFilesByStatus(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFile = $productFileRepository->find(Identifier::fromString('5d001a43-a42d-4083-8673-b64bb4ecd26f'));
+        $productFileImport = ProductFileImport::start($productFile, 666);
+        $productFileImport->completedAt(new \DateTimeImmutable());
+        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
+
+        $productFiles = $this->get(ListProductFiles::class)(1, '', ProductFileImportStatus::COMPLETED);
+
+        static::assertCount(1, $productFiles);
+        static::assertSame(ProductFileImportStatus::COMPLETED->value, $productFiles[0]->importStatus);
+    }
+
+    public function itReturnsAllStatusIfThereIsNoStatusToFilterOn(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFile = $productFileRepository->find(Identifier::fromString('5d001a43-a42d-4083-8673-b64bb4ecd26f'));
+        $productFileImport = ProductFileImport::start($productFile, 666);
+        $productFileImport->completedAt(new \DateTimeImmutable());
+        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
+
+        $productFiles = $this->get(ListProductFiles::class)(1);
+
+        static::assertCount(2, $productFiles);
+        static::assertSame(ProductFileImportStatus::COMPLETED->value, $productFiles[0]->importStatus);
+        static::assertSame(ProductFileImportStatus::TO_IMPORT->value, $productFiles[1]->importStatus);
+    }
+
     private function addLastReadAtByRetailer(string $productFileIdentifier, \DateTimeImmutable $lastReadAt): void
     {
         $sql = <<<SQL
