@@ -52,3 +52,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesParametersBuilderSql
     arguments:
       - '@Akeneo\Category\Application\Handler\SearchFilters'
+
+  Akeneo\Category\Application\Query\GetDirectChildrenCategoryCodesInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDirectChildrenCategoryCodes
+    arguments:
+      - '@database_connection'
