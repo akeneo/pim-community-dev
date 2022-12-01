@@ -3,9 +3,9 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {MultiSelectInput} from 'akeneo-design-system';
 import {ProductValueFiltersValues} from '../models/ProductValueFiltersValues';
 import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
-import {useLocalesByCodes} from '../hooks/useLocalesByCodes';
-import {Locale} from '../models/Locale';
-import {useInfiniteLocales} from '../hooks/useInfiniteLocales';
+import {useLocalesByCodes} from '../../../hooks/useLocalesByCodes';
+import {Locale} from '../../../models/Locale';
+import {useInfiniteLocales} from '../../../hooks/useInfiniteLocales';
 
 type Props = {
     productValueFilters: ProductValueFiltersValues;

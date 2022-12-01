@@ -7,15 +7,16 @@ import {useAttribute} from '../../../hooks/useAttribute';
 import styled from 'styled-components';
 
 const SelectAttributeDropdownField = styled(Field)`
-    margin-top: 15px;
+    margin-top: 10px;
 `;
 
 type Props = {
     code: string;
     onChange: (value: Attribute) => void;
+    error: string | undefined;
 };
 
-export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
+export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
@@ -30,7 +31,7 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
         [onChange]
     );
 
-    const handlePreventSelect = useCallback(e => {
+    const openDropdown = useCallback(e => {
         e.preventDefault();
         setIsOpen(true);
     }, []);
@@ -42,13 +43,14 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange}) => {
             >
                 <Dropdown>
                     <SelectInput
-                        onMouseDown={handlePreventSelect}
-                        emptyResultLabel=''
-                        openLabel=''
+                        onMouseDown={openDropdown}
+                        emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
+                        openLabel={translate('akeneo_catalogs.common.select.open')}
                         value={attribute?.label ?? (code.length > 0 ? `[${code}]` : '')}
                         onChange={() => null}
                         clearable={false}
                         data-testid='product-mapping-select-attribute'
+                        invalid={error !== undefined}
                     ></SelectInput>
                     {isOpen && (
                         <Dropdown.Overlay

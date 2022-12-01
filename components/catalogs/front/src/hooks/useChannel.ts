@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {Channel} from '../../../models/Channel';
+import {Channel} from '../models/Channel';
 
 type ResultError = Error | null;
 type Result = {
