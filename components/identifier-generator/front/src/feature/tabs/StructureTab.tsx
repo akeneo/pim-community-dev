@@ -5,6 +5,7 @@ import {AddPropertyButton, DelimiterEdit, Preview, PropertiesList, PropertyEdit}
 import {Delimiter, Property, Structure as StructureType} from '../models';
 import {Styled} from '../components/Styled';
 import {TranslationWithLink} from '../components';
+import styled from 'styled-components';
 
 type StructureTabProps = {
   initialStructure: StructureType;
@@ -16,6 +17,11 @@ type StructureTabProps = {
 type PropertyId = string;
 type StructureWithIdentifiers = (Property & {id: PropertyId})[];
 const LIMIT_NUMBER = 20;
+
+const StructureDataContainer = styled.div`
+  overflow-y: auto;
+  max-height: calc(100vh - 450px);
+`;
 
 const StructureTab: React.FC<StructureTabProps> = ({
   initialStructure,
@@ -83,18 +89,20 @@ const StructureTab: React.FC<StructureTabProps> = ({
             <>
               {isLimitReached && <Helper>{translate('pim_identifier_generator.structure.limit_reached')}</Helper>}
               <Preview structure={structure} delimiter={delimiter} />
-              <PropertiesList
-                structure={structure}
-                onSelect={setSelectedPropertyId}
-                selectedId={selectedPropertyId}
-                onChange={onStructureChange}
-                onDelete={onDeleteProperty}
-              />
-              <DelimiterEdit
-                delimiter={delimiter}
-                onToggleDelimiter={onToggleDelimiter}
-                onChangeDelimiter={onDelimiterChange}
-              />
+              <StructureDataContainer>
+                <PropertiesList
+                  structure={structure}
+                  onSelect={setSelectedPropertyId}
+                  selectedId={selectedPropertyId}
+                  onChange={onStructureChange}
+                  onDelete={onDeleteProperty}
+                />
+                <DelimiterEdit
+                  delimiter={delimiter}
+                  onToggleDelimiter={onToggleDelimiter}
+                  onChangeDelimiter={onDelimiterChange}
+                />
+              </StructureDataContainer>
             </>
           )}
           {structure.length === 0 && (
@@ -108,11 +116,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
             </NoDataSection>
           )}
         </div>
-        {selectedProperty && (
-          <div>
-            <PropertyEdit selectedProperty={selectedProperty} onChange={onPropertyChange} />
-          </div>
-        )}
+        {selectedProperty && <PropertyEdit selectedProperty={selectedProperty} onChange={onPropertyChange} />}
       </Styled.TwoColumns>
     </>
   );
