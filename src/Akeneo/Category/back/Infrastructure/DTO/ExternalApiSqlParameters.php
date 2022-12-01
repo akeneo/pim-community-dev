@@ -18,33 +18,21 @@ class ExternalApiSqlParameters
     ) {
     }
 
-    /**
-     * @return array|null
-     */
     public function getParams(): ?array
     {
         return $this->params;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSqlWhere(): ?string
     {
         return $this->sqlWhere;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLimitAndOffset(): ?string
     {
         return $this->limitAndOffset;
     }
 
-    /**
-     * @return array|null
-     */
     public function getTypes(): ?array
     {
         return $this->types;
@@ -53,24 +41,28 @@ class ExternalApiSqlParameters
     public function setSqlWhere(?string $sqlWhere): ExternalApiSqlParameters
     {
         $this->sqlWhere = $sqlWhere;
+
         return $this;
     }
 
     public function setParams(?array $params): ExternalApiSqlParameters
     {
         $this->params = $params;
+
         return $this;
     }
 
     public function setTypes(?array $types): ExternalApiSqlParameters
     {
         $this->types = $types;
+
         return $this;
     }
 
     public function setLimitAndOffset(?string $limitAndOffset): ExternalApiSqlParameters
     {
         $this->limitAndOffset = $limitAndOffset;
+
         return $this;
     }
 }

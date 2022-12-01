@@ -14,7 +14,6 @@ interface SearchFilters
 {
     /**
      * @param array<string, mixed> $searchFilters
-     * @return ExternalApiSqlParameters
      */
     public function build(array $searchFilters): ExternalApiSqlParameters;
 }

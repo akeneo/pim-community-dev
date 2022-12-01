@@ -76,18 +76,20 @@ class SearchFiltersSql implements SearchFilters
                 }
             }
         }
+
         return new ExternalApiSqlParameters(
             $sqlWhere,
             $sqlParameters,
             $sqlTypes,
         );
     }
+
     private function addSqlAndIfNecessary(string $sqlWhere): string
     {
         if (!empty($sqlWhere)) {
-            return $sqlWhere . ' AND ';
+            return $sqlWhere.' AND ';
         }
+
         return $sqlWhere;
     }
-
 }

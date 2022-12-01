@@ -8,7 +8,6 @@ use Akeneo\Category\Application\Handler\SearchFilters;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 
-
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -26,7 +25,7 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         int $offset,
         bool $isEnrichedAttributes,
     ): ExternalApiSqlParameters {
-        if (empty($searchFilters)){
+        if (empty($searchFilters)) {
             $sqlParameters = new ExternalApiSqlParameters('1=1');
         } else {
             $sqlParameters = $this->searchFilters->build($searchFilters);
@@ -41,9 +40,8 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
     private function buildLimitOffset(
         ExternalApiSqlParameters $sqlParameters,
         int $limit,
-        int $offset
-    ): ExternalApiSqlParameters
-    {
+        int $offset,
+    ): ExternalApiSqlParameters {
         $sqlParametersParams = $sqlParameters->getParams();
         $sqlParametersTypes = $sqlParameters->getTypes();
 
@@ -67,9 +65,8 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
 
     private function buildWithEnrichedAttributes(
         ExternalApiSqlParameters $sqlParameters,
-        bool $isEnrichedAttributes
-    ): ExternalApiSqlParameters
-    {
+        bool $isEnrichedAttributes,
+    ): ExternalApiSqlParameters {
         $sqlParametersParams = $sqlParameters->getParams();
         $sqlParametersTypes = $sqlParameters->getTypes();
 
