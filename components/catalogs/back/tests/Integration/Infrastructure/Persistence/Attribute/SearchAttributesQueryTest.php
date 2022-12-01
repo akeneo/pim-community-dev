@@ -145,6 +145,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'description',
             'type' => 'pim_catalog_text',
+            'group' => 'marketing',
         ]);
 
         $result = $this->query->execute('desc');
