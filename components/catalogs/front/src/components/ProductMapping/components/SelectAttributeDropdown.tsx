@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useState} from 'react';
-import {Dropdown, Field, GroupsIllustration, Search, SelectInput} from 'akeneo-design-system';
+import {Dropdown, Field, GroupsIllustration, Helper, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteAttributes} from '../hooks/useInfiniteAttributes';
 import {Attribute} from '../../../models/Attribute';
@@ -97,6 +97,11 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error}) => {
                         </Dropdown.Overlay>
                     )}
                 </Dropdown>
+                {undefined !== error && (
+                    <Helper inline level='error'>
+                        {error}
+                    </Helper>
+                )}
             </SelectAttributeDropdownField>
         </>
     );

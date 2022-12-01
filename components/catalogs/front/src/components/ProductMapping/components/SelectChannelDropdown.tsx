@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {Field, SelectInput} from 'akeneo-design-system';
+import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteChannels} from '../../../hooks/useInfiniteChannels';
 import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
@@ -43,6 +43,11 @@ export const SelectChannelDropdown: FC<Props> = ({source, onChange, error}) => {
                     </SelectInput.Option>
                 ))}
             </SelectInput>
+            {undefined !== error && (
+                <Helper inline level='error'>
+                    {error}
+                </Helper>
+            )}
         </DropdownField>
     );
 };

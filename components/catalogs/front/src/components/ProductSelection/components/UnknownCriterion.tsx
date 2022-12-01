@@ -17,6 +17,7 @@ const Title = styled.span`
 `;
 const Operator = styled.span`
     text-transform: lowercase;
+    margin: 0 5px 0 0;
 `;
 const Value = styled.span`
     color: ${getColor('purple', 100)};

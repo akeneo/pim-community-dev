@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {Field, Locale, SelectInput} from 'akeneo-design-system';
+import {Field, Helper, Locale, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Source} from '../models/Source';
 import {useChannelLocales} from '../../../hooks/useChannelLocales';
@@ -37,6 +37,11 @@ export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error}
                     </SelectInput.Option>
                 ))}
             </SelectInput>
+            {undefined !== error && (
+                <Helper inline level='error'>
+                    {error}
+                </Helper>
+            )}
         </DropdownField>
     );
 };
