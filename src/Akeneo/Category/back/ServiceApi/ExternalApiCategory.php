@@ -107,7 +107,7 @@ class ExternalApiCategory
      *     values: array<string, array<string, mixed>>|null
      * }
      */
-    public function normalize(bool $withPosition): array
+    public function normalize(bool $withPosition, bool $withEnrichedAttributes): array
     {
         $normalizedCategory = [
             'code' => $this->getCode(),
@@ -115,11 +115,14 @@ class ExternalApiCategory
             'updated' => $this->getUpdated(),
             'labels' => $this->getLabels(),
             'template' => $this->getTemplateCode(),
-            'values' => $this->getValues(),
         ];
 
         if ($withPosition) {
             $normalizedCategory['position'] = $this->getPosition();
+        }
+
+        if ($withEnrichedAttributes) {
+            $normalizedCategory['values'] = $this->getValues();
         }
 
         return $normalizedCategory;

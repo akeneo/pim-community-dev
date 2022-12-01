@@ -68,12 +68,13 @@ class ListCategoriesController extends AbstractController
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
+        $withEnrichedAttributes = $request->query->getBoolean('with_enriched_attributes');
         try {
             $sqlParameters = $this->parametersBuilder->build(
                 $searchFilters,
                 $queryParameters['limit'],
                 $offset,
-                $request->query->getBoolean('with_enriched_attributes'),
+                $withEnrichedAttributes,
             );
             $categories = $this->getCategories->execute($sqlParameters);
         } catch (\InvalidArgumentException $exception) {
@@ -99,7 +100,7 @@ class ListCategoriesController extends AbstractController
                 $categoryApi->setPosition(($this->getPosition)($category));
             }
 
-            $normalizedCategories[] = $categoryApi->normalize($withPosition);
+            $normalizedCategories[] = $categoryApi->normalize($withPosition, $withEnrichedAttributes);
         }
 
         $paginatedCategories = $this->paginator->paginate(
