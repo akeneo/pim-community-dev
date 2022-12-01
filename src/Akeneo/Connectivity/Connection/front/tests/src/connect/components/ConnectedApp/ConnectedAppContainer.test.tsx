@@ -814,7 +814,7 @@ test('The Open App button is disabled when the user doesnt have the permission t
 
     await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
-    const openAppButton = expect(screen.queryByText('pim_menu.item.open_app'));
+    const openAppButton = expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app'));
     openAppButton.not.toHaveAttribute('href');
     openAppButton.toHaveAttribute('disabled');
     openAppButton.toHaveAttribute('aria-disabled', 'true');
@@ -849,7 +849,7 @@ test('The Open App button is disabled for test app when the user doesnt have the
 
     await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
-    const openAppButton = expect(screen.queryByText('pim_menu.item.open_app'));
+    const openAppButton = expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app'));
     openAppButton.not.toHaveAttribute('href');
     openAppButton.toHaveAttribute('disabled');
     openAppButton.toHaveAttribute('aria-disabled', 'true');
@@ -884,7 +884,7 @@ test('The Open App button is enabled when the user has the permission to manage 
 
     await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
-    const openAppButton = expect(screen.queryByText('pim_menu.item.open_app'));
+    const openAppButton = expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app'));
     openAppButton.toHaveAttribute(
         'href',
         '#akeneo_connectivity_connection_connect_connected_apps_open?connectionCode=some_connection_code'
@@ -922,7 +922,7 @@ test('The Open App button is enabled for test app when the user has the permissi
 
     await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
-    const openAppButton = expect(screen.queryByText('pim_menu.item.open_app'));
+    const openAppButton = expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app'));
     openAppButton.toHaveAttribute(
         'href',
         '#akeneo_connectivity_connection_connect_connected_apps_open?connectionCode=some_connection_code'
@@ -949,7 +949,7 @@ test('The Open App button is in warning state for test app when the connectedApp
 
     await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
-    expect(screen.queryByText('pim_menu.item.open_app')).toHaveStyle('background-color: rgb(249, 181, 63)');
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')).toHaveStyle('background-color: rgb(249, 181, 63)');
 });
 test('The Open App button is in warning state for test app when the connectedApp is pending', async () => {
     const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
@@ -969,7 +969,7 @@ test('The Open App button is in warning state for test app when the connectedApp
 
     await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
-    expect(screen.queryByText('pim_menu.item.open_app')).toHaveStyle('background-color: rgb(249, 181, 63)');
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')).toHaveStyle('background-color: rgb(249, 181, 63)');
 });
 
 const assertPageHeader = () => {
@@ -977,7 +977,7 @@ const assertPageHeader = () => {
     expect(screen.queryByText('pim_menu.item.connected_apps')).toBeInTheDocument();
     expect(screen.queryAllByText('App A')).toHaveLength(2);
     expect(screen.queryByText('pim_common.save')).toBeInTheDocument();
-    expect(screen.queryByText('pim_menu.item.open_app')).toBeInTheDocument();
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')).toBeInTheDocument();
 };
 
 const navigateToPermissionsAndFillTheFormAndSave = () => {
