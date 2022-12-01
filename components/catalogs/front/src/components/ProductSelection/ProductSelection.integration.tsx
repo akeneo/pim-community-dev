@@ -141,12 +141,10 @@ test('it shows a warning and lock the add button when the criteria limit is reac
         };
     }
 
-    const onChange = jest.fn();
-
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
-                <ProductSelection criteria={criteria} onChange={onChange} errors={{}} />
+                <ProductSelection criteria={criteria} onChange={jest.fn()} errors={{}} />
             </QueryClientProvider>
         </ThemeProvider>
     );
