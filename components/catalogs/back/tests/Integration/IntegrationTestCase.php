@@ -525,7 +525,7 @@ abstract class IntegrationTestCase extends WebTestCase
     }
 
     /**
-     *     * @param array{
+     * @param array{
      *     code: string,
      *     sort_order?: integer,
      *     attributes?: array<string>,
@@ -539,7 +539,6 @@ abstract class IntegrationTestCase extends WebTestCase
 
         if (null === $attributeGroup) {
             $attributeGroup = self::getContainer()->get('pim_catalog.factory.attribute_group')->create();
-            ;
         }
 
         /** @var AttributeGroupInterface $attributeGroup */
