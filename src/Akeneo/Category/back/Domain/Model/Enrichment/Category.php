@@ -63,6 +63,26 @@ class Category
         );
     }
 
+    /**
+     * @param Category $category
+     * @param array<string, array<int, string>> $permissions
+     * @return Category
+     */
+    public static function fromCategoryWithPermissions(Category $category, array $permissions): self
+    {
+        return new self(
+            id: $category->getId(),
+            code: $category->getCode(),
+            templateUuid: $category->getTemplateUuid(),
+            labels: $category->getLabels(),
+            parentId: $category->getParentId(),
+            rootId: $category->getRootId(),
+            updated: $category->getUpdated(),
+            attributes: $category->getAttributes(),
+            permissions: $permissions ? PermissionCollection::fromArray($permissions) : null,
+        );
+    }
+
     public function getId(): ?CategoryId
     {
         return $this->id;
