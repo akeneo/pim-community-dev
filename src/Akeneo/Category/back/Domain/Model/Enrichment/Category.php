@@ -64,9 +64,7 @@ class Category
     }
 
     /**
-     * @param Category $category
      * @param array<string, array<int, string>> $permissions
-     * @return Category
      */
     public static function fromCategoryWithPermissions(Category $category, array $permissions): self
     {

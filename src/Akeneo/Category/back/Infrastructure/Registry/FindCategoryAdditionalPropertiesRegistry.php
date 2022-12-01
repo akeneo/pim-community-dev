@@ -1,11 +1,12 @@
 <?php
 
-namespace Akeneo\Category\Application\Handler;
+namespace Akeneo\Category\Infrastructure\Registry;
 
+use Akeneo\Category\Application\Registry\FindCategoryAdditionalProperties;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\ServiceApi\Handler\CategoryAdditionalPropertiesFinder;
 
-class FindCategoryAdditionalPropertiesRegistry
+class FindCategoryAdditionalPropertiesRegistry implements FindCategoryAdditionalProperties
 {
     /**
      * @param iterable<string, CategoryAdditionalPropertiesFinder> $additionalPropertiesFinder
