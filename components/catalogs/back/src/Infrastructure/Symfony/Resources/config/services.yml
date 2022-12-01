@@ -1,7 +1,7 @@
 parameters:
     akeneo_catalog.max_number_of_catalogs_per_user: 15
-
     akeneo_catalog.max_criteria_per_catalog: 25
+
 services:
     _defaults:
         autowire: true
