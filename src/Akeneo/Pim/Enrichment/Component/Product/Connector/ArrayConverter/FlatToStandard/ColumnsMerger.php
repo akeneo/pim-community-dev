@@ -257,6 +257,10 @@ class ColumnsMerger
                     continue;
                 }
 
+                if (!array_key_exists('quantities', $quantifiedAssociation[$entityType])) {
+                    throw new \LogicException(sprintf('A "%s" column is missing for quantified association', $this->associationColumnResolver::QUANTITY_SUFFIX));
+                }
+
                 $isUuids = \array_key_exists('uuids', $quantifiedAssociation[$entityType]);
                 $uuidsOrIdentifiers = $isUuids ? $quantifiedAssociation[$entityType]['uuids'] : $quantifiedAssociation[$entityType]['identifiers'];
 
