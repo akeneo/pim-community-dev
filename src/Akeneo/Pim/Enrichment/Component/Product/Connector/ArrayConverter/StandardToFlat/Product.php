@@ -32,7 +32,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $convertedItem = $this->convertAssociations($data, $convertedItem);
                 break;
             case 'quantified_associations':
-                $convertedItem = $this->convertQuantifiedAssociations($data, $convertedItem);
+                $convertedItem = $this->convertQuantifiedAssociations($data, $convertedItem, $options['with_uuid'] ?? true);
                 break;
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
@@ -177,12 +177,17 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      *     'PRODUCTSET-product_models-quantity' => '12',
      * ]
      */
-    protected function convertQuantifiedAssociations(array $data, array $convertedItem): array
+    protected function convertQuantifiedAssociations(array $data, array $convertedItem, bool $withUuids): array
     {
         foreach ($data as $associationTypeCode => $quantifiedAssociations) {
             foreach ($quantifiedAssociations as $entityType => $quantifiedLinks) {
                 $propertyName = sprintf('%s-%s', $associationTypeCode, $entityType);
-                $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
+
+                if ($withUuids && 'products' === $entityType) {
+                    $convertedItem[sprintf('%s-product_uuids', $associationTypeCode)] = implode(',', array_column($quantifiedLinks, 'uuid'));
+                } else {
+                    $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
+                }
                 $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
             }
         }

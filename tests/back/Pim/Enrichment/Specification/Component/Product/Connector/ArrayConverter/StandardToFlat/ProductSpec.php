@@ -154,7 +154,7 @@ class ProductSpec extends ObjectBehavior
             ],
         ];
 
-        $this->convert($item)->shouldReturn($expected);
+        $this->convert($item, ['with_uuid' => false])->shouldReturn($expected);
     }
 
     function it_converts_a_product_without_any_group_from_standard_to_flat_format($valueConverter)
@@ -307,6 +307,49 @@ class ProductSpec extends ObjectBehavior
             'uuid' => 'ab38e7f9-8af3-4ac2-9ea2-ce078848ee6f',
             'categories' => 'clothing,sportswear',
             'sku' => 'my_product_sku',
+            'enabled' => '0',
+        ];
+
+        $this->convert($standardItem, ['with_uuid' => true])->shouldReturn($expected);
+        $this->convert($standardItem, [])->shouldReturn($expected);
+    }
+
+    function it_converts_quantified_association_product_uuids_when_the_option_is_true()
+    {
+        $standardItem = [
+            'uuid' => 'ab38e7f9-8af3-4ac2-9ea2-ce078848ee6f',
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [
+                        [
+                            'identifier' => 'sku1',
+                            'uuid' => '8f4b3969-d43a-47c9-b858-a80a6c7ab35e',
+                            'quantity' => 6,
+                        ],
+                        [
+                            'identifier' => 'sku2',
+                            'uuid' => '4c4f9316-1c32-4cee-bdaf-4bf835582155',
+                            'quantity' => 3,
+                        ],
+                    ],
+                    'product_models' => [
+                        [
+                            'identifier' => 'pm',
+                            'uuid' => null,
+                            'quantity' => 4,
+                        ],
+                    ],
+                ],
+            ],
+            'enabled' => false,
+        ];
+
+        $expected = [
+            'uuid' => 'ab38e7f9-8af3-4ac2-9ea2-ce078848ee6f',
+            'PACK-product_uuids' => '8f4b3969-d43a-47c9-b858-a80a6c7ab35e,4c4f9316-1c32-4cee-bdaf-4bf835582155',
+            'PACK-products-quantity' => '6|3',
+            'PACK-product_models' => 'pm',
+            'PACK-product_models-quantity' => '4',
             'enabled' => '0',
         ];
 

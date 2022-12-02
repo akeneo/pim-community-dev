@@ -109,7 +109,7 @@ final class UuidMapping
 
     public function hasIdentifierFromId(int $id): bool
     {
-        return isset($this->idsToIdentifiers[$id]);
+        return array_key_exists($id, $this->idsToIdentifiers);
     }
 
     public function getIdentifierFromId(int $id): ?string

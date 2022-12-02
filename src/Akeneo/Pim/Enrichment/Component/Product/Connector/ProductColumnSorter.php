@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface;
@@ -40,9 +41,10 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
                 ['uuid'],
                 [$this->identifierAttributeCode()],
                 $this->firstDefaultColumns,
-                array_map(function ($associationType) {
-                    return $associationType->getCode();
-                }, $this->associationTypeRepository->findAll()),
+                array_map(
+                    static fn (AssociationTypeInterface $associationType): string => $associationType->getCode(),
+                    $this->associationTypeRepository->findAll()
+                ),
                 $context['filters']['structure']['attributes']
             );
 
@@ -61,7 +63,14 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
 
     protected function getFirstDefaultColumns(): array
     {
-        return \array_merge(['uuid', $this->identifierAttributeCode()], $this->firstDefaultColumns);
+        return \array_merge(
+            ['uuid', $this->identifierAttributeCode()],
+            $this->firstDefaultColumns,
+            array_map(
+                static fn (AssociationTypeInterface $associationType): string => $associationType->getCode(),
+                $this->associationTypeRepository->findAll()
+            )
+        );
     }
 
     private function identifierAttributeCode(): string
