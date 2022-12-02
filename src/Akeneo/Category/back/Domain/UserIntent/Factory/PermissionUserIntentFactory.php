@@ -28,11 +28,7 @@ class PermissionUserIntentFactory implements UserIntentFactory
 
         $userIntents = [];
 
-        // TODO: compare existing and new permissions to extract ones that are added or removed
-        // - mock existing permissions
-        // - compare with new values
-        // - extract added and removed ones
-        // - construct AddPermission and RemovePermission user intents with results
+        // TODO: remove mock and use the permission finder
 
         $existingPermissions = [
             'view' => [1, 2, 5],
