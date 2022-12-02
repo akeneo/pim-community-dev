@@ -40,6 +40,17 @@ const PimFetcherProvider: FC = ({children}) => {
           );
           return await response.json();
         },
+        fetchAverageTimeToEnrichByEntity: async (
+          startDate: string,
+          endDate: string,
+          aggregationType: string,
+          filters: {
+            channels: ChannelCode[];
+            locales: LocaleCode[];
+          }
+        ): Promise<TimeToEnrich[]> => {
+          return Promise.resolve([]);
+        },
       },
       family: {
         fetchFamilies: async (limit: number, page: number, search?: string): Promise<{[key: string]: Family}> => {

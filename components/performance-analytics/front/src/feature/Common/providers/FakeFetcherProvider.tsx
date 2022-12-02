@@ -13,6 +13,25 @@ const families: Family[] = Array.from(Array(100).keys()).map((index: number) => 
   };
 });
 
+const timeToEnrichByEntity = [
+  {
+    code: 'accessories',
+    value: 44,
+  },
+  {
+    code: 'camcorders',
+    value: 10,
+  },
+  {
+    code: 'clothing',
+    value: 41,
+  },
+  {
+    code: 'digital_cameras',
+    value: 100,
+  },
+];
+
 const channels: Channel[] = [
   {
     code: 'ecommerce',
@@ -76,6 +95,17 @@ const FakeFetcherProvider: FC = ({children}) => {
           }
 
           return new Promise(resolve => resolve(timeToEnrichList));
+        },
+        fetchAverageTimeToEnrichByEntity: (
+          startDate: string,
+          endDate: string,
+          aggregationType: string,
+          filters: {
+            channels: ChannelCode[];
+            locales: LocaleCode[];
+          }
+        ): Promise<TimeToEnrich[]> => {
+          return new Promise(resolve => resolve(timeToEnrichByEntity));
         },
       },
       family: {

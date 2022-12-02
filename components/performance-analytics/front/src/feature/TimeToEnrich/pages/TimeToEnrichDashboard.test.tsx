@@ -10,7 +10,7 @@ describe('TimeToEnrichDashboard', () => {
     await renderWithProviders(<TimeToEnrichDashboard />);
 
     expect(await screen.findByText('2021-W45')).toBeInTheDocument();
-    expect(await screen.findByText('10')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo.performance_analytics.table.header_time_to_enrich')).toBeInTheDocument();
 
     act(() => {
       userEvent.click(screen.getByText('akeneo.performance_analytics.control_panel.configure'));
@@ -61,7 +61,7 @@ describe('TimeToEnrichDashboard', () => {
   it('changes the control panel filters', async () => {
     await renderWithProviders(<TimeToEnrichDashboard />);
 
-    const openControlPanelButton = screen.getByText('akeneo.performance_analytics.control_panel.configure');
+    const openControlPanelButton = await screen.findByText('akeneo.performance_analytics.control_panel.configure');
     expect(openControlPanelButton).toBeInTheDocument();
 
     expect(screen.queryByText('akeneo.performance_analytics.control_panel.title')).not.toBeInTheDocument();
@@ -78,9 +78,9 @@ describe('TimeToEnrichDashboard', () => {
       fireEvent.click(periodInput);
     });
 
-    act(() => {
+    await act(async () => {
       fireEvent.click(
-        screen.getByText(
+        await screen.findByText(
           'akeneo.performance_analytics.control_panel.select_input.periods.' + PredefinedPeriod.LAST_12_MONTHS
         )
       );

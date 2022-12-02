@@ -19,6 +19,25 @@ const families = Array.from(Array(100).keys()).map((index: number) => {
   return {code: `family_${index}`, labels: {en_US: `Family ${index}`}};
 });
 
+const timeToEnrichByEntity = [
+  {
+    code: 'accessories',
+    value: 44,
+  },
+  {
+    code: 'camcorders',
+    value: 10,
+  },
+  {
+    code: 'clothing',
+    value: 41,
+  },
+  {
+    code: 'digital_cameras',
+    value: 100,
+  },
+];
+
 const channels = [
   {
     code: 'ecommerce',
@@ -58,6 +77,7 @@ const locales = [
 const fetchers = {
   timeToEnrich: {
     fetchHistoricalTimeToEnrich: () => Promise.resolve(weeklyTimeToEnrich),
+    fetchAverageTimeToEnrichByEntity: () => Promise.resolve(timeToEnrichByEntity),
   },
   family: {
     fetchFamilies: (limit: number, page: number, search?: string): Promise<{[key: string]: Family}> => {
