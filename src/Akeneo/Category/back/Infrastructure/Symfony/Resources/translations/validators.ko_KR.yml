@@ -4,6 +4,7 @@ akeneo.category:
       category_code:
         wrong_format: 카테고리 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
         line_feed: 카테고리 코드에는 줄 바꿈 문자가 포함될 수 없습니다.
+      duplicated_value_user_intents: '{{ attributeCode }} 특성의 값이 여러 번 업데이트되고 있습니다.'
       value:
         text_too_long: 이 값은 {{ limit }}자를 넘을 수 없습니다.
         textarea_too_long: 이 값은 {{ limit }}자를 넘을 수 없습니다.

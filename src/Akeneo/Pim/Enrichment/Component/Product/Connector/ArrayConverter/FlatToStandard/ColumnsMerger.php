@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatT
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Merge columns for single value that can be provided in many columns like prices and metric.
@@ -216,9 +217,17 @@ class ColumnsMerger
             return $collectedQuantifiedAssociations;
         }
 
+        $values = explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue);
+        $isUuids = \count(\array_filter($values, fn ($value) => !Uuid::isValid($value))) === 0;
+
+        if ($isUuids) {
+            $newQuantifiedAssociations = ['uuids' => $values];
+        } else {
+            $newQuantifiedAssociations = ['identifiers' => $values];
+        }
         $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_merge(
             $collectedQuantifiedAssociations[$associationTypeCode][$productType] ?? [],
-            ['identifiers' => explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue)]
+            $newQuantifiedAssociations
         );
 
         return $collectedQuantifiedAssociations;
@@ -248,17 +257,25 @@ class ColumnsMerger
                     continue;
                 }
 
-                if (
-                    count($quantifiedAssociation[$entityType]['identifiers']) !==
-                    count($quantifiedAssociation[$entityType]['quantities'])
-                ) {
-                    throw new \LogicException('Inconsistency detected: the count of identifiers and quantities is not the same');
+                $isUuids = \array_key_exists('uuids', $quantifiedAssociation[$entityType]);
+                $uuidsOrIdentifiers = $isUuids ? $quantifiedAssociation[$entityType]['uuids'] : $quantifiedAssociation[$entityType]['identifiers'];
+
+                if (count($uuidsOrIdentifiers) !== count($quantifiedAssociation[$entityType]['quantities'])) {
+                    throw new \LogicException('Inconsistency detected: the count of uuids and quantities is not the same');
                 }
 
                 $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] =
-                array_map(function ($identifier, $quantity) {
-                    return ['identifier' => $identifier, 'quantity' => (int) $quantity];
-                }, $quantifiedAssociation[$entityType]['identifiers'], $quantifiedAssociation[$entityType]['quantities']);
+                array_map(
+                    function ($uuid, $quantity) use ($isUuids) {
+                        if ($isUuids) {
+                            return ['uuid' => $uuid, 'quantity' => (int)$quantity];
+                        } else {
+                            return ['identifier' => $uuid, 'quantity' => (int)$quantity];
+                        }
+                    },
+                    $uuidsOrIdentifiers,
+                    $quantifiedAssociation[$entityType]['quantities']
+                );
             }
         }
 

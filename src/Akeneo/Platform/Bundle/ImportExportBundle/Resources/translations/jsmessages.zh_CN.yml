@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: 文件区域
             help: 定义标签显示的区域
+          with_uuid:
+            title: 含产品 UUID
+            help: 导出产品及其关联产品的 UUID
+          with_uuid_for_models:
+            title: 含产品 UUID
+            help: 导出关联产品的 UUID 而非它们的标识符
       file_path: 文件路径
       storage_form:
         title: 存储
@@ -160,11 +166,36 @@ pim_import_export:
           none: 未配置存储
         file_path:
           label: 文件路径
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: 主机
+          placeholder: example.com
+        fingerprint:
+          label: 主机指纹 (可选)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: 我们要求进行 SHA 512 或 MD5 哈希校验，需要带有冒号标记的主机指纹。
+        port:
+          label: 端口
+          placeholder: 22
+        username:
+          label: 登录
+          placeholder: 输入您的登录
+        password:
+          label: 密码
+          placeholder: 输入您的密码
+        public_key:
+          label: 公钥
+        login_type:
+          label: 验证方法
+          password: 登录和密码
+          private_key: 私钥
       validation:
         storage:
           unavailable_type: 此存储不可用，仅 {{ available_types }} 可用。
         file_path:
           unsupported_extension: 不支持的文件扩展名
+        fingerprint:
+          invalid_encoding: 主机指纹应该是有效且带有冒号标记的 SHA-512或 MD5 哈希校验。
       connection_checker:
         label: 测试连接设置
         exception: 无法建立连接，请检查您的设置。

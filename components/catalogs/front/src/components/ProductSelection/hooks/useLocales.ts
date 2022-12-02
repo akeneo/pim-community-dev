@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {Locale} from '../models/Locale';
+import {Locale} from '../../../models/Locale';
 
 type ResultError = Error | null;
 type Result = {

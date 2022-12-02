@@ -36,3 +36,14 @@ akeneo_catalogs:
         unknown: 'De valuta "{{ currency_name }}" is gedeactiveerd. Controleer uw valuta-instellingen of verwijder dit filter.'
       locale:
         unknown: 'De taal "{{ locale_name }}" is gedeactiveerd. Controleer uw taalinstellingen of verwijder dit filter.'
+    product_mapping:
+      source:
+        channel:
+          not_empty: 'Dit kanaal moet leeg zijn.'
+          empty: 'Dit kanaal mag niet leeg zijn.'
+          unknown: 'Dit kanaal is gedeactiveerd. Controleer uw kanaalinstellingen of verwijder deze bron.'
+        locale:
+          not_empty: 'Deze taal moet leeg zijn.'
+          empty: 'Deze taal mag niet leeg zijn.'
+          unknown: 'Deze taal bestaat niet.'
+          disabled: 'Deze taal is uitgeschakeld voor dit kanaal. Controleer uw kanaalinstellingen of verwijder deze bron.'

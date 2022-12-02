@@ -24,7 +24,9 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST'
+                'NOT IN LIST',
+                'EMPTY',
+                'NOT EMPTY'
             ]
         );
     }
@@ -49,7 +51,9 @@ class IdentifierFilterSpec extends ObjectBehavior
             '=',
             '!=',
             'IN LIST',
-            'NOT IN LIST'
+            'NOT IN LIST',
+            'EMPTY',
+            'NOT EMPTY'
         ]);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
@@ -194,6 +198,49 @@ class IdentifierFilterSpec extends ObjectBehavior
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($sku, Operators::NOT_IN_LIST, ['sku-001'], null, null, []);
+    }
+
+    function it_adds_an_attribute_filter_with_operator_empty(SearchQueryBuilder $sqb, AttributeInterface $sku)
+    {
+        $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('identifier');
+        $sqb->addMustNot(
+            [
+                'exists' => [
+                    'field' => 'values.sku-identifier.<all_channels>.<all_locales>',
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $sqb->addFilter(
+            [
+                "bool" => [
+                    "should" => [
+                        ["terms" => ["attributes_for_this_level" => ["sku"]]],
+                        ["terms" => ["attributes_of_ancestors" => ["sku"]]]],
+                    "minimum_should_match" => 1
+                ]
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addAttributeFilter($sku, Operators::IS_EMPTY, null, null, null, []);
+    }
+
+    function it_adds_an_attribute_filter_with_operator_not_empty(SearchQueryBuilder $sqb, AttributeInterface $sku)
+    {
+        $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('identifier');
+        $sqb->addFilter(
+            [
+                'exists' => [
+                    'field' => 'values.sku-identifier.<all_channels>.<all_locales>',
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addAttributeFilter($sku, Operators::IS_NOT_EMPTY, null, null, null, []);
     }
 
     function it_throws_an_exception_when_the_search_query_builder_is_not_initialized(AttributeInterface $name)

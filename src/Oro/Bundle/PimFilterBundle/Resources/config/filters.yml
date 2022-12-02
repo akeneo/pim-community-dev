@@ -22,6 +22,7 @@ parameters:
     pim_filter.product_value_metric.class:               Oro\Bundle\PimFilterBundle\Filter\ProductValue\MetricFilter
     pim_filter.product_value_price.class:                Oro\Bundle\PimFilterBundle\Filter\ProductValue\PriceFilter
     pim_filter.product_label_or_identifier_filter.class: Oro\Bundle\PimFilterBundle\Filter\Product\LabelOrIdentifierFilter
+    pim_filter.product_label_identifier_or_uuid_filter.class: Oro\Bundle\PimFilterBundle\Filter\Product\LabelIdentifierOrUuidFilter
 
 services:
     pim_filter.ajax_choice_filter:
@@ -216,6 +217,14 @@ services:
             - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: label_or_identifier }
+
+    pim_filter.product_label_identifier_or_uuid_filter:
+        class: '%pim_filter.product_label_identifier_or_uuid_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: label_identifier_or_uuid }
 
     pim_reference_data.filter.reference_data:
         class: 'Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter'

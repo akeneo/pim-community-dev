@@ -5,6 +5,7 @@ import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/
 import {useHistory} from 'react-router-dom';
 import {useCreateIdentifierGenerator} from '../hooks';
 import {useIdentifierGeneratorContext} from '../context';
+import {useQueryClient} from 'react-query';
 
 type CreateGeneratorProps = {
   initialGenerator: IdentifierGenerator;
@@ -14,6 +15,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
   const notify = useNotify();
   const translate = useTranslate();
   const history = useHistory();
+  const queryClient = useQueryClient();
   const {mutate, error, isLoading} = useCreateIdentifierGenerator();
   const identifierGeneratorContext = useIdentifierGeneratorContext();
 
@@ -32,6 +34,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
         }
       },
       onSuccess: ({code}: IdentifierGenerator) => {
+        queryClient.invalidateQueries('getIdentifierGenerator');
         notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success', {code}));
         history.push(`/${code}`);
       },

@@ -41,6 +41,7 @@ pim_enrich.entity.product:
       title: Selecteer een actie
       choose_family: Kies een familie
       choose_family_variant: Kies een familie variant
+      helper: De ID is nu een optioneel veld. <a class="AknMessageBox-link" href="{{ link }}" target="_blank">Lees meer</a> over deze wijziging en het mogelijke effect op uw producten.
     variant_navigation:
       common: Gemeenschappelijk
     status:
@@ -70,6 +71,7 @@ pim_enrich.entity.product:
     meta:
       updated: Laatst bijgewerkt
       groups: Groepen
+      uuid: UUID
     show_group:
       title: Groep {{ group }}
       view_group: Bekijk groep
@@ -220,6 +222,7 @@ pim_enrich.entity.category:
       columns:
         label: Boomlabel
         number_of_categories: Aantal categorieën
+        actions: Acties
         count_categories: ']-Inf, 1]{{ count }} categorie|]1, Inf[{{ count }} categorieën'
     tree:
       not_found: Categorieboom niet gevonden
@@ -436,6 +439,8 @@ pim_datagrid:
         all_attributes: Alle attributen
         with_codes: Met codes
         with_labels: Met labels
+        without_uuid: Zonder UUID
+        with_uuid: Met UUID
         without_media: Zonder media
         with_media: Met media
       flash:

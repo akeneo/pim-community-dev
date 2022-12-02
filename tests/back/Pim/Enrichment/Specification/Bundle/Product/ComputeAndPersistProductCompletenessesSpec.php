@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -37,6 +38,7 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         Clock $clock,
         TokenStorageInterface $tokenStorage,
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $completenessCalculator,
@@ -44,7 +46,8 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
             $getProductCompletenesses,
             $eventDispatcher,
             $clock,
-            $tokenStorage
+            $tokenStorage,
+            $logger
         );
     }
 
@@ -152,5 +155,69 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
 
         $this->fromProductUuids([$uuid1->toString()]);
+    }
+
+    function it_logs_exception_and_doesnt_crash_when_dispatching_error_happens(
+        CompletenessCalculator $completenessCalculator,
+        SaveProductCompletenesses $saveProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
+        EventDispatcher $eventDispatcher,
+        Clock $clock,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user,
+        LoggerInterface $logger
+    ) {
+        $uuid1 = Uuid::uuid4();
+        $uuid2 = Uuid::uuid4();
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+        $user->getId()->willReturn(1);
+
+        $getProductCompletenesses->fromProductUuids([
+            $uuid1->toString(),
+            $uuid2->toString(),
+        ])->willReturn([
+            $uuid1->toString() => new ProductCompletenessCollection($uuid1, [
+                new ProductCompleteness('ecommerce', 'fr_FR', 10, 6),
+                new ProductCompleteness('ecommerce', 'en_US', 10, 0),
+            ]),
+            $uuid2->toString() => new ProductCompletenessCollection($uuid2, [
+                new ProductCompleteness('mobile', 'fr_FR', 10, 8),
+                new ProductCompleteness('ecommerce', 'en_US', 10, 1),
+            ]),
+        ]);
+
+        $newProductsCompletenesses = [
+            $uuid1->toString() => new ProductCompletenessWithMissingAttributeCodesCollection($uuid1->toString(), [
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 10, []),
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, []),
+            ]),
+            $uuid2->toString() => new ProductCompletenessWithMissingAttributeCodesCollection($uuid2->toString(), [
+                new ProductCompletenessWithMissingAttributeCodes('mobile', 'fr_FR', 10, ['name', 'title', 'short_title', 'weight', 'length']),
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, []),
+            ]),
+        ];
+
+        $completenessCalculator->fromProductUuids([$uuid1->toString(), $uuid2->toString()])
+            ->shouldBeCalled()->willReturn($newProductsCompletenesses);
+
+        $saveProductCompletenesses->saveAll($newProductsCompletenesses)->shouldBeCalledOnce();
+
+        $changedAt = new \DateTimeImmutable('2022-10-01');
+        $clock->now()->willReturn($changedAt);
+
+        $event = new ProductWasCompletedOnChannelLocaleCollection([
+            new ProductWasCompletedOnChannelLocale(ProductUuid::fromUuid($uuid1), $changedAt, 'ecommerce', 'fr_FR', '1'),
+            new ProductWasCompletedOnChannelLocale(ProductUuid::fromUuid($uuid2), $changedAt, 'ecommerce', 'en_US', '1'),
+        ]);
+
+        $error = new \TypeError();
+        $eventDispatcher->dispatch($event)->willThrow($error);
+        $logger->error('Error while dispatching ProductWasCompletedOnChannelLocaleCollection event', ['exception' => $error])
+            ->shouldBeCalledOnce();
+
+        $this->fromProductUuids([$uuid1->toString(), $uuid2->toString()]);
     }
 }

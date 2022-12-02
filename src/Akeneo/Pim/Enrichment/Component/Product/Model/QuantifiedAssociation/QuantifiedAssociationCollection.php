@@ -120,8 +120,7 @@ class QuantifiedAssociationCollection
     public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): self
     {
         $currentQuantifiedAssociationNormalized = $this->normalize();
-
-        $result = $this->normalize();
+        $result = $this->normalize(); // wrong format is coming from $submittedQuantifiedAssociations and merge below adds it to result
         foreach ($submittedQuantifiedAssociations as $submittedAssociationTypeCode => $submittedAssociations) {
             $result[$submittedAssociationTypeCode] = array_merge(
                 $currentQuantifiedAssociationNormalized[$submittedAssociationTypeCode] ?? [],

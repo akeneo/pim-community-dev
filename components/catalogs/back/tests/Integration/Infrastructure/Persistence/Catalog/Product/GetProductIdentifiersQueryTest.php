@@ -41,7 +41,7 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
         $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
         $this->createCatalog($catalogId, 'Store US', 'owner');
-        $this->enableCatalog($catalogId);
+
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
         $this->createProduct('tshirt-red', [new SetEnabled(true)]);
@@ -95,7 +95,6 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
 
         $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->createCatalog($catalogId, 'Store US', 'owner');
-        $this->enableCatalog($catalogId);
         $this->setCatalogProductSelection($catalogId, [
             [
                 'field' => 'name',

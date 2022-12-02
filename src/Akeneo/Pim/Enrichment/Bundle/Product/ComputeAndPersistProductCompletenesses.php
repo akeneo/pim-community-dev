@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductWasCompletedOnChannelLocaleCollection;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -31,6 +32,7 @@ class ComputeAndPersistProductCompletenesses
         private EventDispatcherInterface $eventDispatcher,
         private Clock $clock,
         private TokenStorageInterface $tokenStorage,
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -44,12 +46,16 @@ class ComputeAndPersistProductCompletenesses
             $completenessCollections = $this->completenessCalculator->fromProductUuids($uuidsChunk);
             $this->saveProductCompletenesses->saveAll($completenessCollections);
 
-            $productWasCompletedEventsCollection = $this->buildProductWasCompletedEventsCollection(
-                $completenessCollections,
-                $previousCompletenessCollections
-            );
-            if (null !== $productWasCompletedEventsCollection) {
-                $this->eventDispatcher->dispatch($productWasCompletedEventsCollection);
+            try {
+                $productWasCompletedEventsCollection = $this->buildProductWasCompletedEventsCollection(
+                    $completenessCollections,
+                    $previousCompletenessCollections
+                );
+                if (null !== $productWasCompletedEventsCollection) {
+                    $this->eventDispatcher->dispatch($productWasCompletedEventsCollection);
+                }
+            } catch (\Throwable $exception) {
+                $this->logger->error('Error while dispatching ProductWasCompletedOnChannelLocaleCollection event', ['exception' => $exception]);
             }
         }
     }
