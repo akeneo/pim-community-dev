@@ -40,11 +40,15 @@ class PermissionUserIntentFactory implements UserIntentFactory
         $removedPermissions = $this->getRemovedPermissions($existingPermissions, $data);
 
         foreach ($addedPermissions as $type => $addedPermissionsPerType) {
-            $userIntents[] = new AddPermission($type, $addedPermissionsPerType);
+            if ($addedPermissionsPerType) {
+                $userIntents[] = new AddPermission($type, $addedPermissionsPerType);
+            }
         }
 
         foreach ($removedPermissions as $type => $removedPermissionsPerType) {
-            $userIntents[] = new RemovePermission($type, $removedPermissionsPerType);
+            if ($removedPermissionsPerType) {
+                $userIntents[] = new RemovePermission($type, $removedPermissionsPerType);
+            }
         }
 
         return $userIntents;

@@ -22,7 +22,9 @@ final class AddPermissionApplier implements UserIntentApplier
 
         $permissions = $category->getPermissions();
 
-        $permissions->addPermission($userIntent->type(), $userIntent->userGroupIds());
+        if ($userIntent->userGroupIds()) {
+            $permissions->addPermission($userIntent->type(), $userIntent->userGroupIds());
+        }
     }
 
     public function getSupportedUserIntents(): array
