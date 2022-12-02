@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: jacobs/kube-janitor
+  repository: hjacobs/kube-janitor
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "22.7.0"
+  tag: "22.11.0"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -35,10 +35,10 @@ securityContext:
 
 resources:
   limits:
-    memory: 100Mi
+    memory: 256Mi
   requests:
     cpu: 5m
-    memory: 100Mi
+    memory: 128Mi
 
 nodeSelector: {}
 
