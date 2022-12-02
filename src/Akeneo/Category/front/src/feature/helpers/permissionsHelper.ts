@@ -26,6 +26,14 @@ export function ensureSuperset(a1: number[], a2: number[]): number[] {
   return [...a1, ...filter((n: number) => !a1.includes(n), a2)];
 }
 
+function getAddedValue(originalValues: number[], changedValues: number[]) {
+  return changedValues.filter(changedValue => !originalValues.includes(changedValue));
+}
+
+function getRemovedValue(originalValues: number[], changedValues: number[]) {
+  return originalValues.filter(originalValue => !changedValues.includes(originalValue));
+}
+
 /**
  * Permissions are a set of 3 number set : view, edit and own
  * The invariant is :
@@ -47,18 +55,6 @@ export function alterPermissionsConsistently(
   const {type, values} = changes;
   let consistentPermissions = cloneDeep(permissions);
   // the change that MUST be made
-  console.log('original', consistentPermissions);
-  console.log('changes', values);
-  const addedValues = values.filter((changedValue) => {
-    return !consistentPermissions[type].includes(changedValue);
-  });
-
-  const removedValues = consistentPermissions[type].filter((originalValue) => {
-    return !values.includes(originalValue);
-  });
-
-  console.log('addedValues', addedValues);
-  console.log('removedValues', removedValues);
   consistentPermissions[type] = values;
 
   // now adapting other permission level in accordance

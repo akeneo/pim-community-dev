@@ -22,7 +22,7 @@ final class RemovePermissionApplier implements UserIntentApplier
 
         $permissions = $category->getPermissions();
 
-        $permissions->removePermission('view', [1, 2]);
+        $permissions->removePermission($userIntent->type(), $userIntent->userGroupIds());
     }
 
     public function getSupportedUserIntents(): array

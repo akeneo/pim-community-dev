@@ -48,6 +48,7 @@ class InternalApiToStd implements ConverterInterface
         $convertedData['code'] = $data['properties']['code'];
         $convertedData['labels'] = $data['properties']['labels'];
         $convertedData['values'] = $data['attributes'];
+        $convertedData['permissions'] = $data['permissions'];
 
         return $convertedData;
     }

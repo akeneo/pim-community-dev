@@ -71,6 +71,10 @@ final class ValueUserIntentFactory implements UserIntentFactory
      */
     private function getAttributeCollectionByAttributeValues(array $attributes): AttributeCollection
     {
+        if (!$attributes) {
+            return AttributeCollection::fromArray([]);
+        }
+
         $categoryAttributeUuids = $this->extractCategoryAttributeUuids(array_keys($attributes));
 
         return $this->getAttribute->byUuids($categoryAttributeUuids);
