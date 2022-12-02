@@ -6,8 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\CommandMessageBus;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -39,7 +39,7 @@ abstract class EndToEndTestCase extends TestCase
             ProductUuid::fromUuid($uuid),
             $userIntents
         );
-        ($this->getUpsertProductHandler())($command);
+        $this->getCommandMessageBus()->dispatch($command);
 
         return $this->getProductRepository()->find($uuid);
     }
@@ -53,7 +53,7 @@ abstract class EndToEndTestCase extends TestCase
                 new SetIdentifierValue('sku', $identifier),
             ]
         );
-        ($this->getUpsertProductHandler())($command);
+        $this->getCommandMessageBus()->dispatch($command);
 
         return $this->getProductRepository()->find($product->getUuid());
     }
@@ -63,13 +63,13 @@ abstract class EndToEndTestCase extends TestCase
         return $this->get('pim_catalog.repository.product');
     }
 
-    private function getUpsertProductHandler(): UpsertProductHandler
-    {
-        return $this->get('Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler');
-    }
-
     private function getAuthenticator(): AuthenticatorHelper
     {
         return $this->get('akeneo_integration_tests.helper.authenticator');
+    }
+
+    private function getCommandMessageBus(): CommandMessageBus
+    {
+        return $this->get('pim_enrich.product.message_bus');
     }
 }
