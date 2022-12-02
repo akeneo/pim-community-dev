@@ -337,7 +337,7 @@ test('it can check connection, display message if error', async () => {
     type: 'amazon_s3',
     file_path: '/tmp/file.xlsx',
     region: 'eu-west-1',
-    bucket: '',
+    bucket: 'my_bucket',
     key: 'a_key',
     secret: 'my_s3cr3t',
   };
