@@ -81,6 +81,43 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
         $this->assertViolationsListContains($violations, 'This field is missing.');
     }
 
+    /**
+     * @dataProvider numberOfProductSelectionCriteriaDataProvider
+     */
+    public function testItValidatesTheNumberOfProductSelectionCriteria(int $number, bool $allowed): void
+    {
+        $violations = $this->validator->validate([
+            'enabled' => true,
+            'product_selection_criteria' => \array_map(fn () => [
+                'field' => 'enabled',
+                'operator' => '=',
+                'value' => true,
+            ], \range(1, $number)),
+            'product_value_filters' => [],
+            'product_mapping' => [],
+        ], new CatalogUpdatePayload());
+
+        if ($allowed) {
+            $this->assertEmpty($violations);
+        } else {
+            $this->assertViolationsListContains($violations, 'Too many criteria.');
+        }
+    }
+
+    public function numberOfProductSelectionCriteriaDataProvider(): array
+    {
+        return [
+            'valid with 25 product selection criteria' => [
+                'number' => 25,
+                'allowed' => true,
+            ],
+            'not valid with 26 product selection criteria' => [
+                'number' => 26,
+                'allowed' => false,
+            ],
+        ];
+    }
+
     public function testItReturnsViolationsWhenProductSelectionCriteriaIsAssociativeArray(): void
     {
         $violations = $this->validator->validate([

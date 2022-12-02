@@ -61,6 +61,7 @@ akeneo_catalogs:
             empty: No channel found
         criteria:
             unknown: This attribute has been deleted.
+            max_reached: You reached the limit of {{ maxCount }} selection criteria.
             status:
                 label: Status
                 enabled: Enabled
