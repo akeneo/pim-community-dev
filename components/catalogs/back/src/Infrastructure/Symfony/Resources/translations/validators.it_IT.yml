@@ -41,9 +41,6 @@ akeneo_catalogs:
         channel:
           not_empty: 'Questo canale deve essere vuoto.'
           empty: 'Questo canale non può essere vuoto.'
-          unknown: 'Questo canale è stato disattivato. Controlla le impostazioni del canale o rimuovi questa origine.'
         locale:
           not_empty: 'Questa impostazione locale deve essere vuota.'
           empty: 'Questa impostazione locale non può essere vuota.'
-          unknown: 'Questa impostazione locale non esiste.'
-          disabled: 'Questa impostazione locale è disattivata per questo canale. Controlla le impostazioni del canale o rimuovi questa origine.'
