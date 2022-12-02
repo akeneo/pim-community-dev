@@ -88,7 +88,7 @@ class ListCategoriesController extends AbstractController
 
         $count = null;
         if ($request->query->getBoolean('with_count') === true) {
-            $count = $this->getCategories->count($queryParameters);
+            $count = $this->getCategories->count($sqlParameters);
         }
 
         $normalizedCategories = [];
