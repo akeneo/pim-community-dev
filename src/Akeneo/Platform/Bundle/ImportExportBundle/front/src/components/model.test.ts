@@ -23,6 +23,7 @@ test('it says if a storage type is valid', () => {
   expect(isValidStorageType('none', featureFlags)).toBe(true);
   expect(isValidStorageType('local', featureFlags)).toBe(true);
   expect(isValidStorageType('sftp', featureFlags)).toBe(true);
+  expect(isValidStorageType('amazon_s3', featureFlags)).toBe(true);
   expect(isValidStorageType('invalid', featureFlags)).toBe(false);
 });
 
@@ -40,6 +41,15 @@ test('it returns the default local storage', () => {
     port: 22,
     username: '',
     password: '',
+  });
+
+  expect(getDefaultStorage('import', 'amazon_s3', 'csv')).toEqual({
+    type: 'amazon_s3',
+    file_path: 'myfile.csv',
+    region: '',
+    bucket: 'password',
+    key: '',
+    secret: '',
   });
 
   expect(getDefaultStorage('export', 'none', 'xlsx')).toEqual({
