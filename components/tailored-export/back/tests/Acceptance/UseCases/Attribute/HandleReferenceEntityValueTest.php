@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOper
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityNumberAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
@@ -79,6 +80,12 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
                 'value' => new ReferenceEntityValue('starck'),
                 'expected' => [self::TARGET_NAME => 'Nom'],
             ],
+            'it selects the record "size" number attribute' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityNumberAttributeSelection('designer', 'size', null, null),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => '2'],
+            ],
             'it fallbacks on the record code when the label is not found' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityLabelSelection('en_US', 'designer'),
@@ -134,5 +141,6 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
         $findRecordsAttributeValue = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface');
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'description', 'Bezeichnung', 'ecommerce', 'de_DE');
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'name', 'Nom');
+        $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'size', '2');
     }
 }

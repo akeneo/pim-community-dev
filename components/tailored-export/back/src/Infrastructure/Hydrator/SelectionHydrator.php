@@ -46,6 +46,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssoci
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityNumberAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
@@ -244,6 +245,13 @@ class SelectionHydrator
     {
         return match ($selectionConfiguration['attribute_type']) {
             ReferenceEntityTextAttributeSelection::TYPE => new ReferenceEntityTextAttributeSelection(
+                $referenceEntityCode,
+                $selectionConfiguration['attribute_identifier'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+            ),
+            ReferenceEntityNumberAttributeSelection::TYPE => new ReferenceEntityNumberAttributeSelection(
+                // TODO add decimal separator?
                 $referenceEntityCode,
                 $selectionConfiguration['attribute_identifier'],
                 $selectionConfiguration['channel'],
