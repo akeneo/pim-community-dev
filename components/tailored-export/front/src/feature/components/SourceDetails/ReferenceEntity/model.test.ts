@@ -1,4 +1,4 @@
-import {isReferenceEntitySource, ReferenceEntitySource} from './model';
+import {isDefaultReferenceEntitySelection, isReferenceEntitySource, ReferenceEntitySource} from './model';
 
 const source: ReferenceEntitySource = {
   uuid: '123',
@@ -47,6 +47,20 @@ test('it validates that something is a reference entity source', () => {
       operations: {
         foo: 'bar',
       },
+    })
+  ).toEqual(false);
+});
+
+test('it can test that a selection is the default Reference Entity selection', () => {
+  expect(isDefaultReferenceEntitySelection({type: 'code'})).toEqual(true);
+  expect(
+    isDefaultReferenceEntitySelection({
+      type: 'attribute',
+      attribute_identifier: 'color_1234',
+      attribute_type: 'text',
+      reference_entity_code: 'designer',
+      channel: null,
+      locale: null,
     })
   ).toEqual(false);
 });

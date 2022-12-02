@@ -2,10 +2,8 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Source, Attribute} from '../../../models';
 import {
-  CodeLabelSelection,
-  getDefaultCodeLabelSelection,
-  isCodeLabelSelection,
   DefaultValueOperation,
+  isCodeLabelSelection,
   isDefaultValueOperation,
   isReplacementOperation,
   ReplacementOperation,
@@ -16,6 +14,21 @@ type ReferenceEntityOperations = {
   replacement?: ReplacementOperation;
 };
 
+type ReferenceEntityCodeSelection = {
+  type: 'code';
+};
+
+type ReferenceEntityAttributeSelection = {
+  type: 'attribute';
+  attribute_identifier: string;
+  attribute_type: string;
+  reference_entity_code: string;
+  locale: LocaleReference;
+  channel: ChannelReference;
+};
+
+type ReferenceEntitySelection = ReferenceEntityCodeSelection | ReferenceEntityAttributeSelection;
+
 type ReferenceEntitySource = {
   uuid: string;
   code: string;
@@ -23,8 +36,17 @@ type ReferenceEntitySource = {
   locale: LocaleReference;
   channel: ChannelReference;
   operations: ReferenceEntityOperations;
-  selection: CodeLabelSelection;
+  selection: ReferenceEntitySelection;
 };
+
+const isReferenceEntitySelection = (selection: any): selection is ReferenceEntitySelection => {
+  // TODO RAB-1175
+  // if (!('type' in selection)) return false;
+  // return 'code' === selection.type || 'attribute' === selection.type;
+  return isCodeLabelSelection(selection);
+};
+
+const isDefaultReferenceEntitySelection = (selection?: ReferenceEntitySelection): boolean => 'code' === selection?.type;
 
 const getDefaultReferenceEntitySource = (
   attribute: Attribute,
@@ -37,7 +59,7 @@ const getDefaultReferenceEntitySource = (
   locale,
   channel,
   operations: {},
-  selection: getDefaultCodeLabelSelection(),
+  selection: {type: 'code'},
 });
 
 const isReferenceEntityOperations = (operations: Object): operations is ReferenceEntityOperations =>
@@ -53,7 +75,7 @@ const isReferenceEntityOperations = (operations: Object): operations is Referenc
   });
 
 const isReferenceEntitySource = (source: Source): source is ReferenceEntitySource =>
-  isCodeLabelSelection(source.selection) && isReferenceEntityOperations(source.operations);
+  isReferenceEntitySelection(source.selection) && isReferenceEntityOperations(source.operations);
 
-export {isReferenceEntitySource, getDefaultReferenceEntitySource};
-export type {ReferenceEntitySource};
+export {isReferenceEntitySource, getDefaultReferenceEntitySource, isDefaultReferenceEntitySelection};
+export type {ReferenceEntitySource, ReferenceEntitySelection, ReferenceEntityAttributeSelection};
