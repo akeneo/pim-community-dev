@@ -121,6 +121,10 @@ jobs:
       <<: *envVarsDeployPIMSaaSDev
     <<: *dockerCloudDeployerUCS
     resource_class: small
+    parameters:
+      tenant_name:
+        type: string
+        default: ""
     steps:
       - attach_workspace:
           at: ~/
@@ -170,38 +174,40 @@ jobs:
       TEST:
         type: string
         default: "*"
-      DURATION:
+      k6s_duration:
         type: string
-        default: "10m"
-      VUS:
+        default: "1m"
+      k6s_vus:
         type: string
         default: "10"
+      tenant_name:
+        type: string
+        default: ""
     machine:
       image: *executor-machine
     resource_class: medium
-    parallelism: 3
     steps:
       - checkout
       - attach_workspace:
           at: ~/
       - restore_persisted_env_vars
       - run:
+          name: Create artifacts directory
+          command: mkdir /tmp/k6-artifacts
+      - run:
           name: Run k6 load tests
           command: |
-            mkdir /tmp/k6-artifacts
-            TEST=$(circleci tests glob "tests/loadtests/<< parameters.TEST >>.js" | circleci tests split)
+            TEST=tests/loadtests/get-products.js
 
             echo "================================="
-            echo "Test : ${TEST}"
-            docker run --rm -i grafana/k6 run - <$TEST --env FQDN=${FQDN} --env API_CLIENT_ID=${API_CLIENT_ID} --env API_SECRET=${API_SECRET} --env API_USERNAME=${API_USERNAME} --env API_PASSWORD=${API_PASSWORD} --env K6_DURATION=<< parameters.DURATION >> --env K6_VUS=<< parameters.VUS >> --out json=full.json > /tmp/k6-artifacts/$(basename $TEST).log
-            echo "Test : ${TEST}"
+            docker run --rm -i grafana/k6 run - < "$TEST" \
+              --env FQDN=${FQDN} \
+              --env API_CLIENT_ID=${API_CLIENT_ID} --env API_SECRET=${API_SECRET} --env API_USERNAME=${API_USERNAME} --env API_PASSWORD=${API_PASSWORD} \
+              --env K6_DURATION=<< parameters.k6s_duration >> --env K6_VUS=<< parameters.k6s_vus >> --out json=full.json > /tmp/k6-artifacts/$(basename $TEST).log
             echo "================================="
-          when: always
       - run:
-          name: K6 logs
-          command: |
-            cat /tmp/k6-artifacts/*
-          when: always
+          name: Display K6 logs
+          command: cat /tmp/k6-artifacts/*
       - store_artifacts:
           path: /tmp/k6-artifacts
 
