@@ -233,7 +233,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'scope' => null,
                     'locale' => null,
                 ],
-                'expectedMessage' => 'Invalid source value',
+                'expectedMessage' => 'This attribute has been deleted.',
             ],
         ];
     }

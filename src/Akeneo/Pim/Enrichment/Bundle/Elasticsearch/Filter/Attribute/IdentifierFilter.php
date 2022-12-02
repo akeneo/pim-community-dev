@@ -50,7 +50,9 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        $this->checkValue($attribute->getCode(), $operator, $value);
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $this->checkValue($attribute->getCode(), $operator, $value);
+        }
         $this->applyFilter($attribute, $operator, $value);
 
         return $this;
@@ -181,6 +183,44 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
 
                 $this->searchQueryBuilder->addMustNot($clause);
                 break;
+
+            case Operators::IS_EMPTY:
+                $clause = [
+                    'exists' => [
+                        'field' => $attributePath
+                    ]
+                ];
+                $this->searchQueryBuilder->addMustNot($clause);
+
+                $attributeInEntityClauses = [
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
+                        ],
+                    ],
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
+                        ],
+                    ]
+                ];
+                $this->searchQueryBuilder->addFilter(
+                    [
+                        'bool' => [
+                            'should' => $attributeInEntityClauses,
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                );
+                break;
+
+            case Operators::IS_NOT_EMPTY:
+                $clause = [
+                    'exists' => ['field' => $attributePath],
+                ];
+                $this->searchQueryBuilder->addFilter($clause);
+                break;
+
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }

@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: 파일 로케일
             help: 레이블을 표시할 로케일을 정의합니다.
+          with_uuid:
+            title: 제품 UUID 포함
+            help: 제품 및 관련 제품의 UUID 내보내기
+          with_uuid_for_models:
+            title: 제품 UUID 포함
+            help: 식별자 대신 관련 제품 UUID 내보내기
       file_path: 파일 경로
       storage_form:
         title: 스토리지
@@ -160,11 +166,36 @@ pim_import_export:
           none: 구성된 스토리지가 없습니다
         file_path:
           label: 파일 경로
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: 호스트
+          placeholder: example.com
+        fingerprint:
+          label: 호스트 지문(옵션)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: 호스트 지문에는 콜론 표기법의 SHA-512 또는 MD5 해시 체크섬이 필요합니다.
+        port:
+          label: 포트
+          placeholder: 22
+        username:
+          label: 로그인
+          placeholder: 로그인 입력
+        password:
+          label: 암호
+          placeholder: 암호 입력
+        public_key:
+          label: 공개 키
+        login_type:
+          label: 인증 방법
+          password: 로그인 및 암호
+          private_key: 개인 키
       validation:
         storage:
           unavailable_type: 이 스토리지는 사용할 수 없습니다. {{ available_types }}만 사용 가능합니다.
         file_path:
           unsupported_extension: 지원되지 않는 파일 확장자
+        fingerprint:
+          invalid_encoding: 호스트 지문은 콜론 표기법의 유효한 SHA-512 또는 MD5 체크섬 해시여야 합니다.
       connection_checker:
         label: 테스트 연결 설정
         exception: 연결할 수 없습니다. 설정을 확인하십시오.

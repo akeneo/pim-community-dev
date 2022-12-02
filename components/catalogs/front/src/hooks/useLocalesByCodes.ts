@@ -13,6 +13,10 @@ export const useLocalesByCodes = (codes: string[]): Result => {
     return useQuery<Locale[], ResultError, Locale[]>(['locales', [...codes].sort().join('')], async () => {
         const concatCodes = codes.join(',');
 
+        if (concatCodes === '') {
+            return [];
+        }
+
         const response = await fetch(`/rest/catalogs/locales?codes=${concatCodes}`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',

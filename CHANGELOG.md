@@ -102,6 +102,8 @@
 - PIM-10725: Fix get family variant case sensitive
 - PIM-10720: Fix price versioning normalizer to round numbers
 - PIM-10724: Fix textarea template so that first break line is not considered as break in html
+- PIM-10716: Fix uuids in quantified association revert version
+- PIM-10734: Fix failing product export profiles with "[object Object]" family filter since last weekly upgrade
 - PIM-10730: Fix mass actions for quantified associations rendering
 - PIM:10741: Fix diff indexation of product models
 

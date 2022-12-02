@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -19,13 +17,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class GetAllCatalogsByOwnerActionTest extends IntegrationTestCase
 {
     public ?object $tokenStorage;
-    private ?CommandBus $commandBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
         $this->tokenStorage = self::getContainer()->get(TokenStorageInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
@@ -35,21 +31,22 @@ class GetAllCatalogsByOwnerActionTest extends IntegrationTestCase
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
 
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'admin',
-        ));
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
-            'Store FR',
-            'admin',
-        ));
-        $this->commandBus->execute(new CreateCatalogCommand(
-            '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
-            'Store UK',
-            'admin',
-        ));
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'admin',
+        );
+        $this->createCatalog(
+            id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            name: 'Store FR',
+            ownerUsername: 'admin',
+        );
+        $this->createCatalog(
+            id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
+            name: 'Store UK',
+            ownerUsername: 'admin',
+            isEnabled: false,
+        );
 
         $client->request(
             'GET',
@@ -82,11 +79,11 @@ class GetAllCatalogsByOwnerActionTest extends IntegrationTestCase
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
 
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'admin',
-        ));
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'admin',
+        );
 
         $client->request(
             'GET',

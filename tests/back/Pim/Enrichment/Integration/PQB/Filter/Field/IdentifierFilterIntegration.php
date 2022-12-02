@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -147,6 +148,9 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $result = $this->executeFilter([['identifier', Operators::IS_NOT_EMPTY, null]]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
+
+        $result = $this->executeFilter([['sku', Operators::IS_NOT_EMPTY, null]]);
+        $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
     }
 
     public function testOperatorEmpty()
@@ -160,6 +164,22 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $result = $this->executeFilter([['identifier', Operators::IS_EMPTY, null]]);
         $this->assertCount(2, $result);
+
+        // Filtering on sku doesn't return anything because the products are not part of a family
+        $result = $this->executeFilter([['sku', Operators::IS_EMPTY, null]]);
+        $this->assertCount(0, $result);
+
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku']
+        ]);
+        $this->createProduct(null, [
+            new SetTextValue('a_text', null, null, 'third_no_identifier'),
+            new SetFamily('a_family')
+        ]);
+
+        $result = $this->executeFilter([['sku', Operators::IS_EMPTY, null]]);
+        $this->assertCount(1, $result);
     }
 
     public function testErrorDataIsMalformed()

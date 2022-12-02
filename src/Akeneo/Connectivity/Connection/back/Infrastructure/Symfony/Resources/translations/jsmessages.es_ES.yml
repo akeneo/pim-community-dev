@@ -587,5 +587,8 @@ pim_permissions:
 pim_notification:
   types:
     connected_app_authorizations: Autorizaciones de la aplicación conectada
+    disabled_catalog: Catálogo de aplicaciones deshabilitado
   connected_app_authorizations:
     button_label: Abrir aplicación
+  disabled_catalog:
+    button_label: Configuración del catálogo

@@ -4,6 +4,7 @@ akeneo.category:
       category_code:
         wrong_format: Kod kategorii może zawierać tylko litery, cyfry i znaki podkreślenia.
         line_feed: Kod kategorii nie może zawierać znaków końca linii.
+      duplicated_value_user_intents: Wartość atrybutu {{ attributeCode }} jest wielokrotnie aktualizowana.
       value:
         text_too_long: 'Wartość może mieć maksymalnie następującą liczbę znaków: {{ limit }}'
         textarea_too_long: 'Wartość może mieć maksymalnie następującą liczbę znaków: {{ limit }}'

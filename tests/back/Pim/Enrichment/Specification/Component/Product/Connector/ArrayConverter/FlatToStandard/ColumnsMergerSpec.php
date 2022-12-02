@@ -356,7 +356,37 @@ class ColumnsMergerSpec extends ObjectBehavior
         $this->shouldThrow(BusinessArrayConversionException::class)->during('merge', [$row]);
     }
 
-    public function it_merges_columns_which_represents_quantified_associations_in_two_columns(
+    public function it_merges_columns_which_represents_quantified_associations_in_two_columns_with_uuids(
+        $fieldExtractor,
+        $associationColumnResolver
+    ) {
+        $row = [
+            'PACK-products-quantity' => '10|24',
+            'PACK-products' => 'd8ddf845-9dad-46dd-ad38-5eea5c1b179d,3b2571c2-4997-455f-afe0-9abb71b8185c',
+        ];
+        $fieldExtractor->extractColumnInfo('PACK-products-quantity')->willReturn(null);
+        $fieldExtractor->extractColumnInfo('PACK-products')->willReturn(null);
+
+        $associationColumnResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn(['PACK-products-quantity']);
+        $associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn(['PACK-products']);
+
+        $mergedRow = [
+            'PACK-products' => [
+                [
+                    'uuid' => 'd8ddf845-9dad-46dd-ad38-5eea5c1b179d',
+                    'quantity' => 10,
+                ],
+                [
+                    'uuid' => '3b2571c2-4997-455f-afe0-9abb71b8185c',
+                    'quantity' => 24,
+                ],
+            ],
+            'PACK-product_models' => [],
+        ];
+        $this->merge($row)->shouldReturn($mergedRow);
+    }
+
+    public function it_merges_columns_which_represents_quantified_associations_in_two_columns_with_identifiers(
         $fieldExtractor,
         $associationColumnResolver
     ) {

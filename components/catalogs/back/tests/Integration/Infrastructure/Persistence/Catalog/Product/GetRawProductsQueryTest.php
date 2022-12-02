@@ -47,15 +47,18 @@ class GetRawProductsQueryTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [
@@ -107,15 +110,18 @@ class GetRawProductsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
@@ -153,15 +159,18 @@ class GetRawProductsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
@@ -199,15 +208,18 @@ class GetRawProductsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
