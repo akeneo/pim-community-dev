@@ -63,6 +63,7 @@ security:
                 enable_csrf:                true
                 check_path:                 pim_user_security_check
                 login_path:                 pim_user_security_login
+                use_forward:                true
             logout:
                 path:                       pim_user_security_logout
             remember_me:
