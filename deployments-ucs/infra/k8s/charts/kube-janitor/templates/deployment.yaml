@@ -12,10 +12,11 @@ spec:
       {{- include "kube-janitor.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "kube-janitor.selectorLabels" . | nindent 8 }}
     spec:
@@ -29,10 +30,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            - --dry-run
-            - --debug
-            - --interval=60
-            - --rules-file=/config/rules.yaml
+            {{- toYaml .Values.args | nindent 12 }}
           volumeMounts:
             - name: config-volume
               mountPath: /config
