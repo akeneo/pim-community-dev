@@ -34,8 +34,8 @@ spec:
             - --interval=60
             - --rules-file=/config/rules.yaml
           volumeMounts:
-            - name: /config
-              mountPath: config-volume
+            - name: config-volume
+              mountPath: /config
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
