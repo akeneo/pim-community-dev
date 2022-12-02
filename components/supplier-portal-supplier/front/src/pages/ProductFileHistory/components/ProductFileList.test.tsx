@@ -43,9 +43,11 @@ test('it renders a paginated list of product files', async () => {
     renderWithProviders(
         <ProductFileList
             productFiles={productFileList}
-            totalProductFiles={30}
+            totalSearchResults={30}
             currentPage={1}
             onChangePage={() => {}}
+            searchValue={''}
+            onChangeSearch={() => {}}
         />
     );
     expect(screen.getByText('product-file-1.xlsx')).toBeInTheDocument();
@@ -57,7 +59,14 @@ test('it renders a paginated list of product files', async () => {
 
 test('it refreshes the comment panel content when clicking on another product file row', () => {
     renderWithProviders(
-        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+        <ProductFileList
+            productFiles={productFiles}
+            totalSearchResults={2}
+            currentPage={1}
+            onChangePage={() => {}}
+            searchValue={''}
+            onChangeSearch={() => {}}
+        />
     );
     const firstProductFileRow = screen.getByTestId('4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86');
     const secondProductFileRow = screen.getByTestId('8be6446b-befb-4d9f-aa94-0dfd390df690');
@@ -75,7 +84,14 @@ test('it refreshes the comment panel content when clicking on another product fi
 
 test('it displays the total number of product files as first renderer', () => {
     renderWithProviders(
-        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+        <ProductFileList
+            productFiles={productFiles}
+            totalSearchResults={2}
+            currentPage={1}
+            onChangePage={() => {}}
+            searchValue={''}
+            onChangeSearch={() => {}}
+        />
     );
 
     expect(screen.getByText('2 results')).toBeInTheDocument();
@@ -83,7 +99,14 @@ test('it displays the total number of product files as first renderer', () => {
 
 test('it displays the number of product files depending on the search result', async () => {
     renderWithProviders(
-        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+        <ProductFileList
+            productFiles={productFiles}
+            totalSearchResults={1}
+            currentPage={1}
+            onChangePage={() => {}}
+            searchValue={''}
+            onChangeSearch={() => {}}
+        />
     );
     const searchInput = screen.getByPlaceholderText('Search');
 
@@ -96,7 +119,14 @@ test('it displays the number of product files depending on the search result', a
 
 test('it displays the comment panel content when clicking on a product file row', () => {
     renderWithProviders(
-        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+        <ProductFileList
+            productFiles={productFiles}
+            totalSearchResults={2}
+            currentPage={1}
+            onChangePage={() => {}}
+            searchValue={''}
+            onChangeSearch={() => {}}
+        />
     );
     const firstProductFileRow = screen.getByTestId('4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86');
 
@@ -107,7 +137,14 @@ test('it displays the comment panel content when clicking on a product file row'
 
 test('it hides the comment panel content when clicking twice on a product file row', () => {
     renderWithProviders(
-        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+        <ProductFileList
+            productFiles={productFiles}
+            totalSearchResults={2}
+            currentPage={1}
+            onChangePage={() => {}}
+            searchValue={''}
+            onChangeSearch={() => {}}
+        />
     );
     const firstProductFileRow = screen.getByTestId('4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86');
 

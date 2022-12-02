@@ -32,11 +32,12 @@ test('it calls the backend and returns the list of product files', async () => {
                 supplierLastReadAt: '2022-10-18T09:51:24+00:00',
             },
         ],
-        total: 25,
+        total_number_of_product_files: 1,
+        total_search_results: 1,
     });
 
-    const response = await fetchProductFiles(25);
-    expect(response).toStrictEqual({
+    const response = await fetchProductFiles(1, '');
+    expect(response).toEqual({
         product_files: [
             {
                 identifier: '2b0f733e-6038-40a3-bca3-52a4803def89',
@@ -62,6 +63,7 @@ test('it calls the backend and returns the list of product files', async () => {
                 displayNewMessageIndicatorPill: true,
             },
         ],
-        total: 25,
+        totalNumberOfProductFiles: 1,
+        totalSearchResults: 1,
     });
 });
