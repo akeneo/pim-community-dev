@@ -7,14 +7,13 @@ const useCheckStorageConnection = (storage: SftpStorage | AmazonS3Storage) => {
   const [isChecking, setIsChecking] = useState<boolean>(false);
   const route = useRoute('pimee_job_automation_get_storage_connection_check');
 
-  const canCheckConnection =
-    !isChecking &&
-    !isValid &&
-    '' !== storage.file_path &&
-    '' !== storage.host &&
-    !isNaN(storage.port) &&
-    '' !== storage.username &&
-    (('password' === storage.login_type && '' !== storage.password) || 'private_key' === storage.login_type);
+  const canCheckConnection = !isChecking && !isValid;
+  //  &&
+  // '' !== storage.file_path &&
+  // '' !== storage.host &&
+  // !isNaN(storage.port) &&
+  // '' !== storage.username &&
+  // (('password' === storage.login_type && '' !== storage.password) || 'private_key' === storage.login_type);
 
   useEffect(() => {
     return () => {

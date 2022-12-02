@@ -3,7 +3,7 @@ import {AmazonS3Storage, LocalStorage, SftpStorage} from '../model';
 import {isLocalStorage, isSftpStorage, getStorageConfigurator, isAmazonS3Storage} from './model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
-import {AmazonS3StorageConfigurator} from './SftpStorageConfigurator';
+import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
 
 const featureFlagCollection = {
   job_automation_local_storage: false,

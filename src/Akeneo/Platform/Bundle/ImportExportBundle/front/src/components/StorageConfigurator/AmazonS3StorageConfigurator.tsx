@@ -52,6 +52,14 @@ const AmazonS3StorageConfigurator = ({
         errors={filterErrors(validationErrors, '[region]')}
       />
       <TextField
+        required={true}
+        value={storage.bucket}
+        label={translate('pim_import_export.form.job_instance.storage_form.bucket.label')}
+        placeholder={translate('pim_import_export.form.job_instance.storage_form.bucket.placeholder')}
+        onChange={(bucket: string) => onStorageChange({...storage, bucket: bucket})}
+        errors={filterErrors(validationErrors, '[bucket]')}
+      />
+      <TextField
         value={storage.key}
         required={true}
         label={translate('pim_import_export.form.job_instance.storage_form.key.label')}
@@ -60,8 +68,8 @@ const AmazonS3StorageConfigurator = ({
         errors={filterErrors(validationErrors, '[key]')}
       />
       <TextField
-        value={storage.secret}
         required={true}
+        value={storage.secret}
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.secret.label')}
         onChange={(secret: string) => onStorageChange({...storage, secret})}

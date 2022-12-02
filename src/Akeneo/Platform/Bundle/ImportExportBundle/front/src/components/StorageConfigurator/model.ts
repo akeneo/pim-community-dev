@@ -66,7 +66,7 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
 
 const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   return (
-    'sftp' === storage.type &&
+    'amazon_s3' === storage.type &&
     'file_path' in storage &&
     'region' in storage &&
     'bucket' in storage &&

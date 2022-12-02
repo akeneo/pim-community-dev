@@ -47,7 +47,7 @@ test('it returns the default local storage', () => {
     type: 'amazon_s3',
     file_path: 'myfile.csv',
     region: '',
-    bucket: 'password',
+    bucket: '',
     key: '',
     secret: '',
   });
