@@ -1,4 +1,4 @@
-apiVersion: argocd.io/v1alpha
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kube-janitor
