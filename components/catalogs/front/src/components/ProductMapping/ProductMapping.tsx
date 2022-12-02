@@ -1,6 +1,6 @@
 import React, {FC, useCallback, useState} from 'react';
 import styled from 'styled-components';
-import {getColor, SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
+import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {TargetPlaceholder} from './components/TargetPlaceholder';
 import {ProductMapping as ProductMappingType} from './models/ProductMapping';
@@ -21,11 +21,6 @@ const TargetContainer = styled.div`
 `;
 const SourceContainer = styled.div`
     flex-basis: 50%;
-`;
-const TargetCell = styled(Table.Cell)`
-    width: 215px;
-    color: ${getColor('brand', 100)};
-    font-style: italic;
 `;
 
 type Props = {
@@ -65,6 +60,13 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
     );
 
     const targets = Object.entries(productMapping ?? {});
+    // reorder uuid in first line
+    targets.forEach(function (target, i) {
+        if ('uuid' === target[0]) {
+            targets.splice(i, 1);
+            targets.unshift(target);
+        }
+    });
 
     const targetsWithErrors = Object.keys(
         Object.fromEntries(
@@ -100,15 +102,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                         {(targets.length === 0 || undefined === productMappingSchema) && <TargetPlaceholder />}
                         {targets.length > 0 && undefined !== productMappingSchema && (
                             <>
-                                <Table.Row>
-                                    <TargetCell>UUID</TargetCell>
-                                    <Table.Cell>UUID</Table.Cell>
-                                </Table.Row>
                                 {targets.map(([targetCode, source]) => {
-                                    if ('uuid' === targetCode) {
-                                        return;
-                                    }
-
                                     return (
                                         <TargetSourceAssociation
                                             isSelected={selectedTarget === targetCode}

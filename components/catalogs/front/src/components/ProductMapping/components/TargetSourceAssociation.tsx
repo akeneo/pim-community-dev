@@ -39,7 +39,8 @@ export const TargetSourceAssociation: FC<Props> = memo(
                         {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
                     </PlaceholderCell>
                 )}
-                {null !== source && source.source && (
+                {null !== source && 'uuid' === targetCode && <Table.Cell>UUID</Table.Cell>}
+                {null !== source && source.source && 'uuid' !== targetCode && (
                     <Table.Cell>
                         <SourceLabel sourceCode={source.source} />
                         {hasError && <ErrorPill data-testid='error-pill' level='danger' />}

@@ -140,3 +140,6 @@ akeneo_catalogs:
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.
                 subtitle: Then you'll be able to match a PIM attribute with the selected target.
                 link: Check out our Help center for more information.
+            uuid_placeholder:
+                text: The UUID is a technical product identifier. All apps must require it as a target. You have nothing to configure for this target as we automatically map it with the Akeneo product UUID.
+                link: More information about the UUID.
