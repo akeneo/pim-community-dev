@@ -14,15 +14,4 @@ use Symfony\Component\Validator\Constraint;
  */
 final class ProductMappingRespectsSchema extends Constraint
 {
-    public string $productMappingSchemaFile;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(string $productMappingSchemaFile, $options = null, array $groups = null, $payload = null)
-    {
-        parent::__construct($options, $groups, $payload);
-
-        $this->productMappingSchemaFile = $productMappingSchemaFile;
-    }
 }

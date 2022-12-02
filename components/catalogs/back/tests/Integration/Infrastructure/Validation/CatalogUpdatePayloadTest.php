@@ -79,14 +79,15 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'locale' => null,
                 ],
             ],
-        ], new CatalogUpdatePayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+            'product_mapping_schema_file' => 'db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json',
+        ], new CatalogUpdatePayload());
 
         $this->assertEmpty($violations);
     }
 
     public function testItReturnsViolationsWithMissingValues(): void
     {
-        $violations = $this->validator->validate([], new CatalogUpdatePayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+        $violations = $this->validator->validate([], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, 'This field is missing.');
     }

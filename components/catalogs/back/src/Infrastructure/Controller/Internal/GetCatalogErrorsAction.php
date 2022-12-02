@@ -45,12 +45,11 @@ final class GetCatalogErrorsAction
             'product_selection_criteria' => $catalog->getProductSelectionCriteria(),
             'product_value_filters' => $catalog->getProductValueFilters(),
             'product_mapping' => $catalog->getProductMapping(),
+            'product_mapping_schema_file' => [] === $catalog->getProductMapping() ? null : \sprintf('%s_product.json', $catalog->getId()),
         ];
 
         $violations = $this->validator->validate($catalogNormalized, [
-            new CatalogUpdatePayload(
-                productMappingSchemaFile: \sprintf('%s_product.json', $catalog->getId())
-            ),
+            new CatalogUpdatePayload(),
         ]);
 
         $normalizedViolations = $violations->count() > 0 ? $this->normalizer->normalize($violations) : [];

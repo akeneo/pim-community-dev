@@ -46,47 +46,61 @@ final class CatalogUpdateProductMappingPayloadValidator extends ConstraintValida
     {
         return [
             new Assert\Sequentially([
-                new Assert\Type('array'),
-                new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
-                    if (!\is_array($array) || empty($array)) {
-                        return;
-                    }
+                new Assert\Collection([
+                    'fields' => [
+                        'product_mapping' => [
+                            new Assert\Type('array'),
+                            new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
+                                if (!\is_array($array) || empty($array)) {
+                                    return;
+                                }
 
-                    if (\array_is_list($array)) {
-                        $context->buildViolation('Invalid array structure.')
-                            ->addViolation();
-                    }
-                }),
-                new ProductMappingRespectsSchema($constraint->productMappingSchemaFile),
-                new Assert\All([
-                    new Assert\Callback(function (mixed $sourceAssociation, ExecutionContextInterface $context): void {
-                        if (!\is_array($sourceAssociation) || null === $sourceAssociation['source']) {
-                            return;
-                        }
+                                if (\array_is_list($array)) {
+                                    $context->buildViolation('Invalid array structure.')
+                                        ->addViolation();
+                                }
+                            }),
+                        ],
+                    ],
+                    'allowMissingFields' => false,
+                    'allowExtraFields' => true,
+                ]),
+                new ProductMappingRespectsSchema(),
+                new Assert\Collection([
+                    'fields' => [
+                        'product_mapping' => new Assert\All([
+                            new Assert\Callback(function (mixed $sourceAssociation, ExecutionContextInterface $context): void {
+                                if (!\is_array($sourceAssociation) || null === $sourceAssociation['source']) {
+                                    return;
+                                }
 
-                        if (!\is_string($sourceAssociation['source'])) {
-                            $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.unknown')
-                                ->atPath('[source]')
-                                ->addViolation();
+                                if (!\is_string($sourceAssociation['source'])) {
+                                    $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.unknown')
+                                        ->atPath('[source]')
+                                        ->addViolation();
 
-                            return;
-                        }
+                                    return;
+                                }
 
-                        $constraint = $this->getMappingSourceConstraint($sourceAssociation['source']);
+                                $constraint = $this->getMappingSourceConstraint($sourceAssociation['source']);
 
-                        if (null === $constraint) {
-                            $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.invalid')
-                                ->atPath('[source]')
-                                ->addViolation();
+                                if (null === $constraint) {
+                                    $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.invalid')
+                                        ->atPath('[source]')
+                                        ->addViolation();
 
-                            return;
-                        }
+                                    return;
+                                }
 
-                        $context
-                            ->getValidator()
-                            ->inContext($this->context)
-                            ->validate($sourceAssociation, $constraint);
-                    }),
+                                $context
+                                    ->getValidator()
+                                    ->inContext($this->context)
+                                    ->validate($sourceAssociation, $constraint);
+                            }),
+                        ]),
+                    ],
+                    'allowMissingFields' => false,
+                    'allowExtraFields' => true,
                 ]),
             ])
         ];

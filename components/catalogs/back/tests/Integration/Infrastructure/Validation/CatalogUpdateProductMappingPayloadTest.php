@@ -46,17 +46,20 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
         ]);
 
         $violations = $this->validator->validate([
-            'uuid' => [
-                'source' => 'uuid',
-                'scope' => null,
-                'locale' => null,
+            'product_mapping' => [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'name' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ],
-            'name' => [
-                'source' => 'name',
-                'scope' => null,
-                'locale' => null,
-            ],
-        ], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+            'product_mapping_schema_file' => 'db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json',
+        ], new CatalogUpdateProductMappingPayload());
 
         $this->assertEmpty($violations);
     }
@@ -64,12 +67,15 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
     public function testItReturnsViolationsWhenProductMappingIsNotAssociativeArray(): void
     {
         $violations = $this->validator->validate([
-            [
-                'source' => 'uuid',
-                'scope' => null,
-                'locale' => null,
+            'product_mapping' => [
+                [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ],
-        ], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+            'product_mapping_schema_file' => 'db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json',
+        ], new CatalogUpdateProductMappingPayload());
 
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
     }
@@ -84,24 +90,30 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
         ]);
 
         $violations = $this->validator->validate([
-            'uuid' => [
-                'source' => 'unknown_attribute',
-                'scope' => null,
-                'locale' => null,
+            'product_mapping' => [
+                'uuid' => [
+                    'source' => 'unknown_attribute',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'name' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                ]
             ],
-            'name' => [
-                'source' => 'name',
-                'scope' => null,
-                'locale' => null,
-            ]
-        ], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+            'product_mapping_schema_file' => 'db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json',
+        ], new CatalogUpdateProductMappingPayload());
 
         $this->assertViolationsListContains($violations, 'Invalid source value');
     }
 
     public function testItReturnsViolationsWhenTargetsAreMissing(): void
     {
-        $violations = $this->validator->validate([], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+        $violations = $this->validator->validate([
+            'product_mapping' => [],
+            'product_mapping_schema_file' => 'db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json',
+        ], new CatalogUpdateProductMappingPayload());
 
         $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "uuid", "name".');
     }
@@ -116,22 +128,25 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
         ]);
 
         $violations = $this->validator->validate([
-            'uuid' => [
-                'source' => 'uuid',
-                'scope' => null,
-                'locale' => null,
+            'product_mapping' => [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'name' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'additional' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ],
-            'name' => [
-                'source' => 'name',
-                'scope' => null,
-                'locale' => null,
-            ],
-            'additional' => [
-                'source' => 'uuid',
-                'scope' => null,
-                'locale' => null,
-            ]
-        ], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+            'product_mapping_schema_file' => 'db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json',
+        ], new CatalogUpdateProductMappingPayload());
 
         $this->assertViolationsListContains($violations, 'The mapping is incorrect, following targets don\'t exist: "additional".');
     }
@@ -146,17 +161,20 @@ class CatalogUpdateProductMappingPayloadTest extends IntegrationTestCase
         ]);
 
         $violations = $this->validator->validate([
-            'uuid' => [
-                'source' => 'uuid',
-                'scope' => null,
-                'locale' => null,
+            'product_mapping' => [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'name' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ],
-            'name' => [
-                'source' => 'name',
-                'scope' => null,
-                'locale' => null,
-            ],
-        ], new CatalogUpdateProductMappingPayload('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+            'product_mapping_schema_file' => 'db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json',
+        ], new CatalogUpdateProductMappingPayload());
 
         $this->assertViolationsListContains($violations, 'The selected source type does not match the requirements: string expected.');
     }
