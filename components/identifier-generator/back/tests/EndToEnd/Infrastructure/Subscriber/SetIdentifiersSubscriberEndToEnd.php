@@ -7,31 +7,13 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
-use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\EndToEndTestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
 
-class SetIdentifiersSubscriberEndToEnd extends TestCase
+class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
 {
-    private UserInterface $admin;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->admin = $this->createAdminUser();
-    }
-
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog(['identifier_generator']);
@@ -67,7 +49,7 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
     {
         $this->createDefaultIdentifierGenerator();
         $product = $this->createProduct('originalIdentifier');
-        $productFromDatabase = $this->setIdentifier($product, null);
+        $productFromDatabase = $this->updateProductIdentifier($product, null);
 
         Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
         Assert::assertSame('AKN-050', $productFromDatabase->getValue('sku')->getData());
@@ -122,40 +104,6 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
         Assert::assertNull($productFromDatabase->getValue('sku'));
     }
 
-    private function createProduct(?string $identifier = null): ProductInterface
-    {
-        $uuid = Uuid::uuid4();
-        $this->getAuthenticator()->logIn('admin');
-
-        $userIntents = [];
-        if (null !== $identifier) {
-            $userIntents = [new SetIdentifierValue('sku', $identifier)];
-        }
-
-        $command = UpsertProductCommand::createWithUuid(
-            $this->admin->getId(),
-            ProductUuid::fromUuid($uuid),
-            $userIntents
-        );
-        ($this->getUpsertProductHandler())($command);
-
-        return $this->getProductRepository()->find($uuid);
-    }
-
-    private function setIdentifier(ProductInterface $product, ?string $identifier = null): ProductInterface
-    {
-        $command = UpsertProductCommand::createWithUuid(
-            $this->admin->getId(),
-            ProductUuid::fromUuid($product->getUuid()),
-            [
-                new SetIdentifierValue('sku', $identifier),
-            ]
-        );
-        ($this->getUpsertProductHandler())($command);
-
-        return $this->getProductRepository()->find($product->getUuid());
-    }
-
     private function addRestrictionsOnIdentifierAttribute(): void
     {
         $this->getConnection()->executeQuery(<<<SQL
@@ -163,24 +111,9 @@ UPDATE pim_catalog_attribute SET max_characters=1 WHERE code='sku';
 SQL);
     }
 
-    private function getProductRepository(): ProductRepositoryInterface
-    {
-        return $this->get('pim_catalog.repository.product');
-    }
-
     private function getCreateGeneratorHandler(): CreateGeneratorHandler
     {
         return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler');
-    }
-
-    private function getUpsertProductHandler(): UpsertProductHandler
-    {
-        return $this->get('Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler');
-    }
-
-    private function getAuthenticator(): AuthenticatorHelper
-    {
-        return $this->get('akeneo_integration_tests.helper.authenticator');
     }
 
     private function getConnection(): Connection
