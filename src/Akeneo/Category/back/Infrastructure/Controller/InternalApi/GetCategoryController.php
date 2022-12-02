@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,16 +40,13 @@ class GetCategoryController
         $root = null;
         if (!$isRoot) {
             $root = $this->getCategory->byId($category->getRootId()?->getValue());
+            $root = $this->findCategoryAdditionalPropertiesRegistry->forCategory($root);
         }
 
         $response = $category->normalize();
 
         $response['isRoot'] = $isRoot;
         $response['root'] = $root?->normalize();
-
-        if (!empty($category->getPermissions())) {
-            $response['permissions'] = $category->getPermissions();
-        }
 
         return new JsonResponse($response, Response::HTTP_OK);
     }

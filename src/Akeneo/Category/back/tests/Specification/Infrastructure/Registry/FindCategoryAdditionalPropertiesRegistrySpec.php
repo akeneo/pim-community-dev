@@ -26,7 +26,7 @@ class FindCategoryAdditionalPropertiesRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(FindCategoryAdditionalPropertiesRegistry::class);
     }
 
-    function it_executes_finder_if_it_is_supported(
+    function it_executes_only_supported_finder(
         CategoryAdditionalPropertiesFinder $supportedFinder,
         CategoryAdditionalPropertiesFinder $unsupportedFinder,
         Category $category
