@@ -252,7 +252,7 @@ const ProductFileList = ({
                             onChangePage(page);
                             closePanel();
                         }}
-                        currentPage={0 < totalSearchResults ? currentPage : 0}
+                        currentPage={0 < totalSearchResults ? currentPage : 1}
                         totalItems={totalSearchResults}
                         itemsPerPage={PRODUCT_FILES_PER_PAGE}
                     />

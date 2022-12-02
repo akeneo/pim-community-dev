@@ -6,10 +6,10 @@ import {useProductFiles} from './hooks/useProductFiles';
 import {useDebounce} from 'akeneo-design-system';
 
 const ProductFileHistory = () => {
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
     const [searchValue, setSearchValue] = useState<string>('');
     const debouncedSearch = useDebounce(searchValue);
-    const productFiles = useProductFiles(page, debouncedSearch);
+    const productFiles = useProductFiles(page, debouncedSearch, setPage);
 
     if (!productFiles) {
         return null;
