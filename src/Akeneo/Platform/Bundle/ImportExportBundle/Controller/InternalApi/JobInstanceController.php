@@ -233,9 +233,9 @@ class JobInstanceController
         }
 
         if (isset($data['configuration']['storage'])) {
-            $encryptedData['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($data['configuration']['storage']);
+            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($data['configuration']['storage']);
         }
-        $this->updater->update($jobInstance, $encryptedData);
+        $this->updater->update($jobInstance, $data);
 
         try {
             $this->eventDispatcher->dispatch(
