@@ -34,12 +34,23 @@ class SqlUpdateIdentifierPrefixesQueryEndToEnd extends EndToEndTestCase
     public function it_should_update_prefixes_on_update(): void
     {
         $productFromDatabase = $this->createProduct('my_identifier_123');
-        $this->updateProductIdentifier($productFromDatabase, 'my_new_identifier_234');
+        $this->updateProductIdentifier($productFromDatabase, 'my_new_identifier_234_567');
         Assert::assertEquals($this->getPrefixes($productFromDatabase->getUuid(), $this->getIdentifierId()), [
             'my_new_identifier_' => '234',
             'my_new_identifier_2' => '34',
             'my_new_identifier_23' => '4',
+            'my_new_identifier_234_' => '567',
+            'my_new_identifier_234_5' => '67',
+            'my_new_identifier_234_56' => '7',
         ]);
+    }
+
+    /** @test */
+    public function it_should_remove_all_prefixes_on_update_if_new_identifier_does_not_have_digits(): void
+    {
+        $productFromDatabase = $this->createProduct('my_identifier_123');
+        $this->updateProductIdentifier($productFromDatabase, 'identifier_without_digits');
+        Assert::assertEquals($this->getPrefixes($productFromDatabase->getUuid(), $this->getIdentifierId()), []);
     }
 
     /** @test */
