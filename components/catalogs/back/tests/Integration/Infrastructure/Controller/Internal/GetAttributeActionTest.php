@@ -48,6 +48,8 @@ class GetAttributeActionTest extends IntegrationTestCase
             'type',
             'scopable',
             'localizable',
+            'attribute_group_code',
+            'attribute_group_label',
         ], \array_keys($attribute));
     }
 }

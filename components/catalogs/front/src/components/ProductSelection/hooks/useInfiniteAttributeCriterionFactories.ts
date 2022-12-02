@@ -63,6 +63,8 @@ export const useInfiniteAttributeCriterionFactories = ({search = '', limit = 20}
             const factories: CriterionFactory[] = attributes.map(attribute => ({
                 id: attribute.code,
                 label: attribute.label,
+                group_code: attribute.attribute_group_code,
+                group_label: attribute.attribute_group_label,
                 factory: () => findAttributeCriterionByType(attribute.type).factory({field: attribute.code}),
             }));
 
