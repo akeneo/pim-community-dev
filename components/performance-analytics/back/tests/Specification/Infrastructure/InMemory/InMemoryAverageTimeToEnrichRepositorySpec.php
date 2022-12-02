@@ -15,6 +15,7 @@ namespace Specification\Akeneo\PerformanceAnalytics\Infrastructure\InMemory;
 
 use Akeneo\PerformanceAnalytics\Domain\PeriodType;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichCollection;
+use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichQuery;
 use PhpSpec\ObjectBehavior;
 
 class InMemoryAverageTimeToEnrichRepositorySpec extends ObjectBehavior
@@ -22,33 +23,33 @@ class InMemoryAverageTimeToEnrichRepositorySpec extends ObjectBehavior
     public function it_searches_average_time_to_enrich_by_week(): void
     {
         $startDate = new \DateTimeImmutable('2022-09-01');
-        $averageTimeToEnrichList = $this->search(
+        $averageTimeToEnrichList = $this->search(new AverageTimeToEnrichQuery(
             $startDate,
             $startDate->modify('+4 weeks'),
             PeriodType::WEEK,
-        );
+        ));
         $averageTimeToEnrichList->shouldHaveType(AverageTimeToEnrichCollection::class);
         $averageTimeToEnrichList->normalize()->shouldHaveCount(5);
-        $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('period');
-        $averageTimeToEnrichList->normalize()[0]['period']->shouldBe('2022-W35');
-        $averageTimeToEnrichList->normalize()[3]['period']->shouldBe('2022-W38');
+        $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('code');
+        $averageTimeToEnrichList->normalize()[0]['code']->shouldBe('2022-W35');
+        $averageTimeToEnrichList->normalize()[3]['code']->shouldBe('2022-W38');
         $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('value');
     }
 
     public function it_searches_average_time_to_enrich_by_month(): void
     {
         $startDate = new \DateTimeImmutable('2022-09-01');
-        $averageTimeToEnrichList = $this->search(
+        $averageTimeToEnrichList = $this->search(new AverageTimeToEnrichQuery(
             $startDate,
             $startDate->modify('+3 MONTH'),
             PeriodType::MONTH,
-        );
+        ));
 
         $averageTimeToEnrichList->shouldHaveType(AverageTimeToEnrichCollection::class);
         $averageTimeToEnrichList->normalize()->shouldHaveCount(4);
-        $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('period');
-        $averageTimeToEnrichList->normalize()[0]['period']->shouldBe('2022-09');
-        $averageTimeToEnrichList->normalize()[3]['period']->shouldBe('2022-12');
+        $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('code');
+        $averageTimeToEnrichList->normalize()[0]['code']->shouldBe('2022-09');
+        $averageTimeToEnrichList->normalize()[3]['code']->shouldBe('2022-12');
         $averageTimeToEnrichList->normalize()[0]->shouldHaveKey('value');
     }
 }

@@ -11,7 +11,10 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 class MediaLinkAttributeValidator implements AttributeValidatorInterface
 {
@@ -19,12 +22,27 @@ class MediaLinkAttributeValidator implements AttributeValidatorInterface
 
     public function validate(array $normalizedAttribute): array
     {
-        $normalizedAttribute['labels'] =  empty($normalizedAttribute['labels']) ? (object) [] : $normalizedAttribute['labels'] ;
-        $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
+        $normalizedAttribute['labels'] =  empty($normalizedAttribute['labels']) ? (object) [] : $normalizedAttribute['labels'];
         $validator = new Validator();
-        $validator->validate($asset, $this->getJsonSchema());
+        $validator->setMaxErrors(50);
 
-        return $validator->getErrors();
+        $result = $validator->validate(
+            Helper::toJSON($normalizedAttribute),
+            Helper::toJSON($this->getJsonSchema()),
+        );
+
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     public function forAttributeTypes(): array

@@ -6,7 +6,10 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\Li
 
 final class ProductFiles
 {
-    public function __construct(public array $productFiles, public int $totalProductFilesCount)
-    {
+    public function __construct(
+        public readonly array $productFiles,
+        public readonly int $totalProductFilesCount,
+        public readonly int $searchResultsCount,
+    ) {
     }
 }

@@ -7,7 +7,7 @@ GOOGLE_CLUSTER_NAME="akecld-prd-pim-saas-sandbox-europe-west1"
 GOOGLE_CLUSTER_REGION="europe-west1"
 GOOGLE_ZONE="europe-west1-b"
 LOCATION="EU"
-PREFIX_CLUSTER="eur-w-1"
+PREFIX_CLUSTER="sand-eur-w-1"
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 $SCRIPT_DIR/generate_values_file.sh \

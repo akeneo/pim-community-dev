@@ -5,14 +5,14 @@ import {TimeToEnrichHistoricalChartTooltip} from './TimeToEnrichHistoricalChartT
 import {TimeToEnrich} from '../models';
 
 const referenceTimeToEnrichList: TimeToEnrich[] = [
-  {period: '2022-W30', value: 10},
-  {period: '2022-W31', value: 12},
-  {period: '2022-W32', value: 9},
+  {code: '2022-W30', value: 10},
+  {code: '2022-W31', value: 12},
+  {code: '2022-W32', value: 9},
 ];
 const comparisonTimeToEnrichList: TimeToEnrich[] = [
-  {period: '2022-W30', value: 15},
-  {period: '2022-W31', value: 12},
-  {period: '2022-W32', value: 5},
+  {code: '2022-W30', value: 15},
+  {code: '2022-W31', value: 12},
+  {code: '2022-W32', value: 5},
 ];
 
 describe('TimeToEnrichHistoricalChartTooltip', () => {

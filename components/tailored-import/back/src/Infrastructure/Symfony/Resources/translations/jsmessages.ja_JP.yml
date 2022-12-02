@@ -71,6 +71,16 @@ akeneo.tailored_import:
         comma: コンマ (,)
         semicolon: セミコロン (;)
         pipe: パイプ (|)
+      search_and_replace:
+        title: 検索と置換
+        helper: 最大10件の置換を追加できます。
+        what:
+          header: 検索
+          placeholder: 置換値を検索
+        with:
+          header: 置換
+          placeholder: 置換値を定義
+        case_sensitive: 大文字と小文字を区別
       simple_select_replacement:
         title: シンプルな選択の置換
         option_labels: オプションのラベル
@@ -236,6 +246,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: 操作タイプ {{ operation_type }} にターゲットタイプとの互換性がありません。
       missing_required_operations: "必須操作がありません: {{ missing_required_operations }}"
+      max_replacements_reached: 最大{{ limit }}件の置換のみを追加できます。
 pim_information:
   import:
     title: カスタムインポートでマッピングを見つける

@@ -1,0 +1,7 @@
+services:
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySelectionValidator:
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_attributes_public_api'
+    tags:
+      - { name: validator.constraint_validator }
+    public: true

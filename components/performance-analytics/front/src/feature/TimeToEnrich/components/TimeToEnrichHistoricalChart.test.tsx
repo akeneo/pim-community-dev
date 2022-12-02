@@ -6,11 +6,11 @@ import {TimeToEnrichHistoricalChart} from './TimeToEnrichHistoricalChart';
 test('it renders a historical chart for TTE', async () => {
   const data = [
     {
-      period: '2021-W45',
+      code: '2021-W45',
       value: 10,
     },
     {
-      period: '2021-W46',
+      code: '2021-W46',
       value: 20,
     },
   ];
@@ -26,11 +26,11 @@ test('it renders a historical chart for TTE', async () => {
 test('it resizes the chart', async () => {
   const data = [
     {
-      period: '2021-W45',
+      code: '2021-W45',
       value: 10,
     },
     {
-      period: '2021-W46',
+      code: '2021-W46',
       value: 20,
     },
   ];

@@ -19,6 +19,26 @@ use Doctrine\DBAL\Connection;
 
 final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTestCase
 {
+    private Supplier $supplier;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->withCode('supplier_1')
+                ->build(),
+        );
+
+        $this->supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
+        );
+    }
+
     /** @test */
     public function itReturnsAnEmptyArrayIfThereIsNoFile(): void
     {
@@ -29,12 +49,7 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     public function itGetsOnlyTheProductFilesOfAGivenSupplier(): void
     {
         $supplierRepository = $this->get(Repository::class);
-        $supplierRepository->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->withCode('supplier_1')
-                ->build(),
-        );
+
         $supplierRepository->save(
             (new SupplierBuilder())
                 ->withIdentifier('a20576cd-840f-4124-9900-14d581491387')
@@ -75,21 +90,10 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itGetsNoMoreThanTwentyFiveProductFilesAtATime(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         for ($i = 1; 30 >= $i; $i++) {
             ($this->get(ProductFileRepository::class))->save(
                 (new ProductFileBuilder())
-                    ->uploadedBySupplier($supplier)
+                    ->uploadedBySupplier($this->supplier)
                     ->build(),
             );
         }
@@ -100,21 +104,10 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itPaginatesTheProductFilesList(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         for ($i = 1; 30 >= $i; $i++) {
             ($this->get(ProductFileRepository::class))->save(
                 (new ProductFileBuilder())
-                    ->uploadedBySupplier($supplier)
+                    ->uploadedBySupplier($this->supplier)
                     ->build(),
             );
         }
@@ -127,34 +120,23 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itSortsTheProductFilesListByUploadedDateDescending(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
-
         $productFileRepository = $this->get(ProductFileRepository::class);
         $productFileRepository->save(
             (new ProductFileBuilder())
-                ->uploadedBySupplier($supplier)
+                ->uploadedBySupplier($this->supplier)
                 ->withOriginalFilename('file1.xlsx')
                 ->uploadedAt((new \DateTimeImmutable())->modify('-10 DAY'))
                 ->build(),
         );
         $productFileRepository->save(
             (new ProductFileBuilder())
-                ->uploadedBySupplier($supplier)
+                ->uploadedBySupplier($this->supplier)
                 ->withOriginalFilename('file2.xlsx')
                 ->build(),
         );
         $productFileRepository->save(
             (new ProductFileBuilder())
-                ->uploadedBySupplier($supplier)
+                ->uploadedBySupplier($this->supplier)
                 ->withOriginalFilename('file3.xlsx')
                 ->uploadedAt((new \DateTimeImmutable())->modify('-2 DAY'))
                 ->build(),
@@ -173,20 +155,10 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
         $file1Date = new \DateTimeImmutable();
         $file2Date = (new \DateTimeImmutable())->modify('-2 DAY');
 
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         $productFileRepository = $this->get(ProductFileRepository::class);
         $productFileRepository->save(
             (new ProductFileBuilder())
-                ->uploadedBySupplier($supplier)
+                ->uploadedBySupplier($this->supplier)
                 ->withOriginalFilename('file1.xlsx')
                 ->withContributorEmail('contributor@example.com')
                 ->uploadedAt($file1Date)
@@ -194,7 +166,7 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
         );
         $productFileRepository->save(
             (new ProductFileBuilder())
-                ->uploadedBySupplier($supplier)
+                ->uploadedBySupplier($this->supplier)
                 ->withOriginalFilename('file2.xlsx')
                 ->uploadedAt($file2Date)
                 ->build(),
@@ -211,22 +183,12 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itReturnsHasUnreadCommentsProperty(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         $productFileRepository = $this->get(ProductFileRepository::class);
 
         $productFileWithUnreadComments = (new ProductFileBuilder())
             ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
             ->uploadedAt((new FrozenClock('2022-11-29 15:05:38'))->now())
-            ->uploadedBySupplier($supplier)
+            ->uploadedBySupplier($this->supplier)
             ->build();
         $productFileWithUnreadComments->addNewSupplierComment(
             'Here are the products I\'ve got for you.',
@@ -243,7 +205,7 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
         $productFileWithoutUnreadComments = (new ProductFileBuilder())
             ->withIdentifier('a3aac0e2-9eb9-4203-8af2-5425b2062ad4')
             ->uploadedAt((new FrozenClock('2022-11-29 14:05:38'))->now())
-            ->uploadedBySupplier($supplier)
+            ->uploadedBySupplier($this->supplier)
             ->build();
         $productFileWithoutUnreadComments->addNewSupplierComment(
             'Here is a read comment',
@@ -267,21 +229,11 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itReturnsTrueForHasUnreadCommentsIfThereIsCommentsButNoLastReadAtDate(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         $productFileRepository = $this->get(ProductFileRepository::class);
 
         $productFileWithUnreadComments = (new ProductFileBuilder())
             ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
-            ->uploadedBySupplier($supplier)
+            ->uploadedBySupplier($this->supplier)
             ->build();
         $productFileWithUnreadComments->addNewSupplierComment(
             'Here are the products I\'ve got for you.',
@@ -298,22 +250,12 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itReturnsFalseForHasUnreadCommentsIfThereIsNoCommentsButALastReadAtDate(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         $productFileRepository = $this->get(ProductFileRepository::class);
 
         $productFileRepository->save(
             (new ProductFileBuilder())
                 ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
-                ->uploadedBySupplier($supplier)
+                ->uploadedBySupplier($this->supplier)
                 ->build(),
         );
         $this->addLastReadAtByRetailer(
@@ -329,19 +271,9 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itReturnsFalseForHasUnreadCommentsIfThereIsNoCommentsNorLastReadAtDate(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         ($this->get(ProductFileRepository::class))->save(
             (new ProductFileBuilder())
-                ->uploadedBySupplier($supplier)
+                ->uploadedBySupplier($this->supplier)
                 ->build(),
         );
 
@@ -353,20 +285,10 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itReturnsTheProductFileImportStatus(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         $productFileRepository = $this->get(ProductFileRepository::class);
         $productFileRepository->save(
             (new ProductFileBuilder())
-                ->uploadedBySupplier($supplier)
+                ->uploadedBySupplier($this->supplier)
                 ->build(),
         );
 
@@ -378,18 +300,8 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     /** @test */
     public function itReturnsTheProductFileImportStatusInProgress(): void
     {
-        ($this->get(Repository::class))->save(
-            (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->build(),
-        );
-        $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
-            'supplier_code',
-            'Supplier label',
-        );
         $productFile = (new ProductFileBuilder())
-            ->uploadedBySupplier($supplier)
+            ->uploadedBySupplier($this->supplier)
             ->build();
         $productFileRepository = $this->get(ProductFileRepository::class);
         $productFileRepository->save($productFile);
@@ -400,6 +312,53 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
         $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
 
         static::assertSame(ProductFileImportStatus::IN_PROGRESS->value, $productFiles[0]->importStatus);
+    }
+
+    /** @test */
+    public function itCanSearchForProductFiles(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file1.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file2.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00', 1, 'file1');
+        static::assertCount(1, $productFiles);
+        static::assertSame('file1.xlsx', $productFiles[0]->originalFilename);
+    }
+
+    /** @test */
+    public function itCanSearchForProductFilesAndHandleThePagination(): void
+    {
+        for ($i = 0; 40 > $i; $i++) {
+            ($this->get(ProductFileRepository::class))->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->withOriginalFilename('file.xlsx')
+                    ->build(),
+            );
+        }
+        for ($i = 0; 5 > $i; $i++) {
+            ($this->get(ProductFileRepository::class))->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->withOriginalFilename('burger.xlsx')
+                    ->build(),
+            );
+        }
+
+        static::assertCount(15, $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00', 2, 'file'));
+
+        static::assertEmpty($this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00', 3, 'file'));
     }
 
     private function addLastReadAtByRetailer(string $productFileIdentifier, \DateTimeImmutable $lastReadAt): void

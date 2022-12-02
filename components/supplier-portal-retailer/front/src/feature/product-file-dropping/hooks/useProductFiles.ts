@@ -2,15 +2,16 @@ import {useCallback, useEffect, useState} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {ProductFileRow} from '../models/ProductFileRow';
 
-const useProductFiles = (page: number): [ProductFileRow[], number] => {
+const useProductFiles = (page: number, searchValue: string): [ProductFileRow[], number, number] => {
     const [totalNumberOfProductFiles, setTotalNumberOfProductFiles] = useState<number>(page);
+    const [totalSearchResults, setTotalSearchResults] = useState<number>(page);
     const [productFiles, setProductFiles] = useState<ProductFileRow[]>([]);
     const getProductFilesRoute = useRoute('supplier_portal_retailer_product_files_list');
     const notify = useNotify();
     const translate = useTranslate();
 
     const loadProductFiles = useCallback(async () => {
-        const response = await fetch(`${getProductFilesRoute}?page=${page}`, {
+        const response = await fetch(`${getProductFilesRoute}?page=${page}&search=${searchValue}`, {
             method: 'GET',
         });
         if (!response.ok) {
@@ -41,7 +42,8 @@ const useProductFiles = (page: number): [ProductFileRow[], number] => {
         });
         setProductFiles(productFiles);
         setTotalNumberOfProductFiles(responseBody.total);
-    }, [getProductFilesRoute, page]); // eslint-disable-line react-hooks/exhaustive-deps
+        setTotalSearchResults(responseBody.total_search_results);
+    }, [getProductFilesRoute, page, searchValue]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {
@@ -49,7 +51,7 @@ const useProductFiles = (page: number): [ProductFileRow[], number] => {
         })();
     }, [loadProductFiles]);
 
-    return [productFiles, totalNumberOfProductFiles];
+    return [productFiles, totalNumberOfProductFiles, totalSearchResults];
 };
 
 export {useProductFiles};

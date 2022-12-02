@@ -20,7 +20,7 @@ final class TimeToEnrichValueSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('fromValue', [2]);
+        $this->beConstructedThrough('fromHours', [52.8]);
     }
 
     public function it_is_initializable()
@@ -28,20 +28,26 @@ final class TimeToEnrichValueSpec extends ObjectBehavior
         $this->shouldHaveType(TimeToEnrichValue::class);
     }
 
-    public function it_returns_the_value()
+    public function it_returns_the_value_in_days()
     {
-        $this->value()->shouldBe((float) 2);
+        $this->inDays()->shouldBe(2.20);
     }
 
-    public function it_cannot_be_created_with_a_negative_value()
+    public function it_returns_the_value_in_hours()
     {
-        $this->beConstructedThrough('fromValue', [-1]);
+        $this->inHours()->shouldBe(52.8);
+    }
+
+    public function it_cannot_be_created_with_a_negative_number_of_hours()
+    {
+        $this->beConstructedThrough('fromHours', [-1]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_can_be_created_with_a_zero_value()
+    public function it_can_be_created_with_zero_hour_as_value()
     {
-        $this->beConstructedThrough('fromValue', [0]);
-        $this->value()->shouldBe((float) 0);
+        $this->beConstructedThrough('fromHours', [0]);
+        $this->inDays()->shouldBe((float) 0);
+        $this->inHours()->shouldBe((float) 0);
     }
 }

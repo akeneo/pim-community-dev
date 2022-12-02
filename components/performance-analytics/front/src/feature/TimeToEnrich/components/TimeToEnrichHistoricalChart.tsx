@@ -90,7 +90,7 @@ const TimeToEnrichHistoricalChart = ({
           <VictoryGroup style={{data: {stroke: '#3c86b3', strokeWidth: 3}}}>
             <VictoryArea
               data={referenceTimeToEnrichList}
-              x="period"
+              x="code"
               y="value"
               style={{
                 data: {fill: 'url(#myGradient)', fillOpacity: 0.6},
@@ -111,7 +111,7 @@ const TimeToEnrichHistoricalChart = ({
             {comparisonTimeToEnrichList && (
               <VictoryArea
                 data={comparisonTimeToEnrichList}
-                x="period"
+                x="code"
                 y="value"
                 style={{
                   data: {fill: 'white', fillOpacity: 0, strokeDasharray: '6, 8'},

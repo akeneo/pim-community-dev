@@ -88,6 +88,7 @@ supplier_portal:
         supplier: サプライヤー
         status: ステータス
         download: ダウンロードアイコン
+        filename: ファイル名
       notification:
         error_loading_supplier_files:
           title: 商品ファイルを表示できません。
@@ -105,12 +106,34 @@ supplier_portal:
         empty_content: コメントは空にできません。
         max_comment_length_reached: コメントは255文字以下にする必要があります。
         max_number_of_comments_reached: コメントの上限に達しました。
+        product_file_does_not_exist_anymore: 申し訳ありませんが、この商品ファイルは90日後に自動的に削除され、アクセスできなくなりました。
+      product_files_modal:
+        title: 商品ファイル
+        subtitle: カスタムインポートプロファイルを選択
+        import_field_label: インポート
+        select_import_placeholder: カスタムインポートを選択
+        import_button_label: 今すぐインポート
+        error_loading_product_import_profiles:
+          title: カスタムインポートプロファイルを表示できません。
+          content: ご不便をおかけして申し訳ございません。しばらくしてからもう一度お試しください。
+        error_launching_product_import:
+          missing_file: このファイルは存在しません。
+          unknown_error:
+            title: こちらで予期しないエラーが発生しています。
+            content: 後で再試行してください
+      import:
+        status:
+          to_import: インポート
+          in_progress: 処理中
+          completed: 完了
+          failed: 失敗
     pim_notification:
       button_label: 商品ファイルを表示
 pim_title:
   supplier_portal_retailer_supplier_list: サプライヤー
   supplier_portal_retailer_supplier_edit: サプライヤーを編集
   supplier_portal_retailer_product_files_list: 商品ファイル
+  supplier_portal_retailer_product_files_show: 商品ファイル
 batch_jobs.supplier_portal_xlsx_supplier_import.label: サプライヤーポータルのサプライヤーをXLSX形式でインポート
 pim_notification:
   supplier_portal:

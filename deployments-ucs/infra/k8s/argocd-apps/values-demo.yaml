@@ -1,2 +1,4 @@
+kube-janitor:
+  enabled: false
 wiremock:
   enabled: false

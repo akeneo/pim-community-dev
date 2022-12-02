@@ -34,7 +34,7 @@ final class AverageTimeToEnrichCollection
     }
 
     /**
-     * @return array<array{period: string, value: float}>
+     * @return array<array{code: string, value: float}>
      */
     public function normalize(): array
     {

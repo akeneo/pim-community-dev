@@ -1,5 +1,5 @@
 type TimeToEnrich = {
-  period: string;
+  code: string;
   value: number;
 };
 

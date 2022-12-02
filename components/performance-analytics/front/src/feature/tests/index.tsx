@@ -2,14 +2,15 @@ import React, {ReactNode} from 'react';
 import {act, render} from '@testing-library/react';
 import {DefaultProviders} from '@akeneo-pim-community/shared';
 import {Family, FetcherContext} from '../Common';
+import {TimeToEnrich} from '../TimeToEnrich';
 
-const weeklyTimeToEnrich = [
+const weeklyTimeToEnrich: TimeToEnrich[] = [
   {
-    period: '2021-W45',
+    code: '2021-W45',
     value: 10,
   },
   {
-    period: '2021-W46',
+    code: '2021-W46',
     value: 20,
   },
 ];
@@ -17,6 +18,25 @@ const weeklyTimeToEnrich = [
 const families = Array.from(Array(100).keys()).map((index: number) => {
   return {code: `family_${index}`, labels: {en_US: `Family ${index}`}};
 });
+
+const timeToEnrichByEntity = [
+  {
+    code: 'accessories',
+    value: 44,
+  },
+  {
+    code: 'camcorders',
+    value: 10,
+  },
+  {
+    code: 'clothing',
+    value: 41,
+  },
+  {
+    code: 'digital_cameras',
+    value: 100,
+  },
+];
 
 const channels = [
   {
@@ -57,6 +77,7 @@ const locales = [
 const fetchers = {
   timeToEnrich: {
     fetchHistoricalTimeToEnrich: () => Promise.resolve(weeklyTimeToEnrich),
+    fetchAverageTimeToEnrichByEntity: () => Promise.resolve(timeToEnrichByEntity),
   },
   family: {
     fetchFamilies: (limit: number, page: number, search?: string): Promise<{[key: string]: Family}> => {

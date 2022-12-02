@@ -17,18 +17,24 @@ use Webmozart\Assert\Assert;
 
 final class TimeToEnrichValue
 {
-    private function __construct(private float $value)
-    {
-        Assert::greaterThanEq($this->value, 0);
+    private function __construct(
+        private readonly float $hours,
+    ) {
+        Assert::greaterThanEq($hours, 0, 'Time to enrich value in hours must be greater or equal to zero');
     }
 
-    public static function fromValue(float $value): TimeToEnrichValue
+    public static function fromHours(float $hours): TimeToEnrichValue
     {
-        return new TimeToEnrichValue($value);
+        return new TimeToEnrichValue($hours);
     }
 
-    public function value(): float
+    public function inDays(): float
     {
-        return $this->value;
+        return round($this->hours / 24, 2);
+    }
+
+    public function inHours(): float
+    {
+        return $this->hours;
     }
 }

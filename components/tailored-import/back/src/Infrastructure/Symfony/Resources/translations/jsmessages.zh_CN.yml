@@ -71,6 +71,16 @@ akeneo.tailored_import:
         comma: 逗号 (,)
         semicolon: 分号 (;)
         pipe: 管道 (|)
+      search_and_replace:
+        title: 搜索和替换
+        helper: 您最多可以添加 10 个替换。
+        what:
+          header: 搜索
+          placeholder: 搜索要替换的值
+        with:
+          header: 替换为
+          placeholder: 定义您的替换值
+        case_sensitive: 区分大小写
       simple_select_replacement:
         title: 单选替换
         option_labels: 选项标签
@@ -236,6 +246,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: 操作类型 {{ operation_type }} 与您的目标类型不兼容。
       missing_required_operations: "缺少所需操作：{{ missing_required_operations }}"
+      max_replacements_reached: 您只能添加最多 {{ limit }} 个替换
 pim_information:
   import:
     title: 探索定制导入映射

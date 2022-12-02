@@ -25,11 +25,11 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $timeToEnrich1 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-01-01')),
-            TimeToEnrichValue::fromValue(1)
+            TimeToEnrichValue::fromHours(24)
         );
         $timeToEnrich2 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-02-01')),
-            TimeToEnrichValue::fromValue(3)
+            TimeToEnrichValue::fromHours(72)
         );
 
         $this->beConstructedThrough('fromList', [[$timeToEnrich1, $timeToEnrich2]]);
@@ -44,7 +44,7 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $timeToEnrich1 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-01-01')),
-            TimeToEnrichValue::fromValue(1)
+            TimeToEnrichValue::fromHours(24)
         );
         $timeToEnrich2 = new \stdClass();
 
@@ -56,11 +56,11 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             [
-                'period' => '2020-W53',
+                'code' => '2020-W53',
                 'value' => (float) 1,
             ],
             [
-                'period' => '2021-W05',
+                'code' => '2021-W05',
                 'value' => (float) 3,
             ],
         ]);
@@ -70,21 +70,21 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $timeToEnrich1 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-01-01')),
-            TimeToEnrichValue::fromValue(1)
+            TimeToEnrichValue::fromHours(24)
         );
         $timeToEnrich2 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-02-01')),
-            TimeToEnrichValue::fromValue(3)
+            TimeToEnrichValue::fromHours(72)
         );
 
         $this->beConstructedThrough('fromList', [new \ArrayIterator([$timeToEnrich1, $timeToEnrich2])]);
         $this->normalize()->shouldReturn([
             [
-                'period' => '2020-W53',
+                'code' => '2020-W53',
                 'value' => (float) 1,
             ],
             [
-                'period' => '2021-W05',
+                'code' => '2021-W05',
                 'value' => (float) 3,
             ],
         ]);
@@ -94,21 +94,21 @@ final class AverageTimeToEnrichCollectionSpec extends ObjectBehavior
     {
         $timeToEnrich1 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-01-01')),
-            TimeToEnrichValue::fromValue(1)
+            TimeToEnrichValue::fromHours(24)
         );
         $timeToEnrich2 = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
             Week::fromDate(new \DateTimeImmutable('2021-02-01')),
-            TimeToEnrichValue::fromValue(3)
+            TimeToEnrichValue::fromHours(72)
         );
 
         $this->beConstructedThrough('fromList', [yield from [$timeToEnrich1, $timeToEnrich2]]);
         $this->normalize()->shouldReturn([
             [
-                'period' => '2020-W53',
+                'code' => '2020-W53',
                 'value' => (float) 1,
             ],
             [
-                'period' => '2021-W05',
+                'code' => '2021-W05',
                 'value' => (float) 3,
             ],
         ]);

@@ -13,6 +13,9 @@ spec:
     targetRevision: {{ .Values.spec.source.targetRevision }}
     helm:
       releaseName: datadog-agent
+      parameters:
+        - name: datadog.datadog.tags
+          value: "{{ .Values.datadog.tags }}"
   destination:
     server: {{ .Values.spec.destination.server }}
     namespace: default

@@ -18,6 +18,7 @@ use Akeneo\PerformanceAnalytics\Domain\Period\Week;
 use Akeneo\PerformanceAnalytics\Domain\PeriodType;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrich;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichCollection;
+use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichQuery;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichRepository;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\TimeToEnrichValue;
 
@@ -26,19 +27,12 @@ class InMemoryAverageTimeToEnrichRepository implements AverageTimeToEnrichReposi
     /**
      * {@inheritdoc}
      */
-    public function search(
-        \DateTimeImmutable $startDate,
-        \DateTimeImmutable $endDate,
-        PeriodType $aggregationPeriodType,
-        ?array $channelCodesFilter = null,
-        ?array $localeCodesFilter = null,
-        ?array $familyCodesFilter = null,
-        ?array $categoryCodesFilter = null
-    ): AverageTimeToEnrichCollection {
-        $averageTimeToEnrichList = match ($aggregationPeriodType) {
-            PeriodType::WEEK => $this->generateRandomTimeToEnrichListByWeek($startDate, $endDate),
-            PeriodType::MONTH => $this->generateRandomTimeToEnrichListByMonth($startDate, $endDate),
-            default => throw new \InvalidArgumentException(\sprintf('The \'%s\' period type is not implemented', $aggregationPeriodType->name)),
+    public function search(AverageTimeToEnrichQuery $query): AverageTimeToEnrichCollection
+    {
+        $averageTimeToEnrichList = match ($query->aggregationPeriodType()) {
+            PeriodType::WEEK => $this->generateRandomTimeToEnrichListByWeek($query->startDate(), $query->endDate()),
+            PeriodType::MONTH => $this->generateRandomTimeToEnrichListByMonth($query->startDate(), $query->endDate()),
+            default => throw new \InvalidArgumentException(\sprintf('The \'%s\' period type is not implemented', $query->aggregationPeriodType()->name)),
         };
 
         return AverageTimeToEnrichCollection::fromList($averageTimeToEnrichList);
@@ -55,7 +49,7 @@ class InMemoryAverageTimeToEnrichRepository implements AverageTimeToEnrichReposi
         do {
             $averageTimeToEnrichList[] = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
                 Week::fromDate($currentDate),
-                TimeToEnrichValue::fromValue((float) random_int(10, 100))
+                TimeToEnrichValue::fromHours((float) random_int(10, 100) * 24)
             );
             $currentDate = $currentDate->modify('+1 week');
         } while ($currentDate <= $endDate);
@@ -74,7 +68,7 @@ class InMemoryAverageTimeToEnrichRepository implements AverageTimeToEnrichReposi
         do {
             $averageTimeToEnrichList[] = AverageTimeToEnrich::fromPeriodAndTimeToEnrichValue(
                 Month::fromDate($currentDate),
-                TimeToEnrichValue::fromValue((float) random_int(10, 100))
+                TimeToEnrichValue::fromHours((float) random_int(10, 100) * 24)
             );
             $currentDate = $currentDate->modify('+1 MONTH');
         } while ($currentDate <= $endDate);

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountAllProductFiles;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseCountProductFiles implements CountProductFiles
+final class DatabaseCountAllProductFiles implements CountAllProductFiles
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
     }
 

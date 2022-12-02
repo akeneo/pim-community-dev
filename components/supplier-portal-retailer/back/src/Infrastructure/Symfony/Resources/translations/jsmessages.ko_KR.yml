@@ -88,6 +88,7 @@ supplier_portal:
         supplier: 제공업체
         status: 상태
         download: 다운로드 아이콘
+        filename: 파일 이름
       notification:
         error_loading_supplier_files:
           title: 제품 파일을 표시할 수 없습니다.
@@ -105,12 +106,34 @@ supplier_portal:
         empty_content: 코멘트는 비워둘 수 없습니다.
         max_comment_length_reached: 코멘트는 255자를 초과할 수 없습니다.
         max_number_of_comments_reached: 코멘트 제한에 도달했습니다.
+        product_file_does_not_exist_anymore: 죄송합니다. 이 제품 파일은 90일 후에 자동으로 삭제되며 더 이상 액세스할 수 없습니다.
+      product_files_modal:
+        title: 제품 파일
+        subtitle: 맞춤형 가져오기 프로필 선택
+        import_field_label: 가져오기
+        select_import_placeholder: 맞춤형 가져오기 선택
+        import_button_label: 지금 가져오기
+        error_loading_product_import_profiles:
+          title: 맞춤형 가져오기 프로필을 표시할 수 없습니다.
+          content: 불편을 드려 죄송합니다. 잠시 후 다시 시도해주십시오.
+        error_launching_product_import:
+          missing_file: 이 파일이 더 이상 존재하지 않습니다.
+          unknown_error:
+            title: 저희 쪽에서 예기치 않은 오류가 발생했습니다.
+            content: 나중에 다시 시도하십시오
+      import:
+        status:
+          to_import: 가져오기
+          in_progress: 진행 중
+          completed: 완료
+          failed: 실패
     pim_notification:
       button_label: 제품 파일 보기
 pim_title:
   supplier_portal_retailer_supplier_list: 제공업체
   supplier_portal_retailer_supplier_edit: 제공업체 편집
   supplier_portal_retailer_product_files_list: 제품 파일
+  supplier_portal_retailer_product_files_show: 제품 파일
 batch_jobs.supplier_portal_xlsx_supplier_import.label: XLSX로 Supplier Portal 제공업체 가져오기
 pim_notification:
   supplier_portal:

@@ -14,6 +14,7 @@ const productFilesList: ProductFileRow[] = [
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: true,
         importStatus: ImportStatus.TO_IMPORT,
+        filename: 'file1.xlsx',
     },
     {
         supplier: 'mega supplier',
@@ -22,6 +23,7 @@ const productFilesList: ProductFileRow[] = [
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: false,
         importStatus: ImportStatus.IN_PROGRESS,
+        filename: 'file2.xlsx',
     },
     {
         supplier: 'mega supplier',
@@ -30,6 +32,7 @@ const productFilesList: ProductFileRow[] = [
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: false,
         importStatus: ImportStatus.COMPLETED,
+        filename: 'file3.xlsx',
     },
     {
         supplier: 'mega supplier',
@@ -38,6 +41,7 @@ const productFilesList: ProductFileRow[] = [
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: false,
         importStatus: ImportStatus.COMPLETED,
+        filename: 'file4.xlsx',
     },
     {
         supplier: 'mega supplier',
@@ -46,6 +50,7 @@ const productFilesList: ProductFileRow[] = [
         uploadedAt: '2022-07-25T08:00:00+00:00',
         hasUnreadComments: false,
         importStatus: ImportStatus.TO_IMPORT,
+        filename: 'file5.xlsx',
     },
 ];
 
@@ -53,9 +58,11 @@ test('it renders a list of product files', () => {
     renderWithProviders(
         <ProductFilesList
             productFiles={productFilesList}
-            totalProductFiles={5}
+            totalSearchResults={5}
             currentPage={1}
             onChangePage={() => {}}
+            searchValue={''}
+            onSearch={jest.fn}
         />
     );
     expect(screen.queryAllByText('mega supplier').length).toBe(5);
@@ -77,15 +84,20 @@ test('it renders a paginated list of product files', async () => {
         identifier: `file${index}`,
         contributor: 'contributor@example.com',
         uploadedAt: '2022-07-25T08:00:00+00:00',
+        filename: 'file1.xlsx',
+        hasUnreadComments: false,
+        importStatus: 'in_progress',
     }));
 
     const changePageCallback = jest.fn();
     renderWithProviders(
         <ProductFilesList
             productFiles={productFilesList}
-            totalProductFiles={30}
+            totalSearchResults={30}
             currentPage={1}
             onChangePage={changePageCallback}
+            searchValue={''}
+            onSearch={jest.fn}
         />
     );
     expect(screen.queryAllByText('mega supplier').length).toBe(25);
@@ -98,20 +110,15 @@ test('it renders a paginated list of product files', async () => {
     expect(changePageCallback).toHaveBeenNthCalledWith(1, 2);
 });
 
-test('it displays an empty placeholder when there is no files', () => {
-    renderWithProviders(
-        <ProductFilesList productFiles={[]} totalProductFiles={0} currentPage={1} onChangePage={() => {}} />
-    );
-    expect(screen.getByText('supplier_portal.product_file_dropping.supplier_files.no_files')).toBeInTheDocument();
-});
-
 test('it renders a list of product files with supplier column', () => {
     renderWithProviders(
         <ProductFilesList
             productFiles={productFilesList}
-            totalProductFiles={1}
+            totalSearchResults={1}
             currentPage={1}
             onChangePage={() => {}}
+            searchValue={''}
+            onSearch={jest.fn}
         />
     );
     expect(
@@ -123,10 +130,12 @@ test('it renders a list of product files without supplier column', () => {
     renderWithProviders(
         <ProductFilesList
             productFiles={productFilesList}
-            totalProductFiles={1}
+            totalSearchResults={1}
             currentPage={1}
             onChangePage={() => {}}
             displaySupplierColumn={false}
+            searchValue={''}
+            onSearch={jest.fn}
         />
     );
     expect(
@@ -138,10 +147,35 @@ test('it renders a list of product files with pills if there is unread comments 
     renderWithProviders(
         <ProductFilesList
             productFiles={productFilesList}
-            totalProductFiles={5}
+            totalSearchResults={5}
             currentPage={1}
             onChangePage={() => {}}
+            searchValue={''}
+            onSearch={jest.fn}
         />
     );
     expect(screen.queryByTestId('unread-comments-pill')).toBeInTheDocument();
+});
+
+test('it calls the callback when a user search for product files', () => {
+    const onSearchCallback = jest.fn();
+    renderWithProviders(
+        <ProductFilesList
+            productFiles={productFilesList}
+            totalSearchResults={5}
+            currentPage={1}
+            onChangePage={() => {}}
+            searchValue={''}
+            onSearch={onSearchCallback}
+        />
+    );
+
+    const searchField = screen.getByPlaceholderText(
+        'supplier_portal.product_file_dropping.supplier_files.search.placeholder'
+    );
+    expect(searchField).toBeInTheDocument();
+
+    userEvent.type(searchField, 'file');
+
+    expect(onSearchCallback).toHaveBeenCalledTimes(4);
 });

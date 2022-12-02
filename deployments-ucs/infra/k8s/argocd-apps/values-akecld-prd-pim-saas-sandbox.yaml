@@ -8,3 +8,5 @@ spec:
 argocd:
   privateDomain: pim-saas-sandbox.dev.local
   publicDomain: pim-saas-sandbox.dev.cloud.akeneo.com
+datadog:
+  tags: "cloud_env: sandbox cloud_service: ucs"

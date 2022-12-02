@@ -21,7 +21,7 @@ final class ListSupplierProductFiles
     public function __invoke(Request $request, string $supplierIdentifier): JsonResponse
     {
         $productFiles = ($this->listSupplierProductFilesHandler)(
-            new ListSupplierProductFilesQuery($supplierIdentifier, $request->query->getInt('page', 1))
+            new ListSupplierProductFilesQuery($supplierIdentifier, $request->query->getInt('page', 1), trim($request->query->get('search', '')))
         );
 
         return new JsonResponse([

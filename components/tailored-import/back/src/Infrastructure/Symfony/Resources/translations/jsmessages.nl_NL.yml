@@ -71,6 +71,16 @@ akeneo.tailored_import:
         comma: Komma (,)
         semicolon: Puntkomma (;)
         pipe: Sluisteken (|)
+      search_and_replace:
+        title: Zoeken en vervangen
+        helper: U kunt maximaal 10 vervangingen toevoegen.
+        what:
+          header: Zoeken
+          placeholder: Zoek de waarde die u wilt vervangen
+        with:
+          header: Vervangen door
+          placeholder: Geef de vervangende waarde op
+        case_sensitive: Hoofdlettergevoelig
       simple_select_replacement:
         title: Enkelvoudige selectie vervanging
         option_labels: Optielabels
@@ -236,6 +246,7 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: Het type bewerking {{ operation_type }} is niet compatibel met uw doeltype.
       missing_required_operations: "Er ontbreken vereiste bewerkingen: {{ missing_required_operations }}"
+      max_replacements_reached: U kunt slechts maximaal {{ limit }} vervangingen toevoegen.
 pim_information:
   import:
     title: Ontdek hoe u kunt toewijzen met op maat gemaakte import

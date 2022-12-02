@@ -65,12 +65,20 @@
                 "message": "The asset has an invalid format.",
                 "errors": [
                     {
-                        "property": "code",
-                        "message": "Integer value found, but a string is required"
+                        "message": "The properties must match schema: code, values",
+                        "property": ""
                     },
                     {
-                        "property": "values.description",
-                        "message": "Object value found, but an array is required"
+                        "message": "The data (integer) must match the type: string",
+                        "property": "code"
+                    },
+                    {
+                        "message": "Object properties that match pattern '.+' must also match pattern's schema",
+                        "property": "values"
+                    },
+                    {
+                        "message": "The data (object) must match the type: array",
+                        "property": "values.description"
                     }
                 ]
             },

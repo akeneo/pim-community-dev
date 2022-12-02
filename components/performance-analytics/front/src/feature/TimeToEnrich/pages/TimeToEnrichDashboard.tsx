@@ -1,6 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
 import {AddingValueIllustration, Information, SectionTitle, Button, PanelCloseIcon} from 'akeneo-design-system';
-import {TimeToEnrichChartLegend, TimeToEnrichControlPanel, TimeToEnrichHistoricalChart} from '../components';
+import {
+  TimeToEnrichChartLegend,
+  TimeToEnrichControlPanel,
+  TimeToEnrichHistoricalChart,
+  TimeToEnrichTable,
+} from '../components';
 import {getEndDate, getPeriodType, getStartDate, TimeToEnrich, TimeToEnrichFilters} from '../models';
 import {AkeneoSpinner, defaultFilters, useFetchers} from '../../Common';
 import styled from 'styled-components';
@@ -15,13 +20,14 @@ const TimeToEnrichDashboard: FC = () => {
   const [isControlPanelOpen, setIsControlPanelOpen] = useState<boolean>(false);
   const [referenceTimeToEnrichList, setReferenceTimeToEnrichList] = useState<TimeToEnrich[] | undefined>(undefined);
   const [comparisonTimeToEnrichList, setComparisonTimeToEnrichList] = useState<TimeToEnrich[] | undefined>(undefined);
+  const [tableData, setTableData] = useState<TimeToEnrich[] | undefined>(undefined);
   const [filters, setFilters] = useState<TimeToEnrichFilters>(defaultFilters);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const translate = useTranslate();
 
   useEffect(() => {
     setIsLoading(true);
-    const fetchData = async (filters: TimeToEnrichFilters): Promise<TimeToEnrich[]> => {
+    const fetchHistoricalTimeToEnrich = async (filters: TimeToEnrichFilters): Promise<TimeToEnrich[]> => {
       return await fetcher.timeToEnrich.fetchHistoricalTimeToEnrich(
         getStartDate(filters),
         getEndDate(filters),
@@ -34,11 +40,30 @@ const TimeToEnrichDashboard: FC = () => {
       );
     };
 
-    const promise1 = fetchData(filters);
-    promise1.then(async timeToEnrichList => setReferenceTimeToEnrichList(timeToEnrichList));
-    const promise2 = fetchData(filters);
-    promise2.then(async timeToEnrichList => setComparisonTimeToEnrichList(timeToEnrichList));
-    Promise.all([promise1, promise2]).then(() => setIsLoading(false));
+    const fetchAverageTimeToEnrichByEntity = async (filters: TimeToEnrichFilters): Promise<TimeToEnrich[]> => {
+      return await fetcher.timeToEnrich.fetchAverageTimeToEnrichByEntity(
+        getStartDate(filters),
+        getEndDate(filters),
+        filters.aggregation,
+        {
+          channels: filters.channels,
+          locales: filters.locales,
+        }
+      );
+    };
+
+    const fetchHistoricalTimeToEnrichResults = fetchHistoricalTimeToEnrich(filters);
+    fetchHistoricalTimeToEnrichResults.then(async timeToEnrichList => setReferenceTimeToEnrichList(timeToEnrichList));
+    const fetchComparisonTimeToEnrichResults = fetchHistoricalTimeToEnrich(filters);
+    fetchComparisonTimeToEnrichResults.then(async timeToEnrichList => setComparisonTimeToEnrichList(timeToEnrichList));
+    const fetchAverageTimeToEnrichByEntityResults = fetchAverageTimeToEnrichByEntity(filters);
+    fetchAverageTimeToEnrichByEntityResults.then(async tableData => setTableData(tableData));
+
+    Promise.all([
+      fetchHistoricalTimeToEnrichResults,
+      fetchComparisonTimeToEnrichResults,
+      fetchAverageTimeToEnrichByEntityResults,
+    ]).then(() => setIsLoading(false));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(filters)]);
@@ -89,6 +114,8 @@ const TimeToEnrichDashboard: FC = () => {
           comparisonTimeToEnrichList={comparisonTimeToEnrichList}
         />
       )}
+
+      {tableData && tableData.length > 0 && <TimeToEnrichTable tableData={tableData} />}
 
       <TimeToEnrichControlPanel
         isOpen={isControlPanelOpen}

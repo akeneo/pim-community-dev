@@ -14,6 +14,15 @@ type FetcherValue = {
         locales: LocaleCode[];
       }
     ) => Promise<TimeToEnrich[]>;
+    fetchAverageTimeToEnrichByEntity: (
+      startDate: string,
+      endDate: string,
+      aggregationType: string,
+      filters: {
+        channels: ChannelCode[];
+        locales: LocaleCode[];
+      }
+    ) => Promise<TimeToEnrich[]>;
   };
   family: {
     fetchFamilies: (limit: number, page: number, search?: string) => Promise<{[key: string]: Family}>;
@@ -29,6 +38,9 @@ type FetcherValue = {
 const FetcherContext = createContext<FetcherValue>({
   timeToEnrich: {
     fetchHistoricalTimeToEnrich: () => {
+      throw new Error('Fetch attributes by identifiers needs to be implemented');
+    },
+    fetchAverageTimeToEnrichByEntity: () => {
       throw new Error('Fetch attributes by identifiers needs to be implemented');
     },
   },

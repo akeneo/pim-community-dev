@@ -9,7 +9,7 @@ GOOGLE_ZONE="australia-southeast1-b"
 # No multi region exist for Australia
 # https://cloud.google.com/storage/docs/locations#location-mr
 LOCATION="AUSTRALIA-SOUTHEAST1"
-PREFIX_CLUSTER="aus-se-1"
+PREFIX_CLUSTER="demo-aus-se-1"
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 $SCRIPT_DIR/generate_values_file.sh \

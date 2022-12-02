@@ -1,34 +1,41 @@
 import React from 'react';
-import {Search, Table, getColor} from 'akeneo-design-system';
+import {getColor, Table} from 'akeneo-design-system';
+import {BigPill} from '../../Common/components/BigPill';
 import styled from 'styled-components';
+import {TimeToEnrich} from '../models';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
-const TimeToEnrichTable = () => {
-  return (
-    <>
-      <Search onSearchChange={() => {}} placeholder="Search" searchValue="" title="Search">
-        <StyledResults>34 results</StyledResults>
-      </Search>
-
-      <Table>
-        <Table.Header>
-          <Table.HeaderCell>Families</Table.HeaderCell>
-          <Table.HeaderCell>Time-to-enrich (in days)</Table.HeaderCell>
-          <Table.HeaderCell>Same period last year</Table.HeaderCell>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>Global</Table.Cell>
-            <Table.Cell>23</Table.Cell>
-            <Table.Cell>21</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    </>
-  );
+type Props = {
+  tableData: TimeToEnrich[];
 };
 
-const StyledResults = styled('span')`
-  color: ${getColor('brand', 100)};
+const EntityLabelCell = styled(Table.Cell)`
+  color: ${getColor('purple', 100)};
 `;
+
+const TimeToEnrichTable = ({tableData}: Props) => {
+  const translate = useTranslate();
+
+  return (
+    <Table>
+      <Table.Header>
+        <Table.HeaderCell>{translate('akeneo.performance_analytics.table.header_families')}</Table.HeaderCell>
+        <Table.HeaderCell>
+          <BigPill /> {translate('akeneo.performance_analytics.table.header_time_to_enrich')}
+        </Table.HeaderCell>
+      </Table.Header>
+      <Table.Body>
+        {tableData.map((row, index) => {
+          return (
+            <Table.Row key={index} onClick={() => {}}>
+              <EntityLabelCell>{row.code}</EntityLabelCell>
+              <Table.Cell>{row.value}</Table.Cell>
+            </Table.Row>
+          );
+        })}
+      </Table.Body>
+    </Table>
+  );
+};
 
 export {TimeToEnrichTable};

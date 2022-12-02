@@ -88,6 +88,7 @@ supplier_portal:
         supplier: 供应商
         status: 状态
         download: 下载图标
+        filename: 文件名
       notification:
         error_loading_supplier_files:
           title: 我们无法显示产品文件。
@@ -105,12 +106,34 @@ supplier_portal:
         empty_content: 评论不应为空。
         max_comment_length_reached: 评论不应超过 255 个字符。
         max_number_of_comments_reached: 您已达到评论限额。
+        product_file_does_not_exist_anymore: 很抱歉，该产品文件已在 90 天后被自动删除，无法再进行访问。
+      product_files_modal:
+        title: 产品文件
+        subtitle: 选择定制导入配置文件
+        import_field_label: 导入
+        select_import_placeholder: 选择定制导入
+        import_button_label: 立即导入
+        error_loading_product_import_profiles:
+          title: 我们无法显示定制导入配置文件。
+          content: 非常抱歉给您带来不便！请稍后再试。
+        error_launching_product_import:
+          missing_file: 该文件已不再存在。
+          unknown_error:
+            title: 我们这端发生了意外错误。
+            content: 请稍后重试
+      import:
+        status:
+          to_import: 导入
+          in_progress: 进行中
+          completed: 已完成
+          failed: 失败
     pim_notification:
       button_label: 查看产品文件
 pim_title:
   supplier_portal_retailer_supplier_list: 供应商
   supplier_portal_retailer_supplier_edit: 编辑供应商
   supplier_portal_retailer_product_files_list: 产品文件
+  supplier_portal_retailer_product_files_show: 产品文件
 batch_jobs.supplier_portal_xlsx_supplier_import.label: 以 XLSX 格式导入供应商门户
 pim_notification:
   supplier_portal:

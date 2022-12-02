@@ -5,6 +5,12 @@ pim_common:
   result_count: "{0}0 risultati|{1}1 risultato|]1, Inf[{{ itemsCount }} risultati"
   items_selected: "{0}0 elementi selezionati|{1}1 elemento selezionato|]1, Inf[{{ itemsCount }} elementi selezionati"
 shared_catalog:
+  content:
+    attributes:
+      helper:
+        text: L'ordine degli attributi nel catalogo sarà identico all'ordine stabilito nelle impostazioni Gruppi di attributi.
+        link:
+          text: Fai clic qui per sarene di più sui Gruppi di attributi.
   recipients:
     add: Aggiungi e-mail utenti qui
     placeholder: betty@akeneo.com

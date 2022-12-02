@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {ProductFilesList} from '../../../product-file-dropping/components';
+import {useDebounce} from 'akeneo-design-system';
+import {EmptyProductFilesList, ProductFilesList} from '../../../product-file-dropping/components';
 import {useProductFiles} from '../../hooks';
 
 type Props = {
@@ -8,8 +9,10 @@ type Props = {
 };
 
 const ProductFiles = ({supplierIdentifier}: Props) => {
-    const [page, setPage] = useState<number>(1);
-    const [productFiles, totalProductFiles] = useProductFiles(supplierIdentifier, page);
+    const [page, setPage] = useState<number>(0);
+    const [searchValue, setSearchValue] = useState('');
+    const debouncedSearchValue = useDebounce(searchValue);
+    const [productFiles, totalProductFiles] = useProductFiles(supplierIdentifier, page, debouncedSearchValue);
 
     useEffect(() => {
         0 < totalProductFiles && setPage(1);
@@ -17,13 +20,19 @@ const ProductFiles = ({supplierIdentifier}: Props) => {
 
     return (
         <Container>
-            <ProductFilesList
-                productFiles={productFiles}
-                totalProductFiles={totalProductFiles}
-                currentPage={page}
-                onChangePage={setPage}
-                displaySupplierColumn={false}
-            />
+            {0 === totalProductFiles && '' === searchValue ? (
+                <EmptyProductFilesList message="supplier_portal.product_file_dropping.supplier_files.no_files" />
+            ) : (
+                <ProductFilesList
+                    productFiles={productFiles}
+                    totalSearchResults={totalProductFiles}
+                    currentPage={page}
+                    onChangePage={setPage}
+                    searchValue={searchValue}
+                    onSearch={setSearchValue}
+                    displaySupplierColumn={false}
+                />
+            )}
         </Container>
     );
 };

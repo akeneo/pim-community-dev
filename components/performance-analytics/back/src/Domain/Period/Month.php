@@ -17,6 +17,8 @@ use Akeneo\PerformanceAnalytics\Domain\Period;
 
 final class Month implements Period
 {
+    private const DATETIME_FORMAT = 'Y-m';
+
     private function __construct(private \DateTimeImmutable $date)
     {
     }
@@ -26,8 +28,19 @@ final class Month implements Period
         return new Month($date);
     }
 
+    public static function fromString(string $date): Month
+    {
+        $dateTime = \DateTimeImmutable::createFromFormat(self::DATETIME_FORMAT, $date);
+
+        if (!$dateTime instanceof \DateTimeImmutable) {
+            throw new \InvalidArgumentException(sprintf('Date "%s" does not represent a month at format "%s"', $date, self::DATETIME_FORMAT));
+        }
+
+        return new Month($dateTime);
+    }
+
     public function toString(): string
     {
-        return $this->date->format('Y-m');
+        return $this->date->format(self::DATETIME_FORMAT);
     }
 }

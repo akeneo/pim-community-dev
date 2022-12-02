@@ -5,6 +5,12 @@ pim_common:
   result_count: "{0}0개 결과|{1}1개 결과|]1, Inf[{{ itemsCount }}개 결과"
   items_selected: "{0}0개 항목 선택|{1}1개 항목 선택|]1, Inf[{{ itemsCount }}개 항목 선택"
 shared_catalog:
+  content:
+    attributes:
+      helper:
+        text: 카탈로그에서 특성의 순서는 특성 그룹 설정에 지정된 순서와 동일합니다.
+        link:
+          text: 특성 그룹에 대한 자세한 내용을 보려면 여기를 클릭하십시오.
   recipients:
     add: 여기에 사용자 이메일 추가
     placeholder: betty@akeneo.com

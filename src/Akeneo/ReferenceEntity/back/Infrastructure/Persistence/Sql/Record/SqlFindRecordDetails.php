@@ -46,8 +46,10 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails
     {
         $recordsDetails = $this->findByCodes($referenceEntityIdentifier, [$recordCode]);
+        $recordCode = strtolower((string) $recordCode);
+        $recordsDetails = array_change_key_case($recordsDetails);
 
-        return $recordsDetails[(string) $recordCode] ?? null;
+        return $recordsDetails[$recordCode] ?? null;
     }
 
     /**

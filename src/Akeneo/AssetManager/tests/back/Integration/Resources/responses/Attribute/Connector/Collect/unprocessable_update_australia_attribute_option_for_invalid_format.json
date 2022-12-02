@@ -21,8 +21,12 @@
       "message": "The attribute option has an invalid format.",
       "errors": [
         {
-          "property": "labels",
-          "message": "Array value found, but an object is required"
+          "message": "The properties must match schema: labels",
+          "property": ""
+        },
+        {
+          "message": "The data (array) must match the type: object",
+          "property": "labels"
         }
       ]
     }

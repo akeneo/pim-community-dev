@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10747: Fix error 500 on product page caused by a bad case in Reference Entity record.
 - PIM-10524: Removed AuthnContextClassRef from SAML Auth requests
 - PIM-10431: SAML endpoint /saml/acs now returns HTTP status 405 when called using method GET (instead of 500)
 - PIM-10498: Fix Reference Entity Multiple link to handle duplication properly on import

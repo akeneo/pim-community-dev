@@ -13,29 +13,51 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Domain\TimeToEnrich;
 
+use Akeneo\PerformanceAnalytics\Domain\CategoryCode;
+use Akeneo\PerformanceAnalytics\Domain\FamilyCode;
 use Akeneo\PerformanceAnalytics\Domain\Period;
 
 final class AverageTimeToEnrich
 {
     private function __construct(
-        private Period $period,
-        private TimeToEnrichValue $timeToEnrichValue,
+        private readonly string $aggregationCode,
+        private readonly TimeToEnrichValue $timeToEnrichValue,
     ) {
     }
 
     public static function fromPeriodAndTimeToEnrichValue(Period $period, TimeToEnrichValue $timeToEnrichValue): AverageTimeToEnrich
     {
-        return new AverageTimeToEnrich($period, $timeToEnrichValue);
+        return new AverageTimeToEnrich($period->toString(), $timeToEnrichValue);
+    }
+
+    public static function fromFamilyAndTimeToEnrichValue(FamilyCode $familyCode, TimeToEnrichValue $timeToEnrichValue): AverageTimeToEnrich
+    {
+        return new AverageTimeToEnrich($familyCode->toString(), $timeToEnrichValue);
+    }
+
+    public static function fromCategoryAndTimeToEnrichValue(CategoryCode $categoryCode, TimeToEnrichValue $timeToEnrichValue): AverageTimeToEnrich
+    {
+        return new AverageTimeToEnrich($categoryCode->toString(), $timeToEnrichValue);
     }
 
     /**
-     * @return array{period: string, value: float}
+     * @return array{code: string, value: float}
      */
     public function normalize(): array
     {
         return [
-            'period' => $this->period->toString(),
-            'value' => $this->timeToEnrichValue->value(),
+            'code' => $this->aggregationCode,
+            'value' => $this->timeToEnrichValue->inDays(),
         ];
+    }
+
+    public function code(): string
+    {
+        return $this->aggregationCode;
+    }
+
+    public function value(): TimeToEnrichValue
+    {
+        return $this->timeToEnrichValue;
     }
 }

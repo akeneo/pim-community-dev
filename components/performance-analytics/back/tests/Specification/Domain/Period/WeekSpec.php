@@ -17,4 +17,16 @@ class WeekSpec extends ObjectBehavior
         $this->beConstructedThrough('fromDate', [new \DateTimeImmutable('2022-01-01')]);
         $this->toString()->shouldReturn('2021-W52');
     }
+
+    public function it_can_be_created_from_a_string()
+    {
+        $this->beConstructedThrough('fromString', ['2021-W52']);
+        $this->toString()->shouldReturn('2021-W52');
+    }
+
+    public function it_can_not_be_created_from_an_invalid_format()
+    {
+        $this->beConstructedThrough('fromString', ['2022-02']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }

@@ -97,7 +97,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $this->validate($assetFamily)->shouldReturn([]);
     }
 
-    function it_returns_an_error_when_code_is_not_a_string()
+    function it_returns_errors_when_code_is_not_a_string()
     {
         $assetFamily = [
             'code' => []
@@ -106,10 +106,10 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_labels_has_a_wrong_format()
+    function it_returns_errors_when_labels_has_a_wrong_format()
     {
         $assetFamily = [
             'code' => 'starck',
@@ -121,7 +121,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(3);
     }
 
     function it_returns_an_error_when_code_is_not_provided()
@@ -217,7 +217,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    public function it_returns_an_error_when_rule_templates_has_null_values_on_a_property()
+    public function it_returns_errors_when_rule_templates_has_null_values_on_a_property()
     {
         $assetFamily = [
             'code' => 'starck',
@@ -243,10 +243,10 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(6);
     }
 
-    public function it_returns_an_error_when_rule_templates_has_additional_properties()
+    public function it_returns_errors_when_rule_templates_has_additional_properties()
     {
         $assetFamily = [
             'code' => 'starck',
@@ -275,7 +275,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(3);
+        $errors->shouldHaveCount(7);
     }
 
     public function it_does_not_return_any_error_when_transformations_is_empty()
@@ -288,7 +288,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $this->validate($assetFamily)->shouldReturn([]);
     }
 
-    public function it_returns_an_error_when_a_transformation_is_invalid()
+    public function it_returns_errors_when_a_transformation_is_invalid()
     {
         $assetFamily = [
             'code' => 'starck',
@@ -307,10 +307,10 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($assetFamily);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(5);
     }
 
-    public function it_returns_an_error_when_a_transformation_has_additional_properties()
+    public function it_returns_errors_when_a_transformation_has_additional_properties()
     {
         $assetFamily = [
             'code' => 'starck',
@@ -330,7 +330,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($assetFamily);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(3);
     }
 
     public function it_does_not_return_any_error_when_naming_convention_is_empty()
@@ -343,7 +343,7 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $this->validate($assetFamily)->shouldReturn([]);
     }
 
-    public function it_returns_an_error_when_naming_convention_is_invalid()
+    public function it_returns_errors_when_naming_convention_is_invalid()
     {
         $assetFamily = [
             'code' => 'starck',
@@ -357,10 +357,10 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($assetFamily);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(3);
     }
 
-    public function it_returns_an_error_when_naming_convention_has_additional_properties()
+    public function it_returns_errors_when_naming_convention_has_additional_properties()
     {
         $assetFamily = [
             'code' => 'starck',
@@ -375,6 +375,6 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($assetFamily);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 }
