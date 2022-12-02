@@ -304,6 +304,8 @@ test('it displays a placeholder when uuid target is clicked', async () => {
 
     expect(await screen.findByText('akeneo_catalogs.product_mapping.source.uuid_placeholder.text')).toBeInTheDocument();
     expect(await screen.findByText('akeneo_catalogs.product_mapping.source.uuid_placeholder.link')).toBeInTheDocument();
+    expect(await screen.queryByText('akeneo_catalogs.product_mapping.source.title')).not.toBeInTheDocument();
+    expect(await screen.queryByText('akeneo_catalogs.product_mapping.source.select_source.search')).not.toBeInTheDocument();
     assertChannelSourceParameterIsNotDisplayed();
     assertLocaleSourceParameterIsNotDisplayed();
 });
