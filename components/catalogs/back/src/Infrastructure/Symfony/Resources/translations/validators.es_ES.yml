@@ -41,9 +41,6 @@ akeneo_catalogs:
         channel:
           not_empty: 'Este canal debe estar vacío.'
           empty: 'Este canal no debe estar vacío.'
-          unknown: 'Este canal ha sido desactivado. Compruebe la configuración de su canal o elimine esta fuente.'
         locale:
           not_empty: 'Esta configuración regional debe estar vacía.'
           empty: 'Esta configuración regional no debe estar vacía.'
-          unknown: 'Esta configuración regional no existe.'
-          disabled: 'Esta configuración regional está desactivada para este canal. Compruebe la configuración de su canal o elimine esta fuente.'
