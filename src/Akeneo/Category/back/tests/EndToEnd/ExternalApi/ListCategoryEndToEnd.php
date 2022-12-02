@@ -137,7 +137,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    public function testListCategoriesWithCount(): void
+    public function testListCategoriesWithCountLegacy(): void
     {
         $categories = $this->getStandardizedCategories(false, false);
         $client = $this->createAuthenticatedClient();
@@ -203,6 +203,41 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
+    public function testListCategoriesWithCount(): void
+    {
+        $this->enableEnrichedCategoryFeature();
+        $categories = $this->getStandardizedCategories(false, false);
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/categories?with_count=true');
+
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_enriched_attributes=false&with_count=true',
+                ],
+                'first' => [
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_enriched_attributes=false&with_count=true',
+                ],
+            ],
+            'current_page' => 1,
+            'items_count' => 7,
+            '_embedded' => [
+                'items' => [
+                    $categories['master'],
+                    $categories['categoryA'],
+                    $categories['categoryA1'],
+                    $categories['categoryA2'],
+                    $categories['categoryB'],
+                    $categories['categoryC'],
+                    $categories['master_china'],
+                ],
+            ],
+        ];
+
+        $this->assertSameResponse($expected, $client->getResponse());
+    }
+
     public function testOutOfRangeListCategories(): void
     {
         $client = $this->createAuthenticatedClient();
@@ -233,7 +268,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
-    public function testListCategoriesWithPosition(): void
+    public function testListCategoriesWithPositionLegacy(): void
     {
         $categories = $this->getStandardizedCategories(true, false);
         $client = $this->createAuthenticatedClient();
@@ -247,6 +282,40 @@ JSON;
                 ],
                 'first' => [
                     'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true',
+                ],
+            ],
+            'current_page' => 1,
+            '_embedded' => [
+                'items' => [
+                    $categories['master'],
+                    $categories['categoryA'],
+                    $categories['categoryA1'],
+                    $categories['categoryA2'],
+                    $categories['categoryB'],
+                    $categories['categoryC'],
+                    $categories['master_china'],
+                ],
+            ],
+        ];
+
+        $this->assertSameResponse($expected, $client->getResponse());
+    }
+
+    public function testListCategoriesWithPosition(): void
+    {
+        $this->enableEnrichedCategoryFeature();
+        $categories = $this->getStandardizedCategories(true, false);
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/categories?with_position=true');
+
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=false&with_position=true',
+                ],
+                'first' => [
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=false&with_position=true',
                 ],
             ],
             'current_page' => 1,
