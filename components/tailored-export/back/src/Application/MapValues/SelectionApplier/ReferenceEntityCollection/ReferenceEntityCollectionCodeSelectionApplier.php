@@ -32,7 +32,7 @@ class ReferenceEntityCollectionCodeSelectionApplier implements SelectionApplierI
 
         $optionsCodes = $value->getRecordCodes();
         $selectedData = array_map(
-            static fn ($recordCode) => $value->hasMappedValue($recordCode) ? $value->getMappedValue($recordCode) : $recordCode,
+            static fn (string $recordCode) => $value->hasMappedValue($recordCode) ? $value->getMappedValue($recordCode) : $recordCode,
             $optionsCodes,
         );
 

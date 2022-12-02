@@ -17,12 +17,14 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOper
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsAttributeValue;
 use PHPUnit\Framework\Assert;
 
 final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
@@ -62,6 +64,18 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
                 'selection' => new ReferenceEntityCollectionLabelSelection(',', 'en_US', 'color'),
                 'value' => new ReferenceEntityCollectionValue(['blue', 'reference_entity_without_label']),
                 'expected' => [self::TARGET_NAME => 'Blue,[reference_entity_without_label]']
+            ],
+            'it selects the records "description" text attribute' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionTextAttributeSelection(';', 'color', 'description', 'ecommerce', 'de_DE'),
+                'value' => new ReferenceEntityCollectionValue(['blue', 'red', 'green']),
+                'expected' => [self::TARGET_NAME => 'Blau;;Grun'],
+            ],
+            'it selects the records "name" text attribute' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionTextAttributeSelection(';', 'color', 'name', null, null),
+                'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'green']),
+                'expected' => [self::TARGET_NAME => 'Red name;Blue name;Green name'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
@@ -107,5 +121,14 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
         /** @var InMemoryFindRecordLabels $findRecordLabels */
         $findRecordLabels = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
         $findRecordLabels->addRecordLabel('color', 'blue', 'en_US', 'Blue');
+
+        /** @var InMemoryFindRecordsAttributeValue $findRecordsAttributeValue */
+        $findRecordsAttributeValue = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface');
+        $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'description', 'Blau', 'ecommerce', 'de_DE');
+        $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'name', 'Blue name');
+        $findRecordsAttributeValue->addAttributeValue('color', 'red', 'description', 'Rot', 'ecommerce', 'fr_FR');
+        $findRecordsAttributeValue->addAttributeValue('color', 'red', 'name', 'Red name');
+        $findRecordsAttributeValue->addAttributeValue('color', 'green', 'description', 'Grun', 'ecommerce', 'de_DE');
+        $findRecordsAttributeValue->addAttributeValue('color', 'green', 'name', 'Green name');
     }
 }

@@ -47,8 +47,10 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityTextAttributeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Scalar\ScalarSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
@@ -262,7 +264,25 @@ class SelectionHydrator
                 $selectionConfiguration['locale'],
                 $attribute->properties()['reference_data_name'],
             ),
+            ReferenceEntityCollectionAttributeSelectionInterface::TYPE => $this->createReferenceEntityCollectionAttributeSelection(
+                $selectionConfiguration,
+                $attribute->properties()['reference_data_name'],
+            ),
             default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
+    }
+
+    private function createReferenceEntityCollectionAttributeSelection(array $selectionConfiguration, string $referenceEntityCode): SelectionInterface
+    {
+        return match ($selectionConfiguration['attribute_type']) {
+            ReferenceEntityCollectionTextAttributeSelection::TYPE => new ReferenceEntityCollectionTextAttributeSelection(
+                $selectionConfiguration['separator'],
+                $referenceEntityCode,
+                $selectionConfiguration['attribute_identifier'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Reference Entity Collection attribute', $selectionConfiguration['attribute_type'])),
         };
     }
 
