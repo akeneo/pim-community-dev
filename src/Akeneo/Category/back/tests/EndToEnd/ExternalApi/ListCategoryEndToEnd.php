@@ -271,7 +271,7 @@ JSON;
      *
      * @throws \JsonException
      */
-    public function testListCategoriesWithValues(): void
+    public function  testListCategoriesWithValues(): void
     {
         $this->enableEnrichedCategoryFeature();
         $this->updateCategoryWithValues('master');
@@ -284,10 +284,10 @@ JSON;
         $expected = [
             '_links' => [
                 'self' => [
-                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D',
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D',
                 ],
                 'first' => [
-                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%5B%22master%22%5D',
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_enriched_attributes=true&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D',
                 ],
             ],
             'current_page' => 1,
