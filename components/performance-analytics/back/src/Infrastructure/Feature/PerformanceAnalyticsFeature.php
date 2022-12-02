@@ -23,12 +23,12 @@ final class PerformanceAnalyticsFeature implements FeatureFlag
 {
     public function __construct(
         private FeatureFlag $onlySerenityFeature,
-        private mixed $performanceAnalyticsEnabledEnvVar
+        private mixed $featureEnabledEnvVar
     ) {
     }
 
     public function isEnabled(): bool
     {
-        return $this->onlySerenityFeature->isEnabled() && \boolval($this->performanceAnalyticsEnabledEnvVar);
+        return $this->onlySerenityFeature->isEnabled() && (bool) $this->featureEnabledEnvVar;
     }
 }
