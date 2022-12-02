@@ -271,7 +271,7 @@ JSON;
      *
      * @throws \JsonException
      */
-    public function  testListCategoriesWithValues(): void
+    public function testListCategoriesWithValues(): void
     {
         $this->enableEnrichedCategoryFeature();
         $this->updateCategoryWithValues('master');
