@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Breadcrumb, useDebounce} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
@@ -8,15 +8,11 @@ import {useHistory} from 'react-router';
 
 const ListProductFiles = () => {
     const translate = useTranslate();
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue);
-    const [productFiles, totalProductFiles, totalSearchResults] = useProductFiles(page, debouncedSearchValue);
+    const [productFiles, totalProductFiles, totalSearchResults] = useProductFiles(page, debouncedSearchValue, setPage);
     const history = useHistory();
-
-    useEffect(() => {
-        0 < totalProductFiles && setPage(1);
-    }, [totalProductFiles]);
 
     return (
         <>

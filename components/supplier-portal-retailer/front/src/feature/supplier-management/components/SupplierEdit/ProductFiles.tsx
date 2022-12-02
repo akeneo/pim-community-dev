@@ -9,7 +9,7 @@ type Props = {
 };
 
 const ProductFiles = ({supplierIdentifier}: Props) => {
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue);
     const [productFiles, totalProductFiles] = useProductFiles(supplierIdentifier, page, debouncedSearchValue);
