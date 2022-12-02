@@ -9,6 +9,7 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 use Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator;
+use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
@@ -189,16 +190,17 @@ class SearchFiltersSqlSpec extends ObjectBehavior
 
         $searchFiltersValidator->validate(Argument::any())->shouldBeCalledOnce();
 
-        $params = [
-            'code_0' => "master,category1",
-        ];
-        $types = [
-            'code_0' => \PDO::PARAM_STR,
-        ];
         $expected = new ExternalApiSqlParameters(
             sqlWhere: 'category.code IN (:code_0)',
-            params: $params,
-            types: $types,
+            params: [
+                'code_0' => [
+                    "master",
+                    "category1",
+                ]
+            ],
+            types: [
+                'code_0' => Connection::PARAM_STR_ARRAY,
+            ],
             limitAndOffset: null,
         );
         $this->build($searchFilters)->shouldBeLike($expected);
