@@ -88,6 +88,7 @@ supplier_portal:
         supplier: Dostawca
         status: Status
         download: Ikona pobierania
+        filename: Nazwa pliku
       notification:
         error_loading_supplier_files:
           title: Nie można wyświetlić plików produktowych.
@@ -105,12 +106,34 @@ supplier_portal:
         empty_content: Komentarz nie powinien być pusty.
         max_comment_length_reached: Komentarz może składać się z maksymalnie 255 znaków.
         max_number_of_comments_reached: Osiągnięto limit komentarzy.
+        product_file_does_not_exist_anymore: Przepraszamy, ten plik produktowy został usunięty automatycznie po 90 dniach i nie można już uzyskać do niego dostępu.
+      product_files_modal:
+        title: Plik produktowy
+        subtitle: Wybierz dopasowany profil importu
+        import_field_label: Import
+        select_import_placeholder: Wybierz dopasowany import
+        import_button_label: Importuj teraz
+        error_loading_product_import_profiles:
+          title: Nie możemy wyświetlić dopasowanych profili importu.
+          content: Przepraszamy za utrudnienia, spróbuj ponownie za chwilę.
+        error_launching_product_import:
+          missing_file: Ten plik już nie istnieje.
+          unknown_error:
+            title: Po naszej stronie wystąpił nieoczekiwany błąd.
+            content: Spróbuj ponownie później
+      import:
+        status:
+          to_import: aby zaimportować
+          in_progress: w toku
+          completed: ukończono
+          failed: niepowodzenie
     pim_notification:
       button_label: Zobacz pliki produktowe
 pim_title:
   supplier_portal_retailer_supplier_list: Dostawcy
   supplier_portal_retailer_supplier_edit: Edytuj dostawcę
   supplier_portal_retailer_product_files_list: Pliki produktowe
+  supplier_portal_retailer_product_files_show: Plik produktowy
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import dostawców do Portalu dostawcy w formacie XLSX
 pim_notification:
   supplier_portal:
