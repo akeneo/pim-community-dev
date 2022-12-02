@@ -47,7 +47,7 @@ class ReferenceEntityCollectionTextAttributeSelectionApplier implements Selectio
                 return $value->getMappedValue($recordCode);
             }
 
-            return $recordValues[$recordCode] ?? sprintf('', $recordCode);
+            return (string) ($recordValues[$recordCode] ?? '');
         }, $recordCodes);
 
         return implode($selection->getSeparator(), $selectedData);
