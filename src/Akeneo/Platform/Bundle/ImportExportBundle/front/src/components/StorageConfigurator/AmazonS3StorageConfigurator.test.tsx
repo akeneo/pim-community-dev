@@ -11,11 +11,6 @@ beforeEach(() => {
 
 const mockFetch = jest.fn().mockImplementation(async (route: string) => {
   switch (route) {
-    case 'pimee_job_automation_get_public_key':
-      return {
-        ok: true,
-        json: async () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
-      };
     case 'pimee_job_automation_get_storage_connection_check':
       return {
         ok: true,
