@@ -9,7 +9,7 @@ final class ProductFiles
     public function __construct(
         public array $productFiles,
         public int $totalProductFilesCount,
-        public int $totalSearchResultsCount
+        public int $totalSearchResultsCount,
     ) {
     }
 }
