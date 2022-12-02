@@ -16,6 +16,7 @@ const backendResponse = {
 };
 
 test('it loads the suppliers', async () => {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: true,
         json: async () => backendResponse,
@@ -32,6 +33,7 @@ test('it loads the suppliers', async () => {
 });
 
 test('it renders an error notification if the loading of the suppliers failed', async () => {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: false,
     }));

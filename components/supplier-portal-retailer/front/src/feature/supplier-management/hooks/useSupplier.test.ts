@@ -88,6 +88,7 @@ test('it renders an error notification if the saving of the supplier failed', as
 
     //Loading => OK
     //Saving = KO
+    // @ts-ignore
     global.fetch = jest
         .fn()
         .mockImplementationOnce(async () => ({
@@ -123,6 +124,7 @@ test('it renders an error notification if the saving of the supplier failed', as
 });
 
 test('it renders an error notification if the loading of the supplier failed', async () => {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: false,
     }));
@@ -140,6 +142,7 @@ test('it renders an error notification if the loading of the supplier failed', a
 });
 
 function mockSuccessfulBackendResponse() {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: true,
         json: async () => backendResponse,
