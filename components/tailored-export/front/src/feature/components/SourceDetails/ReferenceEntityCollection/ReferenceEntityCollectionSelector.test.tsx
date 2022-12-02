@@ -2,8 +2,8 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {ReferenceEntitySelector} from '../ReferenceEntity/ReferenceEntitySelector';
 import {renderWithProviders} from 'feature/tests';
+import {ReferenceEntityCollectionSelector} from './ReferenceEntityCollectionSelector';
 
 jest.mock('../../../hooks/useReferenceEntityAttributes');
 
@@ -11,9 +11,9 @@ test('it can change the selection type to "attribute"', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <ReferenceEntitySelector
+    <ReferenceEntityCollectionSelector
       referenceEntityCode="designer"
-      selection={{type: 'code'}}
+      selection={{type: 'code', separator: ','}}
       validationErrors={[]}
       onSelectionChange={onSelectionChange}
     />
@@ -24,6 +24,7 @@ test('it can change the selection type to "attribute"', async () => {
 
   expect(onSelectionChange).toHaveBeenCalledWith({
     type: 'attribute',
+    separator: ',',
     attribute_identifier: 'name_1234',
     attribute_type: 'text',
     reference_entity_code: 'designer',
@@ -36,10 +37,11 @@ test('it can change the selection type to "code"', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <ReferenceEntitySelector
+    <ReferenceEntityCollectionSelector
       referenceEntityCode="designer"
       selection={{
         type: 'attribute',
+        separator: ';',
         attribute_identifier: 'name_1234',
         attribute_type: 'text',
         reference_entity_code: 'designer',
@@ -56,6 +58,35 @@ test('it can change the selection type to "code"', async () => {
 
   expect(onSelectionChange).toHaveBeenCalledWith({
     type: 'code',
+    separator: ';',
+  });
+});
+
+test('it can change the collection separator', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <ReferenceEntityCollectionSelector
+      referenceEntityCode="designer"
+      selection={{
+        type: 'code',
+        separator: ';',
+      }}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
+  );
+  userEvent.click(
+    screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.collection_separator.pipe')
+  );
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'code',
+    separator: '|',
   });
 });
 
@@ -68,16 +99,24 @@ test('it displays validation errors', async () => {
       parameters: {},
       propertyPath: '[type]',
     },
+    {
+      messageTemplate: 'error.key.separator',
+      invalidValue: '',
+      message: 'this is a separator error',
+      parameters: {},
+      propertyPath: '[separator]',
+    },
   ];
 
   await renderWithProviders(
-    <ReferenceEntitySelector
+    <ReferenceEntityCollectionSelector
       referenceEntityCode="designer"
-      selection={{type: 'code'}}
+      selection={{type: 'code', separator: ','}}
       validationErrors={validationErrors}
       onSelectionChange={jest.fn()}
     />
   );
 
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
+  expect(screen.getByText('error.key.separator')).toBeInTheDocument();
 });
