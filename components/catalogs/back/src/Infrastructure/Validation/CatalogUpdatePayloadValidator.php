@@ -34,25 +34,19 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
      */
     private function getConstraints(CatalogUpdatePayload $constraint): array
     {
-        $fields = [
-            'enabled' => new Assert\Required([
-                new Assert\Type('boolean'),
-            ]),
-            'product_selection_criteria' => new CatalogUpdateProductSelectionCriteriaPayload(),
-            'product_value_filters' => new CatalogUpdateProductValueFiltersPayload(),
-            'product_mapping' => [],
-        ];
-
-        if (null !== $constraint->productMappingSchemaFile) {
-            $fields['product_mapping'] = new CatalogUpdateProductMappingPayload($constraint->productMappingSchemaFile);
-        }
-
         return [
             new Assert\Collection([
-                'fields' => $fields,
+                'fields' => [
+                    'enabled' => new Assert\Required([
+                        new Assert\Type('boolean'),
+                    ]),
+                    'product_selection_criteria' => new CatalogUpdateProductSelectionCriteriaPayload(),
+                    'product_value_filters' => new CatalogUpdateProductValueFiltersPayload(),
+                ],
                 'allowMissingFields' => false,
-                'allowExtraFields' => false,
+                'allowExtraFields' => true,
             ]),
+            new CatalogUpdateProductMappingPayload(),
         ];
     }
 }

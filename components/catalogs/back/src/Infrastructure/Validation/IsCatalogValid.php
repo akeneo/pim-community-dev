@@ -28,11 +28,10 @@ final class IsCatalogValid implements IsCatalogValidInterface
                 'product_selection_criteria' => $catalog->getProductSelectionCriteria(),
                 'product_value_filters' => $catalog->getProductValueFilters(),
                 'product_mapping' => $catalog->getProductMapping(),
+                'product_mapping_schema_file' => [] === $catalog->getProductMapping() ? null : \sprintf('%s_product.json', $catalog->getId()),
             ],
             [
-                new CatalogUpdatePayload(
-                    productMappingSchemaFile: [] === $catalog->getProductMapping() ? null : \sprintf('%s_product.json', $catalog->getId())
-                ),
+                new CatalogUpdatePayload(),
             ]
         );
 
