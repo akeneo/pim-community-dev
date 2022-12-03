@@ -116,6 +116,8 @@ akeneo_connectivity.connection:
         flash:
           error: Pahoittelut, tapahtui virhe haettaessa yhdistettyjä sovelluksia.
       edit:
+        header:
+          open_app: Avaa sovellus
         not_found: Sovellusta ei löydy
         tabs:
           settings: Asetukset

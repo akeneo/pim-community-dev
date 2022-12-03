@@ -146,6 +146,8 @@ akeneo_connectivity.connection:
         flash:
           error: Spiacenti, si è verificato un errore durante il recupero dell'elenco delle app connesse.
       edit:
+        header:
+          open_app: Apri app
         not_found: App non trovata
         tabs:
           settings: Impostazioni
