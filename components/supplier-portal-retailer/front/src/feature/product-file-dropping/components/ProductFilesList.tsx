@@ -1,11 +1,23 @@
 import React from 'react';
-import {DownloadIcon, getColor, IconButton, Pagination, Pill, Search, Table} from 'akeneo-design-system';
+import {
+    DownloadIcon,
+    Dropdown,
+    getColor,
+    IconButton,
+    Pagination,
+    Pill,
+    Search,
+    SwitcherButton,
+    Table,
+    useBooleanState,
+} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptyProductFilesList} from './EmptyProductFilesList';
 import {ProductFileRow} from '../models/ProductFileRow';
 import {useHistory} from 'react-router';
 import {ProductFileImportStatus} from './ProductFileImportStatus';
+import {ImportStatus} from '../models/ImportStatus';
 
 export const PRODUCT_FILES_PER_PAGE = 25;
 
@@ -16,6 +28,8 @@ type Props = {
     onChangePage: (pageNumber: number) => void;
     searchValue: string;
     onSearch: (searchValue: string) => void;
+    importStatusValue: null | string;
+    handleImportStatusChange: (importStatusValue: null | string) => void;
     displaySupplierColumn?: boolean;
 };
 
@@ -26,15 +40,23 @@ const ProductFilesList = ({
     onChangePage,
     searchValue,
     onSearch,
+    importStatusValue,
+    handleImportStatusChange,
     displaySupplierColumn = true,
 }: Props) => {
     const translate = useTranslate();
     const history = useHistory();
     const dateFormatter = useDateFormatter();
     const router = useRouter();
+    const [isDropdownOpen, open, close] = useBooleanState();
 
     const goToProductFile = (productFileIdentifier: string) => {
         history.push(`/product-file/${productFileIdentifier}`);
+    };
+
+    const handleChange = (importStatus: null | string) => {
+        handleImportStatusChange(importStatus);
+        close();
     };
 
     return (
@@ -48,10 +70,39 @@ const ProductFilesList = ({
                     'supplier_portal.product_file_dropping.supplier_files.search.results_number',
                     {count: totalSearchResults},
                     totalSearchResults
-                )}
+                )}{' '}
+                |
+                <Dropdown>
+                    <SwitcherButton
+                        label={translate('supplier_portal.product_file_dropping.supplier_files.status.label')}
+                        onClick={open}
+                    >
+                        {translate(
+                            null === importStatusValue
+                                ? `supplier_portal.product_file_dropping.supplier_files.status.all`
+                                : `supplier_portal.product_file_dropping.supplier_files.status.${importStatusValue}`
+                        )}
+                    </SwitcherButton>
+                    {isDropdownOpen && (
+                        <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                            <Dropdown.ItemCollection>
+                                <Dropdown.Item key="all" onClick={() => handleChange(null)}>
+                                    {translate('supplier_portal.product_file_dropping.supplier_files.status.all')}
+                                </Dropdown.Item>
+                                {Object.values(ImportStatus).map(importStatus => (
+                                    <Dropdown.Item key={importStatus} onClick={() => handleChange(importStatus)}>
+                                        {translate(
+                                            `supplier_portal.product_file_dropping.supplier_files.status.${importStatus}`
+                                        )}
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown.ItemCollection>
+                        </Dropdown.Overlay>
+                    )}
+                </Dropdown>
             </StyledSearch>
 
-            {(0 < productFiles.length || '' !== searchValue) && (
+            {(0 < productFiles.length || '' !== searchValue || null !== importStatusValue) && (
                 <>
                     {0 < productFiles.length && (
                         <Pagination
@@ -66,7 +117,7 @@ const ProductFilesList = ({
                         />
                     )}
 
-                    {0 === productFiles.length && '' !== searchValue && (
+                    {0 === productFiles.length && (
                         <EmptyProductFilesList message="supplier_portal.product_file_dropping.supplier_files.search.no_results" />
                     )}
 

@@ -63,6 +63,8 @@ test('it renders a list of product files', () => {
             onChangePage={() => {}}
             searchValue={''}
             onSearch={jest.fn}
+            importStatusValue={null}
+            handleImportStatusChange={jest.fn}
         />
     );
     expect(screen.queryAllByText('mega supplier').length).toBe(5);
@@ -98,6 +100,8 @@ test('it renders a paginated list of product files', async () => {
             onChangePage={changePageCallback}
             searchValue={''}
             onSearch={jest.fn}
+            importStatusValue={null}
+            handleImportStatusChange={jest.fn}
         />
     );
     expect(screen.queryAllByText('mega supplier').length).toBe(25);
@@ -119,6 +123,8 @@ test('it renders a list of product files with supplier column', () => {
             onChangePage={() => {}}
             searchValue={''}
             onSearch={jest.fn}
+            importStatusValue={null}
+            handleImportStatusChange={jest.fn}
         />
     );
     expect(
@@ -136,6 +142,8 @@ test('it renders a list of product files without supplier column', () => {
             displaySupplierColumn={false}
             searchValue={''}
             onSearch={jest.fn}
+            importStatusValue={null}
+            handleImportStatusChange={jest.fn}
         />
     );
     expect(
@@ -152,6 +160,8 @@ test('it renders a list of product files with pills if there is unread comments 
             onChangePage={() => {}}
             searchValue={''}
             onSearch={jest.fn}
+            importStatusValue={null}
+            handleImportStatusChange={jest.fn}
         />
     );
     expect(screen.queryByTestId('unread-comments-pill')).toBeInTheDocument();
@@ -167,6 +177,8 @@ test('it calls the callback when a user search for product files', () => {
             onChangePage={() => {}}
             searchValue={''}
             onSearch={onSearchCallback}
+            importStatusValue={null}
+            handleImportStatusChange={jest.fn}
         />
     );
 
@@ -178,4 +190,29 @@ test('it calls the callback when a user search for product files', () => {
     userEvent.type(searchField, 'file');
 
     expect(onSearchCallback).toHaveBeenCalledTimes(4);
+});
+
+test('it calls the callback when a user filter product files on status', () => {
+    const handleImportStatusChange = jest.fn();
+    renderWithProviders(
+        <ProductFilesList
+            productFiles={productFilesList}
+            totalSearchResults={5}
+            currentPage={1}
+            onChangePage={() => {}}
+            searchValue={''}
+            onSearch={jest.fn}
+            importStatusValue={null}
+            handleImportStatusChange={handleImportStatusChange}
+        />
+    );
+
+    const importStatusFilter = screen.getByText('supplier_portal.product_file_dropping.supplier_files.status.all');
+    expect(importStatusFilter).toBeInTheDocument();
+    userEvent.click(importStatusFilter);
+
+    const toImportFilter = screen.getByText('supplier_portal.product_file_dropping.supplier_files.status.to_import');
+    userEvent.click(toImportFilter);
+
+    expect(handleImportStatusChange).toHaveBeenCalledTimes(1);
 });

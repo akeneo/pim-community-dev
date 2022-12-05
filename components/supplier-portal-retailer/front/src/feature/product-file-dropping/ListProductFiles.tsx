@@ -10,8 +10,14 @@ const ListProductFiles = () => {
     const translate = useTranslate();
     const [page, setPage] = useState<number>(1);
     const [searchValue, setSearchValue] = useState('');
+    const [importStatusValue, setImportStatusValue] = useState<null | string>(null);
     const debouncedSearchValue = useDebounce(searchValue);
-    const [productFiles, totalProductFiles, totalSearchResults] = useProductFiles(page, debouncedSearchValue, setPage);
+    const [productFiles, totalProductFiles, totalSearchResults] = useProductFiles(
+      page,
+      debouncedSearchValue,
+      setPage,
+      importStatusValue
+    );
     const history = useHistory();
 
     return (
@@ -52,6 +58,8 @@ const ListProductFiles = () => {
                         onChangePage={setPage}
                         searchValue={searchValue}
                         onSearch={setSearchValue}
+                        importStatusValue={importStatusValue}
+                        handleImportStatusChange={setImportStatusValue}
                     />
                 )}
             </StyledPageContent>

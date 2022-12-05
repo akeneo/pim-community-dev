@@ -12,7 +12,13 @@ const ProductFiles = ({supplierIdentifier}: Props) => {
     const [page, setPage] = useState<number>(1);
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue);
-    const [productFiles, totalProductFiles] = useProductFiles(supplierIdentifier, page, debouncedSearchValue);
+    const [importStatusValue, setImportStatusValue] = useState<null | string>(null);
+    const [productFiles, totalProductFiles] = useProductFiles(
+        supplierIdentifier,
+        page,
+        debouncedSearchValue,
+        importStatusValue
+    );
 
     useEffect(() => {
         0 < totalProductFiles && setPage(1);
@@ -20,7 +26,7 @@ const ProductFiles = ({supplierIdentifier}: Props) => {
 
     return (
         <Container>
-            {0 === totalProductFiles && '' === searchValue ? (
+            {0 === totalProductFiles && '' === searchValue && null === importStatusValue ? (
                 <EmptyProductFilesList message="supplier_portal.product_file_dropping.supplier_files.no_files" />
             ) : (
                 <ProductFilesList
@@ -30,6 +36,8 @@ const ProductFiles = ({supplierIdentifier}: Props) => {
                     onChangePage={setPage}
                     searchValue={searchValue}
                     onSearch={setSearchValue}
+                    importStatusValue={importStatusValue}
+                    handleImportStatusChange={setImportStatusValue}
                     displaySupplierColumn={false}
                 />
             )}
