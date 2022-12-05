@@ -55,7 +55,7 @@ class Category
             templateUuid: isset($category['template_uuid']) ? TemplateUuid::fromString($category['template_uuid']) : null,
             labels: LabelCollection::fromArray($translations),
             parentId: $category['parent_id'] ? new CategoryId((int) $category['parent_id']) : null,
-            parentCode: $category['parent_code'] ? new Code($category['parent_code']) : null,
+            parentCode: isset($category['parent_code']) ? new Code($category['parent_code']) : null,
             rootId: $category['root_id'] ? new CategoryId((int) $category['root_id']) : null,
             updated: $category['updated'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $category['updated']) : null,
             attributes: $category['value_collection'] ?
