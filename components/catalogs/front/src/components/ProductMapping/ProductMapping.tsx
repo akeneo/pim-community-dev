@@ -132,6 +132,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                     targetLabel={selectedTargetLabel}
                     source={selectedSource}
                     onChange={handleSourceUpdate}
+                    errors={selectedTarget === null ? null : errors[selectedTarget]}
                 ></SourcePanel>
             </SourceContainer>
         </MappingContainer>

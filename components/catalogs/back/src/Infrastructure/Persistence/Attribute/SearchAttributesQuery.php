@@ -20,8 +20,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
     }
 
     /**
-     * @param array<string> $types
-     * @return array<array{code: string, label: string, type: string, scopable: bool, localizable: bool, measurement_family?: string, default_measurement_unit?: string}>
+     * @inheritDoc
      */
     public function execute(?string $search = null, int $page = 1, int $limit = 20, array $types = []): array
     {
@@ -44,6 +43,8 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
                     'type' => $attribute->getType(),
                     'scopable' => $attribute->isScopable(),
                     'localizable' => $attribute->isLocalizable(),
+                    'attribute_group_code' => $attribute->getGroup()->getCode(),
+                    'attribute_group_label' => $attribute->getGroup()->getLabel(),
                 ];
 
                 if ('pim_catalog_metric' === $attribute->getType()) {

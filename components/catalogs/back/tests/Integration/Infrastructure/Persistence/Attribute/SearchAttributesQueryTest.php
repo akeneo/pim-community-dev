@@ -23,6 +23,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
+        $this->loadAttributeGroups();
+
         $this->query = self::getContainer()->get(SearchAttributesQuery::class);
     }
 
@@ -49,18 +51,13 @@ class SearchAttributesQueryTest extends IntegrationTestCase
 
         $this->assertEquals([
             [
-                'code' => 'sku',
-                'label' => '[sku]',
-                'type' => 'pim_catalog_identifier',
-                'scopable' => false,
-                'localizable' => false,
-            ],
-            [
                 'code' => 'name',
                 'label' => '[name]',
                 'type' => 'pim_catalog_text',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'marketing',
+                'attribute_group_label' => '[marketing]',
             ],
             [
                 'code' => 'description',
@@ -68,6 +65,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_textarea',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'marketing',
+                'attribute_group_label' => '[marketing]',
             ],
             [
                 'code' => 'materials',
@@ -75,6 +74,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_multiselect',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'marketing',
+                'attribute_group_label' => '[marketing]',
             ],
             [
                 'code' => 'clothing_size',
@@ -82,6 +83,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_simpleselect',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'marketing',
+                'attribute_group_label' => '[marketing]',
             ],
             [
                 'code' => 'number_battery_cells',
@@ -89,6 +92,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_number',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'technical',
+                'attribute_group_label' => '[technical]',
             ],
             [
                 'code' => 'certified',
@@ -96,6 +101,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_boolean',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'technical',
+                'attribute_group_label' => '[technical]',
             ],
             [
                 'code' => 'released_at',
@@ -103,6 +110,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_date',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'technical',
+                'attribute_group_label' => '[technical]',
             ],
             [
                 'code' => 'weight',
@@ -112,6 +121,17 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
                 'measurement_family' => 'Weight',
                 'default_measurement_unit' => 'KILOGRAM',
+                'attribute_group_code' => 'technical',
+                'attribute_group_label' => '[technical]',
+            ],
+            [
+                'code' => 'sku',
+                'label' => '[sku]',
+                'type' => 'pim_catalog_identifier',
+                'scopable' => false,
+                'localizable' => false,
+                'attribute_group_code' => 'other',
+                'attribute_group_label' => '[other]',
             ],
         ], $result);
     }
@@ -125,6 +145,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'description',
             'type' => 'pim_catalog_text',
+            'group' => 'marketing',
         ]);
 
         $result = $this->query->execute('desc');
@@ -136,6 +157,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_text',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'marketing',
+                'attribute_group_label' => '[marketing]',
             ]
         ], $result);
     }
@@ -153,6 +176,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_text',
                 'scopable' => false,
                 'localizable' => false,
+                'attribute_group_code' => 'marketing',
+                'attribute_group_label' => '[marketing]',
             ],
             [
                 'code' => 'clothing_size',
@@ -160,8 +185,17 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_simpleselect',
                 'scopable' => false,
                 'localizable' => false,
-            ],
+                'attribute_group_code' => 'marketing',
+                'attribute_group_label' => '[marketing]',
+        ],
         ], $result);
+    }
+
+    private function loadAttributeGroups(): void
+    {
+        // there is already an attribute "other" (sort order 0) in the minimal catalog
+        $this->createAttributeGroup(['sort_order' => 1, 'code' => 'marketing']);
+        $this->createAttributeGroup(['sort_order' => 2, 'code' => 'technical']);
     }
 
     private function loadAttributes(): void
@@ -171,48 +205,59 @@ class SearchAttributesQueryTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_text',
+            'group' => 'marketing',
         ]);
         $this->createAttribute([
             'code' => 'description',
             'type' => 'pim_catalog_textarea',
+            'group' => 'marketing',
         ]);
         $this->createAttribute([
             'code' => 'materials',
             'type' => 'pim_catalog_multiselect',
+            'group' => 'marketing',
         ]);
         $this->createAttribute([
             'code' => 'clothing_size',
             'type' => 'pim_catalog_simpleselect',
+            'group' => 'marketing',
         ]);
         $this->createAttribute([
             'code' => 'price',
             'type' => 'pim_catalog_price_collection',
+            'group' => 'other',
         ]);
         $this->createAttribute([
             'code' => 'number_battery_cells',
             'type' => 'pim_catalog_number',
+            'group' => 'technical',
         ]);
         $this->createAttribute([
             'code' => 'certified',
             'type' => 'pim_catalog_boolean',
+            'group' => 'technical',
         ]);
         $this->createAttribute([
             'code' => 'released_at',
             'type' => 'pim_catalog_date',
+            'group' => 'technical',
         ]);
         $this->createAttribute([
             'code' => 'notice',
             'type' => 'pim_catalog_file',
+            'group' => 'technical'
         ]);
         $this->createAttribute([
             'code' => 'picture',
             'type' => 'pim_catalog_image',
+            'group' => 'marketing',
         ]);
         $this->createAttribute([
             'code' => 'weight',
             'type' => 'pim_catalog_metric',
             'metric_family' => 'Weight',
             'default_metric_unit' => 'KILOGRAM',
+            'group' => 'technical',
         ]);
     }
 }

@@ -1,9 +1,9 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {PageContent, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {
   AttributesIllustration,
-  CodingIllustration,
   Button,
+  CodingIllustration,
   Helper,
   Information,
   Link,
@@ -18,6 +18,8 @@ import {Styled} from './styles';
 import {Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
+import {GeneratorTab} from '../models/generatorTab';
+import {useStructureTabs} from '../hooks/useStructureTabs';
 
 type ListPageProps = {
   onCreate: () => void;
@@ -28,15 +30,20 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
 
   const history = useHistory();
   const translate = useTranslate();
-
-  const {data: generators = [], isLoading, error: errorOnGenerators} = useGetIdentifierGenerators();
+  const {setCurrentTab} = useStructureTabs();
 
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
   const [generatorToDelete, setGeneratorToDelete] = useState<string>('');
 
   const locale = useUserContext().get('catalogLocale');
+  const {data: generators = [], isLoading, error: errorOnGenerators} = useGetIdentifierGenerators();
   const isCreateDisabled = useMemo(() => generators.length >= 1, [generators]);
   const isGeneratorListEmpty = useMemo(() => generators.length === 0, [generators]);
+
+  useEffect(() => {
+    setCurrentTab(GeneratorTab.GENERAL);
+  }, [setCurrentTab]);
+
   const getCurrentLabel = useCallback(
     (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
     [locale]

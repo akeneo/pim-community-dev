@@ -141,6 +141,9 @@ class Grid extends Index
         'label_or_identifier' => [
             'Pim\Behat\Decorator\Grid\Filter\SearchDecorator',
         ],
+        'label_identifier_or_uuid' => [
+            'Pim\Behat\Decorator\Grid\Filter\SearchDecorator',
+        ],
         'parent' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Grid\Filter\StringDecorator',

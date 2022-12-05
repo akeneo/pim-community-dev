@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEvent
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -58,6 +59,14 @@ class SendBusinessEventToWebhooks extends Command
         } catch (ConnectionException $exception) {
             if ($exception->getPrevious()?->getCode() === self::MYSQL_IS_UNAVAILABLE_ERROR_CODE) {
                 $this->logger->warning('Mysql is unavailable', ['exception' => $exception]);
+
+                return Command::FAILURE;
+            }
+
+            throw $exception;
+        } catch (IndexationException $exception) {
+            if ('No alive nodes found in your cluster' === $exception->getMessage()) {
+                $this->logger->warning('Elastic Search is unavailable', ['exception' => $exception]);
 
                 return Command::FAILURE;
             }

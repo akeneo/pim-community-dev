@@ -27,12 +27,15 @@ akeneo_catalogs:
       channel:
         label: 渠道
         no_matches: 未找到匹配项
+        placeholder: 选择渠道
       locale:
         label: 区域
         no_matches: 未找到匹配项
+        placeholder: 选择区域
       currency:
         label: 货币
         no_matches: 未找到匹配项
+        placeholder: 选择货币
   product_selection:
     empty: 添加选择条件以创建您的产品选择
     more_information: 查看我们的“帮助中心”获取更多信息。
@@ -60,15 +63,18 @@ akeneo_catalogs:
       family:
         label: 品类
         no_matches: 未找到匹配项
+        placeholder: 选择品类
       completeness:
         label: 完成度
       attribute_option:
         no_matches: 未找到匹配项
+        placeholder: 选择选项
       category:
         label: 类别
         remove: 移除类别
         category_tree: 类别树
       measurement:
+        search: 单位
         no_results: 未找到匹配项
       boolean:
         yes: Yes
@@ -101,6 +107,22 @@ akeneo_catalogs:
         label: 筛选器
         option:
           all: 所有
+      table:
+        target: 目录目标
+        source: PIM 源
+        placeholder: 定义内容源
+      placeholder:
+        illustration_title: 没有可用的目录目标
     source:
+      title: 选择源
+      select_source:
+        label: PIM 源
+        search: 搜索条件
+        no_results: 未找到匹配项
+        section_system: 系统
+        section_attributes: 属性
       placeholder:
         title: 选择源
+        illustration_title: 点击右侧面板中的目标来配置您的目录映射。
+        subtitle: 然后您将能够将 PIM 属性与选定的目标匹配。
+        link: 查看我们的“帮助中心”获取更多信息。

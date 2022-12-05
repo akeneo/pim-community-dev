@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: ファイルのロケール
             help: ラベル表示のロケールを定義します
+          with_uuid:
+            title: 商品UUIDあり
+            help: 商品と関連商品のUUIDをエクスポート
+          with_uuid_for_models:
+            title: 商品UUIDあり
+            help: 識別子の代わりに関連商品UUIDをエクスポート
       file_path: ファイルのパス
       storage_form:
         title: ストレージ
@@ -160,11 +166,36 @@ pim_import_export:
           none: ストレージが構成されていません
         file_path:
           label: ファイルパス
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: ホスト
+          placeholder: example.com
+        fingerprint:
+          label: ホストの指紋 (オプション)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: ホストの指紋にはコロン形式表記のSHA-512またはMD5ハッシュ化チェックサムが必要です。
+        port:
+          label: ポート
+          placeholder: 22
+        username:
+          label: ログイン
+          placeholder: ログイン名を入力
+        password:
+          label: パスワード
+          placeholder: パスワードを入力
+        public_key:
+          label: 公開キー
+        login_type:
+          label: 認証方法
+          password: ログインとパスワード
+          private_key: 秘密キー
       validation:
         storage:
           unavailable_type: このストレージは使用できません。{{ available_types }}のみを使用できます。
         file_path:
           unsupported_extension: サポートされていないファイル拡張子
+        fingerprint:
+          invalid_encoding: ホストの指紋は、コロン形式表記の有効なSHA-512またはMD5チェックサムハッシュである必要があります。
       connection_checker:
         label: テスト接続の設定
         exception: 接続を確立できません。設定を確認してください。

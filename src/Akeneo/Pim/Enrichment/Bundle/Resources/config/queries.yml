@@ -439,3 +439,29 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProduct'
         arguments:
             - '@pim_catalog.repository.product'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductUuidsNotSynchronisedBetweenEsAndMysql:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductUuids:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllProductUuids:
+        arguments:
+            - '@database_connection'
+            - 
+    Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllRootProductModelCodes:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductModelCodes:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelCodesNotSynchronisedBetweenEsAndMysql:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@database_connection'

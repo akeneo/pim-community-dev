@@ -4,6 +4,7 @@ akeneo.category:
       category_code:
         wrong_format: カテゴリコードに利用できるのは半角英数字とアンダースコアのみです
         line_feed: カテゴリコードに改行文字を含めることはできません
+      duplicated_value_user_intents: 属性 {{ attributeCode }} の値は複数回更新されています
       value:
         text_too_long: 値は{{count}}文字より長くすることはできません
         textarea_too_long: 値は{{count}}文字より長くすることはできません

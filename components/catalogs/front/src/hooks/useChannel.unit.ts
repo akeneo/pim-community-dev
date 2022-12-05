@@ -3,7 +3,7 @@ jest.unmock('./useChannel');
 import {renderHook} from '@testing-library/react-hooks';
 import {useChannel} from './useChannel';
 import fetchMock from 'jest-fetch-mock';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 
 test('it fetches the API response', async () => {
     fetchMock.mockResponseOnce(

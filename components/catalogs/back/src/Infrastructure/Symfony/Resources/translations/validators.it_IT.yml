@@ -36,3 +36,11 @@ akeneo_catalogs:
         unknown: 'La valuta "{{ currency_name }}" è stata disattivata. Controlla le impostazioni della valuta o rimuovi questo filtro.'
       locale:
         unknown: 'L''impostazione locale "{{ locale_name }}" è stata disattivata. Controlla le impostazioni locali o rimuovi questo filtro.'
+    product_mapping:
+      source:
+        channel:
+          not_empty: 'Questo canale deve essere vuoto.'
+          empty: 'Questo canale non può essere vuoto.'
+        locale:
+          not_empty: 'Questa impostazione locale deve essere vuota.'
+          empty: 'Questa impostazione locale non può essere vuota.'

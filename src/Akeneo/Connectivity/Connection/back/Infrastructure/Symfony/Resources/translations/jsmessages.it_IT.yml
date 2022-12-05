@@ -146,6 +146,8 @@ akeneo_connectivity.connection:
         flash:
           error: Spiacenti, si è verificato un errore durante il recupero dell'elenco delle app connesse.
       edit:
+        header:
+          open_app: Apri app
         not_found: App non trovata
         tabs:
           settings: Impostazioni
@@ -587,5 +589,8 @@ pim_permissions:
 pim_notification:
   types:
     connected_app_authorizations: Autorizzazioni app connesse
+    disabled_catalog: Catalogo app disabilitato
   connected_app_authorizations:
     button_label: Apri app
+  disabled_catalog:
+    button_label: Impostazioni catalogo

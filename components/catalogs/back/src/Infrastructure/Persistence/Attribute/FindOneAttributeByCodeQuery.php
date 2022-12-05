@@ -19,7 +19,7 @@ final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryIn
     }
 
     /**
-     * @return array{code: string, label: string, type: string, scopable: bool, localizable: bool, measurement_family?: string, default_measurement_unit?: string}|null
+     * @inheritDoc
      */
     public function execute(string $code): ?array
     {
@@ -36,6 +36,8 @@ final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryIn
             'type' => $attribute->getType(),
             'scopable' => $attribute->isScopable(),
             'localizable' => $attribute->isLocalizable(),
+            'attribute_group_code' => $attribute->getGroup()->getCode(),
+            'attribute_group_label' => $attribute->getGroup()->getLabel(),
         ];
 
         if ('pim_catalog_metric' === $attribute->getType()) {
