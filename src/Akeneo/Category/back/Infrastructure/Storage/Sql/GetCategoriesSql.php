@@ -41,8 +41,9 @@ final class GetCategoriesSql implements GetCategoriesInterface
             )
             SELECT
                 category.id,
-                category.code, 
+                category.code,
                 category.parent_id,
+                parent_category.code as parent_code,
                 category.root as root_id,
                 category.updated,
                 translation.translations,
@@ -50,6 +51,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
             FROM 
                 pim_catalog_category category
                 LEFT JOIN translation ON translation.code = category.code
+                LEFT JOIN pim_catalog_category as parent_category on category.parent_id = parent_category.id
             WHERE $sqlWhere
             ORDER BY category.root, category.lft
             $sqlLimitOffset

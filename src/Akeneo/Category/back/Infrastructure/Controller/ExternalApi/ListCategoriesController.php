@@ -101,12 +101,6 @@ class ListCategoriesController extends AbstractController
             if ($withPosition) {
                 $categoryApi->setPosition(($this->getPosition)($category));
             }
-
-            $parentId = $categoryApi->getParentId();
-            if ($parentId) {
-                $parentCategory = $this->getCategory->byId($parentId);
-                $categoryApi->setParentCode((string) $parentCategory->getCode());
-            }
             $normalizedCategories[] = $categoryApi->normalize($withPosition, $withEnrichedAttributes);
         }
 

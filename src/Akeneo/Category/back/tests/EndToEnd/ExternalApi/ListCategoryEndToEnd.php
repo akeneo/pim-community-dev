@@ -137,9 +137,6 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    /**
-     * @group enriched_category
-     */
     public function testListCategoriesWithCount(): void
     {
         $categories = $this->getStandardizedCategories(false, false);
@@ -236,9 +233,6 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
-    /**
-     * @group enriched_category
-     */
     public function testListCategoriesWithPosition(): void
     {
         $categories = $this->getStandardizedCategories(true, false);
@@ -282,7 +276,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         // TODO replace with GRF-574 uri by /api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}
-        $client->request('GET', 'api/rest/v1/categories?search=["master"]&with_enriched_attributes=true');
+        $client->request('GET', 'api/rest/v1/categories?with_enriched_attributes=true');
 
         $categories = $this->getStandardizedCategories(false, true);
 
