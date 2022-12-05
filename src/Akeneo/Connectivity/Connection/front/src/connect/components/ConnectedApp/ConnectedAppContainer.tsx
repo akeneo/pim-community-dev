@@ -3,7 +3,6 @@ import {AppIllustration, Breadcrumb, Button, DangerIcon, Helper, TabBar, useTabB
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
-import {useSecurity} from '../../../shared/security';
 import {ApplyButton, DropdownLink, PageContent, PageHeader, SecondaryActionsDropdownButton} from '../../../common';
 import {UserButtons} from '../../../shared/user';
 import {ConnectedAppSettings} from './ConnectedAppSettings';
@@ -21,6 +20,7 @@ import isGrantedOnProduct from '../../is-granted-on-product';
 import isGrantedOnCatalog from '../../is-granted-on-catalog';
 import {CatalogList} from '@akeneo-pim-community/catalogs';
 import styled from 'styled-components';
+import {OpenAppButton} from "./OpenAppButton";
 
 const ConnectedAppCatalogList = styled.div`
     margin-top: 10px;
@@ -40,7 +40,6 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const translate = useTranslate();
     const generateUrl = useRouter();
     const notify = useNotify();
-    const security = useSecurity();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
     const [providers, permissions, setPermissions] = usePermissionsFormProviders(connectedApp.user_group_name);
@@ -50,12 +49,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const [monitoringSettings, setMonitoringSettings] = useState<MonitoringSettings | null>(null);
     const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
-    const openConnectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_open', {
-        connectionCode: connectedApp.connection_code,
-    })}`;
-    const canOpenApp =
-        (!connectedApp.is_test_app && security.isGranted('akeneo_connectivity_connection_open_apps')) ||
-        (connectedApp.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
+
 
     useEffect(() => {
         fetchConnectedAppMonitoringSettings().then(setMonitoringSettings);
@@ -74,19 +68,6 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
             <ApplyButton onClick={handleSave} disabled={!hasUnsavedChanges} classNames={['AknButtonList-item']}>
                 <Translate id='pim_common.save' />
             </ApplyButton>
-        );
-    };
-
-    const OpenAppButton = () => {
-        return (
-            <Button
-                level={connectedApp.is_pending || connectedApp.has_outdated_scopes ? 'warning' : 'secondary'}
-                href={openConnectedAppUrl}
-                disabled={!canOpenApp}
-                target='_blank'
-            >
-                <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app' />
-            </Button>
         );
     };
 
@@ -219,7 +200,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                             <Translate id='pim_common.delete' />
                         </DropdownLink>
                     </SecondaryActionsDropdownButton>,
-                    <OpenAppButton key={2} />,
+                    <OpenAppButton connectedApp={connectedApp} key={2} />,
                     <SaveButton key={1} />,
                 ]}
                 userButtons={<UserButtons />}
