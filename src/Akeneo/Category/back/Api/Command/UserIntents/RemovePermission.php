@@ -24,6 +24,9 @@ final class RemovePermission implements UserIntent
         return $this->type;
     }
 
+    /**
+     * @return array<int>
+     */
     public function userGroupIds(): array
     {
         return $this->userGroupIds;

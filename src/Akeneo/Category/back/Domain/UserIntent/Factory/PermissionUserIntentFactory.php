@@ -32,7 +32,7 @@ class PermissionUserIntentFactory implements UserIntentFactory
         $existingPermissions = [
             'view' => [1, 2, 5],
             'edit' => [1, 2, 5],
-            'own' => [1, 2, 5]
+            'own' => [1, 2, 5],
         ];
 
         $addedPermissions = $this->getAddedPermissions($existingPermissions, $data);
@@ -53,24 +53,40 @@ class PermissionUserIntentFactory implements UserIntentFactory
         return $userIntents;
     }
 
+    /**
+     * @param array<string, array<int>> $existingPermissions
+     * @param array<string, array<int>> $newPermissions
+     *
+     * @return array<string, array<int>>
+     */
     private function getAddedPermissions(array $existingPermissions, array $newPermissions): array
     {
         $addedPermissions = [];
 
         foreach ($existingPermissions as $type => $existingPermissionsPerType) {
-            $addedPermissions[$type] = array_values(array_filter($newPermissions[$type], fn ($newPermission) => !in_array($newPermission, $existingPermissionsPerType)));
+            $addedPermissions[$type] = array_values(
+                array_filter($newPermissions[$type], fn ($newPermission) => !in_array($newPermission, $existingPermissionsPerType)),
+            );
         }
 
         return $addedPermissions;
     }
 
+    /**
+     * @param array<string, array<int>> $existingPermissions
+     * @param array<string, array<int>> $newPermissions
+     *
+     * @return array<string, array<int>>
+     */
     private function getRemovedPermissions(array $existingPermissions, array $newPermissions): array
     {
         $removedPermissions = [];
 
         foreach ($newPermissions as $type => $newPermissionsPerType) {
             if (is_array($newPermissionsPerType)) {
-                $removedPermissions[$type] = array_values(array_filter($existingPermissions[$type], fn($existingPermission) => !in_array($existingPermission, $newPermissionsPerType)));
+                $removedPermissions[$type] = array_values(
+                    array_filter($existingPermissions[$type], fn ($existingPermission) => !in_array($existingPermission, $newPermissionsPerType)),
+                );
             }
         }
 
