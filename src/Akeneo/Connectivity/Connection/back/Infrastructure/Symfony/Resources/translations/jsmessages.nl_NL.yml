@@ -146,6 +146,8 @@ akeneo_connectivity.connection:
         flash:
           error: Er is een fout opgetreden tijdens het ophalen van de lijst met verbonden apps.
       edit:
+        header:
+          open_app: App openen
         not_found: App niet gevonden
         tabs:
           settings: Instellingen
@@ -587,5 +589,8 @@ pim_permissions:
 pim_notification:
   types:
     connected_app_authorizations: Autorisaties voor verbonden apps
+    disabled_catalog: Appcatalogus uitgeschakeld
   connected_app_authorizations:
     button_label: App openen
+  disabled_catalog:
+    button_label: Catalogusinstellingen

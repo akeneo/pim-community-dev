@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifierValidator;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -38,13 +36,6 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new NotBlank()]);
     }
 
-    public function it_could_throw_an_error_when_its_not_the_right_command(ExecutionContext $context): void
-    {
-        $context->getRoot()
-            ->willReturn(new \stdClass());
-        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new TargetAttributeShouldBeAnIdentifier()]);
-    }
-
     public function it_should_build_violation_when_target_attribute_is_not_an_identifier(
         GetAttributes $getAttributes,
         ExecutionContext $context
@@ -64,12 +55,9 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
                 '',
                 []
             ));
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn(new CreateGeneratorCommand('generatorCode', [], [], [], 'sku', '-'));
 
         $context->buildViolation(
-            'validation.create.target_attribute_is_not_an_identifier',
+            'validation.identifier_generator.target_attribute_is_not_an_identifier',
             ['{{code}}' => 'sku', '{{type}}' => 'pim_catalog_text']
         )->shouldBeCalled();
 
@@ -95,19 +83,8 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
                 '',
                 []
             ));
-        $command = new CreateGeneratorCommand(
-            'generatorCode',
-            [],
-            [FreeText::fromString('abcdef')],
-            ['fr' => 'Générateur'],
-            'sku',
-            '-'
-        );
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn($command);
 
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate('sku', new TargetAttributeShouldBeAnIdentifier());
     }

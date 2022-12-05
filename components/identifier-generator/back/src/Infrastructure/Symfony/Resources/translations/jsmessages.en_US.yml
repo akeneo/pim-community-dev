@@ -1,5 +1,6 @@
 pim_title:
     akeneo_identifier_generator_index: "Identifier generator"
+    akeneo_identifier_generator_edit: "Edit Identifier generator"
 pim_error:
     unauthorized: "You cannot list attributes. Please contact your administrator to change your rights."
     general: "An error occurred during the display of this page. Please contact your administrator."
@@ -62,6 +63,12 @@ pim_identifier_generator:
             title: 'Create your identifier structure'
             text: 'Click on "Add new property" on the top right'
             link_text: 'Check out our Help center for more information.'
+        delimiters:
+            title: 'Delimiters'
+            helper: 'Learn more about how to add default or custom delimiters in {{link}}.'
+            helper_link: 'our help center'
+            checkbox_label: 'Use delimiters between each property'
+            input_label: 'Define your delimiters'
     deletion:
         operations: 'Operations'
         confirmation: 'Are you sure you want to delete this identifier generator?'

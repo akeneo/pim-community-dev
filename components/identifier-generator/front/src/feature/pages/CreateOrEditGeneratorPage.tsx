@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
-import {IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
+import {Delimiter, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {validateIdentifierGenerator, Violation} from '../validators/';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
@@ -80,6 +80,11 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     onChangeGenerator(updatedGenerator);
   };
 
+  const onDelimiterChange = (delimiter: Delimiter | null) => {
+    const updatedGenerator = {...generator, delimiter: delimiter};
+    onChangeGenerator(updatedGenerator);
+  };
+
   const isGeneratorValid = validateIdentifierGenerator(generator, '').length === 0;
 
   return (
@@ -135,6 +140,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             initialStructure={generator.structure}
             delimiter={generator.delimiter}
             onStructureChange={onStructureChange}
+            onDelimiterChange={onDelimiterChange}
           />
         )}
       </Container>

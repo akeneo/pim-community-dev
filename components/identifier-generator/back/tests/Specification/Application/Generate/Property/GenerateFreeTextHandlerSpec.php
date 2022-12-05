@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
@@ -9,7 +11,8 @@ use PhpSpec\ObjectBehavior;
 
 class GenerateFreeTextHandlerSpec extends ObjectBehavior
 {
-    public function let(): void {
+    public function let(): void
+    {
     }
 
     public function it_should_support_only_free_text(): void

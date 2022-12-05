@@ -1,5 +1,6 @@
 parameters:
     akeneo_catalog.max_number_of_catalogs_per_user: 15
+    akeneo_catalog.max_criteria_per_catalog: 25
 
 services:
     _defaults:
@@ -151,3 +152,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
+
+    Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayloadValidator:
+        arguments:
+            $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'

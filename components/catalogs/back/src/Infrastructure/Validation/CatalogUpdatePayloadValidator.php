@@ -39,6 +39,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
 {
     public function __construct(
         private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
+        private int $maxCriteriaPerCatalog,
     ) {
     }
 
@@ -59,6 +60,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
      */
     private function getConstraints(): array
     {
+        $maxCriteriaPerCatalog = $this->maxCriteriaPerCatalog;
         return [
             new Assert\Collection([
                 'fields' => [
@@ -67,9 +69,14 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                     ]),
                     'product_selection_criteria' => [
                         new Assert\Type('array'),
-                        new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
+                        new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context) use ($maxCriteriaPerCatalog): void {
                             if (!\is_array($array)) {
                                 return;
+                            }
+
+                            if (\count($array) > $maxCriteriaPerCatalog) {
+                                $context->buildViolation('Too many criteria.')
+                                    ->addViolation();
                             }
 
                             if (\count(\array_filter(\array_keys($array), 'is_string')) > 0) {
@@ -158,7 +165,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                                 }
 
                                 if (!\is_string($sourceAssociation['source'])) {
-                                    $context->buildViolation('Unknown source value')
+                                    $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.unknown')
                                         ->atPath('[source]')
                                         ->addViolation();
 
@@ -168,7 +175,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                                 $constraint = $this->getMappingSourceConstraint($sourceAssociation['source']);
 
                                 if (null === $constraint) {
-                                    $context->buildViolation('Invalid source value')
+                                    $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.invalid')
                                         ->atPath('[source]')
                                         ->addViolation();
 

@@ -1,6 +1,33 @@
 akeneo.category:
+  tree_list:
+    column:
+      category_templates: 카테고리 템플릿
   attributes: 특성
   edition_form:
     error:
       unhandled_attribute_type: 특성 유형 "{{type}}"에 대한 특성 필드 빌더를 찾을 수 없습니다.
+    template:
+      title: 템플릿
+      fetching_failed: 템플릿을 가져오는 동안 오류가 발생했습니다.
     unsaved_changes: 이 페이지를 나가면 카테고리에 대한 변경 사항이 손실됩니다.
+  tree:
+    create: 트리 만들기
+    delete: 트리 삭제
+  template:
+    create: 템플릿 활성화
+    edit: 템플릿 보기
+    delete: 템플릿 삭제
+    notification_success: 템플릿이 활성화되었습니다.
+    notification_error: 템플릿을 활성화할 수 없습니다.
+    attribute:
+      description_title: 설명 설정
+      type:
+        text: 텍스트
+        textarea: 텍스트 영역
+        richtext: 서식 있는 텍스트
+        image: 이미지
+  template_list:
+    columns:
+      header: 레이블
+      code: 코드
+      type: 유형

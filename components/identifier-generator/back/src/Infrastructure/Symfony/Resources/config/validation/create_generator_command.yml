@@ -5,25 +5,36 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
     properties:
         target:
             - NotBlank: ~
+            - Type: string
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
         structure:
             - NotBlank: ~
+            - Count:
+                  max: 20
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\StructureShouldNotContainMultipleAutoNumber: ~
             - All:
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid: ~
                 - Collection:
                     fields:
                         type:
                             - Choice:
                                 choices: ['free_text', 'auto_number']
                                 message: 'Type {{ value }} can only be one of the following: {{ choices }}'
-                    allowExtraFields: true
-        code:
-            - NotBlank: ~
-            - Length:
-                max: 100
-            - Regex:
-                pattern: /^[a-zA-Z0-9_]+$/
-                message: code may contain only letters, numbers and underscore
+                        string:
+                            - Optional:
+                                - NotBlank: ~
+                                - Length:
+                                    max: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText::LENGTH_LIMIT
+                                - Type: string
+                        numberMin:
+                            - Optional:
+                                - GreaterThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_NUMBER_MIN
+                        digitsMin:
+                            - Optional:
+                                - GreaterThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MIN
+                                - LessThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MAX
         labels:
             - All:
                 - Length:
@@ -33,25 +44,10 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                 allowNull: true
             - Length:
                 max: 100
-
-Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand:
-    properties:
-        target:
+        code:
             - NotBlank: ~
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
-        structure:
-            - NotBlank: ~
-            - All:
-                - Collection:
-                    fields:
-                        type:
-                            - Choice:
-                                  choices: ['free_text', 'auto_number']
-                                  message: 'Type {{ value }} can only be one of the following: {{ choices }}'
-                    allowExtraFields: true
-        delimiter:
-            - NotBlank:
-                allowNull: true
             - Length:
                 max: 100
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: code may contain only letters, numbers and underscore

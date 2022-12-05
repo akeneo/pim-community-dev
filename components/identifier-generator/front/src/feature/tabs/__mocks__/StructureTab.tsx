@@ -1,13 +1,20 @@
 import React from 'react';
-import {PROPERTY_NAMES, Structure} from '../../models';
+import {Delimiter, PROPERTY_NAMES, Structure} from '../../models';
 import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
 type StructureTabProps = {
   onStructureChange: (structure: Structure) => void;
   initialStructure: Structure;
+  onDelimiterChange: (delimiter: Delimiter) => void;
+  delimiter: Delimiter | null;
 };
 
-const StructureTab: React.FC<StructureTabProps> = ({onStructureChange, initialStructure}) => {
+const StructureTab: React.FC<StructureTabProps> = ({
+  onStructureChange,
+  initialStructure,
+  onDelimiterChange,
+  delimiter,
+}) => {
   const updateFreeText = () => {
     const updatedStructure = [...initialStructure];
     updatedStructure[0] = {type: PROPERTY_NAMES.FREE_TEXT, string: 'Updated string'};
@@ -16,12 +23,16 @@ const StructureTab: React.FC<StructureTabProps> = ({onStructureChange, initialSt
 
   const revertFreeText = () => onStructureChange(initialGenerator.structure);
 
+  const updateDelimiter = () => onDelimiterChange('/');
+
   return (
     <>
       StructureTabMock
       <div>{JSON.stringify(initialStructure)}</div>
+      <div>Delimiter is {delimiter}</div>
       <button onClick={updateFreeText}>Update Free Text</button>
       <button onClick={revertFreeText}>Revert Free Text</button>
+      <button onClick={updateDelimiter}>Update Delimiter</button>
     </>
   );
 };

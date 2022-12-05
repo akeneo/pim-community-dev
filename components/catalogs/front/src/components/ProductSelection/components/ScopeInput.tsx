@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useChannel} from '../hooks/useChannel';
+import {useChannel} from '../../../hooks/useChannel';
 import {Channel} from '../../../models/Channel';
 import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
 import {useInfiniteChannels} from '../../../hooks/useInfiniteChannels';

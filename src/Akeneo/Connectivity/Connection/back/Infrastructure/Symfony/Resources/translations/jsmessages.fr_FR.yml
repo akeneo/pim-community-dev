@@ -146,6 +146,8 @@ akeneo_connectivity.connection:
         flash:
           error: Désolé, une erreur s'est produite lors de la récupération de la liste des apps.
       edit:
+        header:
+          open_app: Ouvrir l'app
         not_found: App non trouvée
         tabs:
           settings: Général

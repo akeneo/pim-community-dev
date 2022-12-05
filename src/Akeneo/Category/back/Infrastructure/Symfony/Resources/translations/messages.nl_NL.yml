@@ -11,3 +11,4 @@ pim_enrich:
       history: Geschiedenis van categorie weergeven
       template: Sjabloon voor categorie beheren
       edit_attributes: Categorie-attributen bewerken
+      order_trees: Categorieën rangschikken/herschikken

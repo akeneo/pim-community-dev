@@ -1,6 +1,33 @@
 akeneo.category:
+  tree_list:
+    column:
+      category_templates: カテゴリテンプレート
   attributes: 属性
   edition_form:
     error:
       unhandled_attribute_type: 属性タイプ "{{type}}" の属性フィールドビルダーが見つかりませんでした
+    template:
+      title: テンプレート
+      fetching_failed: テンプレートを取得中にエラーが発生しました
     unsaved_changes: このページから移動するとカテゴリに対する変更が失われます。
+  tree:
+    create: ツリーを作成
+    delete: ツリーを削除
+  template:
+    create: テンプレートを有効化
+    edit: テンプレートを表示
+    delete: テンプレートを削除
+    notification_success: テンプレートが正常に有効化されました
+    notification_error: テンプレートを有効化できませんでした
+    attribute:
+      description_title: 説明の設定
+      type:
+        text: テキスト
+        textarea: テキストエリア
+        richtext: リッチテキスト
+        image: 画像
+  template_list:
+    columns:
+      header: ラベル
+      code: コード
+      type: タイプ

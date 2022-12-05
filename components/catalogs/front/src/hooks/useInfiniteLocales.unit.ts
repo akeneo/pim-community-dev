@@ -1,6 +1,6 @@
 jest.unmock('./useInfiniteLocales');
 
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 
 import {act, renderHook} from '@testing-library/react-hooks';
 import {useInfiniteLocales} from './useInfiniteLocales';

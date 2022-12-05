@@ -9,7 +9,13 @@ test('it displays a placeholder if there is no target selected', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
-                <SourcePanel target={null} targetLabel={null} source={null} onChange={jest.fn()}></SourcePanel>
+                <SourcePanel
+                    target={null}
+                    targetLabel={null}
+                    source={null}
+                    onChange={jest.fn()}
+                    errors={null}
+                ></SourcePanel>
             </QueryClientProvider>
         </ThemeProvider>
     );
@@ -21,7 +27,13 @@ test('it displays the target as a title', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
-                <SourcePanel target='erp_name' targetLabel='ERP name' source={null} onChange={jest.fn()}></SourcePanel>
+                <SourcePanel
+                    target='erp_name'
+                    targetLabel='ERP name'
+                    source={null}
+                    onChange={jest.fn()}
+                    errors={null}
+                ></SourcePanel>
             </QueryClientProvider>
         </ThemeProvider>
     );
