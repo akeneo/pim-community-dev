@@ -30,6 +30,15 @@ test('it displays a reference entity collection configurator', () => {
         ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
         uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
       }}
+      requirement={{
+        code: 'test',
+        label: 'label',
+        help: 'help',
+        group: 'general',
+        required: false,
+        examples: [],
+        type: 'string',
+      }}
       attribute={attribute}
       validationErrors={[]}
       onSourceChange={onSourceChange}
@@ -57,6 +66,15 @@ test('it can update default value operation', () => {
       source={{
         ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
         uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      requirement={{
+        code: 'test',
+        label: 'label',
+        help: 'help',
+        group: 'general',
+        required: false,
+        examples: [],
+        type: 'string',
       }}
       attribute={attribute}
       validationErrors={[]}
@@ -86,6 +104,15 @@ test('it can update a reference entity collection replacement operation', () => 
       source={{
         ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
         uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      requirement={{
+        code: 'test',
+        label: 'label',
+        help: 'help',
+        group: 'general',
+        required: false,
+        examples: [],
+        type: 'string',
       }}
       attribute={attribute}
       validationErrors={[]}
@@ -117,6 +144,15 @@ test('it throws when the source data is invalid', () => {
     renderWithProviders(
       <ReferenceEntityCollectionConfigurator
         source={getDefaultDateSource(dateAttribute, null, null)}
+        requirement={{
+          code: 'test',
+          label: 'label',
+          help: 'help',
+          group: 'general',
+          required: false,
+          examples: [],
+          type: 'string',
+        }}
         attribute={dateAttribute}
         validationErrors={[]}
         onSourceChange={jest.fn()}
@@ -138,6 +174,15 @@ test('it throws when the attribute is invalid', () => {
         source={{
           ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
           uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+        }}
+        requirement={{
+          code: 'test',
+          label: 'label',
+          help: 'help',
+          group: 'general',
+          required: false,
+          examples: [],
+          type: 'string',
         }}
         attribute={invalidAttribute}
         validationErrors={[]}

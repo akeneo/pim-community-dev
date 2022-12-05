@@ -1,4 +1,4 @@
-pimee_syndication_get_records_action:
-  path: /rest/syndication/records/{reference_entity_code}
+pimee_syndication_reference_entity_get_records_action:
+  path: /records/{reference_entity_code}
   defaults: { _controller: akeneo.syndication.controller.get_records_actions }
   methods: [POST]

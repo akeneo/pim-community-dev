@@ -75,3 +75,7 @@ pimee_syndication_api_platform_family_update:
     path: /api/rest/v1/syndication/platform/{platformCode}/family/{code}
     defaults: { _controller: pim_syndication.controller.platform_family_update, _format: json, _list_in_root_endpoint: false}
     methods: [post]
+
+pimee_syndication_reference_entity:
+    resource: '@AkeneoSyndicationBundle/Resources/config/reference_entity/routing.yml'
+    prefix: /rest/syndication/reference-entity

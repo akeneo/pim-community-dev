@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\StringCollection;
 
 use Akeneo\Platform\Syndication\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\Syndication\Application\Common\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\Syndication\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\Syndication\Application\Common\SourceValue\StringCollectionValue;
 use Akeneo\Platform\Syndication\Application\Common\Target\Target;
@@ -23,8 +24,12 @@ class StringCollectionSelectionApplier implements SelectionApplierInterface
 {
     public function applySelection(SelectionInterface $selection, Target $target, SourceValueInterface $value): array
     {
-        if (!$value instanceof StringCollectionValue) {
+        if (!($value instanceof StringCollectionValue || $value instanceof ReferenceEntityCollectionValue)) {
             throw new \InvalidArgumentException('Cannot apply String collection selection on this entity');
+        }
+
+        if ($value instanceof ReferenceEntityCollectionValue) {
+            return $value->getRecordCodes();
         }
 
         return $value->getData();
@@ -32,6 +37,6 @@ class StringCollectionSelectionApplier implements SelectionApplierInterface
 
     public function supports(SelectionInterface $selection, Target $target, SourceValueInterface $value): bool
     {
-        return $value instanceof StringCollectionValue;
+        return $value instanceof StringCollectionValue || $value instanceof ReferenceEntityCollectionValue;
     }
 }

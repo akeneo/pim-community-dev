@@ -4,10 +4,12 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelCollectionSelector, DefaultValue, Operations, RecordsReplacement} from '../common';
 import {isReferenceEntityCollectionSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
+import {NoOperationsPlaceholder} from '../../SourceDetails/NoOperationsPlaceholder';
 
 const ReferenceEntityCollectionConfigurator = ({
   source,
   attribute,
+  requirement,
   validationErrors,
   onSourceChange,
 }: AttributeConfiguratorProps) => {
@@ -19,6 +21,10 @@ const ReferenceEntityCollectionConfigurator = ({
 
   if (undefined === attribute.reference_data_name) {
     throw new Error(`Reference entity collection attribute "${attribute.code}" should have a reference_data_name`);
+  }
+
+  if ('string_collection' === requirement.type) {
+    return <NoOperationsPlaceholder />;
   }
 
   return (

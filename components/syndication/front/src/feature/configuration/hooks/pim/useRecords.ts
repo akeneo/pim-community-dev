@@ -17,7 +17,7 @@ const useRecords = (
   const isMounted = useIsMounted();
   const locale = useUserContext().get('catalogLocale');
   const channel = useUserContext().get('catalogScope');
-  const getRecordsRoute = useRoute('pimee_syndication_get_records_action', {
+  const getRecordsRoute = useRoute('pimee_syndication_reference_entity_get_records_action', {
     reference_entity_code: referenceEntityCode,
   });
 
