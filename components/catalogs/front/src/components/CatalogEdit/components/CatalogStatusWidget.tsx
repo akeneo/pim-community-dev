@@ -36,6 +36,10 @@ const Description = styled.div`
 `;
 
 const CatalogStatusWidget: FC<PropsWithChildren<Props>> = ({values, errors, headerContextContainer}) => {
+
+    console.log('CatalogStatusWidget')
+    console.log(headerContextContainer)
+
     if (headerContextContainer === undefined) {
         return null;
     }

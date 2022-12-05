@@ -31,7 +31,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
     const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
     useLayoutEffect(() => {
         setHeaderContextContainer(ref.current);
-    }, []);
+    });
 
     const handleSave = async () => {
         try {
