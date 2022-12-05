@@ -4,7 +4,7 @@ import React, {FC} from "react";
 import {useRouter} from '../../../shared/router/use-router';
 import {useSecurity} from '../../../shared/security';
 import {ConnectedApp} from "@src/model/Apps/connected-app";
-
+import returnIconUrl from '../../../common/assets/icons/return.svg';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -29,6 +29,7 @@ export const OpenAppButton: FC<Props> = ({connectedApp}) => {
             target='_blank'
         >
             <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app'/>
+            <img src={returnIconUrl} alt={'Go to app icon'} height={'13px'}/>
         </Button>
     );
 }
