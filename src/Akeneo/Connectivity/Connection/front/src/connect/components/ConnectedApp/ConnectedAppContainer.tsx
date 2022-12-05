@@ -20,7 +20,7 @@ import isGrantedOnProduct from '../../is-granted-on-product';
 import isGrantedOnCatalog from '../../is-granted-on-catalog';
 import {CatalogList} from '@akeneo-pim-community/catalogs';
 import styled from 'styled-components';
-import {OpenAppButton} from "./OpenAppButton";
+import {OpenAppButton} from './OpenAppButton';
 
 const ConnectedAppCatalogList = styled.div`
     margin-top: 10px;
