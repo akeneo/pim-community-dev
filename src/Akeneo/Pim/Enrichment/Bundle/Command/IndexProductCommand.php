@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductUuidsNotSynchronisedBetweenEsAndMysql;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,7 +34,9 @@ class IndexProductCommand extends Command
     public function __construct(
         private readonly ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         private readonly Client $productAndProductModelClient,
-        private readonly Connection $connection,
+        private readonly GetProductUuidsNotSynchronisedBetweenEsAndMysql $getProductNotSynchronisedBetweenEsAndMysql,
+        private readonly GetExistingProductUuids $getProductExistingAmong,
+        private readonly GetAllProductUuids $getAllProduct,
     ) {
         parent::__construct();
     }
@@ -83,14 +85,14 @@ class IndexProductCommand extends Command
         $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
 
         if (true === $input->getOption('all')) {
-            $chunkedProductUuids = $this->getAllProductUuids($batchSize);
+            $chunkedProductUuids = $this->getAllProduct->byBatchesOf($batchSize);
             $productCount = 0;
         } elseif (true === $input->getOption('diff')) {
-            $chunkedProductUuids = $this->getDiffProductUuids($batchSize);
+            $chunkedProductUuids = $this->getProductNotSynchronisedBetweenEsAndMysql->byBatchesOf($batchSize);
             $productCount = 0;
         } elseif (!empty($input->getArgument('identifiers'))) {
             $requestedIdentifiers = $input->getArgument('identifiers');
-            $existingUuids = $this->getExistingProductUuids($requestedIdentifiers);
+            $existingUuids = $this->getProductExistingAmong->among($requestedIdentifiers);
             $nonExistingIdentifiers = array_diff($requestedIdentifiers, array_keys($existingUuids));
             if (!empty($nonExistingIdentifiers)) {
                 $output->writeln(
@@ -133,56 +135,6 @@ class IndexProductCommand extends Command
         return $indexedProductCount;
     }
 
-    private function getAllProductUuids(int $batchSize): iterable
-    {
-        $lastUuidAsBytes = '';
-        $sql = <<<SQL
-SELECT uuid
-FROM pim_catalog_product
-WHERE uuid > :lastUuid
-ORDER BY uuid ASC
-LIMIT :limit
-SQL;
-        while (true) {
-            $rows = $this->connection->fetchFirstColumn(
-                $sql,
-                [
-                    'lastUuid' => $lastUuidAsBytes,
-                    'limit' => $batchSize,
-                ],
-                [
-                    'lastUuid' => \PDO::PARAM_STR,
-                    'limit' => \PDO::PARAM_INT,
-                ]
-            );
-
-            if (empty($rows)) {
-                return;
-            }
-
-            $lastUuidAsBytes = end($rows);
-
-            yield array_map(fn (string $uuid): UuidInterface => Uuid::fromBytes($uuid), $rows);
-        }
-    }
-
-    private function getExistingProductUuids(array $identifiers): array
-    {
-        $sql = <<<SQL
-SELECT identifier, BIN_TO_UUID(uuid) AS uuid
-FROM pim_catalog_product
-WHERE identifier IN (:identifiers);
-SQL;
-
-        $uuids = $this->connection->executeQuery(
-            $sql,
-            ['identifiers' => $identifiers],
-            ['identifiers' => Connection::PARAM_STR_ARRAY]
-        )->fetchAllKeyValue();
-
-        return array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids);
-    }
-
     /**
      * @throws \RuntimeException
      */
@@ -195,73 +147,6 @@ SQL;
                     $this->productAndProductModelClient->getIndexName()
                 )
             );
-        }
-    }
-
-    private function getDiffProductUuids(int $batchSize)
-    {
-        $lastUuidAsBytes = '';
-        $sql = <<< SQL
-SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, uuid, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
-FROM pim_catalog_product
-WHERE uuid > :lastUuid
-ORDER BY uuid ASC
-LIMIT :limit
-SQL;
-        while (true) {
-            $rows = $this->connection->executeQuery(
-                $sql,
-                [
-                    'lastUuid' => $lastUuidAsBytes,
-                    'limit' => $batchSize,
-                ],
-                [
-                    'lastUuid' => \PDO::PARAM_STR,
-                    'limit' => \PDO::PARAM_INT,
-                ]
-            )->fetchAllAssociative();
-
-            if (empty($rows)) {
-                return;
-            }
-
-            $lastUuidAsBytes = end($rows)['uuid'];
-
-            $existingMysqlIdentifiers = array_column($rows, '_id');
-
-            $results = $this->productAndProductModelClient->search([
-                'query' => [
-                    'bool' => [
-                        'must' => [
-                            'ids' => [
-                                'values' => $existingMysqlIdentifiers
-                            ]
-                        ],
-                    ]
-                ],
-                '_source' => ['id', 'entity_updated'],
-                'size' => $batchSize
-            ]);
-
-            $updatedById = [];
-            foreach ($results['hits']['hits'] as $hit) {
-                $updatedById[$hit['_source']['id']] = $hit['_source']['entity_updated'];
-            }
-
-            $diff = \array_map(
-                static fn (array $row): UuidInterface => Uuid::fromBytes($row['uuid']),
-                \array_filter(
-                    $rows,
-                    function (array $row) use ($updatedById): bool {
-                        $updateDateInIndex = new \DateTimeImmutable($updatedById[$row['_id']]);
-                        $updateDateInDb = new \DateTimeImmutable($row['updated']);
-
-                        return $updateDateInDb != $updateDateInIndex;
-                    }
-                )
-            );
-
-            yield $diff;
         }
     }
 }

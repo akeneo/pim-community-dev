@@ -74,6 +74,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProductModel'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\FindFamiliesController:
+        public: true
         arguments:
             - '@pim_enrich.repository.family.search'
             - '@pim_internal_api_serializer'
