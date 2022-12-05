@@ -205,7 +205,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testCountCategories(): void
     {
-        $parameters = ['sqlWhere' => '1=1', 'params' => [], 'types' => []];
+        $parameters = new ExternalApiSqlParameters('1=1', [], []);
         $numberOfCategories = $this->get(GetCategoriesInterface::class)->count($parameters);
 
         $this->assertIsInt($numberOfCategories);
@@ -214,17 +214,13 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testCountCategoriesByCodes(): void
     {
-        $parameters = [
-            'sqlWhere' => 'category.code IN (:category_codes)',
-            'params' => [
-                'category_codes' => ['socks', 'shoes']
-            ],
-            'types' => [
-                'category_codes' => Connection::PARAM_STR_ARRAY
-            ]
-        ];
-
+        $parameters = new ExternalApiSqlParameters(
+            'category.code IN (:category_codes)',
+            ['category_codes' => ['socks', 'shoes']],
+            ['category_codes' => Connection::PARAM_STR_ARRAY]
+        );
         $numberOfCategories = $this->get(GetCategoriesInterface::class)->count($parameters);
+
         $this->assertIsInt($numberOfCategories);
         $this->assertSame(2, $numberOfCategories);
     }
