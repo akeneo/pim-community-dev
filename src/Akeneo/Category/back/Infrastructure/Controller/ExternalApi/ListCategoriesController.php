@@ -5,6 +5,7 @@ namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 use Akeneo\Category\Application\Handler\GetPositionInterface;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
@@ -32,6 +33,7 @@ class ListCategoriesController extends AbstractController
         private readonly GetCategoriesInterface $getCategories,
         private readonly GetPositionInterface $getPosition,
         private readonly array $apiConfiguration,
+        private readonly GetCategoryInterface $getCategory,
     ) {
     }
 
@@ -100,6 +102,11 @@ class ListCategoriesController extends AbstractController
                 $categoryApi->setPosition(($this->getPosition)($category));
             }
 
+            $parentId = $categoryApi->getParentId();
+            if ($parentId) {
+                $parentCategory = $this->getCategory->byId($parentId);
+                $categoryApi->setParentCode((string) $parentCategory->getCode());
+            }
             $normalizedCategories[] = $categoryApi->normalize($withPosition, $withEnrichedAttributes);
         }
 

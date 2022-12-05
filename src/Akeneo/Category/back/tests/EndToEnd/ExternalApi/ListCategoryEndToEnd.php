@@ -137,6 +137,9 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
+    /**
+     * @group enriched_category
+     */
     public function testListCategoriesWithCount(): void
     {
         $categories = $this->getStandardizedCategories(false, false);
@@ -233,6 +236,9 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    /**
+     * @group enriched_category
+     */
     public function testListCategoriesWithPosition(): void
     {
         $categories = $this->getStandardizedCategories(true, false);
@@ -268,8 +274,6 @@ JSON;
 
     /**
      * @group enriched_category
-     *
-     * @throws \JsonException
      */
     public function testListCategoriesWithValues(): void
     {
