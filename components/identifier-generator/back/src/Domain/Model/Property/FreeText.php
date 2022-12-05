@@ -13,9 +13,13 @@ use Webmozart\Assert\Assert;
  */
 final class FreeText implements PropertyInterface
 {
+    public const LENGTH_LIMIT = 100;
+
     private function __construct(
         private string $value,
     ) {
+        Assert::stringNotEmpty($value);
+        Assert::maxLength($value, self::LENGTH_LIMIT);
     }
 
     public static function type(): string
@@ -31,7 +35,7 @@ final class FreeText implements PropertyInterface
         Assert::keyExists($normalizedProperty, 'type');
         Assert::eq($normalizedProperty['type'], self::type());
         Assert::keyExists($normalizedProperty, 'string');
-        Assert::stringNotEmpty($normalizedProperty['string']);
+        Assert::string($normalizedProperty['string']);
 
         return self::fromString($normalizedProperty['string']);
     }
@@ -49,8 +53,6 @@ final class FreeText implements PropertyInterface
 
     public static function fromString(string $value): self
     {
-        Assert::stringNotEmpty($value);
-
         return new self($value);
     }
 

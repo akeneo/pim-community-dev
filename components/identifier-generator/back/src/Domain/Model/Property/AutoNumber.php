@@ -13,10 +13,17 @@ use Webmozart\Assert\Assert;
  */
 final class AutoNumber implements PropertyInterface
 {
+    public const LIMIT_NUMBER_MIN = 0;
+    public const LIMIT_DIGITS_MIN = 1;
+    public const LIMIT_DIGITS_MAX = 15;
+
     public function __construct(
-        private int $numberMin,
-        private int $digitsMin,
+        private readonly int $numberMin,
+        private readonly int $digitsMin,
     ) {
+        Assert::greaterThanEq($numberMin, self::LIMIT_NUMBER_MIN);
+        Assert::greaterThanEq($digitsMin, self::LIMIT_DIGITS_MIN);
+        Assert::lessThanEq($digitsMin, self::LIMIT_DIGITS_MAX);
     }
 
     public static function type(): string
@@ -32,18 +39,13 @@ final class AutoNumber implements PropertyInterface
         Assert::keyExists($normalizedProperty, 'type');
         Assert::same($normalizedProperty['type'], self::type());
         Assert::keyExists($normalizedProperty, 'numberMin');
-        Assert::greaterThanEq($normalizedProperty['numberMin'], 0);
         Assert::keyExists($normalizedProperty, 'digitsMin');
-        Assert::greaterThanEq($normalizedProperty['digitsMin'], 1);
 
         return self::fromValues(intval($normalizedProperty['numberMin']), intval($normalizedProperty['digitsMin']));
     }
 
     public static function fromValues(int $numberMin, int $digitsMin): self
     {
-        Assert::greaterThanEq($numberMin, 0);
-        Assert::greaterThanEq($digitsMin, 0);
-
         return new self($numberMin, $digitsMin);
     }
 

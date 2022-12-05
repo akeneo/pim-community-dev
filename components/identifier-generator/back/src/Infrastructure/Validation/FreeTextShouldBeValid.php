@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class TargetAttributeShouldBeAnIdentifier extends Constraint
+final class FreeTextShouldBeValid extends Constraint
 {
-    public string $message = 'validation.identifier_generator.target_attribute_is_not_an_identifier';
+    public string $stringKeyRequired = 'validation.identifier_generator.free_text_string_field_required';
 
     /**
      * @inerhitDoc
