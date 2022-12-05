@@ -1,15 +1,14 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Button, Helper, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
+import {Button, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
-import {Conditions, Delimiter, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
+import {Conditions, Delimiter, GeneratorTab, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {Violation} from '../validators';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
 import {useIdentifierGeneratorContext} from '../context';
 import styled from 'styled-components';
-import {GeneratorTab} from '../models';
 import {useStructureTabs} from '../hooks';
 
 // TODO: replace this component by PageContent when there we delete the warning message (DO NOT USE...)
@@ -117,15 +116,6 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         </PageHeader.Actions>
       </Header>
       <Container>
-        {validationErrors.length > 0 && (
-          <Helper level="error">
-            <ul>
-              {validationErrors.map(({path, message}) => (
-                <li key={`${path || ''}${message}`}>{message}</li>
-              ))}
-            </ul>
-          </Helper>
-        )}
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === GeneratorTab.GENERAL} onClick={changeTab(GeneratorTab.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
@@ -153,6 +143,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             delimiter={generator.delimiter}
             onStructureChange={onStructureChange}
             onDelimiterChange={onDelimiterChange}
+            validationErrors={validationErrors}
           />
         )}
       </Container>

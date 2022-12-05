@@ -105,6 +105,8 @@ describe('EditGeneratorPage', () => {
       fireEvent.click(screen.getByText('pim_common.save'));
     });
 
-    expect(screen.getByText('The structure must contain at least one property')).toBeInTheDocument();
+    expect(mockNotify).not.toHaveBeenCalled();
+    // we should see a red pill to know there is an error
+    expect(screen.getByRole('alert')).toBeInTheDocument();
   });
 });
