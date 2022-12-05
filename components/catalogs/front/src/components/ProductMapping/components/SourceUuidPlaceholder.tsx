@@ -21,8 +21,10 @@ export const SourceUuidPlaceholder: FC<Props> = ({targetLabel}) => {
                 <SectionTitle.Title>{targetLabel}</SectionTitle.Title>
             </SectionTitle>
             <SectionContent>
-                <Placeholder illustration={<AttributesIllustration />} title={''}>
-                    <p>{translate('akeneo_catalogs.product_mapping.source.uuid_placeholder.text')}</p>
+                <Placeholder
+                    illustration={<AttributesIllustration />}
+                    title={translate('akeneo_catalogs.product_mapping.source.uuid_placeholder.text')}
+                >
                     <Link
                         href={
                             'https://help.akeneo.com/pim/serenity/articles/manage-product-identifiers.html#description-of-the-uuid-the-new-technical-product-identifier'
