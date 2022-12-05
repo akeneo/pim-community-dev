@@ -9,5 +9,5 @@ dependencies:
     version: "2.1.1"
     repository: gs://akeneo-charts/
   - name: elasticsearch
-    version: "1.32.44"
-    repository: gs://akeneo-charts/
+    version: "1.33.0-3650150b8dd859fb2217820e270db1dd183c3ad7"
+    repository: gs://akeneo-charts-dev/
