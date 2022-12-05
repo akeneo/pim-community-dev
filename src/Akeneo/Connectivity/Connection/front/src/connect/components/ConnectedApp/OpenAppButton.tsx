@@ -1,11 +1,11 @@
-import {Button} from "akeneo-design-system";
+import {Button} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
-import React, {FC} from "react";
+import React, {FC} from 'react';
 import {useRouter} from '../../../shared/router/use-router';
 import {useSecurity} from '../../../shared/security';
-import {ConnectedApp} from "@src/model/Apps/connected-app";
+import {ConnectedApp} from '@src/model/Apps/connected-app';
 import returnIconUrl from '../../../common/assets/icons/return.svg';
-import {translate} from "@akeneo-pim-community/shared";
+import {translate} from '@akeneo-pim-community/shared';
 
 type Props = {
     connectedApp: ConnectedApp;
