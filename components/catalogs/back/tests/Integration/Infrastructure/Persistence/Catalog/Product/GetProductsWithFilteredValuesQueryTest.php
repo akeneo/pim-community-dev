@@ -40,15 +40,18 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
@@ -118,20 +121,24 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
-        $this->setCatalogProductValueFilters('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'channels' => [],
-            'locales' => [],
-            'currencies' => [],
-        ]);
+            catalogProductValueFilters: [
+                'channels' => [],
+                'locales' => [],
+                'currencies' => [],
+            ],
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [
@@ -223,18 +230,22 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
-        $this->setCatalogProductValueFilters('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'channels' => ['ecommerce'],
-        ]);
+            catalogProductValueFilters: [
+                'channels' => ['ecommerce'],
+            ],
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [
@@ -312,18 +323,21 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
-        $this->setCatalogProductValueFilters('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'locales' => ['en_US', 'fr_FR'],
-        ]);
+            catalogProductValueFilters: [
+                'locales' => ['en_US', 'fr_FR'],
+            ],
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [
@@ -406,18 +420,21 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             'code' => 'price',
             'type' => 'pim_catalog_price_collection',
         ]);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
-        $this->setCatalogProductValueFilters('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'currencies' => ['USD', 'EUR'],
-        ]);
+            catalogProductValueFilters: [
+                'currencies' => ['USD', 'EUR'],
+            ],
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [
@@ -508,20 +525,23 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
-        $this->setCatalogProductValueFilters('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'channels' => ['print'],
-            'locales' => ['en_US'],
-            'currencies' => ['USD'],
-        ]);
+            catalogProductValueFilters: [
+                'channels' => ['print'],
+                'locales' => ['en_US'],
+                'currencies' => ['USD'],
+            ],
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [
@@ -611,15 +631,18 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
@@ -682,15 +705,18 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
@@ -753,15 +779,18 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);

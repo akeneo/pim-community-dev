@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {AttributesIllustration, Helper, Link, SectionTitle, uuid} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
-import {AddPropertyButton, Preview, PropertiesList, PropertyEdit} from './structure';
+import {AddPropertyButton, DelimiterEdit, Preview, PropertiesList, PropertyEdit} from './structure';
 import {Delimiter, Property, Structure as StructureType} from '../models';
 import {Styled} from '../components/Styled';
 import {TranslationWithLink} from '../components';
@@ -10,13 +10,19 @@ type StructureTabProps = {
   initialStructure: StructureType;
   delimiter: Delimiter | null;
   onStructureChange: (structure: StructureType) => void;
+  onDelimiterChange: (delimiter: Delimiter | null) => void;
 };
 
 type PropertyId = string;
 type StructureWithIdentifiers = (Property & {id: PropertyId})[];
 const LIMIT_NUMBER = 20;
 
-const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter, onStructureChange}) => {
+const StructureTab: React.FC<StructureTabProps> = ({
+  initialStructure,
+  delimiter,
+  onStructureChange,
+  onDelimiterChange,
+}) => {
   const translate = useTranslate();
   const [selectedPropertyId, setSelectedPropertyId] = useState<PropertyId | undefined>();
   const structure = useMemo(
@@ -53,6 +59,10 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
     onStructureChange(newStructure);
   };
 
+  const onToggleDelimiter = () => {
+    delimiter === null ? onDelimiterChange('-') : onDelimiterChange(null);
+  };
+
   return (
     <>
       <Helper>
@@ -79,6 +89,11 @@ const StructureTab: React.FC<StructureTabProps> = ({initialStructure, delimiter,
                 selectedId={selectedPropertyId}
                 onChange={onStructureChange}
                 onDelete={onDeleteProperty}
+              />
+              <DelimiterEdit
+                delimiter={delimiter}
+                onToggleDelimiter={onToggleDelimiter}
+                onChangeDelimiter={onDelimiterChange}
               />
             </>
           )}

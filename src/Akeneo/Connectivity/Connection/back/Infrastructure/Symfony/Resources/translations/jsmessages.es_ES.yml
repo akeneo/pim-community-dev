@@ -146,6 +146,8 @@ akeneo_connectivity.connection:
         flash:
           error: Lo sentimos, se ha producido un error al obtener la lista de aplicaciones conectadas.
       edit:
+        header:
+          open_app: Abrir aplicación
         not_found: Aplicación no encontrada
         tabs:
           settings: Configuración
@@ -587,5 +589,8 @@ pim_permissions:
 pim_notification:
   types:
     connected_app_authorizations: Autorizaciones de la aplicación conectada
+    disabled_catalog: Catálogo de aplicaciones deshabilitado
   connected_app_authorizations:
     button_label: Abrir aplicación
+  disabled_catalog:
+    button_label: Configuración del catálogo

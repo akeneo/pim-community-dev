@@ -41,6 +41,7 @@ pim_enrich.entity.product:
       title: 选择操作
       choose_family: 选择品类
       choose_family_variant: 选择品类变型
+      helper: 标识符现在为可选字段。<a class="AknMessageBox-link" href="{{ link }}" target="_blank">阅读更多</a>关于此更改的信息及其对您的产品可能造成的影响。
     variant_navigation:
       common: 通用
     status:
@@ -70,6 +71,7 @@ pim_enrich.entity.product:
     meta:
       updated: 上次更新
       groups: 分组
+      uuid: UUID
     show_group:
       title: 分组 {{ group }}
       view_group: 查看组
@@ -220,6 +222,7 @@ pim_enrich.entity.category:
       columns:
         label: 树标签
         number_of_categories: 类别数量
+        actions: 操作
         count_categories: ']-Inf, 1]{{ count }} 个类别|]1, Inf[{{ count }} 个类别'
     tree:
       not_found: 找不到类别树
@@ -436,6 +439,8 @@ pim_datagrid:
         all_attributes: 全部属性
         with_codes: 使用代码
         with_labels: 有标签
+        without_uuid: 不含 UUID
+        with_uuid: 含 UUID
         without_media: 无媒体
         with_media: 含媒体
       flash:

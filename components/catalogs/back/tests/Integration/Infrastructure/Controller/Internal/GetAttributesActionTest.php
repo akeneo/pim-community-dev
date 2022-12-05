@@ -22,9 +22,11 @@ class GetAttributesActionTest extends IntegrationTestCase
     public function testItGetsAttributes(): void
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
+        $this->createAttributeGroup(['code' => 'marketing']);
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_text',
+            'group' => 'marketing'
         ]);
         $this->createAttribute([
             'code' => 'description',
@@ -52,6 +54,8 @@ class GetAttributesActionTest extends IntegrationTestCase
         Assert::assertArrayHasKey('type', $attributes[0]);
         Assert::assertArrayHasKey('scopable', $attributes[0]);
         Assert::assertArrayHasKey('localizable', $attributes[0]);
+        Assert::assertArrayHasKey('attribute_group_code', $attributes[0]);
+        Assert::assertArrayHasKey('attribute_group_label', $attributes[0]);
     }
 
     public function testItSearchesAttributes(): void
@@ -82,6 +86,12 @@ class GetAttributesActionTest extends IntegrationTestCase
         $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertCount(1, $attributes);
         Assert::assertSame('name', $attributes[0]['code']);
+        Assert::assertArrayHasKey('label', $attributes[0]);
+        Assert::assertArrayHasKey('type', $attributes[0]);
+        Assert::assertArrayHasKey('scopable', $attributes[0]);
+        Assert::assertArrayHasKey('localizable', $attributes[0]);
+        Assert::assertArrayHasKey('attribute_group_code', $attributes[0]);
+        Assert::assertArrayHasKey('attribute_group_label', $attributes[0]);
     }
 
     public function testItGetsAttributesByTypes(): void
@@ -127,28 +137,16 @@ class GetAttributesActionTest extends IntegrationTestCase
 
         $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        Assert::assertEquals([
-            [
-                'code' => 'name',
-                'label' => '[name]',
-                'type' => 'pim_catalog_text',
-                'scopable' => false,
-                'localizable' => false,
-            ],
-            [
-                'code' => 'variation_name',
-                'label' => '[variation_name]',
-                'type' => 'pim_catalog_text',
-                'scopable' => false,
-                'localizable' => false,
-            ],
-            [
-                'code' => 'clothing_size',
-                'label' => '[clothing_size]',
-                'type' => 'pim_catalog_simpleselect',
-                'scopable' => false,
-                'localizable' => false,
-            ]
-        ], $attributes);
+        $expectedAttributeCodes = ['name', 'variation_name', 'clothing_size'];
+
+        foreach ($attributes as $index => $attribute) {
+            Assert::assertSame($expectedAttributeCodes[$index], $attribute['code']);
+            Assert::assertArrayHasKey('label', $attribute);
+            Assert::assertArrayHasKey('type', $attribute);
+            Assert::assertArrayHasKey('scopable', $attribute);
+            Assert::assertArrayHasKey('localizable', $attribute);
+            Assert::assertArrayHasKey('attribute_group_code', $attribute);
+            Assert::assertArrayHasKey('attribute_group_label', $attribute);
+        }
     }
 }

@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: Landinstelling bestand
             help: Definieer de taal waarin labels worden weergegeven
+          with_uuid:
+            title: Met product-UUID
+            help: Exporteer de UUID van het product en de bijbehorende producten
+          with_uuid_for_models:
+            title: Met product-UUID
+            help: Exporteer de gekoppelde product-UUID in plaats van de ID
       file_path: Bestandspad
       storage_form:
         title: Opslag
@@ -160,11 +166,36 @@ pim_import_export:
           none: Geen opslag geconfigureerd
         file_path:
           label: Bestandspad
+          placeholder: mijnbestand.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: voorbeeld.nl
+        fingerprint:
+          label: Vingerafdruk host (optioneel)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: We hebben een SHA-512 of MD5 controlesom met hash-waarde en dubbele punt nodig voor de vingerafdruk van de host.
+        port:
+          label: Poort
+          placeholder: 22
+        username:
+          label: Inlognaam
+          placeholder: Voer uw inlognaam in
+        password:
+          label: Wachtwoord
+          placeholder: Voer het wachtwoord in
+        public_key:
+          label: Publieke sleutel
+        login_type:
+          label: Authenticatiemethode
+          password: 'Inlognaam / wachtwoord:'
+          private_key: Privésleutel
       validation:
         storage:
           unavailable_type: Deze opslag is niet beschikbaar, alleen {{ available_types }} zijn beschikbaar.
         file_path:
           unsupported_extension: Niet-ondersteunde bestandsextensie
+        fingerprint:
+          invalid_encoding: De vingerafdruk van de host moet een geldige SHA-512 of MD5 controlesom met hash-waarde en dubbele punt zijn.
       connection_checker:
         label: Verbindingsinstellingen testen
         exception: Er kan geen verbinding tot stand worden gebracht. Controleer de instellingen.

@@ -12,6 +12,7 @@ parameters:
 services:
     akeneo_batch.job_repository:
         class: '%akeneo_batch.job_repository.class%'
+        lazy: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_execution.class%'
@@ -23,6 +24,7 @@ services:
         class: '%akeneo_batch.job.job_instance_repository.class%'
         factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%akeneo_batch.entity.job_instance.class%']
+        lazy: true
         tags:
             - { name: 'pim_repository' }
 

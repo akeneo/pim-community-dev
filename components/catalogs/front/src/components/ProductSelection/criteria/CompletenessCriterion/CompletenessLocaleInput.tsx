@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Locale, SelectInput} from 'akeneo-design-system';
 import {CompletenessCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useChannelLocales} from '../../hooks/useChannelLocales';
+import {useChannelLocales} from '../../../../hooks/useChannelLocales';
 
 type Props = {
     state: CompletenessCriterionState;

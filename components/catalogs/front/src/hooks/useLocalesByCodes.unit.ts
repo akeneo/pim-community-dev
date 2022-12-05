@@ -1,10 +1,10 @@
-import {mockFetchResponses} from '../../../../tests/mockFetchResponses';
+import {mockFetchResponses} from '../../tests/mockFetchResponses';
 
 jest.unmock('./useLocalesByCodes');
 
 import {renderHook} from '@testing-library/react-hooks';
 
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 
 import fetchMock from 'jest-fetch-mock';
 import {useLocalesByCodes} from './useLocalesByCodes';
@@ -47,6 +47,28 @@ test('it fetches the locales', async () => {
                 label: '[de_DE]', // deactivated locales are displayed with brackets
             },
         ],
+        error: null,
+    });
+});
+
+test('it returns no locales when code list is empty', async () => {
+    const {result, waitForNextUpdate} = renderHook(() => useLocalesByCodes([]), {
+        wrapper: ReactQueryWrapper,
+    });
+
+    expect(result.current).toMatchObject({
+        isLoading: true,
+        isError: false,
+        data: undefined,
+        error: null,
+    });
+
+    await waitForNextUpdate();
+
+    expect(result.current).toMatchObject({
+        isLoading: false,
+        isError: false,
+        data: [],
         error: null,
     });
 });

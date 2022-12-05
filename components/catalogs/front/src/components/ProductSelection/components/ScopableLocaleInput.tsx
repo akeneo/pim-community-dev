@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Locale, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useChannelLocales} from '../hooks/useChannelLocales';
+import {useChannelLocales} from '../../../hooks/useChannelLocales';
 
 type LocalizableCriterionState = {
     scope: string | null;

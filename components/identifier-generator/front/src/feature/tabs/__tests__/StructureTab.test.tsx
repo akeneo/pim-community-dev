@@ -5,6 +5,7 @@ import {PROPERTY_NAMES, Structure} from '../../models';
 import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../structure/AddPropertyButton');
+jest.mock('../structure/DelimiterEdit');
 
 describe('StructureTab', () => {
   it('should render the structure tab', () => {
@@ -19,9 +20,10 @@ describe('StructureTab', () => {
         numberMin: 42,
       },
     ];
-    render(<StructureTab initialStructure={structure} delimiter={null} onStructureChange={jest.fn()} />);
+    render(<StructureTab initialStructure={structure} delimiter={'--'} onStructureChange={jest.fn()} />);
     expect(screen.getByText('pim_identifier_generator.structure.title')).toBeInTheDocument();
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
+    expect(screen.getByText('DelimiterEditMock')).toBeInTheDocument();
     expect(screen.getAllByText('AKN')).toHaveLength(2);
   });
 
@@ -44,7 +46,7 @@ describe('StructureTab', () => {
             string: 'original value',
           },
         ]}
-        delimiter={null}
+        initialDelimiter={null}
         onStructureChange={onStructureChange}
       />
     );
@@ -62,7 +64,7 @@ describe('StructureTab', () => {
     render(
       <StructureTab
         initialStructure={initialGenerator.structure}
-        delimiter={null}
+        initialDelimiter={null}
         onStructureChange={onStructureChange}
       />
     );
@@ -92,6 +94,52 @@ describe('StructureTab', () => {
     expect(screen.getByText('pim_identifier_generator.list.confirmation')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_common.cancel'));
     expect(screen.queryByText('pim_identifier_generator.list.confirmation')).not.toBeInTheDocument();
+  });
+
+  it('should toggle off the delimiter', () => {
+    const onStructureChange = jest.fn();
+    const onDelimiterChange = jest.fn();
+    render(
+      <StructureTab
+        initialStructure={[
+          {
+            type: PROPERTY_NAMES.FREE_TEXT,
+            string: 'original value',
+          },
+        ]}
+        delimiter={'--'}
+        onStructureChange={onStructureChange}
+        onDelimiterChange={onDelimiterChange}
+      />
+    );
+
+    expect(screen.getByTestId('current_delimiter').textContent).toEqual('--');
+    expect(screen.getByText('Toggle Delimiter')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Toggle Delimiter'));
+    expect(onDelimiterChange).toBeCalledWith(null);
+  });
+
+  it('should toggle on the delimiter', () => {
+    const onStructureChange = jest.fn();
+    const onDelimiterChange = jest.fn();
+    render(
+      <StructureTab
+        initialStructure={[
+          {
+            type: PROPERTY_NAMES.FREE_TEXT,
+            string: 'original value',
+          },
+        ]}
+        delimiter={null}
+        onStructureChange={onStructureChange}
+        onDelimiterChange={onDelimiterChange}
+      />
+    );
+
+    expect(screen.getByTestId('current_delimiter').textContent).toEqual('');
+    expect(screen.getByText('Toggle Delimiter')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Toggle Delimiter'));
+    expect(onDelimiterChange).toBeCalledWith('-');
   });
 
   it('should not display add property button when limit is reached', () => {

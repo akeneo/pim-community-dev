@@ -77,6 +77,7 @@ pim_common:
   updated: 已更新
   view: 查看
   yes: "是"
+  uuid: uuid
 pim_enrich:
   #ACLs
   acl:

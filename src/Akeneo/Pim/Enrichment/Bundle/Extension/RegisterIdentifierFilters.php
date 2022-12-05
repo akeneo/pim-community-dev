@@ -58,6 +58,7 @@ class RegisterIdentifierFilters
                 'field_options' => [
                     'attr' => [
                         'choice_list' => true,
+                        'empty_choice' => true,
                     ],
                 ],
             ],

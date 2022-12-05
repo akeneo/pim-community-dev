@@ -10,7 +10,6 @@ use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -19,7 +18,6 @@ use Ramsey\Uuid\Uuid;
  */
 class GetProductUuidsQueryTest extends IntegrationTestCase
 {
-    private ?Connection $connection;
     private ?GetCatalogQueryInterface $getCatalogQuery;
     private ?GetProductUuidsQueryInterface $query;
 
@@ -29,7 +27,6 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->connection = self::getContainer()->get(Connection::class);
         $this->getCatalogQuery = self::getContainer()->get(GetCatalogQueryInterface::class);
         $this->query = self::getContainer()->get(GetProductUuidsQueryInterface::class);
     }
@@ -39,15 +36,18 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
         $this->createProduct(Uuid::fromString('c07ad6f1-78a1-4add-84af-3c1d7d8484a3'), [new SetEnabled(false)]);
 
@@ -65,15 +65,18 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
         $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
         $this->createProduct(Uuid::fromString('c07ad6f1-78a1-4add-84af-3c1d7d8484a3'), [new SetEnabled(true)]);
@@ -100,17 +103,22 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'name',
-                'operator' => Operator::EQUALS,
-                'value' => 'Bleu clair',
-                'scope' => 'print',
-                'locale' => 'fr_FR',
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'name',
+                    'operator' => Operator::EQUALS,
+                    'value' => 'Bleu clair',
+                    'scope' => 'print',
+                    'locale' => 'fr_FR',
+                ],
             ],
-        ]);
+        );
+
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
             new SetTextValue('name', 'mobile', 'en_US', 'Blue'),
             new SetTextValue('name', 'print', 'en_US', 'Light blue'),
@@ -135,15 +143,18 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
@@ -165,15 +176,18 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
@@ -195,15 +209,18 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
@@ -225,15 +242,18 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $this->createUser('owner');
         $this->logAs('owner');
 
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-        ]);
+        );
 
         $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);

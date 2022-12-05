@@ -36,10 +36,10 @@ class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
         $idUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
         $idJP = '34478398-d77b-44d6-8a71-4d9ba4cb2c3b';
 
-        $this->createCatalog($idUS, 'Store US', 'owner');
-        $this->createCatalog($idFR, 'Store FR', 'owner');
+        $this->createCatalog($idUS, 'Store US', 'owner', isEnabled: false);
+        $this->createCatalog($idFR, 'Store FR', 'owner', isEnabled: false);
         $this->createCatalog($idJP, 'Store JP', 'another_user');
-        $this->createCatalog($idUK, 'Store UK', 'owner');
+        $this->createCatalog($idUK, 'Store UK', 'owner', isEnabled: false);
 
         $resultFirstPage = $this->query->execute('owner', 0, 2);
         $expectedFirstPage = [

@@ -36,3 +36,11 @@ akeneo_catalogs:
         unknown: '通貨 "{{ currency_name }}" が無効になっています。通貨設定を確認するか、このフィルタを削除してください。'
       locale:
         unknown: 'ロケール "{{ locale_name }}" が無効になっています。ロケール設定を確認するか、このフィルタを削除してください。'
+    product_mapping:
+      source:
+        channel:
+          not_empty: 'このチャンネルは空である必要があります。'
+          empty: 'このチャンネルは空にできません。'
+        locale:
+          not_empty: 'このロケールは空である必要があります。'
+          empty: 'このロケールは空にできません。'

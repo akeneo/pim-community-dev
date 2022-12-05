@@ -36,3 +36,11 @@ akeneo_catalogs:
         unknown: 'La moneda «{{ currency_name }}» ha sido desactivada. Compruebe la configuración de sus divisas o elimine este filtro.'
       locale:
         unknown: 'La configuración regional «{{ locale_name }}» ha sido desactivada. Compruebe la configuración de su configuración regional o elimine este filtro.'
+    product_mapping:
+      source:
+        channel:
+          not_empty: 'Este canal debe estar vacío.'
+          empty: 'Este canal no debe estar vacío.'
+        locale:
+          not_empty: 'Esta configuración regional debe estar vacía.'
+          empty: 'Esta configuración regional no debe estar vacía.'

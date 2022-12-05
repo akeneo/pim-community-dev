@@ -17,6 +17,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\DirectoryListing;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemOperator;
+use League\Flysystem\UnableToReadFile;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -137,6 +138,72 @@ class FileWriterArchiverSpec extends ObjectBehavior
             \fclose($remoteStream);
         }
         \unlink('/tmp/spec/export.csv');
+    }
+
+    function it_log_an_error_when_cannot_fetch_writing_file(
+        FilesystemOperator $filesystem,
+        JobRegistry $jobRegistry,
+        FilesystemProvider $filesystemProvider,
+        FilesystemOperator $catalogFilesystem,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $itemStep,
+        LoggerInterface $logger
+    ) {
+        $jobInstance->getJobName()->willReturn('my_job_name');
+        $jobInstance->getType()->willReturn('export');
+        $jobExecution->getId()->willReturn(42);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobRegistry->get('my_job_name')->willReturn($job);
+
+        $writer = new class implements ItemWriterInterface, ArchivableWriterInterface {
+            public function getWrittenFiles(): array {
+                return [
+                    WrittenFileInfo::fromFileStorage(
+                        'a/b/c/non_existing_file.png',
+                        'catalogStorage',
+                        'files/non_existing_file.png'
+                    ),
+                    WrittenFileInfo::fromFileStorage(
+                        'a/b/c/file.png',
+                        'catalogStorage',
+                        'files/my_media.png'
+                    ),
+                ];
+            }
+            public function getPath(): string
+            {
+                return '/tmp/spec/export.csv';
+            }
+            public function write($items): void {}
+        };
+
+        $itemStep->getWriter()->willReturn($writer);
+        $job->getSteps()->willReturn([$itemStep]);
+        $this->supports($jobExecution)->shouldReturn(true);
+
+        $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($catalogFilesystem);
+        $remoteStream = \tmpfile();
+        $catalogFilesystem->readStream('a/b/c/non_existing_file.png')->willThrow(UnableToReadFile::class);
+        $catalogFilesystem->readStream('a/b/c/file.png')->willReturn($remoteStream);
+
+        $filesystem->writeStream(
+            'export/my_job_name/42/output/files/my_media.png',
+            $remoteStream
+        )->shouldBeCalled();
+
+        $filesystem->writeStream(
+            'export/my_job_name/42/output/non_existing_file.csv',
+            Argument::type('resource')
+        )->shouldNotBeCalled();
+
+        $logger->warning(
+            'The remote file could not be read from the remote filesystem',
+            Argument::type('array')
+        )->shouldBeCalled();
+
+        $this->archive($jobExecution);
     }
 
     function it_gets_the_archives_for_a_job_execution(
