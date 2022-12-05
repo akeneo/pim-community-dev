@@ -14,6 +14,7 @@ import translations from './translations.json';
 import {FakePIM} from './FakePIM';
 import {Attribute, AssetFamily, AssociationType, MeasurementFamily} from './feature/configuration/models';
 import {FetcherContext} from './feature/configuration/contexts';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 const baseFetcher = async (route: string) => {
   const response = await fetch(route);
@@ -92,14 +93,25 @@ const FetcherProvider: FC = ({children}) => {
   return <FetcherContext.Provider value={fetcherValue}>{children}</FetcherContext.Provider>;
 };
 
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10 * 1000, // 10s
+      cacheTime: 5 * 60 * 1000, // 5m
+    },
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
-        <FetcherProvider>
-          <FakePIM />
-        </FetcherProvider>
-      </MicroFrontendDependenciesProvider>
+      <QueryClientProvider client={client}>
+        <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
+          <FetcherProvider>
+            <FakePIM />
+          </FetcherProvider>
+        </MicroFrontendDependenciesProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -71,16 +71,12 @@ class GetProductIdentifiersAction
 
         $query = new ListProductsQuery();
 
-        if ($request->query->has('locales')) {
-            $query->localeCodes = explode(',', $request->query->get('locales'));
-        }
-
         $query->search = $this->generateQuerySearch($platformConfigurationCode, $catalogCode);
 
-        $query->channelCode = $request->query->get('scope', null);
+        $query->channelCode = null;
         $query->limit = self::PAGE_SIZE;
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
-        $query->searchLocaleCode = $request->query->get('search_locale', null);
+        $query->searchLocaleCode = null;
         $query->searchAfter = $request->query->get('search_after', null);
         $query->userId = $this->getUser()->getId();
 

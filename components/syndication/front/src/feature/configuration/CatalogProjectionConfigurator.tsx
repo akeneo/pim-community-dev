@@ -4,7 +4,8 @@ import React, {useCallback} from 'react';
 import styled from 'styled-components';
 import {DataMappingConfigurator} from './DataMappingConfigurator';
 import {FilterConfigurator} from './FilterConfigurator';
-import {CatalogProjection, RequirementCollection, DataMapping, Filter} from './models';
+import {CatalogProjection, RequirementCollection, DataMapping} from './models';
+import {ProductSelectionValues} from '@akeneo-pim-community/catalogs';
 
 const Container = styled.div`
   & > header {
@@ -40,7 +41,7 @@ const CatalogProjectionConfigurator = ({
   );
 
   const handleFiltersConfigurationChange = useCallback(
-    (filters: Filter[]) => {
+    (filters: ProductSelectionValues) => {
       onCatalogProjectionChange({...catalogProjection, filters});
     },
     [catalogProjection, onCatalogProjectionChange]

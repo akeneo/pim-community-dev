@@ -1,9 +1,16 @@
 import {DataMapping} from './DataMapping';
-import {CompletenessFilterType, QualityScoreFilterType, CategoryFilterType, EnabledFilterType} from '../components';
 import {uuid} from 'akeneo-design-system';
 
-type Filter = CompletenessFilterType | QualityScoreFilterType | CategoryFilterType | EnabledFilterType;
-
+type Filter = {
+  field: string;
+  operator: string;
+  value: string;
+  uuid?: string;
+  context?: {
+    locale?: string;
+    scope?: string;
+  };
+};
 type CatalogProjectionCollection = CatalogProjection[];
 
 type CatalogProjection = {
@@ -22,12 +29,10 @@ const getDefaultCatalogProjection = (code: string): CatalogProjection => ({
   dataMappings: [],
 });
 
-const updateCatalogProjectionFilter = (catalogProjection: CatalogProjection, filter: Filter) => {
-  const updatedFilters = [...catalogProjection.filters.filter(({field}) => field === filter.field), filter];
-
+const updateCatalogProjectionFilter = (catalogProjection: CatalogProjection, filters: Filter[]) => {
   return {
     ...catalogProjection,
-    filters: updatedFilters,
+    filters,
   };
 };
 

@@ -1,15 +1,10 @@
-import React from 'react';
-import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
-import {Filter} from './models';
-import {SectionTitle} from 'akeneo-design-system';
+import React, {useMemo, useCallback} from 'react';
 import {useValidationErrors} from './contexts';
-import {
-  CategoryFilter,
-  CategoryFilterType,
-  createDefaultCagoriesFilter,
-} from './components/CategorySelector/CategoryFilter';
-import {EnabledFilter, EnabledFilterType} from './components/EnabledFilter/EnabledFilter';
-import {CompletenessFilter, CompletenessFilterType, createDefaultCompletenessFilter} from '.';
+
+import {ProductSelection, ProductSelectionValues} from '@akeneo-pim-community/catalogs';
+import {Filter} from '../configuration/models';
+
+export const generateRandomId = (): string => (Math.random() + 1).toString(36).substring(7);
 
 type FilterConfiguratorProps = {
   filters: Filter[];
@@ -17,61 +12,45 @@ type FilterConfiguratorProps = {
 };
 
 const FilterConfigurator = ({filters, onFiltersConfigurationChange}: FilterConfiguratorProps) => {
-  const translate = useTranslate();
   const validationErrors = useValidationErrors(`[filters]`, false);
 
-  return (
-    <>
-      <SectionTitle>
-        <SectionTitle.Title>{translate('akeneo.syndication.filters.completeness.label')}</SectionTitle.Title>
-      </SectionTitle>
-      <CompletenessFilter
-        availableOperators={[
-          'ALL',
-          'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
-          'GREATER OR EQUALS THAN ON ALL LOCALES',
-          'LOWER THAN ON ALL LOCALES',
-        ]}
-        filter={
-          (filters.find(filter => filter.field === 'completeness') as CompletenessFilterType) ??
-          createDefaultCompletenessFilter()
-        }
-        onChange={(updatedFilter: Filter) => {
-          onFiltersConfigurationChange([...filters.filter(filter => filter.field !== 'completeness'), updatedFilter]);
-        }}
-        validationErrors={filterErrors(validationErrors, '[completeness]')}
-      />
-      <SectionTitle>
-        <SectionTitle.Title>{translate('akeneo.syndication.filters.categories.label')}</SectionTitle.Title>
-      </SectionTitle>
-      <CategoryFilter
-        filter={
-          (filters.find(filter => filter.field === 'categories') as CategoryFilterType) ?? createDefaultCagoriesFilter()
-        }
-        onChange={(updatedFilter: Filter) => {
-          onFiltersConfigurationChange([...filters.filter(filter => filter.field !== 'categories'), updatedFilter]);
-        }}
-        validationErrors={filterErrors(validationErrors, '[categories]')}
-      />
-      <SectionTitle>
-        <SectionTitle.Title>{translate('akeneo.syndication.filters.enabled.label')}</SectionTitle.Title>
-      </SectionTitle>
-      <EnabledFilter
-        filter={(filters.find(filter => filter.field === 'enabled') as EnabledFilterType) ?? undefined}
-        onChange={(updatedFilter: Filter | undefined) => {
-          const previousFilters = filters.filter(filter => filter.field !== 'enabled');
-
-          if (undefined === updatedFilter) {
-            onFiltersConfigurationChange(previousFilters);
-            return;
-          }
-
-          onFiltersConfigurationChange([...previousFilters, updatedFilter as EnabledFilterType]);
-        }}
-        validationErrors={filterErrors(validationErrors, '[enabled]')}
-      />
-    </>
+  const criteria = useMemo(
+    () =>
+      Object.fromEntries(
+        filters.map((filter: Filter) => [
+          filter.uuid ?? generateRandomId(),
+          {...filter, locale: filter?.context?.locale ?? null, scope: filter?.context?.scope ?? null},
+        ])
+      ),
+    [filters]
   );
+
+  const handleCriteriaChange = useCallback(
+    (criteria: ProductSelectionValues) => {
+      const updatedFilters = Object.keys(criteria).map((filterKey: string) => {
+        const filter = criteria[filterKey];
+
+        return {
+          field: filter.field,
+          uuid: filterKey,
+          operator: filter.operator,
+          value: filter.value,
+          context: {
+            locale: filter.locale ?? null,
+            channel: filter.scope ?? null,
+            scope: filter.scope ?? null,
+          },
+        };
+      });
+
+      if (JSON.stringify(updatedFilters) !== JSON.stringify(filters)) {
+        onFiltersConfigurationChange(updatedFilters);
+      }
+    },
+    [onFiltersConfigurationChange, filters]
+  );
+
+  return <ProductSelection criteria={criteria} onChange={handleCriteriaChange} errors={validationErrors} />;
 };
 
 export {FilterConfigurator};
