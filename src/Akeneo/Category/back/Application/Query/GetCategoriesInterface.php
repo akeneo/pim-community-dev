@@ -17,5 +17,6 @@ interface GetCategoriesInterface
      * @return array<Category>
      */
     public function execute(ExternalApiSqlParameters $sqlParameters): array;
+
     public function count(ExternalApiSqlParameters $parameters): int|null;
 }
