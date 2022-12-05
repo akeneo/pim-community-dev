@@ -25,9 +25,10 @@ export const CountSelectedProductsByCriteria: FC<Props> = ({criteria}) => {
     const translate = useTranslate();
     const {data: count} = useCountProductsInSelectionCriteria(criteria);
 
-    const label = (null === count || undefined === count) ?
-        translate('akeneo_catalogs.product_selection.count.error') :
-        translate('akeneo_catalogs.product_selection.count.products', {count: count.toString()}, count);
+    const label =
+        null === count || undefined === count
+            ? translate('akeneo_catalogs.product_selection.count.error')
+            : translate('akeneo_catalogs.product_selection.count.products', {count: count.toString()}, count);
 
     return (
         <Container>
