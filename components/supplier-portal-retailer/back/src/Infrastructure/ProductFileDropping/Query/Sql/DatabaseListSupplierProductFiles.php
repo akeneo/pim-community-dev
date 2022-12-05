@@ -19,7 +19,7 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
         string $supplierIdentifier,
         int $page = 1,
         string $search = '',
-        ?ProductFileImportStatus $status = null
+        ?ProductFileImportStatus $status = null,
     ): array {
         $page = max($page, 1);
 
@@ -64,7 +64,7 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
                 'toImportStatus' => ProductFileImportStatus::TO_IMPORT->value,
                 'status' => null === $status ? array_column(
                     ProductFileImportStatus::cases(),
-                    'value'
+                    'value',
                 ) : [$status->value],
                 'offset' => ListSupplierProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
                 'limit' => ListSupplierProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,

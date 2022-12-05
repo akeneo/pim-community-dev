@@ -61,7 +61,7 @@ final class DatabaseListProductFiles implements ListProductFiles
                 'toImportStatus' => ProductFileImportStatus::TO_IMPORT->value,
                 'status' => null === $status ? array_column(
                     ProductFileImportStatus::cases(),
-                    'value'
+                    'value',
                 ) : [$status->value],
                 'offset' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
                 'limit' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,

@@ -18,6 +18,6 @@ interface ListSupplierProductFiles
         string $supplierIdentifier,
         int $page = 1,
         string $search = '',
-        ?ProductFileImportStatus $status = null
+        ?ProductFileImportStatus $status = null,
     ): array;
 }

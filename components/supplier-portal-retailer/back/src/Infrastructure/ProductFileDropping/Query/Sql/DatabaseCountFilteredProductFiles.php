@@ -34,7 +34,7 @@ final class DatabaseCountFilteredProductFiles implements CountFilteredProductFil
                 'toImportStatus' => ProductFileImportStatus::TO_IMPORT->value,
                 'status' => null === $status ? array_column(
                     ProductFileImportStatus::cases(),
-                    'value'
+                    'value',
                 ) : [$status->value],
             ],
             [

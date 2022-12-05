@@ -156,7 +156,7 @@ final class DatabaseGetSupplierProductFilesCountIntegration extends SqlIntegrati
                 '14ce8069-8da1-4986-872f-311737f46f00',
                 '',
                 ProductFileImportStatus::TO_IMPORT
-            )
+            ),
         );
         static::assertSame(
             1,
@@ -164,7 +164,7 @@ final class DatabaseGetSupplierProductFilesCountIntegration extends SqlIntegrati
                 '24ce8069-8da1-4986-872f-311737f46f00',
                 '',
                 ProductFileImportStatus::IN_PROGRESS
-            )
+            ),
         );
         static::assertSame(
             1,
@@ -172,7 +172,7 @@ final class DatabaseGetSupplierProductFilesCountIntegration extends SqlIntegrati
                 '14ce8069-8da1-4986-872f-311737f46f00',
                 '',
                 ProductFileImportStatus::COMPLETED
-            )
+            ),
         );
         static::assertSame(
             1,
@@ -180,7 +180,7 @@ final class DatabaseGetSupplierProductFilesCountIntegration extends SqlIntegrati
                 '24ce8069-8da1-4986-872f-311737f46f00',
                 '',
                 ProductFileImportStatus::FAILED
-            )
+            ),
         );
         static::assertSame(2, $this->get(GetSupplierProductFilesCount::class)('14ce8069-8da1-4986-872f-311737f46f00'));
         static::assertSame(2, $this->get(GetSupplierProductFilesCount::class)('24ce8069-8da1-4986-872f-311737f46f00'));

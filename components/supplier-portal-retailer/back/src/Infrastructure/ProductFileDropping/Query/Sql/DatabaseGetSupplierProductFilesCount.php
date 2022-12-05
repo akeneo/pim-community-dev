@@ -18,8 +18,7 @@ final class DatabaseGetSupplierProductFilesCount implements GetSupplierProductFi
         string $supplierIdentifier,
         string $search = '',
         ?ProductFileImportStatus $status = null,
-    ): int
-    {
+    ): int {
         return (int) $this->connection->executeQuery(
             <<<SQL
             SELECT COUNT(*) FROM 
@@ -39,7 +38,7 @@ final class DatabaseGetSupplierProductFilesCount implements GetSupplierProductFi
                 'toImportStatus' => ProductFileImportStatus::TO_IMPORT->value,
                 'status' => null === $status ? array_column(
                     ProductFileImportStatus::cases(),
-                    'value'
+                    'value',
                 ) : [$status->value],
             ],
             [

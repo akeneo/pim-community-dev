@@ -11,6 +11,6 @@ interface GetSupplierProductFilesCount
     public function __invoke(
         string $supplierIdentifier,
         string $search = '',
-        ?ProductFileImportStatus $status = null
+        ?ProductFileImportStatus $status = null,
     ): int;
 }
