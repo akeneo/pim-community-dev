@@ -13,7 +13,3 @@ services:
             - '@Akeneo\Category\Application\Query\GetAttribute'
         tags:
             - { name: 'pim.category.user_intent_factory' }
-
-    Akeneo\Category\Domain\UserIntent\Factory\PermissionUserIntentFactory:
-        tags:
-            - { name: 'pim.category.user_intent_factory' }
