@@ -6,7 +6,7 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Doctrine\DBAL\Connection;
 
 /**

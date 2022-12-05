@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Handler;
 
-use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

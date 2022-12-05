@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Handler\SearchFilters;
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
-use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

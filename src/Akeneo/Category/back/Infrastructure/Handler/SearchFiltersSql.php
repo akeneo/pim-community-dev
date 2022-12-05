@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Handler;
 
 use Akeneo\Category\Application\Handler\SearchFilters;
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 use Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator;
 use Doctrine\DBAL\Connection;
 

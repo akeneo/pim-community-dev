@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Infrastructure\DTO;
+namespace Akeneo\Category\Application\Query;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -10,6 +10,10 @@ namespace Akeneo\Category\Infrastructure\DTO;
  */
 class ExternalApiSqlParameters
 {
+    /**
+     * @param array<string, mixed>|null $params
+     * @param array<string, int>|null $types
+     */
     public function __construct(
         private ?string $sqlWhere = null,
         private ?array $params = null,
@@ -18,6 +22,9 @@ class ExternalApiSqlParameters
     ) {
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function getParams(): ?array
     {
         return $this->params;
@@ -33,6 +40,9 @@ class ExternalApiSqlParameters
         return $this->limitAndOffset;
     }
 
+    /**
+     * @return array<string, int>|null
+     */
     public function getTypes(): ?array
     {
         return $this->types;
@@ -45,6 +55,9 @@ class ExternalApiSqlParameters
         return $this;
     }
 
+    /**
+     * @param array<string, mixed>|null $params
+     */
     public function setParams(?array $params): ExternalApiSqlParameters
     {
         $this->params = $params;
@@ -52,6 +65,9 @@ class ExternalApiSqlParameters
         return $this;
     }
 
+    /**
+     * @param array<string, int>|null $types
+     */
     public function setTypes(?array $types): ExternalApiSqlParameters
     {
         $this->types = $types;

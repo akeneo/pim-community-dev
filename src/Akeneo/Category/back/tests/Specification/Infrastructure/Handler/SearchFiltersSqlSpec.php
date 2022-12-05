@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Handler;
 
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 use Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator;
 use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
@@ -31,7 +31,7 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         );
     }
 
-    function it_generates_where_by_parent(
+    function it_generates_correct_sqlWhere_for_parent_filter(
         ExternalApiSearchFiltersValidator $searchFiltersValidator,
         GetCategoryInterface $getCategory,
     )
@@ -75,7 +75,7 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         $this->build($searchFilters)->shouldBeLike($expected);
     }
 
-    function it_generates_where_is_root_true(
+    function it_generates_correct_sqlWhere_for_root_filter_set_to_true(
         ExternalApiSearchFiltersValidator $searchFiltersValidator,
     )
     {
@@ -99,7 +99,7 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         $this->build($searchFilters)->shouldBeLike($expected);
     }
 
-    function it_generates_where_by_is_root_false(
+    function it_generates_correct_sqlWhere_for_root_filter_set_to_false(
         ExternalApiSearchFiltersValidator $searchFiltersValidator,
     )
     {
@@ -123,7 +123,7 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         $this->build($searchFilters)->shouldBeLike($expected);
     }
 
-    function it_generates_where_by_parent_and_is_root(
+    function it_generates_correct_sqlWhere_for_parent_and_is_root_filters(
         ExternalApiSearchFiltersValidator $searchFiltersValidator,
         GetCategoryInterface $getCategory,
     )
@@ -174,7 +174,7 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         $this->build($searchFilters)->shouldBeLike($expected);
     }
 
-    function it_generates_where_in_codes(
+    function it_generates_correct_sqlWhere_for_category_codes_filter(
         ExternalApiSearchFiltersValidator $searchFiltersValidator,
     )
     {
@@ -194,8 +194,8 @@ class SearchFiltersSqlSpec extends ObjectBehavior
             sqlWhere: 'category.code IN (:code_0)',
             params: [
                 'code_0' => [
-                    "master",
-                    "category1",
+                    'master',
+                    'category1',
                 ]
             ],
             types: [
@@ -206,7 +206,7 @@ class SearchFiltersSqlSpec extends ObjectBehavior
         $this->build($searchFilters)->shouldBeLike($expected);
     }
 
-    function it_generates_where_for_greater_than_date(
+    function it_generates_correct_sqlWhere_for_greater_than_date_filter(
         ExternalApiSearchFiltersValidator $searchFiltersValidator,
     )
     {

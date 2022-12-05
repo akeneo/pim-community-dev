@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
-use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
 use Doctrine\DBAL\Connection;
 
 /**

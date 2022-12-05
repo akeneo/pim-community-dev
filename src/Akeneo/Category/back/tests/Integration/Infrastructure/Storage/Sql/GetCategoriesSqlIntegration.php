@@ -7,7 +7,7 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
-use Akeneo\Category\Infrastructure\DTO\ExternalApiSqlParameters;
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 
