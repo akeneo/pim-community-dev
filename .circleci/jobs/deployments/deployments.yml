@@ -588,6 +588,8 @@ jobs:
               echo export CLOUD_FUNCTION_NAME=${CLOUD_FUNCTION_NAME} >> ${BASH_ENV}
               echo export CLOUD_FUNCTION_BUCKET=${CLOUD_FUNCTION_BUCKET} >> ${BASH_ENV}
               echo export CLOUD_FUNCTION_GSA=${CLOUD_FUNCTION_GSA} >> ${BASH_ENV}
+              echo export TTL_PIM=${TTL_PIM} >> $BASH_ENV
+              echo export TTL_TENANT=${TTL_TENANT} >> $BASH_ENV
         - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${PIM_NAMESPACE}"
@@ -640,6 +642,8 @@ jobs:
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.destination.namespace ${PIM_NAMESPACE}
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.name ${PIM_NAMESPACE}
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.labels.name ${PIM_NAMESPACE}
+              # https://codeberg.org/hjacobs/kube-janitor#ttl
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.annotations."janitor/ttl" "${TTL_PIM}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.source.helm.valueFiles[+] values-ci.yaml
               # Remove automated SYNC
               yq d -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.syncPolicy.automated
