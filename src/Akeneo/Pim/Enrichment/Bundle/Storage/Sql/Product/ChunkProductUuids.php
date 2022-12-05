@@ -30,8 +30,16 @@ class ChunkProductUuids
         // DISTINCT is trick to force to materialize the CTE before ordering the results
         $query = <<<SQL
             WITH product_size as (
-                SELECT /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */ DISTINCT uuid, JSON_STORAGE_SIZE(raw_values) as size 
-                FROM pim_catalog_product
+                SELECT /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */ DISTINCT 
+                    uuid, 
+                    (
+                        JSON_STORAGE_SIZE(product.raw_values) +
+                        COALESCE(JSON_STORAGE_SIZE(sub_product_model.raw_values), 0) +
+                        COALESCE(JSON_STORAGE_SIZE(root_product_model.raw_values), 0) 
+                    ) as size
+                FROM pim_catalog_product product
+                LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
+                LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
                 WHERE uuid IN (:uuids)
             )
             SELECT uuid, size

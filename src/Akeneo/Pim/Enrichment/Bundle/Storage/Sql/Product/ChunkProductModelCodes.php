@@ -28,9 +28,12 @@ class ChunkProductModelCodes
         // DISTINCT is trick to force to materialize the CTE before ordering the results
         $query = <<<SQL
             WITH product_model_size as (
-                SELECT /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */ DISTINCT code, JSON_STORAGE_SIZE(raw_values) as size 
-                FROM pim_catalog_product_model
-                WHERE code IN (:codes)
+                SELECT /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */ DISTINCT 
+                    product_model.code, 
+                    (JSON_STORAGE_SIZE(product_model.raw_values) + COALESCE(JSON_STORAGE_SIZE(root.raw_values), 0)) as size 
+                FROM pim_catalog_product_model product_model
+                LEFT JOIN pim_catalog_product_model root on root.id = product_model.parent_id
+                WHERE product_model.code IN (:codes)
             )
             SELECT code, size
             FROM product_model_size
