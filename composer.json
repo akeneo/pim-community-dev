@@ -71,7 +71,7 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "ext-zip": "*",
-        "akeneo/oauth-server-bundle": "dev-RAB-1149",
+        "akeneo/oauth-server-bundle": "^v3.0.0",
         "ass/xmlsecurity": "1.1.1",
         "aws/aws-sdk-php": "3.172",
         "doctrine/annotations": "^1.13.2",

@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1a4185a41c16ce106746c51650ce35a",
+    "content-hash": "8bfeebea98bc3a960ead74204ca510fc",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
-            "version": "dev-RAB-1149",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/FOSOAuthServerBundle.git",
-                "reference": "a8345541657ad15eec857c0fb582953e54ebf8c3"
+                "reference": "3062ee41922f67db78a251581b69b43d896f8e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/FOSOAuthServerBundle/zipball/a8345541657ad15eec857c0fb582953e54ebf8c3",
-                "reference": "a8345541657ad15eec857c0fb582953e54ebf8c3",
+                "url": "https://api.github.com/repos/akeneo/FOSOAuthServerBundle/zipball/3062ee41922f67db78a251581b69b43d896f8e8a",
+                "reference": "3062ee41922f67db78a251581b69b43d896f8e8a",
                 "shasum": ""
             },
             "require": {
@@ -91,9 +91,9 @@
                 "server"
             ],
             "support": {
-                "source": "https://github.com/akeneo/FOSOAuthServerBundle/tree/RAB-1149"
+                "source": "https://github.com/akeneo/FOSOAuthServerBundle/tree/v3.0.0"
             },
-            "time": "2022-11-24T14:50:08+00:00"
+            "time": "2022-12-05T11:40:53+00:00"
         },
         {
             "name": "ass/xmlsecurity",
@@ -18689,9 +18689,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "akeneo/oauth-server-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
