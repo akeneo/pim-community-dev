@@ -6,12 +6,14 @@ import {Delimiter, Property, Structure} from '../models';
 import {Styled} from '../components/Styled';
 import {TranslationWithLink} from '../components';
 import styled from 'styled-components';
+import {Violation} from '../validators';
 
 type StructureTabProps = {
   initialStructure: Structure;
   delimiter: Delimiter | null;
   onStructureChange: (structure: Structure) => void;
   onDelimiterChange: (delimiter: Delimiter | null) => void;
+  validationErrors: Violation[];
 };
 
 type PropertyId = string;
@@ -28,6 +30,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
   delimiter,
   onStructureChange,
   onDelimiterChange,
+  validationErrors,
 }) => {
   const translate = useTranslate();
   const [selectedPropertyId, setSelectedPropertyId] = useState<PropertyId | undefined>();
@@ -52,6 +55,11 @@ const StructureTab: React.FC<StructureTabProps> = ({
         return property;
       });
     };
+
+  const displayedErrors = useMemo(
+    () => validationErrors?.map(({message}) => message).filter((value, index, self) => self.indexOf(value) === index),
+    [validationErrors]
+  );
 
   const onPropertyChange = (property: Property) => {
     if (selectedProperty) {
@@ -96,6 +104,15 @@ const StructureTab: React.FC<StructureTabProps> = ({
           linkKey={'pim_identifier_generator.structure.helper_link'}
         />
       </Helper>
+      {displayedErrors?.length > 0 && (
+        <Styled.MainErrorHelper level="error">
+          <Styled.ErrorList>
+            {displayedErrors.map(message => (
+              <li key={message}>{message}</li>
+            ))}
+          </Styled.ErrorList>
+        </Styled.MainErrorHelper>
+      )}
       <Styled.TwoColumns withoutSecondColumn={!selectedProperty}>
         <div>
           <SectionTitle>
@@ -114,6 +131,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
                   selectedId={selectedPropertyId}
                   onReorder={onReorder}
                   onDelete={onDeleteProperty}
+                  validationErrors={validationErrors}
                 />
                 <DelimiterEdit
                   delimiter={delimiter}
