@@ -268,8 +268,6 @@ JSON;
 
     /**
      * @group enriched_category
-     *
-     * @throws \JsonException
      */
     public function testListCategoriesWithValues(): void
     {
