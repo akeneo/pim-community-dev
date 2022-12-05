@@ -59,14 +59,20 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         [selectedTarget, onChange, productMapping]
     );
 
-    const targets = Object.entries(productMapping ?? {});
-    // reorder uuid in first line
-    targets.forEach(function (target, i) {
-        if ('uuid' === target[0]) {
-            targets.splice(i, 1);
-            targets.unshift(target);
-        }
-    });
+    const buildTargetsWithUuidFirst = function (productMapping: {(key: string): Source} | {}): [string, Source][] {
+        const targets = Object.entries(productMapping);
+
+        targets.forEach(function (target, i) {
+            if ('uuid' === target[0]) {
+                targets.splice(i, 1);
+                targets.unshift(target);
+            }
+        });
+
+        return targets;
+    };
+
+    const targets = buildTargetsWithUuidFirst(productMapping ?? {});
 
     const targetsWithErrors = Object.keys(
         Object.fromEntries(
