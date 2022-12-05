@@ -18,6 +18,7 @@ import {MonitoringSettings} from '@src/model/Apps/monitoring-settings';
 import {ConnectedAppErrorMonitoring} from '@src/connect/components/ConnectedApp/ErrorMonitoring/ConnectedAppErrorMonitoring';
 import {CatalogList} from '@akeneo-pim-community/catalogs';
 import {SecurityContext} from '@src/shared/security';
+import {OpenAppButton} from "@src/connect/components/ConnectedApp/OpenAppButton";
 
 beforeEach(() => {
     window.sessionStorage.clear();
@@ -808,11 +809,9 @@ test('The Open App button is disabled when the user doesnt have the permission t
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <ConnectedAppContainer connectedApp={connectedApp} />
+            <OpenAppButton connectedApp={connectedApp} />
         </SecurityContext.Provider>
     );
-
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
     const openAppButton = expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')
@@ -845,11 +844,9 @@ test('The Open App button is disabled for test app when the user doesnt have the
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <ConnectedAppContainer connectedApp={{...connectedApp, is_test_app: true}} />
+            <OpenAppButton connectedApp={{...connectedApp, is_test_app: true}} />
         </SecurityContext.Provider>
     );
-
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
     const openAppButton = expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')
@@ -882,11 +879,9 @@ test('The Open App button is enabled when the user has the permission to manage 
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <ConnectedAppContainer connectedApp={connectedApp} />
+            <OpenAppButton connectedApp={connectedApp} />
         </SecurityContext.Provider>
     );
-
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
     const openAppButton = expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')
@@ -922,11 +917,9 @@ test('The Open App button is enabled for test app when the user has the permissi
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <ConnectedAppContainer connectedApp={{...connectedApp, is_test_app: true}} />
+            <OpenAppButton connectedApp={{...connectedApp, is_test_app: true}} />
         </SecurityContext.Provider>
     );
-
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
     const openAppButton = expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')
@@ -953,9 +946,7 @@ test('The Open App button is in warning state for test app when the connectedApp
 
     (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
 
-    renderWithProviders(<ConnectedAppContainer connectedApp={{...connectedApp, has_outdated_scopes: true}} />);
-
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
+    renderWithProviders(<OpenAppButton connectedApp={{...connectedApp, has_outdated_scopes: true}} />);
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')
@@ -975,9 +966,7 @@ test('The Open App button is in warning state for test app when the connectedApp
 
     (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
 
-    renderWithProviders(<ConnectedAppContainer connectedApp={{...connectedApp, is_pending: true}} />);
-
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
+    renderWithProviders(<OpenAppButton connectedApp={{...connectedApp, is_pending: true}} />);
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app')
