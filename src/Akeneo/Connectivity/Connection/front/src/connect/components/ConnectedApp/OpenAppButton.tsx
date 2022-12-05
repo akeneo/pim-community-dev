@@ -5,6 +5,7 @@ import {useRouter} from '../../../shared/router/use-router';
 import {useSecurity} from '../../../shared/security';
 import {ConnectedApp} from "@src/model/Apps/connected-app";
 import returnIconUrl from '../../../common/assets/icons/return.svg';
+import {translate} from "@akeneo-pim-community/shared";
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -28,8 +29,8 @@ export const OpenAppButton: FC<Props> = ({connectedApp}) => {
             disabled={!canOpenApp}
             target='_blank'
         >
-            <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app'/>
-            <img src={returnIconUrl} alt={'Go to app icon'} height={'13px'}/>
+            <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label'/>
+            <img src={returnIconUrl} alt={translate('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.icon_alt')} height={'13px'}/>
         </Button>
     );
 }
