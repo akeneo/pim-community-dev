@@ -25,7 +25,7 @@ type Props = {
 
 const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
     const [values, dispatch] = useReducer(ProductSelectionReducer, criteria);
-    const debouncedValue = useDebounce<ProductSelectionValues>(values, 2000);
+    const debouncedCriteria = useDebounce<ProductSelectionValues>(values, 2000);
 
     useEffect(() => {
         if (criteria !== values) {
@@ -40,7 +40,7 @@ const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
     return (
         <ProductSelectionContext.Provider value={dispatch}>
             <Header>
-                <CountSelectedProductsByCriteria criteria={debouncedValue} />
+                <CountSelectedProductsByCriteria criteria={debouncedCriteria} />
                 <AddCriterionDropdown />
             </Header>
             {rows.length ? rows : <Empty />}

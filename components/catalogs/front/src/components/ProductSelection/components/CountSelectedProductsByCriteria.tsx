@@ -25,14 +25,9 @@ export const CountSelectedProductsByCriteria: FC<Props> = ({criteria}) => {
     const translate = useTranslate();
     const {data: count} = useCountProductsInSelectionCriteria(criteria);
 
-    let label = '';
-    if (null === count || undefined === count) {
-        label = translate('akeneo_catalogs.product_selection.count.error');
-    } else if (0 === count) {
-        label = count.toString() + ' ' + translate('akeneo_catalogs.product_selection.count.no_products');
-    } else {
-        label = count.toString() + ' ' + translate('akeneo_catalogs.product_selection.count.products');
-    }
+    const label = (null === count || undefined === count) ?
+        translate('akeneo_catalogs.product_selection.count.error') :
+        translate('akeneo_catalogs.product_selection.count.products', {count: count.toString()}, count);
 
     return (
         <Container>
