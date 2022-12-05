@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useReducer} from 'react';
-import {getColor} from 'akeneo-design-system';
+import {getColor, useDebounce} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {ProductSelectionReducer} from './reducers/ProductSelectionReducer';
 import {ProductSelectionContext} from './contexts/ProductSelectionContext';
@@ -8,6 +8,7 @@ import {Empty} from './components/Empty';
 import {ProductSelectionValues} from './models/ProductSelectionValues';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import {ProductSelectionErrors} from './models/ProductSelectionErrors';
+import {CountSelectedProductsByCriteria} from './components/CountSelectedProductsByCriteria';
 
 const Header = styled.div`
     border-bottom: 1px solid ${getColor('grey', 60)};
@@ -24,6 +25,7 @@ type Props = {
 
 const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
     const [values, dispatch] = useReducer(ProductSelectionReducer, criteria);
+    const debouncedCriteria = useDebounce<ProductSelectionValues>(values, 2000);
 
     useEffect(() => {
         if (criteria !== values) {
@@ -38,6 +40,7 @@ const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
     return (
         <ProductSelectionContext.Provider value={dispatch}>
             <Header>
+                <CountSelectedProductsByCriteria criteria={debouncedCriteria} />
                 <AddCriterionDropdown />
             </Header>
             {rows.length ? rows : <Empty />}
