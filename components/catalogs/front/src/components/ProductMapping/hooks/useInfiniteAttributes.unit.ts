@@ -17,6 +17,8 @@ test('it fetches attributes & paginates', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'marketing',
+            attribute_group_label: 'Marketing',
         },
         {
             code: 'description',
@@ -24,6 +26,8 @@ test('it fetches attributes & paginates', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'marketing',
+            attribute_group_label: 'Marketing',
         },
         {
             code: 'ean',
@@ -31,6 +35,8 @@ test('it fetches attributes & paginates', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'technical',
+            attribute_group_label: 'Technical',
         },
     ];
 
@@ -65,6 +71,8 @@ test('it fetches attributes & paginates', async () => {
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
+                attribute_group_code: 'marketing',
+                attribute_group_label: 'Marketing',
             },
             {
                 code: 'description',
@@ -72,6 +80,8 @@ test('it fetches attributes & paginates', async () => {
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
+                attribute_group_code: 'marketing',
+                attribute_group_label: 'Marketing',
             },
         ],
         error: null,
@@ -95,6 +105,8 @@ test('it fetches attributes & paginates', async () => {
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
+                attribute_group_code: 'marketing',
+                attribute_group_label: 'Marketing',
             },
             {
                 code: 'description',
@@ -102,6 +114,8 @@ test('it fetches attributes & paginates', async () => {
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
+                attribute_group_code: 'marketing',
+                attribute_group_label: 'Marketing',
             },
             {
                 code: 'ean',
@@ -109,6 +123,8 @@ test('it fetches attributes & paginates', async () => {
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
+                attribute_group_code: 'technical',
+                attribute_group_label: 'Technical',
             },
         ],
         error: null,
@@ -126,6 +142,8 @@ test('it searches with a string', async () => {
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
+                attribute_group_code: 'marketing',
+                attribute_group_label: 'Marketing',
             },
         ])
     );
@@ -150,6 +168,8 @@ test('it searches with a string', async () => {
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
+                attribute_group_code: 'marketing',
+                attribute_group_label: 'Marketing',
             },
         ],
         error: null,

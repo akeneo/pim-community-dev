@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllRootProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelCodesNotSynchronisedBetweenEsAndMysql;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,25 +31,16 @@ class IndexProductModelCommand extends Command
 
     private const ERROR_CODE_USAGE = 1;
 
-    /** @var Client */
-    private $productAndProductModelClient;
-
-    /** @var ProductModelDescendantsAndAncestorsIndexer */
-    private $productModelDescendantAndAncestorsIndexer;
-
-    /** @var Connection */
-    private $connection;
     private BackoffElasticSearchStateHandler $batchEsStateHandler;
 
     public function __construct(
-        Client $productAndProductModelClient,
-        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantAndAncestorsIndexer,
-        Connection $connection
+        private readonly Client $productAndProductModelClient,
+        private readonly ProductModelDescendantsAndAncestorsIndexer $productModelDescendantAndAncestorsIndexer,
+        private readonly GetAllRootProductModelCodes $getAllRootProductModel,
+        private readonly GetExistingProductModelCodes $getProductModelExistingAmong,
+        private readonly GetProductModelCodesNotSynchronisedBetweenEsAndMysql $getProductModelNotSynchronisedBetweenEsAndMysql,
     ) {
         parent::__construct();
-        $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productModelDescendantAndAncestorsIndexer = $productModelDescendantAndAncestorsIndexer;
-        $this->connection = $connection;
         $this->batchEsStateHandler = new BackoffElasticSearchStateHandler();
     }
 
@@ -97,14 +88,14 @@ class IndexProductModelCommand extends Command
         $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
 
         if (true === $input->getOption('all')) {
-            $chunkedProductModelCodes = $this->getAllRootProductModelCodes($batchSize);
+            $chunkedProductModelCodes = $this->getAllRootProductModel->byBatchesOf($batchSize);
             $productModelCount = 0;
         } elseif (true === $input->getOption('diff')) {
-            $chunkedProductModelCodes = $this->getDiffProductModelCodes($batchSize);
+            $chunkedProductModelCodes = $this->getProductModelNotSynchronisedBetweenEsAndMysql->byBatchesOf($batchSize);
             $productModelCount = 0;
         } elseif (!empty($input->getArgument('codes'))) {
             $requestedCodes = $input->getArgument('codes');
-            $existingroductModelCodes = $this->getExistingProductModelCodes($requestedCodes);
+            $existingroductModelCodes = $this->getProductModelExistingAmong->among($requestedCodes);
             $nonExistingCodes = array_diff($requestedCodes, $existingroductModelCodes);
             if (!empty($nonExistingCodes)) {
                 $output->writeln(
@@ -158,129 +149,6 @@ class IndexProductModelCommand extends Command
         $progressBar->finish();
 
         return $indexedCount;
-    }
-
-    private function getAllRootProductModelCodes(int $batchSize): iterable
-    {
-        $formerId = 0;
-        $sql = <<< SQL
-SELECT id, code
-FROM pim_catalog_product_model
-WHERE id > :formerId
-AND parent_id IS NULL
-ORDER BY id ASC
-LIMIT :limit
-SQL;
-        while (true) {
-            $rows = $this->connection->executeQuery(
-                $sql,
-                [
-                    'formerId' => $formerId,
-                    'limit' => $batchSize,
-                ],
-                [
-                    'formerId' => \PDO::PARAM_INT,
-                    'limit' => \PDO::PARAM_INT,
-                ]
-            )->fetchAllAssociative();
-
-            if (empty($rows)) {
-                return;
-            }
-
-            $formerId = (int)end($rows)['id'];
-            yield array_column($rows, 'code');
-        }
-    }
-
-    private function getExistingproductModelCodes(array $productModelCodes): array
-    {
-        $sql = <<<SQL
-SELECT code FROM pim_catalog_product_model
-WHERE code IN (:codes);
-SQL;
-
-        return $this->connection->executeQuery(
-            $sql,
-            [
-                'codes' => $productModelCodes,
-            ],
-            [
-                'codes' => Connection::PARAM_STR_ARRAY,
-            ]
-        )->fetchFirstColumn();
-    }
-
-    private function getDiffProductModelCodes(int $batchSize): iterable
-    {
-        $formerId = 0;
-        $sql = <<< SQL
-SELECT CONCAT('product_model_', id) AS _id, id, code, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
-FROM pim_catalog_product_model
-WHERE id > :formerId
-AND parent_id IS NULL
-ORDER BY id ASC
-LIMIT :limit
-SQL;
-        while (true) {
-            $rows = $this->connection->executeQuery(
-                $sql,
-                [
-                    'formerId' => $formerId,
-                    'limit' => $batchSize
-                ],
-                [
-                    'formerId' => \PDO::PARAM_INT,
-                    'limit' => \PDO::PARAM_INT
-                ]
-            )->fetchAllAssociative();
-
-            if (empty($rows)) {
-                return;
-            }
-
-            $formerId = (int)end($rows)['id'];
-            $existingMysqlIdentifiers = array_column($rows, '_id');
-
-            $results = $this->productAndProductModelClient->search([
-               'query' => [
-                   'bool' => [
-                       'must' => [
-                           'ids' => [
-                               'values' => $existingMysqlIdentifiers
-                           ]
-                       ],
-                   ],
-               ],
-                '_source' => ['id', 'entity_updated'],
-                'size' => $batchSize
-            ]);
-
-            $updatedById = [];
-            foreach ($results['hits']['hits'] as $hit) {
-                $updatedById[$hit['_source']['id']] = $hit['_source']['entity_updated'];
-            }
-
-            $diff = \array_map(
-                static fn (array $row): string => $row['code'],
-                \array_filter(
-                    $rows,
-                    function (array $row) use ($updatedById): bool {
-                        if (!isset($updatedById[$row['_id']])) {
-                            // the model is not indexed at all
-                            return true;
-                        }
-                        // if the PM is indexed, compare the update date in the index and in the DB
-                        $updateDateInIndex = new \DateTimeImmutable($updatedById[$row['_id']]);
-                        $updateDateInDb = new \DateTimeImmutable($row['updated']);
-
-                        return $updateDateInDb != $updateDateInIndex;
-                    }
-                )
-            );
-
-            yield $diff;
-        }
     }
 
     /**

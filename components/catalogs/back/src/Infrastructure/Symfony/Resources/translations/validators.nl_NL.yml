@@ -41,9 +41,6 @@ akeneo_catalogs:
         channel:
           not_empty: 'Dit kanaal moet leeg zijn.'
           empty: 'Dit kanaal mag niet leeg zijn.'
-          unknown: 'Dit kanaal is gedeactiveerd. Controleer uw kanaalinstellingen of verwijder deze bron.'
         locale:
           not_empty: 'Deze taal moet leeg zijn.'
           empty: 'Deze taal mag niet leeg zijn.'
-          unknown: 'Deze taal bestaat niet.'
-          disabled: 'Deze taal is uitgeschakeld voor dit kanaal. Controleer uw kanaalinstellingen of verwijder deze bron.'
