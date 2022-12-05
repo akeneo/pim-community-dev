@@ -203,36 +203,6 @@ resource "local_file" "helm_pim_config" {
         }
       }
 
-      memcached = {
-        resources = {
-          limits = {
-            memory = format(
-              "%d%s", ceil(
-                trimsuffix(local.helm-default-values.memcached.resources.limits.memory, local.k8s-memory-unit) +
-                trimsuffix(local.helm-default-values.memcached.resources.limits.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
-              ),
-              local.k8s-memory-unit
-            )
-          }
-          requests = {
-            cpu = format(
-              "%d%s", ceil(
-                trimsuffix(local.helm-default-values.memcached.resources.requests.cpu, local.k8s-cpu-unit) +
-                trimsuffix(local.helm-default-values.memcached.resources.requests.cpu, local.k8s-cpu-unit) / 2 * local.tshirt-size-index
-              ),
-              local.k8s-cpu-unit
-            )
-            memory = format(
-              "%d%s", ceil(
-                trimsuffix(local.helm-default-values.memcached.resources.requests.memory, local.k8s-memory-unit) +
-                trimsuffix(local.helm-default-values.memcached.resources.requests.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
-              ),
-              local.k8s-memory-unit
-            )
-          }
-        }
-      }
-
       mysql = {
         disk_name          = google_compute_disk.mysql-disk.id
         disk_size          = google_compute_disk.mysql-disk.size
