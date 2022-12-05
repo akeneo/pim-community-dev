@@ -56,6 +56,11 @@ const StructureTab: React.FC<StructureTabProps> = ({
       });
     };
 
+  const displayedErrors = useMemo(
+    () => validationErrors?.map(({message}) => message).filter((value, index, self) => self.indexOf(value) === index),
+    [validationErrors]
+  );
+
   const onPropertyChange = (property: Property) => {
     if (selectedProperty) {
       const updatedPropertyIndex = structure.findIndex(p => selectedProperty.id === p.id);
