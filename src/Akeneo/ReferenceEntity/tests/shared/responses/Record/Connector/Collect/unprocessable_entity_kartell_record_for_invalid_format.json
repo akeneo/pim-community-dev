@@ -30,12 +30,28 @@
             "message": "The record has an invalid format.",
             "errors": [
                 {
-                    "property": "values.name[0].locale",
-                    "message": "Integer value found, but a string or a null is required"
+                    "message": "The properties must match schema: values",
+                    "property": ""
                 },
                 {
-                    "property": "values.name[1].channel",
-                    "message": "The property channel is required"
+                    "message": "Object properties that match pattern '.+' must also match pattern's schema",
+                    "property": "values"
+                },
+                {
+                    "message": "All array items must match schema",
+                    "property": "values.name"
+                },
+                {
+                    "message": "The properties must match schema: locale",
+                    "property": "values.name[0]"
+                },
+                {
+                    "message": "The data (integer) must match the type: string, null",
+                    "property": "values.name[0].locale"
+                },
+                {
+                    "message": "The required properties (channel) are missing",
+                    "property": "values.name[1]"
                 }
             ]
         }

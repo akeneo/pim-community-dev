@@ -233,53 +233,53 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
-        $this->assertCount(7, $errors);
+        $this->assertCount(33, $errors);
         $this->assertContains(
             [
                 'property' => 'values.country[0].data',
-                'message'  => 'Integer value found, but a string or a null is required'
+                'message'  => 'The data (integer) must match the type: string, null'
             ],
             $errors
         );
         $this->assertContains(
             [
-                'property' => 'values.long_description[1].data',
-                'message'  => 'The property data is required'
+                'property' => 'values.long_description[1]',
+                'message'  => 'The required properties (data) are missing'
             ],
             $errors
         );
         $this->assertContains(
             [
                 'property' => 'values.designers[0].data',
-                'message'  => 'String value found, but an array is required'
+                'message'  => 'The data (string) must match the type: array'
             ],
             $errors
         );
         $this->assertContains(
             [
-                'property' => 'values.main_material[0].channel',
-                'message'  => 'The property channel is required'
+                'property' => 'values.main_material[0]',
+                'message'  => 'The required properties (channel) are missing'
             ],
             $errors
         );
         $this->assertContains(
             [
-                'property' => 'values.main_image[0].locale',
-                'message'  => 'The property locale is required'
+                'property' => 'values.main_image[0]',
+                'message'  => 'The required properties (locale) are missing'
             ],
             $errors
         );
         $this->assertContains(
             [
                 'property' => 'values.materials[0].data[2]',
-                'message'  => 'NULL value found, but a string is required'
+                'message'  => 'The data (null) must match the type: string'
             ],
             $errors
         );
         $this->assertContains(
             [
                 'property' => 'values.year[0].data',
-                'message'  => 'Integer value found, but a string or a null is required'
+                'message'  => 'The data (integer) must match the type: string, null'
             ],
             $errors
         );
@@ -304,18 +304,11 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
-        $this->assertCount(2, $errors);
+        $this->assertCount(1, $errors);
         $this->assertContains(
             [
-                'property' => 'code',
-                'message'  => 'The property code is required'
-            ],
-            $errors
-        );
-        $this->assertContains(
-            [
-                'property' => 'values.foo',
-                'message'  => 'String value found, but an array is required'
+                'property' => '',
+                'message'  => 'The required properties (code) are missing'
             ],
             $errors
         );

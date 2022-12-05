@@ -49,7 +49,7 @@ class ImageTypeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($record);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(2);
+        $errors->shouldHaveCount(6);
     }
 
     function it_returns_an_empty_array_if_all_the_record_values_are_valid()

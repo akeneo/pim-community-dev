@@ -15,55 +15,55 @@
       "errors": [
         {
           "message": "The properties must match schema: updated",
-          "property": "/"
+          "property": ""
         },
         {
           "message": "The data should match exactly one schema",
-          "property": "/updated"
+          "property": "updated"
         },
         {
           "message": "All array items must match schema",
-          "property": "/updated"
+          "property": "updated"
         },
         {
           "message": "The properties must match schema: value",
-          "property": "/updated/0"
+          "property": "updated[0]"
         },
         {
           "message": "The data must match the 'date-time' format",
-          "property": "/updated/0/value"
+          "property": "updated[0].value"
         },
         {
           "message": "All array items must match schema",
-          "property": "/updated"
+          "property": "updated"
         },
         {
           "message": "The properties must match schema: operator, value",
-          "property": "/updated/0"
+          "property": "updated[0]"
         },
         {
           "message": "The data should match one item from enum",
-          "property": "/updated/0/operator"
+          "property": "updated[0].operator"
         },
         {
           "message": "The data (string) must match the type: array",
-          "property": "/updated/0/value"
+          "property": "updated[0].value"
         },
         {
           "message": "All array items must match schema",
-          "property": "/updated"
+          "property": "updated"
         },
         {
           "message": "The properties must match schema: operator, value",
-          "property": "/updated/0"
+          "property": "updated[0]"
         },
         {
           "message": "The data should match one item from enum",
-          "property": "/updated/0/operator"
+          "property": "updated[0].operator"
         },
         {
           "message": "The data (string) must match the type: integer",
-          "property": "/updated/0/value"
+          "property": "updated[0].value"
         }
       ]
     }

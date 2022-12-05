@@ -32,7 +32,7 @@ class RecordPropertiesValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($record);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(3);
+        $errors->shouldHaveCount(1);
     }
 
 

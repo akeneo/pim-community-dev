@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
 
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 /**
  * Validate the structure of a records list (but not the records themselves).
@@ -26,11 +29,25 @@ class RecordListValidator
     public function validate(array $normalizedRecordList): array
     {
         $validator = new Validator();
-        $normalizedRecordListObject = json_decode(json_encode($normalizedRecordList));
+        $validator->setMaxErrors(50);
 
-        $validator->validate($normalizedRecordListObject, $this->getJsonSchema());
+        $result = $validator->validate(
+            Helper::toJSON($normalizedRecordList),
+            Helper::toJSON($this->getJsonSchema()),
+        );
 
-        return $validator->getErrors();
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     private function getJsonSchema(): array

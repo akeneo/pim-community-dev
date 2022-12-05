@@ -50,7 +50,7 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
         $this->validate($referenceEntity)->shouldReturn([]);
     }
 
-    function it_returns_an_error_when_code_is_not_a_string()
+    function it_returns_errors_when_code_is_not_a_string()
     {
         $referenceEntity = [
             'code' => []
@@ -59,10 +59,10 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
         $errors = $this->validate($referenceEntity);
 
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_labels_has_a_wrong_format()
+    function it_returns_errors_when_labels_has_a_wrong_format()
     {
         $referenceEntity = [
             'code' => 'starck',
@@ -74,7 +74,7 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
         $errors = $this->validate($referenceEntity);
 
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(3);
     }
 
     function it_returns_an_error_when_code_is_not_provided()
@@ -98,7 +98,7 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_image_is_not_a_string_or_null()
+    function it_returns_errors_when_image_is_not_a_string_or_null()
     {
         $referenceEntity = [
             'code' => 'starck',
@@ -108,6 +108,6 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
         $errors = $this->validate($referenceEntity);
 
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 }
