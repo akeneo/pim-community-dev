@@ -21,6 +21,9 @@ const openDropdown = (selector: string): void => {
 };
 
 test('it can enable a catalog', async () => {
+
+    //@todo not working
+
     mockFetchResponses([
         {
             url: '/rest/catalogs/a134c164-9343-4796-9b4e-e2c04ba3765a',
@@ -44,18 +47,34 @@ test('it can enable a catalog', async () => {
         errors: [],
     };
 
+    //     const reference = React.createRef() as MutableRefObject<HTMLDivElement>;
+//     // const ref = useRef<HTMLDivElement>() as MutableRefObject<HTMLDivElement>;
+//     // const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
+//     // useLayoutEffect(() => {
+//     //     setHeaderContextContainer(ref.current);
+//     // }, []);
+//
+//     const headerContextContainer = React.createElement('div', {ref: reference});
+//
+//     // let headerContextContainer = document.createElement('div');
+//
+//     // console.log(reference);
+
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
+                    <CatalogEdit
+                        id={'a134c164-9343-4796-9b4e-e2c04ba3765a'}
+                        form={form}
+                        headerContextContainer={undefined}/>
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
     );
 
-    fireEvent.click(await screen.findByText('akeneo_catalogs.catalog_edit.tabs.settings'));
-    fireEvent.click(await screen.findByText('akeneo_catalogs.settings.inputs.yes'));
+    fireEvent.click(await screen.findByText('akeneo_catalogs.catalog_status_widget.fields.enable_catalog'));
+    fireEvent.click(await screen.findByText('akeneo_catalogs.catalog_status_widget.inputs.yes'));
     expect(dispatch).toHaveBeenCalledWith({type: CatalogFormActions.SET_ENABLED, value: true});
 });
 
@@ -89,7 +108,10 @@ test('it can change criteria in the product selection', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
+                    <CatalogEdit
+                        id={'a134c164-9343-4796-9b4e-e2c04ba3765a'}
+                        form={form}
+                        headerContextContainer={undefined}/>
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -167,7 +189,10 @@ test('it can add a product value filter on the channel', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
+                    <CatalogEdit
+                        id={'a134c164-9343-4796-9b4e-e2c04ba3765a'}
+                        form={form}
+                        headerContextContainer={undefined}/>
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -187,3 +212,4 @@ test('it can add a product value filter on the channel', async () => {
         value: {channels: ['ecommerce']},
     });
 });
+

@@ -1,6 +1,6 @@
 jest.unmock('./findFirstError');
 
-import {CatalogFormErrors} from '../models/CatalogFormErrors';
+import {CatalogFormErrors} from '../components/CatalogEdit/models/CatalogFormErrors';
 import {findFirstError} from './findFirstError';
 
 test('it returns the first error matching the property path', () => {

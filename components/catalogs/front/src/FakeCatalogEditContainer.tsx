@@ -1,4 +1,4 @@
-import React, {FC, PropsWithChildren} from 'react';
+import React, {FC, MutableRefObject, PropsWithChildren, useLayoutEffect, useRef, useState} from 'react';
 import {useParams} from 'react-router';
 import {CatalogEdit, useCatalogForm} from './components/CatalogEdit';
 import {Button} from 'akeneo-design-system';
@@ -12,6 +12,11 @@ const TopRightContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: end;
+`;
+const CatalogStatusWidgetContainer = styled.div`
+    position: absolute;
+    top: 100px;
+    left: 260px;
 `;
 
 const DirtyWarning = styled.div`
@@ -27,6 +32,11 @@ const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
     const {id} = useParams<{id: string}>();
     const [form, save, isDirty] = useCatalogForm(id);
     const {notify} = useDependenciesContext();
+    const ref = useRef<HTMLDivElement>() as MutableRefObject<HTMLDivElement>;
+    const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
+    useLayoutEffect(() => {
+        setHeaderContextContainer(ref.current);
+    }, [ref]);
 
     const saveHandler = async () => {
         const isSaveSuccessful = await save();
@@ -52,7 +62,8 @@ const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
                 </Button>
                 {isDirty && <DirtyWarning>⚠️ There are unsaved changes.</DirtyWarning>}
             </TopRightContainer>
-            <CatalogEdit id={id} form={form} />
+            <CatalogStatusWidgetContainer ref={ref} />
+            <CatalogEdit id={id} form={form} headerContextContainer={headerContextContainer} />
         </>
     );
 };

@@ -19,7 +19,7 @@ jest.mock('@akeneo-pim-community/catalogs', () => ({
     useCatalogForm: jest.fn(() => [{}, jest.fn(), false]),
 }));
 
-test('The catalog container renders', () => {
+test('The catalog container renders', async () => {
     const connectedApp = {
         id: '12345',
         name: 'App A',
@@ -50,6 +50,9 @@ test('The catalog container renders', () => {
     expect(screen.getAllByText('Store FR')).toHaveLength(2);
     expect(screen.getByText('[Catalog Edit]')).toBeInTheDocument();
     expect(screen.queryByText('pim_common.entity_updated')).not.toBeInTheDocument();
+
+    //@todo not working
+    expect(await screen.findByText('akeneo_catalogs.catalog_status_widget.fields.enable_catalog')).toBeInTheDocument();
 });
 
 test('The save button click triggers save', async () => {
