@@ -53,22 +53,6 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(mainButtonCallback).toBeCalledWith(initialGenerator);
   });
 
-  it('should display validation errors', () => {
-    const mainButtonCallback = jest.fn();
-    render(
-      <CreateOrEditGeneratorPage
-        isMainButtonDisabled={false}
-        initialGenerator={initialGenerator}
-        validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
-        mainButtonCallback={mainButtonCallback}
-        isNew={false}
-      />
-    );
-
-    expect(screen.getByText('a message')).toBeInTheDocument();
-    expect(screen.getByText('another message')).toBeInTheDocument();
-  });
-
   it('should delete a generator', () => {
     const history = createMemoryHistory();
     render(
