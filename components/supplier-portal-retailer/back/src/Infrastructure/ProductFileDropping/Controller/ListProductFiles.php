@@ -21,7 +21,11 @@ final class ListProductFiles
     public function __invoke(Request $request): JsonResponse
     {
         $productFiles = ($this->listProductFilesHandler)(
-            new ListProductFilesQuery($request->query->getInt('page', 1), trim($request->query->get('search', '')))
+            new ListProductFilesQuery(
+                $request->query->getInt('page', 1),
+                trim($request->query->get('search', '')),
+                $request->query->get('status'),
+            )
         );
 
         return new JsonResponse([
