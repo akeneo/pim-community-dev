@@ -134,7 +134,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 }
             }
         }
-        $toto = $qb->getQuery()->getSQL();
+
         return $qb;
     }
 
