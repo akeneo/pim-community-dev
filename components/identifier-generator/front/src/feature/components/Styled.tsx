@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, SkeletonPlaceholder, Table} from 'akeneo-design-system';
+import {AkeneoThemedProps, getColor, Helper, SkeletonPlaceholder, Table} from 'akeneo-design-system';
 
 const FormContainer = styled.div`
   display: flex;
@@ -50,6 +50,24 @@ const TranslationsTextFieldSkeleton = styled(SkeletonPlaceholder)`
   height: 38px;
 `;
 
+const MainErrorHelper = styled(Helper)`
+  margin-top: 10px;
+`;
+
+const ErrorContainer = styled.div`
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  color: ${getColor('grey', 120)};
+  font-style: normal;
+  margin-left: 10px;
+`;
+
+const ErrorList = styled.ul`
+  margin: 0px;
+  padding-left: 20px;
+`;
+
 const CellInputContainer = styled(Table.Cell)`
   width: calc(10vw + 20px);
 `;
@@ -78,6 +96,9 @@ const TitleCondition = styled(TitleCell)`
 
 const Styled = {
   CellInputContainer,
+  ErrorContainer,
+  ErrorList,
+  MainErrorHelper,
   FormContainer,
   FullPageCenteredContent,
   InputContainer,

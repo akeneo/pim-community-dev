@@ -13,7 +13,7 @@ describe('validateDelimiter', () => {
     expect(validateDelimiter('', 'delimiter')).toEqual([
       {
         path: 'delimiter',
-        message: 'Please add a valid delimiter or untick the box if you don’t want to add a delimiter',
+        message: 'A valid delimiter must be added. If you do not want to have a delimiter, untick the box.',
       },
     ]);
   });
