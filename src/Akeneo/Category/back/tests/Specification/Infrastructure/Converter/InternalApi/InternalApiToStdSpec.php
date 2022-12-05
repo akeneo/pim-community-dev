@@ -45,6 +45,11 @@ class InternalApiToStdSpec extends ObjectBehavior
                     "locale" => "fr_FR",
                     "attribute_code" => "title_87939c45-1d85-4134-9579-d594fff65030"
                 ],
+            ],
+            'permissions' => [
+                'view' => [1, 2, 5],
+                'edit' => [1, 2, 5],
+                'own' => [1, 2, 5]
             ]
         ];
         $expected = [
@@ -62,6 +67,11 @@ class InternalApiToStdSpec extends ObjectBehavior
                     'locale' => "fr_FR",
                     'attribute_code' => "title_87939c45-1d85-4134-9579-d594fff65030"
                 ]
+            ],
+            'permissions' => [
+                'view' => [1, 2, 5],
+                'edit' => [1, 2, 5],
+                'own' => [1, 2, 5]
             ]
         ];
         $checker->check($data)->shouldBeCalled();

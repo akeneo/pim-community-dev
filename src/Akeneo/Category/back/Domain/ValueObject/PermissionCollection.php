@@ -46,8 +46,8 @@ final class PermissionCollection
     {
         if (array_key_exists($type, $this->permissions)) {
             foreach ($userGroupIds as $userGroupId) {
-                if (in_array($userGroupId, $this->permissions[$type])) {
-                    unset($this->permissions[$type][$userGroupId]);
+                if (($key = array_search($userGroupId, $this->permissions[$type])) !== false) {
+                    unset($this->permissions[$type][$key]);
                 }
             }
         }
@@ -58,19 +58,19 @@ final class PermissionCollection
     /** @return array<int> */
     public function getViewUserGroups(): array
     {
-        return $this->permissions['view'];
+        return array_values($this->permissions['view']);
     }
 
     /** @return array<int> */
     public function getEditUserGroups(): array
     {
-        return $this->permissions['edit'];
+        return array_values($this->permissions['edit']);
     }
 
     /** @return array<int> */
     public function getOwnUserGroups(): array
     {
-        return $this->permissions['own'];
+        return array_values($this->permissions['own']);
     }
 
     /** @return array<string, array<int>>|null */

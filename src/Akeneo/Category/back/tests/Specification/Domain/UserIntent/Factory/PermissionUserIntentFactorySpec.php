@@ -31,14 +31,14 @@ class PermissionUserIntentFactorySpec extends ObjectBehavior
         $this->create(
             'permissions',
             [
-                'view' => [1, 2, 5, 3],
-                'edit' => [1, 2, 5, 3],
-                'own' => [1, 5]
+                'view' => [1, 2, 5, 999],
+                'edit' => [1, 2, 5, 999],
+                'own' => [2, 5]
             ]
         )->shouldBeLike([
-            new AddPermission('view', [3 => 3]),
-            new AddPermission('edit', [3 => 3]),
-            new RemovePermission('own', [1 => 2]),
+            new AddPermission('view', [999]),
+            new AddPermission('edit', [999]),
+            new RemovePermission('own', [1]),
         ]);
     }
 

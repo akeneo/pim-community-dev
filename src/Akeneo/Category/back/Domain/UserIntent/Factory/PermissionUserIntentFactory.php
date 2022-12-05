@@ -29,7 +29,6 @@ class PermissionUserIntentFactory implements UserIntentFactory
         $userIntents = [];
 
         // TODO: remove mock and use the permission finder
-
         $existingPermissions = [
             'view' => [1, 2, 5],
             'edit' => [1, 2, 5],
@@ -59,7 +58,7 @@ class PermissionUserIntentFactory implements UserIntentFactory
         $addedPermissions = [];
 
         foreach ($existingPermissions as $type => $existingPermissionsPerType) {
-            $addedPermissions[$type] = array_filter($newPermissions[$type], fn ($newPermission) => !in_array($newPermission, $existingPermissionsPerType));
+            $addedPermissions[$type] = array_values(array_filter($newPermissions[$type], fn ($newPermission) => !in_array($newPermission, $existingPermissionsPerType)));
         }
 
         return $addedPermissions;
@@ -71,7 +70,7 @@ class PermissionUserIntentFactory implements UserIntentFactory
 
         foreach ($newPermissions as $type => $newPermissionsPerType) {
             if (is_array($newPermissionsPerType)) {
-                $removedPermissions[$type] = array_filter($existingPermissions[$type], fn($existingPermission) => !in_array($existingPermission, $newPermissionsPerType));
+                $removedPermissions[$type] = array_values(array_filter($existingPermissions[$type], fn($existingPermission) => !in_array($existingPermission, $newPermissionsPerType)));
             }
         }
 
