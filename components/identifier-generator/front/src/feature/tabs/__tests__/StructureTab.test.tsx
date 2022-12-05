@@ -1,6 +1,6 @@
 import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
-import {StructureTab} from '../StructureTab';
+import {StructureTab, StructureWithIdentifiers} from '../StructureTab';
 import {PROPERTY_NAMES, Structure} from '../../models';
 import initialGenerator from '../../tests/fixtures/initialGenerator';
 
@@ -26,6 +26,7 @@ describe('StructureTab', () => {
         delimiter={'--'}
         onStructureChange={jest.fn()}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
     expect(screen.getByText('pim_identifier_generator.structure.title')).toBeInTheDocument();
@@ -42,6 +43,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -63,6 +65,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -82,6 +85,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -104,6 +108,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -127,6 +132,7 @@ describe('StructureTab', () => {
         delimiter={'--'}
         onStructureChange={onStructureChange}
         onDelimiterChange={onDelimiterChange}
+        validationErrors={[]}
       />
     );
 
@@ -150,6 +156,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={onDelimiterChange}
+        validationErrors={[]}
       />
     );
 
@@ -187,6 +194,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={jest.fn()}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
     expect(screen.queryByText('AddPropertyButtonMock')).not.toBeInTheDocument();
@@ -205,6 +213,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={jest.fn()}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -230,5 +239,30 @@ describe('StructureTab', () => {
 
     const rows = screen.getAllByRole('row');
     expect(rows.map(row => row.textContent?.substr(0, 3))).toEqual(['abc', 'ijk', 'lmn', 'def']);
+  });
+
+  it('should show display errors', () => {
+    const structure: StructureWithIdentifiers = [
+      {type: PROPERTY_NAMES.FREE_TEXT, string: 'First item', id: 'id0'},
+      {type: PROPERTY_NAMES.FREE_TEXT, string: '', id: 'id1'},
+      {type: PROPERTY_NAMES.FREE_TEXT, string: 'Third item', id: 'id2'},
+      {type: PROPERTY_NAMES.FREE_TEXT, string: '', id: 'id3'},
+    ];
+    render(
+      <StructureTab
+        initialStructure={structure}
+        delimiter={null}
+        onStructureChange={jest.fn()}
+        onDelimiterChange={jest.fn()}
+        validationErrors={[
+          {path: 'structure[1].string', message: 'error on second item'},
+          {path: 'structure[2].string', message: 'similar error'},
+          {path: 'structure[3].string', message: 'similar error'},
+        ]}
+      />
+    );
+
+    expect(screen.getAllByText('error on second item').length).toBe(2);
+    expect(screen.getAllByText('similar error').length).toBe(3);
   });
 });
