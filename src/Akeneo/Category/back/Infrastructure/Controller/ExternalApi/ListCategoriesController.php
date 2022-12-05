@@ -97,7 +97,6 @@ class ListCategoriesController extends AbstractController
             if ($withPosition) {
                 $categoryApi->setPosition(($this->getPosition)($category));
             }
-
             $normalizedCategories[] = $categoryApi->normalize($withPosition, $withEnrichedAttributes);
         }
 

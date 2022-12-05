@@ -90,6 +90,7 @@ class ExternalApiCategory
         return new self(
             code: (string) $category->getCode(),
             parentId: $category->getParentId()?->getValue(),
+            parentCode: $category->getParentCode() ? (string) $category->getParentCode() : null,
             updated: $category->getUpdated()?->format('c'),
             labels: $category->getLabels()?->normalize(),
             values: $category->getAttributes()?->normalize(),
