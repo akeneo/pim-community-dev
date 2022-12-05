@@ -276,7 +276,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         // TODO replace with GRF-574 uri by /api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}
-        $client->request('GET', 'api/rest/v1/categories?with_enriched_attributes=true');
+        $client->request('GET', 'api/rest/v1/categories?search=["master"]&with_enriched_attributes=true');
 
         $categories = $this->getStandardizedCategories(false, true);
 

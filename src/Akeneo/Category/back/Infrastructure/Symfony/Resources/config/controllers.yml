@@ -85,6 +85,5 @@ services:
             - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
             - '@Akeneo\Category\Application\Handler\GetPositionInterface'
             - '%pim_api.configuration%'
-            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
         calls:
             - [ 'setContainer', [ '@service_container' ] ]
