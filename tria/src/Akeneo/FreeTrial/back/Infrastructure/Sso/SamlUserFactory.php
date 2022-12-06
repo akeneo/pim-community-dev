@@ -18,10 +18,10 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
 use Hslavich\OneloginSamlBundle\Security\User\SamlUserFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -39,15 +39,15 @@ final class SamlUserFactory implements SamlUserFactoryInterface
     ) {
     }
 
-    public function createUser(SamlTokenInterface $token)
+    public function createUser($username, array $attributes = []): UserInterface
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return $this->baseUserFactory->createUser($token);
+            return $this->baseUserFactory->createUser($username, $attributes);
         }
 
         try {
-            $user = $this->createUserFromSamlToken($token);
-            $this->logger->info(sprintf("User '%s' created from free trial SSO authentication.", $token->getUserIdentifier()));
+            $user = $this->createUserFromUsername($username, $attributes);
+            $this->logger->info(sprintf("User '%s' created from free trial SSO authentication.", $username));
         } catch (\Exception $exception) {
             $this->logger->error(
                 'Unable to create user from free trial SSO authentication',
@@ -57,22 +57,23 @@ final class SamlUserFactory implements SamlUserFactoryInterface
                 ]
             );
 
-            throw new UnknownUserException($token->getUserIdentifier(), 'Unable to create user');
+            throw new UnknownUserException($username, 'Unable to create user');
         }
 
         return $user;
     }
 
-    private function createUserFromSamlToken(SamlTokenInterface $token)
+    private function createUserFromUsername(string $username, array $attributes): UserInterface
     {
+        /** @var UserInterface $user */
         $user = $this->userFactory->create();
 
         $this->userUpdater->update($user, [
-            'username' => $token->getUserIdentifier(),
-            'email' => $this->getUserAttribute('akeneo_email', $token),
+            'username' => $username,
+            'email' => $this->getUserAttribute('akeneo_email', $attributes),
             'password' => $this->generatePassword(),
-            'first_name' => $this->getUserAttribute('akeneo_firstname', $token),
-            'last_name' => $this->getUserAttribute('akeneo_lastname', $token),
+            'first_name' => $this->getUserAttribute('akeneo_firstname', $attributes),
+            'last_name' => $this->getUserAttribute('akeneo_lastname', $attributes),
             'groups' => ['All', 'Manager'],
             'roles' => ['ROLE_ADMINISTRATOR'],
             'catalog_default_locale' => 'en_US',
@@ -92,10 +93,10 @@ final class SamlUserFactory implements SamlUserFactoryInterface
         return $user;
     }
 
-    private function getUserAttribute(string $attributeName, SamlTokenInterface $token): string
+    private function getUserAttribute(string $attributeName, array $attributes): string
     {
-        Assert::true($token->hasAttribute($attributeName), sprintf("The SAML token has no attribute '%s'", $attributeName));
-        $attribute = $token->getAttribute($attributeName);
+        Assert::true(array_key_exists($attributeName, $attributes), sprintf("The SAML token has no attribute '%s'", $attributeName));
+        $attribute = $attributes[$attributeName];
 
         Assert::isArray($attribute, sprintf("Attribute '%s' is malformed", $attributeName));
         Assert::string($attribute[0], sprintf("Attribute '%s' value is not a string", $attributeName));

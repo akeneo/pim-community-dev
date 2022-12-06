@@ -39,39 +39,27 @@ final class SamlUserFactorySpec extends ObjectBehavior
         ObjectUpdaterInterface $userUpdater,
         ValidatorInterface $userValidator,
         LoggerInterface $logger
-    ) {
+    ): void {
         $this->beConstructedWith($baseUserFactory, $featureFlags, $userFactory, $userSaver, $userUpdater, $userValidator, $logger);
     }
 
-    public function it_is_an_user_factory()
+    public function it_is_an_user_factory(): void
     {
         $this->shouldImplement(SamlUserFactoryInterface::class);
     }
 
-    public function it_creates_an_user_from_a_saml_token(
-        $featureFlags,
-        $userFactory,
-        $userSaver,
-        $userUpdater,
-        $userValidator,
-        SamlTokenInterface $token,
+    public function it_creates_an_user(
+        FeatureFlags $featureFlags,
+        SimpleFactoryInterface $userFactory,
+        SaverInterface $userSaver,
+        ObjectUpdaterInterface $userUpdater,
+        ValidatorInterface $userValidator,
         UserInterface $user,
         ConstraintViolationListInterface $violations
-    ) {
+    ): void {
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUserIdentifier()->willReturn('an_user_name');
-
-        $userAttributes = [
-            'akeneo_email' => 'ziggy@akeneo.com',
-            'akeneo_firstname' => 'Foo',
-            'akeneo_lastname' => 'Bar'
-        ];
-        foreach ($userAttributes as $attributeName => $attributeValue) {
-            $token->hasAttribute($attributeName)->willReturn(true);
-            $token->getAttribute($attributeName)->willReturn([$attributeValue]);
-        }
 
         $userUpdater->update($user, Argument::that(function (array $userData) {
             return isset($userData['username']) && $userData['username'] === 'an_user_name'
@@ -86,114 +74,80 @@ final class SamlUserFactorySpec extends ObjectBehavior
 
         $userSaver->save($user)->shouldBeCalled();
 
-        $this->createUser($token)->shouldReturn($user);
+        $this->createUser('an_user_name', [
+            'akeneo_email' => ['ziggy@akeneo.com'],
+            'akeneo_firstname' => ['Foo'],
+            'akeneo_lastname' => ['Bar'],
+        ])->shouldReturn($user);
     }
 
     public function it_calls_the_base_user_factory_if_the_free_trial_feature_is_disabled(
-        $baseUserFactory,
-        $featureFlags,
-        SamlTokenInterface $token
-    ) {
+        SamlUserFactoryInterface $baseUserFactory,
+        FeatureFlags $featureFlags,
+        UserInterface $user,
+    ): void {
         $featureFlags->isEnabled('free_trial')->willReturn(false);
-        $baseUserFactory->createUser($token)->shouldBeCalled();
+        $baseUserFactory->createUser('an_user_name', [])->willReturn($user);
 
-        $this->createUser($token);
+        $this->createUser('an_user_name', [])->shouldReturn($user);
     }
 
-    public function it_throws_an_exception_if_an_attribute_is_missing_in_the_token(
-        $featureFlags,
-        $userFactory,
-        $userSaver,
-        $userUpdater,
-        SamlTokenInterface $token,
-        UserInterface $user
-    ) {
+    public function it_throws_an_exception_if_an_attribute_is_missing(
+        FeatureFlags $featureFlags,
+        SimpleFactoryInterface $userFactory,
+        SaverInterface $userSaver,
+        ObjectUpdaterInterface $userUpdater,
+        UserInterface $user,
+    ): void {
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUserIdentifier()->willReturn('an_user_name');
-
-        $token->hasAttribute('akeneo_email')->willReturn(true);
-        $token->getAttribute('akeneo_email')->willReturn(['ziggy@akeneo.com']);
-        $token->hasAttribute('akeneo_firstname')->willReturn(false);
 
         $userUpdater->update($user, Argument::any())->shouldNotBeCalled();
         $userSaver->save($user)->shouldNotBeCalled();
 
-        $this->shouldThrow(UnknownUserException::class)->during('createUser', [$token]);
-    }
-
-    public function it_throws_an_exception_if_an_attribute_is_malformed_in_the_token(
-        $featureFlags,
-        $userFactory,
-        $userSaver,
-        $userUpdater,
-        SamlTokenInterface $token,
-        UserInterface $user
-    ) {
-        $featureFlags->isEnabled('free_trial')->willReturn(true);
-
-        $userFactory->create()->willReturn($user);
-        $token->getUserIdentifier()->willReturn('an_user_name');
-
-        $token->hasAttribute('akeneo_email')->willReturn(true);
-        $token->getAttribute('akeneo_email')->willReturn(['ziggy@akeneo.com']);
-        $token->hasAttribute('akeneo_firstname')->willReturn(true);
-        $token->getAttribute('akeneo_firstname')->willReturn('Foo');
-
-        $userUpdater->update($user, Argument::any())->shouldNotBeCalled();
-        $userSaver->save($user)->shouldNotBeCalled();
-
-        $this->shouldThrow(UnknownUserException::class)->during('createUser', [$token]);
+        $this->shouldThrow(UnknownUserException::class)->during('createUser', [
+            'an_user_name',
+            [
+                'akeneo_email' => ['ziggy@akeneo.com'],
+            ],
+        ]);
     }
 
     public function it_throws_an_exception_if_an_attribute_value_is_not_a_string(
-        $featureFlags,
-        $userFactory,
-        $userSaver,
-        $userUpdater,
-        SamlTokenInterface $token,
-        UserInterface $user
-    ) {
+        FeatureFlags $featureFlags,
+        SimpleFactoryInterface $userFactory,
+        SaverInterface $userSaver,
+        ObjectUpdaterInterface $userUpdater,
+        UserInterface $user,
+    ): void {
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUserIdentifier()->willReturn('an_user_name');
-
-        $token->hasAttribute('akeneo_email')->willReturn(true);
-        $token->getAttribute('akeneo_email')->willReturn(['ziggy@akeneo.com']);
-        $token->hasAttribute('akeneo_firstname')->willReturn(true);
-        $token->getAttribute('akeneo_firstname')->willReturn([42]);
 
         $userUpdater->update($user, Argument::any())->shouldNotBeCalled();
         $userSaver->save($user)->shouldNotBeCalled();
 
-        $this->shouldThrow(UnknownUserException::class)->during('createUser', [$token]);
+        $this->shouldThrow(UnknownUserException::class)->during('createUser', [
+            'an_user_name',
+            [
+                'akeneo_email' => ['ziggy@akeneo.com'],
+                'akeneo_firstname' => [42],
+            ],
+        ]);
     }
 
     public function it_throws_an_exception_if_the_user_is_invalid(
-        $featureFlags,
-        $userFactory,
-        $userSaver,
-        $userUpdater,
-        $userValidator,
-        SamlTokenInterface $token,
-        UserInterface $user
-    ) {
+        FeatureFlags $featureFlags,
+        SimpleFactoryInterface $userFactory,
+        SaverInterface $userSaver,
+        ObjectUpdaterInterface $userUpdater,
+        ValidatorInterface $userValidator,
+        UserInterface $user,
+    ): void {
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUserIdentifier()->willReturn('an_user_name');
-
-        $userAttributes = [
-            'akeneo_email' => 'invalid.email',
-            'akeneo_firstname' => 'Foo',
-            'akeneo_lastname' => 'Bar'
-        ];
-        foreach ($userAttributes as $attributeName => $attributeValue) {
-            $token->hasAttribute($attributeName)->willReturn(true);
-            $token->getAttribute($attributeName)->willReturn([$attributeValue]);
-        }
 
         $userUpdater->update($user, Argument::any())->shouldBeCalled();
 
@@ -203,6 +157,13 @@ final class SamlUserFactorySpec extends ObjectBehavior
 
         $userSaver->save($user)->shouldNotBeCalled();
 
-        $this->shouldThrow(UnknownUserException::class)->during('createUser', [$token]);
+        $this->shouldThrow(UnknownUserException::class)->during('createUser', [
+            'an_user_name',
+            [
+                'akeneo_email' => ['invalid.email'],
+                'akeneo_firstname' => ['Foo'],
+                'akeneo_lastname' => ['Bar'],
+            ],
+        ]);
     }
 }

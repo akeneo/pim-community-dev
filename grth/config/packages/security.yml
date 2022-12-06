@@ -1,4 +1,5 @@
 security:
+    enable_authenticator_manager: true
     providers:
         chain_provider:
             chain:
@@ -19,15 +20,9 @@ security:
             pattern:                        ^/(_(profiler|wdt)|css|images|js)/
             security:                       false
 
-        install:
-            pattern:                        ^/installer
-            security:                       false
-            anonymous:                      true
-
         login:
             pattern:                        ^/user/(login|reset-request|send-email|check-email)$
             provider:                       chain_provider
-            anonymous:                      true
 
         monitoring:
             pattern:                        ^/monitoring/services_status
@@ -36,7 +31,6 @@ security:
         reset_password:
             pattern:                        ^/user/reset/*
             provider:                       chain_provider
-            anonymous:                      true
 
         oauth_token:
             pattern:                        ^/api/oauth/v1/token
@@ -70,15 +64,15 @@ security:
 
         sso:
             pattern:   ^/
-            anonymous: true
             provider:  chain_provider
+            entry_point: saml
             saml:
                 username_attribute: akeneo_uid
                 check_path: saml_acs
                 login_path: saml_login
                 user_factory: akeneo_authentication.sso.user.factory
             form_login:
-                csrf_token_generator: security.csrf.token_manager
+                enable_csrf: true
                 login_path: saml_login
                 failure_path: pim_user_security_login
                 check_path: pim_user_security_check
@@ -90,7 +84,7 @@ security:
             pattern:                        ^/
             provider:                       chain_provider
             form_login:
-                csrf_token_generator:       security.csrf.token_manager
+                enable_csrf:                true
                 check_path:                 pim_user_security_check
                 login_path:                 pim_user_security_login
                 use_forward:                true
@@ -101,20 +95,17 @@ security:
                 name:                       BAPRM
                 lifetime:                   1209600   # stay logged for two weeks
                 samesite:                   'lax'
-            anonymous:                      false
 
     access_control:
-        - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/, role: pim_api_overall_access }
+        - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/api/rest/v1$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/, roles: pim_api_overall_access }
         #Additionnal access control for SSO
-        - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/reset-request, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/send-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/(login|reset-request|send-email|check-email)$, roles: PUBLIC_ACCESS }
+        - { path: ^/user/reset/*, roles: PUBLIC_ACCESS }
+        - { path: ^/saml-idp/resume, roles: PUBLIC_ACCESS }
+        - { path: ^/saml/login, roles: PUBLIC_ACCESS }
+        - { path: ^/saml/metadata, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
 acl:

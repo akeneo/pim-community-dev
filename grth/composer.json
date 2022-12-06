@@ -56,7 +56,7 @@
         "dragonmantank/cron-expression": "^3.3",
         "google/cloud-firestore": "^1.22",
         "grpc/grpc": "^1.42.0",
-        "hslavich/oneloginsaml-bundle": "2.0.*",
+        "hslavich/oneloginsaml-bundle": "^2.9.0",
         "justinrainbow/json-schema": "^5.2",
         "league/flysystem-google-cloud-storage": "^2.0",
         "league/flysystem-sftp-v3": "^3.0",

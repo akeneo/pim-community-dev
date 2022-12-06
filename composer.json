@@ -106,7 +106,7 @@
         "dragonmantank/cron-expression": "^3.3",
         "google/cloud-firestore": "^1.22",
         "grpc/grpc": "^1.42.0",
-        "hslavich/oneloginsaml-bundle": "2.0.*",
+        "hslavich/oneloginsaml-bundle": "^2.9.0",
         "http-interop/http-factory-guzzle": "^1.0",
         "jfcherng/php-diff": "^6.10",
         "justinrainbow/json-schema": "^5.2.11",

@@ -11,8 +11,8 @@
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User;
 
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
 use Hslavich\OneloginSamlBundle\Security\User\SamlUserFactoryInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Creates a PIM user on-the-fly from a SAML token if the provisioning is enabled, throws an exception otherwise.
@@ -24,12 +24,12 @@ final class Factory implements SamlUserFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createUser(SamlTokenInterface $token)
+    public function createUser($username, array $attributes = []): UserInterface
     {
         // TODO AOB-340: Create the user if the provisioning is enabled, else:
         throw new UnknownUserException(
-            $token->getUserIdentifier(),
-            sprintf('The user provisioning is disabled and the user "%s" does not exist.', $token->getUserIdentifier())
+            $username,
+            sprintf('The user provisioning is disabled and the user "%s" does not exist.', $username)
         );
     }
 }

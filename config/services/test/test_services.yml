@@ -8,6 +8,7 @@ parameters:
     akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
     env(EXPERIMENTAL_TEST_DATABASE): false
+    pim_user.account_lock.max_consecutive_failures: 1
 
 imports:
     # Akeneo/Connectivity/Connection
