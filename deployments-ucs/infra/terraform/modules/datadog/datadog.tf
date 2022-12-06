@@ -33,7 +33,7 @@ resource "google_logging_project_sink" "timmy_firestore_log_export_sink" {
   name                   = "timmy-fire-app-datadog-log-sink"
   destination            = module.datadog_pubsub_destination.destination_uri
   project                = var.project_id
-  filter                 = "resource.type=datastore_database AND  protoPayload.serviceName=\"firestore.googleapis.com\" "
+  filter                 = "resource.type=audited_resource AND resource.labels.service=\"firestore.googleapis.com\" "
   unique_writer_identity = true
 }
 
