@@ -8,7 +8,6 @@ use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,7 +39,6 @@ class RoleController extends AbstractController
 
     /**
      * @AclAncestor("pim_user_role_create")
-     * @Template("@PimUser/Role/update.html.twig")
      */
     public function create()
     {
@@ -49,7 +47,6 @@ class RoleController extends AbstractController
 
     /**
      * @AclAncestor("pim_user_role_edit")
-     * @Template("@PimUser/Role/update.html.twig")
      */
     public function update(Role $entity)
     {
@@ -89,7 +86,7 @@ class RoleController extends AbstractController
     /**
      * @param Role $entity
      *
-     * @return array|JsonResponse
+     * @return Response|JsonResponse
      */
     private function updateUser(Role $entity)
     {
@@ -106,9 +103,9 @@ class RoleController extends AbstractController
             );
         }
 
-        return [
+        return $this->render('@PimUser/Role/update.html.twig', [
             'form' => $this->aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('pim_user.privileges'),
-        ];
+        ]);
     }
 }

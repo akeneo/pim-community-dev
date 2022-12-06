@@ -51,7 +51,6 @@ $rules = [
         'Akeneo\UserManagement',
         'Webmozart\Assert\Assert',
         'Oro\Bundle\SecurityBundle',
-        'Sensio\Bundle\FrameworkExtraBundle',
         'Symfony\Bundle\FrameworkBundle',
         'Symfony\Bundle\SecurityBundle',
         'Twig\TwigFunction',

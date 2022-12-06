@@ -8,7 +8,6 @@ use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\UserEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -16,6 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GroupController extends AbstractController
@@ -46,7 +46,6 @@ class GroupController extends AbstractController
     /**
      * Create group form
      *
-     * @Template("@PimUser/Group/update.html.twig")
      * @AclAncestor("pim_user_group_create")
      */
     public function create()
@@ -59,7 +58,6 @@ class GroupController extends AbstractController
     /**
      * Edit group form
      *
-     * @Template("@PimUser/Group/update.html.twig")
      * @AclAncestor("pim_user_group_edit")
      */
     public function update(Group $entity)
@@ -99,7 +97,7 @@ class GroupController extends AbstractController
     /**
      * @param Group $entity
      *
-     * @return array|JsonResponse
+     * @return Response|JsonResponse
      */
     private function updateGroup(Group $entity)
     {
@@ -117,9 +115,9 @@ class GroupController extends AbstractController
             );
         }
 
-        return [
+        return $this->render('@PimUser/Group/update.html.twig', [
             'form' => $this->form->createView(),
-        ];
+        ]);
     }
 
     /**
