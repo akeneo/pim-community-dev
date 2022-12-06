@@ -2,6 +2,10 @@
 
 # 6.0.56 (2022-11-28)
 
+## Bug fixes
+
+- PIM-10681: Fix project without ownership after user has been deleted.
+
 # 6.0.55 (2022-11-21)
 
 ## Bug fixes
