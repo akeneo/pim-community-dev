@@ -19,7 +19,7 @@ jest.mock('@akeneo-pim-community/catalogs', () => ({
     useCatalogForm: jest.fn(() => [{}, jest.fn(), false]),
 }));
 
-test('The catalog container renders', async () => {
+test('The catalog container renders', () => {
     const connectedApp = {
         id: '12345',
         name: 'App A',
