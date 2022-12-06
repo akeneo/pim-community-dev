@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class GetAttributeAction
 {
     public function __construct(
-        private FindOneAttributeByCodeQueryInterface $findOneAttributeByCode,
+        readonly private FindOneAttributeByCodeQueryInterface $findOneAttributeByCode,
     ) {
     }
 

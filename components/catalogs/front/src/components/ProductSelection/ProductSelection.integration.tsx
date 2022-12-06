@@ -12,6 +12,8 @@ import {ProductSelectionErrors} from './models/ProductSelectionErrors';
 
 jest.mock('./utils/generateRandomId');
 
+const MAX_CRITERIA_PER_CATALOG = 25;
+
 test('it displays an empty message if there is no criteria', () => {
     render(
         <ThemeProvider theme={pimTheme}>
@@ -47,6 +49,7 @@ test('it renders a list of criteria', async () => {
     );
 
     expect(await screen.findAllByText('akeneo_catalogs.product_selection.criteria.status.label')).toHaveLength(2);
+    expect(await screen.findByText('akeneo_catalogs.product_selection.add_criteria.label')).toBeEnabled();
 });
 
 test('it renders a list of criteria with validation errors', async () => {
@@ -170,4 +173,26 @@ test('it updates the state when a criterion is removed', async () => {
     fireEvent.click(await screen.findByTitle('remove'));
 
     expect(onChange).toHaveBeenCalledWith({});
+});
+
+test('it shows a warning and lock the add button when the criteria limit is reached', async () => {
+    const criteria = [];
+    for (let criterionIndex = 0; criterionIndex < MAX_CRITERIA_PER_CATALOG; criterionIndex++) {
+        criteria[criterionIndex] = {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
+        };
+    }
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductSelection criteria={criteria} onChange={jest.fn()} errors={{}} />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.max_reached')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_selection.add_criteria.label')).toBeDisabled();
 });

@@ -28,6 +28,8 @@ test('it fetches attributes & paginates criterion factories', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'marketing',
+            attribute_group_label: 'Marketing',
         },
         {
             code: 'description',
@@ -35,6 +37,8 @@ test('it fetches attributes & paginates criterion factories', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'technical',
+            attribute_group_label: 'Technical',
         },
         {
             code: 'ean',
@@ -42,6 +46,8 @@ test('it fetches attributes & paginates criterion factories', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'other',
+            attribute_group_label: '[other]',
         },
     ];
 
@@ -72,11 +78,15 @@ test('it fetches attributes & paginates criterion factories', async () => {
         data: [
             {
                 label: 'Name',
+                group_code: 'marketing',
+                group_label: 'Marketing',
                 factory: expect.any(Function),
             },
             {
                 label: 'Description',
                 factory: expect.any(Function),
+                group_code: 'technical',
+                group_label: 'Technical',
             },
         ],
         error: null,
@@ -96,14 +106,20 @@ test('it fetches attributes & paginates criterion factories', async () => {
         data: [
             {
                 label: 'Name',
+                group_code: 'marketing',
+                group_label: 'Marketing',
                 factory: expect.any(Function),
             },
             {
                 label: 'Description',
+                group_code: 'technical',
+                group_label: 'Technical',
                 factory: expect.any(Function),
             },
             {
                 label: 'EAN',
+                group_code: 'other',
+                group_label: '[other]',
                 factory: expect.any(Function),
             },
         ],
@@ -128,6 +144,8 @@ test('it returns a custom factory with the attribute code as field', async () =>
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
+            attribute_group_code: 'marketing',
+            attribute_group_label: 'Marketing',
         },
     ];
 
@@ -156,6 +174,8 @@ test('it searches with a string', async () => {
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
+                attribute_group_code: 'marketing',
+                attribute_group_label: 'Marketing',
             },
         ])
     );
@@ -179,6 +199,8 @@ test('it searches with a string', async () => {
         data: [
             {
                 label: 'Description',
+                group_code: 'marketing',
+                group_label: 'Marketing',
                 factory: expect.any(Function),
             },
         ],

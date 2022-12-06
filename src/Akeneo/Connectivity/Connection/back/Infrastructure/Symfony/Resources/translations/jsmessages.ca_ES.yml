@@ -146,6 +146,8 @@ akeneo_connectivity.connection:
         flash:
           error: Ho sentim, s'ha produït un error en obtenir la llista d'aplicacions connectades.
       edit:
+        header:
+          open_app: Obre l'aplicació
         not_found: No s'ha trobat l'aplicació
         tabs:
           settings: Preferències

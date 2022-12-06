@@ -146,6 +146,8 @@ akeneo_connectivity.connection:
         flash:
           error: 抱歉，获取已连接应用的列表时出现错误。
       edit:
+        header:
+          open_app: 打开应用
         not_found: 未找到应用
         tabs:
           settings: 设置 

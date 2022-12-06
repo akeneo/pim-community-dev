@@ -129,9 +129,9 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
             \json_encode($updateGenerator),
         );
         $response = $this->client->getResponse();
-        Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         Assert::assertSame(
-            '{"message":"Identifier generator \u0022unknown_generator\u0022 does not exist or you do not have permission to access it."}',
+            '[{"path":"","message":"Identifier generator \u0022unknown_generator\u0022 does not exist or you do not have permission to access it."}]',
             $response->getContent()
         );
     }

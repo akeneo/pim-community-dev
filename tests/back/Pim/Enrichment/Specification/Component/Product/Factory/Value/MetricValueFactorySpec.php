@@ -120,6 +120,15 @@ final class MetricValueFactorySpec extends ObjectBehavior
             ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', ['foo' => 42, 'unit' => 'GRAM']]);
     }
 
+    function it_should_not_throws_an_exception_if_provided_data_has_non_numeric_amount(MetricFactory $metricFactory)
+    {
+        $attribute = $this->getAttribute(false, false);
+
+        $this
+            ->shouldNotThrow(InvalidPropertyTypeException::class)
+            ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', ['amount' => 'aa', 'foo' => 42, 'unit' => 'GRAM']]);
+    }
+
     function it_throws_an_exception_if_provided_data_has_no_unit(MetricFactory $metricFactory)
     {
         $attribute = $this->getAttribute(false, false);
@@ -134,6 +143,22 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $this
             ->shouldThrow($exception)
             ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', ['amount' => 42, 'bar' => 'GRAM']]);
+    }
+
+    function it_throws_an_exception_if_provided_data_has_bad_format_unit(MetricFactory $metricFactory)
+    {
+        $attribute = $this->getAttribute(false, false);
+
+        $exception = InvalidPropertyTypeException::validArrayStructureExpected(
+            'an_attribute',
+            sprintf('key "unit" has to be a string, "%s" given', 'array'),
+            MetricValueFactory::class,
+            ['amount' => 42, 'bar' => 'GRAM', 'unit' => []]
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', ['amount' => 42, 'bar' => 'GRAM', 'unit' => []]]);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute

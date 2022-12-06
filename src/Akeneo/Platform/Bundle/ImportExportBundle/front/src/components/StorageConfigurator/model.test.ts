@@ -1,8 +1,9 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage} from '../model';
-import {isLocalStorage, isSftpStorage, getStorageConfigurator} from './model';
+import {AmazonS3Storage, LocalStorage, SftpStorage} from '../model';
+import {isLocalStorage, isSftpStorage, getStorageConfigurator, isAmazonS3Storage} from './model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
+import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
 
 const featureFlagCollection = {
   job_automation_local_storage: false,
@@ -29,14 +30,31 @@ const sftpStorage: SftpStorage = {
   file_path: '/tmp/test.xlsx',
 };
 
+const amazonS3Storage: AmazonS3Storage = {
+  type: 'amazon_s3',
+  region: 'eu-west-3',
+  bucket: 'a_bucket',
+  key: 'test',
+  secret: 'test',
+  file_path: '/tmp/test.xlsx',
+};
+
 test('it says if a storage is a local storage', () => {
   expect(isLocalStorage(localStorage)).toBe(true);
   expect(isLocalStorage(sftpStorage)).toBe(false);
+  expect(isLocalStorage(amazonS3Storage)).toBe(false);
 });
 
 test('it says if a storage is a sftp storage', () => {
   expect(isSftpStorage(sftpStorage)).toBe(true);
   expect(isSftpStorage({...sftpStorage, fingerprint: 'c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e'})).toBe(true);
+  expect(isSftpStorage(amazonS3Storage)).toBe(false);
+  expect(isSftpStorage(localStorage)).toBe(false);
+});
+
+test('it says if a storage is an amazon s3 storage', () => {
+  expect(isAmazonS3Storage(amazonS3Storage)).toBe(true);
+  expect(isAmazonS3Storage(sftpStorage)).toBe(false);
   expect(isSftpStorage(localStorage)).toBe(false);
 });
 
@@ -48,6 +66,8 @@ test('it returns storage configurator', () => {
   expect(getStorageConfigurator('local', featureFlags)).toBe(LocalStorageConfigurator);
 
   expect(getStorageConfigurator('sftp', featureFlags)).toBe(SftpStorageConfigurator);
+
+  expect(getStorageConfigurator('amazon_s3', featureFlags)).toBe(AmazonS3StorageConfigurator);
 
   // @ts-expect-error - there is no storage configurator for type 'unknown'
   expect(getStorageConfigurator('unknown', featureFlags)).toBe(null);

@@ -41,6 +41,7 @@ pim_enrich.entity.product:
       title: 작업 선택
       choose_family: 패밀리 선택
       choose_family_variant: 패밀리 변형 선택
+      helper: 이제 식별자는 선택적 필드입니다. 이 변경 사항 및 제품에 미칠 수 있는 영향에 대한 <a class="AknMessageBox-link" href="{{ link }}" target="_blank">자세한 내용을 확인하십시오</a>.
     variant_navigation:
       common: 공통
     status:
@@ -70,6 +71,7 @@ pim_enrich.entity.product:
     meta:
       updated: 마지막 업데이트
       groups: 그룹
+      uuid: UUID
     show_group:
       title: 그룹 {{ group }}
       view_group: 그룹 보기
@@ -220,6 +222,7 @@ pim_enrich.entity.category:
       columns:
         label: 트리 레이블
         number_of_categories: 카테고리 수
+        actions: 작업
         count_categories: ']-Inf, 1]{{ count }}개 카테고리|]1, Inf[{{ count }}개 카테고리'
     tree:
       not_found: 카테고리 트리를 찾을 수 없습니다.
@@ -436,6 +439,8 @@ pim_datagrid:
         all_attributes: 모든 특성
         with_codes: 코드 포함
         with_labels: 라벨 부착
+        without_uuid: UUID 미포함
+        with_uuid: UUID 포함
         without_media: 미디어 미포함
         with_media: 미디어 포함
       flash:

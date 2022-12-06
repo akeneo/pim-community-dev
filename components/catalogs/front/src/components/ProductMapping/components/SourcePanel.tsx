@@ -10,6 +10,7 @@ import {useAttribute} from '../../../hooks/useAttribute';
 import {SourceErrors} from '../models/SourceErrors';
 import {SelectLocaleDropdown} from './SelectLocaleDropdown';
 import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
+import {SourceUuidPlaceholder} from './SourceUuidPlaceholder';
 
 type Props = {
     target: string | null;
@@ -21,7 +22,7 @@ type Props = {
 
 export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, errors}) => {
     const translate = useTranslate();
-    const {data: attribute} = useAttribute(source?.source ?? '');
+    const {data: attribute} = useAttribute('uuid' !== target && source?.source ? source.source : '');
     const handleSourceSelection = useCallback(
         (value: Attribute) => {
             onChange({
@@ -40,8 +41,9 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
 
     return (
         <>
-            {target === null && <SourcePlaceholder />}
-            {target && (
+            {null === target && <SourcePlaceholder />}
+            {'uuid' === target && <SourceUuidPlaceholder targetLabel={targetLabel} />}
+            {target && 'uuid' !== target && (
                 <>
                     <SectionTitle>
                         <SectionTitle.Title>{targetLabel}</SectionTitle.Title>
