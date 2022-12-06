@@ -44,7 +44,7 @@ class V20221205153905FillIdentifierPrefixesZddMigrationIntegration extends TestC
 
         $this->runMigration();
 
-        $prefixesBeforeMigration = $this->getIdentifierGeneratorPrefixes();
+        $prefixesAfterMigration = $this->getIdentifierGeneratorPrefixes();
         Assert::assertEqualsCanonicalizing([
             [
                 'uuid' => $uuid4,
@@ -81,7 +81,7 @@ class V20221205153905FillIdentifierPrefixesZddMigrationIntegration extends TestC
                 'prefix' => 'SKU-45',
                 'number' => '6',
             ],
-        ], $prefixesBeforeMigration);
+        ], $prefixesAfterMigration);
     }
 
     protected function getConfiguration(): Configuration
