@@ -25,6 +25,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class GetReferenceEntityAttributesAction
 {
+    private const REFERENCE_ENTITY_LABEL_CODE = 'label';
+
     /**
      * @param array<string> $supportedAttributeTypes
      */
@@ -52,9 +54,14 @@ final class GetReferenceEntityAttributesAction
             $this->supportedAttributeTypes,
         );
 
+        $filteredAttributes = array_values(array_filter(
+            $referenceEntityAttributes,
+            static fn (AttributeDetails $attribute) => $attribute->code !== self::REFERENCE_ENTITY_LABEL_CODE,
+        ));
+
         return new JsonResponse(array_map(
             static fn (AttributeDetails $attribute) => $attribute->normalize(),
-            $referenceEntityAttributes,
+            $filteredAttributes,
         ));
     }
 }

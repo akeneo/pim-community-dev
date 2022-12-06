@@ -7,16 +7,13 @@ import {
   ReplacementOperation,
   isReplacementOperation,
   CollectionSeparator,
+  CodeLabelCollectionSelection,
+  isCodeLabelCollectionSelection,
 } from '../common';
 
 type ReferenceEntityCollectionOperations = {
   default_value?: DefaultValueOperation;
   replacement?: ReplacementOperation;
-};
-
-type ReferenceEntityCollectionCodeSelection = {
-  type: 'code';
-  separator: CollectionSeparator;
 };
 
 type ReferenceEntityCollectionAttributeSelection = {
@@ -29,9 +26,7 @@ type ReferenceEntityCollectionAttributeSelection = {
   channel: ChannelReference;
 };
 
-type ReferenceEntityCollectionSelection =
-  | ReferenceEntityCollectionCodeSelection
-  | ReferenceEntityCollectionAttributeSelection;
+type ReferenceEntityCollectionSelection = CodeLabelCollectionSelection | ReferenceEntityCollectionAttributeSelection;
 
 type ReferenceEntityCollectionSource = {
   uuid: string;
@@ -42,6 +37,15 @@ type ReferenceEntityCollectionSource = {
   operations: ReferenceEntityCollectionOperations;
   selection: ReferenceEntityCollectionSelection;
 };
+
+const isReferenceEntityCollectionAttributeSelection = (
+  selection: any
+): selection is ReferenceEntityCollectionAttributeSelection =>
+  'attribute' === selection.type &&
+  'string' === typeof selection.attribute_identifier &&
+  'string' === typeof selection.attribute_type &&
+  'string' === typeof selection.reference_entity_code &&
+  'string' === typeof selection.separator;
 
 const getDefaultReferenceEntityCollectionSource = (
   attribute: Attribute,
@@ -57,11 +61,8 @@ const getDefaultReferenceEntityCollectionSource = (
   selection: {type: 'code', separator: ','},
 });
 
-const isReferenceEntityCollectionSelection = (selection: any): selection is ReferenceEntityCollectionSelection => {
-  if (!('type' in selection) || !('separator' in selection)) return false;
-
-  return 'code' === selection.type || 'attribute' === selection.type;
-};
+const isReferenceEntityCollectionSelection = (selection: any): selection is ReferenceEntityCollectionSelection =>
+  isCodeLabelCollectionSelection(selection) || isReferenceEntityCollectionAttributeSelection(selection);
 
 const isDefaultReferenceEntityCollectionSelection = (selection?: ReferenceEntityCollectionSelection): boolean =>
   'code' === selection?.type;

@@ -62,6 +62,57 @@ test('it can change the selection type to "code"', async () => {
   });
 });
 
+test('it can change the selection type to "label"', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <ReferenceEntityCollectionSelector
+      referenceEntityCode="designer"
+      selection={{
+        type: 'code',
+        separator: ';',
+      }}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_common.type'));
+  userEvent.click(screen.getByText('pim_common.label'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    locale: 'en_US',
+    separator: ';',
+  });
+});
+
+test('it can change the locale of the label selection', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <ReferenceEntityCollectionSelector
+      referenceEntityCode="designer"
+      selection={{
+        type: 'label',
+        separator: ';',
+        locale: 'en_US',
+      }}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_common.locale'));
+  userEvent.click(screen.getByText('Français'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    separator: ';',
+    locale: 'fr_FR',
+  });
+});
+
 test('it can change the collection separator', async () => {
   const onSelectionChange = jest.fn();
 

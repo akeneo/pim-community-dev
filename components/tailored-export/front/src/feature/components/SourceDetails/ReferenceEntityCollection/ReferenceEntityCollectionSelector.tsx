@@ -18,6 +18,7 @@ import {
 } from './model';
 import {AttributeSelector} from '../ReferenceEntity/Attribute';
 import {availableSeparators, isCollectionSeparator} from '../common';
+import {LocaleDropdown} from '../../../components/LocaleDropdown';
 
 const AttributeSelectorContainer = styled.div`
   display: flex;
@@ -45,11 +46,14 @@ const ReferenceEntityCollectionSelector = ({
   const catalogLocale = useUserContext().get('catalogLocale');
   const locales = getAllLocalesFromChannels(channels);
   const typeErrors = filterErrors(validationErrors, '[type]');
+  const localeErrors = filterErrors(validationErrors, '[locale]');
   const separatorErrors = filterErrors(validationErrors, '[separator]');
 
   const handleTypeChange = (type: string) => {
     if ('code' === type) {
       onSelectionChange({type: 'code', separator: selection.separator});
+    } else if ('label' === type) {
+      onSelectionChange({type: 'label', separator: selection.separator, locale: locales[0].code});
     } else {
       const referenceEntityAttribute = referenceEntityAttributes.find(({identifier}) => identifier === type);
 
@@ -101,6 +105,9 @@ const ReferenceEntityCollectionSelector = ({
               <SelectInput.Option title={translate('pim_common.code')} value="code">
                 {translate('pim_common.code')}
               </SelectInput.Option>
+              <SelectInput.Option title={translate('pim_common.label')} value="label">
+                {translate('pim_common.label')}
+              </SelectInput.Option>
               {referenceEntityAttributes.map(referenceEntityAttribute => (
                 <SelectInput.Option
                   key={referenceEntityAttribute.identifier}
@@ -127,6 +134,14 @@ const ReferenceEntityCollectionSelector = ({
             />
           )}
         </AttributeSelectorContainer>
+        {'label' === selection.type && (
+          <LocaleDropdown
+            value={selection.locale}
+            validationErrors={localeErrors}
+            locales={locales}
+            onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
+          />
+        )}
         <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>
           <SelectInput
             invalid={0 < separatorErrors.length}

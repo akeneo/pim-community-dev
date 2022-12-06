@@ -2,6 +2,7 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Source, Attribute} from '../../../models';
 import {
+  CodeLabelSelection,
   DefaultValueOperation,
   isCodeLabelSelection,
   isDefaultValueOperation,
@@ -14,10 +15,6 @@ type ReferenceEntityOperations = {
   replacement?: ReplacementOperation;
 };
 
-type ReferenceEntityCodeSelection = {
-  type: 'code';
-};
-
 type ReferenceEntityAttributeSelection = {
   type: 'attribute';
   attribute_identifier: string;
@@ -27,7 +24,7 @@ type ReferenceEntityAttributeSelection = {
   channel: ChannelReference;
 };
 
-type ReferenceEntitySelection = ReferenceEntityCodeSelection | ReferenceEntityAttributeSelection;
+type ReferenceEntitySelection = CodeLabelSelection | ReferenceEntityAttributeSelection;
 
 type ReferenceEntitySource = {
   uuid: string;
@@ -39,12 +36,14 @@ type ReferenceEntitySource = {
   selection: ReferenceEntitySelection;
 };
 
-const isReferenceEntitySelection = (selection: any): selection is ReferenceEntitySelection => {
-  // TODO RAB-1175
-  // if (!('type' in selection)) return false;
-  // return 'code' === selection.type || 'attribute' === selection.type;
-  return isCodeLabelSelection(selection);
-};
+const isReferenceEntityAttributeSelection = (selection: any): selection is ReferenceEntityAttributeSelection =>
+  'attribute' === selection.type &&
+  'string' === typeof selection.attribute_identifier &&
+  'string' === typeof selection.attribute_type &&
+  'string' === typeof selection.reference_entity_code;
+
+const isReferenceEntitySelection = (selection: any): selection is ReferenceEntitySelection =>
+  isCodeLabelSelection(selection) || isReferenceEntityAttributeSelection(selection);
 
 const isDefaultReferenceEntitySelection = (selection?: ReferenceEntitySelection): boolean => 'code' === selection?.type;
 

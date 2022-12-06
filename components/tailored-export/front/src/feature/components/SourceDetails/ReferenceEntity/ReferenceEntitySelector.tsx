@@ -13,6 +13,7 @@ import {
 import {useChannels, useReferenceEntityAttributes} from '../../../hooks';
 import {isDefaultReferenceEntitySelection, ReferenceEntityAttributeSelection, ReferenceEntitySelection} from './model';
 import {AttributeSelector} from './Attribute';
+import {LocaleDropdown} from '../../../components/LocaleDropdown';
 
 const AttributeSelectorContainer = styled.div`
   display: flex;
@@ -40,10 +41,13 @@ const ReferenceEntitySelector = ({
   const catalogLocale = useUserContext().get('catalogLocale');
   const locales = getAllLocalesFromChannels(channels);
   const typeErrors = filterErrors(validationErrors, '[type]');
+  const localeErrors = filterErrors(validationErrors, '[locale]');
 
   const handleTypeChange = (type: string) => {
     if ('code' === type) {
       onSelectionChange({type: 'code'});
+    } else if ('label' === type) {
+      onSelectionChange({type: 'label', locale: locales[0].code});
     } else {
       const referenceEntityAttribute = referenceEntityAttributes.find(({identifier}) => identifier === type);
 
@@ -92,6 +96,9 @@ const ReferenceEntitySelector = ({
               <SelectInput.Option title={translate('pim_common.code')} value="code">
                 {translate('pim_common.code')}
               </SelectInput.Option>
+              <SelectInput.Option title={translate('pim_common.label')} value="label">
+                {translate('pim_common.label')}
+              </SelectInput.Option>
               {referenceEntityAttributes.map(referenceEntityAttribute => (
                 <SelectInput.Option
                   key={referenceEntityAttribute.identifier}
@@ -118,6 +125,14 @@ const ReferenceEntitySelector = ({
             />
           )}
         </AttributeSelectorContainer>
+        {'label' === selection.type && (
+          <LocaleDropdown
+            value={selection.locale}
+            validationErrors={localeErrors}
+            locales={locales}
+            onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
+          />
+        )}
       </Section>
     </Collapse>
   );
