@@ -25,13 +25,37 @@ class V20221205153905FillIdentifierPrefixesZddMigrationIntegration extends TestC
         $uuid3 = $this->createProduct('SKU-456', []);
 
         $this->emptyPrefixTable();
+
+        $uuid4 = $this->createProduct('existing_sku_12', []);
+
         $prefixesBeforeMigration = $this->getIdentifierGeneratorPrefixes();
-        Assert::assertSame([], $prefixesBeforeMigration);
+        Assert::assertSame([
+            [
+                'uuid' => $uuid4,
+                'prefix' => 'existing_sku_',
+                'number' => '12',
+            ],
+            [
+                'uuid' => $uuid4,
+                'prefix' => 'existing_sku_1',
+                'number' => '2',
+            ],
+        ], $prefixesBeforeMigration);
 
         $this->runMigration();
 
         $prefixesBeforeMigration = $this->getIdentifierGeneratorPrefixes();
         Assert::assertEqualsCanonicalizing([
+            [
+                'uuid' => $uuid4,
+                'prefix' => 'existing_sku_',
+                'number' => '12',
+            ],
+            [
+                'uuid' => $uuid4,
+                'prefix' => 'existing_sku_1',
+                'number' => '2',
+            ],
             [
                 'uuid' => $uuid1,
                 'prefix' => 'AKN',
