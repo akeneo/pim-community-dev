@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Handler\SearchFilters;
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
-use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -13,50 +14,70 @@ use Doctrine\DBAL\Connection;
  */
 class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilder
 {
-    /**
-     * @param array<string> $categoryCodes
-     *
-     * @return array<string, string>
-     */
+    public function __construct(
+        private readonly SearchFilters $searchFilters,
+    ) {
+    }
+
     public function build(
-        array $categoryCodes,
+        array $searchFilters,
         int $limit,
         int $offset,
         bool $isEnrichedAttributes,
-    ): array {
-        $parameters['sqlWhere'] = $this->buildSearchFilter($categoryCodes);
-        $parameters['sqlLimitOffset'] = $this->buildLimitOffset($limit, $offset);
-        $parameters['params'] = [
-            'category_codes' => $categoryCodes,
-            'with_enriched_attributes' => $isEnrichedAttributes ?: false,
-        ];
-        $parameters['types'] = [
-            'category_codes' => Connection::PARAM_STR_ARRAY,
-            'with_enriched_attributes' => \PDO::PARAM_BOOL,
-        ];
-
-        return $parameters;
-    }
-
-    // TODO: Will be replaced in https://akeneo.atlassian.net/browse/GRF-376
-    private function buildSearchFilter(array $searchParameter): string
-    {
-        if (empty($searchParameter)) {
-            $sqlWhere = '1=1';
+    ): ExternalApiSqlParameters {
+        if (empty($searchFilters)) {
+            $sqlParameters = new ExternalApiSqlParameters('1=1');
         } else {
-            $sqlWhere = 'category.code IN (:category_codes)';
+            $sqlParameters = $this->searchFilters->build($searchFilters);
         }
 
-        return $sqlWhere;
+        $sqlParameters = $this->buildLimitOffset($sqlParameters, $limit, $offset);
+        $sqlParameters = $this->buildWithEnrichedAttributes($sqlParameters, $isEnrichedAttributes);
+
+        return $sqlParameters;
     }
 
-    private function buildLimitOffset(int $limit, int $offset): string
-    {
-        $sqlLimitAndOffset = sprintf('LIMIT %d', $limit);
+    private function buildLimitOffset(
+        ExternalApiSqlParameters $sqlParameters,
+        int $limit,
+        int $offset,
+    ): ExternalApiSqlParameters {
+        $sqlParametersParams = $sqlParameters->getParams();
+        $sqlParametersTypes = $sqlParameters->getTypes();
+
+        $sqlLimitAndOffset = 'LIMIT :limit';
+        $sqlParametersParams['limit'] = $limit;
+        $sqlParametersTypes['limit'] = \PDO::PARAM_INT;
         if ($offset !== 0) {
-            $sqlLimitAndOffset .= sprintf(' OFFSET %d', $offset);
+            $sqlLimitAndOffset .= ' OFFSET :offset';
+            $sqlParametersParams['offset'] = $offset;
+            $sqlParametersTypes['offset'] = \PDO::PARAM_INT;
         }
 
-        return $sqlLimitAndOffset;
+        $sqlParameters
+            ->setLimitAndOffset($sqlLimitAndOffset)
+            ->setParams($sqlParametersParams)
+            ->setTypes($sqlParametersTypes)
+        ;
+
+        return $sqlParameters;
+    }
+
+    private function buildWithEnrichedAttributes(
+        ExternalApiSqlParameters $sqlParameters,
+        bool $isEnrichedAttributes,
+    ): ExternalApiSqlParameters {
+        $sqlParametersParams = $sqlParameters->getParams();
+        $sqlParametersTypes = $sqlParameters->getTypes();
+
+        $sqlParametersParams['with_enriched_attributes'] = $isEnrichedAttributes ?: false;
+        $sqlParametersTypes['with_enriched_attributes'] = \PDO::PARAM_BOOL;
+
+        $sqlParameters
+            ->setParams($sqlParametersParams)
+            ->setTypes($sqlParametersTypes)
+        ;
+
+        return $sqlParameters;
     }
 }

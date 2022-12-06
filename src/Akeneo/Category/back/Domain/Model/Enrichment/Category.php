@@ -8,6 +8,7 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\PermissionCollection;
+use Akeneo\Category\Domain\ValueObject\Position;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
@@ -28,6 +29,7 @@ class Category
         private ?\DateTimeImmutable $updated = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
+        private ?Position $position = null,
     ) {
     }
 
@@ -42,7 +44,10 @@ class Category
      *     updated: string|null,
      *     value_collection: string|null,
      *     permissions: string|null,
-     *     template_uuid: string|null
+     *     template_uuid: string|null,
+     *     lft: int|null,
+     *     rgt: int|null,
+     *     lvl: int|null
      * } $category
      */
     public static function fromDatabase(array $category): self
@@ -62,6 +67,7 @@ class Category
                 ValueCollection::fromDatabase(json_decode($category['value_collection'], true)) : null,
             permissions: isset($category['permissions']) && $category['permissions'] ?
                 PermissionCollection::fromArray(json_decode($category['permissions'], true)) : null,
+            position: new Position((int) $category['lft'], (int) $category['rgt'], (int) $category['lvl']),
         );
     }
 
@@ -146,6 +152,11 @@ class Category
     public function getTemplateUuid(): ?TemplateUuid
     {
         return $this->templateUuid;
+    }
+
+    public function getPosition(): ?Position
+    {
+        return $this->position;
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Doctrine\DBAL\Connection;
@@ -19,17 +20,15 @@ final class GetCategoriesSql implements GetCategoriesInterface
     }
 
     /**
-     * @param array<int, mixed>|array<string, mixed> $parameters
-     *
      * @return array<Category>
      *
      * @throws \Doctrine\DBAL\Exception
-     * @throws \JsonException
+     * @throws \JsonException|\Doctrine\DBAL\Driver\Exception
      */
-    public function execute(array $parameters): array
+    public function execute(ExternalApiSqlParameters $sqlParameters): array
     {
-        $sqlWhere = $parameters['sqlWhere'];
-        $sqlLimitOffset = $parameters['sqlLimitOffset'];
+        $sqlWhere = $sqlParameters->getSqlWhere();
+        $sqlLimitOffset = $sqlParameters->getLimitAndOffset();
 
         $sqlQuery = <<<SQL
             WITH translation as (
@@ -46,6 +45,9 @@ final class GetCategoriesSql implements GetCategoriesInterface
                 parent_category.code as parent_code,
                 category.root as root_id,
                 category.updated,
+                category.lft,
+                category.rgt,
+                category.lvl,
                 translation.translations,
                 IF(:with_enriched_attributes, category.value_collection, '') as value_collection
             FROM 
@@ -59,8 +61,8 @@ final class GetCategoriesSql implements GetCategoriesInterface
 
         $results = $this->connection->executeQuery(
             $sqlQuery,
-            $parameters['params'],
-            $parameters['types'],
+            $sqlParameters->getParams(),
+            $sqlParameters->getTypes(),
         )->fetchAllAssociative();
 
         if (!$results) {
@@ -75,24 +77,20 @@ final class GetCategoriesSql implements GetCategoriesInterface
         return $retrievedCategories;
     }
 
-    /**
-     * @param array<int, mixed>|array<string, mixed> $parameters
-     */
-    public function count(array $parameters): int|null
+    public function count(ExternalApiSqlParameters $parameters): int|null
     {
-        $sqlWhere = $parameters['sqlWhere'];
+        $sqlWhere = $parameters->getSqlWhere();
 
         $sqlQuery = <<<SQL
             SELECT COUNT(category.id)
-            FROM 
-                pim_catalog_category category
+            FROM pim_catalog_category category
             WHERE $sqlWhere
         SQL;
 
         $result = $this->connection->executeQuery(
             $sqlQuery,
-            $parameters['params'],
-            $parameters['types'],
+            $parameters->getParams(),
+            $parameters->getTypes(),
         )->fetchOne();
 
         return $result ? (int) $result : null;

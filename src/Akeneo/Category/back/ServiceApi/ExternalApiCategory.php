@@ -115,7 +115,6 @@ class ExternalApiCategory
             'parent' => $this->getParentCode(),
             'updated' => $this->getUpdated(),
             'labels' => $this->getLabels(),
-            'template' => $this->getTemplateCode(),
         ];
 
         if ($withPosition) {
@@ -123,6 +122,7 @@ class ExternalApiCategory
         }
 
         if ($withEnrichedAttributes) {
+            $normalizedCategory['template'] = $this->getTemplateCode();
             $normalizedCategory['values'] = $this->getValues();
         }
 

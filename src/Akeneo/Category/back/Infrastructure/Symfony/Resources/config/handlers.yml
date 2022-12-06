@@ -18,3 +18,9 @@ services:
     class: Akeneo\Category\Infrastructure\Handler\GetPositionHandler
     arguments:
       - '@Akeneo\Category\Application\Query\GetDirectChildrenCategoryCodesInterface'
+
+  Akeneo\Category\Application\Handler\SearchFilters:
+    class: Akeneo\Category\Infrastructure\Handler\SearchFiltersSql
+    arguments:
+      - '@Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator'
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'

@@ -13,14 +13,9 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
 interface GetCategoriesInterface
 {
     /**
-     * @param array<string, string> $parameters
-     *
      * @return array<Category>
      */
-    public function execute(array $parameters): array;
+    public function execute(ExternalApiSqlParameters $sqlParameters): array;
 
-    /**
-     * @param array<string, string> $parameters
-     */
-    public function count(array $parameters): int|null;
+    public function count(ExternalApiSqlParameters $parameters): int|null;
 }
