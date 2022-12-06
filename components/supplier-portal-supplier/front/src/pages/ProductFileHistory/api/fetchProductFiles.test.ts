@@ -37,7 +37,7 @@ test('it calls the backend and returns the list of product files', async () => {
     });
 
     const response = await fetchProductFiles(1, '');
-    expect(response).toEqual({
+    expect(response).toStrictEqual({
         product_files: [
             {
                 identifier: '2b0f733e-6038-40a3-bca3-52a4803def89',
