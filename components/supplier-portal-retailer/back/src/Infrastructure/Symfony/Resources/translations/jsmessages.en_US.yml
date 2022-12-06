@@ -101,6 +101,7 @@ supplier_portal:
             tabs:
                 discussion: Discussion
                 general_information: General information
+                preview: File preview
             discussion:
                 import_file_button_label: Import file
                 info: Send comments when you need to exchange information with your suppliers.
@@ -120,6 +121,11 @@ supplier_portal:
                 upload_date: Upload date
                 import_date: Import date
                 not_imported_yet: Not imported yet
+            preview:
+                missing_product_file: This file does not exist anymore.
+                error_loading_product_file_preview:
+                    title: We are not able to display the file preview
+                    content: Sorry about this inconvenience, please try again in a few moments.
             product_files_modal:
                 title: Product file
                 subtitle: Select the tailored import profile
