@@ -14,3 +14,9 @@ services:
       - '@event_dispatcher'
     tags:
       - { name: kernel.event_subscriber }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber:
+    arguments:
+      - '@akeneo_batch.job_repository'
+    tags:
+      - { name: kernel.event_subscriber }

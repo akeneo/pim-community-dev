@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
+namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\API\Event\UnableToSetIdentifierEvent;
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;

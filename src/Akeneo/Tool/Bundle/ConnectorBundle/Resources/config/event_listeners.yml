@@ -14,9 +14,3 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
         tags:
             - { name: kernel.event_subscriber }
-
-    Akeneo\Tool\Bundle\ConnectorBundle\EventListener\UnableToSetIdentifiersSubscriber:
-        arguments:
-            - '@akeneo_batch.job_repository'
-        tags:
-          - { name: kernel.event_subscriber }

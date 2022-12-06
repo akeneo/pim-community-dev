@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
+namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\API\Event\UnableToSetIdentifierEvent;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
