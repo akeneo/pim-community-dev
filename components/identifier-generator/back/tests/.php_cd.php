@@ -42,6 +42,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+            'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
@@ -68,6 +69,8 @@ $rules = [
 
             'Ramsey\Uuid\Uuid',
             'Webmozart\Assert\Assert',
+
+            'Psr\Log\LoggerInterface',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
 
