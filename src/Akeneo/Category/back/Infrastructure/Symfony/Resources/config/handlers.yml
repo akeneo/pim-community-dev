@@ -5,7 +5,7 @@ services:
       - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
       - '@Akeneo\Category\Application\Applier\UserIntentApplierRegistry'
       - '@event_dispatcher'
-      - '@Akeneo\Category\Application\Storage\Save\CategorySaverProcessor'
+      - '@Akeneo\Category\Application\Storage\Save\SaveCategory'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Api\Command\UpsertCategoryCommand'}
 

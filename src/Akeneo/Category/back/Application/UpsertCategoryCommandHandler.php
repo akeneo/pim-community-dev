@@ -10,6 +10,7 @@ use Akeneo\Category\Api\Event\CategoryCreatedEvent;
 use Akeneo\Category\Api\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
+use Akeneo\Category\Application\Storage\Save\SaveCategory;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -24,11 +25,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UpsertCategoryCommandHandler
 {
     public function __construct(
-        private ValidatorInterface $validator,
-        private GetCategoryInterface $getCategory,
-        private UserIntentApplierRegistry $applierRegistry,
-        private EventDispatcherInterface $eventDispatcher,
-        private CategorySaverProcessor $saver,
+        private readonly ValidatorInterface $validator,
+        private readonly GetCategoryInterface $getCategory,
+        private readonly UserIntentApplierRegistry $applierRegistry,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SaveCategory $saver,
     ) {
     }
 

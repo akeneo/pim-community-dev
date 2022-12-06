@@ -12,6 +12,9 @@ final class PermissionCollection
     public const EDIT = 'edit';
     public const OWN = 'own';
 
+    /** @var array<string, array<int>>  */
+    private array $removedPermissions;
+
     // @phpstan-ignore-next-line
     private function __construct(private ?array $permissions)
     {
@@ -51,6 +54,7 @@ final class PermissionCollection
         if (array_key_exists($type, $this->permissions)) {
             foreach ($userGroupIds as $userGroupId) {
                 if (($key = array_search($userGroupId, $this->permissions[$type])) !== false) {
+                    $this->removedPermissions[$type][] = $userGroupId;
                     unset($this->permissions[$type][$key]);
                 }
             }
@@ -75,6 +79,11 @@ final class PermissionCollection
     public function getOwnUserGroups(): array
     {
         return array_values($this->permissions[self::OWN]);
+    }
+
+    public function getRemovedPermissions(): PermissionCollection
+    {
+        return new self($this->removedPermissions);
     }
 
     /** @return array<string, array<int>>|null */
