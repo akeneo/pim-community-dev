@@ -36,19 +36,6 @@ services:
             - '@twig'
             - '@pim_notification.email.email_notifier'
 
-    security.authentication.provider.dao:
-        class: Akeneo\UserManagement\Bundle\Provider\CustomDaoAuthenticationProvider
-        abstract: true
-        arguments:
-            - ''
-            - ''
-            - ''
-            - '@security.password_hasher_factory'
-            - '@pim_user.manager'
-            - '%pim_user.account_lock.duration%'
-            - '%pim_user.account_lock.max_consecutive_failures%'
-            - '%security.authentication.hide_user_not_found%'
-
     security.user_checker:
         class: Akeneo\UserManagement\Bundle\Provider\CustomUserChecker
         abstract: false

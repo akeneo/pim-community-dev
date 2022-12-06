@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9230311d10827ae74edda812622bd70c",
+    "content-hash": "8bfeebea98bc3a960ead74204ca510fc",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
-            "version": "v2.0.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/FOSOAuthServerBundle.git",
-                "reference": "79b0dd80d3c3a94b09ae55727aa8b99f00decc29"
+                "reference": "3062ee41922f67db78a251581b69b43d896f8e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/FOSOAuthServerBundle/zipball/79b0dd80d3c3a94b09ae55727aa8b99f00decc29",
-                "reference": "79b0dd80d3c3a94b09ae55727aa8b99f00decc29",
+                "url": "https://api.github.com/repos/akeneo/FOSOAuthServerBundle/zipball/3062ee41922f67db78a251581b69b43d896f8e8a",
+                "reference": "3062ee41922f67db78a251581b69b43d896f8e8a",
                 "shasum": ""
             },
             "require": {
                 "friendsofsymfony/oauth2-php": "~1.1",
-                "php": "^7.2 || ^8.0",
+                "php": "^8.0",
                 "symfony/dependency-injection": "^4.4 || ^5.1",
                 "symfony/framework-bundle": "^4.4 || ^5.1",
                 "symfony/security-bundle": "^4.4 || ^5.1",
@@ -91,9 +91,9 @@
                 "server"
             ],
             "support": {
-                "source": "https://github.com/akeneo/FOSOAuthServerBundle/tree/v2.0.0"
+                "source": "https://github.com/akeneo/FOSOAuthServerBundle/tree/v3.0.0"
             },
-            "time": "2021-09-06T14:20:35+00:00"
+            "time": "2022-12-05T11:40:53+00:00"
         },
         {
             "name": "ass/xmlsecurity",

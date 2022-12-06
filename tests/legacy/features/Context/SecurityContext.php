@@ -946,7 +946,7 @@ class SecurityContext extends PimContext
             ->getService('pim_user.repository.user')
             ->findOneBy(['username' => $username]);
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $session->set('_security_main', serialize($token));
         $session->save();
 
