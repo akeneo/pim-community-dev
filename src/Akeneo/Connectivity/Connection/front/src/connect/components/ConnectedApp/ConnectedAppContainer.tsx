@@ -50,7 +50,6 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
 
-
     useEffect(() => {
         fetchConnectedAppMonitoringSettings().then(setMonitoringSettings);
     }, [connectedApp.connection_code]);

@@ -9,7 +9,7 @@ import {UserButtons} from '../../../../shared/user';
 import {DeveloperModeTag} from '../../DeveloperModeTag';
 import {CatalogEdit, useCatalogForm} from '@akeneo-pim-community/catalogs';
 import {NotificationLevel, useNotify} from '../../../../shared/notify';
-import {OpenAppButton} from "../OpenAppButton";
+import {OpenAppButton} from '../OpenAppButton';
 
 type Props = {
     connectedApp: ConnectedApp;

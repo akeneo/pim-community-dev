@@ -1,10 +1,9 @@
-import {Button} from 'akeneo-design-system';
+import {Button, ExternalLinkIcon} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import React, {FC} from 'react';
 import {useRouter} from '../../../shared/router/use-router';
 import {useSecurity} from '../../../shared/security';
 import {ConnectedApp} from '@src/model/Apps/connected-app';
-import {ExternalLinkIcon} from 'akeneo-design-system';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -30,15 +29,13 @@ export const OpenAppButton: FC<Props> = ({connectedApp}) => {
             disabled={!canOpenApp}
             target='_blank'
         >
-            <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label'/>
+            <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label' />
             <ExternalLinkIcon
-                title={
-                    translate(
+                title={translate(
                     'akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.icon_alt'
-                    )
-                }
+                )}
                 height={'13px'}
             />
         </Button>
     );
-}
+};
