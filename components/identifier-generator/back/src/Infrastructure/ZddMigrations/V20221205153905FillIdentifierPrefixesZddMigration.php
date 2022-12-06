@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\ZddMigrations;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\API\Query\UpdateIdentifierPrefixesQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -33,10 +35,11 @@ class V20221205153905FillIdentifierPrefixesZddMigration implements ZddMigration
         $productUuids = $this->getProductsByBatch($lastProductUuidAsBytes);
 
         while (\count($productUuids) > 0) {
-            $this->logger->warning(\sprintf('%s products found to fill prefixes', \count($productUuids)));
+            $this->logger->info(\sprintf('%s products found to fill prefixes', \count($productUuids)));
 
             $productUuidsAsBytes = \array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $productUuids);
             $products = $this->productRepository->findBy(['uuid' => $productUuidsAsBytes]);
+            Assert::allIsInstanceOf($products, ProductInterface::class);
 
             $this->updateIdentifierPrefixesQuery->updateFromProducts($products);
 
@@ -56,18 +59,21 @@ class V20221205153905FillIdentifierPrefixesZddMigration implements ZddMigration
     private function getProductsByBatch(string $lastProductUuid): array
     {
         $query = <<<SQL
-        SELECT DISTINCT BIN_TO_UUID(pcp.uuid) as uuid from pim_catalog_product as pcp
- LEFT JOIN pim_catalog_identifier_generator_prefixes pcigf on pcp.uuid = pcigf.product_uuid
-WHERE pcigf.product_uuid IS NULL
-AND pcp.uuid > :lastUuid
-ORDER BY uuid
-LIMIT :limit
+        SELECT DISTINCT BIN_TO_UUID(pcp.uuid) as uuid 
+        FROM pim_catalog_product as pcp
+            LEFT JOIN pim_catalog_identifier_generator_prefixes pcigf on pcp.uuid = pcigf.product_uuid
+        WHERE pcigf.product_uuid IS NULL
+        AND pcp.uuid > :lastUuid
+        ORDER BY uuid
+        LIMIT :limit
 SQL;
 
-        return $this->connection->executeQuery(
+        $result = $this->connection->executeQuery(
             $query,
             ['lastUuid' => $lastProductUuid, 'limit' => self::BULK_SIZE],
             ['lastUuid' => \PDO::PARAM_STR, 'limit' => \PDO::PARAM_INT]
         )->fetchFirstColumn();
+
+        return \array_map('strval', $result);
     }
 }
