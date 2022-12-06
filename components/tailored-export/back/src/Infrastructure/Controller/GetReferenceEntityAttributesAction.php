@@ -56,7 +56,7 @@ final class GetReferenceEntityAttributesAction
 
         $filteredAttributes = array_values(array_filter(
             $referenceEntityAttributes,
-            static fn (AttributeDetails $attribute) => $attribute->code !== self::REFERENCE_ENTITY_LABEL_CODE,
+            static fn (AttributeDetails $attribute) => self::REFERENCE_ENTITY_LABEL_CODE !== $attribute->code,
         ));
 
         return new JsonResponse(array_map(
