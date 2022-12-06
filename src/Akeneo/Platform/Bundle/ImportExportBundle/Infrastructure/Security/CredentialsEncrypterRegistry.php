@@ -2,14 +2,12 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security;
 
-class CredentialsEncrypterRegistry
+final class CredentialsEncrypterRegistry
 {
-    /** @var CredentialsEncrypter[] */
-    private $credentialsEncrypters = [];
-
-    public function register(CredentialsEncrypter $credentialsEncrypter)
-    {
-        $this->credentialsEncrypters[] = $credentialsEncrypter;
+    public function __construct(
+        /** @var $credentialsEncrypters CredentialsEncrypter[] */
+        private readonly iterable $credentialsEncrypters,
+    ) {
     }
 
     public function encryptCredentials(array $data): array

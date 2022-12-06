@@ -410,6 +410,30 @@ final class UserIntentContext implements Context
     }
 
     /**
+     * @When /I ask to convert standard format with a measurement with empty unit/
+     */
+    public function askToConvertStandardFormatWithAMeasurementWithEmptyUnit(): void
+    {
+        $this->dispatchToConverter(['values' => [
+            'a_metric' => [
+                ['data' => ['amount' => 12, 'unit' => []], 'scope' => null, 'locale' => 'en_US'],
+            ],
+        ]]);
+    }
+
+    /**
+     * @When /I ask to convert standard format with a measurement with null unit/
+     */
+    public function askToConvertStandardFormatWithAMeasurementWithNullUnit(): void
+    {
+        $this->dispatchToConverter(['values' => [
+            'a_metric' => [
+                ['data' => ['amount' => 12, 'unit' => null], 'scope' => null, 'locale' => 'en_US'],
+            ],
+        ]]);
+    }
+
+    /**
      * @When /I ask to convert standard format with an invalid simpleselect attribute value/
      */
     public function askToConvertStandardFormatWithInvalidSimpleSelectAttributeValue(): void

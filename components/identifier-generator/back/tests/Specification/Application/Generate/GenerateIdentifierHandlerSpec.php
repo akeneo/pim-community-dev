@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
@@ -43,7 +45,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
                     'type' => AutoNumber::type(),
                     'numberMin' => 0,
                     'digitsMin' => 1,
-                ])
+                ]),
             ]),
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
             $target,
@@ -52,7 +54,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
 
         $getNextIdentifierQuery
-            ->fromPrefix($target,'AKN-')
+            ->fromPrefix($target, 'AKN-')
             ->shouldBeCalled()
             ->willReturn(43);
 
@@ -73,7 +75,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
                     'type' => AutoNumber::type(),
                     'numberMin' => 0,
                     'digitsMin' => 1,
-                ])
+                ]),
             ]),
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
             $target,
@@ -82,7 +84,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
 
         $getNextIdentifierQuery
-            ->fromPrefix($target,'AKN-')
+            ->fromPrefix($target, 'AKN-')
             ->shouldBeCalled()
             ->willReturn(43);
 

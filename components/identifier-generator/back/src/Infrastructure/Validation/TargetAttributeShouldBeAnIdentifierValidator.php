@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\CommandInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
@@ -24,9 +23,9 @@ final class TargetAttributeShouldBeAnIdentifierValidator extends ConstraintValid
     public function validate($target, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, TargetAttributeShouldBeAnIdentifier::class);
-        $command = $this->context->getRoot();
-        Assert::isInstanceOf($command, CommandInterface::class);
-        Assert::string($target);
+        if (!\is_string($target)) {
+            return;
+        }
 
         $attribute = $this->getAttributes->forCode($target);
         if (null !== $attribute && AttributeTypes::IDENTIFIER !== $attribute->type()) {

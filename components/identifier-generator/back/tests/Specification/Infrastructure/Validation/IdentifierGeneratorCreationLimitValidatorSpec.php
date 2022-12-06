@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimit;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimitValidator;
@@ -14,6 +12,10 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
 {
     public function let(IdentifierGeneratorRepository $repository, ExecutionContext $context): void
@@ -32,15 +34,6 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new NotBlank()]);
     }
 
-    public function it_could_throw_an_error_when_its_not_the_right_command(ExecutionContext $context): void
-    {
-        $context->getRoot()
-            ->willReturn(new \stdClass());
-        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new IdentifierGeneratorCreationLimit(['limit' => 2])]);
-
-        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new IdentifierGeneratorCreationLimit()]);
-    }
-
     public function it_should_build_violation_when_an_identifier_generator_already_exist(
         ExecutionContext $context,
         IdentifierGeneratorRepository $repository
@@ -49,18 +42,6 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->count()
             ->shouldBeCalledOnce()
             ->willReturn(1);
-
-        $command = new CreateGeneratorCommand(
-            'generatorCode',
-            [],
-            [FreeText::fromString('abcdef')],
-            ['fr' => 'Générateur'],
-            'sku',
-            '-'
-        );
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn($command);
 
         $context->buildViolation(
             'validation.create.identifier_limit_reached',
@@ -79,18 +60,6 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->shouldBeCalledOnce()
             ->willReturn(2);
 
-        $command = new CreateGeneratorCommand(
-            'generatorCode',
-            [],
-            [FreeText::fromString('abcdef')],
-            ['fr' => 'Générateur'],
-            'sku',
-            '-'
-        );
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn($command);
-
         $context->buildViolation(
             'validation.create.identifier_limit_reached',
             ['{{limit}}' => 2]
@@ -108,19 +77,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->shouldBeCalledOnce()
             ->willReturn(1);
 
-        $command = new CreateGeneratorCommand(
-            'generatorCode',
-            [],
-            [FreeText::fromString('abcdef')],
-            ['fr' => 'Générateur'],
-            'sku',
-            '-'
-        );
-        $context->getRoot()
-            ->shouldBeCalledOnce()
-            ->willReturn($command);
-
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate('generatorCode', new IdentifierGeneratorCreationLimit(['limit' => 2]));
     }
