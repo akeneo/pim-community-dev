@@ -84,7 +84,7 @@ abstract class ApiTestCase extends WebTestCase
         ?string $password = self::PASSWORD,
         ?string $accessToken = null,
         ?string $refreshToken = null
-    ):KernelBrowser {
+    ): KernelBrowser {
         $options = array_merge($options, ['debug' => false]);
 
         if (null === $clientId || null === $secret) {
@@ -100,7 +100,7 @@ abstract class ApiTestCase extends WebTestCase
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
 
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
         $aclManager = $this->get('oro_security.acl.manager');
