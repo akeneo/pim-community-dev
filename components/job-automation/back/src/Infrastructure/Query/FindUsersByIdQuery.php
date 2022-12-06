@@ -11,7 +11,7 @@ use Akeneo\UserManagement\ServiceApi\User\UsersQuery;
 class FindUsersByIdQuery implements FindUsersByIdQueryInterface
 {
     public function __construct(
-        private ListUsersHandlerInterface $listUsersHandler,
+        private readonly ListUsersHandlerInterface $listUsersHandler,
     ) {
     }
 

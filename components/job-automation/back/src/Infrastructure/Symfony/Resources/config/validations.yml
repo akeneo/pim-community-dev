@@ -3,6 +3,10 @@ services:
     tags:
       - { name: 'akeneo.import_export.validation.storage_constraint', key: 'sftp' }
 
+  Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\AmazonS3\AmazonS3Storage:
+    tags:
+      - { name: 'akeneo.import_export.validation.storage_constraint', key: 'amazon_s3' }
+
   akeneo_batch.validator.job_instance.automation:
     class: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation\AutomationValidator'
     tags:

@@ -16,7 +16,7 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Security;
 class Encrypter
 {
     public function __construct(
-        private string $appSecret,
+        private readonly string $appSecret,
     ) {
     }
 

@@ -19,8 +19,8 @@ use Akeneo\Platform\JobAutomation\Domain\Query\SaveAsymmetricKeysQueryInterface;
 class GenerateAsymmetricKeysHandler
 {
     public function __construct(
-        private AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator,
-        private SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery,
+        private readonly AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator,
+        private readonly SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery,
     ) {
     }
 

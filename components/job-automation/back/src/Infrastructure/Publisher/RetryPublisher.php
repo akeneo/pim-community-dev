@@ -29,10 +29,10 @@ final class RetryPublisher implements RetryPublisherInterface
     private const RETRY_DELAY_IN_MILLISECOND = 1000;
 
     public function __construct(
-        private ClockInterface $clock,
-        private EventDispatcherInterface $eventDispatcher,
-        private LoggerInterface $logger,
-        private PublishJobToQueueInterface $publishJobToQueue,
+        private readonly ClockInterface $clock,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggerInterface $logger,
+        private readonly PublishJobToQueueInterface $publishJobToQueue,
     ) {
     }
 

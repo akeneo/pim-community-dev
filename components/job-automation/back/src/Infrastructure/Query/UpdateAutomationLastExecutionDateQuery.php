@@ -19,7 +19,7 @@ use Doctrine\DBAL\Connection;
 final class UpdateAutomationLastExecutionDateQuery implements UpdateAutomationLastExecutionDateQueryInterface
 {
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
     ) {
     }
 

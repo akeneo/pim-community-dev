@@ -24,8 +24,8 @@ use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 final class PushScheduledJobsToQueueHandler implements PushScheduledJobsToQueueHandlerInterface
 {
     public function __construct(
-        private FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
-        private RetryPublisherInterface $retryPublisher,
+        private readonly FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
+        private readonly RetryPublisherInterface $retryPublisher,
     ) {
     }
 

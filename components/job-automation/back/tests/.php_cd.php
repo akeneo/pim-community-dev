@@ -22,7 +22,8 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Platform\JobAutomation\Domain',
-            'Akeneo\Platform\Bundle\ImportExportBundle\Domain'
+            'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
+            'Akeneo\Platform\JobAutomation\Infrastructure\StorageClient'
         ],
     )->in('Akeneo\Platform\JobAutomation\Application'),
     $builder->only(
@@ -60,6 +61,8 @@ $rules = [
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             'Akeneo\UserManagement\ServiceApi',
 
+            'Aws\S3\S3Client',
+            'League\Flysystem\AwsS3V3\AwsS3V3Adapter',
             'League\Flysystem\Filesystem',
             'League\Flysystem\PhpseclibV3',
             'Twig\Environment',

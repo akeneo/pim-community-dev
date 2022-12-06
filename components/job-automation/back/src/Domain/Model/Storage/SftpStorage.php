@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Domain\Model;
+namespace Akeneo\Platform\JobAutomation\Domain\Model\Storage;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 

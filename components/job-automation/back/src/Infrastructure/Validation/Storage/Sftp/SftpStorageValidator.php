@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\FilePath;
-use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage as SftpStorageModel;
+use Akeneo\Platform\JobAutomation\Domain\Model\Storage\SftpStorage as SftpStorageModel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;

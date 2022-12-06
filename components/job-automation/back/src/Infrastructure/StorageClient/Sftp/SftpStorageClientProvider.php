@@ -15,16 +15,14 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
-use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
+use Akeneo\Platform\JobAutomation\Domain\Model\Storage\SftpStorage;
 use Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter;
-use Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\RemoteStorageClientProviderInterface;
 use League\Flysystem\Filesystem;
-use League\Flysystem\PhpseclibV3\ConnectionProvider;
 use League\Flysystem\PhpseclibV3\SftpAdapter;
 use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 
-final class SftpStorageClientProvider implements RemoteStorageClientProviderInterface
+final class SftpStorageClientProvider implements StorageClientProviderInterface
 {
     private const MAX_RETRIES = 4;
     private const USE_AGENT = false;
@@ -42,9 +40,10 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         }
 
         $encryptionKey = $this->getEncryptionKey($storage);
+
         $password = $storage->getPassword() ? $this->encrypter->decrypt($storage->getPassword(), $encryptionKey) : null;
 
-        $connection = $this->createConnectionProvider(
+        $connectionProvider = $this->createConnectionProvider(
             loginType: $storage->getLoginType(),
             host: $storage->getHost(),
             username: $storage->getUsername(),
@@ -54,29 +53,15 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
             hostFingerprint: $storage->getFingerprint(),
         );
 
-        return new FileSystemStorageClient(new Filesystem(new SftpAdapter($connection, '')));
+        return new SftpStorageClient(
+            new Filesystem(new SftpAdapter($connectionProvider, '')),
+            $connectionProvider,
+        );
     }
 
     public function supports(StorageInterface $storage): bool
     {
         return $storage instanceof SftpStorage;
-    }
-
-    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider
-    {
-        if (!$storage instanceof SftpStorage) {
-            throw new \InvalidArgumentException('The provider only support SftpStorage');
-        }
-
-        return $this->createConnectionProvider(
-            loginType: $storage->getLoginType(),
-            host: $storage->getHost(),
-            username: $storage->getUsername(),
-            password: $storage->getPassword(),
-            privateKey: $storage->getPrivateKey(),
-            port: $storage->getPort(),
-            hostFingerprint: $storage->getFingerprint(),
-        );
     }
 
     private function getEncryptionKey(SftpStorage $storage): string

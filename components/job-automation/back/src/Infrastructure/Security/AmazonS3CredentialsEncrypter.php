@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Security;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypter;
-use Akeneo\Platform\JobAutomation\Domain\Model\Storage\SftpStorage;
+use Akeneo\Platform\JobAutomation\Domain\Model\Storage\AmazonS3Storage;
 
-final class SftpCredentialsEncrypter implements CredentialsEncrypter
+final class AmazonS3CredentialsEncrypter implements CredentialsEncrypter
 {
     public function __construct(
         private readonly Encrypter $encrypter,
@@ -27,7 +27,7 @@ final class SftpCredentialsEncrypter implements CredentialsEncrypter
     {
         $encryptionKey = $this->getEncryptionKey($data);
 
-        $data['password'] = $this->encrypter->encrypt($data['password'], $encryptionKey);
+        $data['secret'] = $this->encrypter->encrypt($data['secret'], $encryptionKey);
 
         return $data;
     }
@@ -36,7 +36,7 @@ final class SftpCredentialsEncrypter implements CredentialsEncrypter
     {
         $encryptionKey = $this->getEncryptionKey($data);
 
-        $data['password'] = $this->encrypter->decrypt($data['password'], $encryptionKey);
+        $data['secret'] = $this->encrypter->decrypt($data['secret'], $encryptionKey);
 
         return $data;
     }
@@ -44,21 +44,21 @@ final class SftpCredentialsEncrypter implements CredentialsEncrypter
     public function support(array $data): bool
     {
         return isset($data['type'])
-            && isset($data['username'])
-            && isset($data['host'])
-            && isset($data['port'])
-            && isset($data['password'])
-            && SftpStorage::TYPE === $data['type']
+            && isset($data['region'])
+            && isset($data['bucket'])
+            && isset($data['key'])
+            && isset($data['secret'])
+            && AmazonS3Storage::TYPE === $data['type']
         ;
     }
 
     private function getEncryptionKey(array $storage): string
     {
         return sprintf(
-            '%s@%s:%s',
-            $storage['username'],
-            $storage['host'],
-            $storage['port'],
+            '%s:%s:%s',
+            $storage['region'],
+            $storage['bucket'],
+            $storage['key'],
         );
     }
 }

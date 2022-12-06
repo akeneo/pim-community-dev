@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck;
+namespace Akeneo\Platform\JobAutomation\Application\CheckStorageConnection;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 
-final class StorageConnectionCheckQuery
+class CheckStorageConnectionQuery
 {
     public function __construct(
-        private StorageInterface $storage,
+        private readonly StorageInterface $storage,
     ) {
     }
 

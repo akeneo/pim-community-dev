@@ -5,8 +5,8 @@ namespace Akeneo\Platform\JobAutomation\Domain\Model;
 final class UserToNotify
 {
     public function __construct(
-        private string $username,
-        private string $email,
+        private readonly string $username,
+        private readonly string $email,
     ) {
     }
 

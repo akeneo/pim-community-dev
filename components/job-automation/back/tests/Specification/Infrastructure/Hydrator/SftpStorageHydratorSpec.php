@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\JobAutomation\Infrastructure\Hydrator;
 
 use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
-use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
+use Akeneo\Platform\JobAutomation\Domain\Model\Storage\SftpStorage;
 use Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -43,6 +43,7 @@ class SftpStorageHydratorSpec extends ObjectBehavior
         ])->shouldReturn(true);
         $this->supports(['type' => 'none'])->shouldReturn(false);
         $this->supports(['type' => 'local'])->shouldReturn(false);
+        $this->supports(['type' => 'amazon_s3'])->shouldReturn(false);
         $this->supports(['type' => 'unknown'])->shouldReturn(false);
     }
 

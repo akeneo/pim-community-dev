@@ -18,7 +18,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorag
 use Akeneo\Platform\JobAutomation\Test\Acceptance\AcceptanceTestCase;
 use League\Flysystem\Filesystem;
 
-class DownloadFileFromSftpStorageTest extends AcceptanceTestCase
+class DownloadFileFromRemoteStorageTest extends AcceptanceTestCase
 {
     /**
      * @test
@@ -43,6 +43,28 @@ class DownloadFileFromSftpStorageTest extends AcceptanceTestCase
         $this->assertEquals('file content', $this->getLocalFilesystem()->read('/tmp/job_name/a_file_path'));
     }
 
+    /**
+     * @test
+     */
+    public function it_downloads_file_from_amazon_s3_storage(): void
+    {
+        $this->getAmazonS3Filesystem()->write('a_file_path', 'file content');
+
+        $storage = [
+            'type' => 'amazon_s3',
+            'region' => 'a_region',
+            'bucket' => 'a_bucket',
+            'key' => 'a_key',
+            'secret' => 'a_secret',
+            'file_path' => 'a_file_path',
+        ];
+
+        $this->getHandler()->handle(new DownloadFileFromStorageCommand($storage, '/tmp/job_name/'));
+
+        $this->assertTrue($this->getLocalFilesystem()->fileExists('/tmp/job_name/a_file_path'));
+        $this->assertEquals('file content', $this->getLocalFilesystem()->read('/tmp/job_name/a_file_path'));
+    }
+
     private function getHandler(): DownloadFileFromStorageHandler
     {
         return $this->get('Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler');
@@ -51,6 +73,11 @@ class DownloadFileFromSftpStorageTest extends AcceptanceTestCase
     private function getSftpFilesystem(): Filesystem
     {
         return $this->get('oneup_flysystem.sftp_storage_filesystem');
+    }
+
+    private function getAmazonS3Filesystem(): Filesystem
+    {
+        return $this->get('oneup_flysystem.amazon_s3_storage_filesystem');
     }
 
     private function getLocalFilesystem(): Filesystem

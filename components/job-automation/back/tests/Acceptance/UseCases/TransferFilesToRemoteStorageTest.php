@@ -19,7 +19,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage
 use Akeneo\Platform\JobAutomation\Test\Acceptance\AcceptanceTestCase;
 use League\Flysystem\Filesystem;
 
-class TransferFilesToSftpStorageTest extends AcceptanceTestCase
+class TransferFilesToRemoteStorageTest extends AcceptanceTestCase
 {
     /**
      * @test
@@ -53,6 +53,37 @@ class TransferFilesToSftpStorageTest extends AcceptanceTestCase
         $this->assertEquals('file2 content', $this->getSftpFilesystem()->read('filename2.csv'));
     }
 
+    /**
+     * @test
+     */
+    public function it_transfers_files_to_amazon_s3_storage(): void
+    {
+        $this->getLocalFilesystem()->write('file_key1', 'file1 content');
+        $this->getCatalogFilesystem()->write('file_key2', 'file2 content');
+
+        $storage = [
+            'type' => 'amazon_s3',
+            'region' => 'a_region',
+            'bucket' => 'a_bucket',
+            'key' => 'a_key',
+            'secret' => 'a_secret',
+            'file_path' => 'a_file_path',
+        ];
+
+        $filesToTransfer = [
+            new FileToTransfer('file_key1', 'localFilesystem', 'filename1.csv', false),
+            new FileToTransfer('file_key2', 'catalogStorage', 'filename2.csv', false),
+        ];
+
+        $this->getHandler()->handle(new TransferFilesToStorageCommand($filesToTransfer, $storage));
+
+        $this->assertTrue($this->getAmazonS3Filesystem()->fileExists('filename1.csv'));
+        $this->assertTrue($this->getAmazonS3Filesystem()->fileExists('filename2.csv'));
+
+        $this->assertEquals('file1 content', $this->getAmazonS3Filesystem()->read('filename1.csv'));
+        $this->assertEquals('file2 content', $this->getAmazonS3Filesystem()->read('filename2.csv'));
+    }
+
     private function getHandler(): TransferFilesToStorageHandler
     {
         return $this->get('Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler');
@@ -71,5 +102,10 @@ class TransferFilesToSftpStorageTest extends AcceptanceTestCase
     private function getSftpFilesystem(): Filesystem
     {
         return $this->get('oneup_flysystem.sftp_storage_filesystem');
+    }
+
+    private function getAmazonS3Filesystem(): Filesystem
+    {
+        return $this->get('oneup_flysystem.amazon_s3_storage_filesystem');
     }
 }
