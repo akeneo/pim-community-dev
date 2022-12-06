@@ -568,6 +568,8 @@ jobs:
               CLOUD_FUNCTION_BUCKET="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${BUCKET_SHORTED}-job-publisher-${IMAGE_TAG_DATE}"
               CLOUD_FUNCTION_GSA="pim-cloud-function@${GOOGLE_PROJECT_ID}.iam.gserviceaccount.com"
 
+              TTL_PIM="4260m"
+              
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> ${BASH_ENV}
               echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> ${BASH_ENV}
               echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> ${BASH_ENV}
@@ -589,7 +591,6 @@ jobs:
               echo export CLOUD_FUNCTION_BUCKET=${CLOUD_FUNCTION_BUCKET} >> ${BASH_ENV}
               echo export CLOUD_FUNCTION_GSA=${CLOUD_FUNCTION_GSA} >> ${BASH_ENV}
               echo export TTL_PIM=${TTL_PIM} >> $BASH_ENV
-              echo export TTL_TENANT=${TTL_TENANT} >> $BASH_ENV
         - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${PIM_NAMESPACE}"
@@ -743,10 +744,12 @@ jobs:
                       fi
                       TENANT_ID=${TYPE}-${TENANT_NAME}
                       FQDN="${TENANT_NAME}.${GOOGLE_DOMAIN}"
-
+                      TTL_TENANT="4320m"
+              
                       echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> ${BASH_ENV}
                       echo export TENANT_NAME=${TENANT_NAME} >> ${BASH_ENV}
                       echo export TENANT_ID=${TENANT_ID} >> ${BASH_ENV}
+                      echo export TTL_TENANT=${TTL_TENANT} >> $BASH_ENV
                       echo export FQDN=${FQDN} >> ${BASH_ENV}
 
                       echo "Tenant name: ${TENANT_NAME}"
@@ -825,8 +828,7 @@ jobs:
                         echo "The tenant ${TENANT_ID} exits and is already SYNC, we don't need to recreate it"
                         exit 0
                       fi
-
-                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
+                      JSON_BODY_STRING=\''{"annotations":{"kube-janitor":"'"${TTL_TENANT}"'"},"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
                       JSON_BODY_STRING=${JSON_BODY_STRING:1}
 
                       CLOUD_FUNCTION_URL=$(gcloud beta functions describe ${CLOUD_FUNCTION_CREATE_TENANT} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})

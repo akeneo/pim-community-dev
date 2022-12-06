@@ -1,0 +1,18 @@
+{
+  "name": "timmy-clean-firestore",
+  "version": "1.0.0",
+  "description": "A cloud function to clean the firestore tenant contexts",
+  "main": "index.js",
+  "scripts": {
+    "start": "functions-framework --port=8086 --target=cleanFirestore"
+  },
+  "author": "Akeneo",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/firestore": "^6.4.1",
+    "@google-cloud/functions-framework": "^3.1.2",
+    "@google-cloud/logging-winston": "^5.2.3",
+    "axios": "^1.2.1",
+    "winston": "^3.8.2"
+  }
+}
