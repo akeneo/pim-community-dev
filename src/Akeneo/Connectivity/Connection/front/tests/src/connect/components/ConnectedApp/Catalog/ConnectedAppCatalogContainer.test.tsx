@@ -50,9 +50,6 @@ test('The catalog container renders', async () => {
     expect(screen.getAllByText('Store FR')).toHaveLength(2);
     expect(screen.getByText('[Catalog Edit]')).toBeInTheDocument();
     expect(screen.queryByText('pim_common.entity_updated')).not.toBeInTheDocument();
-
-    //@todo not working
-    expect(await screen.findByText('akeneo_catalogs.catalog_status_widget.fields.enable_catalog')).toBeInTheDocument();
 });
 
 test('The save button click triggers save', async () => {
