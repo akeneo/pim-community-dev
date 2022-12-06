@@ -657,17 +657,6 @@ functions.http('createTenant', (req, res) => {
             domain: process.env.MAILER_DOMAIN,
             apiKey: process.env.MAILER_API_KEY,
           },
-          memcached: {
-            resources: {
-              limits: {
-                memory: "32Mi"
-              },
-              requests: {
-                cpu: "1m",
-                memory: "16Mi"
-              }
-            }
-          },
           mysql: {
             mysql: {
               userPassword: mysqlUserPassword,
@@ -723,7 +712,6 @@ functions.http('createTenant', (req, res) => {
         MAILER_PASSWORD: parameters.mailer.password,
         MAILER_DSN: parameters.mailer.baseMailerDsn,
         MAILER_FROM: parameters.mailer.from,
-        MEMCACHED_SVC: `memcached.${tenantId}.svc.cluster.local`,
         MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
         PFID: tenantId,
         PIM_EDITION: pimEdition,
