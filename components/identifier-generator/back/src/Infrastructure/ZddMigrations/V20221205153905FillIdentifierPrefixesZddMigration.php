@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\ZddMigrations;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\API\Query\UpdateIdentifierPrefixesQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
 use Doctrine\DBAL\Connection;
@@ -24,7 +23,7 @@ class V20221205153905FillIdentifierPrefixesZddMigration implements ZddMigration
         private readonly Connection $connection,
         private readonly UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
         private readonly ProductRepositoryInterface $productRepository,
-        private LoggerInterface $logger,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -52,23 +51,14 @@ class V20221205153905FillIdentifierPrefixesZddMigration implements ZddMigration
     }
 
     /**
-     * @param ProductInterface[] $products
-     * @return void
-     */
-    private function fillMissingPrefixes(array $products): void
-    {
-        $this->updateIdentifierPrefixesQuery->updateFromProducts($products);
-    }
-
-    /**
      * @return string[]
      */
     private function getProductsByBatch(string $lastProductUuid): array
     {
         $query = <<<SQL
         SELECT DISTINCT BIN_TO_UUID(pcp.uuid) as uuid from pim_catalog_product as pcp
- LEFT JOIN pim_catalog_identifier_generator pcig on pcp.uuid = pcig.uuid
-WHERE pcig.uuid IS NULL
+ LEFT JOIN pim_catalog_identifier_generator_prefixes pcigf on pcp.uuid = pcigf.product_uuid
+WHERE pcigf.product_uuid IS NULL
 AND pcp.uuid > :lastUuid
 ORDER BY uuid
 LIMIT :limit
