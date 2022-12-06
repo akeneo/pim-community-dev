@@ -16,13 +16,39 @@ describe('validateStructure', () => {
     ).toHaveLength(0);
   });
 
-  it('should not add violations for structure properties', () => {
+  it('should add violation for wrong structure property', () => {
     expect(
       validateStructure(
         [
           {
             type: PROPERTY_NAMES.FREE_TEXT,
             string: '',
+          },
+        ],
+        'structure'
+      )
+    ).toHaveLength(1);
+
+    expect(
+      validateStructure(
+        [
+          {
+            type: PROPERTY_NAMES.AUTO_NUMBER,
+            digitsMin: null,
+            numberMin: 1,
+          },
+        ],
+        'structure'
+      )
+    ).toHaveLength(1);
+
+    expect(
+      validateStructure(
+        [
+          {
+            type: PROPERTY_NAMES.AUTO_NUMBER,
+            digitsMin: 2,
+            numberMin: null,
           },
         ],
         'structure'
