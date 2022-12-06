@@ -6,7 +6,7 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
     tenant_id: {{ .Values.global.extraLabels.tenant_id }}
-  name: {{ .Values.global.extraLabels.tenant_id }}
+  name: {{ .Values.pim.storage.bucketName }}
 spec:
   location: {{ .Values.pim.storage.location }}
   storageClass: STANDARD
@@ -17,10 +17,10 @@ kind: StorageBucketAccessControl
 metadata:
   labels:
     tenant_id: {{ .Values.global.extraLabels.tenant_id }}
-  name: {{ .Values.global.extraLabels.tenant_id }}
+  name: {{ .Values.pim.storage.bucketName }}
 spec:
   bucketRef:
-    name: {{ .Values.global.extraLabels.tenant_id }}
+    name: {{ .Values.pim.storage.bucketName }}
   entity: user-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
   role: OWNER
 ---
@@ -33,7 +33,7 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
     tenant_id: {{ .Values.global.extraLabels.tenant_id }}
-  name: {{ .Values.global.extraLabels.tenant_id }}-es
+  name: {{ .Values.elasticsearch.snapshots.bucketName }}
 spec:
   location: {{ .Values.pim.storage.location }}
   storageClass: STANDARD
@@ -44,9 +44,9 @@ kind: StorageBucketAccessControl
 metadata:
   labels:
     tenant_id: {{ .Values.global.extraLabels.tenant_id }}
-  name: {{ .Values.global.extraLabels.tenant_id }}-es
+  name: {{ .Values.elasticsearch.snapshots.bucketName }}
 spec:
   bucketRef:
-    name: {{ .Values.global.extraLabels.tenant_id }}-es
+    name: {{ .Values.elasticsearch.snapshots.bucketName }}
   entity: user-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
   role: OWNER

@@ -779,7 +779,7 @@ jobs:
                   rm -rf /tmp/pim-saas-k8s-artifacts/tenant
                   mv /tmp/pim-enterprise-dev/deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
 
-                  ## Update the values.yaml with the correct image tag to test
+                  ## Update the values.yaml with the correct image tag
                   yq w -i /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml image.pim.tag "${IMAGE_TAG}"
                   yq m -i -x /tmp/pim-saas-k8s-artifacts/tenant/values.yaml /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml
 
@@ -849,7 +849,7 @@ jobs:
                       echo ${FUNCTION_URL}
                       echo ${JSON_BODY_STRING}
                       curl --fail-with-body -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING}
-                    
+
                       # Better to store the password in CircleCI or other mecanisme
                       ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
@@ -967,7 +967,7 @@ jobs:
                   name: Init and Plan terraform
                   command: |
 
-                  
+
                     cd ${TERRAFORM_PATH}
                     terraform init -backend-config="prefix=timmy/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_REGION}" -reconfigure
                     terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}

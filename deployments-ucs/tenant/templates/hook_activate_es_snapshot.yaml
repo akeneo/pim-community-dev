@@ -1,0 +1,42 @@
+{{ if not .Values.freeTrial.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: activate-es-snapshot-repository
+  labels:
+    component: "hook-activate-es-snapshot"
+    app.kubernetes.io/component: "hook-activate-es-snapshot"
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  template:
+    metadata:
+      labels:
+        component: "hook-activate-es-snapshot"
+        app.kubernetes.io/component: "hook-activate-es-snapshot"
+        {{- include "pim.standardLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: activate-es-snapshot-repository
+          image: {{ .Values.image.curljqzip.repository }}:{{ .Values.image.curljqzip.tag }}
+          imagePullPolicy: {{ .Values.image.curljqzip.pullPolicy | quote }}
+          command: ["sh", "/scripts-dir/hook-activate-es-snapshot.sh"]
+          env:
+            - { name: APP_INDEX_HOSTS, value: {{ printf "%s-client:9200" .Values.elasticsearch.fullnameOverride | quote }} }
+            - { name: BUCKET_NAME, value: {{ .Values.elasticsearch.snapshots.bucketName | quote }} }
+            - { name: REPOSITORY, value: {{ .Values.elasticsearch.snapshots.repository | quote }} }
+            - { name: SNAPSHOTS_FOLDER, value: {{ .Values.elasticsearch.snapshots.folder | quote }} }
+          volumeMounts:
+            - name: pim-scripts-configmap
+              mountPath: /scripts-dir
+      volumes:
+        - name: pim-scripts-configmap
+          configMap:
+            name:  pim-scripts-configmap
+{{- end }}

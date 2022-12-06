@@ -166,10 +166,21 @@ elasticsearch:
         operator: "Equal"
         value: "elasticsearch"
         effect: "NoExecute"
+  serviceAccounts:
+    client:
+      create: false
+      name: null
+    master:
+      create: false
+      name: null
+    data:
+      create: false
+      name: null
   snapshots:
-    retention: 15
-    repository: pim_gcs_repository
+    bucketName: null
     folder: elasticsearch-snapshots
+    repository: pim_gcs_repository
+    retention: 15
 
 # Free Trial
 freeTrial:

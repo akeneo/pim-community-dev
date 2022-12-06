@@ -622,6 +622,20 @@ functions.http('createTenant', (req, res) => {
                 }
               }
             },
+            serviceAccounts: {
+              client: {
+                name: `${tenantName}-ksa-workload-identity`
+              },
+              master: {
+                name: `${tenantName}-ksa-workload-identity`
+              },
+              data: {
+                name: `${tenantName}-ksa-workload-identity`
+              }
+            },
+            snapshots: {
+              bucketName: `${tenantId}-es`
+            },
           },
           global: {
             extraLabels: {
