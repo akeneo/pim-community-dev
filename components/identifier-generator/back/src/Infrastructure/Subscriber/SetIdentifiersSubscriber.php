@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -122,38 +123,15 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         $product->addValue($value);
         $product->setIdentifier($newIdentifier);
 
-        $identifierViolations = $this->validator->validate($product, $this->getProductConstraints($product));
-        $identifierViolations = new ConstraintViolationList(
-            \array_map(fn (ConstraintViolationInterface $constraintViolation) => new ConstraintViolation(
-                $constraintViolation->getMessage(),
-                $constraintViolation->getMessageTemplate(),
-                $constraintViolation->getParameters(),
-                $constraintViolation->getRoot(),
-                'identifier',
-                $constraintViolation->getInvalidValue(),
-                $constraintViolation->getPlural(),
-                $constraintViolation->getCode()
-            ), \iterator_to_array($identifierViolations))
+        $violations = $this->updatePropertyPath(
+            $this->validator->validate($product, $this->getProductConstraints($product)),
+            'identifier'
         );
 
-        Assert::isInstanceOf($value, ScalarValue::class);
-        $attributeViolations = $this->validator->validate($value, $this->getValueConstraints($value));
-        $attributeViolations = new ConstraintViolationList(
-            \array_map(fn (ConstraintViolationInterface $constraintViolation) => new ConstraintViolation(
-                $constraintViolation->getMessage(),
-                $constraintViolation->getMessageTemplate(),
-                $constraintViolation->getParameters(),
-                $constraintViolation->getRoot(),
-                $identifierGenerator->target()->asString(),
-                $constraintViolation->getInvalidValue(),
-                $constraintViolation->getPlural(),
-                $constraintViolation->getCode()
-            ), \iterator_to_array($attributeViolations))
-        );
-
-        $violations = new ConstraintViolationList([]);
-        $violations->addAll($identifierViolations);
-        $violations->addAll($attributeViolations);
+        $violations->addAll($this->updatePropertyPath(
+            $this->validator->validate($value, $this->getValueConstraints($value)),
+            $identifierGenerator->target()->asString()
+        ));
 
         if (count($violations) > 0) {
             $product->removeValue($value);
@@ -221,5 +199,25 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         }
 
         return $constraints;
+    }
+
+    private function updatePropertyPath(
+        ConstraintViolationListInterface $constraintViolationList,
+        string $propertyPath
+    ): ConstraintViolationListInterface {
+        return new ConstraintViolationList(
+            \array_map(
+                fn (ConstraintViolationInterface $constraintViolation) => new ConstraintViolation(
+                    $constraintViolation->getMessage(),
+                    $constraintViolation->getMessageTemplate(),
+                    $constraintViolation->getParameters(),
+                    $constraintViolation->getRoot(),
+                    $propertyPath,
+                    $constraintViolation->getInvalidValue(),
+                    $constraintViolation->getPlural(),
+                    $constraintViolation->getCode()
+                ), \iterator_to_array($constraintViolationList)
+            )
+        );
     }
 }
