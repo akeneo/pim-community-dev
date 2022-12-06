@@ -4,8 +4,7 @@ import React, {FC} from 'react';
 import {useRouter} from '../../../shared/router/use-router';
 import {useSecurity} from '../../../shared/security';
 import {ConnectedApp} from '@src/model/Apps/connected-app';
-import returnIconUrl from '../../../common/assets/icons/return.svg';
-import {translate} from '@akeneo-pim-community/shared';
+import {ExternalLinkIcon} from 'akeneo-design-system';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -14,6 +13,8 @@ type Props = {
 export const OpenAppButton: FC<Props> = ({connectedApp}) => {
     const security = useSecurity();
     const generateUrl = useRouter();
+    const translate = useTranslate();
+
     const openConnectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_open', {
         connectionCode: connectedApp.connection_code,
     })}`;
@@ -31,7 +32,11 @@ export const OpenAppButton: FC<Props> = ({connectedApp}) => {
         >
             <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label'/>
             <ExternalLinkIcon
-                alt={translate('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.icon_alt')}
+                title={
+                    translate(
+                    'akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.icon_alt'
+                    )
+                }
                 height={'13px'}
             />
         </Button>
