@@ -1,0 +1,9 @@
+services:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\ZddMigrations\V20221205153905FillIdentifierPrefixesZddMigration:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlUpdateIdentifierPrefixesQuery'
+            - '@pim_catalog.repository.product'
+            - '@monolog.logger'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
