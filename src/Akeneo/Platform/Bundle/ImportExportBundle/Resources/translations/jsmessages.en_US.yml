@@ -168,6 +168,7 @@ pim_import_export:
                     label: Type
                     local: Local
                     sftp: SFTP
+                    amazon_s3: Amazon S3
                     none: No storage configured
                 file_path:
                     label: File path
@@ -194,6 +195,18 @@ pim_import_export:
                     label: Authentication method
                     password: Login & password
                     private_key: Private key
+                region:
+                    label: Region
+                    placeholder: Enter your region
+                bucket:
+                    label: Bucket name
+                    placeholder: Enter your region name
+                key:
+                    label: Key
+                    placeholder: Enter your key
+                secret:
+                    label: Secret
+                    placeholder: Enter your secret
             validation:
                 storage:
                     unavailable_type: This storage is not available, only {{ available_types }} are available.

@@ -34,6 +34,7 @@ class CredentialsEncrypterRegistrySpec extends ObjectBehavior
     public function let(
         CredentialsEncrypter $encrypter,
     ) {
+        $this->beConstructedWith([]);
         $encrypter->support(self::CLEAR_DATA)->willReturn(true);
         $encrypter->support(self::ENCRYPTED_DATA)->willReturn(true);
 
@@ -44,14 +45,14 @@ class CredentialsEncrypterRegistrySpec extends ObjectBehavior
     public function it_encrypts_credentials(
         CredentialsEncrypter $encrypter,
     ) {
-        $this->register($encrypter);
+        $this->beConstructedWith([$encrypter]);
         $this->encryptCredentials(self::CLEAR_DATA)->shouldReturn(self::ENCRYPTED_DATA);
     }
 
     public function it_decrypts_credentials(
         CredentialsEncrypter $encrypter,
     ) {
-        $this->register($encrypter);
+        $this->beConstructedWith([$encrypter]);
         $this->decryptCredentials(self::ENCRYPTED_DATA)->shouldReturn(self::CLEAR_DATA);
     }
 
