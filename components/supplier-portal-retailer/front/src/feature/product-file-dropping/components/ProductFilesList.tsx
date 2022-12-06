@@ -59,7 +59,7 @@ const ProductFilesList = ({
                             currentPage={
                                 currentPage > totalSearchResults / PRODUCT_FILES_PER_PAGE
                                     ? Math.ceil(totalSearchResults / PRODUCT_FILES_PER_PAGE)
-                                    : 1
+                                    : currentPage
                             }
                             totalItems={totalSearchResults}
                             itemsPerPage={PRODUCT_FILES_PER_PAGE}

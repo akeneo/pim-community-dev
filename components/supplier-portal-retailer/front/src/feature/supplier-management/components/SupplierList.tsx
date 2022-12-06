@@ -75,7 +75,7 @@ const SupplierList = ({
                         currentPage={
                             currentPage > totalSuppliers / SUPPLIERS_PER_PAGE
                                 ? Math.ceil(totalSuppliers / SUPPLIERS_PER_PAGE)
-                                : 1
+                                : currentPage
                         }
                         totalItems={totalSuppliers}
                         itemsPerPage={SUPPLIERS_PER_PAGE}
