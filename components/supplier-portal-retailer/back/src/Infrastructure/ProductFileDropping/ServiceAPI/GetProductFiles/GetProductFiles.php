@@ -18,12 +18,16 @@ final class GetProductFiles
     public function __invoke(GetProductFilesQuery $getProductFilesQuery): ProductFiles
     {
         $productFiles = ($this->listProductFilesForSupplierHandler)(
-            new ListProductFilesForSupplier($getProductFilesQuery->contributorEmail, $getProductFilesQuery->page)
+            new ListProductFilesForSupplier(
+                $getProductFilesQuery->contributorEmail,
+                $getProductFilesQuery->page,
+                $getProductFilesQuery->search,
+            )
         );
 
         return new ProductFiles(array_map(
             fn (ProductFileReadModel $productFileReadModel) => ProductFile::fromReadModel($productFileReadModel),
             $productFiles->productFiles,
-        ), $productFiles->totalProductFilesCount);
+        ), $productFiles->totalProductFilesCount, $productFiles->totalSearchResultsCount);
     }
 }

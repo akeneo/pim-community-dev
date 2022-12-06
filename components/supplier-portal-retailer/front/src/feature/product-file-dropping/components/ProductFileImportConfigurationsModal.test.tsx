@@ -13,6 +13,7 @@ test('it renders only a button to open the modal', () => {
 });
 
 test('it renders the modal with a list of product file import configurations when clicking on the import file button', async () => {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementationOnce(async () => ({
         ok: true,
         json: async () => [
@@ -45,6 +46,7 @@ test('it renders the modal with a list of product file import configurations whe
 });
 
 test('it warns the user if the product file import configurations list cannot be retrieved', async () => {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementationOnce(async () => ({
         ok: false,
     }));
@@ -65,6 +67,7 @@ test('it warns the user if the product file import configurations list cannot be
 
 test('it allows a user to launch an import of a product file', async () => {
     const processTrackerUrl = '#/job/show/28';
+    // @ts-ignore
     global.fetch = jest
         .fn()
         .mockImplementationOnce(async () => ({
@@ -103,6 +106,7 @@ test('it allows a user to launch an import of a product file', async () => {
 
 test('it failed to launch an import of a product file', async () => {
     const notify = jest.spyOn(mockedDependencies, 'notify');
+    // @ts-ignore
     global.fetch = jest
         .fn()
         .mockImplementationOnce(async () => ({

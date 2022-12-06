@@ -26,7 +26,7 @@ jest.mock('../api/fetchProductFiles', () => ({
 }));
 
 test('it fetches the product files', async () => {
-    const {result, waitForNextUpdate} = renderHookWithProviders(() => useProductFiles(1));
+    const {result, waitForNextUpdate} = renderHookWithProviders(() => useProductFiles(1, '', () => {}));
 
     await act(async () => {
         await waitForNextUpdate();

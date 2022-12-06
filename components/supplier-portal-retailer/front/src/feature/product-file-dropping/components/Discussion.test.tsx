@@ -4,15 +4,20 @@ import {mockedDependencies, NotificationLevel, renderWithProviders} from '@akene
 import {Discussion} from './Discussion';
 import userEvent from '@testing-library/user-event';
 import 'jest-fetch-mock';
+import {ImportStatus} from '../models/ImportStatus';
 
 const productFile = {
     identifier: '037455b4-24a3-4404-a721-aca6f06d6293',
     originalFilename: 'file.xlsx',
     uploadedAt: '09/22/2022, 04:08 AM',
-    authorEmail: 'julia@akeneo.com',
+    contributor: 'julia@akeneo.com',
     supplier: 'ffa51317-e609-481e-b6a3-63991b4e6dbe',
+    importStatus: ImportStatus.TO_IMPORT,
+    importedAt: '09/23/2022, 04:08 AM',
+    supplierLabel: 'Los Pollos Hermanos',
     retailerComments: [],
     supplierComments: [],
+    hasUnreadComments: false,
 };
 
 beforeEach(() => {

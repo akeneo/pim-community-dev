@@ -5,6 +5,7 @@ import {DeleteSupplier} from './DeleteSupplier';
 import userEvent from '@testing-library/user-event';
 
 test('it can delete a supplier', async () => {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: true,
         status: 200,

@@ -28,7 +28,8 @@ beforeEach(() => {
                 importStatus: ImportStatus.TO_IMPORT,
             },
         ],
-        total: 2,
+        totalNumberOfProductFiles: 2,
+        totalSearchResults: 2,
     });
 });
 
@@ -36,7 +37,8 @@ test('it displays an empty placeholder when the history is empty', async () => {
     // @ts-ignore
     hook.useProductFiles = jest.fn().mockReturnValue({
         product_files: [],
-        total: 0,
+        totalNumberOfProductFiles: 0,
+        totalSearchResults: 0,
     });
 
     renderWithProviders(<ProductFileHistory />);

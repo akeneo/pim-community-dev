@@ -56,7 +56,11 @@ const ProductFilesList = ({
                     {0 < productFiles.length && (
                         <Pagination
                             followPage={onChangePage}
-                            currentPage={0 < totalSearchResults ? currentPage : 0}
+                            currentPage={
+                                currentPage > totalSearchResults / PRODUCT_FILES_PER_PAGE
+                                    ? Math.ceil(totalSearchResults / PRODUCT_FILES_PER_PAGE)
+                                    : currentPage
+                            }
                             totalItems={totalSearchResults}
                             itemsPerPage={PRODUCT_FILES_PER_PAGE}
                         />

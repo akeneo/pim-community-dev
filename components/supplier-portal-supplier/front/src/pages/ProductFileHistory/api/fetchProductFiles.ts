@@ -4,11 +4,12 @@ import {Comment as CommentReadModel, Comment} from '../model/Comment';
 
 export type ProductFiles = {
     product_files: ProductFile[];
-    total: number;
+    totalNumberOfProductFiles: number;
+    totalSearchResults: number;
 };
 
-const fetchProductFiles = async (page: number): Promise<ProductFiles> => {
-    const response: any = await apiFetch(`/supplier-portal/product-file/?page=${page}`);
+const fetchProductFiles = async (page: number, searchValue: string): Promise<ProductFiles> => {
+    const response: any = await apiFetch(`/supplier-portal/product-file/?page=${page}&search=${searchValue}`);
 
     const productFiles = response.product_files.map((item: any) => {
         const retailerComments = item.retailerComments.map(
@@ -65,7 +66,11 @@ const fetchProductFiles = async (page: number): Promise<ProductFiles> => {
         };
     });
 
-    return {product_files: productFiles, total: response.total};
+    return {
+        product_files: productFiles,
+        totalNumberOfProductFiles: response.total_number_of_product_files,
+        totalSearchResults: response.total_search_results,
+    };
 };
 
 export {fetchProductFiles};
