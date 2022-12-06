@@ -1,5 +1,5 @@
 import React, {MutableRefObject, useLayoutEffect, useRef, useState} from 'react';
-import {fireEvent, render, screen, waitFor, within} from '@testing-library/react';
+import {fireEvent, render, screen, within} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {CatalogEdit} from './CatalogEdit';
