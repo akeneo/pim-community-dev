@@ -14,7 +14,18 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Controller;
 
 use Akeneo\Platform\TailoredExport\Test\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\Test\Integration\Configuration;
@@ -26,7 +37,7 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
 {
     private const ROUTE = 'pimee_tailored_export_get_reference_entity_attributes_action';
     private WebClientHelper $webClientHelper;
-    private string $referenceEntityLabelIdentifier = '';
+    private ?AttributeIdentifier $descriptionIdentifier = null;
 
     public function setUp(): void
     {
@@ -34,7 +45,7 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
 
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
-        $this->createReferenceEntity('designer');
+        $this->createReferenceEntity();
     }
 
     public function test_it_returns_supported_reference_entity_attributes(): void
@@ -44,9 +55,11 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
 
         Assert::assertSame([
             [
-                'identifier' => $this->referenceEntityLabelIdentifier,
-                'code' => 'label',
-                'labels' => [],
+                'identifier' => (string) $this->descriptionIdentifier,
+                'code' => 'description',
+                'labels' => [
+                    'en_US' => 'Description',
+                ],
                 'value_per_channel' => false,
                 'value_per_locale' => true,
                 'type' => 'text',
@@ -70,17 +83,27 @@ final class GetReferenceEntityAttributesControllerIntegrationTest extends Contro
         return $this->client->getResponse();
     }
 
-    private function createReferenceEntity(string $referenceEntityIdentifier): void
+    private function createReferenceEntity(): void
     {
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-        $referenceEntityRepository->create(ReferenceEntity::create(
+        $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntityRepository->create(ReferenceEntity::create($referenceEntityIdentifier, [], Image::createEmpty()));
+
+        $this->descriptionIdentifier = AttributeIdentifier::create('designer', 'description', 'fingerprint');
+        $description = TextAttribute::createText(
+            $this->descriptionIdentifier,
             $referenceEntityIdentifier,
-            [],
-            Image::createEmpty(),
-        ));
-        /** @var ReferenceEntity $referenceEntity */
-        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
-        $this->referenceEntityLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier()->normalize();
+            AttributeCode::fromString('description'),
+            LabelCollection::fromArray(['en_US' => 'Description']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty(),
+        );
+        $attributesRepository->create($description);
     }
 }
