@@ -30,7 +30,10 @@ export const OpenAppButton: FC<Props> = ({connectedApp}) => {
             target='_blank'
         >
             <Translate id='akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label'/>
-            <img src={returnIconUrl} alt={translate('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.icon_alt')} height={'13px'}/>
+            <ExternalLinkIcon
+                alt={translate('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.icon_alt')}
+                height={'13px'}
+            />
         </Button>
     );
 }
