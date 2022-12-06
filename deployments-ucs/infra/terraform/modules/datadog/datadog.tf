@@ -1,4 +1,3 @@
-
 resource "google_service_account_key" "datadog_monitoring" {
   service_account_id = var.datadog_gcp_integration_email
   public_key_type    = "TYPE_X509_PEM_FILE"
@@ -49,8 +48,6 @@ resource "google_project_iam_member" "timmy_firestore_sink_publisher" {
   role    = "roles/pubsub.publisher"
   member  = google_logging_project_sink.timmy_firestore_log_export_sink.writer_identity
 }
-
-
 
 resource "datadog_logs_custom_pipeline" "timmy_app_cloud_function" {
   filter {
