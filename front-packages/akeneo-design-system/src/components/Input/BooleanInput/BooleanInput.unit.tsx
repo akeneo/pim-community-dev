@@ -111,3 +111,22 @@ test('BooleanInput supports ...rest props', () => {
   );
   expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
 });
+
+test('it renders small buttons', async () => {
+  render(
+    <BooleanInput
+      readOnly={false}
+      value={true}
+      noLabel={'Non'}
+      yesLabel={'Oui'}
+      clearLabel={'Effacer la valeur'}
+      size={'small'}
+    />
+  );
+
+  const button = await screen.findByText('Oui');
+  const styles = getComputedStyle(button);
+
+  expect(styles.width).toBe('48px');
+  expect(styles.height).toBe('30px');
+});
