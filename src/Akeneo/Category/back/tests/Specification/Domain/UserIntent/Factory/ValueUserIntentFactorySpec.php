@@ -126,7 +126,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeOrder::fromInteger(3),
                 AttributeIsRequired::fromBoolean(true),
                 AttributeIsScopable::fromBoolean(true),
-                AttributeIsLocalizable::fromBoolean(false),
+                AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([])

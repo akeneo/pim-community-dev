@@ -77,7 +77,7 @@ class TemplateSpec extends ObjectBehavior
                     AttributeOrder::fromInteger(4),
                     AttributeIsRequired::fromBoolean(true),
                     AttributeIsScopable::fromBoolean(true),
-                    AttributeIsLocalizable::fromBoolean(false),
+                    AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['fr_FR' => 'attribute_image_libelle']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([])
@@ -138,7 +138,7 @@ class TemplateSpec extends ObjectBehavior
                     'order' => 4,
                     'is_required' => true,
                     'is_scopable' => true,
-                    'is_localizable' => false,
+                    'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_image_libelle'],
                     'template_uuid' => $expectedTemplateUuid,
                     'additional_properties' => []
