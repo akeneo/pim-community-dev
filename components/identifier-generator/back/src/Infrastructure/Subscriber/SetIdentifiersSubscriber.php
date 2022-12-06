@@ -52,45 +52,22 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     {
         return [
             /**
-             * These events have to be executed
+             * This event has to be executed
              * - after AddDefaultValuesSubscriber (it adds default values from parent and may set values for the
              *   computation of the match or the generation)
              * - before ComputeEntityRawValuesSubscriber (it generates the raw_values)
              */
             StorageEvents::PRE_SAVE => ['setIdentifier', 90],
-            //StorageEvents::PRE_SAVE_ALL => ['setIdentifiers', 90],
         ];
     }
 
     public function setIdentifier(GenericEvent $event): void
     {
-        $object = $event->getSubject();
-        if (!$object instanceof ProductInterface) {
+        $product = $event->getSubject();
+        if (!$product instanceof ProductInterface) {
             return;
         }
 
-        $this->generateIdentifier($object);
-    }
-
-    public function setIdentifiers(GenericEvent $event): void
-    {
-        if (!\is_array($event->getSubject())) {
-            return;
-        }
-
-        foreach ($event->getSubject() as $subject) {
-            if (!$subject instanceof ProductInterface) {
-                return;
-            }
-        }
-
-        foreach ($event->getSubject() as $product) {
-            $this->generateIdentifier($product);
-        }
-    }
-
-    private function generateIdentifier(ProductInterface $product): void
-    {
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
             $identifier = null;
             $identifierValue = $product->getValue($identifierGenerator->target()->asString());
