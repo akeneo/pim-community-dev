@@ -28,7 +28,6 @@ class SearchFiltersSql implements SearchFilters
         $sqlParameters = [];
         $sqlTypes = [];
         $this->searchFiltersValidator->validate($searchFilters);
-        // TODO: build search filters
         foreach ($searchFilters as $field => $searchFilter) {
             foreach ($searchFilter as $key => $criterion) {
                 $SqlParameter = sprintf('%s_%s', $field, $key);

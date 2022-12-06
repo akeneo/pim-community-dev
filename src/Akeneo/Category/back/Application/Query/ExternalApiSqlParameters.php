@@ -15,7 +15,7 @@ class ExternalApiSqlParameters
      * @param array<string, int>|null $types
      */
     public function __construct(
-        private ?string $sqlWhere = null,
+        private readonly ?string $sqlWhere = null,
         private ?array $params = null,
         private ?array $types = null,
         private ?string $limitAndOffset = null,
@@ -46,13 +46,6 @@ class ExternalApiSqlParameters
     public function getTypes(): ?array
     {
         return $this->types;
-    }
-
-    public function setSqlWhere(?string $sqlWhere): ExternalApiSqlParameters
-    {
-        $this->sqlWhere = $sqlWhere;
-
-        return $this;
     }
 
     /**

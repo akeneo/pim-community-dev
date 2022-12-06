@@ -12,7 +12,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
     /**
      * @group critical
      */
-    public function testListAllPaginatedCategoriesLegacy(): void
+    public function testListAllPaginatedCategoriesWithoutEnrichedCategory(): void
     {
         $categories = $this->getStandardizedCategories(false, false);
         $firstPageClient = $this->createAuthenticatedClient();
@@ -69,7 +69,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
     }
 
     /**
-     * @group critical
+     * @group enriched_category
      */
     public function testListAllPaginatedCategories(): void
     {
@@ -128,7 +128,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expectedSecondPage, $secondPageClient->getResponse());
     }
 
-    public function testListCategoriesByParentLegacy(): void
+    public function testListCategoriesByParentWithoutEnrichedCategory(): void
     {
         $this->createCategory(['parent' => 'categoryA1', 'code' => 'categoryA1-1']);
         $this->createCategory(['parent' => 'categoryA1-1', 'code' => 'categoryA1-1-1']);
@@ -184,6 +184,9 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
+    /**
+     * @group enriched_category
+     */
     public function testListCategoriesByParent(): void
     {
         $this->enableEnrichedCategoryFeature();
@@ -241,7 +244,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    public function testListCategoriesWithCountLegacy(): void
+    public function testListCategoriesWithCountWithoutEnrichedCategory(): void
     {
         $categories = $this->getStandardizedCategories(false, false);
         $client = $this->createAuthenticatedClient();
@@ -275,6 +278,9 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
+    /**
+     * @group enriched_category
+     */
     public function testListCategoriesWithCount(): void
     {
         $this->enableEnrichedCategoryFeature();
@@ -310,7 +316,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    public function testListCategoriesByCodesLegacy(): void
+    public function testListCategoriesByCodesWithoutEnrichedCategory(): void
     {
         $categories = $this->getStandardizedCategories(false, false);
         $search = '{"code":[{"operator":"IN","value":["master","categoryA2","master_china"]}]}';
@@ -342,6 +348,9 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
+    /**
+     * @group enriched_category
+     */
     public function testListCategoriesByCodes(): void
     {
         $this->enableEnrichedCategoryFeature();
@@ -375,7 +384,7 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    public function testOutOfRangeListCategoriesLegacy(): void
+    public function testOutOfRangeListCategoriesWithoutEnrichedCategory(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -405,6 +414,9 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    /**
+     * @group enriched_category
+     */
     public function testOutOfRangeListCategories(): void
     {
         $this->enableEnrichedCategoryFeature();
@@ -435,7 +447,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
-    public function testListCategoriesWithPositionLegacy(): void
+    public function testListCategoriesWithPositionWithoutEnrichedCategory(): void
     {
         $categories = $this->getStandardizedCategories(true, false);
         $client = $this->createAuthenticatedClient();
@@ -468,6 +480,9 @@ JSON;
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
+    /**
+     * @group enriched_category
+     */
     public function testListCategoriesWithPosition(): void
     {
         $this->enableEnrichedCategoryFeature();
@@ -505,7 +520,7 @@ JSON;
     /**
      * @group enriched_category
      */
-    public function testListCategoriesWithValues(): void
+    public function testListCategoriesWithEnrichedValues(): void
     {
         $this->enableEnrichedCategoryFeature();
         $this->updateCategoryWithValues('master');
