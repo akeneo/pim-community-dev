@@ -48,6 +48,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
             'Akeneo\Pim\Structure\Family\ServiceAPI',
+            'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
@@ -77,6 +78,8 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Webmozart\Assert\Assert',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+
+            'Psr\Log\LoggerInterface',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
 
