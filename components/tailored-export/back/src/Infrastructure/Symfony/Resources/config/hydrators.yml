@@ -20,6 +20,9 @@ services:
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator'
 
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator:
+    arguments:
+      - '@pim_standard_format_serializer'
+
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AttributeValueHydrator:
     arguments:
       - '@pim_standard_format_serializer'

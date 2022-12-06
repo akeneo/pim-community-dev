@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -21,6 +22,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAsso
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAssociationsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @phpstan-type NormalizedProducts array{identifier: string, quantity: int}
@@ -29,6 +31,11 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
  */
 final class AssociationTypeValueHydrator
 {
+    public function __construct(
+        private readonly NormalizerInterface $normalizer,
+    ) {
+    }
+
     public function hydrate(
         ProductInterface|ProductModelInterface $productOrProductModel,
         string $associationTypeCode,
@@ -36,7 +43,7 @@ final class AssociationTypeValueHydrator
     ): SourceValueInterface {
         if ($isQuantified) {
             /** @var NormalizedAssociation[] $normalizedQuantifiedAssociations */
-            $normalizedQuantifiedAssociations = $productOrProductModel->getQuantifiedAssociations()->normalize()[$associationTypeCode] ?? [];
+            $normalizedQuantifiedAssociations = $this->normalizer->normalize($productOrProductModel, 'standard')['quantified_associations'][$associationTypeCode] ?? [];
 
             return new QuantifiedAssociationsValue(
                 $this->getProductQuantifiedAssociations($normalizedQuantifiedAssociations),
@@ -137,5 +144,18 @@ final class AssociationTypeValueHydrator
             ),
             $normalizedProductModelQuantifiedAssociations,
         );
+    }
+
+    private function getAncestors(EntityWithFamilyVariantInterface $entity): array
+    {
+        $ancestors = [];
+        $current = $entity;
+
+        while (null !== $parent = $current->getParent()) {
+            $current = $parent;
+            $ancestors[] = $current;
+        }
+
+        return array_reverse($ancestors);
     }
 }
