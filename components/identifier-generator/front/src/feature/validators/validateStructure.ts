@@ -2,6 +2,7 @@ import {Validator} from './Validator';
 import {ALLOWED_PROPERTY_NAMES, PROPERTY_NAMES, Structure} from '../models';
 import {Violation} from './Violation';
 import {validateFreeText} from './validateFreeText';
+import {validateAutoNumber} from './validateAutoNumber';
 
 const validateStructure: Validator<Structure | undefined> = (structure, path) => {
   const violations: Violation[] = [];
@@ -26,6 +27,9 @@ const validateStructure: Validator<Structure | undefined> = (structure, path) =>
 
     if (property.type === PROPERTY_NAMES.FREE_TEXT) {
       violations.push(...validateFreeText(property, subPath));
+    }
+    if (property.type === PROPERTY_NAMES.AUTO_NUMBER) {
+      violations.push(...validateAutoNumber(property, subPath));
     }
   });
 
