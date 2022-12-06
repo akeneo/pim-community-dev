@@ -49,7 +49,7 @@ class VersionPurger implements VersionPurgerInterface
                     $resourceNamesToPurgeCount,
                     count($resourceNamesToPurge)
                 ),
-                ['options' => $options]
+                $options
             );
             $purgedVersions = $this->purgeVersionsByResourceName($resourceName, $options);
             $this->logger->info(
