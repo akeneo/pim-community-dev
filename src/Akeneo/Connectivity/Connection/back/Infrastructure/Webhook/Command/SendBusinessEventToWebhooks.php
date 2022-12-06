@@ -11,6 +11,7 @@ use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\ConnectionLost;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -67,6 +68,14 @@ class SendBusinessEventToWebhooks extends Command
         } catch (IndexationException $exception) {
             if ('No alive nodes found in your cluster' === $exception->getMessage()) {
                 $this->logger->warning('Elastic Search is unavailable', ['exception' => $exception]);
+
+                return Command::FAILURE;
+            }
+
+            throw $exception;
+        } catch (ConnectionLost $exception) {
+            if ('SQLSTATE[HY000]: General error: 2006 MySQL server has gone away' === $exception->getMessage()) {
+                $this->logger->warning('MySQL server has gone away', ['exception' => $exception]);
 
                 return Command::FAILURE;
             }
