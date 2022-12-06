@@ -11,7 +11,7 @@ type Result = {
 
 export const useCountProductsInSelectionCriteria = (productSelectionCriteria: ProductSelectionValues): Result => {
     const criteria = JSON.stringify(productSelectionCriteria);
-    return useQuery<number, ResultError, number>(['productSelectionCriteria', criteria], async () => {
+    return useQuery<number, ResultError, number>(['countProductsInSelectionCriteria', criteria], async () => {
         const response = await fetch('/rest/catalogs/product-selection-criteria/product/count', {
             method: 'POST',
             headers: {
