@@ -188,7 +188,7 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerIntegration extends TestCa
 
     private function assertRoleIsUpdatedWithAcls(string $role, array $acls): void
     {
-        $token = new UsernamePasswordToken('username', null, 'main', [$role]);
+        $token = new UsernamePasswordToken('username', 'main', [$role]);
 
         foreach ($acls as $acl => $expectedValue) {
             \assert(\is_bool($expectedValue));
