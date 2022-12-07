@@ -1,6 +1,14 @@
 import {FunctionComponent} from 'react';
 import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage, AmazonS3Storage, Storage, StorageType, localStorageIsEnabled} from '../model';
+import {
+  LocalStorage,
+  SftpStorage,
+  AmazonS3Storage,
+  Storage,
+  StorageType,
+  localStorageIsEnabled,
+  MicrosoftAzureStorage
+} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
@@ -75,11 +83,21 @@ const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   );
 };
 
+const isMicrosoftAzureStorage = (storage: Storage): storage is MicrosoftAzureStorage => {
+  return (
+      'microsoft_azure' === storage.type &&
+      'connection_string' in storage &&
+      'container_name' in storage &&
+      'file_path' in storage
+  );
+};
+
 export type {StorageConfiguratorProps, StorageLoginType};
 export {
   isLocalStorage,
   isSftpStorage,
   isAmazonS3Storage,
+  isMicrosoftAzureStorage,
   isValidLoginType,
   getStorageConfigurator,
   STORAGE_LOGIN_TYPES,
