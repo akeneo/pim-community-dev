@@ -455,8 +455,6 @@ elasticsearch:
       RECOVER_AFTER_DATA_NODES: 1
       cluster.initial_master_nodes: "elasticsearch-master-0"
       discovery.seed_hosts: "elasticsearch-discovery"
-    plugins:
-      - repository-gcs
   client:
     replicas: 1
     heapSize: "512m"
