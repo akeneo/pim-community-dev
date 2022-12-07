@@ -2,19 +2,20 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
+use Twig\Environment;
 
-class SecurityController extends AbstractController
+class SecurityController
 {
     public function __construct(
         private readonly AuthenticationUtils $authenticationUtils,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly LogoutUrlGenerator $logoutUrlGenerator,
+        private readonly Environment $twig,
         private readonly string $actionRoute,
         private readonly array $additionalHiddenFields
     ) {
@@ -29,7 +30,7 @@ class SecurityController extends AbstractController
         $lastUsername = $this->authenticationUtils->getLastUsername();
         $csrfToken = $this->csrfTokenManager->getToken('authenticate')->getValue();
 
-        return $this->render('@PimUser/Security/login.html.twig', [
+        $content = $this->twig->render('@PimUser/Security/login.html.twig', [
             // last username entered by the user
             'last_username'            => $lastUsername,
             'csrf_token'               => $csrfToken,
@@ -37,6 +38,8 @@ class SecurityController extends AbstractController
             'action_route'             => $this->actionRoute,
             'additional_hidden_fields' => $this->additionalHiddenFields,
         ]);
+
+        return new Response($content);
     }
 
     public function check()

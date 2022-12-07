@@ -91,10 +91,9 @@ services:
             - '@security.authentication_utils'
             - '@security.csrf.token_manager'
             - '@security.logout_url_generator'
+            - '@twig'
             - '%pim_user.login_form.action_route%'
             - '%pim_user.login_form.additional_hidden_fields%'
-        calls:
-            - [ 'setContainer', [ '@service_container' ] ]
 
 
     Akeneo\UserManagement\Bundle\Controller\Rest\FindAllProfilesController:
