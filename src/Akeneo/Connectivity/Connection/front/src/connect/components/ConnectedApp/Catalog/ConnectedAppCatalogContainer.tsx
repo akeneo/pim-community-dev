@@ -9,6 +9,7 @@ import {UserButtons} from '../../../../shared/user';
 import {DeveloperModeTag} from '../../DeveloperModeTag';
 import {CatalogEdit, useCatalogForm} from '@akeneo-pim-community/catalogs';
 import {NotificationLevel, useNotify} from '../../../../shared/notify';
+import {OpenAppButton} from '../OpenAppButton';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -80,7 +81,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[<SaveButton key={0} />]}
+                buttons={[<OpenAppButton connectedApp={connectedApp} key={1} />, <SaveButton key={0} />]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
                 imageSrc={connectedApp.logo ?? undefined}

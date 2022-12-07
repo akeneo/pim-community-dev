@@ -1,7 +1,7 @@
 import React from 'react';
 import {Delimiter, PROPERTY_NAMES, Structure} from '../../models';
 import {Preview as PreviewComponent} from 'akeneo-design-system';
-import {AutoNumberPreview, DelimiterPreview, FreeTextPreview} from './preview/index';
+import {AutoNumberPreview, DelimiterPreview, FreeTextPreview} from './preview';
 
 type PreviewProps = {
   structure: Structure;

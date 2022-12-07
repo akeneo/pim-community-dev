@@ -149,7 +149,9 @@ akeneo_connectivity.connection:
                     error: Sorry, an error occured while fetching the connected apps list.
             edit:
                 header:
-                    open_app: Open App
+                    open_app_button:
+                        label: Go to app
+                        icon_alt: Go to app icon
                 not_found: App not found
                 tabs:
                     settings: Settings

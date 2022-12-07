@@ -5,6 +5,7 @@ namespace Akeneo\Category\Infrastructure\Builder;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
+use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
@@ -87,7 +88,7 @@ class TemplateBuilder
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
                 ),
-                AttributeText::create(
+                AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_meta_description'),
                     AttributeOrder::fromInteger(4),
@@ -98,7 +99,7 @@ class TemplateBuilder
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
                 ),
-                AttributeText::create(
+                AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_keywords'),
                     AttributeOrder::fromInteger(5),

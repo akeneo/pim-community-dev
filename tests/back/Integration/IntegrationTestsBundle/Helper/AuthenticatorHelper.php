@@ -56,7 +56,7 @@ final class AuthenticatorHelper
             $user = $this->createUser($username);
         }
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
 
         $this->session->set('_security_main', serialize($token));
