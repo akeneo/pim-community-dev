@@ -19,7 +19,7 @@ namespace Akeneo\Platform;
 class EnterpriseVersion
 {
     /** @staticvar string */
-    const VERSION = '6.0.56';
+    const VERSION = '6.0.57';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Maple';
