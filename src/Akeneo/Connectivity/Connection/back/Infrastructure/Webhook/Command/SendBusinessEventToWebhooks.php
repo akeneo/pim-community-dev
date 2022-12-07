@@ -11,6 +11,7 @@ use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\ConnectionLost;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -59,6 +60,10 @@ class SendBusinessEventToWebhooks extends Command
         } catch (ConnectionException $exception) {
             if ($exception->getPrevious()?->getCode() === self::MYSQL_IS_UNAVAILABLE_ERROR_CODE) {
                 $this->logger->warning('Mysql is unavailable', ['exception' => $exception]);
+
+                return Command::FAILURE;
+            } elseif ('SQLSTATE[HY000]: General error: 2006 MySQL server has gone away' === $exception->getMessage()) {
+                $this->logger->warning('MySQL server has gone away', ['exception' => $exception]);
 
                 return Command::FAILURE;
             }
