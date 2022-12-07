@@ -11,7 +11,7 @@ identifier-generator-front-fix:
 
 .PHONY: identifier-generator-unit-front
 identifier-generator-unit-front: yarn-policies
-	YARN_RUN workspace @akeneo-pim-community/identifier-generator test:unit:run --ci --coverage ${O}
+	$(YARN_RUN) workspace @akeneo-pim-community/identifier-generator test:unit:run --ci --coverage ${O}
 
 .PHONY: identifier-generator-unit-back
 identifier-generator-unit-back:
