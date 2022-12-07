@@ -46,9 +46,9 @@ identifier-generator-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect \
 		--config-file=$(IDENTIFIER_GENERATOR_PATH)/back/tests/.php_cd.php
 
-.PHONY: identifier-generator-end-to-end-back
-identifier-generator-end-to-end-back:
+.PHONY: identifier-generator-phpunit-back
+identifier-generator-phpunit-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
-		--testsuite Identifier_Generator_End_To_End \
+		--testsuite Identifier_Generator_PhpUnit \
 		--order-by random \
 		--log-junit var/tests/phpunit/phpunit_identifier_generator_end_to_end.xml ${O}
