@@ -28,7 +28,7 @@ class PurgeEventsApiSuccessLogsQuery
         $result = $this->esClient->search($search);
         $esIdsToKeep = [];
         foreach ($result['hits']['hits'] as $hit) {
-            $esIdsToKeep[] = $hit['_id'];
+            $esIdsToKeep[] = $hit['_source']['id'];
         }
         $this->esClient->deleteByQuery($this->getDeleteAllDocumentsButGivenIdsQuery($esIdsToKeep));
     }
@@ -38,12 +38,12 @@ class PurgeEventsApiSuccessLogsQuery
         return [
             'query' => [
                 'bool' => [
-                    'must_not' => ['terms' => ['_id' => $idsToKeep]],
+                    'must_not' => ['terms' => ['id' => $idsToKeep]],
                     'must' => [
                         'terms' => [
                             'level' => [
                                 EventsApiDebugLogLevels::INFO,
-                                EventsApiDebugLogLevels::NOTICE
+                                EventsApiDebugLogLevels::NOTICE,
                             ],
                         ],
                     ],
@@ -63,10 +63,13 @@ class PurgeEventsApiSuccessLogsQuery
                     'filter' => [
                         'bool' => [
                             'filter' => [
-                                'terms' => [
-                                    'level' => [
-                                        EventsApiDebugLogLevels::INFO,
-                                        EventsApiDebugLogLevels::NOTICE
+                                ['exists' => ['field' => 'id']],
+                                [
+                                    'terms' => [
+                                        'level' => [
+                                            EventsApiDebugLogLevels::INFO,
+                                            EventsApiDebugLogLevels::NOTICE,
+                                        ],
                                     ],
                                 ],
                             ],

@@ -126,13 +126,14 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     ): array {
         $nowTimestamp = $this->clock->now()->getTimestamp();
         $constraints = [
+            ['exists' => ['field' => 'id']],
             [
                 'bool' => [
                     'should' => [
                         [
                             'bool' => [
                                 'must' => [
-                                    ['terms' => ['_id' => $lastNoticeAndInfoIds['ids']]],
+                                    ['terms' => ['id' => $lastNoticeAndInfoIds['ids']]],
                                 ],
                             ],
                         ],
@@ -206,7 +207,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             'size' => 25,
             'sort' => [
                 'timestamp' => 'DESC',
-                '_id' => 'ASC',
+                'id' => 'ASC',
             ],
             'track_total_hits' => true,
             'query' => [
@@ -268,12 +269,13 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             '_source' => ['id'],
             'sort' => [
                 'timestamp' => 'DESC',
-                '_id' => 'ASC',
+                'id' => 'ASC',
             ],
             'size' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS,
             'query' => [
                 'bool' => [
                     'must' => [
+                        ['exists' => ['field' => 'id']],
                         ['terms' => ['level' => [EventsApiDebugLogLevels::INFO, EventsApiDebugLogLevels::NOTICE]]],
                         [
                             'bool' => [
@@ -303,10 +305,10 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $result = $this->elasticsearchClient->search($query);
 
         return [
-            'first_id' => $result['hits']['hits'][0]['_id'] ?? null,
+            'first_id' => $result['hits']['hits'][0]['_source']['id'] ?? null,
             'first_search_after' => $result['hits']['hits'][0]['sort'] ?? null,
             'ids' => \array_map(
-                fn ($hit) => $hit['_id'],
+                fn ($hit) => $hit['_source']['id'],
                 $result['hits']['hits']
             ),
         ];
@@ -344,7 +346,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             'ids' => \array_merge(
                 [$firstId],
                 \array_map(
-                    fn ($hit) => $hit['_id'],
+                    fn ($hit) => $hit['_source']['id'],
                     $result['hits']['hits']
                 )
             ),

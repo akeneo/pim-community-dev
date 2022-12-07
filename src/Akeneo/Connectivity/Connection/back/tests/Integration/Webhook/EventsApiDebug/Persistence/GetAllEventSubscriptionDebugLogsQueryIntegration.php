@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persist
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -40,6 +41,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->generateLogs(
             function ($index) use ($timestamp) {
                 return [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestamp,
                     'level' => $index % 2 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
@@ -67,6 +69,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                 $timestampNow -= $timestampStep;
 
                 return [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNow,
                     'level' => $index % 2 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
@@ -99,6 +102,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->insertLogs(
             [
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampOlderThanLimit,
                     'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
@@ -106,6 +110,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNewerThanLimit,
                     'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
@@ -113,6 +118,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampOlderThanLimit,
                     'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
@@ -120,6 +126,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNewerThanLimit,
                     'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
@@ -141,6 +148,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->insertLogs(
             [
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNow - 5,
                     'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
@@ -148,6 +156,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNow - 1,
                     'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
@@ -155,6 +164,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNow - 3,
                     'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
@@ -162,6 +172,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNow - 4,
                     'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
@@ -169,6 +180,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNow - 2,
                     'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
@@ -194,6 +206,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->insertLogs(
             [
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
@@ -201,6 +214,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
@@ -208,6 +222,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'context' => [],
                 ],
                 [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
