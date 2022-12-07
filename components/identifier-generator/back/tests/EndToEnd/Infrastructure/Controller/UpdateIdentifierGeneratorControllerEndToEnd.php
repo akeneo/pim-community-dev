@@ -177,7 +177,7 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
 
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 
     private function insertDefaultIdentifierGenerator(): void
