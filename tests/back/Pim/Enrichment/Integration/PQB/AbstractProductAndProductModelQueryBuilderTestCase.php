@@ -81,27 +81,4 @@ abstract class AbstractProductAndProductModelQueryBuilderTestCase extends TestCa
 
         $this->assertSame($expected, $entities);
     }
-
-    /**
-     * @param CursorInterface $result
-     * @param array           $expected
-     */
-    protected function assertUuid(CursorInterface $result, array $expected): void
-    {
-        $entities = [];
-        foreach ($result as $entity) {
-            if ($entity instanceof ProductInterface) {
-                $entities[] = $entity->getUuid()->toString();
-            }
-
-            if ($entity instanceof ProductModelInterface) {
-                $entities[] = $entity->getCode();
-            }
-        }
-
-        sort($entities);
-        sort($expected);
-
-        $this->assertSame($expected, $entities);
-    }
 }
