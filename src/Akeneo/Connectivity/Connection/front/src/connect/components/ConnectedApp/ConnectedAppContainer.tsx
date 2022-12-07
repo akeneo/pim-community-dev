@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {AppIllustration, Breadcrumb, Button, DangerIcon, Helper, TabBar, useTabBar} from 'akeneo-design-system';
+import {AppIllustration, Breadcrumb, DangerIcon, Helper, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';

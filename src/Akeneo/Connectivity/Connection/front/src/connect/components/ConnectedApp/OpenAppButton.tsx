@@ -3,7 +3,7 @@ import {Translate, useTranslate} from '../../../shared/translate';
 import React, {FC} from 'react';
 import {useRouter} from '../../../shared/router/use-router';
 import {useSecurity} from '../../../shared/security';
-import {ConnectedApp} from '@src/model/Apps/connected-app';
+import {ConnectedApp} from '../../../model/Apps/connected-app';
 
 type Props = {
     connectedApp: ConnectedApp;
