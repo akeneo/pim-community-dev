@@ -62,20 +62,16 @@ class SendBusinessEventToWebhooks extends Command
                 $this->logger->warning('Mysql is unavailable', ['exception' => $exception]);
 
                 return Command::FAILURE;
+            } elseif ('SQLSTATE[HY000]: General error: 2006 MySQL server has gone away' === $exception->getMessage()) {
+                $this->logger->warning('MySQL server has gone away', ['exception' => $exception]);
+
+                return Command::FAILURE;
             }
 
             throw $exception;
         } catch (IndexationException $exception) {
             if ('No alive nodes found in your cluster' === $exception->getMessage()) {
                 $this->logger->warning('Elastic Search is unavailable', ['exception' => $exception]);
-
-                return Command::FAILURE;
-            }
-
-            throw $exception;
-        } catch (ConnectionLost $exception) {
-            if ('SQLSTATE[HY000]: General error: 2006 MySQL server has gone away' === $exception->getMessage()) {
-                $this->logger->warning('MySQL server has gone away', ['exception' => $exception]);
 
                 return Command::FAILURE;
             }
