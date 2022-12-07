@@ -3,7 +3,7 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlUpdateIdentifierPrefixesQuery'
-            - '@pim_catalog.repository.product'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
             - '@monolog.logger'
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
