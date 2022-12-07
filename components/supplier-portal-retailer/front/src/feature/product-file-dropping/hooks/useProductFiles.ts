@@ -9,6 +9,7 @@ const useProductFiles = (
     importStatusValue: null | string
 ): [ProductFileRow[], number, number] => {
     const [previousSearchValue, setPreviousSearchValue] = useState<string>('');
+    const [previousImportStatusValue, setPreviousImportStatusValue] = useState<null | string>(null);
     const [totalNumberOfProductFiles, setTotalNumberOfProductFiles] = useState<number>(page);
     const [totalSearchResults, setTotalSearchResults] = useState<number>(page);
     const [productFiles, setProductFiles] = useState<ProductFileRow[]>([]);
@@ -16,10 +17,8 @@ const useProductFiles = (
     const parameters = {
         page: page.toString(),
         search: searchValue,
+        ...(null !== importStatusValue && {status: importStatusValue}),
     };
-    if (null !== importStatusValue) {
-        parameters['status'] = importStatusValue;
-    }
 
     const getProductFilesRoute = useRoute('supplier_portal_retailer_product_files_list', parameters);
     const notify = useNotify();
@@ -59,10 +58,24 @@ const useProductFiles = (
             setPage(1);
         }
 
+        if (importStatusValue !== previousImportStatusValue) {
+            setPreviousImportStatusValue(importStatusValue);
+            setPage(1);
+        }
+
         setProductFiles(productFiles);
         setTotalNumberOfProductFiles(responseBody.total);
         setTotalSearchResults(responseBody.total_search_results);
-    }, [getProductFilesRoute, notify, translate]);
+    }, [
+        getProductFilesRoute,
+        previousSearchValue,
+        searchValue,
+        previousImportStatusValue,
+        importStatusValue,
+        setPage,
+        notify,
+        translate,
+    ]);
 
     useEffect(() => {
         (async () => {

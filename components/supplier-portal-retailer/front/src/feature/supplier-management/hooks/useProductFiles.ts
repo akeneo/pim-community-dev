@@ -15,10 +15,8 @@ const useProductFiles = (
         supplierIdentifier: supplierIdentifier,
         page: page.toString(),
         search: searchValue,
+        ...(null !== importStatusValue && {status: importStatusValue}),
     };
-    if (null !== importStatusValue) {
-        parameters['status'] = importStatusValue;
-    }
 
     const getProductFilesRoute = useRoute('supplier_portal_retailer_supplier_product_files_list', parameters);
     const notify = useNotify();

@@ -54,7 +54,7 @@ const ProductFilesList = ({
         history.push(`/product-file/${productFileIdentifier}`);
     };
 
-    const handleChange = (importStatus: null | string) => {
+    const onImportStatusChange = (importStatus: null | string) => {
         handleImportStatusChange(importStatus);
         close();
     };
@@ -70,8 +70,8 @@ const ProductFilesList = ({
                     'supplier_portal.product_file_dropping.supplier_files.search.results_number',
                     {count: totalSearchResults},
                     totalSearchResults
-                )}{' '}
-                |
+                )}
+                <StyledPipe />
                 <Dropdown>
                     <SwitcherButton
                         label={translate('supplier_portal.product_file_dropping.supplier_files.status.label')}
@@ -86,11 +86,14 @@ const ProductFilesList = ({
                     {isDropdownOpen && (
                         <Dropdown.Overlay verticalPosition="down" onClose={close}>
                             <Dropdown.ItemCollection>
-                                <Dropdown.Item key="all" onClick={() => handleChange(null)}>
+                                <Dropdown.Item key="all" onClick={() => onImportStatusChange(null)}>
                                     {translate('supplier_portal.product_file_dropping.supplier_files.status.all')}
                                 </Dropdown.Item>
                                 {Object.values(ImportStatus).map(importStatus => (
-                                    <Dropdown.Item key={importStatus} onClick={() => handleChange(importStatus)}>
+                                    <Dropdown.Item
+                                        key={importStatus}
+                                        onClick={() => onImportStatusChange(importStatus)}
+                                    >
                                         {translate(
                                             `supplier_portal.product_file_dropping.supplier_files.status.${importStatus}`
                                         )}
@@ -207,6 +210,11 @@ const ProductFilesList = ({
         </>
     );
 };
+
+const StyledPipe = styled.div`
+    height: 24px;
+    border-right: 1px solid ${getColor('grey100')};
+`;
 
 const StyledDownloadIcon = styled(DownloadIcon)`
     color: ${getColor('grey100')};

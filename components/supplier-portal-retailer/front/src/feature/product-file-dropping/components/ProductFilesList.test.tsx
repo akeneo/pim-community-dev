@@ -208,11 +208,14 @@ test('it calls the callback when a user filter product files on status', () => {
     );
 
     const importStatusFilter = screen.getByText('supplier_portal.product_file_dropping.supplier_files.status.all');
-    expect(importStatusFilter).toBeInTheDocument();
     userEvent.click(importStatusFilter);
 
     const toImportFilter = screen.getByText('supplier_portal.product_file_dropping.supplier_files.status.to_import');
     userEvent.click(toImportFilter);
 
+    expect(importStatusFilter).toBeInTheDocument();
     expect(handleImportStatusChange).toHaveBeenCalledTimes(1);
+    expect(
+        screen.queryAllByText('supplier_portal.product_file_dropping.supplier_files.import.status.to_import').length
+    ).toBe(2);
 });

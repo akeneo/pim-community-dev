@@ -33,9 +33,7 @@ test('it loads the product files', async () => {
         json: async () => backendResponse,
     }));
 
-    const {result, waitForNextUpdate} = renderHookWithProviders(() =>
-        useProductFiles('bbe78bfb-10e8-4cd8-ad9c-22056824e9bd', 1, '')
-    );
+    const {result, waitForNextUpdate} = renderHookWithProviders(() => useProductFiles('bbe78bfb-10e8-4cd8-ad9c-22056824e9bd', 1, '', null));
 
     expect(result.current[0]).toEqual([]);
 
@@ -69,7 +67,7 @@ test('it renders an error notification if the loading of the suppliers failed', 
     }));
     const notify = jest.spyOn(mockedDependencies, 'notify');
 
-    await renderHookWithProviders(() => useProductFiles('bbe78bfb-10e8-4cd8-ad9c-22056824e9bd', 1, ''));
+    await renderHookWithProviders(() => useProductFiles('bbe78bfb-10e8-4cd8-ad9c-22056824e9bd', 1, '', null));
 
     expect(notify).toHaveBeenNthCalledWith(
         1,

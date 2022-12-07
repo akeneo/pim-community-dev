@@ -13,10 +13,10 @@ const ListProductFiles = () => {
     const [importStatusValue, setImportStatusValue] = useState<null | string>(null);
     const debouncedSearchValue = useDebounce(searchValue);
     const [productFiles, totalProductFiles, totalSearchResults] = useProductFiles(
-      page,
-      debouncedSearchValue,
-      setPage,
-      importStatusValue
+        page,
+        debouncedSearchValue,
+        setPage,
+        importStatusValue
     );
     const history = useHistory();
 
