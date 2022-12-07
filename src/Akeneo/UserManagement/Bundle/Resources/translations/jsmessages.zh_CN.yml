@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: 登录
   pim_user_reset_reset: 密码重置
   pim_user_reset_request: 忘记密码
-  pim_user_reset_check_email: 密码重置 | 检查电子邮件
   pim_user_group_create: '分组 | 创建'
   pim_user_group_update: '分组 {{ group }} | 编辑'
 confirmation:

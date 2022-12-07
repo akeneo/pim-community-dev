@@ -8,7 +8,6 @@ use Akeneo\UserManagement\Bundle\Notification\MailResetNotifier;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -19,12 +18,12 @@ class ResetController extends AbstractController
     const SESSION_EMAIL = 'pim_user_reset_email';
 
     public function __construct(
-        private UserManager           $userManager,
-        private SessionInterface      $session,
-        private ResetHandler          $resetHandler,
-        private TokenStorageInterface $tokenStorage,
-        private FormInterface         $form,
-        private MailResetNotifier     $mailer
+        private readonly UserManager $userManager,
+        private readonly SessionInterface $session,
+        private readonly ResetHandler $resetHandler,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FormInterface $form,
+        private readonly MailResetNotifier $mailer,
     ) {
     }
 
@@ -36,7 +35,7 @@ class ResetController extends AbstractController
     /**
      * Request reset user password
      */
-    public function sendEmail(Request $request): Response|RedirectResponse
+    public function sendEmail(Request $request): Response
     {
         $username = $request->request->get('username');
         $user = $this->userManager->findUserByUsernameOrEmail($username);
@@ -71,7 +70,7 @@ class ResetController extends AbstractController
     /**
      * Reset user password
      */
-    public function reset($token)
+    public function reset(string $token): Response
     {
         $user = $this->userManager->findUserByConfirmationToken($token);
 
@@ -109,12 +108,8 @@ class ResetController extends AbstractController
     /**
      * Get the truncated email displayed when requesting the resetting.
      * The default implementation only keeps the part following @ in the address.
-     *
-     * @param UserInterface $user
-     *
-     * @return string
      */
-    protected function getObfuscatedEmail(UserInterface $user)
+    protected function getObfuscatedEmail(UserInterface $user): string
     {
         $email = $user->getEmail();
 

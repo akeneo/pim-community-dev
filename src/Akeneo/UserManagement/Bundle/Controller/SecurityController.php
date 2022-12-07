@@ -11,24 +11,13 @@ use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
 class SecurityController extends AbstractController
 {
-    private AuthenticationUtils $authenticationUtils;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-    private string $actionRoute;
-    private array $additionalHiddenFields;
-    private LogoutUrlGenerator $logoutUrlGenerator;
-
     public function __construct(
-        AuthenticationUtils $authenticationUtils,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        LogoutUrlGenerator $logoutUrlGenerator,
-        string $actionRoute,
-        array $additionalHiddenFields
+        private readonly AuthenticationUtils $authenticationUtils,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly LogoutUrlGenerator $logoutUrlGenerator,
+        private readonly string $actionRoute,
+        private readonly array $additionalHiddenFields
     ) {
-        $this->authenticationUtils = $authenticationUtils;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->logoutUrlGenerator = $logoutUrlGenerator;
-        $this->actionRoute = $actionRoute;
-        $this->additionalHiddenFields = $additionalHiddenFields;
     }
 
     public function login(): Response
