@@ -90,6 +90,22 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'datagrid', ['data_locale' => 'en_US'])->shouldReturn(null);
     }
 
+    function it_formats_a_simple_reference_entity_link_value_with_labels_for_zero_value(
+        GetRecordInformationQueryInterface $getRecordInformationQuery,
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ) {
+        $value = ReferenceEntityValue::value('designer_link', RecordCode::fromString('0'));
+
+        $this->attributeRepositoryWillReturnReferenceEntityAttribute($attributeRepository);
+        $this->recordInformationWillBe($getRecordInformationQuery, '0', ['en_US' => 'this label']);
+
+        $this->normalize($value, 'datagrid', ['data_locale' => 'en_US'])->shouldReturn([
+            'locale' => null,
+            'scope'  => null,
+            'data'   => 'this label',
+        ]);
+    }
+
     function it_supports_the_datagrid_format_for_reference_entity_value()
     {
         $referenceEntityValue = ReferenceEntityValue::value('designer_link', RecordCode::fromString('tony_stark'));
