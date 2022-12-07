@@ -125,10 +125,15 @@ class TemplateBuilder
     /**
      * Generate a template label by adding ' template' at the end of given category tree 'en_US' label.
      */
-    private function generateTemplateLabelCollection(LabelCollection $categoryTreeLabelCollection): LabelCollection
+    private function generateTemplateLabelCollection(?LabelCollection $categoryTreeLabelCollection): LabelCollection
     {
-        return LabelCollection::fromArray([
-            'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
-        ]);
+        $translations = [];
+        if ($categoryTreeLabelCollection) {
+            $translations = [
+                'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
+            ];
+        }
+
+        return LabelCollection::fromArray($translations);
     }
 }
