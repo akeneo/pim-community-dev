@@ -5,7 +5,6 @@ namespace Akeneo\UserManagement\Bundle\Controller;
 use Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Bundle\Notification\MailResetNotifier;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +14,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ResetController extends AbstractController
 {
-    const SESSION_EMAIL = 'pim_user_reset_email';
-
     public function __construct(
         private readonly UserManager $userManager,
         private readonly SessionInterface $session,
@@ -56,8 +53,6 @@ class ResetController extends AbstractController
         if (null === $user->getConfirmationToken()) {
             $user->setConfirmationToken($user->generateToken());
         }
-
-        $this->session->set(static::SESSION_EMAIL, $this->getObfuscatedEmail($user));
 
         $user->setPasswordRequestedAt(new \DateTime('now', new \DateTimeZone('UTC')));
         $this->userManager->updateUser($user);
@@ -103,20 +98,5 @@ class ResetController extends AbstractController
             'token' => $token,
             'form' => $this->form->createView(),
         ]);
-    }
-
-    /**
-     * Get the truncated email displayed when requesting the resetting.
-     * The default implementation only keeps the part following @ in the address.
-     */
-    protected function getObfuscatedEmail(UserInterface $user): string
-    {
-        $email = $user->getEmail();
-
-        if (false !== $pos = strpos($email, '@')) {
-            $email = '...' . substr($email, $pos);
-        }
-
-        return $email;
     }
 }

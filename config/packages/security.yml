@@ -19,7 +19,7 @@ security:
             security:                       false
 
         login:
-            pattern:                        ^/user/(login|reset-request|send-email|check-email)$
+            pattern:                        ^/user/(login|reset-request|send-email)$
             provider:                       chain_provider
 
         reset_password:
@@ -73,7 +73,7 @@ security:
                 samesite:                   'lax'
 
     access_control:
-        - { path: ^/user/(login|reset-request|send-email|check-email)$, roles: PUBLIC_ACCESS }
+        - { path: ^/user/(login|reset-request|send-email)$, roles: PUBLIC_ACCESS }
         - { path: ^/user/reset/*, roles: PUBLIC_ACCESS }
         - { path: ^/api/rest/v1$, roles: PUBLIC_ACCESS }
         - { path: ^/api/, roles: pim_api_overall_access }
