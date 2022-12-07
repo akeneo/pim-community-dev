@@ -32,6 +32,11 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler'
 
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\PreviewProductFile:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\PreviewProductFile\PreviewProductFileHandler'
+
     # GCS Bucket services
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket
@@ -55,6 +60,17 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\GetAllSupplierCodes'
+            - '@monolog.logger.supplier_portal'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Spout\SpoutRemoteXlsxFileReaderFactory:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StreamStoredProductFile'
+
+    #Spout
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePreview:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Spout\SpoutGetProductFilePreview
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Spout\SpoutRemoteXlsxFileReaderFactory'
             - '@monolog.logger.supplier_portal'
 
     # PIM Notification service
@@ -123,6 +139,11 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierProductFilesCount'
+
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\PreviewProductFile\PreviewProductFileHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePreview'
 
     # Queries
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName:
