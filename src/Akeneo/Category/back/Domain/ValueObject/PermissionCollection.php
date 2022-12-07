@@ -12,7 +12,7 @@ final class PermissionCollection
     public const EDIT = 'edit';
     public const OWN = 'own';
 
-    /** @var array<string, array<int>>  */
+    /** @var array<string, array<int>> */
     private array $removedPermissions;
 
     // @phpstan-ignore-next-line

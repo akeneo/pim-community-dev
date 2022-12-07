@@ -54,7 +54,7 @@ class CategoryTestCase extends TestCase
         ?int $id = null,
         ?array $labels = [],
         ?int $parentId = null,
-        ?array $permissions = []
+        ?array $permissions = [],
     ): Category {
         $categoryId = (null === $id ? null : new CategoryId($id));
         $parentId = (null === $parentId ? null : new CategoryId($parentId));
@@ -84,7 +84,7 @@ class CategoryTestCase extends TestCase
             templateUuid: null,
             labels: $categoryModelToCreate->getLabels(),
             parentId: $parentId,
-            permissions: $categoryModelToCreate->getPermissions()
+            permissions: $categoryModelToCreate->getPermissions(),
         );
         $this->get(UpsertCategoryTranslations::class)->execute($categoryModelWithId);
 
