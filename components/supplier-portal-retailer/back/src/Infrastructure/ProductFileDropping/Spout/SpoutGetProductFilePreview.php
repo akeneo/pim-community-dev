@@ -42,6 +42,7 @@ final class SpoutGetProductFilePreview implements GetProductFilePreview
 
         $firstSheet = $this->getFirstSheet($xlsxReader);
         $firstRows = $this->getFirstRows($firstSheet);
+        $firstRows = $this->padRowsToTheLongestRow($firstRows);
 
         return new ProductFilePreview($firstRows);
     }
@@ -75,5 +76,16 @@ final class SpoutGetProductFilePreview implements GetProductFilePreview
             fn (Cell $cell) => $cell->getValue(),
             iterator_to_array($firstCells),
         );
+    }
+
+    private function padRowsToTheLongestRow(array $rows): array
+    {
+        if (empty($rows)) {
+            return [];
+        }
+
+        $maxCellPerRow = count(max($rows));
+
+        return array_map(fn (array $row) => array_pad($row, $maxCellPerRow, ''), $rows);
     }
 }
