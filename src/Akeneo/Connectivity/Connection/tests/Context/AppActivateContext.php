@@ -301,7 +301,7 @@ SQL;
 
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->getMainContext()->getContainer()->get('security.access.decision_manager');
-        $token = new UsernamePasswordToken('username', null, 'main', $roles);
+        $token = new UsernamePasswordToken('username', 'main', $roles);
 
         foreach ($acls as $acl => $expectedValue) {
             assert(is_bool($expectedValue));
