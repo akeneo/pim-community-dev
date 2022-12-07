@@ -193,7 +193,8 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                     $constraintViolation->getInvalidValue(),
                     $constraintViolation->getPlural(),
                     $constraintViolation->getCode()
-                ), \iterator_to_array($constraintViolationList)
+                ),
+                \iterator_to_array($constraintViolationList)
             )
         );
     }
