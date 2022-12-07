@@ -43,7 +43,7 @@ final class UserContext implements Context
         $user = $this->userFactory->create();
         $user->setUsername('admin');
 
-        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_USER']);
+        $token = new UsernamePasswordToken($user, 'main', ['ROLE_USER']);
         $this->tokenStorage->setToken($token);
     }
 

@@ -15,6 +15,22 @@ type AddPropertyButtonProps = {
   onAddProperty: (property: Property) => void;
 };
 
+const items: PropertiesSelection[] = [
+  {
+    code: 'system',
+    items: [
+      {
+        code: PROPERTY_NAMES.FREE_TEXT,
+        defaultValue: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
+      },
+      {
+        code: PROPERTY_NAMES.AUTO_NUMBER,
+        defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
+      },
+    ],
+  },
+];
+
 const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
@@ -35,25 +51,6 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
     close();
   };
 
-  const items = useMemo(
-    (): PropertiesSelection[] => [
-      {
-        code: 'system',
-        items: [
-          {
-            code: PROPERTY_NAMES.FREE_TEXT,
-            defaultValue: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
-          },
-          {
-            code: PROPERTY_NAMES.AUTO_NUMBER,
-            defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
-          },
-        ],
-      },
-    ],
-    []
-  );
-
   const filterElements = useMemo((): PropertiesSelection[] => {
     if ('' !== debouncedSearchValue) {
       return items
@@ -67,7 +64,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
     } else {
       return items;
     }
-  }, [debouncedSearchValue, items]);
+  }, [debouncedSearchValue]);
 
   const searchInputRef = React.useRef<HTMLInputElement | null>(null);
   // We can not use the useAutoFocus here because the element is hidden when dropdown is not open

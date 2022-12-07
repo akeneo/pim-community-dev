@@ -56,7 +56,7 @@ abstract class WebTestCase extends TestCase
         $firewallName = 'main';
         $firewallContext = 'main';
 
-        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
+        $token = new UsernamePasswordToken($user, $firewallName, $user->getRoles());
         $session = $this->getSession();
         $session->set('_security_' . $firewallContext, \serialize($token));
         $session->save();
