@@ -145,17 +145,4 @@ final class AssociationTypeValueHydrator
             $normalizedProductModelQuantifiedAssociations,
         );
     }
-
-    private function getAncestors(EntityWithFamilyVariantInterface $entity): array
-    {
-        $ancestors = [];
-        $current = $entity;
-
-        while (null !== $parent = $current->getParent()) {
-            $current = $parent;
-            $ancestors[] = $current;
-        }
-
-        return array_reverse($ancestors);
-    }
 }
