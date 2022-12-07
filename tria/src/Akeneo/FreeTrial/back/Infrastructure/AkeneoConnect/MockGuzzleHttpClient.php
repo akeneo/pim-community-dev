@@ -15,6 +15,7 @@ namespace Akeneo\FreeTrial\Infrastructure\AkeneoConnect;
 
 use Akeneo\FreeTrial\Domain\Query\GetInvitedUsersQuery;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -29,14 +30,12 @@ final class MockGuzzleHttpClient implements ClientInterface
         'Julien@example.com',
     ];
 
-    private GetInvitedUsersQuery $getInvitedUsersQuery;
-
-    public function __construct(GetInvitedUsersQuery $getInvitedUsersQuery)
-    {
-        $this->getInvitedUsersQuery = $getInvitedUsersQuery;
+    public function __construct(
+        private readonly GetInvitedUsersQuery $getInvitedUsersQuery,
+    ) {
     }
 
-    public function request($method, $uri, array $options = [])
+    public function request($method, $uri, array $options = []): ResponseInterface
     {
         if ($method === 'POST' && $uri === APIClient::URI_CONNECT) {
             return $this->buildConnectionResponse();
@@ -49,17 +48,17 @@ final class MockGuzzleHttpClient implements ClientInterface
         throw new \Exception(sprintf('No request handled for method "%s" on URI "%s"', $method, $uri));
     }
 
-    public function send(RequestInterface $request, array $options = [])
+    public function send(RequestInterface $request, array $options = []): ResponseInterface
     {
         throw new \Exception('The method "send" is not implemented for the fake client.');
     }
 
-    public function sendAsync(RequestInterface $request, array $options = [])
+    public function sendAsync(RequestInterface $request, array $options = []): PromiseInterface
     {
         throw new \Exception('The method "sendAsync" is not implemented for the fake client.');
     }
 
-    public function requestAsync($method, $uri, array $options = [])
+    public function requestAsync($method, $uri, array $options = []): PromiseInterface
     {
         throw new \Exception('The method "requestAsync" is not implemented for the fake client.');
     }
