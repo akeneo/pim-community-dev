@@ -14,21 +14,14 @@ use GuzzleHttp\Psr7\Response;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
- * A sub class of the Guzzle handler stack providing a JSON filesystem history.
- * The purpose of this handler is to share its history between a parent process and subprocess. It is useful to  keep track of the history of the webhook call in the tests. Indeed, the webhook call is performed in a subprocess.
+ * A factory providing a Guzzle handler stack with a JSON filesystem history.
+ * The purpose of this handler is to share its history between a parent process and subprocess. It is useful to keep track of the history of the webhook call in the tests. Indeed, the webhook call is performed in a subprocess.
  */
-class GuzzleMockHandlerStack extends HandlerStack
+class GuzzleMockHandlerStackFactory
 {
-    private ?GuzzleJsonHistory $container;
-
-    public function historyContainer(): GuzzleJsonHistory
+    public static function createWithHistoryContainer(GuzzleJsonHistoryContainer $historyContainer): HandlerStack
     {
-        return $this->container;
-    }
-
-    public static function createWithHistoryContainer(GuzzleJsonHistory $historyContainer)
-    {
-        $stack = new self(new MockHandler([new Response(200)]));
+        $stack = new HandlerStack(new MockHandler([new Response(200)]));
         $stack->push(Middleware::httpErrors(), 'http_errors');
         $stack->push(Middleware::redirect(), 'allow_redirects');
         $stack->push(Middleware::cookies(), 'cookies');
@@ -37,8 +30,6 @@ class GuzzleMockHandlerStack extends HandlerStack
         $historyContainer->resetHistory();
         $history = Middleware::history($historyContainer);
         $stack->push($history);
-
-        $stack->container = $historyContainer;
 
         return $stack;
     }

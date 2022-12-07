@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\CategoryLoade
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
-use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleMockHandlerStack;
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
@@ -34,6 +34,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
     private ProductInterface $referenceProduct;
     private Author $referenceAuthor;
     private DbalConnection $dbalConnection;
+    private GuzzleJsonHistoryContainer $historyContainer;
 
     protected function setUp(): void
     {
@@ -44,6 +45,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->dbalConnection = $this->get('database_connection');
+        $this->historyContainer = $this->get('Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer');
 
         $this->referenceProduct = $this->loadReferenceProduct();
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -60,9 +62,6 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
 
     public function test_it_increments_events_api_request_count()
     {
-        /** @var GuzzleMockHandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-
         $message = new BulkEvent(
             [
                 new ProductCreated(
@@ -81,7 +80,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        Assert::assertCount(1, $handlerStack->historyContainer());
+        Assert::assertCount(1, $this->historyContainer);
 
         $eventsApiRequestCount = $this->getEventsApiRequestCount();
 
