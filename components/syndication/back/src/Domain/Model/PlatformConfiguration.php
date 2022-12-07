@@ -7,7 +7,8 @@ class PlatformConfiguration
     public function __construct(
         private string $code,
         private string $label,
-        private array $configuration // Should be improved and be properly typed
+        private array  $catalogs, // Should be improved and be properly typed
+        private string $syndicationChannel // Should be improved and be properly typed
     ) {
     }
 
@@ -21,10 +22,15 @@ class PlatformConfiguration
         return $this->label;
     }
 
+    public function getSyndicationChannel(): string
+    {
+        return $this->syndicationChannel;
+    }
+
     public function getCatalog(string $catalogCode): array
     {
-        $filteredCatalogs = array_values(array_filter($this->configuration, function ($configuration) use ($catalogCode) {
-            return $catalogCode === $configuration['code'];
+        $filteredCatalogs = array_values(array_filter($this->catalogs, function ($catalogs) use ($catalogCode) {
+            return $catalogCode === $catalogs['code'];
         }));
 
         if (0 === count($filteredCatalogs)) {
@@ -39,7 +45,8 @@ class PlatformConfiguration
         return [
             'code' => $this->code,
             'label' => $this->label,
-            'catalogProjections' => $this->configuration,
+            'catalogProjections' => $this->catalogs,
+            'getSyndicationChannel' => $this->getSyndicationChannel(),
         ];
     }
 }

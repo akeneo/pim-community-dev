@@ -146,7 +146,6 @@ services:
                     - 'pim_catalog_text'
                     - 'pim_catalog_asset_collection'
                 measurement:
-                    - 'pim_catalog_number'
                     - 'pim_catalog_metric'
                 price:
                     - 'pim_catalog_price_collection'

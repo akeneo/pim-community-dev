@@ -62,7 +62,8 @@ SQL;
             return new PlatformConfiguration(
                 $row['code'],
                 $row['label'],
-                $parameters['catalogProjections']
+                $parameters['catalogProjections'],
+                $parameters['connection']['connectedChannelCode'],
             );
         }, $rows);
     }

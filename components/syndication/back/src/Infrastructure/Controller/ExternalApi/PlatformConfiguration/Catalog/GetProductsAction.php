@@ -15,6 +15,7 @@ use Akeneo\Platform\Syndication\Application\Common\Source\AssociationTypeSource;
 use Akeneo\Platform\Syndication\Application\Common\Source\AttributeSource;
 use Akeneo\Platform\Syndication\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\Syndication\Application\MapValues\MapValuesQueryHandler;
+use Akeneo\Platform\Syndication\Domain\Model\PlatformConfiguration;
 use Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationQueryInterface;
 use Akeneo\Platform\Syndication\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\Syndication\Infrastructure\Hydrator\ValueCollectionHydrator;
@@ -104,7 +105,9 @@ class GetProductsAction
         $query->searchAfter = $request->query->get('search_after', null);
         $query->userId = $this->getUser()->getId();
 
-        $catalog = $this->getCatalog($platformConfigurationCode, $catalogCode);
+        $platformConfiguration = $this->getPlatformConfiguration($platformConfigurationCode);
+        $catalog = $this->getCatalog($platformConfiguration, $catalogCode);
+        $syndicationChannelCode = $platformConfiguration->getSyndicationChannel();
         $columnCollection = $this->getColumnCollection($catalog);
 
         try {
@@ -117,18 +120,23 @@ class GetProductsAction
         }
 
         return new JsonResponse([
-            'products' => $this->normalizeProductsList($products, $columnCollection, $catalog),
+            'products' => $this->normalizeProductsList(
+                $products,
+                $columnCollection,
+                $syndicationChannelCode,
+                $catalog
+            ),
             'family' => $catalog['code'], //TODO: will be changed when we will have multiple families per job configuration
             'catalog' => $catalog['uuid'],
-            'marketingChannel' => $catalog['connected_channel_code']
+            'syndicationChannel' => $syndicationChannelCode
         ]);
     }
 
-    private function normalizeProductsList(ConnectorProductList $connectorProductList, ColumnCollection $columnCollection, array $catalog): array
+    private function normalizeProductsList(ConnectorProductList $connectorProductList, ColumnCollection $columnCollection, string $syndicationChannelCode, array $catalog): array
     {
         $connectorProducts = $connectorProductList->connectorProducts();
 
-        $mappedProducts = array_map(function (ConnectorProduct $connectorProduct) use ($columnCollection, $catalog) {
+        $mappedProducts = array_map(function (ConnectorProduct $connectorProduct) use ($columnCollection, $syndicationChannelCode, $catalog) {
             $valueCollection = $this->valueCollectionHydrator->hydrate($connectorProduct, $columnCollection);
 
             $mapValuesQuery = new MapValuesQuery($columnCollection, $valueCollection);
@@ -141,20 +149,26 @@ class GetProductsAction
                 'values' => $values,
                 'family' => $catalog['code'], //TODO: will be changed when we will have multiple families per job configuration
                 'catalog' => $catalog['uuid'],
-                'marketingChannel' => $catalog['connected_channel_code'],
+                'syndicationChannel' => $syndicationChannelCode,
             ];
         }, $connectorProducts);
 
         return $mappedProducts;
     }
 
-    private function getCatalog(string $platformConfigurationCode, string $catalogCode): array
+    private function getPlatformConfiguration(string $platformConfigurationCode): PlatformConfiguration
     {
         try {
             $platformConfiguration = $this->findPlatformConfigurationQuery->execute($platformConfigurationCode);
         } catch (\Exception $e) {
             throw new HttpException(404, 'Platform configuration not found');
         }
+
+        return $platformConfiguration;
+    }
+
+    private function getCatalog(PlatformConfiguration $platformConfiguration, string $catalogCode): array
+    {
         try {
             $catalog = $platformConfiguration->getCatalog($catalogCode);
         } catch (\Exception $e) {
