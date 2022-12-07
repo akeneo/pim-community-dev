@@ -16,7 +16,7 @@ trait AuthenticateAs
 
         /** @var User $user */
         $user = $this->get('pim_user.provider.user')->loadUserByUsername($username);
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
         return $user;

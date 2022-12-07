@@ -29,7 +29,7 @@ class AbstractDraft extends TestCase
 
         // login as Mary
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier('mary');
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
     }
 

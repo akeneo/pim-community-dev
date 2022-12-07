@@ -13,7 +13,7 @@ class GetPublishedProductEndToEnd extends AbstractPublishedProductTestCase
         $client = $this->createAuthenticatedClient([], [], null, null, 'admin', 'admin');
 
         $user = $this->get('pim_user.provider.user')->loadUserByUsername('admin');
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');

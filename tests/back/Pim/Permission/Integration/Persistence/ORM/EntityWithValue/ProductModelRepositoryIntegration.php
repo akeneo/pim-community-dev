@@ -73,7 +73,7 @@ class ProductModelRepositoryIntegration extends TestCase
     {
         $user = $this->getUserByUsername($username);
 
-        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_USER']);
+        $token = new UsernamePasswordToken($user, 'main', ['ROLE_USER']);
         $this->get('security.token_storage')->setToken($token);
     }
 

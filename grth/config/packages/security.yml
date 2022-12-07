@@ -97,7 +97,6 @@ security:
                 samesite:                   'lax'
 
     access_control:
-        - { path: ^/admin/, roles: ROLE_ADMIN }
         - { path: ^/api/rest/v1$, roles: PUBLIC_ACCESS }
         - { path: ^/api/, roles: pim_api_overall_access }
         #Additionnal access control for SSO
