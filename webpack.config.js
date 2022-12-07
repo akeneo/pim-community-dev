@@ -1,5 +1,4 @@
 /* eslint-env es6 */
-const fs = require('fs');
 const process = require('process');
 const rootDir = process.cwd();
 const webpack = require('webpack');
@@ -9,7 +8,7 @@ const _ = require('lodash');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
-const isStrict = process.argv && process.argv.indexOf('--strict') > -1;
+const isStrict = process.env.STRICT === '1';
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
