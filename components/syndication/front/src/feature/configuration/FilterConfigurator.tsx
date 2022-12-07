@@ -7,11 +7,12 @@ import {Filter} from '../configuration/models';
 export const generateRandomId = (): string => (Math.random() + 1).toString(36).substring(7);
 
 type FilterConfiguratorProps = {
+  key: string;
   filters: Filter[];
   onFiltersConfigurationChange: (filters: Filter[]) => void;
 };
 
-const FilterConfigurator = ({filters, onFiltersConfigurationChange}: FilterConfiguratorProps) => {
+const FilterConfigurator = ({key, filters, onFiltersConfigurationChange}: FilterConfiguratorProps) => {
   const validationErrors = useValidationErrors(`[filters]`, false);
 
   const criteria = useMemo(
@@ -50,7 +51,7 @@ const FilterConfigurator = ({filters, onFiltersConfigurationChange}: FilterConfi
     [onFiltersConfigurationChange, filters]
   );
 
-  return <ProductSelection criteria={criteria} onChange={handleCriteriaChange} errors={validationErrors} />;
+  return <ProductSelection key={key} criteria={criteria} onChange={handleCriteriaChange} errors={validationErrors} />;
 };
 
 export {FilterConfigurator};

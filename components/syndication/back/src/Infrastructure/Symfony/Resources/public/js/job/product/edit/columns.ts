@@ -13,9 +13,21 @@ import {Channel} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 const router = require('pim/router');
+
+
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10 * 1000, // 10s
+      cacheTime: 5 * 60 * 1000, // 5m
+    },
+  },
+});
+
 class ColumnView extends BaseView {
   public config: any;
 
@@ -36,58 +48,62 @@ class ColumnView extends BaseView {
 
     ReactDOM.render(
       React.createElement(
-        ThemeProvider,
-        {theme: pimTheme},
+        QueryClientProvider,
+        {client: client},
         React.createElement(
-          DependenciesProvider,
-          null,
+          ThemeProvider,
+          {theme: pimTheme},
           React.createElement(
-            FetcherContext.Provider,
-            {
-              value: {
-                attribute: {
-                  fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
-                    );
+            DependenciesProvider,
+            null,
+            React.createElement(
+              FetcherContext.Provider,
+              {
+                value: {
+                  attribute: {
+                    fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
+                      return new Promise(resolve =>
+                        fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
+                      );
+                    },
                   },
-                },
-                channel: {
-                  fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
+                  channel: {
+                    fetchAll: (): Promise<Channel[]> => {
+                      return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
+                    },
                   },
-                },
-                associationType: {
-                  fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
-                    );
+                  associationType: {
+                    fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
+                      return new Promise(resolve =>
+                        fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
+                      );
+                    },
                   },
-                },
-                measurementFamily: {
-                  fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
-                    return new Promise(resolve => fetcherRegistry.getFetcher('measure').fetch(code).then(resolve));
+                  measurementFamily: {
+                    fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
+                      return new Promise(resolve => fetcherRegistry.getFetcher('measure').fetch(code).then(resolve));
+                    },
+                    fetchAll: (): Promise<MeasurementFamily[]> => {
+                      return new Promise(resolve => fetcherRegistry.getFetcher('measure').fetchAll().then(resolve));
+                    },
                   },
-                  fetchAll: (): Promise<MeasurementFamily[]> => {
-                    return new Promise(resolve => fetcherRegistry.getFetcher('measure').fetchAll().then(resolve));
-                  },
-                },
-                assetFamily: {
-                  fetchByIdentifier: async (identifier: string): Promise<AssetFamily | undefined> => {
-                    const route = router.generate('akeneo_asset_manager_asset_family_get_rest', {identifier});
-                    const response = await fetch(route);
-                    if (!response.ok) {
-                      return undefined;
-                    }
+                  assetFamily: {
+                    fetchByIdentifier: async (identifier: string): Promise<AssetFamily | undefined> => {
+                      const route = router.generate('akeneo_asset_manager_asset_family_get_rest', {identifier});
+                      const response = await fetch(route);
+                      if (!response.ok) {
+                        return undefined;
+                      }
 
-                    return await response.json();
+                      return await response.json();
+                    },
                   },
                 },
               },
-            },
-            React.createElement(Syndication, props)
+              React.createElement(Syndication, props)
+            )
           )
-        )
+        ),
       ),
       this.el
     );

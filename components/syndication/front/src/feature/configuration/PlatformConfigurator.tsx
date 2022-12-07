@@ -201,6 +201,7 @@ const PlatformConfigurator = ({
                   )}
                 >
                   <CatalogProjectionConfigurator
+                    key={currentFamily.code}
                     onSave={onSave}
                     requirements={currentFamily.requirements}
                     catalogProjection={

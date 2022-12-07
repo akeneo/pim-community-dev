@@ -42,7 +42,7 @@ class ProductDefaultValueProvider implements DefaultValuesProviderInterface
         ];
         $defaultValues['catalogProjections'] = [];
         $defaultValues['connection'] = [
-            'connectedChannelCode' => 'amazon_us',
+            'connectedChannelCode' => 'amazon_vendor_us',
         ];
 
         return $defaultValues;

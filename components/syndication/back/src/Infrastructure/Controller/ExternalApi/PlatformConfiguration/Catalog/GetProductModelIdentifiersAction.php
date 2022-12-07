@@ -72,7 +72,6 @@ class GetProductModelIdentifiersAction
 
         $query->search = $this->generateQuerySearch($platformConfigurationCode, $catalogCode);
 
-
         $query->channelCode = null;
         $query->limit = 1000;
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -145,6 +144,10 @@ class GetProductModelIdentifiersAction
         $filters = [...$catalog['filters'], ['field' => 'parent', 'operator' => 'EMPTY']];
 
         return array_reduce($filters, function (array $accumulator, array $filter) {
+            if ('enabled' === $filter['field']) {
+                return $accumulator;
+            }
+
             $locale = isset($filter['context']['locale']) ? $filter['context']['locale'] : null;
             $locales = isset($filter['context']['locales']) ? $filter['context']['locales'] : null;
             $scope = isset($filter['context']['channel']) ? $filter['context']['channel'] : null;

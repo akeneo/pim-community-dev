@@ -16,6 +16,7 @@ const Container = styled.div`
 `;
 
 type CatalogProjectionConfiguratorProps = {
+  key: string;
   requirements: RequirementCollection;
   catalogProjection: CatalogProjection;
   onSave: () => void;
@@ -23,6 +24,7 @@ type CatalogProjectionConfiguratorProps = {
 };
 
 const CatalogProjectionConfigurator = ({
+  key,
   requirements,
   catalogProjection,
   onCatalogProjectionChange,
@@ -66,6 +68,7 @@ const CatalogProjectionConfigurator = ({
       )}
       {'filter' === currentTab && (
         <FilterConfigurator
+          key={key}
           filters={catalogProjection.filters}
           onFiltersConfigurationChange={handleFiltersConfigurationChange}
         />

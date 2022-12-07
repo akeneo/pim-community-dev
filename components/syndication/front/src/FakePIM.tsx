@@ -38,7 +38,7 @@ const FakePIM = () => {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Redirect to="/amazon_us" />
+            <Redirect to="/amazon_vendor_us" />
           </Route>
           <Route path="/:jobCode">
             <Edit />
