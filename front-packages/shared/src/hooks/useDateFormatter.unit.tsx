@@ -8,7 +8,6 @@ const options: Intl.DateTimeFormatOptions = {
   dateStyle: 'full',
   timeStyle: 'long',
   timeZone: 'UTC',
-  timeZoneName: 'long',
 };
 
 const ProviderWithNoTimezone: FC = ({children}) => (
