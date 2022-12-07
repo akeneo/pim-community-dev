@@ -82,9 +82,9 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
             ],
             'it selects the record "size" number attribute' => [
                 'operations' => [],
-                'selection' => new ReferenceEntityNumberAttributeSelection('designer', 'size', null, null),
+                'selection' => new ReferenceEntityNumberAttributeSelection('designer', 'size', ',', null, null),
                 'value' => new ReferenceEntityValue('starck'),
-                'expected' => [self::TARGET_NAME => '2'],
+                'expected' => [self::TARGET_NAME => '2,67'],
             ],
             'it fallbacks on the record code when the label is not found' => [
                 'operations' => [],
@@ -141,6 +141,6 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
         $findRecordsAttributeValue = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface');
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'description', 'Bezeichnung', 'ecommerce', 'de_DE');
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'name', 'Nom');
-        $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'size', '2');
+        $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'size', '2.67');
     }
 }

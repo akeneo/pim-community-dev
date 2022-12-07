@@ -29,6 +29,8 @@ class ReferenceEntitySelectionValidator extends ConstraintValidator
 {
     public function __construct(
         private FindReferenceEntityAttributesInterface $findReferenceEntityAttributes,
+        private array $supportedAttributeTypes,
+        private array $availableDecimalSeparators,
     ) {
     }
 
@@ -38,20 +40,17 @@ class ReferenceEntitySelectionValidator extends ConstraintValidator
         $validator->inContext($this->context)->validate($selection, new Collection(
             [
                 'fields' => [
-                    'type' => new Choice(
-                        [
-                            'choices' => [
-                                ReferenceEntityCodeSelection::TYPE,
-                                ReferenceEntityLabelSelection::TYPE,
-                                ReferenceEntityAttributeSelectionInterface::TYPE,
-                            ],
-                        ],
-                    ),
+                    'type' => new Choice([
+                        ReferenceEntityCodeSelection::TYPE,
+                        ReferenceEntityLabelSelection::TYPE,
+                        ReferenceEntityAttributeSelectionInterface::TYPE,
+                    ]),
                     'channel' => new Optional(new Type('string')),
                     'locale' => new Optional(new Type('string')),
                     'attribute_identifier' => new Optional(new Type('string')),
-                    'attribute_type' => new Optional(new Type('string')),
+                    'attribute_type' => new Optional(new Choice($this->supportedAttributeTypes)),
                     'reference_entity_code' => new Optional(new Type('string')),
+                    'decimal_separator' => new Optional(new Choice($this->availableDecimalSeparators)),
                 ],
             ],
         ));

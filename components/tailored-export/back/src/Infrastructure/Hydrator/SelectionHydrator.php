@@ -251,9 +251,9 @@ class SelectionHydrator
                 $selectionConfiguration['locale'],
             ),
             ReferenceEntityNumberAttributeSelection::TYPE => new ReferenceEntityNumberAttributeSelection(
-                // TODO add decimal separator?
                 $referenceEntityCode,
                 $selectionConfiguration['attribute_identifier'],
+                $selectionConfiguration['decimal_separator'],
                 $selectionConfiguration['channel'],
                 $selectionConfiguration['locale'],
             ),

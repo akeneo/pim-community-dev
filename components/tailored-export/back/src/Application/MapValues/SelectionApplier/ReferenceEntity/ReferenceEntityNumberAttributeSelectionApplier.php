@@ -22,6 +22,8 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterfa
 
 class ReferenceEntityNumberAttributeSelectionApplier implements SelectionApplierInterface
 {
+    private const DEFAULT_DECIMAL_SEPARATOR = '.';
+
     public function __construct(
         private FindRecordsAttributeValueInterface $findRecordsAttributeValue,
     ) {
@@ -41,7 +43,13 @@ class ReferenceEntityNumberAttributeSelectionApplier implements SelectionApplier
             $selection->getLocale(),
         );
 
-        return $recordValues[strtolower($value->getRecordCode())] ?? '';
+        $recordValue = $recordValues[strtolower($value->getRecordCode())] ?? null;
+
+        if (null === $recordValue) {
+            return '';
+        }
+
+        return str_replace(self::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $recordValue);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

@@ -1,6 +1,6 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Source, Attribute} from '../../../models';
+import {Source, Attribute, ReferenceEntityAttribute} from '../../../models';
 import {
   CodeLabelSelection,
   DefaultValueOperation,
@@ -24,6 +24,11 @@ type ReferenceEntityAttributeSelection = {
   channel: ChannelReference;
 };
 
+type ReferenceEntityNumberAttributeSelection = ReferenceEntityAttributeSelection & {
+  attribute_type: 'number';
+  decimal_separator: string;
+};
+
 type ReferenceEntitySelection = CodeLabelSelection | ReferenceEntityAttributeSelection;
 
 type ReferenceEntitySource = {
@@ -41,6 +46,13 @@ const isReferenceEntityAttributeSelection = (selection: any): selection is Refer
   'string' === typeof selection.attribute_identifier &&
   'string' === typeof selection.attribute_type &&
   'string' === typeof selection.reference_entity_code;
+
+const isReferenceEntityNumberAttributeSelection = (
+  selection: any
+): selection is ReferenceEntityNumberAttributeSelection =>
+  'number' === selection.attribute_type &&
+  'string' === typeof selection.decimal_separator &&
+  isReferenceEntityAttributeSelection(selection);
 
 const isReferenceEntitySelection = (selection: any): selection is ReferenceEntitySelection =>
   isCodeLabelSelection(selection) || isReferenceEntityAttributeSelection(selection);
@@ -76,5 +88,44 @@ const isReferenceEntityOperations = (operations: Object): operations is Referenc
 const isReferenceEntitySource = (source: Source): source is ReferenceEntitySource =>
   isReferenceEntitySelection(source.selection) && isReferenceEntityOperations(source.operations);
 
-export {isReferenceEntitySource, getDefaultReferenceEntitySource, isDefaultReferenceEntitySelection};
-export type {ReferenceEntitySource, ReferenceEntitySelection, ReferenceEntityAttributeSelection};
+const getDefaultReferenceEntityAttributeSelection = (
+  attribute: ReferenceEntityAttribute,
+  referenceEntityCode: string,
+  channel: ChannelReference,
+  locale: LocaleReference
+) => {
+  const selection: ReferenceEntityAttributeSelection = {
+    type: 'attribute',
+    attribute_identifier: attribute.identifier,
+    attribute_type: attribute.type,
+    reference_entity_code: referenceEntityCode,
+    channel,
+    locale,
+  };
+
+  switch (attribute.type) {
+    case 'text':
+      return selection;
+    case 'number':
+      return {
+        ...selection,
+        decimal_separator: '.',
+      };
+    default:
+      throw new Error(`Unsupported attribute type "${attribute.type}"`);
+  }
+};
+
+export {
+  isReferenceEntitySource,
+  getDefaultReferenceEntityAttributeSelection,
+  getDefaultReferenceEntitySource,
+  isDefaultReferenceEntitySelection,
+  isReferenceEntityNumberAttributeSelection,
+};
+export type {
+  ReferenceEntitySource,
+  ReferenceEntitySelection,
+  ReferenceEntityAttributeSelection,
+  ReferenceEntityNumberAttributeSelection,
+};

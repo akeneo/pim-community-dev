@@ -32,6 +32,7 @@ class ReferenceEntityNumberAttributeSelectionApplierSpec extends ObjectBehavior
         $selection = new ReferenceEntityNumberAttributeSelection(
             'a_reference_entity_code',
             'a_reference_entity_attribute_identifier',
+            '.',
             'ecommerce',
             'br_FR',
         );
@@ -44,11 +45,34 @@ class ReferenceEntityNumberAttributeSelectionApplierSpec extends ObjectBehavior
             'ecommerce',
             'br_FR',
         )->willReturn([
-            // TODO check if return is int
-            'record_code1' => 'label1',
+            'record_code1' => '2',
         ]);
 
-        $this->applySelection($selection, $value)->shouldReturn('label1');
+        $this->applySelection($selection, $value)->shouldReturn('2');
+    }
+
+    public function it_applies_the_selection_with_decimal_separator(FindRecordsAttributeValueInterface $findRecordsAttributeValue): void
+    {
+        $selection = new ReferenceEntityNumberAttributeSelection(
+            'a_reference_entity_code',
+            'a_reference_entity_attribute_identifier',
+            ',',
+            'ecommerce',
+            'br_FR',
+        );
+        $value = new ReferenceEntityValue('record_code1');
+
+        $findRecordsAttributeValue->find(
+            'a_reference_entity_code',
+            ['record_code1'],
+            'a_reference_entity_attribute_identifier',
+            'ecommerce',
+            'br_FR',
+        )->willReturn([
+            'record_code1' => '2944.67',
+        ]);
+
+        $this->applySelection($selection, $value)->shouldReturn('2944,67');
     }
 
     public function it_applies_the_selection_and_fallback_when_no_value_is_found(
@@ -57,6 +81,7 @@ class ReferenceEntityNumberAttributeSelectionApplierSpec extends ObjectBehavior
         $selection = new ReferenceEntityNumberAttributeSelection(
             'a_reference_entity_code',
             'a_reference_entity_attribute_identifier',
+            '.',
             'ecommerce',
             'br_FR',
         );
@@ -88,6 +113,7 @@ class ReferenceEntityNumberAttributeSelectionApplierSpec extends ObjectBehavior
         $selection = new ReferenceEntityNumberAttributeSelection(
             'a_reference_entity_code',
             'a_reference_entity_attribute_identifier',
+            '.',
             'ecommerce',
             'br_FR',
         );

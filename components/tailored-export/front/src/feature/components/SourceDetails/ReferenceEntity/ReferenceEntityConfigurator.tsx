@@ -1,9 +1,10 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
-import {CodeLabelSelector, DefaultValue, isCodeLabelSelection, Operations, RecordsReplacement} from '../common';
+import {DefaultValue, Operations, RecordsReplacement} from '../common';
 import {isReferenceEntitySource} from './model';
 import {InvalidAttributeSourceError} from '../error';
+import {ReferenceEntitySelector} from './ReferenceEntitySelector';
 
 const ReferenceEntityConfigurator = ({
   attribute,
@@ -36,16 +37,12 @@ const ReferenceEntityConfigurator = ({
           onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
         }
       />
-      {isCodeLabelSelection(source.selection) && (
-        // TODO RAB-1175
-        // <ReferenceEntitySelector
-        // referenceEntityCode={attribute.reference_data_name}
-        <CodeLabelSelector
-          selection={source.selection}
-          validationErrors={filterErrors(validationErrors, '[selection]')}
-          onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
-        />
-      )}
+      <ReferenceEntitySelector
+        referenceEntityCode={attribute.reference_data_name}
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
+      />
     </Operations>
   );
 };

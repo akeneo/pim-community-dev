@@ -11,7 +11,12 @@ import {
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {useChannels, useReferenceEntityAttributes} from '../../../hooks';
-import {isDefaultReferenceEntitySelection, ReferenceEntityAttributeSelection, ReferenceEntitySelection} from './model';
+import {
+  getDefaultReferenceEntityAttributeSelection,
+  isDefaultReferenceEntitySelection,
+  ReferenceEntityAttributeSelection,
+  ReferenceEntitySelection,
+} from './model';
 import {AttributeSelector} from './Attribute';
 import {LocaleDropdown} from '../../../components/LocaleDropdown';
 
@@ -52,14 +57,14 @@ const ReferenceEntitySelector = ({
       const referenceEntityAttribute = referenceEntityAttributes.find(({identifier}) => identifier === type);
 
       if (undefined !== referenceEntityAttribute) {
-        onSelectionChange({
-          type: 'attribute',
-          attribute_identifier: type,
-          attribute_type: referenceEntityAttribute.type,
-          reference_entity_code: referenceEntityCode,
-          channel: referenceEntityAttribute.value_per_channel ? channels[0].code : null,
-          locale: referenceEntityAttribute.value_per_locale ? locales[0].code : null,
-        });
+        onSelectionChange(
+          getDefaultReferenceEntityAttributeSelection(
+            referenceEntityAttribute,
+            referenceEntityCode,
+            referenceEntityAttribute.value_per_channel ? channels[0].code : null,
+            referenceEntityAttribute.value_per_locale ? locales[0].code : null
+          )
+        );
       }
     }
   };

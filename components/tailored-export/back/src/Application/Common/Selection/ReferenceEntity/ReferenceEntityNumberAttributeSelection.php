@@ -20,6 +20,7 @@ final class ReferenceEntityNumberAttributeSelection implements ReferenceEntityAt
     public function __construct(
         private string $referenceEntityCode,
         private string $referenceEntityAttributeIdentifier,
+        private string $decimalSeparator,
         private ?string $channel,
         private ?string $locale,
     ) {
@@ -43,5 +44,10 @@ final class ReferenceEntityNumberAttributeSelection implements ReferenceEntityAt
     public function getReferenceEntityAttributeIdentifier(): string
     {
         return $this->referenceEntityAttributeIdentifier;
+    }
+
+    public function getDecimalSeparator(): string
+    {
+        return $this->decimalSeparator;
     }
 }

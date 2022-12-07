@@ -69,6 +69,7 @@ class AkeneoTailoredExportExtension extends Extension
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['AkeneoReferenceEntityBundle'])) {
             $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/reference_entity'));
+            $loader->load('parameters.yml');
             $loader->load('controllers.yml');
             $loader->load('queries.yml');
             $loader->load('selection_appliers.yml');
