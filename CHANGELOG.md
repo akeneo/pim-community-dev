@@ -108,6 +108,7 @@
 - PIM:10739: Fix find families controller access.
 - PIM:10741: Fix diff indexation of product models
 - PIM:10743: Fix HTTP 500 on measurement PATCH without unit
+- PIM:10744: Fix product import with a quantified association column is missing
 
 ## Improvements
 
