@@ -7,12 +7,12 @@ import {
   CategoryAttributes,
   CategoryAttributeValueData,
   CategoryImageAttributeValueData,
-  CategoryPermissions,
   CategoryProperties,
   EnrichCategory,
   File,
   Template,
 } from '../models';
+import {CategoryPermission, CategoryPermissions} from "../models/CategoryPermission";
 
 function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
   // maybe too strict of simplistic, to adjust
@@ -21,8 +21,10 @@ function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
 
 const sort = sortBy<number>(identity);
 
-function isEqualUnordered(a1: number[], a2: number[]): boolean {
-  return isEqual(sort(a1), sort(a2));
+function isEqualUnordered(a1: CategoryPermission[], a2: CategoryPermission[]): boolean {
+  const a1Ids = a1.map(permission => permission.id);
+  const a2Ids = a2.map(permission => permission.id);
+  return isEqual(sort(a1Ids), sort(a2Ids));
 }
 
 export function permissionsAreEqual(cp1: CategoryPermissions, cp2: CategoryPermissions): boolean {

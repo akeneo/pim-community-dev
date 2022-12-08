@@ -1,5 +1,6 @@
 import {cloneDeep, filter} from 'lodash/fp';
-import {CategoryPermissions} from '../models';
+import {CategoryPermission, CategoryPermissions} from "../models/CategoryPermission";
+import {UserGroup} from "../hooks/useFetchUserGroups";
 
 interface PermissionChanges {
   type: keyof CategoryPermissions;
@@ -12,8 +13,8 @@ interface PermissionChanges {
  * @param a2
  * @return a copy of a1 eventually modified so that it's a subset of a2
  */
-export function ensureSubset(a1: number[], a2: number[]): number[] {
-  return filter((n: number) => a2.includes(n), a1);
+export function ensureSubset(a1: CategoryPermission[], a2: CategoryPermission[]): CategoryPermission[] {
+  return filter((n: CategoryPermission) => a2.map(permission => permission.id).includes(n.id), a1);
 }
 
 /**
@@ -22,8 +23,8 @@ export function ensureSubset(a1: number[], a2: number[]): number[] {
  * @param a2
  * @return a copy of a1 eventually modified so that it's a super of a2
  */
-export function ensureSuperset(a1: number[], a2: number[]): number[] {
-  return [...a1, ...filter((n: number) => !a1.includes(n), a2)];
+export function ensureSuperset(a1: CategoryPermission[], a2: CategoryPermission[]): CategoryPermission[] {
+  return [...a1, ...filter((n: CategoryPermission) => !a1.map(permission => permission.id).includes(n.id), a2)];
 }
 
 /**
@@ -36,18 +37,23 @@ export function ensureSuperset(a1: number[], a2: number[]): number[] {
  * Ensuring the requested changes are honored
  * and the invrarient is preserved
  * by doing the minimum amount of modifications
+ * @param userGroups
  * @param permissions
  * @param changes
  * @returns
  */
 export function alterPermissionsConsistently(
-  permissions: CategoryPermissions,
+    userGroups: UserGroup[],
+    permissions: CategoryPermissions,
   changes: PermissionChanges
 ): CategoryPermissions {
   const {type, values} = changes;
   let consistentPermissions = cloneDeep(permissions);
   // the change that MUST be made
-  consistentPermissions[type] = values;
+  consistentPermissions[type] = userGroups.filter(userGroup => values.includes(parseInt(userGroup.id, 10))).map(userGroup => ({
+    id: parseInt(userGroup.id, 10),
+    label: userGroup.label
+  }));
 
   // now adapting other permission level in accordance
   switch (type) {
