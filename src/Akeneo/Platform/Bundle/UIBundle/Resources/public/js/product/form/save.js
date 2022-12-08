@@ -67,6 +67,9 @@ define([
         .fail(this.fail.bind(this))
         .then(
           function (data) {
+            if (data.meta.warning) {
+              messenger.notify('warning', data.meta.warning);
+            }
             this.postSave();
 
             this.setData(data, options);
