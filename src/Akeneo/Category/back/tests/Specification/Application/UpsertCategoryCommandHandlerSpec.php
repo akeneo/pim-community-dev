@@ -55,30 +55,6 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(UpsertCategoryCommandHandler::class);
     }
 
-    function it_updates_and_saves_a_category(
-        GetCategoryInterface $getCategory,
-        EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator,
-        CategorySaverProcessor $saver
-    ) {
-        $command = new UpsertCategoryCommand('code');
-        $category = new Category(
-            id: new CategoryId(1),
-            code: new Code('code'),
-            templateUuid: null,
-            labels: LabelCollection::fromArray([]),
-            parentId: null
-        );
-        $event = new CategoryUpdatedEvent('code');
-        $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-
-        $getCategory->byCode('code')->shouldBeCalledOnce()->willReturn($category);
-        $saver->save($category, $command->userIntents())->shouldBeCalledOnce();
-        $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
-
-        $this->__invoke($command);
-    }
-
     function it_creates_and_saves_a_category(
         GetCategoryInterface $getCategory,
         ValidatorInterface $validator,
