@@ -5,6 +5,12 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  {{#annotations}}
+  annotations:
+    {{#janitor/ttl}}
+    janitor/ttl: "{{{annotations.janitor/ttl}}}"
+    {{/janitor/ttl}}
+  {{/annotations}}
   labels:
     application_name: "{{{global.extraLabels.tenant_id}}}"
     instance_dns_record: "{{{global.extraLabels.instance_dns_record}}}"

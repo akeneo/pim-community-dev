@@ -54,13 +54,4 @@ args:
 
 # example rules configuration to set TTL for arbitrary objects
 # see https://codeberg.org/hjacobs/kube-janitor for details
-rules:
-  - id: temporary-pr-deployments
-    # delete all ArgoCD applications with a name starting with "srnt-ucs-pr-*
-    # the app needs to not be in synchronization to be deleted
-    resources:
-      - applications
-    # this uses JMESPath's built-in "starts_with" function
-    # see http://jmespath.org/specification.html#starts-with
-    jmespath: "starts_with(metadata.name, 'srnt-ucs-pr')"
-    ttl: 30d
+rules: []
