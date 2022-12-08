@@ -1,0 +1,43 @@
+services:
+  ## PIM installer
+  Akeneo\CoEdition\Infrastructure\Installer\InstallerSubscriber:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  ## Controller
+  Akeneo\CoEdition\Infrastructure\Controller\EnterRoomAction:
+    arguments:
+      - '@Akeneo\CoEdition\Infrastructure\Storage\PimUserFindEditor'
+      - '@Akeneo\CoEdition\Application\EnterRoom'
+      -
+  Akeneo\CoEdition\Infrastructure\Controller\LeaveRoomAction:
+    arguments:
+      - '@Akeneo\CoEdition\Infrastructure\Storage\PimUserFindEditor'
+      - '@Akeneo\CoEdition\Application\LeaveRoom'
+      -
+  Akeneo\CoEdition\Infrastructure\Controller\ListEditorsInRoomAction:
+    arguments:
+      - '@Akeneo\CoEdition\Infrastructure\Storage\SQL\SQLFindRoom'
+
+  ## Storage
+  Akeneo\CoEdition\Infrastructure\Storage\SQL\SQLFindRoom:
+    arguments:
+      - '@database_connection'
+
+  Akeneo\CoEdition\Infrastructure\Storage\SQL\SQLStoreRoom:
+    arguments:
+      - '@database_connection'
+
+  ## Application services
+  Akeneo\CoEdition\Application\EnterRoom:
+    arguments:
+      - '@Akeneo\CoEdition\Infrastructure\Storage\SQL\SQLFindRoom'
+      - '@Akeneo\CoEdition\Infrastructure\Storage\SQL\SQLStoreRoom'
+  Akeneo\CoEdition\Application\LeaveRoom:
+    arguments:
+      - '@Akeneo\CoEdition\Infrastructure\Storage\SQL\SQLFindRoom'
+      - '@Akeneo\CoEdition\Infrastructure\Storage\SQL\SQLStoreRoom'
+
+  Akeneo\CoEdition\Infrastructure\Storage\PimUserFindEditor: ~

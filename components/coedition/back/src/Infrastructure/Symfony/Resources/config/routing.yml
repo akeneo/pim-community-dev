@@ -1,0 +1,17 @@
+akeneo_coedition_get_room:
+  path: '/rest/coedition/room/{roomId}'
+  controller: Akeneo\CoEdition\Infrastructure\Controller\GetRoomAction
+  methods: [ GET ]
+  requirements:
+    roomId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+
+akeneo_coedition_enter_room:
+  path: '/rest/coedition/room/{roomId}/enter'
+  controller: Akeneo\CoEdition\Infrastructure\Controller\EnterRoomAction
+  methods: [ POST ]
+
+akeneo_coedition_leave_room:
+  path: '/rest/coedition/room/{roomId}/leave'
+  controller: Akeneo\CoEdition\Infrastructure\Controller\LeaveRoomAction
+  methods: [ POST ]
