@@ -5,7 +5,7 @@ import {
   isSftpStorage,
   getStorageConfigurator,
   isAmazonS3Storage,
-  isMicrosoftAzureStorage
+  isMicrosoftAzureStorage,
 } from './model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
