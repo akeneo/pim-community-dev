@@ -1,0 +1,4 @@
+services:
+  Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry:
+    arguments:
+      - !tagged_iterator 'pim.category.additional_properties_finder'

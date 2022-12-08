@@ -43,6 +43,7 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
         public: true
