@@ -47,6 +47,7 @@ class InternalApiToStd implements ConverterInterface
 
         // Normalize
         $convertedData = [];
+        $convertedData['id'] = $data['id'];
         $convertedData['code'] = $data['properties']['code'];
         $convertedData['labels'] = $data['properties']['labels'];
         $convertedData['values'] = $data['attributes'];

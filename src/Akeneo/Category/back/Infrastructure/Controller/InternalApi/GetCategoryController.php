@@ -34,7 +34,7 @@ class GetCategoryController
         }
 
         $category = $this->getCategory->byId($id);
-        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
+        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($request->getMethod(), $category);
 
         $isRoot = $category->isRoot();
         $root = null;

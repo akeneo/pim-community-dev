@@ -12,15 +12,15 @@ class FindCategoryAdditionalPropertiesRegistry implements FindCategoryAdditional
      * @param iterable<string, CategoryAdditionalPropertiesFinder> $additionalPropertiesFinder
      */
     public function __construct(
-        private iterable $additionalPropertiesFinder,
+        private readonly iterable $additionalPropertiesFinder,
     ) {
     }
 
-    public function forCategory(Category $category): Category
+    public function forCategory(string $originalHttpRequestType, Category $category): Category
     {
         foreach ($this->additionalPropertiesFinder as $finder) {
-            if ($finder->isSupportedAdditionalProperties() === true) {
-                $category = $finder->execute($category);
+            if ($finder->isSupportedAdditionalProperties() === true && $finder->originalHttpRequestType() === $originalHttpRequestType) {
+                return $finder->execute($category);
             }
         }
 
