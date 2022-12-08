@@ -14,12 +14,14 @@ use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
  *
  * @phpstan-type InternalApi array{
  *     properties: PropertyApi,
- *     attributes: array<string, AttributeValueApi>
+ *     attributes: array<string, AttributeValueApi>,
+ *     permissions: array<string, array<int>>|null
  * }
  * @phpstan-type StandardInternalApi array{
  *     code: string,
- *     labels: array<string, string>
- *     values: array<string, array<AttributeValueApi>>
+ *     labels: array<string, string>,
+ *     values: array<string, array<AttributeValueApi>>,
+ *     permissions: array<string, array<int>>|null
  * }
  * @phpstan-type PropertyApi array{code: string, labels: array<string, string>}
  * @phpstan-type AttributeValueApi array{data: string, channel: string|null, locale: string|null, attribute_code: string}
