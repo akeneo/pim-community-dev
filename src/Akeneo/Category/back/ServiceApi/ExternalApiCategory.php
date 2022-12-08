@@ -90,6 +90,7 @@ class ExternalApiCategory
         return new self(
             code: (string) $category->getCode(),
             parentId: $category->getParentId()?->getValue(),
+            parentCode: $category->getParentCode() ? (string) $category->getParentCode() : null,
             updated: $category->getUpdated()?->format('c'),
             labels: $category->getLabels()?->normalize(),
             values: $category->getAttributes()?->normalize(),
@@ -107,16 +108,24 @@ class ExternalApiCategory
      *     values: array<string, array<string, mixed>>|null
      * }
      */
-    public function normalize(): array
+    public function normalize(bool $withPosition, bool $withEnrichedAttributes): array
     {
-        return [
+        $normalizedCategory = [
             'code' => $this->getCode(),
             'parent' => $this->getParentCode(),
             'updated' => $this->getUpdated(),
-            'position' => $this->getPosition(),
             'labels' => $this->getLabels(),
-            'template' => $this->getTemplateCode(),
-            'values' => $this->getValues(),
         ];
+
+        if ($withPosition) {
+            $normalizedCategory['position'] = $this->getPosition();
+        }
+
+        if ($withEnrichedAttributes) {
+            $normalizedCategory['template'] = $this->getTemplateCode();
+            $normalizedCategory['values'] = $this->getValues();
+        }
+
+        return $normalizedCategory;
     }
 }

@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Zaloguj się
   pim_user_reset_reset: Resetowanie hasła
   pim_user_reset_request: Zapomniałem hasła
-  pim_user_reset_check_email: Resetowanie hasła | Sprawdź e-mail
   pim_user_group_create: 'Grupy | Utwórz'
   pim_user_group_update: 'Grupa {{ group }} | Edytuj'
 confirmation:

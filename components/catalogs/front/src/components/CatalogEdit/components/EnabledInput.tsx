@@ -1,13 +1,8 @@
 import React, {FC, useCallback} from 'react';
 import {BooleanInput, Field} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
 import {useCatalogFormContext} from '../contexts/CatalogFormContext';
 import {CatalogFormActions} from '../reducers/CatalogFormReducer';
-
-const Container = styled(Field)`
-    margin: 20px 0;
-`;
 
 type Props = {
     value: boolean;
@@ -19,23 +14,26 @@ const EnabledInput: FC<Props> = ({value, error}) => {
     const dispatch = useCatalogFormContext();
 
     const handleStatusChange = useCallback(
-        value => dispatch({type: CatalogFormActions.SET_ENABLED, value: value}),
+        value => {
+            dispatch({type: CatalogFormActions.SET_ENABLED, value: value});
+        },
         [dispatch]
     );
 
     return (
-        <Container label={translate('akeneo_catalogs.settings.fields.enabled')}>
+        <Field label={translate('akeneo_catalogs.catalog_status_widget.fields.enable_catalog')}>
             <BooleanInput
-                noLabel={translate('akeneo_catalogs.settings.inputs.no')}
+                noLabel={translate('akeneo_catalogs.catalog_status_widget.inputs.no')}
                 value={value}
-                yesLabel={translate('akeneo_catalogs.settings.inputs.yes')}
+                yesLabel={translate('akeneo_catalogs.catalog_status_widget.inputs.yes')}
                 readOnly={false}
                 onChange={handleStatusChange}
                 invalid={error !== undefined}
+                size={'small'}
             >
                 {error}
             </BooleanInput>
-        </Container>
+        </Field>
     );
 };
 

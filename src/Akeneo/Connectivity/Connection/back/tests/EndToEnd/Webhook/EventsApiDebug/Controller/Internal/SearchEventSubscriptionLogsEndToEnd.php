@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -46,6 +47,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         $this->generateLogs(
             function () use ($timestamp) {
                 return [
+                    'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
@@ -92,6 +94,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
 
         $this->insertLogs([
             [
+                'id' => Uuid::uuid4()->toString(),
                 'timestamp' => $timestamp,
                 'level' => EventsApiDebugLogLevels::NOTICE,
                 'message' => 'Foo bar',
@@ -99,6 +102,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
                 'context' => [],
             ],
             [
+                'id' => Uuid::uuid4()->toString(),
                 'timestamp' => $timestamp,
                 'level' => EventsApiDebugLogLevels::ERROR,
                 'message' => 'Foo bar',

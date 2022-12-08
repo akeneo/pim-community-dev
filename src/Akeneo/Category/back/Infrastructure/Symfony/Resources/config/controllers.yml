@@ -82,7 +82,9 @@ services:
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@feature_flags'
+            - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
             - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
+            - '@Akeneo\Category\Application\Handler\GetPositionInterface'
             - '%pim_api.configuration%'
         calls:
             - [ 'setContainer', [ '@service_container' ] ]

@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Kirjaudu sisään
   pim_user_reset_reset: Salasanan asettaminen
   pim_user_reset_request: Unohdin salasanani
-  pim_user_reset_check_email: Salasanan asettaminen | tarkista sähköposti
   pim_user_group_create: 'Käyttäjäryhmät | luo'
   pim_user_group_update: 'Ryhmä {{ group }} | Muokkaa'
 confirmation:

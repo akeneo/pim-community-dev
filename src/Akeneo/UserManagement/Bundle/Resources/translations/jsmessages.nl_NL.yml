@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Aanmelden
   pim_user_reset_reset: Wachtwoord resetten
   pim_user_reset_request: Wachtwoord vergeten
-  pim_user_reset_check_email: Wachtwoord opnieuw instellen - Bekijk E-mail
   pim_user_group_create: 'Groepen | Aanmaken'
   pim_user_group_update: 'Groep {{ group }} | Bewerken'
 confirmation:

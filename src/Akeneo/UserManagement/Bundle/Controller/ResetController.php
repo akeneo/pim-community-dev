@@ -5,49 +5,40 @@ namespace Akeneo\UserManagement\Bundle\Controller;
 use Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Bundle\Notification\MailResetNotifier;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ResetController extends AbstractController
 {
-    const SESSION_EMAIL = 'pim_user_reset_email';
-
     public function __construct(
-        private UserManager           $userManager,
-        private SessionInterface      $session,
-        private ResetHandler          $resetHandler,
-        private TokenStorageInterface $tokenStorage,
-        private FormInterface         $form,
-        private MailResetNotifier     $mailer
+        private readonly UserManager $userManager,
+        private readonly SessionInterface $session,
+        private readonly ResetHandler $resetHandler,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FormInterface $form,
+        private readonly MailResetNotifier $mailer,
     ) {
     }
 
-    /**
-     * @Template("@PimUser/Reset/request.html.twig")
-     */
-    public function request(): array
+    public function request(): Response
     {
-        return [];
+        return $this->render('@PimUser/Reset/request.html.twig');
     }
 
     /**
      * Request reset user password
-     *
-     * @Template("@PimUser/Reset/sendEmail.html.twig")
      */
-    public function sendEmail(Request $request): RedirectResponse|array
+    public function sendEmail(Request $request): Response
     {
         $username = $request->request->get('username');
         $user = $this->userManager->findUserByUsernameOrEmail($username);
 
         if (null === $user || false === $user->isEnabled()) {
-            return [];
+            return $this->render('@PimUser/Reset/sendEmail.html.twig');
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
@@ -63,43 +54,18 @@ class ResetController extends AbstractController
             $user->setConfirmationToken($user->generateToken());
         }
 
-        $this->session->set(static::SESSION_EMAIL, $this->getObfuscatedEmail($user));
-
         $user->setPasswordRequestedAt(new \DateTime('now', new \DateTimeZone('UTC')));
         $this->userManager->updateUser($user);
 
         $this->mailer->notify($user);
 
-        return [];
-    }
-
-    /**
-     * Tell the user to check his email provider
-     *
-     * @Template
-     */
-    public function checkEmail()
-    {
-        $email = $this->session->get(static::SESSION_EMAIL);
-
-        $this->session->remove(static::SESSION_EMAIL);
-
-        if (empty($email)) {
-            // the user does not come from the sendEmail action
-            return $this->redirectToRoute('pim_user_reset_request');
-        }
-
-        return [
-            'email' => $email,
-        ];
+        return $this->render('@PimUser/Reset/sendEmail.html.twig');
     }
 
     /**
      * Reset user password
-     *
-     * @Template("@PimUser/Reset/reset.html.twig")
      */
-    public function reset($token)
+    public function reset(string $token): Response
     {
         $user = $this->userManager->findUserByConfirmationToken($token);
 
@@ -128,28 +94,9 @@ class ResetController extends AbstractController
             return $this->redirectToRoute('pim_user_security_login');
         }
 
-        return [
+        return $this->render('@PimUser/Reset/reset.html.twig', [
             'token' => $token,
             'form' => $this->form->createView(),
-        ];
-    }
-
-    /**
-     * Get the truncated email displayed when requesting the resetting.
-     * The default implementation only keeps the part following @ in the address.
-     *
-     * @param UserInterface $user
-     *
-     * @return string
-     */
-    protected function getObfuscatedEmail(UserInterface $user)
-    {
-        $email = $user->getEmail();
-
-        if (false !== $pos = strpos($email, '@')) {
-            $email = '...' . substr($email, $pos);
-        }
-
-        return $email;
+        ]);
     }
 }

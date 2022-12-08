@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Ingresar
   pim_user_reset_reset: Reiniciar contraseña
   pim_user_reset_request: Contraseña olvidada
-  pim_user_reset_check_email: Reiniciar contraseña | Verificar correo electrónico
   pim_user_group_create: 'Grupos | Crear'
   pim_user_group_update: 'Grupo {{ group }} | Editar'
 confirmation:

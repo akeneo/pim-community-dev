@@ -2,7 +2,9 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
+use Akeneo\Category\Application\Handler\GetPositionInterface;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
+use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
@@ -23,17 +25,17 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class ListCategoriesController extends AbstractController
 {
     public function __construct(
-        private PaginatorInterface $paginator,
-        private ParameterValidatorInterface $parameterValidator,
-        private FeatureFlags $featureFlags,
-        private GetCategoriesInterface $getCategories,
-        private array $apiConfiguration,
+        private readonly PaginatorInterface $paginator,
+        private readonly ParameterValidatorInterface $parameterValidator,
+        private readonly FeatureFlags $featureFlags,
+        private readonly GetCategoriesParametersBuilder $parametersBuilder,
+        private readonly GetCategoriesInterface $getCategories,
+        private readonly GetPositionInterface $getPosition,
+        private readonly array $apiConfiguration,
     ) {
     }
 
     /**
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
-     *
      * @AclAncestor("pim_api_category_list")
      */
     public function __invoke(Request $request): JsonResponse|Response
@@ -55,23 +57,24 @@ class ListCategoriesController extends AbstractController
             'page' => 1,
             'limit' => $this->apiConfiguration['pagination']['limit_by_default'],
             'with_count' => 'false',
-            'with_enriched_attributes' => false,
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
-        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true, 512, JSON_THROW_ON_ERROR);
-        if (null === $searchFilters) {
-            throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
-        }
-        // TODO: Take limit, offset & order into account. https://akeneo.atlassian.net/browse/GRF-538
-        $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $order = ['root' => 'ASC', 'left' => 'ASC'];
         try {
-            // TODO: Call Filtering service (to be created) instead. https://akeneo.atlassian.net/browse/GRF-538
-            $categories = $this->getCategories->byCodes(
+            $searchFilters = json_decode($queryParameters['search'] ?? '[]', true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new BadRequestHttpException(sprintf('The search query parameter must be a valid JSON: %s', $e->getMessage()));
+        }
+        $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
+        $withEnrichedAttributes = $request->query->getBoolean('with_enriched_attributes');
+        try {
+            $sqlParameters = $this->parametersBuilder->build(
                 $searchFilters,
-                $request->query->getBoolean('with_enriched_attributes'),
+                $queryParameters['limit'],
+                $offset,
+                $withEnrichedAttributes,
             );
+            $categories = $this->getCategories->execute($sqlParameters);
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
@@ -84,13 +87,17 @@ class ListCategoriesController extends AbstractController
 
         $count = null;
         if ($request->query->getBoolean('with_count') === true) {
-            // TODO: Adapt $count to match currently existing behavior. https://akeneo.atlassian.net/browse/GRF-538
-            $count = sizeof($categories);
+            $count = $this->getCategories->count($sqlParameters);
         }
 
         $normalizedCategories = [];
         foreach ($categories as $category) {
-            $normalizedCategories[] = ExternalApiCategory::fromDomainModel($category)->normalize();
+            $categoryApi = ExternalApiCategory::fromDomainModel($category);
+            $withPosition = $request->query->getBoolean('with_position');
+            if ($withPosition) {
+                $categoryApi->setPosition(($this->getPosition)($category));
+            }
+            $normalizedCategories[] = $categoryApi->normalize($withPosition, $withEnrichedAttributes);
         }
 
         $paginatedCategories = $this->paginator->paginate(

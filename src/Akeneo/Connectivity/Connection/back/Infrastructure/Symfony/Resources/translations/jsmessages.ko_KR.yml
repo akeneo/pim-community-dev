@@ -146,8 +146,6 @@ akeneo_connectivity.connection:
         flash:
           error: 죄송합니다. 연결된 앱 목록을 가져오는 동안 오류가 발생했습니다.
       edit:
-        header:
-          open_app: 앱 열기
         not_found: 앱을 찾을 수 없음
         tabs:
           settings: 설정

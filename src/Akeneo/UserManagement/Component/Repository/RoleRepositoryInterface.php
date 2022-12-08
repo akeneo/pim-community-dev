@@ -12,4 +12,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 interface RoleRepositoryInterface extends IdentifiableObjectRepositoryInterface
 {
     public function findAll();
+
+    public function find($id);
 }

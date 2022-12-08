@@ -9,6 +9,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class PurgeEventsApiSuccessLogsQueryIntegration extends TestCase
 {
@@ -89,6 +90,7 @@ class PurgeEventsApiSuccessLogsQueryIntegration extends TestCase
         $datetime = new \DateTime('now');
         for ($i = 0 ; $i < $number ; $i++) {
             $documents[] = [
+                'id' => Uuid::uuid4()->toString(),
                 'content' => $content,
                 'level' => $level,
                 'timestamp' => $datetime->getTimestamp(),

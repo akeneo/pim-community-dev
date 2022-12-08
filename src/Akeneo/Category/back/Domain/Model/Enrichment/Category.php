@@ -8,6 +8,7 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\PermissionCollection;
+use Akeneo\Category\Domain\ValueObject\Position;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
@@ -23,10 +24,12 @@ class Category
         private ?TemplateUuid $templateUuid,
         private ?LabelCollection $labels = null,
         private ?CategoryId $parentId = null,
+        private ?Code $parentCode = null,
         private ?CategoryId $rootId = null,
         private ?\DateTimeImmutable $updated = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
+        private ?Position $position = null,
     ) {
     }
 
@@ -36,30 +39,35 @@ class Category
      *     code: string,
      *     translations: string|null,
      *     parent_id: int|null,
+     *     parent_code: string|null,
      *     root_id: int|null,
      *     updated: string|null,
      *     value_collection: string|null,
      *     permissions: string|null,
-     *     template_uuid: string|null
+     *     template_uuid: string|null,
+     *     lft: int|null,
+     *     rgt: int|null,
+     *     lvl: int|null
      * } $category
      */
     public static function fromDatabase(array $category): self
     {
+        $translations = $category['translations'] ? json_decode($category['translations'], true, 512, JSON_THROW_ON_ERROR) : [];
+
         return new self(
             id: new CategoryId((int) $category['id']),
             code: new Code($category['code']),
             templateUuid: isset($category['template_uuid']) ? TemplateUuid::fromString($category['template_uuid']) : null,
-            labels: $category['translations'] ?
-                LabelCollection::fromArray(
-                    json_decode($category['translations'], true, 512, JSON_THROW_ON_ERROR),
-                ) : null,
+            labels: LabelCollection::fromArray($translations),
             parentId: $category['parent_id'] ? new CategoryId((int) $category['parent_id']) : null,
+            parentCode: isset($category['parent_code']) ? new Code($category['parent_code']) : null,
             rootId: $category['root_id'] ? new CategoryId((int) $category['root_id']) : null,
             updated: $category['updated'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $category['updated']) : null,
             attributes: $category['value_collection'] ?
                 ValueCollection::fromDatabase(json_decode($category['value_collection'], true)) : null,
             permissions: isset($category['permissions']) && $category['permissions'] ?
                 PermissionCollection::fromArray(json_decode($category['permissions'], true)) : null,
+            position: new Position((int) $category['lft'], (int) $category['rgt'], (int) $category['lvl']),
         );
     }
 
@@ -89,6 +97,11 @@ class Category
     public function getCode(): Code
     {
         return $this->code;
+    }
+
+    public function getParentCode(): ?Code
+    {
+        return $this->parentCode;
     }
 
     public function getLabels(): ?LabelCollection
@@ -157,6 +170,11 @@ class Category
     public function getTemplateUuid(): ?TemplateUuid
     {
         return $this->templateUuid;
+    }
+
+    public function getPosition(): ?Position
+    {
+        return $this->position;
     }
 
     /**

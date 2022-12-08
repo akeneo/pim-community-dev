@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Anmelden
   pim_user_reset_reset: Passwort zurücksetzen
   pim_user_reset_request: Passwort vergessen
-  pim_user_reset_check_email: Passwort zurücksetzen | E-Mail überprüfen
   pim_user_group_create: 'Gruppen | Anlegen'
   pim_user_group_update: 'Gruppe {{ group }} | Bearbeiten'
 confirmation:

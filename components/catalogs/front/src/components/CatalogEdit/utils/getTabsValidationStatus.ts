@@ -5,10 +5,6 @@ type Status = {
     [key in Tabs]: boolean;
 };
 
-const settingsHasAnError = (errors: CatalogFormErrors): boolean => {
-    return errors.find(error => error.propertyPath === '[enabled]') !== undefined;
-};
-
 const productSelectionCriteriaHasAnError = (errors: CatalogFormErrors): boolean => {
     return errors.find(error => error.propertyPath.startsWith('[product_selection_criteria]')) !== undefined;
 };
@@ -22,7 +18,6 @@ const productMappingHasAnError = (errors: CatalogFormErrors): boolean => {
 };
 export const getTabsValidationStatus = (errors: CatalogFormErrors): Status => {
     return {
-        [Tabs.SETTINGS]: settingsHasAnError(errors),
         [Tabs.PRODUCT_SELECTION]: productSelectionCriteriaHasAnError(errors),
         [Tabs.PRODUCT_VALUE_FILTERS]: productValueFiltersHasAnError(errors),
         [Tabs.PRODUCT_MAPPING]: productMappingHasAnError(errors),

@@ -9,6 +9,7 @@ type Props = PropsWithChildren<{
     imageSrc?: string;
     imageIllustration?: ReactElement;
     tag?: ReactNode;
+    contextContainer?: ReactElement;
 }>;
 
 const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
@@ -59,6 +60,7 @@ export const PageHeader = ({
     imageSrc,
     imageIllustration,
     tag,
+    contextContainer,
 }: Props) => (
     <Header>
         <div className='AknTitleContainer-line'>
@@ -73,7 +75,6 @@ export const PageHeader = ({
                     {cloneElement(imageIllustration, {width: 142, height: 142})}
                 </IllustrationContainer>
             )}
-
             <div className='AknTitleContainer-mainContainer'>
                 <div>
                     <div className='AknTitleContainer-line'>
@@ -94,6 +95,7 @@ export const PageHeader = ({
                         <div className='AknTitleContainer-title'>{title}</div>
                         <div className='AknTitleContainer-state'>{state}</div>
                     </div>
+                    {contextContainer}
                 </div>
             </div>
         </div>
