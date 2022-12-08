@@ -107,7 +107,7 @@ test('it allows user to fill container name field', async () => {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
     connection_string: 'connection_string',
-    container_name: 'container_name'
+    container_name: 'container_'
   };
 
   const onStorageChange = jest.fn();
@@ -125,12 +125,12 @@ test('it allows user to fill container name field', async () => {
 
   userEvent.paste(
     screen.getByLabelText('pim_import_export.form.job_instance.storage_form.container_name.label pim_common.required_label'),
-    'my_amazing_container'
+    'name'
   );
 
   expect(onStorageChange).toHaveBeenLastCalledWith({
     ...storage,
-    container_name: 'my_amazing_container',
+    container_name: 'container_name',
   });
 });
 
