@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, MutableRefObject, useLayoutEffect, useRef, useState} from 'react';
 import {AppIllustration, Breadcrumb} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../../shared/translate';
 import {ConnectedApp} from '../../../../model/Apps/connected-app';
@@ -26,6 +26,12 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
         connectionCode: connectedApp.connection_code,
     })}`;
     const [form, save, isDirty] = useCatalogForm(catalog.id);
+
+    const ref = useRef<HTMLDivElement>() as MutableRefObject<HTMLDivElement>;
+    const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
+    useLayoutEffect(() => {
+        setHeaderContextContainer(ref.current);
+    });
 
     const handleSave = async () => {
         try {
@@ -87,11 +93,14 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
                 imageSrc={connectedApp.logo ?? undefined}
                 imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
                 tag={tag}
+                contextContainer={<div ref={ref} />}
             >
                 {catalog.name}
             </PageHeader>
 
-            <PageContent>{form && <CatalogEdit id={catalog.id} form={form} />}</PageContent>
+            <PageContent>
+                {form && <CatalogEdit id={catalog.id} form={form} headerContextContainer={headerContextContainer} />}
+            </PageContent>
         </>
     );
 };

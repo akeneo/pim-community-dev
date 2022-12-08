@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {MutableRefObject, useLayoutEffect, useRef, useState} from 'react';
 import {fireEvent, render, screen, within} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
@@ -35,7 +35,7 @@ test('it can enable a catalog', async () => {
     const dispatch = jest.fn();
     const form = {
         values: {
-            enabled: true,
+            enabled: false,
             product_selection_criteria: {},
             product_value_filters: {},
             product_mapping: {},
@@ -44,18 +44,33 @@ test('it can enable a catalog', async () => {
         errors: [],
     };
 
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <QueryClientProvider client={new QueryClient()}>
-                <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
-                </CatalogFormContext.Provider>
-            </QueryClientProvider>
-        </ThemeProvider>
-    );
+    function RenderWithHeaderContextContainer() {
+        const ref = useRef<HTMLDivElement>() as MutableRefObject<HTMLDivElement>;
+        const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
+        useLayoutEffect(() => {
+            setHeaderContextContainer(ref.current);
+        });
 
-    fireEvent.click(await screen.findByText('akeneo_catalogs.catalog_edit.tabs.settings'));
-    fireEvent.click(await screen.findByText('akeneo_catalogs.settings.inputs.yes'));
+        return (
+            <ThemeProvider theme={pimTheme}>
+                <div ref={ref} />
+                <QueryClientProvider client={new QueryClient()}>
+                    <CatalogFormContext.Provider value={dispatch}>
+                        <CatalogEdit
+                            id={'a134c164-9343-4796-9b4e-e2c04ba3765a'}
+                            form={form}
+                            headerContextContainer={headerContextContainer}
+                        />
+                    </CatalogFormContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>
+        );
+    }
+
+    render(<RenderWithHeaderContextContainer />);
+
+    fireEvent.click(await screen.findByText('akeneo_catalogs.catalog_status_widget.fields.enable_catalog'));
+    fireEvent.click(await screen.findByText('akeneo_catalogs.catalog_status_widget.inputs.yes'));
     expect(dispatch).toHaveBeenCalledWith({type: CatalogFormActions.SET_ENABLED, value: true});
 });
 
@@ -89,7 +104,11 @@ test('it can change criteria in the product selection', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
+                    <CatalogEdit
+                        id={'a134c164-9343-4796-9b4e-e2c04ba3765a'}
+                        form={form}
+                        headerContextContainer={undefined}
+                    />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -167,7 +186,11 @@ test('it can add a product value filter on the channel', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
+                    <CatalogEdit
+                        id={'a134c164-9343-4796-9b4e-e2c04ba3765a'}
+                        form={form}
+                        headerContextContainer={undefined}
+                    />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
