@@ -52,6 +52,13 @@ test('it returns the default local storage', () => {
     secret: '',
   });
 
+  expect(getDefaultStorage('import', 'microsoft_azure', 'csv')).toEqual({
+    type: 'microsoft_azure',
+    file_path: 'myfile.csv',
+    connection_string: 'agagag',
+    container_name: 'agagag'
+  });
+
   expect(getDefaultStorage('export', 'none', 'xlsx')).toEqual({
     type: 'none',
     file_path: 'export_%job_label%_%datetime%.xlsx',

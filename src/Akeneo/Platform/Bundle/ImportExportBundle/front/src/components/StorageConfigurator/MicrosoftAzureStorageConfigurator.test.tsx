@@ -2,8 +2,9 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, LocalStorage} from '../model';
+import {AmazonS3Storage, LocalStorage, MicrosoftAzureStorage} from '../model';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
+import {MicrosoftAzureStorageConfigurator} from "./MicrosoftAzureStorageConfigurator";
 
 beforeEach(() => {
   global.fetch = mockFetch;
@@ -20,19 +21,17 @@ const mockFetch = jest.fn().mockImplementation(async (route: string) => {
   }
 });
 
-test('it renders the amazon s3 storage configurator', async () => {
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
+test('it renders the microsoft azure storage configurator', async () => {
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
-    region: 'eu-west-1',
-    bucket: 'my_bucket',
-    key: 'a_key',
-    secret: 'my_s3cr3t',
+    connection_string: 'connection_string',
+    container_name: 'container_name'
   };
 
   await act(async () => {
     renderWithProviders(
-      <AmazonS3StorageConfigurator
+      <MicrosoftAzureStorageConfigurator
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -42,25 +41,23 @@ test('it renders the amazon s3 storage configurator', async () => {
   });
 
   expect(screen.getByDisplayValue('/tmp/file.xlsx')).toBeInTheDocument();
-  expect(screen.getByDisplayValue('eu-west-1')).toBeInTheDocument();
-  expect(screen.getByDisplayValue('my_bucket')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('connection_string')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('container_name')).toBeInTheDocument();
 });
 
 test('it allows user to fill file_path field', async () => {
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
     file_path: '/tmp/test.xls',
-    region: 'eu-west-1',
-    bucket: 'my_bucket',
-    key: 'a_key',
-    secret: 'my_s3cr3t',
+    connection_string: 'connection_string',
+    container_name: 'container_name'
   };
 
   const onStorageChange = jest.fn();
 
   await act(async () => {
     renderWithProviders(
-      <AmazonS3StorageConfigurator
+      <MicrosoftAzureStorageConfigurator
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -77,21 +74,19 @@ test('it allows user to fill file_path field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, file_path: '/tmp/test.xlsx'});
 });
 
-test('it allows user to fill region field', async () => {
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
+test('it allows user to fill connection string field', async () => {
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
-    region: 'eu-west-',
-    bucket: 'my_bucket',
-    key: 'a_key',
-    secret: 'my_s3cr3t',
+    connection_string: 'connection_strin',
+    container_name: 'container_name'
   };
 
   const onStorageChange = jest.fn();
 
   await act(async () => {
     renderWithProviders(
-      <AmazonS3StorageConfigurator
+      <MicrosoftAzureStorageConfigurator
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -100,29 +95,27 @@ test('it allows user to fill region field', async () => {
     );
   });
 
-  const regionInput = screen.getByLabelText(
-    'pim_import_export.form.job_instance.storage_form.region.label pim_common.required_label'
+  const connectionStringInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.connection_string.label pim_common.required_label'
   );
-  userEvent.type(regionInput, '1');
+  userEvent.type(connectionStringInput, 'g');
 
-  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, region: 'eu-west-1'});
+  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, connection_string: 'connection_string'});
 });
 
-test('it allows user to fill bucket field', async () => {
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
+test('it allows user to fill container name field', async () => {
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
-    region: 'eu-west-1',
-    bucket: '',
-    key: 'a_key',
-    secret: 'my_s3cr3t',
+    connection_string: 'connection_string',
+    container_name: 'container_name'
   };
 
   const onStorageChange = jest.fn();
 
   await act(async () => {
     renderWithProviders(
-      <AmazonS3StorageConfigurator
+      <MicrosoftAzureStorageConfigurator
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -132,79 +125,17 @@ test('it allows user to fill bucket field', async () => {
   });
 
   userEvent.paste(
-    screen.getByLabelText('pim_import_export.form.job_instance.storage_form.bucket.label pim_common.required_label'),
-    'my_amazing_bucket'
+    screen.getByLabelText('pim_import_export.form.job_instance.storage_form.container_name.label pim_common.required_label'),
+    'my_amazing_container'
   );
 
   expect(onStorageChange).toHaveBeenLastCalledWith({
     ...storage,
-    bucket: 'my_amazing_bucket',
+    container_name: 'my_amazing_container',
   });
 });
 
-test('it allows user to fill key field', async () => {
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
-    file_path: '/tmp/file.xlsx',
-    region: 'eu-west-1',
-    bucket: '',
-    key: 'a_ke',
-    secret: 'my_s3cr3t',
-  };
-
-  const onStorageChange = jest.fn();
-
-  await act(async () => {
-    renderWithProviders(
-      <AmazonS3StorageConfigurator
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
-
-  const keyInput = screen.getByLabelText(
-    'pim_import_export.form.job_instance.storage_form.key.label pim_common.required_label'
-  );
-  userEvent.type(keyInput, 'y');
-
-  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, key: 'a_key'});
-});
-
-test('it allows user to fill secret field', async () => {
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
-    file_path: '/tmp/file.xlsx',
-    region: 'eu-west-1',
-    bucket: '',
-    key: 'a_key',
-    secret: 'my_s3cr3',
-  };
-
-  const onStorageChange = jest.fn();
-
-  await act(async () => {
-    renderWithProviders(
-      <AmazonS3StorageConfigurator
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
-
-  const secretInput = screen.getByLabelText(
-    'pim_import_export.form.job_instance.storage_form.secret.label pim_common.required_label'
-  );
-  userEvent.type(secretInput, 't');
-
-  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, secret: 'my_s3cr3t'});
-});
-
-test('it throws an exception when passing a non amazon s3 storage', async () => {
+test('it throws an exception when passing a non microsoft azure storage', async () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
   const storage: LocalStorage = {
@@ -214,26 +145,24 @@ test('it throws an exception when passing a non amazon s3 storage', async () => 
 
   expect(() =>
     renderWithProviders(
-      <AmazonS3StorageConfigurator
+      <MicrosoftAzureStorageConfigurator
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
         onStorageChange={jest.fn()}
       />
     )
-  ).toThrowError('Invalid storage type "local" for amazon s3 storage configurator');
+  ).toThrowError('Invalid storage type "local" for microsoft azure storage configurator');
 
   mockedConsole.mockRestore();
 });
 
 test('it displays validation errors', async () => {
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
-    region: 'invalid',
-    bucket: 'foo',
-    key: 'a_key',
-    secret: 'my_s3cr3t',
+    connection_string: 'connection_string',
+    container_name: 'container_name'
   };
 
   const validationErrors: ValidationError[] = [
@@ -245,38 +174,24 @@ test('it displays validation errors', async () => {
       propertyPath: '[file_path]',
     },
     {
-      messageTemplate: 'error.key.a_region_error',
+      messageTemplate: 'error.key.a_connection_string_error',
       invalidValue: '',
-      message: 'this is a region error',
+      message: 'this is a connection string error',
       parameters: {},
-      propertyPath: '[region]',
+      propertyPath: '[connection_string]',
     },
     {
-      messageTemplate: 'error.key.a_bucket_error',
+      messageTemplate: 'error.key.a_container_name_error',
       invalidValue: '',
-      message: 'this is a bucket error',
+      message: 'this is a container name error',
       parameters: {},
-      propertyPath: '[bucket]',
-    },
-    {
-      messageTemplate: 'error.key.a_key_error',
-      invalidValue: '',
-      message: 'this is a key error',
-      parameters: {},
-      propertyPath: '[key]',
-    },
-    {
-      messageTemplate: 'error.key.a_secret_error',
-      invalidValue: '',
-      message: 'this is a secret error',
-      parameters: {},
-      propertyPath: '[secret]',
+      propertyPath: '[container_name]',
     },
   ];
 
   await act(async () => {
     renderWithProviders(
-      <AmazonS3StorageConfigurator
+      <MicrosoftAzureStorageConfigurator
         storage={storage}
         fileExtension="xlsx"
         validationErrors={validationErrors}
@@ -286,26 +201,22 @@ test('it displays validation errors', async () => {
   });
 
   expect(screen.getByText('error.key.a_file_path_error')).toBeInTheDocument();
-  expect(screen.getByText('error.key.a_region_error')).toBeInTheDocument();
-  expect(screen.getByText('error.key.a_bucket_error')).toBeInTheDocument();
-  expect(screen.getByText('error.key.a_key_error')).toBeInTheDocument();
-  expect(screen.getByText('error.key.a_secret_error')).toBeInTheDocument();
+  expect(screen.getByText('error.key.a_connection_string_error')).toBeInTheDocument();
+  expect(screen.getByText('error.key.a_container_name_error')).toBeInTheDocument();
 });
 
 test('it can check connection', async () => {
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
-    region: 'eu-west-1',
-    bucket: '',
-    key: 'a_key',
-    secret: 'my_s3cr3t',
+    connection_string: 'connection_string',
+    container_name: 'container_name'
   };
 
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <AmazonS3StorageConfigurator
+    <MicrosoftAzureStorageConfigurator
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -333,19 +244,17 @@ test('it can check connection, display message if error', async () => {
     }
   });
 
-  const storage: AmazonS3Storage = {
-    type: 'amazon_s3',
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
-    region: 'eu-west-1',
-    bucket: 'my_bucket',
-    key: 'a_key',
-    secret: 'my_s3cr3t',
+    connection_string: 'connection_string',
+    container_name: 'container_name'
   };
 
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <AmazonS3StorageConfigurator
+    <MicrosoftAzureStorageConfigurator
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}

@@ -1,6 +1,12 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, LocalStorage, SftpStorage} from '../model';
-import {isLocalStorage, isSftpStorage, getStorageConfigurator, isAmazonS3Storage} from './model';
+import {AmazonS3Storage, LocalStorage, MicrosoftAzureStorage, SftpStorage} from '../model';
+import {
+  isLocalStorage,
+  isSftpStorage,
+  getStorageConfigurator,
+  isAmazonS3Storage,
+  isMicrosoftAzureStorage
+} from './model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
@@ -39,6 +45,13 @@ const amazonS3Storage: AmazonS3Storage = {
   file_path: '/tmp/test.xlsx',
 };
 
+const microsoftAzureStorage: MicrosoftAzureStorage = {
+  type: 'microsoft_azure',
+  connection_string: 'agagag',
+  container_name: 'ahaha',
+  file_path: '/tmp/test.xlsx',
+};
+
 test('it says if a storage is a local storage', () => {
   expect(isLocalStorage(localStorage)).toBe(true);
   expect(isLocalStorage(sftpStorage)).toBe(false);
@@ -55,6 +68,12 @@ test('it says if a storage is a sftp storage', () => {
 test('it says if a storage is an amazon s3 storage', () => {
   expect(isAmazonS3Storage(amazonS3Storage)).toBe(true);
   expect(isAmazonS3Storage(sftpStorage)).toBe(false);
+  expect(isSftpStorage(localStorage)).toBe(false);
+});
+
+test('it says if a storage is a microsoft azure storage', () => {
+  expect(isMicrosoftAzureStorage(microsoftAzureStorage)).toBe(true);
+  expect(isMicrosoftAzureStorage(sftpStorage)).toBe(false);
   expect(isSftpStorage(localStorage)).toBe(false);
 });
 
