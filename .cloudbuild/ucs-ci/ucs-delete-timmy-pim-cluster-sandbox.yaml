@@ -1,0 +1,63 @@
+steps:
+  - id: Delete TIMMY
+    name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: sh
+    args:
+      - '-c'
+      - |
+        if [ "${BRANCH_NAME}" != "master" ]; then
+          echo "Not on branch master. Leaving ..."
+        else
+          if [ "${_CLUSTER_ENV}" == "poc" ] || [ "${_CLUSTER_ENV}" = "sanbox" ]; then
+             cd deployments-ucs/timmy/terraform/${_CLUSTER_ENV}
+             echo "*************** TERRAFORM APPLY ******************"
+             echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
+             echo "*************************************************"
+             terraform init -backend-config="prefix=timmy/${_GOOGLE_PROJECT_ID}/${_GOOGLE_CLUSTER_REGION}" -reconfigure  -no-color
+             terraform workspace select ${BRANCH_NAME} || terraform workspace new ${BRANCH_NAME}
+             terraform destroy -input=false -auto-approve  -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME} -no-color
+         else
+           echo "No ${_CLUSTER_ENV} env to delete"
+         fi
+        fi
+
+  - id: Delete argocd-apps & argocd
+    name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-deployer:1.2.0"
+    dir: "deployments-ucs"
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+        # Set cluster authentication
+        gcloud config set auth/impersonate_service_account ${_TARGET_IMPERSONATE}
+        gcloud config set project ${_GOOGLE_PROJECT_ID}
+        gcloud config set compute/zone ${_GOOGLE_COMPUTE_ZONE}
+        gcloud container clusters get-credentials ${_CLUSTER_NAME} --project=${_GOOGLE_PROJECT_ID} --region=${_GOOGLE_CLUSTER_REGION}
+        #delete argocd-apps and argocd
+        helm uninstall argocd-apps - n argocd
+        helm uninstall argocd -n argocd 
+
+  - id: 'Delete Infra'
+    name: 'hashicorp/terraform:1.1.3'
+    env:
+      - 'TF_IN_AUTOMATION=true'
+      - 'GOOGLE_IMPERSONATE_SERVICE_ACCOUNT=${_TARGET_IMPERSONATE}'
+    entrypoint: 'sh'
+    args:
+    - '-c'
+    - |
+      if [ "${BRANCH_NAME}" != "master" ]; then
+        echo "Not on branch master. Leaving ..."
+      else
+        if [ "${_CLUSTER_ENV}" == "poc" ] || [ "${_CLUSTER_ENV}" = "sandbox" ]; then
+          cd deployments-ucs/infra/terraform/${_ENV}
+          echo "*************** TERRAFORM APPLY ******************"
+          echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
+          echo "*************************************************"
+          terraform init -no-color
+          terraform destroy -no-color -auto-approve || exit 1
+        else
+          echo "No ${_CLUSTER_ENV} env to delete"
+        fi
+      fi
+logsBucket: 'gs://${_GOOGLE_PROJECT_ID}-cloudbuild-logs'
