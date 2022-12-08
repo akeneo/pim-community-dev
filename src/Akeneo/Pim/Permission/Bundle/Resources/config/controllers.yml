@@ -123,6 +123,7 @@ services:
             - '@translator'
             - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
+            - '@pim_catalog.repository.locale'
 
     pim_enrich.controller.rest.job_instance:
         public: true

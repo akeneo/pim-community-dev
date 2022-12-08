@@ -21,7 +21,7 @@ security:
             security:                       false
 
         login:
-            pattern:                        ^/user/(login|reset-request|send-email|check-email)$
+            pattern:                        ^/user/(login|reset-request|send-email)$
             provider:                       chain_provider
 
         monitoring:
@@ -100,7 +100,7 @@ security:
         - { path: ^/api/rest/v1$, roles: PUBLIC_ACCESS }
         - { path: ^/api/, roles: pim_api_overall_access }
         #Additionnal access control for SSO
-        - { path: ^/user/(login|reset-request|send-email|check-email)$, roles: PUBLIC_ACCESS }
+        - { path: ^/user/(login|reset-request|send-email)$, roles: PUBLIC_ACCESS }
         - { path: ^/user/reset/*, roles: PUBLIC_ACCESS }
         - { path: ^/saml-idp/resume, roles: PUBLIC_ACCESS }
         - { path: ^/saml/login, roles: PUBLIC_ACCESS }
