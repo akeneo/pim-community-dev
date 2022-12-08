@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
@@ -69,6 +70,7 @@ class ProductController
         private Client $productAndProductModelClient,
         private MessageBusInterface $commandMessageBus,
         private FindIdentifier $findIdentifier,
+        private UnableToSetIdentifiersSubscriber $unableToSetIdentifiersSubscriber,
     ) {
     }
 
@@ -143,11 +145,20 @@ class ProductController
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 
-            return new JsonResponse($this->normalizer->normalize(
+            $normalizedProduct = $this->normalizer->normalize(
                 $product,
                 'internal_api',
                 $this->getNormalizationContext()
-            ));
+            );
+
+            if (\count($this->unableToSetIdentifiersSubscriber->getEvents()) > 0) {
+                if (!\array_key_exists('meta', $normalizedProduct)) {
+                    $normalizedProduct['meta'] = [];
+                }
+                $normalizedProduct['meta']['warning'] = $this->unableToSetIdentifiersSubscriber->getEvents()[0]->getException()->getMessage();
+            }
+
+            return new JsonResponse($normalizedProduct);
         }
 
         $normalizedViolations = $this->normalizeViolations($violations, $product);

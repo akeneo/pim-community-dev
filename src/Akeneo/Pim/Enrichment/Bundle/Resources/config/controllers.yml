@@ -213,6 +213,7 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_enrich.product.message_bus'
             - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber'
 
     pim_enrich.controller.rest.product_comment:
         public: true
