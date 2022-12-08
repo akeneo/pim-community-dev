@@ -31,7 +31,6 @@ steps:
         # Set cluster authentication
         gcloud config set auth/impersonate_service_account ${_TARGET_IMPERSONATE}
         gcloud config set project ${_GOOGLE_PROJECT_ID}
-        gcloud config set compute/zone ${_GOOGLE_COMPUTE_ZONE}
         gcloud container clusters get-credentials ${_CLUSTER_NAME} --project=${_GOOGLE_PROJECT_ID} --region=${_GOOGLE_CLUSTER_REGION}
         #delete argocd-apps and argocd
         helm uninstall argocd-apps - n argocd
