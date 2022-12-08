@@ -202,6 +202,6 @@ SQL;
 
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useMinimalCatalog(['identifier_generator']);
     }
 }
