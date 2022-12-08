@@ -18,9 +18,10 @@ akeneo_catalogs:
             more: More
             product_value_filters: Filter the values
             product_mapping: Mapping
-    settings:
+    catalog_status_widget:
         fields:
-            enabled: Enabled
+            enable_catalog: Enable catalog
+        helper: By default, new catalogs are disabled. Enable the catalog to allow the app to retrieve your product data.
         inputs:
             yes: Yes
             no: No

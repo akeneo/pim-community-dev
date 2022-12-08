@@ -2,7 +2,6 @@ import React, {FC, PropsWithChildren, useCallback} from 'react';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {useTabBar} from 'akeneo-design-system';
 import {TabBar, Tabs} from './TabBar';
-import {Settings} from './Settings';
 import {CatalogFormValues} from '../models/CatalogFormValues';
 import {CatalogFormErrors} from '../models/CatalogFormErrors';
 import {ProductSelection} from '../../ProductSelection';
@@ -46,7 +45,7 @@ const ProductMappingWrapper: FC<
 
 const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
     const dispatch = useCatalogFormContext();
-    const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.SETTINGS, 'pim_catalog_activeTab');
+    const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.PRODUCT_SELECTION, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
 
     const handleSwitchTo = useCallback(
@@ -80,15 +79,6 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
     return (
         <>
             <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} invalid={getTabsValidationStatus(errors)} id={id} />
-
-            {isCurrent(Tabs.SETTINGS) && (
-                <Settings
-                    settings={{
-                        enabled: values.enabled,
-                    }}
-                    errors={errors}
-                />
-            )}
             {isCurrent(Tabs.PRODUCT_SELECTION) && (
                 <ProductSelection
                     criteria={values.product_selection_criteria}

@@ -146,8 +146,6 @@ akeneo_connectivity.connection:
         flash:
           error: Beim Abrufen der Liste der verbundenen Apps ist ein Fehler aufgetreten.
       edit:
-        header:
-          open_app: App öffnen
         not_found: App nicht gefunden
         tabs:
           settings: Einstellungen

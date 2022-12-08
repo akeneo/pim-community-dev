@@ -75,3 +75,4 @@ services:
         arguments:
             - '@pim_catalog.saver.currency'
             - '@oro_security.security_facade'
+            - '@pim_catalog.repository.currency'

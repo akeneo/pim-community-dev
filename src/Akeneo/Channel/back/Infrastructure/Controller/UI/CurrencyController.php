@@ -3,7 +3,7 @@
 namespace Akeneo\Channel\Infrastructure\Controller\UI;
 
 use Akeneo\Channel\Infrastructure\Component\Exception\LinkedChannelException;
-use Akeneo\Channel\Infrastructure\Component\Model\Currency;
+use Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
@@ -19,15 +19,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CurrencyController
 {
     public function __construct(
-        private SaverInterface $currencySaver,
-        private SecurityFacadeInterface $securityFacade,
+        private readonly SaverInterface $currencySaver,
+        private readonly SecurityFacadeInterface $securityFacade,
+        private readonly CurrencyRepositoryInterface $currencyRepository,
     ) {
     }
 
     /**
      * Activate/Deactivate a currency
      */
-    public function toggleAction(Currency $currency): JsonResponse
+    public function toggleAction(int $id): JsonResponse
     {
         if (!$this->securityFacade->isGranted('pim_enrich_currency_toggle')) {
             throw AccessDeniedException::create(
@@ -35,6 +36,8 @@ class CurrencyController
                 __METHOD__,
             );
         }
+
+        $currency = $this->currencyRepository->find($id);
 
         try {
             $currency->toggleActivation();

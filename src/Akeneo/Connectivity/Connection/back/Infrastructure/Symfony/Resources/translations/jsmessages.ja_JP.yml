@@ -146,8 +146,6 @@ akeneo_connectivity.connection:
         flash:
           error: 申し訳ございません、接続されたアプリリストを取得中にエラーが発生しました。
       edit:
-        header:
-          open_app: アプリを開く
         not_found: アプリが見つかりません
         tabs:
           settings: 設定

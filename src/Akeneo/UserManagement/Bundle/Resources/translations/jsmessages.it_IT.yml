@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Login
   pim_user_reset_reset: Reimposta password
   pim_user_reset_request: Password Dimenticata
-  pim_user_reset_check_email: Reimpostazione password | Controllo Email
   pim_user_group_create: 'Gruppi | Crea'
   pim_user_group_update: 'Gruppo {{ group }} | Modifica'
 confirmation:
@@ -32,7 +31,7 @@ pim_user.profile:
   why_is_it_needed: Perché abbiamo bisogno di queste informazioni?
   save_button: Salva e accedi all'App Store
   selector:
-    placeholder: Scegli un'opzione 
+    placeholder: Scegli un'opzione
     not_found: Nessun risultato trovato
   product_manager: Gestisco i cataloghi dei prodotti.
   redactor: Arricchisco i dati di prodotto.

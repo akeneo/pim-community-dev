@@ -13,9 +13,9 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
 interface GetCategoriesInterface
 {
     /**
-     * @param array<string> $categoryCodes
-     *
      * @return array<Category>
      */
-    public function byCodes(array $categoryCodes, bool $isEnrichedAttributes): array;
+    public function execute(ExternalApiSqlParameters $sqlParameters): array;
+
+    public function count(ExternalApiSqlParameters $parameters): int|null;
 }

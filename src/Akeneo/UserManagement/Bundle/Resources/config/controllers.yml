@@ -50,13 +50,12 @@ services:
         public: true
         class: 'Akeneo\UserManagement\Bundle\Controller\GroupController'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_user.repository.group'
             - '@pim_user.remover.user_group'
             - '@pim_user.form.handler.group'
             - '@translator'
             - '@pim_user.form.group'
             - '@event_dispatcher'
-            - '@session'
         calls:
             - [ 'setContainer', [ '@service_container' ] ]
 
@@ -92,8 +91,10 @@ services:
             - '@security.authentication_utils'
             - '@security.csrf.token_manager'
             - '@security.logout_url_generator'
+            - '@twig'
             - '%pim_user.login_form.action_route%'
             - '%pim_user.login_form.additional_hidden_fields%'
+
 
     Akeneo\UserManagement\Bundle\Controller\Rest\FindAllProfilesController:
         public: true

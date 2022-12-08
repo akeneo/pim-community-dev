@@ -8,7 +8,6 @@ use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,42 +17,31 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RoleController extends AbstractController
 {
-    private RoleRepositoryInterface $roleRepository;
-    private RemoverInterface $remover;
-    private AclSidManager $aclSidManager;
-    private AclRoleHandler $aclRoleHandler;
-    private TranslatorInterface $translator;
-
     public function __construct(
-        RoleRepositoryInterface $roleRepository,
-        RemoverInterface $remover,
-        AclSidManager $aclSidManager,
-        AclRoleHandler $aclRoleHandler,
-        TranslatorInterface $translator
+        private readonly RoleRepositoryInterface $roleRepository,
+        private readonly RemoverInterface $remover,
+        private readonly AclSidManager $aclSidManager,
+        private readonly AclRoleHandler $aclRoleHandler,
+        private readonly TranslatorInterface $translator,
     ) {
-        $this->roleRepository = $roleRepository;
-        $this->remover = $remover;
-        $this->aclSidManager = $aclSidManager;
-        $this->aclRoleHandler = $aclRoleHandler;
-        $this->translator = $translator;
     }
 
     /**
      * @AclAncestor("pim_user_role_create")
-     * @Template("@PimUser/Role/update.html.twig")
      */
-    public function create()
+    public function create(): Response
     {
-        return $this->update(new Role());
+        $newRole = new Role();
+        return $this->updateRole($newRole);
     }
 
     /**
      * @AclAncestor("pim_user_role_edit")
-     * @Template("@PimUser/Role/update.html.twig")
      */
-    public function update(Role $entity)
+    public function update(int $id): Response
     {
-        return $this->updateUser($entity);
+        $role = $this->roleRepository->find($id);
+        return $this->updateRole($role);
     }
 
     /**
@@ -61,7 +49,7 @@ class RoleController extends AbstractController
      *
      * @AclAncestor("pim_user_role_remove")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -86,29 +74,24 @@ class RoleController extends AbstractController
         return new JsonResponse('', 204);
     }
 
-    /**
-     * @param Role $entity
-     *
-     * @return array|JsonResponse
-     */
-    private function updateUser(Role $entity)
+    private function updateRole(Role $role): Response
     {
-        $this->aclRoleHandler->createForm($entity);
+        $this->aclRoleHandler->createForm($role);
 
-        if ($this->aclRoleHandler->process($entity)) {
+        if ($this->aclRoleHandler->process($role)) {
             $this->addFlash(
                 'success',
                 $this->translator->trans('pim_user.controller.role.message.saved')
             );
 
             return new JsonResponse(
-                ['route' => 'pim_user_role_update', 'params' => ['id' => $entity->getId()]]
+                ['route' => 'pim_user_role_update', 'params' => ['id' => $role->getId()]]
             );
         }
 
-        return [
+        return $this->render('@PimUser/Role/update.html.twig', [
             'form' => $this->aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('pim_user.privileges'),
-        ];
+        ]);
     }
 }

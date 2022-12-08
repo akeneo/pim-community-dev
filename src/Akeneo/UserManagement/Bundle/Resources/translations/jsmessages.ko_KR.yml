@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: 로그인
   pim_user_reset_reset: 암호 재설정
   pim_user_reset_request: 암호 분실
-  pim_user_reset_check_email: 암호 재설정 | 이메일 확인
   pim_user_group_create: '그룹 | 만들기'
   pim_user_group_update: '그룹 {{ group }} | 편집'
 confirmation:
