@@ -43,8 +43,10 @@ class CurrencyDeactivationSubscriber implements EventSubscriberInterface
         /** @var JobInstance $jobInstance */
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalogs_on_currency_deactivation');
 
-        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
-            'currency_codes' => $currency->getCode(),
-        ]);
+        if ($jobInstance) {
+            $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
+                'currency_codes' => [$currency->getCode()],
+            ]);
+        }
     }
 }

@@ -30,6 +30,6 @@ class DisableCatalogsOnCurrencyDeactivationConstraint implements ConstraintColle
 
     public function supports(JobInterface $job): bool
     {
-        return $job->getName() === 'disable_catalogs_on_currency_removal';
+        return $job->getName() === 'disable_catalogs_on_currency_deactivation';
     }
 }

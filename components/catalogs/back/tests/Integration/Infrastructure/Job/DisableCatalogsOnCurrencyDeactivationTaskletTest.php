@@ -17,7 +17,7 @@ class DisableCatalogsOnCurrencyDeactivationTaskletTest extends IntegrationTestCa
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItDisablesCatalogsOnCurrencyRemoval(): void
+    public function testItDisablesCatalogsOnCurrencyDeactivation(): void
     {
         $this->getAuthenticatedInternalApiClient();
 
