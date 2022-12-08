@@ -66,12 +66,14 @@ const ProductFilesList = ({
                 searchValue={searchValue}
                 placeholder={translate('supplier_portal.product_file_dropping.supplier_files.search.placeholder')}
             >
-                {translate(
-                    'supplier_portal.product_file_dropping.supplier_files.search.results_number',
-                    {count: totalSearchResults},
-                    totalSearchResults
-                )}
-                <StyledPipe />
+                <Search.ResultCount>
+                    {translate(
+                        'supplier_portal.product_file_dropping.supplier_files.search.results_number',
+                        {count: totalSearchResults},
+                        totalSearchResults
+                    )}
+                </Search.ResultCount>
+                <Search.Separator />
                 <Dropdown>
                     <SwitcherButton
                         label={translate('supplier_portal.product_file_dropping.supplier_files.status.label')}
@@ -105,116 +107,100 @@ const ProductFilesList = ({
                 </Dropdown>
             </StyledSearch>
 
-            {(0 < productFiles.length || '' !== searchValue || null !== importStatusValue) && (
+            {0 === productFiles.length && (
+                <EmptyProductFilesList message="supplier_portal.product_file_dropping.supplier_files.search.no_results" />
+            )}
+
+            {0 < productFiles.length && (
                 <>
-                    {0 < productFiles.length && (
-                        <Pagination
-                            followPage={onChangePage}
-                            currentPage={
-                                currentPage > totalSearchResults / PRODUCT_FILES_PER_PAGE
-                                    ? Math.ceil(totalSearchResults / PRODUCT_FILES_PER_PAGE)
-                                    : currentPage
-                            }
-                            totalItems={totalSearchResults}
-                            itemsPerPage={PRODUCT_FILES_PER_PAGE}
-                        />
-                    )}
-
-                    {0 === productFiles.length && (
-                        <EmptyProductFilesList message="supplier_portal.product_file_dropping.supplier_files.search.no_results" />
-                    )}
-
-                    {0 < productFiles.length && (
-                        <Table>
-                            <Table.Header>
+                    <Pagination
+                        followPage={onChangePage}
+                        currentPage={
+                            currentPage > totalSearchResults / PRODUCT_FILES_PER_PAGE
+                                ? Math.ceil(totalSearchResults / PRODUCT_FILES_PER_PAGE)
+                                : currentPage
+                        }
+                        totalItems={totalSearchResults}
+                        itemsPerPage={PRODUCT_FILES_PER_PAGE}
+                    />
+                    <Table>
+                        <Table.Header>
+                            <Table.HeaderCell>
+                                {translate('supplier_portal.product_file_dropping.supplier_files.columns.upload_date')}
+                            </Table.HeaderCell>
+                            <Table.HeaderCell>
+                                {translate('supplier_portal.product_file_dropping.supplier_files.columns.filename')}
+                            </Table.HeaderCell>
+                            <Table.HeaderCell>
+                                {translate('supplier_portal.product_file_dropping.supplier_files.columns.contributor')}
+                            </Table.HeaderCell>
+                            {displaySupplierColumn && (
                                 <Table.HeaderCell>
-                                    {translate(
-                                        'supplier_portal.product_file_dropping.supplier_files.columns.upload_date'
-                                    )}
+                                    {translate('supplier_portal.product_file_dropping.supplier_files.columns.supplier')}
                                 </Table.HeaderCell>
-                                <Table.HeaderCell>
-                                    {translate('supplier_portal.product_file_dropping.supplier_files.columns.filename')}
-                                </Table.HeaderCell>
-                                <Table.HeaderCell>
-                                    {translate(
-                                        'supplier_portal.product_file_dropping.supplier_files.columns.contributor'
-                                    )}
-                                </Table.HeaderCell>
-                                {displaySupplierColumn && (
-                                    <Table.HeaderCell>
-                                        {translate(
-                                            'supplier_portal.product_file_dropping.supplier_files.columns.supplier'
+                            )}
+                            <Table.HeaderCell>
+                                {translate('supplier_portal.product_file_dropping.supplier_files.columns.status')}
+                            </Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
+                        </Table.Header>
+                        <Table.Body>
+                            {productFiles.map((productFile: ProductFileRow) => {
+                                const uploadedDate = dateFormatter(productFile.uploadedAt, {
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                });
+                                return (
+                                    <Table.Row
+                                        key={productFile.identifier}
+                                        onClick={() => goToProductFile(productFile.identifier)}
+                                    >
+                                        <Table.Cell>{uploadedDate}</Table.Cell>
+                                        <Table.Cell>
+                                            <FilenameCell>{productFile.filename}</FilenameCell>
+                                        </Table.Cell>
+                                        <Table.Cell>{productFile.contributor}</Table.Cell>
+                                        {displaySupplierColumn && (
+                                            <Table.Cell>
+                                                {productFile.hasOwnProperty('supplier') && productFile.supplier}
+                                            </Table.Cell>
                                         )}
-                                    </Table.HeaderCell>
-                                )}
-                                <Table.HeaderCell>
-                                    {translate('supplier_portal.product_file_dropping.supplier_files.columns.status')}
-                                </Table.HeaderCell>
-                                <Table.HeaderCell></Table.HeaderCell>
-                                <Table.HeaderCell></Table.HeaderCell>
-                            </Table.Header>
-                            <Table.Body>
-                                {productFiles.map((productFile: ProductFileRow) => {
-                                    const uploadedDate = dateFormatter(productFile.uploadedAt, {
-                                        day: '2-digit',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        month: '2-digit',
-                                        year: 'numeric',
-                                    });
-                                    return (
-                                        <Table.Row
-                                            key={productFile.identifier}
-                                            onClick={() => goToProductFile(productFile.identifier)}
-                                        >
-                                            <Table.Cell>{uploadedDate}</Table.Cell>
-                                            <Table.Cell>
-                                                <FilenameCell>{productFile.filename}</FilenameCell>
-                                            </Table.Cell>
-                                            <Table.Cell>{productFile.contributor}</Table.Cell>
-                                            {displaySupplierColumn && (
-                                                <Table.Cell>
-                                                    {productFile.hasOwnProperty('supplier') && productFile.supplier}
-                                                </Table.Cell>
+                                        <Table.Cell>
+                                            <ProductFileImportStatus importStatus={productFile.importStatus} />
+                                        </Table.Cell>
+                                        <HasUnreadCommentsCell>
+                                            {productFile.hasUnreadComments && (
+                                                <StyledPill data-testid="unread-comments-pill" level="primary" />
                                             )}
-                                            <Table.Cell>
-                                                <ProductFileImportStatus importStatus={productFile.importStatus} />
-                                            </Table.Cell>
-                                            <HasUnreadCommentsCell>
-                                                {productFile.hasUnreadComments && (
-                                                    <StyledPill data-testid="unread-comments-pill" level="primary" />
+                                        </HasUnreadCommentsCell>
+                                        <DownloadCell>
+                                            <StyledIconButton
+                                                data-testid="Download icon"
+                                                icon={<StyledDownloadIcon animateOnHover={true} />}
+                                                title={translate(
+                                                    'supplier_portal.product_file_dropping.supplier_files.columns.download'
                                                 )}
-                                            </HasUnreadCommentsCell>
-                                            <DownloadCell>
-                                                <StyledIconButton
-                                                    data-testid="Download icon"
-                                                    icon={<StyledDownloadIcon animateOnHover={true} />}
-                                                    title={translate(
-                                                        'supplier_portal.product_file_dropping.supplier_files.columns.download'
-                                                    )}
-                                                    ghost={'borderless'}
-                                                    onClick={(event: any) => event.stopPropagation()}
-                                                    href={router.generate('supplier_portal_retailer_download_file', {
-                                                        productFileIdentifier: productFile.identifier,
-                                                    })}
-                                                />
-                                            </DownloadCell>
-                                        </Table.Row>
-                                    );
-                                })}
-                            </Table.Body>
-                        </Table>
-                    )}
+                                                ghost={'borderless'}
+                                                onClick={(event: any) => event.stopPropagation()}
+                                                href={router.generate('supplier_portal_retailer_download_file', {
+                                                    productFileIdentifier: productFile.identifier,
+                                                })}
+                                            />
+                                        </DownloadCell>
+                                    </Table.Row>
+                                );
+                            })}
+                        </Table.Body>
+                    </Table>
                 </>
             )}
         </>
     );
 };
-
-const StyledPipe = styled.div`
-    height: 24px;
-    border-right: 1px solid ${getColor('grey100')};
-`;
 
 const StyledDownloadIcon = styled(DownloadIcon)`
     color: ${getColor('grey100')};
@@ -249,6 +235,7 @@ const FilenameCell = styled.span`
 
 const StyledSearch = styled(Search)`
     margin-bottom: 10px;
+    min-height: 44px;
 `;
 
 export {ProductFilesList};

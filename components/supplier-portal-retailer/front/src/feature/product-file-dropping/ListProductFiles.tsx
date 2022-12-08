@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Breadcrumb, useDebounce} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
@@ -19,6 +19,10 @@ const ListProductFiles = () => {
         importStatusValue
     );
     const history = useHistory();
+
+    useEffect(() => {
+        0 < totalSearchResults && setPage(1);
+    }, [totalSearchResults, searchValue, importStatusValue]);
 
     return (
         <>
@@ -48,7 +52,7 @@ const ListProductFiles = () => {
                 </PageHeader.Title>
             </PageHeader>
             <StyledPageContent>
-                {0 === totalProductFiles ? (
+                {0 === totalSearchResults && '' === searchValue && null === importStatusValue ? (
                     <EmptyProductFilesList message="supplier_portal.product_file_dropping.supplier_files.no_files" />
                 ) : (
                     <ProductFilesList

@@ -8,8 +8,6 @@ const useProductFiles = (
     setPage: (pageNumber: number) => void,
     importStatusValue: null | string
 ): [ProductFileRow[], number, number] => {
-    const [previousSearchValue, setPreviousSearchValue] = useState<string>('');
-    const [previousImportStatusValue, setPreviousImportStatusValue] = useState<null | string>(null);
     const [totalNumberOfProductFiles, setTotalNumberOfProductFiles] = useState<number>(page);
     const [totalSearchResults, setTotalSearchResults] = useState<number>(page);
     const [productFiles, setProductFiles] = useState<ProductFileRow[]>([]);
@@ -53,20 +51,10 @@ const useProductFiles = (
             };
         });
 
-        if (searchValue !== previousSearchValue) {
-            setPreviousSearchValue(searchValue);
-            setPage(1);
-        }
-
-        if (importStatusValue !== previousImportStatusValue) {
-            setPreviousImportStatusValue(importStatusValue);
-            setPage(1);
-        }
-
         setProductFiles(productFiles);
         setTotalNumberOfProductFiles(responseBody.total);
         setTotalSearchResults(responseBody.total_search_results);
-    }, [getProductFilesRoute, page, searchValue, previousSearchValue, importStatusValue, previousImportStatusValue]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [getProductFilesRoute]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {
