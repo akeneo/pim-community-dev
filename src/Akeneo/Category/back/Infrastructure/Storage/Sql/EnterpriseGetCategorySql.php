@@ -6,7 +6,6 @@ namespace AkeneoEnterprise\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -22,8 +21,8 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
     public function byId(int $categoryId): ?Category
     {
         $condition['sqlWhere'] = 'category.id = :category_id';
-        $condition['params'] = ['category_id' => $categoryId,];
-        $condition['types'] = ['category_id' => \PDO::PARAM_INT,];
+        $condition['params'] = ['category_id' => $categoryId];
+        $condition['types'] = ['category_id' => \PDO::PARAM_INT];
 
         return $this->execute($condition);
     }
@@ -31,8 +30,8 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
     public function byCode(string $categoryCode): ?Category
     {
         $condition['sqlWhere'] = 'category.code = :category_code';
-        $condition['params'] = ['category_code' => $categoryCode,];
-        $condition['types'] = ['category_code' => \PDO::PARAM_STR,];
+        $condition['params'] = ['category_code' => $categoryCode];
+        $condition['types'] = ['category_code' => \PDO::PARAM_STR];
 
         return $this->execute($condition);
     }
@@ -104,7 +103,7 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
         $result = $this->connection->executeQuery(
             $sqlQuery,
             $condition['params'],
-            $condition['types']
+            $condition['types'],
         )->fetchAssociative();
 
         if (!$result) {

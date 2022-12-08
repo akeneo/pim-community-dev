@@ -90,7 +90,7 @@ class EnterpriseGetCategorySqlIntegration extends CategoryTestCase
         $this->assertTemplate($category);
     }
 
-    private function assertPermissions(Category $category)
+    private function assertPermissions(Category $category): void
     {
         $this->assertContains($this->userGroup1->getId(), $category->getPermissions()->getViewUserGroups());
         $this->assertContains($this->userGroup1->getId(), $category->getPermissions()->getEditUserGroups());
@@ -105,7 +105,7 @@ class EnterpriseGetCategorySqlIntegration extends CategoryTestCase
         $this->assertNotContains($this->userGroup3->getId(), $category->getPermissions()->getOwnUserGroups());
     }
 
-    private function assertTemplate(Category $category)
+    private function assertTemplate(Category $category): void
     {
         Assert::assertSame($this->templateUuid->getValue(), $category->getTemplateUuid()->getValue());
     }

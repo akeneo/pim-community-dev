@@ -16,6 +16,12 @@ suites:
         src_path: src/Akeneo/Pim/Enrichment/Category/back/
         spec_prefix: Specification
 
+    CategoryEnterpriseV2:
+        namespace: AkeneoEnterprise\Category
+        psr4_prefix: AkeneoEnterprise\Category
+        spec_path: src/Akeneo/Category/back/tests
+        src_path: src/Akeneo/Category/back
+        spec_prefix: Specification
 
     ## Platform BC
     Platform:
