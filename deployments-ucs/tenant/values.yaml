@@ -41,7 +41,7 @@ common:
   googleZone: null
   fqdn: null
   dnsCloudDomain: null
-  workloadIdentityKSA: null
+  workloadIdentityKSA: pim-ksa-workload-identity
   workloadIdentityGSA: pim-saas-service
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"

@@ -5,6 +5,11 @@ POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
   case $1 in
+    -e|--env)
+      ENV_NAME_SHORTED="$2"
+      shift # past argument
+      shift # past value
+      ;;
     -p|--project)
       GOOGLE_CLOUD_PROJECT="$2"
       shift # past argument
@@ -27,6 +32,11 @@ while [[ $# -gt 0 ]]; do
       ;;
     -r|--region)
       GOOGLE_CLUSTER_REGION="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -s|--region-shorted)
+      GOOGLE_REGION_SHORTED="$2"
       shift # past argument
       shift # past value
       ;;
@@ -57,12 +67,19 @@ while [[ $# -gt 0 ]]; do
 done
 
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+BUCKET_SHORTED="bkt"
+CLOUD_FUNCTION_SHORTED="cfun"
+CLOUD_SCHEDULER_SHORTED="csch"
+PUBSUB_TOPIC_SHORTED="ptop"
+PUBSUB_SUBSCRIPTION_SHORTED="psub"
 
+echo "ENV_NAME_SHORTED                  = ${ENV_NAME_SHORTED}"
 echo "GOOGLE_CLOUD_PROJECT              = ${GOOGLE_CLOUD_PROJECT}"
 echo "GOOGLE_CLOUD_FIRESTORE_PROJECT    = ${GOOGLE_CLOUD_FIRESTORE_PROJECT}"
 echo "GOOGLE_DOMAIN                     = ${GOOGLE_DOMAIN}"
 echo "GOOGLE_CLUSTER_NAME               = ${GOOGLE_CLUSTER_NAME}"
 echo "GOOGLE_CLUSTER_REGION             = ${GOOGLE_CLUSTER_REGION}"
+echo "GOOGLE_REGION_SHORTED             = ${GOOGLE_REGION_SHORTED}"
 echo "GOOGLE_ZONE                       = ${GOOGLE_ZONE}"
 echo "LOCATION                          = ${LOCATION}"
 echo "PREFIX_CLUSTER                    = ${GOOGLE_ZONE}"
@@ -72,33 +89,27 @@ SCRIPT_DIRECTORY_PATH=$(dirname "${SCRIPT_FILE_PATH}")
 PIM_SAAS_SERVICE_DIRECTORY_PATH=$(realpath "${SCRIPT_DIRECTORY_PATH}/../pim-saas-service")
 
 TENANT_CONTEXT="${GOOGLE_CLUSTER_REGION}/pim/tenant_contexts"
-TOPIC_BUSINESS_EVENT="${PREFIX_CLUSTER}-srnt-business-event" # Should we really set the srnt in it?
-TOPIC_JOB_QUEUE_UI="${PREFIX_CLUSTER}-srnt-job-queue-ui" # Should we really set the srnt in it?
-TOPIC_JOB_QUEUE_IMPORT_EXPORT="${PREFIX_CLUSTER}-srnt-job-queue-import-export" # Should we really set the srnt in it?
-TOPIC_JOB_QUEUE_DATA_MAINTENANCE="${PREFIX_CLUSTER}-srnt-job-queue-data-maintenance" # Should we really set the srnt in it?
-TOPIC_JOB_QUEUE_SCHEDULED_JOB="${PREFIX_CLUSTER}-srnt-job-queue-scheduled-job" # Should we really set the srnt in it?
-SUBSCRIPTION_WEBHOOK="${PREFIX_CLUSTER}-srnt-webhook" # Should we really set the srnt in it?
-SUBSCRIPTION_JOB_QUEUE_UI="${PREFIX_CLUSTER}-srnt-job-queue-ui" # Should we really set the srnt in it?
-SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="${PREFIX_CLUSTER}-srnt-job-queue-import-export" # Should we really set the srnt in it?
-SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="${PREFIX_CLUSTER}-srnt-job-queue-data-maintenance" # Should we really set the srnt in it?
-SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB="${PREFIX_CLUSTER}-srnt-job-queue-scheduled-job" # Should we really set the srnt in it?
-CLOUD_FUNCTION_NAME="${PREFIX_CLUSTER}-srnt-job-publisher"
-CLOUD_FUNCTION_BUCKET="${PREFIX_CLUSTER}-srnt-job-publisher"
-CLOUD_SCHEDULER_PREFIX="${PREFIX_CLUSTER}-srnt-job-publisher"
+TOPIC_BUSINESS_EVENT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_TOPIC_SHORTED}-business-event"
+TOPIC_JOB_QUEUE_UI="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_TOPIC_SHORTED}-job-queue-ui"
+TOPIC_JOB_QUEUE_IMPORT_EXPORT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_TOPIC_SHORTED}-job-queue-import-export"
+TOPIC_JOB_QUEUE_DATA_MAINTENANCE="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_TOPIC_SHORTED}-job-queue-data-maintenance"
+TOPIC_JOB_QUEUE_SCHEDULED_JOB="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_TOPIC_SHORTED}-job-queue-scheduled-job"
+SUBSCRIPTION_WEBHOOK="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_SUBSCRIPTION_SHORTED}-webhook"
+SUBSCRIPTION_JOB_QUEUE_UI="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_SUBSCRIPTION_SHORTED}-job-queue-ui"
+SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_SUBSCRIPTION_SHORTED}-job-queue-import-export"
+SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_SUBSCRIPTION_SHORTED}-job-queue-data-maintenance"
+SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_SUBSCRIPTION_SHORTED}-job-queue-scheduled-job"
+
+CLOUD_SCHEDULER_PREFIX="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_SCHEDULER_SHORTED}-job-publisher"
+CLOUD_FUNCTION_NAME="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-job-publisher"
+CLOUD_FUNCTION_BUCKET="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${BUCKET_SHORTED}-job-publisher"
 CLOUD_FUNCTION_GSA="pim-cloud-function@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com"
-TENANT_CONTEXT_ENCRYPTION_ENABLED="true"
-ENCRYPTION_KEY_SECRET_NAME="TENANT_CONTEXT_ENCRYPTION_KEY"
-
-INSTANCE_NAME="ucs" # Should be removed
-PIM_MASTER_DOMAIN="ucs.${GOOGLE_DOMAIN}" # Should be removed
-WORKLOAD_IDENTITY_KSA="ksa-workload-identity" # Do we really need to change this value ? Or does the CI change it
-
-## Charts
-yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/Chart.yaml appVersion ${RELEASE_NAME}
 
 TENANT_NAME="ucs" # Should be removed
 FQDN="ucs.${GOOGLE_DOMAIN}" # Should be removed
-WORKLOAD_IDENTITY_KSA="ksa-workload-identity" # Do we really need to change this value ? Or does the CI change it
+
+## Charts
+yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/Chart.yaml appVersion ${RELEASE_NAME}
 
 VALUES_FILE="${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml"
 
@@ -112,7 +123,6 @@ yq w -i "${VALUES_FILE}" common.fqdn "${FQDN}"
 yq w -i "${VALUES_FILE}" common.dnsCloudDomain "${GOOGLE_DOMAIN}"
 yq w -i "${VALUES_FILE}" common.region "${GOOGLE_CLUSTER_REGION}"
 yq w -i "${VALUES_FILE}" common.tenantContext "${TENANT_CONTEXT}"
-yq w -i "${VALUES_FILE}" common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
 yq w -i "${VALUES_FILE}" image.pim.tag "${RELEASE_NAME}"
 yq w -i "${VALUES_FILE}" pim.pubsub.topicBusinessEvent "${TOPIC_BUSINESS_EVENT}"
 yq w -i "${VALUES_FILE}" pim.pubsub.topicJobQueueUI "${TOPIC_JOB_QUEUE_UI}"
@@ -128,5 +138,3 @@ yq w -i "${VALUES_FILE}" pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
 yq w -i "${VALUES_FILE}" pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
 yq w -i "${VALUES_FILE}" pim.cloudFunction.serviceAccountEmail "${CLOUD_FUNCTION_GSA}"
 yq w -i "${VALUES_FILE}" pim.jobsPrefix "${CLOUD_SCHEDULER_PREFIX}"
-yq w -i "${VALUES_FILE}" tenantContextEncryption.enabled "${TENANT_CONTEXT_ENCRYPTION_ENABLED}"
-yq w -i "${VALUES_FILE}" tenantContextEncryption.encryptionKeySecretName "${ENCRYPTION_KEY_SECRET_NAME}"

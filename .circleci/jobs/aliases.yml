@@ -8,11 +8,11 @@ envVarsDeployDev: &envVarsDeployDev
   GOOGLE_COMPUTE_ZONE: "europe-west3-a"
   CLUSTER_NAME: "europe-west3-a"
   GOOGLE_CLUSTER_REGION: "europe-west3"
-  GOOGLE_REGION_PREFIX: ""
+  GOOGLE_REGION_SHORTED: ""
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
   CLUSTER_NAME_NEXT: "europe-west3-b"
   GOOGLE_CLUSTER_REGION_NEXT: "europe-west3"
-  GOOGLE_REGION_PREFIX_NEXT: ""
+  GOOGLE_REGION_SHORTED_NEXT: ""
 
 envVarsDeployPreprod: &envVarsDeployPreprod
   ENV_NAME: "preprod"
@@ -20,27 +20,30 @@ envVarsDeployPreprod: &envVarsDeployPreprod
   GOOGLE_COMPUTE_ZONE: "europe-west3-a"
   CLUSTER_NAME: "europe-west3-a"
   GOOGLE_CLUSTER_REGION: "europe-west3"
-  GOOGLE_REGION_PREFIX: ""
+  GOOGLE_REGION_SHORTED: ""
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
   CLUSTER_NAME_NEXT: "europe-west3-b"
   GOOGLE_CLUSTER_REGION_NEXT: "europe-west3"
-  GOOGLE_REGION_PREFIX_NEXT: ""
+  GOOGLE_REGION_SHORTED_NEXT: ""
 
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
   ENV_NAME: "dev"
+  ENV_NAME_SHORTED: "dev"
   GOOGLE_DOMAIN: "ci.pim.akeneo.cloud"
   GOOGLE_MANAGED_ZONE_DNS: "ci.pim.akeneo.cloud"
   GOOGLE_PROJECT_ID: "akecld-prd-pim-saas-dev"
   GOOGLE_PROJECT_ID_SHARED: "akecld-prd-pim-saas-shared"
   GOOGLE_PROJECT_ID_FIRESTORE: "akecld-prd-pim-fire-eur-dev"
   CLUSTER_NAME: "akecld-prd-pim-saas-dev-europe-west1"
+  GOOGLE_LOCATION: "EU"
   GOOGLE_CLUSTER_REGION: "europe-west1"
   GOOGLE_COMPUTE_ZONE: "europe-west1-b"
-  GOOGLE_REGION_PREFIX: "dev-eur-w-1"
+  GOOGLE_REGION_SHORTED: "euw1"
   CLUSTER_NAME_NEXT: "akecld-prd-pim-saas-dev-europe-west3"
+  GOOGLE_LOCATION_NEXT: "EU"
   GOOGLE_CLUSTER_REGION_NEXT: "europe-west3"
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
-  GOOGLE_REGION_PREFIX_NEXT: "dev-eur-w-3"
+  GOOGLE_REGION_SHORTED_NEXT: "euw3"
 
 dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent # cloudDeployer version used in prod (used for lastest release deployement)
   docker:
