@@ -202,7 +202,7 @@ module "cloud_build_destroy_infra_timmy_pim_saas_sandbox_europe-west1" {
   tags                      = ["type:terraform", "env:sandbox", "action:destroy"]
   trigger_name              = "destroy-infra-timmy-pim-saas-sandbox-europe-west1"
   trigger_on_pr             = false
-  trigger_on_push           = false
+  trigger_on_push           = true
   substitutions = {
     _CLUSTER_ENV           = "sandbox"
     _CLUSTER_NAME          = "akecld-prd-pim-saas-sandbox-europe-west1"
