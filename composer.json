@@ -117,7 +117,8 @@
         "php-http/guzzle6-adapter": "^2.0",
         "symfony/mailer": "^5.4.0",
         "symfony/password-hasher": "5.4.*",
-        "tigitz/php-spellchecker": "0.4.0"
+        "tigitz/php-spellchecker": "0.4.0",
+        "vimeo/psalm": "^5.1.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.8.1",
