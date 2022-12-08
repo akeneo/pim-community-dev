@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
-use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType;
@@ -33,41 +33,24 @@ use Webmozart\Assert\Assert;
  */
 class LocaleController
 {
-    protected FormFactoryInterface $formFactory;
-
-    private Environment $templating;
-
-    private TranslatorInterface $translator;
-
-    private FeatureFlag $dictionaryFeatureFlag;
-
-    private SupportedLocaleValidator $supportedLocaleValidator;
-
     public function __construct(
-        FormFactoryInterface $formFactory,
-        Environment $engine,
-        TranslatorInterface $translator,
-        FeatureFlag $dictionaryFeatureFlag,
-        SupportedLocaleValidator $supportedLocaleValidator
+        private readonly FormFactoryInterface $formFactory,
+        private readonly Environment $twig,
+        private readonly TranslatorInterface $translator,
+        private readonly FeatureFlag $dictionaryFeatureFlag,
+        private readonly SupportedLocaleValidator $supportedLocaleValidator,
+        private readonly LocaleRepositoryInterface $localeRepository,
     ) {
-        $this->formFactory = $formFactory;
-        $this->templating = $engine;
-        $this->translator = $translator;
-        $this->dictionaryFeatureFlag = $dictionaryFeatureFlag;
-        $this->supportedLocaleValidator = $supportedLocaleValidator;
     }
 
     /**
      * Edit a locale
      *
-     * @param Locale $locale
-     *
      * @AclAncestor("pimee_enrich_locale_edit")
-     *
-     * @return  Response
      */
-    public function editAction(Request $request, Locale $locale): Response
+    public function editAction(Request $request, int $id): Response
     {
+        $locale = $this->localeRepository->find($id);
         $form = $this->formFactory->create(LocaleType::class, $locale);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -91,7 +74,7 @@ class LocaleController
         );
 
         return new Response(
-            $this->templating->render('@AkeneoPimPermission/Locale/edit.html.twig', [
+            $this->twig->render('@AkeneoPimPermission/Locale/edit.html.twig', [
                 'form' => $form->createView(),
                 'dictionaryEnabled' => $dictionaryEnabled,
             ])

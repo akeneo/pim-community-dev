@@ -25,7 +25,7 @@ class AbstractSecurityTestCase extends TestCase
     protected function generateToken($username): void
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
     }
 

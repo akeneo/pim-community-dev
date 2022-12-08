@@ -7,6 +7,7 @@ import {
     IconButton,
     Pagination,
     Pill,
+    Search,
     SectionTitle,
     Table,
 } from 'akeneo-design-system';
@@ -19,9 +20,11 @@ import {ProductFileImportStatus} from './ProductFileImportStatus';
 
 type Props = {
     productFiles: ProductFile[];
-    totalProductFiles: number;
     currentPage: number;
     onChangePage: (pageNumber: number) => void;
+    searchValue: string;
+    onChangeSearch: (searchValue: string) => void;
+    totalSearchResults: number;
 };
 
 export const PRODUCT_FILES_PER_PAGE = 10;
@@ -96,7 +99,14 @@ const StyledPill = styled(Pill)`
     background-color: ${getColor('blue100')};
 `;
 
-const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChangePage}: Props) => {
+const ProductFileList = ({
+    productFiles,
+    currentPage,
+    onChangePage,
+    searchValue,
+    onChangeSearch,
+    totalSearchResults,
+}: Props) => {
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
     const [currentProductFileIdentifier, setCurrentProductFileIdentifier] = useState<string | null>(null);
@@ -134,12 +144,20 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                         <SectionTitle.Title>
                             <FormattedMessage defaultMessage="File history" id="E+F5l+" />
                         </SectionTitle.Title>
+                        <Search
+                            onSearchChange={onChangeSearch}
+                            searchValue={searchValue}
+                            placeholder={intl.formatMessage({
+                                defaultMessage: 'Search',
+                                id: 'xmcVZ0',
+                            })}
+                        />
                         <StyledNumberOfProductFiles>
                             <FormattedMessage
                                 defaultMessage="{numberOfProductFiles, plural, one {# result} other {# results}}"
                                 id="OEGUss"
                                 values={{
-                                    numberOfProductFiles: productFiles.length,
+                                    numberOfProductFiles: totalSearchResults,
                                 }}
                             />
                         </StyledNumberOfProductFiles>
@@ -230,9 +248,16 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                         </StyledTable>
                     </FlexRow>
                     <Pagination
-                        followPage={onChangePage}
-                        currentPage={currentPage}
-                        totalItems={totalProductFiles}
+                        followPage={(page: number) => {
+                            onChangePage(page);
+                            closePanel();
+                        }}
+                        currentPage={
+                            currentPage > totalSearchResults / PRODUCT_FILES_PER_PAGE
+                                ? Math.ceil(totalSearchResults / PRODUCT_FILES_PER_PAGE)
+                                : currentPage
+                        }
+                        totalItems={totalSearchResults}
                         itemsPerPage={PRODUCT_FILES_PER_PAGE}
                     />
                 </ProductFilesContainer>

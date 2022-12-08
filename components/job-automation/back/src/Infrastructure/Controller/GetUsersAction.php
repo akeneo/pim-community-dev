@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetUsersAction
 {
     public function __construct(
-        private ListUsersHandlerInterface $listUsersHandler,
+        private readonly ListUsersHandlerInterface $listUsersHandler,
     ) {
     }
 

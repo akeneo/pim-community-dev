@@ -6,6 +6,7 @@ services:
             - '%env(default::FLAG_PERFORMANCE_ANALYTICS_ENABLED)%'
 
     akeneo.performance_analytics.notify_enriched_products.feature:
-        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        class: Akeneo\PerformanceAnalytics\Infrastructure\Feature\PerformanceAnalyticsFeature
         arguments:
+            - '@akeneo.feature_flag.service.only_serenity_feature'
             - '%env(default::FLAG_PERFORMANCE_ANALYTICS_NOTIFY_ENRICHED_PRODUCTS_ENABLED)%'

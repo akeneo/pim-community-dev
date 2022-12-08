@@ -23,8 +23,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class RefreshScheduledJobInstanceAfterJobPublished implements EventSubscriberInterface
 {
     public function __construct(
-        private ClockInterface $clock,
-        private UpdateAutomationLastExecutionDateQueryInterface $updateJobInstanceAutomationLastExecutionDate,
+        private readonly ClockInterface $clock,
+        private readonly UpdateAutomationLastExecutionDateQueryInterface $updateJobInstanceAutomationLastExecutionDate,
     ) {
     }
 

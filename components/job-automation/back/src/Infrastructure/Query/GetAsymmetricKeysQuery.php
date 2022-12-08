@@ -21,7 +21,7 @@ use Doctrine\DBAL\Connection;
 final class GetAsymmetricKeysQuery implements GetAsymmetricKeysQueryInterface
 {
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
     ) {
     }
 

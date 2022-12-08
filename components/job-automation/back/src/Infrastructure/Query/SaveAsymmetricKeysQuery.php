@@ -23,7 +23,7 @@ final class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
     public const OPTION_CODE = 'SFTP_ASYMMETRIC_KEYS';
 
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
     ) {
     }
 

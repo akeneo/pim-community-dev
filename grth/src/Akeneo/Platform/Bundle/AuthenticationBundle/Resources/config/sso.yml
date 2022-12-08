@@ -14,24 +14,10 @@ services:
         arguments:
             - '%env(AKENEO_PIM_URL)%'
 
-    onelogin_auth:
-        class: 'OneLogin\Saml2\Auth'
-        factory: ['@onelogin_auth.factory', 'create']
-        public: true
-
-    onelogin_auth.factory:
-        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\OneLoginAuthFactory'
-        arguments:
-            - '@akeneo_authentication.sso.configuration.repository'
-            - '%hslavich_onelogin_saml.settings%'
-
     akeneo_authentication.sso.log.create_archive_from_db_table:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchiveFromDbTable'
         arguments:
             - '@database_connection'
-
-    hslavich_onelogin_saml.saml_token_factory:
-        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory'
 
     akeneo_authentication.sso.user.factory:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\Factory'
@@ -84,3 +70,12 @@ services:
     Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlACSErrorListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\OneLoginAuthFactory:
+        arguments:
+            - '@akeneo_authentication.sso.configuration.repository'
+            - '%hslavich_onelogin_saml.settings%'
+
+    OneLogin\Saml2\Auth:
+        class: 'OneLogin\Saml2\Auth'
+        factory: [ '@Akeneo\Platform\Bundle\AuthenticationBundle\Sso\OneLoginAuthFactory', 'create' ]

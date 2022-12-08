@@ -3,7 +3,7 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ReferenceEntityConfigurator} from './ReferenceEntityConfigurator';
-import {getDefaultReferenceEntitySource} from './model';
+import {getDefaultReferenceEntitySource, ReferenceEntitySelection} from './model';
 import {getDefaultDateSource} from '../Date/model';
 
 const attribute = {
@@ -21,15 +21,35 @@ jest.mock('../common/CodeLabelSelector');
 jest.mock('../common/DefaultValue');
 jest.mock('../common/RecordsReplacement');
 
+jest.mock('./ReferenceEntitySelector', () => ({
+  ReferenceEntitySelector: ({
+    onSelectionChange,
+  }: {
+    onSelectionChange: (updatedSelection: ReferenceEntitySelection) => void;
+  }) => (
+    <button
+      onClick={() =>
+        onSelectionChange({
+          type: 'attribute',
+          attribute_identifier: 'description_1234',
+          attribute_type: 'text',
+          reference_entity_code: 'brand',
+          channel: null,
+          locale: null,
+        })
+      }
+    >
+      Update selection
+    </button>
+  ),
+}));
+
 test('it displays a reference entity configurator', () => {
   const onSourceChange = jest.fn();
 
   renderWithProviders(
     <ReferenceEntityConfigurator
-      source={{
-        ...getDefaultReferenceEntitySource(attribute, null, null),
-        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-      }}
+      source={getDefaultReferenceEntitySource(attribute, null, null)}
       attribute={attribute}
       validationErrors={[]}
       onSourceChange={onSourceChange}
@@ -40,11 +60,18 @@ test('it displays a reference entity configurator', () => {
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultReferenceEntitySource(attribute, null, null),
+    uuid: expect.any(String),
     selection: {
-      type: 'label',
+      // TODO RAB-1175
+      // type: 'attribute',
+      // attribute_identifier: 'description_1234',
+      // attribute_type: 'text',
+      // reference_entity_code: 'brand',
+      // channel: null,
+      // locale: null,
       locale: 'en_US',
+      type: 'label',
     },
-    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
 });
 
@@ -53,10 +80,7 @@ test('it can update default value operation', () => {
 
   renderWithProviders(
     <ReferenceEntityConfigurator
-      source={{
-        ...getDefaultReferenceEntitySource(attribute, null, null),
-        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-      }}
+      source={getDefaultReferenceEntitySource(attribute, null, null)}
       attribute={attribute}
       validationErrors={[]}
       onSourceChange={onSourceChange}
@@ -67,13 +91,13 @@ test('it can update default value operation', () => {
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultReferenceEntitySource(attribute, null, null),
+    uuid: expect.any(String),
     operations: {
       default_value: {
         type: 'default_value',
         value: 'foo',
       },
     },
-    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
 });
 
@@ -101,10 +125,7 @@ test('it can update a reference entity replacement operation', () => {
 
   renderWithProviders(
     <ReferenceEntityConfigurator
-      source={{
-        ...getDefaultReferenceEntitySource(attribute, null, null),
-        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-      }}
+      source={getDefaultReferenceEntitySource(attribute, null, null)}
       attribute={attribute}
       validationErrors={[]}
       onSourceChange={onSourceChange}
@@ -115,7 +136,7 @@ test('it can update a reference entity replacement operation', () => {
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultReferenceEntitySource(attribute, null, null),
-    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+    uuid: expect.any(String),
     operations: {
       replacement: {
         type: 'replacement',
@@ -134,10 +155,7 @@ test('it throws when the attribute is invalid', () => {
   expect(() => {
     renderWithProviders(
       <ReferenceEntityConfigurator
-        source={{
-          ...getDefaultReferenceEntitySource(attribute, null, null),
-          uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-        }}
+        source={getDefaultReferenceEntitySource(attribute, null, null)}
         attribute={invalidAttribute}
         validationErrors={[]}
         onSourceChange={jest.fn()}

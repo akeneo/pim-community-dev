@@ -305,12 +305,6 @@ services:
         class: Akeneo\AssetManager\Common\Fake\ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy
 
     # Third party services
-    fos_oauth_server.security.authentication.listener:
-        class: Akeneo\AssetManager\Common\Fake\Connector\NullListener
-
-    security.access_listener:
-        class: Akeneo\AssetManager\Common\Fake\Connector\NullListener
-
     cache.adapter.array:
         class: Symfony\Component\Cache\Adapter\ArrayAdapter
 

@@ -66,9 +66,7 @@ class ReferenceEntityValueNormalizer implements NormalizerInterface, CacheableSu
 
     private function valueIsEmpty(ReferenceEntityValueInterface $value): bool
     {
-        $recordCode = $value->getData();
-
-        return $recordCode === null || empty($recordCode->normalize());
+        return null === $value->getData();
     }
 
     private function formatSimpleLink(ReferenceEntityValueInterface $value, string $catalogLocaleCode): string

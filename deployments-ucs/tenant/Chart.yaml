@@ -11,6 +11,3 @@ dependencies:
   - name: elasticsearch
     version: "1.33.0"
     repository: gs://akeneo-pim-saas-charts-prod/
-  - name: memcached
-    version: "6.1.4"
-    repository: https://charts.bitnami.com/bitnami

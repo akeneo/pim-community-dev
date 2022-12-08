@@ -22,16 +22,15 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Twig\Environment;
 
 /**
  * Project controller.
@@ -40,54 +39,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProjectController
 {
-    protected FilterConverter $filterConverter;
-    protected ValidatorInterface $validator;
-    protected ProjectFactoryInterface $projectFactory;
-    protected SaverInterface $projectSaver;
-    protected ObjectUpdaterInterface $projectUpdater;
-    protected RemoverInterface $projectRemover;
-    protected ProjectCalculationJobLauncher $projectCalculationJobLauncher;
-    protected NormalizerInterface $projectNormalizer;
-    protected ProjectRepositoryInterface $projectRepository;
-    protected SearchableRepositoryInterface $userRepository;
-    protected TokenStorageInterface $tokenStorage;
-    protected ProjectCompletenessRepositoryInterface $projectCompletenessRepository;
-    protected AuthorizationCheckerInterface $authorizationChecker;
-    protected RouterInterface $router;
-    protected NormalizerInterface $projectCompletenessNormalizer;
-
     public function __construct(
-        FilterConverter $filterConverter,
-        ProjectFactoryInterface $projectFactory,
-        SaverInterface $projectSaver,
-        ObjectUpdaterInterface $projectUpdater,
-        RemoverInterface $projectRemover,
-        ValidatorInterface $validator,
-        ProjectCalculationJobLauncher $projectCalculationJobLauncher,
-        NormalizerInterface $projectNormalizer,
-        ProjectRepositoryInterface $projectRepository,
-        SearchableRepositoryInterface $userRepository,
-        TokenStorageInterface $tokenStorage,
-        ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
-        AuthorizationCheckerInterface $authorizationChecker,
-        RouterInterface $router,
-        NormalizerInterface $projectCompletenessNormalizer
+        private readonly FilterConverter $filterConverter,
+        private readonly ProjectFactoryInterface $projectFactory,
+        private readonly SaverInterface $projectSaver,
+        private readonly ObjectUpdaterInterface $projectUpdater,
+        private readonly RemoverInterface $projectRemover,
+        private readonly ValidatorInterface $validator,
+        private readonly ProjectCalculationJobLauncher $projectCalculationJobLauncher,
+        private readonly NormalizerInterface $projectNormalizer,
+        private readonly ProjectRepositoryInterface $projectRepository,
+        private readonly SearchableRepositoryInterface $userRepository,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly NormalizerInterface $projectCompletenessNormalizer,
+        private readonly Environment $twig,
     ) {
-        $this->filterConverter = $filterConverter;
-        $this->projectFactory = $projectFactory;
-        $this->validator = $validator;
-        $this->projectSaver = $projectSaver;
-        $this->projectUpdater = $projectUpdater;
-        $this->projectCalculationJobLauncher = $projectCalculationJobLauncher;
-        $this->projectNormalizer = $projectNormalizer;
-        $this->projectRepository = $projectRepository;
-        $this->userRepository = $userRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->projectCompletenessRepository = $projectCompletenessRepository;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->router = $router;
-        $this->projectCompletenessNormalizer = $projectCompletenessNormalizer;
-        $this->projectRemover = $projectRemover;
     }
 
     public function createAction(Request $request): Response
@@ -246,12 +214,8 @@ class ProjectController
     /**
      * The "show" action of a project means redirecting the user on the datagrid filtered with the Project's view.
      * If a "status" is specified, we fill in the project completeness filter depending on the user permissions.
-     *
-     * @Template("@AkeneoPimTeamworkAssistant/Project/filter-grid.html.twig")
-     *
-     * @return array|RedirectResponse|JsonResponse
      */
-    public function showAction(string $identifier, string $status)
+    public function showAction(string $identifier, string $status): Response
     {
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
@@ -289,10 +253,12 @@ class ProjectController
             $statusCode = $contributorStatuses[$status];
         }
 
-        return [
+        $content = $this->twig->render('@AkeneoPimTeamworkAssistant/Project/filter-grid.html.twig', [
             'view'   => $project->getDatagridView(),
             'status' => $statusCode,
             'locale' => $project->getLocale()->getCode(),
-        ];
+        ]);
+
+        return new Response($content);
     }
 }

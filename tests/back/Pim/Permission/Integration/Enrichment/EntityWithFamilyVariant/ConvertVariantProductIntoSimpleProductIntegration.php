@@ -179,7 +179,7 @@ class ConvertVariantProductIntoSimpleProductIntegration extends TestCase
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier('mary');
         $this->get('security.token_storage')->setToken(
-            new UsernamePasswordToken($user, null, 'main', $user->getRoles())
+            new UsernamePasswordToken($user, 'main', $user->getRoles())
         );
     }
 

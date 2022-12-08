@@ -27,7 +27,7 @@ final class GetProductFilesTest extends TestCase
             '8110a4f5-9d1e-488e-a878-1a274423cfa4',
             '',
             null,
-        )], 1);
+        )], 1, 1);
 
         $listProductFilesQueryHandler
             ->expects($this->once())

@@ -172,8 +172,8 @@ services:
             - '@security.token_storage'
             - '@pimee_teamwork_assistant.repository.project_completeness'
             - '@security.authorization_checker'
-            - '@router'
             - '@pim_internal_api_serializer'
+            - '@twig'
 
     pimee_teamwork_assistant.controller.project_completeness_controller:
         class: '%pimee_teamwork_assistant.controller.project_completeness_controller.class%'

@@ -30,11 +30,6 @@ variable "region_prefix" {
   type        = string
 }
 
-variable "google_zone" {
-  description = "The Google zone where to provision MySQL storage"
-  type        = string
-}
-
 variable "domain" {
   description = "The domain to use for the tenant deployments"
   type        = string
@@ -61,11 +56,6 @@ variable "project_id" {
   default     = "akecld-prd-pim-saas-dev"
 }
 
-variable "shared_project_id" {
-  description = "The GCP project ID of the shared project to centralize common components to all projects"
-  type    = string
-}
-
 variable "tenant_context_collection_name" {
   description = "The name of the tenant context collection in firestore"
   type        = string
@@ -75,6 +65,12 @@ variable "tenant_context_collection_name" {
 variable "branch_name" {
   description = "The branch name that the Timmy deployment uses"
   type        = string
+}
+
+variable "suffix_name" {
+  description = "The suffix added at the end of the command, it is a hash for the branch name"
+  type        = string
+  default     = ""
 }
 
 variable "portal_hostname" {

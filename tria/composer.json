@@ -52,16 +52,16 @@
     },
     "require": {
         "ext-json": "*",
-        "akeneo/pim-growth-edition": "*@dev",
-        "akeneo/pim-community-dev": "dev-master",
-        "hslavich/oneloginsaml-bundle": "2.0.*",
-        "justinrainbow/json-schema": "^5.2",
-        "grpc/grpc": "^1.42.0",
         "akeneo/api-php-client": "^6.0",
-        "php-http/guzzle6-adapter": "^2.0",
+        "akeneo/pim-community-dev": "dev-master",
+        "akeneo/pim-growth-edition": "*@dev",
+        "grpc/grpc": "^1.42.0",
+        "hslavich/oneloginsaml-bundle": "^2.9.0",
         "http-interop/http-factory-guzzle": "^1.0",
+        "justinrainbow/json-schema": "^5.2",
         "league/flysystem-google-cloud-storage": "^2.0",
-        "league/flysystem-sftp-v3": "^3.0"
+        "league/flysystem-sftp-v3": "^3.0",
+        "php-http/guzzle6-adapter": "^2.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",

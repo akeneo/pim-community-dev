@@ -17,9 +17,3 @@ services:
     _defaults:
         autowire: false      # Automatically injects dependencies in your services.
         autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.
-
-    Hslavich\OneloginSamlBundle\Controller\SamlController:
-        class: Hslavich\OneloginSamlBundle\Controller\SamlController
-        tags: ['controller.service_arguments']
-        public: true
-        autowire: true

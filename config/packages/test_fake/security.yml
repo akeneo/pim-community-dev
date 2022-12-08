@@ -1,0 +1,4 @@
+security:
+  firewalls:
+    api:
+      security: false

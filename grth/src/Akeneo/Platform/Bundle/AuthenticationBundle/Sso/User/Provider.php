@@ -34,11 +34,10 @@ final class Provider implements UserProviderInterface
     }
 
     /**
-     * @TODO: Remove this function when symfony will be in 6.0
-     * @param string $username
-     * @return UserInterface
+     * TODO: Remove this function when symfony will be in 6.0
+     * {@inheritDoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username): UserInterface
     {
         return $this->loadUserByIdentifier($username);
     }
@@ -56,7 +55,7 @@ final class Provider implements UserProviderInterface
 
         $user = $this->userRepository->findOneBy(['username' => $identifier]);
         if (null === $user) {
-            throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $identifier));
         }
 
         if (!$user->isEnabled()) {

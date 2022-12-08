@@ -74,7 +74,7 @@ final class CompletenessOnNonGrantedAttributesIntegration extends AbstractComple
     {
         $user = $this->get('pim_user.repository.user')->findOneBy(['username' => $username]);
 
-        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_USER']);
+        $token = new UsernamePasswordToken($user, 'main', ['ROLE_USER']);
         $this->get('security.token_storage')->setToken($token);
     }
 

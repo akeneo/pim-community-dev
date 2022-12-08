@@ -32,10 +32,11 @@ test('it calls the backend and returns the list of product files', async () => {
                 supplierLastReadAt: '2022-10-18T09:51:24+00:00',
             },
         ],
-        total: 25,
+        total_number_of_product_files: 1,
+        total_search_results: 1,
     });
 
-    const response = await fetchProductFiles(25);
+    const response = await fetchProductFiles(1, '');
     expect(response).toStrictEqual({
         product_files: [
             {
@@ -62,6 +63,7 @@ test('it calls the backend and returns the list of product files', async () => {
                 displayNewMessageIndicatorPill: true,
             },
         ],
-        total: 25,
+        totalNumberOfProductFiles: 1,
+        totalSearchResults: 1,
     });
 });

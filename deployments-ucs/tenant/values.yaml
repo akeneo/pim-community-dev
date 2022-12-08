@@ -41,7 +41,7 @@ common:
   googleZone: null
   fqdn: null
   dnsCloudDomain: null
-  workloadIdentityKSA: null
+  workloadIdentityKSA: pim-ksa-workload-identity
   workloadIdentityGSA: pim-saas-service
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
@@ -166,10 +166,21 @@ elasticsearch:
         operator: "Equal"
         value: "elasticsearch"
         effect: "NoExecute"
+  serviceAccounts:
+    client:
+      create: false
+      name: null
+    master:
+      create: false
+      name: null
+    data:
+      create: false
+      name: null
   snapshots:
-    retention: 15
-    repository: pim_gcs_repository
+    bucketName: null
     folder: elasticsearch-snapshots
+    repository: pim_gcs_repository
+    retention: 15
 
 # Free Trial
 freeTrial:
@@ -203,25 +214,6 @@ mailer:
   baseMailerDsn: null
   domain: null
   apiKey: null
-
-memcached:
-  image:
-    tag: 1.6.12
-    pullPolicy: IfNotPresent
-  fullnameOverride: memcached
-  replicaCount: 1
-  resources:
-    limits:
-      memory: "32Mi"
-    requests:
-      cpu: "1m"
-      memory: "16Mi"
-  extraEnvVars:
-    - name: MEMCACHED_MAX_ITEM_SIZE
-      value: "64"
-  pdb:
-    create: true
-    minAvailable: 0
 
 mysql:
   image:

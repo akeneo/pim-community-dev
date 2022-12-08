@@ -63,7 +63,7 @@ class AuthenticatedClient
 
     private function getUserToken(User $user): UsernamePasswordToken
     {
-        return new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        return new UsernamePasswordToken($user, 'main', $user->getRoles());
     }
 
     private function createSession(KernelBrowser $client, TokenInterface $token): void

@@ -242,12 +242,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
     # Third party services
-    fos_oauth_server.security.authentication.listener:
-        class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
-
-    security.access_listener:
-        class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
-
     cache.adapter.array:
         class: Symfony\Component\Cache\Adapter\ArrayAdapter
 

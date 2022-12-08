@@ -55,7 +55,7 @@ class TestCase extends IntegrationTestCase
 
         $this->get('pim_user.saver.user')->save($user);
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
     }
 

@@ -39,7 +39,6 @@ functions.http('createDocument', (req, res) => {
       "MAILER_DSN": mailerBaseDsn + "?encryption=tls&auth_mode=login",
       "MAILER_FROM": "Akeneo <no-reply@" + tenantName + "." + domain + ">",
       "MAILER_USER": tenantName + "-" + projectId + "@mg.cloud.akeneo.com",
-      "MEMCACHED_SVC": "memcached." + tenantId + ".svc.cluster.local",
       "APP_DATABASE_PASSWORD": mysqlPassword,
       "PFID": tenantId,
       "SRNT_GOOGLE_BUCKET_NAME": tenantId

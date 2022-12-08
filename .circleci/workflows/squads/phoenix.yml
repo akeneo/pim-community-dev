@@ -273,6 +273,21 @@ workflows:
                     - test_deploy_timmy
                     - test_deploy_ucs_pim
 
+          - prepare_load_tests_ucs:
+                name: prepare-test-<< matrix.tenant_name >>
+                matrix:
+                    parameters:
+                        tenant_name: ['ucs-perf-01', 'ucs-perf-02']
+                requires:
+                    - deploy-<< matrix.tenant_name >>
+          - execute_load_tests_ucs:
+                name: load-test-<< matrix.tenant_name >>
+                matrix:
+                    parameters:
+                        tenant_name: ['ucs-perf-01', 'ucs-perf-02']
+                requires:
+                    - prepare-test-<< matrix.tenant_name >>
+
           - delete_ucs_tenants?:
                 type: approval
                 filters:

@@ -193,6 +193,25 @@ module "cloud_build_cluster_pim_saas_dev_europe_west3" {
   cloudbuild_service_account   = local.main_sa
 }
 
+module "cloud_build_destroy_infra_timmy_pim_saas_sandbox_europe-west1" {
+  source                    = "../modules/cloudbuild-infra"
+  approval_required         = true
+  cloudbuild_filename       = ".cloudbuild/ucs-ci/ucs-delete-timmy-pim-cluster-sandbox.yaml"
+  cloudbuild_included_files = [".cloudbuild/ucs-ci/ucs-delete-timmy-pim-cluster-sandbox.yaml",".cloudbuild/clusters/akecld-prd-pim-saas-sandbox-europe-west1.yaml", "deployments-ucs/argocd/**", "deployments-ucs/argocd-apps/**", "deployments-ucs/infra/k8s/**"]
+  logs_bucket               = "gs://akecld-prd-pim-saas-sandbox-cloudbuild-logs"
+  tags                      = ["type:terraform", "env:sandbox", "action:destroy"]
+  trigger_name              = "destroy-infra-timmy-pim-saas-sandbox-europe-west1"
+  trigger_on_pr             = false
+  trigger_on_push           = true
+  substitutions = {
+    _CLUSTER_ENV           = "sandbox"
+    _CLUSTER_NAME          = "akecld-prd-pim-saas-sandbox-europe-west1"
+    _GOOGLE_CLUSTER_REGION = "europe-west1"
+    _GOOGLE_PROJECT_ID     = "akecld-prd-pim-saas-sandbox"
+    _TARGET_IMPERSONATE    = "main-service-account@akecld-prd-pim-saas-sandbox.iam.gserviceaccount.com"
+  }
+}
+
 module "shared_dns_zone" {
   source     = "../modules/shared-dns-zone"
   project_id = local.project_id

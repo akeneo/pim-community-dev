@@ -25,7 +25,7 @@ trait AuthenticateAsTrait
         $tokenStorage = $this->get('security.token_storage');
 
         $user = $userRepository->findOneByIdentifier($username);
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $tokenStorage->setToken($token);
 
         return $user;

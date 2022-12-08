@@ -113,12 +113,6 @@ DEFAULT_MYSQL_REQUESTS_CPU := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/val
 MYSQL_REQUESTS_CPU := $(shell echo $$(( $(DEFAULT_MYSQL_REQUESTS_CPU) + $(DEFAULT_MYSQL_REQUESTS_CPU) * $(PRODUCT_REFERENCE_SIZE_INDEX) * 130 / 100 / 2 ))$(CPU_UNIT) )
 DEFAULT_MYSQL_REQUESTS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'mysql.mysql.resources.requests.memory') | sed 's/$(MEMORY_UNIT)//' )
 MYSQL_REQUESTS_MEMORY := $(shell echo $$(( $(DEFAULT_MYSQL_REQUESTS_MEMORY) + 1024 * $(PRODUCT_REFERENCE_SIZE_INDEX) * 130 / 100 ))$(MEMORY_UNIT) )
-DEFAULT_MEMCACHED_LIMITS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'memcached.resources.limits.memory') | sed 's/$(MEMORY_UNIT)//' )
-MEMCACHED_LIMITS_MEMORY := $(shell echo $$(( $(DEFAULT_MEMCACHED_LIMITS_MEMORY) + $(DEFAULT_MEMCACHED_LIMITS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
-DEFAULT_MEMCACHED_REQUESTS_CPU := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'memcached.resources.requests.cpu') | sed 's/$(CPU_UNIT)//' )
-MEMCACHED_REQUESTS_CPU := $(shell echo $$(( $(DEFAULT_MEMCACHED_REQUESTS_CPU) + $(DEFAULT_MEMCACHED_REQUESTS_CPU) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(CPU_UNIT) )
-DEFAULT_MEMCACHED_REQUESTS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'memcached.resources.requests.memory') | sed 's/$(MEMORY_UNIT)//' )
-MEMCACHED_REQUESTS_MEMORY := $(shell echo $$(( $(DEFAULT_MEMCACHED_REQUESTS_MEMORY) + $(DEFAULT_MEMCACHED_REQUESTS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
 
 .DEFAULT_GOAL := help
 

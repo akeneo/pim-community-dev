@@ -131,16 +131,14 @@ jobs:
                       if [ ! << parameters.tenant_name >> = "" ]; then
                         TENANT_NAME=<< parameters.tenant_name >>
                       fi
-                      FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-timmy-delete-tenant
-                      if [ ! -z "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
-                        FUNCTION_NAME=${GOOGLE_REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-delete-tenant
-                      fi
+
                       JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\",\"tenant_name\":\"%s\"}\n" ${CIRCLE_BRANCH} ${TENANT_NAME} )
-                      gcloud config unset auth/impersonate_service_account
-                      DELETE_TENANT_STATUS_CODE=0
-                      gcloud beta functions call ${FUNCTION_NAME} --region=${GOOGLE_CLUSTER_REGION} --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
-                      echo ${FUNCTION_NAME}
                       echo ${JSON_BODY_STRING}
+
+                      gcloud config unset auth/impersonate_service_account
+
+                      DELETE_TENANT_STATUS_CODE=0
+                      gcloud beta functions call ${CLOUD_FUNCTION_DELETE_TENANT} --region=${GOOGLE_CLUSTER_REGION} --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
                       exit ${DELETE_TENANT_STATUS_CODE}
 
     delete_timmy:

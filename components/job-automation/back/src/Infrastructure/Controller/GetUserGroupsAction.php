@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetUserGroupsAction
 {
     public function __construct(
-        private ListUserGroupInterface $listUserGroup,
+        private readonly ListUserGroupInterface $listUserGroup,
     ) {
     }
 

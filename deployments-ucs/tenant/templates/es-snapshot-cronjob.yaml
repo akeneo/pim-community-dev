@@ -1,0 +1,40 @@
+{{ if not .Values.freeTrial.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: es-snapshot-cronjob
+  labels:
+    component: "es-snapshot-cronjob"
+    app.kubernetes.io/component: "es-snapshot-cronjob"
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+spec:
+  schedule: "@daily"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            component: es-snapshot-cronjob
+        spec:
+          containers:
+          - name: snapshotter
+            image: {{ .Values.image.curljqzip.repository }}:{{ .Values.image.curljqzip.tag }}
+            imagePullPolicy: {{ .Values.image.curljqzip.pullPolicy | quote }}
+            command: ["sh", "/scripts-dir/es-snapshot.sh"]
+            env:
+              - { name: APP_INDEX_HOSTS, value: {{ printf "%s-client:9200" .Values.elasticsearch.fullnameOverride | quote }} }
+              - { name: REPOSITORY, value: {{ .Values.elasticsearch.snapshots.repository | quote }} }
+              - { name: SNAPSHOT_RETENTION, value: {{ .Values.elasticsearch.snapshots.retention | quote }} }
+            volumeMounts:
+              - name: pim-scripts-configmap
+                mountPath: /scripts-dir
+          volumes:
+            - name: pim-scripts-configmap
+              configMap:
+                name:  pim-scripts-configmap
+          restartPolicy: OnFailure
+{{- end }}

@@ -14,6 +14,8 @@ services:
         - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileHandlerForSupplier'
         - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler'
         - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\PreviewProductFile\PreviewProductFileHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePreview'
 
     Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileImportContext:
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImportConfigurations'

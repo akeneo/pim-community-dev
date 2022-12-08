@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Serv
 
 final class GetProductFilesQuery
 {
-    public function __construct(public string $contributorEmail, public int $page)
+    public function __construct(public string $contributorEmail, public int $page, public string $search = '')
     {
     }
 }

@@ -5,3 +5,11 @@ services:
     tags:
       - { name: validator.constraint_validator }
     public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSelectionValidator:
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_attributes_public_api'
+      - [ ',', ';', '|' ]
+    tags:
+      - { name: validator.constraint_validator }
+    public: true

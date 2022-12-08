@@ -15,6 +15,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
@@ -147,6 +148,7 @@ final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
 
         $productFileWithUnreadComments = (new ProductFileBuilder())
             ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+            ->uploadedAt((new FrozenClock('2022-11-29 15:05:38'))->now())
             ->uploadedBySupplier($this->supplier)
             ->build();
         $productFileWithUnreadComments->addNewSupplierComment(
@@ -163,6 +165,7 @@ final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
 
         $productFileWithoutUnreadComments = (new ProductFileBuilder())
             ->withIdentifier('a3aac0e2-9eb9-4203-8af2-5425b2062ad4')
+            ->uploadedAt((new FrozenClock('2022-11-29 14:05:38'))->now())
             ->uploadedBySupplier($this->supplier)
             ->build();
         $productFileWithoutUnreadComments->addNewSupplierComment(

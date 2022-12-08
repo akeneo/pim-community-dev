@@ -106,17 +106,19 @@
         "dragonmantank/cron-expression": "^3.3",
         "google/cloud-firestore": "^1.22",
         "grpc/grpc": "^1.42.0",
-        "hslavich/oneloginsaml-bundle": "2.0.*",
-        "php-http/guzzle6-adapter": "^2.0",
+        "hslavich/oneloginsaml-bundle": "^2.9.0",
         "http-interop/http-factory-guzzle": "^1.0",
         "jfcherng/php-diff": "^6.10",
         "justinrainbow/json-schema": "^5.2.11",
+        "league/flysystem-aws-s3-v3": "^2.0",
         "league/flysystem-google-cloud-storage": "^2.3.0",
         "league/flysystem-sftp-v3": "^3.0",
         "openspout/openspout": "^4.8.0",
+        "php-http/guzzle6-adapter": "^2.0",
         "symfony/mailer": "^5.4.0",
         "symfony/password-hasher": "5.4.*",
-        "tigitz/php-spellchecker": "0.4.0"
+        "tigitz/php-spellchecker": "0.4.0",
+        "vimeo/psalm": "^5.1.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.8.1",
@@ -128,7 +130,6 @@
         "friends-of-behat/symfony-extension": "^2.2.1",
         "friends-of-phpspec/phpspec-code-coverage": "^6.1.0",
         "friendsofphp/php-cs-fixer": "^3.13.0",
-        "league/flysystem-aws-s3-v3": "^2.0",
         "liuggio/fastest": "^1.10.0",
         "mcustiel/phiremock": "2.1.1",
         "nunomaduro/phpinsights": "^2.0",
@@ -142,8 +143,7 @@
         "rector/rector": "^0.14.8",
         "sensiolabs/behat-page-object-extension": "^2.3.3",
         "symfony/debug-bundle": "^5.4.0",
-        "symfony/web-profiler-bundle": "^5.4.0",
-        "vimeo/psalm": "^4.10"
+        "symfony/web-profiler-bundle": "^5.4.0"
     },
     "repositories": {
         "onboarder-extension": {

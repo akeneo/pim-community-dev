@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class JobInstaller implements EventSubscriberInterface
 {
     public function __construct(
-        private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler,
+        private readonly GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler,
     ) {
     }
 

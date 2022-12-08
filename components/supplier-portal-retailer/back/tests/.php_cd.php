@@ -96,9 +96,7 @@ $rules = [
             'Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceHandlerInterface',
 
             // External dependencies coupling
-            'OpenSpout\Common\Entity\Row',
-            'OpenSpout\Common\Exception\IOException',
-            'OpenSpout\Writer\Exception\WriterNotOpenedException',
+            'OpenSpout',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Types\Types',
             'League\Flysystem',
@@ -118,6 +116,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\Storage',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseComputeCommentsReadDelay',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Spout\SpoutRemoteXlsxFileReaderFactory',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
@@ -132,6 +131,7 @@ $rules = [
             'Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory',
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
+            'OpenSpout\Reader\XLSX\Reader',
             'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
@@ -204,6 +204,9 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFile',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Write\ImportProductFile\ImportProductFileHandler',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Repository\InMemory\InMemoryRepository',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\PreviewProductFile\PreviewProductFile',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\PreviewProductFile\PreviewProductFileHandler',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Spout\InMemory\InMemoryGetProductFilePreview',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
             'Ramsey\Uuid\Uuid',

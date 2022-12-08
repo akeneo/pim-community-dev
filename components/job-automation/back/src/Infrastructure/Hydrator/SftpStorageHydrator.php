@@ -15,13 +15,13 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Hydrator;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
-use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
+use Akeneo\Platform\JobAutomation\Domain\Model\Storage\SftpStorage;
 use Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface;
 
 final class SftpStorageHydrator implements StorageHydratorInterface
 {
     public function __construct(
-        private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
+        private readonly GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
     ) {
     }
 

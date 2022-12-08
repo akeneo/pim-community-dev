@@ -5,6 +5,12 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  {{#annotations}}
+  annotations:
+    {{#janitor/ttl}}
+    janitor/ttl: "{{{annotations.janitor/ttl}}}"
+    {{/janitor/ttl}}
+  {{/annotations}}
   labels:
     application_name: "{{{global.extraLabels.tenant_id}}}"
     instance_dns_record: "{{{global.extraLabels.instance_dns_record}}}"
@@ -63,12 +69,14 @@ spec:
           value: "{{{elasticsearch.data.resources.requests.memory}}}"
         - name: elasticsearch.data.resources.limits.memory
           value: "{{{elasticsearch.data.resources.limits.memory}}}"
-        - name: memcached.resources.limits.memory
-          value: "{{{memcached.resources.limits.memory}}}"
-        - name: memcached.resources.requests.cpu
-          value: "{{{memcached.resources.requests.cpu}}}"
-        - name: memcached.resources.requests.memory
-          value: "{{{memcached.resources.requests.memory}}}"
+        - name: elasticsearch.serviceAccounts.client.name
+          value: "{{{elasticsearch.serviceAccounts.client.name}}}"
+        - name: elasticsearch.serviceAccounts.master.name
+          value: "{{{elasticsearch.serviceAccounts.master.name}}}"
+        - name: elasticsearch.serviceAccounts.data.name
+          value: "{{{elasticsearch.serviceAccounts.data.name}}}"
+        - name: elasticsearch.snapshots.bucketName
+          value: "{{{elasticsearch.snapshots.bucketName}}}"
         - name: mailer.login
           value: "{{{mailer.login}}}"
         - name: mailer.password

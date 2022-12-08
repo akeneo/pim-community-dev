@@ -123,7 +123,7 @@ class FindProductWithAppliedDraftIntegration extends TestCase
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
         Assert::assertInstanceOf(UserInterface::class, $user);
         $this->get('security.token_storage')->setToken(
-            new UsernamePasswordToken($user, null, 'main', $user->getRoles())
+            new UsernamePasswordToken($user, 'main', $user->getRoles())
         );
 
         return (int) $user->getId();

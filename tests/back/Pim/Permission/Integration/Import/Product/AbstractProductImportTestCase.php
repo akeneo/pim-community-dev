@@ -197,7 +197,7 @@ abstract class AbstractProductImportTestCase extends TestCase
         $this->assertSame($countDrafts, $this->countProductDraft());
 
         $user = $this->get('pim_user.provider.user')->loadUserByUsername('admin');
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
         foreach ($expected as $identifier => $values) {

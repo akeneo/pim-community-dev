@@ -42,7 +42,7 @@ class ReferenceEntitySelectionValidator extends ConstraintValidator
                         [
                             'choices' => [
                                 ReferenceEntityCodeSelection::TYPE,
-                                ReferenceEntityLabelSelection::TYPE, // TODO RAB-1200 remove this type of selection
+                                ReferenceEntityLabelSelection::TYPE,
                                 ReferenceEntityAttributeSelectionInterface::TYPE,
                             ],
                         ],

@@ -30,6 +30,7 @@ const backendResponse = {
 };
 
 test('it loads a product file', async () => {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: true,
         json: async () => backendResponse,
@@ -73,6 +74,7 @@ test('it loads a product file', async () => {
 });
 
 test('it renders an error notification if the loading of the product file failed', async () => {
+    // @ts-ignore
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: false,
     }));
@@ -98,6 +100,7 @@ test('it renders an error notification if the submitted comment is empty', async
         },
     ];
 
+    // @ts-ignore
     global.fetch = jest
         .fn()
         .mockImplementationOnce(async () => ({
@@ -138,6 +141,7 @@ test('it renders an error notification if the submitted comment is longer than 2
         },
     ];
 
+    // @ts-ignore
     global.fetch = jest
         .fn()
         .mockImplementationOnce(async () => ({
@@ -182,6 +186,7 @@ test('it renders an error notification if there is already 50 comments on the pr
         },
     ];
 
+    // @ts-ignore
     global.fetch = jest
         .fn()
         .mockImplementationOnce(async () => ({

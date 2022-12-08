@@ -21,7 +21,7 @@ final class PushScheduledJobsToQueueQuery
      * @param ScheduledJobInstance[] $scheduledJobInstances
      */
     public function __construct(
-        private array $scheduledJobInstances,
+        private readonly array $scheduledJobInstances,
     ) {
     }
 

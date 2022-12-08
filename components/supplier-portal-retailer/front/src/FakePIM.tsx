@@ -55,6 +55,7 @@ ul {
 
 const Page = styled.div`
     flex: 1;
+    width: 1px;
 `;
 
 const apps = {
