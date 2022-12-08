@@ -56,7 +56,7 @@ test('it returns the default local storage', () => {
     type: 'microsoft_azure',
     file_path: 'myfile.csv',
     connection_string: '',
-    container_name: ''
+    container_name: '',
   });
 
   expect(getDefaultStorage('export', 'none', 'xlsx')).toEqual({

@@ -30,9 +30,9 @@ type AmazonS3Storage = {
 
 type MicrosoftAzureStorage = {
   type: 'microsoft_azure';
+  file_path: string;
   connection_string: string;
   container_name: string;
-  file_path: string;
 };
 
 type NoneStorage = {
@@ -96,9 +96,9 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
     case 'microsoft_azure':
       return {
         type: 'microsoft_azure',
+        file_path: getDefaultFilePath(jobType, fileExtension),
         connection_string: '',
         container_name: '',
-        file_path: getDefaultFilePath(jobType, fileExtension),
       };
     case 'none':
       return {
@@ -118,7 +118,8 @@ export type {
   SftpStorage,
   AmazonS3Storage,
   MicrosoftAzureStorage,
-  NoneStorage};
+  NoneStorage,
+};
 export {
   getDefaultStorage,
   isValidStorageType,

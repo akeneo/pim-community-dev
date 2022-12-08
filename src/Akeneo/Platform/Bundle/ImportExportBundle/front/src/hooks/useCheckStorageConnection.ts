@@ -24,11 +24,7 @@ const isAmazonS3ConnectionFieldFulfilled = (storage: AmazonS3Storage): boolean =
 };
 
 const isMicrosoftAzureConnectionFieldFulfilled = (storage: MicrosoftAzureStorage): boolean => {
-  return (
-      '' !== storage.connection_string &&
-      '' !== storage.container_name &&
-      '' !== storage.file_path
-  );
+  return '' !== storage.connection_string && '' !== storage.container_name && '' !== storage.file_path;
 };
 
 const useCheckStorageConnection = (storage: SftpStorage | AmazonS3Storage | MicrosoftAzureStorage) => {

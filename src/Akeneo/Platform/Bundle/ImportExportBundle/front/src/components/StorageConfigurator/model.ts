@@ -7,11 +7,12 @@ import {
   Storage,
   StorageType,
   localStorageIsEnabled,
-  MicrosoftAzureStorage
+  MicrosoftAzureStorage,
 } from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
+import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
 
 type StorageLoginType = 'password' | 'private_key';
 
@@ -32,6 +33,7 @@ const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
   sftp: SftpStorageConfigurator,
   amazon_s3: AmazonS3StorageConfigurator,
+  microsoft_azure: MicrosoftAzureStorageConfigurator,
 };
 
 const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
@@ -85,10 +87,10 @@ const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
 
 const isMicrosoftAzureStorage = (storage: Storage): storage is MicrosoftAzureStorage => {
   return (
-      'microsoft_azure' === storage.type &&
-      'connection_string' in storage &&
-      'container_name' in storage &&
-      'file_path' in storage
+    'microsoft_azure' === storage.type &&
+    'connection_string' in storage &&
+    'container_name' in storage &&
+    'file_path' in storage
   );
 };
 

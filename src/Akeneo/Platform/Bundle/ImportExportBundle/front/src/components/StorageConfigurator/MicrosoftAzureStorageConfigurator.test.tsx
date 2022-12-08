@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {LocalStorage, MicrosoftAzureStorage} from '../model';
-import {MicrosoftAzureStorageConfigurator} from "./MicrosoftAzureStorageConfigurator";
+import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
 
 beforeEach(() => {
   global.fetch = mockFetch;
@@ -25,7 +25,7 @@ test('it renders the microsoft azure storage configurator', async () => {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
     connection_string: 'connection_string',
-    container_name: 'container_name'
+    container_name: 'container_name',
   };
 
   await act(async () => {
@@ -49,7 +49,7 @@ test('it allows user to fill file_path field', async () => {
     type: 'microsoft_azure',
     file_path: '/tmp/test.xls',
     connection_string: 'connection_string',
-    container_name: 'container_name'
+    container_name: 'container_name',
   };
 
   const onStorageChange = jest.fn();
@@ -78,7 +78,7 @@ test('it allows user to fill connection string field', async () => {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
     connection_string: 'connection_strin',
-    container_name: 'container_name'
+    container_name: 'container_name',
   };
 
   const onStorageChange = jest.fn();
@@ -107,7 +107,7 @@ test('it allows user to fill container name field', async () => {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
     connection_string: 'connection_string',
-    container_name: 'container_'
+    container_name: 'container_',
   };
 
   const onStorageChange = jest.fn();
@@ -124,7 +124,9 @@ test('it allows user to fill container name field', async () => {
   });
 
   userEvent.paste(
-    screen.getByLabelText('pim_import_export.form.job_instance.storage_form.container_name.label pim_common.required_label'),
+    screen.getByLabelText(
+      'pim_import_export.form.job_instance.storage_form.container_name.label pim_common.required_label'
+    ),
     'name'
   );
 
@@ -161,7 +163,7 @@ test('it displays validation errors', async () => {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
     connection_string: 'connection_string',
-    container_name: 'container_name'
+    container_name: 'container_name',
   };
 
   const validationErrors: ValidationError[] = [
@@ -209,7 +211,7 @@ test('it can check connection', async () => {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
     connection_string: 'connection_string',
-    container_name: 'container_name'
+    container_name: 'container_name',
   };
 
   const onStorageChange = jest.fn();
@@ -247,7 +249,7 @@ test('it can check connection, display message if error', async () => {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
     connection_string: 'connection_string',
-    container_name: 'container_name'
+    container_name: 'container_name',
   };
 
   const onStorageChange = jest.fn();
