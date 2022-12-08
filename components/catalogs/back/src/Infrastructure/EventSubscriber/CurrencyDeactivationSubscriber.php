@@ -36,7 +36,7 @@ class CurrencyDeactivationSubscriber implements EventSubscriberInterface
     {
         $currency = $event->getSubject();
 
-        if (!$currency instanceof CurrencyInterface) {
+        if (!$currency instanceof CurrencyInterface || $currency->isActivated()) {
             return;
         }
 
