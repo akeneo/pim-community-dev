@@ -33,8 +33,8 @@ steps:
         gcloud config set project ${_GOOGLE_PROJECT_ID}
         gcloud container clusters get-credentials ${_CLUSTER_NAME} --project=${_GOOGLE_PROJECT_ID} --region=${_GOOGLE_CLUSTER_REGION}
         #delete argocd-apps and argocd
-        helm uninstall argocd-apps - n argocd
-        helm uninstall argocd -n argocd 
+        helm uninstall argocd-apps - n argocd || true
+        helm uninstall argocd -n argocd || true
 
   - id: 'Delete Infra'
     name: 'hashicorp/terraform:1.1.3'
