@@ -27,19 +27,15 @@ final class GetCatalogIdsContainingCurrenciesQuery implements GetCatalogIdsConta
     public function execute(array $currencyCodes): array
     {
         $query = <<<SQL
-            SELECT DISTINCT BIN_TO_UUID(id)
-            FROM akeneo_catalog,
-                 JSON_TABLE(product_value_filters, '$[*]' COLUMNS (
-                     field VARCHAR(255)  PATH '$.field',
-                     value json PATH '$.value')
-                     ) AS criterion
-            WHERE criterion.field = 'currencies' AND JSON_OVERLAPS(criterion.value, :categoryCodes)
+        SELECT DISTINCT BIN_TO_UUID(id)
+        FROM akeneo_catalog
+        WHERE JSON_OVERLAPS(JSON_EXTRACT(product_value_filters, '$.currencies' ), :currencyCodes)
             AND is_enabled IS TRUE
         SQL;
 
         /** @var string[] $catalogIds */
         $catalogIds = $this->connection->executeQuery($query, [
-            'categoryCodes' => \json_encode($currencyCodes, JSON_THROW_ON_ERROR),
+            'currencyCodes' => \json_encode($currencyCodes, JSON_THROW_ON_ERROR),
         ])->fetchFirstColumn();
 
         return $catalogIds;
