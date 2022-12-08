@@ -49,7 +49,7 @@ steps:
         echo "Not on branch master. Leaving ..."
       else
         if [ "${_CLUSTER_ENV}" == "poc" ] || [ "${_CLUSTER_ENV}" = "sandbox" ]; then
-          cd deployments-ucs/infra/terraform/${_ENV}
+          cd deployments-ucs/infra/terraform/${_CLUSTER_ENV}
           echo "*************** TERRAFORM APPLY ******************"
           echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
           echo "*************************************************"
