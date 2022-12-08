@@ -54,7 +54,7 @@ steps:
           echo "******* At project: ${_GOOGLE_PROJECT_ID} ********"
           echo "*************************************************"
           terraform init -no-color
-          terraform destroy -no-color -auto-approve || exit 1
+          terraform apply -no-color -auto-approve || exit 1
         else
           echo "No ${_CLUSTER_ENV} env to delete"
         fi
