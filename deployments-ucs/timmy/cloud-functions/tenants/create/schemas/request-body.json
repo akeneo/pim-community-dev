@@ -8,10 +8,6 @@
       "description": "The branch name",
       "type": "string"
     },
-    "tenant_name": {
-      "description": "The tenant name",
-      "type": "string"
-    },
     "dnsCloudDomain": {
       "description": "The DNS zone for the tenant",
       "type": "string"
@@ -58,6 +54,20 @@
       "required": [
         "defaultAdminUser"
       ]
+    },
+    "tenant_name": {
+      "description": "The tenant name",
+      "type": "string"
+    },
+    "annotations": {
+      "description": "The kubernetes annotations to add to the ArgoCD tenant application",
+      "type": "object",
+      "properties": {
+        "janitor/ttl": {
+          "description": "The TTL value to auto-clean the tenant with janitor for pull-requests",
+          "type": "string"
+        }
+      }
     }
   },
   "required": [

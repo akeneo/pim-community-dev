@@ -40,6 +40,7 @@ const FIRESTORE_STATUS = {
   CREATION_FAILED: "creation_failed",
   CREATION_IN_PREPARATION: 'creation_in_preparation',
   CREATION_IN_PROGRESS: "creation_in_progress",
+  DELETED: 'deleted',
 };
 
 let firestoreCollection = null;
@@ -458,8 +459,8 @@ async function createFirestoreDoc(firestore, docRef, status) {
   try {
     let document = firestore.collection(firestoreCollection).doc(docRef);
     const snapshot = await document.get();
-    if (snapshot.exists) {
-      let msg = "The document " + docRef + " already exists !!!";
+    if (snapshot.exists && snapshot.data().status !== FIRESTORE_STATUS.DELETED) {
+      let msg = `The document ${docRef} already exists and not with deleted status (actually ${snapshot.data().status} status)!!!`;
       logger.error(msg);
       return Promise.reject(msg);
     } else {
@@ -622,6 +623,20 @@ functions.http('createTenant', (req, res) => {
                 }
               }
             },
+            serviceAccounts: {
+              client: {
+                name: `${tenantName}-ksa-workload-identity`
+              },
+              master: {
+                name: `${tenantName}-ksa-workload-identity`
+              },
+              data: {
+                name: `${tenantName}-ksa-workload-identity`
+              }
+            },
+            snapshots: {
+              bucketName: `${tenantId}-es`
+            },
           },
           global: {
             extraLabels: {
@@ -642,17 +657,6 @@ functions.http('createTenant', (req, res) => {
             baseMailerDsn: `smtp://${tenantName}@${process.env.MAILER_DOMAIN}:${mailerPassword}@smtp.mailgun.org:2525`,
             domain: process.env.MAILER_DOMAIN,
             apiKey: process.env.MAILER_API_KEY,
-          },
-          memcached: {
-            resources: {
-              limits: {
-                memory: "32Mi"
-              },
-              requests: {
-                cpu: "1m",
-                memory: "16Mi"
-              }
-            }
           },
           mysql: {
             mysql: {
@@ -709,7 +713,6 @@ functions.http('createTenant', (req, res) => {
         MAILER_PASSWORD: parameters.mailer.password,
         MAILER_DSN: parameters.mailer.baseMailerDsn,
         MAILER_FROM: parameters.mailer.from,
-        MEMCACHED_SVC: `memcached.${tenantId}.svc.cluster.local`,
         MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
         PFID: tenantId,
         PIM_EDITION: pimEdition,

@@ -30,7 +30,7 @@ common:
   dnsCloudDomain: null # Generated
   region: null # Generated
   tenantContext: null # Generated
-  workloadIdentityKSA: null # Generated
+  workloadIdentityKSA: pim-ksa-workload-identity
   workloadIdentityGSA: pim-saas-service
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
@@ -214,7 +214,7 @@ pim:
   dqi:
     settings:
       enabled: true
-  jobsPrefix: pim-job
+  jobsPrefix: null # Generated
   jobs:
     versioning-purge:
       enabled: true

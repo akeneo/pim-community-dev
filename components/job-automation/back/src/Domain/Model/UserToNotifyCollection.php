@@ -21,7 +21,7 @@ class UserToNotifyCollection
      * @param array<UserToNotify> $usersToNotify
      */
     public function __construct(
-        private array $usersToNotify,
+        private readonly array $usersToNotify,
     ) {
         Assert::allIsInstanceOf($usersToNotify, UserToNotify::class);
     }

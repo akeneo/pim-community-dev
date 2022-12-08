@@ -8,7 +8,7 @@ use Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface;
 final class GetAsymmetricKeysHandler implements GetAsymmetricKeysHandlerInterface
 {
     public function __construct(
-        private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
+        private readonly GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
     ) {
     }
 

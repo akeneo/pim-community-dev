@@ -2,7 +2,12 @@ import {useCallback, useEffect, useState} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {ProductFileRow} from '../models/ProductFileRow';
 
-const useProductFiles = (page: number, searchValue: string): [ProductFileRow[], number, number] => {
+const useProductFiles = (
+    page: number,
+    searchValue: string,
+    setPage: (pageNumber: number) => void
+): [ProductFileRow[], number, number] => {
+    const [previousSearchValue, setPreviousSearchValue] = useState<string>('');
     const [totalNumberOfProductFiles, setTotalNumberOfProductFiles] = useState<number>(page);
     const [totalSearchResults, setTotalSearchResults] = useState<number>(page);
     const [productFiles, setProductFiles] = useState<ProductFileRow[]>([]);
@@ -40,6 +45,12 @@ const useProductFiles = (page: number, searchValue: string): [ProductFileRow[], 
                 filename: item.originalFilename,
             };
         });
+
+        if (searchValue !== previousSearchValue) {
+            setPreviousSearchValue(searchValue);
+            setPage(1);
+        }
+
         setProductFiles(productFiles);
         setTotalNumberOfProductFiles(responseBody.total);
         setTotalSearchResults(responseBody.total_search_results);

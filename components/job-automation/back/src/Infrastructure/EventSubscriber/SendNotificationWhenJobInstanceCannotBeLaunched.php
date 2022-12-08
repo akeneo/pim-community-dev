@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class SendNotificationWhenJobInstanceCannotBeLaunched implements EventSubscriberInterface
 {
     public function __construct(
-        private NotifierInterface $pimNotifier,
+        private readonly NotifierInterface $pimNotifier,
     ) {
     }
 

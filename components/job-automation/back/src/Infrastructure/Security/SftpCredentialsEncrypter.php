@@ -14,46 +14,41 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Security;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypter;
-use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
+use Akeneo\Platform\JobAutomation\Domain\Model\Storage\SftpStorage;
 
 final class SftpCredentialsEncrypter implements CredentialsEncrypter
 {
     public function __construct(
-        private Encrypter $encrypter,
+        private readonly Encrypter $encrypter,
     ) {
     }
 
     public function encryptCredentials(array $data): array
     {
-        $encryptionKey = $this->getEncryptionKey($data['configuration']['storage']);
+        $encryptionKey = $this->getEncryptionKey($data);
 
-        $data['configuration']['storage']['password'] = $this->encrypter->encrypt(
-            $data['configuration']['storage']['password'],
-            $encryptionKey,
-        );
+        $data['password'] = $this->encrypter->encrypt($data['password'], $encryptionKey);
 
         return $data;
     }
 
     public function decryptCredentials(array $data): array
     {
-        $encryptionKey = $this->getEncryptionKey($data['configuration']['storage']);
+        $encryptionKey = $this->getEncryptionKey($data);
 
-        $data['configuration']['storage']['password'] = $this->encrypter->decrypt(
-            $data['configuration']['storage']['password'],
-            $encryptionKey,
-        );
+        $data['password'] = $this->encrypter->decrypt($data['password'], $encryptionKey);
 
         return $data;
     }
 
     public function support(array $data): bool
     {
-        return isset($data['configuration']['storage']['type'])
-            && isset($data['configuration']['storage']['username'])
-            && isset($data['configuration']['storage']['host'])
-            && isset($data['configuration']['storage']['port'])
-            && SftpStorage::TYPE === $data['configuration']['storage']['type']
+        return isset($data['type'])
+            && isset($data['username'])
+            && isset($data['host'])
+            && isset($data['port'])
+            && isset($data['password'])
+            && SftpStorage::TYPE === $data['type']
         ;
     }
 

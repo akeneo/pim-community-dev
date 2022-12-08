@@ -64,12 +64,6 @@ spec:
           value: null
         - name: elasticsearch.data.resources.limits.memory
           value: null
-        - name: memcached.resources.limits.memory
-          value: null
-        - name: memcached.resources.requests.cpu
-          value: null
-        - name: memcached.resources.requests.memory
-          value: null
         - name: mailer.login
           value: null
         - name: mailer.password

@@ -1,6 +1,12 @@
 services:
-    Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp\SftpStorageClientProvider:
-        arguments:
-            - '@Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter'
-        tags:
-            - { name: pim_import_export.storage_client_provider }
+  Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp\SftpStorageClientProvider:
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter'
+    tags:
+      - { name: pim_import_export.storage_client_provider }
+
+  Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\AmazonS3\AmazonS3StorageClientProvider:
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter'
+    tags:
+      - { name: pim_import_export.storage_client_provider }

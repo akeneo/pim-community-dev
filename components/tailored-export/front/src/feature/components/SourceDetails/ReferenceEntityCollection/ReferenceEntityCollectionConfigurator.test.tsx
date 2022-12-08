@@ -3,7 +3,7 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ReferenceEntityCollectionConfigurator} from './ReferenceEntityCollectionConfigurator';
-import {getDefaultReferenceEntityCollectionSource} from './model';
+import {getDefaultReferenceEntityCollectionSource, ReferenceEntityCollectionSelection} from './model';
 import {getDefaultDateSource} from '../Date/model';
 
 const attribute = {
@@ -21,15 +21,36 @@ jest.mock('../common/CodeLabelCollectionSelector');
 jest.mock('../common/DefaultValue');
 jest.mock('../common/RecordsReplacement');
 
+jest.mock('./ReferenceEntityCollectionSelector', () => ({
+  ReferenceEntityCollectionSelector: ({
+    onSelectionChange,
+  }: {
+    onSelectionChange: (updatedSelection: ReferenceEntityCollectionSelection) => void;
+  }) => (
+    <button
+      onClick={() =>
+        onSelectionChange({
+          type: 'attribute',
+          separator: ',',
+          attribute_identifier: 'description_1234',
+          attribute_type: 'text',
+          reference_entity_code: 'brand',
+          channel: null,
+          locale: null,
+        })
+      }
+    >
+      Update selection
+    </button>
+  ),
+}));
+
 test('it displays a reference entity collection configurator', () => {
   const onSourceChange = jest.fn();
 
   renderWithProviders(
     <ReferenceEntityCollectionConfigurator
-      source={{
-        ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
-        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-      }}
+      source={getDefaultReferenceEntityCollectionSource(attribute, null, null)}
       attribute={attribute}
       validationErrors={[]}
       onSourceChange={onSourceChange}
@@ -41,11 +62,15 @@ test('it displays a reference entity collection configurator', () => {
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
     selection: {
-      type: 'label',
-      locale: 'en_US',
+      type: 'attribute',
       separator: ',',
+      attribute_identifier: 'description_1234',
+      attribute_type: 'text',
+      reference_entity_code: 'brand',
+      channel: null,
+      locale: null,
     },
-    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+    uuid: expect.any(String),
   });
 });
 
@@ -54,10 +79,7 @@ test('it can update default value operation', () => {
 
   renderWithProviders(
     <ReferenceEntityCollectionConfigurator
-      source={{
-        ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
-        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-      }}
+      source={getDefaultReferenceEntityCollectionSource(attribute, null, null)}
       attribute={attribute}
       validationErrors={[]}
       onSourceChange={onSourceChange}
@@ -74,7 +96,7 @@ test('it can update default value operation', () => {
         value: 'foo',
       },
     },
-    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+    uuid: expect.any(String),
   });
 });
 
@@ -83,10 +105,7 @@ test('it can update a reference entity collection replacement operation', () => 
 
   renderWithProviders(
     <ReferenceEntityCollectionConfigurator
-      source={{
-        ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
-        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-      }}
+      source={getDefaultReferenceEntityCollectionSource(attribute, null, null)}
       attribute={attribute}
       validationErrors={[]}
       onSourceChange={onSourceChange}
@@ -97,7 +116,7 @@ test('it can update a reference entity collection replacement operation', () => 
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
-    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+    uuid: expect.any(String),
     operations: {
       replacement: {
         type: 'replacement',

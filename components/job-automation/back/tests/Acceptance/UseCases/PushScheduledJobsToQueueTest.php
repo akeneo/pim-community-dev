@@ -17,14 +17,12 @@ use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushSched
 use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueQuery;
 use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
-use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
 use Akeneo\Platform\JobAutomation\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Platform\JobAutomation\Test\Acceptance\FakeService\FakeRetryPublisher;
 
 final class PushScheduledJobsToQueueTest extends AcceptanceTestCase
 {
     /**
-
      * @test
      */
     public function it_push_job_instance_in_queue(): void

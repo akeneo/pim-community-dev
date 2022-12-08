@@ -22,8 +22,8 @@ use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 final class FindUsersToNotifyQuery implements FindUsersToNotifyQueryInterface
 {
     public function __construct(
-        private FindUsersByIdQueryInterface $findUsersByIdQuery,
-        private FindUsersByUserGroupIdQueryInterface $findUsersByUserGroupIdQuery,
+        private readonly FindUsersByIdQueryInterface $findUsersByIdQuery,
+        private readonly FindUsersByUserGroupIdQueryInterface $findUsersByUserGroupIdQuery,
     ) {
     }
 

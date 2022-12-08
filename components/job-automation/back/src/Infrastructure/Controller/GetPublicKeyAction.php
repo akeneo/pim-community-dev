@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetPublicKeyAction
 {
     public function __construct(
-        private GetAsymmetricKeysHandlerInterface $getAsymmetricKeysHandler,
+        private readonly GetAsymmetricKeysHandlerInterface $getAsymmetricKeysHandler,
     ) {
     }
 

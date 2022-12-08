@@ -27,3 +27,4 @@ akeneo_feature_flag:
         - { feature: 'sso_configuration', service: 'akeneo.feature_flag.service.only_enterprise_edition_feature' }
         - { feature: 'supplier_portal', service: 'akeneo.supplier_portal.feature' }
         - { feature: 'teamwork_assistant', service: 'akeneo.feature_flag.service.only_enterprise_edition_feature' }
+        - { feature: 'identifier_generator', service: 'akeneo.feature_flag.service.only_saas_feature' }

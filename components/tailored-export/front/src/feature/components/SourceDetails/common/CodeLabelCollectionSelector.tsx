@@ -157,4 +157,4 @@ export {
   isCodeLabelCollectionSelection,
   isCollectionSeparator,
 };
-export type {CodeLabelCollectionSelection};
+export type {CodeLabelCollectionSelection, CollectionSeparator};

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\PreviewProductFile\PreviewProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\PreviewProductFile\PreviewProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileForSupplier;
@@ -13,6 +15,7 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCom
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithMetadataAndComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
@@ -20,16 +23,19 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\Pr
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Spout\InMemory\InMemoryGetProductFilePreview;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as InMemorySupplierRepository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
 final class ProductFileDroppingContext implements Context
 {
     private string $productFileIdentifier;
     private ?\Exception $exception = null;
+    private array $productFilePreview = [];
 
     public function __construct(
         private InMemorySupplierRepository $supplierRepository,
@@ -39,6 +45,8 @@ final class ProductFileDroppingContext implements Context
         private CommentProductFileHandlerForSupplier $commentProductFileHandlerForSupplier,
         private MarkCommentsAsReadBySupplierHandler $markCommentsAsReadBySupplierHandler,
         private MarkCommentsAsReadByRetailerHandler $markCommentsAsReadByRetailerHandler,
+        private PreviewProductFileHandler $previewProductFileHandler,
+        private InMemoryGetProductFilePreview $getProductFilePreview,
     ) {
     }
 
@@ -145,6 +153,14 @@ final class ProductFileDroppingContext implements Context
             Identifier::fromString($this->productFileIdentifier),
         );
         Assert::assertNull($productFile['commentslastReadDate']);
+    }
+
+    /**
+     * @Given the following product file preview:
+     */
+    public function theFollowingFilePreview(TableNode $properties): void
+    {
+        $this->getProductFilePreview->save($properties->getRows());
     }
 
     /**
@@ -264,6 +280,26 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
+     * @When a retailer previews the product file
+     */
+    public function aRetailerPreviewsProductFile(): void
+    {
+        $this->productFilePreview = ($this->previewProductFileHandler)(new PreviewProductFile($this->productFileIdentifier));
+    }
+
+    /**
+     * @When a retailer try to preview a product file that does not exist
+     */
+    public function aRetailerPreviewsAnUnknownProductFile(): void
+    {
+        try {
+            $this->productFilePreview = ($this->previewProductFileHandler)(new PreviewProductFile('2f23c9cb-8d36-457d-a057-b111daaeadcb'));
+        } catch (Read\Exception\ProductFileDoesNotExist $e) {
+            $this->exception = $e;
+        }
+    }
+
+    /**
      * @Then it should have throw an exception
      */
     public function itShouldHavethrowAProductFileDoesNotExistException(): void
@@ -359,5 +395,21 @@ final class ProductFileDroppingContext implements Context
             Identifier::fromString($this->productFileIdentifier),
         );
         Assert::assertNull($productFile['commentslastReadDate']);
+    }
+
+    /**
+     * @Then the retailer should get the following product file preview:
+     */
+    public function theRetailerShouldGetTheProductFilePreview(TableNode $properties): void
+    {
+        Assert::assertSame($properties->getRows(), $this->productFilePreview);
+    }
+
+    /**
+     * @Then the retailer should be warned that the product file does not exist
+     */
+    public function theRetailerShouldGetAnUnknownProductFileError(): void
+    {
+        Assert::assertInstanceOf(Read\Exception\ProductFileDoesNotExist::class, $this->exception);
     }
 }

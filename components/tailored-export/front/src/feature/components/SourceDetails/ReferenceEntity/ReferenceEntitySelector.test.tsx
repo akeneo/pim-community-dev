@@ -4,20 +4,8 @@ import userEvent from '@testing-library/user-event';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {ReferenceEntitySelector} from '../ReferenceEntity/ReferenceEntitySelector';
 import {renderWithProviders} from 'feature/tests';
-import {ReferenceEntityAttribute} from 'feature/models';
 
-jest.mock('../../../hooks/useReferenceEntityAttributes', () => ({
-  useReferenceEntityAttributes: (): ReferenceEntityAttribute[] => [
-    {
-      code: 'name',
-      type: 'text',
-      identifier: 'name_1234',
-      labels: {},
-      value_per_channel: true,
-      value_per_locale: false,
-    },
-  ],
-}));
+jest.mock('../../../hooks/useReferenceEntityAttributes');
 
 test('it can change the selection type to "attribute"', async () => {
   const onSelectionChange = jest.fn();
@@ -68,6 +56,53 @@ test('it can change the selection type to "code"', async () => {
 
   expect(onSelectionChange).toHaveBeenCalledWith({
     type: 'code',
+  });
+});
+
+test('it can change the selection type to "label"', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <ReferenceEntitySelector
+      referenceEntityCode="designer"
+      selection={{
+        type: 'code',
+      }}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_common.type'));
+  userEvent.click(screen.getByText('pim_common.label'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    locale: 'en_US',
+  });
+});
+
+test('it can change the locale of the label selection', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <ReferenceEntitySelector
+      referenceEntityCode="designer"
+      selection={{
+        type: 'label',
+        locale: 'en_US',
+      }}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_common.locale'));
+  userEvent.click(screen.getByText('Français'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    locale: 'fr_FR',
   });
 });
 

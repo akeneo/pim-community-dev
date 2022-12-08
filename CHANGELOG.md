@@ -94,10 +94,12 @@
 - PIM-10717: Accept boolean value in PLRs
 - PIM-10731: Fix desindexation issue on the asset deletion with the code on the wRoNg CaSe
 - PIM-10726: Fix ProjectsRecalculationLauncher
+- PIM-10752: Fix Tailored Export - associations with quantity inherited from parent are not exported
 - PIM-10713: Hide Shared Catalog Export Profile under a Serenity FT
 - PIM-10694: Fix the PM darfts/proposals are displayed on all the PMs, and not only on the corresponding PM
 - PIM-10712: Fix table values xlsx import when providing product identifier as a number 
 - PIM-10703: Fix displayed rejected proposal on empty value on the proposals screen
+- PIM-10758: fix ref entity records on product grid with zero value
 
 ## Improvements
 

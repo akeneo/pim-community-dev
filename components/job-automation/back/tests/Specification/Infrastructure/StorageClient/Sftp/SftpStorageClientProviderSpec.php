@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
-use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
+use Akeneo\Platform\JobAutomation\Domain\Model\Storage\AmazonS3Storage;
+use Akeneo\Platform\JobAutomation\Domain\Model\Storage\SftpStorage;
 use Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter;
+use Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp\SftpStorageClient;
 use League\Flysystem\Filesystem;
 use League\Flysystem\PhpseclibV3\SftpAdapter;
 use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class SftpStorageClientProviderSpec extends ObjectBehavior
 {
@@ -37,27 +37,29 @@ class SftpStorageClientProviderSpec extends ObjectBehavior
             'a_fingerprint',
         );
 
-        $expectedClient = new FileSystemStorageClient(
-            new Filesystem(
-                new SftpAdapter(
-                    new SftpConnectionProvider(
-                        'an_host',
-                        'a_username',
-                        'a_password',
-                        null,
-                        null,
-                        22,
-                        false,
-                        10,
-                        4,
-                        'a_fingerprint',
-                    ),
-                    '',
-                )
+        $sftpConnectionProvider = new SftpConnectionProvider(
+            'an_host',
+            'a_username',
+            'a_password',
+            null,
+            null,
+            22,
+            false,
+            10,
+            4,
+            'a_fingerprint',
+        );
+
+        $filesystemOperator = new Filesystem(
+            new SftpAdapter(
+                $sftpConnectionProvider,
+                '',
             )
         );
 
-        $encrypter->decrypt('a_password', Argument::type('string'))
+        $expectedClient = new SftpStorageClient($filesystemOperator, $sftpConnectionProvider);
+
+        $encrypter->decrypt('a_password', 'a_username@an_host:22')
             ->willReturn('a_password');
 
         $this->getFromStorage($sftpStorage)->shouldBeLike($expectedClient);
@@ -77,25 +79,27 @@ class SftpStorageClientProviderSpec extends ObjectBehavior
             'a_fingerprint',
         );
 
-        $expectedClient = new FileSystemStorageClient(
-            new Filesystem(
-                new SftpAdapter(
-                    new SftpConnectionProvider(
-                        'an_host',
-                        'a_username',
-                        null,
-                        'a_private_key',
-                        null,
-                        22,
-                        false,
-                        10,
-                        4,
-                        'a_fingerprint',
-                    ),
-                    '',
-                )
+        $expectedSftpConnectionProvider = new SftpConnectionProvider(
+            'an_host',
+            'a_username',
+            null,
+            'a_private_key',
+            null,
+            22,
+            false,
+            10,
+            4,
+            'a_fingerprint',
+        );
+
+        $expectedFilesystemOperator = new Filesystem(
+            new SftpAdapter(
+                $expectedSftpConnectionProvider,
+                '',
             )
         );
+
+        $expectedClient = new SftpStorageClient($expectedFilesystemOperator, $expectedSftpConnectionProvider);
 
         $this->getFromStorage($sftpStorage)->shouldBeLike($expectedClient);
     }
@@ -113,5 +117,13 @@ class SftpStorageClientProviderSpec extends ObjectBehavior
             null,
             null,
         ))->shouldReturn(true);
+
+        $this->supports(new AmazonS3Storage(
+            'a_region',
+            'a_bucket',
+            'a_key',
+            'a_secret',
+            'a_file_path',
+        ))->shouldReturn(false);
     }
 }

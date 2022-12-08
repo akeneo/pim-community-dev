@@ -21,6 +21,7 @@ class EncrypterTest extends KernelTestCase
         $encryptedString = $encrypter->encrypt($string, $encryptionKey);
         $decryptedString = $encrypter->decrypt($encryptedString, $encryptionKey);
 
+        $this->assertNotSame($string, $encryptedString);
         $this->assertSame($string, $decryptedString);
     }
 }

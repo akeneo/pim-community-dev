@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {ArrowIcon, getColor, Helper, Locale, SelectInput} from 'akeneo-design-system';
 import {
@@ -14,7 +14,8 @@ import {
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {ReferenceEntityAttribute} from '../../../../models';
-import {ReferenceEntityAttributeSelection, ReferenceEntitySelection} from '../model';
+import {ReferenceEntityAttributeSelection} from '../model';
+import {ReferenceEntityCollectionAttributeSelection} from '../../ReferenceEntityCollection/model';
 
 const SubField = styled.div`
   display: flex;
@@ -31,27 +32,23 @@ const InnerField = styled.div`
   gap: 5px;
 `;
 
-const attributeSelectors: {
-  [attributeType: string]: FunctionComponent<AttributeSelectorProps> | null;
-} = {
-  text: null,
-};
+type AttributeSelection = ReferenceEntityAttributeSelection | ReferenceEntityCollectionAttributeSelection;
 
-type AttributeSelectorProps = {
+type AttributeSelectorProps<SelectionType extends AttributeSelection> = {
   attribute: ReferenceEntityAttribute;
-  selection: ReferenceEntityAttributeSelection;
+  selection: SelectionType;
   validationErrors: ValidationError[];
   channels: Channel[];
-  onSelectionChange: (selection: ReferenceEntitySelection) => void;
+  onSelectionChange: (selection: SelectionType) => void;
 };
 
-const AttributeSelector = ({
+const AttributeSelector = <SelectionType extends AttributeSelection>({
   attribute,
   selection,
   channels,
   validationErrors,
   onSelectionChange,
-}: AttributeSelectorProps) => {
+}: AttributeSelectorProps<SelectionType>) => {
   const translate = useTranslate();
   const catalogLocale = useUserContext().get('catalogLocale');
   const locales = getAllLocalesFromChannels(channels);
@@ -64,8 +61,6 @@ const AttributeSelector = ({
   };
 
   const handleLocaleChange = (locale: LocaleCode) => onSelectionChange({...selection, locale});
-
-  const AdditionalFields = attributeSelectors[attribute.type] ?? null;
 
   return (
     <>
@@ -124,15 +119,6 @@ const AttributeSelector = ({
             ))}
           </InnerField>
         </SubField>
-      )}
-      {null !== AdditionalFields && (
-        <AdditionalFields
-          attribute={attribute}
-          selection={selection}
-          validationErrors={validationErrors}
-          channels={channels}
-          onSelectionChange={onSelectionChange}
-        />
       )}
     </>
   );

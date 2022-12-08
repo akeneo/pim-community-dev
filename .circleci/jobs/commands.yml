@@ -49,6 +49,19 @@ commands:
                       export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
                       gcloud auth configure-docker ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev --quiet
 
+    set_common_env_vars:
+        description: "Set the common environment variables."
+        steps:
+            - run:
+                  name: Set common env vars
+                  shell: "/bin/bash -eo pipefail"
+                  command: |
+                      echo export BUCKET_SHORTED="bkt" >> ${BASH_ENV}
+                      echo export CLOUD_FUNCTION_SHORTED="cfun" >> ${BASH_ENV}
+                      echo export CLOUD_SCHEDULER_SHORTED="csch" >> ${BASH_ENV}
+                      echo export PUBSUB_TOPIC_SHORTED="ptop" >> ${BASH_ENV}
+                      echo export PUBSUB_SUBSCRIPTION_SHORTED="psub" >> ${BASH_ENV}
+
     restore_persisted_env_vars:
         description: "Restore env vars that have been persisted by the previous job."
         steps:
@@ -89,13 +102,12 @@ commands:
                       CLUSTER_NAME=${CLUSTER_NAME_NEXT}
                       GOOGLE_CLUSTER_ZONE=${CLUSTER_NAME_NEXT}
                       GOOGLE_CLUSTER_REGION=${GOOGLE_CLUSTER_REGION_NEXT}
-                      GOOGLE_REGION_PREFIX=${GOOGLE_REGION_PREFIX_NEXT}
+                      GOOGLE_REGION_SHORTED=${GOOGLE_REGION_SHORTED_NEXT}
                       echo export GOOGLE_COMPUTE_ZONE=${GOOGLE_COMPUTE_ZONE} >> $BASH_ENV
                       echo export CLUSTER_NAME=${CLUSTER_NAME} >> $BASH_ENV
                       echo export GOOGLE_CLUSTER_ZONE=${GOOGLE_CLUSTER_ZONE} >> $BASH_ENV
                       echo export GOOGLE_CLUSTER_REGION=${GOOGLE_CLUSTER_REGION} >> $BASH_ENV
-                      echo export GOOGLE_REGION_PREFIX=${GOOGLE_REGION_PREFIX} >> $BASH_ENV
-
+                      echo export GOOGLE_REGION_SHORTED=${GOOGLE_REGION_SHORTED} >> $BASH_ENV
 
     install_terrafrom:
         description: "Install Terraform "

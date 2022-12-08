@@ -7,8 +7,8 @@ import {
     getColor,
     Pagination,
     pimTheme,
-    Table,
     Search,
+    Table,
     useBooleanState,
 } from 'akeneo-design-system';
 import {NoDataSection, NoDataText, useTranslate} from '@akeneo-pim-community/shared';
@@ -72,7 +72,11 @@ const SupplierList = ({
                 <>
                     <Pagination
                         followPage={onChangePage}
-                        currentPage={currentPage}
+                        currentPage={
+                            currentPage > totalSuppliers / SUPPLIERS_PER_PAGE
+                                ? Math.ceil(totalSuppliers / SUPPLIERS_PER_PAGE)
+                                : currentPage
+                        }
                         totalItems={totalSuppliers}
                         itemsPerPage={SUPPLIERS_PER_PAGE}
                     />

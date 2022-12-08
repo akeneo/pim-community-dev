@@ -30,12 +30,6 @@ variable "timmy_k8s_ns" {
   default     = "timmy"
 }
 
-variable "timmy_k8s_sa" {
-  description = "Timmy deployment K8S service account"
-  type        = string
-  default     = "timmy-deployment-sa"
-}
-
 variable "pim_k8s_ns" {
   description = "PIM deployment K8S namespace"
   type        = string

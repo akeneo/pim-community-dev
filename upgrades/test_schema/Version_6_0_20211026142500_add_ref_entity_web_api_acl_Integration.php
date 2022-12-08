@@ -159,7 +159,7 @@ class Version_6_0_20211026142500_add_ref_entity_web_api_acl_Integration extends 
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
-        $token = new UsernamePasswordToken('username', null, 'main', [$role]);
+        $token = new UsernamePasswordToken('username', 'main', [$role]);
 
         foreach ($acls as $acl => $expectedValue) {
             assert(is_bool($expectedValue));

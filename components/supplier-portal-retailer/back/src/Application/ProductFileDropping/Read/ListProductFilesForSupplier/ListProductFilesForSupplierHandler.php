@@ -23,12 +23,13 @@ class ListProductFilesForSupplierHandler
         $supplier = ($this->getSupplierFromContributorEmail)($listProductFiles->contributorEmail);
 
         if (null === $supplier) {
-            return new ProductFiles([], 0);
+            return new ProductFiles([], 0, 0);
         }
 
         return new ProductFiles(
-            ($this->listProductFilesForSupplier)($supplier->identifier, $listProductFiles->page),
-            ($this->getProductFilesCount)($supplier->identifier),
+            ($this->listProductFilesForSupplier)($supplier->identifier, $listProductFiles->page, $listProductFiles->search),
+            ($this->getProductFilesCount)($supplier->identifier, ''),
+            ($this->getProductFilesCount)($supplier->identifier, $listProductFiles->search),
         );
     }
 }

@@ -23,8 +23,8 @@ final class SendEmailWhenJobInstanceCannotBeLaunched implements EventSubscriberI
     private const MAIL_SUBJECT = 'Could not launch scheduled job instance';
 
     public function __construct(
-        private MailNotifierInterface $mailNotifier,
-        private Environment $twig,
+        private readonly MailNotifierInterface $mailNotifier,
+        private readonly Environment $twig,
     ) {
     }
 

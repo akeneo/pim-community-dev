@@ -51,7 +51,7 @@ final class UserContext implements Context
         $adminUser->setUsername('admin');
         $this->userRepository->save($adminUser);
 
-        $token = new UsernamePasswordToken($adminUser, null, 'main', $adminUser->getRoles());
+        $token = new UsernamePasswordToken($adminUser, 'main', $adminUser->getRoles());
         $this->tokenStorage->setToken($token);
     }
 }

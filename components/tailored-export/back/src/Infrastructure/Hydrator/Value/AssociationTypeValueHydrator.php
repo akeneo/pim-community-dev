@@ -21,6 +21,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAsso
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAssociationsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @phpstan-type NormalizedProducts array{identifier: string, quantity: int}
@@ -29,6 +30,11 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
  */
 final class AssociationTypeValueHydrator
 {
+    public function __construct(
+        private readonly NormalizerInterface $normalizer,
+    ) {
+    }
+
     public function hydrate(
         ProductInterface|ProductModelInterface $productOrProductModel,
         string $associationTypeCode,
@@ -36,7 +42,7 @@ final class AssociationTypeValueHydrator
     ): SourceValueInterface {
         if ($isQuantified) {
             /** @var NormalizedAssociation[] $normalizedQuantifiedAssociations */
-            $normalizedQuantifiedAssociations = $productOrProductModel->getQuantifiedAssociations()->normalize()[$associationTypeCode] ?? [];
+            $normalizedQuantifiedAssociations = $this->normalizer->normalize($productOrProductModel, 'standard')['quantified_associations'][$associationTypeCode] ?? [];
 
             return new QuantifiedAssociationsValue(
                 $this->getProductQuantifiedAssociations($normalizedQuantifiedAssociations),

@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Controller;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
-use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckHandler;
-use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckQuery;
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
+use Akeneo\Platform\JobAutomation\Application\CheckStorageConnection\CheckStorageConnectionHandler;
+use Akeneo\Platform\JobAutomation\Application\CheckStorageConnection\CheckStorageConnectionQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,10 +28,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class GetStorageConnectionCheckAction
 {
     public function __construct(
-        private StorageConnectionCheckHandler $storageConnectionCheckHandler,
-        private ValidatorInterface $validator,
-        private NormalizerInterface $normalizer,
-        private StorageHydratorInterface $storageHydrator,
+        private readonly CheckStorageConnectionHandler $checkStorageConnectionHandler,
+        private readonly ValidatorInterface $validator,
+        private readonly NormalizerInterface $normalizer,
+        private readonly StorageHydratorInterface $storageHydrator,
+        private readonly CredentialsEncrypterRegistry $credentialsEncrypterRegistry,
     ) {
     }
 
@@ -41,20 +43,16 @@ final class GetStorageConnectionCheckAction
         }
 
         $data = json_decode($request->getContent(), true);
+        $encryptedData = $this->credentialsEncrypterRegistry->encryptCredentials($data);
 
-        $violations = $this->validator->validate($data, new SftpStorage([]));
+        $violations = $this->validator->validate($encryptedData, new Storage(['xlsx', 'csv', 'zip']));
         if (0 < $violations->count()) {
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
-        $storage = $this->storageHydrator->hydrate($data);
+        $storage = $this->storageHydrator->hydrate($encryptedData);
+        $connectionCheck = $this->checkStorageConnectionHandler->handle(new CheckStorageConnectionQuery($storage));
 
-        try {
-            $this->storageConnectionCheckHandler->handle(new StorageConnectionCheckQuery($storage));
-
-            return new JsonResponse([], Response::HTTP_OK);
-        } catch (\Exception) {
-            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
-        }
+        return new JsonResponse([], $connectionCheck ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
 }

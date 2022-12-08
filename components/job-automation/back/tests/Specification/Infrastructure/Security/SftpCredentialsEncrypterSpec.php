@@ -23,79 +23,55 @@ class SftpCredentialsEncrypterSpec extends ObjectBehavior
     public function it_encrypts_credentials()
     {
         $data = [
-            'configuration' => [
-                'storage' => [
-                    'type' => 'sftp',
-                    'username' => 'username',
-                    'host' => 'host',
-                    'port' => '22',
-                    'password' => 's3cr3t',
-                ],
-            ],
+            'type' => 'sftp',
+            'username' => 'username',
+            'host' => 'host',
+            'port' => '22',
+            'password' => 's3cr3t',
         ];
 
         $this->encryptCredentials($data)->shouldReturn([
-            'configuration' => [
-                'storage' => [
-                    'type' => 'sftp',
-                    'username' => 'username',
-                    'host' => 'host',
-                    'port' => '22',
-                    'password' => 'encrypted_password',
-                ],
-            ],
+            'type' => 'sftp',
+            'username' => 'username',
+            'host' => 'host',
+            'port' => '22',
+            'password' => 'encrypted_password',
         ]);
     }
 
     public function it_decrypts_credentials()
     {
         $data = [
-            'configuration' => [
-                'storage' => [
-                    'type' => 'sftp',
-                    'username' => 'username',
-                    'host' => 'host',
-                    'port' => '22',
-                    'password' => 'encrypted_password',
-                ],
-            ],
+            'type' => 'sftp',
+            'username' => 'username',
+            'host' => 'host',
+            'port' => '22',
+            'password' => 'encrypted_password',
         ];
 
         $this->decryptCredentials($data)->shouldReturn([
-            'configuration' => [
-                'storage' => [
-                    'type' => 'sftp',
-                    'username' => 'username',
-                    'host' => 'host',
-                    'port' => '22',
-                    'password' => 's3cr3t',
-                ],
-            ],
+            'type' => 'sftp',
+            'username' => 'username',
+            'host' => 'host',
+            'port' => '22',
+            'password' => 's3cr3t',
         ]);
     }
 
     public function it_supports_data_for_sftp_configuration()
     {
         $data = [
-            'configuration' => [
-                'storage' => [
-                    'type' => 'sftp',
-                    'username' => 'username',
-                    'host' => 'host',
-                    'port' => '22',
-                    'password' => 's3cr3t',
-                ],
-            ],
+            'type' => 'sftp',
+            'username' => 'username',
+            'host' => 'host',
+            'port' => '22',
+            'password' => 's3cr3t',
         ];
 
         $noSftpData = [
-            'configuration' => [
-                'storage' => [
-                    'type' => 'aws',
-                    'token' => 'A_TOKEN',
-                    'secret' => 'A_SECRET',
-                ],
-            ],
+            'type' => 'aws',
+            'token' => 'A_TOKEN',
+            'secret' => 'A_SECRET',
         ];
 
         $this->support($data)->shouldReturn(true);

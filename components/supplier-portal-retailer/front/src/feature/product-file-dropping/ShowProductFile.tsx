@@ -6,6 +6,7 @@ import {Discussion, GeneralInformation, ProductFileImportConfigurationsModal} fr
 import {useProductFile} from './hooks/useProductFile';
 import styled from 'styled-components';
 import {ProductFileImportStatus} from './components/ProductFileImportStatus';
+import {ProductFilePreview} from './components/ProductFilePreview';
 
 const ShowProductFile = () => {
     const translate = useTranslate();
@@ -52,11 +53,14 @@ const ShowProductFile = () => {
                     </StatusContainer>
                 </PageHeader.Content>
             </PageHeader>
-            <PageContent>
+            <StyledPageContent>
                 <TabBar moreButtonTitle="More">
                     <TabBar.Tab isActive={isCurrent('discussion')} onClick={() => switchTo('discussion')}>
                         {translate('supplier_portal.product_file_dropping.supplier_files.tabs.discussion')}
                         {productFile.hasUnreadComments && <StyledPill level="primary" />}
+                    </TabBar.Tab>
+                    <TabBar.Tab isActive={isCurrent('preview')} onClick={() => switchTo('preview')}>
+                        {translate('supplier_portal.product_file_dropping.supplier_files.tabs.preview')}
                     </TabBar.Tab>
                     <TabBar.Tab
                         isActive={isCurrent('general_information')}
@@ -69,7 +73,8 @@ const ShowProductFile = () => {
                     <Discussion productFile={productFile} saveComment={saveComment} validationError={validationError} />
                 )}
                 {isCurrent('general_information') && <GeneralInformation productFile={productFile} />}
-            </PageContent>
+                {isCurrent('preview') && <ProductFilePreview productFileIdentifier={productFile.identifier} />}
+            </StyledPageContent>
         </>
     );
 };
@@ -84,6 +89,10 @@ const StatusLabel = styled.span`
 
 const StyledPill = styled(Pill)`
     background-color: ${onboarderTheme.color.brand100};
+`;
+
+const StyledPageContent = styled(PageContent)`
+    height: calc(100vh - 200px);
 `;
 
 export {ShowProductFile};

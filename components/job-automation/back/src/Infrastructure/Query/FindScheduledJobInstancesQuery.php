@@ -21,8 +21,8 @@ use Doctrine\DBAL\Connection;
 final class FindScheduledJobInstancesQuery implements FindScheduledJobInstancesQueryInterface
 {
     public function __construct(
-        private Connection $connection,
-        private ResolveScheduledJobRunningUsername $resolveScheduledJobRunningUsername,
+        private readonly Connection $connection,
+        private readonly ResolveScheduledJobRunningUsername $resolveScheduledJobRunningUsername,
     ) {
     }
 

@@ -575,34 +575,41 @@ jobs:
                   skip: << pipeline.parameters.skip_build >>
             - attach_workspace:
                   at: ~/
-            - add_ssh_keys:
-                  fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - change_pim_onboarder_branch_steps
             - set_gcloud_config_pim_saas_dev
+            - set_common_env_vars
             - install_yq_v3
             - set_docker_gcp_mirror
             - run:
                   name: Define value for next steps
                   command: |
                       TYPE="srnt"
-                      TYPE_LONG="serenity"
+                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0 )}')
+                      PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
+                      HASH_PR_URL=$(echo -n ${CI_PULL_REQUEST} | sha1sum | cut -c -10)
                       IMAGE_TAG=${CIRCLE_SHA1}
                       IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
-                      IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
-                      PRODUCT_REFERENCE_TYPE="serenity_instance"
-                      PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
+                      IMAGE_TAG_DATE="${RELEASE_NAME:1}"
+                      # Use default timmy if timmy step not used
+                      SKIP_DEPLOY_TIMMY=true
+                      CLOUD_FUNCTION_CREATE_TENANT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-timmy-create-tenant"
+                      CLOUD_FUNCTION_DELETE_TENANT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-timmy-delete-tenant"
 
-                      echo export TYPE=${TYPE} >> $BASH_ENV
-                      echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
-                      echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
-                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
-                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
-                      echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
-                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
-                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                      echo export TYPE=${TYPE} >> ${BASH_ENV}
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> ${BASH_ENV}
+                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> ${BASH_ENV}
+                      echo export HASH_PR_URL=${HASH_PR_URL} >> ${BASH_ENV}
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> ${BASH_ENV}
+                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> ${BASH_ENV}
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> ${BASH_ENV}
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> ${BASH_ENV}
+                      echo export SKIP_DEPLOY_TIMMY=${SKIP_DEPLOY_TIMMY} >> ${BASH_ENV}
+                      echo export CLOUD_FUNCTION_CREATE_TENANT=${CLOUD_FUNCTION_CREATE_TENANT} >> ${BASH_ENV}
+                      echo export CLOUD_FUNCTION_DELETE_TENANT=${CLOUD_FUNCTION_DELETE_TENANT} >> ${BASH_ENV}
 
+                      echo "Type: ${TYPE}"
+                      echo "PIM namesapce: ${PIM_NAMESPACE}"
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Serenity release name: ${RELEASE_NAME}"
             - run:
@@ -615,13 +622,16 @@ jobs:
                   name: Persist env vars for next jobs
                   command: |
                       echo export TYPE=${TYPE} > persisted_env_vars
-                      echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> persisted_env_vars
+                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> persisted_env_vars
+                      echo export HASH_PR_URL=${HASH_PR_URL} >> persisted_env_vars
                       echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
                       echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
-                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
                       echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
-                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
-                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                      echo export SKIP_DEPLOY_TIMMY=${SKIP_DEPLOY_TIMMY} >> persisted_env_vars
+                      echo export CLOUD_FUNCTION_CREATE_TENANT=${CLOUD_FUNCTION_CREATE_TENANT} >> persisted_env_vars
+                      echo export CLOUD_FUNCTION_DELETE_TENANT=${CLOUD_FUNCTION_DELETE_TENANT} >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:
@@ -642,46 +652,55 @@ jobs:
             - attach_workspace:
                   at: ~/
             - set_gcloud_config_pim_saas_dev
+            - set_common_env_vars
             - install_yq_v3
             - set_docker_gcp_mirror
             - run:
                   name: Define value for next steps
                   command: |
-                      TYPE=<< parameters.PRODUCT_TYPE >>
-                      TYPE_LONG=serenity
-                      PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
-                      PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
+                      TYPE="srnt"
+                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0 )}')
+                      PIM_NAMESPACE=$(echo "pim-${CIRCLE_BRANCH_LOWER}" | cut -c -63)
+                      HASH_PR_URL=$(echo -n ${CI_PULL_REQUEST} | sha1sum | cut -c -10)
                       IMAGE_TAG=$(gcloud container images list-tags ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       RELEASE_NAME=${IMAGE_TAG}
-                      IMAGE_TAG_DATE="${IMAGE_TAG:1}"
+                      IMAGE_TAG_DATE="${RELEASE_NAME:1}"
+                      # Use default timmy if timmy step not used
+                      SKIP_DEPLOY_TIMMY=true
+                      CLOUD_FUNCTION_CREATE_TENANT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-timmy-create-tenant"
+                      CLOUD_FUNCTION_DELETE_TENANT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-timmy-delete-tenant"
 
-                      echo export TYPE=${TYPE} >> $BASH_ENV
-                      echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
-                      echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
-                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
-                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
-                      echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
-                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
-                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                      echo export TYPE=${TYPE} >> ${BASH_ENV}
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> ${BASH_ENV}
+                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> ${BASH_ENV}
+                      echo export HASH_PR_URL=${HASH_PR_URL} >> ${BASH_ENV}
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> ${BASH_ENV}
+                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> ${BASH_ENV}
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> ${BASH_ENV}
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> ${BASH_ENV}
+                      echo export SKIP_DEPLOY_TIMMY=${SKIP_DEPLOY_TIMMY} >> ${BASH_ENV}
+                      echo export CLOUD_FUNCTION_CREATE_TENANT=${CLOUD_FUNCTION_CREATE_TENANT} >> ${BASH_ENV}
+                      echo export CLOUD_FUNCTION_DELETE_TENANT=${CLOUD_FUNCTION_DELETE_TENANT} >> ${BASH_ENV}
 
                       echo "Type: ${TYPE}"
-                      echo "Type long: ${TYPE_LONG}"
+                      echo "PIM namesapce: ${PIM_NAMESPACE}"
                       echo "Image tag: ${IMAGE_TAG}"
-                      echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
-                      echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
+                      echo "Serenity release name: ${RELEASE_NAME}"
             - run:
                   name: Persist env vars for next jobs
                   command: |
                       echo export TYPE=${TYPE} > persisted_env_vars
-                      echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> persisted_env_vars
+                      echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> persisted_env_vars
+                      echo export HASH_PR_URL=${HASH_PR_URL} >> persisted_env_vars
                       echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
                       echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
-                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
                       echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
-                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
-                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                      echo export SKIP_DEPLOY_TIMMY=${SKIP_DEPLOY_TIMMY} >> persisted_env_vars
+                      echo export CLOUD_FUNCTION_CREATE_TENANT=${CLOUD_FUNCTION_CREATE_TENANT} >> persisted_env_vars
+                      echo export CLOUD_FUNCTION_DELETE_TENANT=${CLOUD_FUNCTION_DELETE_TENANT} >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:
@@ -710,7 +729,7 @@ jobs:
                   name: Define value for next steps
                   command: |
                       RELEASE_NAME=$(gcloud container images list-tags ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
-                      echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> ${BASH_ENV}
 
                       echo "Release name: ${RELEASE_NAME}"
             - run:
@@ -753,7 +772,7 @@ jobs:
                   bash /tmp/pim-enterprise-dev/deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west3.sh
                   bash /tmp/pim-enterprise-dev/deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-us-central1.sh
                   bash /tmp/pim-enterprise-dev/deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-australia-southeast1.sh
-                  
+
                   cp -r /tmp/pim-enterprise-dev/deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 
                   # tenant
