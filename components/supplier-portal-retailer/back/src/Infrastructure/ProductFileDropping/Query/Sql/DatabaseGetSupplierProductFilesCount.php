@@ -21,16 +21,13 @@ final class DatabaseGetSupplierProductFilesCount implements GetSupplierProductFi
     ): int {
         return (int) $this->connection->executeQuery(
             <<<SQL
-            SELECT COUNT(*) FROM 
-                (
-                    SELECT COALESCE(product_file_import.import_status, :toImportStatus) AS 'product_file_import_status'
-                    FROM `akeneo_supplier_portal_supplier_product_file` AS product_file
-                    LEFT JOIN `akeneo_supplier_portal_product_file_imported_by_job_execution` AS product_file_import
-                        ON product_file_import.product_file_identifier = product_file.identifier
-                    WHERE uploaded_by_supplier = :supplierIdentifier
-                    AND product_file.original_filename LIKE :search
-                    HAVING product_file_import_status IN (:status)
-            ) AS filteredProductCount
+            SELECT COUNT(*)
+            FROM `akeneo_supplier_portal_supplier_product_file` AS product_file
+            LEFT JOIN `akeneo_supplier_portal_product_file_imported_by_job_execution` AS product_file_import
+                ON product_file_import.product_file_identifier = product_file.identifier
+            WHERE product_file.uploaded_by_supplier = :supplierIdentifier
+            AND product_file.original_filename LIKE :search
+            AND COALESCE(product_file_import.import_status, :toImportStatus) IN (:status)
         SQL,
             [
                 'supplierIdentifier' => $supplierIdentifier,

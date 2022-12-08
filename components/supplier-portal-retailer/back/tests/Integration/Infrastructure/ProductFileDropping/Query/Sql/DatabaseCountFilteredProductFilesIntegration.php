@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountFilteredProductFiles;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\ProductFileImportStatus;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileImportBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Ramsey\Uuid\Uuid;
 
 final class DatabaseCountFilteredProductFilesIntegration extends SqlIntegrationTestCase
 {
@@ -60,13 +60,14 @@ final class DatabaseCountFilteredProductFilesIntegration extends SqlIntegrationT
     /** @test */
     public function itCanCountProductFilesDependingOnStatus(): void
     {
+        $supplierIdentifier = Uuid::uuid4()->toString();
         ($this->get(Repository::class))->save(
             (new SupplierBuilder())
-                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->withIdentifier($supplierIdentifier)
                 ->build(),
         );
         $supplier = new Supplier(
-            '44ce8069-8da1-4986-872f-311737f46f00',
+            $supplierIdentifier,
             'supplier_code',
             'Supplier label',
         );
@@ -74,42 +75,47 @@ final class DatabaseCountFilteredProductFilesIntegration extends SqlIntegrationT
         $productFileRepository = $this->get(ProductFileRepository::class);
         $productFileRepository->save(
             (new ProductFileBuilder())
-                ->withIdentifier('0d001a43-a42d-4083-8673-b64bb4ecd26f')
                 ->uploadedBySupplier($supplier)
                 ->build(),
         );
 
-        $productFileRepository->save(
-            (new ProductFileBuilder())
-                ->withIdentifier('1d001a43-a42d-4083-8673-b64bb4ecd26f')
-                ->uploadedBySupplier($supplier)
+        $inProgressProductFile = (new ProductFileBuilder())
+            ->uploadedBySupplier($supplier)
+            ->build();
+        $productFileRepository->save($inProgressProductFile);
+        ($this->get(ProductFileImportRepository::class))->save(
+            (new ProductFileImportBuilder())
+                ->withProductFile($inProgressProductFile)
+                ->withImportExecutionId(1)
+                ->withImportStatus(ProductFileImportStatus::IN_PROGRESS)
                 ->build(),
         );
-        $productFile1 = $productFileRepository->find(Identifier::fromString('1d001a43-a42d-4083-8673-b64bb4ecd26f'));
-        $productFileImport1 = ProductFileImport::start($productFile1, 1);
-        ($this->get(ProductFileImportRepository::class))->save($productFileImport1);
 
-        $productFileRepository->save(
-            (new ProductFileBuilder())
-                ->withIdentifier('2d001a43-a42d-4083-8673-b64bb4ecd26f')
-                ->uploadedBySupplier($supplier)
-                ->build(),
-        );
-        $productFile2 = $productFileRepository->find(Identifier::fromString('2d001a43-a42d-4083-8673-b64bb4ecd26f'));
-        $productFileImport2 = ProductFileImport::start($productFile2, 2);
-        $productFileImport2->completedAt(new \DateTimeImmutable());
-        ($this->get(ProductFileImportRepository::class))->save($productFileImport2);
+        $competedProductFile = (new ProductFileBuilder())
+            ->uploadedBySupplier($supplier)
+            ->build();
+        $productFileRepository->save($competedProductFile);
 
-        $productFileRepository->save(
-            (new ProductFileBuilder())
-                ->withIdentifier('3d001a43-a42d-4083-8673-b64bb4ecd26f')
-                ->uploadedBySupplier($supplier)
+        ($this->get(ProductFileImportRepository::class))->save(
+            (new ProductFileImportBuilder())
+                ->withProductFile($competedProductFile)
+                ->withImportExecutionId(2)
+                ->withImportStatus(ProductFileImportStatus::COMPLETED)
                 ->build(),
         );
-        $productFile3 = $productFileRepository->find(Identifier::fromString('3d001a43-a42d-4083-8673-b64bb4ecd26f'));
-        $productFileImport3 = ProductFileImport::start($productFile3, 3);
-        $productFileImport3->failedAt(new \DateTimeImmutable());
-        ($this->get(ProductFileImportRepository::class))->save($productFileImport3);
+
+        $failedProductFile = (new ProductFileBuilder())
+            ->uploadedBySupplier($supplier)
+            ->build();
+        $productFileRepository->save($failedProductFile);
+
+        ($this->get(ProductFileImportRepository::class))->save(
+            (new ProductFileImportBuilder())
+                ->withProductFile($failedProductFile)
+                ->withImportExecutionId(3)
+                ->withImportStatus(ProductFileImportStatus::FAILED)
+                ->build(),
+        );
 
         static::assertSame(1, $this->get(CountFilteredProductFiles::class)('', ProductFileImportStatus::TO_IMPORT));
         static::assertSame(1, $this->get(CountFilteredProductFiles::class)('', ProductFileImportStatus::IN_PROGRESS));

@@ -30,7 +30,7 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
                 uploaded_by_contributor,
                 uploaded_at,
                 IFNULL(COALESCE(last_comment_read_by_retailer.last_read_at, 0) < MAX(supplier_comments.created_at), 0) AS 'has_unread_comments',
-                COALESCE(product_file_import.import_status, :toImportStatus) AS 'product_file_import_status'
+                product_file_import.import_status
             FROM akeneo_supplier_portal_supplier_product_file AS product_file
             LEFT JOIN akeneo_supplier_portal_product_file_comments_read_by_retailer AS last_comment_read_by_retailer
                 ON last_comment_read_by_retailer.product_file_identifier = product_file.identifier
@@ -40,8 +40,8 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
                 ON product_file_import.product_file_identifier = product_file.identifier
             WHERE uploaded_by_supplier = :supplierIdentifier
             AND product_file.original_filename LIKE :search
+            AND COALESCE(product_file_import.import_status, :toImportStatus) IN (:status)
             GROUP BY product_file.identifier, uploaded_at, product_file_import.import_status
-            HAVING product_file_import_status IN (:status)
             ORDER BY uploaded_at DESC
             LIMIT :limit
             OFFSET :offset
@@ -55,7 +55,7 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
             $supplierIdentifier,
             $file['uploaded_at'],
             (bool) $file['has_unread_comments'],
-            $file['product_file_import_status'],
+            $file['import_status'],
         ), $this->connection->executeQuery(
             $sql,
             [
