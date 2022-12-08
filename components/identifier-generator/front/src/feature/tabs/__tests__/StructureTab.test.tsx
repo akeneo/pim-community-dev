@@ -20,7 +20,14 @@ describe('StructureTab', () => {
         numberMin: 42,
       },
     ];
-    render(<StructureTab initialStructure={structure} delimiter={'--'} onStructureChange={jest.fn()} />);
+    render(
+      <StructureTab
+        initialStructure={structure}
+        delimiter={'--'}
+        onStructureChange={jest.fn()}
+        onDelimiterChange={jest.fn()}
+      />
+    );
     expect(screen.getByText('pim_identifier_generator.structure.title')).toBeInTheDocument();
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
     expect(screen.getByText('DelimiterEditMock')).toBeInTheDocument();
@@ -29,7 +36,14 @@ describe('StructureTab', () => {
 
   it('should add a new property', () => {
     const onStructureChange = jest.fn();
-    render(<StructureTab initialStructure={[]} delimiter={null} onStructureChange={onStructureChange} />);
+    render(
+      <StructureTab
+        initialStructure={[]}
+        delimiter={null}
+        onStructureChange={onStructureChange}
+        onDelimiterChange={jest.fn()}
+      />
+    );
 
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Add Property'));
@@ -46,8 +60,9 @@ describe('StructureTab', () => {
             string: 'original value',
           },
         ]}
-        initialDelimiter={null}
+        delimiter={null}
         onStructureChange={onStructureChange}
+        onDelimiterChange={jest.fn()}
       />
     );
 
@@ -64,8 +79,9 @@ describe('StructureTab', () => {
     render(
       <StructureTab
         initialStructure={initialGenerator.structure}
-        initialDelimiter={null}
+        delimiter={null}
         onStructureChange={onStructureChange}
+        onDelimiterChange={jest.fn()}
       />
     );
 
@@ -87,6 +103,7 @@ describe('StructureTab', () => {
         ]}
         delimiter={null}
         onStructureChange={onStructureChange}
+        onDelimiterChange={jest.fn()}
       />
     );
 
@@ -169,9 +186,49 @@ describe('StructureTab', () => {
         ]}
         delimiter={null}
         onStructureChange={jest.fn()}
+        onDelimiterChange={jest.fn()}
       />
     );
     expect(screen.queryByText('AddPropertyButtonMock')).not.toBeInTheDocument();
     expect(screen.getByText('pim_identifier_generator.structure.limit_reached')).toBeInTheDocument();
+  });
+
+  it('should reorder properties', () => {
+    render(
+      <StructureTab
+        initialStructure={[
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'abc'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'def'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'ijk'},
+          {type: PROPERTY_NAMES.FREE_TEXT, string: 'lmn'},
+        ]}
+        delimiter={null}
+        onStructureChange={jest.fn()}
+        onDelimiterChange={jest.fn()}
+      />
+    );
+
+    let dataTransferred = '';
+    const dataTransfer = {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      getData: (_format: string) => {
+        return dataTransferred;
+      },
+      setData: (_format: string, data: string) => {
+        dataTransferred = data;
+      },
+    };
+
+    // Move 2nd item after 4th one
+    fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
+    fireEvent.dragStart(screen.getAllByRole('row')[1], {dataTransfer});
+    fireEvent.dragEnter(screen.getAllByRole('row')[2], {dataTransfer});
+    fireEvent.dragLeave(screen.getAllByRole('row')[2], {dataTransfer});
+    fireEvent.dragEnter(screen.getAllByRole('row')[3], {dataTransfer});
+    fireEvent.drop(screen.getAllByRole('row')[3], {dataTransfer});
+    fireEvent.dragEnd(screen.getAllByRole('row')[1], {dataTransfer});
+
+    const rows = screen.getAllByRole('row');
+    expect(rows.map(row => row.textContent?.substr(0, 3))).toEqual(['abc', 'ijk', 'lmn', 'def']);
   });
 });

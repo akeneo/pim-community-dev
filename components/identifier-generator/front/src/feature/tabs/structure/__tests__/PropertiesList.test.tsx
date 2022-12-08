@@ -6,14 +6,22 @@ import {StructureWithIdentifiers} from '../../StructureTab';
 
 describe('PropertiesList', () => {
   it('reorder properties', () => {
-    const onChange = jest.fn();
+    const onReorder = jest.fn();
     const structure: StructureWithIdentifiers = [
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'First item', id: 'id0'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'Second item', id: 'id1'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'Third item', id: 'id2'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'Fourth item', id: 'id3'},
     ];
-    render(<PropertiesList structure={structure} onChange={onChange} selectedId={undefined} onSelect={jest.fn()} />);
+    render(
+      <PropertiesList
+        structure={structure}
+        onReorder={onReorder}
+        selectedId={undefined}
+        onSelect={jest.fn()}
+        onDelete={jest.fn()}
+      />
+    );
 
     let dataTransferred = '';
     const dataTransfer = {
@@ -35,11 +43,6 @@ describe('PropertiesList', () => {
     fireEvent.drop(screen.getAllByRole('row')[3], {dataTransfer});
     fireEvent.dragEnd(screen.getAllByRole('row')[1], {dataTransfer});
 
-    expect(onChange).toHaveBeenCalledWith([
-      {type: PROPERTY_NAMES.FREE_TEXT, string: 'First item', id: 'id0'},
-      {type: PROPERTY_NAMES.FREE_TEXT, string: 'Third item', id: 'id2'},
-      {type: PROPERTY_NAMES.FREE_TEXT, string: 'Fourth item', id: 'id3'},
-      {type: PROPERTY_NAMES.FREE_TEXT, string: 'Second item', id: 'id1'},
-    ]);
+    expect(onReorder).toHaveBeenCalledWith([0, 2, 3, 1]);
   });
 });
