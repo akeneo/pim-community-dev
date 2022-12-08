@@ -84,12 +84,12 @@ class TemplateBuilderSpec extends ObjectBehavior
         $metaTitleAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Meta Title');
 
         $metaDescriptionAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_meta_description');
-        $metaDescriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXT);
+        $metaDescriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
         $metaDescriptionAttribute->getOrder()->intValue()->shouldReturn(4);
         $metaDescriptionAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Meta Description');
 
         $keywordsAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_keywords');
-        $keywordsAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXT);
+        $keywordsAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
         $keywordsAttribute->getOrder()->intValue()->shouldReturn(5);
         $keywordsAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Keywords');
     }

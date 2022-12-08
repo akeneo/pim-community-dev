@@ -39,14 +39,14 @@ class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDe
             'size' => 1000,
             'sort' => [
                 'timestamp' => 'ASC',
-                '_id' => 'ASC'
+                'id' => 'ASC'
             ],
             'query' => [
                 'bool' => [
                     'should' => [
                         ['bool' => ['must' => [
                             ['terms' => ['level' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO]]],
-                            ['terms' => ['_id' => $lastNoticeAndInfoIdentifiers]],
+                            ['terms' => ['id' => $lastNoticeAndInfoIdentifiers]],
                             ['bool' => ['should' => [
                                 ['term' => ['connection_code' => $connectionCode]],
                                 ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]], // connection_code IS NULL
@@ -103,7 +103,7 @@ class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDe
         );
 
         foreach ($result['hits']['hits'] as $hit) {
-            yield $hit['_id'];
+            yield $hit['_source']['id'];
         }
     }
 }

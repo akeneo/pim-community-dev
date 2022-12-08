@@ -90,7 +90,7 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
             $user = $this->createUser($username);
         }
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
         $session->set('_security_main', serialize($token));

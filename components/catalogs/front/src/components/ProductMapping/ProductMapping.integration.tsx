@@ -137,6 +137,7 @@ test('it displays an existing product mapping', async () => {
     const productMappingSchema = {
         properties: {
             uuid: {
+                title: 'Uuid',
                 type: 'string',
             },
             name: {
@@ -167,7 +168,9 @@ test('it displays an existing product mapping', async () => {
     );
 
     expect(screen.queryByTestId('product-mapping')).toBeInTheDocument();
-    expect(await screen.findAllByText('UUID')).toHaveLength(2);
+
+    expect(await screen.findByText('Uuid')).toBeInTheDocument();
+    expect(await screen.findByText('UUID')).toBeInTheDocument();
 
     expect(await screen.findByText('name')).toBeInTheDocument();
     expect(await screen.findByText('Title')).toBeInTheDocument();
@@ -261,6 +264,55 @@ test('it displays error pills when mapping is incorrect', async () => {
     );
 
     expect(await screen.findAllByTestId('error-pill')).toHaveLength(2);
+});
+
+test('it displays a placeholder when uuid target is clicked', async () => {
+    const onChange = jest.fn();
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                title: 'Uuid',
+                type: 'string',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                    onChange={onChange}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(await screen.findByText('Uuid')).toBeInTheDocument();
+    fireEvent.click(await screen.findByText('Uuid'));
+
+    expect(
+        await screen.findByText('akeneo_catalogs.product_mapping.source.uuid_placeholder.illustration_title')
+    ).toBeInTheDocument();
+    expect(
+        await screen.findByText('akeneo_catalogs.product_mapping.source.uuid_placeholder.subtitle')
+    ).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_mapping.source.uuid_placeholder.link')).toBeInTheDocument();
+    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.title')).not.toBeInTheDocument();
+    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.select_source.search')).not.toBeInTheDocument();
+    assertChannelSourceParameterIsNotDisplayed();
+    assertLocaleSourceParameterIsNotDisplayed();
 });
 
 test('it updates the state when a source is selected', async () => {

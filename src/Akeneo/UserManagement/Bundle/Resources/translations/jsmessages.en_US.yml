@@ -14,7 +14,6 @@ pim_title:
 
     pim_user_reset_reset: Password Reset
     pim_user_reset_request: Forgot Password
-    pim_user_reset_check_email: Password Reset | Check Email
 
     pim_user_group_create: 'Groups | Create'
     pim_user_group_update: 'Group {{ group }} | Edit'

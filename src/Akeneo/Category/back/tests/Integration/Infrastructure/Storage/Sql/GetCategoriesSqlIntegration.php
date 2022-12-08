@@ -6,9 +6,10 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Test\Integration\Configuration;
+use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -49,14 +50,46 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testDoNotGetCategoryByCodes(): void
     {
-        $category = $this->get(GetCategoriesInterface::class)->byCodes(['wrong_code'], true);
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['wrong code'],
+                'with_enriched_attributes' => true
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+        $category = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($category);
         $this->assertEmpty($category);
     }
 
     public function testGetCategoryByCodes(): void
     {
-        $retrievedCategories = $this->get(GetCategoriesInterface::class)->byCodes(['socks', 'shoes'], true);
+        $parameters['sqlWhere'] = '';
+        $parameters['sqlLimitOffset'] = 'LIMIT 10';
+        $parameters['params'] = [
+
+        ];
+        $parameters['types'] = [
+
+        ];
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['socks', 'shoes'],
+                'with_enriched_attributes' => true,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($retrievedCategories);
         // we retrieve 2 out of the 3 existing categories
         $this->assertCount(2, $retrievedCategories);
@@ -111,7 +144,19 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testGetCategoryByCodesWithoutEnrichedCategories(): void
     {
-        $retrievedCategories = $this->get(GetCategoriesInterface::class)->byCodes(['shoes'], false);
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['shoes'],
+                'with_enriched_attributes' => false,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($retrievedCategories);
         // we retrieve 1 out of the 3 existing categories
         $this->assertCount(1, $retrievedCategories);
@@ -135,6 +180,49 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         );
 
         $this->assertNull($shoesCategory->getAttributes());
+    }
+
+    public function testGetCategoryWithLimitSetToOneAndOffsetToTwo(): void{
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: '1=1',
+            params: [
+                'with_enriched_attributes' => false,
+            ],
+            types : [
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 1 OFFSET 2',
+        );
+        $retrievedCategory = $this->get(GetCategoriesInterface::class)->execute($parameters);
+        $this->assertIsArray($retrievedCategory);
+
+        // we retrieve only 1 out of the 3 existing categories
+        $this->assertCount(1, $retrievedCategory);
+
+        // we check that we retrieved the correct category according to the OFFSET
+        $this->assertSame('shoes', (string) $retrievedCategory[0]->getCode());
+    }
+
+    public function testCountCategories(): void
+    {
+        $parameters = new ExternalApiSqlParameters('1=1', [], []);
+        $numberOfCategories = $this->get(GetCategoriesInterface::class)->count($parameters);
+
+        $this->assertIsInt($numberOfCategories);
+        $this->assertSame(4, $numberOfCategories);
+    }
+
+    public function testCountCategoriesByCodes(): void
+    {
+        $parameters = new ExternalApiSqlParameters(
+            'category.code IN (:category_codes)',
+            ['category_codes' => ['socks', 'shoes']],
+            ['category_codes' => Connection::PARAM_STR_ARRAY]
+        );
+        $numberOfCategories = $this->get(GetCategoriesInterface::class)->count($parameters);
+
+        $this->assertIsInt($numberOfCategories);
+        $this->assertSame(2, $numberOfCategories);
     }
 
     protected function getConfiguration(): Configuration

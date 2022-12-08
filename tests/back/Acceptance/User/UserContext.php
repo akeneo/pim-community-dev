@@ -35,7 +35,7 @@ class UserContext implements Context
         $user = $this->userFactory->create();
         $user->setUsername('admin');
 
-        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_ADMINISTRATOR']);
+        $token = new UsernamePasswordToken($user, 'main', ['ROLE_ADMINISTRATOR']);
         $this->tokenStorage->setToken($token);
     }
 
@@ -48,7 +48,7 @@ class UserContext implements Context
         $user = $this->userFactory->create();
         $user->setUsername('julia');
 
-        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_USER']);
+        $token = new UsernamePasswordToken($user, 'main', ['ROLE_USER']);
         $this->tokenStorage->setToken($token);
     }
 }

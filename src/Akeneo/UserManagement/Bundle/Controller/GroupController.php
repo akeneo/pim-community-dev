@@ -5,10 +5,9 @@ namespace Akeneo\UserManagement\Bundle\Controller;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\UserManagement\Bundle\Form\Handler\GroupHandler;
 use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Akeneo\UserManagement\Component\UserEvents;
-use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -16,57 +15,46 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GroupController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-    private RemoverInterface $remover;
-    private GroupHandler $groupHandler;
-    private TranslatorInterface $translator;
-    private FormInterface $form;
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        RemoverInterface $remover,
-        GroupHandler $groupHandler,
-        TranslatorInterface $translator,
-        FormInterface $form,
-        EventDispatcherInterface $eventDispatcher
+        private readonly GroupRepositoryInterface $groupRepository,
+        private readonly RemoverInterface $remover,
+        private readonly GroupHandler $groupHandler,
+        private readonly TranslatorInterface $translator,
+        private readonly FormInterface $form,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->entityManager = $entityManager;
-        $this->remover = $remover;
-        $this->groupHandler = $groupHandler;
-        $this->translator = $translator;
-        $this->form = $form;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * Create group form
      *
-     * @Template("@PimUser/Group/update.html.twig")
      * @AclAncestor("pim_user_group_create")
      */
-    public function create()
+    public function create(): Response
     {
         $this->dispatchGroupEvent(UserEvents::PRE_CREATE_GROUP);
 
-        return $this->update(new Group());
+        $newGroup = new Group();
+        return $this->updateGroup($newGroup);
     }
 
     /**
      * Edit group form
      *
-     * @Template("@PimUser/Group/update.html.twig")
      * @AclAncestor("pim_user_group_edit")
      */
-    public function update(Group $entity)
+    public function update(int $id): Response
     {
-        $this->dispatchGroupEvent(UserEvents::PRE_UPDATE_GROUP, $entity);
+        $group = $this->groupRepository->find($id);
 
-        return $this->updateGroup($entity);
+        $this->dispatchGroupEvent(UserEvents::PRE_UPDATE_GROUP, $group);
+
+        return $this->updateGroup($group);
     }
 
     /**
@@ -74,36 +62,30 @@ class GroupController extends AbstractController
      *
      * @AclAncestor("pim_user_group_remove")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, int $id): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $groupClass = $this->container->getParameter('pim_user.entity.group.class');
-        $group = $this->entityManager->getRepository($groupClass)->find($id);
+        $group = $this->groupRepository->find($id);
 
-        if (!$group) {
+        if (null === $group) {
             throw $this->createNotFoundException(sprintf('Group with id %d could not be found.', $id));
         }
 
         try {
             $this->remover->remove($group);
         } catch (\Exception $exception) {
-            return new JsonResponse(['message' => $exception->getMessage()], 500);
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
         };
 
         return new JsonResponse('', 204);
     }
 
-    /**
-     * @param Group $entity
-     *
-     * @return array|JsonResponse
-     */
-    private function updateGroup(Group $entity)
+    private function updateGroup(Group $group): Response
     {
-        if ($this->groupHandler->process($entity)) {
+        if ($this->groupHandler->process($group)) {
             $this->addFlash(
                 'success',
                 $this->translator->trans('pim_user.controller.group.message.saved')
@@ -112,21 +94,17 @@ class GroupController extends AbstractController
             return new JsonResponse(
                 [
                     'route' => 'pim_user_group_update',
-                    'params' => ['id' => $entity->getId()]
+                    'params' => ['id' => $group->getId()]
                 ]
             );
         }
 
-        return [
+        return $this->render('@PimUser/Group/update.html.twig', [
             'form' => $this->form->createView(),
-        ];
+        ]);
     }
 
-    /**
-     * @param string $event
-     * @param Group  $group
-     */
-    private function dispatchGroupEvent($event, Group $group = null)
+    private function dispatchGroupEvent(string $event, Group $group = null): void
     {
         $this->eventDispatcher->dispatch(new GenericEvent($group), $event);
     }

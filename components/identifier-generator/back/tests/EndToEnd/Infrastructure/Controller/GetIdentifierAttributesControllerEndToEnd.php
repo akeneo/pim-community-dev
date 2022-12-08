@@ -35,6 +35,6 @@ final class GetIdentifierAttributesControllerEndToEnd extends ControllerEndToEnd
 
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 }

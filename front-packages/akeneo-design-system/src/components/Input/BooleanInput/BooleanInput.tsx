@@ -12,13 +12,14 @@ const BooleanButton = styled.button<
     value?: boolean;
     readOnly: boolean;
     invalid: boolean;
+    size: 'normal' | 'small';
   } & AkeneoThemedProps
 >`
   ${CommonStyle}
-  height: 40px;
-  width: 60px;
+  height: ${({size}) => ('small' === size ? 30 : 40)}px;
+  width: ${({size}) => ('small' === size ? 48 : 60)}px;
   display: inline-block;
-  line-height: 36px;
+  line-height: ${({size}) => ('small' === size ? 26 : 36)}px;
   text-align: center;
   vertical-align: middle;
   overflow: hidden;
@@ -153,6 +154,7 @@ type BooleanInputProps = Override<
     noLabel: string;
     invalid?: boolean;
     children?: ReactNode;
+    size?: 'normal' | 'small';
   }
 >;
 
@@ -171,6 +173,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
       clearLabel,
       invalid,
       children,
+      size = 'normal',
       ...rest
     }: BooleanInputProps,
     forwardedRef: Ref<HTMLDivElement>
@@ -203,6 +206,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
           title={noLabel}
           aria-invalid={invalid}
           invalid={invalid}
+          size={size}
         >
           {noLabel}
         </NoButton>
@@ -218,6 +222,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
           title={yesLabel}
           aria-invalid={invalid}
           invalid={invalid}
+          size={size}
         >
           {yesLabel}
         </YesButton>

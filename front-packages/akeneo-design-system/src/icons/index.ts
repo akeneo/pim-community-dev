@@ -55,6 +55,7 @@ export * from './EntityMultiIcon';
 export * from './EraseIcon';
 export * from './ExpandIcon';
 export * from './ExplanationPointIcon';
+export * from './ExternalLinkIcon';
 export * from './FactoryIcon';
 export * from './FileIcon';
 export * from './FileCsvIcon';

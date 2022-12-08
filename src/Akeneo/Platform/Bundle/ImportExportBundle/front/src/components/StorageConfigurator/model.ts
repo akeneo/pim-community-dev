@@ -1,8 +1,9 @@
 import {FunctionComponent} from 'react';
 import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage, Storage, StorageType, localStorageIsEnabled} from '../model';
+import {LocalStorage, SftpStorage, AmazonS3Storage, Storage, StorageType, localStorageIsEnabled} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
+import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
 
 type StorageLoginType = 'password' | 'private_key';
 
@@ -22,6 +23,7 @@ type StorageConfiguratorCollection = {
 const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
   sftp: SftpStorageConfigurator,
+  amazon_s3: AmazonS3StorageConfigurator,
 };
 
 const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
@@ -62,5 +64,23 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
   );
 };
 
+const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
+  return (
+    'amazon_s3' === storage.type &&
+    'file_path' in storage &&
+    'region' in storage &&
+    'bucket' in storage &&
+    'key' in storage &&
+    'secret' in storage
+  );
+};
+
 export type {StorageConfiguratorProps, StorageLoginType};
-export {isLocalStorage, isSftpStorage, isValidLoginType, getStorageConfigurator, STORAGE_LOGIN_TYPES};
+export {
+  isLocalStorage,
+  isSftpStorage,
+  isAmazonS3Storage,
+  isValidLoginType,
+  getStorageConfigurator,
+  STORAGE_LOGIN_TYPES,
+};

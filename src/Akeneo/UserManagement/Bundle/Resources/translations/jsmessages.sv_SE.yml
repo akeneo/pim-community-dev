@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Logga in
   pim_user_reset_reset: Återställ lösenord
   pim_user_reset_request: Glömt Lösenord
-  pim_user_reset_check_email: Återställ lösenord | Kontrollera e-post
   pim_user_group_create: 'Grupper | Skapa'
   pim_user_group_update: 'Grupp {{ group }} | Redigera'
 confirmation:

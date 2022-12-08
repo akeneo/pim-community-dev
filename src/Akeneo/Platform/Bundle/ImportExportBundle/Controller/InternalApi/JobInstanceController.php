@@ -191,7 +191,10 @@ class JobInstanceController
         }
 
         $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
-        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        if (isset($normalizedJobInstance['configuration']['storage'])) {
+            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance['configuration']['storage']);
+        }
 
         return new JsonResponse($normalizedJobInstance);
     }
@@ -229,8 +232,10 @@ class JobInstanceController
             return new JsonResponse($errors, 400);
         }
 
-        $encryptedData = $this->credentialsEncrypterRegistry->encryptCredentials($data);
-        $this->updater->update($jobInstance, $encryptedData);
+        if (isset($data['configuration']['storage'])) {
+            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($data['configuration']['storage']);
+        }
+        $this->updater->update($jobInstance, $data);
 
         try {
             $this->eventDispatcher->dispatch(
@@ -249,7 +254,10 @@ class JobInstanceController
         );
 
         $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
-        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        if (isset($normalizedJobInstance['configuration']['storage'])) {
+            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance['configuration']['storage']);
+        }
 
         return new JsonResponse($normalizedJobInstance);
     }
@@ -555,7 +563,10 @@ class JobInstanceController
         );
 
         $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
-        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        if (isset($normalizedJobInstance['configuration']['storage'])) {
+            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance['configuration']['storage']);
+        }
 
         return new JsonResponse($normalizedJobInstance);
     }

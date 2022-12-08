@@ -217,7 +217,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $username = $stepExecution->getJobExecution()->getUser();
         $user = $this->userProvider->loadUserByIdentifier($username);
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
     }
 }

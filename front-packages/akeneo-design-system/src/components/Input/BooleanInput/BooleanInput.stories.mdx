@@ -34,6 +34,13 @@ import {useArgs, updateArgs} from '@storybook/client-api';
     clearLabel: {
       description: 'The label for the Clear value button',
     },
+    size: {
+      description: 'The size of the buttons',
+      table: {
+        defaultValue: {summary: 'normal'},
+      },
+      control: {type: 'select'}, options: ['normal', 'small'],
+    },
   }}
   args={{
     value: null,
@@ -112,6 +119,28 @@ The input can in some cases have a 3rd state, EMPTY. In this case, a clear butto
             There is an error. <Link href="#">Link</Link>
           </BooleanInput>
           <BooleanInput {...args} value={false} invalid={true}>
+            There is an error. <Link href="#">Link</Link>
+          </BooleanInput>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on size
+
+<Canvas>
+  <Story name="Small">
+    {args => {
+      return (
+        <>
+          <BooleanInput {...args} value={null} size={'small'}>
+            There is an error. <Link href="#">Link</Link>
+          </BooleanInput>
+          <BooleanInput {...args} value={true} size={'small'}>
+            There is an error. <Link href="#">Link</Link>
+          </BooleanInput>
+          <BooleanInput {...args} value={false} size={'small'}>
             There is an error. <Link href="#">Link</Link>
           </BooleanInput>
         </>

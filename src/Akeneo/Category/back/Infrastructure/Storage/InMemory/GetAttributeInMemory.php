@@ -78,7 +78,7 @@ class GetAttributeInMemory implements GetAttribute
                 AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(true),
                 AttributeIsScopable::fromBoolean(false),
-                AttributeIsLocalizable::fromBoolean(false),
+                AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'Banner image']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),

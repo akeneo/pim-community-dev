@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, MutableRefObject, useLayoutEffect, useRef, useState} from 'react';
 import {AppIllustration, Breadcrumb} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../../shared/translate';
 import {ConnectedApp} from '../../../../model/Apps/connected-app';
@@ -9,6 +9,7 @@ import {UserButtons} from '../../../../shared/user';
 import {DeveloperModeTag} from '../../DeveloperModeTag';
 import {CatalogEdit, useCatalogForm} from '@akeneo-pim-community/catalogs';
 import {NotificationLevel, useNotify} from '../../../../shared/notify';
+import {OpenAppButton} from '../OpenAppButton';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -25,6 +26,12 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
         connectionCode: connectedApp.connection_code,
     })}`;
     const [form, save, isDirty] = useCatalogForm(catalog.id);
+
+    const ref = useRef<HTMLDivElement>() as MutableRefObject<HTMLDivElement>;
+    const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
+    useLayoutEffect(() => {
+        setHeaderContextContainer(ref.current);
+    });
 
     const handleSave = async () => {
         try {
@@ -80,17 +87,20 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[<SaveButton key={0} />]}
+                buttons={[<OpenAppButton connectedApp={connectedApp} key={1} />, <SaveButton key={0} />]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
                 imageSrc={connectedApp.logo ?? undefined}
                 imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
                 tag={tag}
+                contextContainer={<div ref={ref} />}
             >
                 {catalog.name}
             </PageHeader>
 
-            <PageContent>{form && <CatalogEdit id={catalog.id} form={form} />}</PageContent>
+            <PageContent>
+                {form && <CatalogEdit id={catalog.id} form={form} headerContextContainer={headerContextContainer} />}
+            </PageContent>
         </>
     );
 };

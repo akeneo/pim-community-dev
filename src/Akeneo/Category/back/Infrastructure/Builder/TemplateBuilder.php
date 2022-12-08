@@ -5,6 +5,7 @@ namespace Akeneo\Category\Infrastructure\Builder;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
+use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
@@ -71,7 +72,7 @@ class TemplateBuilder
                     AttributeOrder::fromInteger(2),
                     AttributeIsRequired::fromBoolean(true),
                     AttributeIsScopable::fromBoolean(true),
-                    AttributeIsLocalizable::fromBoolean(false),
+                    AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'Banner image']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
@@ -87,7 +88,7 @@ class TemplateBuilder
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
                 ),
-                AttributeText::create(
+                AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_meta_description'),
                     AttributeOrder::fromInteger(4),
@@ -98,7 +99,7 @@ class TemplateBuilder
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
                 ),
-                AttributeText::create(
+                AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_keywords'),
                     AttributeOrder::fromInteger(5),
@@ -124,10 +125,15 @@ class TemplateBuilder
     /**
      * Generate a template label by adding ' template' at the end of given category tree 'en_US' label.
      */
-    private function generateTemplateLabelCollection(LabelCollection $categoryTreeLabelCollection): LabelCollection
+    private function generateTemplateLabelCollection(?LabelCollection $categoryTreeLabelCollection): LabelCollection
     {
-        return LabelCollection::fromArray([
-            'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
-        ]);
+        $translations = [];
+        if ($categoryTreeLabelCollection) {
+            $translations = [
+                'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
+            ];
+        }
+
+        return LabelCollection::fromArray($translations);
     }
 }
