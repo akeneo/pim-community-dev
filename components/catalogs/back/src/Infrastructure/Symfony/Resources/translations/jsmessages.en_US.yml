@@ -18,9 +18,10 @@ akeneo_catalogs:
             more: More
             product_value_filters: Filter the values
             product_mapping: Mapping
-    settings:
+    catalog_status_widget:
         fields:
-            enabled: Enabled
+            enable_catalog: Enable catalog
+        helper: By default, new catalogs are disabled. Enable the catalog to allow the app to retrieve your product data.
         inputs:
             yes: Yes
             no: No
@@ -43,6 +44,9 @@ akeneo_catalogs:
                 placeholder: Select a currency
     product_selection:
         empty: Add selection criteria to create your product selection
+        count:
+            products: '{0} No products|{1} 1 product|[2,Inf[ {{ count }} products'
+            error: Impossible to calculate the number of products
         more_information: Check out our Help center for more information.
         add_criteria:
             label: add selection criteria
@@ -140,3 +144,7 @@ akeneo_catalogs:
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.
                 subtitle: Then you'll be able to match a PIM attribute with the selected target.
                 link: Check out our Help center for more information.
+            uuid_placeholder:
+                illustration_title: The UUID is a technical product identifier.
+                subtitle: All apps must require it as a target. You have nothing to configure for this target as we automatically map it with the Akeneo product UUID.
+                link: More information about the UUID.

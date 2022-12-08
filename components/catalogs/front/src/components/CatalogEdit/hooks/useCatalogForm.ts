@@ -85,7 +85,7 @@ export const useCatalogForm = (id: string): Result => {
                         break;
                 }
             },
-        [setDirty, values, setErrors, errors]
+        [setDirty, setErrors, errors]
     );
 
     if (catalog.isLoading) {

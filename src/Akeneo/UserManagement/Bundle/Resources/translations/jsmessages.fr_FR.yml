@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Connexion
   pim_user_reset_reset: Réinitialisation de mot de passe
   pim_user_reset_request: Mot de passe oublié
-  pim_user_reset_check_email: Réinitialisation de mot de passe | Email de vérification
   pim_user_group_create: 'Groupes | Création'
   pim_user_group_update: 'Groupes {{ group }} | Édition'
 confirmation:

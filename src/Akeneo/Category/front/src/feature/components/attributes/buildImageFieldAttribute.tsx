@@ -41,7 +41,7 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
     });
 
     return (
-      <Field channel={channel} label={getLabelFromAttribute(attribute, locale)}>
+      <Field channel={channel} label={getLabelFromAttribute(attribute, locale)} locale={locale}>
         <MediaFileInput
           value={imageInfo}
           onChange={onChange}

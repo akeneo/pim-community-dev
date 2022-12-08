@@ -41,7 +41,7 @@ class PurgeConnectionErrorsQuery
         $esIdsToKeep = [];
         foreach ($msearchResults['responses'] as $result) {
             foreach ($result['hits']['hits'] as $hit) {
-                $esIdsToKeep[] = $hit['_id'];
+                $esIdsToKeep[] = $hit['_source']['id'];
             }
         }
         $this->esClient->deleteByQuery($this->getDeleteAllDocumentsButGivenIdsQuery($esIdsToKeep));
@@ -52,7 +52,7 @@ class PurgeConnectionErrorsQuery
         return [
             'query' => [
                 'bool' => [
-                    'must_not' => ['terms' => ['_id' => $idsToKeep]]
+                    'must_not' => ['terms' => ['id' => $idsToKeep]]
                 ]
             ]
         ];
@@ -73,7 +73,10 @@ class PurgeConnectionErrorsQuery
                 'constant_score' => [
                     'filter' => [
                         'bool' => [
-                            'filter' => ['term' => ['connection_code' => $code]],
+                            'filter' => [
+                                ['exists' => ['field' => 'id']],
+                                ['term' => ['connection_code' => $code]],
+                            ],
                             'must_not' => [
                                 'range' => ['error_datetime' => ['lt' => $daysToKeepQuery]]
                             ],

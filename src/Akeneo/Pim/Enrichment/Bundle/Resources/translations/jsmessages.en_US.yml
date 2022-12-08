@@ -505,8 +505,6 @@ pim_datagrid:
             label: Updated At
         label_or_identifier:
             label: Label or identifier
-        label_identifier_or_uuid:
-            label: label, identifier or UUID
         parent:
             label: Parent
         identifier:

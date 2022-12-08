@@ -446,4 +446,25 @@ class ColumnsMergerSpec extends ObjectBehavior
 
         $this->merge($row)->shouldReturn(['weight' => "10 CENTIMETER"]);
     }
+
+    public function it_throw_an_exception_on_missing_column_for_quantified_association(
+        $fieldExtractor,
+        $associationColumnResolver
+    ): void
+    {
+        $row = [
+            'PACK-products' => 'my_sku,nice',
+        ];
+        $fieldExtractor->extractColumnInfo('PACK-products-quantity')->willReturn(null);
+        $fieldExtractor->extractColumnInfo('PACK-products')->willReturn(null);
+
+        $associationColumnResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn(['PACK-products-quantity']);
+        $associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn(['PACK-products']);
+
+        $this
+            ->shouldThrow(
+                new \LogicException('A "PACK-products-quantity" column is missing for quantified association')
+            )
+            ->during('merge', [$row]);
+    }
 }

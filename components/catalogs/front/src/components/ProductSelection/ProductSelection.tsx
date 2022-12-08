@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useReducer} from 'react';
-import {getColor, Helper} from 'akeneo-design-system';
+import {getColor, Helper, useDebounce} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {ProductSelectionReducer} from './reducers/ProductSelectionReducer';
 import {ProductSelectionContext} from './contexts/ProductSelectionContext';
@@ -8,6 +8,7 @@ import {Empty} from './components/Empty';
 import {ProductSelectionValues} from './models/ProductSelectionValues';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import {ProductSelectionErrors} from './models/ProductSelectionErrors';
+import {CountSelectedProductsByCriteria} from './components/CountSelectedProductsByCriteria';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Header = styled.div`
@@ -27,6 +28,7 @@ const MAX_CRITERIA_PER_CATALOG = 25;
 
 const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
     const [values, dispatch] = useReducer(ProductSelectionReducer, criteria);
+    const debouncedCriteria = useDebounce<ProductSelectionValues>(values, 2000);
     const translate = useTranslate();
 
     useEffect(() => {
@@ -49,6 +51,7 @@ const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
                 </Helper>
             ) : null}
             <Header>
+                <CountSelectedProductsByCriteria criteria={debouncedCriteria} />
                 <AddCriterionDropdown isDisabled={rows.length >= MAX_CRITERIA_PER_CATALOG} />
             </Header>
             {rows.length ? rows : <Empty />}

@@ -1,8 +1,12 @@
 services:
   Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUniqueValidator:
-      tags:
-        - { name: validator.constraint_validator }
+    tags:
+      - { name: validator.constraint_validator }
 
   Akeneo\Category\Infrastructure\Validation\ValueUserIntentsShouldBeUniqueValidator:
     tags:
       - { name: validator.constraint_validator }
+
+  Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator:
+    arguments:
+      - '@validator'

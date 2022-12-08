@@ -2,38 +2,26 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
+use Twig\Environment;
 
 class SecurityController
 {
-    private AuthenticationUtils $authenticationUtils;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-    private string $actionRoute;
-    private array $additionalHiddenFields;
-    private LogoutUrlGenerator $logoutUrlGenerator;
-
     public function __construct(
-        AuthenticationUtils $authenticationUtils,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        LogoutUrlGenerator $logoutUrlGenerator,
-        string $actionRoute,
-        array $additionalHiddenFields
+        private readonly AuthenticationUtils $authenticationUtils,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly LogoutUrlGenerator $logoutUrlGenerator,
+        private readonly Environment $twig,
+        private readonly string $actionRoute,
+        private readonly array $additionalHiddenFields
     ) {
-        $this->authenticationUtils = $authenticationUtils;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->logoutUrlGenerator = $logoutUrlGenerator;
-        $this->actionRoute = $actionRoute;
-        $this->additionalHiddenFields = $additionalHiddenFields;
     }
 
-    /**
-     * @Template("@PimUser/Security/login.html.twig")
-     */
-    public function login(): array
+    public function login(): Response
     {
         // get the login error if there is one
         $error = $this->authenticationUtils->getLastAuthenticationError();
@@ -42,14 +30,16 @@ class SecurityController
         $lastUsername = $this->authenticationUtils->getLastUsername();
         $csrfToken = $this->csrfTokenManager->getToken('authenticate')->getValue();
 
-        return [
+        $content = $this->twig->render('@PimUser/Security/login.html.twig', [
             // last username entered by the user
             'last_username'            => $lastUsername,
             'csrf_token'               => $csrfToken,
             'error'                    => $error,
             'action_route'             => $this->actionRoute,
             'additional_hidden_fields' => $this->additionalHiddenFields,
-        ];
+        ]);
+
+        return new Response($content);
     }
 
     public function check()

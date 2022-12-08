@@ -99,6 +99,14 @@ Feature: Convert standard format to user intents
     When I ask to convert standard format with a measurement without unit
     Then there is an exception with message: Property "a_metric" expects an array with the key "unit".
 
+  Scenario: Error when bad metric attribute value
+    When I ask to convert standard format with a measurement with empty unit
+    Then there is an exception with message: Property "a_metric" expects a string as data, "array" given.
+
+  Scenario: Error when bad metric attribute value
+    When I ask to convert standard format with a measurement with null unit
+    Then there is an exception with message: Property "a_metric" expects a string as data, "NULL" given.
+
   Scenario: Error when bad multiselect attribute value
     When I ask to convert standard format with an invalid simpleselect attribute value
     Then there is an exception with message: Property "a_simpleselect" expects a string as data, "array" given.

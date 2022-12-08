@@ -51,11 +51,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    security.authentication.form_entry_point:
+    security.authenticator.form_login:
         abstract: true
-        class: 'Akeneo\Platform\Bundle\UIBundle\Http\FormAuthenticationEntryPoint'
+        class: 'Akeneo\Platform\Bundle\UIBundle\Http\FormLoginAuthenticator'
         arguments:
-            - '@http_kernel'
+            - '@security.http_utils'
+            - !abstract
+            - !abstract
+            - !abstract
+            - !abstract
 
     security.script_nonce_generator:
       class: Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator

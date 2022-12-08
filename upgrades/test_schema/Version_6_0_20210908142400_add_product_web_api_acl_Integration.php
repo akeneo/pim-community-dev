@@ -148,7 +148,7 @@ class Version_6_0_20210908142400_add_product_web_api_acl_Integration extends Tes
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
-        $token = new UsernamePasswordToken('username', null, 'main', [$role]);
+        $token = new UsernamePasswordToken('username', 'main', [$role]);
 
         foreach ($acls as $acl => $expectedValue) {
             assert(is_bool($expectedValue));

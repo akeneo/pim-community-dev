@@ -61,9 +61,12 @@ class GetCategorySql implements GetCategoryInterface
             )
             SELECT
                 category.id,
-                category.code, 
+                category.code,
                 category.parent_id,
                 category.root as root_id,
+                category.lft,
+                category.rgt,
+                category.lvl,
                 category.updated,
                 translation.translations,
                 category.value_collection,

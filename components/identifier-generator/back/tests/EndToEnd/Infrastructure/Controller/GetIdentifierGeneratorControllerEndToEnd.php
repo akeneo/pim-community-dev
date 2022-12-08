@@ -79,7 +79,7 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
 
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useMinimalCatalog(['identifier_generator']);
     }
 
     private function getUuidFromCode(string $code): string

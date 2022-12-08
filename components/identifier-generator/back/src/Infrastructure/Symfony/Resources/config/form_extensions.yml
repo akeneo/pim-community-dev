@@ -8,6 +8,7 @@ extensions:
     config:
       title: pim_title.akeneo_identifier_generator_index
       to: akeneo_identifier_generator_index
+    feature: identifier_generator
 
   pim-identifier-generator-user-navigation:
     module: pim/menu/user-navigation
