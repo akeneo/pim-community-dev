@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Iniciar Sessió
   pim_user_reset_reset: Reiniciar contrasenya
   pim_user_reset_request: He oblidat la contrasenya
-  pim_user_reset_check_email: Reiniciar contrasenya | Revisar el correu electrònic
   pim_user_group_create: 'Grups | Crear'
   pim_user_group_update: 'Grup {{ group }} | Editar'
 confirmation:

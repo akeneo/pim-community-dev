@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: ログイン
   pim_user_reset_reset: パスワードリセット
   pim_user_reset_request: パスワードのリセット
-  pim_user_reset_check_email: パスワードリセット | Email確認
   pim_user_group_create: 'グループ | 作成'
   pim_user_group_update: 'グループ {{ group }} | 編集'
 confirmation:
