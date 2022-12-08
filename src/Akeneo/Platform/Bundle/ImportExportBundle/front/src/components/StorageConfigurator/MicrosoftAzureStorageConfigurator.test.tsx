@@ -2,8 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, LocalStorage, MicrosoftAzureStorage} from '../model';
-import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
+import {LocalStorage, MicrosoftAzureStorage} from '../model';
 import {MicrosoftAzureStorageConfigurator} from "./MicrosoftAzureStorageConfigurator";
 
 beforeEach(() => {
