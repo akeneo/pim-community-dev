@@ -45,7 +45,7 @@ final class GetCatalogIdsContainingCurrenciesQueryTest extends IntegrationTestCa
         $this->enableCatalog($catalogIdFR);
         $this->enableCatalog($catalogIdUK);
 
-        $this->setCatalogProductSelection($catalogIdUS, [
+        $this->setCatalogProductValueFilters($catalogIdUS, [
             [
                 'field' => 'currencies',
                 'operator' => Operator::IN_LIST,
@@ -54,7 +54,7 @@ final class GetCatalogIdsContainingCurrenciesQueryTest extends IntegrationTestCa
                 'locale' => null,
             ],
         ]);
-        $this->setCatalogProductSelection($catalogIdFR, [
+        $this->setCatalogProductValueFilters($catalogIdFR, [
             [
                 'field' => 'currencies',
                 'operator' => Operator::IN_LIST,
