@@ -8,6 +8,10 @@ namespace Akeneo\Category\Domain\ValueObject;
  */
 final class PermissionCollection
 {
+    public const VIEW = 'view';
+    public const EDIT = 'edit';
+    public const OWN = 'own';
+
     // @phpstan-ignore-next-line
     private function __construct(private ?array $permissions)
     {
@@ -21,22 +25,56 @@ final class PermissionCollection
         return new self($permissions);
     }
 
+    /**
+     * @param array<int> $userGroupIds
+     */
+    public function addPermission(string $type, array $userGroupIds): self
+    {
+        if (array_key_exists($type, $this->permissions)) {
+            foreach ($userGroupIds as $userGroupId) {
+                if (!in_array($userGroupId, $this->permissions[$type])) {
+                    $this->permissions[$type][] = $userGroupId;
+                }
+            }
+        } else {
+            $this->permissions[$type] = $userGroupIds;
+        }
+
+        return new self($this->permissions);
+    }
+
+    /**
+     * @param array<int> $userGroupIds
+     */
+    public function removePermission(string $type, array $userGroupIds): self
+    {
+        if (array_key_exists($type, $this->permissions)) {
+            foreach ($userGroupIds as $userGroupId) {
+                if (($key = array_search($userGroupId, $this->permissions[$type])) !== false) {
+                    unset($this->permissions[$type][$key]);
+                }
+            }
+        }
+
+        return new self($this->permissions);
+    }
+
     /** @return array<int> */
     public function getViewUserGroups(): array
     {
-        return $this->permissions['view'];
+        return array_values($this->permissions[self::VIEW]);
     }
 
     /** @return array<int> */
     public function getEditUserGroups(): array
     {
-        return $this->permissions['edit'];
+        return array_values($this->permissions[self::EDIT]);
     }
 
     /** @return array<int> */
     public function getOwnUserGroups(): array
     {
-        return $this->permissions['own'];
+        return array_values($this->permissions[self::OWN]);
     }
 
     /** @return array<string, array<int>>|null */

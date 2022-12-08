@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Converter\InternalApi;
 
-use Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\RequirementChecker;
 use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
 
@@ -27,7 +27,7 @@ use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
 class InternalApiToStd implements ConverterInterface
 {
     public function __construct(
-        private InternalApiRequirementChecker $checker,
+        private readonly RequirementChecker $checker,
     ) {
     }
 
