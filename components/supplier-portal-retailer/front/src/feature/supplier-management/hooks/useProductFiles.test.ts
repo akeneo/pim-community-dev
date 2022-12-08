@@ -33,7 +33,9 @@ test('it loads the product files', async () => {
         json: async () => backendResponse,
     }));
 
-    const {result, waitForNextUpdate} = renderHookWithProviders(() => useProductFiles('bbe78bfb-10e8-4cd8-ad9c-22056824e9bd', 1, '', null));
+    const {result, waitForNextUpdate} = renderHookWithProviders(() =>
+        useProductFiles('bbe78bfb-10e8-4cd8-ad9c-22056824e9bd', 1, '', null)
+    );
 
     expect(result.current[0]).toEqual([]);
 
