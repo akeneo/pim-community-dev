@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\Product;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Presenter\UnableToSetIdentifierExceptionPresenter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
@@ -60,6 +61,7 @@ final class UpdateProductController
         private MessageBusInterface $commandMessageBus,
         private MessageBusInterface $queryMessageBus,
         private UnableToSetIdentifiersSubscriber $unableToSetIdentifiersSubscriber,
+        private UnableToSetIdentifierExceptionPresenter $unableToSetIdentifierExceptionPresenter,
     ) {
     }
 
@@ -135,7 +137,10 @@ final class UpdateProductController
             if (!\array_key_exists('meta', $normalizedProduct)) {
                 $normalizedProduct['meta'] = [];
             }
-            $normalizedProduct['meta']['warning'] = $this->unableToSetIdentifiersSubscriber->getEvents()[0]->getException()->getMessage();
+            $normalizedProduct['meta']['identifier_generator_warnings'] =
+                $this->unableToSetIdentifierExceptionPresenter->fromException(
+                    $this->unableToSetIdentifiersSubscriber->getEvents()[0]->getException()
+                );
         }
 
         return new JsonResponse($normalizedProduct);

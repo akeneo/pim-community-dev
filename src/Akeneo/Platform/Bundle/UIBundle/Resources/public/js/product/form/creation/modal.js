@@ -13,8 +13,12 @@ define([
 ) {
     return BaseModal.extend({
         postSuccess(entity) {
-            if (entity.meta.warning) {
-                messenger.notify('warning', entity.meta.warning);
+            if (entity.meta.identifier_generator_warnings) {
+                const normalizedWarnings = entity.meta.identifier_generator_warnings.map((warning) => {
+                    return `${warning.path}: ${warning.message}`;
+                });
+
+                messenger.notify('warning', this.updateIdentifierWarningMessage, normalizedWarnings);
             }
             messenger.notify('success', __(this.config.successMessage));
         },

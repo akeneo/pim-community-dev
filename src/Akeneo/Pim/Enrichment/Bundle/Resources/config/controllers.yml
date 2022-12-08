@@ -214,6 +214,7 @@ services:
             - '@pim_enrich.product.message_bus'
             - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier'
             - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Presenter\UnableToSetIdentifierExceptionPresenter'
 
     pim_enrich.controller.rest.product_comment:
         public: true
@@ -453,3 +454,4 @@ services:
             - '@pim_enrich.product.message_bus'
             - '@pim_enrich.product.query_message_bus'
             - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Presenter\UnableToSetIdentifierExceptionPresenter'
