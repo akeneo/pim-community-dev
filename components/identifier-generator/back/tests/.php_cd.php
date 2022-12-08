@@ -33,15 +33,18 @@ $rules = [
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
 
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
+            'Akeneo\Tool\Component\Batch\Event\EventInterface',
+            'Akeneo\Tool\Component\Batch\Event\StepExecutionEvent',
+            'Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface',
+            'Akeneo\Tool\Component\Batch\Model\Warning',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
-
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
 
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\DependencyInjection\ContainerBuilder',
@@ -52,6 +55,7 @@ $rules = [
             'Symfony\Component\HttpKernel\Exception\BadRequestHttpException',
             'Symfony\Component\HttpKernel\Exception\NotFoundHttpException',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\Validator',
 

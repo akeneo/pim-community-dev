@@ -2,15 +2,15 @@ import React, {useMemo, useState} from 'react';
 import {AttributesIllustration, Helper, Link, SectionTitle, uuid} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton, DelimiterEdit, Preview, PropertiesList, PropertyEdit} from './structure';
-import {Delimiter, Property, Structure as StructureType} from '../models';
+import {Delimiter, Property, Structure} from '../models';
 import {Styled} from '../components/Styled';
 import {TranslationWithLink} from '../components';
 import styled from 'styled-components';
 
 type StructureTabProps = {
-  initialStructure: StructureType;
+  initialStructure: Structure;
   delimiter: Delimiter | null;
-  onStructureChange: (structure: StructureType) => void;
+  onStructureChange: (structure: Structure) => void;
   onDelimiterChange: (delimiter: Delimiter | null) => void;
 };
 
@@ -31,13 +31,11 @@ const StructureTab: React.FC<StructureTabProps> = ({
 }) => {
   const translate = useTranslate();
   const [selectedPropertyId, setSelectedPropertyId] = useState<PropertyId | undefined>();
-  const structure = useMemo(
-    () =>
-      initialStructure.map(property => ({
-        id: uuid(),
-        ...property,
-      })),
-    [initialStructure]
+  const [structure, setStructure] = useState<StructureWithIdentifiers>(
+    initialStructure.map(property => ({
+      id: uuid(),
+      ...property,
+    }))
   );
   const selectedProperty = useMemo(
     () => structure.find(propertyWithId => propertyWithId.id === selectedPropertyId),
@@ -45,24 +43,44 @@ const StructureTab: React.FC<StructureTabProps> = ({
   );
   const isLimitReached = useMemo(() => structure.length === LIMIT_NUMBER, [structure.length]);
 
+  const removeIdentifiers: (structureWithIdentifiers: StructureWithIdentifiers) => Structure =
+    structureWithIdentifiers => {
+      return structureWithIdentifiers.map(propertyWithIdentifier => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {id, ...property} = propertyWithIdentifier;
+
+        return property;
+      });
+    };
+
   const onPropertyChange = (property: Property) => {
     if (selectedProperty) {
       const updatedPropertyIndex = structure.findIndex(p => selectedProperty.id === p.id);
-      const clonedStructure = [...structure];
-      clonedStructure[updatedPropertyIndex] = {...property, id: selectedProperty.id};
-      onStructureChange(clonedStructure);
+      const newStructure = [...structure];
+      newStructure[updatedPropertyIndex] = {...property, id: selectedProperty.id};
+      setStructure(newStructure);
+      onStructureChange(removeIdentifiers(newStructure));
     }
   };
 
   const onAddProperty = (property: Property) => {
     const newPropertyId = uuid();
-    onStructureChange([...structure, {...property, id: newPropertyId}]);
+    const newStructure = [...structure, {...property, id: newPropertyId}];
+    setStructure(newStructure);
+    onStructureChange(removeIdentifiers(newStructure));
     setSelectedPropertyId(newPropertyId);
   };
 
   const onDeleteProperty = (propertyId: PropertyId) => {
     const newStructure = structure.filter(property => property.id !== propertyId);
-    onStructureChange(newStructure);
+    setStructure(newStructure);
+    onStructureChange(removeIdentifiers(newStructure));
+  };
+
+  const onReorder = (indices: number[]) => {
+    const newStructure = indices.map(i => structure[i]);
+    setStructure(newStructure);
+    onStructureChange(removeIdentifiers(newStructure));
   };
 
   const onToggleDelimiter = () => {
@@ -94,7 +112,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
                   structure={structure}
                   onSelect={setSelectedPropertyId}
                   selectedId={selectedPropertyId}
-                  onChange={onStructureChange}
+                  onReorder={onReorder}
                   onDelete={onDeleteProperty}
                 />
                 <DelimiterEdit
