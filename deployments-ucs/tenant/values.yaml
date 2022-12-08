@@ -101,7 +101,7 @@ elasticsearch:
       discovery.seed_hosts: "elasticsearch-discovery"
   client:
     replicas: 1
-    heapSize: "512m"
+    heapSize: "1024m"
     resources:
       limits:
         memory: "1024Mi"
