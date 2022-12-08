@@ -1,9 +1,10 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
-import {CodeLabelCollectionSelector, DefaultValue, Operations, RecordsReplacement} from '../common';
+import {DefaultValue, Operations, RecordsReplacement} from '../common';
 import {isReferenceEntityCollectionSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
+import {ReferenceEntityCollectionSelector} from './ReferenceEntityCollectionSelector';
 
 const ReferenceEntityCollectionConfigurator = ({
   source,
@@ -38,7 +39,8 @@ const ReferenceEntityCollectionConfigurator = ({
           onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
         }
       />
-      <CodeLabelCollectionSelector
+      <ReferenceEntityCollectionSelector
+        referenceEntityCode={attribute.reference_data_name}
         selection={source.selection}
         validationErrors={filterErrors(validationErrors, '[selection]')}
         onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}

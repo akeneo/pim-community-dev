@@ -11,8 +11,13 @@ import {
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {useChannels, useReferenceEntityAttributes} from '../../../hooks';
-import {isDefaultReferenceEntitySelection, ReferenceEntityAttributeSelection, ReferenceEntitySelection} from './model';
-import {AttributeSelector} from './Attribute';
+import {
+  isDefaultReferenceEntityCollectionSelection,
+  ReferenceEntityCollectionAttributeSelection,
+  ReferenceEntityCollectionSelection,
+} from './model';
+import {AttributeSelector} from '../ReferenceEntity/Attribute';
+import {availableSeparators, isCollectionSeparator} from '../common';
 import {LocaleDropdown} from '../../../components/LocaleDropdown';
 
 const AttributeSelectorContainer = styled.div`
@@ -21,19 +26,19 @@ const AttributeSelectorContainer = styled.div`
   gap: 5px;
 `;
 
-type ReferenceEntitySelectorProps = {
+type ReferenceEntityCollectionSelectorProps = {
   referenceEntityCode: string;
-  selection: ReferenceEntitySelection;
+  selection: ReferenceEntityCollectionSelection;
   validationErrors: ValidationError[];
-  onSelectionChange: (updatedSelection: ReferenceEntitySelection) => void;
+  onSelectionChange: (updatedSelection: ReferenceEntityCollectionSelection) => void;
 };
 
-const ReferenceEntitySelector = ({
+const ReferenceEntityCollectionSelector = ({
   selection,
   referenceEntityCode,
   validationErrors,
   onSelectionChange,
-}: ReferenceEntitySelectorProps) => {
+}: ReferenceEntityCollectionSelectorProps) => {
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();
@@ -42,18 +47,20 @@ const ReferenceEntitySelector = ({
   const locales = getAllLocalesFromChannels(channels);
   const typeErrors = filterErrors(validationErrors, '[type]');
   const localeErrors = filterErrors(validationErrors, '[locale]');
+  const separatorErrors = filterErrors(validationErrors, '[separator]');
 
   const handleTypeChange = (type: string) => {
     if ('code' === type) {
-      onSelectionChange({type: 'code'});
+      onSelectionChange({type: 'code', separator: selection.separator});
     } else if ('label' === type) {
-      onSelectionChange({type: 'label', locale: locales[0].code});
+      onSelectionChange({type: 'label', separator: selection.separator, locale: locales[0].code});
     } else {
       const referenceEntityAttribute = referenceEntityAttributes.find(({identifier}) => identifier === type);
 
       if (undefined !== referenceEntityAttribute) {
         onSelectionChange({
           type: 'attribute',
+          separator: selection.separator,
           attribute_identifier: type,
           attribute_type: referenceEntityAttribute.type,
           reference_entity_code: referenceEntityCode,
@@ -75,7 +82,9 @@ const ReferenceEntitySelector = ({
       label={
         <>
           {translate('akeneo.tailored_export.column_details.sources.selection.title')}
-          {0 === validationErrors.length && !isDefaultReferenceEntitySelection(selection) && <Pill level="primary" />}
+          {0 === validationErrors.length && !isDefaultReferenceEntityCollectionSelection(selection) && (
+            <Pill level="primary" />
+          )}
           {0 < validationErrors.length && <Pill level="danger" />}
         </>
       }
@@ -116,7 +125,7 @@ const ReferenceEntitySelector = ({
             ))}
           </Field>
           {'attribute' === selection.type && null !== selectedReferenceEntityAttribute && (
-            <AttributeSelector<ReferenceEntityAttributeSelection>
+            <AttributeSelector<ReferenceEntityCollectionAttributeSelection>
               attribute={selectedReferenceEntityAttribute}
               selection={selection}
               channels={channels}
@@ -133,9 +142,40 @@ const ReferenceEntitySelector = ({
             onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
           />
         )}
+        <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>
+          <SelectInput
+            invalid={0 < separatorErrors.length}
+            clearable={false}
+            emptyResultLabel={translate('pim_common.no_result')}
+            openLabel={translate('pim_common.open')}
+            value={selection.separator}
+            onChange={separator => {
+              if (isCollectionSeparator(separator)) {
+                onSelectionChange({...selection, separator});
+              }
+            }}
+          >
+            {Object.entries(availableSeparators).map(([separator, name]) => (
+              <SelectInput.Option
+                key={separator}
+                title={translate(
+                  `akeneo.tailored_export.column_details.sources.selection.collection_separator.${name}`
+                )}
+                value={separator}
+              >
+                {translate(`akeneo.tailored_export.column_details.sources.selection.collection_separator.${name}`)}
+              </SelectInput.Option>
+            ))}
+          </SelectInput>
+          {separatorErrors.map((error, index) => (
+            <Helper key={index} inline={true} level="error">
+              {translate(error.messageTemplate, error.parameters)}
+            </Helper>
+          ))}
+        </Field>
       </Section>
     </Collapse>
   );
 };
 
-export {ReferenceEntitySelector};
+export {ReferenceEntityCollectionSelector};
