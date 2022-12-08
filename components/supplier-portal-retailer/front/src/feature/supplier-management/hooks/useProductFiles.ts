@@ -49,7 +49,7 @@ const useProductFiles = (
         });
         setProductFiles(productFiles);
         setTotalNumberOfProductFiles(responseBody.total);
-    }, [getProductFilesRoute, notify, translate]);
+    }, [getProductFilesRoute]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {

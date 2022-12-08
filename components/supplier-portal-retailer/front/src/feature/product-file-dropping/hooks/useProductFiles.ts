@@ -66,16 +66,7 @@ const useProductFiles = (
         setProductFiles(productFiles);
         setTotalNumberOfProductFiles(responseBody.total);
         setTotalSearchResults(responseBody.total_search_results);
-    }, [
-        getProductFilesRoute,
-        previousSearchValue,
-        searchValue,
-        previousImportStatusValue,
-        importStatusValue,
-        setPage,
-        notify,
-        translate,
-    ]);
+    }, [getProductFilesRoute, page, searchValue, previousSearchValue, importStatusValue, previousImportStatusValue]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {
