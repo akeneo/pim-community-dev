@@ -29,7 +29,7 @@ final class GetCatalogIdsContainingCurrenciesQuery implements GetCatalogIdsConta
         $query = <<<SQL
             SELECT DISTINCT BIN_TO_UUID(id)
             FROM akeneo_catalog,
-                 JSON_TABLE(product_selection_criteria, '$[*]' COLUMNS (
+                 JSON_TABLE(product_value_filters, '$[*]' COLUMNS (
                      field VARCHAR(255)  PATH '$.field',
                      value json PATH '$.value')
                      ) AS criterion
