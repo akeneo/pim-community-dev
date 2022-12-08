@@ -12,14 +12,19 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -39,6 +44,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         private GenerateIdentifierHandler $generateIdentifierCommandHandler,
         private ValidatorInterface $validator,
         private MetadataFactoryInterface $metadataFactory,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -46,44 +52,22 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     {
         return [
             /**
-             * These events have to be executed
+             * This event has to be executed
              * - after AddDefaultValuesSubscriber (it adds default values from parent and may set values for the
              *   computation of the match or the generation)
              * - before ComputeEntityRawValuesSubscriber (it generates the raw_values)
              */
             StorageEvents::PRE_SAVE => ['setIdentifier', 90],
-            StorageEvents::PRE_SAVE_ALL => ['setIdentifiers', 90],
         ];
     }
 
     public function setIdentifier(GenericEvent $event): void
     {
-        $object = $event->getSubject();
-        if (!$object instanceof ProductInterface) {
+        $product = $event->getSubject();
+        if (!$product instanceof ProductInterface) {
             return;
         }
 
-        $this->generateIdentifier($object);
-    }
-
-    public function setIdentifiers(GenericEvent $event): void
-    {
-        if (!\is_array($event->getSubject())) {
-            return;
-        }
-        foreach ($event->getSubject() as $subject) {
-            if (!$subject instanceof ProductInterface) {
-                return;
-            }
-        }
-
-        foreach ($event->getSubject() as $product) {
-            $this->generateIdentifier($product);
-        }
-    }
-
-    private function generateIdentifier(ProductInterface $product): void
-    {
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
             $identifier = null;
             $identifierValue = $product->getValue($identifierGenerator->target()->asString());
@@ -96,9 +80,9 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
             if ($identifierGenerator->match($productProjection)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $product);
-                } catch (UnableToSetIdentifierException) {
-                    // TODO CPM-807: A warning should be displayed during the Import
+                } catch (UnableToSetIdentifierException $e) {
                     // TODO CPM-808: A warning should be displayed as flash message when saving from PEF
+                    $this->eventDispatcher->dispatch(new UnableToSetIdentifierEvent($e));
                 }
             }
         }
@@ -116,19 +100,23 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         $product->addValue($value);
         $product->setIdentifier($newIdentifier);
 
-        // Check if product identifier is unique
-        $violations = $this->validator->validate($product, $this->getProductConstraints($product));
-        if (\count($violations) === 0) {
-            Assert::isInstanceOf($value, ScalarValue::class);
-            $attributeViolations = $this->validator->validate($value, $this->getValueConstraints($value));
-            $violations->addAll($attributeViolations);
-        }
+        $violations = $this->updatePropertyPath(
+            $this->validator->validate($product, $this->getProductConstraints($product)),
+            'identifier'
+        );
+
+        $violations->addAll($this->updatePropertyPath(
+            $this->validator->validate($value, $this->getValueConstraints($value)),
+            $identifierGenerator->target()->asString()
+        ));
 
         if (count($violations) > 0) {
             $product->removeValue($value);
             $product->setIdentifier(null);
 
             throw new UnableToSetIdentifierException(
+                $newIdentifier,
+                $identifierGenerator->target()->asString(),
                 new ErrorList(\array_map(
                     fn (ConstraintViolationInterface $violation): Error => new Error(
                         (string) $violation->getMessage(),
@@ -188,5 +176,26 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         }
 
         return $constraints;
+    }
+
+    private function updatePropertyPath(
+        ConstraintViolationListInterface $constraintViolationList,
+        string $propertyPath
+    ): ConstraintViolationListInterface {
+        return new ConstraintViolationList(
+            \array_map(
+                fn (ConstraintViolationInterface $constraintViolation) => new ConstraintViolation(
+                    $constraintViolation->getMessage(),
+                    $constraintViolation->getMessageTemplate(),
+                    $constraintViolation->getParameters(),
+                    $constraintViolation->getRoot(),
+                    $propertyPath,
+                    $constraintViolation->getInvalidValue(),
+                    $constraintViolation->getPlural(),
+                    $constraintViolation->getCode()
+                ),
+                \iterator_to_array($constraintViolationList)
+            )
+        );
     }
 }
