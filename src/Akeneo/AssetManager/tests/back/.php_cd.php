@@ -47,7 +47,6 @@ $rules = [
         'GuzzleHttp',
         'Imagine\Exception',
         'Imagine\Image',
-        'JsonSchema\Validator',
         'League\Flysystem\FilesystemException',
         'League\Flysystem\FilesystemReader',
         'Liip\ImagineBundle',
