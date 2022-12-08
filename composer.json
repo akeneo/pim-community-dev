@@ -142,8 +142,7 @@
         "rector/rector": "^0.14.8",
         "sensiolabs/behat-page-object-extension": "^2.3.3",
         "symfony/debug-bundle": "^5.4.0",
-        "symfony/web-profiler-bundle": "^5.4.0",
-        "vimeo/psalm": "^4.10"
+        "symfony/web-profiler-bundle": "^5.4.0"
     },
     "repositories": {
         "onboarder-extension": {
