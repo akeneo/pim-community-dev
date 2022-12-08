@@ -40,6 +40,7 @@ const FIRESTORE_STATUS = {
   CREATION_FAILED: "creation_failed",
   CREATION_IN_PREPARATION: 'creation_in_preparation',
   CREATION_IN_PROGRESS: "creation_in_progress",
+  DELETED: 'deleted',
 };
 
 let firestoreCollection = null;
@@ -458,8 +459,8 @@ async function createFirestoreDoc(firestore, docRef, status) {
   try {
     let document = firestore.collection(firestoreCollection).doc(docRef);
     const snapshot = await document.get();
-    if (snapshot.exists) {
-      let msg = "The document " + docRef + " already exists !!!";
+    if (snapshot.exists && snapshot.data().status !== FIRESTORE_STATUS.DELETED) {
+      let msg = `The document ${docRef} already exists and not with deleted status (actually ${snapshot.data().status} status)!!!`;
       logger.error(msg);
       return Promise.reject(msg);
     } else {
