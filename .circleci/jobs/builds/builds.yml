@@ -590,7 +590,7 @@ jobs:
                       IMAGE_TAG=${CIRCLE_SHA1}
                       IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
-                      IMAGE_TAG_DATE="${IMAGE_TAG:1}"
+                      IMAGE_TAG_DATE="${RELEASE_NAME:1}"
                       # Use default timmy if timmy step not used
                       SKIP_DEPLOY_TIMMY=true
                       CLOUD_FUNCTION_CREATE_TENANT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-timmy-create-tenant"
@@ -665,7 +665,7 @@ jobs:
                       IMAGE_TAG=$(gcloud container images list-tags ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       RELEASE_NAME=${IMAGE_TAG}
-                      IMAGE_TAG_DATE="${IMAGE_TAG:1}"
+                      IMAGE_TAG_DATE="${RELEASE_NAME:1}"
                       # Use default timmy if timmy step not used
                       SKIP_DEPLOY_TIMMY=true
                       CLOUD_FUNCTION_CREATE_TENANT="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-timmy-create-tenant"
