@@ -1,12 +1,25 @@
 module "ci-demo" {
-  source     = "../pim-saas-env/cloudbuild"
-  project_id = "akecld-prd-pim-saas-demo"
-  env        = "demo"
-  tf_bucket  = "akecld-terraform-pim-saas-demo"
-  regions = [
-    "europe-west1",
-    "europe-west3",
-    "us-central1",
-    "australia-southeast1"
-  ]
+  source       = "../pim-saas-env/cloudbuild"
+  project_id   = "akecld-prd-pim-saas-demo"
+  project_name = "pim-saas-demo"
+  env          = "demo"
+  env_shorted  = "demo"
+  tf_bucket    = "akecld-terraform-pim-saas-demo"
+  clusters     = {
+    cluster1 : {
+      region                = "europe-west3"
+      region_shorted        = "euw3"
+      cluster_number_region = "1"
+    }
+    cluster2 : {
+      region                = "us-central1"
+      region_shorted        = "usc1"
+      cluster_number_region = "1"
+    }
+    cluster3 : {
+      region                = "australia-southeast1"
+      region_shorted        = "ause1"
+      cluster_number_region = "1"
+    }
+  }
 }

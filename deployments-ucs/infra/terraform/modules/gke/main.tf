@@ -15,7 +15,7 @@ resource "google_project_iam_member" "gke_container_dev" {
 #tfsec:ignore:google-gke-enforce-pod-security-policy
 resource "google_container_cluster" "gke" {
   project                  = var.project
-  name                     = var.name == null ? "${data.google_project.current.project_id}-${var.region}" : var.name
+  name                     = var.name
   location                 = var.region
   network                  = data.google_compute_network.shared_vpc.self_link
   subnetwork               = data.google_compute_subnetwork.gke.self_link

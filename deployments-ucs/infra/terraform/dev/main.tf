@@ -1,8 +1,11 @@
 locals {
+  env                     = "dev"
+  env_shorted             = "dev"
   host_project_id         = "akecld-prd-shared-infra"
   shared_vpc_name         = "akecld-prd-shared-infra-dev-xpn"
   shared_project_id       = "akecld-prd-pim-saas-shared"
   project_id              = "akecld-prd-pim-saas-dev"
+  project_name            = "pim-saas-dev"
   ci_sa                   = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
   admins                  = ["group:ucs@akeneo.com"]
   viewers                 = ["group:ucs@akeneo.com"]
@@ -113,6 +116,7 @@ module "tenant_context_encryption_key" {
 module "gke_europe_west1" {
   source                 = "../modules/gke"
   project                = local.project_id
+  name                   = "${local.project_id}-europe-west1"
   host_project_id        = local.host_project_id
   shared_vpc_name        = local.shared_vpc_name
   gke_sa_email           = module.iam.gke_sa_email
@@ -186,6 +190,7 @@ module "gke_europe_west1" {
 module "gke_europe_west3" {
   source                 = "../modules/gke"
   project                = local.project_id
+  name                   = "${local.project_id}-europe-west3"
   host_project_id        = local.host_project_id
   shared_vpc_name        = local.shared_vpc_name
   gke_sa_email           = module.iam.gke_sa_email

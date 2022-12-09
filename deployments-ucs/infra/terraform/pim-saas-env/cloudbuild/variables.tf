@@ -12,11 +12,19 @@ variable "project_id" {
   type = string
 }
 
-variable "regions" {
-  type = list(string)
+variable "project_name" {
+  type = string
+}
+
+variable "clusters" {
+  type = map(map(string))
 }
 
 variable "env" {
+  type = string
+}
+
+variable "env_shorted" {
   type = string
 }
 
