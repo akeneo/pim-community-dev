@@ -437,10 +437,10 @@ mysql:
       failureThreshold: 5
 
 elasticsearch:
-  appVersion: 7.17.7
+  appVersion: 8.4.2
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch
-    tag: 7.17.7
+    tag: 8.4.2
   fullnameOverride: elasticsearch
   sysctlInitContainer:
     enabled: false
@@ -450,17 +450,14 @@ elasticsearch:
       # See chart config map: https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/configmap.yaml
       # And elasticsearch documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html
       MINIMUM_MASTER_NODES: 2
-      EXPECTED_MASTER_NODES: 2
-      RECOVER_AFTER_MASTER_NODES: 2
       EXPECTED_DATA_NODES: 1
       RECOVER_AFTER_DATA_NODES: 1
+      XPACK_SECURITY_ENABLED: 0
       cluster.initial_master_nodes: "elasticsearch-master-0"
       discovery.seed_hosts: "elasticsearch-discovery"
-    plugins:
-      - repository-gcs
   client:
     replicas: 1
-    heapSize: "512m"
+    heapSize: "1024m"
     resources:
       limits:
         memory: "1024Mi"

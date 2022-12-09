@@ -9,5 +9,5 @@ dependencies:
     version: "2.2.0"
     repository: gs://akeneo-pim-saas-charts-prod/
   - name: elasticsearch
-    version: "1.33.0"
+    version: "1.34.0"
     repository: gs://akeneo-pim-saas-charts-prod/
