@@ -1,6 +1,6 @@
 import {cloneDeep, filter} from 'lodash/fp';
-import {CategoryPermission, CategoryPermissions} from "../models/CategoryPermission";
-import {UserGroup} from "../hooks/useFetchUserGroups";
+import {CategoryPermission, CategoryPermissions} from '../models/CategoryPermission';
+import {UserGroup} from '../hooks/useFetchUserGroups';
 
 interface PermissionChanges {
   type: keyof CategoryPermissions;
@@ -43,17 +43,19 @@ export function ensureSuperset(a1: CategoryPermission[], a2: CategoryPermission[
  * @returns
  */
 export function alterPermissionsConsistently(
-    userGroups: UserGroup[],
-    permissions: CategoryPermissions,
+  userGroups: UserGroup[],
+  permissions: CategoryPermissions,
   changes: PermissionChanges
 ): CategoryPermissions {
   const {type, values} = changes;
   let consistentPermissions = cloneDeep(permissions);
   // the change that MUST be made
-  consistentPermissions[type] = userGroups.filter(userGroup => values.includes(parseInt(userGroup.id, 10))).map(userGroup => ({
-    id: parseInt(userGroup.id, 10),
-    label: userGroup.label
-  }));
+  consistentPermissions[type] = userGroups
+    .filter(userGroup => values.includes(parseInt(userGroup.id, 10)))
+    .map(userGroup => ({
+      id: parseInt(userGroup.id, 10),
+      label: userGroup.label,
+    }));
 
   // now adapting other permission level in accordance
   switch (type) {

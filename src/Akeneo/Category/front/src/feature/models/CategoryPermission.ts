@@ -1,6 +1,6 @@
 export type CategoryPermission = {
-  id: number,
-  label: string
+  id: number;
+  label: string;
 };
 
 export type CategoryPermissions = {
