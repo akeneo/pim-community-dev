@@ -83,6 +83,10 @@ final class PermissionCollection
 
     public function getRemovedPermissions(): PermissionCollection
     {
+        if (!isset($this->removedPermissions)) {
+            return new self($this->permissions);
+        }
+
         return new self($this->removedPermissions);
     }
 

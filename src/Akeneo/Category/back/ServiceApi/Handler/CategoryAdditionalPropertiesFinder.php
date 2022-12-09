@@ -9,6 +9,4 @@ interface CategoryAdditionalPropertiesFinder
     public function execute(Category $category): Category;
 
     public function isSupportedAdditionalProperties(): bool;
-
-    public function originalHttpRequestType(): string;
 }

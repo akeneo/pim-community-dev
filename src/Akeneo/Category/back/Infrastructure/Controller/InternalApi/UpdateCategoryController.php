@@ -90,10 +90,9 @@ class UpdateCategoryController
                 Response::HTTP_BAD_REQUEST,
             );
         }
+
         $category = $this->getCategory->byId($id);
-        if ($category === null) {
-            throw new NotFoundHttpException('Category not found');
-        }
+        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($request->getMethod(), $category);
 
         $normalizedCategory = $category->normalize();
 
