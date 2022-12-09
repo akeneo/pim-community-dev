@@ -8,23 +8,45 @@ interface PermissionChanges {
 }
 
 /**
- * Make a copy of array a1 where all elements that are not in a2 are removed
- * @param a1 The array that should be a subset of a2
- * @param a2
- * @return a copy of a1 eventually modified so that it's a subset of a2
+ * Make a copy of array permissions1 where all elements that are not in permission2 are removed
+ *
+ * The logic is to keep only the permissions that are in the permissions2 that are also in the permissions1.
+ * In that way we remove all the element in permissions1 that aren't in permissions2.
+ *
+ * @param permissions1 The array that should be a subset of permission2
+ * @param permission2
+ * @return a copy of permissions1 eventually modified so that it's a subset of permission2
  */
-export function ensureSubset(a1: CategoryPermission[], a2: CategoryPermission[]): CategoryPermission[] {
-  return filter((n: CategoryPermission) => a2.map(permission => permission.id).includes(n.id), a1);
+export function ensureSubset(
+  permissions1: CategoryPermission[],
+  permission2: CategoryPermission[]
+): CategoryPermission[] {
+  return filter(
+    (permission: CategoryPermission) => permission2.map(permission => permission.id).includes(permission.id),
+    permissions1
+  );
 }
 
 /**
- * Make a copy of array a1 where all elements of a2 are present
- * @param a1 The array that should be a superset of a2
- * @param a2
- * @return a copy of a1 eventually modified so that it's a super of a2
+ * Make a copy of array permissions1 where all elements of permissions2 are present
+ *
+ * The logic is to add all elements from permissions1 and keep only those from permisions2 which aren't in permission1.
+ *
+ * @param permissions1 The array that should be a superset of permissions2
+ * @param permissions2
+ * @return a copy of permissions1 eventually modified so that it's a super of permissions2
  */
-export function ensureSuperset(a1: CategoryPermission[], a2: CategoryPermission[]): CategoryPermission[] {
-  return [...a1, ...filter((n: CategoryPermission) => !a1.map(permission => permission.id).includes(n.id), a2)];
+export function ensureSuperset(
+  permissions1: CategoryPermission[],
+  permissions2: CategoryPermission[]
+): CategoryPermission[] {
+  return [
+    ...permissions1,
+    ...filter(
+      (permission: CategoryPermission) => !permissions1.map(permission => permission.id).includes(permission.id),
+      permissions2
+    ),
+  ];
 }
 
 /**

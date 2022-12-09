@@ -21,10 +21,10 @@ function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
 
 const sort = sortBy<number>(identity);
 
-function isEqualUnordered(a1: CategoryPermission[], a2: CategoryPermission[]): boolean {
-  const a1Ids = a1.map(permission => permission.id);
-  const a2Ids = a2.map(permission => permission.id);
-  return isEqual(sort(a1Ids), sort(a2Ids));
+function isEqualUnordered(permissions1: CategoryPermission[], peremissions2: CategoryPermission[]): boolean {
+  const permissions1Ids = permissions1.map(permission => permission.id);
+  const permissions2Ids = peremissions2.map(permission => permission.id);
+  return isEqual(sort(permissions1Ids), sort(permissions2Ids));
 }
 
 export function permissionsAreEqual(cp1: CategoryPermissions, cp2: CategoryPermissions): boolean {
