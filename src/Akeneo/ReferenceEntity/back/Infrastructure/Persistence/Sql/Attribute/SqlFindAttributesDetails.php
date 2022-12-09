@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
@@ -39,6 +40,37 @@ class SqlFindAttributesDetails implements FindAttributesDetailsInterface
         $results = $this->fetchResult($referenceEntityIdentifier);
 
         return $this->hydrateAttributesDetails($results);
+    }
+
+    public function findByIdentifier(AttributeIdentifier $attributeIdentifier): ?AttributeDetails
+    {
+        $query = <<<SQL
+SELECT
+    identifier,
+    code,
+    reference_entity_identifier,
+    labels,
+    attribute_type,
+    attribute_order,
+    is_required,
+    value_per_channel,
+    value_per_locale,
+    additional_properties
+FROM akeneo_reference_entity_attribute
+WHERE identifier = :identifier;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $query,
+            ['identifier' => (string) $attributeIdentifier]
+        );
+
+        $result = current($this->hydrateAttributesDetails($statement->fetchAllAssociative()));
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
     }
 
     private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier): array
