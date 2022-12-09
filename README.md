@@ -38,3 +38,6 @@ https://docs.akeneo.com/master/migrate_pim/index.html
 
 To run the tests of Akeneo PIM, please follow:
 https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/tests/running_the_tests.md
+
+
+Please ignore. Just need to compare my branch and a fresh branch based off master on CircleCI
