@@ -25,6 +25,7 @@ class CurrencyDeactivationSubscriber implements EventSubscriberInterface
         private readonly JobLauncherInterface                  $jobLauncher
     ) {
     }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -43,10 +44,8 @@ class CurrencyDeactivationSubscriber implements EventSubscriberInterface
         /** @var JobInstance $jobInstance */
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalogs_on_currency_deactivation');
 
-        if ($jobInstance) {
-            $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
-                'currency_codes' => [$currency->getCode()],
-            ]);
-        }
+        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
+            'currency_codes' => [$currency->getCode()],
+        ]);
     }
 }
