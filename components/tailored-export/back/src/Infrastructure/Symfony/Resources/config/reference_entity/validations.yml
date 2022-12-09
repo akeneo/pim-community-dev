@@ -11,7 +11,9 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSelectionValidator:
     arguments:
       - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_attributes_public_api'
+      - '%supported_reference_entity_attribute_types%'
       - [ ',', ';', '|' ]
+      - [',', '.', '٫‎']
     tags:
       - { name: validator.constraint_validator }
     public: true

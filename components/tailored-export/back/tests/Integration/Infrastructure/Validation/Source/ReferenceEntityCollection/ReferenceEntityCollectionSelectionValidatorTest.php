@@ -16,27 +16,34 @@ namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validat
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 
 class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidationTest
 {
+    private ?AttributeRepositoryInterface $attributeRepository = null;
+
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $this->get('feature_flags')->enable('reference_entity');
         $this->loadReferenceEntity();
     }
@@ -95,6 +102,18 @@ class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidation
                     'locale' => null,
                 ],
             ],
+            'a valid "size" attribute selection' => [
+                [
+                    'type' => 'attribute',
+                    'attribute_identifier' => 'size_designer_fingerprint',
+                    'attribute_type' => 'number',
+                    'reference_entity_code' => 'designer',
+                    'channel' => null,
+                    'locale' => null,
+                    'separator' => '|',
+                    'decimal_separator' => ',',
+                ],
+            ],
         ];
     }
 
@@ -139,6 +158,33 @@ class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidation
                     'locale' => null,
                 ],
             ],
+            'a number attribute with invalid decimal separator' => [
+                'The value you selected is not a valid choice.',
+                '[decimal_separator]',
+                [
+                    'type' => 'attribute',
+                    'separator' => ',',
+                    'attribute_identifier' => 'unknown_attribute',
+                    'attribute_type' => 'text',
+                    'reference_entity_code' => 'designer',
+                    'channel' => null,
+                    'locale' => null,
+                    'decimal_separator' => 'o',
+                ],
+            ],
+            'a unsupported attribute type' => [
+                'The value you selected is not a valid choice.',
+                '[attribute_type]',
+                [
+                    'type' => 'attribute',
+                    'separator' => ',',
+                    'attribute_identifier' => 'unknown_attribute',
+                    'attribute_type' => 'image',
+                    'reference_entity_code' => 'designer',
+                    'channel' => null,
+                    'locale' => null,
+                ],
+            ],
         ];
     }
 
@@ -155,6 +201,7 @@ class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidation
         $referenceEntityRepository->create($referenceEntity);
         $this->createTextAttribute((string) $referenceEntityIdentifier, 'text_attribute', 10, false, true);
         $this->createTextAttribute((string) $referenceEntityIdentifier, 'another_one', 20, false, false);
+        $this->createNumberAttribute((string) $referenceEntityIdentifier, 'size', 30, false, false);
     }
 
     private function createTextAttribute(
@@ -164,8 +211,6 @@ class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidation
         bool $valuePerChannel,
         bool $valuePerLocale,
     ): void {
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-
         $attribute = TextAttribute::createText(
             AttributeIdentifier::create((string) $referenceEntityIdentifier, $attributeCode, 'fingerprint'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
@@ -179,6 +224,29 @@ class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidation
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty(),
         );
-        $attributeRepository->create($attribute);
+        $this->attributeRepository->create($attribute);
+    }
+
+    private function createNumberAttribute(
+        string $referenceEntityIdentifier,
+        string $attributeCode,
+        int $order,
+        bool $valuePerChannel,
+        bool $valuePerLocale,
+    ): void {
+        $attribute = NumberAttribute::create(
+            AttributeIdentifier::create((string) $referenceEntityIdentifier, $attributeCode, 'fingerprint'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean($valuePerChannel),
+            AttributeValuePerLocale::fromBoolean($valuePerLocale),
+            AttributeDecimalsAllowed::fromBoolean(true),
+            AttributeLimit::limitless(),
+            AttributeLimit::limitless(),
+        );
+        $this->attributeRepository->create($attribute);
     }
 }

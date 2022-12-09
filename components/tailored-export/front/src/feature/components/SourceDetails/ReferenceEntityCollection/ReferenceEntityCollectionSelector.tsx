@@ -12,6 +12,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useChannels, useReferenceEntityAttributes} from '../../../hooks';
 import {
+  getDefaultReferenceEntityCollectionAttributeSelection,
   isDefaultReferenceEntityCollectionSelection,
   ReferenceEntityCollectionAttributeSelection,
   ReferenceEntityCollectionSelection,
@@ -58,15 +59,14 @@ const ReferenceEntityCollectionSelector = ({
       const referenceEntityAttribute = referenceEntityAttributes.find(({identifier}) => identifier === type);
 
       if (undefined !== referenceEntityAttribute) {
-        onSelectionChange({
-          type: 'attribute',
-          separator: selection.separator,
-          attribute_identifier: type,
-          attribute_type: referenceEntityAttribute.type,
-          reference_entity_code: referenceEntityCode,
-          channel: referenceEntityAttribute.value_per_channel ? channels[0].code : null,
-          locale: referenceEntityAttribute.value_per_locale ? locales[0].code : null,
-        });
+        onSelectionChange(
+          getDefaultReferenceEntityCollectionAttributeSelection(
+            referenceEntityAttribute,
+            referenceEntityCode,
+            referenceEntityAttribute.value_per_channel ? channels[0].code : null,
+            referenceEntityAttribute.value_per_locale ? locales[0].code : null
+          )
+        );
       }
     }
   };

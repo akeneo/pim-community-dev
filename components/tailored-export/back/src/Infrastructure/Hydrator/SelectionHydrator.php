@@ -51,6 +51,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionNumberAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Scalar\ScalarSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
@@ -287,6 +288,14 @@ class SelectionHydrator
                 $selectionConfiguration['separator'],
                 $referenceEntityCode,
                 $selectionConfiguration['attribute_identifier'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+            ),
+            ReferenceEntityNumberAttributeSelection::TYPE => new ReferenceEntityCollectionNumberAttributeSelection(
+                $selectionConfiguration['separator'],
+                $referenceEntityCode,
+                $selectionConfiguration['attribute_identifier'],
+                $selectionConfiguration['decimal_separator'],
                 $selectionConfiguration['channel'],
                 $selectionConfiguration['locale'],
             ),

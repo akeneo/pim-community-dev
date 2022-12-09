@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOper
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionNumberAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
@@ -77,6 +78,12 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
                 'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'green']),
                 'expected' => [self::TARGET_NAME => 'Red name;Blue name;Green name'],
             ],
+            'it selects the records "size" text attribute' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionNumberAttributeSelection('|', 'color', 'size', ',', null, null),
+                'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'green']),
+                'expected' => [self::TARGET_NAME => '1000000|5,6|'],
+            ],
             'it applies default value operation when value is null' => [
                 'operations' => [
                     new DefaultValueOperation('n/a'),
@@ -126,8 +133,10 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
         $findRecordsAttributeValue = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface');
         $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'description', 'Blau', 'ecommerce', 'de_DE');
         $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'name', 'Blue name');
+        $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'size', '5.6');
         $findRecordsAttributeValue->addAttributeValue('color', 'red', 'description', 'Rot', 'ecommerce', 'fr_FR');
         $findRecordsAttributeValue->addAttributeValue('color', 'red', 'name', 'Red name');
+        $findRecordsAttributeValue->addAttributeValue('color', 'red', 'size', '1000000');
         $findRecordsAttributeValue->addAttributeValue('color', 'green', 'description', 'Grun', 'ecommerce', 'de_DE');
         $findRecordsAttributeValue->addAttributeValue('color', 'green', 'name', 'Green name');
     }

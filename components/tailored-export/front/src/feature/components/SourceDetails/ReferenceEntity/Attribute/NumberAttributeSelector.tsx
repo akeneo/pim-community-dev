@@ -4,6 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeSelectorProps} from './AttributeSelector';
 import {isReferenceEntityNumberAttributeSelection, ReferenceEntityAttributeSelection} from '../model';
 import {availableDecimalSeparators, isNumberDecimalSeparator} from '../../Number/model';
+import {isReferenceEntityCollectionNumberAttributeSelection} from '../../ReferenceEntityCollection/model';
 
 const NumberAttributeSelector = <SelectionType extends ReferenceEntityAttributeSelection>({
   selection,
@@ -12,7 +13,10 @@ const NumberAttributeSelector = <SelectionType extends ReferenceEntityAttributeS
 }: AttributeSelectorProps<SelectionType>) => {
   const translate = useTranslate();
 
-  if (!isReferenceEntityNumberAttributeSelection(selection)) {
+  if (
+    !isReferenceEntityNumberAttributeSelection(selection) &&
+    !isReferenceEntityCollectionNumberAttributeSelection(selection)
+  ) {
     throw new Error('Invalid selection type for Number Attribute Selector');
   }
 

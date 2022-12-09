@@ -43,3 +43,10 @@ services:
       - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface'
     tags:
       - { name: akeneo.tailored_export.selection_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntityCollection\ReferenceEntityCollectionNumberAttributeSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
