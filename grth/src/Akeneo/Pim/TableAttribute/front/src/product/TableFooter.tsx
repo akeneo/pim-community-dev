@@ -67,7 +67,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
             {itemsPerPage}
           </SwitcherButton>
           {isItemsPerPageOpen && (
-            <Dropdown.Overlay verticalPosition='down' onClose={closeItemsPerPage}>
+            <Dropdown.Overlay onClose={closeItemsPerPage}>
               <Dropdown.Header>
                 <Dropdown.Title>{translate('pim_table_attribute.form.product.items_per_page')}</Dropdown.Title>
               </Dropdown.Header>
