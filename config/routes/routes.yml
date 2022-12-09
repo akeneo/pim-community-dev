@@ -26,6 +26,9 @@ akeneo_job:
 akeneo_catalogs:
     resource: "@AkeneoCatalogsBundle/Resources/config/routing.yml"
 
+akeneo_coedition:
+    resource: "@AkeneoCoEditionBundle/Resources/config/routing.yml"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"

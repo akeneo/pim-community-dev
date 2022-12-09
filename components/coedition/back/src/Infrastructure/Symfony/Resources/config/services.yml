@@ -8,16 +8,19 @@ services:
 
   ## Controller
   Akeneo\CoEdition\Infrastructure\Controller\EnterRoomAction:
+    public: true
     arguments:
       - '@Akeneo\CoEdition\Infrastructure\Storage\PimUserFindEditor'
       - '@Akeneo\CoEdition\Application\EnterRoom'
       -
   Akeneo\CoEdition\Infrastructure\Controller\LeaveRoomAction:
+    public: true
     arguments:
       - '@Akeneo\CoEdition\Infrastructure\Storage\PimUserFindEditor'
       - '@Akeneo\CoEdition\Application\LeaveRoom'
       -
-  Akeneo\CoEdition\Infrastructure\Controller\ListEditorsInRoomAction:
+  Akeneo\CoEdition\Infrastructure\Controller\GetRoomAction:
+    public: true
     arguments:
       - '@Akeneo\CoEdition\Infrastructure\Storage\SQL\SQLFindRoom'
 

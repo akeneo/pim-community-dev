@@ -25,6 +25,7 @@
             "Akeneo\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back",
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Catalogs\\": "components/catalogs/back/src",
+            "Akeneo\\CoEdition\\": "components/coedition/back/src",
             "Akeneo\\Category\\": "src/Akeneo/Category/back",
             "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back",
             "Akeneo\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/src"
@@ -51,6 +52,7 @@
             "Akeneo\\Test\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back/Test",
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
+            "Akeneo\\CoEdition\\Test\\": "components/coedition/back/tests",
             "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
             "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests",
             "Akeneo\\Test\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/tests"

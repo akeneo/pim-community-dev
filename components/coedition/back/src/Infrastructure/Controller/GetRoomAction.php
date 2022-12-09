@@ -28,10 +28,10 @@ class GetRoomAction
         }
 
         return new JsonResponse([
-            'roomId' => $room->getRoomUuid(),
+            'roomId' => (string) $room->getRoomUuid(),
             'editors' => array_map(static function (Editor $editor) {
                 return [
-                  'id' => $editor->getToken(),
+                  'id' => (string) $editor->getToken(),
                   'name' => $editor->getName(),
                   'avatar' => $editor->getAvatar(),
                 ];
