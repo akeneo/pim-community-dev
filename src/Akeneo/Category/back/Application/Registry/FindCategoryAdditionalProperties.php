@@ -6,5 +6,5 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
 
 interface FindCategoryAdditionalProperties
 {
-    public function forCategory(string $originalHttpRequestType, Category $category): Category;
+    public function forCategory(Category $category): Category;
 }

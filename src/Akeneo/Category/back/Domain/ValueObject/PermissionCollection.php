@@ -18,11 +18,6 @@ final class PermissionCollection
     // @phpstan-ignore-next-line
     private function __construct(private ?array $permissions)
     {
-        $this->removedUserGroupIdsFromPermissions = [
-            self::VIEW => [],
-            self::EDIT => [],
-            self::OWN => [],
-        ];
     }
 
     /**
@@ -40,9 +35,14 @@ final class PermissionCollection
     {
         if (array_key_exists($permission, $this->permissions)) {
             $existingUserGroupsIds = array_map(fn ($existingUserGroup) => $existingUserGroup['id'], $this->permissions[$permission]);
-            $this->permissions[$permission][] = array_filter($newUserGroups, fn ($newUserGroup) => !in_array($newUserGroup['id'], $existingUserGroupsIds));
+
+            foreach ($newUserGroups as $newUserGroup) {
+                if (!in_array($newUserGroup['id'], $existingUserGroupsIds)) {
+                    $this->permissions[$permission][] = $newUserGroup;
+                }
+            }
         } else {
-            $this->permissions[$permission][] = $newUserGroups;
+            $this->permissions[$permission] = $newUserGroups;
         }
 
         return new self($this->permissions);
@@ -97,6 +97,14 @@ final class PermissionCollection
     /** @return array<string, array<int>> */
     public function getRemovedUserGroupIdsFromPermissions(): array
     {
+        if (!isset($this->removedUserGroupIdsFromPermissions)) {
+            return [
+                self::VIEW => [],
+                self::EDIT => [],
+                self::OWN => [],
+            ];
+        }
+
         return $this->removedUserGroupIdsFromPermissions;
     }
 

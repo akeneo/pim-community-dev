@@ -16,10 +16,10 @@ class FindCategoryAdditionalPropertiesRegistry implements FindCategoryAdditional
     ) {
     }
 
-    public function forCategory(string $originalHttpRequestType, Category $category): Category
+    public function forCategory(Category $category): Category
     {
         foreach ($this->additionalPropertiesFinder as $finder) {
-            if ($finder->isSupportedAdditionalProperties() === true && $finder->originalHttpRequestType() === $originalHttpRequestType) {
+            if ($finder->isSupportedAdditionalProperties() === true) {
                 return $finder->execute($category);
             }
         }

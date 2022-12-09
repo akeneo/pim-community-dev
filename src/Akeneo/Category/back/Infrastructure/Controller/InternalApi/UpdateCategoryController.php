@@ -48,7 +48,7 @@ class UpdateCategoryController
         }
 
         $category = $this->getCategory->byId($id);
-        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($request->getMethod(), $category);
+        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
 
         // Transform request to a user intent list
         $data = $request->toArray();
@@ -92,7 +92,7 @@ class UpdateCategoryController
         }
 
         $category = $this->getCategory->byId($id);
-        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($request->getMethod(), $category);
+        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
 
         $normalizedCategory = $category->normalize();
 

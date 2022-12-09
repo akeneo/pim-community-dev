@@ -29,6 +29,7 @@ class LabelUserIntentFactorySpec extends ObjectBehavior
     {
         $result = $this->create(
             'labels',
+            1,
             [
                 'en_US' => 'sausages',
                 'fr_FR' => 'saucisses'
@@ -42,12 +43,12 @@ class LabelUserIntentFactorySpec extends ObjectBehavior
     function it_throws_an_exception_when_data_has_wrong_format()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', ['labels', null]);
+            ->during('create', ['labels', 1, null]);
 
         $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', ['labels', 'data']);
+            ->during('create', ['labels', 1, 'data']);
 
         $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', ['labels', true]);
+            ->during('create', ['labels', 1, true]);
     }
 }
