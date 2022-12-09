@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel;
 
 use Doctrine\DBAL\Connection;
 

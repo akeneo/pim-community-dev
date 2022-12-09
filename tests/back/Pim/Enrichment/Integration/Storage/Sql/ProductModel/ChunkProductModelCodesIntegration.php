@@ -1,10 +1,8 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductModel;
 
 use Akeneo\Test\Integration\TestCase;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 class ChunkProductModelCodesIntegration extends TestCase

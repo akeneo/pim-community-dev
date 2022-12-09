@@ -11,6 +11,7 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductUuids'
+            - '@Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\PhpMemoryLimit'
 
     pim_catalog.elasticsearch.indexer.product_model:
         class: '%pim_catalog.elasticsearch.indexer.product_model_indexer.class%'
@@ -19,6 +20,7 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductModelCodes'
+            - '@Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\PhpMemoryLimit'
 
     akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer'
@@ -35,3 +37,6 @@ services:
             - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids'
             - '@akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes'
+
+    Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\PhpMemoryLimit:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\PhpMemoryLimit

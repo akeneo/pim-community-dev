@@ -25,15 +25,26 @@ use Ramsey\Uuid\UuidInterface;
 class ProductIndexer implements ProductIndexerInterface
 {
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
-    // 4MB of raw values can product a query of 25MB (x7) for the indexation, due to the encoding of UTF-8 characters
-    // also, it's possible to consume two times the memory, if you manipulate copy the values into another variable,
-    // hence a conservative ratio of x14
-    private const MEMORY_RATIO = 14;
+
+    /**
+     * The memory ratio helps to determine the size of the batch in function of the configured PHP memory limit.
+     * For example, with a ratio of 60 and a maximum memory of 512 MB,  the cumulated size of the raw values in a batch of products is at most ~8MB.
+     * It seems very conservative, but it is not actually.
+     * Indeed, 8MB of raw values in database can generate up to 100MB once passed to json_decode. Additionally, as soon as you copy the values
+     *
+     */
+    // The memory footprint of the process could be 100MB before even launching the indexation (LRU cache, etc).
+    // 10MB of raw values in database can generate up to 100MB once passed to json_decode. So we are at almost 200MB consumed.
+    // As PHP pass by copy the variable into a function, it can consume several times the 100MB of decoded raw values.
+    // In practice, with a limit of 10MB, it can take up to 350MB of memory.
+    // This explains the why the ratio between the siwe
+    private const MEMORY_RATIO = 60;
 
     public function __construct(
         private Client $productAndProductModelClient,
         private GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
-        private ChunkProductUuids $chunkProductUuids
+        private ChunkProductUuids $chunkProductUuids,
+        private PhpMemoryLimit $phpMemoryLimit
     ) {
     }
 
@@ -53,7 +64,7 @@ class ProductIndexer implements ProductIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $maxMemoryPerChunk = (int) floor($this->memoryLimitAsBytes()/ self::MEMORY_RATIO);
+        $maxMemoryPerChunk = (int) floor($this->phpMemoryLimit->asBytesFromPHPConfig()/ self::MEMORY_RATIO);
         $chunks =$this->chunkProductUuids->byRawValuesSize($productUuids, $maxMemoryPerChunk);
         foreach ($chunks as $productUuidsChunk) {
             $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductUuids(
@@ -79,28 +90,5 @@ class ProductIndexer implements ProductIndexerInterface
         ));
     }
 
-    private function memoryLimitAsBytes(): int
-    {
-        $limit = ini_get('memory_limit');
-        if (false === $limit) {
-            return 512 * 1024 * 1024;
-        }
 
-        if ($limit === '-1') {
-            return 512 * 1024 * 1024 * 1024;
-        }
-
-        $lastCharacter = substr($limit, -1);
-        if ($lastCharacter === 'K') {
-            return  (int) substr($limit, 0, -1) * 1024;
-        }
-        if ($lastCharacter === 'M') {
-            return  (int) substr($limit, 0, -1) * 1024 * 1024;
-        }
-        if ($lastCharacter === 'G') {
-            return  (int) substr($limit, 0, -1) * 1024 * 1024 * 1024;
-        }
-
-        return (int) $limit;
-    }
 }
