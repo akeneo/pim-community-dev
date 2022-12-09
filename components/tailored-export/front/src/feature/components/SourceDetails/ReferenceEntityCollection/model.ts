@@ -1,6 +1,6 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Source, Attribute} from '../../../models';
+import {Source, Attribute, ReferenceEntityAttribute} from '../../../models';
 import {
   DefaultValueOperation,
   isDefaultValueOperation,
@@ -9,6 +9,7 @@ import {
   CollectionSeparator,
   CodeLabelCollectionSelection,
   isCodeLabelCollectionSelection,
+  CodeLabelSelection,
 } from '../common';
 
 type ReferenceEntityCollectionOperations = {
@@ -24,6 +25,16 @@ type ReferenceEntityCollectionAttributeSelection = {
   reference_entity_code: string;
   locale: LocaleReference;
   channel: ChannelReference;
+};
+
+type ReferenceEntityCollectionNumberAttributeSelection = ReferenceEntityCollectionAttributeSelection & {
+  attribute_type: 'number';
+  decimal_separator: string;
+};
+
+type ReferenceEntityCollectionOptionAttributeSelection = ReferenceEntityCollectionAttributeSelection & {
+  attribute_type: 'option';
+  option_selection: CodeLabelSelection;
 };
 
 type ReferenceEntityCollectionSelection = CodeLabelCollectionSelection | ReferenceEntityCollectionAttributeSelection;
@@ -46,6 +57,18 @@ const isReferenceEntityCollectionAttributeSelection = (
   'string' === typeof selection.attribute_type &&
   'string' === typeof selection.reference_entity_code &&
   'string' === typeof selection.separator;
+
+const isReferenceEntityCollectionNumberAttributeSelection = (
+  selection: any
+): selection is ReferenceEntityCollectionNumberAttributeSelection =>
+  'number' === selection.attribute_type &&
+  'string' === typeof selection.decimal_separator &&
+  isReferenceEntityCollectionAttributeSelection(selection);
+
+const isReferenceEntityCollectionOptionAttributeSelection = (
+  selection: any
+): selection is ReferenceEntityCollectionOptionAttributeSelection =>
+  'option' === selection.attribute_type && isReferenceEntityCollectionAttributeSelection(selection);
 
 const getDefaultReferenceEntityCollectionSource = (
   attribute: Attribute,
@@ -82,13 +105,52 @@ const isReferenceEntityCollectionOperations = (operations: Object): operations i
 const isReferenceEntityCollectionSource = (source: Source): source is ReferenceEntityCollectionSource =>
   isReferenceEntityCollectionSelection(source.selection) && isReferenceEntityCollectionOperations(source.operations);
 
+const getDefaultReferenceEntityCollectionAttributeSelection = (
+  attribute: ReferenceEntityAttribute,
+  referenceEntityCode: string,
+  channel: ChannelReference,
+  locale: LocaleReference
+) => {
+  const selection: ReferenceEntityCollectionAttributeSelection = {
+    type: 'attribute',
+    separator: ',',
+    attribute_identifier: attribute.identifier,
+    attribute_type: attribute.type,
+    reference_entity_code: referenceEntityCode,
+    channel,
+    locale,
+  };
+
+  switch (attribute.type) {
+    case 'text':
+      return selection;
+    case 'number':
+      return {
+        ...selection,
+        decimal_separator: '.',
+      };
+    case 'option':
+      return {
+        ...selection,
+        option_selection: {type: 'code'},
+      };
+    default:
+      throw new Error(`Unsupported attribute type "${attribute.type}"`);
+  }
+};
+
 export type {
   ReferenceEntityCollectionSource,
   ReferenceEntityCollectionSelection,
   ReferenceEntityCollectionAttributeSelection,
+  ReferenceEntityCollectionNumberAttributeSelection,
+  ReferenceEntityCollectionOptionAttributeSelection,
 };
 export {
+  getDefaultReferenceEntityCollectionAttributeSelection,
+  isReferenceEntityCollectionNumberAttributeSelection,
   getDefaultReferenceEntityCollectionSource,
   isDefaultReferenceEntityCollectionSelection,
   isReferenceEntityCollectionSource,
+  isReferenceEntityCollectionOptionAttributeSelection,
 };

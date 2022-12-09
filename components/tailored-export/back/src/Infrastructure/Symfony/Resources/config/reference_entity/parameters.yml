@@ -1,0 +1,5 @@
+parameters:
+  supported_reference_entity_attribute_types:
+    - 'text'
+    - 'number'
+    - 'option'

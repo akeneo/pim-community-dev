@@ -1,6 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
-import {ArrowIcon, getColor, Helper, Locale, SelectInput} from 'akeneo-design-system';
+import React, {FunctionComponent} from 'react';
+import {ArrowIcon, Helper, Locale, SelectInput} from 'akeneo-design-system';
 import {
   Channel,
   ChannelCode,
@@ -16,21 +15,9 @@ import {
 import {ReferenceEntityAttribute} from '../../../../models';
 import {ReferenceEntityAttributeSelection} from '../model';
 import {ReferenceEntityCollectionAttributeSelection} from '../../ReferenceEntityCollection/model';
-
-const SubField = styled.div`
-  display: flex;
-  gap: 5px;
-  align-items: baseline;
-  margin-left: 8px;
-  color: ${getColor('grey', 100)};
-`;
-
-const InnerField = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 5px;
-`;
+import {NumberAttributeSelector} from './NumberAttributeSelector';
+import {OptionAttributeSelector} from './OptionAttributeSelector';
+import {AttributeSelectorContainer, InnerField, SubField, SubFields} from './common';
 
 type AttributeSelection = ReferenceEntityAttributeSelection | ReferenceEntityCollectionAttributeSelection;
 
@@ -40,6 +27,14 @@ type AttributeSelectorProps<SelectionType extends AttributeSelection> = {
   validationErrors: ValidationError[];
   channels: Channel[];
   onSelectionChange: (selection: SelectionType) => void;
+};
+
+const attributeSelectors: {
+  [attributeType: string]: FunctionComponent<AttributeSelectorProps<AttributeSelection>> | null;
+} = {
+  text: null,
+  number: NumberAttributeSelector,
+  option: OptionAttributeSelector,
 };
 
 const AttributeSelector = <SelectionType extends AttributeSelection>({
@@ -62,66 +57,80 @@ const AttributeSelector = <SelectionType extends AttributeSelection>({
 
   const handleLocaleChange = (locale: LocaleCode) => onSelectionChange({...selection, locale});
 
+  const AdditionalFields = attributeSelectors[attribute.type] ?? null;
+
   return (
-    <>
-      {attribute.value_per_channel && null !== selection.channel && (
-        <SubField>
-          <ArrowIcon />
-          <InnerField>
-            <SelectInput
-              invalid={0 < channelErrors.length}
-              clearable={false}
-              emptyResultLabel={translate('pim_common.no_result')}
-              openLabel={translate('pim_common.open')}
-              value={selection.channel}
-              onChange={handleChannelChange}
-            >
-              {channels.map(channel => (
-                <SelectInput.Option
-                  key={channel.code}
-                  title={getLabel(channel.labels, catalogLocale, channel.code)}
-                  value={channel.code}
-                >
-                  {getLabel(channel.labels, catalogLocale, channel.code)}
-                </SelectInput.Option>
+    <AttributeSelectorContainer>
+      <SubFields>
+        {attribute.value_per_channel && null !== selection.channel && (
+          <SubField>
+            <ArrowIcon />
+            <InnerField>
+              <SelectInput
+                invalid={0 < channelErrors.length}
+                clearable={false}
+                emptyResultLabel={translate('pim_common.no_result')}
+                openLabel={translate('pim_common.open')}
+                value={selection.channel}
+                onChange={handleChannelChange}
+              >
+                {channels.map(channel => (
+                  <SelectInput.Option
+                    key={channel.code}
+                    title={getLabel(channel.labels, catalogLocale, channel.code)}
+                    value={channel.code}
+                  >
+                    {getLabel(channel.labels, catalogLocale, channel.code)}
+                  </SelectInput.Option>
+                ))}
+              </SelectInput>
+              {channelErrors.map((error, index) => (
+                <Helper key={index} inline={true} level="error">
+                  {translate(error.messageTemplate, error.parameters)}
+                </Helper>
               ))}
-            </SelectInput>
-            {channelErrors.map((error, index) => (
-              <Helper key={index} inline={true} level="error">
-                {translate(error.messageTemplate, error.parameters)}
-              </Helper>
-            ))}
-          </InnerField>
-        </SubField>
-      )}
-      {attribute.value_per_locale && null !== selection.locale && (
-        <SubField>
-          <ArrowIcon />
-          <InnerField>
-            <SelectInput
-              invalid={0 < localeErrors.length}
-              clearable={false}
-              emptyResultLabel={translate('pim_common.no_result')}
-              openLabel={translate('pim_common.open')}
-              value={selection.locale}
-              onChange={handleLocaleChange}
-            >
-              {locales.map(locale => (
-                <SelectInput.Option key={locale.code} title={locale.label} value={locale.code}>
-                  <Locale code={locale.code} languageLabel={locale.label} />
-                </SelectInput.Option>
+            </InnerField>
+          </SubField>
+        )}
+        {attribute.value_per_locale && null !== selection.locale && (
+          <SubField>
+            <ArrowIcon />
+            <InnerField>
+              <SelectInput
+                invalid={0 < localeErrors.length}
+                clearable={false}
+                emptyResultLabel={translate('pim_common.no_result')}
+                openLabel={translate('pim_common.open')}
+                value={selection.locale}
+                onChange={handleLocaleChange}
+              >
+                {locales.map(locale => (
+                  <SelectInput.Option key={locale.code} title={locale.label} value={locale.code}>
+                    <Locale code={locale.code} languageLabel={locale.label} />
+                  </SelectInput.Option>
+                ))}
+              </SelectInput>
+              {localeErrors.map((error, index) => (
+                <Helper key={index} inline={true} level="error">
+                  {translate(error.messageTemplate, error.parameters)}
+                </Helper>
               ))}
-            </SelectInput>
-            {localeErrors.map((error, index) => (
-              <Helper key={index} inline={true} level="error">
-                {translate(error.messageTemplate, error.parameters)}
-              </Helper>
-            ))}
-          </InnerField>
-        </SubField>
+            </InnerField>
+          </SubField>
+        )}
+      </SubFields>
+      {null !== AdditionalFields && (
+        <AdditionalFields
+          attribute={attribute}
+          selection={selection}
+          validationErrors={validationErrors}
+          channels={channels}
+          onSelectionChange={selection => onSelectionChange(selection as SelectionType)}
+        />
       )}
-    </>
+    </AttributeSelectorContainer>
   );
 };
 
 export {AttributeSelector};
+export type {AttributeSelectorProps};

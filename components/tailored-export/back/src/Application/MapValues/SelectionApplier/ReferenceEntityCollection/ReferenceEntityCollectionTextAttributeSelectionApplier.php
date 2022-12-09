@@ -34,13 +34,13 @@ class ReferenceEntityCollectionTextAttributeSelectionApplier implements Selectio
         }
 
         $recordCodes = $value->getRecordCodes();
-        $recordValues = $this->findRecordsAttributeValue->find(
+        $recordValues = array_change_key_case($this->findRecordsAttributeValue->find(
             $selection->getReferenceEntityCode(),
             $recordCodes,
             $selection->getReferenceEntityAttributeIdentifier(),
             $selection->getChannel(),
             $selection->getLocale(),
-        );
+        ));
 
         $selectedData = array_map(static function (string $recordCode) use ($value, $recordValues) {
             if ($value->hasMappedValue($recordCode)) {

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {channels, renderWithProviders} from 'feature/tests';
 import {ReferenceEntityAttribute} from 'feature/models';
-import {ReferenceEntityAttributeSelection} from '../model';
+import {ReferenceEntityAttributeSelection, ReferenceEntityNumberAttributeSelection} from '../model';
 import {AttributeSelector} from './AttributeSelector';
 
 const attribute: ReferenceEntityAttribute = {
@@ -24,6 +24,26 @@ const selection: ReferenceEntityAttributeSelection = {
   channel: null,
   locale: null,
 };
+
+jest.mock('./NumberAttributeSelector', () => ({
+  NumberAttributeSelector: ({
+    onSelectionChange,
+  }: {
+    onSelectionChange: (updatedSelection: ReferenceEntityNumberAttributeSelection) => void;
+  }) => (
+    <button
+      onClick={() =>
+        onSelectionChange({
+          ...selection,
+          attribute_type: 'number',
+          decimal_separator: ',',
+        })
+      }
+    >
+      Update number selection
+    </button>
+  ),
+}));
 
 test('it can change the channel if the attribute has a value per channel', async () => {
   const onSelectionChange = jest.fn();
@@ -66,6 +86,28 @@ test('it can change the locale if the attribute has a value per locale', async (
   expect(onSelectionChange).toHaveBeenCalledWith({
     ...selection,
     locale: 'en_US',
+  });
+});
+
+test('it displays number related fields when attribute type is number', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <AttributeSelector
+      attribute={{...attribute, type: 'number'}}
+      selection={{...selection, attribute_type: 'number', decimal_separator: '.'}}
+      channels={channels}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Update number selection'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    ...selection,
+    attribute_type: 'number',
+    decimal_separator: ',',
   });
 });
 

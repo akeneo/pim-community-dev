@@ -53,6 +53,35 @@ class ReferenceEntityCollectionTextAttributeSelectionApplierSpec extends ObjectB
         $this->applySelection($selection, $value)->shouldReturn('label1;label2;label3');
     }
 
+    public function it_applies_the_selection_ignoring_case_and_mapped_values(FindRecordsAttributeValueInterface $findRecordsAttributeValue): void
+    {
+        $selection = new ReferenceEntityCollectionTextAttributeSelection(
+            ';',
+            'a_reference_entity_code',
+            'a_reference_entity_attribute_identifier',
+            'ecommerce',
+            'br_FR',
+        );
+        $value = new ReferenceEntityCollectionValue(
+            ['record_code1', 'record_code2', 'record_code3'],
+            ['record_code2' => 'DO NOT REPLACE'],
+        );
+
+        $findRecordsAttributeValue->find(
+            'a_reference_entity_code',
+            ['record_code1', 'record_code2', 'record_code3'],
+            'a_reference_entity_attribute_identifier',
+            'ecommerce',
+            'br_FR',
+        )->willReturn([
+            'recOrd_Code1' => 'label1',
+            'record_code2' => 'label2',
+            'record_CodE3' => 'label3',
+        ]);
+
+        $this->applySelection($selection, $value)->shouldReturn('label1;DO NOT REPLACE;label3');
+    }
+
     public function it_applies_the_selection_and_fallback_when_no_value_is_found(
         FindRecordsAttributeValueInterface $findRecordsAttributeValue
     ): void {

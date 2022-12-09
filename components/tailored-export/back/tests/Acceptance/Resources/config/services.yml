@@ -29,6 +29,9 @@ services:
     Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsAttributeValue
 
+    Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindReferenceEntityOptionAttributeLabels
+
     Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Product\InMemoryFindProductLabels
 

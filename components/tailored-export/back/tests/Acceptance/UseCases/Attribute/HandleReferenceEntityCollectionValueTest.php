@@ -17,6 +17,9 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOper
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionNumberAttributeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionAttributeCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionAttributeLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
@@ -25,6 +28,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsAttributeValue;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindReferenceEntityOptionAttributeLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
@@ -77,6 +81,30 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
                 'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'green']),
                 'expected' => [self::TARGET_NAME => 'Red name;Blue name;Green name'],
             ],
+            'it selects the records "size" text attribute' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionNumberAttributeSelection('|', 'color', 'size', ',', null, null),
+                'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'green']),
+                'expected' => [self::TARGET_NAME => '1000000|5,6|'],
+            ],
+            'it selects the record "tags" option attribute code' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionOptionAttributeCodeSelection(',', 'color', 'tags', null, null),
+                'value' => new ReferenceEntityCollectionValue(['red', 'green', 'record_with_no_value', 'blue']),
+                'expected' => [self::TARGET_NAME => 'large,medium,,small'],
+            ],
+            'it selects the record "tags" option attribute label' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionOptionAttributeLabelSelection(';', 'color', 'tags', 'en_US', null, null),
+                'value' => new ReferenceEntityCollectionValue(['red', 'record_with_no_value', 'blue', 'green']),
+                'expected' => [self::TARGET_NAME => 'large label;;small label;medium label'],
+            ],
+            'it fallbacks on the option code when option label is not found' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionOptionAttributeLabelSelection('|', 'color', 'tags', 'fr_FR', null, null),
+                'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'record_with_no_value', 'green']),
+                'expected' => [self::TARGET_NAME => 'gros label|[small]||moyen label'],
+            ],
             'it applies default value operation when value is null' => [
                 'operations' => [
                     new DefaultValueOperation('n/a'),
@@ -126,9 +154,24 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
         $findRecordsAttributeValue = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface');
         $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'description', 'Blau', 'ecommerce', 'de_DE');
         $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'name', 'Blue name');
+        $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'size', '5.6');
+        $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'tags', 'small');
+
         $findRecordsAttributeValue->addAttributeValue('color', 'red', 'description', 'Rot', 'ecommerce', 'fr_FR');
         $findRecordsAttributeValue->addAttributeValue('color', 'red', 'name', 'Red name');
+        $findRecordsAttributeValue->addAttributeValue('color', 'red', 'size', '1000000');
+        $findRecordsAttributeValue->addAttributeValue('color', 'red', 'tags', 'large');
+
         $findRecordsAttributeValue->addAttributeValue('color', 'green', 'description', 'Grun', 'ecommerce', 'de_DE');
         $findRecordsAttributeValue->addAttributeValue('color', 'green', 'name', 'Green name');
+        $findRecordsAttributeValue->addAttributeValue('color', 'green', 'tags', 'medium');
+
+        /** @var InMemoryFindReferenceEntityOptionAttributeLabels $findOptionAttributeLabels */
+        $findOptionAttributeLabels = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface');
+        $findOptionAttributeLabels->addOptionLabel('tags', 'large', 'en_US', 'large label');
+        $findOptionAttributeLabels->addOptionLabel('tags', 'large', 'fr_FR', 'gros label');
+        $findOptionAttributeLabels->addOptionLabel('tags', 'medium', 'en_US', 'medium label');
+        $findOptionAttributeLabels->addOptionLabel('tags', 'medium', 'fr_FR', 'moyen label');
+        $findOptionAttributeLabels->addOptionLabel('tags', 'small', 'en_US', 'small label');
     }
 }

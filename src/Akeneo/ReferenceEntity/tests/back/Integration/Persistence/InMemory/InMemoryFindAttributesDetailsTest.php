@@ -15,18 +15,15 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocales;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryFindAttributesDetailsTest extends TestCase
 {
-    /** @var InMemoryFindAttributesDetails */
-    private $query;
-
-    /** @var InMemoryFindActivatedLocales */
-    private $activatedLocaleQuery;
+    private InMemoryFindAttributesDetails $query;
+    private InMemoryFindActivatedLocales $activatedLocaleQuery;
 
     public function setUp(): void
     {
@@ -39,15 +36,34 @@ class InMemoryFindAttributesDetailsTest extends TestCase
      */
     public function it_saves_multiple_attribute_details_from_different_reference_entity()
     {
-        $this->query->save($this->createReferenceEntityDetails('designer', 'name'));
-        $this->query->save($this->createReferenceEntityDetails('designer', 'description'));
-        $this->query->save($this->createReferenceEntityDetails('manufacturer', 'name'));
-        $this->query->save($this->createReferenceEntityDetails('manufacturer', 'description'));
+        $this->query->save($this->createAttributeDetails('designer', 'name'));
+        $this->query->save($this->createAttributeDetails('designer', 'description'));
+        $this->query->save($this->createAttributeDetails('manufacturer', 'name'));
+        $this->query->save($this->createAttributeDetails('manufacturer', 'description'));
 
         $manufacturerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
         $designerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
         $this->assertCount(2, $this->query->find($manufacturerIdentifier));
         $this->assertCount(2, $this->query->find($designerIdentifier));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_find_an_attribute_by_its_identifier()
+    {
+        $nameDetails = $this->createAttributeDetails('designer', 'name');
+        $descriptionDetails = $this->createAttributeDetails('manufacturer', 'description');
+
+        $this->query->save($nameDetails);
+        $this->query->save($descriptionDetails);
+
+        $this->assertEquals($nameDetails, $this->query->findByIdentifier(
+            AttributeIdentifier::fromString('name'),
+        ));
+        $this->assertEquals($descriptionDetails, $this->query->findByIdentifier(
+            AttributeIdentifier::fromString('description'),
+        ));
     }
 
     /**
@@ -59,9 +75,10 @@ class InMemoryFindAttributesDetailsTest extends TestCase
         $this->assertEmpty($this->query->find($manufacturerIdentifier));
     }
 
-    private function createReferenceEntityDetails(string $referenceEntityIdentifier, string $attributeCode): AttributeDetails
+    private function createAttributeDetails(string $referenceEntityIdentifier, string $attributeCode): AttributeDetails
     {
         $textAttributeDetails = new AttributeDetails();
+        $textAttributeDetails->identifier = $attributeCode;
         $textAttributeDetails->referenceEntityIdentifier = $referenceEntityIdentifier;
         $textAttributeDetails->code = $attributeCode;
         $textAttributeDetails->labels = [];

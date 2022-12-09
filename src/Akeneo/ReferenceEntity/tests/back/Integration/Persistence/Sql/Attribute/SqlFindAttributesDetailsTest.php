@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
@@ -20,14 +21,8 @@ use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindAttributesDetailsInterface */
-    private $findAttributesDetails;
-
-    /** @var array */
-    private $fixturesDesigner;
-
-    /** @var array */
-    private $fixturesBrand;
+    private FindAttributesDetailsInterface $findAttributesDetails;
+    private array $fixturesDesigner;
 
     public function setUp(): void
     {
@@ -41,16 +36,40 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_the_attributes_details_for_a_reference_entity()
+    public function it_returns_the_attributes_details_for_a_reference_entity(): void
     {
         $attributeDetails = $this->findAttributesDetails->find(ReferenceEntityIdentifier::fromString('designer'));
 
-        $this->assertCount(7, $attributeDetails);
+        $this->assertCount(8, $attributeDetails);
         $this->assertNameAttribute($attributeDetails);
         $this->assertEmailAttribute($attributeDetails);
         $this->assertCustomRegex($attributeDetails);
         $this->assertLongDescriptionAttribute($attributeDetails);
         $this->assertImageAttribute($attributeDetails);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_attributes_details_for_a_given_identifier(): void
+    {
+        $attributeDetails = $this->findAttributesDetails->findByIdentifier(
+            $this->fixturesDesigner['attributes']['main_material']->getIdentifier(),
+        );
+
+        $this->assertMainMaterialAttribute($attributeDetails);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_when_attribute_is_not_found(): void
+    {
+        $attributeDetails = $this->findAttributesDetails->findByIdentifier(
+            AttributeIdentifier::fromString('not_found'),
+        );
+
+        $this->assertNull($attributeDetails);
     }
 
     private function resetDB(): void
@@ -62,19 +81,11 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         $this->fixturesDesigner = $this->fixturesLoader
             ->referenceEntity('designer')
-            ->withAttributes(['name', 'email', 'regex', 'long_description', 'main_image'])
-            ->load();
-
-        $this->fixturesBrand = $this->fixturesLoader
-            ->referenceEntity('brand')
+            ->withAttributes(['name', 'email', 'regex', 'long_description', 'main_image', 'main_material'])
             ->load();
     }
 
-    /**
-     * @param $attributeDetails
-     *
-     */
-    private function assertNameAttribute($attributeDetails): void
+    private function assertNameAttribute(array $attributeDetails): void
     {
         $actualName = $this->getAttributeWithCode($attributeDetails, 'name');
 
@@ -99,7 +110,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $this->assertEquals($expectedName, $actualName);
     }
 
-    private function assertEmailAttribute($attributeDetails): void
+    private function assertEmailAttribute(array $attributeDetails): void
     {
         $actualEmail = $this->getAttributeWithCode($attributeDetails, 'email');
 
@@ -124,7 +135,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $this->assertEquals($expectedEmail, $actualEmail);
     }
 
-    private function assertCustomRegex($attributeDetails)
+    private function assertCustomRegex(array $attributeDetails): void
     {
         $actualRegex = $this->getAttributeWithCode($attributeDetails, 'regex');
 
@@ -149,7 +160,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $this->assertEquals($expectedRegex, $actualRegex);
     }
 
-    private function assertLongDescriptionAttribute($attributeDetails)
+    private function assertLongDescriptionAttribute(array $attributeDetails): void
     {
         $actualLongDescription = $this->getAttributeWithCode($attributeDetails, 'long_description');
 
@@ -174,11 +185,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $this->assertEquals($expectedLongDescription, $actualLongDescription);
     }
 
-    /**
-     * @param $attributeDetails
-     *
-     */
-    private function assertImageAttribute($attributeDetails): void
+    private function assertImageAttribute(array $attributeDetails): void
     {
         $actualImage = $this->getAttributeWithCode($attributeDetails, 'main_image');
 
@@ -198,6 +205,25 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         ];
 
         $this->assertEquals($expectedImage, $actualImage);
+    }
+
+    private function assertMainMaterialAttribute(AttributeDetails $attributeDetails): void
+    {
+        $expectedMainMaterial = new AttributeDetails();
+        $expectedMainMaterial->type = 'option';
+        $expectedMainMaterial->identifier = (string) $this->fixturesDesigner['attributes']['main_material']->getIdentifier();
+        $expectedMainMaterial->referenceEntityIdentifier = 'designer';
+        $expectedMainMaterial->code = 'main_material';
+        $expectedMainMaterial->labels = ['en_US' => 'Main material'];
+        $expectedMainMaterial->order = 7;
+        $expectedMainMaterial->isRequired = false;
+        $expectedMainMaterial->valuePerChannel = false;
+        $expectedMainMaterial->valuePerLocale = false;
+        $expectedMainMaterial->additionalProperties = [
+            'options' => [],
+        ];
+
+        $this->assertEquals($expectedMainMaterial, $attributeDetails);
     }
 
     // TODO: add test case for new attribute types

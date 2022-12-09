@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
@@ -23,19 +24,18 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface
  */
 class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
 {
-    private $results = [];
+    private array $attributesIndexedByReferenceEntityIdentifier = [];
+    private array $attributesIndexedByIdentifier = [];
 
-    /** @var InMemoryFindActivatedLocales */
-    private $activatedLocalesQuery;
-
-    public function __construct(InMemoryFindActivatedLocales $activatedLocalesQuery)
-    {
-        $this->activatedLocalesQuery = $activatedLocalesQuery;
+    public function __construct(
+        private InMemoryFindActivatedLocales $activatedLocalesQuery,
+    ) {
     }
 
-    public function save(AttributeDetails $referenceEntityDetails): void
+    public function save(AttributeDetails $attributeDetails): void
     {
-        $this->results[(string) $referenceEntityDetails->referenceEntityIdentifier][] = $referenceEntityDetails;
+        $this->attributesIndexedByReferenceEntityIdentifier[(string) $attributeDetails->referenceEntityIdentifier][] = $attributeDetails;
+        $this->attributesIndexedByIdentifier[(string) $attributeDetails->identifier] = $attributeDetails;
     }
 
     /**
@@ -46,17 +46,25 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
         $activatedLocales = $this->activatedLocalesQuery->findAll();
         $key = (string) $referenceEntityIdentifier;
 
-        if (!isset($this->results[$key])) {
+        if (!isset($this->attributesIndexedByReferenceEntityIdentifier[$key])) {
             return [];
         }
 
-        foreach ($this->results[$key] as $attributeDetails) {
+        foreach ($this->attributesIndexedByReferenceEntityIdentifier[$key] as $attributeDetails) {
             if (null !== $attributeDetails->labels) {
                 $attributeDetails->labels = $this->getLabelsByActivatedLocale($attributeDetails->labels, $activatedLocales);
             }
         }
 
-        return $this->results[$key];
+        return $this->attributesIndexedByReferenceEntityIdentifier[$key];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIdentifier(AttributeIdentifier $attributeIdentifier): ?AttributeDetails
+    {
+        return $this->attributesIndexedByIdentifier[(string) $attributeIdentifier] ?? null;
     }
 
     private function getLabelsByActivatedLocale(array $labels, array $activatedLocales): array

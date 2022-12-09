@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Refere
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\AttributeDetails;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityAttributesInterface;
 use Symfony\Component\Validator\Constraint;
@@ -29,7 +30,9 @@ class ReferenceEntityCollectionSelectionValidator extends ConstraintValidator
 {
     public function __construct(
         private FindReferenceEntityAttributesInterface $findReferenceEntityAttributes,
-        private array $availableCollectionSeparator,
+        private array $supportedAttributeTypes,
+        private array $availableCollectionSeparators,
+        private array $availableDecimalSeparators,
     ) {
     }
 
@@ -39,19 +42,19 @@ class ReferenceEntityCollectionSelectionValidator extends ConstraintValidator
         $validator->inContext($this->context)->validate($selection, new Collection(
             [
                 'fields' => [
-                    'type' => new Choice(
-                        [
-                            ReferenceEntityCollectionCodeSelection::TYPE,
-                            ReferenceEntityCollectionLabelSelection::TYPE,
-                            ReferenceEntityCollectionAttributeSelectionInterface::TYPE,
-                        ],
-                    ),
-                    'separator' => new Choice($this->availableCollectionSeparator),
+                    'type' => new Choice([
+                        ReferenceEntityCollectionCodeSelection::TYPE,
+                        ReferenceEntityCollectionLabelSelection::TYPE,
+                        ReferenceEntityCollectionAttributeSelectionInterface::TYPE,
+                    ]),
+                    'separator' => new Choice($this->availableCollectionSeparators),
                     'channel' => new Optional(new Type('string')),
                     'locale' => new Optional(new Type('string')),
                     'attribute_identifier' => new Optional(new Type('string')),
-                    'attribute_type' => new Optional(new Type('string')),
+                    'attribute_type' => new Optional(new Choice($this->supportedAttributeTypes)),
                     'reference_entity_code' => new Optional(new Type('string')),
+                    'decimal_separator' => new Optional(new Choice($this->availableDecimalSeparators)),
+                    'option_selection' => new Optional(new CodeLabelSelectionConstraint()),
                 ],
             ],
         ));

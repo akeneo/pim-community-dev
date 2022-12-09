@@ -33,13 +33,13 @@ class ReferenceEntityTextAttributeSelectionApplier implements SelectionApplierIn
             throw new \InvalidArgumentException('Cannot apply Reference Entity selection on this entity');
         }
 
-        $recordValues = $this->findRecordsAttributeValue->find(
+        $recordValues = array_change_key_case($this->findRecordsAttributeValue->find(
             $selection->getReferenceEntityCode(),
             [$value->getRecordCode()],
             $selection->getReferenceEntityAttributeIdentifier(),
             $selection->getChannel(),
             $selection->getLocale(),
-        );
+        ));
 
         return $recordValues[strtolower($value->getRecordCode())] ?? '';
     }

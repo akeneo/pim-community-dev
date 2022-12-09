@@ -14,6 +14,11 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
 
+    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_option_attribute_labels_public_api:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindOptionAttributeLabels
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details'
+
     akeneo_referenceentity.infrastructure.persistence.query.enrich.find_reference_entity_attributes_public_api:
         class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityAttributes
         arguments:

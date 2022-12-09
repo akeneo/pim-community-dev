@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Refere
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\AttributeDetails;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityAttributesInterface;
 use Symfony\Component\Validator\Constraint;
@@ -29,6 +30,8 @@ class ReferenceEntitySelectionValidator extends ConstraintValidator
 {
     public function __construct(
         private FindReferenceEntityAttributesInterface $findReferenceEntityAttributes,
+        private array $supportedAttributeTypes,
+        private array $availableDecimalSeparators,
     ) {
     }
 
@@ -38,20 +41,18 @@ class ReferenceEntitySelectionValidator extends ConstraintValidator
         $validator->inContext($this->context)->validate($selection, new Collection(
             [
                 'fields' => [
-                    'type' => new Choice(
-                        [
-                            'choices' => [
-                                ReferenceEntityCodeSelection::TYPE,
-                                ReferenceEntityLabelSelection::TYPE,
-                                ReferenceEntityAttributeSelectionInterface::TYPE,
-                            ],
-                        ],
-                    ),
+                    'type' => new Choice([
+                        ReferenceEntityCodeSelection::TYPE,
+                        ReferenceEntityLabelSelection::TYPE,
+                        ReferenceEntityAttributeSelectionInterface::TYPE,
+                    ]),
                     'channel' => new Optional(new Type('string')),
                     'locale' => new Optional(new Type('string')),
                     'attribute_identifier' => new Optional(new Type('string')),
-                    'attribute_type' => new Optional(new Type('string')),
+                    'attribute_type' => new Optional(new Choice($this->supportedAttributeTypes)),
                     'reference_entity_code' => new Optional(new Type('string')),
+                    'decimal_separator' => new Optional(new Choice($this->availableDecimalSeparators)),
+                    'option_selection' => new Optional(new CodeLabelSelectionConstraint()),
                 ],
             ],
         ));
