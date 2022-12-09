@@ -4,7 +4,6 @@ import {
   VictoryArea,
   VictoryAxis,
   VictoryGroup,
-  VictoryTheme,
   VictoryVoronoiContainer,
   InterpolationPropType,
   VictoryTooltip,
@@ -12,6 +11,7 @@ import {
 import {TimeToEnrich} from '../models';
 import {TimeToEnrichHistoricalChartTooltip} from './TimeToEnrichHistoricalChartTooltip';
 import {useTheme} from 'akeneo-design-system';
+import {gridYAxesTheme, yAxeTheme, daysAxeTheme} from './TimeToEnrichHistoricalChartThemes';
 
 const interpolation: InterpolationPropType = 'catmullRom';
 
@@ -40,6 +40,12 @@ const TimeToEnrichHistoricalChart = ({
   const ref = useRef<HTMLInputElement>(null);
   const theme = useTheme();
   const chartRedrawTempo = 50;
+  const paddingValue = 0.5;
+  const incrementLimit = 1;
+
+  const paddedAxis = Array.from({length: referenceTimeToEnrichList.length}, (value, index) => {
+    return paddingValue + incrementLimit * index;
+  });
 
   useEffect(() => {
     // Make effective the chart width change
@@ -79,13 +85,18 @@ const TimeToEnrichHistoricalChart = ({
         <VictoryChart
           height={400}
           width={width}
-          theme={VictoryTheme.material}
           padding={{top: 0, bottom: 50, left: 30, right: 5}}
-          maxDomain={{y: getMaxY(referenceTimeToEnrichList, comparisonTimeToEnrichList)}}
+          maxDomain={{
+            y: getMaxY(referenceTimeToEnrichList, comparisonTimeToEnrichList),
+            x: referenceTimeToEnrichList.length + 0.2,
+          }}
           containerComponent={<VictoryVoronoiContainer voronoiDimension="x" />}
         >
-          <VictoryAxis />
-          <VictoryAxis dependentAxis />
+          <VictoryAxis style={daysAxeTheme} />
+          <VictoryAxis dependentAxis style={yAxeTheme} />
+          {paddedAxis.map((value, index) => {
+            return <VictoryAxis dependentAxis key={index} style={gridYAxesTheme} axisValue={value} />;
+          })}
 
           <VictoryGroup style={{data: {stroke: '#3c86b3', strokeWidth: 3}}}>
             <VictoryArea

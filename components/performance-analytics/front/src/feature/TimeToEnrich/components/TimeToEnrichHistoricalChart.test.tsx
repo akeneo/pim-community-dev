@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '../../tests';
 import {screen} from '@testing-library/react';
 import {TimeToEnrichHistoricalChart} from './TimeToEnrichHistoricalChart';
 
@@ -15,12 +15,12 @@ test('it renders a historical chart for TTE', async () => {
     },
   ];
 
-  renderWithProviders(<TimeToEnrichHistoricalChart referenceTimeToEnrichList={data} />);
+  await renderWithProviders(<TimeToEnrichHistoricalChart referenceTimeToEnrichList={data} />);
 
   expect(screen.getByText('2021-W45')).toBeInTheDocument();
   expect(screen.getByText('2021-W46')).toBeInTheDocument();
-  expect(screen.getByText('10')).toBeInTheDocument();
-  expect(screen.getByText('20')).toBeInTheDocument();
+  expect(screen.getAllByText('10')).toHaveLength(3);
+  expect(screen.getAllByText('20')).toHaveLength(3);
 });
 
 test('it resizes the chart', async () => {
@@ -35,12 +35,12 @@ test('it resizes the chart', async () => {
     },
   ];
 
-  renderWithProviders(<TimeToEnrichHistoricalChart referenceTimeToEnrichList={data} />);
+  await renderWithProviders(<TimeToEnrichHistoricalChart referenceTimeToEnrichList={data} />);
 
   expect(screen.getByText('2021-W45')).toBeInTheDocument();
   expect(screen.getByText('2021-W46')).toBeInTheDocument();
-  expect(screen.getByText('10')).toBeInTheDocument();
-  expect(screen.getByText('20')).toBeInTheDocument();
+  expect(screen.getAllByText('10')).toHaveLength(3);
+  expect(screen.getAllByText('20')).toHaveLength(3);
 
   global.innerWidth = 500;
   global.dispatchEvent(new Event('resize'));
@@ -48,6 +48,6 @@ test('it resizes the chart', async () => {
 
   expect(screen.getByText('2021-W45')).toBeInTheDocument();
   expect(screen.getByText('2021-W46')).toBeInTheDocument();
-  expect(screen.getByText('10')).toBeInTheDocument();
-  expect(screen.getByText('20')).toBeInTheDocument();
+  expect(screen.getAllByText('10')).toHaveLength(3);
+  expect(screen.getAllByText('20')).toHaveLength(3);
 });
