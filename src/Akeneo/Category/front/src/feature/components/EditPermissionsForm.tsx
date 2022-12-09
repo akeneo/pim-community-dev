@@ -3,8 +3,8 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {EnrichCategory} from '../models';
-import {CategoryPermission, CategoryPermissions} from "../models/CategoryPermission";
-import {useFetchUserGroups, UserGroup} from "../hooks/useFetchUserGroups";
+import {CategoryPermission, CategoryPermissions} from '../models/CategoryPermission';
+import {useFetchUserGroups, UserGroup} from '../hooks/useFetchUserGroups';
 
 type Props = {
   category: EnrichCategory;
@@ -36,21 +36,25 @@ const EditPermissionsForm = ({
 
   const handleChangePermissions = useCallback(
     (type: keyof CategoryPermissions) => (values: string[]) => {
-        if(userGroups) {
-            onChangePermissions(userGroups, type, values.map(value => parseInt(value, 10)));
-        }
+      if (userGroups) {
+        onChangePermissions(
+          userGroups,
+          type,
+          values.map(value => parseInt(value, 10))
+        );
+      }
     },
     [onChangePermissions, userGroups]
   );
 
   const makeGroupOptions = useCallback(
     (type: string) => {
-      if(userGroups) {
-          return userGroups?.map(({id, label}) => (
-              <MultiSelectInput.Option value={id.toString()} key={`${type}-${id}`}>
-                  {label}
-              </MultiSelectInput.Option>
-          ));
+      if (userGroups) {
+        return userGroups?.map(({id, label}) => (
+          <MultiSelectInput.Option value={id.toString()} key={`${type}-${id}`}>
+            {label}
+          </MultiSelectInput.Option>
+        ));
       }
       return [];
     },
