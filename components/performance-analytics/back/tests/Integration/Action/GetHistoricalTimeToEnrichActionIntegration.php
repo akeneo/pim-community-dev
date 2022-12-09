@@ -18,6 +18,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class GetHistoricalTimeToEnrichActionIntegration extends ActionIntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->logIn($this->client, 'admin');
+    }
+
     public function testItReturnsHistoricalTimeToEnrichByMonth(): void
     {
         $response = $this->launchQuery('2022-01-01', '2022-06-30', 'month');

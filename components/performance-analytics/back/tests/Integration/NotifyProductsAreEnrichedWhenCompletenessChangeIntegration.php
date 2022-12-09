@@ -16,6 +16,7 @@ namespace Akeneo\Test\PerformanceAnalytics\Integration;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
@@ -76,7 +77,7 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
             ],
         ]);
 
-        $productEnrichedAtCreation = $this->createProductEntity('product1', 'accessories', [
+        $productEnrichedAtCreation = $this->createProductEntity('product1', 'accessories', ['master'], [
             'a_localized_and_scopable_text_area' => [
                 ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'A textarea'],
             ],
@@ -87,7 +88,7 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
                 ['scope' => null, 'locale' => null, 'data' => true],
             ],
         ]);
-        $productEnrichedAtCreation2 = $this->createProductEntity('product2', 'accessories', [
+        $productEnrichedAtCreation2 = $this->createProductEntity('product2', 'accessories', ['categoryA1'], [
             'a_localized_and_scopable_text_area' => [
                 ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'A textarea'],
             ],
@@ -99,7 +100,7 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
             ],
         ]);
 
-        $productEnrichedAtUpdate = $this->createProductEntity('product_enriched_at_update', 'accessories', [
+        $productEnrichedAtUpdate = $this->createProductEntity('product_enriched_at_update', 'accessories', [], [
             'a_localized_and_scopable_text_area' => [
                 ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'A textarea'],
             ],
@@ -108,13 +109,13 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
             ],
         ]);
 
-        $productNotEnrichedAtAll = $this->createProductEntity('product3', 'accessories', [
+        $productNotEnrichedAtAll = $this->createProductEntity('product3', 'accessories', [], [
             'a_localized_and_scopable_text_area' => [
                 ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'A textarea'],
             ],
         ]);
 
-        $productWithoutFamily = $this->createProductEntity('product_without_family', null, [
+        $productWithoutFamily = $this->createProductEntity('product_without_family', null, [], [
             'a_localized_and_scopable_text_area' => [
                 ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'A textarea'],
             ],
@@ -147,10 +148,33 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         $messages = $this->pullAndAckMessages();
         self::assertCount(2, $messages, 'There should be 2 messages after products creation');
 
-        $this->assertMessagesCountForProduct($productEnrichedAtCreation->getUuid(), 1, $messages);
-        $this->assertProductChannelLocaleIsInMessages($productEnrichedAtCreation->getUuid(), 'ecommerce', 'en_US', $messages);
-        $this->assertMessagesCountForProduct($productEnrichedAtCreation2->getUuid(), 1, $messages);
-        $this->assertProductChannelLocaleIsInMessages($productEnrichedAtCreation2->getUuid(), 'ecommerce', 'en_US', $messages);
+        $message = $this->getDecodedMessageForProductChannelLocale($messages, $productEnrichedAtCreation->getUuid(), 'ecommerce', 'en_US');
+        self::assertNotNull($message);
+        unset($message['product_created_at']);
+        unset($message['enriched_at']);
+        self::assertSame([
+            'product_uuid' => $productEnrichedAtCreation->getUuid()->toString(),
+            'family_code' => 'accessories',
+            'category_codes' => ['master'],
+            'category_codes_with_ancestors' => ['master'],
+            'channel_code' => 'ecommerce',
+            'locale_code' => 'en_US',
+            'author_id' => (string) $this->getUserId('admin'),
+        ], $message);
+        $message = $this->getDecodedMessageForProductChannelLocale($messages, $productEnrichedAtCreation2->getUuid(), 'ecommerce', 'en_US');
+        self::assertNotNull($message);
+        unset($message['product_created_at']);
+        unset($message['enriched_at']);
+        \sort($message['category_codes_with_ancestors']);
+        self::assertSame([
+            'product_uuid' => $productEnrichedAtCreation2->getUuid()->toString(),
+            'family_code' => 'accessories',
+            'category_codes' => ['categoryA1'],
+            'category_codes_with_ancestors' => ['categoryA', 'categoryA1', 'master'],
+            'channel_code' => 'ecommerce',
+            'locale_code' => 'en_US',
+            'author_id' => (string) $this->getUserId('admin'),
+        ], $message);
 
         $productEnrichedAtUpdate = $this->createOrUpdateProduct(
             'product_enriched_at_update',
@@ -172,6 +196,35 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         $this->assertProductChannelLocaleIsInMessages($productEnrichedAtUpdate->getUuid(), 'tablet', 'fr_FR', $messages);
     }
 
+    public function testItNotifiesVariantProductsAreEnrichedWhenCompletenessChange(): void
+    {
+        $this->createProductModel('root', null, 'familyVariantA1', ['categoryA1']);
+        $this->createProductModel('sub', 'root', 'familyVariantA1', ['categoryB']);
+        $product = $this->createOrUpdateProduct('test1', 'familyA', ['master_china'], [
+            new ChangeParent('sub'),
+            new SetBooleanValue('a_yes_no', null, null, true),
+        ]);
+
+        $messages = $this->pullAndAckMessages();
+        self::assertCount(2, $messages, 'There should be 2 messages after products creation');
+
+        $message = $this->getDecodedMessageForProductChannelLocale($messages, $product->getUuid(), 'ecommerce_china', 'en_US');
+        self::assertNotNull($message);
+        unset($message['product_created_at']);
+        unset($message['enriched_at']);
+        \sort($message['category_codes']);
+        \sort($message['category_codes_with_ancestors']);
+        self::assertSame([
+            'product_uuid' => $product->getUuid()->toString(),
+            'family_code' => 'familyA',
+            'category_codes' => ['categoryA1', 'categoryB', 'master_china'],
+            'category_codes_with_ancestors' => ['categoryA', 'categoryA1', 'categoryB', 'master', 'master_china'],
+            'channel_code' => 'ecommerce_china',
+            'locale_code' => 'en_US',
+            'author_id' => (string) $this->getUserId('admin'),
+        ], $message);
+    }
+
     /**
      * @return Message[]
      */
@@ -189,10 +242,15 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         return $allMessages;
     }
 
-    private function createProductEntity(string $identifier, ?string $familyCode, array $values): ProductInterface
-    {
+    private function createProductEntity(
+        string $identifier,
+        ?string $familyCode,
+        array $categoryCodes,
+        array $values
+    ): ProductInterface {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
         $this->get('pim_catalog.updater.product')->update($product, [
+            'categories' => $categoryCodes,
             'values' => $values,
         ]);
         $violations = $this->get('pim_catalog.validator.product')->validate($product);
@@ -222,6 +280,21 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         return $this->productRepository->findOneByIdentifier($identifier);
     }
 
+    private function createProductModel(string $code, ?string $parentCode, string $familyVariant, array $categoryCodes): void
+    {
+        $productModelBuilder = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+            ->withCode($code)
+            ->withFamilyVariant($familyVariant)
+            ->withCategories(...$categoryCodes)
+        ;
+        if (null !== $parentCode) {
+            $productModelBuilder->withParent($parentCode);
+        }
+
+        $productModel = $productModelBuilder->build();
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
@@ -247,6 +320,24 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         }
 
         Assert::assertTrue($found, 'Product channel locale was not found');
+    }
+
+    private function getDecodedMessageForProductChannelLocale(
+        array $messages,
+        UuidInterface $productUuid,
+        string $channelCode,
+        string $localeCode
+    ): ?array {
+        foreach ($messages as $message) {
+            $productInfo = \json_decode($message->data(), true);
+            if ($productInfo['product_uuid'] === $productUuid->toString()
+                && $productInfo['channel_code'] === $channelCode
+                && $productInfo['locale_code'] === $localeCode) {
+                return $productInfo;
+            }
+        }
+
+        return null;
     }
 
     private function assertMessagesCountForProduct(

@@ -88,5 +88,9 @@
         <testsuite name="TeamworkAssistant">
             <directory suffix="Integration.php">tests/back/Pim/WorkOrganization/Integration/TeamworkAssistant</directory>
         </testsuite>
+
+        <testsuite name="PerformanceAnalytics">
+            <directory suffix="Integration.php">components/performance-analytics/back/tests/Integration</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

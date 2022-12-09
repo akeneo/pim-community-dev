@@ -47,6 +47,25 @@ recursive_category AS (
 
     UNION DISTINCT
 
+    SELECT cpm.category_id, c.code, c.parent_id, p.uuid as product_uuid
+    FROM pim_catalog_product p
+        JOIN pim_catalog_product_model pm ON pm.id = p.product_model_id
+        JOIN pim_catalog_category_product_model cpm ON cpm.product_model_id = pm.id
+        JOIN pim_catalog_category c ON c.id = cpm.category_id
+    WHERE p.uuid IN (:product_uuids)
+
+    UNION DISTINCT
+
+    SELECT cpm.category_id, c.code, c.parent_id, p.uuid as product_uuid
+    FROM pim_catalog_product p
+        JOIN pim_catalog_product_model pm ON pm.id = p.product_model_id
+        JOIN pim_catalog_product_model root_pm ON root_pm.id = pm.parent_id
+        JOIN pim_catalog_category_product_model cpm ON cpm.product_model_id = root_pm.id
+        JOIN pim_catalog_category c ON c.id = cpm.category_id
+    WHERE p.uuid IN (:product_uuids)
+
+    UNION DISTINCT
+
     SELECT c.id as category_id, c.code, c.parent_id, rc.product_uuid
     FROM pim_catalog_category c
         INNER JOIN recursive_category rc ON rc.parent_id = c.id
@@ -65,7 +84,7 @@ SQL;
         return \array_map(
             fn (?string $collapsedCodes): array => \array_map(
                 fn (string $stringCategoryCodes): CategoryCode => CategoryCode::fromString($stringCategoryCodes),
-                null === $collapsedCodes ? [] : \explode(',', $collapsedCodes)
+                \array_unique(null === $collapsedCodes ? [] : \explode(',', $collapsedCodes))
             ),
             $results
         );
