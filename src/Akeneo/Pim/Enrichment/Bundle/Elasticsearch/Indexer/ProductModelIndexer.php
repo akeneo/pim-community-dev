@@ -25,8 +25,10 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
-    /** @see ProductIndexer::MEMORY_RATIO */
-    private const MEMORY_RATIO = 14;
+
+
+    /** @see ProductIndexer::MEMORY_RATIO for the explanation of this ratio*/
+    private const MEMORY_RATIO = 60;
 
     public function __construct(
         private Client $productAndProductModelClient,
