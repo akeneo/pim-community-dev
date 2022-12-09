@@ -47,6 +47,9 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityNumberAttributeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
@@ -258,7 +261,31 @@ class SelectionHydrator
                 $selectionConfiguration['channel'],
                 $selectionConfiguration['locale'],
             ),
+            ReferenceEntityOptionAttributeSelectionInterface::TYPE => $this->createReferenceEntityOptionAttributeSelection(
+                $selectionConfiguration,
+                $referenceEntityCode,
+            ),
             default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Reference Entity attribute', $selectionConfiguration['attribute_type'])),
+        };
+    }
+
+    private function createReferenceEntityOptionAttributeSelection(array $selectionConfiguration, string $referenceEntityCode): SelectionInterface
+    {
+        return match ($selectionConfiguration['option_selection']['type']) {
+            ReferenceEntityOptionAttributeCodeSelection::TYPE => new ReferenceEntityOptionAttributeCodeSelection(
+                $referenceEntityCode,
+                $selectionConfiguration['attribute_identifier'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+            ),
+            ReferenceEntityOptionAttributeLabelSelection::TYPE => new ReferenceEntityOptionAttributeLabelSelection(
+                $referenceEntityCode,
+                $selectionConfiguration['attribute_identifier'],
+                $selectionConfiguration['option_selection']['locale'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Reference Entity option attribute', $selectionConfiguration['type'])),
         };
     }
 

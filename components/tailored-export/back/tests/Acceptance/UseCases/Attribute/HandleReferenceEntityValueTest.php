@@ -18,6 +18,8 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOpera
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityNumberAttributeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
@@ -26,6 +28,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsAttributeValue;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindReferenceEntityOptionAttributeLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleReferenceEntityValueTest extends AttributeTestCase
@@ -86,6 +89,24 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
                 'value' => new ReferenceEntityValue('starck'),
                 'expected' => [self::TARGET_NAME => '2,67'],
             ],
+            'it selects the record "tags" option attribute code' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityOptionAttributeCodeSelection('designer', 'tags', null, null),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => 'large'],
+            ],
+            'it selects the record "tags" option attribute label' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityOptionAttributeLabelSelection('designer', 'tags', 'en_US', null, null),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => 'large label'],
+            ],
+            'it fallbacks on the option code when option label is not found' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityOptionAttributeLabelSelection('designer', 'tags', 'fr_FR', null, null),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => '[large]'],
+            ],
             'it fallbacks on the record code when the label is not found' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityLabelSelection('en_US', 'designer'),
@@ -142,5 +163,10 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'description', 'Bezeichnung', 'ecommerce', 'de_DE');
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'name', 'Nom');
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'size', '2.67');
+        $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'tags', 'large');
+
+        /** @var InMemoryFindReferenceEntityOptionAttributeLabels $findOptionAttributeLabels */
+        $findOptionAttributeLabels = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface');
+        $findOptionAttributeLabels->addOptionLabel('tags', 'large', 'en_US', 'large label');
     }
 }
