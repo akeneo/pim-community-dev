@@ -14,7 +14,8 @@ class AttributeCode
 {
     public function __construct(private string $code)
     {
-        Assert::notEmpty($code);
+        Assert::notNull($code);
+        Assert::notEq($code, '');
     }
 
     public function __toString(): string
