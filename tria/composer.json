@@ -57,11 +57,11 @@
         "akeneo/pim-growth-edition": "*@dev",
         "grpc/grpc": "^1.42.0",
         "hslavich/oneloginsaml-bundle": "^2.9.0",
-        "http-interop/http-factory-guzzle": "^1.0",
+        "http-interop/http-factory-guzzle": "^1.2.0",
         "justinrainbow/json-schema": "^5.2",
         "league/flysystem-google-cloud-storage": "^2.0",
         "league/flysystem-sftp-v3": "^3.0",
-        "php-http/guzzle6-adapter": "^2.0"
+        "php-http/guzzle7-adapter": "^1.0.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",

@@ -7,17 +7,13 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCred
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
-use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleMockHandlerStack;
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Response;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -28,6 +24,7 @@ class SendProductModelRemovedEventToWebhookEndToEnd extends ApiTestCase
 {
     private ConnectionLoader $connectionLoader;
     private IdentifiableObjectRepositoryInterface $userGroupRepository;
+    private GuzzleJsonHistoryContainer $historyContainer;
 
     protected function setUp(): void
     {
@@ -35,6 +32,7 @@ class SendProductModelRemovedEventToWebhookEndToEnd extends ApiTestCase
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->userGroupRepository = $this->get('pim_user.repository.group');
+        $this->historyContainer = $this->get('Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer');
 
         $this->get('akeneo_integration_tests.loader.permissions')->loadProductsAndProductModelsForRemovedEvents();
         $redactorGroupConnection = $this->getRedactorGroupConnection();
@@ -46,9 +44,6 @@ class SendProductModelRemovedEventToWebhookEndToEnd extends ApiTestCase
     public function test_that_a_connection_with_access_to_only_one_category_of_the_product_model_is_still_notified_about_its_removal(
     ): void
     {
-        /** @var GuzzleMockHandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-
         $message = new BulkEvent(
             [
                 new ProductModelRemoved(
@@ -64,14 +59,11 @@ class SendProductModelRemovedEventToWebhookEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $handlerStack->historyContainer());
+        $this->assertCount(1, $this->historyContainer);
     }
 
     public function test_that_a_connection_that_does_not_see_a_product_model_is_not_notified_about_its_removal(): void
     {
-        /** @var GuzzleMockHandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-
         $message = new BulkEvent(
             [
                 new ProductModelRemoved(
@@ -87,7 +79,7 @@ class SendProductModelRemovedEventToWebhookEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(0, $handlerStack->historyContainer());
+        $this->assertCount(0, $this->historyContainer);
     }
 
     private function getRedactorGroupConnection(): ConnectionWithCredentials
