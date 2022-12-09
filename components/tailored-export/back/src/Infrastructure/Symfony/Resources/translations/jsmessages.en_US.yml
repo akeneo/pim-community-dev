@@ -91,6 +91,8 @@ akeneo.tailored_export:
         asset_collection:
           property: Property
           with_prefix_and_suffix: Add prefix & suffix
+        reference_entity:
+          option_type: Option type
         format: Format
         parent:
           information:

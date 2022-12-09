@@ -1,6 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import styled from 'styled-components';
-import {ArrowIcon, getColor, Helper, Locale, SelectInput} from 'akeneo-design-system';
+import {ArrowIcon, Helper, Locale, SelectInput} from 'akeneo-design-system';
 import {
   Channel,
   ChannelCode,
@@ -17,33 +16,8 @@ import {ReferenceEntityAttribute} from '../../../../models';
 import {ReferenceEntityAttributeSelection} from '../model';
 import {ReferenceEntityCollectionAttributeSelection} from '../../ReferenceEntityCollection/model';
 import {NumberAttributeSelector} from './NumberAttributeSelector';
-
-const AttributeSelectorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const SubFields = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const SubField = styled.div`
-  display: flex;
-  gap: 5px;
-  align-items: baseline;
-  margin-left: 8px;
-  color: ${getColor('grey', 100)};
-`;
-
-const InnerField = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 5px;
-`;
+import {OptionAttributeSelector} from './OptionAttributeSelector';
+import {AttributeSelectorContainer, InnerField, SubField, SubFields} from './common';
 
 type AttributeSelection = ReferenceEntityAttributeSelection | ReferenceEntityCollectionAttributeSelection;
 
@@ -60,6 +34,7 @@ const attributeSelectors: {
 } = {
   text: null,
   number: NumberAttributeSelector,
+  option: OptionAttributeSelector,
 };
 
 const AttributeSelector = <SelectionType extends AttributeSelection>({

@@ -29,6 +29,11 @@ type ReferenceEntityNumberAttributeSelection = ReferenceEntityAttributeSelection
   decimal_separator: string;
 };
 
+type ReferenceEntityOptionAttributeSelection = ReferenceEntityAttributeSelection & {
+  attribute_type: 'option';
+  option_selection: CodeLabelSelection;
+};
+
 type ReferenceEntitySelection = CodeLabelSelection | ReferenceEntityAttributeSelection;
 
 type ReferenceEntitySource = {
@@ -53,6 +58,11 @@ const isReferenceEntityNumberAttributeSelection = (
   'number' === selection.attribute_type &&
   'string' === typeof selection.decimal_separator &&
   isReferenceEntityAttributeSelection(selection);
+
+const isReferenceEntityOptionAttributeSelection = (
+  selection: any
+): selection is ReferenceEntityOptionAttributeSelection =>
+  'option' === selection.attribute_type && isReferenceEntityAttributeSelection(selection);
 
 const isReferenceEntitySelection = (selection: any): selection is ReferenceEntitySelection =>
   isCodeLabelSelection(selection) || isReferenceEntityAttributeSelection(selection);
@@ -111,6 +121,11 @@ const getDefaultReferenceEntityAttributeSelection = (
         ...selection,
         decimal_separator: '.',
       };
+    case 'option':
+      return {
+        ...selection,
+        option_selection: {type: 'code'},
+      };
     default:
       throw new Error(`Unsupported attribute type "${attribute.type}"`);
   }
@@ -118,6 +133,7 @@ const getDefaultReferenceEntityAttributeSelection = (
 
 export {
   isReferenceEntitySource,
+  isReferenceEntityOptionAttributeSelection,
   getDefaultReferenceEntityAttributeSelection,
   getDefaultReferenceEntitySource,
   isDefaultReferenceEntitySelection,
@@ -128,4 +144,5 @@ export type {
   ReferenceEntitySelection,
   ReferenceEntityAttributeSelection,
   ReferenceEntityNumberAttributeSelection,
+  ReferenceEntityOptionAttributeSelection,
 };
