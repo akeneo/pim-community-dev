@@ -13,9 +13,7 @@ akeneo_catalogs:
       more: Més
       product_value_filters: Filtreu els valors
       product_mapping: Mapatge
-  settings:
-    fields:
-      enabled: Habilitat
+  catalog_status_widget:
     inputs:
       yes: Yes
       no: No
