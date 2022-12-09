@@ -73,6 +73,7 @@ export * from './FullscreenIcon';
 export * from './GiftIcon';
 export * from './GroupsIcon';
 export * from './HelpIcon';
+export * from './HelpPlainIcon';
 export * from './IconProps';
 export * from './IdIcon';
 export * from './InfoIcon';
