@@ -16,13 +16,16 @@ final class UnableToSetIdentifierExceptionPresenter
     }
 
     /**
-     * @return array<array>
+     * @return array<array{'path': string|null, "message": string}>
      */
     public function fromException(UnableToSetIdentifierException $exception): array
     {
         return \array_map(fn (Error $error): array => $this->fromError($error), $exception->getErrors()->toArray());
     }
 
+    /**
+     * @return array{'path': string|null, "message": string}
+     */
     private function fromError(Error $error): array
     {
         return [
