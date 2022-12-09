@@ -36,7 +36,7 @@ class ProductIndexer implements ProductIndexerInterface
      * There would be possibilities to optimize memory consumption it by using reference or wrapping string values in Object to just duplicate the pointer of the objects.
      * Though, it would be less maintainable and an improvement.
 s     */
-    private const MEMORY_RATIO = 60;
+    const MEMORY_RATIO = 60;
 
     public function __construct(
         private Client $productAndProductModelClient,

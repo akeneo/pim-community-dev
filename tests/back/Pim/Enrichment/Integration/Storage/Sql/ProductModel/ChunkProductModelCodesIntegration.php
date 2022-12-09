@@ -30,7 +30,7 @@ class ChunkProductModelCodesIntegration extends TestCase
         ];
         $codes = $this->givenProductModelsWithRawValuesSize($productSizes);
 
-        $chunkProductModelCodes= $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductModelCodes')->byRawValuesSize($codes, 2000000);
+        $chunkProductModelCodes= $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\ChunkProductModelCodes')->byRawValuesSize($codes, 2000000);
 
         Assert::same($chunkProductModelCodes, [
             array_slice($codes, 0, 5),

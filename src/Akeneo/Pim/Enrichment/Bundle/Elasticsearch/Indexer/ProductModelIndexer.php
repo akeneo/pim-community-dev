@@ -33,7 +33,8 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     public function __construct(
         private Client $productAndProductModelClient,
         private GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection,
-        private ChunkProductModelCodes $chunkProductModelCodes
+        private ChunkProductModelCodes $chunkProductModelCodes,
+        private PhpMemoryLimit $phpMemoryLimit
     ) {
     }
 
@@ -60,7 +61,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $maxMemoryPerChunk = (int) floor($this->memoryLimitAsBytes()/ self::MEMORY_RATIO);
+        $maxMemoryPerChunk = (int) floor($this->phpMemoryLimit->asBytesFromPHPConfig() / self::MEMORY_RATIO);
         $chunks =$this->chunkProductModelCodes->byRawValuesSize($productModelCodes, $maxMemoryPerChunk);
 
         foreach ($chunks as $productModelCodesChunk) {

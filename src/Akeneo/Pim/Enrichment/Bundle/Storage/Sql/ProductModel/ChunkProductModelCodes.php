@@ -51,13 +51,13 @@ class ChunkProductModelCodes
         $chunkSize = 0;
 
         foreach ($results as $row) {
-            if ($chunkSize + $row['size'] < $maxSizeInBytesPerChunk) {
+            if ($chunkSize + (int) $row['size'] < $maxSizeInBytesPerChunk) {
                 $chunk[] = $row['code'];
                 $chunkSize += $row['size'];
             } else {
                 $chunks[] = $chunk;
                 $chunk = [$row['code']];
-                $chunkSize = $row['size'];
+                $chunkSize = (int) $row['size'];
             }
         }
 

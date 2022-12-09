@@ -471,7 +471,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductModelCodes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductModelCodes'
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\ChunkProductModelCodes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\ChunkProductModelCodes'
         arguments:
             - '@database_connection'

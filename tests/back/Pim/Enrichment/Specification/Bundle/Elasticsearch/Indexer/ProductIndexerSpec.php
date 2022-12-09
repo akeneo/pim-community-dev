@@ -3,8 +3,10 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\PhpMemoryLimit;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ChunkProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -17,11 +19,15 @@ class ProductIndexerSpec extends ObjectBehavior
 {
     function let(
         Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
+        ChunkProductUuids $chunkProductUuids,
+        PhpMemoryLimit $phpMemoryLimit
     ) {
         $this->beConstructedWith(
             $productAndProductModelIndexClient,
-            $getElasticsearchProductProjection
+            $getElasticsearchProductProjection,
+            $chunkProductUuids,
+            $phpMemoryLimit
         );
     }
 
@@ -37,53 +43,52 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_bulk_indexes_products_from_uuids(
         Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
+        ChunkProductUuids $chunkProductUuids,
+        PhpMemoryLimit $phpMemoryLimit
     ) {
-        $uuids = [Uuid::uuid4(), Uuid::uuid4()];
+        $uuids = [Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4()];
+        $phpMemoryLimit->asBytesFromPHPConfig()->willReturn(1200);
+        $chunkProductUuids->byRawValuesSize($uuids, 20)->willReturn([
+            [$uuids[0]],
+            [$uuids[1]],
+            [$uuids[2]],
+        ]);
 
-        $iterable = [
-            $this->getElasticSearchProjection('identifier_1', $uuids[0]),
-            $this->getElasticSearchProjection('identifier_2', $uuids[1])
-        ];
+        $chunk1 = [$this->getElasticSearchProjection('identifier_1', $uuids[0])];
+        $chunk2 = [$this->getElasticSearchProjection('identifier_1', $uuids[1])];
+        $chunk3 = [$this->getElasticSearchProjection('identifier_1', $uuids[2])];
 
         $getElasticsearchProductProjection
-            ->fromProductUuids($uuids)
+            ->fromProductUuids([$uuids[0]])
             ->shouldBeCalled()
-            ->willReturn($iterable);
+            ->willReturn($chunk1);
+        $getElasticsearchProductProjection
+            ->fromProductUuids([$uuids[1]])
+            ->shouldBeCalled()
+            ->willReturn($chunk2);
+        $getElasticsearchProductProjection
+            ->fromProductUuids([$uuids[2]])
+            ->shouldBeCalled()
+            ->willReturn($chunk3);
 
         $productAndProductModelIndexClient->bulkIndexes(
-            $iterable,
+            $chunk1,
             'id',
             Refresh::disable()
         )->shouldBeCalled();
 
-        $this->indexFromProductUuids($uuids);
-    }
-
-    function it_bulk_indexes_products_from_identifiers_using_batch(
-        Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
-    ) {
-        $uuids = $this->getRangeUuids(1, 1002);
-
-        $getElasticsearchProductProjection
-            ->fromProductUuids(array_slice($uuids, 0, 500))
-            ->shouldBeCalled()
-            ->willReturn([$this->getElasticSearchProjection('identifier_1')]);
-        $getElasticsearchProductProjection
-            ->fromProductUuids(array_slice($uuids, 500, 500))
-            ->shouldBeCalled()
-            ->willReturn([$this->getElasticSearchProjection('identifier_2')]);
-        $getElasticsearchProductProjection
-            ->fromProductUuids(array_slice($uuids, 1000, 2))
-            ->shouldBeCalled()
-            ->willReturn([$this->getElasticSearchProjection('identifier_3')]);
-
         $productAndProductModelIndexClient->bulkIndexes(
-            Argument::any(),
+            $chunk2,
             'id',
             Refresh::disable()
-        )->shouldBeCalledTimes(3);
+        )->shouldBeCalled();
+
+        $productAndProductModelIndexClient->bulkIndexes(
+            $chunk3,
+            'id',
+            Refresh::disable()
+        )->shouldBeCalled();
 
         $this->indexFromProductUuids($uuids);
     }
@@ -113,9 +118,13 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_indexes_products_from_identifiers_and_waits_for_index_refresh(
         Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
+        ChunkProductUuids $chunkProductUuids,
+        PhpMemoryLimit $phpMemoryLimit
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4()];
+        $phpMemoryLimit->asBytesFromPHPConfig()->willReturn(1200);
+        $chunkProductUuids->byRawValuesSize($uuids, 20)->willReturn([$uuids]);
 
         $iterable = [
             $this->getElasticSearchProjection('identifier_1', $uuids[0]),
@@ -138,9 +147,13 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_indexes_products_from_identifiers_and_disables_index_refresh_by_default(
         Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
+        ChunkProductUuids $chunkProductUuids,
+        PhpMemoryLimit $phpMemoryLimit
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4()];
+        $phpMemoryLimit->asBytesFromPHPConfig()->willReturn(1200);
+        $chunkProductUuids->byRawValuesSize($uuids, 20)->willReturn([$uuids]);
 
         $iterable = [
             $this->getElasticSearchProjection('identifier_1', $uuids[0]),
@@ -163,10 +176,13 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_indexes_products_from_identifiers_and_enable_index_refresh_without_waiting_for_it(
         Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
+        ChunkProductUuids $chunkProductUuids,
+        PhpMemoryLimit $phpMemoryLimit
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4()];
-
+        $phpMemoryLimit->asBytesFromPHPConfig()->willReturn(1200);
+        $chunkProductUuids->byRawValuesSize($uuids, 20)->willReturn([$uuids]);
         $iterable = [
             $this->getElasticSearchProjection('identifier_1', $uuids[0]),
             $this->getElasticSearchProjection('identifier_2', $uuids[1])

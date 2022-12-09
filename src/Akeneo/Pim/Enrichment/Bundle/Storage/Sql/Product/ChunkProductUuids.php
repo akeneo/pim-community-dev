@@ -60,13 +60,13 @@ class ChunkProductUuids
         $chunkSize = 0;
 
         foreach ($results as $row) {
-            if ($chunkSize + $row['size'] < $maxSizeInBytesPerChunk) {
+            if ($chunkSize + (int) $row['size'] < $maxSizeInBytesPerChunk) {
                 $chunk[] = Uuid::fromBytes($row['uuid']);
                 $chunkSize += $row['size'];
             } else {
                 $chunks[] = $chunk;
                 $chunk = [Uuid::fromBytes($row['uuid'])];
-                $chunkSize = $row['size'];
+                $chunkSize = (int) $row['size'];
             }
         }
 
