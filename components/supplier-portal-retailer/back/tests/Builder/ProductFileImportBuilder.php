@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Builder;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\ProductFileImportStatus;
 use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
 
 final class ProductFileImportBuilder

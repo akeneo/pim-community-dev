@@ -2,14 +2,23 @@ import {useCallback, useEffect, useState} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {ProductFileRow} from '../../product-file-dropping/models/ProductFileRow';
 
-const useProductFiles = (supplierIdentifier: string, page: number, searchValue: string): [ProductFileRow[], number] => {
+const useProductFiles = (
+    supplierIdentifier: string,
+    page: number,
+    searchValue: string,
+    importStatusValue: null | string
+): [ProductFileRow[], number] => {
     const [totalNumberOfProductFiles, setTotalNumberOfProductFiles] = useState<number>(page);
     const [productFiles, setProductFiles] = useState<ProductFileRow[]>([]);
-    const getProductFilesRoute = useRoute('supplier_portal_retailer_supplier_product_files_list', {
+
+    const parameters = {
         supplierIdentifier: supplierIdentifier,
         page: page.toString(),
         search: searchValue,
-    });
+        ...(null !== importStatusValue && {status: importStatusValue}),
+    };
+
+    const getProductFilesRoute = useRoute('supplier_portal_retailer_supplier_product_files_list', parameters);
     const notify = useNotify();
     const translate = useTranslate();
 
@@ -40,7 +49,7 @@ const useProductFiles = (supplierIdentifier: string, page: number, searchValue: 
         });
         setProductFiles(productFiles);
         setTotalNumberOfProductFiles(responseBody.total);
-    }, [getProductFilesRoute, page, searchValue]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [getProductFilesRoute]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {

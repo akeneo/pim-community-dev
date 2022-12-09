@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Quer
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileWithHasUnreadComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\ProductFileImportStatus;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
@@ -14,8 +15,12 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
     {
     }
 
-    public function __invoke(string $supplierIdentifier, int $page = 1, string $search = ''): array
-    {
+    public function __invoke(
+        string $supplierIdentifier,
+        int $page = 1,
+        string $search = '',
+        ?ProductFileImportStatus $status = null,
+    ): array {
         $page = max($page, 1);
 
         $sql = <<<SQL
@@ -35,6 +40,7 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
                 ON product_file_import.product_file_identifier = product_file.identifier
             WHERE uploaded_by_supplier = :supplierIdentifier
             AND product_file.original_filename LIKE :search
+            AND COALESCE(product_file_import.import_status, :toImportStatus) IN (:status)
             GROUP BY product_file.identifier, uploaded_at, product_file_import.import_status
             ORDER BY uploaded_at DESC
             LIMIT :limit
@@ -55,12 +61,19 @@ final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
             [
                 'supplierIdentifier' => $supplierIdentifier,
                 'search' => "%$search%",
+                'toImportStatus' => ProductFileImportStatus::TO_IMPORT->value,
+                'status' => null === $status ? array_column(
+                    ProductFileImportStatus::cases(),
+                    'value',
+                ) : [$status->value],
                 'offset' => ListSupplierProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
                 'limit' => ListSupplierProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
             ],
             [
                 'supplierIdentifier' => \PDO::PARAM_STR,
                 'search' => \PDO::PARAM_STR,
+                'toImportStatus' => \PDO::PARAM_STR,
+                'status' => Connection::PARAM_STR_ARRAY,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ],

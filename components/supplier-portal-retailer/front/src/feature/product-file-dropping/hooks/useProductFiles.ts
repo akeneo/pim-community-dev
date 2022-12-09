@@ -5,20 +5,25 @@ import {ProductFileRow} from '../models/ProductFileRow';
 const useProductFiles = (
     page: number,
     searchValue: string,
-    setPage: (pageNumber: number) => void
+    setPage: (pageNumber: number) => void,
+    importStatusValue: null | string
 ): [ProductFileRow[], number, number] => {
-    const [previousSearchValue, setPreviousSearchValue] = useState<string>('');
     const [totalNumberOfProductFiles, setTotalNumberOfProductFiles] = useState<number>(page);
     const [totalSearchResults, setTotalSearchResults] = useState<number>(page);
     const [productFiles, setProductFiles] = useState<ProductFileRow[]>([]);
-    const getProductFilesRoute = useRoute('supplier_portal_retailer_product_files_list');
+
+    const parameters = {
+        page: page.toString(),
+        search: searchValue,
+        ...(null !== importStatusValue && {status: importStatusValue}),
+    };
+
+    const getProductFilesRoute = useRoute('supplier_portal_retailer_product_files_list', parameters);
     const notify = useNotify();
     const translate = useTranslate();
 
     const loadProductFiles = useCallback(async () => {
-        const response = await fetch(`${getProductFilesRoute}?page=${page}&search=${searchValue}`, {
-            method: 'GET',
-        });
+        const response = await fetch(getProductFilesRoute, {method: 'GET'});
         if (!response.ok) {
             notify(
                 NotificationLevel.ERROR,
@@ -46,15 +51,10 @@ const useProductFiles = (
             };
         });
 
-        if (searchValue !== previousSearchValue) {
-            setPreviousSearchValue(searchValue);
-            setPage(1);
-        }
-
         setProductFiles(productFiles);
         setTotalNumberOfProductFiles(responseBody.total);
         setTotalSearchResults(responseBody.total_search_results);
-    }, [getProductFilesRoute, page, searchValue]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [getProductFilesRoute]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {

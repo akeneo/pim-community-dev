@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileWithHasUnreadComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\ProductFileImportStatus;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileImportBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
@@ -283,7 +284,7 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
     }
 
     /** @test */
-    public function itReturnsTheProductFileImportStatus(): void
+    public function itReturnsTheDefaultProductFileImportStatus(): void
     {
         $productFileRepository = $this->get(ProductFileRepository::class);
         $productFileRepository->save(
@@ -303,11 +304,15 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
         $productFile = (new ProductFileBuilder())
             ->uploadedBySupplier($this->supplier)
             ->build();
-        $productFileRepository = $this->get(ProductFileRepository::class);
-        $productFileRepository->save($productFile);
+        $this->get(ProductFileRepository::class)->save($productFile);
 
-        $productFileImport = ProductFileImport::start($productFile, 666);
-        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
+        ($this->get(ProductFileImportRepository::class))->save(
+            (new ProductFileImportBuilder())
+                ->withProductFile($productFile)
+                ->withImportExecutionId(1)
+                ->withImportStatus(ProductFileImportStatus::IN_PROGRESS)
+                ->build(),
+        );
 
         $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
 
@@ -359,6 +364,68 @@ final class DatabaseListSupplierProductFilesIntegration extends SqlIntegrationTe
         static::assertCount(15, $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00', 2, 'file'));
 
         static::assertEmpty($this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00', 3, 'file'));
+    }
+
+    /** @test */
+    public function itCanFilterProductFilesByStatus(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFile = (new ProductFileBuilder())
+            ->uploadedBySupplier($this->supplier)
+            ->build();
+        $productFileRepository->save($productFile);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFileImport = (new ProductFileImportBuilder())
+            ->withProductFile($productFile)
+            ->withImportExecutionId(1)
+            ->withImportStatus(ProductFileImportStatus::COMPLETED)
+            ->build();
+        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            1,
+            '',
+            ProductFileImportStatus::COMPLETED
+        );
+
+        static::assertCount(1, $productFiles);
+        static::assertSame(ProductFileImportStatus::COMPLETED->value, current($productFiles)->importStatus);
+    }
+
+    public function itReturnsAllStatusIfThereIsNoStatusToFilterOn(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFile = (new ProductFileBuilder())
+            ->uploadedBySupplier($this->supplier)
+            ->build();
+        $productFileRepository->save($productFile);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFileImport = (new ProductFileImportBuilder())
+            ->withProductFile($productFile)
+            ->withImportExecutionId(1)
+            ->withImportStatus(ProductFileImportStatus::COMPLETED)
+            ->build();
+        ($this->get(ProductFileImportRepository::class))->save($productFileImport);
+
+        $productFiles = $this->get(ListSupplierProductFiles::class)('44ce8069-8da1-4986-872f-311737f46f00', 1);
+
+        static::assertCount(2, $productFiles);
+
+        $productFilesStatus = array_map(fn (ProductFileWithHasUnreadComments $productFile) => $productFile->importStatus, $productFiles);
+
+        static::assertEqualsCanonicalizing(
+            [ProductFileImportStatus::COMPLETED->value, ProductFileImportStatus::TO_IMPORT->value],
+            $productFilesStatus,
+        );
     }
 
     private function addLastReadAtByRetailer(string $productFileIdentifier, \DateTimeImmutable $lastReadAt): void

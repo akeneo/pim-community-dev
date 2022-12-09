@@ -87,6 +87,13 @@ supplier_portal:
                 placeholder: Search by file name
                 results_number: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
                 no_results: There are no product file matching this search.
+            status:
+                label: Status
+                all: All status
+                to_import: To import
+                in_progress: In progress
+                completed: Completed
+                failed: Failed
             columns:
                 upload_date: Upload date
                 contributor: Contributor

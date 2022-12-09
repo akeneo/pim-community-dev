@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileWithHasUnreadComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImport;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\Model\ProductFileImportStatus;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\ProductFileImportStatus;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Write\ProductFileImportRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileImportBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Akeneo\SupplierPortal\Retailer\Test\Unit\Fakes\FrozenClock;
@@ -320,6 +322,66 @@ final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
         static::assertCount(15, $this->get(ListProductFiles::class)(2, 'file'));
 
         static::assertEmpty($this->get(ListProductFiles::class)(3, 'file'));
+    }
+
+    /** @test */
+    public function itCanFilterProductFilesByStatus(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFile = (new ProductFileBuilder())
+            ->uploadedBySupplier($this->supplier)
+            ->build();
+        $productFileRepository->save($productFile);
+        ($this->get(ProductFileImportRepository::class))->save(
+            (new ProductFileImportBuilder())
+                ->withProductFile($productFile)
+                ->withImportExecutionId(1)
+                ->withImportStatus(ProductFileImportStatus::COMPLETED)
+                ->build(),
+        );
+
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+
+        $productFiles = $this->get(ListProductFiles::class)(1, '', ProductFileImportStatus::COMPLETED);
+
+        static::assertCount(1, $productFiles);
+        static::assertSame(ProductFileImportStatus::COMPLETED->value, current($productFiles)->importStatus);
+    }
+
+    public function itReturnsAllStatusIfThereIsNoStatusToFilterOn(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFile = $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->build(),
+        );
+
+        ($this->get(ProductFileImportRepository::class))->save(
+            (new ProductFileImportBuilder())
+                ->withProductFile($productFile)
+                ->withImportExecutionId(1)
+                ->withImportStatus(ProductFileImportStatus::COMPLETED)
+                ->build(),
+        );
+
+        $productFiles = $this->get(ListProductFiles::class)(1);
+
+        $productFilesStatus = array_map(fn (ProductFileWithHasUnreadComments $productFile) => $productFile->importStatus, $productFiles);
+        static::assertCount(2, $productFiles);
+        static::assertEqualsCanonicalizing(
+            [ProductFileImportStatus::COMPLETED->value, ProductFileImportStatus::TO_IMPORT->value],
+            $productFilesStatus,
+        );
     }
 
     private function addLastReadAtByRetailer(string $productFileIdentifier, \DateTimeImmutable $lastReadAt): void
