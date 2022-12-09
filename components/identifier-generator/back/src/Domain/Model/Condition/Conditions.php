@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Webmozart\Assert\Assert;
 
 /**

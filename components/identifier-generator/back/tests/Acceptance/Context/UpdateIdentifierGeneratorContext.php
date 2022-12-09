@@ -288,47 +288,47 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When I try to update an identifier generator with unknown condition type
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithUnknownConditionType()
+    public function iTryToUpdateAnIdentifierGeneratorWithUnknownConditionType(): void
     {
         $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'unknown', 'value' => true]
+            ['type' => 'unknown', 'value' => true],
         ]);
     }
 
     /**
      * @When I try to update an identifier generator with enabled condition without value
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithoutValue()
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithoutValue(): void
     {
         $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled']
+            ['type' => 'enabled'],
         ]);
     }
 
     /**
      * @When I try to update an identifier generator with enabled condition with string value
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithStringValue()
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithStringValue(): void
     {
         $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => 'true']
+            ['type' => 'enabled', 'value' => 'true'],
         ]);
     }
 
     /**
      * @When I try to update an identifier generator with enabled condition with an unknown property
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty()
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty(): void
     {
         $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property']
+            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property'],
         ]);
     }
 
     /**
      * @When I try to update an identifier generator with :arg1 enabled conditions
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditions($arg1)
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditions($arg1): void
     {
         $this->tryToUpdateGenerator(conditions: [
             ['type' => 'enabled', 'value' => true],
@@ -343,7 +343,7 @@ final class UpdateIdentifierGeneratorContext implements Context
         ?array $labels = null,
         ?string $target = null,
         ?string $delimiter = null,
-    ) {
+    ): void {
         try {
             ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
                 $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,

@@ -29,7 +29,7 @@ use Webmozart\Assert\Assert;
  */
 final class CreateIdentifierGeneratorContext implements Context
 {
-    const DEFAULT_CODE = 'abcdef';
+    public const DEFAULT_CODE = 'abcdef';
     private ?ViolationsException $violations = null;
 
     public function __construct(
@@ -141,7 +141,8 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
     {
-        $this->tryToCreateGenerator(structure:
+        $this->tryToCreateGenerator(
+            structure:
             \array_fill(0, 21, ['type' => 'free_text', 'string' => 'abcdef1'])
         );
     }
@@ -251,47 +252,47 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When /^I try to create an identifier generator with unknown condition type$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithUnknownConditionType()
+    public function iTryToCreateAnIdentifierGeneratorWithUnknownConditionType(): void
     {
         $this->tryToCreateGenerator(conditions: [
-            ['type' => 'unknown', 'value' => true]
+            ['type' => 'unknown', 'value' => true],
         ]);
     }
 
     /**
      * @When I try to create an identifier generator with enabled condition without value
      */
-    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithoutValue()
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithoutValue(): void
     {
         $this->tryToCreateGenerator(conditions: [
-            ['type' => 'enabled']
+            ['type' => 'enabled'],
         ]);
     }
 
     /**
      * @When I try to create an identifier generator with enabled condition with string value
      */
-    public function iCreateAnIdentifierGeneratorWithEnabledConditionWithStringValue()
+    public function iCreateAnIdentifierGeneratorWithEnabledConditionWithStringValue(): void
     {
         $this->tryToCreateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => 'true']
+            ['type' => 'enabled', 'value' => 'true'],
         ]);
     }
 
     /**
      * @When I try to create an identifier generator with enabled condition with an unknown property
      */
-    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty()
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty(): void
     {
         $this->tryToCreateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property']
+            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property'],
         ]);
     }
 
     /**
      * @When I try to create an identifier generator with 2 enabled conditions
      */
-    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditions()
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditions(): void
     {
         $this->tryToCreateGenerator(conditions: [
             ['type' => 'enabled', 'value' => true],
@@ -306,8 +307,7 @@ final class CreateIdentifierGeneratorContext implements Context
         ?array $labels = null,
         ?string $target = null,
         ?string $delimiter = null,
-    ): void
-    {
+    ): void {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
                 $code ?? self::DEFAULT_CODE,

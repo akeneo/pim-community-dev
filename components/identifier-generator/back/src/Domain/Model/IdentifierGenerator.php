@@ -63,7 +63,7 @@ final class IdentifierGenerator
         $this->structure = $structure;
     }
 
-    public function setConditions(Conditions $conditions)
+    public function setConditions(Conditions $conditions): void
     {
         $this->conditions = $conditions;
     }
