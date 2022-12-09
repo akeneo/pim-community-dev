@@ -50,6 +50,29 @@ class ReferenceEntityTextAttributeSelectionApplierSpec extends ObjectBehavior
         $this->applySelection($selection, $value)->shouldReturn('label1');
     }
 
+    public function it_applies_the_selection_and_ignores_case(FindRecordsAttributeValueInterface $findRecordsAttributeValue): void
+    {
+        $selection = new ReferenceEntityTextAttributeSelection(
+            'a_reference_entity_code',
+            'a_reference_entity_attribute_identifier',
+            'ecommerce',
+            'br_FR',
+        );
+        $value = new ReferenceEntityValue('record_code1');
+
+        $findRecordsAttributeValue->find(
+            'a_reference_entity_code',
+            ['record_code1'],
+            'a_reference_entity_attribute_identifier',
+            'ecommerce',
+            'br_FR',
+        )->willReturn([
+            'reCoRd_CoDe1' => 'label1',
+        ]);
+
+        $this->applySelection($selection, $value)->shouldReturn('label1');
+    }
+
     public function it_applies_the_selection_and_fallback_when_no_value_is_found(
         FindRecordsAttributeValueInterface $findRecordsAttributeValue
     ): void {
