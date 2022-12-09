@@ -24,9 +24,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface
  */
 class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
 {
+    private array $attributesIndexedByReferenceEntityIdentifier = [];
+    private array $attributesIndexedByIdentifier = [];
+
     public function __construct(
-        private array $attributesIndexedByReferenceEntityIdentifier = [],
-        private array $attributesIndexedByIdentifier = [],
         private InMemoryFindActivatedLocales $activatedLocalesQuery,
     ) {
     }
