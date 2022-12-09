@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -37,15 +40,24 @@ final class Conditions
      */
     public static function fromNormalized(array $normalizedConditions): self
     {
-        // TODO
-        return new self([]);
+        $conditions = [];
+        foreach ($normalizedConditions as $normalizedCondition) {
+            Assert::isMap($normalizedCondition);
+            Assert::stringNotEmpty($normalizedCondition['type'] ?? null);
+            $conditions[] = match ($normalizedCondition['type']) {
+                Enabled::type() => Enabled::fromNormalized($normalizedCondition),
+                default => throw new \InvalidArgumentException(sprintf('The type %s does not exist', $normalizedCondition['type'])),
+            };
+        }
+
+        return self::fromArray($conditions);
     }
 
     /**
-     * @return array<string, string>
+     * @return array<mixed>
      */
     public function normalize(): array
     {
-        return [];
+        return \array_map(static fn (ConditionInterface $condition) => $condition->normalize(), $this->conditions);
     }
 }

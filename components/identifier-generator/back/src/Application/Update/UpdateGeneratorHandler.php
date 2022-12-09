@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Update;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -35,6 +36,7 @@ final class UpdateGeneratorHandler
         $identifierGenerator->setLabelCollection(LabelCollection::fromNormalized($command->labels));
         $identifierGenerator->setTarget(Target::fromString($command->target));
         $identifierGenerator->setStructure(Structure::fromNormalized($command->structure));
+        $identifierGenerator->setConditions(Conditions::fromNormalized($command->conditions));
 
         $this->identifierGeneratorRepository->update($identifierGenerator);
     }

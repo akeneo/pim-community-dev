@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsEx
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Enabled;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
@@ -43,7 +44,7 @@ final class UpdateIdentifierGeneratorContext implements Context
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
             IdentifierGeneratorCode::fromString($generatorCode),
-            Conditions::fromArray([]),
+            Conditions::fromArray([Enabled::fromBoolean(true)]),
             Structure::fromArray([FreeText::fromString('abc')]),
             LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
             Target::fromString('sku'),
@@ -101,18 +102,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iUpdateTheIdentifierGenerator(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                'updatedGenerator'
-            ));
-        } catch (ViolationsException $violations) {
-            $this->violations = $violations;
-        }
+        $this->tryToUpdateGenerator();
     }
 
     /**
@@ -120,18 +110,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnUnknownIdentifierGenerator(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                'unknown',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $violations) {
-            $this->violations = $violations;
-        }
+        $this->tryToUpdateGenerator(code: 'unknown');
     }
 
     /**
@@ -139,18 +118,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAnUnknownProperty(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'unknown', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'unknown', 'string' => 'abcdef']]);
     }
 
     /**
@@ -158,18 +126,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithTarget(string $target): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                $target,
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(target: $target);
     }
 
     /**
@@ -177,18 +134,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithBlankStructure(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: []);
     }
 
     /**
@@ -196,18 +142,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAnAutoNumberWithNumberMinAndDigitsMin(int $numberMin, int $digitsMin): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]]);
     }
 
     /**
@@ -215,18 +150,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iUpdateAnIdentifierGeneratorWithoutLabel(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                [],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(labels: []);
     }
 
     /**
@@ -234,18 +158,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithLabel(string $locale, string $label): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                [$locale => $label],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(labels: [$locale => $label]);
     }
 
     /**
@@ -253,11 +166,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [
+        $this->tryToUpdateGenerator(structure: [
                     ['type' => 'free_text', 'string' => 'abcdef1'],
                     ['type' => 'free_text', 'string' => 'abcdef2'],
                     ['type' => 'free_text', 'string' => 'abcdef3'],
@@ -279,14 +188,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                     ['type' => 'free_text', 'string' => 'abcdef19'],
                     ['type' => 'free_text', 'string' => 'abcdef20'],
                     ['type' => 'free_text', 'string' => 'abcdef21'],
-                ],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+                ]);
     }
 
     /**
@@ -294,21 +196,10 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithMultipleAutoNumberInStructure(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [
+        $this->tryToUpdateGenerator(structure: [
                     ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
                     ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
-                ],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+                ]);
     }
 
     /**
@@ -316,18 +207,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithFreeText(string $freetextContent): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'string' => $freetextContent]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'free_text', 'string' => $freetextContent]]);
     }
 
     /**
@@ -335,18 +215,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithFreeTextWithoutRequiredField(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'free_text']]);
     }
 
     /**
@@ -354,18 +223,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithFreeTextWithUnknownField(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']]);
     }
 
     /**
@@ -373,18 +231,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAutonumberNumberMinNegative(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'auto_number', 'numberMin' => -2, 'digitsMin' => 3]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'numberMin' => -2, 'digitsMin' => 3]]);
     }
 
     /**
@@ -392,18 +239,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAutonumberWithoutRequiredField(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'auto_number', 'numberMin' => 4]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'numberMin' => 4]]);
     }
 
     /**
@@ -411,18 +247,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAutonumberDigitsMinNegative(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'auto_number', 'digitsMin' => -2, 'numberMin' => 4]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'digitsMin' => -2, 'numberMin' => 4]]);
     }
 
     /**
@@ -430,18 +255,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAutonumberDigitsMinTooBig(): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'auto_number', 'digitsMin' => 22, 'numberMin' => 4]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'digitsMin' => 22, 'numberMin' => 4]]);
     }
 
     /**
@@ -449,18 +263,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
     {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                $delimiter
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToUpdateGenerator(delimiter: $delimiter);
     }
 
     /**
@@ -479,6 +282,79 @@ final class UpdateIdentifierGeneratorContext implements Context
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @When I try to update an identifier generator with unknown condition type
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithUnknownConditionType()
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'unknown', 'value' => true]
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with enabled condition without value
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithoutValue()
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'enabled']
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with enabled condition with string value
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithStringValue()
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'enabled', 'value' => 'true']
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with enabled condition with an unknown property
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty()
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property']
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with :arg1 enabled conditions
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditions($arg1)
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'enabled', 'value' => true],
+            ['type' => 'enabled', 'value' => true],
+        ]);
+    }
+
+    private function tryToUpdateGenerator(
+        ?string $code = null,
+        ?array $structure = null,
+        ?array $conditions = null,
+        ?array $labels = null,
+        ?string $target = null,
+        ?string $delimiter = null,
+    ) {
+        try {
+            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
+                $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
+                $conditions ?? [['type' => 'enabled', 'value' => true]],
+                $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_IDENTIFIER_GENERATOR_CODE]],
+                $labels ?? ['fr_FR' => 'Générateur'],
+                $target ?? 'sku',
+                $delimiter ?? 'updatedGenerator'
+            ));
+        } catch (ViolationsException $violations) {
+            $this->violations = $violations;
         }
     }
 }

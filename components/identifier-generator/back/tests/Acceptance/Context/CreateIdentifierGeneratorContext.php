@@ -109,7 +109,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iCreateAnIdentifierGenerator(): void
     {
-        $this->tryTocreateGenerator();
+        $this->tryToCreateGenerator();
     }
 
     /**
@@ -117,7 +117,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithTarget(string $target): void
     {
-        $this->tryTocreateGenerator(target: $target);
+        $this->tryToCreateGenerator(target: $target);
     }
 
     /**
@@ -125,7 +125,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithBlankStructure(): void
     {
-        $this->tryTocreateGenerator(structure: []);
+        $this->tryToCreateGenerator(structure: []);
     }
 
     /**
@@ -133,7 +133,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithAnUnknownProperty(): void
     {
-        $this->tryTocreateGenerator(structure: [['type' => 'unknown', 'string' => 'a_string']]);
+        $this->tryToCreateGenerator(structure: [['type' => 'unknown', 'string' => 'a_string']]);
     }
 
     /**
@@ -141,7 +141,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
     {
-        $this->tryTocreateGenerator(structure:
+        $this->tryToCreateGenerator(structure:
             \array_fill(0, 21, ['type' => 'free_text', 'string' => 'abcdef1'])
         );
     }
@@ -151,7 +151,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithMultipleAutoNumberInStructure(): void
     {
-        $this->tryTocreateGenerator(structure: [
+        $this->tryToCreateGenerator(structure: [
             ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
             ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
         ]);
@@ -162,7 +162,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithFreeText(string $freetextContent): void
     {
-        $this->tryTocreateGenerator(structure: [['type' => 'free_text', 'string' => $freetextContent]]);
+        $this->tryToCreateGenerator(structure: [['type' => 'free_text', 'string' => $freetextContent]]);
     }
 
     /**
@@ -170,7 +170,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iCreateAnIdentifierGeneratorWithFreeTextWithoutRequiredField(): void
     {
-        $this->tryTocreateGenerator(structure: [['type' => 'free_text']]);
+        $this->tryToCreateGenerator(structure: [['type' => 'free_text']]);
     }
 
     /**
@@ -178,7 +178,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithFreeTextWithUnknownField(): void
     {
-        $this->tryTocreateGenerator(structure: [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']]);
+        $this->tryToCreateGenerator(structure: [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']]);
     }
 
     /**
@@ -186,7 +186,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithAutonumberWithoutRequiredField(): void
     {
-        $this->tryTocreateGenerator(structure: [['type' => 'auto_number', 'numberMin' => 4]]);
+        $this->tryToCreateGenerator(structure: [['type' => 'auto_number', 'numberMin' => 4]]);
     }
 
     /**
@@ -194,7 +194,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithAnAutoNumberWithNumberMinAndDigitsMin(int $numberMin, int $digitsMin): void
     {
-        $this->tryTocreateGenerator(structure: [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]]);
+        $this->tryToCreateGenerator(structure: [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]]);
     }
 
     /**
@@ -202,7 +202,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iCreateAnIdentifierGeneratorWithoutLabel(): void
     {
-        $this->tryTocreateGenerator(labels: []);
+        $this->tryToCreateGenerator(labels: []);
     }
 
     /**
@@ -210,7 +210,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithLabel(string $locale, string $label): void
     {
-        $this->tryTocreateGenerator(labels: [$locale => $label]);
+        $this->tryToCreateGenerator(labels: [$locale => $label]);
     }
 
     /**
@@ -218,7 +218,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
     {
-        $this->tryTocreateGenerator(delimiter: $delimiter);
+        $this->tryToCreateGenerator(delimiter: $delimiter);
     }
 
     /**
@@ -245,61 +245,61 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithCode(string $code): void
     {
-        $this->tryTocreateGenerator(code: $code);
+        $this->tryToCreateGenerator(code: $code);
     }
 
     /**
-     * @When /^I create an identifier generator with unknown condition type$/
+     * @When /^I try to create an identifier generator with unknown condition type$/
      */
-    public function iCreateAnIdentifierGeneratorWithUnknownConditionType()
+    public function iTryToCreateAnIdentifierGeneratorWithUnknownConditionType()
     {
-        $this->tryTocreateGenerator(conditions: [
+        $this->tryToCreateGenerator(conditions: [
             ['type' => 'unknown', 'value' => true]
         ]);
     }
 
     /**
-     * @When I create an identifier generator with enabled condition without value
+     * @When I try to create an identifier generator with enabled condition without value
      */
-    public function iCreateAnIdentifierGeneratorWithEnabledConditionWithoutValue()
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithoutValue()
     {
-        $this->tryTocreateGenerator(conditions: [
+        $this->tryToCreateGenerator(conditions: [
             ['type' => 'enabled']
         ]);
     }
 
     /**
-     * @When I create an identifier generator with enabled condition with string value
+     * @When I try to create an identifier generator with enabled condition with string value
      */
     public function iCreateAnIdentifierGeneratorWithEnabledConditionWithStringValue()
     {
-        $this->tryTocreateGenerator(conditions: [
+        $this->tryToCreateGenerator(conditions: [
             ['type' => 'enabled', 'value' => 'true']
         ]);
     }
 
     /**
-     * @When I create an identifier generator with enabled condition with an unknown property
+     * @When I try to create an identifier generator with enabled condition with an unknown property
      */
-    public function iCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty()
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty()
     {
-        $this->tryTocreateGenerator(conditions: [
+        $this->tryToCreateGenerator(conditions: [
             ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property']
         ]);
     }
 
     /**
-     * @When I create an identifier generator with 2 enabled conditions
+     * @When I try to create an identifier generator with 2 enabled conditions
      */
-    public function iCreateAnIdentifierGeneratorWithEnabledConditions()
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditions()
     {
-        $this->tryTocreateGenerator(conditions: [
+        $this->tryToCreateGenerator(conditions: [
             ['type' => 'enabled', 'value' => true],
             ['type' => 'enabled', 'value' => true],
         ]);
     }
 
-    private function tryTocreateGenerator(
+    private function tryToCreateGenerator(
         ?string $code = null,
         ?array $structure = null,
         ?array $conditions = null,

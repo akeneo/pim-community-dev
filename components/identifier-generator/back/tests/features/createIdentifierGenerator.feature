@@ -97,28 +97,28 @@ Feature: Create Identifier Generator
 
   # Conditions
   Scenario: Cannot create another condition type than defined ones
-    When I create an identifier generator with unknown condition type
+    When I try to create an identifier generator with unknown condition type
     Then I should get an error with message 'conditions[0][type]: Type "unknown" can only be one of the following: "enabled"'
     And the identifier should not be created
 
   # Conditions: enabled
   Scenario: Cannot create an enabled condition without value
-    When I create an identifier generator with enabled condition without value
+    When I try to create an identifier generator with enabled condition without value
     Then I should get an error with message 'conditions[0]: Enabled should contain "value" key'
     And the identifier should not be created
 
   Scenario: Cannot create an enabled condition with a non boolean value
-    When I create an identifier generator with enabled condition with string value
+    When I try to create an identifier generator with enabled condition with string value
     Then I should get an error with message 'conditions[0].value: This value should be a boolean.'
     And the identifier should not be created
 
   Scenario: Cannot create an enabled condition with an unknown property
-    When I create an identifier generator with enabled condition with an unknown property
+    When I try to create an identifier generator with enabled condition with an unknown property
     Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
     And the identifier should not be created
 
   Scenario: Cannot create several enabled conditions
-    When I create an identifier generator with 2 enabled conditions
+    When I try to create an identifier generator with 2 enabled conditions
     Then I should get an error with message 'conditions: should contain only 1 enabled'
     And the identifier should not be created
 
