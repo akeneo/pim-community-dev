@@ -188,3 +188,14 @@ services:
             - '@Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\ProjectsRecalculationLauncher'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command\UpdateProjectOwnerCommand:
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.updater.project'
+            - '@pimee_teamwork_assistant.saver.project'
+            - '@pim_datagrid.updater.datagrid_view'
+            - '@validator'
+        tags:
+            - { name: console.command }
