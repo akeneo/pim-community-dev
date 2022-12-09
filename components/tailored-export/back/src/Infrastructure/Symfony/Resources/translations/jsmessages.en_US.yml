@@ -93,6 +93,7 @@ akeneo.tailored_export:
           with_prefix_and_suffix: Add prefix & suffix
         reference_entity:
           option_type: Option type
+          record_separator: Record separator
         format: Format
         parent:
           information:

@@ -21,12 +21,15 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -112,6 +115,35 @@ class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidation
                     'locale' => null,
                     'separator' => '|',
                     'decimal_separator' => ',',
+                ],
+            ],
+            'a valid "tags" attribute code selection' => [
+                [
+                    'type' => 'attribute',
+                    'separator' => '|',
+                    'attribute_identifier' => 'tags_designer_fingerprint',
+                    'attribute_type' => 'option',
+                    'reference_entity_code' => 'designer',
+                    'channel' => null,
+                    'locale' => null,
+                    'option_selection' => [
+                        'type' => 'code',
+                    ]
+                ],
+            ],
+            'a valid "tags" attribute label selection' => [
+                [
+                    'type' => 'attribute',
+                    'separator' => '|',
+                    'attribute_identifier' => 'tags_designer_fingerprint',
+                    'attribute_type' => 'option',
+                    'reference_entity_code' => 'designer',
+                    'channel' => null,
+                    'locale' => null,
+                    'option_selection' => [
+                        'type' => 'label',
+                        'locale' => 'en_US',
+                    ]
                 ],
             ],
         ];
@@ -202,6 +234,7 @@ class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidation
         $this->createTextAttribute((string) $referenceEntityIdentifier, 'text_attribute', 10, false, true);
         $this->createTextAttribute((string) $referenceEntityIdentifier, 'another_one', 20, false, false);
         $this->createNumberAttribute((string) $referenceEntityIdentifier, 'size', 30, false, false);
+        $this->createOptionAttribute((string) $referenceEntityIdentifier, 'tags', ['red', 'blue'], 40, false, false);
     }
 
     private function createTextAttribute(
@@ -247,6 +280,37 @@ class ReferenceEntityCollectionSelectionValidatorTest extends AbstractValidation
             AttributeLimit::limitless(),
             AttributeLimit::limitless(),
         );
+        $this->attributeRepository->create($attribute);
+    }
+
+    private function createOptionAttribute(
+        string $referenceEntityIdentifier,
+        string $attributeCode,
+        array $options,
+        int $order,
+        bool $valuePerChannel,
+        bool $valuePerLocale,
+    ): void {
+        $attribute = OptionAttribute::create(
+            AttributeIdentifier::create((string) $referenceEntityIdentifier, $attributeCode, 'fingerprint'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean($valuePerChannel),
+            AttributeValuePerLocale::fromBoolean($valuePerLocale),
+        );
+        $attribute->setOptions(array_map(
+            static fn (string $optionCode) => AttributeOption::create(
+                OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([
+                    'en_US' => sprintf('%s in english', $optionCode),
+                    'fr_FR' => sprintf('%s en français', $optionCode),
+                ]),
+            ),
+            $options,
+        ));
         $this->attributeRepository->create($attribute);
     }
 }

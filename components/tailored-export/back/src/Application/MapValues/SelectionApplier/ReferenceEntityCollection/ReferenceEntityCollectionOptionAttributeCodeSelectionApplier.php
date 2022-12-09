@@ -13,17 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntityCollection;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionNumberAttributeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionAttributeCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface;
 
-class ReferenceEntityCollectionNumberAttributeSelectionApplier implements SelectionApplierInterface
+class ReferenceEntityCollectionOptionAttributeCodeSelectionApplier implements SelectionApplierInterface
 {
-    private const DEFAULT_DECIMAL_SEPARATOR = '.';
-
     public function __construct(
         private FindRecordsAttributeValueInterface $findRecordsAttributeValue,
     ) {
@@ -31,7 +29,7 @@ class ReferenceEntityCollectionNumberAttributeSelectionApplier implements Select
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$value instanceof ReferenceEntityCollectionValue || !$selection instanceof ReferenceEntityCollectionNumberAttributeSelection) {
+        if (!$value instanceof ReferenceEntityCollectionValue || !$selection instanceof ReferenceEntityCollectionOptionAttributeCodeSelection) {
             throw new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity');
         }
 
@@ -44,18 +42,12 @@ class ReferenceEntityCollectionNumberAttributeSelectionApplier implements Select
             $selection->getLocale(),
         ));
 
-        $selectedData = array_map(static function (string $recordCode) use ($value, $recordValues, $selection) {
+        $selectedData = array_map(static function (string $recordCode) use ($value, $recordValues) {
             if ($value->hasMappedValue($recordCode)) {
                 return $value->getMappedValue($recordCode);
             }
 
-            $recordValue = $recordValues[strtolower($recordCode)] ?? null;
-
-            if (null === $recordValue) {
-                return '';
-            }
-
-            return str_replace(self::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), (string) $recordValue);
+            return (string) ($recordValues[$recordCode] ?? '');
         }, $recordCodes);
 
         return implode($selection->getSeparator(), $selectedData);
@@ -63,7 +55,7 @@ class ReferenceEntityCollectionNumberAttributeSelectionApplier implements Select
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof ReferenceEntityCollectionNumberAttributeSelection
+        return $selection instanceof ReferenceEntityCollectionOptionAttributeCodeSelection
             && $value instanceof ReferenceEntityCollectionValue;
     }
 }

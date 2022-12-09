@@ -142,7 +142,9 @@ const ReferenceEntityCollectionSelector = ({
             onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
           />
         )}
-        <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>
+        <Field
+          label={translate('akeneo.tailored_export.column_details.sources.selection.reference_entity.record_separator')}
+        >
           <SelectInput
             invalid={0 < separatorErrors.length}
             clearable={false}

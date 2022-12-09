@@ -4,6 +4,7 @@ import {filterErrors, getAllLocalesFromChannels, useTranslate} from '@akeneo-pim
 import {AttributeSelectorProps} from './AttributeSelector';
 import {isReferenceEntityOptionAttributeSelection, ReferenceEntityAttributeSelection} from '../model';
 import {InnerField, SubField, SubFields} from './common';
+import {isReferenceEntityCollectionOptionAttributeSelection} from '../../ReferenceEntityCollection/model';
 
 const OptionAttributeSelector = <SelectionType extends ReferenceEntityAttributeSelection>({
   selection,
@@ -16,7 +17,10 @@ const OptionAttributeSelector = <SelectionType extends ReferenceEntityAttributeS
   const typeErrors = filterErrors(validationErrors, '[type]');
   const localeErrors = filterErrors(validationErrors, '[locale]');
 
-  if (!isReferenceEntityOptionAttributeSelection(selection)) {
+  if (
+    !isReferenceEntityOptionAttributeSelection(selection) &&
+    !isReferenceEntityCollectionOptionAttributeSelection(selection)
+  ) {
     throw new Error('Invalid selection type for Option Attribute Selector');
   }
 

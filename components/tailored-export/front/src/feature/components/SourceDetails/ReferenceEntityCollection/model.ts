@@ -9,6 +9,7 @@ import {
   CollectionSeparator,
   CodeLabelCollectionSelection,
   isCodeLabelCollectionSelection,
+  CodeLabelSelection,
 } from '../common';
 
 type ReferenceEntityCollectionOperations = {
@@ -29,6 +30,11 @@ type ReferenceEntityCollectionAttributeSelection = {
 type ReferenceEntityCollectionNumberAttributeSelection = ReferenceEntityCollectionAttributeSelection & {
   attribute_type: 'number';
   decimal_separator: string;
+};
+
+type ReferenceEntityCollectionOptionAttributeSelection = ReferenceEntityCollectionAttributeSelection & {
+  attribute_type: 'option';
+  option_selection: CodeLabelSelection;
 };
 
 type ReferenceEntityCollectionSelection = CodeLabelCollectionSelection | ReferenceEntityCollectionAttributeSelection;
@@ -58,6 +64,11 @@ const isReferenceEntityCollectionNumberAttributeSelection = (
   'number' === selection.attribute_type &&
   'string' === typeof selection.decimal_separator &&
   isReferenceEntityCollectionAttributeSelection(selection);
+
+const isReferenceEntityCollectionOptionAttributeSelection = (
+  selection: any
+): selection is ReferenceEntityCollectionOptionAttributeSelection =>
+  'option' === selection.attribute_type && isReferenceEntityCollectionAttributeSelection(selection);
 
 const getDefaultReferenceEntityCollectionSource = (
   attribute: Attribute,
@@ -118,6 +129,11 @@ const getDefaultReferenceEntityCollectionAttributeSelection = (
         ...selection,
         decimal_separator: '.',
       };
+    case 'option':
+      return {
+        ...selection,
+        option_selection: {type: 'code'},
+      };
     default:
       throw new Error(`Unsupported attribute type "${attribute.type}"`);
   }
@@ -128,6 +144,7 @@ export type {
   ReferenceEntityCollectionSelection,
   ReferenceEntityCollectionAttributeSelection,
   ReferenceEntityCollectionNumberAttributeSelection,
+  ReferenceEntityCollectionOptionAttributeSelection,
 };
 export {
   getDefaultReferenceEntityCollectionAttributeSelection,
@@ -135,4 +152,5 @@ export {
   getDefaultReferenceEntityCollectionSource,
   isDefaultReferenceEntityCollectionSelection,
   isReferenceEntityCollectionSource,
+  isReferenceEntityCollectionOptionAttributeSelection,
 };

@@ -129,7 +129,7 @@ test('it can change the collection separator', async () => {
   );
 
   userEvent.click(
-    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.reference_entity.record_separator')
   );
   userEvent.click(
     screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.collection_separator.pipe')
