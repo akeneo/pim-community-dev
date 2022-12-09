@@ -7,8 +7,8 @@ Feature: Create Identifier Generator
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator
-    Then The identifier generator is saved in the repository
-    And I should not get any error
+    Then I should not get any error
+    And The identifier generator is saved in the repository
 
   # Class
   Scenario: Cannot create an identifier generator if the limit is reached
@@ -104,7 +104,7 @@ Feature: Create Identifier Generator
   # Conditions: enabled
   Scenario: Cannot create an enabled condition without value
     When I create an identifier generator with enabled condition without value
-    Then I should get an error with message 'conditions[0].value: This value should not be blank.'
+    Then I should get an error with message 'conditions[0]: Enabled should contain "value" key'
     And the identifier should not be created
 
   Scenario: Cannot create an enabled condition with a non boolean value
@@ -119,7 +119,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create several enabled conditions
     When I create an identifier generator with 2 enabled conditions
-    Then I should get an error with message 'conditions[1]: Should not have several enabled conditions'
+    Then I should get an error with message 'conditions: should contain only 1 enabled'
     And the identifier should not be created
 
   # Label

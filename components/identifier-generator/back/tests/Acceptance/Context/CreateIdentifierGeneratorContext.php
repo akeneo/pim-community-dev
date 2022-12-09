@@ -92,7 +92,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iShouldNotGetAnyError(): void
     {
-        Assert::null($this->violations);
+        Assert::null($this->violations, 'Errors were raised: ' . \json_encode($this->violations?->normalize()));
     }
 
     /**
