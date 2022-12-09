@@ -13,7 +13,7 @@ Feature: Create Identifier Generator
   # Class
   Scenario: Cannot create an identifier generator if the limit is reached
     Given the identifier generator is created
-    When I try to create new identifier generator
+    When I try to create an identifier generator with code 'another generator'
     Then I should get an error with message 'Limit of "1" identifier generators is reached'
 
   # Target
@@ -93,6 +93,33 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with autoNumber digits min too big
     When I try to create an identifier generator with an auto number with '4' as number min and '22' as min digits
     Then I should get an error with message 'structure[0][digitsMin]: This value should be less than or equal to 15.'
+    And the identifier should not be created
+
+  # Conditions
+  Scenario: Cannot create another condition type than defined ones
+    When I create an identifier generator with unknown condition type
+    Then I should get an error with message 'conditions[0][type]: Type "unknown" can only be one of the following: "enabled"'
+    And the identifier should not be created
+
+  # Conditions: enabled
+  Scenario: Cannot create an enabled condition without value
+    When I create an identifier generator with enabled condition without value
+    Then I should get an error with message 'conditions[0].value: This value should not be blank.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an enabled condition with a non boolean value
+    When I create an identifier generator with enabled condition with string value
+    Then I should get an error with message 'conditions[0].value: This value should be a boolean.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an enabled condition with an unknown property
+    When I create an identifier generator with enabled condition with an unknown property
+    Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create several enabled conditions
+    When I create an identifier generator with 2 enabled conditions
+    Then I should get an error with message 'conditions[1]: Should not have several enabled conditions'
     And the identifier should not be created
 
   # Label
