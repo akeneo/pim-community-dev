@@ -105,7 +105,7 @@
         "maennchen/zipstream-php": "^2.1",
         "monolog/monolog": "1.27.1",
         "ocramius/proxy-manager": "2.11.1",
-        "oneup/flysystem-bundle": "^4.0.0",
+        "oneup/flysystem-bundle": "^4.5",
         "openspout/openspout": "^4.8.0",
         "opis/json-schema": "^2.3",
         "phpseclib/phpseclib": "^3.0",
