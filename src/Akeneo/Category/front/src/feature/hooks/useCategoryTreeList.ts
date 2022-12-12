@@ -24,7 +24,7 @@ const useCategoryTreeList = () => {
         await fetchProductsNumberByCategory();
       })();
     }
-  }, [treesData]);
+  }, [fetchProductsNumberByCategory, treesData]);
 
   useEffect(() => {
     if (productsNumberByCategory) {
@@ -40,7 +40,7 @@ const useCategoryTreeList = () => {
       });
       setTrees(updatedTrees);
     }
-  }, [productsNumberByCategory]);
+  }, [productsNumberByCategory, trees]);
 
   return {
     trees,
