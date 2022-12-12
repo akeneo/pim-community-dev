@@ -15,7 +15,10 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorInterface;
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -25,11 +28,26 @@ class NumberTypeValidator implements RecordValueValidatorInterface
 {
     public function validate(array $normalizedRecord): array
     {
-        $record = Validator::arrayToObjectRecursive($normalizedRecord);
         $validator = new Validator();
-        $validator->validate($record, $this->getJsonSchema());
+        $validator->setMaxErrors(50);
 
-        return $validator->getErrors();
+        $result = $validator->validate(
+            Helper::toJSON($normalizedRecord),
+            Helper::toJSON($this->getJsonSchema()),
+        );
+
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     public function forAttributeType(): string

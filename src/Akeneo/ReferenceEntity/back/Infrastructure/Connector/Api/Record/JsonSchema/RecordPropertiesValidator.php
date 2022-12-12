@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
 
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 /**
  * Validate the first level properties of a record using JSON Schema.
@@ -26,14 +29,28 @@ class RecordPropertiesValidator
     public function validate(array $normalizedRecord): array
     {
         if (isset($normalizedRecord['values']) && [] === $normalizedRecord['values']) {
-            $normalizedRecord['values'] = (object) [];
+            $normalizedRecord['values'] = (object)[];
+        }
+        $validator = new Validator();
+        $validator->setMaxErrors(50);
+
+        $result = $validator->validate(
+            Helper::toJSON($normalizedRecord),
+            Helper::toJSON($this->getJsonSchema()),
+        );
+
+        if (!$result->hasError()) {
+            return [];
         }
 
-        $validator = new Validator();
-        $normalizedRecordObject = Validator::arrayToObjectRecursive($normalizedRecord);
-        $validator->validate($normalizedRecordObject, $this->getJsonSchema());
+        $errorFormatter = new ErrorFormatter();
 
-        return $validator->getErrors();
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     private function getJsonSchema(): array
@@ -53,8 +70,12 @@ class RecordPropertiesValidator
                         '.+' => ['type' => 'array'],
                     ],
                 ],
-                'created' => 'string',
-                'updated' => 'string',
+                'created' => [
+                    'type' => ['string'],
+                ],
+                'updated' => [
+                    'type' => ['string'],
+                ],
             ],
             'required' => ['code'],
             'additionalProperties' => false,

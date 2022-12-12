@@ -22,20 +22,8 @@
       "message": "The attribute has an invalid format.",
       "errors": [
         {
-          "property": "value_per_locale",
-          "message": "The property value_per_locale is required"
-        },
-        {
-          "property": "value_per_channel",
-          "message": "The property value_per_channel is required"
-        },
-        {
-          "property": "labels",
-          "message": "Array value found, but an object is required"
-        },
-        {
-          "property": "",
-          "message": "The property unknown_property is not defined and the definition does not allow additional properties"
+          "message": "The required properties (value_per_locale, value_per_channel) are missing",
+          "property": ""
         }
       ]
     }

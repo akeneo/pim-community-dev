@@ -117,7 +117,7 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_code_is_not_a_string()
+    function it_returns_errors_when_code_is_not_a_string()
     {
         $attribute = [
             'code' => 1,
@@ -128,10 +128,10 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_type_is_not_a_string()
+    function it_returns_errors_when_type_is_not_a_string()
     {
         $attribute = [
             'code' => 'starck',
@@ -142,10 +142,10 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_channel_is_not_a_boolean()
+    function it_returns_errors_when_channel_is_not_a_boolean()
     {
         $attribute = [
             'code' => 'starck',
@@ -156,10 +156,10 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_locale_is_not_a_boolean()
+    function it_returns_errors_when_locale_is_not_a_boolean()
     {
         $attribute = [
             'code' => 'starck',
@@ -170,10 +170,10 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_labels_has_a_wrong_format()
+    function it_returns_errors_when_labels_has_a_wrong_format()
     {
         $attribute = [
             'code' => 'starck',
@@ -187,10 +187,10 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(3);
     }
 
-    function it_returns_an_error_when_is_required_for_completeness_is_not_a_boolean()
+    function it_returns_errors_when_is_required_for_completeness_is_not_a_boolean()
     {
         $attribute = [
             'code' => 'starck',
@@ -202,10 +202,10 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_allowed_extensions_is_not_an_array()
+    function it_returns_errors_when_allowed_extensions_is_not_an_array()
     {
         $attribute = [
             'code' => 'starck',
@@ -217,10 +217,10 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_max_file_size_is_not_a_string_or_null()
+    function it_returns_errors_when_max_file_size_is_not_a_string_or_null()
     {
         $attribute = [
             'code' => 'starck',
@@ -232,6 +232,6 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 }

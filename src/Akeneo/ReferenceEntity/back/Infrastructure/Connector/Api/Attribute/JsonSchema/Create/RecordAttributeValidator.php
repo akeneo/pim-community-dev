@@ -11,11 +11,10 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 class RecordAttributeValidator implements AttributeValidatorInterface
 {
@@ -24,11 +23,26 @@ class RecordAttributeValidator implements AttributeValidatorInterface
 
     public function validate(array $normalizedAttribute): array
     {
-        $record = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
-        $validator->validate($record, $this->getJsonSchema());
+        $validator->setMaxErrors(50);
 
-        return $validator->getErrors();
+        $result = $validator->validate(
+            Helper::toJSON($normalizedAttribute),
+            Helper::toJSON($this->getJsonSchema()),
+        );
+
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     public function forAttributeTypes(): array

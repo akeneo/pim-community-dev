@@ -37,7 +37,6 @@ $rules = [
         'Symfony',
         'Webmozart\Assert\Assert',
         'Opis\JsonSchema',
-        'JsonSchema\Validator',
         'PDO',
         'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
         'Akeneo\UserManagement\Component\Model\Group', // For a constant usage
