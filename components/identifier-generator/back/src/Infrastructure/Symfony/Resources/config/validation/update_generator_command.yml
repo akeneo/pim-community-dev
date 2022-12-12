@@ -7,6 +7,18 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
             - Type: string
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
+        conditions:
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleEnabled: ~
+            - All:
+                  - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
+                  - Collection:
+                        fields:
+                            type:
+                                - Choice:
+                                      choices: ['enabled']
+                                      message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                            value:
+                                - Optional: ~
         structure:
             - NotBlank: ~
             - Count:

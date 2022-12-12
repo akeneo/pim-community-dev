@@ -80,6 +80,28 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with an auto number with '4' as number min and '22' as min digits
     Then I should get an error on update with message 'structure[0][digitsMin]: This value should be less than or equal to 15.'
 
+  # Conditions
+  Scenario: Cannot update another condition type than defined ones
+    When I try to update an identifier generator with unknown condition type
+    Then I should get an error on update with message 'conditions[0][type]: Type "unknown" can only be one of the following: "enabled"'
+
+  # Conditions: enabled
+  Scenario: Cannot update an enabled condition without value
+    When I try to update an identifier generator with enabled condition without value
+    Then I should get an error on update with message 'conditions[0]: Enabled should contain "value" key'
+
+  Scenario: Cannot update an enabled condition with a non boolean value
+    When I try to update an identifier generator with enabled condition with string value
+    Then I should get an error on update with message 'conditions[0].value: This value should be a boolean.'
+
+  Scenario: Cannot update an enabled condition with an unknown property
+    When I try to update an identifier generator with enabled condition with an unknown property
+    Then I should get an error on update with message 'conditions[0][unknown]: This field was not expected.'
+
+  Scenario: Cannot update several enabled conditions
+    When I try to update an identifier generator with 2 enabled conditions
+    Then I should get an error on update with message 'conditions: should contain only 1 enabled'
+
   # Label
   Scenario: Can update an identifier generator without label
     When I update an identifier generator without label
