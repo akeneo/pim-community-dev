@@ -55,8 +55,8 @@ final class PermissionCollection
     {
         if (array_key_exists($permission, $this->permissions)) {
             $existingUserGroupsIds = array_map(fn ($existingUserGroup) => $existingUserGroup['id'], $this->permissions[$permission]);
-            foreach ($userGroupsToRemove as $key => $userGroupToRemove) {
-                if (in_array($userGroupToRemove['id'], $existingUserGroupsIds)) {
+            foreach ($userGroupsToRemove as $userGroupToRemove) {
+                if (($key = array_search($userGroupToRemove['id'], $existingUserGroupsIds)) !== false) {
                     $this->removedUserGroupIdsFromPermissions[$permission][] = $userGroupToRemove['id'];
                     unset($this->permissions[$permission][$key]);
                 }
