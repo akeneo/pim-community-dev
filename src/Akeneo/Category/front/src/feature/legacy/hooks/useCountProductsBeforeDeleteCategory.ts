@@ -29,13 +29,13 @@ const useCountProductsBeforeDeleteCategory = (categoryId: number) => {
       categoryDeletion.callback(numberOfProducts as number);
       setCategoryDeletion(null);
     }
-  }, [categoryDeletion]);
+  }, [categoryDeletion, loadNumberOfProducts, numberOfProducts]);
 
   useEffect(() => {
     if (categoryDeletion !== null && numberOfProducts !== null) {
       setCategoryDeletion({...categoryDeletion, status: 'ready'});
     }
-  }, [numberOfProducts]);
+  }, [categoryDeletion, numberOfProducts]);
 
   return beforeDelete;
 };

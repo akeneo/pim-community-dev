@@ -116,11 +116,11 @@ const useEditCategoryForm = (categoryId: number) => {
       const refreshedToken = {...editedFormData._token, value: response.form._token.value};
       setEditedFormData({...editedFormData, _token: refreshedToken});
     }
-  }, [categoryData, editedFormData]);
+  }, [categoryData, editedFormData, notify, router, translate]);
 
   useEffect(() => {
     loadCategory();
-  }, [categoryId]);
+  }, [categoryId, loadCategory]);
 
   useEffect(() => {
     if (categoryData === null) {
@@ -145,17 +145,17 @@ const useEditCategoryForm = (categoryId: number) => {
     } else {
       setEditedFormData({...originalFormData});
     }
-  }, [originalFormData]);
+  }, [editedFormData, originalFormData]);
 
   useEffect(() => {
     if (editedFormData !== null) {
       setThereAreUnsavedChanges(haveLabelsBeenChanged() || havePermissionsBeenChanged());
     }
-  }, [editedFormData]);
+  }, [editedFormData, haveLabelsBeenChanged, havePermissionsBeenChanged]);
 
   useEffect(() => {
     setCanLeavePage(!thereAreUnsavedChanges);
-  }, [thereAreUnsavedChanges]);
+  }, [setCanLeavePage, thereAreUnsavedChanges]);
 
   return {
     categoryLoadingStatus,
