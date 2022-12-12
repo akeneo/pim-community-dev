@@ -11,6 +11,7 @@ use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\SaveCategory;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -28,6 +29,7 @@ class UpsertCategoryCommandHandler
         private readonly UserIntentApplierRegistry $applierRegistry,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly SaveCategory $saver,
+        private readonly FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry,
     ) {
     }
 
@@ -39,6 +41,9 @@ class UpsertCategoryCommandHandler
         $this->validateCommand($command);
 
         $category = $this->getCategory->byCode($command->categoryCode());
+        if ($category) {
+            $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
+        }
 
         $isCreation = null === $category;
         if ($isCreation) {

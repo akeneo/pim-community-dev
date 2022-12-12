@@ -55,6 +55,7 @@ final class PermissionCollection
     {
         if (array_key_exists($permission, $this->permissions)) {
             $existingUserGroupsIds = array_map(fn ($existingUserGroup) => $existingUserGroup['id'], $this->permissions[$permission]);
+
             foreach ($userGroupsToRemove as $userGroupToRemove) {
                 if (($key = array_search($userGroupToRemove['id'], $existingUserGroupsIds)) !== false) {
                     $this->removedUserGroupIdsFromPermissions[$permission][] = $userGroupToRemove['id'];
@@ -69,19 +70,19 @@ final class PermissionCollection
     /** @return array<array{id: int, label: string}> */
     public function getViewUserGroups(): array
     {
-        return $this->permissions[self::VIEW];
+        return $this->permissions[self::VIEW] ?? [];
     }
 
     /** @return array<array{id: int, label: string}> */
     public function getEditUserGroups(): array
     {
-        return $this->permissions[self::EDIT];
+        return $this->permissions[self::EDIT] ?? [];
     }
 
     /** @return array<array{id: int, label: string}> */
     public function getOwnUserGroups(): array
     {
-        return $this->permissions[self::OWN];
+        return $this->permissions[self::OWN] ?? [];
     }
 
     /** @return array<string, array<int>> */
