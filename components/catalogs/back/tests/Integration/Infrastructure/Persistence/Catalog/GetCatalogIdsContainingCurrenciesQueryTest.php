@@ -37,8 +37,7 @@ final class GetCatalogIdsContainingCurrenciesQueryTest extends IntegrationTestCa
         array $currenciesSecondCatalog,
         array $currenciesQueried,
         array $expectedCatalogs,
-    ): void
-    {
+    ): void {
         $this->createUser('shopifi');
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $catalogIdFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
