@@ -1,5 +1,5 @@
 akeneo_catalogs:
-  settings:
+  catalog_status_widget:
     inputs:
       yes: Yes
       no: No

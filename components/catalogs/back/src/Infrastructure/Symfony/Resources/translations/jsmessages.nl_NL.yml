@@ -13,9 +13,7 @@ akeneo_catalogs:
       more: Meer
       product_value_filters: Filter de waarden
       product_mapping: Toewijzen
-  settings:
-    fields:
-      enabled: Ingeschakeld
+  catalog_status_widget:
     inputs:
       yes: Yes
       no: No

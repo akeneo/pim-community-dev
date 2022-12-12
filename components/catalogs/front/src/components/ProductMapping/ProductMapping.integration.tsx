@@ -1154,3 +1154,343 @@ test('it resets source locale when channel changes for an attribute with value p
         },
     });
 });
+
+test('it displays error message when source attribute is incorrect', async () => {
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            json: [
+                {
+                    code: 'title',
+                    label: 'Title',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: null,
+            scope: null,
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+        },
+    };
+
+    const mappingErrors = {
+        name: {
+            source: 'Source error',
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={mappingErrors}
+                    onChange={() => null}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('name');
+    expect(await screen.findByText('Source error')).toBeInTheDocument();
+});
+
+test('it displays error message when source scope is incorrect', async () => {
+    mockFetchResponses([
+        channelsPayload,
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: true,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            json: [
+                {
+                    code: 'title',
+                    label: 'Title',
+                    type: 'pim_catalog_text',
+                    scopable: true,
+                    localizable: false,
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce',
+            json: {
+                code: 'ecommerce',
+                label: 'Ecommerce',
+            },
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: null,
+            scope: 'ecommerce',
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+        },
+    };
+
+    const mappingErrors = {
+        name: {
+            scope: 'Scope error',
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={mappingErrors}
+                    onChange={() => null}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('name');
+    expect(await screen.findByText('Scope error')).toBeInTheDocument();
+});
+test('it displays error message when source local but not scopable is incorrect', async () => {
+    mockFetchResponses([
+        localesPayload,
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: true,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            json: [
+                {
+                    code: 'title',
+                    label: 'Title',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: true,
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/locales?codes=en_US',
+            json: [
+                {
+                    code: 'en_US',
+                    label: 'English (United States)',
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: null,
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+        },
+    };
+
+    const mappingErrors = {
+        name: {
+            locale: 'Locale error',
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={mappingErrors}
+                    onChange={() => null}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('name');
+    expect(await screen.findByText('Locale error')).toBeInTheDocument();
+});
+
+test('it displays error message when source local and scopable is incorrect', async () => {
+    mockFetchResponses([
+        localesPayload,
+        channelsPayload,
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: true,
+                localizable: true,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            json: [
+                {
+                    code: 'title',
+                    label: 'Title',
+                    type: 'pim_catalog_text',
+                    scopable: true,
+                    localizable: true,
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/locales?codes=en_US',
+            json: [
+                {
+                    code: 'en_US',
+                    label: 'English (United States)',
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce/locales',
+            json: [
+                {
+                    code: 'fr_FR',
+                    label: 'French (France)',
+                },
+                {
+                    code: 'en_US',
+                    label: 'English (United States)',
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce',
+            json: {
+                code: 'ecommerce',
+                label: 'Ecommerce',
+            },
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+        },
+    };
+
+    const mappingErrors = {
+        name: {
+            locale: 'Locale error',
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={mappingErrors}
+                    onChange={() => null}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('name');
+    expect(await screen.findByText('Locale error')).toBeInTheDocument();
+});
