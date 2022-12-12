@@ -17,7 +17,7 @@ final class Conditions
      * @param ConditionInterface[] $conditions
      */
     private function __construct(
-        private array $conditions, // @phpstan-ignore-line
+        private array $conditions,
     ) {
     }
 
@@ -37,15 +37,24 @@ final class Conditions
      */
     public static function fromNormalized(array $normalizedConditions): self
     {
-        // TODO
-        return new self([]);
+        $conditions = [];
+        foreach ($normalizedConditions as $normalizedCondition) {
+            Assert::isMap($normalizedCondition);
+            Assert::stringNotEmpty($normalizedCondition['type'] ?? null);
+            $conditions[] = match ($normalizedCondition['type']) {
+                Enabled::type() => Enabled::fromNormalized($normalizedCondition),
+                default => throw new \InvalidArgumentException(sprintf('The type %s does not exist', $normalizedCondition['type'])),
+            };
+        }
+
+        return self::fromArray($conditions);
     }
 
     /**
-     * @return array<string, string>
+     * @return array<mixed>
      */
     public function normalize(): array
     {
-        return [];
+        return \array_map(static fn (ConditionInterface $condition) => $condition->normalize(), $this->conditions);
     }
 }

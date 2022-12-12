@@ -85,8 +85,9 @@
             <directory suffix="Integration.php">src/Akeneo/Category/back/tests/Integration</directory>
         </testsuite>
 
-        <testsuite name="Identifier_Generator_End_To_End">
+        <testsuite name="Identifier_Generator_PhpUnit">
             <directory suffix="EndToEnd.php">components/identifier-generator/back/tests/EndToEnd</directory>
+            <directory suffix="Integration.php">components/identifier-generator/back/tests/Integration</directory>
         </testsuite>
     </testsuites>
 </phpunit>

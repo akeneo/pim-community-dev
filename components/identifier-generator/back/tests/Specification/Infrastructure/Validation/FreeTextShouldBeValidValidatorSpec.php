@@ -60,7 +60,7 @@ class FreeTextShouldBeValidValidatorSpec extends ObjectBehavior
         $this->validate($freeTextWithoutString, new FreeTextShouldBeValid());
     }
 
-    public function it_should_build_violation_when_free_text_is_valid(ExecutionContext $context): void
+    public function it_should_not_build_violation_when_free_text_is_valid(ExecutionContext $context): void
     {
         $freeTextWithoutString = [
             'type' => 'free_text',

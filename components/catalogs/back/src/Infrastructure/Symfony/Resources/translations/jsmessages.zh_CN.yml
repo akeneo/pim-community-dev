@@ -13,9 +13,7 @@ akeneo_catalogs:
       more: 更多
       product_value_filters: 筛选值
       product_mapping: 映射
-  settings:
-    fields:
-      enabled: 已启用
+  catalog_status_widget:
     inputs:
       yes: Yes
       no: No
