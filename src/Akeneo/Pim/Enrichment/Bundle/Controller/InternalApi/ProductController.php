@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Presenter\UnableToSetIdentifierExceptionPresenter;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber;
+use Akeneo\Pim\Automation\IdentifierGenerator\API\Presenter\UnableToSetIdentifierExceptionPresenterInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\API\Subscriber\UnableToSetIdentifiersSubscriberInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
@@ -71,8 +71,8 @@ class ProductController
         private Client $productAndProductModelClient,
         private MessageBusInterface $commandMessageBus,
         private FindIdentifier $findIdentifier,
-        private UnableToSetIdentifiersSubscriber $unableToSetIdentifiersSubscriber,
-        private UnableToSetIdentifierExceptionPresenter $unableToSetIdentifierExceptionPresenter,
+        private UnableToSetIdentifiersSubscriberInterface $unableToSetIdentifiersSubscriber,
+        private UnableToSetIdentifierExceptionPresenterInterface $unableToSetIdentifierExceptionPresenter,
     ) {
     }
 

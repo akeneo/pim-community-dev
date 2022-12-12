@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\API\Subscriber\UnableToSetIdentifiersSubscriberInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
@@ -15,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class UnableToSetIdentifiersSubscriber implements EventSubscriberInterface
+final class UnableToSetIdentifiersSubscriber implements EventSubscriberInterface, UnableToSetIdentifiersSubscriberInterface
 {
     /** @var UnableToSetIdentifierEvent[] */
     private array $events = [];
@@ -57,7 +58,7 @@ final class UnableToSetIdentifiersSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return UnableToSetIdentifierEvent[]
+     * @inheritDoc
      */
     public function getEvents(): array
     {

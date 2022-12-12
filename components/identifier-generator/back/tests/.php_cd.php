@@ -58,6 +58,7 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\Validator',
+            'Symfony\Contracts\Translation\TranslatorInterface',
 
             'Doctrine\DBAL',
 
