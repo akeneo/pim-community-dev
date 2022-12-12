@@ -22,26 +22,12 @@ final class StructureShouldNotContainMultipleAutoNumberValidator extends Constra
             return;
         }
 
-        $countAutonumber = 0;
-        foreach ($structure as $property) {
-            if (!\is_array($property)) {
-                continue;
-            }
-            if (!\array_key_exists('type', $property)) {
-                continue;
-            }
-            if (AutoNumber::type() === $property['type']) {
-                ++$countAutonumber;
-                if ($countAutonumber > StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE) {
-                    $this->context
-                        ->buildViolation($constraint->message, [
-                            '{{limit}}' => StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE,
-                        ])
-                        ->addViolation();
-
-                    return;
-                }
-            }
+        if (\count(\array_filter($structure, fn (mixed $property): bool => \is_array($property) && \array_key_exists('type', $property) && $property['type'] === AutoNumber::type())) > StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE) {
+            $this->context
+                ->buildViolation($constraint->message, [
+                    '{{limit}}' => StructureShouldNotContainMultipleAutoNumber::LIMIT_PER_STRUCTURE,
+                ])
+                ->addViolation();
         }
     }
 }

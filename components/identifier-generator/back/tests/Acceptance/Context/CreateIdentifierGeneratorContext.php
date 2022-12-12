@@ -29,6 +29,7 @@ use Webmozart\Assert\Assert;
  */
 final class CreateIdentifierGeneratorContext implements Context
 {
+    public const DEFAULT_CODE = 'abcdef';
     private ?ViolationsException $violations = null;
 
     public function __construct(
@@ -57,7 +58,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function identifierGeneratorIsSavedInTheRepository(): void
     {
-        $identifierGenerator = $this->generatorRepository->get('abcdef');
+        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_CODE);
         Assert::isInstanceOf($identifierGenerator, IdentifierGenerator::class);
     }
 
@@ -68,7 +69,7 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
-            IdentifierGeneratorCode::fromString('abcdef'),
+            IdentifierGeneratorCode::fromString(self::DEFAULT_CODE),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),
             LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
@@ -83,7 +84,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function theIdentifierShouldNotBeCreated(): void
     {
-        Assert::null($this->generatorRepository->get('abcdef'));
+        Assert::null($this->generatorRepository->get(self::DEFAULT_CODE));
     }
 
     /**
@@ -91,7 +92,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iShouldNotGetAnyError(): void
     {
-        Assert::null($this->violations);
+        Assert::null($this->violations, 'Errors were raised: ' . \json_encode($this->violations?->normalize()));
     }
 
     /**
@@ -99,7 +100,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iShouldGetAnErrorWithMessage(string $message): void
     {
-        Assert::notNull($this->violations);
+        Assert::notNull($this->violations, 'No error were raised.');
         Assert::contains($this->violations->getMessage(), $message);
     }
 
@@ -108,33 +109,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iCreateAnIdentifierGenerator(): void
     {
-        ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-            'abcdef',
-            [],
-            [['type' => 'free_text', 'string' => 'abcdef']],
-            ['fr_FR' => 'Générateur'],
-            'sku',
-            '-'
-        ));
-    }
-
-    /**
-     * @When I try to create new identifier generator
-     */
-    public function iTryToCreateNewIdentifierGenerator(): void
-    {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator();
     }
 
     /**
@@ -142,18 +117,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithTarget(string $target): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                $target,
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(target: $target);
     }
 
     /**
@@ -161,18 +125,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithBlankStructure(): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(structure: []);
     }
 
     /**
@@ -180,18 +133,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithAnUnknownProperty(): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'unknown', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(structure: [['type' => 'unknown', 'string' => 'a_string']]);
     }
 
     /**
@@ -199,40 +141,10 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [
-                    ['type' => 'free_text', 'string' => 'abcdef1'],
-                    ['type' => 'free_text', 'string' => 'abcdef2'],
-                    ['type' => 'free_text', 'string' => 'abcdef3'],
-                    ['type' => 'free_text', 'string' => 'abcdef4'],
-                    ['type' => 'free_text', 'string' => 'abcdef5'],
-                    ['type' => 'free_text', 'string' => 'abcdef6'],
-                    ['type' => 'free_text', 'string' => 'abcdef7'],
-                    ['type' => 'free_text', 'string' => 'abcdef8'],
-                    ['type' => 'free_text', 'string' => 'abcdef9'],
-                    ['type' => 'free_text', 'string' => 'abcdef10'],
-                    ['type' => 'free_text', 'string' => 'abcdef11'],
-                    ['type' => 'free_text', 'string' => 'abcdef12'],
-                    ['type' => 'free_text', 'string' => 'abcdef13'],
-                    ['type' => 'free_text', 'string' => 'abcdef14'],
-                    ['type' => 'free_text', 'string' => 'abcdef15'],
-                    ['type' => 'free_text', 'string' => 'abcdef16'],
-                    ['type' => 'free_text', 'string' => 'abcdef17'],
-                    ['type' => 'free_text', 'string' => 'abcdef18'],
-                    ['type' => 'free_text', 'string' => 'abcdef19'],
-                    ['type' => 'free_text', 'string' => 'abcdef20'],
-                    ['type' => 'free_text', 'string' => 'abcdef21'],
-                ],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(
+            structure:
+            \array_fill(0, 21, ['type' => 'free_text', 'string' => 'abcdef1'])
+        );
     }
 
     /**
@@ -240,21 +152,10 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithMultipleAutoNumberInStructure(): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [
-                    ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
-                    ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
-                ],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(structure: [
+            ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
+            ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
+        ]);
     }
 
     /**
@@ -262,18 +163,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithFreeText(string $freetextContent): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'string' => $freetextContent]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(structure: [['type' => 'free_text', 'string' => $freetextContent]]);
     }
 
     /**
@@ -281,18 +171,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iCreateAnIdentifierGeneratorWithFreeTextWithoutRequiredField(): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(structure: [['type' => 'free_text']]);
     }
 
     /**
@@ -300,18 +179,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithFreeTextWithUnknownField(): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(structure: [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']]);
     }
 
     /**
@@ -319,18 +187,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithAutonumberWithoutRequiredField(): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'auto_number', 'numberMin' => 4]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(structure: [['type' => 'auto_number', 'numberMin' => 4]]);
     }
 
     /**
@@ -338,18 +195,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithAnAutoNumberWithNumberMinAndDigitsMin(int $numberMin, int $digitsMin): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(structure: [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]]);
     }
 
     /**
@@ -357,18 +203,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iCreateAnIdentifierGeneratorWithoutLabel(): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                [],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(labels: []);
     }
 
     /**
@@ -376,18 +211,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithLabel(string $locale, string $label): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                [$locale => $label],
-                'sku',
-                '-'
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(labels: [$locale => $label]);
     }
 
     /**
@@ -395,18 +219,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
     {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                [],
-                'sku',
-                $delimiter
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violations = $exception;
-        }
+        $this->tryToCreateGenerator(delimiter: $delimiter);
     }
 
     /**
@@ -416,9 +229,9 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                'abcdef',
+                self::DEFAULT_CODE,
                 [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
+                [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 [],
                 'sku',
                 null,
@@ -433,14 +246,76 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithCode(string $code): void
     {
+        $this->tryToCreateGenerator(code: $code);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with unknown condition type$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithUnknownConditionType(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'unknown', 'value' => true],
+        ]);
+    }
+
+    /**
+     * @When I try to create an identifier generator with enabled condition without value
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithoutValue(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'enabled'],
+        ]);
+    }
+
+    /**
+     * @When I try to create an identifier generator with enabled condition with string value
+     */
+    public function iCreateAnIdentifierGeneratorWithEnabledConditionWithStringValue(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'enabled', 'value' => 'true'],
+        ]);
+    }
+
+    /**
+     * @When I try to create an identifier generator with enabled condition with an unknown property
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property'],
+        ]);
+    }
+
+    /**
+     * @When I try to create an identifier generator with 2 enabled conditions
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditions(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'enabled', 'value' => true],
+            ['type' => 'enabled', 'value' => true],
+        ]);
+    }
+
+    private function tryToCreateGenerator(
+        ?string $code = null,
+        ?array $structure = null,
+        ?array $conditions = null,
+        ?array $labels = null,
+        ?string $target = null,
+        ?string $delimiter = null,
+    ): void {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                $code,
-                [],
-                [['type' => 'free_text', 'string' => 'abcdef']],
-                ['fr_FR' => 'Générateur'],
-                'sku',
-                '-'
+                $code ?? self::DEFAULT_CODE,
+                $conditions ?? [['type' => 'enabled', 'value' => true]],
+                $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
+                $labels ?? ['fr_FR' => 'Générateur'],
+                $target ?? 'sku',
+                $delimiter ?? '-'
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
