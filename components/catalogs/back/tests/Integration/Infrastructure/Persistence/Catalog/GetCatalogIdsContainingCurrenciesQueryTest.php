@@ -39,24 +39,24 @@ final class GetCatalogIdsContainingCurrenciesQueryTest extends IntegrationTestCa
         array $expectedCatalogs,
     ): void {
         $this->createUser('shopifi');
-        $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $catalogIdFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
-        $catalogIdUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
 
-        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
-        $this->createCatalog($catalogIdFR, 'Store FR', 'shopifi');
-        $this->createCatalog($catalogIdUK, 'Store UK', 'shopifi');
-
-        $this->enableCatalog($catalogIdUS);
-        $this->enableCatalog($catalogIdFR);
-        $this->enableCatalog($catalogIdUK);
-
-        $this->setCatalogProductValueFilters($catalogIdUS, [
-            'currencies' => $currenciesFirstCatalog,
-        ]);
-        $this->setCatalogProductValueFilters($catalogIdFR, [
-            'currencies' => $currenciesSecondCatalog,
-        ]);
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductValueFilters: ['currencies' => $currenciesFirstCatalog]
+        );
+        $this->createCatalog(
+            id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            name: 'Store FR',
+            ownerUsername: 'shopifi',
+            catalogProductValueFilters: ['currencies' => $currenciesSecondCatalog]
+        );
+        $this->createCatalog(
+            id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
+            name: 'Store UK',
+            ownerUsername: 'shopifi'
+        );
 
         $resultBothCatalogs = $this->query->execute($currenciesQueried);
         $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
