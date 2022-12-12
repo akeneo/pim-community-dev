@@ -14,8 +14,7 @@ class TemplateCode
 {
     public function __construct(private string $code)
     {
-        Assert::notNull($code);
-        Assert::notEq($code, '');
+        Assert::stringNotEmpty($code);
     }
 
     public function __toString(): string

@@ -20,7 +20,7 @@ final class AttributeAdditionalProperties implements \IteratorAggregate
     private function __construct(private ?array $additionalProperties)
     {
         Assert::allString($additionalProperties);
-        Assert::allNotEq($this->additionalProperties, '');
+        Assert::allStringNotEmpty(\array_keys($additionalProperties));
     }
 
     /**
