@@ -17,4 +17,3 @@ interface UnableToSetIdentifiersSubscriberInterface
      */
     public function getEvents(): array;
 }
-
