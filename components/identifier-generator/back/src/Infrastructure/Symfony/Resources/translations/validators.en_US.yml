@@ -7,5 +7,8 @@ validation:
         target_attribute_does_not_exist: 'The "{{code}}" attribute code given as target does not exist'
         target_attribute_is_not_an_identifier: 'The "{{code}}" attribute code is "{{type}}" type and should be of type identifier'
         free_text_string_field_required: 'Free text should contain "string" key'
+        enabled_value_field_required: 'Enabled should contain "value" key'
+        enabled_boolean_value: 'This value should be a boolean.'
         auto_number_fields_required: '"{{field}}" fields are required for "auto_number" type'
         structure_auto_number_limit_reached: 'should contain only {{limit}} auto number'
+        conditions_enabled_limit_reached: 'should contain only {{limit}} enabled'

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Enabled;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
@@ -28,8 +29,9 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
 
         $freeText = FreeText::fromString('abc');
+        $enabled = Enabled::fromBoolean(true);
         $structure = Structure::fromArray([$freeText]);
-        $conditions = Conditions::fromArray([]);
+        $conditions = Conditions::fromArray([$enabled]);
 
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
         $delimiter = Delimiter::fromString('-');
@@ -109,7 +111,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_returns_a_conditions(): void
     {
-        $this->conditions()->shouldBeLike(Conditions::fromArray([]));
+        $this->conditions()->shouldBeLike(Conditions::fromArray([Enabled::fromBoolean(true)]));
     }
 
     public function it_returns_a_structure(): void
@@ -153,7 +155,12 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             'uuid' => '2038e1c9-68ff-4833-b06f-01e42d206002',
             'code' => 'abcdef',
-            'conditions' => [],
+            'conditions' => [
+                [
+                    'type' => 'enabled',
+                    'value' => true,
+                ]
+            ],
             'structure' => [
                 [
                     'type' => 'free_text',
