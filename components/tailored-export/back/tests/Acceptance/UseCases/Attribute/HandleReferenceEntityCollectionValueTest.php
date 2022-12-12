@@ -20,6 +20,8 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityC
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionNumberAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionAttributeCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionAttributeLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionCollectionAttributeCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionCollectionAttributeLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
@@ -87,13 +89,13 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
                 'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'green']),
                 'expected' => [self::TARGET_NAME => '1000000|5,6|'],
             ],
-            'it selects the record "tags" option attribute code' => [
+            'it selects the records "tags" option attribute code' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityCollectionOptionAttributeCodeSelection(',', 'color', 'tags', null, null),
                 'value' => new ReferenceEntityCollectionValue(['red', 'green', 'record_with_no_value', 'blue']),
                 'expected' => [self::TARGET_NAME => 'large,medium,,small'],
             ],
-            'it selects the record "tags" option attribute label' => [
+            'it selects the records "tags" option attribute label' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityCollectionOptionAttributeLabelSelection(';', 'color', 'tags', 'en_US', null, null),
                 'value' => new ReferenceEntityCollectionValue(['red', 'record_with_no_value', 'blue', 'green']),
@@ -104,6 +106,18 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
                 'selection' => new ReferenceEntityCollectionOptionAttributeLabelSelection('|', 'color', 'tags', 'fr_FR', null, null),
                 'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'record_with_no_value', 'green']),
                 'expected' => [self::TARGET_NAME => 'gros label|[small]||moyen label'],
+            ],
+            'it selects the records "collection" option collection attribute codes' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionOptionCollectionAttributeCodeSelection(',', 'color', 'collection', ';', null, null),
+                'value' => new ReferenceEntityCollectionValue(['red', 'green', 'record_with_no_value', 'blue']),
+                'expected' => [self::TARGET_NAME => 'autumn,winter;spring,,spring;summer'],
+            ],
+            'it selects the records "collection" option collection attribute labels (with fallback on option codes)' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityCollectionOptionCollectionAttributeLabelSelection(';', 'color', 'collection', '|', 'fr_FR', null, null),
+                'value' => new ReferenceEntityCollectionValue(['red', 'green', 'record_with_no_value', 'blue']),
+                'expected' => [self::TARGET_NAME => 'Automne;Hiver|Printemps;;Printemps|[summer]'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
@@ -156,15 +170,18 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
         $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'name', 'Blue name');
         $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'size', '5.6');
         $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'tags', 'small');
+        $findRecordsAttributeValue->addAttributeValue('color', 'blue', 'collection', ['spring', 'summer']);
 
         $findRecordsAttributeValue->addAttributeValue('color', 'red', 'description', 'Rot', 'ecommerce', 'fr_FR');
         $findRecordsAttributeValue->addAttributeValue('color', 'red', 'name', 'Red name');
         $findRecordsAttributeValue->addAttributeValue('color', 'red', 'size', '1000000');
         $findRecordsAttributeValue->addAttributeValue('color', 'red', 'tags', 'large');
+        $findRecordsAttributeValue->addAttributeValue('color', 'red', 'collection', ['autumn']);
 
         $findRecordsAttributeValue->addAttributeValue('color', 'green', 'description', 'Grun', 'ecommerce', 'de_DE');
         $findRecordsAttributeValue->addAttributeValue('color', 'green', 'name', 'Green name');
         $findRecordsAttributeValue->addAttributeValue('color', 'green', 'tags', 'medium');
+        $findRecordsAttributeValue->addAttributeValue('color', 'green', 'collection', ['winter', 'spring']);
 
         /** @var InMemoryFindReferenceEntityOptionAttributeLabels $findOptionAttributeLabels */
         $findOptionAttributeLabels = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface');
@@ -173,5 +190,10 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
         $findOptionAttributeLabels->addOptionLabel('tags', 'medium', 'en_US', 'medium label');
         $findOptionAttributeLabels->addOptionLabel('tags', 'medium', 'fr_FR', 'moyen label');
         $findOptionAttributeLabels->addOptionLabel('tags', 'small', 'en_US', 'small label');
+        $findOptionAttributeLabels->addOptionLabel('collection', 'spring', 'en_US', 'Spring');
+        $findOptionAttributeLabels->addOptionLabel('collection', 'spring', 'fr_FR', 'Printemps');
+        $findOptionAttributeLabels->addOptionLabel('collection', 'summer', 'en_US', 'Summer');
+        $findOptionAttributeLabels->addOptionLabel('collection', 'autumn', 'fr_FR', 'Automne');
+        $findOptionAttributeLabels->addOptionLabel('collection', 'winter', 'fr_FR', 'Hiver');
     }
 }

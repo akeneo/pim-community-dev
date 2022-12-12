@@ -4,7 +4,6 @@ import {
   isMeasurementConversionOperation,
   isDefaultMeasurementConversionOperation,
   getDefaultMeasurementConversionOperation,
-  isMeasurementDecimalSeparator,
   isMeasurementRoundingOperation,
   isDefaultMeasurementRoundingOperation,
   getDefaultMeasurementRoundingOperation,
@@ -19,13 +18,6 @@ const source: MeasurementSource = {
   operations: {},
   selection: {type: 'unit_code'},
 };
-
-test('it validates that something is a measurement decimal separator', () => {
-  expect(isMeasurementDecimalSeparator('.')).toBe(true);
-  expect(isMeasurementDecimalSeparator(undefined)).toBe(true);
-
-  expect(isMeasurementDecimalSeparator('=')).toBe(false);
-});
 
 test('it validates that something is a measurement source', () => {
   expect(isMeasurementSource(source)).toEqual(true);

@@ -13,31 +13,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntity;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionCollectionAttributeCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface;
 
-class ReferenceEntityOptionAttributeLabelSelectionApplier implements SelectionApplierInterface
+class ReferenceEntityOptionCollectionAttributeCodeSelectionApplier implements SelectionApplierInterface
 {
     public function __construct(
         private FindRecordsAttributeValueInterface $findRecordsAttributeValue,
-        private FindReferenceEntityOptionAttributeLabelsInterface $findReferenceEntityOptionAttributeLabels,
     ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$value instanceof ReferenceEntityValue || !$selection instanceof ReferenceEntityOptionAttributeLabelSelection) {
+        if (!$value instanceof ReferenceEntityValue || !$selection instanceof ReferenceEntityOptionCollectionAttributeCodeSelection) {
             throw new \InvalidArgumentException('Cannot apply Reference Entity selection on this entity');
         }
-
-        $optionLabels = array_change_key_case($this->findReferenceEntityOptionAttributeLabels->find(
-            $selection->getReferenceEntityAttributeIdentifier(),
-        ));
 
         $recordValues = array_change_key_case($this->findRecordsAttributeValue->find(
             $selection->getReferenceEntityCode(),
@@ -47,18 +41,14 @@ class ReferenceEntityOptionAttributeLabelSelectionApplier implements SelectionAp
             $selection->getLocale(),
         ));
 
-        $optionCode = $recordValues[strtolower($value->getRecordCode())] ?? null;
+        $optionCodes = $recordValues[strtolower($value->getRecordCode())] ?? [];
 
-        if (null === $optionCode) {
-            return '';
-        }
-
-        return $optionLabels[strtolower($optionCode)][$selection->getLabelLocale()] ?? sprintf('[%s]', $optionCode);
+        return implode($selection->getOptionSeparator(), $optionCodes);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof ReferenceEntityOptionAttributeLabelSelection
+        return $selection instanceof ReferenceEntityOptionCollectionAttributeCodeSelection
             && $value instanceof ReferenceEntityValue;
     }
 }

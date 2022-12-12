@@ -10,7 +10,7 @@ import {
 import {useChannels} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
 import {DecimalSeparatorDropdown} from '../../DecimalSeparatorDropdown';
-import {availableDecimalSeparators, isDefaultMeasurementSelection, MeasurementSelection} from './model';
+import {isDefaultMeasurementSelection, MeasurementSelection} from './model';
 
 type MeasurementSelectorProps = {
   selection: MeasurementSelection;
@@ -130,7 +130,6 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
             label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}
             value={selection.decimal_separator ?? '.'}
             validationErrors={decimalSeparatorErrors}
-            decimalSeparators={availableDecimalSeparators}
             onChange={updatedValue => onSelectionChange({...selection, decimal_separator: updatedValue})}
           />
         )}
@@ -140,7 +139,6 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
               label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}
               value={selection.decimal_separator}
               validationErrors={decimalSeparatorErrors}
-              decimalSeparators={availableDecimalSeparators}
               onChange={updatedValue => onSelectionChange({...selection, decimal_separator: updatedValue})}
             />
             <LocaleDropdown
@@ -157,7 +155,6 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
             label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}
             value={selection.decimal_separator}
             validationErrors={decimalSeparatorErrors}
-            decimalSeparators={availableDecimalSeparators}
             onChange={updatedValue => onSelectionChange({...selection, decimal_separator: updatedValue})}
           />
         )}

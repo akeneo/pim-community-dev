@@ -19,7 +19,7 @@ test('it can change the selection type to "attribute"', async () => {
     />
   );
 
-  userEvent.click(screen.getByLabelText('pim_common.type'));
+  userEvent.click(screen.getByLabelText('akeneo.tailored_export.column_details.sources.selection.type.attribute'));
   userEvent.click(screen.getByText('[name]'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({
@@ -53,7 +53,7 @@ test('it can change the selection type to "code"', async () => {
     />
   );
 
-  userEvent.click(screen.getByLabelText('pim_common.type'));
+  userEvent.click(screen.getByLabelText('akeneo.tailored_export.column_details.sources.selection.type.attribute'));
   userEvent.click(screen.getByText('pim_common.code'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({
@@ -77,7 +77,7 @@ test('it can change the selection type to "label"', async () => {
     />
   );
 
-  userEvent.click(screen.getByLabelText('pim_common.type'));
+  userEvent.click(screen.getByLabelText('akeneo.tailored_export.column_details.sources.selection.type.attribute'));
   userEvent.click(screen.getByText('pim_common.label'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({

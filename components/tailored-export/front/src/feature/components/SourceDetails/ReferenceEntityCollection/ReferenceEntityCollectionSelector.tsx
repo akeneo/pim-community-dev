@@ -93,7 +93,7 @@ const ReferenceEntityCollectionSelector = ({
     >
       <Section>
         <AttributeSelectorContainer>
-          <Field label={translate('pim_common.type')}>
+          <Field label={translate('akeneo.tailored_export.column_details.sources.selection.type.attribute')}>
             <SelectInput
               clearable={false}
               invalid={0 < typeErrors.length}

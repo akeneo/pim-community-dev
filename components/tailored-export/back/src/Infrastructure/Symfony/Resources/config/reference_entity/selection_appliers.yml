@@ -40,6 +40,21 @@ services:
     tags:
       - { name: akeneo.tailored_export.selection_applier }
 
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntity\ReferenceEntityOptionCollectionAttributeCodeSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntity\ReferenceEntityOptionCollectionAttributeLabelSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelectionApplier:
     public: true
     tags:
@@ -74,6 +89,21 @@ services:
       - { name: akeneo.tailored_export.selection_applier }
 
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntityCollection\ReferenceEntityCollectionOptionAttributeLabelSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntityCollection\ReferenceEntityCollectionOptionCollectionAttributeCodeSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntityCollection\ReferenceEntityCollectionOptionCollectionAttributeLabelSelectionApplier:
     public: true
     arguments:
       - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface'

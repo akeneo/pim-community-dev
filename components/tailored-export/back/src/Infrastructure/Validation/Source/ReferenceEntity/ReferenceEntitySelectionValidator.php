@@ -16,10 +16,12 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Refere
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityAttributeSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\AttributeDetails;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindReferenceEntityAttributesInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\AtLeastOneOf;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Optional;
@@ -52,7 +54,10 @@ class ReferenceEntitySelectionValidator extends ConstraintValidator
                     'attribute_type' => new Optional(new Choice($this->supportedAttributeTypes)),
                     'reference_entity_code' => new Optional(new Type('string')),
                     'decimal_separator' => new Optional(new Choice($this->availableDecimalSeparators)),
-                    'option_selection' => new Optional(new CodeLabelSelectionConstraint()),
+                    'option_selection' => new Optional(new AtLeastOneOf([
+                        new CodeLabelSelectionConstraint(),
+                        new CodeLabelCollectionSelectionConstraint(),
+                    ])),
                 ],
             ],
         ));

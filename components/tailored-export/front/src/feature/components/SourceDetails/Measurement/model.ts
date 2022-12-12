@@ -1,12 +1,9 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute, Source} from '../../../models';
+import {Attribute, DecimalSeparator, isDecimalSeparator, Source} from '../../../models';
 import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
-const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'} as const;
 const availableRoundingTypes = ['no_rounding', 'standard', 'round_up', 'round_down'] as const;
-
-type MeasurementDecimalSeparator = keyof typeof availableDecimalSeparators;
 
 type MeasurementSelection =
   | {
@@ -21,20 +18,17 @@ type MeasurementSelection =
     }
   | {
       type: 'value';
-      decimal_separator?: MeasurementDecimalSeparator;
+      decimal_separator?: DecimalSeparator;
     }
   | {
       type: 'value_and_unit_label';
-      decimal_separator: MeasurementDecimalSeparator;
+      decimal_separator: DecimalSeparator;
       locale: LocaleCode;
     }
   | {
       type: 'value_and_unit_symbol';
-      decimal_separator: MeasurementDecimalSeparator;
+      decimal_separator: DecimalSeparator;
     };
-
-const isMeasurementDecimalSeparator = (separator?: string): separator is MeasurementDecimalSeparator =>
-  undefined === separator || separator in availableDecimalSeparators;
 
 const isMeasurementSelection = (selection: any): selection is MeasurementSelection => {
   if (!('type' in selection)) return false;
@@ -43,11 +37,11 @@ const isMeasurementSelection = (selection: any): selection is MeasurementSelecti
     'unit_code' === selection.type ||
     'unit_symbol' === selection.type ||
     ('unit_label' === selection.type && 'locale' in selection) ||
-    ('value' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator)) ||
+    ('value' === selection.type && isDecimalSeparator(selection.decimal_separator)) ||
     ('value_and_unit_label' === selection.type &&
       'locale' in selection &&
-      isMeasurementDecimalSeparator(selection.decimal_separator)) ||
-    ('value_and_unit_symbol' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator))
+      isDecimalSeparator(selection.decimal_separator)) ||
+    ('value_and_unit_symbol' === selection.type && isDecimalSeparator(selection.decimal_separator))
   );
 };
 
@@ -156,15 +150,12 @@ export type {
   MeasurementSource,
   MeasurementConversionOperation,
   MeasurementRoundingOperation,
-  MeasurementDecimalSeparator,
   RoundingType,
 };
 export {
-  availableDecimalSeparators,
   availableRoundingTypes,
   getDefaultMeasurementSource,
   isDefaultMeasurementSelection,
-  isMeasurementDecimalSeparator,
   isMeasurementSelection,
   isMeasurementSource,
   isDefaultMeasurementConversionOperation,

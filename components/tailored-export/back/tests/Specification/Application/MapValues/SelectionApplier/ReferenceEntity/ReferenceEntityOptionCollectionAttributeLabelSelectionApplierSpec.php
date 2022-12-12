@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntity;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionCollectionAttributeLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityOptionAttributeLabelSelectionApplierSpec extends ObjectBehavior
+class ReferenceEntityOptionCollectionAttributeLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(
         FindRecordsAttributeValueInterface $findRecordsAttributeValue,
@@ -34,9 +34,10 @@ class ReferenceEntityOptionAttributeLabelSelectionApplierSpec extends ObjectBeha
         FindRecordsAttributeValueInterface $findRecordsAttributeValue,
         FindReferenceEntityOptionAttributeLabelsInterface $findReferenceEntityOptionAttributeLabels,
     ): void {
-        $selection = new ReferenceEntityOptionAttributeLabelSelection(
+        $selection = new ReferenceEntityOptionCollectionAttributeLabelSelection(
             'a_reference_entity_code',
             'a_reference_entity_option_attribute_identifier',
+            ';',
             'en_US',
             'ecommerce',
             'br_FR',
@@ -50,31 +51,32 @@ class ReferenceEntityOptionAttributeLabelSelectionApplierSpec extends ObjectBeha
             'ecommerce',
             'br_FR',
         )->willReturn([
-            'reCord_Code1' => 'OPtion_coDE1',
+            'reCord_Code1' => ['option_CODe1', 'oPTIon_code2'],
         ]);
         $findReferenceEntityOptionAttributeLabels->find(
             'a_reference_entity_option_attribute_identifier',
         )->willReturn([
-            'optIOn_coDE1' => [
+            'option_cODE1' => [
                 'en_US' => 'Option 1 EN',
                 'fr_FR' => 'Option 1 FR',
             ],
-            'option_code2' => [
+            'optiON_code2' => [
                 'en_US' => 'Option 2 EN',
                 'fr_FR' => 'Option 2 FR',
             ],
         ]);
 
-        $this->applySelection($selection, $value)->shouldReturn('Option 1 EN');
+        $this->applySelection($selection, $value)->shouldReturn('Option 1 EN;Option 2 EN');
     }
 
     public function it_applies_the_selection_and_fallbacks_on_code_when_no_translation_is_found(
         FindRecordsAttributeValueInterface $findRecordsAttributeValue,
         FindReferenceEntityOptionAttributeLabelsInterface $findReferenceEntityOptionAttributeLabels,
     ): void {
-        $selection = new ReferenceEntityOptionAttributeLabelSelection(
+        $selection = new ReferenceEntityOptionCollectionAttributeLabelSelection(
             'a_reference_entity_code',
             'a_reference_entity_option_attribute_identifier',
+            ';',
             'de_DE',
             'ecommerce',
             'br_FR',
@@ -88,7 +90,7 @@ class ReferenceEntityOptionAttributeLabelSelectionApplierSpec extends ObjectBeha
             'ecommerce',
             'br_FR',
         )->willReturn([
-            'record_code1' => 'option_code1',
+            'record_code1' => ['option_code1', 'option_code2'],
         ]);
         $findReferenceEntityOptionAttributeLabels->find(
             'a_reference_entity_option_attribute_identifier',
@@ -100,10 +102,11 @@ class ReferenceEntityOptionAttributeLabelSelectionApplierSpec extends ObjectBeha
             'option_code2' => [
                 'en_US' => 'Option 2 EN',
                 'fr_FR' => 'Option 2 FR',
+                'de_DE' => 'Option 2 DE',
             ],
         ]);
 
-        $this->applySelection($selection, $value)->shouldReturn('[option_code1]');
+        $this->applySelection($selection, $value)->shouldReturn('[option_code1];Option 2 DE');
     }
 
     public function it_does_not_apply_selection_on_unsupported_selections_and_values(): void
@@ -118,9 +121,10 @@ class ReferenceEntityOptionAttributeLabelSelectionApplierSpec extends ObjectBeha
 
     public function it_supports_reference_entity_text_attribute_selection_with_reference_entity_value(): void
     {
-        $selection = new ReferenceEntityOptionAttributeLabelSelection(
+        $selection = new ReferenceEntityOptionCollectionAttributeLabelSelection(
             'a_reference_entity_code',
             'a_reference_entity_option_attribute_identifier',
+            ';',
             'en_US',
             'ecommerce',
             'br_FR',

@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntityCollection;
+namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntity;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionAttributeLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionCollectionAttributeLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface;
 
-class ReferenceEntityCollectionOptionAttributeLabelSelectionApplier implements SelectionApplierInterface
+class ReferenceEntityOptionCollectionAttributeLabelSelectionApplier implements SelectionApplierInterface
 {
     public function __construct(
         private FindRecordsAttributeValueInterface $findRecordsAttributeValue,
@@ -31,43 +31,36 @@ class ReferenceEntityCollectionOptionAttributeLabelSelectionApplier implements S
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$value instanceof ReferenceEntityCollectionValue || !$selection instanceof ReferenceEntityCollectionOptionAttributeLabelSelection) {
-            throw new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity');
+        if (!$value instanceof ReferenceEntityValue || !$selection instanceof ReferenceEntityOptionCollectionAttributeLabelSelection) {
+            throw new \InvalidArgumentException('Cannot apply Reference Entity selection on this entity');
         }
 
         $optionLabels = array_change_key_case($this->findReferenceEntityOptionAttributeLabels->find(
             $selection->getReferenceEntityAttributeIdentifier(),
         ));
 
-        $recordCodes = $value->getRecordCodes();
         $recordValues = array_change_key_case($this->findRecordsAttributeValue->find(
             $selection->getReferenceEntityCode(),
-            $recordCodes,
+            [$value->getRecordCode()],
             $selection->getReferenceEntityAttributeIdentifier(),
             $selection->getChannel(),
             $selection->getLocale(),
         ));
 
-        $selectedData = array_map(static function (string $recordCode) use ($value, $recordValues, $optionLabels, $selection) {
-            if ($value->hasMappedValue($recordCode)) {
-                return $value->getMappedValue($recordCode);
-            }
+        $optionCodes = $recordValues[strtolower($value->getRecordCode())] ?? [];
 
-            $optionCode = $recordValues[strtolower($recordCode)] ?? null;
+        $optionLabels = array_map(
+            static fn (string $optionCode) => $optionLabels[strtolower($optionCode)][$selection->getLabelLocale()]
+                ?? sprintf('[%s]', $optionCode),
+            $optionCodes,
+        );
 
-            if (null === $optionCode) {
-                return '';
-            }
-
-            return $optionLabels[strtolower($optionCode)][$selection->getLabelLocale()] ?? sprintf('[%s]', $optionCode);
-        }, $recordCodes);
-
-        return implode($selection->getSeparator(), $selectedData);
+        return implode($selection->getOptionSeparator(), $optionLabels);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof ReferenceEntityCollectionOptionAttributeLabelSelection
-            && $value instanceof ReferenceEntityCollectionValue;
+        return $selection instanceof ReferenceEntityOptionCollectionAttributeLabelSelection
+            && $value instanceof ReferenceEntityValue;
     }
 }

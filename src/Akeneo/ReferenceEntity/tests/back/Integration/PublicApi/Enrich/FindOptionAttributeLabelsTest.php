@@ -13,6 +13,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -34,7 +35,7 @@ class FindOptionAttributeLabelsTest extends SqlIntegrationTestCase
             'akeneo_referenceentity.infrastructure.persistence.query.enrich.find_option_attribute_labels_public_api'
         );
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
-        $this->loadReferenceEntityWithOptionAttribute();
+        $this->loadReferenceEntityWithOptionAttributes();
     }
 
     /**
@@ -64,6 +65,30 @@ class FindOptionAttributeLabelsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_finds_provided_option_collection_attribute_labels(): void
+    {
+        $records = $this->findOptionAttributeLabels->find(
+            'option_col_attribute_designer_fingerprint',
+        );
+
+        Assert::assertEquals(
+            [
+                'spring' => [
+                    'en_US' => 'spring in english',
+                    'fr_FR' => 'spring en français',
+                ],
+                'summer' => [
+                    'en_US' => 'summer in english',
+                    'fr_FR' => 'summer en français',
+                ],
+            ],
+            $records,
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_empty_array_when_attribute_is_not_found(): void
     {
         $records = $this->findOptionAttributeLabels->find('unknown_attribute');
@@ -81,7 +106,7 @@ class FindOptionAttributeLabelsTest extends SqlIntegrationTestCase
         Assert::assertEmpty($records);
     }
 
-    private function loadReferenceEntityWithOptionAttribute(): void
+    private function loadReferenceEntityWithOptionAttributes(): void
     {
         $referenceEntityRepository = $this->get(
             'akeneo_referenceentity.infrastructure.persistence.repository.reference_entity',
@@ -99,6 +124,7 @@ class FindOptionAttributeLabelsTest extends SqlIntegrationTestCase
         $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
         $this->labelAttributeIdentifier = (string) $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
         $this->createOptionAttribute((string) $referenceEntityIdentifier, 'option_attribute', ['blue', 'red'], 40, false, false);
+        $this->createOptionCollectionAttribute((string) $referenceEntityIdentifier, 'option_col_attribute', ['spring', 'summer'], 50, false, false);
     }
 
     private function createOptionAttribute(
@@ -112,6 +138,40 @@ class FindOptionAttributeLabelsTest extends SqlIntegrationTestCase
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
 
         $attribute = OptionAttribute::create(
+            AttributeIdentifier::create((string) $referenceEntityIdentifier, $attributeCode, 'fingerprint'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean($valuePerChannel),
+            AttributeValuePerLocale::fromBoolean($valuePerLocale),
+        );
+        $attribute->setOptions(array_map(
+            static fn (string $optionCode) => AttributeOption::create(
+                OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([
+                    'en_US' => sprintf('%s in english', $optionCode),
+                    'fr_FR' => sprintf('%s en français', $optionCode),
+                ]),
+            ),
+            $options,
+        ));
+
+        $attributeRepository->create($attribute);
+    }
+
+    private function createOptionCollectionAttribute(
+        string $referenceEntityIdentifier,
+        string $attributeCode,
+        array $options,
+        int $order,
+        bool $valuePerChannel,
+        bool $valuePerLocale,
+    ): void {
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+
+        $attribute = OptionCollectionAttribute::create(
             AttributeIdentifier::create((string) $referenceEntityIdentifier, $attributeCode, 'fingerprint'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeCode),

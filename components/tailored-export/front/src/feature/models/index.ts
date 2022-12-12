@@ -7,4 +7,5 @@ export * from './ColumnConfiguration';
 export * from './Configurator';
 export * from './MeasurementFamily';
 export * from './ReferenceEntity';
+export * from './separator';
 export * from './Source';

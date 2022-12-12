@@ -3,3 +3,4 @@ parameters:
     - 'text'
     - 'number'
     - 'option'
+    - 'option_collection'

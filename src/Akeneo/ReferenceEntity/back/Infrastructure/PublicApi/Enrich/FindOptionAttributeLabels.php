@@ -15,11 +15,17 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
 
 class FindOptionAttributeLabels implements FindOptionAttributeLabelsInterface
 {
+    private const OPTION_ATTRIBUTE_TYPES = [
+        OptionAttribute::ATTRIBUTE_TYPE,
+        OptionCollectionAttribute::ATTRIBUTE_TYPE,
+    ];
+
     public function __construct(
         private FindAttributesDetailsInterface $findAttributesDetails,
     ) {
@@ -36,7 +42,7 @@ class FindOptionAttributeLabels implements FindOptionAttributeLabelsInterface
 
         if (
             !$attributeDetails instanceof AttributeDetails
-            || OptionAttribute::ATTRIBUTE_TYPE !== $attributeDetails->type
+            || !in_array($attributeDetails->type, self::OPTION_ATTRIBUTE_TYPES)
         ) {
             return [];
         }

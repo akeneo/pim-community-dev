@@ -18,6 +18,7 @@ import {ReferenceEntityCollectionAttributeSelection} from '../../ReferenceEntity
 import {NumberAttributeSelector} from './NumberAttributeSelector';
 import {OptionAttributeSelector} from './OptionAttributeSelector';
 import {AttributeSelectorContainer, InnerField, SubField, SubFields} from './common';
+import {OptionCollectionAttributeSelector} from './OptionCollectionAttributeSelector';
 
 type AttributeSelection = ReferenceEntityAttributeSelection | ReferenceEntityCollectionAttributeSelection;
 
@@ -35,6 +36,7 @@ const attributeSelectors: {
   text: null,
   number: NumberAttributeSelector,
   option: OptionAttributeSelector,
+  option_collection: OptionCollectionAttributeSelector,
 };
 
 const AttributeSelector = <SelectionType extends AttributeSelection>({

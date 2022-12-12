@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\ReferenceEntityCollection;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionAttributeLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionOptionCollectionAttributeLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Select
 use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordsAttributeValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface;
 
-class ReferenceEntityCollectionOptionAttributeLabelSelectionApplier implements SelectionApplierInterface
+class ReferenceEntityCollectionOptionCollectionAttributeLabelSelectionApplier implements SelectionApplierInterface
 {
     public function __construct(
         private FindRecordsAttributeValueInterface $findRecordsAttributeValue,
@@ -31,7 +31,7 @@ class ReferenceEntityCollectionOptionAttributeLabelSelectionApplier implements S
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$value instanceof ReferenceEntityCollectionValue || !$selection instanceof ReferenceEntityCollectionOptionAttributeLabelSelection) {
+        if (!$value instanceof ReferenceEntityCollectionValue || !$selection instanceof ReferenceEntityCollectionOptionCollectionAttributeLabelSelection) {
             throw new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity');
         }
 
@@ -53,13 +53,14 @@ class ReferenceEntityCollectionOptionAttributeLabelSelectionApplier implements S
                 return $value->getMappedValue($recordCode);
             }
 
-            $optionCode = $recordValues[strtolower($recordCode)] ?? null;
+            $optionCodes = $recordValues[strtolower($recordCode)] ?? [];
 
-            if (null === $optionCode) {
-                return '';
-            }
+            $optionLabels = array_map(
+                static fn (string $optionCode) => $optionLabels[strtolower($optionCode)][$selection->getLabelLocale()] ?? sprintf('[%s]', $optionCode),
+                $optionCodes,
+            );
 
-            return $optionLabels[strtolower($optionCode)][$selection->getLabelLocale()] ?? sprintf('[%s]', $optionCode);
+            return implode($selection->getOptionSeparator(), $optionLabels);
         }, $recordCodes);
 
         return implode($selection->getSeparator(), $selectedData);
@@ -67,7 +68,7 @@ class ReferenceEntityCollectionOptionAttributeLabelSelectionApplier implements S
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof ReferenceEntityCollectionOptionAttributeLabelSelection
+        return $selection instanceof ReferenceEntityCollectionOptionCollectionAttributeLabelSelection
             && $value instanceof ReferenceEntityCollectionValue;
     }
 }

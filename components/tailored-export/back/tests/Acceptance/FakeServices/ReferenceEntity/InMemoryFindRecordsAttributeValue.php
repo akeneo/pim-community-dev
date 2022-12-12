@@ -15,7 +15,7 @@ final class InMemoryFindRecordsAttributeValue implements FindRecordsAttributeVal
         string $referenceEntityCode,
         string $recordCode,
         string $referenceEntityAttributeIdentifier,
-        string $value,
+        string|array $value,
         ?string $channel = null,
         ?string $locale = null,
     ): void {

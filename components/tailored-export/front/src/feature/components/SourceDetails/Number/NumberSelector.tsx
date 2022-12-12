@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {Field, SelectInput, Helper, Collapse, Pill} from 'akeneo-design-system';
+import {Collapse, Pill} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {isNumberDecimalSeparator, availableDecimalSeparators, NumberSelection, isDefaultNumberSelection} from './model';
+import {NumberSelection, isDefaultNumberSelection} from './model';
+import {DecimalSeparatorDropdown} from '../../../components';
 
 type NumberSelectorProps = {
   selection: NumberSelection;
@@ -27,35 +28,12 @@ const NumberSelector = ({selection, validationErrors, onSelectionChange}: Number
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >
-      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}>
-        <SelectInput
-          invalid={0 < decimalSeparatorErrors.length}
-          clearable={false}
-          emptyResultLabel={translate('pim_common.no_result')}
-          openLabel={translate('pim_common.open')}
-          value={selection.decimal_separator}
-          onChange={decimal_separator => {
-            if (isNumberDecimalSeparator(decimal_separator)) {
-              onSelectionChange({...selection, decimal_separator});
-            }
-          }}
-        >
-          {Object.entries(availableDecimalSeparators).map(([separator, name]) => (
-            <SelectInput.Option
-              key={separator}
-              title={translate(`akeneo.tailored_export.column_details.sources.selection.decimal_separator.${name}`)}
-              value={separator}
-            >
-              {translate(`akeneo.tailored_export.column_details.sources.selection.decimal_separator.${name}`)}
-            </SelectInput.Option>
-          ))}
-        </SelectInput>
-        {decimalSeparatorErrors.map((error, index) => (
-          <Helper key={index} inline={true} level="error">
-            {translate(error.messageTemplate, error.parameters)}
-          </Helper>
-        ))}
-      </Field>
+      <DecimalSeparatorDropdown
+        label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}
+        value={selection.decimal_separator}
+        validationErrors={decimalSeparatorErrors}
+        onChange={updatedValue => onSelectionChange({...selection, decimal_separator: updatedValue})}
+      />
     </Collapse>
   );
 };

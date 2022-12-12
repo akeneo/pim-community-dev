@@ -20,6 +20,8 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityNumberAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionAttributeLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionCollectionAttributeCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityOptionCollectionAttributeLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityTextAttributeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
@@ -107,6 +109,18 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
                 'value' => new ReferenceEntityValue('starck'),
                 'expected' => [self::TARGET_NAME => '[large]'],
             ],
+            'it selects the record "collection" option collection attribute codes' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityOptionCollectionAttributeCodeSelection('designer', 'collection', ';', null, null),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => 'spring;summer'],
+            ],
+            'it selects the record "collection" option collection attribute labels (with fallback on option codes)' => [
+                'operations' => [],
+                'selection' => new ReferenceEntityOptionCollectionAttributeLabelSelection('designer', 'collection', '|', 'fr_FR', null, null),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => 'Printemps|[summer]'],
+            ],
             'it fallbacks on the record code when the label is not found' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityLabelSelection('en_US', 'designer'),
@@ -164,9 +178,13 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'name', 'Nom');
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'size', '2.67');
         $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'tags', 'large');
+        $findRecordsAttributeValue->addAttributeValue('designer', 'starck', 'collection', ['spring', 'summer']);
 
         /** @var InMemoryFindReferenceEntityOptionAttributeLabels $findOptionAttributeLabels */
         $findOptionAttributeLabels = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindReferenceEntityOptionAttributeLabelsInterface');
         $findOptionAttributeLabels->addOptionLabel('tags', 'large', 'en_US', 'large label');
+        $findOptionAttributeLabels->addOptionLabel('collection', 'spring', 'en_US', 'Spring');
+        $findOptionAttributeLabels->addOptionLabel('collection', 'spring', 'fr_FR', 'Printemps');
+        $findOptionAttributeLabels->addOptionLabel('collection', 'summer', 'en_US', 'Summer');
     }
 }

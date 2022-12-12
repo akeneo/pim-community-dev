@@ -111,6 +111,22 @@ test('it can get the default attribute selection based on the attribute type', (
     locale: 'en_US',
     option_selection: {type: 'code'},
   });
+  expect(
+    getDefaultReferenceEntityAttributeSelection(
+      {...attribute, type: 'option_collection'},
+      'designer',
+      'ecommerce',
+      null
+    )
+  ).toEqual({
+    type: 'attribute',
+    attribute_identifier: 'name_1234',
+    attribute_type: 'option_collection',
+    reference_entity_code: 'designer',
+    channel: 'ecommerce',
+    locale: null,
+    option_selection: {type: 'code', separator: ','},
+  });
 });
 
 test('it throws when the attribute type is unsupported', () => {

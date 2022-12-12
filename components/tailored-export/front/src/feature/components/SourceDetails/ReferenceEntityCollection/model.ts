@@ -1,6 +1,6 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Source, Attribute, ReferenceEntityAttribute} from '../../../models';
+import {Source, Attribute, ReferenceEntityAttribute, DecimalSeparator} from '../../../models';
 import {
   DefaultValueOperation,
   isDefaultValueOperation,
@@ -29,12 +29,17 @@ type ReferenceEntityCollectionAttributeSelection = {
 
 type ReferenceEntityCollectionNumberAttributeSelection = ReferenceEntityCollectionAttributeSelection & {
   attribute_type: 'number';
-  decimal_separator: string;
+  decimal_separator: DecimalSeparator;
 };
 
 type ReferenceEntityCollectionOptionAttributeSelection = ReferenceEntityCollectionAttributeSelection & {
   attribute_type: 'option';
   option_selection: CodeLabelSelection;
+};
+
+type ReferenceEntityCollectionOptionCollectionAttributeSelection = ReferenceEntityCollectionAttributeSelection & {
+  attribute_type: 'option_collection';
+  option_selection: CodeLabelCollectionSelection;
 };
 
 type ReferenceEntityCollectionSelection = CodeLabelCollectionSelection | ReferenceEntityCollectionAttributeSelection;
@@ -69,6 +74,11 @@ const isReferenceEntityCollectionOptionAttributeSelection = (
   selection: any
 ): selection is ReferenceEntityCollectionOptionAttributeSelection =>
   'option' === selection.attribute_type && isReferenceEntityCollectionAttributeSelection(selection);
+
+const isReferenceEntityCollectionOptionCollectionAttributeSelection = (
+  selection: any
+): selection is ReferenceEntityCollectionOptionCollectionAttributeSelection =>
+  'option_collection' === selection.attribute_type && isReferenceEntityCollectionAttributeSelection(selection);
 
 const getDefaultReferenceEntityCollectionSource = (
   attribute: Attribute,
@@ -134,6 +144,11 @@ const getDefaultReferenceEntityCollectionAttributeSelection = (
         ...selection,
         option_selection: {type: 'code'},
       };
+    case 'option_collection':
+      return {
+        ...selection,
+        option_selection: {type: 'code', separator: ','},
+      };
     default:
       throw new Error(`Unsupported attribute type "${attribute.type}"`);
   }
@@ -145,10 +160,12 @@ export type {
   ReferenceEntityCollectionAttributeSelection,
   ReferenceEntityCollectionNumberAttributeSelection,
   ReferenceEntityCollectionOptionAttributeSelection,
+  ReferenceEntityCollectionOptionCollectionAttributeSelection,
 };
 export {
   getDefaultReferenceEntityCollectionAttributeSelection,
   isReferenceEntityCollectionNumberAttributeSelection,
+  isReferenceEntityCollectionOptionCollectionAttributeSelection,
   getDefaultReferenceEntityCollectionSource,
   isDefaultReferenceEntityCollectionSelection,
   isReferenceEntityCollectionSource,

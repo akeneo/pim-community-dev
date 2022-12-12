@@ -1,23 +1,16 @@
 import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {isMeasurementDecimalSeparator, MeasurementDecimalSeparator} from './SourceDetails/Measurement/model';
+import {availableDecimalSeparators, DecimalSeparator, isDecimalSeparator} from '../models';
 
 type DecimalSeparatorDropdownProps = {
   label?: string;
-  value: MeasurementDecimalSeparator;
-  decimalSeparators: {[key: string]: string};
+  value: DecimalSeparator;
   validationErrors: ValidationError[];
-  onChange: (updatedValue: MeasurementDecimalSeparator) => void;
+  onChange: (updatedValue: DecimalSeparator) => void;
 };
 
-const DecimalSeparatorDropdown = ({
-  label,
-  value,
-  decimalSeparators,
-  onChange,
-  validationErrors,
-}: DecimalSeparatorDropdownProps) => {
+const DecimalSeparatorDropdown = ({label, value, onChange, validationErrors}: DecimalSeparatorDropdownProps) => {
   const translate = useTranslate();
 
   return (
@@ -31,12 +24,12 @@ const DecimalSeparatorDropdown = ({
         openLabel={translate('pim_common.open')}
         value={value}
         onChange={decimal_separator => {
-          if (isMeasurementDecimalSeparator(decimal_separator)) {
+          if (isDecimalSeparator(decimal_separator)) {
             onChange(decimal_separator);
           }
         }}
       >
-        {Object.entries(decimalSeparators).map(([separator, name]) => (
+        {Object.entries(availableDecimalSeparators).map(([separator, name]) => (
           <SelectInput.Option
             key={separator}
             title={translate(`akeneo.tailored_export.column_details.sources.selection.decimal_separator.${name}`)}
