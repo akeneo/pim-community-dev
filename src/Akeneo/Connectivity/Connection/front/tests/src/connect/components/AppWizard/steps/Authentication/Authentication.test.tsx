@@ -31,6 +31,7 @@ test('it renders correctly for first connection', async () => {
             appUrl={null}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
+            displayConsent={false}
         />
     );
 
@@ -59,6 +60,7 @@ test('it renders correctly with new scopes required when not already had old sco
             appUrl={null}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
+            displayConsent={false}
         />
     );
 
@@ -87,6 +89,7 @@ test('it renders correctly with new scopes required when already accepted old sc
             appUrl={null}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
+            displayConsent={false}
         />
     );
 

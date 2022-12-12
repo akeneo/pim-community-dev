@@ -13,7 +13,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppSc
 use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
@@ -93,9 +92,7 @@ final class ConfirmAuthorizationAction
                 throw new \LogicException('There is no active app authorization in session');
             }
 
-            if ($appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
-                $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId));
-            }
+            $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId));
         } catch (InvalidAppAuthorizationRequestException | InvalidAppAuthenticationException $exception) {
             $this->logger->warning(
                 \sprintf('App activation failed with validation error "%s"', $exception->getMessage())

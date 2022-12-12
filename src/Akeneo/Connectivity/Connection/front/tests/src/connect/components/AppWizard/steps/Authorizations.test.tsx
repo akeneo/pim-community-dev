@@ -11,7 +11,16 @@ jest.mock('@src/connect/components/AppWizard/ScopeListContainer', () => ({
 test('The authorizations step renders without error', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <Authorizations appName={'MyApp'} scopeMessages={[]} />
+            <Authorizations
+                appName={'MyApp'}
+                scopeMessages={[]}
+                appUrl={''}
+                scopesConsentGiven={false}
+                setScopesConsent={() => null}
+                certificationConsentGiven={false}
+                setCertificationConsent={() => null}
+                displayCertificationConsent={false}
+            />
         </ThemeProvider>
     );
     await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.apps.title'));
