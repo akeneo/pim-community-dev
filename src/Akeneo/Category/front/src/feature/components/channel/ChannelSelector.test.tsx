@@ -3,7 +3,7 @@ import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {ChannelSelector} from 'feature/components/channel/index';
 import userEvent from '@testing-library/user-event';
-import {Channel} from '@akeneo-pim-community/shared';
+import {Channel} from "@akeneo-pim-community/shared";
 
 const locales = [
   {
@@ -23,43 +23,43 @@ const locales = [
 const channels: Channel[] = [
   {
     code: 'ecommerce',
-    labels: {en_US: 'Ecommerce'},
+    labels: {'en_US': 'Ecommerce'},
     locales: locales,
-    category_tree: '1',
+    category_tree: "1",
     conversion_units: ['test'],
     currencies: ['test'],
     meta: {
       created: null,
       form: '',
       id: 1,
-      updated: null,
-    },
+      updated: null
+    }
   },
   {
     code: 'mobile',
-    labels: {en_US: 'Mobile'},
+    labels: {'en_US': 'Mobile'},
     locales: locales,
-    category_tree: '1',
+    category_tree: "1",
     conversion_units: ['test'],
     currencies: ['test'],
     meta: {
       created: null,
       form: '',
       id: 1,
-      updated: null,
-    },
+      updated: null
+    }
   },
 ];
 
 test('It renders the current channel', () => {
-  renderWithProviders(<ChannelSelector values={channels} value={'mobile'} onChange={() => {}} />);
+  renderWithProviders(<ChannelSelector values={channels} value={'mobile'} onChange={() => {}}/>);
 
   expect(screen.getByText(/pim_common.channel/)).toBeInTheDocument();
   expect(screen.getByText(/Mobile/)).toBeInTheDocument();
 });
 
 test('It renders with an unknown channel', async () => {
-  renderWithProviders(<ChannelSelector values={channels} value={'unknown_channel'} onChange={() => {}} />);
+  renderWithProviders(<ChannelSelector values={channels} value={'unknown_channel'} onChange={() => {}}/>);
 
   expect(screen.getByText(/pim_common.channel/)).toBeInTheDocument();
   expect(screen.getByTestId(`ChannelSelector.selection`)).toBeEmptyDOMElement();

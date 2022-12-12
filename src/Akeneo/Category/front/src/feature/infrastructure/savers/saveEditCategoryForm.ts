@@ -2,7 +2,7 @@ import {Router} from '@akeneo-pim-community/shared';
 import {set} from 'lodash/fp';
 
 import {EnrichCategory} from '../../models';
-import {CategoryPermissions} from '../../models/CategoryPermission';
+import {CategoryPermissions} from "../../models/CategoryPermission";
 
 interface EditCategoryResponseOK {
   success: true;
@@ -57,20 +57,19 @@ const saveEditCategoryForm = async (
   category: EnrichCategory,
   options: SaveOptions
 ): Promise<EditCategoryResponse> => {
+  const {applyPermissionsOnChildren, populateResponseCategory = x => x} = options;
+
+  // this is for keeping compatibility at the moment, ideally it should not go into the category data
+  // because it is a modality for saving, not a part of a category state
+  let payload = set(['permissions', 'apply_on_children'], applyPermissionsOnChildren, category);
   const adaptPermissionsToSave = (permissions: CategoryPermissions): CategoryPermissionsToSave => {
     return {
       view: permissions.view.map(permission => permission.id),
       edit: permissions.edit.map(permission => permission.id),
       own: permissions.own.map(permission => permission.id),
-    };
+    }
   };
-  let payload = set(['permissions'], adaptPermissionsToSave(category.permissions), category);
-
-  const {applyPermissionsOnChildren, populateResponseCategory = x => x} = options;
-
-  // this is for keeping compatibility at the moment, ideally it should not go into the category data
-  // because it is a modality for saving, not a part of a category state
-  payload = set(['permissions', 'apply_on_children'], applyPermissionsOnChildren, payload);
+  set(['permissions'], adaptPermissionsToSave(category.permissions), payload);
 
   const response = await fetch(router.generate('pim_enriched_category_rest_update', {id: category.id}), {
     method: 'POST',

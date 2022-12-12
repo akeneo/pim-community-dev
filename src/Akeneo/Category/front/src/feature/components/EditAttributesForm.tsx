@@ -2,7 +2,7 @@ import React, {useCallback, useMemo, useContext, useState} from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Helper} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {ChannelSelector} from './channel';
+import {ChannelSelector} from "./channel";
 import {
   Attribute,
   buildCompositeKey,
@@ -146,8 +146,16 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       <SectionTitle>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <ChannelSelector value={channel} values={channelList} onChange={handleChannelChange} />
-        <LocaleSelector value={locale} values={Object.values(locales)} onChange={handleLocaleChange} />
+        <ChannelSelector
+          value={channel}
+          values={channelList}
+          onChange={handleChannelChange}
+        />
+        <LocaleSelector
+          value={locale}
+          values={Object.values(locales)}
+          onChange={handleLocaleChange}
+        />
       </SectionTitle>
       {attributeFields}
     </FormContainer>

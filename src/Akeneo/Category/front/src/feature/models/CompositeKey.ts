@@ -10,11 +10,7 @@ export type CompositeKeyWithoutLocale = string;
 
 const COMPOSITE_KEY_SEPARATOR = '|';
 
-export function buildCompositeKey(
-  attribute: Attribute,
-  channelCode: ChannelCode | null = null,
-  localeCode: LocaleCode | null = null
-): CompositeKey {
+export function buildCompositeKey(attribute: Attribute, channelCode: ChannelCode | null = null, localeCode: LocaleCode | null = null): CompositeKey {
   const {code, uuid} = attribute;
   const components = [code, uuid];
 

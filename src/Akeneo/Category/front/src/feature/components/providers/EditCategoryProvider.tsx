@@ -65,9 +65,7 @@ const EditCategoryProvider: FC<Props> = ({children, setCanLeavePage}) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <EditCategoryContext.Provider
-        value={{setCanLeavePage, channels, channelsFetchFailed, locales, localesFetchFailed}}
-      >
+      <EditCategoryContext.Provider value={{setCanLeavePage, channels, channelsFetchFailed, locales, localesFetchFailed}}>
         {children}
       </EditCategoryContext.Provider>
     </QueryClientProvider>
