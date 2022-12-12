@@ -106,7 +106,11 @@ function populateCategoryAttributes(
  * @param locales the locales to consider to build attribute values
  * @returns the attributes values
  */
-function buildCategoryAttributeValues(attribute: Attribute, channels: ChannelCode[], locales: LocaleCode[]): CategoryAttributes {
+function buildCategoryAttributeValues(
+  attribute: Attribute,
+  channels: ChannelCode[],
+  locales: LocaleCode[]
+): CategoryAttributes {
   const attributesValues = {};
   const applicableChannels = attribute.is_scopable ? channels : [null];
   const applicableLocales = attribute.is_localizable ? locales : [null];
