@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingCurrenciesQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;

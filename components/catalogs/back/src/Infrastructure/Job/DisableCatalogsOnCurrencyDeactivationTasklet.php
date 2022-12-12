@@ -16,8 +16,8 @@ class DisableCatalogsOnCurrencyDeactivationTasklet implements TaskletInterface
 
     public function __construct(
         private readonly GetCatalogIdsContainingCurrenciesQueryInterface $getCatalogsToDisableQuery,
-        private readonly DisableCatalogQueryInterface                    $disableCatalogsQuery,
-        private readonly DispatchInvalidCatalogDisabledEventInterface    $dispatchInvalidCatalogDisabledEvent,
+        private readonly DisableCatalogQueryInterface $disableCatalogsQuery,
+        private readonly DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
     ) {
     }
 
