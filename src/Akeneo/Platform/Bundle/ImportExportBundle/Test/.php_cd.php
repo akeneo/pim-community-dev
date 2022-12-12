@@ -27,8 +27,10 @@ $rules = [
             'Akeneo\Platform\Bundle\ImportExportBundle\Application',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
 
-            'Akeneo\UserManagement\ServiceApi',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle',
+            'Akeneo\Platform\Bundle\InstallerBundle',
             'Akeneo\Tool',
+            'Akeneo\UserManagement\ServiceApi',
 
             'League\Flysystem',
             'Symfony\Component',

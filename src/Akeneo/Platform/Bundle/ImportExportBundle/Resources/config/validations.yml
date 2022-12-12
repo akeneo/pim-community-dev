@@ -13,6 +13,12 @@ services:
     tags:
       - { name: 'akeneo.import_export.validation.storage_constraint', key: 'local' }
 
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\Local\LocalStorageValidator:
+    arguments:
+      - '@feature_flags'
+    tags:
+      - { name: validator.constraint_validator }
+
   Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\ManualUpload\ManualUploadStorage:
     tags:
       - { name: 'akeneo.import_export.validation.storage_constraint', key: 'manual_upload' }

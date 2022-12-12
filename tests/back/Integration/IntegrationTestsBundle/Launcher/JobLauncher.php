@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
-use Doctrine\DBAL\Driver\Connection;
-use Google\Cloud\PubSub\Message;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Result;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -34,26 +33,20 @@ class JobLauncher
     private const MESSENGER_RECEIVERS = ['data_maintenance_job', 'import_export_job', 'ui_job'];
 
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
-
     const IMPORT_DIRECTORY = 'pim-integration-tests-import';
 
-    private KernelInterface $kernel;
-    private Connection $dbConnection;
-    /** @var PubSubQueueStatus[] */
-    private iterable $pubSubQueueStatuses;
-    private LoggerInterface $logger;
-
+    /**
+     * @param PubSubQueueStatus[] $pubSubQueueStatuses
+     */
     public function __construct(
-        KernelInterface $kernel,
-        Connection $dbConnection,
-        iterable $pubSubQueueStatuses,
-        LoggerInterface $logger
+        private KernelInterface $kernel,
+        private Connection $connection,
+        private iterable $pubSubQueueStatuses,
+        private LoggerInterface $logger,
+        private FilesystemOperator $jobStorageFilesystem,
+        private FilesystemOperator $archivistFilesystem,
     ) {
         Assert::allIsInstanceOf($pubSubQueueStatuses, PubSubQueueStatus::class);
-        $this->kernel = $kernel;
-        $this->dbConnection = $dbConnection;
-        $this->pubSubQueueStatuses = $pubSubQueueStatuses;
-        $this->logger = $logger;
     }
 
     /**
@@ -72,11 +65,7 @@ class JobLauncher
         $application->setAutoExit(false);
 
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.' . $format;
-        if (file_exists($filePath)) {
-            unlink($filePath);
-        }
-
-        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
+        $config['storage'] = ['type' => 'none', 'file_path' => $filePath];
 
         $arrayInput = [
             'command'  => 'akeneo:batch:job',
@@ -99,14 +88,13 @@ class JobLauncher
             throw new \Exception(sprintf('Export failed, "%s".', $output->fetch()));
         }
 
-        if (!is_readable($filePath)) {
+        $jobExecution = $this->getLastJobExecutionInformation($jobCode);
+        $archiveFilename = sprintf('export/%s/%s/output/export.%s', $jobExecution['job_name'], $jobExecution['id'], $format);
+        if (!$this->archivistFilesystem->fileExists($archiveFilename)) {
             return '';
         }
 
-        $content = file_get_contents($filePath);
-        unlink($filePath);
-
-        return $content;
+        return $this->archivistFilesystem->read($archiveFilename);
     }
 
     /**
@@ -142,11 +130,7 @@ class JobLauncher
     public function launchSubProcessExport(string $jobCode, string $username = null, array $config = []) : string
     {
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export_.csv';
-        if (file_exists($filePath)) {
-            unlink($filePath);
-        }
-
-        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
+        $config['storage'] = ['type' => 'none', 'file_path' => $filePath];
 
         $pathFinder = new PhpExecutableFinder();
         $command = [
@@ -166,14 +150,58 @@ class JobLauncher
             throw new \Exception(sprintf('Export failed, "%s".', $process->getOutput() . PHP_EOL . $process->getErrorOutput()));
         }
 
-        if (!is_readable($filePath)) {
+        $jobExecution = $this->getLastJobExecutionInformation($jobCode);
+        $archiveFilename = sprintf('export/%s/%s/output/export_.csv', $jobExecution['job_name'], $jobExecution['id']);
+        if (!$this->archivistFilesystem->fileExists($archiveFilename)) {
             throw new \Exception(sprintf('Exported file "%s" is not readable for the job "%s".', $filePath, $jobCode));
         }
 
-        $content = file_get_contents($filePath);
-        unlink($filePath);
+        return $this->archivistFilesystem->read($archiveFilename);
+    }
 
-        return $content;
+    /**
+     * @param string      $jobCode
+     * @param string      $content
+     *
+     * @throws \Exception
+     */
+    public function launchFixtureImport(
+        string $jobCode,
+        string $content,
+    ) : void {
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+
+        $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. 'pim-integration-tests-import';
+        $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
+        $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
+
+        $fs = new Filesystem();
+        $fs->remove($importDirectoryPath);
+        $fs->remove($fixturesDirectoryPath);
+        $fs->mkdir($importDirectoryPath);
+        $fs->mkdir($fixturesDirectoryPath);
+
+        file_put_contents($filePath, $content);
+
+        $config = ['storage' => ['type' => 'local', 'file_path' => $filePath]];
+
+        $arrayInput = [
+            'command'  => 'akeneo:batch:job',
+            'code'     => $jobCode,
+            '--config' => json_encode($config),
+            '--no-log' => true,
+            '-v'       => true
+        ];
+
+        $input = new ArrayInput($arrayInput);
+
+        $output = new BufferedOutput();
+        $exitCode = $application->run($input, $output);
+
+        if (BatchCommand::EXIT_SUCCESS_CODE !== $exitCode) {
+            throw new \Exception(sprintf('Export failed, "%s".', $output->fetch()));
+        }
     }
 
     /**
@@ -201,20 +229,17 @@ class JobLauncher
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.' . $format;
 
-        $fs = new Filesystem();
-        $fs->remove($importDirectoryPath);
-        $fs->remove($fixturesDirectoryPath);
-        $fs->mkdir($importDirectoryPath);
-        $fs->mkdir($fixturesDirectoryPath);
-
-        file_put_contents($filePath, $content);
+        $this->jobStorageFilesystem->deleteDirectory($importDirectoryPath);
+        $this->jobStorageFilesystem->deleteDirectory($fixturesDirectoryPath);
+        $this->jobStorageFilesystem->write($filePath, $content);
 
         foreach ($fixturePaths as $fixturePath) {
             $fixturesPath = $fixturesDirectoryPath . DIRECTORY_SEPARATOR . basename($fixturePath);
-            $fs->copy($fixturePath, $fixturesPath, true);
+            $content = file_get_contents($fixturesPath);
+            $this->jobStorageFilesystem->write($filePath, $content);
         }
 
-        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
+        $config['storage'] = ['type' => 'manual_upload', 'file_path' => $filePath];
 
         $arrayInput = [
             'command'  => 'akeneo:batch:job',
@@ -258,36 +283,6 @@ class JobLauncher
     }
 
     /**
-     * Wait until a job has been finished.
-     *
-     * @param JobExecution $jobExecution
-     *
-     * @throws \RuntimeException
-     */
-    public function waitCompleteJobExecution(JobExecution $jobExecution): void
-    {
-        $timeout = 0;
-        $isCompleted = false;
-
-        $stmt = $this->dbConnection->prepare('SELECT status from akeneo_batch_job_execution where id = :id');
-
-        while (!$isCompleted) {
-            if ($timeout > 30) {
-                throw new \RuntimeException(sprintf('Timeout: job execution "%s" is not complete.', $jobExecution->getId()));
-            }
-            $stmt->bindValue('id', $jobExecution->getId());
-            $stmt->execute();
-            $result = $stmt->fetch();
-
-            $isCompleted = isset($result['status']) && BatchStatus::COMPLETED === (int) $result['status'];
-
-            $timeout++;
-
-            sleep(1);
-        }
-    }
-
-    /**
      * Indicates whether the queue has a job still not consumed in the queue.
      */
     public function hasJobInQueue(): bool
@@ -300,21 +295,6 @@ class JobLauncher
         }
 
         return false;
-    }
-
-    /**
-     * Returns all the messages in the queues
-     *
-     * @return Message[]
-     */
-    public function getMessagesInQueues(): array
-    {
-        return array_merge(...array_map(
-            fn (PubSubQueueStatus $pubSubQueueStatus): array => $pubSubQueueStatus->getMessagesInQueue(),
-            is_array($this->pubSubQueueStatuses)
-                ? $this->pubSubQueueStatuses
-                : iterator_to_array($this->pubSubQueueStatuses)
-        ));
     }
 
     /**
@@ -404,20 +384,17 @@ class JobLauncher
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
 
-        $fs = new Filesystem();
-        $fs->remove($importDirectoryPath);
-        $fs->remove($fixturesDirectoryPath);
-        $fs->mkdir($importDirectoryPath);
-        $fs->mkdir($fixturesDirectoryPath);
+        $this->jobStorageFilesystem->deleteDirectory($importDirectoryPath);
+        $this->jobStorageFilesystem->deleteDirectory($fixturesDirectoryPath);
+        $this->jobStorageFilesystem->write($filePath, $content);
 
         foreach ($fixturePaths as $fixturePath) {
             $fixturesPath = $fixturesDirectoryPath . DIRECTORY_SEPARATOR . basename($fixturePath);
-            $fs->copy($fixturePath, $fixturesPath, true);
+            $content = file_get_contents($fixturesPath);
+            $this->jobStorageFilesystem->write($filePath, $content);
         }
 
-        file_put_contents($filePath, $content);
-
-        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
+        $config['storage'] = ['type' => 'manual_upload', 'file_path' => $filePath];
 
         $pathFinder = new PhpExecutableFinder();
         $command = [
@@ -483,5 +460,19 @@ class JobLauncher
                 }
             } while (0 < $count);
         }
+    }
+
+    private function getLastJobExecutionInformation(string $jobCode): array
+    {
+        $query = <<<SQL
+            SELECT je.id, ji.job_name
+            FROM akeneo_batch_job_instance ji
+            JOIN akeneo_batch_job_execution je ON je.job_instance_id = ji.id
+            WHERE ji.code = :code
+            ORDER BY je.id DESC
+            LIMIT 1
+        SQL;
+
+        return $this->connection->executeQuery($query, ['code' => $jobCode])->fetchAssociative();
     }
 }

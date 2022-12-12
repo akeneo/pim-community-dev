@@ -15,7 +15,7 @@ import {GoogleCloudStorageConfigurator} from './GoogleCloudStorageConfigurator';
 import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
 
 const featureFlagCollection = {
-  job_automation_local_storage: false,
+  import_export_local_storage: false,
 };
 
 const enableFeatureFlag = (featureFlag: string) => (featureFlagCollection[featureFlag] = true);
@@ -98,7 +98,7 @@ test('it returns storage configurator', () => {
   expect(getStorageConfigurator('none', featureFlags)).toBe(null);
 
   expect(getStorageConfigurator('local', featureFlags)).toBe(null);
-  enableFeatureFlag('job_automation_local_storage');
+  enableFeatureFlag('import_export_local_storage');
   expect(getStorageConfigurator('local', featureFlags)).toBe(LocalStorageConfigurator);
 
   expect(getStorageConfigurator('sftp', featureFlags)).toBe(SftpStorageConfigurator);

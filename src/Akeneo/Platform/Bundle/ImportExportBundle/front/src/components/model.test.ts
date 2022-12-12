@@ -2,7 +2,7 @@ import {FeatureFlags} from '@akeneo-pim-community/shared';
 import {isValidStorageType, getDefaultStorage, isExport, getDefaultFilePath, localStorageIsEnabled} from './model';
 
 const featureFlagCollection = {
-  job_automation_local_storage: false,
+  import_export_local_storage: false,
 };
 
 const enableFeatureFlag = (featureFlag: string) => (featureFlagCollection[featureFlag] = true);
@@ -12,13 +12,13 @@ const featureFlags: FeatureFlags = {
 };
 
 beforeEach(() => {
-  featureFlagCollection.job_automation_local_storage = false;
+  featureFlagCollection.import_export_local_storage = false;
 });
 
 test('it says if a storage type is valid', () => {
   expect(isValidStorageType('local', featureFlags)).toBe(false);
 
-  enableFeatureFlag('job_automation_local_storage');
+  enableFeatureFlag('import_export_local_storage');
 
   expect(isValidStorageType('none', featureFlags)).toBe(true);
   expect(isValidStorageType('local', featureFlags)).toBe(true);
@@ -92,6 +92,6 @@ test('it returns the default file path', () => {
 
 test('it check if local storage is enabled', () => {
   expect(localStorageIsEnabled(featureFlags)).toBe(false);
-  enableFeatureFlag('job_automation_local_storage');
+  enableFeatureFlag('import_export_local_storage');
   expect(localStorageIsEnabled(featureFlags)).toBe(true);
 });

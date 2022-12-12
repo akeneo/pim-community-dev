@@ -6,4 +6,5 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\StorageC
 
 class LocalStorage extends StorageConstraint
 {
+    public const UNAVAILABLE_TYPE = 'pim_import_export.form.job_instance.validation.storage.local.unavailable';
 }

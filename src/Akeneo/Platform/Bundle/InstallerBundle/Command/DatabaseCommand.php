@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Bundle\InstallerBundle\FeatureFlag\InstallContextFeatureFlag;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
@@ -37,15 +38,16 @@ class DatabaseCommand extends Command
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
 
-    protected ?CommandExecutor $commandExecutor;
+    private ?CommandExecutor $commandExecutor = null;
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ClientRegistry $clientRegistry,
-        protected readonly Connection $connection,
+        private readonly Connection $connection,
         private readonly FixtureJobLoader $fixtureJobLoader,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InstallData $installTimeQuery,
+        private InstallContextFeatureFlag $installContextFeatureFlag
     ) {
         parent::__construct();
     }
@@ -110,6 +112,7 @@ class DatabaseCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->installContextFeatureFlag->enable();
         $output->writeln('<info>Prepare database schema</info>');
 
         // Needs to try if database already exists or not
@@ -175,6 +178,7 @@ class DatabaseCommand extends Command
         }
 
         $this->installTimeQuery->withDatetime(new \DateTimeImmutable());
+        $this->installContextFeatureFlag->disable();
 
         return Command::SUCCESS;
     }
@@ -207,6 +211,7 @@ class DatabaseCommand extends Command
                 $catalog
             )
         );
+
         $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
 
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();

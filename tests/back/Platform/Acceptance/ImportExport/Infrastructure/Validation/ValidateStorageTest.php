@@ -11,6 +11,7 @@ class ValidateStorageTest extends AbstractValidationTest
      */
     public function test_it_does_not_build_violations_when_storage_is_valid(array $value): void
     {
+        $this->get('feature_flags')->enable('import_export_local_storage');
         $violations = $this->getValidator()->validate($value, new Storage(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);

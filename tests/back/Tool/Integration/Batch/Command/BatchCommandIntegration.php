@@ -49,7 +49,6 @@ class BatchCommandIntegration extends TestCase
     {
         $output = $this->launchJob(['--username' => 'mary']);
         $jobExecution = $this->getJobExecution();
-
         $this->assertEquals(BatchStatus::COMPLETED, $jobExecution['status']);
         $this->assertNotNull($jobExecution['start_time']);
         $this->assertNotNull($jobExecution['end_time']);
@@ -63,6 +62,7 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobWithConfigOverridden()
     {
+        $this->get('feature_flags')->enable('import_export_local_storage');
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
         if (file_exists($filePath)) {
             unlink($filePath);

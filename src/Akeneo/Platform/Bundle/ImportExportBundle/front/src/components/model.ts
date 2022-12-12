@@ -55,7 +55,7 @@ type StorageType = 'none' | 'local' | 'sftp' | 'amazon_s3' | 'microsoft_azure' |
 const STORAGE_TYPES = ['none', 'sftp', 'amazon_s3', 'microsoft_azure', 'google_cloud_storage'];
 
 const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
-  featureFlags.isEnabled('job_automation_local_storage');
+  featureFlags.isEnabled('import_export_local_storage');
 
 const getEnabledStorageTypes = (featureFlags: FeatureFlags): string[] => {
   const enabledStorageTypes = [...STORAGE_TYPES];

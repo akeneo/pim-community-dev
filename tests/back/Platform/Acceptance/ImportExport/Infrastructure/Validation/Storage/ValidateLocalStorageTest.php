@@ -12,6 +12,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
      */
     public function test_it_does_not_build_violations_when_local_storage_are_valid(array $value): void
     {
+        $this->enableLocalStorageFeatureFlag(true);
         $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);
@@ -21,10 +22,12 @@ class ValidateLocalStorageTest extends AbstractValidationTest
      * @dataProvider invalidLocalStorage
      */
     public function test_it_build_violations_when_local_storage_are_invalid(
+        bool $importExportLocalStorageIsEnabled,
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value,
     ): void {
+        $this->enableLocalStorageFeatureFlag($importExportLocalStorageIsEnabled);
         $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
@@ -52,6 +55,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
     {
         return [
             'invalid storage type' => [
+                true,
                 'This value should be equal to "local".',
                 '[type]',
                 [
@@ -59,6 +63,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
                 ],
             ],
             'local storage with additional fields' => [
+                true,
                 'This field was not expected.',
                 '[additional]',
                 [
@@ -67,6 +72,24 @@ class ValidateLocalStorageTest extends AbstractValidationTest
                     'additional' => 'invalid',
                 ],
             ],
+            'local storage feature flag disabled' => [
+                false,
+                'pim_import_export.form.job_instance.validation.storage.local.unavailable',
+                '[type]',
+                [
+                    'type' => 'local',
+                    'file_path' => '/tmp/products.xlsx',
+                    'additional' => 'invalid',
+                ],
+            ],
         ];
+    }
+
+    private function enableLocalStorageFeatureFlag(bool $enable): void
+    {
+        $this->get('feature_flags')->disable('import_export_local_storage');
+        if ($enable) {
+            $this->get('feature_flags')->enable('import_export_local_storage');
+        }
     }
 }
