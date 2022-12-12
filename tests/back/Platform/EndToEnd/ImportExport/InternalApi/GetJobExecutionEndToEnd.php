@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AkeneoTest\Platform\EndToEnd\ImportExport\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
@@ -130,29 +132,29 @@ SQL;
                 'connector' => 'Akeneo CSV Connector',
                 'type' => 'import',
                 'configuration' =>
-                    [
-                        'storage' => [
-                            'type' => 'local',
-                            'file_path' => '/tmp/footwear_products.csv',
-                        ],
-                        'delimiter' => ';',
-                        'enclosure' => '"',
-                        'escape' => '\\',
-                        'withHeader' => true,
-                        'uploadAllowed' => true,
-                        'invalid_items_file_format' => 'csv',
-                        'users_to_notify' => [],
-                        'is_user_authenticated' => false,
-                        'decimalSeparator' => '.',
-                        'dateFormat' => 'yyyy-MM-dd',
-                        'enabled' => true,
-                        'categoriesColumn' => 'categories',
-                        'familyColumn' => 'family',
-                        'groupsColumn' => 'groups',
-                        'enabledComparison' => true,
-                        'realTimeVersioning' => true,
-                        'convertVariantToSimple' => false,
+                [
+                    'storage' => [
+                        'type' => 'local',
+                        'file_path' => '/tmp/footwear_products.csv',
                     ],
+                    'delimiter' => ';',
+                    'enclosure' => '"',
+                    'escape' => '\\',
+                    'withHeader' => true,
+                    'uploadAllowed' => true,
+                    'invalid_items_file_format' => 'csv',
+                    'users_to_notify' => [],
+                    'is_user_authenticated' => false,
+                    'decimalSeparator' => '.',
+                    'dateFormat' => 'yyyy-MM-dd',
+                    'enabled' => true,
+                    'categoriesColumn' => 'categories',
+                    'familyColumn' => 'family',
+                    'groupsColumn' => 'groups',
+                    'enabledComparison' => true,
+                    'realTimeVersioning' => true,
+                    'convertVariantToSimple' => false,
+                ],
                 'automation' => null,
                 'scheduled' => false,
             ],
@@ -163,6 +165,17 @@ SQL;
                 'currentStep' => 3,
                 'totalSteps' => 4,
                 'steps' => [
+                    [
+                        'jobName' => 'csv_product_import',
+                        'stepName' => 'download_files',
+                        'status' => 'STARTING',
+                        'isTrackable' => false,
+                        'hasWarning' => false,
+                        'hasError' => false,
+                        'duration' => 0,
+                        'processedItems' => 0,
+                        'totalItems' => 0,
+                    ],
                     [
                         'jobName' => 'csv_product_import',
                         'stepName' => 'validation',
