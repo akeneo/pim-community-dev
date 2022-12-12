@@ -29,7 +29,15 @@ final class GetCatalogIdsContainingCurrenciesQueryTest extends IntegrationTestCa
         $this->query = self::getContainer()->get(GetCatalogIdsContainingCurrenciesQuery::class);
     }
 
-    public function testItGetsCatalogsByCurrency(): void
+    /**
+     * @dataProvider catalogsByCurrenciesDataProvider
+     */
+    public function testItGetsCatalogsByCurrency(
+        array $currenciesFirstCatalog,
+        array $currenciesSecondCatalog,
+        array $currenciesQueried,
+        array $expectedCatalogs,
+    ): void
     {
         $this->createUser('shopifi');
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
@@ -45,19 +53,43 @@ final class GetCatalogIdsContainingCurrenciesQueryTest extends IntegrationTestCa
         $this->enableCatalog($catalogIdUK);
 
         $this->setCatalogProductValueFilters($catalogIdUS, [
-            'currencies' => ['USD', 'EUR'],
+            'currencies' => $currenciesFirstCatalog,
         ]);
         $this->setCatalogProductValueFilters($catalogIdFR, [
-            'currencies' => ['EUR'],
+            'currencies' => $currenciesSecondCatalog,
         ]);
 
-        $resultBothCatalogs = $this->query->execute(['EUR']);
-        $this->assertEquals([$catalogIdUS, $catalogIdFR], $resultBothCatalogs);
+        $resultBothCatalogs = $this->query->execute($currenciesQueried);
+        $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
+    }
 
-        $resultUSDCatalog = $this->query->execute(['USD']);
-        $this->assertEquals([$catalogIdUS], $resultUSDCatalog);
-
-        $resultNoCatalog = $this->query->execute(['GBP']);
-        $this->assertEquals([], $resultNoCatalog);
+    public function catalogsByCurrenciesDataProvider(): array
+    {
+        return [
+            'gets two catalogs with two currencies' => [
+                'currencies_first_catalog' => ['USD'],
+                'currencies_second_catalog' => ['EUR'],
+                'currencies_queried' => ['USD', 'EUR'],
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+            ],
+            'gets two catalogs with one currency' => [
+                'currencies_first_catalog' => ['USD', 'EUR'],
+                'currencies_second_catalog' => ['EUR'],
+                'currencies_queried' => ['EUR'],
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+            ],
+            'gets only one catalog with one currency' => [
+                'currencies_first_catalog' => ['USD', 'EUR'],
+                'currencies_second_catalog' => ['EUR'],
+                'currencies_queried' => ['USD'],
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c']
+            ],
+            'gets no catalogs with one currency' => [
+                'currencies_first_catalog' => ['USD', 'EUR'],
+                'currencies_second_catalog' => ['EUR'],
+                'currencies_queried' => ['GBP'],
+                'expected_catalog' => []
+            ],
+        ];
     }
 }
