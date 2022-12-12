@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Enabled;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -63,5 +64,12 @@ class EnabledSpec extends ObjectBehavior
             'value' => 'abc',
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_matches_only_enabled_products(): void
+    {
+        $this->beConstructedThrough('fromBoolean', [true]);
+        $this->match(new ProductProjection('', true))->shouldReturn(true);
+        $this->match(new ProductProjection('', false))->shouldReturn(false);
     }
 }

@@ -11,12 +11,18 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 final class ProductProjection
 {
     public function __construct(
-        private ?string $identifier
+        private ?string $identifier,
+        private bool $enabled,
     ) {
     }
 
     public function identifier(): ?string
     {
         return $this->identifier;
+    }
+
+    public function enabled(): bool
+    {
+        return $this->enabled;
     }
 }
