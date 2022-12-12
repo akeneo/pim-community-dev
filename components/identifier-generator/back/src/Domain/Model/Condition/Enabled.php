@@ -18,11 +18,14 @@ class Enabled implements ConditionInterface
         return 'enabled';
     }
 
-    public static function fromBoolean(bool $value)
+    public static function fromBoolean(bool $value): self
     {
         return new self($value);
     }
 
+    /**
+     * @param array<string, boolean> $normalizedProperty
+     */
     public static function fromNormalized(array $normalizedProperty): ConditionInterface
     {
         Assert::keyExists($normalizedProperty, 'type');
@@ -33,6 +36,9 @@ class Enabled implements ConditionInterface
         return self::fromBoolean($normalizedProperty['value']);
     }
 
+    /**
+     * @return array<string, boolean|string>
+     */
     public function normalize(): array
     {
         return [

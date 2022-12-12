@@ -10,5 +10,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
  */
 interface ConditionInterface
 {
+    /**
+     * @return array<string, boolean|string>
+     */
     public function normalize(): array;
 }

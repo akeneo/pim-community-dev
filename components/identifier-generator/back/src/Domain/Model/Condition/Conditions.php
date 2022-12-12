@@ -17,7 +17,7 @@ final class Conditions
      * @param ConditionInterface[] $conditions
      */
     private function __construct(
-        private array $conditions, // @phpstan-ignore-line
+        private array $conditions,
     ) {
     }
 
