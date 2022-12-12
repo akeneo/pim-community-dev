@@ -12,8 +12,10 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductsQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +41,7 @@ class GetProductsAction
         private TokenStorageInterface $tokenStorage,
         private SecurityFacadeInterface $security,
         private RouterInterface $router,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -75,6 +78,8 @@ class GetProductsAction
                 Response::HTTP_OK,
             );
         }
+
+        $this->eventDispatcher->dispatch(new ReadProductsEvent(\count($products)));
 
         return new JsonResponse(
             $this->paginate($catalog, $products, $searchAfter, $limit, $updatedAfter, $updatedBefore),
