@@ -82,6 +82,13 @@ services:
       - { name: validator.constraint_validator }
     public: true
 
+  Akeneo\Platform\Syndication\Infrastructure\Validation\FiltersValidator:
+    arguments:
+      - '@Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface'
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
   Akeneo\Platform\Syndication\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionValidator:
     arguments:
       - [',', ';', '|']

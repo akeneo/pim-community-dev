@@ -106,6 +106,7 @@ $rules = [
             'Psr\Log\LoggerInterface',
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\BundlesDataCollector',
+            'Akeneo\Catalogs',
         ],
     )->in('Akeneo\Platform\Syndication\Infrastructure'),
 ];

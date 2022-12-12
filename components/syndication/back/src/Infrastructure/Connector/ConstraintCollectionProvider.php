@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Syndication\Infrastructure\Connector;
 
 use Akeneo\Platform\Syndication\Infrastructure\Validation\Columns;
-use Akeneo\Platform\Syndication\Infrastructure\Validation\ProductFilters;
+use Akeneo\Platform\Syndication\Infrastructure\Validation\Filters;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Uuid;
@@ -63,7 +62,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                 'code' => new Type('string'),
                 'label' => new Assert\Optional(new Type('string')),
                 'dataMappings' => new Columns(),
-                'filters' => new ProductFilters()
+                'filters' => new Filters()
             ]
         ]);
 

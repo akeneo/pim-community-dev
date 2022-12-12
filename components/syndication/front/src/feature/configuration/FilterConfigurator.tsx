@@ -1,6 +1,7 @@
-import React, {useMemo, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {useValidationErrors} from './contexts';
 
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {ProductSelection, ProductSelectionValues} from '@akeneo-pim-community/catalogs';
 import {Filter} from '../configuration/models';
 
@@ -15,43 +16,33 @@ type FilterConfiguratorProps = {
 const FilterConfigurator = ({key, filters, onFiltersConfigurationChange}: FilterConfiguratorProps) => {
   const validationErrors = useValidationErrors(`[filters]`, false);
 
-  const criteria = useMemo(
-    () =>
-      Object.fromEntries(
-        filters.map((filter: Filter) => [
-          filter.uuid ?? generateRandomId(),
-          {...filter, locale: filter?.context?.locale ?? null, scope: filter?.context?.scope ?? null},
-        ])
-      ),
-    [filters]
-  );
+  const errors = validationErrors.reduce((accumulator: Record<string, string[]>, error: ValidationError) => {
+    const extractRegex = /^\[([a-z0-9]*)\]/;
+    const propertyId = extractRegex.exec(error.propertyPath);
+
+    if (null === propertyId) {
+      return accumulator;
+    }
+
+    if ('string' !== typeof propertyId[1]) {
+      return accumulator;
+    }
+
+    const existingErrors = accumulator[propertyId[1]] || [];
+
+    return {[propertyId[1]]: [...existingErrors, error.message]};
+  }, {});
 
   const handleCriteriaChange = useCallback(
     (criteria: ProductSelectionValues) => {
-      const updatedFilters = Object.keys(criteria).map((filterKey: string) => {
-        const filter = criteria[filterKey];
-
-        return {
-          field: filter.field,
-          uuid: filterKey,
-          operator: filter.operator,
-          value: filter.value,
-          context: {
-            locale: filter.locale ?? null,
-            channel: filter.scope ?? null,
-            scope: filter.scope ?? null,
-          },
-        };
-      });
-
-      if (JSON.stringify(updatedFilters) !== JSON.stringify(filters)) {
-        onFiltersConfigurationChange(updatedFilters);
+      if (JSON.stringify(criteria) !== JSON.stringify(filters)) {
+        onFiltersConfigurationChange(criteria);
       }
     },
     [onFiltersConfigurationChange, filters]
   );
 
-  return <ProductSelection key={key} criteria={criteria} onChange={handleCriteriaChange} errors={validationErrors} />;
+  return <ProductSelection key={key} criteria={filters} onChange={handleCriteriaChange} errors={errors} />;
 };
 
 export {FilterConfigurator};

@@ -141,28 +141,7 @@ class GetProductModelIdentifiersAction
             throw new HttpException(404, 'Catalog projection not found');
         }
 
-        $filters = [...$catalog['filters'], ['field' => 'parent', 'operator' => 'EMPTY']];
-
-        return array_reduce($filters, function (array $accumulator, array $filter) {
-            if ('enabled' === $filter['field']) {
-                return $accumulator;
-            }
-
-            $locale = isset($filter['context']['locale']) ? $filter['context']['locale'] : null;
-            $locales = isset($filter['context']['locales']) ? $filter['context']['locales'] : null;
-            $scope = isset($filter['context']['channel']) ? $filter['context']['channel'] : null;
-
-            return array_merge(
-                $accumulator,
-                [$filter['field'] => [array_filter([
-                    'operator' => $filter['operator'],
-                    'value' => $filter['value'] ?? '',
-                    'locale' => $locale,
-                    'locales' => $locales,
-                    'scope' => $scope,
-                ])]],
-            );
-        }, []);
+        return [...$catalog['filters'], ['field' => 'parent', 'operator' => 'EMPTY']];
     }
 
     private function deniedAccessMessage(string $acl): string
