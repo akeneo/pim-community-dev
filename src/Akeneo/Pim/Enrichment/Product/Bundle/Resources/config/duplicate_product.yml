@@ -8,6 +8,8 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_user.context.user'
             - '@pim_internal_api_serializer'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Presenter\UnableToSetIdentifierExceptionPresenter'
 
     pimee_enrich.product.duplicate_product_handler:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler'

@@ -25,6 +25,7 @@ interface Config {
 interface DuplicatedProductResponse {
   duplicated_product: any;
   unique_attribute_codes: string[];
+  identifier_generator_warnings?: { path: string, message: string }[];
 }
 
 class DuplicateModal extends BaseView {
@@ -97,6 +98,18 @@ class DuplicateModal extends BaseView {
   }
 
   private notifySuccessMessage(duplicatedProductResponse: DuplicatedProductResponse) {
+    if (duplicatedProductResponse.identifier_generator_warnings) {
+      const normalizedWarnings = duplicatedProductResponse.identifier_generator_warnings.map(warning => {
+        return `${warning.path}: ${warning.message} `;
+      });
+
+      messenger.notify(
+        'warning',
+        __('pim_enrich.entity.product.flash.update.identifier_warning'),
+        normalizedWarnings
+      );
+    }
+
     if (duplicatedProductResponse.unique_attribute_codes.length === 0) {
       messenger.notify(
         'success',

@@ -11,6 +11,8 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\API\Presenter\UnableToSetIdentifierExceptionPresenterInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\API\Subscriber\UnableToSetIdentifiersSubscriberInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -34,7 +36,9 @@ class DuplicateProductController
         private DuplicateProductHandler $duplicateProductHandler,
         private NormalizerInterface $constraintViolationNormalizer,
         private UserContext $userContext,
-        private NormalizerInterface $normalizer
+        private NormalizerInterface $normalizer,
+        private UnableToSetIdentifiersSubscriberInterface $unableToSetIdentifiersSubscriber,
+        private UnableToSetIdentifierExceptionPresenterInterface $unableToSetIdentifierExceptionPresenter,
     ) {
     }
 
@@ -74,16 +78,21 @@ class DuplicateProductController
 
 
         if ($duplicateProductResponse->isOk()) {
-            return new JsonResponse(
-                [
-                    'duplicated_product' => $this->normalizer->normalize(
-                        $duplicateProductResponse->duplicatedProduct(),
-                        'internal_api'
-                    ),
-                    'unique_attribute_codes' => $duplicateProductResponse->uniqueAttributeValues()
-                ],
-                Response::HTTP_OK
-            );
+            $response = [
+                'duplicated_product' => $this->normalizer->normalize(
+                    $duplicateProductResponse->duplicatedProduct(),
+                    'internal_api'
+                ),
+                'unique_attribute_codes' => $duplicateProductResponse->uniqueAttributeValues()
+            ];
+
+            $events = $this->unableToSetIdentifiersSubscriber->getEvents();
+            if (\count($events) > 0) {
+                $response['identifier_generator_warnings'] =
+                    $this->unableToSetIdentifierExceptionPresenter->present($events[0]->getException());
+            }
+
+            return new JsonResponse($response, Response::HTTP_OK);
         }
 
         $normalizedViolations = [];
