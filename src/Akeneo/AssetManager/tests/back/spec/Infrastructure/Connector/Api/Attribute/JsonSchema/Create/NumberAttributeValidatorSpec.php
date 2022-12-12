@@ -110,7 +110,7 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_code_is_not_a_string()
+    function it_returns_errors_when_code_is_not_a_string()
     {
         $attribute = [
             'code' => 1,
@@ -121,10 +121,10 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_type_is_not_a_string()
+    function it_returns_errors_when_type_is_not_a_string()
     {
         $attribute = [
             'code' => 'view_number',
@@ -135,10 +135,10 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_channel_is_not_a_boolean()
+    function it_returns_errors_when_channel_is_not_a_boolean()
     {
         $attribute = [
             'code' => 'view_number',
@@ -149,10 +149,10 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_locale_is_not_a_boolean()
+    function it_returns_errors_when_locale_is_not_a_boolean()
     {
         $attribute = [
             'code' => 'View_number',
@@ -163,10 +163,10 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_labels_has_a_wrong_format()
+    function it_returns_errors_when_labels_has_a_wrong_format()
     {
         $attribute = [
             'code' => 'view_number',
@@ -180,10 +180,10 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(3);
     }
 
-    function it_returns_an_error_when_is_required_for_completeness_is_not_a_boolean()
+    function it_returns_errors_when_is_required_for_completeness_is_not_a_boolean()
     {
         $attribute = [
             'code' => 'view_number',
@@ -195,10 +195,10 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_decimals_allowed_is_not_a_boolean()
+    function it_returns_errors_when_decimals_allowed_is_not_a_boolean()
     {
         $attribute = [
             'code' => 'view_number',
@@ -210,10 +210,10 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_min_value_is_not_a_string_or_an_integer()
+    function it_returns_errors_when_min_value_is_not_a_string_or_an_integer()
     {
         $attribute = [
             'code' => 'view_number',
@@ -225,10 +225,10 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 
-    function it_returns_an_error_when_max_value_is_not_a_string_or_an_integer()
+    function it_returns_errors_when_max_value_is_not_a_string_or_an_integer()
     {
         $attribute = [
             'code' => 'starck',
@@ -240,6 +240,6 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($attribute);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
+        $errors->shouldHaveCount(2);
     }
 }

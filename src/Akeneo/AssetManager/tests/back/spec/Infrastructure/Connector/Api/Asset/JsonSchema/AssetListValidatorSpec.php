@@ -34,7 +34,7 @@ class AssetListValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($assetList);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(2);
+        $errors->shouldHaveCount(3);
     }
 
     function it_returns_an_empty_array_if_the_list_of_assets_is_valid()

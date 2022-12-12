@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 /**
- * Validate the structure of a assets list (but not the assets themselves).
+ * Validate the structure of an assets list (but not the assets themselves).
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -26,11 +29,25 @@ class AssetListValidator
     public function validate(array $normalizedAssetList): array
     {
         $validator = new Validator();
-        $normalizedAssetListObject = json_decode(json_encode($normalizedAssetList));
+        $validator->setMaxErrors(50);
 
-        $validator->validate($normalizedAssetListObject, $this->getJsonSchema());
+        $result = $validator->validate(
+            Helper::toJSON($normalizedAssetList),
+            Helper::toJSON($this->getJsonSchema()),
+        );
 
-        return $validator->getErrors();
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     private function getJsonSchema(): array

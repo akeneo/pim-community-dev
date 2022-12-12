@@ -49,7 +49,7 @@ class MediaFileTypeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($asset);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(2);
+        $errors->shouldHaveCount(6);
     }
 
     function it_returns_an_empty_array_if_all_the_asset_values_are_valid()

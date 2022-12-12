@@ -171,75 +171,27 @@
         "status": 422,
         "body": {
             "code": 422,
-            "message": "The asset family has data that does not comply with the business rules.",
+            "message": "The asset family has an invalid format.",
             "errors": [
                 {
-                    "property": "transformations[0][target]",
-                    "message": "The attribute \"unknown\" does not exist for this asset family"
+                    "message": "The properties must match schema: transformations",
+                    "property": ""
                 },
                 {
-                    "property": "transformations[1][source]",
-                    "message": "Attribute \"main_image\" is not scopable, you cannot define a channel"
+                    "message": "All array items must match schema",
+                    "property": "transformations"
                 },
                 {
-                    "property": "transformations[1][operations][0]",
-                    "message": "Operation \"unknown\" is unknown."
+                    "message": "The properties must match schema: operations",
+                    "property": "transformations[10]"
                 },
                 {
-                    "property": "transformations[1][operations][1]",
-                    "message": "No parameter is provided for 'thumbnail' operation. At least one of parameter 'width' and 'height' must be defined."
+                    "message": "All array items must match schema",
+                    "property": "transformations[10].operations"
                 },
                 {
-                    "property": "transformations[1][operations][2]",
-                    "message": "No parameter is provided for 'scale' operation. At least one of parameter 'width', 'height' and 'ratio' must be defined."
-                },
-                {
-                    "property": "transformations[1][filename_prefix]",
-                    "message": "Filename prefix contains illegal character. Allowed characters are alphanumerics, '_', '-', '.', and space."
-                },
-                {
-                    "property": "transformations[2][operations][2]",
-                    "message": "Parameter 'quality' must be between 1 and 100."
-                },
-                {
-                    "property": "transformations[2][operations]",
-                    "message": "The operation \"thumbnail\" cannot be defined twice in a single transformation"
-                },
-                {
-                    "property": "transformations[3][target]",
-                    "message": "The target attribute should be of type media file."
-                },
-                {
-                    "property": "transformations[4][source]",
-                    "message": "The source attribute should be of type media file."
-                },
-                {
-                    "property": "transformations[5][operations]",
-                    "message": "At least one transformation operation is required."
-                },
-                {
-                    "property": "transformations[10][operations][0][foo]",
-                    "message": "The property \"foo\" was not expected."
-                },
-                {
-                    "property": "transformations[10]",
-                    "message": "You should have at least either the properties filename_prefix or filename_suffix and one of them should not be empty strings."
-                },
-                {
-                    "property": "transformations",
-                    "message": "Two transformations cannot have the same target."
-                },
-                {
-                    "property": "transformations",
-                    "message": "You have reached the limit of 10 transformations"
-                },
-                {
-                    "property": "transformations",
-                    "message": "The attribute source \"test_scopable_localizable\" can not be an attribute target of a transformation."
-                },
-                {
-                    "property": "transformations",
-                    "message": "A transformation with filename's prefix \"\" and suffix \"_2\" already exists for attribute source \"main_image\""
+                    "message": "Additional object properties are not allowed: foo",
+                    "property": "transformations[10].operations[0]"
                 }
             ]
         }

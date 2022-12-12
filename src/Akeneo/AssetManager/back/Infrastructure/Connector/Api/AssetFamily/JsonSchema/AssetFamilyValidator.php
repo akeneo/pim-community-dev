@@ -13,18 +13,36 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema;
 
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 class AssetFamilyValidator
 {
     public function validate(array $normalizedAsset): array
     {
-        $normalizedAsset['labels'] =  empty($normalizedAsset['labels']) ? (object) [] : $normalizedAsset['labels'] ;
+        $normalizedAsset['labels'] =  empty($normalizedAsset['labels']) ? (object) [] : $normalizedAsset['labels'];
         $validator = new Validator();
-        $normalizedAssetObject = Validator::arrayToObjectRecursive($normalizedAsset);
-        $validator->validate($normalizedAssetObject, $this->getJsonSchema());
+        $validator->setMaxErrors(50);
 
-        return $validator->getErrors();
+        $result = $validator->validate(
+            Helper::toJSON($normalizedAsset),
+            Helper::toJSON($this->getJsonSchema()),
+        );
+
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     private function getJsonSchema(): array
@@ -151,9 +169,9 @@ class AssetFamilyValidator
                                         'parameters' => [
                                             'type' => ['object', 'null', 'array'],
                                         ],
-                                        'required' => ['type'],
-                                        'additionalProperties' => false,
                                     ],
+                                    'required' => ['type'],
+                                    'additionalProperties' => false,
                                 ],
                             ],
                             'filename_prefix' => [

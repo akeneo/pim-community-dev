@@ -32,7 +32,7 @@ class AssetPropertiesValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($asset);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(3);
+        $errors->shouldHaveCount(1);
     }
 
 

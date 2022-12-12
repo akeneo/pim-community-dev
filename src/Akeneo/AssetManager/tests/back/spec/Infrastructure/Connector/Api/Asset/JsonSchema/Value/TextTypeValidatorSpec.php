@@ -56,7 +56,7 @@ class TextTypeValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($asset);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(4);
+        $errors->shouldHaveCount(8);
     }
 
     function it_returns_an_empty_array_if_all_the_asset_values_are_valid()
