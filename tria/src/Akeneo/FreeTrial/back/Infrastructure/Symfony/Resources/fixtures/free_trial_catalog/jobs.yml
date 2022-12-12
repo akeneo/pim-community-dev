@@ -821,3 +821,8 @@ jobs:
         alias:     versioning_refresh
         label:     Refresh versioning for any updated entities
         type:      scheduled_job
+    disable_catalogs_on_currency_deactivation:
+        connector: internal
+        alias:     disable_catalogs_on_currency_deactivation
+        label:     Disable catalogs on currency deactivation
+        type:      disable_catalogs_on_currency_deactivation
