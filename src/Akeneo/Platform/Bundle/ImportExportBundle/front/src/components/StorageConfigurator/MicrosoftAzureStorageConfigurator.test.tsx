@@ -231,6 +231,31 @@ test('it can check connection', async () => {
   });
 
   expect(checkButton).toBeDisabled();
+  expect(screen.getByText('pim_import_export.form.job_instance.connection_checker.exception')).not.toBeInTheDocument();
+});
+
+test('it cannot check connection if a field is empty', async () => {
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
+    file_path: '/tmp/file.xlsx',
+    connection_string: '',
+    container_name: 'container_name',
+  };
+
+  const onStorageChange = jest.fn();
+
+  renderWithProviders(
+      <MicrosoftAzureStorageConfigurator
+          storage={storage}
+          fileExtension="xlsx"
+          validationErrors={[]}
+          onStorageChange={onStorageChange}
+      />
+  );
+
+  const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');
+
+  expect(checkButton).toBeDisabled();
 });
 
 test('it can check connection, display message if error', async () => {
