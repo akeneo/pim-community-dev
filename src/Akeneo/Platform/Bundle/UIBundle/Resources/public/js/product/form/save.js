@@ -68,9 +68,9 @@ define([
         .fail(this.fail.bind(this))
         .then(
           function (data) {
-            if (data.meta.identifier_generator_warnings) {
+            if (data.meta?.identifier_generator_warnings) {
               const normalizedWarnings = data.meta.identifier_generator_warnings.map(warning => {
-                return `${warning.path}: ${warning.message}`;
+                return `${warning.path}: ${warning.message} `;
               });
 
               messenger.notify('warning', this.updateIdentifierWarningMessage, normalizedWarnings);

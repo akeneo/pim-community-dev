@@ -8,12 +8,16 @@ define(['underscore', 'oro/translator', 'oro/messenger', 'pim/form/common/creati
 ) {
   return BaseModal.extend({
     postSuccess(entity) {
-      if (entity.meta.identifier_generator_warnings) {
+      if (entity.meta?.identifier_generator_warnings) {
         const normalizedWarnings = entity.meta.identifier_generator_warnings.map(warning => {
-          return `${warning.path}: ${warning.message}`;
+          return `${warning.path}: ${warning.message} `;
         });
 
-        messenger.notify('warning', this.updateIdentifierWarningMessage, normalizedWarnings);
+        messenger.notify(
+          'warning',
+          __('pim_enrich.entity.product.flash.update.identifier_warning'),
+          normalizedWarnings
+        );
       }
       messenger.notify('success', __(this.config.successMessage));
     },

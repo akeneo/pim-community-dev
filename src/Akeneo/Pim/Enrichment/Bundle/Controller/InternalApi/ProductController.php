@@ -153,14 +153,10 @@ class ProductController
                 $this->getNormalizationContext()
             );
 
-            if (\count($this->unableToSetIdentifiersSubscriber->getEvents()) > 0) {
-                if (!\array_key_exists('meta', $normalizedProduct)) {
-                    $normalizedProduct['meta'] = [];
-                }
+            $events = $this->unableToSetIdentifiersSubscriber->getEvents();
+            if (\count($events) > 0) {
                 $normalizedProduct['meta']['identifier_generator_warnings'] =
-                    $this->unableToSetIdentifierExceptionPresenter->fromException(
-                        $this->unableToSetIdentifiersSubscriber->getEvents()[0]->getException()
-                    );
+                    $this->unableToSetIdentifierExceptionPresenter->present($events[0]->getException());
             }
 
             return new JsonResponse($normalizedProduct);

@@ -61,6 +61,9 @@ final class UnableToSetIdentifiersSubscriber implements EventSubscriberInterface
      */
     public function getEvents(): array
     {
-        return $this->events;
+        $events = $this->events;
+        $this->events = [];
+
+        return $events;
     }
 }
