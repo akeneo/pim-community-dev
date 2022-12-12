@@ -1,6 +1,6 @@
 import {Aggregation, Metric, PredefinedComparison, PredefinedPeriod} from '../../Common';
 
-type TimeToEnrichFilters = {
+export type TimeToEnrichFilters = {
   metric: Metric;
   period: PredefinedPeriod;
   aggregation: Aggregation;
@@ -9,6 +9,8 @@ type TimeToEnrichFilters = {
   channels: string[];
   locales: string[];
 };
+
+export type TimeToEnrichEntityType = 'family' | 'category';
 
 const getFirstDayOfTheWeek = (date: Date): Date => {
   const day = date.getDay();
@@ -50,5 +52,4 @@ const getPeriodType: (filters: TimeToEnrichFilters) => string = filters => {
   return 'week';
 };
 
-export type {TimeToEnrichFilters};
 export {getStartDate, getEndDate, getPeriodType};

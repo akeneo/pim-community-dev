@@ -19,44 +19,23 @@ use Akeneo\PerformanceAnalytics\Application\Command\ProductIsEnriched;
 use Akeneo\PerformanceAnalytics\Domain\ChannelCode;
 use Akeneo\PerformanceAnalytics\Domain\LocaleCode;
 use Akeneo\PerformanceAnalytics\Domain\Product\ProductWasEnrichedMessage;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\PerformanceAnalytics\Integration\PerformanceAnalyticsTestCase;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\Client;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory;
 use Google\Cloud\PubSub\Message;
 use Google\Cloud\PubSub\Subscription;
-use PHPUnit\Framework\Assert;
-use Symfony\Component\Messenger\MessageBusInterface;
 
-final class NotifyProductsAreEnrichedIntegration extends TestCase
+final class NotifyProductsAreEnrichedIntegration extends PerformanceAnalyticsTestCase
 {
     private Subscription $subscription;
-    private MessageBusInterface $messageBus;
-    private ProductRepositoryInterface $productRepository;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useTechnicalCatalog();
-    }
 
     protected function setUp(): void
     {
         putenv('PFID=fake_pfid');
         putenv('APP_TENANT_ID=fake_tenant_id');
         parent::setUp();
-
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-        $this->messageBus = $this->get('pim_enrich.product.message_bus');
-        $this->productRepository = $this->get('pim_catalog.repository.product');
 
         $client = Client::fromDsn($this->get(PubSubClientFactory::class), 'gps:', [
             'project_id' => 'emulator-project', // Project id is hardcoded when emulator is enabled
@@ -76,8 +55,19 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
 
     public function testItNotifiesProductsAreEnriched(): void
     {
-        $product1 = $this->createProduct('product1', 'familyA', ['categoryA', 'categoryC']);
-        $product2 = $this->createProduct('product2', 'familyA1', ['categoryB']);
+        $this->createCategory(['code' => 'categoryA', 'parent' => 'master']);
+        $this->createCategory(['code' => 'categoryB', 'parent' => 'master']);
+        $this->createCategory(['code' => 'categoryC', 'parent' => 'master']);
+        $this->createFamily('familyA', ['attributes' => ['sku']]);
+        $this->createFamily('familyA1', ['attributes' => ['sku']]);
+        $product1 = $this->createProduct('product1', [
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA', 'categoryC']),
+        ]);
+        $product2 = $this->createProduct('product2', [
+            new SetFamily('familyA1'),
+            new SetCategories(['categoryB']),
+        ]);
 
         $notifierProductsAreEnriched = new NotifyProductsAreEnriched([
             new ProductIsEnriched(
@@ -158,28 +148,6 @@ final class NotifyProductsAreEnrichedIntegration extends TestCase
             'enriched_at' => '2022-02-28T00:00:00+00:00',
             'author_id' => '1',
         ], $message3);
-    }
-
-    private function createProduct(
-        string $identifier,
-        string $familyCode,
-        array $categories
-    ): ProductInterface {
-        $command = UpsertProductCommand::createWithIdentifier(userId: $this->getUserId('admin'), productIdentifier: ProductIdentifier::fromIdentifier($identifier), userIntents: [
-            new SetFamily($familyCode),
-            new SetCategories($categories),
-        ]);
-        $this->messageBus->dispatch($command);
-
-        return $this->productRepository->findOneByIdentifier($identifier);
-    }
-
-    private function getUserId(string $username): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
     }
 
     /**

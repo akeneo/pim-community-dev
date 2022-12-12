@@ -14,19 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\Test\PerformanceAnalytics\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
-use Akeneo\Pim\Enrichment\Product\API\CommandMessageBus;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\Client;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory;
 use Google\Cloud\PubSub\Message;
@@ -34,16 +31,13 @@ use Google\Cloud\PubSub\Subscription;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\UuidInterface;
 
-final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends TestCase
+final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends PerformanceAnalyticsTestCase
 {
-    private CommandMessageBus $messageBus;
-    private ProductRepositoryInterface $productRepository;
     private Subscription $subscription;
 
     protected function getConfiguration(): Configuration
     {
-        // @todo use a catalog specific to performance-analytics (JEL-71)
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useMinimalCatalog();
     }
 
     protected function setUp(): void
@@ -51,9 +45,6 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         parent::setUp();
 
         $this->getContainer()->set('akeneo.performance_analytics.notify_enriched_products.feature', new EnvVarFeatureFlag(true));
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-        $this->messageBus = $this->get('pim_enrich.product.message_bus');
-        $this->productRepository = $this->get('pim_catalog.repository.product');
 
         $this->subscription = Client::fromDsn($this->get(PubSubClientFactory::class), 'gps:', [
             'project_id' => 'emulator-project',
@@ -64,6 +55,33 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
 
         // Empty the messages in the queue
         $this->pullAndAckMessages();
+
+        $this->createChannel([
+            'code' => 'ecommerce_china',
+            'category_tree' => 'master',
+            'currencies' => ['USD'],
+            'locales' => ['en_US', 'fr_FR'],
+        ]);
+        $this->createChannel([
+            'code' => 'tablet',
+            'category_tree' => 'master',
+            'currencies' => ['USD'],
+            'locales' => ['en_US', 'fr_FR'],
+        ]);
+
+        $this->createCategory(['code' => 'master_china']);
+        $this->createCategory(['code' => 'categoryA', 'parent' => 'master']);
+        $this->createCategory(['code' => 'categoryA1', 'parent' => 'categoryA']);
+        $this->createCategory(['code' => 'categoryB', 'parent' => 'master']);
+
+        $this->createAttribute('a_localized_and_scopable_text_area', [
+            'type' => AttributeTypes::TEXTAREA,
+            'localizable' => true,
+            'scopable' => true,
+        ]);
+        $this->createAttribute('a_simple_select', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
+        $this->createAttributeOptions('a_simple_select', ['optionA']);
+        $this->createAttribute('a_yes_no', ['type' => AttributeTypes::BOOLEAN]);
     }
 
     public function testItNotifiesProductsAreEnrichedWhenCompletenessChange(): void
@@ -198,6 +216,29 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
 
     public function testItNotifiesVariantProductsAreEnrichedWhenCompletenessChange(): void
     {
+        $this->createFamily('familyA', [
+            'attributes' => ['sku', 'a_simple_select', 'a_yes_no', 'a_localized_and_scopable_text_area'],
+            'attribute_requirements' => [
+                'ecommerce' => ['sku', 'a_localized_and_scopable_text_area', 'a_simple_select', 'a_yes_no'],
+                'ecommerce_china' => ['sku'],
+                'tablet' => ['sku', 'a_localized_and_scopable_text_area', 'a_simple_select', 'a_yes_no'],
+            ],
+        ]);
+        $this->createFamilyVariant('familyVariantA1', 'familyA', [
+            'variant_attribute_sets' => [
+                [
+                    'level' => 1,
+                    'axes' => ['a_simple_select'],
+                    'attributes' => [],
+                ],
+                [
+                    'level' => 2,
+                    'axes' => ['a_yes_no'],
+                    'attributes' => [],
+                ],
+            ],
+        ]);
+
         $this->createProductModel('root', null, 'familyVariantA1', ['categoryA1']);
         $this->createProductModel('sub', 'root', 'familyVariantA1', ['categoryB']);
         $product = $this->createOrUpdateProduct('test1', 'familyA', ['master_china'], [
@@ -280,29 +321,6 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         return $this->productRepository->findOneByIdentifier($identifier);
     }
 
-    private function createProductModel(string $code, ?string $parentCode, string $familyVariant, array $categoryCodes): void
-    {
-        $productModelBuilder = $this->get('akeneo_integration_tests.catalog.product_model.builder')
-            ->withCode($code)
-            ->withFamilyVariant($familyVariant)
-            ->withCategories(...$categoryCodes)
-        ;
-        if (null !== $parentCode) {
-            $productModelBuilder->withParent($parentCode);
-        }
-
-        $productModel = $productModelBuilder->build();
-        $this->get('pim_catalog.saver.product_model')->save($productModel);
-    }
-
-    private function getUserId(string $username): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
-    }
-
     private function assertProductChannelLocaleIsInMessages(
         UuidInterface $productUuid,
         string $channelCode,
@@ -354,17 +372,5 @@ final class NotifyProductsAreEnrichedWhenCompletenessChangeIntegration extends T
         }
 
         Assert::assertSame($expectedCount, $count, sprintf('There should be %d channel-locale for product %s', $expectedCount, $productUuid->toString()));
-    }
-
-    private function createFamily(string $code, array $data = []): FamilyInterface
-    {
-        $data = \array_merge(['code' => $code], $data);
-
-        $family = $this->get('akeneo_integration_tests.base.family.builder')->build($data);
-        $violations = $this->get('validator')->validate($family);
-        Assert::assertCount(0, $violations, (string) $violations);
-        $this->get('pim_catalog.saver.family')->save($family);
-
-        return $family;
     }
 }

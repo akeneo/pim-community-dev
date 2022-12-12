@@ -15,19 +15,19 @@ const families: Family[] = Array.from(Array(100).keys()).map((index: number) => 
 
 const timeToEnrichByEntity = [
   {
-    code: 'accessories',
+    code: 'family_1',
     value: 44,
   },
   {
-    code: 'camcorders',
+    code: 'family_2',
     value: 10,
   },
   {
-    code: 'clothing',
+    code: 'family_3',
     value: 41,
   },
   {
-    code: 'digital_cameras',
+    code: 'family_4',
     value: 100,
   },
 ];
@@ -122,6 +122,16 @@ const FakeFetcherProvider: FC = ({children}) => {
               }, {})
             );
           });
+        },
+        fetchAllFamilies: (): Promise<{[key: string]: Family}> => {
+          return new Promise(resolve =>
+            resolve(
+              families.reduce((map, family: Family) => {
+                map[family.code] = family;
+                return map;
+              }, {})
+            )
+          );
         },
       },
       channel: {

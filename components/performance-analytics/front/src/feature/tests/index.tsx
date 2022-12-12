@@ -15,9 +15,15 @@ const weeklyTimeToEnrich: TimeToEnrich[] = [
   },
 ];
 
-const families = Array.from(Array(100).keys()).map((index: number) => {
-  return {code: `family_${index}`, labels: {en_US: `Family ${index}`}};
-});
+const families = [
+  ...Array.from(Array(100).keys()).map((index: number) => {
+    return {code: `family_${index}`, labels: {en_US: `Family ${index}`}};
+  }),
+  {code: 'accessories', labels: {en_US: 'Accessories'}},
+  {code: 'camcorders', labels: {en_US: 'Camcorders'}},
+  {code: 'clothing', labels: {en_US: 'Clothing'}},
+  {code: 'digital_cameras', labels: {en_US: 'Digital cameras'}},
+];
 
 const timeToEnrichByEntity = [
   {
@@ -93,6 +99,16 @@ const fetchers = {
           }, {})
         );
       });
+    },
+    fetchAllFamilies: (): Promise<{[key: string]: Family}> => {
+      return new Promise(resolve =>
+        resolve(
+          families.reduce((map, family: Family) => {
+            map[family.code] = family;
+            return map;
+          }, {})
+        )
+      );
     },
   },
   channel: {

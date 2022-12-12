@@ -2,7 +2,7 @@ import {createContext, useContext} from 'react';
 import {TimeToEnrich} from '../../TimeToEnrich';
 import {Channel, ChannelCode, Family, FamilyCode, Locale, LocaleCode} from '../models';
 
-type FetcherValue = {
+export type FetcherValue = {
   timeToEnrich: {
     fetchHistoricalTimeToEnrich: (
       startDate: string,
@@ -26,6 +26,7 @@ type FetcherValue = {
   };
   family: {
     fetchFamilies: (limit: number, page: number, search?: string) => Promise<{[key: string]: Family}>;
+    fetchAllFamilies: () => Promise<{[key: string]: Family}>;
   };
   channel: {
     fetchChannels: () => Promise<Channel[]>;
@@ -47,6 +48,9 @@ const FetcherContext = createContext<FetcherValue>({
   family: {
     fetchFamilies: () => {
       throw new Error('Fetch families needs to be implemented');
+    },
+    fetchAllFamilies: () => {
+      throw new Error('Fetch all families needs to be implemented');
     },
   },
   channel: {

@@ -7,7 +7,8 @@ akeneo.performance_analytics:
         tooltip_compared_period: compared to the previous period
         tooltip_compared_period_same: Same compared to the previous period
     table:
-        header_families: Families
+        header_family: Families
+        header_category: Categories
         header_time_to_enrich: Time-to-enrich (in days)
     control_panel:
         title: Configure analytics

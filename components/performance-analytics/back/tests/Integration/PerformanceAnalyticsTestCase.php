@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\PerformanceAnalytics\Integration;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -160,5 +161,18 @@ abstract class PerformanceAnalyticsTestCase extends TestCase
         }
 
         $this->get('pim_catalog.saver.attribute_option')->saveAll($attributeOptions);
+    }
+
+    protected function createChannel(array $data = []): ChannelInterface
+    {
+        $channel = $this->get('pim_catalog.factory.channel')->create();
+        $this->get('pim_catalog.updater.channel')->update($channel, $data);
+
+        $violations = $this->get('validator')->validate($channel);
+        Assert::assertCount(0, $violations, $violations->__toString());
+
+        $this->get('pim_catalog.saver.channel')->save($channel);
+
+        return $channel;
     }
 }

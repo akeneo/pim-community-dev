@@ -40,6 +40,11 @@ abstract class ActionIntegrationTestCase extends WebTestCase
         $this->disableSsoConfiguration();
     }
 
+    protected function tearDown(): void
+    {
+        static::ensureKernelShutdown();
+    }
+
     protected function get(string $service)
     {
         return static::getContainer()->get($service);
