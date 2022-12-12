@@ -13,9 +13,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @group ce
- */
 class ExportProductsWithQuantifiedAssociationsIntegration extends AbstractExportTestCase
 {
     private array $uuids = [];

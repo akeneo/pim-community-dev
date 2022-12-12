@@ -90,12 +90,13 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         );
 
         if (!isset($item['identifier']) && !isset($item['uuid'])) {
-            $this->skipItemWithMessage($item, 'The UUID or identifier must be filled');
+            $this->skipItemWithMessage($item, 'The uuid or identifier must be filled');
         }
 
         $product = $this->findProduct($item['identifier'] ?? null, $item['uuid'] ?? null, $item);
-        if (null === $product) {
-            // TODO: message with uuid
+        if (null === $product && isset($item['uuid'])) {
+            $this->skipItemWithMessage($item, sprintf('No product with uuid "%s" has been found', $item['uuid']));
+        } elseif (null === $product && isset($item['identifier'])) {
             $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $item['identifier']));
         }
 

@@ -386,7 +386,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $this->merge($row)->shouldReturn($mergedRow);
     }
 
-    public function it_quantified_associations_product_uuid_columns(
+    public function it_merges_quantified_associations_product_uuid_columns(
         $fieldExtractor,
         $associationColumnResolver
     ) {
