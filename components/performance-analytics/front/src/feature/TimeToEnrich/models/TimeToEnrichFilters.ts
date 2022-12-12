@@ -15,12 +15,26 @@ export type TimeToEnrichEntityType = 'family' | 'category';
 const getFirstDayOfTheWeek = (date: Date): Date => {
   const day = date.getDay();
   const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-
   return new Date(date.setDate(diff));
+};
+
+const getLastDayOfTheWeek = (date: Date): Date => {
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? 0 : 7);
+  return new Date(date.setDate(diff));
+};
+
+const getLastDayOfThePreviousWeek = (date: Date): Date => {
+  const previousWeek = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7, date.getHours());
+  return getLastDayOfTheWeek(previousWeek);
 };
 
 const getFirstDayOfTheMonth = (date: Date): Date => {
   return new Date(date.getFullYear(), date.getMonth(), 1, date.getHours());
+};
+
+const getLastDayOfThePreviousMonth = (date: Date): Date => {
+  return new Date(date.getFullYear(), date.getMonth(), 0, date.getHours());
 };
 
 const getStartDate: (filters: TimeToEnrichFilters) => string = filters => {
@@ -38,10 +52,10 @@ const getStartDate: (filters: TimeToEnrichFilters) => string = filters => {
 const getEndDate: (filters: TimeToEnrichFilters) => string = filters => {
   let date = new Date();
   if (filters.period === PredefinedPeriod.LAST_12_MONTHS) {
-    return date.toISOString().substr(0, 10);
+    return getLastDayOfThePreviousMonth(date).toISOString().substr(0, 10);
   }
 
-  return date.toISOString().substr(0, 10);
+  return getLastDayOfThePreviousWeek(date).toISOString().substr(0, 10);
 };
 
 const getPeriodType: (filters: TimeToEnrichFilters) => string = filters => {
@@ -52,4 +66,12 @@ const getPeriodType: (filters: TimeToEnrichFilters) => string = filters => {
   return 'week';
 };
 
-export {getStartDate, getEndDate, getPeriodType};
+export {
+  getStartDate,
+  getEndDate,
+  getPeriodType,
+  getFirstDayOfTheWeek,
+  getLastDayOfThePreviousWeek,
+  getLastDayOfThePreviousMonth,
+  getFirstDayOfTheMonth,
+};
