@@ -22,7 +22,7 @@ final class LabelCollection implements \IteratorAggregate
     {
         Assert::nullOrIsArray($translatedLabels);
         Assert::allString(array_keys($translatedLabels));
-        Assert::allNotEq(array_keys($translatedLabels), "");
+        Assert::allNotEq(array_keys($translatedLabels), '');
     }
 
     /**
