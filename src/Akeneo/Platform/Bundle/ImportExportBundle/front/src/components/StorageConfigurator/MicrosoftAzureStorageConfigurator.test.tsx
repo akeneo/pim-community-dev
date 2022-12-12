@@ -231,7 +231,7 @@ test('it can check connection', async () => {
   });
 
   expect(checkButton).toBeDisabled();
-  expect(screen.getByText('pim_import_export.form.job_instance.connection_checker.exception')).not.toBeInTheDocument();
+  expect(screen.queryByText('pim_import_export.form.job_instance.connection_checker.exception')).not.toBeInTheDocument();
 });
 
 test('it cannot check connection if a field is empty', async () => {
