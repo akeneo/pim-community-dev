@@ -48,7 +48,7 @@ const MicrosoftAzureStorageConfigurator = ({
         value={storage.connection_string}
         label={translate('pim_import_export.form.job_instance.storage_form.connection_string.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.connection_string.placeholder')}
-        onChange={(connection_string: string) => onStorageChange({...storage, connection_string: connection_string})}
+        onChange={(connection_string: string) => onStorageChange({...storage, connection_string})}
         errors={filterErrors(validationErrors, '[connection_string]')}
       />
       <TextField
@@ -56,7 +56,7 @@ const MicrosoftAzureStorageConfigurator = ({
         value={storage.container_name}
         label={translate('pim_import_export.form.job_instance.storage_form.container_name.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.container_name.placeholder')}
-        onChange={(container_name: string) => onStorageChange({...storage, container_name: container_name})}
+        onChange={(container_name: string) => onStorageChange({...storage, container_name})}
         errors={filterErrors(validationErrors, '[container_name]')}
       />
       <CheckStorageForm>
