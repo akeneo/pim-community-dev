@@ -8,17 +8,20 @@ use Webmozart\Assert\InvalidArgumentException;
 
 class CodeIntegration extends CategoryTestCase
 {
-    public function testItCanBeConstructedWithAString() {
+    public function testItCanBeConstructedWithAString(): void
+    {
         $code = new Code('my_code');
         $this->assertEquals('my_code', (string) $code);
     }
 
-public function testItThrowsExceptionWhenCodeIsEmpty() {
+    public function testItThrowsExceptionWhenCodeIsEmpty(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         new Code('');
     }
 
-    public function testItCanHaveZeroAsCode() {
+    public function testItCanHaveZeroAsCode(): void
+    {
         $code = new Code('0');
         $this->assertEquals('0', (string) $code);
     }
