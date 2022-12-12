@@ -61,6 +61,7 @@ $rules = [
             'Akeneo\Connectivity\Connection\ServiceApi',
             'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
             'Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException',
+            'Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent', // For data flow monitoring
 
             /**********************************************************************************************************/
             /* Below are dependencies that we have, but we shouldn't rely on them.
