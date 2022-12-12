@@ -10,8 +10,8 @@ namespace Akeneo\Catalogs\Application\Persistence\Catalog;
 interface GetCatalogIdsContainingCurrenciesQueryInterface
 {
     /**
-     * @param string[] $currencyCodes
-     * @return string[]
+     * @param array<string> $currencyCodes
+     * @return array<string>
      */
     public function execute(array $currencyCodes): array;
 }

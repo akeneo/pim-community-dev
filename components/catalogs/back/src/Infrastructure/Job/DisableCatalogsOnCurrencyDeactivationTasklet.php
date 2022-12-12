@@ -29,7 +29,7 @@ class DisableCatalogsOnCurrencyDeactivationTasklet implements TaskletInterface
     public function execute(): void
     {
         if (null === $this->stepExecution) {
-            throw new \LogicException('the variable $stepExecution should not be null.');
+            throw new \LogicException('The variable $stepExecution should not be null.');
         }
 
         /** @var string[] $currencyCodes */
