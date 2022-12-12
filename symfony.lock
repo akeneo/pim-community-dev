@@ -967,9 +967,6 @@
     "webmozart/assert": {
         "version": "1.3.0"
     },
-    "webmozart/path-util": {
-        "version": "2.3.0"
-    },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"
     },

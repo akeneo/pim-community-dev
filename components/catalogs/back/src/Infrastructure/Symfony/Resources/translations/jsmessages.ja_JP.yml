@@ -13,9 +13,7 @@ akeneo_catalogs:
       more: その他
       product_value_filters: 値をフィルタ
       product_mapping: マッピング
-  settings:
-    fields:
-      enabled: 有効
+  catalog_status_widget:
     inputs:
       yes: Yes
       no: No

@@ -13,7 +13,9 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceede
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -115,7 +117,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                         $response->getHeaders(),
                     );
                 },
-                'rejected' => function (RequestException $reason, int $index) use (&$logs) {
+                'rejected' => function (RequestException|ConnectException $reason, int $index) use (&$logs) {
                     $this->eventDispatcher->dispatch(new EventsApiRequestFailedEvent());
 
                     /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
@@ -123,7 +125,9 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     $webhookRequestLog->setMessage($reason->getMessage());
                     $webhookRequestLog->setSuccess(false);
                     $webhookRequestLog->setEndTime(\microtime(true));
-                    $webhookRequestLog->setResponse($reason->getResponse());
+                    if ($reason instanceof RequestException) {
+                        $webhookRequestLog->setResponse($reason->getResponse());
+                    }
 
                     $this->sendApiEventRequestLogger->log(
                         $webhookRequestLog->getWebhookRequest(),
@@ -135,7 +139,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                         $webhookRequestLog->getResponse()
                     );
 
-                    if ($reason->hasResponse()) {
+                    if ($reason instanceof RequestException) {
                         $this->debugLogger->logEventsApiRequestFailed(
                             $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                             $webhookRequestLog->getWebhookRequest()->apiEvents(),

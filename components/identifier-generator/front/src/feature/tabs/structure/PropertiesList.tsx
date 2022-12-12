@@ -11,17 +11,13 @@ type PropertiesListProps = {
   structure: StructureWithIdentifiers;
   onSelect: (id: PropertyId) => void;
   selectedId?: PropertyId;
-  onChange: (structure: StructureWithIdentifiers) => void;
+  onReorder: (indices: number[]) => void;
   onDelete: (id: PropertyId) => void;
 };
 
-const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, selectedId, onChange, onDelete}) => {
+const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, selectedId, onReorder, onDelete}) => {
   const translate = useTranslate();
   const [propertyIdToDelete, setPropertyIdToDelete] = useState<PropertyId | undefined>();
-
-  const onReorder = (indices: number[]) => {
-    onChange(indices.map(i => structure[i]));
-  };
 
   const openModal = (propertyId: PropertyId) => () => {
     setPropertyIdToDelete(propertyId);
