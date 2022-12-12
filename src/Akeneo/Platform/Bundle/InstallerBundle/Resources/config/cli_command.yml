@@ -31,6 +31,7 @@ services:
             - '@pim_installer.fixture_loader.job_loader'
             - '@event_dispatcher'
             - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData'
+            - '@pim_installer.feature_flag.install_fixture_context_feature_flag'
         tags:
             - { name: console.command }
 

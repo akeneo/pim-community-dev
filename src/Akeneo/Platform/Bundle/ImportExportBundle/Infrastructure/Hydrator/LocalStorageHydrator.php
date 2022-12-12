@@ -15,10 +15,6 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 
 final class LocalStorageHydrator implements StorageHydratorInterface
 {
-    public function __construct()
-    {
-    }
-
     public function hydrate(array $normalizedStorage): StorageInterface
     {
         return new LocalStorage($normalizedStorage['file_path']);

@@ -8,6 +8,6 @@ akeneo_feature_flag:
         - { feature: 'communication_channel', service: 'akeneo_communication_channel.feature' }
         - { feature: 'app_developer_mode', service: 'akeneo_connectivity.connection.app_developer_mode.feature' }
         - { feature: 'reference_data', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
-        - { feature: 'job_automation_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
         - { feature: 'enriched_category', service: 'akeneo.category.enriched.feature'}
         - { feature: 'identifier_generator', service: 'akeneo.feature_flag.service.only_saas_feature' }
+        - { feature: 'import_export_local_storage', service: 'akeneo.import_export.service.local_storage_feature_flag' }
