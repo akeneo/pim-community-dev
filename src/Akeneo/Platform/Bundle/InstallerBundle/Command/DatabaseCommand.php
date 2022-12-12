@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Query\InstallTimeQuery;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Component\Console\CommandExecutor;
 use Doctrine\DBAL\Connection;
@@ -49,7 +50,8 @@ class DatabaseCommand extends Command
         ClientRegistry $clientRegistry,
         Connection $connection,
         FixtureJobLoader $fixtureJobLoader,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        private readonly InstallTimeQuery $installTimeQuery,
     ) {
         parent::__construct();
 
@@ -183,6 +185,8 @@ class DatabaseCommand extends Command
                 InstallerEvents::POST_LOAD_FIXTURES
             );
         }
+
+        $this->installTimeQuery->setInstallTime();
 
         return Command::SUCCESS;
     }
