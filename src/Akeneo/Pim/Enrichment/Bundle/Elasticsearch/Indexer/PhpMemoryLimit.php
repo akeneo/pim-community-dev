@@ -12,7 +12,6 @@ class PhpMemoryLimit
         $limit = ini_get('memory_limit');
 
         return $this->asBytes($limit);
-
     }
 
     public function asBytes(string $limit): int
@@ -43,5 +42,4 @@ class PhpMemoryLimit
 
         return (int) $limit;
     }
-
 }

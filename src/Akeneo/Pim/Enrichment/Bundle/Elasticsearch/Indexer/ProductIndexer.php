@@ -87,6 +87,4 @@ s     */
             $productUuids
         ));
     }
-
-
 }
