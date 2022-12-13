@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, SftpStorage} from '../components';
-import {isAmazonS3Storage, isSftpStorage} from '../components/StorageConfigurator';
+import {AmazonS3Storage, GoogleCloudStorage, SftpStorage} from '../components';
+import {isAmazonS3Storage, isGoogleCloudStorage, isSftpStorage} from '../components/StorageConfigurator';
 
 const isSftpConnectionFieldFulfilled = (storage: SftpStorage): boolean => {
   return (
@@ -23,7 +23,13 @@ const isAmazonS3ConnectionFieldFulfilled = (storage: AmazonS3Storage): boolean =
   );
 };
 
-const useCheckStorageConnection = (storage: SftpStorage | AmazonS3Storage) => {
+const isGoogleCloudConnectionFieldFulfilled = (storage: GoogleCloudStorage): boolean => {
+  return (
+    '' !== storage.file_path && '' !== storage.project_id && '' !== storage.service_account && '' !== storage.bucket
+  );
+};
+
+const useCheckStorageConnection = (storage: SftpStorage | AmazonS3Storage | GoogleCloudStorage) => {
   const [isValid, setValid] = useState<boolean | undefined>(undefined);
   const [isChecking, setIsChecking] = useState<boolean>(false);
   const route = useRoute('pimee_job_automation_get_storage_connection_check');
@@ -32,7 +38,8 @@ const useCheckStorageConnection = (storage: SftpStorage | AmazonS3Storage) => {
     !isChecking &&
     !isValid &&
     ((isSftpStorage(storage) && isSftpConnectionFieldFulfilled(storage)) ||
-      (isAmazonS3Storage(storage) && isAmazonS3ConnectionFieldFulfilled(storage)));
+      (isAmazonS3Storage(storage) && isAmazonS3ConnectionFieldFulfilled(storage)) ||
+      (isGoogleCloudStorage(storage) && isGoogleCloudConnectionFieldFulfilled(storage)));
 
   useEffect(() => {
     return () => {

@@ -1,9 +1,18 @@
 import {FunctionComponent} from 'react';
 import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage, AmazonS3Storage, Storage, StorageType, localStorageIsEnabled} from '../model';
+import {
+  LocalStorage,
+  SftpStorage,
+  AmazonS3Storage,
+  Storage,
+  StorageType,
+  localStorageIsEnabled,
+  GoogleCloudStorage,
+} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
+import {GoogleCloudStorageConfigurator} from './GoogleCloudStorageConfigurator';
 
 type StorageLoginType = 'password' | 'private_key';
 
@@ -24,6 +33,7 @@ const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
   sftp: SftpStorageConfigurator,
   amazon_s3: AmazonS3StorageConfigurator,
+  google_cloud: GoogleCloudStorageConfigurator,
 };
 
 const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
@@ -75,11 +85,26 @@ const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   );
 };
 
+const isGoogleCloudStorage = (storage: Storage): storage is GoogleCloudStorage => {
+  return (
+    'google_cloud' === storage.type &&
+    'file_path' in storage &&
+    typeof 'file_path' === 'string' &&
+    'project_id' in storage &&
+    typeof 'project_id' === 'string' &&
+    'service_account' in storage &&
+    typeof 'service_account' === 'string' &&
+    'bucket' in storage &&
+    typeof 'bucket' === 'string'
+  );
+};
+
 export type {StorageConfiguratorProps, StorageLoginType};
 export {
   isLocalStorage,
   isSftpStorage,
   isAmazonS3Storage,
+  isGoogleCloudStorage,
   isValidLoginType,
   getStorageConfigurator,
   STORAGE_LOGIN_TYPES,

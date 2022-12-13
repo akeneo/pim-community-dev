@@ -1,9 +1,10 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, LocalStorage, SftpStorage} from '../model';
-import {isLocalStorage, isSftpStorage, getStorageConfigurator, isAmazonS3Storage} from './model';
+import {AmazonS3Storage, GoogleCloudStorage, LocalStorage, SftpStorage} from '../model';
+import {isLocalStorage, isSftpStorage, getStorageConfigurator, isAmazonS3Storage, isGoogleCloudStorage} from './model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
+import {GoogleCloudStorageConfigurator} from './GoogleCloudStorageConfigurator';
 
 const featureFlagCollection = {
   job_automation_local_storage: false,
@@ -39,6 +40,14 @@ const amazonS3Storage: AmazonS3Storage = {
   file_path: '/tmp/test.xlsx',
 };
 
+const googleCloudStorage: GoogleCloudStorage = {
+  type: 'google_cloud',
+  file_path: '/tmp/test.xlsx',
+  project_id: 'eu-west-3',
+  service_account: 'a_service_account',
+  bucket: 'a_bucket',
+};
+
 test('it says if a storage is a local storage', () => {
   expect(isLocalStorage(localStorage)).toBe(true);
   expect(isLocalStorage(sftpStorage)).toBe(false);
@@ -58,6 +67,12 @@ test('it says if a storage is an amazon s3 storage', () => {
   expect(isSftpStorage(localStorage)).toBe(false);
 });
 
+test('it says if a storage is a google cloud storage', () => {
+  expect(isGoogleCloudStorage(googleCloudStorage)).toBe(true);
+  expect(isGoogleCloudStorage(sftpStorage)).toBe(false);
+  expect(isSftpStorage(localStorage)).toBe(false);
+});
+
 test('it returns storage configurator', () => {
   expect(getStorageConfigurator('none', featureFlags)).toBe(null);
 
@@ -68,6 +83,10 @@ test('it returns storage configurator', () => {
   expect(getStorageConfigurator('sftp', featureFlags)).toBe(SftpStorageConfigurator);
 
   expect(getStorageConfigurator('amazon_s3', featureFlags)).toBe(AmazonS3StorageConfigurator);
+
+  // Also add microsoft azure
+
+  expect(getStorageConfigurator('google_cloud', featureFlags)).toBe(GoogleCloudStorageConfigurator);
 
   // @ts-expect-error - there is no storage configurator for type 'unknown'
   expect(getStorageConfigurator('unknown', featureFlags)).toBe(null);

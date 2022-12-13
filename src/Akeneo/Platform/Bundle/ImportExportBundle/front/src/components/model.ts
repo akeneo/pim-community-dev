@@ -28,16 +28,24 @@ type AmazonS3Storage = {
   secret: string;
 };
 
+type GoogleCloudStorage = {
+  type: 'google_cloud';
+  file_path: string;
+  project_id: string;
+  service_account: string;
+  bucket: string;
+};
+
 type NoneStorage = {
   type: 'none';
   file_path: string;
 };
 
-type Storage = LocalStorage | SftpStorage | AmazonS3Storage | NoneStorage;
+type Storage = LocalStorage | SftpStorage | AmazonS3Storage | GoogleCloudStorage | NoneStorage;
 
-type StorageType = 'none' | 'local' | 'sftp' | 'amazon_s3';
+type StorageType = 'none' | 'local' | 'sftp' | 'amazon_s3' | 'google_cloud';
 
-const STORAGE_TYPES = ['none', 'sftp', 'amazon_s3'];
+const STORAGE_TYPES = ['none', 'sftp', 'amazon_s3', 'google_cloud'];
 
 const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
   featureFlags.isEnabled('job_automation_local_storage');
@@ -86,6 +94,14 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
         key: '',
         secret: '',
       };
+    case 'google_cloud':
+      return {
+        type: 'google_cloud',
+        file_path: getDefaultFilePath(jobType, fileExtension),
+        project_id: '',
+        service_account: '',
+        bucket: '',
+      };
     case 'none':
       return {
         type: 'none',
@@ -96,7 +112,16 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
   }
 };
 
-export type {JobType, Storage, StorageType, LocalStorage, SftpStorage, AmazonS3Storage, NoneStorage};
+export type {
+  JobType,
+  Storage,
+  StorageType,
+  LocalStorage,
+  SftpStorage,
+  AmazonS3Storage,
+  GoogleCloudStorage,
+  NoneStorage,
+};
 export {
   getDefaultStorage,
   isValidStorageType,
