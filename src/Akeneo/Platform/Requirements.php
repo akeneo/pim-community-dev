@@ -18,9 +18,6 @@ use Symfony\Requirements\SymfonyRequirements;
  */
 class Requirements extends SymfonyRequirements
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(string $baseDirectory)
     {
         parent::__construct();
@@ -64,7 +61,7 @@ class Requirements extends SymfonyRequirements
     public function getMandatoryRequirements(): array
     {
         return array_filter($this->getRequirements(), function ($requirement) {
-            return !($requirement instanceof PhpConfigRequirement) && !($requirement instanceof Requirement);
+            return !($requirement instanceof Requirement);
         });
     }
 
