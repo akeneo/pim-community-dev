@@ -35,7 +35,7 @@ final class JobExecutionRow
             'username' => $this->username,
             'status' => $this->status->getLabel(),
             'warning_count' => $this->tracking->getWarningCount(),
-            'error_count' => $this->tracking->getErrorCount(),
+            'has_error' => $this->tracking->hasError(),
             'tracking' => $this->tracking->normalize(),
             'is_stoppable' => $this->isStoppable,
         ];

@@ -12,7 +12,7 @@ const jobExecutionRow: JobExecutionRow = {
     current_step: 2,
     steps: [
       {
-        error_count: 0,
+        has_error: false,
         warning_count: 0,
         duration: 22,
         is_trackable: true,
@@ -21,7 +21,7 @@ const jobExecutionRow: JobExecutionRow = {
         status: 'COMPLETED',
       },
       {
-        error_count: 2,
+        has_error: true,
         warning_count: 0,
         duration: 22,
         is_trackable: true,
@@ -31,7 +31,7 @@ const jobExecutionRow: JobExecutionRow = {
       },
     ],
   },
-  error_count: 2,
+  has_error: true,
   type: 'export',
   username: 'admin',
   warning_count: 4,

@@ -2,7 +2,7 @@ import {Level, ProgressBarPercent} from 'akeneo-design-system';
 import {StepStatus} from './StepStatus';
 
 type StepExecutionRowTracking = {
-  error_count: number;
+  has_error: boolean;
   warning_count: number;
   is_trackable: boolean;
   processed_items: number;
@@ -11,8 +11,8 @@ type StepExecutionRowTracking = {
   duration: number;
 };
 
-const getStepExecutionRowTrackingLevel = ({warning_count, error_count}: StepExecutionRowTracking): Level => {
-  if (0 < error_count) return 'danger';
+const getStepExecutionRowTrackingLevel = ({warning_count, has_error}: StepExecutionRowTracking): Level => {
+  if (has_error) return 'danger';
   if (0 < warning_count) return 'warning';
 
   return 'primary';

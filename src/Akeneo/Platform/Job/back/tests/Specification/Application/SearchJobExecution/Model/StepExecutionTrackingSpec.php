@@ -35,7 +35,7 @@ class StepExecutionTrackingSpec extends ObjectBehavior
             'id' => 1,
             'duration' => 10,
             'warning_count' => 0,
-            'error_count' => 0,
+            'has_error' => false,
             'total_items' => 200,
             'processed_items' => 100,
             'is_trackable' => true,
@@ -48,9 +48,9 @@ class StepExecutionTrackingSpec extends ObjectBehavior
         $this->getId()->shouldReturn(1);
     }
 
-    public function it_returns_error_count()
+    public function it_returns_has_error()
     {
-        $this->getErrorCount()->shouldReturn(0);
+        $this->hasError()->shouldReturn(false);
     }
 
     public function it_returns_warning_count()
