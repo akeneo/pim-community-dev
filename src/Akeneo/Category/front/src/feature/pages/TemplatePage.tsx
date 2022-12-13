@@ -133,7 +133,7 @@ const TemplatePage: FC = () => {
         <PageHeader.Title>{templateLabel ?? templateId}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <TabBar moreButtonTitle={'More'}>
+        <TabBar moreButtonTitle={'More'} sticky={0}>
           <TabBar.Tab
             isActive={isCurrent(Tabs.ATTRIBUTE)}
             onClick={() => {

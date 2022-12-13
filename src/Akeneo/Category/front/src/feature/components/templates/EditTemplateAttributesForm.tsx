@@ -33,7 +33,7 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
 
   return (
     <FormContainer>
-      <SectionTitle>
+      <SectionTitle sticky={44}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
       </SectionTitle>
       <Table>
