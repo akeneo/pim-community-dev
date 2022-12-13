@@ -73,7 +73,6 @@ describe('PropertiesList', () => {
       </ThemeProvider>
     );
 
-    expect(screen.getByText('error on second item')).toBeInTheDocument();
-    expect(screen.getAllByText('similar error').length).toBe(2);
+    expect(screen.getAllByRole('alert').length).toBe(3);
   });
 });
