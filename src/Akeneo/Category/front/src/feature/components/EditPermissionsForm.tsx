@@ -1,10 +1,11 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {EnrichCategory} from '../models';
 import {CategoryPermission, CategoryPermissions} from '../models/CategoryPermission';
 import {useFetchUserGroups, UserGroup} from '../hooks/useFetchUserGroups';
+import {cloneDeep} from "lodash/fp";
 
 type Props = {
   category: EnrichCategory;
@@ -32,7 +33,16 @@ const EditPermissionsForm = ({
   onChangeApplyPermissionsOnChildren,
 }: Props) => {
   const translate = useTranslate();
-  const {data: userGroups} = useFetchUserGroups();
+  const {data: fetchedUserGroups, status: userGroupStatus} = useFetchUserGroups();
+    const [userGroups, setUserGroup] = useState<UserGroup[] | null>(null);
+
+    useEffect(() => {
+        if (userGroupStatus === 'success') {
+            if (fetchedUserGroups) {
+                setUserGroup(fetchedUserGroups);
+            }
+        }
+    }, [fetchedUserGroups, userGroupStatus]);
 
   const handleChangePermissions = useCallback(
     (type: keyof CategoryPermissions) => (values: string[]) => {
