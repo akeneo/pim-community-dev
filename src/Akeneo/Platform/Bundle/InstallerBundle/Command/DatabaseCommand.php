@@ -37,29 +37,17 @@ class DatabaseCommand extends Command
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
 
-    private EntityManagerInterface $entityManager;
-    private ClientRegistry $clientRegistry;
-    protected Connection $connection;
-    private FixtureJobLoader $fixtureJobLoader;
-    private EventDispatcherInterface $eventDispatcher;
-
     protected ?CommandExecutor $commandExecutor;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ClientRegistry $clientRegistry,
-        Connection $connection,
-        FixtureJobLoader $fixtureJobLoader,
-        EventDispatcherInterface $eventDispatcher,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ClientRegistry $clientRegistry,
+        protected readonly Connection $connection,
+        private readonly FixtureJobLoader $fixtureJobLoader,
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InstallDataQuery $installTimeQuery,
     ) {
         parent::__construct();
-
-        $this->entityManager = $entityManager;
-        $this->clientRegistry = $clientRegistry;
-        $this->connection = $connection;
-        $this->fixtureJobLoader = $fixtureJobLoader;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
