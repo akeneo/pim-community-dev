@@ -15,7 +15,7 @@ class DisableCatalogsOnCurrencyDeactivationTasklet implements TaskletInterface
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private readonly GetCatalogIdsContainingCurrenciesQueryInterface $getCatalogsToDisableQuery,
+        private readonly GetCatalogIdsContainingCurrenciesQueryInterface $getCatalogIdsContainingCurrenciesQuery,
         private readonly DisableCatalogQueryInterface $disableCatalogsQuery,
         private readonly DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
     ) {
@@ -35,7 +35,7 @@ class DisableCatalogsOnCurrencyDeactivationTasklet implements TaskletInterface
         /** @var string[] $currencyCodes */
         $currencyCodes = $this->stepExecution->getJobParameters()->get('currency_codes');
 
-        $catalogsIds = $this->getCatalogsToDisableQuery->execute($currencyCodes);
+        $catalogsIds = $this->getCatalogIdsContainingCurrenciesQuery->execute($currencyCodes);
 
         foreach ($catalogsIds as $catalogId) {
             $this->disableCatalogsQuery->execute($catalogId);

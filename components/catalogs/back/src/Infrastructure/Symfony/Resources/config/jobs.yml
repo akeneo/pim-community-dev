@@ -3,10 +3,6 @@ services:
         autowire: true
         autoconfigure: true
 
-    _instanceof:
-        Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface:
-            tags: [ 'pim_api.security.scope_mapper' ]
-
     Akeneo\Catalogs\Infrastructure\Job\DisableCatalogsOnCurrencyDeactivationTasklet:
         public: false
 
