@@ -1456,6 +1456,11 @@ jobs:
         alias:     rule_engine_execute_rules_scheduled
         label:     'Execute rules as a scheduled job'
         type:      scheduled_job
+    disable_catalogs_on_currency_deactivation:
+        connector: internal
+        alias:     disable_catalogs_on_currency_deactivation
+        label:     Disable catalogs on currency deactivation
+        type:      disable_catalogs_on_currency_deactivation
     disable_catalogs_on_channel_removal:
         connector: internal
         alias:     disable_catalogs_on_channel_removal
