@@ -26,10 +26,6 @@ const TableHeaderCellLabel = styled(Table.HeaderCell)`
   width: 35%;
 `;
 
-const TableActionCell = styled(Table.ActionCell)`
-  width: 50px;
-`;
-
 const AssociationTypesDataGrid = ({
   associationTypes,
   sortDirection,
@@ -82,7 +78,7 @@ const AssociationTypesDataGrid = ({
               <Table.Cell rowTitle>{associationType.label}</Table.Cell>
               <Table.Cell>{renderBooleanCellValue(associationType.isQuantified)}</Table.Cell>
               <Table.Cell>{renderBooleanCellValue(associationType.isTwoWay)}</Table.Cell>
-              <TableActionCell>
+              <Table.ActionCell>
                 <IconButton
                   icon={<DeleteIcon />}
                   onClick={() => deleteAssociationType(associationType)}
@@ -90,7 +86,7 @@ const AssociationTypesDataGrid = ({
                   ghost="borderless"
                   level="tertiary"
                 />
-              </TableActionCell>
+              </Table.ActionCell>
             </Table.Row>
           );
         })}
