@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.58 (2022-12-13)
+
 ## Bug fixes
 
 - [Backport PIM-10246] PIM-10765: Fix oom in Process Tracker
