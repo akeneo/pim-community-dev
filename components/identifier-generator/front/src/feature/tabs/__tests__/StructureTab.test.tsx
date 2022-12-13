@@ -4,7 +4,7 @@ import {StructureTab} from '../StructureTab';
 import {PROPERTY_NAMES, Structure} from '../../models';
 import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 
-jest.mock('../structure/AddPropertyButton');
+jest.mock('../structure/AddConditionButton');
 jest.mock('../structure/DelimiterEdit');
 
 describe('StructureTab', () => {
