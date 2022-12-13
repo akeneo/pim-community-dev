@@ -1,12 +1,16 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10765: Fix Out of sort memory on Process Tracker
+
 # 6.0.57 (2022-12-07)
 
 # 6.0.56 (2022-11-28)
 
 ## Bug fixes
 
-PIM-10734: Assets export fails because of a failed warning messages
+- PIM-10734: Assets export fails because of a failed warning messages
 
 # 6.0.55 (2022-11-21)
 
@@ -43,8 +47,9 @@ PIM-10734: Assets export fails because of a failed warning messages
 # 6.0.46 (2022-10-20)
 
 ## Bug fixes
-PIM-10670: Fix memory leak on creating combinations for currencies
-PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
+
+- PIM-10670: Fix memory leak on creating combinations for currencies
+- PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
 
 # 6.0.45 (2022-10-06)
 

@@ -77,6 +77,7 @@ SQL;
         LIMIT :offset, :limit
     )
     SELECT
+        /*+ SET_VAR(sort_buffer_size = 1000000) */
         job_execution.*,
         COUNT(step_execution.job_execution_id) AS current_step_number,
         JSON_ARRAYAGG(JSON_OBJECT(
