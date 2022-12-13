@@ -1,19 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Condition, Enabled} from '../../models';
-import {Table, TextInput, SelectInput} from 'akeneo-design-system';
+import {Table, TextInput, SelectInput, Button} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {DeletePropertyModal} from '../../pages';
+import {ConditionId} from '../SelectionTab';
 
 type EnabledLineProps = {
   condition: Enabled & {id: string};
   onChange: (condition: Condition & {id: string}) => void;
+  onDelete: (conditionId: string) => void;
 };
 
-const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange}) => {
+const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
+  const [enabledIdToDelete, setEnabledIdToDelete] = useState<ConditionId | undefined>();
 
   const handleChange = (value: string) => {
     onChange({...condition, value: value === 'true'});
+  };
+
+  const openModal = (enabledId: ConditionId) => () => {
+    setEnabledIdToDelete(enabledId);
+  };
+
+  const closeModal = () => {
+    setEnabledIdToDelete(undefined);
+  };
+
+  const handleDelete = () => {
+    if (enabledIdToDelete) {
+      onDelete(enabledIdToDelete);
+      setEnabledIdToDelete(undefined);
+    }
   };
 
   return (
@@ -46,6 +65,12 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange}) => {
           </SelectInput>
         </Styled.InputContainer>
       </Table.Cell>
+      <Table.ActionCell>
+        <Button onClick={openModal(condition.id)} ghost level="danger">
+          {translate('pim_common.delete')}
+        </Button>
+      </Table.ActionCell>
+      {enabledIdToDelete && <DeletePropertyModal onClose={closeModal} onDelete={handleDelete} />}
     </Table.Row>
   );
 };
