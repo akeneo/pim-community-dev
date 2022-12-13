@@ -21,11 +21,7 @@ final class Version_7_0_20221212160000_add_database_install_time extends Abstrac
 
     public function up(Schema $schema): void
     {
-        if ($this->installDataExists()) {
-            $this->addSql('SELECT 1');
-
-            return;
-        }
+        $this->skipIf($this->installDataExists(), 'Install data already exists');
 
         $userTableTime = $this->getUserTableDate();
 

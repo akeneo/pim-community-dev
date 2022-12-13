@@ -17,6 +17,6 @@ services:
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    Akeneo\Platform\Bundle\InstallerBundle\Persistence\Query\InstallTimeQuery:
+    Akeneo\Platform\Bundle\InstallerBundle\Persistence\Query\InstallDataQuery:
         arguments:
             - '@database_connection'
