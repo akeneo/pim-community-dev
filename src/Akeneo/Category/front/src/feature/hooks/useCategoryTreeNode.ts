@@ -240,7 +240,7 @@ const useCategoryTreeNode = (id: number) => {
         (node, currentNode) => node.identifier === currentNode.identifier
       );
     });
-  }, [childrenData, node, setNodes]);
+  }, [childrenData]);
 
   useEffect(() => {
     if (node?.childrenStatus === 'to-reload') {
@@ -274,7 +274,7 @@ const useCategoryTreeNode = (id: number) => {
 
       return;
     }
-  }, [doMove, loadChildren, move]);
+  }, [move]);
 
   useEffect(() => {
     if (!node) {
@@ -298,7 +298,7 @@ const useCategoryTreeNode = (id: number) => {
 
       setNodes(newNodesList);
     }
-  }, [loadChildrenStatus, node, nodes, setNodes]);
+  }, [loadChildrenStatus]);
 
   return {
     node,

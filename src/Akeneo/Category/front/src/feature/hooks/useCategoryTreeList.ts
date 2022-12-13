@@ -40,7 +40,7 @@ const useCategoryTreeList = () => {
       });
       setTrees(updatedTrees);
     }
-  }, [productsNumberByCategory, trees]);
+  }, [productsNumberByCategory]);
 
   return {
     trees,
