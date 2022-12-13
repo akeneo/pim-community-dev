@@ -9,12 +9,13 @@ import {
   buildCompositeKey,
   Attribute,
   CategoryAttributeValueData,
-  CategoryPermissions,
   EnrichCategory,
   Template,
 } from '../models';
 import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
 import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
+import {CategoryPermissions} from "../models/CategoryPermission";
+import {UserGroup} from "./useFetchUserGroups";
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
@@ -109,14 +110,14 @@ const useEditCategoryForm = (categoryId: number) => {
     [categoryEdited]
   );
 
-  const onChangePermissions = (type: keyof CategoryPermissions, values: number[]) => {
+  const onChangePermissions = (userGroups: UserGroup[], type: keyof CategoryPermissions, values: number[]) => {
     if (categoryEdited === null) {
       return;
     }
 
-    const consistentPermissions = alterPermissionsConsistently(categoryEdited.permissions, {type, values});
+    const consistentPermissions = alterPermissionsConsistently(userGroups, categoryEdited.permissions, {type, values});
 
-    setCategoryEdited(set(['permissions'], consistentPermissions, categoryEdited));
+    setCategoryEdited(set('permissions', consistentPermissions, categoryEdited));
   };
 
   const onChangeAttribute = useCallback(
