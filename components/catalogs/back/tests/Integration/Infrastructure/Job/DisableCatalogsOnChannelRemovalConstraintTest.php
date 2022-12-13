@@ -26,7 +26,7 @@ class DisableCatalogsOnChannelRemovalConstraintTest extends IntegrationTestCase
     public function testItProvidesConstraintToValidateParameters(): void
     {
         $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
-        $parameters = ['channel_codes' => ['print']];
+        $parameters = ['channel_codes' => ['print', 'mobile']];
         $violations = $this->validator->validate($parameters, $constraintCollection);
 
         $this->assertEmpty($violations);
@@ -57,6 +57,12 @@ class DisableCatalogsOnChannelRemovalConstraintTest extends IntegrationTestCase
                     'channel_codes' => 'print',
                 ],
                 'expectedMessage' => 'This value should be of type array.',
+            ],
+            'channel code is not an string' => [
+                'parameters' => [
+                    'channel_codes' => ['print', 2, 'mobile'],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }

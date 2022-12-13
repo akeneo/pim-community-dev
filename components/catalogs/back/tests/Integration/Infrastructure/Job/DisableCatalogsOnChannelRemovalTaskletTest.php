@@ -37,11 +37,18 @@ class DisableCatalogsOnChannelRemovalTaskletTest extends IntegrationTestCase
             ownerUsername: 'magenta',
             catalogProductValueFilters: ['channels' => ['ecommerce']]
         );
+        $this->createCatalog(
+            id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
+            name: 'Store UK',
+            ownerUsername: 'shopifi',
+            catalogProductValueFilters: ['channels' => ['print']]
+        );
 
         $this->removeChannel('print');
         $this->waitForQueuedJobs();
 
         $this->assertCatalogIsDisabled('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->assertCatalogIsDisabled('27c53e59-ee6a-4215-a8f1-2fccbb67ba0d');
         $this->assertCatalogIsEnabled('b79b09a3-cb4c-45f8-a086-4f70cc17f521');
     }
 

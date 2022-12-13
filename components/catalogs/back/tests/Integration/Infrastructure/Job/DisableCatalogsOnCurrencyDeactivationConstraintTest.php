@@ -26,7 +26,7 @@ class DisableCatalogsOnCurrencyDeactivationConstraintTest extends IntegrationTes
     public function testItProvidesConstraintToValidateParameters(): void
     {
         $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
-        $parameters = ['currency_codes' => ['EUR']];
+        $parameters = ['currency_codes' => ['EUR', 'USD']];
         $violations = $this->validator->validate($parameters, $constraintCollection);
 
         $this->assertEmpty($violations);
@@ -57,6 +57,12 @@ class DisableCatalogsOnCurrencyDeactivationConstraintTest extends IntegrationTes
                     'currency_codes' => 'EUR',
                 ],
                 'expectedMessage' => 'This value should be of type array.',
+            ],
+            'currency code is not an string' => [
+                'parameters' => [
+                    'channel_codes' => ['EUR', 2, 'USD'],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }
