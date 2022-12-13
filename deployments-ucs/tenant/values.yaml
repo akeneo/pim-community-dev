@@ -297,6 +297,8 @@ pim:
       enabled: true
     installPim:
       enabled: true
+    migration:
+      enable: false
     tests:
       enabled: false
   storage:

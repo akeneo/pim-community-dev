@@ -38,7 +38,7 @@ jobs:
                       docker push ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/dev/pim-enterprise-dev:${RELEASE_NAME}
                       docker push ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev:${RELEASE_NAME}
             - run:
-                name: Update the pim-saas-k8s-artifacts with the new values
+                name: Update the pim-saas-k8s-artifacts with the new values for master branch
                 command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                   export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
@@ -59,9 +59,6 @@ jobs:
                   rm -rf /tmp/pim-saas-k8s-artifacts/infra
                   mkdir -p /tmp/pim-saas-k8s-artifacts/infra
                   cp -r deployments-ucs/infra/k8s /tmp/pim-saas-k8s-artifacts/infra/k8s
-
-                  # k8s
-                  rm -rf /tmp/pim-saas-k8s-artifacts/k8s
 
                   # pim-saas-services
                   rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
@@ -96,3 +93,119 @@ jobs:
                   fi
                   # Tag the repo with the release number
                   git tag -a ${RELEASE_NAME} -m "Update with release ${RELEASE_NAME}"
+            - run:
+                name: Update the pim-saas-k8s-artifacts with the new values for master-migration-step1 branch
+                command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  git config --global user.email "pim_ci@akeneo.com"
+                  git config --global user.name "pim_ci_deployment"
+
+                  rm -rf /tmp/pim-saas-k8s-artifacts
+                  MIGRATION_BRANCH=master-migration-step1
+                  git clone -b ${MIGRATION_BRANCH} git@github.com:akeneo/pim-saas-k8s-artifacts.git /tmp/pim-saas-k8s-artifacts
+
+                  # argocd
+                  rm -rf /tmp/pim-saas-k8s-artifacts/argocd
+                  cp -r deployments-ucs/argocd /tmp/pim-saas-k8s-artifacts/argocd
+
+                  # argocd-apps
+                  rm -rf /tmp/pim-saas-k8s-artifacts/argocd-apps
+                  cp -r deployments-ucs/argocd-apps /tmp/pim-saas-k8s-artifacts/argocd-apps
+
+                  # infra
+                  rm -rf /tmp/pim-saas-k8s-artifacts/infra
+                  mkdir -p /tmp/pim-saas-k8s-artifacts/infra
+                  cp -r deployments-ucs/infra/k8s /tmp/pim-saas-k8s-artifacts/infra/k8s
+
+                  # pim-saas-services
+                  rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west3.sh
+
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
+
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west3.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-us-central1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-australia-southeast1.sh
+
+                  cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
+
+                  # tenant
+                  rm -rf /tmp/pim-saas-k8s-artifacts/tenant
+                  mkdir -p /tmp/pim-saas-k8s-artifacts/tenant
+                  mkdir -p /tmp/pim-saas-k8s-artifacts/tenant/templates
+                  cp deployments-ucs/tenant/templates/storage-bucket.yaml /tmp/pim-saas-k8s-artifacts/tenant/templates/storage-bucket.yaml
+                  cp deployments-ucs/tenant/Chart.yaml /tmp/pim-saas-k8s-artifacts/tenant/Chart.yaml
+                  yq d -i /tmp/pim-saas-k8s-artifacts/tenant/Chart.yaml dependencies
+                  yq w -i deployments-ucs/tenant/values.yaml image.pim.tag "${RELEASE_NAME}"
+                  cp deployments-ucs/tenant/values.yaml /tmp/pim-saas-k8s-artifacts/tenant/values.yaml
+
+                  # timmy
+                  rm -rf /tmp/pim-saas-k8s-artifacts/timmy
+                  cp -r deployments-ucs/timmy /tmp/pim-saas-k8s-artifacts/timmy
+
+                  cd /tmp/pim-saas-k8s-artifacts
+                  git add -A
+                  # git diff for commit only when changes are present
+                  if ! git diff-index --quiet HEAD; then
+                    git commit -m "Update with release ${RELEASE_NAME}"
+                    git push
+                  fi
+            - run:
+                name: Update the pim-saas-k8s-artifacts with the new values for master-migration-step2 branch
+                command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  git config --global user.email "pim_ci@akeneo.com"
+                  git config --global user.name "pim_ci_deployment"
+
+                  rm -rf /tmp/pim-saas-k8s-artifacts
+                  MIGRATION_BRANCH=master-migration-step2
+                  git clone -b ${MIGRATION_BRANCH} git@github.com:akeneo/pim-saas-k8s-artifacts.git /tmp/pim-saas-k8s-artifacts
+
+                  # argocd
+                  rm -rf /tmp/pim-saas-k8s-artifacts/argocd
+                  cp -r deployments-ucs/argocd /tmp/pim-saas-k8s-artifacts/argocd
+
+                  # argocd-apps
+                  rm -rf /tmp/pim-saas-k8s-artifacts/argocd-apps
+                  cp -r deployments-ucs/argocd-apps /tmp/pim-saas-k8s-artifacts/argocd-apps
+
+                  # infra
+                  rm -rf /tmp/pim-saas-k8s-artifacts/infra
+                  mkdir -p /tmp/pim-saas-k8s-artifacts/infra
+                  cp -r deployments-ucs/infra/k8s /tmp/pim-saas-k8s-artifacts/infra/k8s
+
+                  # pim-saas-services
+                  rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west3.sh
+
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
+
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west3.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-us-central1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-australia-southeast1.sh
+
+                  cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
+
+                  # tenant
+                  rm -rf /tmp/pim-saas-k8s-artifacts/tenant
+                  cp -r deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml pim.hook.migration.enable true
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml mysql.mysql.resetPassword true
+
+                  # timmy
+                  rm -rf /tmp/pim-saas-k8s-artifacts/timmy
+                  cp -r deployments-ucs/timmy /tmp/pim-saas-k8s-artifacts/timmy
+
+                  cd /tmp/pim-saas-k8s-artifacts
+                  git add -A
+                  # git diff for commit only when changes are present
+                  if ! git diff-index --quiet HEAD; then
+                    git commit -m "Update with release ${RELEASE_NAME}"
+                    git push
+                  fi
