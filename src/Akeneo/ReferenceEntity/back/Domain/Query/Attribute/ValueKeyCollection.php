@@ -50,6 +50,11 @@ class ValueKeyCollection implements \IteratorAggregate
         return new self($valueKeys);
     }
 
+    public static function empty(): self
+    {
+        return new self([]);
+    }
+
     public function normalize(): array
     {
         return array_map(static fn (ValueKey $valueKey) => $valueKey->__toString(), $this->valueKeys);

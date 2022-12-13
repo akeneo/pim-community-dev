@@ -21,8 +21,6 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\Channel\API\Query\Channel;
 use Akeneo\Channel\API\Query\FindChannels;
-use Akeneo\Channel\API\Query\FindLocales;
-use Akeneo\Channel\API\Query\Locale;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
@@ -46,7 +44,13 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequi
         Assert::false($localeIdentifierCollection->isEmpty(), 'The list of locales should not be empty.');
 
         $attributes = $this->findRequiredAttributes($assetFamilyIdentifier);
-        $channel = $this->getChannel($channelIdentifier);
+
+        try {
+            $channel = $this->getChannel($channelIdentifier);
+        } catch (\Exception) {
+            return ValueKeyCollection::empty();
+        }
+
         $channelLocaleCodes = array_map(fn (string $localeCode) => strtolower($localeCode), $channel->getLocaleCodes());
 
         $localeIdentifiers = array_filter(

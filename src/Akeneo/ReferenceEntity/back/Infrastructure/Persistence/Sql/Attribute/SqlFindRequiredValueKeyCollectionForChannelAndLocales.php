@@ -15,8 +15,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\Channel\API\Query\Channel;
 use Akeneo\Channel\API\Query\FindChannels;
-use Akeneo\Channel\API\Query\FindLocales;
-use Akeneo\Channel\API\Query\Locale;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -46,7 +44,13 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequi
         Assert::false($localeIdentifierCollection->isEmpty(), 'The list of locales should not be empty.');
 
         $attributes = $this->findRequiredAttributes($referenceEntityIdentifier);
-        $channel = $this->getChannel($channelIdentifier);
+
+        try {
+            $channel = $this->getChannel($channelIdentifier);
+        } catch(\Exception) {
+            return ValueKeyCollection::empty();
+        }
+
         $channelLocaleCodes = array_map(fn (string $localeCode) => strtolower($localeCode), $channel->getLocaleCodes());
 
         $localeIdentifiers = array_filter(
