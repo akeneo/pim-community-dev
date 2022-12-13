@@ -20,12 +20,6 @@ class CheckRequirementsCommand extends Command
     protected static $defaultName = 'pim:installer:check-requirements';
     protected static $defaultDescription = 'heck requirements for Akeneo PIM';
 
-    public function __construct(
-        private readonly string $rootDirectory
-    ) {
-        parent::__construct();
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM requirements check:</info>');
@@ -33,7 +27,7 @@ class CheckRequirementsCommand extends Command
         $this->renderRequirements(
             $input,
             $output,
-            new Requirements($this->rootDirectory)
+            new Requirements()
         );
 
         return Command::SUCCESS;

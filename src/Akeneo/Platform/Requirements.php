@@ -18,11 +18,11 @@ use Symfony\Requirements\SymfonyRequirements;
  */
 class Requirements extends SymfonyRequirements
 {
-    public function __construct(string $baseDirectory)
+    public function __construct()
     {
         parent::__construct();
 
-        $communityRequirements = new PimRequirements($baseDirectory);
+        $communityRequirements = new PimRequirements();
 
         foreach ($communityRequirements->getRequirements() as $requirement) {
             if (!$requirement->isOptional()) {
