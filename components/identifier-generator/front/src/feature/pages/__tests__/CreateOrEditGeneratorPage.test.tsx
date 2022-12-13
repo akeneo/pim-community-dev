@@ -3,7 +3,7 @@ import {fireEvent, render, screen} from '../../tests/test-utils';
 import {CreateOrEditGeneratorPage} from '../';
 import {createMemoryHistory} from 'history';
 import {Router} from 'react-router';
-import {IdentifierGeneratorContext} from '../../context/IdentifierGeneratorContext';
+import {IdentifierGeneratorContext} from '../../context';
 import {initialGenerator} from '../../tests/fixtures/initialGenerator';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 
@@ -29,7 +29,6 @@ describe('CreateOrEditGeneratorPage', () => {
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.product_selection'));
     expect(screen.getByText('SelectionTabMock')).toBeInTheDocument();
-    expect(screen.getByText('[]')).toBeInTheDocument(); // conditions
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
     expect(screen.getByText('StructureTabMock')).toBeInTheDocument();
@@ -178,5 +177,23 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('Delimiter is -')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update Delimiter'));
     expect(screen.getByText('Delimiter is /')).toBeInTheDocument();
+  });
+
+  it('should update conditions', () => {
+    render(
+      <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
+        initialGenerator={initialGenerator}
+        validationErrors={[]}
+        mainButtonCallback={jest.fn()}
+        isNew={false}
+      />
+    );
+
+    fireEvent.click(screen.getByText('pim_identifier_generator.tabs.product_selection'));
+    expect(screen.getByText('SelectionTabMock')).toBeInTheDocument();
+    expect(screen.getByText('[{"type":"enabled","value":true}]')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Update selection'));
+    expect(screen.getByText('[{"type":"enabled","value":false}]')).toBeInTheDocument();
   });
 });
