@@ -36,3 +36,16 @@ akeneo_catalogs:
         unknown: 'La devise "{{ currency_name }}" a été désactivée. Veuillez vérifier vos paramètres de devises ou supprimer ce filtre.'
       locale:
         unknown: 'La locale "{{ locale_name }}" a été désactivée. Veuillez vérifier vos paramètres de locale ou supprimer ce filtre.'
+    product_mapping:
+      source:
+        invalid: 'Cet attribut a été supprimé.'
+        unknown: 'Valeur inconnue'
+        channel:
+          not_empty: 'Ce canal doit être vide.'
+          empty: 'Ce canal ne peut pas être vide.'
+          unknown: 'Ce canal a été désactivé. Veuillez vérifier les paramètres de votre canal ou supprimer ce critère.'
+        locale:
+          not_empty: 'Cette locale doit être vide.'
+          empty: 'Cette locale ne peut pas être vide.'
+          unknown: 'Cette locale est désactivée ou n''existe plus. Veuillez vérifier vos paramètres de canaux et de locales.'
+          disabled: 'Cette locale est désactivée. Veuillez vérifier vos paramètres de canaux et de locales ou mettre à jour cette valeur.'
