@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Query\InstallDataQuery;
+use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallDataQuery;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Component\Console\CommandExecutor;
 use Doctrine\DBAL\Connection;
@@ -174,7 +174,7 @@ class DatabaseCommand extends Command
             );
         }
 
-        $this->installTimeQuery->setInstallTime();
+        $this->installTimeQuery->withDatetime(new \DateTimeImmutable());
 
         return Command::SUCCESS;
     }

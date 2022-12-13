@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Bundle\InstallerBundle\Persistence\Query;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql;
 
+use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -17,10 +18,10 @@ final class InstallDataQuery
     {
     }
 
-    public function setInstallTime(): void
+    public function withDatetime(DateTimeImmutable $installDatetime): void
     {
         $installData = [
-            'database_installed_at' => (new \DateTimeImmutable())->format('c'),
+            'database_installed_at' => $installDatetime->format('c'),
         ];
 
         $sql = 'INSERT INTO pim_configuration (`code`, `values`) VALUES (?, ?)';
