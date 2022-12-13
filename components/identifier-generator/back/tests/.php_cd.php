@@ -30,6 +30,7 @@ $rules = [
 
     $builder->only(
         [
+            'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
 
