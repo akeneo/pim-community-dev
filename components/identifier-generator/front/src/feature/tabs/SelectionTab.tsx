@@ -14,6 +14,7 @@ type SelectionTabProps = {
 };
 
 type ConditionsWithIdentifier = (Condition & {id: string})[];
+type ConditionId = string;
 
 const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange}) => {
   const translate = useTranslate();
@@ -49,6 +50,12 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     onChange(removeIdentifiers(newConditions));
   };
 
+  const handleDelete = (conditionId: ConditionId) => {
+    const newConditions = conditionsWithId.filter(condition => condition.id !== conditionId);
+    setConditionsWithId(newConditions);
+    onChange(removeIdentifiers(newConditions));
+  };
+
   return (
     <>
       <SectionTitle>
@@ -74,7 +81,8 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
               {conditionsWithId.map(conditionWithId => (
                 <>
                   {conditionWithId.type === CONDITION_NAMES.ENABLED && (
-                    <EnabledLine condition={conditionWithId} key={conditionWithId.id} onChange={handleChange} />
+                    <EnabledLine condition={conditionWithId} key={conditionWithId.id}
+                                 onChange={handleChange} onDelete={handleDelete}/>
                   )}
                 </>
               ))}
@@ -87,3 +95,4 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
 };
 
 export {SelectionTab};
+export type {ConditionId};
