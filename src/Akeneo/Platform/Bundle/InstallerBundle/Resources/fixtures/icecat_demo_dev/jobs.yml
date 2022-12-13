@@ -967,3 +967,8 @@ jobs:
         alias:     disable_catalogs_on_currency_deactivation
         label:     Disable catalogs on currency deactivation
         type:      disable_catalogs_on_currency_deactivation
+    disable_catalogs_on_channel_removal:
+        connector: internal
+        alias:     disable_catalogs_on_channel_removal
+        label:     Disable catalogs on channel removal
+        type:      disable_catalogs_on_channel_removal
