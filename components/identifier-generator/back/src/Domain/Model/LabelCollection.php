@@ -10,6 +10,8 @@ use Webmozart\Assert\Assert;
  * The collection of the generator labels by locale
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-type LabelsNormalized array<string, string>|object
  */
 final class LabelCollection
 {
@@ -22,9 +24,9 @@ final class LabelCollection
     }
 
     /**
-     * @param array<string, string>|\stdClass $normalizedLabels
+     * @param \stdClass|array<string, mixed> $normalizedLabels
      */
-    public static function fromNormalized($normalizedLabels): self
+    public static function fromNormalized(array|\stdClass $normalizedLabels): self
     {
         if ($normalizedLabels instanceof \stdClass) {
             $normalizedLabels = [];
@@ -37,15 +39,15 @@ final class LabelCollection
     }
 
     /**
-     * @return array<string, string>|\stdClass
+     * @return LabelsNormalized
      */
-    public function normalize()
+    public function normalize(): array|object
     {
         return [] === $this->labels ? (object) [] : $this->labels;
     }
 
     /**
-     * @param array<string, string> $labels
+     * @param array<string, mixed> $labels
      */
     public function merge(array $labels): self
     {

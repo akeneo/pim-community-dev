@@ -10,6 +10,9 @@ use Webmozart\Assert\Assert;
  * Condition allowing to apply the identifier generation
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type EnabledNormalized from Enabled
+ * @phpstan-type ConditionsNormalized list<EnabledNormalized>
  */
 final class Conditions
 {
@@ -33,7 +36,7 @@ final class Conditions
     }
 
     /**
-     * @param array<mixed> $normalizedConditions
+     * @param list<array<string, mixed>> $normalizedConditions
      */
     public static function fromNormalized(array $normalizedConditions): self
     {
@@ -51,7 +54,7 @@ final class Conditions
     }
 
     /**
-     * @return array<mixed>
+     * @return ConditionsNormalized
      */
     public function normalize(): array
     {

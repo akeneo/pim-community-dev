@@ -10,6 +10,8 @@ use Webmozart\Assert\Assert;
  * Property to add a free text to the structure
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-type FreeTextNormalized array{type: string, string: string}
  */
 final class FreeText implements PropertyInterface
 {
@@ -41,7 +43,7 @@ final class FreeText implements PropertyInterface
     }
 
     /**
-     * @inheritDoc
+     * @return FreeTextNormalized
      */
     public function normalize(): array
     {

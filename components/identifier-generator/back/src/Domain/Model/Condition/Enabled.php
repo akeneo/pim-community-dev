@@ -6,6 +6,9 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * @phpstan-type EnabledNormalized array{type: string, value: bool}
+ */
 class Enabled implements ConditionInterface
 {
     public function __construct(
@@ -24,7 +27,7 @@ class Enabled implements ConditionInterface
     }
 
     /**
-     * @param array<string, boolean> $normalizedProperty
+     * @param array<string, mixed> $normalizedProperty
      */
     public static function fromNormalized(array $normalizedProperty): ConditionInterface
     {
@@ -37,7 +40,7 @@ class Enabled implements ConditionInterface
     }
 
     /**
-     * @return array<string, boolean|string>
+     * @return EnabledNormalized
      */
     public function normalize(): array
     {

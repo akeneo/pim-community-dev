@@ -9,6 +9,10 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type ConditionsNormalized from Conditions
+ * @phpstan-import-type StructureNormalized from Structure
+ * @phpstan-import-type LabelsNormalized from LabelCollection
  */
 final class IdentifierGenerator
 {
@@ -87,9 +91,9 @@ final class IdentifierGenerator
      * @return array{
      *     uuid: string,
      *     code: string,
-     *     conditions: array<mixed>,
-     *     structure: array<mixed>,
-     *     labels: array<string, string>|\stdClass,
+     *     conditions: ConditionsNormalized,
+     *     structure: StructureNormalized,
+     *     labels: LabelsNormalized,
      *     target: string,
      *     delimiter: string | null,
      * }
