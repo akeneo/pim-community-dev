@@ -7,6 +7,11 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
+/**
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class Version_7_0_20221212160000_add_database_install_time extends AbstractMigration
 {
     public function getDescription(): string
@@ -18,6 +23,7 @@ final class Version_7_0_20221212160000_add_database_install_time extends Abstrac
     {
         if ($this->installDataExists()) {
             $this->addSql('SELECT 1');
+
             return;
         }
 
@@ -67,7 +73,7 @@ final class Version_7_0_20221212160000_add_database_install_time extends Abstrac
         $result = $this->connection->executeQuery(
             $sql,
             [
-                'database_name' => 'akeneo_pim',
+                'database_name' => $this->connection->getDatabase(),
                 'install_table_name' => 'oro_user',
             ]
         );

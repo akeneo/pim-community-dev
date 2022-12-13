@@ -7,6 +7,11 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class Version_7_0_20221212160000_add_database_install_time_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
