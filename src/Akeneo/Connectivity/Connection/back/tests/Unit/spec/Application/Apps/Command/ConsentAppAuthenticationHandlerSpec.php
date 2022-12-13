@@ -98,35 +98,6 @@ class ConsentAppAuthenticationHandlerSpec extends ObjectBehavior
         $this->handle($consentAppAuthenticationCommand);
     }
 
-    public function it_throws_when_the_scope_openid_is_not_requested(
-        AppAuthorizationSessionInterface $appAuthorizationSession,
-        ValidatorInterface $validator,
-        ConstraintViolationListInterface $constraintViolationList
-    ): void {
-        $clientId = 'a_client_id';
-        $pimUserId = 1;
-        $consentAppAuthenticationCommand = new ConsentAppAuthenticationCommand($clientId, $pimUserId);
-        $appAuthorization = AppAuthorization::createFromNormalized([
-            'client_id' => $consentAppAuthenticationCommand->getClientId(),
-            'authorization_scope' => ScopeList::fromScopes([])->toScopeString(),
-            'authentication_scope' => ScopeList::fromScopes([])->toScopeString(),
-            'redirect_uri' => 'a_redirect_uri',
-            'state' => 'a_state',
-        ]);
-
-        $constraintViolationList->count()->willReturn(0);
-        $appAuthorizationSession->getAppAuthorization($consentAppAuthenticationCommand->getClientId())->willReturn(
-            $appAuthorization
-        );
-
-        $validator->validate($consentAppAuthenticationCommand)->willReturn($constraintViolationList);
-
-        $this->shouldThrow(new \LogicException('The app authorization should request the openid scope'))->during(
-            'handle',
-            [$consentAppAuthenticationCommand]
-        );
-    }
-
     public function it_throws_when_the_command_is_not_valid(
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList
