@@ -1,3 +1,6 @@
+orbs:
+  security-hunter: akeneo-orbs/security-hunter@1.2.0
+
 workflows:
   version: 2
 
@@ -21,6 +24,23 @@ workflows:
       - build_srnt_dev:
           requires:
             - checkout
+      # Security tests block
+      - security-hunter/detect-secrets-in-latest-commits:
+            requires:
+                - ready_to_build?
+      - security-hunter/detect-secrets-in-directory:
+            requires:
+                - checkout
+      - security-hunter/scan-iac-files:
+            exclude_rules: "google-storage-enable-ubla"
+            requires:
+                - checkout
+      - security-hunter/scan-docker-image:
+            archive_name: "php-pim-image.tar"
+            image_name: "akeneo/pim-dev/php:8.1"
+            requires:
+                - build_srnt_dev
+      # End of security tests
       - test_front_supplier_portal:
           requires:
             - build_srnt_dev
@@ -66,6 +86,10 @@ workflows:
             - test_front_supplier_portal
             - test_back_supplier_portal
             - test_database
+            - security-hunter/detect-secrets-in-latest-commits
+            - security-hunter/detect-secrets-in-directory
+            - security-hunter/scan-iac-files
+            - security-hunter/scan-docker-image
 
   suricates-docs:
       when:
