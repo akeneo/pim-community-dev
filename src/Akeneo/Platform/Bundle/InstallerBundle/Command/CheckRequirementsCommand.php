@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Akeneo\Platform\Bundle\PimVersionBundle\Version\CommunityVersion;
 use Akeneo\Platform\Requirements;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -19,24 +18,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckRequirementsCommand extends Command
 {
     protected static $defaultName = 'pim:installer:check-requirements';
+    protected static $defaultDescription = 'heck requirements for Akeneo PIM';
 
-    public function __construct(
-        private string $rootDirectory
-    ) {
-        parent::__construct();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setDescription('Check requirements for Akeneo PIM');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM requirements check:</info>');
@@ -44,7 +27,7 @@ class CheckRequirementsCommand extends Command
         $this->renderRequirements(
             $input,
             $output,
-            new Requirements($this->rootDirectory)
+            new Requirements()
         );
 
         return Command::SUCCESS;
@@ -72,14 +55,7 @@ class CheckRequirementsCommand extends Command
         }
     }
 
-    /**
-     * Render requirements table
-     *
-     * @param array           $collection
-     * @param string          $header
-     * @param OutputInterface $output
-     */
-    protected function renderTable(array $collection, $header, OutputInterface $output)
+    protected function renderTable(array $collection, string $header, OutputInterface $output): void
     {
         $table = new Table($output);
 
@@ -94,7 +70,7 @@ class CheckRequirementsCommand extends Command
                 $table->addRow(
                     [
                         $requirement->isOptional() ? 'WARNING' : 'ERROR',
-                        $requirement->getHelpText()
+                        $requirement->getHelpText(),
                     ]
                 );
             }
