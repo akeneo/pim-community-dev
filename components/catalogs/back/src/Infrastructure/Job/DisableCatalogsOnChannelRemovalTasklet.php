@@ -15,7 +15,7 @@ class DisableCatalogsOnChannelRemovalTasklet implements TaskletInterface
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private readonly GetCatalogIdsUsingChannelsAsFilterQueryInterface $getCatalogsToDisableQuery,
+        private readonly GetCatalogIdsUsingChannelsAsFilterQueryInterface $getCatalogIdsUsingChannelsAsFilterQuery,
         private readonly DisableCatalogQueryInterface $disableCatalogsQuery,
         private readonly DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
     ) {
@@ -35,7 +35,7 @@ class DisableCatalogsOnChannelRemovalTasklet implements TaskletInterface
         /** @var string[] $channelCodes */
         $channelCodes = $this->stepExecution->getJobParameters()->get('channel_codes');
 
-        $catalogsIds = $this->getCatalogsToDisableQuery->execute($channelCodes);
+        $catalogsIds = $this->getCatalogIdsUsingChannelsAsFilterQuery->execute($channelCodes);
 
         foreach ($catalogsIds as $catalogId) {
             $this->disableCatalogsQuery->execute($catalogId);
