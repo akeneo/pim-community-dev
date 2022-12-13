@@ -30,10 +30,10 @@ class ProductIndexer implements ProductIndexerInterface
      * The memory ratio helps to determine the size of the batch in function of the configured PHP memory limit.
      * For example, with a ratio of 60 and a maximum memory of 512 MB,  the cumulated size of the raw values in a batch of products is at most ~8MB (512/60).
      * It seems very conservative, but it is not actually.
-     * Indeed, 8MB of raw values in database can generate up to 100MB once passed to json_decode. Additionally, as soon as you manipulates the values
-     * in different function in the stack traces, you can reach a big consumption of memory, as PHP could dupicate the whole array of raw values.
+     * Indeed, 8MB of raw values in database can generate up to 100MB once passed to json_decode. Additionally, as soon as it manipulates the values
+     * in different function in the stack traces, it can reach a big consumption of memory, as PHP could duplicate the whole array of raw values.
      *
-     * There would be possibilities to optimize memory consumption it by using reference or wrapping string values in Object to just duplicate the pointer of the objects.
+     * There would be possibilities to optimize memory consumption by using reference or wrapping string values in Object to just duplicate the pointer of the objects.
      * Though, it would be less maintainable and an improvement.
 s     */
     const MEMORY_RATIO = 60;
