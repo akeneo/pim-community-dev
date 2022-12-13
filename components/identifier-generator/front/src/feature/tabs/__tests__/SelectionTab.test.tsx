@@ -5,7 +5,6 @@ import {CONDITION_NAMES, Conditions, Operator} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
-jest.mock('../../pages/SimpleDeleteModal');
 
 describe('SelectionTab', () => {
   it('should render the selection tab', () => {
@@ -66,6 +65,29 @@ describe('SelectionTab', () => {
     fireEvent.click(screen.getByText('Add condition'));
     expect(screen.getByText('EnabledLineMock')).toBeInTheDocument();
     expect(onChange).toBeCalledWith([{type: CONDITION_NAMES.ENABLED}]);
+  });
+
+  it('should display a placeholder if conditions are empty', async () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+    const onChange = jest.fn();
+
+    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} />);
+    expect(await screen.findByText('Sku')).toBeInTheDocument();
+    expect(screen.queryByText('pim_identifier_generator.selection.empty.title')).toBeInTheDocument();
+  });
+
+  it('should not display placeholder there is at least 1 condition', async () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+    const onChange = jest.fn();
+    render(
+      <SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />
+    );
+    expect(await screen.findByText('Sku')).toBeInTheDocument();
+    expect(screen.queryByText('pim_identifier_generator.selection.empty.title')).not.toBeInTheDocument();
   });
 
   it('should delete a condition', async () => {
