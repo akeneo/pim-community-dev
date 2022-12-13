@@ -19,7 +19,17 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  * @psalm-suppress PropertyNotSetInConstructor
  *
  * @phpstan-type AttributeSource array{source: string, scope: string|null, locale: string|null}
- * @phpstan-type Attribute array{code: string, label: string, type: string, scopable: bool, localizable: bool}
+ * @phpstan-type Attribute array{
+ *    attribute_group_code: string,
+ *    attribute_group_label: string,
+ *    code: string,
+ *    default_measurement_unit?: string,
+ *    label: string,
+ *    localizable: bool,
+ *    measurement_family?: string,
+ *    scopable: bool,
+ *    type: string
+ * }
  */
 final class AttributeSourceContainsValidLocaleValidator extends ConstraintValidator
 {
