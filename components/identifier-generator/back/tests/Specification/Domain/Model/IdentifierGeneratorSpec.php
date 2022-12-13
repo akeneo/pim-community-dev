@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -173,5 +174,37 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             'target' => 'sku',
             'delimiter' => '-',
         ]);
+    }
+
+    public function it_should_match_empty_identifier(): void
+    {
+        $this->match(new ProductProjection(
+            '',
+            true
+        ))->shouldReturn(true);
+    }
+
+    public function it_should_match_null_identifier(): void
+    {
+        $this->match(new ProductProjection(
+            null,
+            true
+        ))->shouldReturn(true);
+    }
+
+    public function it_should_not_match_filled_identifier(): void
+    {
+        $this->match(new ProductProjection(
+            'a_product_identifier',
+            true
+        ))->shouldReturn(false);
+    }
+
+    public function it_should_not_match_disabled_product(): void
+    {
+        $this->match(new ProductProjection(
+            null,
+            false
+        ))->shouldReturn(false);
     }
 }

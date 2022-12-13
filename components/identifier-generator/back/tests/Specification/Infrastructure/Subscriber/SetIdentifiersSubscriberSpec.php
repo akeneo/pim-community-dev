@@ -83,6 +83,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
+        $product->isEnabled()->shouldBeCalled()->willReturn(true);
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -119,6 +120,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
+        $product->isEnabled()->shouldBeCalled()->willReturn(true);
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -159,6 +161,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
+        $product->isEnabled()->shouldBeCalled()->willReturn(true);
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);

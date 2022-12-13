@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 class Enabled implements ConditionInterface
@@ -45,5 +46,10 @@ class Enabled implements ConditionInterface
             'type' => self::type(),
             'value' => $this->value,
         ];
+    }
+
+    public function match(ProductProjection $productProjection): bool
+    {
+        return $productProjection->enabled() === $this->value;
     }
 }
