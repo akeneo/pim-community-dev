@@ -106,6 +106,10 @@ class EnterpriseReferenceEntityContext extends PimContext
         $jobInstance = new JobInstance('Akeneo CSV Connector', 'import', 'csv_reference_entity_record_import');
         $jobInstance->setCode('test_csv');
         $jobInstance->setLabel('Record CSV import');
+        $jobInstance->setRawParameters(['storage' => [
+            'type' => 'local',
+            'file_path' => 'test.csv',
+        ]]);
         $this->getService('akeneo_batch.saver.job_instance')->save($jobInstance);
     }
 
@@ -117,6 +121,10 @@ class EnterpriseReferenceEntityContext extends PimContext
         $jobInstance = new JobInstance('Akeneo CSV Connector', 'import', 'xlsx_reference_entity_record_import');
         $jobInstance->setCode('test_xlsx');
         $jobInstance->setLabel('Record XLSX import');
+        $jobInstance->setRawParameters(['storage' => [
+            'type' => 'local',
+            'file_path' => 'test.xlsx',
+        ]]);
         $this->getService('akeneo_batch.saver.job_instance')->save($jobInstance);
     }
 }

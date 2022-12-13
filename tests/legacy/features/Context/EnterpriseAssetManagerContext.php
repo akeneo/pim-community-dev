@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -26,7 +27,8 @@ class EnterpriseAssetManagerContext extends PimContext
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
             [],
-            Image::createEmpty()
+            Image::createEmpty(),
+            RuleTemplateCollection::empty(),
         );
         $this->getService('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->create($assetFamily);
@@ -103,6 +105,10 @@ class EnterpriseAssetManagerContext extends PimContext
         $jobInstance = new JobInstance('Akeneo CSV Connector', 'import', 'asset_manager_csv_asset_import');
         $jobInstance->setCode('test_csv');
         $jobInstance->setLabel('Asset Manager CSV import');
+        $jobInstance->setRawParameters(['storage' => [
+            'type' => 'local',
+            'file_path' => 'test.csv',
+        ]]);
         $this->getService('akeneo_batch.saver.job_instance')->save($jobInstance);
     }
 }
