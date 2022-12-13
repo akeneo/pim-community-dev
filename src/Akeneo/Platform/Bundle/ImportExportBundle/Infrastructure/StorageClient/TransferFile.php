@@ -22,7 +22,7 @@ final class TransferFile
         string $destinationFilePath
     ): void {
         if (!$sourceFilesystem->fileExists($sourceFilePath)) {
-            throw new \RuntimeException(sprintf('The file "%s" is not present in the storage.', $sourceFilePath));
+            throw new \RuntimeException(sprintf('The file "%s" does not exist in the selected storage.', $sourceFilePath));
         }
 
         try {
