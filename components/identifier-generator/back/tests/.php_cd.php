@@ -30,6 +30,7 @@ $rules = [
 
     $builder->only(
         [
+            'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
 
@@ -58,6 +59,7 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\Validator',
+            'Symfony\Contracts\Translation\TranslatorInterface',
 
             'Doctrine\DBAL',
 

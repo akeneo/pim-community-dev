@@ -12,7 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class MeasureConverterSpec extends ObjectBehavior
 {
-    function let(LegacyMeasurementProvider $provider)
+    function let(LegacyMeasurementProvider $provider): void
     {
         $yaml = <<<YAML
 measures_config:
@@ -45,13 +45,13 @@ YAML;
         $this->beConstructedWith($provider);
     }
 
-    public function it_allows_to_define_the_family()
+    public function it_allows_to_define_the_family(): void
     {
         $this->setFamily('Length')->shouldReturnAnInstanceOf(MeasureConverter::class);
         $this->setFamily('length')->shouldReturnAnInstanceOf(MeasureConverter::class);
     }
 
-    public function it_throws_an_exception_if_an_unknown_family_is_set()
+    public function it_throws_an_exception_if_an_unknown_family_is_set(): void
     {
         $this
             ->shouldThrow(
@@ -60,7 +60,7 @@ YAML;
             ->during('setFamily', ['foo']);
     }
 
-    public function it_converts_a_value_from_a_base_unit_to_a_final_unit()
+    public function it_converts_a_value_from_a_base_unit_to_a_final_unit(): void
     {
         $this->setFamily('Weight');
         $this->convert(
@@ -70,7 +70,7 @@ YAML;
         )->shouldReturn('1000000.000000000000');
     }
 
-    public function it_converts_a_value_from_a_base_unit_to_a_final_unit_case_insensitive()
+    public function it_converts_a_value_from_a_base_unit_to_a_final_unit_case_insensitive(): void
     {
         $this->setFamily('weight');
         $this->convert(
@@ -80,14 +80,14 @@ YAML;
         )->shouldReturn('1000000.000000000000');
     }
 
-    public function it_converts_a_value_to_a_standard_unit()
+    public function it_converts_a_value_to_a_standard_unit(): void
     {
         $this->setFamily('Weight');
         $this->convertBaseToStandard('MILLIGRAM', 1000)->shouldReturn('1.000000000000');
         $this->convertBaseToStandard('milligram', 1000)->shouldReturn('1.000000000000');
     }
 
-    public function it_converts_a_very_small_value_to_a_standard_unit()
+    public function it_converts_a_very_small_value_to_a_standard_unit(): void
     {
         $this->setFamily('Weight');
         $this->convertBaseToStandard(
@@ -96,7 +96,7 @@ YAML;
         )->shouldReturn('0.000100000000');
     }
 
-    public function it_returns_zero_when_value_is_not_numeric()
+    public function it_returns_zero_when_value_is_not_numeric(): void
     {
         $this->setFamily('Weight');
         $this->convertBaseToStandard(
@@ -105,14 +105,23 @@ YAML;
         )->shouldReturn('0');
     }
 
-    public function it_converts_a_standard_value_to_a_final_unit()
+    public function it_returns_zero_when_value_is_numeric_and_contains_space(): void
+    {
+        $this->setFamily('Weight');
+        $this->convertBaseToStandard(
+            'KILOGRAM',
+            ' 1.900'
+        )->shouldReturn('0');
+    }
+
+    public function it_converts_a_standard_value_to_a_final_unit(): void
     {
         $this->setFamily('Weight');
         $this->convertStandardToResult('KILOGRAM', 10)->shouldReturn('0.010000000000');
         $this->convertStandardToResult('KiloGram', 10)->shouldReturn('0.010000000000');
     }
 
-    public function it_throws_an_exception_if_the_unit_measure_does_not_exist()
+    public function it_throws_an_exception_if_the_unit_measure_does_not_exist(): void
     {
         $this->setFamily('Weight');
         $this

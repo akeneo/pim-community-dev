@@ -105,7 +105,7 @@ class MeasureConverter
      */
     protected function applyOperation($value, $operator, $operand)
     {
-        if (!is_numeric($value)) {
+        if (!is_numeric($value) || (is_string($value) && str_contains($value, ' '))) {
             return '0';
         }
 
