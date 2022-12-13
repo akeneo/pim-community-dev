@@ -6,5 +6,5 @@ namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping;
 
 interface GetProductFilesWithUnreadCommentsForContributor
 {
-    public function __invoke(string $contributorEmail, \DateTimeImmutable $todayDate): array;
+    public function __invoke(string $contributorEmail): array;
 }

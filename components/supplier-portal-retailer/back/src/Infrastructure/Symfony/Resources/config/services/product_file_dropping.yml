@@ -304,6 +304,12 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket'
             - '@monolog.logger.supplier_portal'
 
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Job\SendProductFilesWithUnreadCommentsForContributorEmail:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\SendProductFilesWithUnreadCommentsForContributorEmail'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesWithUnreadCommentsForContributor'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors'
+
     # Command
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Command\CleanSupplierProductFilesCommand:
         arguments:
@@ -341,3 +347,10 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\MarkCommentsAsRead\MarkCommentsAsRead:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler'
+
+    # Email sending services
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\SendProductFilesWithUnreadCommentsForContributorEmail:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SendTwigProductFilesWithUnreadCommentsForContributorEmail
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\SendEmail'
+            - '%kernel.project_dir%/public/bundles/akeneosupplierportalretailer'

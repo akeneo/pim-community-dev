@@ -10,14 +10,14 @@ use Doctrine\DBAL\Connection;
 
 final class DatabaseGetProductFilesWithUnreadCommentsForContributor implements GetProductFilesWithUnreadCommentsForContributor
 {
+    private const COMMENTS_AGE_IN_HOURS = 24;
+
     public function __construct(private Connection $connection)
     {
     }
 
-    public function __invoke(string $contributorEmail, \DateTimeImmutable $todayDate): array
+    public function __invoke(string $contributorEmail): array
     {
-        $COMMENTS_AGE_IN_HOURS = 24;
-
         $sql = <<<SQL
             WITH retailer_comments AS (
                 SELECT rc.product_file_identifier, JSON_ARRAYAGG(
@@ -29,7 +29,7 @@ final class DatabaseGetProductFilesWithUnreadCommentsForContributor implements G
                 FROM akeneo_supplier_portal_product_file_retailer_comments AS rc
                          LEFT JOIN akeneo_supplier_portal_product_file_comments_read_by_supplier comments_read_by_supplier
                                    ON rc.product_file_identifier = comments_read_by_supplier.product_file_identifier
-                WHERE TIMESTAMPDIFF(HOUR, rc.created_at, :todayDate) < :COMMENTS_AGE_IN_HOURS
+                WHERE TIMESTAMPDIFF(HOUR, rc.created_at, NOW()) < :COMMENTS_AGE_IN_HOURS
                   AND (rc.created_at > comments_read_by_supplier.last_read_at OR comments_read_by_supplier.last_read_at IS NULL)
                 GROUP BY rc.product_file_identifier
             ) SELECT
@@ -62,8 +62,7 @@ final class DatabaseGetProductFilesWithUnreadCommentsForContributor implements G
             $this->connection->executeQuery(
                 $sql,
                 ['contributorEmail' => $contributorEmail,
-                'todayDate' => $todayDate->format('Y-m-d H:i:s'),
-                'COMMENTS_AGE_IN_HOURS' => $COMMENTS_AGE_IN_HOURS, ],
+                'COMMENTS_AGE_IN_HOURS' => self::COMMENTS_AGE_IN_HOURS, ],
             )->fetchAllAssociative(),
         );
     }

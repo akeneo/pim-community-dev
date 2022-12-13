@@ -48,7 +48,7 @@ final class DatabaseGetProductFilesWithUnreadCommentsForContributorIntegration e
 
         ($this->get(ProductFileRepository::class))->save($productFile);
 
-        static::assertEmpty($this->get(GetProductFilesWithUnreadCommentsForContributor::class)('contributor2@example.com', new \DateTimeImmutable('2022-09-07 16:54:38')));
+        static::assertEmpty($this->get(GetProductFilesWithUnreadCommentsForContributor::class)('contributor2@example.com'));
     }
 
     /** @test */
@@ -63,13 +63,13 @@ final class DatabaseGetProductFilesWithUnreadCommentsForContributorIntegration e
 
         ($this->get(ProductFileRepository::class))->save($productFile);
 
-        static::assertEmpty($this->get(GetProductFilesWithUnreadCommentsForContributor::class)('contributor1@example.com', new \DateTimeImmutable('2022-09-07 16:54:38')));
+        static::assertEmpty($this->get(GetProductFilesWithUnreadCommentsForContributor::class)('contributor1@example.com'));
     }
 
     /** @test */
     public function itGetsProductFilesAndTheirsUnreadCommentsOfTheLast24hUploadedByAGivenContributor(): void
     {
-        $currentDate = new \DateTimeImmutable('2022-09-05 08:25:35');
+        $currentDate = new \DateTimeImmutable();
 
         $productFile = (new ProductFileBuilder())
             ->withIdentifier('6b827a50-6cd7-11ed-a1eb-0242ac120002')
@@ -109,7 +109,7 @@ final class DatabaseGetProductFilesWithUnreadCommentsForContributorIntegration e
             ],
         );
 
-        $productFiles = $this->get(GetProductFilesWithUnreadCommentsForContributor::class)('contributor1@example.com', $currentDate);
+        $productFiles = $this->get(GetProductFilesWithUnreadCommentsForContributor::class)('contributor1@example.com');
 
         static::assertCount(1, $productFiles);
         static::assertSame('6b827a50-6cd7-11ed-a1eb-0242ac120002', $productFiles[0]->identifier);

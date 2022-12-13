@@ -4,3 +4,7 @@ services:
         arguments:
             - '%env(bool:FLAG_SUPPLIER_PORTAL_ENABLED)%'
         public: true
+
+    Akeneo\SupplierPortal\Retailer\Domain\SendEmail:
+        arguments:
+            - '@mailer'
