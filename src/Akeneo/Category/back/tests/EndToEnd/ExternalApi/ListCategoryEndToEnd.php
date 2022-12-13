@@ -650,19 +650,12 @@ JSON;
         }
 
         if ($withEnrichedValues) {
-            $categories['master']['template'] = null;
             $categories['master']['values'] = $this->getStandardizedAttributesValues();
-            $categories['categoryA']['template'] = null;
             $categories['categoryA']['values'] = $this->getStandardizedAttributesValues();
-            $categories['categoryA1']['template'] = null;
             $categories['categoryA1']['values'] = $this->getStandardizedAttributesValues();
-            $categories['categoryA2']['template'] = null;
             $categories['categoryA2']['values'] = $this->getStandardizedAttributesValues();
-            $categories['categoryB']['template'] = null;
             $categories['categoryB']['values'] = $this->getStandardizedAttributesValues();
-            $categories['categoryC']['template'] = null;
             $categories['categoryC']['values'] = $this->getStandardizedAttributesValues();
-            $categories['master_china']['template'] = null;
             $categories['master_china']['values'] = $this->getStandardizedAttributesValues();
         }
 

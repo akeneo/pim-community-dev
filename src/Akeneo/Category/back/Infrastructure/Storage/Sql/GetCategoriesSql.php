@@ -6,7 +6,7 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
-use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -20,7 +20,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
     }
 
     /**
-     * @return array<Category>
+     * @return array<ExternalApiCategory>
      *
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException|\Doctrine\DBAL\Driver\Exception
@@ -71,7 +71,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
 
         $retrievedCategories = [];
         foreach ($results as $rawCategory) {
-            $retrievedCategories[] = Category::fromDatabase($rawCategory);
+            $retrievedCategories[] = ExternalApiCategory::fromDatabase($rawCategory);
         }
 
         return $retrievedCategories;
