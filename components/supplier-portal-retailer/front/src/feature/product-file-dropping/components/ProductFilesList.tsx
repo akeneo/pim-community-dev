@@ -177,7 +177,7 @@ const ProductFilesList = ({
                                                 <StyledPill data-testid="unread-comments-pill" level="primary" />
                                             )}
                                         </HasUnreadCommentsCell>
-                                        <DownloadCell>
+                                        <Table.ActionCell>
                                             <StyledIconButton
                                                 data-testid="Download icon"
                                                 icon={<StyledDownloadIcon animateOnHover={true} />}
@@ -190,7 +190,7 @@ const ProductFilesList = ({
                                                     productFileIdentifier: productFile.identifier,
                                                 })}
                                             />
-                                        </DownloadCell>
+                                        </Table.ActionCell>
                                     </Table.Row>
                                 );
                             })}
@@ -213,10 +213,6 @@ const StyledIconButton = styled(IconButton)`
         background-color: transparent;
         color: ${getColor('grey100')};
     }
-`;
-
-const DownloadCell = styled(Table.ActionCell)`
-    width: 50px;
 `;
 
 const StyledPill = styled(Pill)`

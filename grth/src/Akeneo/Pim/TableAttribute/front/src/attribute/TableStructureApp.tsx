@@ -48,10 +48,6 @@ type TableStructureAppProps = {
 export type ColumnDefinitionWithId = ColumnDefinition & {id: string};
 type TableConfigurationWithId = ColumnDefinitionWithId[];
 
-const TableStructureActionCell = styled(Table.ActionCell)`
-  width: 44px;
-`;
-
 const TableStructureApp: React.FC<TableStructureAppProps> = ({
   attribute,
   initialTableConfiguration,
@@ -181,7 +177,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
               <Table.Cell rowTitle={true}>
                 {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
               </Table.Cell>
-              <TableStructureActionCell>
+              <Table.ActionCell>
                 <IconButton
                   ghost='borderless'
                   icon={<CloseIcon />}
@@ -192,7 +188,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
                   title={translate('pim_common.delete')}
                   level='tertiary'
                 />
-              </TableStructureActionCell>
+              </Table.ActionCell>
             </Table.Row>
           ))}
         </Table.Body>
