@@ -4,6 +4,8 @@ import {
   getFirstDayOfTheWeek,
   getLastDayOfThePreviousWeek,
   getFirstDayOfTheMonth,
+  getMondayOfTheFirstWeekOfMonth,
+  getSundayOfTheLastCompleteWeekOfPreviousMonth,
 } from './TimeToEnrichFilters';
 import {Aggregation, Metric, PredefinedComparison, PredefinedPeriod} from '../../Common';
 
@@ -38,6 +40,33 @@ describe('TimeToEnrichFilters', () => {
     );
     expect(getLastDayOfThePreviousMonth(new Date('2022-10-31T00:00:00'))).toStrictEqual(
       new Date('2022-09-30T00:00:00')
+    );
+  });
+
+  it('should return the monday of the first week of the month', async () => {
+    expect(getMondayOfTheFirstWeekOfMonth(new Date('2022-12-01T00:00:00'))).toStrictEqual(
+      new Date('2022-11-28T00:00:00')
+    );
+    expect(getMondayOfTheFirstWeekOfMonth(new Date('2022-11-06T00:00:00'))).toStrictEqual(
+      new Date('2022-10-31T00:00:00')
+    );
+    expect(getMondayOfTheFirstWeekOfMonth(new Date('2022-10-26T00:00:00'))).toStrictEqual(
+      new Date('2022-09-26T00:00:00')
+    );
+  });
+
+  it('should return the sunday of the last week of the previous month', async () => {
+    expect(getSundayOfTheLastCompleteWeekOfPreviousMonth(new Date('2022-12-12T00:00:00'))).toStrictEqual(
+      new Date('2022-12-04T00:00:00')
+    );
+    expect(getSundayOfTheLastCompleteWeekOfPreviousMonth(new Date('2022-12-01T00:00:00'))).toStrictEqual(
+      new Date('2022-11-27T00:00:00')
+    );
+    expect(getSundayOfTheLastCompleteWeekOfPreviousMonth(new Date('2022-11-06T00:00:00'))).toStrictEqual(
+      new Date('2022-11-06T00:00:00')
+    );
+    expect(getSundayOfTheLastCompleteWeekOfPreviousMonth(new Date('2022-10-31T00:00:00'))).toStrictEqual(
+      new Date('2022-10-02T00:00:00')
     );
   });
 

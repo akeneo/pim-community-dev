@@ -28,6 +28,7 @@ akeneo.performance_analytics:
                 families: Families
                 categories: Categories
             periods:
+                last_month: Last month
                 last_12_weeks: Last 12 weeks (quarter)
                 last_12_months: Last 12 months
             comparisons:

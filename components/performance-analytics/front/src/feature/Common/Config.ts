@@ -14,11 +14,16 @@ export enum Aggregation {
 export const Aggregations = [Aggregation.FAMILIES, Aggregation.CATEGORIES];
 
 export enum PredefinedPeriod {
+  LAST_MONTH = 'last_month',
   LAST_12_WEEKS = 'last_12_weeks',
   LAST_12_MONTHS = 'last_12_months',
 }
 
-export const PredefinedPeriods = [PredefinedPeriod.LAST_12_WEEKS, PredefinedPeriod.LAST_12_MONTHS];
+export const PredefinedPeriods = [
+  PredefinedPeriod.LAST_MONTH,
+  PredefinedPeriod.LAST_12_WEEKS,
+  PredefinedPeriod.LAST_12_MONTHS,
+];
 
 export enum PredefinedComparison {
   SAME_PERIOD_LAST_YEAR = 'same_period_last_year',
@@ -32,7 +37,7 @@ export const PredefinedComparisons = [
 
 export const defaultFilters: TimeToEnrichFilters = {
   metric: Metric.TIME_TO_ENRICH,
-  period: PredefinedPeriod.LAST_12_WEEKS,
+  period: PredefinedPeriod.LAST_MONTH,
   aggregation: Aggregation.FAMILIES,
   comparison: PredefinedComparison.SAME_PERIOD_LAST_YEAR,
   families: [],

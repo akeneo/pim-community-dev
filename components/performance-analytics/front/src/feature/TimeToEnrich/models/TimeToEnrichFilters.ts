@@ -37,8 +37,31 @@ const getLastDayOfThePreviousMonth = (date: Date): Date => {
   return new Date(date.getFullYear(), date.getMonth(), 0, date.getHours());
 };
 
+const getMondayOfTheFirstWeekOfMonth = (date: Date): Date => {
+  const firstDayOfTheMonth = getFirstDayOfTheMonth(date);
+  const firstMondayOfTheMonth = getFirstDayOfTheWeek(firstDayOfTheMonth);
+
+  return firstMondayOfTheMonth;
+};
+
+const getSundayOfTheLastCompleteWeekOfPreviousMonth = (date: Date): Date => {
+  const lastDayOfPreviousMonth = getLastDayOfThePreviousMonth(date);
+  const lastSundayOfPreviousMonth = getLastDayOfTheWeek(lastDayOfPreviousMonth);
+  const lastDayOfThePreviousWeek = getLastDayOfThePreviousWeek(lastSundayOfPreviousMonth);
+
+  if (date >= lastDayOfPreviousMonth) {
+    return lastSundayOfPreviousMonth;
+  }
+  return lastDayOfThePreviousWeek;
+};
+
 const getStartDate: (filters: TimeToEnrichFilters) => string = filters => {
   let date = new Date();
+
+  if (filters.period === PredefinedPeriod.LAST_MONTH) {
+    date.setMonth(date.getMonth() - 1);
+    return getMondayOfTheFirstWeekOfMonth(date).toISOString().substr(0, 10);
+  }
 
   if (filters.period === PredefinedPeriod.LAST_12_MONTHS) {
     date.setFullYear(date.getFullYear() - 1);
@@ -51,6 +74,11 @@ const getStartDate: (filters: TimeToEnrichFilters) => string = filters => {
 
 const getEndDate: (filters: TimeToEnrichFilters) => string = filters => {
   let date = new Date();
+
+  if (filters.period === PredefinedPeriod.LAST_MONTH) {
+    return getSundayOfTheLastCompleteWeekOfPreviousMonth(date).toISOString().substr(0, 10);
+  }
+
   if (filters.period === PredefinedPeriod.LAST_12_MONTHS) {
     return getLastDayOfThePreviousMonth(date).toISOString().substr(0, 10);
   }
@@ -74,4 +102,6 @@ export {
   getLastDayOfThePreviousWeek,
   getLastDayOfThePreviousMonth,
   getFirstDayOfTheMonth,
+  getMondayOfTheFirstWeekOfMonth,
+  getSundayOfTheLastCompleteWeekOfPreviousMonth,
 };
