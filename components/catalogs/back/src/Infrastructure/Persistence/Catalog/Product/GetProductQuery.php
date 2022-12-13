@@ -143,7 +143,7 @@ class GetProductQuery implements GetProductQueryInterface
 
                 $value['data'] = \array_values(
                     \array_filter(
-                        (array) $value['data'],
+                        $value['data'],
                         static fn (array $price) => \in_array($price['currency'], $currencies, true)
                     )
                 );

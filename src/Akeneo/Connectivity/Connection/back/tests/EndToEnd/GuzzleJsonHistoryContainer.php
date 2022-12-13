@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  * A filesystem container to store Guzzle history in a json file.
  * We need this filesytem json file to share it between process and keep track of the history in the tests
  */
-class GuzzleJsonHistory implements \ArrayAccess, \Countable
+class GuzzleJsonHistoryContainer implements \ArrayAccess, \Countable
 {
     public function __construct(private string $filepath)
     {

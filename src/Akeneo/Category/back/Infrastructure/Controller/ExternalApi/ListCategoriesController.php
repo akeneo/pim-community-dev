@@ -2,7 +2,6 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
-use Akeneo\Category\Application\Handler\GetPositionInterface;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Akeneo\Category\Application\Query\GetDirectChildrenCategoryCodesInterface;
@@ -32,7 +31,6 @@ class ListCategoriesController extends AbstractController
         private readonly GetCategoriesParametersBuilder $parametersBuilder,
         private readonly GetCategoriesInterface $getCategories,
         private readonly GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes,
-//        TODO : Handle position GRF-633 : private readonly GetPositionInterface $getPosition,
         private readonly array $apiConfiguration,
     ) {
     }

@@ -13,9 +13,7 @@ akeneo_catalogs:
       more: Más
       product_value_filters: Filtrar los valores
       product_mapping: Asignación
-  settings:
-    fields:
-      enabled: Habilitado
+  catalog_status_widget:
     inputs:
       yes: Yes
       no: No

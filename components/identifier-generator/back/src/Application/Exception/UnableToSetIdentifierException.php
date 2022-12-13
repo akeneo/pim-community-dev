@@ -11,7 +11,7 @@ class UnableToSetIdentifierException extends \Exception
     public function __construct(
         private string $identifier,
         private string $target,
-        ErrorList $errorList
+        private ErrorList $errorList
     ) {
         parent::__construct(sprintf(
             "Your product has been saved but your identifier could not be generated:\n%s",
@@ -25,5 +25,10 @@ class UnableToSetIdentifierException extends \Exception
     public function getInvalidData(): array
     {
         return [$this->target => $this->identifier];
+    }
+
+    public function getErrors(): ErrorList
+    {
+        return $this->errorList;
     }
 }

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Enabled;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -28,8 +30,9 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
 
         $freeText = FreeText::fromString('abc');
+        $enabled = Enabled::fromBoolean(true);
         $structure = Structure::fromArray([$freeText]);
-        $conditions = Conditions::fromArray([]);
+        $conditions = Conditions::fromArray([$enabled]);
 
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
         $delimiter = Delimiter::fromString('-');
@@ -109,7 +112,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_returns_a_conditions(): void
     {
-        $this->conditions()->shouldBeLike(Conditions::fromArray([]));
+        $this->conditions()->shouldBeLike(Conditions::fromArray([Enabled::fromBoolean(true)]));
     }
 
     public function it_returns_a_structure(): void
@@ -153,7 +156,12 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             'uuid' => '2038e1c9-68ff-4833-b06f-01e42d206002',
             'code' => 'abcdef',
-            'conditions' => [],
+            'conditions' => [
+                [
+                    'type' => 'enabled',
+                    'value' => true,
+                ]
+            ],
             'structure' => [
                 [
                     'type' => 'free_text',
@@ -166,5 +174,37 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             'target' => 'sku',
             'delimiter' => '-',
         ]);
+    }
+
+    public function it_should_match_empty_identifier(): void
+    {
+        $this->match(new ProductProjection(
+            '',
+            true
+        ))->shouldReturn(true);
+    }
+
+    public function it_should_match_null_identifier(): void
+    {
+        $this->match(new ProductProjection(
+            null,
+            true
+        ))->shouldReturn(true);
+    }
+
+    public function it_should_not_match_filled_identifier(): void
+    {
+        $this->match(new ProductProjection(
+            'a_product_identifier',
+            true
+        ))->shouldReturn(false);
+    }
+
+    public function it_should_not_match_disabled_product(): void
+    {
+        $this->match(new ProductProjection(
+            null,
+            false
+        ))->shouldReturn(false);
     }
 }
