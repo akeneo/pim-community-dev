@@ -90,17 +90,17 @@ resource "google_container_cluster" "gke" {
 resource "google_container_node_pool" "gke" {
   for_each           = var.node_pool_configs
   project            = var.project
-  name               = "${each.value.name}-${var.region}"
+  name_prefix        = "${each.value.name}-"
   location           = var.region
   cluster            = google_container_cluster.gke.name
-  initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(each.value, "min_node_count", 1) : null
-  node_count         = lookup(each.value, "autoscaling", true) ? null : lookup(each.value, "node_count", 1)
+  initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(each.value, "min_node_count", 0) : null
+  node_count         = lookup(each.value, "autoscaling", true) ? null : lookup(each.value, "node_count", 0)
   max_pods_per_node  = lookup(each.value, "max_pods_per_node", 110)
   node_locations     = var.node_locations == null ? null : lookup(lookup(var.node_locations, each.value.name, tomap({})), var.region, null)
 
   node_config {
     preemptible     = lookup(each.value, "preemptible", false)
-    machine_type    = lookup(each.value, "machine_type", "n1-standard-16")
+    machine_type    = lookup(each.value, "machine_type", "n1-standard-8")
     labels          = lookup(var.node_pool_labels, each.value.name, {})
     tags            = concat([data.google_project.current.project_id], lookup(var.node_pool_tags, each.key, []))
     service_account = var.gke_sa_email
@@ -129,8 +129,21 @@ resource "google_container_node_pool" "gke" {
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
-      min_node_count = lookup(autoscaling.value, "min_node_count", 1)
-      max_node_count = lookup(autoscaling.value, "max_node_count", 60)
+      min_node_count  = lookup(autoscaling.value, "min_node_count", 0)
+      max_node_count  = lookup(autoscaling.value, "max_node_count", 60)
+      location_policy = "BALANCED"
     }
+  }
+
+  management {
+    auto_repair  = true
+    auto_upgrade = true
+  }
+
+  lifecycle {
+    ignore_changes = [
+      initial_node_count
+    ]
+    create_before_destroy = true
   }
 }

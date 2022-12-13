@@ -20,7 +20,7 @@ module "gke" {
       name              = "default"
       preemptible       = false
       machine_type      = "n1-standard-16"
-      min_node_count    = 1
+      min_node_count    = 0
       max_node_count    = 60
       max_pods_per_node = 64
     },
@@ -28,7 +28,7 @@ module "gke" {
       name              = "mysql"
       preemptible       = false
       machine_type      = "n1-highmem-16"
-      min_node_count    = 1
+      min_node_count    = 0
       max_node_count    = 60
       max_pods_per_node = 64
     },
@@ -36,7 +36,7 @@ module "gke" {
       name              = "elasticsearch"
       preemptible       = false
       machine_type      = "n1-highmem-16"
-      min_node_count    = 1
+      min_node_count    = 0
       max_node_count    = 60
       max_pods_per_node = 64
     }

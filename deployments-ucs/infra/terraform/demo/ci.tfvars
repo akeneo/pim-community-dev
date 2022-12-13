@@ -1,7 +1,7 @@
 env         = "demo"
 env_shorted = "demo"
 tf_bucket   = "akecld-terraform-pim-saas-demo"
-clusters    = {
+clusters = {
   cluster1 : {
     region                = "europe-west3"
     region_shorted        = "euw3"

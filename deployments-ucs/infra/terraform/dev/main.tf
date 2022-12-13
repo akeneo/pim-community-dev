@@ -131,25 +131,22 @@ module "gke_europe_west1" {
     "default" = {
       name              = "default"
       preemptible       = false
-      machine_type      = "n1-standard-16"
-      min_node_count    = 1
-      max_node_count    = 60
+      machine_type      = "n1-standard-8"
+      min_node_count    = 0
       max_pods_per_node = 64
     },
     "mysql" = {
       name              = "mysql"
       preemptible       = false
-      machine_type      = "n1-highmem-16"
-      min_node_count    = 1
-      max_node_count    = 60
+      machine_type      = "n1-highmem-8"
+      min_node_count    = 0
       max_pods_per_node = 64
     },
     "elasticsearch" = {
       name              = "elasticsearch"
       preemptible       = false
-      machine_type      = "n1-standard-8"
-      min_node_count    = 1
-      max_node_count    = 60
+      machine_type      = "n1-highmem-8"
+      min_node_count    = 0
       max_pods_per_node = 64
     }
   }
@@ -205,25 +202,22 @@ module "gke_europe_west3" {
     "default" = {
       name              = "default"
       preemptible       = false
-      machine_type      = "n1-standard-16"
-      min_node_count    = 1
-      max_node_count    = 60
+      machine_type      = "n1-standard-8"
+      min_node_count    = 0
       max_pods_per_node = 64
     },
     "mysql" = {
       name              = "mysql"
       preemptible       = false
-      machine_type      = "n1-highmem-16"
-      min_node_count    = 1
-      max_node_count    = 60
+      machine_type      = "n1-highmem-8"
+      min_node_count    = 0
       max_pods_per_node = 64
     },
     "elasticsearch" = {
       name              = "elasticsearch"
       preemptible       = false
-      machine_type      = "n1-standard-8"
-      min_node_count    = 1
-      max_node_count    = 60
+      machine_type      = "n1-highmem-8"
+      min_node_count    = 0
       max_pods_per_node = 64
     }
   }

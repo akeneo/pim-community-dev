@@ -197,7 +197,7 @@ module "cloud_build_destroy_infra_timmy_pim_saas_sandbox_europe-west1" {
   source                    = "../modules/cloudbuild-infra"
   approval_required         = true
   cloudbuild_filename       = ".cloudbuild/ucs-ci/ucs-delete-timmy-pim-cluster-sandbox.yaml"
-  cloudbuild_included_files = [".cloudbuild/ucs-ci/ucs-delete-timmy-pim-cluster-sandbox.yaml",".cloudbuild/clusters/akecld-prd-pim-saas-sandbox-europe-west1.yaml", "deployments-ucs/argocd/**", "deployments-ucs/argocd-apps/**", "deployments-ucs/infra/k8s/**"]
+  cloudbuild_included_files = [".cloudbuild/ucs-ci/ucs-delete-timmy-pim-cluster-sandbox.yaml", ".cloudbuild/clusters/akecld-prd-pim-saas-sandbox-europe-west1.yaml", "deployments-ucs/argocd/**", "deployments-ucs/argocd-apps/**", "deployments-ucs/infra/k8s/**"]
   logs_bucket               = "gs://akecld-prd-pim-saas-sandbox-cloudbuild-logs"
   tags                      = ["type:terraform", "env:sandbox", "action:destroy"]
   trigger_name              = "destroy-infra-timmy-pim-saas-sandbox-europe-west1"
