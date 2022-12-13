@@ -38,6 +38,7 @@ The %attribute% attribute requires a string, a %givenType% was detected.: The %a
 The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.
 The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.
 The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.: The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.
+The {{ attribute }} attribute requires a value which does not contain space, and the submitted "{{ value }}" has at least one.: The {{ attribute }} attribute requires a value which does not contain space, and the submitted "{{ value }}" has at least one.
 The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.: The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.
 The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.: The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.
 "The %attribute% attribute requires a url link.": The %attribute% attribute requires a url link.
