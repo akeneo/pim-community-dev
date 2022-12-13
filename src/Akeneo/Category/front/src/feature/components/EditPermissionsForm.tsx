@@ -1,13 +1,15 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {CategoryPermissions, EnrichCategory} from '../models';
+import {EnrichCategory} from '../models';
+import {CategoryPermission, CategoryPermissions} from '../models/CategoryPermission';
+import {useFetchUserGroups, UserGroup} from '../hooks/useFetchUserGroups';
 
 type Props = {
   category: EnrichCategory;
   applyPermissionsOnChildren: boolean;
-  onChangePermissions: (type: keyof CategoryPermissions, values: number[]) => void;
+  onChangePermissions: (userGroups: UserGroup[], type: keyof CategoryPermissions, values: number[]) => void;
   onChangeApplyPermissionsOnChildren: (value: boolean) => void;
 };
 
@@ -23,11 +25,6 @@ const PermissionField = styled(Field)`
   max-width: 400px;
 `;
 
-const asString = (n: number): string => n.toString();
-const asNumber = (s: string): number => parseInt(s, 10);
-const asStringArr = (a: number[]): string[] => a.map(asString);
-const asNumberArr = (a: string[]): number[] => a.map(asNumber);
-
 const EditPermissionsForm = ({
   category,
   applyPermissionsOnChildren,
@@ -35,38 +32,33 @@ const EditPermissionsForm = ({
   onChangeApplyPermissionsOnChildren,
 }: Props) => {
   const translate = useTranslate();
-  const [userGroupList] = useState([
-    {
-      id: 1,
-      label: 'IT support',
-    },
-    {
-      id: 2,
-      label: 'Manager',
-    },
-    {
-      id: 3,
-      label: 'Furniture manager',
-    },
-    {
-      id: 7,
-      label: 'All',
-    },
-  ]);
+  const {data: userGroups} = useFetchUserGroups();
 
   const handleChangePermissions = useCallback(
-    (type: keyof CategoryPermissions) => (value: string[]) => onChangePermissions(type, asNumberArr(value)),
-    [onChangePermissions]
+    (type: keyof CategoryPermissions) => (values: string[]) => {
+      if (userGroups) {
+        onChangePermissions(
+          userGroups,
+          type,
+          values.map(value => parseInt(value, 10))
+        );
+      }
+    },
+    [onChangePermissions, userGroups]
   );
 
   const makeGroupOptions = useCallback(
-    (type: string) =>
-      userGroupList.map(({id, label}) => (
-        <MultiSelectInput.Option value={id.toString()} key={`${type}-${id}`}>
-          {label}
-        </MultiSelectInput.Option>
-      )),
-    [userGroupList]
+    (type: string) => {
+      if (userGroups) {
+        return userGroups?.map(({id, label}) => (
+          <MultiSelectInput.Option value={id.toString()} key={`${type}-${id}`}>
+            {label}
+          </MultiSelectInput.Option>
+        ));
+      }
+      return [];
+    },
+    [userGroups]
   );
 
   if (!category.permissions) {
@@ -79,10 +71,8 @@ const EditPermissionsForm = ({
     own: makeGroupOptions('own'),
   };
 
-  const valuesAstring = {
-    view: asStringArr(category.permissions.view),
-    edit: asStringArr(category.permissions.edit),
-    own: asStringArr(category.permissions.own),
+  const extractPermissionIdAsString = (permissions: CategoryPermission[]): string[] => {
+    return permissions?.map(permission => permission.id?.toString());
   };
 
   return (
@@ -90,7 +80,7 @@ const EditPermissionsForm = ({
       <PermissionField label={translate('category.permissions.view.label')}>
         <MultiSelectInput
           readOnly={false}
-          value={valuesAstring['view']}
+          value={extractPermissionIdAsString(category.permissions.view)}
           name="view-permission"
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
@@ -102,7 +92,7 @@ const EditPermissionsForm = ({
       </PermissionField>
       <PermissionField label={translate('category.permissions.edit.label')}>
         <MultiSelectInput
-          value={valuesAstring['edit']}
+          value={extractPermissionIdAsString(category.permissions.edit)}
           name="edit-permission"
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
@@ -114,7 +104,7 @@ const EditPermissionsForm = ({
       </PermissionField>
       <PermissionField label={translate('category.permissions.own.label')}>
         <MultiSelectInput
-          value={valuesAstring['own']}
+          value={extractPermissionIdAsString(category.permissions.own)}
           name="own-permission"
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}

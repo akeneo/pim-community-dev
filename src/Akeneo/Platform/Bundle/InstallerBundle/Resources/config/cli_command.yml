@@ -19,8 +19,6 @@ services:
             - { name: 'console.command' }
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\CheckRequirementsCommand:
-        arguments:
-            - '%kernel.project_dir%'
         tags:
             - { name: console.command }
 

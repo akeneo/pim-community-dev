@@ -9,20 +9,14 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Model\StepExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use AkeneoTest\Platform\Integration\ImportExport\Utils\FrozenClock;
 use Doctrine\DBAL\Connection;
 
 class GetJobExecutionTrackingIntegration extends TestCase
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var GetJobExecutionTracking */
-    private $getJobExecutionTracking;
-
-    /** @var FrozenClock */
-    private $clock;
+    private Connection $sqlConnection;
+    private GetJobExecutionTracking $getJobExecutionTracking;
+    private FrozenClock $clock;
 
     public function setUp(): void
     {
@@ -230,6 +224,7 @@ SQL;
         $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedJobExecutionTracking->steps = [
+            $this->getDownloadStepExecutionTracking(),
             $this->getValidationStepExecutionTracking(),
             $this->getImportStepExecutionTracking(),
             $this->getImportAssociationsStepExecutionTracking()
@@ -259,6 +254,7 @@ SQL;
         $expectedStepExecutionTracking3 = $this->getImportAssociationsStepExecutionTracking();
 
         $expectedJobExecutionTracking->steps = [
+            $this->getDownloadStepExecutionTracking(),
             $expectedStepExecutionTracking1,
             $expectedStepExecutionTracking2,
             $expectedStepExecutionTracking3
@@ -289,6 +285,7 @@ SQL;
         $expectedStepExecutionTracking3->duration = 1;
 
         $expectedJobExecutionTracking->steps = [
+            $this->getDownloadStepExecutionTracking(),
             $expectedStepExecutionTracking1,
             $expectedStepExecutionTracking2,
             $expectedStepExecutionTracking3
@@ -320,6 +317,7 @@ SQL;
         $expectedStepExecutionTracking3->duration = 0;
 
         $expectedJobExecutionTracking->steps = [
+            $this->getDownloadStepExecutionTracking(),
             $expectedStepExecutionTracking1,
             $expectedStepExecutionTracking2,
             $expectedStepExecutionTracking3
@@ -355,6 +353,22 @@ SQL;
         ];
 
         return $expectedJobExecutionTracking;
+    }
+
+    private function getDownloadStepExecutionTracking(): StepExecutionTracking
+    {
+        $stepExecutionTracking = new StepExecutionTracking();
+        $stepExecutionTracking->isTrackable = false;
+        $stepExecutionTracking->jobName = 'csv_product_import';
+        $stepExecutionTracking->stepName = 'download_files';
+        $stepExecutionTracking->status = 'STARTING';
+        $stepExecutionTracking->duration = 0;
+        $stepExecutionTracking->hasError = false;
+        $stepExecutionTracking->hasWarning = false;
+        $stepExecutionTracking->processedItems = 0;
+        $stepExecutionTracking->totalItems = 0;
+
+        return $stepExecutionTracking;
     }
 
     private function getValidationStepExecutionTracking(): StepExecutionTracking

@@ -68,13 +68,13 @@ final class DownloadFileFromStorage implements DownloadFileFromStorageInterface
         }
 
         if (!$fileExists) {
-            throw new \RuntimeException(sprintf('The file "%s" is not present in the storage.', $filePath));
+            throw new \RuntimeException(sprintf('The file "%s" does not exist in the selected storage.', $filePath));
         }
 
         $fileSize = $storageClient->getFileSize($filePath);
 
         if (self::MAX_FILE_SIZE < $fileSize) {
-            throw new \RuntimeException('The file is too large to be downloaded');
+            throw new \RuntimeException('The file is too large to be downloaded.');
         }
     }
 }
