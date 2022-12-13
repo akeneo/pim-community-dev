@@ -46,8 +46,8 @@ const MicrosoftAzureStorageConfigurator = ({
       <TextField
         required={true}
         value={storage.connection_string}
+        type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.connection_string.label')}
-        placeholder={translate('pim_import_export.form.job_instance.storage_form.connection_string.placeholder')}
         onChange={(connection_string: string) => onStorageChange({...storage, connection_string})}
         errors={filterErrors(validationErrors, '[connection_string]')}
       />
