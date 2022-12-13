@@ -53,7 +53,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     <>
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_identifier_generator.tabs.product_selection')}</SectionTitle.Title>
-        <SectionTitle.Spacer/>
+        <SectionTitle.Spacer />
         <AddConditionButton onAddCondition={onAddCondition} />
       </SectionTitle>
       <Table>
