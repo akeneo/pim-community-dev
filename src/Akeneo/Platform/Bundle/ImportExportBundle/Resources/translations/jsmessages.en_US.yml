@@ -169,6 +169,7 @@ pim_import_export:
                     local: Local
                     sftp: SFTP
                     amazon_s3: Amazon S3
+                    google_cloud: Google Cloud
                     none: No storage configured
                 file_path:
                     label: File path
@@ -207,6 +208,12 @@ pim_import_export:
                 secret:
                     label: Secret
                     placeholder: Enter your secret
+                project_id:
+                    label: Project ID
+                    placeholder: Enter your project ID
+                service_account:
+                    label: Service Account
+                    placeholder: Enter your service account
             validation:
                 storage:
                     unavailable_type: This storage is not available, only {{ available_types }} are available.
