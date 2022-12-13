@@ -63,7 +63,6 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
                 {property.errorMessage && (
                   <Styled.ErrorContainer>
                     <Pill level="danger" />
-                    {property.errorMessage}
                   </Styled.ErrorContainer>
                 )}
               </Styled.TitleCell>

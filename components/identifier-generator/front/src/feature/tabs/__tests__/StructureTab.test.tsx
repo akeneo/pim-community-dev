@@ -241,7 +241,7 @@ describe('StructureTab', () => {
     expect(rows.map(row => row.textContent?.substr(0, 3))).toEqual(['abc', 'ijk', 'lmn', 'def']);
   });
 
-  it('should show display errors', () => {
+  it('should show displayed errors', () => {
     const structure: StructureWithIdentifiers = [
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'First item', id: 'id0'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: '', id: 'id1'},
@@ -262,7 +262,8 @@ describe('StructureTab', () => {
       />
     );
 
-    expect(screen.getAllByText('error on second item').length).toBe(2);
-    expect(screen.getAllByText('similar error').length).toBe(3);
+    expect(screen.getAllByRole('alert').length).toBe(3);
+    expect(screen.getAllByText('error on second item').length).toBe(1);
+    expect(screen.getAllByText('similar error').length).toBe(1);
   });
 });
