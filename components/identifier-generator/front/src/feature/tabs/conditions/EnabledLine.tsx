@@ -27,7 +27,7 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange}) => {
       <Table.Cell>
         <Styled.InputContainer>
           <SelectInput
-            value={typeof condition.value === 'undefined' ? null : (condition.value ? 'true' : 'false')}
+            value={typeof condition.value === 'undefined' ? null : condition.value ? 'true' : 'false'}
             emptyResultLabel={translate('pim_common.no_result')}
             openLabel={'pim_common.open'}
             placeholder={translate('pim_identifier_generator.selection.settings.enabled.placeholder')}
@@ -37,7 +37,10 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange}) => {
             <SelectInput.Option value="true" title={translate('pim_common.enabled')}>
               {translate('pim_common.enabled')}
             </SelectInput.Option>
-            <SelectInput.Option value="false" title={translate('pim_identifier_generator.selection.settings.enabled.disabled')}>
+            <SelectInput.Option
+              value="false"
+              title={translate('pim_identifier_generator.selection.settings.enabled.disabled')}
+            >
               {translate('pim_identifier_generator.selection.settings.enabled.disabled')}
             </SelectInput.Option>
           </SelectInput>
