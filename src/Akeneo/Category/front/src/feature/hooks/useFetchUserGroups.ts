@@ -13,14 +13,6 @@ type Result = {
     error: ResultError;
 };
 
-type UserGroupValue = {
-    name: string;
-    meta: {
-        id: number;
-        default: boolean
-    }
-};
-
 export type UserGroup = {
     id: string;
     label: string;
@@ -28,7 +20,7 @@ export type UserGroup = {
 };
 
 export const useFetchUserGroups = (): Result => {
-    const url = useRoute('pim_user_user_group_rest_index');
+    const url = useRoute('pim_enriched_category_rest_user_group_list');
 
     const fetchUserGroups = useCallback(async () => {
        const response = await fetch(url);
@@ -37,12 +29,7 @@ export const useFetchUserGroups = (): Result => {
             throw new Error();
         }
 
-        const userGroups = await response.json();
-        return userGroups.map((userGroup: UserGroupValue) => ({
-            id: userGroup.meta.id.toString(),
-            label: userGroup.name,
-            isDefault: userGroup.meta.default,
-        }));
+        return await response.json();
     }, [url]);
 
     const options = {
