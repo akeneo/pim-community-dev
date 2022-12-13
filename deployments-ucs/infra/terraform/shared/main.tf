@@ -17,7 +17,6 @@ locals {
   ]
   child_projects = [
     "akecld-prd-pim-saas-dev",
-    "akecld-prd-pim-saas-sandbox",
     "akecld-prd-pim-saas-demo"
   ]
   cloudbuild_github_repository = "pim-enterprise-dev"
