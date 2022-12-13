@@ -44,5 +44,6 @@ deployments-ucs/tenant/Chart.lock
 /pim-enterprise-cloud
 connectors/*
 .terraform*
+.terraform.lock.hcl
 .DS_Store
 /make-file/local.mk

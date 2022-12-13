@@ -27,7 +27,7 @@ steps:
           echo "*************************************************"
           terraform init -backend-config="prefix=timmy/${_GOOGLE_PROJECT_ID}/${_GOOGLE_CLUSTER_REGION}" -reconfigure  -no-color
           terraform workspace select ${BRANCH_NAME} || terraform workspace new ${BRANCH_NAME}
-          terraform  plan -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME}
+          terraform  plan -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME} -no-color
         else
           echo "No files for ${_GOOGLE_PROJECT_ID}. Exiting"
         fi
@@ -50,7 +50,7 @@ steps:
             echo "*************************************************"
             terraform init -backend-config="prefix=timmy/${_GOOGLE_PROJECT_ID}/${_GOOGLE_CLUSTER_REGION}" -reconfigure  -no-color
             terraform workspace select ${BRANCH_NAME} || terraform workspace new ${BRANCH_NAME}
-            terraform  apply -input=false -auto-approve  -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME} -no-color
+            terraform apply -input=false -auto-approve  -var-file=./vars/${_GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${BRANCH_NAME} -no-color
           else
             echo "No files for ${_GOOGLE_PROJECT_ID}. Exiting"
           fi
