@@ -40,7 +40,6 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
 
       mutate(generator, {
         onError: error => {
-          // @ts-ignore
           if (error.violations) {
             notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
           } else {
@@ -55,7 +54,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
         },
       });
     },
-    [history, mutate, notify, queryClient, translate]
+    [history, identifierGeneratorContext.unsavedChanges, mutate, notify, queryClient, translate]
   );
 
   return (
