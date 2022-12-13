@@ -148,7 +148,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
 
   return (
     <FormContainer>
-      <SectionTitle>
+      <SectionTitle sticky={44}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <ChannelSelector
