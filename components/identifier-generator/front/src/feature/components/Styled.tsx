@@ -54,6 +54,10 @@ const CellInputContainer = styled(Table.Cell)`
   width: calc(10vw + 20px);
 `;
 
+const TranslationsPlaceholderTitleConditions = styled.div`
+  font-weight: bold;
+`;
+
 const NotDraggableCell = styled(Table.Cell)`
   width: 44px;
 `;
@@ -71,6 +75,7 @@ const Styled = {
   TwoColumns,
   TranslationsLabelSkeleton,
   TranslationsTextFieldSkeleton,
+  TranslationsPlaceholderTitleConditions,
   NotDraggableCell,
   TitleCondition,
 };

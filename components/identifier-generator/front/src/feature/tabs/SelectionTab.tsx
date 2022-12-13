@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
-import {SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
+import {NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
@@ -122,6 +122,23 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
                   </Styled.InputContainer>
                 </Table.Cell>
               </Table.Row>
+              {conditionsWithId.length === 0 && (
+                <tr>
+                  <td colSpan={2}>
+                    <Placeholder
+                      illustration={<NoResultsIllustration />}
+                      size="large"
+                      title={translate('pim_identifier_generator.selection.empty.title')}
+                    >
+                      <Styled.TranslationsPlaceholderTitleConditions>
+                        {translate('pim_identifier_generator.selection.empty.text')}
+                      </Styled.TranslationsPlaceholderTitleConditions>
+                      {translate('pim_identifier_generator.selection.empty.info')}
+                    </Placeholder>
+                  </td>
+                </tr>
+              )}
+              {conditionsWithId.map(({id, ...condition}) => (
             </>
           )}
         </Table.Body>
