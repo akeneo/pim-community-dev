@@ -133,6 +133,17 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const countTreesChildren = useCountCategoryTreesChildren();
 
+  const displayTemplateLabelOrCode = (categoryTree: CategoryTreeModel): string => {
+    if (categoryTree.templateLabel){
+      return categoryTree.templateLabel
+    }
+
+    if (categoryTree.templateCode){
+      return '[' + categoryTree.templateCode + ']';
+    }
+    return '';
+  }
+
   useEffect(() => {
     const hasRights =
       isGranted('pim_enrich_product_category_template') || isGranted('pim_enrich_product_category_edit_attributes');
@@ -201,7 +212,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                       )}
                   </Table.Cell>
-                  {displayCategoryTemplatesColumn && <Table.Cell>{tree.templateLabel}</Table.Cell>}
+                  {displayCategoryTemplatesColumn && <Table.Cell>{displayTemplateLabelOrCode(tree)}
+                  </Table.Cell>}
                   <Table.ActionCell>
                     {featureFlags.isEnabled('enriched_category') && isGranted('pim_enrich_product_category_template') && (
                       <Button

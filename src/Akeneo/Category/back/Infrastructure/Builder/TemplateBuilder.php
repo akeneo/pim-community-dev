@@ -128,11 +128,11 @@ class TemplateBuilder
     private function generateTemplateLabelCollection(?LabelCollection $categoryTreeLabelCollection): LabelCollection
     {
         $translations = [];
-        if ($categoryTreeLabelCollection) {
-            $translations = [
-                'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
-            ];
-        }
+//        if ($categoryTreeLabelCollection) {
+//            $translations = [
+//                'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
+//            ];
+//        }
 
         return LabelCollection::fromArray($translations);
     }

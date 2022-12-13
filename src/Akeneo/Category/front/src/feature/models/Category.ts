@@ -81,6 +81,7 @@ export type CategoryTreeModel = {
   productsNumber?: number;
   templateLabel?: string;
   templateUuid?: string;
+  templateCode?: string;
 };
 
 export type FormField = {
