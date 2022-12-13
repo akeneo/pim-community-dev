@@ -30,6 +30,7 @@ services:
             - '@database_connection'
             - '@pim_installer.fixture_loader.job_loader'
             - '@event_dispatcher'
+            - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData'
         tags:
             - { name: console.command }
 
