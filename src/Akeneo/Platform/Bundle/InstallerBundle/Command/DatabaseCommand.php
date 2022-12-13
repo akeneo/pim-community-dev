@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallDataQuery;
+use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Component\Console\CommandExecutor;
 use Doctrine\DBAL\Connection;
@@ -45,7 +45,7 @@ class DatabaseCommand extends Command
         protected readonly Connection $connection,
         private readonly FixtureJobLoader $fixtureJobLoader,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly InstallDataQuery $installTimeQuery,
+        private readonly InstallData $installTimeQuery,
     ) {
         parent::__construct();
     }
