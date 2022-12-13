@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
-import {AttributesIllustration, Helper, Link, SectionTitle, uuid} from 'akeneo-design-system';
-import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
+import {AttributesIllustration, Helper, Link, Placeholder, SectionTitle, uuid} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton, DelimiterEdit, Preview, PropertiesList, PropertyEdit} from './structure';
 import {Delimiter, Property, Structure} from '../models';
 import {Styled} from '../components/Styled';
@@ -124,14 +124,14 @@ const StructureTab: React.FC<StructureTabProps> = ({
             </>
           )}
           {structure.length === 0 && (
-            <NoDataSection>
-              <AttributesIllustration size={256} />
-              <NoDataTitle>{translate('pim_identifier_generator.structure.empty.title')}</NoDataTitle>
-              <NoDataText>
-                <p>{translate('pim_identifier_generator.structure.empty.text')}</p>
-                <Link>{translate('pim_identifier_generator.structure.empty.link_text')}</Link>
-              </NoDataText>
-            </NoDataSection>
+            <Placeholder
+              illustration={<AttributesIllustration />}
+              size="large"
+              title={translate('pim_identifier_generator.structure.empty.title')}
+            >
+              {translate('pim_identifier_generator.structure.empty.text')}
+              <Link>{translate('pim_identifier_generator.structure.empty.link_text')}</Link>
+            </Placeholder>
           )}
         </div>
         {selectedProperty && <PropertyEdit selectedProperty={selectedProperty} onChange={onPropertyChange} />}
