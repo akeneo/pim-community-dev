@@ -23,9 +23,4 @@ class FamilySpec extends ObjectBehavior
         $this->shouldImplement(ConditionInterface::class);
         $this->shouldBeAnInstanceOf(Family::class);
     }
-
-    public function it_should_normalize(): void
-    {
-        $this->fromNormalized([]);
-    }
 }
