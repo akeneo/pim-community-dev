@@ -90,7 +90,7 @@
         "doctrine/persistence": "^2.2.3",
         "dompdf/dompdf": "^2.0.1",
         "elasticsearch/elasticsearch": "7.11.0",
-        "friendsofsymfony/jsrouting-bundle": "2.7.0",
+        "friendsofsymfony/jsrouting-bundle": "2.8.0",
         "friendsofsymfony/rest-bundle": "^3.0.5",
         "gedmo/doctrine-extensions": "^3.2.0",
         "google/cloud-pubsub": "^1.35.0",
