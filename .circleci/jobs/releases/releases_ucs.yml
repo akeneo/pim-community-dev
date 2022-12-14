@@ -67,10 +67,9 @@ jobs:
 
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
 
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west1.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west3.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-us-central1.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-australia-southeast1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-euw3-gke-pim-saas-demo-1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-usc1-gke-pim-saas-demo-1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-ause1-gke-pim-saas-demo-1.sh
 
                   cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 
@@ -125,10 +124,9 @@ jobs:
 
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
 
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west1.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west3.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-us-central1.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-australia-southeast1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-euw3-gke-pim-saas-demo-1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-usc1-gke-pim-saas-demo-1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-ause1-gke-pim-saas-demo-1.sh
 
                   cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 
@@ -185,10 +183,9 @@ jobs:
 
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
 
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west1.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-europe-west3.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-us-central1.sh
-                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-demo-australia-southeast1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-euw3-gke-pim-saas-demo-1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-usc1-gke-pim-saas-demo-1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_demo-ause1-gke-pim-saas-demo-1.sh
 
                   cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 
