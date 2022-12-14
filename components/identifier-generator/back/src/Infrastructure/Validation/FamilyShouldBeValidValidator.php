@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -14,6 +16,11 @@ use Webmozart\Assert\Assert;
  */
 final class FamilyShouldBeValidValidator extends ConstraintValidator
 {
+    public function __construct(
+        private readonly FindFamilyCodes $findFamilyCodes,
+    ) {
+    }
+
     public function validate($condition, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, FamilyShouldBeValid::class);
@@ -63,6 +70,7 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
                     ->buildViolation($constraint->valueShouldNotBeBlank)
                     ->atPath('value')
                     ->addViolation();
+                return;
             }
 
             foreach ($condition['value'] as $value) {
@@ -71,7 +79,18 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
                         ->buildViolation($constraint->valueShouldBeAnArray)
                         ->atPath('value')
                         ->addViolation();
+                    return;
                 }
+            }
+
+            $existingCodes = $this->findFamilyCodes->fromQuery(new FamilyQuery(includeCodes: $condition['value']));
+            $nonExistingCodes = \array_diff($condition['value'], $existingCodes);
+            if (\count($nonExistingCodes) > 0) {
+                $this->context
+                    ->buildViolation($constraint->familyNotExist)
+                    ->atPath('value')
+                    ->setParameter('{{ familyCodes }}', \implode(', ', \array_map(fn (string $value): string => \json_encode($value), $nonExistingCodes)))
+                    ->addViolation();
             }
         }
     }
