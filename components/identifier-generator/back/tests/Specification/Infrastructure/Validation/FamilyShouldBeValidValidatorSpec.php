@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValidValidator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid;
 use Akeneo\Platform\Component\Webhook\Context;
+use PhpParser\Node\Arg;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -54,6 +55,30 @@ class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $this->validate(['type' => 'something_else', 'operator' => 'IN', 'value' => ['shirts']], new FamilyShouldBeValid());
+    }
+
+    public function it_should_build_a_violation_when_value_is_filled_with_EMPTY(
+        ExecutionContext $context,
+        ConstraintViolationBuilderInterface $violationBuilder,
+    ): void
+    {
+        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate(['type' => 'family', 'operator' => 'EMPTY', 'value' => ['shirts']], new FamilyShouldBeValid());
+    }
+
+    public function it_should_build_a_violation_when_value_is_filled_with_NOT_EMPTY(
+        ExecutionContext $context,
+        ConstraintViolationBuilderInterface $violationBuilder,
+    ): void
+    {
+        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate(['type' => 'family', 'operator' => 'NOT EMPTY', 'value' => ['shirts']], new FamilyShouldBeValid());
     }
 
     public function it_should_build_violation_when_operator_is_unknown(
