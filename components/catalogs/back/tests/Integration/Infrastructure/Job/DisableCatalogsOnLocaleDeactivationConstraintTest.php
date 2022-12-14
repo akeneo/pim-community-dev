@@ -58,6 +58,12 @@ class DisableCatalogsOnLocaleDeactivationConstraintTest extends IntegrationTestC
                 ],
                 'expectedMessage' => 'This value should be of type array.',
             ],
+            'locale code is not an string' => [
+                'parameters' => [
+                    'locale_codes' => ['fr_FR', 2, 'en_US'],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
+            ],
         ];
     }
 }
