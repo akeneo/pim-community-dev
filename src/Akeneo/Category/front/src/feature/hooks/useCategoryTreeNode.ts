@@ -162,7 +162,7 @@ const useCategoryTreeNode = (id: number) => {
         console.error(`Failed to persist node ${identifier}`);
       }
     },
-    [nodes, router, setNodes]
+    [nodes]
   );
 
   const determineAfterWhichCategoryIdentifierToMove = (target: DropTarget, childrenIds: number[]): number | null => {
@@ -217,7 +217,7 @@ const useCategoryTreeNode = (id: number) => {
       });
       open();
     }
-  }, [node, open, setNodes]);
+  }, [node]);
 
   useEffect(() => {
     if (!node || !Array.isArray(childrenData)) {
@@ -246,7 +246,7 @@ const useCategoryTreeNode = (id: number) => {
     if (node?.childrenStatus === 'to-reload') {
       loadChildren();
     }
-  }, [loadChildren, node]);
+  }, [node?.childrenStatus]);
 
   useEffect(() => {
     if (move === null) {

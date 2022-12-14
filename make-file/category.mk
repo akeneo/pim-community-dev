@@ -44,7 +44,7 @@ category-end-to-end-back: #Doc: launch PHPUnit end-to-end tests for category bou
 category-ci-back: category-lint-back category-coupling-back category-unit-back category-integration-back category-end-to-end-back
 
 .PHONY: category-ci-front
-category-ci-front: category-lint-front category-unit-front
+category-ci-front: category-unit-front
 
 .PHONY: category-ci
 category-ci: category-ci-back category-ci-front

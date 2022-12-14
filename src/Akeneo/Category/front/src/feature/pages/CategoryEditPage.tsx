@@ -164,7 +164,7 @@ const CategoryEditPage: FC = () => {
     ) {
       handleSwitchTo(Tabs.PROPERTY);
     }
-  }, [handleSwitchTo, category, activeTab, isGranted]);
+  }, [category, activeTab]);
 
   if (categoryFetchingStatus === 'error') {
     return (

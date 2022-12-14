@@ -51,13 +51,13 @@ const useEditCategoryForm = (categoryId: number) => {
   // fetching the category
   useEffect(() => {
     loadCategory();
-  }, [categoryId, loadCategory]);
+  }, [categoryId]);
 
   // initializing category edition state
   useEffect(() => {
     if (fetchedCategory === null) return;
     initializeEditionState(fetchedCategory, template ?? null, channels, locales);
-  }, [fetchedCategory, template, locales, initializeEditionState, channels]);
+  }, [fetchedCategory, template, locales]);
 
   useEffect(() => {
     setCanLeavePage(!isModified);
