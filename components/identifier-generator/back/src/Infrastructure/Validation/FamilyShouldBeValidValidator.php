@@ -36,5 +36,12 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
                 ])
                 ->addViolation();
         }
+
+        if (\in_array($condition['operator'], ['EMPTY', 'NOT EMPTY']) && \array_key_exists('value', $condition)) {
+            $this->context
+                ->buildViolation($constraint->valueFilled)
+                ->atPath('value')
+                ->addViolation();
+        }
     }
 }
