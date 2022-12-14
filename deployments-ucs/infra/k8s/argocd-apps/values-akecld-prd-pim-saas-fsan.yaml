@@ -1,0 +1,17 @@
+spec:
+  destination:
+    googleProject: akecld-prd-pim-saas-fsan
+    publicDomains: 
+    - fsan.pim.akeneo.cloud
+    privateDomains: 
+    - pim-saas-fsan.fsan.local
+argocd:
+  privateDomain: pim-saas-fsan.fsan.local
+  publicDomain: fsan.pim.akeneo.cloud
+gateways:
+  externalHttp:
+    gatewayClassName: gke-l7-gxlb
+datadog:
+  tags:     
+    - cloud_env: fsan
+    - cloud_service: ucs

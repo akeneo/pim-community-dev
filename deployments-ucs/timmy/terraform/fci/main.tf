@@ -1,0 +1,19 @@
+module "timmy" {
+  source                                          = "../modules/timmy"
+  branch_name                                     = var.branch_name
+  bucket_location                                 = var.bucket_location
+  cloud_scheduler_request_portal_attempt_deadline = var.cloud_scheduler_request_portal_attempt_deadline
+  cloud_scheduler_request_portal_schedule         = var.cloud_scheduler_request_portal_schedule
+  cloud_scheduler_time_zone                       = var.cloud_scheduler_time_zone
+  domain                                          = var.domain
+  enable_clean_firestore                          = var.enable_clean_firestore
+  firestore_project_id                            = var.firestore_project_id
+  portal_hostname                                 = var.portal_hostname
+  portal_login_hostname                           = var.portal_login_hostname
+  portal_tenant_continent                         = var.portal_tenant_continent
+  portal_tenant_environment                       = var.portal_tenant_environment
+  project_id                                      = var.project_id
+  region                                          = var.region
+  region_prefix                                   = var.region_prefix
+  suffix_name                                     = var.suffix_name
+}

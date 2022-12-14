@@ -10,4 +10,6 @@ argocd:
   privateDomain: pim-saas-dev.dev.local
   publicDomain: ci.pim.akeneo.cloud
 datadog:
-  tags: "cloud_env: dev cloud_service: ucs"
+  tags:
+    - cloud_env: dev
+    - cloud_service: ucs

@@ -1,0 +1,17 @@
+spec:
+  destination:
+    googleProject: akecld-prd-pim-saas-inci
+    publicDomains: 
+    - inci.pim.akeneo.cloud
+    privateDomains: 
+    - pim-saas-inci.inci.local
+argocd:
+  privateDomain: pim-saas-inci.inci.local
+  publicDomain: inci.pim.akeneo.cloud
+gateways:
+  externalHttp:
+    gatewayClassName: gke-l7-gxlb
+datadog:
+  tags:     
+    - cloud_env: inci
+    - cloud_service: ucs

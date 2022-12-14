@@ -1,0 +1,17 @@
+spec:
+  destination:
+    googleProject: akecld-prd-pim-saas-fci
+    publicDomains: 
+    - fci.pim.akeneo.cloud
+    privateDomains: 
+    - pim-saas-fci.fci.local
+argocd:
+  privateDomain: pim-saas-fci.fci.local
+  publicDomain: fci.pim.akeneo.cloud
+gateways:
+  externalHttp:
+    gatewayClassName: gke-l7-gxlb
+datadog:
+  tags: 
+    - cloud_env: fci
+    - cloud_service: ucs
