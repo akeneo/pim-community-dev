@@ -153,6 +153,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0]: Family should contain "value" key.'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with non existing family
+    When I try to create an identifier generator with a family condition with operator IN and ["shirts", "non_existing1", "non_existing_2"] as value
+    Then I should get an error with message 'conditions[0].value: The following families do not exist: "shirts", "non_existing1", "non_existing_2".'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
