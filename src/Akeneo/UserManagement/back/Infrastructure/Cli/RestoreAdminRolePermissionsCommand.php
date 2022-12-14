@@ -2,7 +2,6 @@
 
 namespace Akeneo\UserManagement\back\Infrastructure\Cli;
 
-
 use Akeneo\UserManagement\back\Application\Exception\UnknownUserRole;
 use Akeneo\UserManagement\back\Application\RestoreAdminRolePermissions;
 use Symfony\Component\Console\Command\Command;
