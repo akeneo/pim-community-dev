@@ -336,6 +336,63 @@ final class UpdateIdentifierGeneratorContext implements Context
         ]);
     }
 
+    /**
+     * @When I try to update an identifier generator with a family condition with an unknown operator
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator()
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'unknown'],
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with a family condition with unknown property
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty()
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with 2 family conditions
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWith2FamilyConditions()
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'EMPTY'],
+            ['type' => 'family', 'operator' => 'NOT EMPTY'],
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with a family without operator
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyWithoutOperator()
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'family', 'value' => ['shirts']],
+        ]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value)
+    {
+        if ($value === 'undefined') {
+            $this->tryToUpdateGenerator(conditions: [
+                ['type' => 'family', 'operator' => $operator],
+            ]);
+        } else {
+            $this->tryToUpdateGenerator(conditions: [
+                ['type' => 'family', 'operator' => $operator, 'value' => \json_decode($value)],
+            ]);
+        }
+    }
+
     private function tryToUpdateGenerator(
         ?string $code = null,
         ?array $structure = null,
@@ -347,7 +404,10 @@ final class UpdateIdentifierGeneratorContext implements Context
         try {
             ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
                 $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                $conditions ?? [['type' => 'enabled', 'value' => true]],
+                $conditions ?? [
+                    ['type' => 'enabled', 'value' => true],
+                    ['type' => 'family', 'operator' => 'EMPTY'],
+                ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_IDENTIFIER_GENERATOR_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
                 $target ?? 'sku',

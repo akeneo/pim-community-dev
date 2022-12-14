@@ -12,18 +12,18 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleCondition:
                 types: ['enabled', 'family']
             - All:
-                  - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
-                  - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid: ~
-                  - Collection:
-                      fields:
-                          type:
-                              - Choice:
-                                  choices: ['enabled', 'family']
-                                  message: 'Type {{ value }} can only be one of the following: {{ choices }}'
-                          value:
-                              - Optional: ~
-                          operator:
-                              - Optional: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid: ~
+                - Collection:
+                    fields:
+                        type:
+                            - Choice:
+                                choices: ['enabled', 'family']
+                                message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                        value:
+                            - Optional: ~
+                        operator:
+                            - Optional: ~
         structure:
             - NotBlank: ~
             - Count:
