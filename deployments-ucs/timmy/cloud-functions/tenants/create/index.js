@@ -185,7 +185,7 @@ function castYamlToJson(content) {
  */
 async function createArgoCdApp(token, payload) {
   logger.info('Create the ArgoCD application for the new tenant');
-  const url = new URL('/api/v1/applications', process.env.ARGOCD_URL);
+  const url = new URL('/api/v1/applications?upsert=true', process.env.ARGOCD_URL);
   const config = {
     httpsAgent: httpsAgent,
     headers: {
