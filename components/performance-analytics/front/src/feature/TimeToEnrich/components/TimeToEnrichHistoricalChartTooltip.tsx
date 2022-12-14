@@ -31,9 +31,6 @@ const EnrichedProductText = styled('div')`
   font-size: 9px;
 `;
 
-const tooltipWidthPx = 250;
-const tooltipHeightPx = 60;
-
 type Props = {
   x?: number;
   y?: number;
@@ -64,6 +61,8 @@ const TimeToEnrichHistoricalChartTooltip: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
   const theme = useTheme();
+  const tooltipWidthPx = 250;
+  const tooltipHeightPx = comparisonTimeToEnrichList ? 60 : 50;
 
   const value =
     typeof datum !== 'undefined' && referenceTimeToEnrichList ? referenceTimeToEnrichList[datum._group]['value'] : 0;
@@ -86,13 +85,15 @@ const TimeToEnrichHistoricalChartTooltip: React.FC<Props> = ({
             <DataContainer>
               <EnrichedProductHighlight>{value}</EnrichedProductHighlight>{' '}
               {translate('akeneo.performance_analytics.graph.tooltip_day_to_enrich')}
-              <EnrichedProductText>
-                {comparedValue > 0 &&
-                  `+${comparedValue} ${translate('akeneo.performance_analytics.graph.tooltip_compared_period')}`}
-                {comparedValue < 0 &&
-                  `${comparedValue} ${translate('akeneo.performance_analytics.graph.tooltip_compared_period')}`}
-                {comparedValue === 0 && translate('akeneo.performance_analytics.graph.tooltip_compared_period_same')}
-              </EnrichedProductText>
+              {comparisonTimeToEnrichList && (
+                <EnrichedProductText>
+                  {comparedValue > 0 &&
+                    `+${comparedValue} ${translate('akeneo.performance_analytics.graph.tooltip_compared_period')}`}
+                  {comparedValue < 0 &&
+                    `${comparedValue} ${translate('akeneo.performance_analytics.graph.tooltip_compared_period')}`}
+                  {comparedValue === 0 && translate('akeneo.performance_analytics.graph.tooltip_compared_period_same')}
+                </EnrichedProductText>
+              )}
             </DataContainer>
           </Container>
         </foreignObject>

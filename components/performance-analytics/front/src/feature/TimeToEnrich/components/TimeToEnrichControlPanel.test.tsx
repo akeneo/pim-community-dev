@@ -152,11 +152,9 @@ describe('TimeToEnrichControlPanel', () => {
     });
 
     userEvent.click(await screen.findByText('[ecommerce]'));
-    userEvent.click(await screen.findByText('[family_10]'));
     userEvent.click(await screen.findByText('French'));
 
     expect(await screen.findByText('[ecommerce]')).toBeInTheDocument();
-    expect(await screen.findByText('[family_10]')).toBeInTheDocument();
     expect(await screen.findByText('French')).toBeInTheDocument();
   });
 });

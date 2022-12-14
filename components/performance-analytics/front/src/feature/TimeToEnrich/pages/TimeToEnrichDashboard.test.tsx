@@ -70,9 +70,13 @@ describe('TimeToEnrichDashboard', () => {
       userEvent.click(openControlPanelButton);
     });
 
-    const [metricInput, aggregationInput, periodInput] = await screen.findAllByRole('textbox');
+    const [metricInput, aggregationInput, channelInput, localeInput, periodInput] = await screen.findAllByRole(
+      'textbox'
+    );
     expect(metricInput).toBeInTheDocument();
     expect(aggregationInput).toBeInTheDocument();
+    expect(channelInput).toBeInTheDocument();
+    expect(localeInput).toBeInTheDocument();
 
     act(() => {
       fireEvent.click(periodInput);

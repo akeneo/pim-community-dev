@@ -15,7 +15,7 @@ const Container = styled.div<{isControlPanelOpen: boolean}>`
   margin-right: ${({isControlPanelOpen}) => (isControlPanelOpen ? '350px' : '0px')};
 `;
 
-const TimeToEnrichDashboard: FC = () => {
+const TimeToEnrichDashboard: FC<{activateComparison?: boolean}> = ({activateComparison = true}) => {
   const fetcher = useFetchers();
   const [isControlPanelOpen, setIsControlPanelOpen] = useState<boolean>(false);
   const [referenceTimeToEnrichList, setReferenceTimeToEnrichList] = useState<TimeToEnrich[] | undefined>(undefined);
@@ -24,6 +24,7 @@ const TimeToEnrichDashboard: FC = () => {
   const [filters, setFilters] = useState<TimeToEnrichFilters>(defaultFilters);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const translate = useTranslate();
+  let timeToEnrichPromiseList: Promise<TimeToEnrich[]>[] = [];
 
   useEffect(() => {
     setIsLoading(true);
@@ -54,16 +55,21 @@ const TimeToEnrichDashboard: FC = () => {
 
     const fetchHistoricalTimeToEnrichResults = fetchHistoricalTimeToEnrich(filters);
     fetchHistoricalTimeToEnrichResults.then(async timeToEnrichList => setReferenceTimeToEnrichList(timeToEnrichList));
-    const fetchComparisonTimeToEnrichResults = fetchHistoricalTimeToEnrich(filters);
-    fetchComparisonTimeToEnrichResults.then(async timeToEnrichList => setComparisonTimeToEnrichList(timeToEnrichList));
+    timeToEnrichPromiseList.push(fetchHistoricalTimeToEnrichResults);
+
+    if (activateComparison) {
+      const fetchComparisonTimeToEnrichResults = fetchHistoricalTimeToEnrich(filters);
+      fetchComparisonTimeToEnrichResults.then(async timeToEnrichList =>
+        setComparisonTimeToEnrichList(timeToEnrichList)
+      );
+      timeToEnrichPromiseList.push(fetchComparisonTimeToEnrichResults);
+    }
+
     const fetchAverageTimeToEnrichByEntityResults = fetchAverageTimeToEnrichByEntity(filters);
     fetchAverageTimeToEnrichByEntityResults.then(async tableData => setTableData(tableData));
+    timeToEnrichPromiseList.push(fetchAverageTimeToEnrichByEntityResults);
 
-    Promise.all([
-      fetchHistoricalTimeToEnrichResults,
-      fetchComparisonTimeToEnrichResults,
-      fetchAverageTimeToEnrichByEntityResults,
-    ]).then(() => setIsLoading(false));
+    Promise.all(timeToEnrichPromiseList).then(() => setIsLoading(false));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(filters)]);
@@ -108,7 +114,7 @@ const TimeToEnrichDashboard: FC = () => {
           </>
         )}
       </SectionTitle>
-      {referenceTimeToEnrichList && comparisonTimeToEnrichList && (
+      {referenceTimeToEnrichList && (
         <TimeToEnrichHistoricalChart
           referenceTimeToEnrichList={referenceTimeToEnrichList}
           comparisonTimeToEnrichList={comparisonTimeToEnrichList}
@@ -122,6 +128,7 @@ const TimeToEnrichDashboard: FC = () => {
         onFiltersChange={handleFiltersChange}
         onIsControlPanelOpenChange={(value: boolean) => setIsControlPanelOpen(value)}
         filters={filters}
+        activateComparison={activateComparison}
       />
     </Container>
   );

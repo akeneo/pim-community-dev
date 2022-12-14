@@ -1,7 +1,15 @@
-pim_title.pimee_performance_analytics_dashboard: Performance Analytics Dashboard
+pim_title.pimee_performance_analytics_dashboard: Time-to-market insights Dashboard
 
 akeneo.performance_analytics:
-    title: Performance Analytics
+    title: Time-to-market insights
+    legend:
+        for: for
+        across: across
+        over_the: over the
+        channels: "{0}0 channel|{1}1 channel|]1, Inf[{{ channelsCount }} channels"
+        all_channels: All channels
+        locales: "{0}0 locale|{1}1 locale|]1, Inf[{{ localesCount }} locales"
+        all_locales: All locales
     graph:
         tooltip_day_to_enrich: days to enrich a product
         tooltip_compared_period: compared to the previous period
@@ -15,15 +23,15 @@ akeneo.performance_analytics:
         configure: Configure
         open_control_panel: Open control panel
         close_control_panel: Close control panel
-        metric_title: Display
+        metric_title: Metric displayed
         period_title: From
         grouped_by: grouped by
         compare_title: Compared to
-        filtered_on_title: Filtered by
+        filters_title: Across
         time_to_enrich_helper: is the measure of the time spent from the creation of the product in the PIM to 100% completeness.
         select_input:
             metrics:
-                time_to_enrich: Time-to-enrich
+                time_to_enrich: Time-to-enrich (in days)
             aggregations:
                 families: Families
                 categories: Categories

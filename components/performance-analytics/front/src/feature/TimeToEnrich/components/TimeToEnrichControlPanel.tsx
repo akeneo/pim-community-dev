@@ -16,7 +16,6 @@ import {
   Metrics,
   PredefinedComparisons,
   PredefinedPeriods,
-  MultiFamilyInput,
   MultiChannelInput,
   MultiLocaleInput,
   SelectAggregationInput,
@@ -82,9 +81,16 @@ type Props = {
   onFiltersChange: (filters: TimeToEnrichFilters) => void;
   onIsControlPanelOpenChange: (isOpen: boolean) => void;
   filters: TimeToEnrichFilters;
+  activateComparison?: boolean;
 };
 
-const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpenChange, filters}: Props) => {
+const TimeToEnrichControlPanel = ({
+  isOpen,
+  onFiltersChange,
+  onIsControlPanelOpenChange,
+  filters,
+  activateComparison = false,
+}: Props) => {
   const [isCompareFilterCollapsed, toggleCompareFilterCollapse] = useState<boolean>(true);
   const [isPeriodFilterCollapsed, togglePeriodFilterCollapse] = useState<boolean>(true);
   const [isComparisonFilterCollapsed, toggleComparisonFilterCollapse] = useState<boolean>(true);
@@ -100,7 +106,6 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
       <ControlPanelSectionTitle>
         <ControlPanelTitle>{isOpen && translate('akeneo.performance_analytics.control_panel.title')}</ControlPanelTitle>
         <SectionTitle.Spacer />
-        {/*<SystemIcon color={pimTheme.color.purple100} size={24} />*/}
         <IconButton
           ghost
           icon={<CloseIcon color={pimTheme.color.purple100} />}
@@ -145,58 +150,11 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
       </Collapse>
 
       <Collapse
-        collapseButtonLabel={isPeriodFilterCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-        label={<>{translate('akeneo.performance_analytics.control_panel.period_title')}</>}
-        onCollapse={togglePeriodFilterCollapse}
-        isOpen={isPeriodFilterCollapsed}
-      >
-        <Field>
-          <SelectPeriodInput
-            filters={PredefinedPeriods}
-            value={filters.period}
-            onChange={(period: string) => {
-              let updatedPeriod: {};
-              updatedPeriod = {period: period};
-              onFiltersChange({...filters, ...updatedPeriod});
-            }}
-          />
-        </Field>
-      </Collapse>
-
-      <Collapse
-        collapseButtonLabel={isComparisonFilterCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-        label={<>{translate('akeneo.performance_analytics.control_panel.compare_title')}</>}
-        onCollapse={toggleComparisonFilterCollapse}
-        isOpen={isComparisonFilterCollapsed}
-      >
-        <Field>
-          <SelectComparisonInput
-            filters={PredefinedComparisons}
-            value={filters.comparison}
-            onChange={(comparison: string) => {
-              let updatedComparison: {};
-              updatedComparison = {comparison: comparison};
-              onFiltersChange({...filters, ...updatedComparison});
-            }}
-          />
-        </Field>
-      </Collapse>
-
-      <Collapse
         collapseButtonLabel={isFilteredOnCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-        label={<>{translate('akeneo.performance_analytics.control_panel.filtered_on_title')}</>}
+        label={<>{translate('akeneo.performance_analytics.control_panel.filters_title')}</>}
         onCollapse={toggleFilteredOnFilterCollapse}
         isOpen={isFilteredOnCollapsed}
       >
-        <Field>
-          <MultiFamilyInput
-            onChange={(families: string[]) => {
-              let updatedFamilies: {};
-              updatedFamilies = {families: families};
-              onFiltersChange({...filters, ...updatedFamilies});
-            }}
-          />
-        </Field>
         <Field>
           <MultiChannelInput
             onChange={(channels: string[]) => {
@@ -216,6 +174,48 @@ const TimeToEnrichControlPanel = ({isOpen, onFiltersChange, onIsControlPanelOpen
           />
         </Field>
       </Collapse>
+
+      <Collapse
+        collapseButtonLabel={isPeriodFilterCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
+        label={<>{translate('akeneo.performance_analytics.control_panel.period_title')}</>}
+        onCollapse={togglePeriodFilterCollapse}
+        isOpen={isPeriodFilterCollapsed}
+      >
+        <Field>
+          <SelectPeriodInput
+            filters={PredefinedPeriods}
+            value={filters.period}
+            onChange={(period: string) => {
+              let updatedPeriod: {};
+              updatedPeriod = {period: period};
+              onFiltersChange({...filters, ...updatedPeriod});
+            }}
+          />
+        </Field>
+      </Collapse>
+
+      {activateComparison && (
+        <Collapse
+          collapseButtonLabel={
+            isComparisonFilterCollapsed ? translate('pim_common.close') : translate('pim_common.open')
+          }
+          label={<>{translate('akeneo.performance_analytics.control_panel.compare_title')}</>}
+          onCollapse={toggleComparisonFilterCollapse}
+          isOpen={isComparisonFilterCollapsed}
+        >
+          <Field>
+            <SelectComparisonInput
+              filters={PredefinedComparisons}
+              value={filters.comparison}
+              onChange={(comparison: string) => {
+                let updatedComparison: {};
+                updatedComparison = {comparison: comparison};
+                onFiltersChange({...filters, ...updatedComparison});
+              }}
+            />
+          </Field>
+        </Collapse>
+      )}
     </Container>
   );
 };

@@ -25,7 +25,6 @@ const SelectMetricInput = ({filters, value, onChange}: Props) => {
       emptyResultLabel={translate('pim_common.no_result')}
       openLabel={translate('pim_common.open')}
       value={value}
-      readOnly={true}
       onChange={onChange}
       clearable={false}
     >

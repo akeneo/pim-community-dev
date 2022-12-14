@@ -4,6 +4,6 @@ extensions:
         parent: pim-menu-activity-navigation-block
         position: 150
         config:
-            title: Performance Analytics
+            title: Time-to-market insights
             to: pimee_performance_analytics_dashboard
         feature: performance_analytics

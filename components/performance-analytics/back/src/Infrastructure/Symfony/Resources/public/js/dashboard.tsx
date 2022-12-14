@@ -53,7 +53,7 @@ class Dashboard extends BaseController {
             </PageHeader>
             <PageContent>
               <Section>
-                <TimeToEnrichDashboard />
+                <TimeToEnrichDashboard activateComparison={false} />
               </Section>
             </PageContent>
           </PimFetcherProvider>
