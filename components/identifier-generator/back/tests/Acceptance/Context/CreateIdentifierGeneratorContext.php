@@ -332,6 +332,16 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to create an identifier generator with a family without operator
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyWithoutOperator()
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'family', 'value' => ['shirts']],
+        ]);
+    }
+
+    /**
      * @When /^I try to create an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value)
@@ -360,7 +370,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 $code ?? self::DEFAULT_CODE,
                 $conditions ?? [
                     ['type' => 'enabled', 'value' => true],
-                    ['type' => 'family', 'value' => 'shirts'],
+                    ['type' => 'family', 'operator' => 'EMPTY'],
                 ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Family;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use Symfony\Component\Validator\Constraint;
@@ -29,7 +30,14 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
             return;
         }
 
+        if (\array_key_exists('type', $condition) && $condition['type'] !== Family::type()) {
+            return;
+        }
+
         if (!\array_key_exists('operator', $condition)) {
+            $this->context
+                ->buildViolation($constraint->operatorShouldBePresent)
+                ->addViolation();
             return;
         }
 
