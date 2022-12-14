@@ -40,7 +40,7 @@ class LocaleDeactivationSubscriber implements EventSubscriberInterface
         if (!$locale instanceof LocaleInterface || $locale->isActivated()) {
             return;
         }
-        dd($locale);
+
         /** @var JobInstance|null $jobInstance */
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalogs_on_locale_deactivation');
 

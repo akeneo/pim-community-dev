@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
+class DeactivateLocaleFromChannelEndToEnd extends InternalApiTestCase
 {
     /** @var ValidatorInterface */
     private $validator;
