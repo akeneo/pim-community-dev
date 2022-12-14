@@ -50,7 +50,7 @@ class EnabledShouldBeValidValidatorSpec extends ObjectBehavior
 
     public function it_should_build_violation_when_value_is_missing(ExecutionContext $context): void
     {
-        $enabledWihoutValue = [
+        $enabledWithoutValue = [
             'type' => 'enabled',
         ];
 
@@ -58,7 +58,7 @@ class EnabledShouldBeValidValidatorSpec extends ObjectBehavior
             'validation.identifier_generator.enabled_value_field_required'
         )->shouldBeCalled();
 
-        $this->validate($enabledWihoutValue, new EnabledShouldBeValid());
+        $this->validate($enabledWithoutValue, new EnabledShouldBeValid());
     }
 
     public function it_should_build_violation_when_value_is_not_a_boolean(
@@ -66,7 +66,7 @@ class EnabledShouldBeValidValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ): void
     {
-        $enabledWihoutValue = [
+        $enabledWithoutValue = [
             'type' => 'enabled', 'value' => 'bar',
         ];
 
@@ -76,7 +76,7 @@ class EnabledShouldBeValidValidatorSpec extends ObjectBehavior
         $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
-        $this->validate($enabledWihoutValue, new EnabledShouldBeValid());
+        $this->validate($enabledWithoutValue, new EnabledShouldBeValid());
     }
 
     public function it_should_not_build_violation_when_enabled_is_valid(ExecutionContext $context): void
