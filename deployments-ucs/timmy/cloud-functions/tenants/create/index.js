@@ -514,7 +514,7 @@ functions.http('createTenant', (req, res) => {
     const tenantName = body.tenant_name;
     const extraLabelType = 'srnt';
     const tenantId = `${extraLabelType}-${tenantName}`;
-    
+
     // Workarround to UAT migration
     const pimNamespaceOld = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE + "-" + branchName.toLowerCase());
     const pimNamespace = (pimNamespaceOld === "pim-master-migration-step2" ? DEFAULT_PIM_NAMESPACE : pimNamespaceOld);
@@ -665,7 +665,6 @@ functions.http('createTenant', (req, res) => {
             mysql: {
               userPassword: mysqlUserPassword,
               rootPassword: mysqlRootPassword,
-              dataDiskSize: "10",
               innodbBufferPoolSize: "2048M",
               resources: {
                 limits: {

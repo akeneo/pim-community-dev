@@ -194,7 +194,7 @@ jobs:
                   # tenant
                   rm -rf /tmp/pim-saas-k8s-artifacts/tenant
                   cp -r deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
-                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml pim.hook.migration.enable true
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml pim.hook.migration.enabled true
                   yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml mysql.mysql.resetPassword true
 
                   # timmy

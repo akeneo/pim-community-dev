@@ -2,6 +2,10 @@ image:
   pim:
     repository: europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/dev/pim-enterprise-dev
 
+mysql:
+  mysql:
+    dataDiskSize: 10
+
 pim:
   hook:
     tests:
