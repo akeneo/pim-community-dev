@@ -20,6 +20,8 @@ final class FamilyShouldBeValid extends Constraint
 
     public string $valueShouldNotBeBlank = 'This value should not be blank.';
 
+    public string $valueShouldBePresent = 'Family should contain "value" key.';
+
     /**
      * @inerhitDoc
      */
