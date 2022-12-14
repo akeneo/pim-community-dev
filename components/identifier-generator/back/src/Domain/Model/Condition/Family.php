@@ -19,6 +19,7 @@ class Family implements ConditionInterface
 
     static function fromNormalized(): self
     {
+        // TODO: Implement normalize() method.
         return new self();
     }
 
