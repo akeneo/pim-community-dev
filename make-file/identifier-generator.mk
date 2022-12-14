@@ -29,7 +29,7 @@ identifier-generator-lint-back:
 		--configuration components/identifier-generator/back/tests/phpstan.neon \
 		$(IDENTIFIER_GENERATOR_PATH)/back/src/Infrastructure
 	$(PHP_RUN) vendor/bin/phpstan analyse \
-		--level 8 \
+		--level max \
 		--configuration components/identifier-generator/back/tests/phpstan.neon \
 		$(IDENTIFIER_GENERATOR_PATH)/back/src/Domain $(IDENTIFIER_GENERATOR_PATH)/back/src/Application
 	$(PHP_RUN) vendor/bin/phpstan analyse \

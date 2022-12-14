@@ -39,8 +39,14 @@ pim_identifier_generator:
             info: 'You will soon be able to configure multiple generators matching all your usecases.'
         confirmation: 'Are you sure you want to delete this property?'
     selection:
-        enabled:
-            disabled: 'Disabled'
+        property_type:
+            sections:
+                system: 'System'
+            enabled: 'Status'
+        settings:
+            enabled:
+                disabled: 'Disabled'
+                placeholder: 'Choose a status'
     structure:
         helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at {{link}}.'
         helper_link: 'this article'
