@@ -28,7 +28,7 @@ class UserGroupController
     public function __invoke(Request $request): Response
     {
         $userGroups = array_map(
-            static fn(UserGroup $userGroup) => ['id' => $userGroup->getId(), 'label' => $userGroup->getLabel()],
+            static fn (UserGroup $userGroup) => ['id' => $userGroup->getId(), 'label' => $userGroup->getLabel()],
             $this->listUserGroup->fromQuery(new UserGroupQuery()),
         );
 
