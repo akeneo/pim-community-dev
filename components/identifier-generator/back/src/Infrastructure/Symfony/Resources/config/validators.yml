@@ -28,5 +28,6 @@ services:
     Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValidValidator:
         arguments:
             - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
+            - '@validator'
         tags:
             - { name: validator.constraint_validator }
