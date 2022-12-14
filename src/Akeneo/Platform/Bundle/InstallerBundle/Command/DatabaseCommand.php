@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Component\Console\CommandExecutor;
 use Doctrine\DBAL\Connection;
@@ -36,28 +37,17 @@ class DatabaseCommand extends Command
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
 
-    private EntityManagerInterface $entityManager;
-    private ClientRegistry $clientRegistry;
-    protected Connection $connection;
-    private FixtureJobLoader $fixtureJobLoader;
-    private EventDispatcherInterface $eventDispatcher;
-
     protected ?CommandExecutor $commandExecutor;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ClientRegistry $clientRegistry,
-        Connection $connection,
-        FixtureJobLoader $fixtureJobLoader,
-        EventDispatcherInterface $eventDispatcher
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ClientRegistry $clientRegistry,
+        protected readonly Connection $connection,
+        private readonly FixtureJobLoader $fixtureJobLoader,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly InstallData $installTimeQuery,
     ) {
         parent::__construct();
-
-        $this->entityManager = $entityManager;
-        $this->clientRegistry = $clientRegistry;
-        $this->connection = $connection;
-        $this->fixtureJobLoader = $fixtureJobLoader;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -183,6 +173,8 @@ class DatabaseCommand extends Command
                 InstallerEvents::POST_LOAD_FIXTURES
             );
         }
+
+        $this->installTimeQuery->withDatetime(new \DateTimeImmutable());
 
         return Command::SUCCESS;
     }
