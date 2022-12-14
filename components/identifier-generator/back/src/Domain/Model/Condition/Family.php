@@ -19,17 +19,19 @@ class Family implements ConditionInterface
 
     static function fromNormalized(): self
     {
-        // TODO: Implement normalize() method.
+        // TODO: CPM-861
         return new self();
     }
 
     public function normalize(): array
     {
-        // TODO: Implement normalize() method.
+        // TODO: CPM-861
+        throw new \Exception('not implemented');
     }
 
     public function match(ProductProjection $productProjection): bool
     {
-        // TODO: Implement match() method.
+        // TODO: CPM-861
+        throw new \Exception('not implemented');
     }
 }
