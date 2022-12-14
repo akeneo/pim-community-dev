@@ -64,6 +64,14 @@ spec:
           value: null
         - name: elasticsearch.data.resources.limits.memory
           value: null
+        - name: elasticsearch.serviceAccounts.client.name
+          value: null
+        - name: elasticsearch.serviceAccounts.master.name
+          value: null
+        - name: elasticsearch.serviceAccounts.data.name
+          value: null
+        - name: elasticsearch.snapshots.bucketName
+          value: null
         - name: mailer.login
           value: null
         - name: mailer.password
@@ -127,6 +135,8 @@ spec:
         - name: mysql.mysql.resources.requests.memory
           value: null
         - name: mysql.mysql.resources.limits.memory
+          value: null
+        - name: mysql.mysql.nodeSelector.topology\.kubernetes\.io/zone
           value: null
         - name: mysql.common.persistentDisks.0
           value: null
