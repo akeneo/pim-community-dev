@@ -5,6 +5,9 @@ services:
   oneup_flysystem.amazon_s3_adapter:
     class: League\Flysystem\InMemory\InMemoryFilesystemAdapter
 
+  oneup_flysystem.microsoft_azure_adapter:
+    class: League\Flysystem\InMemory\InMemoryFilesystemAdapter
+
   oneup_flysystem.sftp_storage_filesystem:
     class: League\Flysystem\Filesystem
     arguments:
@@ -14,6 +17,11 @@ services:
     class: League\Flysystem\Filesystem
     arguments:
       - '@oneup_flysystem.amazon_s3_adapter'
+
+  oneup_flysystem.microsoft_azure_storage_filesystem:
+    class: League\Flysystem\Filesystem
+    arguments:
+      - '@oneup_flysystem.microsoft_azure_adapter'
 
   Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp\SftpStorageClientProvider:
     class: AkeneoTest\Platform\Acceptance\ImportExport\FakeServices\FakeStorageClientProvider
@@ -28,6 +36,14 @@ services:
     arguments:
       - '@oneup_flysystem.amazon_s3_storage_filesystem'
       - 'Akeneo\Platform\JobAutomation\Domain\Model\Storage\AmazonS3Storage'
+    tags:
+      - { name: pim_import_export.storage_client_provider }
+
+  Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\MicrosoftAzure\MicrosoftAzureStorageClientProvider:
+    class: AkeneoTest\Platform\Acceptance\ImportExport\FakeServices\FakeStorageClientProvider
+    arguments:
+      - '@oneup_flysystem.microsoft_azure_storage_filesystem'
+      - 'Akeneo\Platform\JobAutomation\Domain\Model\Storage\MicrosoftAzureStorage'
     tags:
       - { name: pim_import_export.storage_client_provider }
 

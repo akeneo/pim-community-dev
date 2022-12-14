@@ -44,6 +44,7 @@ class SftpStorageHydratorSpec extends ObjectBehavior
         $this->supports(['type' => 'none'])->shouldReturn(false);
         $this->supports(['type' => 'local'])->shouldReturn(false);
         $this->supports(['type' => 'amazon_s3'])->shouldReturn(false);
+        $this->supports(['type' => 'microsoft_azure'])->shouldReturn(false);
         $this->supports(['type' => 'unknown'])->shouldReturn(false);
     }
 

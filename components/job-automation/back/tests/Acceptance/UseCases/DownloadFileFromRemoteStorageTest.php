@@ -65,6 +65,26 @@ class DownloadFileFromRemoteStorageTest extends AcceptanceTestCase
         $this->assertEquals('file content', $this->getLocalFilesystem()->read('/tmp/job_name/a_file_path'));
     }
 
+    /**
+     * @test
+     */
+    public function it_downloads_file_from_microsoft_azure_storage(): void
+    {
+        $this->getMicrosoftAzureFilesystem()->write('a_file_path', 'file content');
+
+        $storage = [
+            'type' => 'microsoft_azure',
+            'connection_string' => 'a_connection_string',
+            'container_name' => 'a_container_name',
+            'file_path' => 'a_file_path',
+        ];
+
+        $this->getHandler()->handle(new DownloadFileFromStorageCommand($storage, '/tmp/job_name/'));
+
+        $this->assertTrue($this->getLocalFilesystem()->fileExists('/tmp/job_name/a_file_path'));
+        $this->assertEquals('file content', $this->getLocalFilesystem()->read('/tmp/job_name/a_file_path'));
+    }
+
     private function getHandler(): DownloadFileFromStorageHandler
     {
         return $this->get('Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler');
@@ -78,6 +98,11 @@ class DownloadFileFromRemoteStorageTest extends AcceptanceTestCase
     private function getAmazonS3Filesystem(): Filesystem
     {
         return $this->get('oneup_flysystem.amazon_s3_storage_filesystem');
+    }
+
+    private function getMicrosoftAzureFilesystem(): Filesystem
+    {
+        return $this->get('oneup_flysystem.microsoft_azure_storage_filesystem');
     }
 
     private function getLocalFilesystem(): Filesystem

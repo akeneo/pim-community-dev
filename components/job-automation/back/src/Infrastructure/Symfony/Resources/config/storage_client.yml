@@ -10,3 +10,9 @@ services:
       - '@Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter'
     tags:
       - { name: pim_import_export.storage_client_provider }
+
+  Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\MicrosoftAzure\MicrosoftAzureStorageClientProvider:
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter'
+    tags:
+      - { name: pim_import_export.storage_client_provider }

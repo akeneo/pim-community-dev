@@ -15,6 +15,12 @@ services:
         tags:
             - { name: pim_import_export.credentials_encrypter }
 
+    Akeneo\Platform\JobAutomation\Infrastructure\Security\MicrosoftAzureCredentialsEncrypter:
+        arguments:
+            - '@Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter'
+        tags:
+            - { name: pim_import_export.credentials_encrypter }
+
     akeneo.job_automation.feature:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:

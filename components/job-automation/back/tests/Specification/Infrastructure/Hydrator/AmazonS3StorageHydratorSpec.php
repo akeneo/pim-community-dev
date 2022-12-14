@@ -32,6 +32,7 @@ class AmazonS3StorageHydratorSpec extends ObjectBehavior
         $this->supports(['type' => 'local'])->shouldReturn(false);
         $this->supports(['type' => 'sftp'])->shouldReturn(false);
         $this->supports(['type' => 'unknown'])->shouldReturn(false);
+        $this->supports(['type' => 'microsoft_azure'])->shouldReturn(false);
     }
 
     public function it_hydrates_an_amazon_s3_storage()

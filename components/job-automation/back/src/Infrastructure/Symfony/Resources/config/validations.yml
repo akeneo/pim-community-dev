@@ -7,6 +7,10 @@ services:
     tags:
       - { name: 'akeneo.import_export.validation.storage_constraint', key: 'amazon_s3' }
 
+  Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\MicrosoftAzure\MicrosoftAzureStorage:
+    tags:
+      - { name: 'akeneo.import_export.validation.storage_constraint', key: 'microsoft_azure' }
+
   akeneo_batch.validator.job_instance.automation:
     class: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation\AutomationValidator'
     tags:

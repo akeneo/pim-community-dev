@@ -8,3 +8,7 @@ services:
   Akeneo\Platform\JobAutomation\Infrastructure\Hydrator\AmazonS3StorageHydrator:
     tags:
       - { name: pim_import_export.hydrator.storage }
+
+  Akeneo\Platform\JobAutomation\Infrastructure\Hydrator\MicrosoftAzureStorageHydrator:
+    tags:
+      - { name: pim_import_export.hydrator.storage }

@@ -63,6 +63,8 @@ $rules = [
 
             'Aws\S3\S3Client',
             'League\Flysystem\AwsS3V3\AwsS3V3Adapter',
+            'MicrosoftAzure\Storage\Blob\BlobRestProxy',
+            'League\Flysystem\AzureBlobStorage\AzureBlobStorageAdapter',
             'League\Flysystem\Filesystem',
             'League\Flysystem\PhpseclibV3',
             'Twig\Environment',

@@ -84,6 +84,35 @@ class TransferFilesToRemoteStorageTest extends AcceptanceTestCase
         $this->assertEquals('file2 content', $this->getAmazonS3Filesystem()->read('filename2.csv'));
     }
 
+    /**
+     * @test
+     */
+    public function it_transfers_files_to_microsoft_azure_storage(): void
+    {
+        $this->getLocalFilesystem()->write('file_key1', 'file1 content');
+        $this->getCatalogFilesystem()->write('file_key2', 'file2 content');
+
+        $storage = [
+            'type' => 'microsoft_azure',
+            'connection_string' => 'a_connection_string',
+            'container_name' => 'a_container_name',
+            'file_path' => 'a_file_path',
+        ];
+
+        $filesToTransfer = [
+            new FileToTransfer('file_key1', 'localFilesystem', 'filename1.csv', false),
+            new FileToTransfer('file_key2', 'catalogStorage', 'filename2.csv', false),
+        ];
+
+        $this->getHandler()->handle(new TransferFilesToStorageCommand($filesToTransfer, $storage));
+
+        $this->assertTrue($this->getMicrosoftAzureFilesystem()->fileExists('filename1.csv'));
+        $this->assertTrue($this->getMicrosoftAzureFilesystem()->fileExists('filename2.csv'));
+
+        $this->assertEquals('file1 content', $this->getMicrosoftAzureFilesystem()->read('filename1.csv'));
+        $this->assertEquals('file2 content', $this->getMicrosoftAzureFilesystem()->read('filename2.csv'));
+    }
+
     private function getHandler(): TransferFilesToStorageHandler
     {
         return $this->get('Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler');
@@ -107,5 +136,10 @@ class TransferFilesToRemoteStorageTest extends AcceptanceTestCase
     private function getAmazonS3Filesystem(): Filesystem
     {
         return $this->get('oneup_flysystem.amazon_s3_storage_filesystem');
+    }
+
+    private function getMicrosoftAzureFilesystem(): Filesystem
+    {
+        return $this->get('oneup_flysystem.microsoft_azure_storage_filesystem');
     }
 }
