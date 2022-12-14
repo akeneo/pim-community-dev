@@ -311,7 +311,10 @@ final class CreateIdentifierGeneratorContext implements Context
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
                 $code ?? self::DEFAULT_CODE,
-                $conditions ?? [['type' => 'enabled', 'value' => true]],
+                $conditions ?? [
+                    ['type' => 'enabled', 'value' => true],
+                    ['type' => 'family', 'value' => 'shirts'],
+                ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
                 $target ?? 'sku',
