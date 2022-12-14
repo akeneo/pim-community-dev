@@ -128,8 +128,8 @@ Feature: Update Identifier Generator
     Then I should get an error on update with message 'conditions[0][value]: This field is missing.'
 
   Scenario: Cannot update an identifier generator with non existing family
-    When I try to update an identifier generator with a family condition with operator IN and ["shirts", "non_existing1", "non_existing_2"] as value
-    Then I should get an error on update with message 'conditions[0].value: The following families do not exist: "shirts", "non_existing1", "non_existing_2".'
+    When I try to update an identifier generator with a family condition with operator IN and ["non_existing1", "non_existing_2"] as value
+    Then I should get an error on update with message 'conditions[0][value]: The following families do not exist: "non_existing1", "non_existing_2".'
 
   Scenario: Cannot update an identifier generator with non existing field
     When I try to update an identifier generator with a family condition with unknown property
