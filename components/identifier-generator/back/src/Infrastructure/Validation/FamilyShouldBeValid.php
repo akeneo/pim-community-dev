@@ -14,6 +14,8 @@ final class FamilyShouldBeValid extends Constraint
 {
     public string $unknownOperator = 'Operator {{ value }} can only be one of the following: {{ choices }}';
 
+    public string $valueFilled = 'This field was not expected.';
+
     /**
      * @inerhitDoc
      */
