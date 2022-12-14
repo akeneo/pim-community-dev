@@ -9,9 +9,9 @@ Practically, it means the Akeneo PIM source code is present in the src/ director
 
 If you want to contribute to the Akeneo PIM (and we will be pleased if you do!), you can fork this repository and submit a pull request.
 
-Scrutinizer | Crowdin
------------ | -------
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/) | [![Crowdin](https://d322cqt584bo4o.cloudfront.net/akeneo/localized.svg)](https://crowdin.com/project/akeneo)
+| Crowdin |
+| ------- |
+| [![Crowdin](https://d322cqt584bo4o.cloudfront.net/akeneo/localized.svg)](https://crowdin.com/project/akeneo) |
 
 ## Application Technical Information
 
