@@ -90,6 +90,11 @@ akeneo_connectivity_connection_connect_apps_v1_redirect_to_catalog:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditCatalogAction
     methods: [ GET ]
 
+akeneo_connectivity_connection_connect_apps_v1_redirect_to_connected_app:
+    path: '/connect/apps/v1/connected_app/{id}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditConnectedAppAction
+    methods: [ GET ]
+
 # Front API
 ## Apps
 akeneo_connectivity_connection_connect_apps_activate:

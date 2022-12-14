@@ -157,9 +157,11 @@ pim_import_export:
           label: Type
           local: Local
           sftp: SFTP
+          amazon_s3: Amazon S3
           none: Aucun stockage configuré
         file_path:
           label: Chemin du fichier
+          placeholder: mon-fichier.{{ file_extension }}
         host:
           label: Hôte
           placeholder: exemple.fr
@@ -176,6 +178,24 @@ pim_import_export:
         password:
           label: Mot de passe
           placeholder: Saisissez votre mot de passe
+        public_key:
+          label: Clé publique
+        login_type:
+          label: Méthode d'authentification
+          password: Identifiant et mot de passe
+          private_key: Clé privée
+        region:
+          label: Région
+          placeholder: Saisissez la région
+        bucket:
+          label: Nom du compartiment
+          placeholder: Saisissez le nom de la région
+        key:
+          label: Clé
+          placeholder: Saisissez la clé
+        secret:
+          label: Secret 
+          placeholder: Saisissez le secret
       validation:
         storage:
           unavailable_type: 'Ce stockage n''est pas disponible, seuls les types suivants sont disponibles: {{ available_types }}.'
