@@ -100,7 +100,7 @@
         "khaled.alshamaa/ar-php": "^6.2",
         "lcobucci/jwt": "^4.2",
         "league/flysystem": "^3.11.0",
-        "liip/imagine-bundle": "2.6.1",
+        "liip/imagine-bundle": "2.9.0",
         "maennchen/zipstream-php": "^2.1",
         "monolog/monolog": "1.27.1",
         "ocramius/proxy-manager": "2.11.1",
