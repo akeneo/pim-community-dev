@@ -18,6 +18,8 @@ final class FamilyShouldBeValid extends Constraint
 
     public string $valueShouldBeAnArray = 'This value should be an array of strings.';
 
+    public string $valueShouldNotBeBlank = 'This value should not be blank.';
+
     /**
      * @inerhitDoc
      */
