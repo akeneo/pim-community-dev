@@ -128,6 +128,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0].operator: Operator "unknown" can only be one of the following: "IN", "NOT IN", "EMPTY", "NOT EMPTY"'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with operator EMPTY and a value
+    When I try to create an identifier generator with a family condition with operator EMPTY and ["shirts"] as value
+    Then I should get an error with message 'conditions[0].value: This field was not expected.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
