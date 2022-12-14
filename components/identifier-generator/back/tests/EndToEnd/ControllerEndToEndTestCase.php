@@ -9,6 +9,11 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
 use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -77,6 +82,17 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
             $this->client,
             $routeName,
             [],
+            'GET',
+            $header
+        );
+    }
+
+    protected function callGetRouteWithQueryParam(string $routeName, array $queryParam, ?array $header = self::DEFAULT_HEADER): void
+    {
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            $queryParam,
             'GET',
             $header
         );
@@ -154,5 +170,23 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         $webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
 
         return $webClientHelper;
+    }
+
+    protected function removeAclFromRole(string $aclPrivilegeIdentityId, string $role = 'ROLE_ADMINISTRATOR'): void
+    {
+        $aclManager = $this->get('oro_security.acl.manager');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier($role);
+        $privilege = new AclPrivilege();
+        $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
+        $privilege
+            ->setIdentity($identity)
+            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
+        $aclManager->getPrivilegeRepository()->savePrivileges(
+            $aclManager->getSid($role),
+            new ArrayCollection([$privilege])
+        );
+
+        $aclManager->flush();
+        $aclManager->clearCache();
     }
 }
