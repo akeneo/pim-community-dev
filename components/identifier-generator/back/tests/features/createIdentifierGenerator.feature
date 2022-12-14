@@ -125,7 +125,7 @@ Feature: Create Identifier Generator
   # Conditions: Family
   Scenario: Cannot create an identifier generator with unknown operator
     When I try to create an identifier generator with a family condition with an unknown operator
-    Then I should get an error with message 'conditions[0].operator: Operator "unknown" can only be one of the following: "IN", "NOT IN", "EMPTY", "NOT EMPTY"'
+    Then I should get an error with message 'conditions[0].operator: Operator "unknown" can only be one of the following: "IN", "NOT IN", "EMPTY", "NOT EMPTY".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with operator EMPTY and a value
@@ -133,9 +133,14 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0].value: This field was not expected.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and a non array of string value
+  Scenario: Cannot create an identifier generator with operator IN and a non array value
     When I try to create an identifier generator with a family condition with operator IN and "shirts" as value
-    Then I should get an error with message 'conditions[0].value: This value should be an array.'
+    Then I should get an error with message 'conditions[0].value: This value should be an array of strings.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and a non array of string value
+    When I try to create an identifier generator with a family condition with operator IN and [true] as value
+    Then I should get an error with message 'conditions[0].value: This value should be an array of strings.'
     And the identifier should not be created
 
   # Label
