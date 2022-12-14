@@ -601,6 +601,16 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
     }
 
+    protected function disableCurrency(string $code): void
+    {
+        $currency = self::getContainer()->get('pim_catalog.repository.currency')->findOneByIdentifier($code);
+        self::getContainer()->get('pim_catalog.updater.currency')->update($currency, [
+            'code' => $code,
+            'enabled' => false,
+        ]);
+        self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
+    }
+
     protected function getCatalog(string $id): Catalog
     {
         /** @var ?Catalog $catalog */

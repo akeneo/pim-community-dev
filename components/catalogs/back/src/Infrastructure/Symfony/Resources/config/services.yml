@@ -156,3 +156,8 @@ services:
     Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayloadValidator:
         arguments:
             $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
+
+    Akeneo\Catalogs\Infrastructure\EventSubscriber\CurrencyDeactivationSubscriber:
+        arguments:
+            $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
+            $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'

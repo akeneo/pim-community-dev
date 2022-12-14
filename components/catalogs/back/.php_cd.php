@@ -112,6 +112,21 @@ $rules = [
 
             // used in Persistence\Family
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+
+            // used in EventSubscriber\CurrencyDeactivationSubscriber
+            'Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface',
+            'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+            'Akeneo\Tool\Component\Batch\Model\JobInstance',
+            'Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface',
+            'Akeneo\Tool\Component\StorageUtils\StorageEvents',
+
+            //used in Job\DisableCatalogsOnCurrencyDeactivationConstraint
+            'Akeneo\Tool\Component\Batch\Job\JobInterface',
+            'Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface',
+
+            //used in Job\DisableCatalogsOnCurrencyDeactivationTasklet
+            'Akeneo\Tool\Component\Batch\Model\StepExecution',
+            'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
