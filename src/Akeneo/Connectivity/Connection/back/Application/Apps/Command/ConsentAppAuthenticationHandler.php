@@ -53,10 +53,6 @@ class ConsentAppAuthenticationHandler
             throw new \LogicException('There is no active app authorization in session');
         }
 
-        if (false === $appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
-            throw new \LogicException('The app authorization should request the openid scope');
-        }
-
         $appConfirmation = $this->getAppConfirmationQuery->execute($appId);
         if (null === $appConfirmation) {
             throw new \LogicException('The connected app should have been created');

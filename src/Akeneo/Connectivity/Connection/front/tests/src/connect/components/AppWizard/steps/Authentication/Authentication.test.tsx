@@ -22,7 +22,7 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-test('it renders correctly for first connection', async () => {
+test('it renders correctly for first connection without consent checkbox', async () => {
     renderWithProviders(
         <Authentication
             appName='MyApp'
@@ -31,6 +31,36 @@ test('it renders correctly for first connection', async () => {
             appUrl={null}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
+            displayConsent={false}
+        />
+    );
+
+    await waitFor(() =>
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authentication.title?app_name=MyApp')
+    );
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authentication.title?app_name=MyApp')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('UserAvatar')).toBeInTheDocument();
+    expect(ConsentList).toHaveBeenCalledTimes(1);
+    expect(ConsentList).toHaveBeenCalledWith({scopes: ['email'], highlightMode: null}, {});
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.is_allowed_to')
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('ConsentCheckbox')).not.toBeInTheDocument();
+});
+
+test('it renders correctly for first connection with consent checkbox', async () => {
+    renderWithProviders(
+        <Authentication
+            appName='MyApp'
+            scopes={['email']}
+            oldScopes={null}
+            appUrl={null}
+            scopesConsentGiven={false}
+            setScopesConsent={() => null}
+            displayConsent={true}
         />
     );
 
@@ -59,6 +89,7 @@ test('it renders correctly with new scopes required when not already had old sco
             appUrl={null}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
+            displayConsent={false}
         />
     );
 
@@ -75,7 +106,7 @@ test('it renders correctly with new scopes required when not already had old sco
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.is_allowed_to')
     ).not.toBeInTheDocument();
-    expect(screen.queryByText('ConsentCheckbox')).toBeInTheDocument();
+    expect(screen.queryByText('ConsentCheckbox')).not.toBeInTheDocument();
 });
 
 test('it renders correctly with new scopes required when already accepted old scopes', async () => {
@@ -87,6 +118,7 @@ test('it renders correctly with new scopes required when already accepted old sc
             appUrl={null}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
+            displayConsent={false}
         />
     );
 
@@ -104,5 +136,5 @@ test('it renders correctly with new scopes required when already accepted old sc
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.is_allowed_to')
     ).toBeInTheDocument();
-    expect(screen.queryByText('ConsentCheckbox')).toBeInTheDocument();
+    expect(screen.queryByText('ConsentCheckbox')).not.toBeInTheDocument();
 });

@@ -67,6 +67,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
             'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+            'appIsCertified' => false,
             'scopeMessages' => [
                 [
                     'icon' => 'products',
@@ -157,6 +158,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
             'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+            'appIsCertified' => false,
             'scopeMessages' => [
                 [
                     'icon' => 'products',
@@ -211,6 +213,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
             'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+            'appIsCertified' => false,
             'scopeMessages' => [],
             'oldScopeMessages' => null,
             'authenticationScopes' => [],
@@ -274,6 +277,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
             'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+            'appIsCertified' => false,
             'scopeMessages' => [
                 [
                     'icon' => 'products',
@@ -362,6 +366,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
             'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+            'appIsCertified' => false,
             'scopeMessages' => [
                 [
                     'icon' => 'products',

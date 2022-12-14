@@ -67,6 +67,7 @@ test('it renders correctly', async () => {
             oldScopes: null,
             appUrl: 'https://myapp.example.com',
             scopesConsentGiven: false,
+            displayConsent: true,
         }),
         {}
     );
