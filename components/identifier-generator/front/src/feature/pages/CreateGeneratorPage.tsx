@@ -36,6 +36,7 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
       onSuccess: ({code}: IdentifierGenerator) => {
         queryClient.invalidateQueries('getIdentifierGenerator');
         notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success', {code}));
+        identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(false);
         history.push(`/${code}`);
       },
     });
