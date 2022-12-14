@@ -635,7 +635,7 @@ functions.http('createTenant', (req, res) => {
               }
             },
             snapshots: {
-              bucketName: `${tenantId}-es`
+              bucketName: `ucs-${tenantName}-es`
             },
           },
           global: {
@@ -683,7 +683,7 @@ functions.http('createTenant', (req, res) => {
           },
           pim: {
             storage: {
-              bucketName: tenantId,
+              bucketName: `ucs-${tenantName}`,
               location: (process.env.REGION).toUpperCase()
             },
             defaultAdminUser: {

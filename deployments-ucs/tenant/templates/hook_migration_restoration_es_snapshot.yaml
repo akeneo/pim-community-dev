@@ -1,4 +1,4 @@
-{{ if not .Values.pim.hook.migration.enabled -}}
+{{ if .Values.pim.hook.migration.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:

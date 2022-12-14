@@ -564,12 +564,12 @@ jobs:
               SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${PUBSUB_TOPIC_SHORTED}-job-queue-scheduled-job-${HASH_PR_URL}"
 
               CLOUD_SCHEDULER_PREFIX="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_SCHEDULER_SHORTED}-job-publisher-${HASH_PR_URL}"
-              CLOUD_FUNCTION_NAME="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-job-publisher-${IMAGE_TAG_DATE}"
-              CLOUD_FUNCTION_BUCKET="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${BUCKET_SHORTED}-job-publisher-${IMAGE_TAG_DATE}"
+              CLOUD_FUNCTION_NAME="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${CLOUD_FUNCTION_SHORTED}-job-publisher-${HASH_PR_URL}${IMAGE_TAG_DATE}"
+              CLOUD_FUNCTION_BUCKET="${ENV_NAME_SHORTED}-${GOOGLE_REGION_SHORTED}-${BUCKET_SHORTED}-job-publisher-${HASH_PR_URL}${IMAGE_TAG_DATE}"
               CLOUD_FUNCTION_GSA="pim-cloud-function@${GOOGLE_PROJECT_ID}.iam.gserviceaccount.com"
 
               TTL_PIM="4260m"
-              
+
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> ${BASH_ENV}
               echo export PIM_NAMESPACE=${PIM_NAMESPACE} >> ${BASH_ENV}
               echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> ${BASH_ENV}
@@ -745,7 +745,7 @@ jobs:
                       TENANT_ID=${TYPE}-${TENANT_NAME}
                       FQDN="${TENANT_NAME}.${GOOGLE_DOMAIN}"
                       TTL_TENANT="4320m"
-              
+
                       echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> ${BASH_ENV}
                       echo export TENANT_NAME=${TENANT_NAME} >> ${BASH_ENV}
                       echo export TENANT_ID=${TENANT_ID} >> ${BASH_ENV}

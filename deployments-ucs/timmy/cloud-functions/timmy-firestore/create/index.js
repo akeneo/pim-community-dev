@@ -41,7 +41,7 @@ functions.http('createDocument', (req, res) => {
       "MAILER_USER": tenantName + "-" + projectId + "@mg.cloud.akeneo.com",
       "APP_DATABASE_PASSWORD": mysqlPassword,
       "PFID": tenantId,
-      "SRNT_GOOGLE_BUCKET_NAME": tenantId
+      "SRNT_GOOGLE_BUCKET_NAME": "ucs-" + tenantName,
     }
   });
 
