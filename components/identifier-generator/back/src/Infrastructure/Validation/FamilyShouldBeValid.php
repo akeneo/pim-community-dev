@@ -16,6 +16,8 @@ final class FamilyShouldBeValid extends Constraint
 
     public string $valueFilled = 'This field was not expected.';
 
+    public string $valueShouldBeAnArray = 'This value should be an array';
+
     /**
      * @inerhitDoc
      */
