@@ -11,8 +11,8 @@ services:
         tags:
             - { name: console.command }
 
-    Akeneo\UserManagement\Infrastructure\Cli\RestoreAdminRolePermissionsCommand:
+    Akeneo\UserManagement\back\Infrastructure\Cli\RestoreAdminRolePermissionsCommand:
         arguments:
-            - '@Akeneo\UserManagement\Application\RestoreAdminRolePermissions'
+            - '@Akeneo\UserManagement\back\Application\RestoreAdminRolePermissions'
         tags:
             - { name: console.command }

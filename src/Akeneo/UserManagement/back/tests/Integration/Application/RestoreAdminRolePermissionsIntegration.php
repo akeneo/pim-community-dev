@@ -4,8 +4,8 @@ namespace Akeneo\Test\UserManagement\Integration\Application;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Application\Exception\UnknownUserRole;
-use Akeneo\UserManagement\Application\RestoreAdminRolePermissions;
+use Akeneo\UserManagement\back\Application\Exception\UnknownUserRole;
+use Akeneo\UserManagement\back\Application\RestoreAdminRolePermissions;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Webmozart\Assert\Assert;
 

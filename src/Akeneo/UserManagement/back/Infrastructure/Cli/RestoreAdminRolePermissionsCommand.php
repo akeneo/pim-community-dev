@@ -1,9 +1,10 @@
 <?php
 
-namespace Akeneo\UserManagement\Infrastructure\Cli;
+namespace Akeneo\UserManagement\back\Infrastructure\Cli;
 
-use Akeneo\UserManagement\Application\Exception\UnknownUserRole;
-use Akeneo\UserManagement\Application\RestoreAdminRolePermissions;
+
+use Akeneo\UserManagement\back\Application\Exception\UnknownUserRole;
+use Akeneo\UserManagement\back\Application\RestoreAdminRolePermissions;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;

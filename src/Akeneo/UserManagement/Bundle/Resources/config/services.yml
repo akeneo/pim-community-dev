@@ -43,7 +43,7 @@ services:
         class: Akeneo\UserManagement\Bundle\Provider\CustomUserChecker
         abstract: false
 
-    Akeneo\UserManagement\Application\RestoreAdminRolePermissions:
+    Akeneo\UserManagement\back\Application\RestoreAdminRolePermissions:
         arguments:
             - '@oro_security.acl.manager'
             - '@pim_user.factory.role_with_permissions'

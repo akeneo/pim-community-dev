@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\Application\Exception;
+namespace Akeneo\UserManagement\back\Application\Exception;
 
 class UnknownUserRole extends \RuntimeException
 {

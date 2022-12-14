@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\UserManagement\Application;
+namespace Akeneo\UserManagement\back\Application;
 
-use Akeneo\UserManagement\Application\Exception\UnknownUserRole;
+use Akeneo\UserManagement\back\Application\Exception\UnknownUserRole;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Akeneo\UserManagement\Component\Factory\RoleWithPermissionsFactory;
