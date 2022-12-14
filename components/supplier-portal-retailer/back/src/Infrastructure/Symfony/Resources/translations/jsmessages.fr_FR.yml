@@ -82,18 +82,32 @@ supplier_portal:
       menu_item: Fichiers produits
       title: "]-Inf, 1]{{ count }} fichier produits|]1, Inf[{{ count }} fichiers produits"
       no_files: Il n'y a pas encore de fichier produit.
+      search:
+        placeholder: Rechercher par nom de fichier
+        results_number: "]-Inf, 1]{{ count }} résultat|]1, Inf[{{ count }} résultats"
+        no_results: Aucun fichier ne correspond à cette recherche.
+      status:
+        label: Statut
+        all: Tous les statuts
+        to_import: À importer
+        in_progress: En cours
+        completed: Complété
+        failed: Échoué
       columns:
         upload_date: Date de chargement
         contributor: Contributeur
         supplier: Fournisseur
         status: Statut
         download: Icône téléchargement
+        filename: Nom de fichier
       notification:
         error_loading_supplier_files:
           title: Nous ne sommes pas en mesure d'afficher le fichier de produits.
           content: Désolé pour ce désagrément, veuillez réessayer dans quelques instants.
       tabs:
         discussion: Discussion
+        general_information: Informations générales
+        preview: Aperçu du fichier
       discussion:
         import_file_button_label: Importer un fichier
         info: Envoyez des commentaires lorsque vous avez besoin d'échanger des informations avec vos fournisseurs.
@@ -106,6 +120,18 @@ supplier_portal:
         max_comment_length_reached: Le commentaire ne doit pas dépasser 255 caractères.
         max_number_of_comments_reached: Vous avez atteint la limite de commentaires.
         product_file_does_not_exist_anymore: Désolé, ce fichier produit a été automatiquement supprimé après 90 jours et n'est plus accessible.
+      general_information:
+        title: Informations générales
+        supplier: Fournisseur
+        contributor: Contributeur
+        upload_date: Date de chargement
+        import_date: Date d'import
+        not_imported_yet: Pas encore importé
+      preview:
+        missing_product_file: Ce fichier n’existe plus.
+        error_loading_product_file_preview:
+          title: Nous ne sommes pas en mesure d'afficher l'aperçu du fichier
+          content: Désolé pour ce désagrément, veuillez réessayer dans quelques instants.
       product_files_modal:
         title: Fichier produit
         subtitle: Sélectionnez le profil d'import sur mesure
@@ -115,6 +141,17 @@ supplier_portal:
         error_loading_product_import_profiles:
           title: Nous ne sommes pas en mesure d'afficher les profils d'import sur mesure.
           content: Désolé pour ce désagrément, veuillez réessayer dans quelques instants.
+        error_launching_product_import:
+          missing_file: Ce fichier n’existe plus
+          unknown_error:
+            title: Une erreur inattendue se produit de notre côté.
+            content: Veuillez réessayer plus tard
+      import:
+        status:
+          to_import: À importer
+          in_progress: en cours
+          completed: complété
+          failed: échoué
     pim_notification:
       button_label: Voir les fichiers produit
 pim_title:
