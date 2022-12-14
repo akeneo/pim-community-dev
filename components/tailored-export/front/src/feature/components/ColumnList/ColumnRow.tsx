@@ -27,10 +27,6 @@ const SourceListPlaceholder = styled.span`
   width: 100%;
 `;
 
-const RemoveCell = styled(Table.ActionCell)`
-  width: 50px;
-`;
-
 const TargetCell = styled(Table.Cell)`
   width: 300px;
   max-width: unset;
@@ -139,7 +135,7 @@ const ColumnRow = memo(
               <Spacer />
               {hasError && <Pill level="danger" />}
             </Table.Cell>
-            <RemoveCell>
+            <Table.ActionCell>
               <IconButton
                 ghost="borderless"
                 level="tertiary"
@@ -147,7 +143,7 @@ const ColumnRow = memo(
                 title={translate('akeneo.tailored_export.column_list.column_row.remove')}
                 onClick={handleColumnRemove}
               />
-            </RemoveCell>
+            </Table.ActionCell>
           </Table.Row>
           {isDeleteModalOpen && (
             <DeleteModal

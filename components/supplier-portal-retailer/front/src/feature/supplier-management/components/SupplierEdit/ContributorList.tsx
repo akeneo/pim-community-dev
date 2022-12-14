@@ -121,9 +121,9 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                                         : {})}
                                 >
                                     <Table.Cell>{email}</Table.Cell>
-                                    <DeleteCell>
+                                    <Table.ActionCell>
                                         <DeleteIcon onClick={() => removeContributor(email)} />
-                                    </DeleteCell>
+                                    </Table.ActionCell>
                                 </Table.Row>
                             ))}
                         </Table.Body>
@@ -139,10 +139,6 @@ const TabContainer = styled.div`
         margin: 0 0 20px 0;
         max-width: none;
     }
-`;
-
-const DeleteCell = styled(Table.ActionCell)`
-    width: 50px;
 `;
 
 const FieldContent = styled.div`

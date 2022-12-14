@@ -23,10 +23,6 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const RemoveCell = styled(Table.ActionCell)`
-  width: 50px;
-`;
-
 const DisplayedSources = styled.span`
   white-space: nowrap;
   overflow: hidden;
@@ -89,7 +85,7 @@ const DataMappingRow = ({
         {isIdentifierDataMapping ? (
           <Table.Cell />
         ) : (
-          <RemoveCell>
+          <Table.ActionCell>
             <IconButton
               ghost="borderless"
               level="tertiary"
@@ -97,7 +93,7 @@ const DataMappingRow = ({
               title={translate('pim_common.remove')}
               onClick={handleRemove}
             />
-          </RemoveCell>
+          </Table.ActionCell>
         )}
       </Table.Row>
       {isDeleteModalOpen && (
