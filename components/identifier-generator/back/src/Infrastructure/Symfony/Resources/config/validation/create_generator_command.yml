@@ -16,7 +16,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                       fields:
                           type:
                               - Choice:
-                                  choices: ['enabled']
+                                  choices: ['enabled', 'family']
                                   message: 'Type {{ value }} can only be one of the following: {{ choices }}'
                           value:
                               - Optional: ~
