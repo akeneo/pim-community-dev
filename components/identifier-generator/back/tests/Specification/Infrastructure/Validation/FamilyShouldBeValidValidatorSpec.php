@@ -60,8 +60,7 @@ class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
     public function it_should_build_a_violation_when_value_is_filled_with_EMPTY(
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $violationBuilder,
-    ): void
-    {
+    ): void {
         $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
@@ -72,13 +71,23 @@ class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
     public function it_should_build_a_violation_when_value_is_filled_with_NOT_EMPTY(
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $violationBuilder,
-    ): void
-    {
+    ): void {
         $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(['type' => 'family', 'operator' => 'NOT EMPTY', 'value' => ['shirts']], new FamilyShouldBeValid());
+    }
+
+    public function it_should_build_a_violation_when_value_is_not_an_array(
+        ExecutionContext $context,
+        ConstraintViolationBuilderInterface $violationBuilder,
+    ): void {
+        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate(['type' => 'family', 'operator' => 'IN', 'value' => 'shirts'], new FamilyShouldBeValid());
     }
 
     public function it_should_build_violation_when_operator_is_unknown(
