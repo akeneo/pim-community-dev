@@ -311,6 +311,16 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to create an identifier generator with a family condition with unknown property
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty()
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
+        ]);
+    }
+
+    /**
      * @When /^I try to create an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value)
