@@ -1,4 +1,9 @@
 akeneo_catalogs:
+  common:
+    select:
+      open: Ouvrir
+      remove: Supprimer
+      no_matches: Aucune correspondance trouvée
   catalog_list:
     catalogs_name: Nom du catalogue
     status: État
@@ -14,6 +19,9 @@ akeneo_catalogs:
       product_value_filters: Filtrer les valeurs
       product_mapping: Mapping
   catalog_status_widget:
+    fields:
+      enable_catalog: Activer le catalogue
+    helper: Par défaut, les nouveaux catalogues sont désactivés. Activez le catalogue pour permettre à l'application de récupérer les données de vos produits.
     inputs:
       yes: Yes
       no: No
@@ -25,14 +33,20 @@ akeneo_catalogs:
       channel:
         label: Canal
         no_matches: Aucun résultat trouvé
+        placeholder: Sélectionner un canal
       locale:
         label: Locale
         no_matches: Aucun résultat trouvé
+        placeholder: Sélectionner une locale
       currency:
         label: Devise
         no_matches: Aucun résultat trouvé
+        placeholder: Sélectionnez une devise
   product_selection:
     empty: Ajouter des critères de sélection pour créer votre sélection de produits
+    count:
+      products: '{0}Aucun produit|{1}1 produit|]1, Inf[{{ count }} produits'
+      error: Impossible de calculer le nombre de produits
     more_information: Consultez notre Help Center pour plus d'informations.
     add_criteria:
       label: ajouter un critère de sélection
@@ -51,6 +65,7 @@ akeneo_catalogs:
       empty: Aucun canal trouvé
     criteria:
       unknown: Cet attribut a été supprimé.
+      max_reached: Vous avez atteint la limite de {{ maxCount }} critères de sélection.
       status:
         label: État
         enabled: Activé
@@ -58,10 +73,12 @@ akeneo_catalogs:
       family:
         label: Famille
         no_matches: Aucun résultat trouvé
+        placeholder: Sélectionnez une famille
       completeness:
         label: Complétude
       attribute_option:
         no_matches: Aucun résultat trouvé
+        placeholder: Sélectionner une option
       category:
         label: Catégorie
         remove: Supprimer la catégorie
@@ -99,7 +116,34 @@ akeneo_catalogs:
         label: Affichage
         option:
           all: Toutes
+      table:
+        target: Cible du catalogue
+        source: Source
+        placeholder: Configurer une source
+      placeholder:
+        illustration_title: Aucune cible disponible
     source:
+      title: Sélectionner une source 
+      parameters:
+        title: Paramétrage de la source
+        channel:
+          label: Canal
+          placeholder: Sélectionner un canal
+        locale:
+          label: Locale
+          placeholder: Sélectionner une locale
+      select_source:
+        label: Source
+        search: Rechercher un critère
+        no_results: Aucune correspondance trouvée
+        section_system: Système
+        section_attributes: Attributs
       placeholder:
         title: Sélectionner une source 
+        illustration_title: Cliquez sur une cible dans la partie droite de l'écran pour configurer le mapping de votre catalogue.
+        subtitle: Ensuite, vous serez en mesure de faire correspondre un attribut de votre PIM avec la cible sélectionnée.
         link: Consultez notre Help Center pour plus d'informations.
+      uuid_placeholder:
+        illustration_title: L'UUID est un identifiant technique pour les produits.
+        subtitle: Toutes les apps doivent le définir en tant que cible. Vous n'avez rien à configurer pour cette cible car nous la "mappons" automatiquement avec l'UUID du produit Akeneo.
+        link: Plus d'informations sur l'UUID.
