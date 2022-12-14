@@ -40,8 +40,9 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
-
+            'Akeneo\Pim\Structure\Family\ServiceAPI',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
             'Akeneo\Tool\Component\Batch\Event\StepExecutionEvent',
@@ -60,6 +61,7 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\HttpFoundation',
+            'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Symfony\Component\Validator',
             'Symfony\Contracts\Translation\TranslatorInterface',
 
@@ -67,6 +69,7 @@ $rules = [
 
             'Ramsey\Uuid\Uuid',
             'Webmozart\Assert\Assert',
+            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
 ];
