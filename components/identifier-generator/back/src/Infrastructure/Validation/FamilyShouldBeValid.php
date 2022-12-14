@@ -14,16 +14,6 @@ final class FamilyShouldBeValid extends Constraint
 {
     public string $unknownOperator = 'Operator {{ value }} can only be one of the following: {{ choices }}.';
 
-    public string $valueFilled = 'This field was not expected.';
-
-    public string $valueShouldBeAnArray = 'This value should be an array of strings.';
-
-    public string $valueShouldNotBeBlank = 'This value should not be blank.';
-
-    public string $valueShouldBePresent = 'Family should contain "value" key.';
-
-    public string $operatorShouldBePresent = 'Family should contain "operator" key.';
-
     public string $familyNotExist = 'The following families do not exist: {{ familyCodes }}.';
 
     /**
