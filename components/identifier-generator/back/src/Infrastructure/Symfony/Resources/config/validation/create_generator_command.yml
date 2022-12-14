@@ -12,6 +12,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleEnabled: ~
             - All:
                   - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
+                  - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid: ~
                   - Collection:
                       fields:
                           type:
@@ -19,6 +20,8 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                                   choices: ['enabled', 'family']
                                   message: 'Type {{ value }} can only be one of the following: {{ choices }}'
                           value:
+                              - Optional: ~
+                          operator:
                               - Optional: ~
         structure:
             - NotBlank: ~
