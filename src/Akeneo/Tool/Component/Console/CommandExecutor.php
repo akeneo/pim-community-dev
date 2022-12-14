@@ -35,13 +35,13 @@ class CommandExecutor
         $command = $this->application->find($commandName);
 
         $commandInput = new ArrayInput($params);
-        if ($this->input->hasOption('no-interaction')) {
-            $commandInput->setInteractive(false);
-        }
+        $commandInput->setInteractive(false);
+
+        $quiet = isset($params['--quiet']) || isset($params['-q']);
 
         $command->run(
             $commandInput,
-            $this->input->hasOption('quiet') ? new NullOutput() : $this->output
+            $quiet ? new NullOutput() : $this->output
         );
 
         return $this;
