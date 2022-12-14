@@ -10,8 +10,10 @@ use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Asset\Context\ContextInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 /**
@@ -20,14 +22,21 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
  */
 class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
 {
-    public function let(ExecutionContext $context, FindFamilyCodes $findFamilyCodes): void
+    public function let(
+        FindFamilyCodes $findFamilyCodes,
+        ValidatorInterface $globalValidator,
+        ExecutionContext $context,
+        ValidatorInterface $validator
+    ): void
     {
-        $this->beConstructedWith($findFamilyCodes);
+        $this->beConstructedWith($findFamilyCodes, $globalValidator);
         $this->initialize($context);
 
         $findFamilyCodes
-            ->fromQuery(new FamilyQuery(includeCodes: ['shirts']))
+            ->fromQuery(Argument::any())
             ->willReturn(['shirts']);
+
+        $globalValidator->inContext($context)->willReturn($validator);
     }
 
     public function it_is_initializable(): void
@@ -41,132 +50,67 @@ class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
             ->during('validate', [['type' => 'enabled', 'operator' => 'IN', 'value' => ['shirts']], new NotBlank()]);
     }
 
-    public function it_should_not_build_violation_when_family_constraint_is_valid(
-        ExecutionContext $context
+    public function it_should_not_validate_if_condition_is_not_an_array(
+        ValidatorInterface $validator,
     ): void {
+        $condition = 'foo';
+        $validator->validate(Argument::any())->shouldNotBeCalled();
+        $this->validate($condition, new FamilyShouldBeValid());
+    }
+
+    public function it_should_not_validate_other_conditions(
+        ValidatorInterface $validator,
+    ): void {
+        $condition = ['type' => 'foo'];
+
+        $validator->validate(Argument::any())->shouldNotBeCalled();
+        $this->validate($condition, new FamilyShouldBeValid());
+    }
+
+    public function it_should_only_validate_condition_keys(
+        ValidatorInterface $validator,
+    ): void {
+        $condition = ['type' => 'family', 'foo' => 'bar'];
+
+        $validator->validate($condition, Argument::any())->shouldBeCalledTimes(1);
+        $this->validate($condition, new FamilyShouldBeValid());
+    }
+
+    public function it_should_validate_condition_keys_without_value(
+        ValidatorInterface $validator,
+    ): void {
+        $condition = ['type' => 'family', 'operator' => 'EMPTY'];
+
+        $validator->validate($condition, Argument::any())->shouldBeCalledTimes(2);
+        $this->validate($condition, new FamilyShouldBeValid());
+    }
+
+    public function it_should_validate_condition_keys_with_value_and_families(
+        ValidatorInterface $validator,
+        ExecutionContext $context,
+    ): void {
+        $condition = ['type' => 'family', 'operator' => 'IN', 'value' => ['shirts']];
+
+        $validator->validate($condition, Argument::any())->shouldBeCalledTimes(2);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
-        $this->validate(['type' => 'family', 'operator' => 'IN', 'value' => ['shirts']], new FamilyShouldBeValid());
+
+        $this->validate($condition, new FamilyShouldBeValid());
     }
 
-    public function it_should_not_validate_something_else_than_an_array(ExecutionContext $context): void
-    {
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
-
-        $this->validate(new \stdClass(), new FamilyShouldBeValid());
-    }
-
-    public function it_should_not_validate_a_condition_which_is_not_a_family(ExecutionContext $context): void
-    {
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
-
-        $this->validate(['type' => 'something_else', 'operator' => 'IN', 'value' => ['shirts']], new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_a_violation_when_operator_is_undefined(
+    public function it_should_build_violation_for_non_existing_families(
+        ValidatorInterface $validator,
         ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder,
     ): void {
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
+        $condition = ['type' => 'family', 'operator' => 'IN', 'value' => ['shirts', 'not_existing1', 'not_existing2']];
 
-        $this->validate(['type' => 'family'], new FamilyShouldBeValid());
-    }
+        $validator->validate($condition, Argument::any())->shouldBeCalledTimes(2);
+        $context->buildViolation(Argument::any(), [
+            '{{ familyCodes }}' => '"not_existing1", "not_existing2"',
+        ])->shouldBeCalled()->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->atPath('value')->shouldBeCalled()->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-    public function it_should_build_a_violation_when_value_is_filled_with_EMPTY(
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
-    ): void {
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate(['type' => 'family', 'operator' => 'EMPTY', 'value' => ['shirts']], new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_a_violation_when_value_is_filled_with_NOT_EMPTY(
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
-    ): void {
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate(['type' => 'family', 'operator' => 'NOT EMPTY', 'value' => ['shirts']], new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_a_violation_when_value_is_not_an_array(
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
-    ): void {
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate(['type' => 'family', 'operator' => 'IN', 'value' => 'shirts'], new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_a_violation_when_value_is_not_an_array_of_strings(
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
-    ): void {
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate(['type' => 'family', 'operator' => 'IN', 'value' => [true]], new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_a_violation_when_value_is_blank(
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
-    ): void {
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate(['type' => 'family', 'operator' => 'IN', 'value' => []], new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_a_violation_when_value_is_undefined(
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
-    ): void {
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate(['type' => 'family', 'operator' => 'IN'], new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_violation_when_operator_is_unknown(
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder
-    ): void {
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('operator')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->setParameters([
-            '{{ value }}' => '"unknown"',
-            '{{ choices }}' => '"IN", "NOT IN", "EMPTY", "NOT EMPTY"',
-        ])->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate(['type' => 'family', 'operator' => 'unknown', 'value' => ['shirts']], new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_violation_when_families_does_not_exist(
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
-        FindFamilyCodes $findFamilyCodes
-    ): void {
-        $findFamilyCodes
-            ->fromQuery(new FamilyQuery(includeCodes: ['shirts', 'non_existing1', 'non_existing2']))
-            ->shouldBeCalled()
-            ->willReturn(['shirts']);
-
-        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->setParameter('{{ familyCodes }}', '"non_existing1", "non_existing2"')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate(['type' => 'family', 'operator' => 'IN', 'value' => ['shirts', 'non_existing1', 'non_existing2']], new FamilyShouldBeValid());
+        $this->validate($condition, new FamilyShouldBeValid());
     }
 }
