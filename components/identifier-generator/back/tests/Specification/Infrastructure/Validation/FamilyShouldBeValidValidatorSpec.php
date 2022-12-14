@@ -101,6 +101,17 @@ class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
         $this->validate(['type' => 'family', 'operator' => 'IN', 'value' => [true]], new FamilyShouldBeValid());
     }
 
+    public function it_should_build_a_violation_when_value_is_blank(
+        ExecutionContext $context,
+        ConstraintViolationBuilderInterface $violationBuilder,
+    ): void {
+        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('value')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate(['type' => 'family', 'operator' => 'IN', 'value' => []], new FamilyShouldBeValid());
+    }
+
     public function it_should_build_violation_when_operator_is_unknown(
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $violationBuilder
