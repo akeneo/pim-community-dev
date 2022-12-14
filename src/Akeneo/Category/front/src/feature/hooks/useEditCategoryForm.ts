@@ -36,11 +36,17 @@ const useEditCategoryForm = (categoryId: number) => {
   const isModified =
     categoryStatus === 'fetched' && !!category && !!categoryEdited && !categoriesAreEqual(category, categoryEdited);
 
-  const initializeEditionState = useCallback(function (category: EnrichCategory, template: Template | null, channels, locales) {
+  const initializeEditionState = useCallback(function (
+    category: EnrichCategory,
+    template: Template | null,
+    channels,
+    locales
+  ) {
     const populated = populateCategory(category, template, Object.keys(channels), Object.keys(locales));
     setCategory(populated);
     setCategoryEdited(cloneDeep(populated));
-  }, []);
+  },
+  []);
 
   // fetching the category
   useEffect(() => {
@@ -120,7 +126,12 @@ const useEditCategoryForm = (categoryId: number) => {
   };
 
   const onChangeAttribute = useCallback(
-    (attribute: Attribute, channelCode: string | null, localeCode: string | null, attributeValue: CategoryAttributeValueData) => {
+    (
+      attribute: Attribute,
+      channelCode: string | null,
+      localeCode: string | null,
+      attributeValue: CategoryAttributeValueData
+    ) => {
       if (categoryEdited === null) {
         return;
       }
