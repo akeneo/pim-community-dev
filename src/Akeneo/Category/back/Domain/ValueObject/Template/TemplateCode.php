@@ -14,7 +14,7 @@ class TemplateCode
 {
     public function __construct(private string $code)
     {
-        Assert::notEmpty($code);
+        Assert::stringNotEmpty($code);
     }
 
     public static function fromString(string $code): self

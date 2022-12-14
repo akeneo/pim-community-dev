@@ -172,6 +172,7 @@ const SftpStorageConfigurator = ({
           required={true}
           type="password"
           label={translate('pim_import_export.form.job_instance.storage_form.password.label')}
+          placeholder={translate('pim_import_export.form.job_instance.storage_form.password.placeholder')}
           onChange={(password: string) => onStorageChange({...storage, password})}
           errors={filterErrors(validationErrors, '[password]')}
         />

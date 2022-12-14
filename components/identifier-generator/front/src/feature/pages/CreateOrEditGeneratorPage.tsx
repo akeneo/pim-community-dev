@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
-import {Delimiter, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
+import {Conditions, Delimiter, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {validateIdentifierGenerator, Violation} from '../validators/';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
@@ -80,6 +80,11 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     onChangeGenerator(updatedGenerator);
   };
 
+  const onConditionsChange = (conditions: Conditions) => {
+    const updatedGenerator = {...generator, conditions};
+    onChangeGenerator(updatedGenerator);
+  };
+
   const onDelimiterChange = (delimiter: Delimiter | null) => {
     const updatedGenerator = {...generator, delimiter: delimiter};
     onChangeGenerator(updatedGenerator);
@@ -133,7 +138,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           <GeneralPropertiesTab generator={generator} onGeneratorChange={onChangeGenerator} />
         )}
         {currentTab === GeneratorTab.PRODUCT_SELECTION && (
-          <SelectionTab target={generator.target} conditions={generator.conditions} />
+          <SelectionTab target={generator.target} conditions={generator.conditions} onChange={onConditionsChange} />
         )}
         {currentTab === GeneratorTab.STRUCTURE && (
           <StructureTab

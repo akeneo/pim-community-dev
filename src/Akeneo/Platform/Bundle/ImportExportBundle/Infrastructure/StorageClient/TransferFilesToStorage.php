@@ -46,8 +46,7 @@ final class TransferFilesToStorage implements TransferFilesToStorageInterface
                     $fileToTransfer->getOutputFileName()
                 );
             } catch (\Exception $exception) {
-                $message = $exception->getPrevious() ? $exception->getPrevious()->getMessage() : $exception->getMessage();
-                $this->eventDispatcher->dispatch(new FileCannotBeExported($message));
+                $this->eventDispatcher->dispatch(new FileCannotBeExported('An error occured during file upload, please check your storage configuration.'));
             }
         }
     }

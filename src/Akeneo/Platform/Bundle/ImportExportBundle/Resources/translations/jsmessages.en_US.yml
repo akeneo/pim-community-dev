@@ -169,6 +169,7 @@ pim_import_export:
                     local: Local
                     sftp: SFTP
                     amazon_s3: Amazon S3
+                    microsoft_azure: Microsoft Azure
                     none: No storage configured
                 file_path:
                     label: File path
@@ -207,6 +208,12 @@ pim_import_export:
                 secret:
                     label: Secret
                     placeholder: Enter your secret
+                connection_string:
+                    label: Connection string
+                    placeholder: Enter your connection string
+                container_name:
+                    label: Container name
+                    placeholder: Enter your container name
             validation:
                 storage:
                     unavailable_type: This storage is not available, only {{ available_types }} are available.

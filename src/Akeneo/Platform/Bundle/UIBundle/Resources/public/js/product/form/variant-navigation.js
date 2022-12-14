@@ -288,6 +288,19 @@ define([
 
       return formModal.saveProductModelChild(route).done(entity => {
         this.redirectToEntity(entity.meta);
+
+        if (entity.meta?.identifier_generator_warnings) {
+          const normalizedWarnings = entity.meta.identifier_generator_warnings.map(warning => {
+            return `${warning.path}: ${warning.message} `;
+          });
+
+          messenger.notify(
+            'warning',
+            __('pim_enrich.entity.product.flash.update.identifier_warning'),
+            normalizedWarnings
+          );
+        }
+
         messenger.notify('success', message);
       });
     },

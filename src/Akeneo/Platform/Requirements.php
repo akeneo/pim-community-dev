@@ -18,14 +18,11 @@ use Symfony\Requirements\SymfonyRequirements;
  */
 class Requirements extends SymfonyRequirements
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(string $baseDirectory)
+    public function __construct()
     {
         parent::__construct();
 
-        $communityRequirements = new PimRequirements($baseDirectory);
+        $communityRequirements = new PimRequirements();
 
         foreach ($communityRequirements->getRequirements() as $requirement) {
             if (!$requirement->isOptional()) {
@@ -64,7 +61,7 @@ class Requirements extends SymfonyRequirements
     public function getMandatoryRequirements(): array
     {
         return array_filter($this->getRequirements(), function ($requirement) {
-            return !($requirement instanceof PhpConfigRequirement) && !($requirement instanceof Requirement);
+            return !($requirement instanceof Requirement);
         });
     }
 

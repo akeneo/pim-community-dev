@@ -43,13 +43,19 @@ const TwoColumns = styled.div<{withoutSecondColumn: boolean} & AkeneoThemedProps
 const TranslationsLabelSkeleton = styled(SkeletonPlaceholder)`
   max-width: 460px;
 `;
+
 const TranslationsTextFieldSkeleton = styled(SkeletonPlaceholder)`
   margin-top: 8px;
   max-width: 460px;
   height: 38px;
 `;
 
+const CellInputContainer = styled(Table.Cell)`
+  width: calc(10vw + 20px);
+`;
+
 const Styled = {
+  CellInputContainer,
   FormContainer,
   FullPageCenteredContent,
   InputContainer,

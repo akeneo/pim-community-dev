@@ -56,7 +56,7 @@ const CategoryEditPage: FC = () => {
 
   // locales
   const uiLocale = userContext.get('uiLocale');
-  const [catalogLocale, setCatalogLocale] = useState(userContext.get('catalogLocale'));
+  const [catalogLocale] = useState(userContext.get('catalogLocale'));
 
   // features
   const featureFlags = useFeatureFlags();
