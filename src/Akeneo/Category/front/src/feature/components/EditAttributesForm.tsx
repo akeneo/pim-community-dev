@@ -2,7 +2,7 @@ import React, {useCallback, useMemo, useContext, useState} from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Helper} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {ChannelSelector} from "./channel";
+import {ChannelSelector} from './channel';
 import {
   Attribute,
   buildCompositeKey,
@@ -74,7 +74,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
     userContext.set('catalogScope', value, {});
     const localesFromChannel = channels[value]?.locales;
     const localeFromChannel = localesFromChannel?.find(channelLocale => locale === channelLocale.code);
-    if(!localeFromChannel) {
+    if (!localeFromChannel) {
       handleLocaleChange(localesFromChannel[0].code);
     }
   };
@@ -151,16 +151,8 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       <SectionTitle>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <ChannelSelector
-          value={channel}
-          values={channelList}
-          onChange={handleChannelChange}
-        />
-        <LocaleSelector
-          value={locale}
-          values={channels[channel]?.locales}
-          onChange={handleLocaleChange}
-        />
+        <ChannelSelector value={channel} values={channelList} onChange={handleChannelChange} />
+        <LocaleSelector value={locale} values={channels[channel]?.locales} onChange={handleLocaleChange} />
       </SectionTitle>
       {attributeFields}
     </FormContainer>

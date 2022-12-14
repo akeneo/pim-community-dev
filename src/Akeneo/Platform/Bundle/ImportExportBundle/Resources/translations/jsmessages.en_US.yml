@@ -169,6 +169,7 @@ pim_import_export:
                     local: Local
                     sftp: SFTP
                     amazon_s3: Amazon S3
+                    microsoft_azure: Microsoft Azure
                     google_cloud: Google Cloud
                     none: No storage configured
                 file_path:
@@ -208,6 +209,12 @@ pim_import_export:
                 secret:
                     label: Secret
                     placeholder: Enter your secret
+                connection_string:
+                    label: Connection string
+                    placeholder: Enter your connection string
+                container_name:
+                    label: Container name
+                    placeholder: Enter your container name
                 project_id:
                     label: Project ID
                     placeholder: Enter your project ID

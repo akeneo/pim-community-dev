@@ -11,6 +11,7 @@ test('it fetches the wizard data', async () => {
     const expectedData = {
         appName: 'a_name',
         appLogo: 'a_logo',
+        appIsCertified: false,
         scopeMessages: [
             {
                 icon: 'an_icon',

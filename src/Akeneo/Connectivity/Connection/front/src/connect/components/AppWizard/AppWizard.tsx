@@ -25,6 +25,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
     const fetchWizardData = useFetchAppWizardData(clientId);
     const [steps, setSteps] = useState<Step[]>([]);
     const [authenticationScopesConsentGiven, setAuthenticationScopesConsent] = useState<boolean>(false);
+    const [certificationConsentGiven, setCertificationConsent] = useState<boolean>(false);
 
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
@@ -94,6 +95,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         permissionsAreEditable ? providers : [],
         permissionsAreEditable ? permissions : {}
     );
+
     if (wizardData === null) {
         return null;
     }
@@ -108,7 +110,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         return <FullScreenLoader />;
     }
 
-    const userConsentRequired = wizardData.authenticationScopes.length !== 0 && !authenticationScopesConsentGiven;
+    const certificationConsentRequired = wizardData.appIsCertified && !certificationConsentGiven;
 
     return (
         <WizardModal
@@ -117,7 +119,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
             onClose={redirectToMarketplace}
             onConfirm={confirm}
             steps={steps}
-            maxAllowedStep={userConsentRequired ? 'authentication' : null}
+            maxAllowedStep={!authenticationScopesConsentGiven || certificationConsentRequired ? 'authorizations' : null}
         >
             {step => (
                 <>
@@ -129,6 +131,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             appUrl={wizardData.appUrl}
                             scopesConsentGiven={authenticationScopesConsentGiven}
                             setScopesConsent={setAuthenticationScopesConsent}
+                            displayConsent={false}
                         />
                     )}
                     {step.name === 'authorizations' && (
@@ -136,6 +139,12 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             appName={wizardData.appName}
                             scopeMessages={wizardData.scopeMessages}
                             oldScopeMessages={wizardData.oldScopeMessages}
+                            appUrl={wizardData.appUrl}
+                            scopesConsentGiven={authenticationScopesConsentGiven}
+                            setScopesConsent={setAuthenticationScopesConsent}
+                            certificationConsentGiven={certificationConsentGiven}
+                            setCertificationConsent={setCertificationConsent}
+                            displayCertificationConsent={wizardData.appIsCertified}
                         />
                     )}
                     {step.name === 'permissions' && (

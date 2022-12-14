@@ -166,3 +166,10 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditConnectedAppAction:
+        public: true
+        arguments:
+            - '@router'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'

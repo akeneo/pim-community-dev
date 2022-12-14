@@ -27,7 +27,7 @@ const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlacehold
       <TableCellLabel rowTitle={true}>&nbsp;</TableCellLabel>
       <Table.Cell>{translate('pim_enrich.entity.attribute_option.module.edit.new_option_code')}</Table.Cell>
       <Table.Cell>&nbsp;</Table.Cell>
-      <TableActionCell>
+      <Table.ActionCell>
         <IconButton
           icon={<CloseIcon />}
           onClick={() => cancelNewOption()}
@@ -36,7 +36,7 @@ const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlacehold
           level="tertiary"
           data-testid="new-option-cancel"
         />
-      </TableActionCell>
+      </Table.ActionCell>
     </TableRow>
   );
 };
@@ -59,10 +59,6 @@ const HandleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const TableActionCell = styled(Table.ActionCell)`
-  width: 50px;
 `;
 
 export default NewOptionPlaceholder;

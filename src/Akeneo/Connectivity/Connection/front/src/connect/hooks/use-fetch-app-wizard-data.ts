@@ -5,6 +5,7 @@ type Result = {
     appName: string;
     appLogo: string;
     appUrl: string | null;
+    appIsCertified: boolean;
     scopeMessages: Array<{
         icon: string;
         type: string;

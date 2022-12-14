@@ -14,7 +14,7 @@ class Code
 {
     public function __construct(private string $code)
     {
-        Assert::notEmpty($code);
+        Assert::stringNotEmpty($code);
     }
 
     public function __toString(): string

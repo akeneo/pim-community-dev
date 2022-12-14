@@ -10,19 +10,26 @@ import {PermissionFormProvider, PermissionFormRegistryContext} from '@src/shared
 import {useFeatureFlags} from '@src/shared/feature-flags';
 import {PermissionsByProviderKey} from '@src/model/Apps/permissions-by-provider-key';
 
-const checkboxConsent = jest
-    .fn(setScopesConsent => setScopesConsent(false))
-    .mockImplementationOnce(setScopesConsent => setScopesConsent(false))
-    .mockImplementationOnce(setScopesConsent => setScopesConsent(true));
-
 jest.mock('@src/connect/components/AppWizard/steps/Authentication/Authentication', () => ({
-    Authentication: ({setScopesConsent}: {setScopesConsent: (newValue: boolean) => void}) => (
-        <div onClick={() => checkboxConsent(setScopesConsent)}>authentication-component</div>
-    ),
+    Authentication: () => <div>authentication-component</div>,
 }));
 
 jest.mock('@src/connect/components/AppWizard/steps/Authorizations', () => ({
-    Authorizations: () => <div>authorizations-component</div>,
+    Authorizations: ({
+        setScopesConsent,
+        setCertificationConsent,
+    }: {
+        setScopesConsent: (newValue: boolean) => void;
+        setCertificationConsent: (newValue: boolean) => void;
+    }) => (
+        <div>
+            authorizations-component
+            <div onClick={() => setScopesConsent(true)}>consent-scopes</div>
+            <div onClick={() => setScopesConsent(false)}>unconsent-scopes</div>
+            <div onClick={() => setCertificationConsent(true)}>consent-certification</div>
+            <div onClick={() => setCertificationConsent(false)}>unconsent-certification</div>
+        </div>
+    ),
 }));
 
 jest.mock('akeneo-design-system', () => ({
@@ -71,6 +78,7 @@ const notify = jest.fn();
 const providerSave = jest.fn();
 
 const setPermissionsAndConfirmWizard = async () => {
+    await act(async () => userEvent.click(await screen.findByText('consent-scopes')));
     await act(async () => {
         userEvent.click(
             await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')
@@ -111,6 +119,7 @@ test('The wizard renders without error', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -142,6 +151,7 @@ test('The wizard renders without error when no logo', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: null,
+                appIsCertified: false,
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -172,6 +182,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -206,6 +217,7 @@ test('The wizard display a notification and redirects on success', async done =>
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -231,6 +243,9 @@ test('The wizard display a notification and redirects on success', async done =>
     await waitFor(() => screen.getByAltText('MyApp'));
     expect(screen.getByAltText('MyApp')).toBeInTheDocument();
 
+    act(() => {
+        userEvent.click(screen.getByText('consent-scopes'));
+    });
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
     });
@@ -261,6 +276,7 @@ test('The wizard display the authentication step', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [],
                 authenticationScopes: ['profile'],
             },
@@ -279,7 +295,7 @@ test('The wizard display the authentication step', async () => {
     expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
 });
 
-test('The wizard prevents going past the authentication step without consent', async () => {
+test('The wizard prevents going past the authorizations step without consent', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) =>
             ({
@@ -292,47 +308,146 @@ test('The wizard prevents going past the authentication step without consent', a
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [],
-                authenticationScopes: ['profile'],
+                authenticationScopes: [],
             },
         },
+        'akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b':
+            {
+                json: {
+                    userGroup: 'foo',
+                    redirectUrl: 'http://foo.example.com/oauth2/callback',
+                },
+            },
     };
 
     mockFetchResponses({
         ...fetchAppWizardDataResponses,
     });
 
-    renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />
+        </NotifyContext.Provider>
+    );
     await waitFor(() => screen.getByAltText('MyApp'));
     expect(screen.getByAltText('MyApp')).toBeInTheDocument();
 
-    expect(screen.queryByText('authentication-component')).toBeInTheDocument();
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
 
     act(() => {
-        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
     });
 
-    expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
+    expect(global.window.location.assign).not.toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
 
     act(() => {
-        userEvent.click(screen.getByText('authentication-component'));
+        userEvent.click(screen.getByText('unconsent-scopes'));
     });
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
+    });
+
+    expect(global.window.location.assign).not.toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
 
     act(() => {
-        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
+        userEvent.click(screen.getByText('consent-scopes'));
     });
-
-    expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
-
     act(() => {
-        userEvent.click(screen.getByText('authentication-component'));
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
     });
 
-    act(() => {
-        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
+    await waitFor(() => {
+        expect(notify).toHaveBeenCalledTimes(1);
     });
+
+    expect(notify).toBeCalledWith(
+        NotificationLevel.SUCCESS,
+        'akeneo_connectivity.connection.connect.apps.wizard.flash.success'
+    );
+    expect(global.window.location.assign).toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
+});
+
+test('The wizard prevents going past the authorizations step without certification consent', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) =>
+            ({
+                connect_app_with_permissions: false,
+            }[feature] ?? false),
+    }));
+
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
+            json: {
+                appName: 'MyApp',
+                appLogo: 'http://example.com/logo.png',
+                appIsCertified: true,
+                scopeMessages: [],
+                authenticationScopes: [],
+            },
+        },
+        'akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b':
+            {
+                json: {
+                    userGroup: 'foo',
+                    redirectUrl: 'http://foo.example.com/oauth2/callback',
+                },
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />
+        </NotifyContext.Provider>
+    );
+    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
 
     expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
+    act(() => {
+        userEvent.click(screen.getByText('consent-scopes'));
+    });
+
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
+    });
+
+    expect(global.window.location.assign).not.toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
+
+    act(() => {
+        userEvent.click(screen.getByText('unconsent-certification'));
+    });
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
+    });
+
+    expect(global.window.location.assign).not.toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
+
+    act(() => {
+        userEvent.click(screen.getByText('consent-certification'));
+    });
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
+    });
+
+    await waitFor(() => {
+        expect(notify).toHaveBeenCalledTimes(1);
+    });
+
+    expect(notify).toBeCalledWith(
+        NotificationLevel.SUCCESS,
+        'akeneo_connectivity.connection.connect.apps.wizard.flash.success'
+    );
+    expect(global.window.location.assign).toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
 });
 
 test('The wizard notifies an unspecified error occurred on app confirm', async () => {
@@ -349,6 +464,7 @@ test('The wizard notifies an unspecified error occurred on app confirm', async (
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 oldScopeMessages: null,
                 authenticationScopes: [],
@@ -370,6 +486,7 @@ test('The wizard notifies an unspecified error occurred on app confirm', async (
             <AppWizard clientId={clientId} />
         </NotifyContext.Provider>
     );
+    await waitFor(() => screen.getByAltText('MyApp'));
 
     await setPermissionsAndConfirmWizard();
 
@@ -397,6 +514,7 @@ test('The wizard saves app and permissions on confirm', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 oldScopeMessages: null,
                 authenticationScopes: [],
@@ -440,6 +558,7 @@ test('The wizard saves app and permissions on confirm', async () => {
             </PermissionFormRegistryContext.Provider>
         </NotifyContext.Provider>
     );
+    await waitFor(() => screen.getByAltText('MyApp'));
 
     await setPermissionsAndConfirmWizard();
 
@@ -475,6 +594,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 oldScopeMessages: null,
                 authenticationScopes: [],
@@ -542,6 +662,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             </PermissionFormRegistryContext.Provider>
         </NotifyContext.Provider>
     );
+    await waitFor(() => screen.getByAltText('MyApp'));
 
     await setPermissionsAndConfirmWizard();
 
@@ -586,6 +707,7 @@ test('The wizard does not display permissions and confirm steps when there is no
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
                 scopeMessages: [],
                 oldScopeMessages: null,
                 authenticationScopes: [],

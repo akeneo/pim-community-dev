@@ -111,6 +111,7 @@
 - PIM:10743: Fix HTTP 500 on measurement PATCH without unit
 - PIM-10753: Fix HTTP 500 in the API when patching product metric with a mathematical notation
 - PIM:10744: Fix product import with a quantified association column is missing
+- PIM-10750: Fix category code validation to allow '0'
 
 ## Improvements
 
