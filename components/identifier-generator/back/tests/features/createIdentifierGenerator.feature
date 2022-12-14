@@ -122,6 +122,12 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions: should contain only 1 enabled'
     And the identifier should not be created
 
+  # Conditions: Family
+  Scenario: Cannot create an identifier generator with unknown operator
+    When I try to create an identifier generator with a family condition with an unknown operator
+    Then I should get an error with message 'conditions[0].operator: Operator "unknown" can only be one of the following: "IN", "NOT IN", "EMPTY", "NOT EMPTY"'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
