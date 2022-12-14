@@ -6,15 +6,11 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValidValidator;
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Asset\Context\ContextInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -23,18 +19,13 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
 {
     public function let(
-        FindFamilyCodes $findFamilyCodes,
         ValidatorInterface $globalValidator,
         ExecutionContext $context,
         ValidatorInterface $validator
     ): void
     {
-        $this->beConstructedWith($findFamilyCodes, $globalValidator);
+        $this->beConstructedWith($globalValidator);
         $this->initialize($context);
-
-        $findFamilyCodes
-            ->fromQuery(Argument::any())
-            ->willReturn(['shirts']);
 
         $globalValidator->inContext($context)->willReturn($validator);
     }
@@ -93,23 +84,6 @@ class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
 
         $validator->validate($condition, Argument::any())->shouldBeCalledTimes(2);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
-
-        $this->validate($condition, new FamilyShouldBeValid());
-    }
-
-    public function it_should_build_violation_for_non_existing_families(
-        ValidatorInterface $validator,
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $constraintViolationBuilder,
-    ): void {
-        $condition = ['type' => 'family', 'operator' => 'IN', 'value' => ['shirts', 'not_existing1', 'not_existing2']];
-
-        $validator->validate($condition, Argument::any())->shouldBeCalledTimes(2);
-        $context->buildViolation(Argument::any(), [
-            '{{ familyCodes }}' => '"not_existing1", "not_existing2"',
-        ])->shouldBeCalled()->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->atPath('value')->shouldBeCalled()->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($condition, new FamilyShouldBeValid());
     }
