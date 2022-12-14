@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - [Backport PIM-10246] PIM-10765: Fix oom in Process Tracker
+- [Backport PIM-10672] PIM-10690: Command to create/add roles with all existing permission
 
 # 6.0.57 (2022-12-07)
 
