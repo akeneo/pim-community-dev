@@ -11,4 +11,4 @@ validation:
         enabled_boolean_value: 'This value should be a boolean.'
         auto_number_fields_required: '"{{field}}" fields are required for "auto_number" type'
         structure_auto_number_limit_reached: 'should contain only {{limit}} auto number'
-        conditions_enabled_limit_reached: 'should contain only {{limit}} enabled'
+        conditions_limit_reached: 'should contain only {{limit}} {{type}} condition'

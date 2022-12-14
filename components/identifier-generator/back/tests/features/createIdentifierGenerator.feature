@@ -163,6 +163,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
     And the identifier should not be created
 
+  Scenario: Cannot create several family conditions
+    When I try to create an identifier generator with 2 family conditions
+    Then I should get an error with message 'conditions: should contain only 1 family'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label

@@ -321,6 +321,17 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to create an identifier generator with 2 family conditions
+     */
+    public function iTryToCreateAnIdentifierGeneratorWith2FamilyConditions()
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'EMPTY'],
+            ['type' => 'family', 'operator' => 'NOT EMPTY'],
+        ]);
+    }
+
+    /**
      * @When /^I try to create an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value)
