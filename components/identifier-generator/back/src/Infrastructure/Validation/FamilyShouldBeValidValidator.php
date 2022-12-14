@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Family;
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -26,7 +24,6 @@ use Webmozart\Assert\Assert;
 final class FamilyShouldBeValidValidator extends ConstraintValidator
 {
     public function __construct(
-        private readonly FindFamilyCodes $findFamilyCodes,
         private readonly ValidatorInterface $validator,
     ) {
     }
@@ -53,20 +50,6 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
             $this->validateValueIsUndefined($condition);
         } else {
             $this->validateValueField($condition);
-
-            if (!\array_key_exists('value', $condition)) {
-                return;
-            }
-            if (!\is_array($condition['value'])) {
-                return;
-            }
-            foreach ($condition['value'] as $value) {
-                if (!\is_string($value)) {
-                    return;
-                }
-            }
-
-            $this->validateFamiliesExist($condition['value'], $constraint);
         }
     }
 
@@ -102,23 +85,9 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
                 new All([
                     new Type('string'),
                     new NotBlank(),
-                ])
+                ]),
+                new FamilyCodesShouldExist(),
             ]
         ]));
-    }
-
-    /**
-     * @param string[] $familyCodes
-     */
-    private function validateFamiliesExist(array $familyCodes, FamilyShouldBeValid $constraint): void
-    {
-        $existingCodes = $this->findFamilyCodes->fromQuery(new FamilyQuery(includeCodes: $familyCodes));
-        $nonExistingCodes = \array_diff($familyCodes, $existingCodes);
-        if (\count($nonExistingCodes) > 0) {
-            $this->context
-                ->buildViolation($constraint->familyNotExist, [ '{{ familyCodes }}' =>  \implode(', ', \array_map(fn(string $value): string => \json_encode($value), $nonExistingCodes))])
-                ->atPath('value')
-                ->addViolation();
-        }
     }
 }

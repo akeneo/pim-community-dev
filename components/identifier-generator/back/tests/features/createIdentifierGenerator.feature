@@ -153,9 +153,9 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][value]: This field is missing.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with non existing family
-    When I try to create an identifier generator with a family condition with operator IN and ["shirts", "non_existing1", "non_existing_2"] as value
-    Then I should get an error with message 'conditions[0].value: The following families do not exist: "shirts", "non_existing1", "non_existing_2".'
+  Scenario: Cannot create an identifier generator with non existing families
+    When I try to create an identifier generator with a family condition with operator IN and ["non_existing1", "non_existing_2"] as value
+    Then I should get an error with message 'conditions[0][value]: The following families do not exist: "non_existing1", "non_existing_2".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with non existing field

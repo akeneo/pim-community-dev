@@ -19,8 +19,10 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -33,9 +35,9 @@ final class CreateIdentifierGeneratorContext implements Context
     private ?ViolationsException $violations = null;
 
     public function __construct(
-        private CreateGeneratorHandler $createGeneratorHandler,
-        private IdentifierGeneratorRepository $generatorRepository,
-        private SaverInterface $attributeRepository
+        private readonly CreateGeneratorHandler $createGeneratorHandler,
+        private readonly IdentifierGeneratorRepository $generatorRepository,
+        private readonly SaverInterface $attributeRepository,
     ) {
     }
 
