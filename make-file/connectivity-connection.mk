@@ -76,6 +76,10 @@ endif
 		--level=5 \
 		--configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon \
 		src/Akeneo/Connectivity/Connection/back/Infrastructure
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--level=1 \
+		--configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan-deprecations.neon \
+		src/Akeneo/Connectivity/Connection/back
 	$(PHP_RUN) bin/console lint:container
 
 connectivity-connection-lint-back_fix:

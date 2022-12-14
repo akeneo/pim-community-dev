@@ -25,6 +25,7 @@ catalogs-fixtures:
 catalogs-tests:
 	$(MAKE) catalogs-cs-back
 	$(MAKE) catalogs-lint-back
+	$(MAKE) catalogs-deprecation-back
 	$(MAKE) catalogs-check-configuration-back
 	$(MAKE) catalogs-coupling-back
 	$(MAKE) catalogs-coverage-back
@@ -57,6 +58,17 @@ endif
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
 	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) -c $(CATALOGS_PATH)/back/psalm.xml
+
+.PHONY: catalogs-deprecation-back
+catalogs-deprecation-back:
+ifneq ($(CI),true)
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+endif
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--configuration $(CATALOGS_PATH)/back/phpstan-deprecations.neon \
+		--level=1 \
+		$(CATALOGS_PATH)/back
 
 .PHONY: catalogs-check-configuration-back
 catalogs-check-configuration-back:
