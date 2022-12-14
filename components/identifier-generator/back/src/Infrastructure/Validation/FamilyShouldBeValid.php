@@ -22,6 +22,8 @@ final class FamilyShouldBeValid extends Constraint
 
     public string $valueShouldBePresent = 'Family should contain "value" key.';
 
+    public string $operatorShouldBePresent = 'Family should contain "operator" key.';
+
     public string $familyNotExist = 'The following families do not exist: {{ familyCodes }}.';
 
     /**
