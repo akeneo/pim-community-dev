@@ -39,12 +39,6 @@ interface I18nMessageSpec {
   };
 }
 
-type CategoryPermissionsToSave = {
-  view: number[];
-  edit: number[];
-  own: number[];
-};
-
 type EditCategoryResponse = EditCategoryResponseOK | EditCategoryResponseKO;
 
 interface SaveOptions {
@@ -57,20 +51,11 @@ const saveEditCategoryForm = async (
   category: EnrichCategory,
   options: SaveOptions
 ): Promise<EditCategoryResponse> => {
-  const adaptPermissionsToSave = (permissions: CategoryPermissions): CategoryPermissionsToSave => {
-    return {
-      view: permissions.view.map(permission => permission.id),
-      edit: permissions.edit.map(permission => permission.id),
-      own: permissions.own.map(permission => permission.id),
-    };
-  };
-  let payload = set(['permissions'], adaptPermissionsToSave(category.permissions), category);
-
   const {applyPermissionsOnChildren, populateResponseCategory = x => x} = options;
 
   // this is for keeping compatibility at the moment, ideally it should not go into the category data
   // because it is a modality for saving, not a part of a category state
-  payload = set(['permissions', 'apply_on_children'], applyPermissionsOnChildren, payload);
+  let payload = set(['permissions', 'apply_on_children'], applyPermissionsOnChildren, category);
 
   const response = await fetch(router.generate('pim_enriched_category_rest_update', {id: category.id}), {
     method: 'POST',

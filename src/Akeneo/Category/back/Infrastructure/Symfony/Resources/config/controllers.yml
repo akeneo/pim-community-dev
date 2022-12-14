@@ -76,6 +76,11 @@ services:
             - '@pim_category.infrastructure.registry.preview_generator'
             - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
 
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UserGroupController:
+        public: true
+        arguments:
+            - '@Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface'
+
     Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
         public: true
         arguments:
