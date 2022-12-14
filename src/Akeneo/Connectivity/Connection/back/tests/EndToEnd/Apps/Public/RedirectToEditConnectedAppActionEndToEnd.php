@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +20,6 @@ class RedirectToEditConnectedAppActionEndToEnd extends WebTestCase
 {
     private FilePersistedFeatureFlags $featureFlags;
     private ConnectedAppLoader $connectedAppLoader;
-    private Connection $connection;
 
     protected function getConfiguration(): Configuration
     {
