@@ -28,6 +28,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
+use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
@@ -134,6 +135,15 @@ abstract class IntegrationTestCase extends WebTestCase
 
         $connectionCloser = self::getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
+
+        // Make sure the job repository is fully initialized before we close the kernel (this service is lazy loaded)
+        // The reason is that ensureKernelShutdown calls the FixturesLoader's destructor which uses this service
+        // It causes a PDO connection to be created from the destructor, and it seems that it can't be closed when opened in this context
+        // It leads to a connection leak
+
+        /** @var DoctrineJobRepository */
+        $jobRepo = self::getContainer()->get('akeneo_batch.job_repository');
+        $jobRepo->getJobManager();
 
         $this->ensureKernelShutdown();
 
