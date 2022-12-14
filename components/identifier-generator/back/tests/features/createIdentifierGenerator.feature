@@ -168,6 +168,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions: should contain only 1 family'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator without operator
+    When I try to create an identifier generator with a family without operator
+    Then I should get an error with message 'conditions[0]: Family should contain "operator" key.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
