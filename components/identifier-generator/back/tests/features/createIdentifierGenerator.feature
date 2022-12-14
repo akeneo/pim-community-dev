@@ -148,6 +148,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0].value: This value should not be blank.'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with operator IN and no value
+    When I try to create an identifier generator with a family condition with operator IN and undefined as value
+    Then I should get an error with message 'conditions[0]: Family should contain "value" key.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label

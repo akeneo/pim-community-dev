@@ -44,14 +44,20 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-        if (\in_array($condition['operator'], ['IN', 'NOT IN']) && !\is_array($condition['value'])) {
+        if (\in_array($condition['operator'], ['IN', 'NOT IN']) && \array_key_exists('value', $condition) && !\is_array($condition['value'])) {
             $this->context
                 ->buildViolation($constraint->valueShouldBeAnArray)
                 ->atPath('value')
                 ->addViolation();
         }
 
-        if (\in_array($condition['operator'], ['IN', 'NOT IN']) && \is_array($condition['value'])) {
+        if (\in_array($condition['operator'], ['IN', 'NOT IN']) && !\array_key_exists('value', $condition)) {
+            $this->context
+                ->buildViolation($constraint->valueShouldBePresent)
+                ->addViolation();
+        }
+
+        if (\in_array($condition['operator'], ['IN', 'NOT IN']) && \array_key_exists('value', $condition) && \is_array($condition['value'])) {
             if (\count($condition['value']) === 0) {
                 $this->context
                     ->buildViolation($constraint->valueShouldNotBeBlank)

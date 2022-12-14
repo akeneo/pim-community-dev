@@ -311,13 +311,19 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to create an identifier generator with a family condition with operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
+     * @When /^I try to create an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value)
     {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'family', 'operator' => $operator, 'value' => \json_decode($value)],
-        ]);
+        if ($value === 'undefined') {
+            $this->tryToCreateGenerator(conditions: [
+                ['type' => 'family', 'operator' => $operator],
+            ]);
+        } else {
+            $this->tryToCreateGenerator(conditions: [
+                ['type' => 'family', 'operator' => $operator, 'value' => \json_decode($value)],
+            ]);
+        }
     }
 
     private function tryToCreateGenerator(
