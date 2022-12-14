@@ -50,16 +50,26 @@ class FamilyShouldBeValidValidatorSpec extends ObjectBehavior
 
     public function it_should_not_validate_something_else_than_an_array(ExecutionContext $context): void
     {
-        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate(new \stdClass(), new FamilyShouldBeValid());
     }
 
     public function it_should_not_validate_a_condition_which_is_not_a_family(ExecutionContext $context): void
     {
-        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate(['type' => 'something_else', 'operator' => 'IN', 'value' => ['shirts']], new FamilyShouldBeValid());
+    }
+
+    public function it_should_build_a_violation_when_operator_is_undefined(
+        ExecutionContext $context,
+        ConstraintViolationBuilderInterface $violationBuilder,
+    ): void {
+        $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate(['type' => 'family'], new FamilyShouldBeValid());
     }
 
     public function it_should_build_a_violation_when_value_is_filled_with_EMPTY(
