@@ -133,12 +133,14 @@ jobs:
                   # tenant
                   rm -rf /tmp/pim-saas-k8s-artifacts/tenant
                   mkdir -p /tmp/pim-saas-k8s-artifacts/tenant
-                  mkdir -p /tmp/pim-saas-k8s-artifacts/tenant/templates
-                  cp deployments-ucs/tenant/templates/storage-bucket.yaml /tmp/pim-saas-k8s-artifacts/tenant/templates/storage-bucket.yaml
                   cp deployments-ucs/tenant/Chart.yaml /tmp/pim-saas-k8s-artifacts/tenant/Chart.yaml
                   yq d -i /tmp/pim-saas-k8s-artifacts/tenant/Chart.yaml dependencies
                   yq w -i deployments-ucs/tenant/values.yaml image.pim.tag "${RELEASE_NAME}"
                   cp deployments-ucs/tenant/values.yaml /tmp/pim-saas-k8s-artifacts/tenant/values.yaml
+                  mkdir -p /tmp/pim-saas-k8s-artifacts/tenant/templates
+                  cp deployments-ucs/tenant/templates/storage-bucket.yaml /tmp/pim-saas-k8s-artifacts/tenant/templates/storage-bucket.yaml
+                  mkdir -p /tmp/pim-saas-k8s-artifacts/tenant/argocd-app
+                  cp deployments-ucs/tenant/argocd-app/tenant-application.yaml /tmp/pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml
 
                   # timmy
                   rm -rf /tmp/pim-saas-k8s-artifacts/timmy
