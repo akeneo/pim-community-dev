@@ -300,6 +300,17 @@ final class CreateIdentifierGeneratorContext implements Context
         ]);
     }
 
+    /**
+     * @When I try to create an identifier generator with a family condition with an unknown operator
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator()
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'unknown']
+        ]);
+    }
+
+
     private function tryToCreateGenerator(
         ?string $code = null,
         ?array $structure = null,
