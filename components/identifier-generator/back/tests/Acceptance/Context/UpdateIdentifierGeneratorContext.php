@@ -339,7 +339,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When I try to update an identifier generator with a family condition with an unknown operator
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator()
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator(): void
     {
         $this->tryToUpdateGenerator(conditions: [
             ['type' => 'family', 'operator' => 'unknown'],
@@ -349,7 +349,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When I try to update an identifier generator with a family condition with unknown property
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty()
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty(): void
     {
         $this->tryToUpdateGenerator(conditions: [
             ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
@@ -359,7 +359,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When I try to update an identifier generator with 2 family conditions
      */
-    public function iTryToUpdateAnIdentifierGeneratorWith2FamilyConditions()
+    public function iTryToUpdateAnIdentifierGeneratorWith2FamilyConditions(): void
     {
         $this->tryToUpdateGenerator(conditions: [
             ['type' => 'family', 'operator' => 'EMPTY'],
@@ -370,7 +370,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When I try to update an identifier generator with a family without operator
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyWithoutOperator()
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyWithoutOperator(): void
     {
         $this->tryToUpdateGenerator(conditions: [
             ['type' => 'family', 'value' => ['shirts']],
@@ -380,7 +380,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When /^I try to update an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value)
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value): void
     {
         if ($value === 'undefined') {
             $this->tryToUpdateGenerator(conditions: [

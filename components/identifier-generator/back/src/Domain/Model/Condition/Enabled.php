@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
 final class Enabled implements ConditionInterface
 {
     public function __construct(
-        private bool $value
+        private readonly bool $value
     ) {
     }
 

@@ -13,7 +13,8 @@ use Webmozart\Assert\Assert;
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type EnabledNormalized from Enabled
- * @phpstan-type ConditionsNormalized list<EnabledNormalized>
+ * @phpstan-import-type FamilyNormalized from Family
+ * @phpstan-type ConditionsNormalized list<EnabledNormalized|FamilyNormalized>
  */
 final class Conditions
 {

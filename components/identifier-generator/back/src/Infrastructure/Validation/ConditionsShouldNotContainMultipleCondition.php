@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class ConditionsShouldNotContainMultipleCondition extends Constraint
 {
+    /** @var string[] */
     public array $types;
 
     public string $message = 'validation.identifier_generator.conditions_limit_reached';
