@@ -5,6 +5,7 @@ import {CONDITION_NAMES} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
+jest.mock('../../pages/DeletePropertyModal');
 
 describe('SelectionTab', () => {
   it('should render the selection tab', () => {
@@ -55,5 +56,21 @@ describe('SelectionTab', () => {
     fireEvent.click(screen.getByText('Add condition'));
     expect(screen.getByText('EnabledLineMock')).toBeInTheDocument();
     expect(onChange).toBeCalledWith([{type: CONDITION_NAMES.ENABLED}]);
+  });
+
+  it('should delete a condition', async () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+
+    const onChange = jest.fn();
+    render(<SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />);
+
+    expect(await screen.findByText('Sku')).toBeInTheDocument();
+
+    expect(screen.getByText('EnabledLineMock')).toBeInTheDocument();
+    expect(screen.getByText('Delete Enabled')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Delete Enabled'));
+    expect(screen.getByText('DeletePropertyModalMock')).toBeInTheDocument();
   });
 });
