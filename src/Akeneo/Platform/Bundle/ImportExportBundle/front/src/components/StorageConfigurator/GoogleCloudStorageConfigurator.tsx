@@ -49,7 +49,7 @@ const GoogleCloudStorageConfigurator = ({
         label={translate('pim_import_export.form.job_instance.storage_form.project_id.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.project_id.placeholder')}
         onChange={(project_id: string) => onStorageChange({...storage, project_id})}
-        errors={filterErrors(validationErrors, '[region]')}
+        errors={filterErrors(validationErrors, '[project_id]')}
       />
       <TextField
         required={true}
@@ -58,7 +58,7 @@ const GoogleCloudStorageConfigurator = ({
         label={translate('pim_import_export.form.job_instance.storage_form.service_account.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.service_account.placeholder')}
         onChange={(service_account: string) => onStorageChange({...storage, service_account})}
-        errors={filterErrors(validationErrors, '[secret]')}
+        errors={filterErrors(validationErrors, '[service_account]')}
       />
       <TextField
         required={true}

@@ -98,10 +98,10 @@ test('it allows user to fill project_id field', async () => {
     );
   });
 
-  const regionInput = screen.getByLabelText(
-    'pim_import_export.form.job_instance.storage_form.region.label pim_common.required_label'
+  const projectIdInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.project_id.label pim_common.required_label'
   );
-  userEvent.type(regionInput, 'd');
+  userEvent.type(projectIdInput, 'd');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, project_id: 'a_project_id'});
 });
@@ -129,7 +129,7 @@ test('it allows user to fill service_account field', async () => {
   });
 
   const serviceAccountInput = screen.getByLabelText(
-    'pim_import_export.form.job_instance.storage_form.secret.label pim_common.required_label'
+    'pim_import_export.form.job_instance.storage_form.service_account.label pim_common.required_label'
   );
   userEvent.type(serviceAccountInput, 't');
 
@@ -320,7 +320,7 @@ test('it can check connection, display message if error', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
-    service_account: '',
+    service_account: 'a_service_account',
     bucket: 'a_bucket',
   };
 

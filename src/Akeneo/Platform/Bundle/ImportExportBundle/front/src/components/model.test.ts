@@ -64,10 +64,9 @@ test('it returns the default local storage', () => {
   expect(getDefaultStorage('import', 'google_cloud', 'csv')).toEqual({
     type: 'google_cloud',
     file_path: 'myfile.csv',
-    region: '',
+    project_id: '',
+    service_account: '',
     bucket: '',
-    key: '',
-    secret: '',
   });
 
   expect(getDefaultStorage('export', 'none', 'xlsx')).toEqual({

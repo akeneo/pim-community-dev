@@ -12,7 +12,7 @@ import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
 import {GoogleCloudStorageConfigurator} from './GoogleCloudStorageConfigurator';
-import {MicrosoftAzureStorageConfigurator} from "./MicrosoftAzureStorageConfigurator";
+import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
 
 const featureFlagCollection = {
   job_automation_local_storage: false,
