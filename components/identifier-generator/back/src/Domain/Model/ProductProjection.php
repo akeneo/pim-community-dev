@@ -11,8 +11,9 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 final class ProductProjection
 {
     public function __construct(
-        private ?string $identifier,
-        private bool $enabled,
+        private readonly ?string $identifier,
+        private readonly bool $enabled,
+        private readonly ?string $familyCode,
     ) {
     }
 
@@ -24,5 +25,10 @@ final class ProductProjection
     public function enabled(): bool
     {
         return $this->enabled;
+    }
+
+    public function familyCode(): ?string
+    {
+        return $this->familyCode;
     }
 }
