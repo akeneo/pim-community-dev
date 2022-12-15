@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {AddingValueIllustration, Information, SectionTitle, Button, PanelCloseIcon} from 'akeneo-design-system';
+import {SectionTitle, Button, PanelCloseIcon} from 'akeneo-design-system';
 import {
   TimeToEnrichChartLegend,
   TimeToEnrichControlPanel,
@@ -81,15 +81,6 @@ const TimeToEnrichDashboard: FC<{activateComparison?: boolean}> = ({activateComp
   return (
     <Container isControlPanelOpen={isControlPanelOpen}>
       {isLoading && <AkeneoSpinner />}
-
-      <Information illustration={<AddingValueIllustration />} title={<>Insights</>}>
-        <p>
-          Your average time-to-activate is <b>4 days</b> and decreased from 4% over the last 12 weeks.
-          <br />
-          This is <b>26% better</b> than the <b>standards of your industry</b>.<br />
-          The family “Xylophones” is the most at risk. <b>Focus on this family</b>
-        </p>
-      </Information>
 
       <SectionTitle>
         <SectionTitle.Title level="secondary">
