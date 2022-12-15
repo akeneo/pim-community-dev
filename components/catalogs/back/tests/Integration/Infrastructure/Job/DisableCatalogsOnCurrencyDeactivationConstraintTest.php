@@ -60,7 +60,7 @@ class DisableCatalogsOnCurrencyDeactivationConstraintTest extends IntegrationTes
             ],
             'currency code is not an string' => [
                 'parameters' => [
-                    'channel_codes' => ['EUR', 2, 'USD'],
+                    'currency_codes' => ['EUR', 2, 'USD'],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
