@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class FamilyCodesShouldExist extends Constraint
 {
-    public string $familyNotExist = 'The following families do not exist: {{ familyCodes }}.';
+    public string $familiesDoNotExist = 'validation.identifier_generator.families_do_not_exist';
 
     /**
      * @inerhitDoc
