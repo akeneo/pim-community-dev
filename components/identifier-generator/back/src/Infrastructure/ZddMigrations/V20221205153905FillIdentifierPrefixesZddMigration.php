@@ -75,15 +75,18 @@ SQL;
                 return;
             }
 
+            $identifierAttributeCodes = $this->getIdentifierAttributeCodes();
+            Assert::isArray($rows);
+            Assert::allString($rows);
             $values = $this->writeValueCollectionFactory->createMultipleFromStorageFormat(
                 \array_map(
-                    static function (string $rawValues): array {
+                    static function (string $rawValues) use ($identifierAttributeCodes): array {
                         $values = \json_decode($rawValues, true);
                         Assert::isArray($values);
 
                         return \array_filter(
                             $values,
-                            fn (string $key): bool => \in_array($key, $this->getIdentifierAttributeCodes()),
+                            fn (string $key): bool => \in_array($key, $identifierAttributeCodes),
                             ARRAY_FILTER_USE_KEY
                         );
                     },

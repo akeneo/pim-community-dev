@@ -41,7 +41,9 @@ $rules = [
 
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\Product',
             'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
+            'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
@@ -86,6 +88,9 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+
+            'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent',
+            'Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToSetIdentifierException',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\API'),
 ];
