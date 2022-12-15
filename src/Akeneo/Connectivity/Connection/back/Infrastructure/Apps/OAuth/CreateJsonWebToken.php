@@ -41,8 +41,10 @@ class CreateJsonWebToken
          */
         ['public_key' => $publicKey, 'private_key' => $privateKey] = $this->getAsymmetricKeysQuery->execute(
         )->normalize();
-        $privateKey = InMemory::plainText($privateKey);
-        $publicKey = InMemory::plainText($publicKey);
+        if ('' !== $privateKey && '' !== $publicKey) {
+            $privateKey = InMemory::plainText($privateKey);
+            $publicKey = InMemory::plainText($publicKey);
+        }
 
         $jwtConfig = Configuration::forAsymmetricSigner(
             new Sha256(),
