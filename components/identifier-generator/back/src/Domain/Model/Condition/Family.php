@@ -9,20 +9,28 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-type FamilyNormalized array{type: string, operator: string, value?: string[]}
  */
 final class Family implements ConditionInterface
 {
-    static function type(): string
+    public static function type(): string
     {
         return 'family';
     }
 
-    static function fromNormalized(): self
+    /**
+     * @param array<string, mixed> $normalizedProperty
+     */
+    public static function fromNormalized(array $normalizedProperty): self
     {
         // TODO: CPM-861
         return new self();
     }
 
+    /**
+     * @return FamilyNormalized
+     */
     public function normalize(): array
     {
         // TODO: CPM-861
