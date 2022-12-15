@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class FamilyShouldBeValid extends Constraint
 {
-    public string $unknownOperator = 'Operator {{ value }} can only be one of the following: {{ choices }}.';
+    public string $unknownOperator = 'validation.identifier_generator.unknown_operator';
 
     /**
      * @inerhitDoc
