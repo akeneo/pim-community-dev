@@ -69,6 +69,7 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
         $this->findOneAttributeByCodeQuery = $this->createMock(FindOneAttributeByCodeQueryInterface::class);
         $this->findOneAttributeByCodeQuery
             ->method('execute')
+            // @phpstan-ignore-next-line
             ->willReturnCallback(fn ($code) => $this->attributes[$code] ?? null);
         self::getContainer()->set(FindOneAttributeByCodeQuery::class, $this->findOneAttributeByCodeQuery);
 
