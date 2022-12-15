@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Helper, Button, CheckIcon, getColor} from 'akeneo-design-system';
+import {Helper, Button, CheckIcon, getColor, Field, TextAreaInput} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isGoogleCloudStorage} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
@@ -51,15 +51,15 @@ const GoogleCloudStorageConfigurator = ({
         onChange={(project_id: string) => onStorageChange({...storage, project_id})}
         errors={filterErrors(validationErrors, '[project_id]')}
       />
-      <TextField
-        required={true}
-        value={storage.service_account}
-        type="password"
-        label={translate('pim_import_export.form.job_instance.storage_form.service_account.label')}
-        placeholder={translate('pim_import_export.form.job_instance.storage_form.service_account.placeholder')}
-        onChange={(service_account: string) => onStorageChange({...storage, service_account})}
-        errors={filterErrors(validationErrors, '[service_account]')}
-      />
+      <Field label={translate('pim_import_export.form.job_instance.storage_form.service_account.label')}>
+        <TextAreaInput
+          required={true}
+          value={storage.service_account}
+          type="password"
+          placeholder={translate('pim_import_export.form.job_instance.storage_form.service_account.placeholder')}
+          onChange={(service_account: string) => onStorageChange({...storage, service_account})}
+        />
+      </Field>
       <TextField
         required={true}
         value={storage.bucket}
