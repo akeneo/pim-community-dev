@@ -15,7 +15,7 @@ import {
 import {useGetIdentifierGenerators, useIdentifierAttributes} from '../hooks';
 import {LabelCollection, Target} from '../models';
 import {Styled} from './styles';
-import {Header, ListSkeleton} from '../components';
+import {FamiliesSelector, Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
 import {GeneratorTab} from '../models/generatorTab';
@@ -68,6 +68,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
 
   return (
     <>
+      <FamiliesSelector />
       <Header>
         <Button onClick={onCreate} disabled={isCreateDisabled}>
           {translate('pim_common.create')}
