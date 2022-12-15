@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  *
  * @phpstan-type EnabledNormalized array{type: string, value: bool}
  */
-class Enabled implements ConditionInterface
+final class Enabled implements ConditionInterface
 {
     public function __construct(
         private bool $value
