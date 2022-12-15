@@ -12,3 +12,5 @@ validation:
         auto_number_fields_required: '"{{field}}" fields are required for "auto_number" type'
         structure_auto_number_limit_reached: 'should contain only {{limit}} auto number'
         conditions_limit_reached: 'should contain only {{limit}} {{type}} condition'
+        unknown_operator: 'Operator {{ value }} can only be one of the following: {{ choices }}.'
+        families_do_not_exist: 'The following families do not exist: {{ familyCodes }}.'
