@@ -53,6 +53,9 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param array<string, mixed> $condition
+     */
     private function validateConditionKeys(array $condition, FamilyShouldBeValid $constraint): void
     {
         $this->validator->inContext($this->context)->validate($condition, new Collection([
@@ -65,6 +68,9 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $condition
+     */
     private function validateValueIsUndefined(array $condition): void
     {
         $this->validator->inContext($this->context)->validate($condition, new Collection([
@@ -73,6 +79,9 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $condition
+     */
     private function validateValueField(array $condition): void
     {
         $this->validator->inContext($this->context)->validate($condition, new Collection([
@@ -87,7 +96,7 @@ final class FamilyShouldBeValidValidator extends ConstraintValidator
                     new NotBlank(),
                 ]),
                 new FamilyCodesShouldExist(),
-            ]
+            ],
         ]));
     }
 }
