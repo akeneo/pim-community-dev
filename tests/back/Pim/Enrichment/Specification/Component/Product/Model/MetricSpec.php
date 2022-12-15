@@ -15,11 +15,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             1/3,
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn(2/6);
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(true);
     }
@@ -32,11 +34,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             666.11,
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn('666.11');
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(false);
     }
@@ -49,11 +53,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             '666',
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn('666.00000');
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(true);
     }
@@ -66,11 +72,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             '6',
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn('600');
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(false);
     }
@@ -83,11 +91,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             '666.00',
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn('666.00000');
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(true);
     }
@@ -100,11 +110,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             666.11,
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn(666);
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(false);
     }
@@ -117,11 +129,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             '666.00000000000000000000000000000000000000000000000001',
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn('666.00000000000000000000000000000000000000000000000001');
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(true);
     }
@@ -134,11 +148,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             '666.00000000000000000000000000000000000000000000000001',
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn('666.00000000000000000000000000000000000000000000000002');
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(false);
     }
@@ -151,11 +167,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             '61529519452809720693702583126814',
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn('61529519452809720000000000000000');
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(false);
     }
@@ -168,11 +186,13 @@ class MetricSpec extends ObjectBehavior
             'centimeter',
             '9.000.000',
             'meter',
-            6.6611
+            6.6611,
+            'cm'
         );
 
         $anotherMetric->getData()->willReturn('9000000');
         $anotherMetric->getUnit()->willReturn('centimeter');
+        $anotherMetric->getSymbol()->willReturn('cm');
 
         $this->isEqual($anotherMetric)->shouldReturn(false);
     }

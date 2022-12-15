@@ -28,6 +28,7 @@ class MetricFactorySpec extends ObjectBehavior
         $measureConverter->convertBaseToStandard('GRAM', 42)->willReturn(0.042);
 
         $measureManager->getStandardUnitForFamily('Weight')->willReturn('KILOGRAM');
+        $measureManager->getSymbolByUnitCodeForFamily('GRAM', 'Weight')->willReturn('g');
 
         $metric = $this->createMetric('Weight', 'GRAM', 42);
 
@@ -48,6 +49,7 @@ class MetricFactorySpec extends ObjectBehavior
         $measureConverter->convertBaseToStandard()->shouldNotBeCalled();
 
         $measureManager->getStandardUnitForFamily('Weight')->willReturn('KILOGRAM');
+        $measureManager->getSymbolByUnitCodeForFamily('GRAM', 'Weight')->willReturn('g');
 
         $metric = $this->createMetric('Weight', 'GRAM', null);
 
@@ -68,6 +70,7 @@ class MetricFactorySpec extends ObjectBehavior
         $measureConverter->convertBaseToStandard('GRAM', 'foobar')->willReturn(0.0000);
 
         $measureManager->getStandardUnitForFamily('Weight')->willReturn('KILOGRAM');
+        $measureManager->getSymbolByUnitCodeForFamily('GRAM', 'Weight')->willReturn('g');
 
         $metric = $this->createMetric('Weight', 'GRAM', 'foobar');
 
@@ -131,6 +134,7 @@ class MetricFactorySpec extends ObjectBehavior
         $measureConverter->convertBaseToStandard('GRAM', 42)->willReturn(0.042);
 
         $measureManager->getStandardUnitForFamily('Weight')->willReturn('KILOGRAM');
+        $measureManager->getSymbolByUnitCodeForFamily('GRAM', 'Weight')->willReturn('g');
 
         $metric = $this->createMetric('Weight', 'GrAm', 42);
 

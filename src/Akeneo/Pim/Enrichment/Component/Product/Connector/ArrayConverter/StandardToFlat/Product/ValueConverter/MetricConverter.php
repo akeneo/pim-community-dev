@@ -24,7 +24,8 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
      *         'scope'  => 'print',
      *         'data'   => [
      *             'unit'   => 'MEGAHERTZ',
-     *             'amount' => '100'
+     *             'amount' => '100',
+     *             'symbol => 'MHz'
      *         ]
      *     ]
      * ]
@@ -33,6 +34,7 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
      * [
      *     'weight-de_DE-print'      => '100',
      *     'weight-de_DE-print-unit' => 'MEGAHERTZ',
+     *     'weight-de_DE-print-symbol' => 'MHz',
      * ]
      */
     public function convert($attributeCode, $data)
@@ -46,16 +48,19 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
                 $value['scope']
             );
             $flatUnitName = sprintf('%s-unit', $flatName);
+            $flatSymbolName = sprintf('%s-symbol', $flatName);
 
             if (null === $value['data']['amount']) {
                 $convertedItem[$flatName] = null;
                 $convertedItem[$flatUnitName] = null;
+                $convertedItem[$flatSymbolName] = null;
 
                 continue;
             }
 
             $convertedItem[$flatName] = (string) $value['data']['amount'];
             $convertedItem[$flatUnitName] = $value['data']['unit'];
+            $convertedItem[$flatSymbolName] = $value['data']['symbol'];
         }
 
         return $convertedItem;

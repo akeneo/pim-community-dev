@@ -29,7 +29,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     ) {
         $metricNormalizer->normalize($value, 'standard', ['locale' => 'en_US'])->willReturn(
             [
-                'amount' => new Metric('weight', 'KILOGRAM', 10, 'GRAM', 10),
+                'amount' => new Metric('weight', 'KILOGRAM', 10, 'GRAM', 10, 'kg'),
             ]
         );
 

@@ -3,6 +3,13 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Converter;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -19,9 +26,10 @@ class MetricConverterSpec extends ObjectBehavior
     function let(
         MeasureConverter $converter,
         EntityWithValuesBuilderInterface $productBuilder,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository
     ) {
-        $this->beConstructedWith($converter, $productBuilder, $attributeRepository);
+        $this->beConstructedWith($converter, $productBuilder, $attributeRepository, $measurementFamilyRepository);
     }
 
     function it_converts_metric_values_given_the_configured_base_unit_in_the_channel(
@@ -37,7 +45,8 @@ class MetricConverterSpec extends ObjectBehavior
         MetricInterface $surfaceMetric,
         ProductInterface $product,
         ChannelInterface $channel,
-        $attributeRepository
+        $attributeRepository,
+        $measurementFamilyRepository
     ) {
         $channel->getConversionUnits()->willReturn(['weight' => 'GRAM']);
 
@@ -50,6 +59,7 @@ class MetricConverterSpec extends ObjectBehavior
         $weightMetric->getFamily()->willReturn('Weight');
         $weightMetric->getUnit()->willReturn('KILOGRAM');
         $weightMetric->getData()->willReturn(1);
+        $weightMetric->getSymbol()->willReturn('kg');
 
         $surfaceValue->getAttributeCode()->willReturn('surface');
         $surfaceValue->getData()->willReturn($surfaceMetric);
@@ -60,6 +70,7 @@ class MetricConverterSpec extends ObjectBehavior
         $surfaceMetric->getFamily()->willReturn('Surface');
         $surfaceMetric->getUnit()->willReturn('METER_SQUARE');
         $surfaceMetric->getData()->willReturn(10);
+        $surfaceMetric->getSymbol()->willReturn('m2');
 
         $nameValue->getAttributeCode()->willReturn('name');
         $nameValue->getData()->willReturn('foobar');
@@ -75,9 +86,33 @@ class MetricConverterSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('weight')->willReturn($weight);
 
+        $measurementFamily = MeasurementFamily::create(
+            MeasurementFamilyCode::fromString('Weight'),
+            LabelCollection::fromArray([]),
+            UnitCode::fromString('KILOGRAM'),
+            [
+                Unit::create(
+                    UnitCode::fromString('KILOGRAM'),
+                    LabelCollection::fromArray([]),
+                    [
+                        Operation::create('mul', '1'),
+                    ],
+                    'kg',
+                ),
+                Unit::create(
+                    UnitCode::fromString('GRAM'),
+                    LabelCollection::fromArray([]),
+                    [Operation::create('mul', '0.0001')],
+                    'g',
+                )
+            ]
+        );
+        $measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString('Weight'))
+            ->willReturn($measurementFamily);
+
         $productBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(1);
         $productBuilder
-            ->addOrReplaceValue($product, $weight, null, null, ['amount' => 1000, 'unit' => 'GRAM'])
+            ->addOrReplaceValue($product, $weight, null, null, ['amount' => 1000, 'unit' => 'GRAM', 'symbol' => 'g'])
             ->shouldBeCalled();
 
         $this->convert($product, $channel);

@@ -19,4 +19,6 @@ interface MetricValueInterface extends ValueInterface
     public function getAmount(): ?string;
 
     public function getUnit(): ?string;
+
+    public function getSymbol(): ?string;
 }

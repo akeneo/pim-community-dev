@@ -132,6 +132,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProduct->getValue('size')->willReturn($sValue);
         $weightData->getData()->willReturn(10.0);
         $weightData->getUnit()->willReturn('KILOGRAM');
+        $weightData->getSymbol()->willReturn('kg');
         $weightValue = MetricValue::value('weight', $weightData->getWrappedObject());
         $variantProduct->getValue('weight')->willReturn($weightValue);
 
