@@ -22,7 +22,6 @@ use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -305,7 +304,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with a family condition with an unknown operator
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator()
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator(): void
     {
         $this->tryToCreateGenerator(conditions: [
             ['type' => 'family', 'operator' => 'unknown'],
@@ -315,7 +314,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with a family condition with unknown property
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty()
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty(): void
     {
         $this->tryToCreateGenerator(conditions: [
             ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
@@ -325,7 +324,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with 2 family conditions
      */
-    public function iTryToCreateAnIdentifierGeneratorWith2FamilyConditions()
+    public function iTryToCreateAnIdentifierGeneratorWith2FamilyConditions(): void
     {
         $this->tryToCreateGenerator(conditions: [
             ['type' => 'family', 'operator' => 'EMPTY'],
@@ -336,7 +335,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When I try to create an identifier generator with a family without operator
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyWithoutOperator()
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyWithoutOperator(): void
     {
         $this->tryToCreateGenerator(conditions: [
             ['type' => 'family', 'value' => ['shirts']],
@@ -346,7 +345,7 @@ final class CreateIdentifierGeneratorContext implements Context
     /**
      * @When /^I try to create an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value)
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value): void
     {
         if ($value === 'undefined') {
             $this->tryToCreateGenerator(conditions: [
