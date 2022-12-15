@@ -63,7 +63,8 @@ akeneo_job_process_tracker:
     yes: Yes
     no: No
     label: Automatització
-  max_page_without_filter_helper: Per mostrar-vos els resultats més rellevants, milloreu la cerca.
+  max_page_without_filter_helper:
+    - 
   tracking:
     completed: "Temps emprat: {{ duration }}"
     in_progress: "Temps estimat que queda per al pas actual: {{ duration }}"

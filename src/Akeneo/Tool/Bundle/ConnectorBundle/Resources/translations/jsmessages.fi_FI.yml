@@ -11,6 +11,7 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Käsittele ylätason tuotemallin tiedot
     compute_data_related_to_family_sub_product_models: Käsittele alatuotemallin tiedot
     compute_data_related_to_family_products: Tuotteiden käsittely
+    index_family_products_and_product_models: Indeksoidaan tuotteiden ja tuotemallien perheitä
     compute_family_variant_structure_changes: Laske varianttiperheen rakenteen muutokset
     compute_completeness_of_products_family: Laske perheiden valmiusaste
     index_family_products: Indeksoidaan tuotteiden ja tuotemallien perheitä

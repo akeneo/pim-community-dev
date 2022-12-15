@@ -13,6 +13,7 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Ursprüngliche Produktdaten-Modell berechnen
     compute_data_related_to_family_sub_product_models: Teilproduktmodell berechnen
     compute_data_related_to_family_products: Produktdaten berechnen
+    index_family_products_and_product_models: Produkt- und Produktmodelle indizieren
     compute_family_variant_structure_changes: Änderungen in der Struktur von Varianten der Produktfamilie berechnen
     compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
     index_family_products: Produkt- und Produktmodelle indizieren
