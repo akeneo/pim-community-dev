@@ -57,13 +57,13 @@ endif
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
 	$(PHP_RUN) vendor/bin/phpstan analyse \
-		--configuration $(CATALOGS_PATH)/back/phpstan.neon \
-		--level=5 \
-		$(CATALOGS_PATH)/back/tests
-	$(PHP_RUN) vendor/bin/phpstan analyse \
 		--configuration $(CATALOGS_PATH)/back/phpstan-deprecations.neon \
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--configuration $(CATALOGS_PATH)/back/phpstan-deprecations.neon\
+		--level=5 \
+		$(CATALOGS_PATH)/back/tests
 	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) -c $(CATALOGS_PATH)/back/psalm.xml
 
 .PHONY: catalogs-check-configuration-back
