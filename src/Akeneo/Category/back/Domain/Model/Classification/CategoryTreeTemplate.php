@@ -23,8 +23,8 @@ class CategoryTreeTemplate
 
     /**
      * @param array{
-     *     template_uuid: string|null,
-     *     template_code: string|null,
+     *     template_uuid: string,
+     *     template_code: string,
      *     template_labels: string|null
      * } $result
      */
@@ -40,12 +40,12 @@ class CategoryTreeTemplate
         return new self($templateUuid, $templateCode, $templateLabels);
     }
 
-    public function getTemplateUuid(): ?TemplateUuid
+    public function getTemplateUuid(): TemplateUuid
     {
         return $this->templateUuid;
     }
 
-    public function getTemplateCode(): ?TemplateCode
+    public function getTemplateCode(): TemplateCode
     {
         return $this->templateCode;
     }
