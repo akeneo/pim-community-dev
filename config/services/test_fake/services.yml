@@ -18,6 +18,8 @@ imports:
     - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_fake_services.yml }
     # Enrichment
     - { resource: ../../../src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Resources/config/services.yml }
+    # Structure
+    - { resource: ../../../src/Akeneo/Pim/Structure/Family/back/Test/Acceptance/Resources/config/services.yml }
     # Category
     - { resource: ../../../tests/back/Category/Acceptance/Resources/config/services.yml }
     # Channel
