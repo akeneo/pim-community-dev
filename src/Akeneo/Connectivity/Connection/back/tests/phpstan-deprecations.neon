@@ -1,7 +1,6 @@
 includes:
     - '%rootDir%/../phpstan-deprecation-rules/rules.neon'
 parameters:
-    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         # Doctrine DBAL migration (CPM-741-upgrade-doctrine)
         - '#Call to deprecated method executeUpdate#'
