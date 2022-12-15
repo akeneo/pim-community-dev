@@ -13,9 +13,9 @@ use PHPUnit\Framework\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Version_7_0_20221214103800_add_disable_catalogs_on_locale_deactivation_job_instance_Integration extends TestCase
+final class Version_7_0_20221214103600_add_disable_catalogs_on_locale_deactivation_job_instance_Integration extends TestCase
 {
-    private const MIGRATION_NAME = '_7_0_20221214103800_add_disable_catalogs_on_locale_deactivation_job_instance';
+    private const MIGRATION_NAME = '_7_0_20221214103600_add_disable_catalogs_on_locale_deactivation_job_instance';
 
     use ExecuteMigrationTrait;
 
