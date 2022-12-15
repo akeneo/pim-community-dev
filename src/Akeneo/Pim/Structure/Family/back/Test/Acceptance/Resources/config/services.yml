@@ -1,0 +1,3 @@
+services:
+    Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes:
+        class: Akeneo\Pim\Structure\Family\Infrastructure\Query\InMemory\InMemoryFindFamilyCodes
