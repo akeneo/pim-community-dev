@@ -111,7 +111,7 @@ test('it allows user to fill service_account field', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
-    service_account: '_service_account',
+    service_account: 'a_service_accoun',
     bucket: 'a_bucket',
   };
 
@@ -128,10 +128,10 @@ test('it allows user to fill service_account field', async () => {
     );
   });
 
-  const serviceAccountInput = screen.getByText(
-    'pim_import_export.form.job_instance.storage_form.service_account.label'
+  const serviceAccountInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.service_account.label pim_common.required_label'
   );
-  userEvent.type(serviceAccountInput, 'a');
+  userEvent.type(serviceAccountInput, 't');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, service_account: 'a_service_account'});
 });
@@ -216,6 +216,13 @@ test('it displays validation errors', async () => {
       propertyPath: '[project_id]',
     },
     {
+      messageTemplate: 'error.key.a_service_account_error',
+      invalidValue: '',
+      message: 'this is a service account error',
+      parameters: {},
+      propertyPath: '[service_account]',
+    },
+    {
       messageTemplate: 'error.key.a_bucket_error',
       invalidValue: '',
       message: 'this is a bucket error',
@@ -237,6 +244,7 @@ test('it displays validation errors', async () => {
 
   expect(screen.getByText('error.key.a_file_path_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_project_id_error')).toBeInTheDocument();
+  expect(screen.getByText('error.key.a_service_account_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_bucket_error')).toBeInTheDocument();
 });
 
