@@ -619,6 +619,16 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
     }
 
+    protected function disableLocale(string $code): void
+    {
+        $locale = self::getContainer()->get('pim_catalog.repository.locale')->findOneByIdentifier($code);
+        self::getContainer()->get('pim_catalog.updater.locale')->update($locale, [
+            'code' => $code,
+            'enabled' => false,
+        ]);
+        self::getContainer()->get('pim_catalog.saver.locale')->save($locale);
+    }
+
     protected function getCatalog(string $id): Catalog
     {
         /** @var ?Catalog $catalog */
