@@ -33,15 +33,15 @@ const EditPermissionsForm = ({
 }: Props) => {
   const translate = useTranslate();
   const {data: fetchedUserGroups, status: userGroupStatus} = useFetchUserGroups();
-    const [userGroups, setUserGroup] = useState<UserGroup[] | null>(null);
+  const [userGroups, setUserGroup] = useState<UserGroup[] | null>(null);
 
-    useEffect(() => {
-        if (userGroupStatus === 'success') {
-            if (fetchedUserGroups) {
-                setUserGroup(fetchedUserGroups);
-            }
-        }
-    }, [fetchedUserGroups, userGroupStatus]);
+  useEffect(() => {
+    if (userGroupStatus === 'success') {
+      if (fetchedUserGroups) {
+        setUserGroup(fetchedUserGroups);
+      }
+    }
+  }, [fetchedUserGroups, userGroupStatus]);
 
   const handleChangePermissions = useCallback(
     (type: keyof CategoryPermissions) => (values: string[]) => {

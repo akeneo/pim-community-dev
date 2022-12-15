@@ -65,17 +65,19 @@ export function ensureSuperset(
  * @returns
  */
 export function alterPermissionsConsistently(
-    userGroups: UserGroup[],
-    permissions: CategoryPermissions,
+  userGroups: UserGroup[],
+  permissions: CategoryPermissions,
   changes: PermissionChanges
 ): CategoryPermissions {
   const {type, values} = changes;
   let consistentPermissions = cloneDeep(permissions);
   // the change that MUST be made
-  consistentPermissions[type] = userGroups.filter(userGroup => values.includes(parseInt(userGroup.id, 10))).map(userGroup => ({
-    id: parseInt(userGroup.id, 10),
-    label: userGroup.label
-  }));
+  consistentPermissions[type] = userGroups
+    .filter(userGroup => values.includes(parseInt(userGroup.id, 10)))
+    .map(userGroup => ({
+      id: parseInt(userGroup.id, 10),
+      label: userGroup.label,
+    }));
 
   // now adapting other permission level in accordance
   switch (type) {
