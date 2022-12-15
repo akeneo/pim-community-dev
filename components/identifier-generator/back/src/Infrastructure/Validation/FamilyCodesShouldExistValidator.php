@@ -43,7 +43,9 @@ final class FamilyCodesShouldExistValidator extends ConstraintValidator
         $nonExistingCodes = \array_diff($familyCodes, $existingCodes);
         if (\count($nonExistingCodes) > 0) {
             $this->context
-                ->buildViolation($constraint->familiesDoNotExist, [ '{{ familyCodes }}' =>  \implode(', ', \array_map(fn(string $value): string => \json_encode($value), $nonExistingCodes))])
+                ->buildViolation($constraint->familiesDoNotExist, [
+                    '{{ familyCodes }}' =>  \implode(', ', \array_map(fn (string $value): string => (string) \json_encode($value), $nonExistingCodes)),
+                ])
                 ->addViolation();
         }
     }
