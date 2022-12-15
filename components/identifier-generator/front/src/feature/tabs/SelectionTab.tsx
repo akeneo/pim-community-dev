@@ -6,6 +6,7 @@ import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
 import {ListSkeleton} from '../components';
 import {AddConditionButton, EnabledLine} from './conditions';
+import {DeletePropertyModal} from '../pages';
 
 type SelectionTabProps = {
   conditions: Conditions;
@@ -19,6 +20,7 @@ type ConditionId = string;
 const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange}) => {
   const translate = useTranslate();
   const {data: identifiers, isLoading} = useIdentifierAttributes();
+  const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionId | undefined>();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
     conditions.map(condition => ({
       id: uuid(),
@@ -50,10 +52,23 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     onChange(removeIdentifiers(newConditions));
   };
 
-  const handleDelete = (conditionId: ConditionId) => {
-    const newConditions = conditionsWithId.filter(condition => condition.id !== conditionId);
-    setConditionsWithId(newConditions);
-    onChange(removeIdentifiers(newConditions));
+  const closeModal = () => {
+    setConditionIdToDelete(undefined);
+  };
+
+  const handleDeleteCondition = (): void => {
+    if (conditionIdToDelete) {
+      const newConditions = conditionsWithId.filter(condition => condition.id !== conditionIdToDelete);
+      setConditionsWithId(newConditions);
+      onChange(removeIdentifiers(newConditions));
+      setConditionIdToDelete(undefined);
+    }
+
+    closeModal();
+  };
+
+  const onDelete = (conditionId: ConditionId) => () => {
+    setConditionIdToDelete(conditionId);
   };
 
   return (
@@ -68,7 +83,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
           {isLoading && <ListSkeleton />}
           {!isLoading && (
             <>
-              <Table.Row>
+              <Table.Row key={0}>
                 <Styled.TitleCell>
                   {identifiers && identifiers.length > 0 ? identifiers[0].label : `[${target}]`}
                 </Styled.TitleCell>
@@ -82,7 +97,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
                 <>
                   {conditionWithId.type === CONDITION_NAMES.ENABLED && (
                     <EnabledLine condition={conditionWithId} key={conditionWithId.id}
-                                 onChange={handleChange} onDelete={handleDelete}/>
+                                 onChange={handleChange} onDelete={onDelete(conditionWithId.id)}/>
                   )}
                 </>
               ))}
@@ -90,6 +105,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
           )}
         </Table.Body>
       </Table>
+      {conditionIdToDelete && <DeletePropertyModal onClose={closeModal} onDelete={handleDeleteCondition} />}
     </>
   );
 };
