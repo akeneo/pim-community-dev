@@ -44,14 +44,6 @@ class PimRequirements
         'openssl',
     ];
 
-    /** @var string */
-    private $baseDir;
-
-    public function __construct(string $baseDir)
-    {
-        $this->baseDir = $baseDir;
-    }
-
     /**
      * Generate the requirements by executing test and providing the result and the
      * associated messages
@@ -179,7 +171,7 @@ class PimRequirements
     /**
      * Returns a global MySQL configuration variable value
      */
-    protected function getMySQLVariableValue(string $variableName) : ?string
+    protected function getMySQLVariableValue(string $variableName) : string|int|null
     {
         $stmt = $this->getConnection()->query(
             sprintf("SELECT @@GLOBAL.%s", $variableName)

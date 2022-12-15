@@ -2,6 +2,7 @@ import {Router} from '@akeneo-pim-community/shared';
 import {set} from 'lodash/fp';
 
 import {EnrichCategory} from '../../models';
+import {CategoryPermissions} from '../../models/CategoryPermission';
 
 interface EditCategoryResponseOK {
   success: true;

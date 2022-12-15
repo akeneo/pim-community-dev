@@ -151,7 +151,7 @@ SQL;
         return new IdentifierGenerator(
             IdentifierGeneratorId::fromString($result['uuid']),
             IdentifierGeneratorCode::fromString($result['code']),
-            Conditions::fromArray(json_decode($result['conditions'], true)),
+            Conditions::fromNormalized(json_decode($result['conditions'], true)),
             Structure::fromNormalized(json_decode($result['structure'], true)),
             LabelCollection::fromNormalized(json_decode($result['labels'], true)),
             Target::fromString($result['target']),

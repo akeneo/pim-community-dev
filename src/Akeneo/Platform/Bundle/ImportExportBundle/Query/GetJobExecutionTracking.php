@@ -26,28 +26,12 @@ use Doctrine\Common\Collections\Collection;
  */
 class GetJobExecutionTracking
 {
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobExecutionRepository */
-    private $jobExecutionRepository;
-
-    /** @var JobExecutionManager */
-    private $jobExecutionManager;
-
-    /** @var ClockInterface */
-    private $clock;
-
     public function __construct(
-        JobRegistry $jobRegistry,
-        JobExecutionRepository $jobExecutionRepository,
-        JobExecutionManager $jobExecutionManager,
-        ClockInterface $clock
+        private JobRegistry $jobRegistry,
+        private JobExecutionRepository $jobExecutionRepository,
+        private JobExecutionManager $jobExecutionManager,
+        private ClockInterface $clock,
     ) {
-        $this->jobRegistry = $jobRegistry;
-        $this->jobExecutionRepository = $jobExecutionRepository;
-        $this->jobExecutionManager = $jobExecutionManager;
-        $this->clock = $clock;
     }
 
     public function execute(int $jobExecutionId): JobExecutionTracking
@@ -111,10 +95,6 @@ class GetJobExecutionTracking
             $stepName = $step->getName();
             $stepExecutionIndex = $this->searchFirstMatchingStepExecutionIndex($stepExecutions, $stepName);
             if (-1 === $stepExecutionIndex) {
-                if ($this->shouldSkipStep($stepName, $createdTime)) {
-                    continue;
-                }
-
                 $stepsExecutionTracking[] = $this->createNotStartedStepExecutionTracking($step, $job->getName());
                 continue;
             }
@@ -130,14 +110,6 @@ class GetJobExecutionTracking
         }
 
         return $stepsExecutionTracking;
-    }
-
-    // TODO RAB-875: Remove this method and the check
-    private function shouldSkipStep(string $stepName, \DateTime $createdTime): bool
-    {
-        $downloadUploadStepsMergeDate = \DateTime::createFromFormat('Y-m-d', '2022-09-07');
-
-        return in_array($stepName, ['download_files', 'upload_files']) && $createdTime < $downloadUploadStepsMergeDate;
     }
 
     private function searchFirstMatchingStepExecutionIndex(Collection $stepExecutions, string $stepName): int

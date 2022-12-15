@@ -1,9 +1,18 @@
 import {FunctionComponent} from 'react';
 import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage, AmazonS3Storage, Storage, StorageType, localStorageIsEnabled} from '../model';
+import {
+  LocalStorage,
+  SftpStorage,
+  AmazonS3Storage,
+  Storage,
+  StorageType,
+  localStorageIsEnabled,
+  MicrosoftAzureStorage,
+} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
+import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
 
 type StorageLoginType = 'password' | 'private_key';
 
@@ -24,6 +33,7 @@ const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
   sftp: SftpStorageConfigurator,
   amazon_s3: AmazonS3StorageConfigurator,
+  microsoft_azure: MicrosoftAzureStorageConfigurator,
 };
 
 const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
@@ -68,10 +78,27 @@ const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   return (
     'amazon_s3' === storage.type &&
     'file_path' in storage &&
+    typeof 'file_path' === 'string' &&
     'region' in storage &&
+    typeof 'region' === 'string' &&
     'bucket' in storage &&
+    typeof 'bucket' === 'string' &&
     'key' in storage &&
-    'secret' in storage
+    typeof 'key' === 'string' &&
+    'secret' in storage &&
+    typeof 'secret' === 'string'
+  );
+};
+
+const isMicrosoftAzureStorage = (storage: Storage): storage is MicrosoftAzureStorage => {
+  return (
+    'microsoft_azure' === storage.type &&
+    'file_path' in storage &&
+    typeof 'file_path' === 'string' &&
+    'connection_string' in storage &&
+    typeof 'connection_string' === 'string' &&
+    'container_name' in storage &&
+    typeof 'container_name' === 'string'
   );
 };
 
@@ -80,6 +107,7 @@ export {
   isLocalStorage,
   isSftpStorage,
   isAmazonS3Storage,
+  isMicrosoftAzureStorage,
   isValidLoginType,
   getStorageConfigurator,
   STORAGE_LOGIN_TYPES,

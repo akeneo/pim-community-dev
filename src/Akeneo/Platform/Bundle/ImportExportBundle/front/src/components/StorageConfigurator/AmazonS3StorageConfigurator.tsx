@@ -72,6 +72,7 @@ const AmazonS3StorageConfigurator = ({
         value={storage.secret}
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.secret.label')}
+        placeholder={translate('pim_import_export.form.job_instance.storage_form.secret.placeholder')}
         onChange={(secret: string) => onStorageChange({...storage, secret})}
         errors={filterErrors(validationErrors, '[secret]')}
       />

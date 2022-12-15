@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCred
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
-use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleMockHandlerStack;
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
@@ -34,6 +34,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
     private Author $referenceAuthor;
     private DbalConnection $dbalConnection;
     private ProductLoader $productLoader;
+    private GuzzleJsonHistoryContainer $historyContainer;
 
     protected function setUp(): void
     {
@@ -59,6 +60,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $this->productLoader = static::getContainer()->get(
             'akeneo_connectivity.connection.fixtures.enrichment.product'
         );
+        $this->historyContainer = $this->get('Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer');
 
         $this->tshirtProduct = $this->productLoader->create(
             'blue-t-shirt',
@@ -96,9 +98,6 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_created_webhook_event()
     {
-        /** @var GuzzleMockHandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-
         $message = new BulkEvent(
             [
                 new ProductCreated(
@@ -126,10 +125,10 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        Assert::assertCount(1, $handlerStack->historyContainer());
+        Assert::assertCount(1, $this->historyContainer);
 
         /** @var Request $requestObject */
-        $request = $handlerStack->historyContainer()[0]['request'];
+        $request = $this->historyContainer[0]['request'];
         $requestObject = Message::parseRequest($request);
         $requestContent = \json_decode($requestObject->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
@@ -140,9 +139,6 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_updated_webhook_event()
     {
-        /** @var GuzzleMockHandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-
         $message = new BulkEvent(
             [
                 new ProductUpdated(
@@ -161,9 +157,9 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        Assert::assertCount(1, $handlerStack->historyContainer());
+        Assert::assertCount(1, $this->historyContainer);
 
-        $request = $handlerStack->historyContainer()[0]['request'];
+        $request = $this->historyContainer[0]['request'];
         $requestObject = Message::parseRequest($request);
         $requestContent = \json_decode($requestObject->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
@@ -174,9 +170,6 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_removed_webhook_event()
     {
-        /** @var GuzzleMockHandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-
         $message = new BulkEvent(
             [
                 new ProductRemoved(
@@ -196,9 +189,9 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $handlerStack->historyContainer());
+        $this->assertCount(1, $this->historyContainer);
 
-        $request = Message::parseRequest($handlerStack->historyContainer()[0]['request']);
+        $request = Message::parseRequest($this->historyContainer[0]['request']);
         $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
 
         Assert::assertEquals(1, (int)$this->getEventCount('ecommerce'));
