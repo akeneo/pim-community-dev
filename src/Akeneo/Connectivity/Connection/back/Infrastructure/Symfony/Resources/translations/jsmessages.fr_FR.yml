@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: Désolé, une erreur s'est produite lors de la récupération de la liste des apps.
       edit:
+        header:
+          open_app_button:
+            label: Accéder à l'app
+            icon_alt: Accéder à l'app
         not_found: App non trouvée
         tabs:
           settings: Général
@@ -587,5 +591,8 @@ pim_permissions:
 pim_notification:
   types:
     connected_app_authorizations: Autorisations accordées
+    disabled_catalog: Catalogue désactivé
   connected_app_authorizations:
     button_label: Ouvrir l'app
+  disabled_catalog:
+    button_label: Paramètres du catalogue

@@ -56,7 +56,7 @@ function mustChangeBeSkipped(
 
 export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange}: Props) => {
   const translate = useTranslate();
-  const {locales, channels} = useContext(EditCategoryContext);
+  const {channels} = useContext(EditCategoryContext);
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
   const [locale, setLocale] = useState(catalogLocale);
@@ -64,14 +64,19 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   const [channel, setChannel] = useState(catalogChannel);
   const channelList = useMemo(() => Object.values(channels), [channels]);
 
-  const handleChannelChange = (value: string): void => {
-    setChannel(value);
-    userContext.set('catalogScope', value, {});
-  };
-
   const handleLocaleChange = (value: string): void => {
     setLocale(value);
     userContext.set('catalogLocale', value, {});
+  };
+
+  const handleChannelChange = (value: string): void => {
+    setChannel(value);
+    userContext.set('catalogScope', value, {});
+    const localesFromChannel = channels[value]?.locales;
+    const localeFromChannel = localesFromChannel?.find(channelLocale => locale === channelLocale.code);
+    if(!localeFromChannel) {
+      handleLocaleChange(localesFromChannel[0].code);
+    }
   };
 
   const handleChange = useCallback(
@@ -146,8 +151,16 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       <SectionTitle>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <ChannelSelector value={channel} values={channelList} onChange={handleChannelChange} />
-        <LocaleSelector value={locale} values={Object.values(locales)} onChange={handleLocaleChange} />
+        <ChannelSelector
+          value={channel}
+          values={channelList}
+          onChange={handleChannelChange}
+        />
+        <LocaleSelector
+          value={locale}
+          values={channels[channel]?.locales}
+          onChange={handleLocaleChange}
+        />
       </SectionTitle>
       {attributeFields}
     </FormContainer>

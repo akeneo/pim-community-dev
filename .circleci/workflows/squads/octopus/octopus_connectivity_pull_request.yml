@@ -36,6 +36,10 @@ workflows:
                     name: test_cxp_front_lint
                     requires:
                         - install_front_dependencies
+            -   test_front_build_connectivity:
+                    name: text_cxp_front_build
+                    requires:
+                        - build
             -   test_back_unit_connectivity:
                     name: test_cxp_back_unit
                     requires:
@@ -56,6 +60,7 @@ workflows:
                     requires:
                         - test_cxp_front_lint
                         - test_cxp_front_unit
+                        - text_cxp_front_build
                         - test_cxp_back_unit
                         - test_cxp_back_integration
                         - test_cxp_back_e2e

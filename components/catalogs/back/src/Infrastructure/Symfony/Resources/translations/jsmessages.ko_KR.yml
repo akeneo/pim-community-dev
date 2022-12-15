@@ -13,9 +13,7 @@ akeneo_catalogs:
       more: 더 보기
       product_value_filters: 값 필터링
       product_mapping: 매핑
-  settings:
-    fields:
-      enabled: 활성화됨
+  catalog_status_widget:
     inputs:
       yes: Yes
       no: No

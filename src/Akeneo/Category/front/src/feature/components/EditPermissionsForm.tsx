@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
@@ -32,7 +32,16 @@ const EditPermissionsForm = ({
   onChangeApplyPermissionsOnChildren,
 }: Props) => {
   const translate = useTranslate();
-  const {data: userGroups} = useFetchUserGroups();
+  const {data: fetchedUserGroups, status: userGroupStatus} = useFetchUserGroups();
+    const [userGroups, setUserGroup] = useState<UserGroup[] | null>(null);
+
+    useEffect(() => {
+        if (userGroupStatus === 'success') {
+            if (fetchedUserGroups) {
+                setUserGroup(fetchedUserGroups);
+            }
+        }
+    }, [fetchedUserGroups, userGroupStatus]);
 
   const handleChangePermissions = useCallback(
     (type: keyof CategoryPermissions) => (values: string[]) => {
@@ -72,7 +81,7 @@ const EditPermissionsForm = ({
   };
 
   const extractPermissionIdAsString = (permissions: CategoryPermission[]): string[] => {
-    return permissions.map(permission => permission.id.toString());
+    return permissions?.map(permission => permission.id?.toString());
   };
 
   return (

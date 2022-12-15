@@ -34,4 +34,12 @@ final class ErrorList implements \Countable
     {
         return \implode("\n", array_map(fn (Error $error): string => $error->__toString(), $this->errors));
     }
+
+    /**
+     * @return Error[]
+     */
+    public function toArray(): array
+    {
+        return $this->errors;
+    }
 }
