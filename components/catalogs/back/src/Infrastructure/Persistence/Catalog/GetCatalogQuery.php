@@ -24,7 +24,7 @@ use Ramsey\Uuid\Uuid;
  *      product_mapping: string,
  * }
  *
- * @phpstan-import-type ProductSelectionCriterion from Catalog
+ * @phpstan-import-type ProductSelectionCriteria from Catalog
  * @phpstan-import-type ProductValueFilters from Catalog
  * @phpstan-import-type ProductMapping from Catalog
  */
@@ -59,7 +59,7 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             throw new CatalogNotFoundException();
         }
 
-        /** @var array<array-key, ProductSelectionCriterion>|null $productSelectionCriteria */
+        /** @var ProductSelectionCriteria|null $productSelectionCriteria */
         $productSelectionCriteria = \json_decode($row['product_selection_criteria'], true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($productSelectionCriteria)) {
             throw new \LogicException('Invalid JSON in product_selection_criteria column');

@@ -459,8 +459,8 @@ abstract class IntegrationTestCase extends WebTestCase
      *     type: string,
      *     available_locales?: array<string>,
      *     group?: string,
-     *     scopable: bool,
-     *     localizable: bool,
+     *     scopable?: bool,
+     *     localizable?: bool,
      *     options?: array<string>,
      * } $data
      */
