@@ -77,6 +77,8 @@ COPY docker/php.ini /etc/php/8.1/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/8.1/fpm/conf.d/99-akeneo.ini
 COPY docker/fpm_policy.xml /etc/php/8.1/fpm/policy.xml
 
+COPY docker/grpc.so /usr/lib/php/20210902/grpc.so
+
 #
 # Image used for development
 #
