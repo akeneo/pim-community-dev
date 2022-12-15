@@ -10,7 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Family implements ConditionInterface
+final class Family implements ConditionInterface
 {
     static function type(): string
     {
