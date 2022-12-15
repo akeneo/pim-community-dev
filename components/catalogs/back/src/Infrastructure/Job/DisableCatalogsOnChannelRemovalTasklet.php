@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Job;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsUsingCurrenciesAsFilterQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsUsingChannelsAsFilterQueryInterface;
 use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
-class DisableCatalogsOnCurrencyDeactivationTasklet implements TaskletInterface
+class DisableCatalogsOnChannelRemovalTasklet implements TaskletInterface
 {
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private readonly GetCatalogIdsUsingCurrenciesAsFilterQueryInterface $getCatalogIdsUsingCurrenciesAsFilterQuery,
+        private readonly GetCatalogIdsUsingChannelsAsFilterQueryInterface $getCatalogIdsUsingChannelsAsFilterQuery,
         private readonly DisableCatalogQueryInterface $disableCatalogsQuery,
         private readonly DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
     ) {
@@ -32,10 +32,10 @@ class DisableCatalogsOnCurrencyDeactivationTasklet implements TaskletInterface
             throw new \LogicException('The variable $stepExecution should not be null.');
         }
 
-        /** @var string[] $currencyCodes */
-        $currencyCodes = $this->stepExecution->getJobParameters()->get('currency_codes');
+        /** @var string[] $channelCodes */
+        $channelCodes = $this->stepExecution->getJobParameters()->get('channel_codes');
 
-        $catalogsIds = $this->getCatalogIdsUsingCurrenciesAsFilterQuery->execute($currencyCodes);
+        $catalogsIds = $this->getCatalogIdsUsingChannelsAsFilterQuery->execute($channelCodes);
 
         foreach ($catalogsIds as $catalogId) {
             $this->disableCatalogsQuery->execute($catalogId);

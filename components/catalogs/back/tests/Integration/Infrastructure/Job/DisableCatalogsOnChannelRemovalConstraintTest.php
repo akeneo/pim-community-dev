@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Job;
 
-use Akeneo\Catalogs\Infrastructure\Job\DisableCatalogsOnCurrencyDeactivationConstraint;
+use Akeneo\Catalogs\Infrastructure\Job\DisableCatalogsOnChannelRemovalConstraint;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DisableCatalogsOnCurrencyDeactivationConstraintTest extends IntegrationTestCase
+class DisableCatalogsOnChannelRemovalConstraintTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
-    private ?DisableCatalogsOnCurrencyDeactivationConstraint $disableCatalogConstraint;
+    private ?DisableCatalogsOnChannelRemovalConstraint $disableCatalogConstraint;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
-        $this->disableCatalogConstraint = self::getContainer()->get(DisableCatalogsOnCurrencyDeactivationConstraint::class);
+        $this->disableCatalogConstraint = self::getContainer()->get(DisableCatalogsOnChannelRemovalConstraint::class);
 
         $this->purgeData();
     }
@@ -26,7 +26,7 @@ class DisableCatalogsOnCurrencyDeactivationConstraintTest extends IntegrationTes
     public function testItProvidesConstraintToValidateParameters(): void
     {
         $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
-        $parameters = ['currency_codes' => ['EUR', 'USD']];
+        $parameters = ['channel_codes' => ['print', 'mobile']];
         $violations = $this->validator->validate($parameters, $constraintCollection);
 
         $this->assertEmpty($violations);
@@ -48,19 +48,19 @@ class DisableCatalogsOnCurrencyDeactivationConstraintTest extends IntegrationTes
     public function invalidParametersDataProvider(): array
     {
         return [
-            'missing currency codes' => [
+            'missing channel codes' => [
                 'parameters' => [],
                 'expectedMessage' => 'This field is missing.',
             ],
-            'currency codes is not an array' => [
+            'channel codes is not an array' => [
                 'parameters' => [
-                    'currency_codes' => 'EUR',
+                    'channel_codes' => 'print',
                 ],
                 'expectedMessage' => 'This value should be of type array.',
             ],
-            'currency code is not an string' => [
+            'channel code is not an string' => [
                 'parameters' => [
-                    'currency_codes' => ['EUR', 2, 'USD'],
+                    'channel_codes' => ['print', 2, 'mobile'],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],

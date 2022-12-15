@@ -559,6 +559,14 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
+    protected function removeChannel(string $code): void
+    {
+        $channel = self::getContainer()->get('pim_catalog.repository.channel')
+            ->findOneByIdentifier($code);
+
+        self::getContainer()->get('pim_catalog.remover.channel')->remove($channel);
+    }
+
     protected function createFamily(array $familyData): void
     {
         /** @var FamilyInterface $family */
