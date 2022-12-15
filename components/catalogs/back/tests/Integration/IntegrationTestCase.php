@@ -593,7 +593,7 @@ abstract class IntegrationTestCase extends WebTestCase
 
     protected function createGroupType(array $data = []): void
     {
-        /** @var GroupInterface $group */
+        /** @var GroupInterface $groupType */
         $groupType = self::getContainer()->get('pim_catalog.factory.group_type')->create();
         self::getContainer()->get('pim_catalog.updater.group_type')->update($groupType, $data);
         self::getContainer()->get('pim_catalog.saver.group_type')->save($groupType);

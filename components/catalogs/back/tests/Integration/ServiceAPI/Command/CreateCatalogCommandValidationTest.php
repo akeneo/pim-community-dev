@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\IsCatalogsNumberLimitReached
 use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUserValidator;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateCatalogCommandValidationTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
-    private ?IsCatalogsNumberLimitReachedQueryInterface $isCatalogsNumberLimitReachedQuery;
+    private IsCatalogsNumberLimitReachedQueryInterface&MockObject $isCatalogsNumberLimitReachedQuery;
 
     protected function setUp(): void
     {

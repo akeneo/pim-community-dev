@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 use Akeneo\Catalogs\Application\Persistence\Category\GetCategoriesByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Category\GetCategoryTreeRootsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoriesAction;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,8 +23,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class GetCategoriesActionTest extends TestCase
 {
     private ?GetCategoriesAction $getCategoriesAction;
-    private ?GetCategoryTreeRootsQueryInterface $getCategoryTreeRootsQuery;
-    private ?GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery;
+    private GetCategoryTreeRootsQueryInterface&MockObject $getCategoryTreeRootsQuery;
+    private GetCategoriesByCodeQueryInterface&MockObject $getCategoriesByCodeQuery;
 
     protected function setUp(): void
     {

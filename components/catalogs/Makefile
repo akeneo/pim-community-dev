@@ -57,6 +57,10 @@ endif
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
 	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--configuration $(CATALOGS_PATH)/back/phpstan.neon \
+		--level=3 \
+		$(CATALOGS_PATH)/back/tests
+	$(PHP_RUN) vendor/bin/phpstan analyse \
 		--configuration $(CATALOGS_PATH)/back/phpstan-deprecations.neon \
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
