@@ -57,7 +57,6 @@ akeneo_job_process_tracker:
     all: Kaikki
     yes: Yes
     no: No
-  max_page_without_filter_helper: Jotta voisit näyttää sinulle tärkeimmät tulokset, ole hyvä ja tarkista hakusi.
   tracking:
     completed: "Käytetty aika: {{ duration }}"
     in_progress: "Arvioitu aika jäljellä nykyiselle vaiheelle: {{ duration }}"
