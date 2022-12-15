@@ -1,3 +1,5 @@
+includes:
+  - '%rootDir%/../phpstan-deprecation-rules/rules.neon'
 parameters:
   treatPhpDocTypesAsCertain: false
   excludePaths:
