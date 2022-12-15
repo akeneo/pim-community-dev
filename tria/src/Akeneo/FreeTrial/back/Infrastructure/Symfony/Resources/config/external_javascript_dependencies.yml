@@ -52,3 +52,16 @@ services:
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
+
+
+  Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies\LinkedinInsightsTag:
+    arguments:
+      - '@feature_flags'
+    tags:
+      - { name: akeneo.pim.security.content_security_policy_provider }
+
+  Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies\RedditPixel:
+    arguments:
+      - '@feature_flags'
+    tags:
+      - { name: akeneo.pim.security.content_security_policy_provider }
