@@ -1,6 +1,7 @@
 export * from './properties';
 export * from './conditions';
 export * from './delimiter';
+export * from './family';
 export * from './flatten-attribute';
 export * from './identifierGenerator';
 export * from './identifierGeneratorCode';

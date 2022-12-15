@@ -1,4 +1,5 @@
 export * from './Common';
+export * from './FamiliesSelector';
 export * from './Header';
 export * from './IdentifierAttributeSelector';
 export * from './LabelTranslations';
