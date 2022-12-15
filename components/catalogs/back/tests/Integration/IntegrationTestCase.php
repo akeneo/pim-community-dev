@@ -559,6 +559,14 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
+    protected function removeChannel(string $code): void
+    {
+        $channel = self::getContainer()->get('pim_catalog.repository.channel')
+            ->findOneByIdentifier($code);
+
+        self::getContainer()->get('pim_catalog.remover.channel')->remove($channel);
+    }
+
     protected function createFamily(array $familyData): void
     {
         /** @var FamilyInterface $family */
@@ -599,6 +607,26 @@ abstract class IntegrationTestCase extends WebTestCase
             'enabled' => true,
         ]);
         self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
+    }
+
+    protected function disableCurrency(string $code): void
+    {
+        $currency = self::getContainer()->get('pim_catalog.repository.currency')->findOneByIdentifier($code);
+        self::getContainer()->get('pim_catalog.updater.currency')->update($currency, [
+            'code' => $code,
+            'enabled' => false,
+        ]);
+        self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
+    }
+
+    protected function disableLocale(string $code): void
+    {
+        $locale = self::getContainer()->get('pim_catalog.repository.locale')->findOneByIdentifier($code);
+        self::getContainer()->get('pim_catalog.updater.locale')->update($locale, [
+            'code' => $code,
+            'enabled' => false,
+        ]);
+        self::getContainer()->get('pim_catalog.saver.locale')->save($locale);
     }
 
     protected function getCatalog(string $id): Catalog

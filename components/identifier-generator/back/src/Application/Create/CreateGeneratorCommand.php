@@ -15,8 +15,8 @@ final class CreateGeneratorCommand implements CommandInterface
 {
     /**
      * @param string $code
-     * @param array<mixed> $conditions
-     * @param array<mixed> $structure
+     * @param list<array<string, mixed>> $conditions
+     * @param list<array<string, mixed>> $structure
      * @param array<string, string> $labels
      * @param string $target
      * @param string|null $delimiter
@@ -40,8 +40,8 @@ final class CreateGeneratorCommand implements CommandInterface
             Assert::keyExists($normalizedGenerator, $key);
         }
         Assert::string($normalizedGenerator['code']);
-        Assert::isArray($normalizedGenerator['conditions']);
-        Assert::isArray($normalizedGenerator['structure']);
+        Assert::isList($normalizedGenerator['conditions']);
+        Assert::isList($normalizedGenerator['structure']);
         Assert::isArray($normalizedGenerator['labels']);
         Assert::string($normalizedGenerator['target']);
         Assert::nullOrString($normalizedGenerator['delimiter']);

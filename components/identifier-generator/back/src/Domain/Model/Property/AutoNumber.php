@@ -10,6 +10,8 @@ use Webmozart\Assert\Assert;
  * Property to add an auto number to the structure
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-type AutoNumberNormalized array{type: string, numberMin: int, digitsMin: int}
  */
 final class AutoNumber implements PropertyInterface
 {
@@ -50,7 +52,7 @@ final class AutoNumber implements PropertyInterface
     }
 
     /**
-     * @inheritDoc
+     * @return AutoNumberNormalized
      */
     public function normalize(): array
     {

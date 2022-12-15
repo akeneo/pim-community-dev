@@ -27,7 +27,13 @@ const unMemoizedBuildRichTextFieldAttribute: AttributeFieldBuilder<AttributeInpu
     // we have to force react to rebuild it when changing the value (when channel or locale is changed for instance)
     return (
       <Field960 label={getLabelFromAttribute(attribute, locale)} channel={channel} locale={locale}>
-        <TextAreaInput key={buildCompositeKey(attribute, channel, locale)} isRichText name={attribute.code} value={value} onChange={onChange} />
+        <TextAreaInput
+          key={buildCompositeKey(attribute, channel, locale)}
+          isRichText
+          name={attribute.code}
+          value={value}
+          onChange={onChange}
+        />
       </Field960>
     );
   };

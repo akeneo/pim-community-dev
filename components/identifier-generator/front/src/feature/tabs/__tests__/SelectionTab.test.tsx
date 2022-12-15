@@ -3,6 +3,7 @@ import {mockResponse, render, screen, fireEvent} from '../../tests/test-utils';
 import {SelectionTab} from '../SelectionTab';
 import {CONDITION_NAMES} from '../../models';
 
+jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
 
 describe('SelectionTab', () => {
@@ -39,5 +40,20 @@ describe('SelectionTab', () => {
     expect(screen.getByText('EnabledLineMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update value'));
     expect(onChange).toBeCalledWith([{type: CONDITION_NAMES.ENABLED, value: false}]);
+  });
+
+  it('should add a condition', async () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+
+    const onChange = jest.fn();
+    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} />);
+
+    expect(await screen.findByText('Sku')).toBeInTheDocument();
+    expect(screen.getByText('AddConditionButtonMock')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Add condition'));
+    expect(screen.getByText('EnabledLineMock')).toBeInTheDocument();
+    expect(onChange).toBeCalledWith([{type: CONDITION_NAMES.ENABLED}]);
   });
 });

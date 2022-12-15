@@ -62,6 +62,7 @@ final class GetWizardDataAction
             'appName' => $app->getName(),
             'appLogo' => $app->getLogo(),
             'appUrl' => $app->getUrl(),
+            'appIsCertified' => $app->isCertified(),
             'oldScopeMessages' => $oldAuthorizationScopeMessages,
             'scopeMessages' => $newAuthorizationScopeMessages,
             'oldAuthenticationScopes' => $oldAuthenticationScopes,

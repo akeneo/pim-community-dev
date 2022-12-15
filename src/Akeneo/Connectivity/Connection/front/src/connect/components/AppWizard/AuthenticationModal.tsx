@@ -69,6 +69,7 @@ export const AuthenticationModal: FC<Props> = ({clientId}) => {
                     appUrl={wizardData.appUrl}
                     scopesConsentGiven={scopesConsentGiven}
                     setScopesConsent={setScopesConsent}
+                    displayConsent={true}
                 />
             )}
         </WizardModal>

@@ -10,7 +10,6 @@ use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
 use Lcobucci\JWT\Configuration;
-use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Ramsey\Uuid\Uuid;
@@ -21,18 +20,11 @@ use Ramsey\Uuid\Uuid;
  */
 class CreateJsonWebToken
 {
-    private ClockInterface $clock;
-    private PimUrl $pimUrl;
-    private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery;
-
     public function __construct(
-        ClockInterface $clock,
-        PimUrl $pimUrl,
-        GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery
+        private ClockInterface $clock,
+        private PimUrl $pimUrl,
+        private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery
     ) {
-        $this->clock = $clock;
-        $this->pimUrl = $pimUrl;
-        $this->getAsymmetricKeysQuery = $getAsymmetricKeysQuery;
     }
 
     public function create(
@@ -43,6 +35,10 @@ class CreateJsonWebToken
         string $lastName,
         string $email
     ): string {
+        /**
+         * @var non-empty-string $publicKey
+         * @var non-empty-string $privateKey
+         */
         ['public_key' => $publicKey, 'private_key' => $privateKey] = $this->getAsymmetricKeysQuery->execute(
         )->normalize();
         $privateKey = InMemory::plainText($privateKey);

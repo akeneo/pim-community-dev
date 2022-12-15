@@ -8,8 +8,7 @@ const TableActionCellContainer = styled.td`
   color: ${getColor('grey', 140)};
   border-bottom: 1px solid ${getColor('grey', 60)};
   padding: 0 10px;
-  max-width: 15vw;
-  min-width: 0;
+  width: 50px;
 `;
 
 const InnerTableActionCellContainer = styled.div`
