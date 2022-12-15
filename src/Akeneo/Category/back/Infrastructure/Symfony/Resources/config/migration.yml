@@ -1,0 +1,6 @@
+services:
+  Akeneo\Category\Infrastructure\Migration\V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration:
+    arguments:
+      - '@monolog.logger'
+    tags:
+      - { name: 'akeneo.pim.zdd_migration' }
