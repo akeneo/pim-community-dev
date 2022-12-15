@@ -45,6 +45,7 @@ class CategoryTestCase extends TestCase
 {
     /**
      * @param array<string, string|null>|null $labels
+     * @param array<string, array<array{id: int, label: string}>>|null $permissions
      *
      * @throws Exception
      * @throws \Doctrine\DBAL\Exception

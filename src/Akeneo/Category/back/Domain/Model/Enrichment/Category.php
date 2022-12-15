@@ -72,7 +72,7 @@ class Category
     }
 
     /**
-     * @param array<string, array<int, string>> $permissions
+     * @param array<string, array<array{id: int, label: string}>> $permissions
      */
     public static function fromCategoryWithPermissions(Category $category, array $permissions): self
     {
