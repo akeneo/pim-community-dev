@@ -180,7 +180,8 @@ class IdentifierGeneratorSpec extends ObjectBehavior
     {
         $this->match(new ProductProjection(
             '',
-            true
+            true,
+            ''
         ))->shouldReturn(true);
     }
 
@@ -188,7 +189,8 @@ class IdentifierGeneratorSpec extends ObjectBehavior
     {
         $this->match(new ProductProjection(
             null,
-            true
+            true,
+            ''
         ))->shouldReturn(true);
     }
 
@@ -196,7 +198,8 @@ class IdentifierGeneratorSpec extends ObjectBehavior
     {
         $this->match(new ProductProjection(
             'a_product_identifier',
-            true
+            true,
+            ''
         ))->shouldReturn(false);
     }
 
@@ -204,7 +207,8 @@ class IdentifierGeneratorSpec extends ObjectBehavior
     {
         $this->match(new ProductProjection(
             null,
-            false
+            false,
+            ''
         ))->shouldReturn(false);
     }
 }
