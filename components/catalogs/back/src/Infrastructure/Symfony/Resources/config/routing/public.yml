@@ -62,3 +62,8 @@ akeneo_catalogs_public_get_mapped_products:
     path: '/api/rest/v1/catalogs/{catalogId}/mapped-products'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetMappedProductsAction
     methods: [ GET ]
+
+akeneo_catalogs_public_get_mapped_product:
+    path: '/api/rest/v1/catalogs/{catalogId}/mapped-products/{productUuid}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetMappedProductAction
+    methods: [ GET ]
