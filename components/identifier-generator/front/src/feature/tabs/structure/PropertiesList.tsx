@@ -5,7 +5,7 @@ import {PropertyId, StructureWithIdentifiers} from '../StructureTab';
 import {PROPERTY_NAMES} from '../../models';
 import {AutoNumberLine, FreeTextLine} from './line';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {DeletePropertyModal} from '../../pages';
+import {SimpleDeleteModal} from '../../pages';
 
 type PropertiesListProps = {
   structure: StructureWithIdentifiers;
@@ -53,7 +53,7 @@ const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, sel
           ))}
         </Table.Body>
       </Table>
-      {propertyIdToDelete && <DeletePropertyModal onClose={closeModal} onDelete={handleDelete} />}
+      {propertyIdToDelete && <SimpleDeleteModal onClose={closeModal} onDelete={handleDelete} />}
     </>
   );
 };
