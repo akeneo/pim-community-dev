@@ -6,7 +6,7 @@ import {Family, FamilyCode} from '../models';
 import {Unauthorized} from '../errors';
 
 type FamiliesSelectorProps = {
-  familyCodes: FamilyCode[],
+  familyCodes: FamilyCode[];
   onChange: (familyCodes: FamilyCode[]) => void;
 };
 
@@ -28,14 +28,15 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
   const [debouncedInvalidFamilyCodes, setDebouncedInvalidFamilyCodes] = React.useState<FamilyCode[]>([]);
   React.useEffect(() => {
     if (!isLoading && !error) {
-      setDebouncedInvalidFamilyCodes(familyCodes
-        .filter(code => !(selectedFamilies as Family[]).map(f => f.code).includes(code)));
+      setDebouncedInvalidFamilyCodes(
+        familyCodes.filter(code => !(selectedFamilies as Family[]).map(f => f.code).includes(code))
+      );
     }
   }, [selectedFamilies, isLoading, error]);
 
   const getFamiliesList = [
     ...(families || []),
-    ...(debouncedSelectedFamilies || []).filter(family => !(families || []).map(f => f.code).includes(family.code))
+    ...(debouncedSelectedFamilies || []).filter(family => !(families || []).map(f => f.code).includes(family.code)),
   ];
 
   if (error) {
@@ -45,22 +46,25 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
     return <Helper level={'error'}>{translate('pim_error.general')}</Helper>;
   }
 
-  return <MultiSelectInput
-    emptyResultLabel={translate('pim_common.no_result')}
-    placeholder="Please select at least one family"
-    removeLabel={translate('pim_common.remove')}
-    openLabel={translate('pim_common.open')}
-    onNextPage={handleNextPage}
-    onSearchChange={handleSearchChange}
-    onChange={onChange}
-    value={familyCodes}
-    invalidValue={debouncedInvalidFamilyCodes}
-  >
-    {getFamiliesList.map(family => (
-      <MultiSelectInput.Option value={family.code} key={family.code}>
-        {getLabel(family.labels, catalogLocale, family.code)}
-    </MultiSelectInput.Option>))}
-  </MultiSelectInput>;
+  return (
+    <MultiSelectInput
+      emptyResultLabel={translate('pim_common.no_result')}
+      placeholder="Please select at least one family"
+      removeLabel={translate('pim_common.remove')}
+      openLabel={translate('pim_common.open')}
+      onNextPage={handleNextPage}
+      onSearchChange={handleSearchChange}
+      onChange={onChange}
+      value={familyCodes}
+      invalidValue={debouncedInvalidFamilyCodes}
+    >
+      {getFamiliesList.map(family => (
+        <MultiSelectInput.Option value={family.code} key={family.code}>
+          {getLabel(family.labels, catalogLocale, family.code)}
+        </MultiSelectInput.Option>
+      ))}
+    </MultiSelectInput>
+  );
 };
 
 export {FamiliesSelector};
