@@ -151,7 +151,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
     private function removeCategoryCodesFilterInAllJobInstances(array $categoryCodes): int
     {
         $jobsToUpdate = [];
-        foreach ($this->repository->findAll() as $jobInstance) {
+        foreach ($this->getJobInstances() as $jobInstance) {
             if ($this->updateCategoryCodesFilterInJobInstance($jobInstance, $categoryCodes)) {
                 $jobsToUpdate[] = $jobInstance;
             }
@@ -162,6 +162,11 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
         }
 
         return count($jobsToUpdate);
+    }
+
+    protected function getJobInstances(): array
+    {
+        return $this->repository->findAll();
     }
 
     /**
