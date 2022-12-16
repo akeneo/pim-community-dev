@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
 import {SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -52,11 +52,11 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     onChange(removeIdentifiers(newConditions));
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setConditionIdToDelete(undefined);
-  };
+  }, []);
 
-  const handleDeleteCondition = (): void => {
+  const handleDeleteCondition = useCallback((): void => {
     if (conditionIdToDelete) {
       const newConditions = conditionsWithId.filter(condition => condition.id !== conditionIdToDelete);
       setConditionsWithId(newConditions);
@@ -65,11 +65,11 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     }
 
     closeModal();
-  };
+  }, [closeModal, conditionIdToDelete, conditionsWithId, onChange]);
 
-  const onDelete = (conditionId: ConditionIdentifier) => () => {
+  const onDelete = useCallback((conditionId: ConditionIdentifier) => () => {
     setConditionIdToDelete(conditionId);
-  };
+  }, []);
 
   return (
     <>
