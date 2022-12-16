@@ -59,7 +59,7 @@ const googleCloudStorage: GoogleCloudStorage = {
   type: 'google_cloud',
   file_path: '/tmp/test.xlsx',
   project_id: 'eu-west-3',
-  service_account: 'a_service_account',
+  service_account: '{"type": "service_account"}',
   bucket: 'a_bucket',
 };
 

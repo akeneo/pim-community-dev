@@ -25,7 +25,7 @@ test('it renders the google cloud storage configurator', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
-    service_account: 'a_service_account',
+    service_account: '{"type": "service_account"}',
     bucket: 'a_bucket',
   };
 
@@ -42,7 +42,7 @@ test('it renders the google cloud storage configurator', async () => {
 
   expect(screen.getByDisplayValue('/tmp/file.xlsx')).toBeInTheDocument();
   expect(screen.getByDisplayValue('a_project_id')).toBeInTheDocument();
-  expect(screen.getByDisplayValue('a_service_account')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('{"type": "service_account"}')).toBeInTheDocument();
   expect(screen.getByDisplayValue('a_bucket')).toBeInTheDocument();
 });
 
@@ -51,7 +51,7 @@ test('it allows user to fill file_path field', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xls',
     project_id: 'a_project_id',
-    service_account: 'a_service_account',
+    service_account: '{"type": "service_account"}',
     bucket: 'a_bucket',
   };
 
@@ -81,7 +81,7 @@ test('it allows user to fill project_id field', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_i',
-    service_account: 'a_service_account',
+    service_account: '{"type": "service_account"}',
     bucket: 'a_bucket',
   };
 
@@ -111,7 +111,7 @@ test('it allows user to fill service_account field', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
-    service_account: 'a_service_accoun',
+    service_account: '{"type": "service_account"',
     bucket: 'a_bucket',
   };
 
@@ -131,9 +131,9 @@ test('it allows user to fill service_account field', async () => {
   const serviceAccountInput = screen.getByLabelText(
     'pim_import_export.form.job_instance.storage_form.service_account.label pim_common.required_label'
   );
-  userEvent.type(serviceAccountInput, 't');
+  userEvent.type(serviceAccountInput, '}');
 
-  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, service_account: 'a_service_account'});
+  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, service_account: '{"type": "service_account"}'});
 });
 
 test('it allows user to fill bucket field', async () => {
@@ -141,7 +141,7 @@ test('it allows user to fill bucket field', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
-    service_account: 'a_service_account',
+    service_account: '{"type": "service_account"}',
     bucket: '',
   };
 
@@ -196,7 +196,7 @@ test('it displays validation errors', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
-    service_account: 'a_service_account',
+    service_account: '{"type": "service_account"}',
     bucket: 'a_bucket',
   };
 
@@ -253,7 +253,7 @@ test('it can check connection', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
-    service_account: 'a_service_account',
+    service_account: '{"type": "service_account"}',
     bucket: 'a_bucket',
   };
 
@@ -320,7 +320,7 @@ test('it can check connection, display message if error', async () => {
     type: 'google_cloud',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
-    service_account: 'a_service_account',
+    service_account: '{"type": "service_account"}',
     bucket: 'a_bucket',
   };
 
