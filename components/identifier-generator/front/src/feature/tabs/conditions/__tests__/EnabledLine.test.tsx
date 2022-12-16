@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, screen, waitFor} from '../../../tests/test-utils';
+import {fireEvent, render, screen} from '../../../tests/test-utils';
 import {EnabledLine} from '../EnabledLine';
 import {CONDITION_NAMES} from '../../../models';
 
