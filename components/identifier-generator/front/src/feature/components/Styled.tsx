@@ -54,6 +54,14 @@ const CellInputContainer = styled(Table.Cell)`
   width: calc(10vw + 20px);
 `;
 
+const NotDraggableCell = styled(Table.Cell)`
+  width: 44px;
+`;
+
+const TitleCondition = styled(TitleCell)`
+  width: calc(10vw + 100px);
+`;
+
 const Styled = {
   CellInputContainer,
   FormContainer,
@@ -63,6 +71,8 @@ const Styled = {
   TwoColumns,
   TranslationsLabelSkeleton,
   TranslationsTextFieldSkeleton,
+  NotDraggableCell,
+  TitleCondition,
 };
 
 export {Styled};
