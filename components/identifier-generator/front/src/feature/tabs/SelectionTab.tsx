@@ -5,7 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
 import {ListSkeleton} from '../components';
-import {EnabledLine} from './conditions';
+import {AddConditionButton, EnabledLine} from './conditions';
 
 type SelectionTabProps = {
   conditions: Conditions;
@@ -25,7 +25,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     }))
   );
 
-  const removeIds: (conditionsWithId: ConditionsWithIdentifier) => Conditions = conditionsWithId => {
+  const removeIdentifiers: (conditionsWithId: ConditionsWithIdentifier) => Conditions = conditionsWithId => {
     return conditionsWithId.map(conditionWithId => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {id, ...condition} = conditionWithId;
@@ -39,13 +39,22 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     const newConditions = [...conditionsWithId];
     newConditions[index] = conditionWithId;
     setConditionsWithId(newConditions);
-    onChange(removeIds(newConditions));
+    onChange(removeIdentifiers(newConditions));
+  };
+
+  const onAddCondition = (condition: Condition) => {
+    const newConditionId = uuid();
+    const newConditions = [...conditionsWithId, {...condition, id: newConditionId}];
+    setConditionsWithId(newConditions);
+    onChange(removeIdentifiers(newConditions));
   };
 
   return (
     <>
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_identifier_generator.tabs.product_selection')}</SectionTitle.Title>
+        <SectionTitle.Spacer />
+        <AddConditionButton onAddCondition={onAddCondition} />
       </SectionTitle>
       <Table>
         <Table.Body>

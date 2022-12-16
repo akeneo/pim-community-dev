@@ -256,7 +256,7 @@ const CategoryEditPage: FC = () => {
         <PageHeader.State>{thereAreUnsavedChanges && <UnsavedChanges />}</PageHeader.State>
       </PageHeader>
       <CategoryPageContent>
-        <TabBar moreButtonTitle={'More'}>
+        <TabBar moreButtonTitle={'More'} sticky={0}>
           {isGranted('pim_enrich_product_category_edit_attributes') && template && (
             <TabBar.Tab isActive={isCurrent(Tabs.ATTRIBUTE)} onClick={() => handleSwitchTo(Tabs.ATTRIBUTE)}>
               {translate('akeneo.category.attributes')}

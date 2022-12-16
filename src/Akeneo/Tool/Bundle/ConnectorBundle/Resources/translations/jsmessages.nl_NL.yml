@@ -13,6 +13,7 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Bereken root product modellen gegevens
     compute_data_related_to_family_sub_product_models: Bereken sub product modellen gegevens
     compute_data_related_to_family_products: Productgegevens berekenen
+    index_family_products_and_product_models: Familieproducten en productmodellen worden berekend
     compute_family_variant_structure_changes: Wijzigingen van de familie variant structuur berekenen
     compute_completeness_of_products_family: Berekenen van de volledigheid van de producten-familie
     index_family_products: Familieproducten en productmodellen worden berekend

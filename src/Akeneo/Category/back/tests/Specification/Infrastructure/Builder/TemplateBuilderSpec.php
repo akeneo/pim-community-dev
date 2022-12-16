@@ -66,29 +66,24 @@ class TemplateBuilderSpec extends ObjectBehavior
 
         $template->getCode()->__toString()->shouldReturn('category_code_template');
 
-        $descriptionAttribute = $template->getAttributeCollection()->getAttributeByCode('description');
-        $descriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::RICH_TEXT);
-        $descriptionAttribute->getOrder()->intValue()->shouldReturn(1);
-        $descriptionAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Description');
+        $richTextAttribute = $template->getAttributeCollection()->getAttributeByCode('long_description');
+        $richTextAttribute->getType()->__toString()->shouldReturn(AttributeType::RICH_TEXT);
+        $richTextAttribute->getOrder()->intValue()->shouldReturn(1);
+        $richTextAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Long description');
 
-        $imageAttribute = $template->getAttributeCollection()->getAttributeByCode('banner_image');
+        $textAttribute = $template->getAttributeCollection()->getAttributeByCode('url_slug');
+        $textAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXT);
+        $textAttribute->getOrder()->intValue()->shouldReturn(3);
+        $textAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('URL slug');
+
+        $imageAttribute = $template->getAttributeCollection()->getAttributeByCode('image_1');
         $imageAttribute->getType()->__toString()->shouldReturn(AttributeType::IMAGE);
-        $imageAttribute->getOrder()->intValue()->shouldReturn(2);
-        $imageAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Banner image');
+        $imageAttribute->getOrder()->intValue()->shouldReturn(4);
+        $imageAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('Image 1');
 
-        $metaTitleAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_meta_title');
-        $metaTitleAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXT);
-        $metaTitleAttribute->getOrder()->intValue()->shouldReturn(3);
-        $metaTitleAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Meta Title');
-
-        $metaDescriptionAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_meta_description');
-        $metaDescriptionAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
-        $metaDescriptionAttribute->getOrder()->intValue()->shouldReturn(4);
-        $metaDescriptionAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Meta Description');
-
-        $keywordsAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_keywords');
-        $keywordsAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
-        $keywordsAttribute->getOrder()->intValue()->shouldReturn(5);
-        $keywordsAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO Keywords');
+        $textAreaAttribute = $template->getAttributeCollection()->getAttributeByCode('seo_meta_description');
+        $textAreaAttribute->getType()->__toString()->shouldReturn(AttributeType::TEXTAREA);
+        $textAreaAttribute->getOrder()->intValue()->shouldReturn(11);
+        $textAreaAttribute->getLabelCollection()->getTranslation('en_US')->shouldReturn('SEO meta description');
     }
 }

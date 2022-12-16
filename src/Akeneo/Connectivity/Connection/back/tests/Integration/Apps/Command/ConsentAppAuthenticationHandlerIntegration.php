@@ -121,31 +121,6 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
         $this->handler->handle(new ConsentAppAuthenticationCommand($appId, $user->getId()));
     }
 
-    public function test_it_throws_logic_exception_because_of_missing_openid_authentication_scope(): void
-    {
-        $appId = 'an_app_id';
-        $autenticationScope = ScopeList::fromScopes(['whatever_scope']);
-
-        $this->createOAuth2Client(['marketplacePublicAppId' => $appId]);
-        $user = $this->createAdminUser();
-        $this->createConnectedApp($appId);
-
-        $appAuthorization = AppAuthorization::createFromNormalized([
-            'client_id' => $appId,
-            'redirect_uri' => 'http://shopware.example.com/callback',
-            'authorization_scope' => 'read_catalog_structure write_products',
-            'authentication_scope' => $autenticationScope->toScopeString(),
-            'state' => 'foo',
-        ]);
-
-        $this->appAuthorizationSession->initialize($appAuthorization);
-
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The app authorization should request the openid scope');
-
-        $this->handler->handle(new ConsentAppAuthenticationCommand($appId, $user->getId()));
-    }
-
     public function test_it_throws_logic_exception_because_of_missing_connected_app_into_database(): void
     {
         $appId = 'an_app_id';

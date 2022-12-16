@@ -31,8 +31,8 @@ class GetMappedProductsPerformance extends PerformanceTestCase
         $this->config->setTitle('Get mapped products from a Catalog');
         $this->config->assert('main.wall_time < 350ms', 'Wall time');
         $this->config->assert('main.peak_memory < 50mb', 'Peak memory');
-        $this->config->assert('metrics.sql.queries.count < 20', 'SQL queries');
-        $this->config->assert('metrics.http.curl.requests.count == 2', 'Network requests');
+        $this->config->assert('metrics.sql.queries.count <= 20', 'SQL queries');
+        $this->config->assert('metrics.http.curl.requests.count <= 2', 'Network requests');
 
         $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 

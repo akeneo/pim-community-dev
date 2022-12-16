@@ -13,6 +13,7 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: 计算根产品模型数据
     compute_data_related_to_family_sub_product_models: 计算子产品模型数据
     compute_data_related_to_family_products: 计算产品数据
+    index_family_products_and_product_models: 指数品类产品和产品模型
     compute_family_variant_structure_changes: 计算品类变型结构变化
     compute_completeness_of_products_family: 计算产品品类的完成度
     index_family_products: 指数品类产品和产品模型
