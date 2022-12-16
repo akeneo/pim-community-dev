@@ -2,12 +2,12 @@ import React, {FC} from 'react';
 import {Button, DeleteIllustration, Modal} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
-type DeleteGeneratorModalProps = {
+type SimpleDeleteModalProps = {
   onClose: () => void;
   onDelete: () => void;
 };
 
-const DeletePropertyModal: FC<DeleteGeneratorModalProps> = ({onClose, onDelete}) => {
+const SimpleDeleteModal: FC<SimpleDeleteModalProps> = ({onClose, onDelete}) => {
   const translate = useTranslate();
 
   return (
@@ -27,4 +27,4 @@ const DeletePropertyModal: FC<DeleteGeneratorModalProps> = ({onClose, onDelete})
   );
 };
 
-export {DeletePropertyModal};
+export {SimpleDeleteModal};
