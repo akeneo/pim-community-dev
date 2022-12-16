@@ -5,7 +5,7 @@ import {CONDITION_NAMES} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
-jest.mock('../../pages/DeletePropertyModal');
+jest.mock('../../pages/SimpleDeleteModal');
 
 describe('SelectionTab', () => {
   it('should render the selection tab', () => {
@@ -71,6 +71,6 @@ describe('SelectionTab', () => {
     expect(screen.getByText('EnabledLineMock')).toBeInTheDocument();
     expect(screen.getByText('Delete Enabled')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete Enabled'));
-    expect(screen.getByText('DeletePropertyModalMock')).toBeInTheDocument();
+    expect(screen.getByText('SimpleDeleteModalMock')).toBeInTheDocument();
   });
 });
