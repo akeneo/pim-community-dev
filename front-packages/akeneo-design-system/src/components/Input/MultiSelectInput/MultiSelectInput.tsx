@@ -107,6 +107,11 @@ type MultiMultiSelectInputProps = Override<
     value: string[];
 
     /**
+     * The selected options which are invalid
+     */
+    invalidValue?: string[];
+
+    /**
      * The placeholder displayed when no option is selected.
      */
     placeholder?: string;
@@ -167,6 +172,7 @@ const MultiSelectInput = ({
   placeholder,
   invalid,
   value,
+  invalidValue = [],
   emptyResultLabel,
   children = [],
   onChange,
@@ -265,6 +271,7 @@ const MultiSelectInput = ({
           id={id}
           placeholder={placeholder}
           value={value.map(chipCode => indexedChips[chipCode] ?? {code: chipCode, label: chipCode})}
+          invalidValue={invalidValue}
           searchValue={searchValue}
           removeLabel={removeLabel}
           readOnly={readOnly}

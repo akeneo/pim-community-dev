@@ -66,7 +66,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     return identifierAttributes.find(attribute => attribute.code === target)?.label;
   };
 
-  const [familyCodes, setFamilyCodes] = React.useState<string[]>(['family1043', 'accessories', 'family1143']);
+  const [familyCodes, setFamilyCodes] = React.useState<string[]>(['family1043', 'accessories', 'non_existing', 'family1143']);
 
   return (
     <>
