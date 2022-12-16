@@ -32,7 +32,7 @@ const IdentifierAttributeSelector: React.FC<{code: string}> = ({code}) => {
       </SelectInput>
       {status === Status.FORBIDDEN && (
         <Helper inline level="error">
-          {translate('pim_error.unauthorized')}
+          {translate('pim_error.unauthorized_list_attributes')}
         </Helper>
       )}
       {status === Status.ERROR && (
