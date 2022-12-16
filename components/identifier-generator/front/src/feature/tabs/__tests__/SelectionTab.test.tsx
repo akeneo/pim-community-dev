@@ -64,7 +64,9 @@ describe('SelectionTab', () => {
     });
 
     const onChange = jest.fn();
-    render(<SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />);
+    render(
+      <SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />
+    );
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
 
@@ -72,5 +74,26 @@ describe('SelectionTab', () => {
     expect(screen.getByText('Delete Enabled')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete Enabled'));
     expect(screen.getByText('SimpleDeleteModalMock')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Delete property'));
+    expect(screen.queryByText('SimpleDeleteModalMock')).not.toBeInTheDocument();
+  });
+
+  it('should cancel deletion of a condition', async () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+
+    const onChange = jest.fn();
+    render(
+      <SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />
+    );
+
+    expect(await screen.findByText('Sku')).toBeInTheDocument();
+
+    expect(screen.getByText('EnabledLineMock')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Delete Enabled'));
+    expect(screen.getByText('SimpleDeleteModalMock')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Close modal'));
+    expect(screen.queryByText('SimpleDeleteModalMock')).not.toBeInTheDocument();
   });
 });
