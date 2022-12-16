@@ -14,22 +14,28 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
   const {families, handleNextPage, handleSearchChange} = usePaginatedFamilies();
-  const {data: selectedValues, isLoading} = useGetFamilies({codes: familyCodes});
+  const {data: selectedFamilies, isLoading} = useGetFamilies({codes: familyCodes});
 
   // Avoid blinking of values when selecting a new one
-  const [debouncedSelectedValues, setDebouncedSelectedValues] = React.useState<Family[]>([]);
+  const [debouncedSelectedFamilies, setDebouncedSelectedFamilies] = React.useState<Family[]>([]);
   React.useEffect(() => {
     if (!isLoading) {
-      setDebouncedSelectedValues(selectedValues as Family[]);
+      setDebouncedSelectedFamilies(selectedFamilies as Family[]);
     }
-  }, [selectedValues, isLoading]);
+  }, [selectedFamilies, isLoading]);
+
+  const [debouncedInvalidFamilyCodes, setDebouncedInvalidFamilyCodes] = React.useState<FamilyCode[]>([]);
+  React.useEffect(() => {
+    if (!isLoading) {
+      setDebouncedInvalidFamilyCodes(familyCodes
+        .filter(code => !(selectedFamilies as Family[]).map(f => f.code).includes(code)));
+    }
+  }, [selectedFamilies, isLoading]);
 
   const getFamiliesList = [
     ...(families || []),
-    ...(debouncedSelectedValues || []).filter(family => !(families || []).map(f => f.code).includes(family.code))
+    ...(debouncedSelectedFamilies || []).filter(family => !(families || []).map(f => f.code).includes(family.code))
   ];
-
-  console.log(JSON.stringify(getFamiliesList));
 
   return <MultiSelectInput
     emptyResultLabel={translate('pim_common.no_result')}
@@ -40,10 +46,11 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
     onSearchChange={handleSearchChange}
     onChange={onChange}
     value={familyCodes}
+    invalidValue={debouncedInvalidFamilyCodes}
   >
     {getFamiliesList.map(family => (
       <MultiSelectInput.Option value={family.code} key={family.code}>
-      {getLabel(family.labels, catalogLocale, family.code)}
+        {getLabel(family.labels, catalogLocale, family.code)}
     </MultiSelectInput.Option>))}
   </MultiSelectInput>;
 };
