@@ -12,14 +12,12 @@ import {
   Table,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useGetIdentifierGenerators, useIdentifierAttributes} from '../hooks';
-import {LabelCollection, Target} from '../models';
+import {useGetIdentifierGenerators, useIdentifierAttributes, useStructureTabs} from '../hooks';
+import {GeneratorTab, LabelCollection, Target} from '../models';
 import {Styled} from './styles';
-import {FamiliesSelector, Header, ListSkeleton} from '../components';
+import {Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
-import {GeneratorTab} from '../models/generatorTab';
-import {useStructureTabs} from '../hooks/useStructureTabs';
 
 type ListPageProps = {
   onCreate: () => void;
@@ -66,11 +64,8 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     return identifierAttributes.find(attribute => attribute.code === target)?.label;
   };
 
-  const [familyCodes, setFamilyCodes] = React.useState<string[]>(['family1043', 'accessories', 'non_existing', 'family1143']);
-
   return (
     <>
-      <FamiliesSelector familyCodes={familyCodes} onChange={setFamilyCodes}/>
       <Header>
         <Button onClick={onCreate} disabled={isCreateDisabled}>
           {translate('pim_common.create')}
