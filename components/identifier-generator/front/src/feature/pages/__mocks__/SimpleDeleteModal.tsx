@@ -1,18 +1,18 @@
 import React, {FC} from 'react';
 
-type DeletePropertyModalProps = {
+type SimpleDeleteModalProps = {
   onClose: () => void;
   onDelete: () => void;
 };
 
-const DeletePropertyModal: FC<DeletePropertyModalProps> = ({onClose, onDelete}) => {
+const SimpleDeleteModal: FC<SimpleDeleteModalProps> = ({onClose, onDelete}) => {
   return (
     <>
-      DeletePropertyModalMock
+      SimpleDeleteModalMock
       <button onClick={onDelete}>Delete property</button>
       <button onClick={onClose}>Close modal</button>
     </>
   );
 };
 
-export {DeletePropertyModal};
+export {SimpleDeleteModal};
