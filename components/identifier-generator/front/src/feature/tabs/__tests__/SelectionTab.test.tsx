@@ -76,6 +76,7 @@ describe('SelectionTab', () => {
     expect(screen.getByText('SimpleDeleteModalMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete property'));
     expect(screen.queryByText('SimpleDeleteModalMock')).not.toBeInTheDocument();
+    expect(onChange).toBeCalledWith([]);
   });
 
   it('should cancel deletion of a condition', async () => {
@@ -95,5 +96,6 @@ describe('SelectionTab', () => {
     expect(screen.getByText('SimpleDeleteModalMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Close modal'));
     expect(screen.queryByText('SimpleDeleteModalMock')).not.toBeInTheDocument();
+    expect(onChange).not.toBeCalledWith([]);
   });
 });
