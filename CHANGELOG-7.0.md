@@ -1,4 +1,4 @@
-# master
+# 7.0.0
 
 ## Bug fixes
 
