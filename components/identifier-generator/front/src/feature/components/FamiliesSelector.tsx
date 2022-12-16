@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {MultiSelectInput} from 'akeneo-design-system';
 import {useGetFamilies, usePaginatedFamilies} from '../hooks/useFamilies';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {FamilyCode} from '../models';
+import {Family, FamilyCode} from '../models';
 
 type FamiliesSelectorProps = {
   familyCodes: FamilyCode[],
@@ -14,11 +14,19 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
   const {families, handleNextPage, handleSearchChange} = usePaginatedFamilies();
-  const {data: selectedValues} = useGetFamilies({codes: familyCodes});
+  const {data: selectedValues, isLoading} = useGetFamilies({codes: familyCodes});
+
+  // Avoid blinking of values when selecting a new one
+  const [debouncedSelectedValues, setDebouncedSelectedValues] = React.useState<Family[]>([]);
+  React.useEffect(() => {
+    if (!isLoading) {
+      setDebouncedSelectedValues(selectedValues as Family[]);
+    }
+  }, [selectedValues, isLoading]);
 
   const getFamiliesList = [
     ...(families || []),
-    ...(selectedValues || []).filter(family => !(families || []).map(f => f.code).includes(family.code))
+    ...(debouncedSelectedValues || []).filter(family => !(families || []).map(f => f.code).includes(family.code))
   ];
 
   console.log(JSON.stringify(getFamiliesList));
