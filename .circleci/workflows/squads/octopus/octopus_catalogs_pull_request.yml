@@ -79,5 +79,6 @@ workflows:
                     requires:
                         - ce_test_front
                         - ce_test_back
+                        - ce_test_performance
                         - ee_test_front
                         - ee_test_back
