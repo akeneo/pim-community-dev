@@ -36,7 +36,7 @@ type MicrosoftAzureStorage = {
 };
 
 type GoogleCloudStorage = {
-  type: 'google_cloud';
+  type: 'google_cloud_storage';
   file_path: string;
   project_id: string;
   service_account: string;
@@ -50,9 +50,9 @@ type NoneStorage = {
 
 type Storage = LocalStorage | SftpStorage | AmazonS3Storage | MicrosoftAzureStorage | GoogleCloudStorage | NoneStorage;
 
-type StorageType = 'none' | 'local' | 'sftp' | 'amazon_s3' | 'microsoft_azure' | 'google_cloud';
+type StorageType = 'none' | 'local' | 'sftp' | 'amazon_s3' | 'microsoft_azure' | 'google_cloud_storage';
 
-const STORAGE_TYPES = ['none', 'sftp', 'amazon_s3', 'microsoft_azure', 'google_cloud'];
+const STORAGE_TYPES = ['none', 'sftp', 'amazon_s3', 'microsoft_azure', 'google_cloud_storage'];
 
 const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
   featureFlags.isEnabled('job_automation_local_storage');
@@ -108,9 +108,9 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
         connection_string: '',
         container_name: '',
       };
-    case 'google_cloud':
+    case 'google_cloud_storage':
       return {
-        type: 'google_cloud',
+        type: 'google_cloud_storage',
         file_path: getDefaultFilePath(jobType, fileExtension),
         project_id: '',
         service_account: '',

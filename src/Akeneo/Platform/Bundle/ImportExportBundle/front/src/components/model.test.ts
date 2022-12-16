@@ -25,7 +25,7 @@ test('it says if a storage type is valid', () => {
   expect(isValidStorageType('sftp', featureFlags)).toBe(true);
   expect(isValidStorageType('amazon_s3', featureFlags)).toBe(true);
   expect(isValidStorageType('microsoft_azure', featureFlags)).toBe(true);
-  expect(isValidStorageType('google_cloud', featureFlags)).toBe(true);
+  expect(isValidStorageType('google_cloud_storage', featureFlags)).toBe(true);
   expect(isValidStorageType('invalid', featureFlags)).toBe(false);
 });
 
@@ -61,8 +61,8 @@ test('it returns the default local storage', () => {
     container_name: '',
   });
 
-  expect(getDefaultStorage('import', 'google_cloud', 'csv')).toEqual({
-    type: 'google_cloud',
+  expect(getDefaultStorage('import', 'google_cloud_storage', 'csv')).toEqual({
+    type: 'google_cloud_storage',
     file_path: 'myfile.csv',
     project_id: '',
     service_account: '',

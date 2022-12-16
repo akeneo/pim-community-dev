@@ -36,7 +36,7 @@ const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   sftp: SftpStorageConfigurator,
   amazon_s3: AmazonS3StorageConfigurator,
   microsoft_azure: MicrosoftAzureStorageConfigurator,
-  google_cloud: GoogleCloudStorageConfigurator,
+  google_cloud_storage: GoogleCloudStorageConfigurator,
 };
 
 const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
@@ -107,7 +107,7 @@ const isMicrosoftAzureStorage = (storage: Storage): storage is MicrosoftAzureSto
 
 const isGoogleCloudStorage = (storage: Storage): storage is GoogleCloudStorage => {
   return (
-    'google_cloud' === storage.type &&
+    'google_cloud_storage' === storage.type &&
     'file_path' in storage &&
     typeof 'file_path' === 'string' &&
     'project_id' in storage &&

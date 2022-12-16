@@ -56,7 +56,7 @@ const microsoftAzureStorage: MicrosoftAzureStorage = {
 };
 
 const googleCloudStorage: GoogleCloudStorage = {
-  type: 'google_cloud',
+  type: 'google_cloud_storage',
   file_path: '/tmp/test.xlsx',
   project_id: 'eu-west-3',
   service_account: '{"type": "service_account"}',
@@ -107,7 +107,7 @@ test('it returns storage configurator', () => {
 
   expect(getStorageConfigurator('microsoft_azure', featureFlags)).toBe(MicrosoftAzureStorageConfigurator);
 
-  expect(getStorageConfigurator('google_cloud', featureFlags)).toBe(GoogleCloudStorageConfigurator);
+  expect(getStorageConfigurator('google_cloud_storage', featureFlags)).toBe(GoogleCloudStorageConfigurator);
 
   // @ts-expect-error - there is no storage configurator for type 'unknown'
   expect(getStorageConfigurator('unknown', featureFlags)).toBe(null);

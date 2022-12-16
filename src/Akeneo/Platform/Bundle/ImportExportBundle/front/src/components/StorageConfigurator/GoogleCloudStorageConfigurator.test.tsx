@@ -22,7 +22,7 @@ const mockFetch = jest.fn().mockImplementation(async (route: string) => {
 
 test('it renders the google cloud storage configurator', async () => {
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
     service_account: '{"type": "service_account"}',
@@ -48,7 +48,7 @@ test('it renders the google cloud storage configurator', async () => {
 
 test('it allows user to fill file_path field', async () => {
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xls',
     project_id: 'a_project_id',
     service_account: '{"type": "service_account"}',
@@ -78,7 +78,7 @@ test('it allows user to fill file_path field', async () => {
 
 test('it allows user to fill project_id field', async () => {
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_i',
     service_account: '{"type": "service_account"}',
@@ -108,7 +108,7 @@ test('it allows user to fill project_id field', async () => {
 
 test('it allows user to fill service_account field', async () => {
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
     service_account: '{"type": "service_account"',
@@ -138,7 +138,7 @@ test('it allows user to fill service_account field', async () => {
 
 test('it allows user to fill bucket field', async () => {
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
     service_account: '{"type": "service_account"}',
@@ -193,7 +193,7 @@ test('it throws an exception when passing a non google cloud storage', async () 
 
 test('it displays validation errors', async () => {
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
     service_account: '{"type": "service_account"}',
@@ -250,7 +250,7 @@ test('it displays validation errors', async () => {
 
 test('it can check connection', async () => {
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
     service_account: '{"type": "service_account"}',
@@ -281,7 +281,7 @@ test('it can check connection', async () => {
 
 test('it cannot check connection if a field is empty', async () => {
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
     service_account: '',
@@ -317,7 +317,7 @@ test('it can check connection, display message if error', async () => {
   });
 
   const storage: GoogleCloudStorage = {
-    type: 'google_cloud',
+    type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
     project_id: 'a_project_id',
     service_account: '{"type": "service_account"}',
