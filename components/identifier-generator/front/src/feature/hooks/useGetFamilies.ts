@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useQuery} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {IdentifierGeneratorNotFound, ServerError, Unauthorized} from '../errors';
+import {ServerError, Unauthorized} from '../errors';
 import {Family, FamilyCode} from '../models';
 
 const DEFAULT_LIMIT_PAGINATION = 20;
@@ -20,7 +20,7 @@ const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyC
         search: parameters.queryKey[2],
       };
       if (typeof parameters.queryKey[3] !== 'undefined') {
-        queryParameters.codes = (parameters.queryKey[3] as FamilyCode[]).join(',');
+        queryParameters.codes = (parameters.queryKey[3] as FamilyCode[]);
       }
       const response = await fetch(router.generate('akeneo_identifier_generator_get_families_list', queryParameters), {
         method: 'GET',

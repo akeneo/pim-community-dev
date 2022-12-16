@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Helper, MultiSelectInput} from 'akeneo-design-system';
-import {useGetFamilies, usePaginatedFamilies} from '../hooks/useFamilies';
+import {useGetFamilies, usePaginatedFamilies} from '../hooks/useGetFamilies';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Family, FamilyCode} from '../models';
 import {Unauthorized} from '../errors';
