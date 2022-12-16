@@ -66,9 +66,11 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     return identifierAttributes.find(attribute => attribute.code === target)?.label;
   };
 
+  const [familyCodes, setFamilyCodes] = React.useState<string[]>(['family1043', 'accessories', 'family1143']);
+
   return (
     <>
-      <FamiliesSelector />
+      <FamiliesSelector familyCodes={familyCodes} onChange={setFamilyCodes}/>
       <Header>
         <Button onClick={onCreate} disabled={isCreateDisabled}>
           {translate('pim_common.create')}
