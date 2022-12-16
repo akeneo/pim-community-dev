@@ -8,7 +8,11 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-          <EnabledLine condition={{type: CONDITION_NAMES.ENABLED, value: true, id: 'enabledId'}} onChange={jest.fn()} onDelete={jest.fn()} />
+          <EnabledLine
+            condition={{type: CONDITION_NAMES.ENABLED, value: true, id: 'enabledId'}}
+            onChange={jest.fn()}
+            onDelete={jest.fn()}
+          />
         </tbody>
       </table>
     );
@@ -23,7 +27,11 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-          <EnabledLine condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}} onChange={onChange} onDelete={jest.fn()} />
+          <EnabledLine
+            condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}}
+            onChange={onChange}
+            onDelete={jest.fn()}
+          />
         </tbody>
       </table>
     );
@@ -40,7 +48,11 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-        <EnabledLine condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}} onChange={jest.fn()} onDelete={onDelete} />
+          <EnabledLine
+            condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}}
+            onChange={jest.fn()}
+            onDelete={onDelete}
+          />
         </tbody>
       </table>
     );

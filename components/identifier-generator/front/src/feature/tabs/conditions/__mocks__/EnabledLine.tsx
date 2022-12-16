@@ -1,6 +1,6 @@
 import React from 'react';
 import {Condition, Enabled} from '../../../models';
-import {Button} from "akeneo-design-system";
+import {Button} from 'akeneo-design-system';
 
 type EnabledLineProps = {
   condition: Enabled & {id: string};
