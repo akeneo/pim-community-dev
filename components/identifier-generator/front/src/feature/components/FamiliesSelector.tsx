@@ -1,29 +1,42 @@
 import React, {FC} from 'react';
 import {MultiSelectInput} from 'akeneo-design-system';
-import {usePaginatedFamilies} from '../hooks/useFamilies';
+import {useGetFamilies, usePaginatedFamilies} from '../hooks/useFamilies';
+import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {FamilyCode} from '../models';
 
-type FamiliesSelectorProps = {};
+type FamiliesSelectorProps = {
+  familyCodes: FamilyCode[],
+  onChange: (familyCodes: FamilyCode[]) => void;
+};
 
-const FamiliesSelector: FC<FamiliesSelectorProps> = () => {
+const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) => {
+  const translate = useTranslate();
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
   const {families, handleNextPage, handleSearchChange} = usePaginatedFamilies();
+  const {data: selectedValues} = useGetFamilies({codes: familyCodes});
 
-  const handleChange = (value: string[]) => {
-    value = ['foo'];
-  };
+  const getFamiliesList = [
+    ...(families || []),
+    ...(selectedValues || []).filter(family => !(families || []).map(f => f.code).includes(family.code))
+  ];
+
+  console.log(JSON.stringify(getFamiliesList));
 
   return <MultiSelectInput
-    emptyResultLabel="No result found"
-    onChange={handleChange}
-    placeholder="Please enter a value in the Multi select input"
-    removeLabel="Remove"
-    value={[]}
-    openLabel='open'
+    emptyResultLabel={translate('pim_common.no_result')}
+    placeholder="Please select at least one family"
+    removeLabel={translate('pim_common.remove')}
+    openLabel={translate('pim_common.open')}
     onNextPage={handleNextPage}
     onSearchChange={handleSearchChange}
+    onChange={onChange}
+    value={familyCodes}
   >
-    {(families || []).map(family => <MultiSelectInput.Option value={family.code} key={family.code}>
-      {family.code}
-    </MultiSelectInput.Option>)}
+    {getFamiliesList.map(family => (
+      <MultiSelectInput.Option value={family.code} key={family.code}>
+      {getLabel(family.labels, catalogLocale, family.code)}
+    </MultiSelectInput.Option>))}
   </MultiSelectInput>;
 };
 
