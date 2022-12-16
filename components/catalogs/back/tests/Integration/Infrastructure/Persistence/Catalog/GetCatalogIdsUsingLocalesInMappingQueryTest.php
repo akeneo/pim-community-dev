@@ -69,29 +69,29 @@ final class GetCatalogIdsUsingLocalesInMappingQueryTest extends IntegrationTestC
                 'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
             ],
             'gets two catalogs with one locale' => [
-                'locales_first_catalog' => [
+                'first_mapping' => [
                     'custom_field' => ['scope' => null, 'locale' => 'en_US', 'source' => 'meta_title'],
                     'custom_field2' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title'],
                 ],
-                'locales_second_catalog' => ['custom_field' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title']],
+                'second_mapping' => ['custom_field' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title']],
                 'locales_queried' => ['fr_FR'],
                 'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
             ],
             'gets only one catalog with one locale' => [
-                'locales_first_catalog' => [
+                'first_mapping' => [
                     'custom_field' => ['scope' => null, 'locale' => 'en_US', 'source' => 'meta_title'],
                     'custom_field2' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title'],
                 ],
-                'locales_second_catalog' => ['custom_field' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title']],
+                'second_mapping' => ['custom_field' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title']],
                 'locales_queried' => ['en_US'],
                 'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c']
             ],
             'gets no catalogs with one locale' => [
-                'locales_first_catalog' => [
+                'first_mapping' => [
                     'custom_field' => ['scope' => null, 'locale' => 'en_US', 'source' => 'meta_title'],
                     'custom_field2' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title'],
                 ],
-                'locales_second_catalog' => ['custom_field' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title']],
+                'second_mapping' => ['custom_field' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title']],
                 'locales_queried' => ['GBP'],
                 'expected_catalog' => []
             ],
