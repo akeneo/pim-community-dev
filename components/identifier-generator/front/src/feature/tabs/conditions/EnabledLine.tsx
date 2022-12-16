@@ -18,8 +18,8 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
   };
 
   return (
-    <Table.Row>
-      <Styled.TitleCell>{translate('pim_common.status')}</Styled.TitleCell>
+    <>
+      <Styled.TitleCondition>{translate('pim_common.status')}</Styled.TitleCondition>
       <Styled.CellInputContainer>
         <Styled.InputContainer>
           <TextInput value={translate('pim_common.operators.=')} readOnly={true} />
@@ -52,7 +52,7 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
           {translate('pim_common.delete')}
         </Button>
       </Table.ActionCell>
-    </Table.Row>
+    </>
   );
 };
 
