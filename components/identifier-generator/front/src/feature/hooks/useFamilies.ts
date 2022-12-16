@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useQuery} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {ServerError} from '../errors';
+import {IdentifierGeneratorNotFound, ServerError, Unauthorized} from '../errors';
 import {Family, FamilyCode} from '../models';
 
 const DEFAULT_LIMIT_PAGINATION = 20;
@@ -31,7 +31,7 @@ const useGetFamilies = (params: {page?: number, search?: string, codes?: FamilyC
       });
 
       if (!response.ok) {
-        //if (response.status === 404) throw new IdentifierGeneratorNotFound();
+        if (response.status === 403) throw new Unauthorized();
         throw new ServerError();
       }
 
