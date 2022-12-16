@@ -6,8 +6,8 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
 use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
+use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 
@@ -46,6 +46,25 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         ]);
 
         $this->updateCategoryWithValues($categoryShoes->getCode());
+    }
+
+    public function testReturnExternalCategoryApiList(): void
+    {
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['shoes'],
+                'with_enriched_attributes' => false,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
+        $this->assertIsArray($retrievedCategories);
+        $this->assertContainsOnlyInstancesOf(ExternalApiCategory::class, $retrievedCategories);
     }
 
     public function testDoNotGetCategoryByCodes(): void
@@ -117,29 +136,17 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'fr_FR' => 'Chaussures',
                 'en_US' => 'Shoes'
             ],
-            $shoesCategory->getLabels()->normalize()
+            $shoesCategory->getLabels()
         );
         $this->assertEqualsCanonicalizing(
             [
                 'fr_FR' => 'Chaussettes',
                 'en_US' => 'Socks'
             ],
-            $socksCategory->getLabels()->normalize()
+            $socksCategory->getLabels()
         );
 
-        // we check that existing categories attributes were fetched
-        $expectedTextValue = TextValue::fromApplier(
-            value: 'Les chaussures dont vous avez besoin !',
-            uuid: '87939c45-1d85-4134-9579-d594fff65030',
-            code: 'title',
-            channel: 'ecommerce',
-            locale: 'fr_FR'
-        );
-        $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
-        $this->assertSame('ecommerce', $expectedTextValue->getChannel()?->getValue());
-        $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
-
-        $this->assertNull($socksCategory->getAttributes());
+        $this->assertNull($socksCategory->getValues());
     }
 
     public function testGetCategoryByCodesWithoutEnrichedCategories(): void
@@ -176,10 +183,10 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'fr_FR' => 'Chaussures',
                 'en_US' => 'Shoes'
             ],
-            $shoesCategory->getLabels()->normalize()
+            $shoesCategory->getLabels()
         );
 
-        $this->assertNull($shoesCategory->getAttributes());
+        $this->assertNull($shoesCategory->getValues());
     }
 
     public function testGetCategoryWithLimitSetToOneAndOffsetToTwo(): void{
