@@ -67,9 +67,12 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     closeModal();
   }, [closeModal, conditionIdToDelete, conditionsWithId, onChange]);
 
-  const onDelete = useCallback((conditionId: ConditionIdentifier) => () => {
-    setConditionIdToDelete(conditionId);
-  }, []);
+  const onDelete = useCallback(
+    (conditionId: ConditionIdentifier) => () => {
+      setConditionIdToDelete(conditionId);
+    },
+    []
+  );
 
   return (
     <>
@@ -96,8 +99,12 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
               {conditionsWithId.map(conditionWithId => (
                 <>
                   {conditionWithId.type === CONDITION_NAMES.ENABLED && (
-                    <EnabledLine condition={conditionWithId} key={conditionWithId.id}
-                                 onChange={handleChange} onDelete={onDelete(conditionWithId.id)}/>
+                    <EnabledLine
+                      condition={conditionWithId}
+                      key={conditionWithId.id}
+                      onChange={handleChange}
+                      onDelete={onDelete(conditionWithId.id)}
+                    />
                   )}
                 </>
               ))}
