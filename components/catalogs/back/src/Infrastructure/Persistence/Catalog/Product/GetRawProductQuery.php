@@ -24,8 +24,8 @@ class GetRawProductQuery implements GetRawProductQueryInterface
     /**
      * {@inheritDoc}
      */
-    public function execute(string $productUuid): array|null {
-
+    public function execute(string $productUuid): array|null
+    {
         /** @var array<RawProduct> $rawProducts */
         $rawProducts = $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids([Uuid::fromString($productUuid)]);
 
