@@ -28,7 +28,7 @@ final class GetFamiliesControllerEndToEnd extends ControllerEndToEndTestCase
     }
 
     /** @test */
-    public function it_return_http_forbidden_without_acl(): void
+    public function it_returns_http_forbidden_without_acl(): void
     {
         $this->removeAclFromRole('action:pim_enrich_family_index');
         $this->loginAs('admin');
