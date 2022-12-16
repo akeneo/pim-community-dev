@@ -3,11 +3,12 @@ import {Condition, Enabled} from '../../models';
 import {Table, TextInput, SelectInput, Button} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {ConditionIdentifier} from '../SelectionTab';
 
 type EnabledLineProps = {
-  condition: Enabled & {id: string};
-  onChange: (condition: Condition & {id: string}) => void;
-  onDelete: (conditionId: string) => void;
+  condition: Enabled & {id: ConditionIdentifier};
+  onChange: (condition: Condition & {id: ConditionIdentifier}) => void;
+  onDelete: (conditionId: ConditionIdentifier) => void;
 };
 
 const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}) => {
