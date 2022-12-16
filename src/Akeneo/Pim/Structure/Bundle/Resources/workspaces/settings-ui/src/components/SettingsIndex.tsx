@@ -9,6 +9,7 @@ import {
   useTranslate,
   Translate,
   useAnalytics,
+  useFeatureFlags,
 } from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
@@ -26,6 +27,7 @@ import {
   MetricIcon,
   SectionTitle,
   ShopIcon,
+  Tag,
   TagIcon,
   useTheme,
   ValueIcon,
@@ -88,6 +90,8 @@ const SettingsIndex = () => {
     router.redirect(router.generate(route));
   };
 
+  const featureFlags = useFeatureFlags();
+
   if (!canAccessCatalogSettings && !canAccessProductSettings) {
     return (
       <FullScreenError
@@ -128,7 +132,15 @@ const SettingsIndex = () => {
                   <IconCard
                     id="pim-settings-product-category"
                     icon={<CategoryIcon />}
-                    label={translate('pim_enrich.entity.category.plural_label')}
+                    label={(
+                      <>
+                        {translate('pim_enrich.entity.category.plural_label')}
+                        &nbsp;
+                        {featureFlags.isEnabled('enriched_category') && (
+                        <Tag tint="blue">{translate('akeneo.category.tag.new')}</Tag>
+                        )}
+                      </>
+                    )}
                     onClick={() => redirectToRoute('pim_enrich_categorytree_index')}
                     content={
                       countEntities.hasOwnProperty('count_category_trees') &&
