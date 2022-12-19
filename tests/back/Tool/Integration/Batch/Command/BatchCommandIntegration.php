@@ -49,6 +49,7 @@ class BatchCommandIntegration extends TestCase
     {
         $output = $this->launchJob(['--username' => 'mary']);
         $jobExecution = $this->getJobExecution();
+
         $this->assertEquals(BatchStatus::COMPLETED, $jobExecution['status']);
         $this->assertNotNull($jobExecution['start_time']);
         $this->assertNotNull($jobExecution['end_time']);

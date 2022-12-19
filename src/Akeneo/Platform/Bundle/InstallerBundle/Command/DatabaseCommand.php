@@ -38,12 +38,12 @@ class DatabaseCommand extends Command
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
 
-    private ?CommandExecutor $commandExecutor = null;
+    protected ?CommandExecutor $commandExecutor;
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ClientRegistry $clientRegistry,
-        private readonly Connection $connection,
+        protected readonly Connection $connection,
         private readonly FixtureJobLoader $fixtureJobLoader,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InstallData $installTimeQuery,
@@ -211,7 +211,6 @@ class DatabaseCommand extends Command
                 $catalog
             )
         );
-
         $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
 
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();

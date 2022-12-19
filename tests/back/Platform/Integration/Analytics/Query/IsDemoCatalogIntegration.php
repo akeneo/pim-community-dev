@@ -44,11 +44,10 @@ final class IsDemoCatalogIntegration extends TestCase
         // test both CE and EE fixtures as the path is the same
         $this->featureFlags->enable('import_export_local_storage');
         $this->fixtureJobLoader->loadJobInstances($this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal');
-
         $fixturePath = $this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/';
 
-        $this->jobLauncher->launchFixtureImport('fixtures_channel_csv', file_get_contents($fixturePath . 'channels.csv'));
-        $this->jobLauncher->launchFixtureImport('fixtures_user_csv', file_get_contents($fixturePath . 'users.csv'));
+        $this->jobLauncher->launchImport('fixtures_channel_csv', file_get_contents($fixturePath . 'channels.csv'));
+        $this->jobLauncher->launchImport('fixtures_user_csv', file_get_contents($fixturePath . 'users.csv'));
 
         Assert::assertTrue($this->isDemoCatalogQuery->fetch());
     }

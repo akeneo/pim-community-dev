@@ -12,7 +12,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
      */
     public function test_it_does_not_build_violations_when_local_storage_are_valid(array $value): void
     {
-        $this->enableLocalStorageFeatureFlag(true);
+        $this->get('feature_flags')->enable('import_export_local_storage');
         $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);
@@ -27,7 +27,10 @@ class ValidateLocalStorageTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value,
     ): void {
-        $this->enableLocalStorageFeatureFlag($importExportLocalStorageIsEnabled);
+        if ($importExportLocalStorageIsEnabled) {
+            $this->get('feature_flags')->enable('import_export_local_storage');
+        }
+
         $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
@@ -83,13 +86,5 @@ class ValidateLocalStorageTest extends AbstractValidationTest
                 ],
             ],
         ];
-    }
-
-    private function enableLocalStorageFeatureFlag(bool $enable): void
-    {
-        $this->get('feature_flags')->disable('import_export_local_storage');
-        if ($enable) {
-            $this->get('feature_flags')->enable('import_export_local_storage');
-        }
     }
 }
