@@ -4,7 +4,7 @@ import {mockResponse, render, screen} from '../../tests/test-utils';
 
 describe('FamiliesSelector', () => {
   it('should render the family labels from family codes', async () => {
-    const expectCall = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {
+    const expectCall = mockResponse('akeneo_identifier_generator_get_families', 'GET', {
       ok: true,
       json: [
         {code: 'family1', labels: {en_US: 'Family1 label'}},
@@ -21,7 +21,7 @@ describe('FamiliesSelector', () => {
   });
 
   it('should render unauthorized error', async () => {
-    mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {
+    mockResponse('akeneo_identifier_generator_get_families', 'GET', {
       ok: false,
       status: 403,
     });
@@ -32,7 +32,7 @@ describe('FamiliesSelector', () => {
   });
 
   it('should render default error', async () => {
-    mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {
+    mockResponse('akeneo_identifier_generator_get_families', 'GET', {
       ok: false,
       status: 500,
     });

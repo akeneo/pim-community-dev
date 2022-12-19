@@ -7,7 +7,7 @@ describe('usePaginatedFamilies', () => {
   test('it paginates families', async () => {
     const page1 = [...Array(20)].map((_, i) => ({code: `Family${i}`, labels: {}}));
 
-    const expectCall = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {ok: true, json: page1});
+    const expectCall = mockResponse('akeneo_identifier_generator_get_families', 'GET', {ok: true, json: page1});
     const {result, waitFor} = renderHook(() => usePaginatedFamilies(), {wrapper: createWrapper()});
     await waitFor(() => !!result.current.families);
     expectCall();
@@ -15,7 +15,7 @@ describe('usePaginatedFamilies', () => {
     expect(result.current.families).toEqual(page1);
 
     const page2 = [...Array(10)].map((_, i) => ({code: `Family${i + 20}`, labels: {}}));
-    const expectCall2 = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {ok: true, json: page2});
+    const expectCall2 = mockResponse('akeneo_identifier_generator_get_families', 'GET', {ok: true, json: page2});
     act(() => {
       result.current.handleNextPage();
     });
@@ -28,7 +28,7 @@ describe('usePaginatedFamilies', () => {
   test('it searches families', async () => {
     const page1 = [...Array(20)].map((_, i) => ({code: `Family${i}`, labels: {}}));
 
-    const expectCall = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {ok: true, json: page1});
+    const expectCall = mockResponse('akeneo_identifier_generator_get_families', 'GET', {ok: true, json: page1});
     const {result, waitFor} = renderHook(() => usePaginatedFamilies(), {wrapper: createWrapper()});
     await waitFor(() => !!result.current.families);
     expectCall();
@@ -36,7 +36,7 @@ describe('usePaginatedFamilies', () => {
     expect(result.current.families).toEqual(page1);
 
     const pageSearch = [...Array(3)].map((_, i) => ({code: `Family${i * 2}`, labels: {}}));
-    const expectCall2 = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {
+    const expectCall2 = mockResponse('akeneo_identifier_generator_get_families', 'GET', {
       ok: true,
       json: pageSearch,
     });
