@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
-import {Condition, CONDITION_NAMES} from '../../models';
+import {Condition, CONDITION_NAMES, Operator} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type ConditionsSelection = {
@@ -23,6 +23,10 @@ const items: ConditionsSelection[] = [
         code: CONDITION_NAMES.ENABLED,
         defaultValue: {type: CONDITION_NAMES.ENABLED},
       },
+      {
+        code: CONDITION_NAMES.FAMILY,
+        defaultValue: {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []}
+      }
     ],
   },
 ];

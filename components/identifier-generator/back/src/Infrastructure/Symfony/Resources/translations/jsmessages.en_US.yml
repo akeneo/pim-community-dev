@@ -44,6 +44,7 @@ pim_identifier_generator:
             sections:
                 system: 'System'
             enabled: 'Status'
+            family: 'Family'
         settings:
             enabled:
                 disabled: 'Disabled'
