@@ -18,6 +18,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -47,6 +48,9 @@ class UpdateCategoryController
         }
 
         $category = $this->getCategory->byId($id);
+        if ($category === null) {
+            throw new NotFoundHttpException('Category not found');
+        }
         $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
 
         // Transform request to a user intent list
@@ -90,7 +94,7 @@ class UpdateCategoryController
             );
         }
 
-        $category = $this->getCategory->byId($id);
+        $category = $this->getCategory->byId($category->getId()->getValue());
         $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
 
         $normalizedCategory = $category->normalize();
