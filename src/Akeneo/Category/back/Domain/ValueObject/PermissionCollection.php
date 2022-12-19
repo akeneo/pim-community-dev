@@ -34,10 +34,10 @@ final class PermissionCollection
     public function addUserGroupsToPermission(string $permission, array $newUserGroups): self
     {
         if (array_key_exists($permission, $this->permissions)) {
-            $existingUserGroupsIds = array_map(fn ($existingUserGroup) => $existingUserGroup['id'], $this->permissions[$permission]);
+            $existingUserGroupsIds = $this->getUserGroupIdsPerPermission()[$permission];
 
             foreach ($newUserGroups as $newUserGroup) {
-                if (!in_array($newUserGroup['id'], $existingUserGroupsIds)) {
+                if (array_key_exists('id', $newUserGroup) && !in_array($newUserGroup['id'], $existingUserGroupsIds)) {
                     $this->permissions[$permission][] = $newUserGroup;
                 }
             }
@@ -54,10 +54,10 @@ final class PermissionCollection
     public function removeUserGroupsFromPermission(string $permission, array $userGroupsToRemove): self
     {
         if (array_key_exists($permission, $this->permissions)) {
-            $existingUserGroupsIds = array_map(fn ($existingUserGroup) => $existingUserGroup['id'], $this->permissions[$permission]);
+            $existingUserGroupsIds = $this->getUserGroupIdsPerPermission()[$permission];
 
             foreach ($userGroupsToRemove as $userGroupToRemove) {
-                if (($key = array_search($userGroupToRemove['id'], $existingUserGroupsIds)) !== false) {
+                if (array_key_exists('id', $userGroupToRemove) && ($key = array_search($userGroupToRemove['id'], $existingUserGroupsIds)) !== false) {
                     $this->removedUserGroupIdsFromPermissions[$permission][] = $userGroupToRemove['id'];
                     unset($this->permissions[$permission][$key]);
                 }
