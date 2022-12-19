@@ -10,7 +10,7 @@ describe('FamiliesSelector', () => {
         {code: 'family1', labels: {en_US: 'Family1 label'}},
         {code: 'family2', labels: {}},
       ],
-    })
+    });
 
     render(<FamiliesSelector onChange={jest.fn()} familyCodes={['family1', 'family2']} />);
 
@@ -24,7 +24,7 @@ describe('FamiliesSelector', () => {
     mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {
       ok: false,
       status: 403,
-    })
+    });
 
     render(<FamiliesSelector onChange={jest.fn()} familyCodes={['family1', 'family2']} />);
 
@@ -35,7 +35,7 @@ describe('FamiliesSelector', () => {
     mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {
       ok: false,
       status: 500,
-    })
+    });
 
     render(<FamiliesSelector onChange={jest.fn()} familyCodes={['family1', 'family2']} />);
 
