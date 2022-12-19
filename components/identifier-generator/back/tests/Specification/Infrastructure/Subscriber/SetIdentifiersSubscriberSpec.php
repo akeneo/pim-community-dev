@@ -84,6 +84,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
+        $product->getFamily()->shouldBeCalled()->willReturn(null);
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -121,6 +122,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
+        $product->getFamily()->shouldBeCalled()->willReturn(null);
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -162,6 +164,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
+        $product->getFamily()->shouldBeCalled()->willReturn(null);
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
