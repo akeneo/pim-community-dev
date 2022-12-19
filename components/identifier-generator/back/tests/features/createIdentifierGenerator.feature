@@ -122,6 +122,57 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions: should contain only 1 enabled'
     And the identifier should not be created
 
+  # Conditions: Family
+  Scenario: Cannot create an identifier generator with unknown operator
+    When I try to create an identifier generator with a family condition with an unknown operator
+    Then I should get an error with message 'conditions[0][operator]: Operator "unknown" can only be one of the following: "IN", "NOT IN", "EMPTY", "NOT EMPTY".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator EMPTY and a value
+    When I try to create an identifier generator with a family condition with operator EMPTY and ["shirts"] as value
+    Then I should get an error with message 'conditions[0][value]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and a non array value
+    When I try to create an identifier generator with a family condition with operator IN and "shirts" as value
+    Then I should get an error with message 'conditions[0][value]: This value should be of type iterable.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and a non array of string value
+    When I try to create an identifier generator with a family condition with operator IN and [true] as value
+    Then I should get an error with message 'conditions[0][value][0]: This value should be of type string.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and no values
+    When I try to create an identifier generator with a family condition with operator IN and [] as value
+    Then I should get an error with message 'conditions[0][value]: This collection should contain 1 element or more.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and no value
+    When I try to create an identifier generator with a family condition with operator IN and undefined as value
+    Then I should get an error with message 'conditions[0][value]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with non existing families
+    When I try to create an identifier generator with a family condition with operator IN and ["non_existing1", "non_existing_2"] as value
+    Then I should get an error with message 'conditions[0][value]: The following families do not exist: "non_existing1", "non_existing_2".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with non existing field
+    When I try to create an identifier generator with a family condition with unknown property
+    Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create several family conditions
+    When I try to create an identifier generator with 2 family conditions
+    Then I should get an error with message 'conditions: should contain only 1 family'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator without operator
+    When I try to create an identifier generator with a family without operator
+    Then I should get an error with message 'conditions[0][operator]: This field is missing.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
