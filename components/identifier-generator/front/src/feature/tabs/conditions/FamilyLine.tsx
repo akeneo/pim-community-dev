@@ -1,9 +1,9 @@
 import React from 'react';
 import {FamilyCode, FamilyCondition, FamilyOperators, Operator} from '../../models';
-import {SelectInput, Table} from 'akeneo-design-system';
+import {Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {FamiliesSelector} from '../../components';
+import {FamiliesSelector, OperatorSelector} from '../../components';
 
 type FamilyLineProps = {
   condition: FamilyCondition & {id: string};
@@ -33,20 +33,10 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange}) => {
 
   return (
     <Table.Row>
-      <Styled.TitleCell>{translate('pim_common.status')}</Styled.TitleCell>
+      <Styled.TitleCell>{translate('pim_common.family')}</Styled.TitleCell>
       <Styled.CellInputContainer>
         <Styled.InputContainer>
-          <SelectInput
-            value={condition.operator}
-            emptyResultLabel={translate('pim_common.no_result')}
-            openLabel={translate('pim_common.open')}
-            onChange={(operator: string) => handleOperatorChange(operator as Operator)}
-            clearable={false}
-          >
-            {FamilyOperators.map(operator => (
-              <SelectInput.Option key={operator} value={operator}>{operator}</SelectInput.Option>
-            ))}
-          </SelectInput>
+          <OperatorSelector operator={condition.operator} onChange={handleOperatorChange} operators={FamilyOperators}/>
         </Styled.InputContainer>
       </Styled.CellInputContainer>
       <Table.Cell>
