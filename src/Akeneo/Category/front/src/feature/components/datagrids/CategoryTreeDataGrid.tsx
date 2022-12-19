@@ -150,7 +150,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     let hasTemplates = false;
 
     filteredTrees.map(function (tree) {
-      if (tree.templateLabel) {
+      if (tree.templateCode) {
         hasTemplates = true;
       }
 
