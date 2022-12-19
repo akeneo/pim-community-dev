@@ -20,9 +20,6 @@ final class GetCatalogIdsUsingChannelsInMappingQuery implements GetCatalogIdsUsi
 
     /**
      * {@inheritdoc}
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \JsonException
      */
     public function execute(array $channelCodes): array
     {
