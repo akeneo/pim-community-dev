@@ -6,7 +6,7 @@ pim_error:
     unauthorized_list_families: "You cannot list families. Please contact your administrator to change your rights."
     general: "An error occurred during the display of this page. Please contact your administrator."
     unexpected: "Unexpected error occurred. Please contact system administrator."
-    404: 'A 404 error occured...'
+    404: 'A 404 error occurred...'
     identifier_generator_not_found: 'Identifier generator not found'
 pim_identifier_generator:
     create:
@@ -48,6 +48,8 @@ pim_identifier_generator:
             enabled:
                 disabled: 'Disabled'
                 placeholder: 'Choose a status'
+            family:
+                placeholder: 'Please select at least one family'
     structure:
         helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at {{link}}.'
         helper_link: 'this article'

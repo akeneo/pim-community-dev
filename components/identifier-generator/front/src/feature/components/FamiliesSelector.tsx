@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {Helper, MultiSelectInput} from 'akeneo-design-system';
 import {useGetFamilies, usePaginatedFamilies} from '../hooks/useGetFamilies';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
@@ -14,33 +14,40 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
-  const {families, handleNextPage, handleSearchChange} = usePaginatedFamilies();
-  const {data: selectedFamilies, isLoading, error} = useGetFamilies({codes: familyCodes});
+  const {
+    families: paginatedFamilies,
+    handleNextPage,
+    handleSearchChange,
+    error: errorDuringPagination,
+  } = usePaginatedFamilies();
+  const {data: selectedFamilies, isLoading, error: errorDuringGet} = useGetFamilies({codes: familyCodes});
 
   // Avoid blinking of values when selecting a new one
-  const [debouncedSelectedFamilies, setDebouncedSelectedFamilies] = React.useState<Family[]>([]);
-  React.useEffect(() => {
-    if (!isLoading) {
+  const [debouncedSelectedFamilies, setDebouncedSelectedFamilies] = useState<Family[]>([]);
+  useEffect(() => {
+    if (!isLoading && !errorDuringGet) {
       setDebouncedSelectedFamilies(selectedFamilies as Family[]);
     }
-  }, [selectedFamilies, isLoading]);
+  }, [selectedFamilies, isLoading, errorDuringGet]);
 
-  const [debouncedInvalidFamilyCodes, setDebouncedInvalidFamilyCodes] = React.useState<FamilyCode[]>([]);
-  React.useEffect(() => {
-    if (!isLoading && !error) {
+  const [debouncedInvalidFamilyCodes, setDebouncedInvalidFamilyCodes] = useState<FamilyCode[]>([]);
+  useEffect(() => {
+    if (!isLoading && !errorDuringGet) {
       setDebouncedInvalidFamilyCodes(
-        familyCodes.filter(code => !(selectedFamilies as Family[]).map(f => f.code).includes(code))
+        familyCodes.filter(code => !(selectedFamilies as Family[]).map(family => family.code).includes(code))
       );
     }
-  }, [selectedFamilies, isLoading, error]);
+  }, [selectedFamilies, isLoading, errorDuringGet, familyCodes]);
 
-  const getFamiliesList = [
-    ...(families || []),
-    ...(debouncedSelectedFamilies || []).filter(family => !(families || []).map(f => f.code).includes(family.code)),
+  const familiesList = [
+    ...(paginatedFamilies || []),
+    ...(debouncedSelectedFamilies || []).filter(
+      family => !(paginatedFamilies || []).map(family => family.code).includes(family.code)
+    ),
   ];
 
-  if (error) {
-    if (error instanceof Unauthorized) {
+  if (errorDuringGet || errorDuringGet) {
+    if (errorDuringGet instanceof Unauthorized || errorDuringPagination instanceof Unauthorized) {
       return <Helper level={'error'}>{translate('pim_error.unauthorized_list_families')}</Helper>;
     }
     return <Helper level={'error'}>{translate('pim_error.general')}</Helper>;
@@ -49,7 +56,7 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
   return (
     <MultiSelectInput
       emptyResultLabel={translate('pim_common.no_result')}
-      placeholder="Please select at least one family"
+      placeholder={translate('pim_identifier_generator.selection.settings.family.placeholder')}
       removeLabel={translate('pim_common.remove')}
       openLabel={translate('pim_common.open')}
       onNextPage={handleNextPage}
@@ -58,7 +65,7 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
       value={familyCodes}
       invalidValue={debouncedInvalidFamilyCodes}
     >
-      {getFamiliesList.map(family => (
+      {familiesList.map(family => (
         <MultiSelectInput.Option value={family.code} key={family.code}>
           {getLabel(family.labels, catalogLocale, family.code)}
         </MultiSelectInput.Option>
