@@ -8,14 +8,14 @@ const validateAutoNumber: Validator<AutoNumber> = (autoNumber, path) => {
   if (null === autoNumber.digitsMin) {
     violations.push({
       path: `${path}.digitsMin`,
-      message: 'DigitsMin should not be empty',
+      message: 'You must add a minimum number of digits',
     });
   }
 
   if (null === autoNumber.numberMin) {
     violations.push({
       path: `${path}.numberMin`,
-      message: 'NumberMin should not be empty',
+      message: 'You must add a minimum value',
     });
   }
 
