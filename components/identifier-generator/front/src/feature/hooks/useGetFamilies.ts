@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useQuery} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
 import {ServerError, Unauthorized} from '../errors';
@@ -14,13 +14,13 @@ const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyC
   return useQuery<Family[], Error, Family[], QueryKey>({
     queryKey: ['getFamilies', params.page ?? 1, params.search ?? '', params.codes],
     queryFn: async (parameters: {queryKey: QueryKey}) => {
-      const queryParameters: {[key: string]: any} = {
+      const queryParameters: {[key: string]: string | number | FamilyCode[] | undefined} = {
         limit: DEFAULT_LIMIT_PAGINATION,
         page: parameters.queryKey[1],
         search: parameters.queryKey[2],
       };
       if (typeof parameters.queryKey[3] !== 'undefined') {
-        queryParameters.codes = (parameters.queryKey[3] as FamilyCode[]);
+        queryParameters.codes = parameters.queryKey[3] as FamilyCode[];
       }
       const response = await fetch(router.generate('akeneo_identifier_generator_get_families_list', queryParameters), {
         method: 'GET',
@@ -37,23 +37,29 @@ const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyC
   });
 };
 
-const usePaginatedFamilies = () => {
-  const [page, setPage] = React.useState<number>(1);
-  const [hasNextPage, setHasNextPage] = React.useState<boolean>(true);
-  const [families, setFamilies] = React.useState<Family[] | undefined>();
-  const [search, setSearch] = React.useState<string>('');
-  const [hasSearchChanged, setHasSearchChanged] = React.useState<boolean>(false);
+const usePaginatedFamilies: () => {
+  families: Family[] | undefined;
+  handleNextPage: () => void;
+  handleSearchChange: (search: string) => void;
+  error: Error | null;
+} = () => {
+  const [page, setPage] = useState<number>(1);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  const [families, setFamilies] = useState<Family[] | undefined>();
+  const [search, setSearch] = useState<string>('');
+  const [hasSearchChanged, setHasSearchChanged] = useState<boolean>(false);
 
-  const {data, isLoading} = useGetFamilies({page, search});
+  const {data, isLoading, error} = useGetFamilies({page, search});
 
   useEffect(() => {
     if (typeof data !== 'undefined') {
       if (data.length < DEFAULT_LIMIT_PAGINATION) {
         setHasNextPage(false);
       }
-      setFamilies(oldFamily => (hasSearchChanged ? data : [...(oldFamily || []), ...data]));
+      setFamilies(formerFamilies => (hasSearchChanged ? data : [...(formerFamilies || []), ...data]));
+      setHasSearchChanged(false);
     }
-  }, [data]);
+  }, [data, hasSearchChanged]);
 
   const handleNextPage = () => {
     if (!isLoading && hasNextPage) {
@@ -70,7 +76,7 @@ const usePaginatedFamilies = () => {
     }
   };
 
-  return {families, handleNextPage, handleSearchChange};
+  return {families, handleNextPage, handleSearchChange, error};
 };
 
 export {useGetFamilies, usePaginatedFamilies};

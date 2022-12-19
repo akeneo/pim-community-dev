@@ -5,9 +5,7 @@ import {usePaginatedFamilies} from '../useGetFamilies';
 
 describe('usePaginatedFamilies', () => {
   test('it paginates families', async () => {
-    const page1 = [...Array(20)].map((_, i) => (
-      {code: `Family${i}`, labels: {}}
-    ));
+    const page1 = [...Array(20)].map((_, i) => ({code: `Family${i}`, labels: {}}));
 
     const expectCall = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {ok: true, json: page1});
     const {result, waitFor} = renderHook(() => usePaginatedFamilies(), {wrapper: createWrapper()});
@@ -16,23 +14,19 @@ describe('usePaginatedFamilies', () => {
     expect(result.current.families).toBeDefined();
     expect(result.current.families).toEqual(page1);
 
-    const page2 = [...Array(10)].map((_, i) => (
-      {code: `Family${i+20}`, labels: {}}
-    ));
+    const page2 = [...Array(10)].map((_, i) => ({code: `Family${i + 20}`, labels: {}}));
     const expectCall2 = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {ok: true, json: page2});
     act(() => {
       result.current.handleNextPage();
     });
     await waitFor(() => result.current.families && result.current.families.length > 20);
-    await expectCall2();
+    expectCall2();
     expect(result.current.families).toBeDefined();
     expect(result.current.families).toEqual([...page1, ...page2]);
   });
 
   test('it searches families', async () => {
-    const page1 = [...Array(20)].map((_, i) => (
-      {code: `Family${i}`, labels: {}}
-    ));
+    const page1 = [...Array(20)].map((_, i) => ({code: `Family${i}`, labels: {}}));
 
     const expectCall = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {ok: true, json: page1});
     const {result, waitFor} = renderHook(() => usePaginatedFamilies(), {wrapper: createWrapper()});
@@ -41,15 +35,16 @@ describe('usePaginatedFamilies', () => {
     expect(result.current.families).toBeDefined();
     expect(result.current.families).toEqual(page1);
 
-    const pageSearch = [...Array(3)].map((_, i) => (
-      {code: `Family${i*2}`, labels: {}}
-    ));
-    const expectCall2 = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {ok: true, json: pageSearch});
+    const pageSearch = [...Array(3)].map((_, i) => ({code: `Family${i * 2}`, labels: {}}));
+    const expectCall2 = mockResponse('akeneo_identifier_generator_get_families_list', 'GET', {
+      ok: true,
+      json: pageSearch,
+    });
     act(() => {
       result.current.handleSearchChange('yolo');
     });
     await waitFor(() => result.current.families && result.current.families.length === 3);
-    await expectCall2();
+    expectCall2();
     expect(result.current.families).toBeDefined();
     expect(result.current.families).toEqual(pageSearch);
   });
