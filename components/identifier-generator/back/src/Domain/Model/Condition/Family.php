@@ -12,13 +12,13 @@ use Webmozart\Assert\Assert;
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-type FamilyOperator 'IN'|'NOT IN'|'EMPTY'|'NOT EMPTY'
- * @phpstan-type FamilyNormalized array{type: string, operator: FamilyOperator, value?: string[]}
+ * @phpstan-type FamilyNormalized array{type: 'family', operator: FamilyOperator, value?: string[]}
  */
 final class Family implements ConditionInterface
 {
     /**
      * @param FamilyOperator $operator
-     * @param array|null $value
+     * @param string[]|null $value
      */
     private function __construct(
         private readonly string $operator,
@@ -26,6 +26,9 @@ final class Family implements ConditionInterface
     ) {
     }
 
+    /**
+     * @return 'family'
+     */
     public static function type(): string
     {
         return 'family';
@@ -39,8 +42,10 @@ final class Family implements ConditionInterface
         Assert::eq($normalizedProperty['type'], self::type());
         Assert::keyExists($normalizedProperty, 'operator');
         Assert::string($normalizedProperty['operator']);
+        Assert::oneOf($normalizedProperty['operator'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
         if (\in_array($normalizedProperty['operator'], ['IN', 'NOT IN'])) {
             Assert::keyExists($normalizedProperty, 'value');
+            Assert::isArray($normalizedProperty['value']);
             Assert::allStringNotEmpty($normalizedProperty['value']);
             Assert::minCount($normalizedProperty['value'], 1);
 
@@ -71,9 +76,9 @@ final class Family implements ConditionInterface
     public function match(ProductProjection $productProjection): bool
     {
         return match ($this->operator) {
-            'IN' => \in_array($productProjection->familyCode(), $this->value),
+            'IN' => \in_array($productProjection->familyCode(), (array) $this->value),
             'NOT IN' => null !== $productProjection->familyCode() &&
-                !\in_array($productProjection->familyCode(), $this->value),
+                !\in_array($productProjection->familyCode(), (array) $this->value),
             'EMPTY' => null === $productProjection->familyCode(),
             default => null !== $productProjection->familyCode(),
         };
