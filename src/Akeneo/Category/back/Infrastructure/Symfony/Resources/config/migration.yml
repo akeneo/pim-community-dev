@@ -1,6 +1,9 @@
 services:
   Akeneo\Category\Infrastructure\Migration\V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration:
     arguments:
-      - '@monolog.logger'
+      - '@oro_security.acl.manager'
+      - '@pim_user.repository.role_with_permissions'
+      - '@pim_user.saver.role_with_permissions'
+      - '@database_connection'
     tags:
       - { name: 'akeneo.pim.zdd_migration' }

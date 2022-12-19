@@ -42,6 +42,11 @@ use Doctrine\DBAL\Driver\Exception;
 
 class CategoryTestCase extends TestCase
 {
+    protected function enableEnrichedCategoryFeature(): void
+    {
+        $this->get('feature_flags')->enable('enriched_category');
+    }
+
     /**
      * @param array<string, string|null>|null $labels
      *

@@ -3,6 +3,7 @@
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Migration;
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Infrastructure\Migration\V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -18,12 +19,12 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 
 class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration extends CategoryTestCase
 {
-    private AclManager $aclManager;
+    private V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration $migration;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->aclManager = $this->get('oro_security.acl.manager');
+        $this->migration = $this->get(V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration::class);
     }
 
     protected function getConfiguration(): Configuration
@@ -31,81 +32,176 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function testItGivesNewAclsRightToUserWithLegacyRightsOnCategories()
+    public function testMigrationGivesACLToEditEnrichedCategoryWhenUserHasACLToEditCategory()
     {
-        $this->createRoleWithAcls('ROLE_WITH_PERMS', ['pim_api_overall_access', 'pim_api_asset_family_edit']);
-        $this->createRoleWithAcls('ROLE_WITHOUT_PERMS', []);
+        $this->enableEnrichedCategoryFeature();
 
-        // The administrator has the ACLs by default, due to its mask on (root)
-        $this->assertRoleAclsAreGranted('ROLE_ADMINISTRATOR', [
-            'pim_api_asset_family_edit' => true,
-            'pim_api_asset_family_list' => true,
-            'pim_api_asset_edit' => true,
-            'pim_api_asset_list' => true,
-            'pim_api_asset_remove' => true,
-        ]);
+        $this->createRoleWithAcls('ROLE_WITH_CATEGORY_EDIT_PERMS', ['pim_enrich_product_category_edit']);
+
         // This role has only its initial ACLs
-        $this->assertRoleAclsAreGranted('ROLE_WITH_PERMS', [
-            'pim_api_asset_family_edit' => true,
-            'pim_api_asset_family_list' => false,
-            'pim_api_asset_edit' => false,
-            'pim_api_asset_list' => false,
-            'pim_api_asset_remove' => false,
-        ]);
-        // This role has no ACLs
-        $this->assertRoleAclsAreGranted('ROLE_WITHOUT_PERMS', [
-            'pim_api_asset_family_edit' => false,
-            'pim_api_asset_family_list' => false,
-            'pim_api_asset_edit' => false,
-            'pim_api_asset_list' => false,
-            'pim_api_asset_remove' => false,
+        $this->assertRoleAclsAreGranted('ROLE_WITH_CATEGORY_EDIT_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => false,
+            'pim_enrich_product_category_edit' => true,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => false,
+            'pim_enrich_product_category_edit_attributes' => false,
+            'pim_enrich_product_category_order_trees' => false,
         ]);
 
-        $this->reExecuteMigration($this->getMigrationLabel());
-
-        // Destroying the Kernel is the only solution I found to properly purge stateful variables
-        // from symfony/security-acl.
+        $this->migration->migrate();
+        // Destroying the Kernel to properly purge stateful variables from symfony/security-acl.
         $this->testKernel = static::bootKernel(['debug' => false]);
 
-        // After the migration, the new ACLs can be found in the database
-        $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITH_PERMS', [
-            'pim_api_asset_family_edit' => true,
-            'pim_api_asset_family_list' => true,
-            'pim_api_asset_edit' => true,
-            'pim_api_asset_list' => true,
-            'pim_api_asset_remove' => true,
-        ]);
-        $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITHOUT_PERMS', [
-            'pim_api_asset_family_edit' => true,
-            'pim_api_asset_family_list' => true,
-            'pim_api_asset_edit' => true,
-            'pim_api_asset_list' => true,
-            'pim_api_asset_remove' => true,
+        $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITH_CATEGORY_EDIT_PERMS', [
+            'pim_enrich_product_category_edit' => true,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => true,
+            'pim_enrich_product_category_edit_attributes' => true,
+            'pim_enrich_product_category_order_trees' => true,
         ]);
 
-        // After the migration, the administrator still has all the ACLs
-        $this->assertRoleAclsAreGranted('ROLE_ADMINISTRATOR', [
-            'pim_api_asset_family_edit' => true,
-            'pim_api_asset_family_list' => true,
-            'pim_api_asset_edit' => true,
-            'pim_api_asset_list' => true,
-            'pim_api_asset_remove' => true,
+        // After the migration, this role has the new ACLs while keeping the initial ones
+        $this->assertRoleAclsAreGranted('ROLE_WITH_CATEGORY_EDIT_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => false,
+            'pim_enrich_product_category_edit' => true,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => true,
+            'pim_enrich_product_category_edit_attributes' => true,
+            'pim_enrich_product_category_order_trees' => true,
+        ]);
+    }
+
+    public function testMigrationGivesACLToEditCategoryTemplateWhenUserHasACLToCreateCategory()
+    {
+        $this->enableEnrichedCategoryFeature();
+
+        $this->createRoleWithAcls('ROLE_WITH_CATEGORY_CREATE_PERMS', ['pim_enrich_product_category_create']);
+
+        // This role has only its initial ACLs
+        $this->assertRoleAclsAreGranted('ROLE_WITH_CATEGORY_CREATE_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => true,
+            'pim_enrich_product_category_edit' => false,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => false,
+            'pim_enrich_product_category_edit_attributes' => false,
+            'pim_enrich_product_category_order_trees' => false,
+        ]);
+
+        $this->migration->migrate();
+        // Destroying the Kernel to properly purge stateful variables from symfony/security-acl.
+        $this->testKernel = static::bootKernel(['debug' => false]);
+
+        $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITH_CATEGORY_CREATE_PERMS', [
+            'pim_enrich_product_category_create' => true,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => true,
+            'pim_enrich_product_category_edit_attributes' => false,
+            'pim_enrich_product_category_order_trees' => false,
         ]);
         // After the migration, this role has the new ACLs while keeping the initial ones
-        $this->assertRoleAclsAreGranted('ROLE_WITH_PERMS', [
-            'pim_api_asset_family_edit' => true,
-            'pim_api_asset_family_list' => true,
-            'pim_api_asset_edit' => true,
-            'pim_api_asset_list' => true,
-            'pim_api_asset_remove' => true,
+        $this->assertRoleAclsAreGranted('ROLE_WITH_CATEGORY_CREATE_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => true,
+            'pim_enrich_product_category_edit' => false,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => true,
+            'pim_enrich_product_category_edit_attributes' => false,
+            'pim_enrich_product_category_order_trees' => false,
         ]);
-        // After the migration, this role has only the new ACLs
-        $this->assertRoleAclsAreGranted('ROLE_WITHOUT_PERMS', [
-            'pim_api_asset_family_edit' => true,
-            'pim_api_asset_family_list' => true,
-            'pim_api_asset_edit' => true,
-            'pim_api_asset_list' => true,
-            'pim_api_asset_remove' => true,
+    }
+
+    public function testMigrationGivesACLOnEnrichedCategoryOnlyToRolesWithACLToCreateAndEditCategory()
+    {
+        $this->enableEnrichedCategoryFeature();
+
+        $this->createRoleWithAcls('ROLE_WITH_CATEGORY_PERMS', ['pim_enrich_product_category_edit','pim_enrich_product_category_create']);
+        $this->createRoleWithAcls('ROLE_WITHOUT_CATEGORY_PERMS', []);
+
+        // These roles have only their initial ACLs
+        $this->assertRoleAclsAreGranted('ROLE_WITH_CATEGORY_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => true,
+            'pim_enrich_product_category_edit' => true,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => false,
+            'pim_enrich_product_category_edit_attributes' => false,
+            'pim_enrich_product_category_order_trees' => false,
+        ]);
+        $this->assertRoleAclsAreGranted('ROLE_WITHOUT_CATEGORY_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => false,
+            'pim_enrich_product_category_edit' => false,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => false,
+            'pim_enrich_product_category_edit_attributes' => false,
+            'pim_enrich_product_category_order_trees' => false,
+        ]);
+
+
+        $this->migration->migrate();
+        // Destroying the Kernel to properly purge stateful variables from symfony/security-acl.
+        $this->testKernel = static::bootKernel(['debug' => false]);
+
+        $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITH_CATEGORY_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => true,
+            'pim_enrich_product_category_edit' => true,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => true,
+            'pim_enrich_product_category_edit_attributes' => true,
+            'pim_enrich_product_category_order_trees' => true,
+        ]);
+        $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITHOUT_CATEGORY_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => false,
+            'pim_enrich_product_category_edit' => false,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => false,
+            'pim_enrich_product_category_edit_attributes' => false,
+            'pim_enrich_product_category_order_trees' => false,
+        ]);
+        // After the migration, this role has the new ACLs while keeping the initial ones
+        $this->assertRoleAclsAreGranted('ROLE_WITH_CATEGORY_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => true,
+            'pim_enrich_product_category_edit' => true,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => true,
+            'pim_enrich_product_category_edit_attributes' => true,
+            'pim_enrich_product_category_order_trees' => true,
+        ]);
+        // After the migration, this role has not the new ACLs, but it keeps the initial ones
+        $this->assertRoleAclsAreGranted('ROLE_WITHOUT_CATEGORY_PERMS', [
+            'pim_enrich_product_category_list' => false,
+            'pim_enrich_product_category_create' => false,
+            'pim_enrich_product_category_edit' => false,
+            'pim_enrich_product_category_remove' => false,
+            'pim_enrich_product_category_history' => false,
+            // these are the new ACLs
+            'pim_enrich_product_category_template' => false,
+            'pim_enrich_product_category_edit_attributes' => false,
+            'pim_enrich_product_category_order_trees' => false,
         ]);
     }
 
@@ -156,7 +252,8 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
             assert(is_bool($expectedValue));
 
             $isAllowed = $decisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
-            $this->assertEquals($expectedValue, $isAllowed, sprintf('%s %s', $role, $acl));
+            $this->assertEquals($expectedValue, $isAllowed, sprintf('Role %s should have ACL \'%s\' = %s', $role, $acl, ($isAllowed ? 'false' : 'true')));
+            //$this->assertEquals($expectedValue, $isAllowed, sprintf('%s %s', $role, $acl));
         }
     }
 
@@ -176,11 +273,15 @@ SQL;
         foreach ($acls as $acl => $expectedValue) {
             assert(is_bool($expectedValue));
 
-            $isAllowed = (boolean) $connection->fetchColumn($query, [
+            $isAllowed = (boolean) $connection->fetchOne($query, [
                 'role' => $role,
                 'acl' => $acl,
             ]);
-            $this->assertEquals($expectedValue, $isAllowed);
+            $this->assertEquals(
+                $expectedValue,
+                $isAllowed,
+                sprintf('\'%s\' should be stored in database.', $acl)
+            );
         }
     }
 }
