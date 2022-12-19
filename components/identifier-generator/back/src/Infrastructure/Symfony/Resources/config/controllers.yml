@@ -31,3 +31,10 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetFamiliesController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamiliesWithLabels'
+      - '@pim_user.context.user'
+      - '@oro_security.security_facade'
