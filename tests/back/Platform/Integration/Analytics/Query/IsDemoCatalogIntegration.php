@@ -49,7 +49,6 @@ final class IsDemoCatalogIntegration extends TestCase
 
         $this->jobLauncher->launchFixtureImport('fixtures_channel_csv', file_get_contents($fixturePath . 'channels.csv'));
         $this->jobLauncher->launchFixtureImport('fixtures_user_csv', file_get_contents($fixturePath . 'users.csv'));
-        $this->featureFlags->disable('import_export_local_storage');
 
         Assert::assertTrue($this->isDemoCatalogQuery->fetch());
     }

@@ -175,14 +175,7 @@ class JobLauncher
         $application->setAutoExit(false);
 
         $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. 'pim-integration-tests-import';
-        $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
-
-        $fs = new Filesystem();
-        $fs->remove($importDirectoryPath);
-        $fs->remove($fixturesDirectoryPath);
-        $fs->mkdir($importDirectoryPath);
-        $fs->mkdir($fixturesDirectoryPath);
 
         file_put_contents($filePath, $content);
 
@@ -228,12 +221,12 @@ class JobLauncher
         $application->setAutoExit(false);
 
         $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::IMPORT_DIRECTORY;
-        $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $fileName = 'import.' . $format;
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . $fileName;
 
-        $this->jobStorageFilesystem->deleteDirectory($importDirectoryPath);
-        $this->jobStorageFilesystem->deleteDirectory($fixturesDirectoryPath);
+        $fs = new Filesystem();
+        $fs->remove($importDirectoryPath);
+        $fs->mkdir($importDirectoryPath);
 
         if (!empty($fixturePaths)) {
             $filePath .= '.zip';
