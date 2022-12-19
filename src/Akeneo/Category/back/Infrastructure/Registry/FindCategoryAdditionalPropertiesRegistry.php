@@ -20,7 +20,7 @@ class FindCategoryAdditionalPropertiesRegistry implements FindCategoryAdditional
     {
         foreach ($this->additionalPropertiesFinder as $finder) {
             if ($finder->isSupportedAdditionalProperties() === true) {
-                return $finder->execute($category);
+                $category = $finder->execute($category);
             }
         }
 
