@@ -453,7 +453,6 @@ elasticsearch:
       EXPECTED_DATA_NODES: 1
       RECOVER_AFTER_DATA_NODES: 1
       XPACK_SECURITY_ENABLED: 0
-      cluster.initial_master_nodes: "elasticsearch-master-0"
       discovery.seed_hosts: "elasticsearch-discovery"
   client:
     replicas: 1

@@ -387,7 +387,7 @@ test-prod:
 			if [ $${TIME_TO_SLEEP} -gt $(MAX_DNS_TEST_TIMEOUT) ]; then echo 'DNS resolution issue on "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"';exit 1; fi; \
 		echo 'Waiting for DNS "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)" to be ready'; sleep $${TIME_TO_SLEEP} ; \
 	done
-	helm3 test ${PFID} -n ${PFID} --debug
+	helm3 test ${PFID} -n ${PFID} --debug --filter '!name=elasticsearch-test'
 
 .PHONY: release
 release:
