@@ -5,7 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
 import {ListSkeleton} from '../components';
-import {AddConditionButton, EnabledLine} from './conditions';
+import {AddConditionButton, EnabledLine, FamilyLine} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 
 type SelectionTabProps = {
@@ -15,7 +15,23 @@ type SelectionTabProps = {
 };
 
 type ConditionIdentifier = string;
-type ConditionsWithIdentifier = (Condition & {id: ConditionIdentifier})[];
+type ConditionWithIdentifier = (Condition & {id: ConditionIdentifier});
+type ConditionsWithIdentifier = ConditionWithIdentifier[];
+
+type ConditionLineProps = {
+  conditionWithId: ConditionWithIdentifier,
+  handleChange: any,
+  onDelete: any,
+};
+
+const ConditionLine: React.FC<ConditionLineProps> = ({conditionWithId, handleChange, onDelete}) => {
+  switch (conditionWithId.type) {
+    case CONDITION_NAMES.ENABLED:
+      return <EnabledLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete} />;
+    case CONDITION_NAMES.FAMILY:
+      return <FamilyLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete}/>
+  }
+}
 
 const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange}) => {
   const translate = useTranslate();
@@ -97,16 +113,12 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
                 </Table.Cell>
               </Table.Row>
               {conditionsWithId.map(conditionWithId => (
-                <>
-                  {conditionWithId.type === CONDITION_NAMES.ENABLED && (
-                    <EnabledLine
-                      condition={conditionWithId}
-                      key={conditionWithId.id}
-                      onChange={handleChange}
-                      onDelete={onDelete(conditionWithId.id)}
-                    />
-                  )}
-                </>
+                <ConditionLine
+                  conditionWithId={conditionWithId}
+                  handleChange={handleChange}
+                  onDelete={onDelete(conditionWithId.id)}
+                  key={conditionWithId.id}
+                />
               ))}
             </>
           )}
