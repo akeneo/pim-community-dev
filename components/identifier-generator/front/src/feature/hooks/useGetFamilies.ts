@@ -57,12 +57,12 @@ const usePaginatedFamilies: () => {
         setHasNextPage(false);
       }
       setFamilies(formerFamilies => (hasSearchChanged ? data : [...(formerFamilies || []), ...data]));
-      setHasSearchChanged(false);
     }
   }, [data, hasSearchChanged]);
 
   const handleNextPage = () => {
     if (!isLoading && hasNextPage) {
+      setHasSearchChanged(false);
       setPage(page => page + 1);
     }
   };
