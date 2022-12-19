@@ -12,9 +12,9 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
-    "test:unit:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
-    "test:unit:watch": "react-scripts test --maxWorkers=3",
+    "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts --openssl-legacy-provider start",
+    "test:unit:run": "react-scripts --openssl-legacy-provider test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
+    "test:unit:watch": "react-scripts --openssl-legacy-provider test --maxWorkers=3",
     "lib:build": "tsc -p ./tsconfig.build.json",
     "translation:build": "cp $npm_package_config_application_path/public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp $npm_package_config_application_path/public/js/fos_js_routes.json ./src/routes.json",
