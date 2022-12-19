@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
@@ -227,17 +229,27 @@ class JobLauncher
 
         $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::IMPORT_DIRECTORY;
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
-        $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.' . $format;
+        $fileName = 'import.' . $format;
+        $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . $fileName;
 
         $this->jobStorageFilesystem->deleteDirectory($importDirectoryPath);
         $this->jobStorageFilesystem->deleteDirectory($fixturesDirectoryPath);
-        $this->jobStorageFilesystem->write($filePath, $content);
 
-        foreach ($fixturePaths as $fixturePath) {
-            $fixturesPath = $fixturesDirectoryPath . DIRECTORY_SEPARATOR . basename($fixturePath);
-            $content = file_get_contents($fixturesPath);
-            $this->jobStorageFilesystem->write($filePath, $content);
+        if (!empty($fixturePaths)) {
+            $filePath .= '.zip';
+            $archive = new \ZipArchive();
+            $archive->open($filePath,  \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+            foreach ($fixturePaths as $fixturePath) {
+                $fixtureContent = file_get_contents($fixturePath);
+                $archive->addFromString('fixtures/' . basename($fixturePath), $fixtureContent);
+            }
+
+            $archive->addFromString($fileName, $content);
+            $archive->close();
+            $content = file_get_contents($filePath);
         }
+
+        $this->jobStorageFilesystem->write($filePath, $content);
 
         $config['storage'] = ['type' => 'manual_upload', 'file_path' => $filePath];
 
@@ -280,6 +292,35 @@ class JobLauncher
         $config['is_user_authenticated'] = true;
 
         self::launchImport($jobCode, $content, $username, $fixturePaths, $config);
+    }
+
+    /**
+     * Wait until a job has been finished.
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @throws \RuntimeException
+     */
+    public function waitCompleteJobExecution(JobExecution $jobExecution): void
+    {
+        $timeout = 0;
+        $isCompleted = false;
+
+        $stmt = $this->connection->prepare('SELECT status from akeneo_batch_job_execution where id = :id');
+
+        while (!$isCompleted) {
+            if ($timeout > 30) {
+                throw new \RuntimeException(sprintf('Timeout: job execution "%s" is not complete.', $jobExecution->getId()));
+            }
+            $stmt->bindValue('id', $jobExecution->getId());
+            $result = $stmt->executeQuery()->fetchAssociative();
+
+            $isCompleted = isset($result['status']) && BatchStatus::COMPLETED === (int) $result['status'];
+
+            $timeout++;
+
+            sleep(1);
+        }
     }
 
     /**

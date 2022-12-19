@@ -19,7 +19,6 @@ class OnlyFlexibilityOnPremiseFeatureFlag implements FeatureFlag
 
     public function isEnabled(): bool
     {
-        return false;
         return !in_array($this->edition, self::SAAS_EDITIONS);
     }
 }
