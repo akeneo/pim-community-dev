@@ -170,7 +170,7 @@ pim_import_export:
                     sftp: SFTP
                     amazon_s3: Amazon S3
                     microsoft_azure: Microsoft Azure
-                    google_cloud: Google Cloud
+                    google_cloud_storage: Google Cloud Storage
                     none: No storage configured
                 file_path:
                     label: File path
