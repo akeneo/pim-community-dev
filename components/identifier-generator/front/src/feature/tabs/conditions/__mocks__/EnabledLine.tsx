@@ -1,9 +1,9 @@
 import React from 'react';
-import {Condition, Enabled} from '../../../models';
+import {Condition, EnabledCondition} from '../../../models';
 import {Button} from 'akeneo-design-system';
 
 type EnabledLineProps = {
-  condition: Enabled & {id: string};
+  condition: EnabledCondition & {id: string};
   onChange: (condition: Condition & {id: string}) => void;
   onDelete: (conditionId: string) => void;
 };

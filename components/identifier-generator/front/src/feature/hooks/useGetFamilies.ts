@@ -22,7 +22,7 @@ const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyC
       if (typeof parameters.queryKey[3] !== 'undefined') {
         queryParameters.codes = parameters.queryKey[3] as FamilyCode[];
       }
-      const response = await fetch(router.generate('akeneo_identifier_generator_get_families_list', queryParameters), {
+      const response = await fetch(router.generate('akeneo_identifier_generator_get_families', queryParameters), {
         method: 'GET',
         headers: [['X-Requested-With', 'XMLHttpRequest']],
       });
