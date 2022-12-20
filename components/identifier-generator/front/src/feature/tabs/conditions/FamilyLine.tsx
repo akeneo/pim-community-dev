@@ -14,14 +14,15 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange}) => {
   const translate = useTranslate();
 
   const handleOperatorChange = (operator: Operator) => {
+    const {value, ...conditionWithoutValue} = condition;
     switch (operator) {
       case Operator.IN:
       case Operator.NOT_IN:
-        onChange({...condition, operator, value: condition.value ?? []});
+        onChange({...conditionWithoutValue, operator, value: value ?? []});
         break;
       case Operator.EMPTY:
       case Operator.NOT_EMPTY:
-        onChange({...condition, operator, value: undefined});
+        onChange({...conditionWithoutValue, operator});
     }
   };
 
