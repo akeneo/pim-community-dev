@@ -77,3 +77,8 @@ variable "tags" {
   description = "List of trigger tags"
   default     = []
 }
+
+variable "disabled" {
+  type    = bool
+  default = false
+}

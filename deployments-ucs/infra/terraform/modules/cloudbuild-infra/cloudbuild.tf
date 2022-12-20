@@ -6,6 +6,7 @@ locals {
 
 resource "google_cloudbuild_trigger" "trigger" {
   name               = var.trigger_name
+  disabled           = var.disabled
   project            = var.cloudbuild_project_id
   service_account    = "projects/${var.cloudbuild_project_id}/serviceAccounts/${local.cloudbuild_service_account}"
   filename           = var.cloudbuild_filename
