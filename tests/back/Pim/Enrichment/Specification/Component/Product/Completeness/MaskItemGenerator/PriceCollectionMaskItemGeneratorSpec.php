@@ -98,4 +98,30 @@ class PriceCollectionMaskItemGeneratorSpec extends ObjectBehavior
         $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
             ->shouldReturn([]);
     }
+
+    public function it_filters_every_channel_active_currencies(
+        FindChannels $findChannels
+    ) {
+        $findChannels->findAll()->shouldBeCalled()->willReturn([
+            new Channel('channel1', ['localeCode'], LabelCollection::fromArray([]), ['USD', 'GPB']),
+            new Channel('channel2', ['localeCode'], LabelCollection::fromArray([]), ['EUR', 'GPB']),
+        ]);
+
+        $value = [
+            ['amount' => 200, 'currency' => 'USD'],
+            ['amount' => 100, 'currency' => 'EUR'],
+            ['amount' => 100, 'currency' => 'CNY'], // Inactive
+            ['amount' => 50, 'currency' => 'GPB'],
+        ];
+        $this->forRawValue('attributeCode', '<all_channels>', 'localeCode', $value)
+            ->shouldReturn([
+                'attributeCode-EUR-<all_channels>-localeCode',
+                'attributeCode-GPB-<all_channels>-localeCode',
+                'attributeCode-USD-<all_channels>-localeCode',
+                'attributeCode-EUR-GPB-<all_channels>-localeCode',
+                'attributeCode-EUR-USD-<all_channels>-localeCode',
+                'attributeCode-EUR-GPB-USD-<all_channels>-localeCode',
+                'attributeCode-GPB-USD-<all_channels>-localeCode',
+            ]);
+    }
 }

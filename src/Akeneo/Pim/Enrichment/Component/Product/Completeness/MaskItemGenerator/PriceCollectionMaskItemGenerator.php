@@ -59,7 +59,9 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
         $filledCurrencies = [];
-        $activeCurrencies = $this->getActiveCurrencies($channelCode);
+        $activeCurrencies = $channelCode === '<all_channels>' ?
+            $this->getAllActiveCurrencies() :
+            $this->getActiveCurrencies($channelCode);
         foreach ($value as $price) {
             if (
                 \in_array($price['currency'], $activeCurrencies) &&
@@ -123,5 +125,19 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
         }
 
         return [];
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAllActiveCurrencies()
+    {
+        $result = [];
+        $channels = $this->findChannels->findAll();
+        foreach ($channels as $channel) {
+            $result[] = $channel->getActiveCurrencies();
+        }
+
+        return \array_unique(\array_merge(...$result));
     }
 }
