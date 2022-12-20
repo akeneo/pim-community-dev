@@ -12,6 +12,7 @@ global:
     papo_project_code_truncated: null
     tenant_id: null
     tenant_name: null
+  cloned: false
   monitoring:
     enabled: false
   externalGateway:
@@ -235,6 +236,7 @@ mysql:
     userPassword: null # Generate me with `pwgen -sB 22`
     rootPassword: null # Generate me with `pwgen -sB 22`
     defaultDatabase: akeneo_pim
+    snapshotRef: ""
     dataDiskSize: 20
     innodbBufferPoolSize: 2048M
     innodbPoolInstances: 8
@@ -299,7 +301,7 @@ pim:
     installPim:
       enabled: true
     migration:
-      enable: false
+      enabled: false
     tests:
       enabled: false
   storage:

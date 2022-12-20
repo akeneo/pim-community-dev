@@ -15,3 +15,7 @@ spec:
   location: {{ .Values.common.googleZone }}
   projectRef:
     external: {{ .Values.common.gcpProjectID }}
+{{ if .Values.global.cloned -}}
+  snapshotRef:
+    external: {{ .Values.mysql.mysql.snapshotRef }}
+{{- end }}

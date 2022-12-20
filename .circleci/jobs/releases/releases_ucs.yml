@@ -194,8 +194,13 @@ jobs:
                   # tenant
                   rm -rf /tmp/pim-saas-k8s-artifacts/tenant
                   cp -r deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml global.cloned true
                   yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml pim.hook.migration.enabled true
                   yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml mysql.mysql.resetPassword true
+
+                  # Waiting PH-430
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml pim.hook.addAdmin.enabled false
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values.yaml pim.hook.installPim.enabled false
 
                   # timmy
                   rm -rf /tmp/pim-saas-k8s-artifacts/timmy
