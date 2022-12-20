@@ -446,6 +446,7 @@ elasticsearch:
     enabled: false
   cluster:
     name: "pim-es"
+    initial_master_nodes: "elasticsearch-master-0"
     env:
       # See chart config map: https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/configmap.yaml
       # And elasticsearch documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html

@@ -126,6 +126,8 @@ jobs:
                       echo export TYPE=${TYPE} >> $BASH_ENV
 
                       LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                      # To remove !
+                      LATEST_RELEASE=v20221214013743
 
                       if [[ -z "${LATEST_RELEASE}" ]]; then
                           echo "Could not retrieve latest deployed release"
