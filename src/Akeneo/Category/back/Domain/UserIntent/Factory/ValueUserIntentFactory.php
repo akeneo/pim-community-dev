@@ -42,7 +42,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
      *
      * @return array|UserIntent[]
      */
-    public function create(string $fieldName, mixed $data): array
+    public function create(string $fieldName, int $categoryId, mixed $data): array
     {
         if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($fieldName, ValueUserIntentFactory::class, $data);
@@ -71,6 +71,10 @@ final class ValueUserIntentFactory implements UserIntentFactory
      */
     private function getAttributeCollectionByAttributeValues(array $attributes): AttributeCollection
     {
+        if (!$attributes) {
+            return AttributeCollection::fromArray([]);
+        }
+
         $categoryAttributeUuids = $this->extractCategoryAttributeUuids(array_keys($attributes));
 
         return $this->getAttribute->byUuids($categoryAttributeUuids);

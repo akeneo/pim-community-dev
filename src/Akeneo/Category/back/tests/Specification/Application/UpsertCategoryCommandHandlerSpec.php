@@ -19,6 +19,7 @@ use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Exception;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
@@ -39,14 +40,16 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         GetCategoryInterface $getCategory,
         UserIntentApplierRegistry $applierRegistry,
         EventDispatcherInterface $eventDispatcher,
-        CategorySaverProcessor $saver
+        CategorySaverProcessor $saver,
+        FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry
     ) {
         $this->beConstructedWith(
             $validator,
             $getCategory,
             $applierRegistry,
             $eventDispatcher,
-            $saver
+            $saver,
+            $findCategoryAdditionalPropertiesRegistry
         );
     }
 
@@ -58,7 +61,8 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
     function it_creates_and_saves_a_category(
         GetCategoryInterface $getCategory,
         ValidatorInterface $validator,
-        CategorySaverProcessor $saver
+        CategorySaverProcessor $saver,
+        FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry
     ) {
         $command = new UpsertCategoryCommand('code');
         $category = new Category(
@@ -70,9 +74,10 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         );
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $getCategory->byCode('code')->shouldBeCalledOnce()->willReturn(null);
+        $findCategoryAdditionalPropertiesRegistry->forCategory(Argument::type(Category::class))->shouldNotBeCalled();
         $saver->save($category, $command->userIntents())->shouldNotBeCalled();
 
-        $this->shouldThrow(new Exception("Command to create a category is in progress."))->during__invoke($command);
+        $this->shouldThrow(new Exception("Command to create a category is in progress."))->during('__invoke', [$command]);
     }
 
     function it_throws_an_exception_when_command_is_not_valid(
@@ -80,7 +85,8 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         GetCategoryInterface $getCategory,
         UserIntentApplierRegistry $applierRegistry,
         EventDispatcherInterface $eventDispatcher,
-        CategorySaverProcessor $saver
+        CategorySaverProcessor $saver,
+        FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry
     ) {
         $command = new UpsertCategoryCommand('');
         $violations = new ConstraintViolationList([
@@ -89,12 +95,13 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn($violations);
         $getCategory->byCode('')->shouldNotBeCalled();
+        $findCategoryAdditionalPropertiesRegistry->forCategory(Argument::type(Category::class))->shouldNotBeCalled();
         $applierRegistry->getApplier(Argument::type(UserIntent::class))->shouldNotBeCalled();
         $saver->save(Argument::type(Category::class), Argument::cetera())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::type(CategoryUpdatedEvent::class))->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::type(CategoryCreatedEvent::class))->shouldNotBeCalled();
 
-        $this->shouldThrow(new ViolationsException($violations))->during__invoke($command);
+        $this->shouldThrow(new ViolationsException($violations))->during('__invoke', [$command]);
     }
 
     function it_throws_an_exception_when_updater_throws_an_exception(
@@ -103,7 +110,8 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         UserIntentApplier $userIntentApplier,
         EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator,
-        CategorySaverProcessor $saver
+        CategorySaverProcessor $saver,
+        FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry
     ) {
         $setLabelUserIntent = new SetLabel('en_US', 'The label');
         $command = new UpsertCategoryCommand('code', [$setLabelUserIntent]);
@@ -116,11 +124,12 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         );
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $getCategory->byCode('code')->shouldBeCalledOnce()->willReturn($category);
+        $findCategoryAdditionalPropertiesRegistry->forCategory($category)->shouldBeCalledOnce()->willReturn($category);
         $applierRegistry->getApplier($setLabelUserIntent)->willReturn($userIntentApplier);
         $userIntentApplier->apply($setLabelUserIntent, $category)->willThrow(InvalidArgumentException::class);
 
         $saver->save($category, $command->userIntents())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::type(CategoryUpdatedEvent::class))->shouldNotBeCalled();
-        $this->shouldThrow(ViolationsException::class)->during__invoke($command);
+        $this->shouldThrow(ViolationsException::class)->during('__invoke', [$command]);
     }
 }
