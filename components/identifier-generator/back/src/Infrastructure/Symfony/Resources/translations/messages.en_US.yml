@@ -1,4 +1,9 @@
-pim_catalog_identifier_generator:
+pim_identifier_generator:
+  acl:
+    view: 'View identifier generators'
+    manage: 'Manage identifier generators'
+  acl_group:
+    identifier_generator: 'Identifier Generators'
   condition:
     fields:
       family: Family
