@@ -37,7 +37,7 @@ describe('SelectionTab', () => {
         target={'sku'}
         conditions={[
           {type: CONDITION_NAMES.ENABLED, value: true},
-          {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY, value: undefined},
+          {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
         ]}
         onChange={onChange}
       />
@@ -49,7 +49,7 @@ describe('SelectionTab', () => {
     fireEvent.click(screen.getByText('Update value'));
     expect(onChange).toBeCalledWith([
       {type: CONDITION_NAMES.ENABLED, value: false},
-      {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY, value: undefined},
+      {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
     ]);
   });
 
