@@ -41,3 +41,18 @@ variable "min_master_version" {
   type    = string
   default = "1.24"
 }
+
+variable "default_machine type" {
+  type    = string
+  default = "n1-standard-4"
+}
+
+variable "mysql_machine type" {
+  type    = string
+  default = "n1-highmem-4"
+}
+
+variable "es_machine type" {
+  type    = string
+  default = "n1-highmem-4"
+}
