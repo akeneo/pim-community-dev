@@ -13,6 +13,9 @@ spec:
     targetRevision: {{ .Values.spec.source.targetRevision }}
     helm:
       releaseName: custom-metrics-stackdriver-adapter
+      parameters:
+        - name: customMetrics.gsa
+          value: "custom-metrics@{{ .Values.spec.destination.googleProject }}.iam.gserviceaccount.com"
   destination:
     server: {{ .Values.spec.destination.server }}
     namespace: custom-metrics
