@@ -150,6 +150,7 @@ $rules = [
         'Psr\Log\LoggerInterface',
         'Ramsey\Uuid',
         'Akeneo\Pim\Enrichment\Product\API',
+        'Akeneo\Channel\API',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
