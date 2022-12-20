@@ -240,7 +240,6 @@ mysql:
     dataDiskSize: 20
     innodbBufferPoolSize: 2048M
     innodbPoolInstances: 8
-    snapshotRef: ""
     stateful:
       enabled: false
     resources:
