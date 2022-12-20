@@ -130,15 +130,15 @@ const SettingsIndex = () => {
                   <IconCard
                     id="pim-settings-product-category"
                     icon={<CategoryIcon />}
-                    label={(
+                    label={
                       <>
                         {translate('pim_enrich.entity.category.plural_label')}
                         &nbsp;
                         {featureFlags.isEnabled('enriched_category') && (
-                        <Tag tint="blue">{translate('akeneo.category.tag.new')}</Tag>
+                          <Tag tint="blue">{translate('akeneo.category.tag.new')}</Tag>
                         )}
                       </>
-                    )}
+                    }
                     onClick={() => redirectToRoute('pim_enrich_categorytree_index')}
                     content={
                       countEntities.hasOwnProperty('count_category_trees') &&

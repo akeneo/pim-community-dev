@@ -113,9 +113,8 @@ const SubNavigation: FC<Props> = ({
                       </Tag>
                     )}
                     {subEntry.title === 'Categories' && featureFlags.isEnabled('enriched_category') && (
-                        <Tag tint="blue">
-                          {translate('akeneo.category.tag.new')}
-                        </Tag>)}
+                      <Tag tint="blue">{translate('akeneo.category.tag.new')}</Tag>
+                    )}
                     {subEntry.new && <Tag tint="green">New</Tag>}
                   </StyledSubNavigationItem>
                 ))}
