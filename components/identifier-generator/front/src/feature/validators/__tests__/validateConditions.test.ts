@@ -7,7 +7,7 @@ describe('validateConditions', () => {
       validateConditions(
         [
           {type: CONDITION_NAMES.ENABLED, value: true},
-          {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY, value: undefined},
+          {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
         ],
         'conditions'
       )
