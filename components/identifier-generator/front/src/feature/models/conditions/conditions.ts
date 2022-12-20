@@ -8,7 +8,7 @@ enum CONDITION_NAMES {
 
 type Condition = {
   type: CONDITION_NAMES;
-} & (EnabledCondition|FamilyCondition);
+} & (EnabledCondition | FamilyCondition);
 
 type Conditions = Condition[];
 
