@@ -1,0 +1,31 @@
+scaleDownMysql:
+    params: [input]
+    steps:
+        - create_build:
+            call: googleapis.cloudbuild.v1.projects.builds.create
+            args:
+                projectId: $${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                parent: $${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/locations/global"}
+                body:
+                    serviceAccount: $${sys.get_env("GOOGLE_CLOUD_SERVICE_ACCOUNT_NAME")}
+                    options:
+                        logging: CLOUD_LOGGING_ONLY
+                    substitutions:
+                        _PFID: $${map.get(input, "pfid")}
+                        _SOURCE_PROJECT: $${map.get(input, "sourceProject")}
+                        _SOURCE_CLUSTER_NAME: $${map.get(input, "sourceClusterName")}
+                        _SOURCE_GOOGLE_CLUSTER_ZONE: $${map.get(input, "sourceClusterName")}
+                    steps:
+                        - name: eu.gcr.io/akeneo-cloud/cloud-deployer:7.10
+                          entrypoint: /bin/bash
+                          args:
+                            - -c
+                            - |
+                                # Set cluster authentication
+                                gcloud container clusters get-credentials $${_SOURCE_CLUSTER_NAME} --project=$${_SOURCE_PROJECT} --zone=$${_SOURCE_GOOGLE_CLUSTER_ZONE}
+
+                                echo "Scale down the MySQL pod"
+                                kubectl scale -n $${_PFID} deploy/mysql --replicas=0
+            result: build_result
+        - return_build_result:
+            return: $${build_result}

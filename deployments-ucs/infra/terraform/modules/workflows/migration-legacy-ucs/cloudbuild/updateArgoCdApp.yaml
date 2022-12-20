@@ -1,0 +1,87 @@
+updateArgoCdApp:
+    params: [input,sourceMysqlSize,mysqlSnapshotUrl]
+    steps:
+        - create_build:
+            call: googleapis.cloudbuild.v1.projects.builds.create
+            args:
+                projectId: $${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                parent: $${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/locations/global"}
+                body:
+                    serviceAccount: $${sys.get_env("GOOGLE_CLOUD_SERVICE_ACCOUNT_NAME")}
+                    availableSecrets:
+                        secretManager:
+                            env: "SSH_KEY"
+                            versionName: "projects/871183243453/secrets/GIT_SSH_KEY_MIGRATION/versions/latest"
+                    options:
+                        logging: CLOUD_LOGGING_ONLY
+                    substitutions:
+                        _SOURCE_PROJECT: $${map.get(input, "sourceProject")}
+                        _SOURCE_CLUSTER_NAME: $${map.get(input, "sourceClusterName")}
+                        _SOURCE_GOOGLE_CLUSTER_ZONE: $${map.get(input, "sourceClusterName")}
+                        _TENANT_ID: $${map.get(input, "tenantId")}
+                        _TENANT_NAME: $${map.get(input, "tenantName")}
+                        _DESTINATION_GOOGLE_CLUSTER_REGION: $${map.get(input, "destinationClusterRegion")}
+                        _DNS_GOOGLE_DOMAIN: $${map.get(input, "dnsGoogleDomain")}
+                        _CLOUD_FUNCTION_CREATE_TENANT: $${map.get(input, "cloudFunctionCreateTenant")}
+                        _SOURCE_MYSQL_SIZE: $${sourceMysqlSize}
+                        _MYSQL_URL_SNAPSHOT: $${mysqlSnapshotUrl}
+                    steps:
+                        - name: eu.gcr.io/akeneo-cloud/cloud-deployer:7.10
+                          entrypoint: /bin/bash
+                          secretEnv: ['SSH_KEY']
+                          args:
+                            - -c
+                            - |
+                                # Set cluster authentication
+                                gcloud container clusters get-credentials $${_SOURCE_CLUSTER_NAME} --project=$${_SOURCE_PROJECT} --zone=$${_SOURCE_GOOGLE_CLUSTER_ZONE}
+
+                                echo "Mysql Size: $${_SOURCE_MYSQL_SIZE}"
+                                echo "Mysql Snapshot URL: $${_MYSQL_URL_SNAPSHOT}"
+
+                                PIM_EDITION=serenity_instance
+                                BRANCH_NAME=master-migration-step2
+                                PIM_NAMESPACE=pim
+                                LOGIN_NAME=akeneo-migration
+
+                                export GITHUB_USER=akeneo-pim-saas-argocd
+                                export GITHUB_TOKEN=$$${SSH_KEY}
+                                export GITHUB_REPOSITORY=akeneo/pim-saas-k8s-artifacts.git
+
+                                git config --global user.email "akeneo-pim-saas-argocd@akeneo.com"
+                                git config --global user.name "akeneo-pim-saas-argocd@akeneo.com"
+
+                                git clone -b $$${BRANCH_NAME} https://$$${GITHUB_USER}:$$${GITHUB_TOKEN}@github.com/$$${GITHUB_REPOSITORY} pim-saas-k8s-artifacts
+
+                                cd pim-saas-k8s-artifacts
+
+                                yq w -i tenant/values.yaml mysql.mysql.dataDiskSize "$${_SOURCE_MYSQL_SIZE}"
+                                yq w -i tenant/values.yaml mysql.mysql.sourceSnapshot "$${_MYSQL_URL_SNAPSHOT}"
+                                yq w -i tenant/values.yaml pim.hook.addAdmin.enabled false
+                                yq w -i tenant/values.yaml pim.hook.installPim.enabled false
+
+                                git add -u
+                                git commit -m "Update tenant information"
+                                git push
+
+                                JSON_BODY_STRING=\''{"pim_edition":"'"$$${PIM_EDITION}"'","branchName":"'"$$${BRANCH_NAME}"'","tenant_name":"'"$${_TENANT_NAME}"'","dnsCloudDomain":"'"$${_DNS_GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"$$${LOGIN_NAME}"'@akeneo.com","firstName":"'"$$${LOGIN_NAME}"'","lastName":"'"$$${LOGIN_NAME}"'","email":"'"$$${LOGIN_NAME}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"$$${PIM_NAMESPACE}"'"},"web":{"namespace":"'"$$${PIM_NAMESPACE}"'"}}}'
+                                JSON_BODY_STRING=$$${JSON_BODY_STRING:1}
+                                CLOUD_FUNCTION_URL=$(gcloud beta functions describe $${_CLOUD_FUNCTION_CREATE_TENANT} --format='value(serviceConfig.uri)' --gen2 --region=$${_DESTINATION_GOOGLE_CLUSTER_REGION})
+                                IDENTITY_TOKEN=$(gcloud --impersonate-service-account ucs-migration-uat-wip@akecld-prd-pim-saas-demo.iam.gserviceaccount.com auth print-identity-token)
+                                echo "Cloud function URL: $$${CLOUD_FUNCTION_URL}"
+                                echo "Cloud function body: $$${JSON_BODY_STRING}"
+
+                                curl --fail-with-body -m 3610 -X POST $$${CLOUD_FUNCTION_URL} -H "Authorization: bearer $$${IDENTITY_TOKEN}" -H "Content-Type: application/json" -d $$${JSON_BODY_STRING}
+
+                                SYNC_STATUS=$(kubectl get application $${_TENANT_ID} --no-headers --namespace=argocd | awk '{print $$2}')
+                                HEALTH_STATUS=$(kubectl get application $${_TENANT_ID} --no-headers --namespace=argocd | awk '{print $$3}')
+                                if [ "$$${SYNC_STATUS}" == "Synced" ] && [ "$$${HEALTH_STATUS}" == "Healthy" ]; then
+                                echo "Tenant creation fully synchronized"
+                                else
+                                echo "SYNC_STATUS: $$${SYNC_STATUS}"
+                                echo "HEALTH_STATUS: $$${HEALTH_STATUS}"
+                                echo "Tenant creation is not fully synchronized"
+                                exit 1
+                                fi
+            result: build_result
+        - return_build_result:
+            return: $${build_result}

@@ -117,6 +117,12 @@ module "timmy_datadog" {
   datadog_gcp_integration_email = module.iam.datadog_gcp_integration_email
 }
 
+module "google_workflows" {
+  source        = "../../modules/workflows"
+  project_id    = var.project_id
+  region        = element(var.regions, 0)
+}
+
 provider "datadog" {
   api_key = local.datadog_api_key
   app_key = local.datadog_app_key

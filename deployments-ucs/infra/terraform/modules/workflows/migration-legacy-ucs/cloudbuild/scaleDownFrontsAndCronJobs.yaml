@@ -1,0 +1,46 @@
+scaleDownFrontsAndCronJobs:
+    params: [input]
+    steps:
+        - create_build:
+            call: googleapis.cloudbuild.v1.projects.builds.create
+            args:
+                projectId: $${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                parent: $${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/locations/global"}
+                body:
+                    serviceAccount: $${sys.get_env("GOOGLE_CLOUD_SERVICE_ACCOUNT_NAME")}
+                    options:
+                        logging: CLOUD_LOGGING_ONLY
+                    substitutions:
+                        _PFID: $${map.get(input, "pfid")}
+                        _SOURCE_PROJECT: $${map.get(input, "sourceProject")}
+                        _SOURCE_CLUSTER_NAME: $${map.get(input, "sourceClusterName")}
+                        _SOURCE_GOOGLE_CLUSTER_ZONE: $${map.get(input, "sourceClusterName")}
+                    steps:
+                        - name: eu.gcr.io/akeneo-cloud/cloud-deployer:7.10
+                          entrypoint: /bin/bash
+                          args:
+                            - -c
+                            - |
+                                # Set cluster authentication
+                                gcloud container clusters get-credentials $${_SOURCE_CLUSTER_NAME} --project=$${_SOURCE_PROJECT} --zone=$${_SOURCE_GOOGLE_CLUSTER_ZONE}
+
+                                echo "Scale down the pim-api"
+                                kubectl scale -n $${_PFID} deploy/pim-api --replicas=0
+
+                                echo "Scale down the pim-web"
+                                kubectl scale -n $${_PFID} deploy/pim-web --replicas=0
+
+                                echo "Remove all cronjobs except zdd-migration-migrate and elasticsearch-snapshotter for $${_PFID}"
+                                echo "kubectl get cronjob --no-headers --namespace=$${_PFID} | awk '{print \$$1}' | grep -v zdd-migration-migrate | grep -v elasticsearch-snapshotter"
+                                CRON_JOB_LIST=$(kubectl get cronjob --no-headers --namespace=$${_PFID} | awk '{print $$1}' | grep -v zdd-migration-migrate | grep -v elasticsearch-snapshotter)
+                                if [ -z "$$${CRON_JOB_LIST}" ]; then
+                                echo "The list of the cronjobs is already empty. Nothing to do!"
+                                else
+                                for CRON_JOB in $$${CRON_JOB_LIST}; do
+                                    echo "kubectl delete -n $${_PFID} cronjob $$${CRON_JOB}"
+                                    kubectl delete -n $${_PFID} cronjob $$${CRON_JOB}
+                                done
+                                fi
+            result: build_result
+        - return_build_result:
+            return: $${build_result}

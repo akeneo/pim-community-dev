@@ -1,0 +1,345 @@
+main:
+    params: [input]
+    steps:
+        - initVariable:
+            assign:
+                - pfid: $${map.get(input, "pfid")}
+                - tenantId: $${map.get(input, "tenantId")}
+                - tenantName: $${map.get(input, "tenantName")}
+                - sourceProject: $${map.get(input, "sourceProject")}
+                - destinationProject: $${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                - mysqlSourceDiskZone: $${map.get(input, "mysqlSourceDiskZone")}
+                - mysqlSnapshotLocation: $${map.get(input, "mysqlSnapshotLocation")}
+                - sourceClusterRegion: $${map.get(input, "sourceClusterRegion")}
+                - sourceClusterName: $${map.get(input, "sourceClusterName")}
+                - destinationClusterRegion: $${map.get(input, "destinationClusterRegion")}
+                - destinationClusterName: $${map.get(input, "destinationClusterName")}
+                - destinationPimBucketName: $${"pim-"+tenantName}
+                - destinationEsBucketName: $${"pim-"+tenantName+"-es"}
+                - destinationBucketLocation: $${destinationClusterRegion}
+                - dnsGoogleDomain: $${map.get(input, "dnsGoogleDomain")}
+                - cloudFunctionCreateTenant: $${map.get(input, "cloudFunctionCreateTenant")}
+                - workflowId: $${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+                - inputMap:
+                    pfid: $${pfid}
+                    tenantId: $${tenantId}
+                    tenantName: $${tenantName}
+                    sourceProject: $${sourceProject}
+                    destinationProject: $${destinationProject}
+                    mysqlSourceDiskZone: $${mysqlSourceDiskZone}
+                    mysqlSnapshotLocation: $${mysqlSnapshotLocation}
+                    sourceClusterRegion: $${sourceClusterRegion}
+                    sourceClusterName: $${sourceClusterName}
+                    destinationClusterRegion: $${destinationClusterRegion}
+                    destinationClusterName: $${destinationClusterName}
+                    destinationPimBucketName: $${destinationPimBucketName}
+                    destinationEsBucketName: $${destinationEsBucketName}
+                    destinationBucketLocation: $${destinationBucketLocation}
+                    dnsGoogleDomain: $${dnsGoogleDomain}
+                    cloudFunctionCreateTenant: $${cloudFunctionCreateTenant}
+                    workflowId: $${workflowId}
+                - sourceMysqlSize: null
+                - mysqlSnapshotUrl: null
+        - step1:
+            parallel:
+                branches:
+                    - initArgoApp:
+                        steps:
+                            - initialArgocdAppCreationCall:
+                                call: initialArgocdAppCreation
+                                args:
+                                    input: $${inputMap}
+                                result: result
+                    - esFirstSansphot:
+                        steps:
+                            - esFirstSnapshotCreationCall:
+                                call: esSnapshotCreation
+                                args:
+                                    input: $${inputMap}
+                                result: result
+        - step2:
+            parallel:
+                    branches:
+                        - esFirstBucketTransfer:
+                            steps:
+                                - initEsFirstBucketTransfer:
+                                    assign:
+                                        - storageTransferName: $${"transferJobs/"+pfid+"-es-ucs-migration-"+workflowId}
+                                - createEsFirstBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.create
+                                        args:
+                                            body:
+                                                name: $${storageTransferName}
+                                                description: "A job that transfers data between src and sink buckets in the UCS migration workflow."
+                                                projectId: $${destinationProject}
+                                                transferSpec:
+                                                    gcsDataSource:
+                                                        bucketName: $${pfid+"-es"}
+                                                        path: ""
+                                                    gcsDataSink:
+                                                        bucketName: $${destinationEsBucketName}
+                                                        path: ""
+                                                    transferOptions:
+                                                        deleteObjectsUniqueInSink: true
+                                                        overwriteObjectsAlreadyExistingInSink: false
+                                                status: "ENABLED"
+                                - runEsFirstBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.run
+                                        args:
+                                            jobName: $${storageTransferName}
+                                            body:
+                                                projectId: $${destinationProject}
+                                            connector_params:
+                                                timeout: 7200
+                                        result: r
+                                - deleteEsBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.patch
+                                        args:
+                                            jobName: $${storageTransferName}
+                                            body:
+                                                projectId: $${destinationProject}
+                                                transferJob:
+                                                    status: "DELETED"
+                        - assetFirstBucketTransfer:
+                            steps:
+                                - initAssetFirstBucketTransfer:
+                                    assign:
+                                        - storageTransferName: $${"transferJobs/"+pfid+"-asset-ucs-migration-"+workflowId}
+                                - createAssetFirstBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.create
+                                        args:
+                                            body:
+                                                name: $${storageTransferName}
+                                                description: "A job that transfers data between src and sink buckets in the UCS migration workflow."
+                                                projectId: $${destinationProject}
+                                                transferSpec:
+                                                    gcsDataSource:
+                                                        bucketName: $${pfid}
+                                                        path: ""
+                                                    gcsDataSink:
+                                                        bucketName: $${destinationPimBucketName}
+                                                        path: ""
+                                                    transferOptions:
+                                                        deleteObjectsUniqueInSink: true
+                                                        overwriteObjectsAlreadyExistingInSink: false
+                                                status: "ENABLED"
+                                - runAssetFirstBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.run
+                                        args:
+                                            jobName: $${storageTransferName}
+                                            body:
+                                                projectId: $${destinationProject}
+                                            connector_params:
+                                                timeout: 7200
+                                        result: r
+                                - deleteAssetFirstBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.patch
+                                        args:
+                                            jobName: $${storageTransferName}
+                                            body:
+                                                projectId: $${destinationProject}
+                                                transferJob:
+                                                    status: "DELETED"
+        - step3:
+            parallel:
+                branches:
+                    - scaleDownPim:
+                        steps:
+                            - scaleDownFrontsAndCronJobsCall:
+                                call: scaleDownFrontsAndCronJobs
+                                args:
+                                    input: $${inputMap}
+                                result: result
+                    - step3skip:
+                        steps:
+                            - step3skipStep:
+                                assign:
+                                    - skip: null
+        - step4:
+            parallel:
+                branches:
+                    - scaleDownDaemon:
+                        steps:
+                            - scaleDownDaemonCall:
+                                call: scaleDownDaemon
+                                args:
+                                    input: $${inputMap}
+                                result: result
+                    - step4skip:
+                        steps:
+                            - step4skipStep:
+                                assign:
+                                    - skip: null
+        - step5:
+            parallel:
+                branches:
+                    - scaleMysql:
+                        steps:
+                            - scaleMysqlCall:
+                                call: scaleDownMysql
+                                args:
+                                    input: $${inputMap}
+                                result: result
+                    - step5skip:
+                        steps:
+                            - step5skipStep:
+                                assign:
+                                    - skip: null
+        - step6:
+            parallel:
+                shared: [sourceMysqlSize, mysqlSnapshotUrl]
+                branches:
+                    - esSecondSansphot:
+                        steps:
+                            - esSecondSansphotCreationCall:
+                                call: esSnapshotCreation
+                                args:
+                                    input: $${inputMap}
+                                result: result
+                    - mysql:
+                        steps:
+                            - getSourceMysqlDiskName:
+                                call: googleapis.compute.v1.disks.list
+                                args:
+                                    project: $${sourceProject}
+                                    zone: $${mysqlSourceDiskZone}
+                                    filter: $${"(labels.app = \"mysql\") AND (labels.pfid = "+pfid+")"}
+                                    maxResults: 5
+                                result: mysqlDiskListResult
+                            - sourceMysqlSnapshotCreation:
+                                    call: googleapis.compute.v1.disks.createSnapshot
+                                    args:
+                                        disk: $${mysqlDiskListResult.items[0].name}
+                                        project: $${sourceProject}
+                                        zone: $${mysqlSourceDiskZone}
+                                        guestFlush: false
+                                        body:
+                                            description: "Snapshot created for UCS migration"
+                                            labels:
+                                                {
+                                                    "app": "mysql",
+                                                    "generated_by": "ucs-migration-workflow",
+                                                    "workflow_id": "$${workflowId}",
+                                                    "pfid": "$${pfid}",
+                                                    "project_id": "$${sourceProject}",
+                                                }
+                                            name: $${text.replace_all(pfid+sys.now(),".","")}
+                                            storageLocations: $${mysqlSnapshotLocation}
+                                    result: createSnapshotResult
+                            - listSnapshots:
+                                    call: googleapis.compute.v1.snapshots.list
+                                    args:
+                                        project: $${sourceProject}
+                                        filter: $${"(labels.generated_by = \"ucs-migration-workflow\") AND (labels.pfid = "+pfid+") AND (labels.workflow_id = "+workflowId+")"}
+                                        maxResults: 5
+                                    result: listResult
+                            - getSourceMysqlSnapshotInfo:
+                                    call: googleapis.compute.v1.snapshots.get
+                                    args:
+                                        project: $${sourceProject}
+                                        snapshot: $${listResult.items[0].name}
+                                    result: getResult
+                            - setMysqlSnapshotInfoVars:
+                                assign:
+                                    - sourceMysqlSize: $${getResult.diskSizeGb}
+                                    - mysqlSnapshotUrl:  $${getResult.selfLink}
+        - step7:
+            parallel:
+                    branches:
+                        - esSecondBucketTransfer:
+                            steps:
+                                - initEsBucketTransfer:
+                                    assign:
+                                        - storageTransferName: $${"transferJobs/"+pfid+"-es-2-ucs-migration-"+workflowId}
+                                - createEsSecondBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.create
+                                        args:
+                                            body:
+                                                name: $${storageTransferName}
+                                                description: "A job that transfers data between src and sink buckets in the UCS migration workflow."
+                                                projectId: $${destinationProject}
+                                                transferSpec:
+                                                    gcsDataSource:
+                                                        bucketName: $${pfid+"-es"}
+                                                        path: ""
+                                                    gcsDataSink:
+                                                        bucketName: $${"pim-"+tenantName+"-es"}
+                                                        path: ""
+                                                    transferOptions:
+                                                        deleteObjectsUniqueInSink: true
+                                                        overwriteObjectsAlreadyExistingInSink: false
+                                                status: "ENABLED"
+                                - runEsSecondBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.run
+                                        args:
+                                            jobName: $${storageTransferName}
+                                            body:
+                                                projectId: $${destinationProject}
+                                            connector_params:
+                                                timeout: 7200
+                                        result: r
+                                - deleteEsSecondBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.patch
+                                        args:
+                                            jobName: $${storageTransferName}
+                                            body:
+                                                projectId: $${destinationProject}
+                                                transferJob:
+                                                    status: "DELETED"
+                        - assetSecondBucketTransfer:
+                            steps:
+                                - initAssetSecondBucketTransfer:
+                                    assign:
+                                        - storageTransferName: $${"transferJobs/"+pfid+"-asset-2-ucs-migration-"+workflowId}
+                                - createAssetSecondBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.create
+                                        args:
+                                            body:
+                                                name: $${storageTransferName}
+                                                description: "A job that transfers data between src and sink buckets in the UCS migration workflow."
+                                                projectId: $${destinationProject}
+                                                transferSpec:
+                                                    gcsDataSource:
+                                                        bucketName: $${pfid}
+                                                        path: ""
+                                                    gcsDataSink:
+                                                        bucketName: $${"pim-"+tenantName}
+                                                        path: ""
+                                                    transferOptions:
+                                                        deleteObjectsUniqueInSink: true
+                                                        overwriteObjectsAlreadyExistingInSink: false
+                                                status: "ENABLED"
+                                - runAssetSecondBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.run
+                                        args:
+                                            jobName: $${storageTransferName}
+                                            body:
+                                                projectId: $${destinationProject}
+                                            connector_params:
+                                                timeout: 7200
+                                        result: r
+                                - deleteAssetSecondBucketTransferJob:
+                                        call: googleapis.storagetransfer.v1.transferJobs.patch
+                                        args:
+                                            jobName: $${storageTransferName}
+                                            body:
+                                                projectId: $${destinationProject}
+                                                transferJob:
+                                                    status: "DELETED"
+        - step8:
+            parallel:
+                branches:
+                    - timmy:
+                        steps:
+                            - updateArgoCdAppCall:
+                                call: updateArgoCdApp
+                                args:
+                                    input: $${inputMap}
+                                    sourceMysqlSize: $${sourceMysqlSize}
+                                    mysqlSnapshotUrl:  $${mysqlSnapshotUrl}
+                                result: result
+                    - step8skip:
+                        steps:
+                            - step8skipStep:
+                                assign:
+                                    - skip: null

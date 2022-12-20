@@ -4,7 +4,6 @@ firestore_locations = {
   "australia-southeast1" = "akecld-prd-pim-fire-aus-demo"
 }
 regions = [
-  "europe-west1",
   "europe-west3",
   "us-central1",
   "australia-southeast1"

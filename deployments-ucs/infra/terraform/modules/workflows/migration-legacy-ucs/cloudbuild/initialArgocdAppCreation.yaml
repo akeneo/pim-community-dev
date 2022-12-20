@@ -1,0 +1,93 @@
+initialArgocdAppCreation:
+    params: [input]
+    steps:
+        - create_build:
+            call: googleapis.cloudbuild.v1.projects.builds.create
+            args:
+                projectId: $${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                parent: $${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/locations/global"}
+                body:
+                    serviceAccount: $${sys.get_env("GOOGLE_CLOUD_SERVICE_ACCOUNT_NAME")}
+                    availableSecrets:
+                        secretManager:
+                            env: "SSH_KEY"
+                            versionName: "projects/871183243453/secrets/GIT_SSH_KEY_MIGRATION/versions/latest"
+                    options:
+                        logging: CLOUD_LOGGING_ONLY
+                    substitutions:
+                        _DESTINATION_PROJECT: $${map.get(input, "destinationProject")}
+                        _DESTINATION_CLUSTER_NAME: $${map.get(input, "destinationClusterName")}
+                        _DESTINATION_GOOGLE_CLUSTER_REGION: $${map.get(input, "destinationClusterRegion")}
+                        _TENANT_ID: $${map.get(input, "tenantId")}
+                        _DEST_PIM_BUCKET_NAME: $${map.get(input, "destinationPimBucketName")}
+                        _DEST_ES_BUCKET_NAME: $${map.get(input, "destinationEsBucketName")}
+                        _DEST_BUCKET_LOCATION: $${text.to_upper(map.get(input, "destinationBucketLocation"))}
+                    steps:
+                        - name: eu.gcr.io/akeneo-cloud/cloud-deployer:7.10
+                          entrypoint: /bin/bash
+                          secretEnv: ['SSH_KEY']
+                          args:
+                            - -c
+                            - |
+                                # Set cluster authentication
+                                gcloud container clusters get-credentials $${_DESTINATION_CLUSTER_NAME} --project=$${_DESTINATION_PROJECT} --region=$${_DESTINATION_GOOGLE_CLUSTER_REGION}
+                                # Test
+                                echo "It works !"
+                                BRANCH_NAME=master-migration-step1
+
+                                export GITHUB_USER=akeneo-pim-saas-argocd
+                                export GITHUB_TOKEN=$$${SSH_KEY}
+                                export GITHUB_REPOSITORY=akeneo/pim-saas-k8s-artifacts.git
+
+                                git clone -b $$${BRANCH_NAME} https://$$${GITHUB_USER}:$$${GITHUB_TOKEN}@github.com/$$${GITHUB_REPOSITORY} pim-saas-k8s-artifacts
+
+                                ls -la
+
+                                yq d -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml metadata.labels
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml metadata.name "$${_TENANT_ID}"
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml metadata.labels.tenant_id "$${_TENANT_ID}"
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml spec.source.targetRevision "$$${BRANCH_NAME}"
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml spec.destination.namespace "$${_TENANT_ID}"
+
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml 'spec.source.helm.parameters.(name==global.extraLabels.tenant_id).value' "$${_TENANT_ID}"
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml 'spec.source.helm.parameters.(name==common.gcpProjectID).value' "$${_DESTINATION_PROJECT}"
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml 'spec.source.helm.parameters.(name==pim.storage.bucketName).value' "$${_DEST_PIM_BUCKET_NAME}"
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml 'spec.source.helm.parameters.(name==pim.storage.location).value' "$${_DEST_BUCKET_LOCATION}"
+                                yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml 'spec.source.helm.parameters.(name==elasticsearch.snapshots.bucketName).value' "$${_DEST_ES_BUCKET_NAME}"
+
+                                echo "Create the tenant application"
+                                kubectl apply -f pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml -n argocd
+
+                                # Wait up to 10minutes that application is sync
+                                echo "Wait that the resources for the tenant is created"
+                                MAX_COUNTER=120
+                                COUNTER=1
+                                SLEEP_TIME=5
+                                CONTINUE=true
+
+                                while $$${CONTINUE}; do
+                                echo "Check the tenant application health"
+                                SYNC_STATUS=$(kubectl get application $${_TENANT_ID} --no-headers --namespace=argocd | awk '{print $$2}')
+                                HEALTH_STATUS=$(kubectl get application $${_TENANT_ID} --no-headers --namespace=argocd | awk '{print $$3}')
+                                if [ "$$${SYNC_STATUS}" == "Synced" ] && [ "$$${HEALTH_STATUS}" == "Healthy" ]; then
+                                    echo "Tenant creation fully synchronized"
+                                    CONTINUE=false
+                                else
+                                    echo "Tenant creation still in creation"
+                                    echo "SYNC_STATUS: $$${SYNC_STATUS}"
+                                    echo "HEALTH_STATUS: $$${HEALTH_STATUS}"
+                                    sleep $$${SLEEP_TIME}
+                                    COUNTER=$(($$${COUNTER} + 1))
+                                    if [ $$${COUNTER} -gt $$${MAX_COUNTER} ]; then
+                                        TIME_WAITED=$$(( COUNTER*SLEEP_TIME ))
+                                        echo "We have been waiting the tenant creation for too long: $$${TIME_WAITED} seconds; failing."
+                                        exit 1
+                                    fi;
+                                fi
+                                done
+                                TIME_WAITED=$$(( COUNTER*SLEEP_TIME ))
+
+                                echo "We have been waiting for $$${TIME_WAITED} seconds!"
+            result: build_result
+        - return_build_result:
+            return: $${build_result}
