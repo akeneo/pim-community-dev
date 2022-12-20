@@ -2,7 +2,7 @@ envVarsDeployDev: &envVarsDeployDev
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
 dockerCloudDeployerNext: &dockerCloudDeployerNext
-dockerCloudDeployerUCS: &dockerCloudDeployerUCS
+dockerPIMDeployerUCS: &dockerPIMDeployerUCS
 executor-machine: &executor-machine
 
 jobs:
@@ -73,7 +73,7 @@ jobs:
                 default: ""
         environment:
             <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
+        <<: *dockerPIMDeployerUCS
         resource_class: small
         steps:
             - attach_workspace:
@@ -111,7 +111,7 @@ jobs:
                 default: ''
         environment:
             <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
+        <<: *dockerPIMDeployerUCS
         resource_class: small
         steps:
             - attach_workspace:
@@ -151,7 +151,7 @@ jobs:
                 default: ""
         environment:
             <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
+        <<: *dockerPIMDeployerUCS
         resource_class: small
         steps:
             - attach_workspace:
@@ -159,7 +159,6 @@ jobs:
             - set_gcloud_config_pim_saas_dev
             - restore_persisted_env_vars
             - restore_persisted_timmy_env_vars
-            - install_terrafrom
             - run:
                   name: Delete environments
                   command: |
@@ -215,7 +214,7 @@ jobs:
     delete_ucs_environments_hourly:
         environment:
             <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
+        <<: *dockerPIMDeployerUCS
         resource_class: small
         steps:
             - attach_workspace:

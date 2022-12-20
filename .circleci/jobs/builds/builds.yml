@@ -1,6 +1,6 @@
 envVarsDeployDev: &envVarsDeployDev
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
-dockerCloudDeployerUCS: &dockerCloudDeployerUCS
+dockerPIMDeployerUCS: &dockerPIMDeployerUCS
 executor-machine: &executor-machine
 
 orbs:

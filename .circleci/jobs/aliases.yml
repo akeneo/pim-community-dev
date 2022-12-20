@@ -45,30 +45,30 @@ envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
   GOOGLE_REGION_SHORTED_NEXT: "euw3"
 
-dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent # cloudDeployer version used in prod (used for lastest release deployement)
+dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent                                       # cloudDeployer version used in prod (used for lastest release deployement)
   docker:
     - image: eu.gcr.io/akeneo-cloud/cloud-deployer:7.11
       auth:
-        username: _json_key                             # default username when using a JSON key file to authenticate
-        password: $GCLOUD_SERVICE_KEY_DEV               # JSON service account you created, do not encode to base64
+        username: _json_key                                                                   # default username when using a JSON key file to authenticate
+        password: $GCLOUD_SERVICE_KEY_DEV                                                     # JSON service account you created, do not encode to base64
 
-dockerCloudDeployerNext: &dockerCloudDeployerNext       # cloudDeployer version (used for lastest current deployement)
+dockerCloudDeployerNext: &dockerCloudDeployerNext                                             # cloudDeployer version (used for lastest current deployement)
   docker:
     - image: eu.gcr.io/akeneo-cloud/cloud-deployer:7.11
       auth:
-        username: _json_key                             # default username when using a JSON key file to authenticate
-        password: $GCLOUD_SERVICE_KEY_DEV               # JSON service account you created, do not encode to base64
+        username: _json_key                                                                   # default username when using a JSON key file to authenticate
+        password: $GCLOUD_SERVICE_KEY_DEV                                                     # JSON service account you created, do not encode to base64
 
-dockerCloudDeployerUCS: &dockerCloudDeployerUCS         # cloudDeployer version (used for UCS deployement)
+dockerPIMDeployerUCS: &dockerPIMDeployerUCS                                                   # PIMDeployer version (used for UCS deployement)
   docker:
-    - image: eu.gcr.io/akeneo-cloud/cloud-deployer:c79e5e568e847524e59a2f946ea204bbfe1cd43f # cloudDeployer with go and argocd
+    - image: europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/dev/pim-deployer:1.3.1    # PIMDeployer with argocd
       auth:
-        username: _json_key                             # default username when using a JSON key file to authenticate
-        password: $GCLOUD_SERVICE_KEY_DEV               # JSON service account you created, do not encode to base64
+        username: _json_key                                                                   # default username when using a JSON key file to authenticate
+        password: ${GCLOUD_SERVICE_KEY_PIM_SAAS_DEV}                                          # JSON service account you created, do not encode to base64
 
-dockerJenkinsCloudDeployer: &dockerJenkinsCloudDeployer # jenknsDeployer version used in prod
+dockerJenkinsCloudDeployer: &dockerJenkinsCloudDeployer                                       # jenknsDeployer version used in prod
   docker:
     - image: eu.gcr.io/akeneo-cloud/jenkinsfile-runner:7.11
       auth:
-        username: _json_key                             # default username when using a JSON key file to authenticate
-        password: $GCLOUD_SERVICE_KEY_DEV               # JSON service account you created, do not encode to base64
+        username: _json_key                                                                   # default username when using a JSON key file to authenticate
+        password: $GCLOUD_SERVICE_KEY_DEV                                                     # JSON service account you created, do not encode to base64

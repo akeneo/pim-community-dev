@@ -109,15 +109,6 @@ commands:
                       echo export GOOGLE_CLUSTER_REGION=${GOOGLE_CLUSTER_REGION} >> $BASH_ENV
                       echo export GOOGLE_REGION_SHORTED=${GOOGLE_REGION_SHORTED} >> $BASH_ENV
 
-    install_terrafrom:
-        description: "Install Terraform "
-        steps:
-            - run:
-                  name: Install Terraform v1.1.3
-                  command: |
-                      tfenv install 1.1.3
-                      tfenv use  1.1.3
-
     install_yq_v3:
         description: "Install yq (v3)"
         steps:

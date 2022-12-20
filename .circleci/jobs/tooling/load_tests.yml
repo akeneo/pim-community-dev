@@ -1,7 +1,7 @@
 envVarsDeployDev: &envVarsDeployDev
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 dockerCloudDeployerNext: &dockerCloudDeployerNext
-dockerCloudDeployerUCS: &dockerCloudDeployerUCS
+dockerPIMDeployerUCS: &dockerPIMDeployerUCS
 executor-machine: &executor-machine
 
 jobs:
@@ -119,7 +119,7 @@ jobs:
   prepare_load_tests_ucs:
     environment:
       <<: *envVarsDeployPIMSaaSDev
-    <<: *dockerCloudDeployerUCS
+    <<: *dockerPIMDeployerUCS
     resource_class: small
     parameters:
       tenant_name:

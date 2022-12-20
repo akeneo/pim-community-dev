@@ -2,7 +2,7 @@ envVarsDeployDev: &envVarsDeployDev
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
 dockerCloudDeployerNext: &dockerCloudDeployerNext
-dockerCloudDeployerUCS: &dockerCloudDeployerUCS
+dockerPIMDeployerUCS: &dockerPIMDeployerUCS
 executor-machine: &executor-machine
 
 jobs:
@@ -525,7 +525,7 @@ jobs:
               default: false
       environment:
           <<: *envVarsDeployPIMSaaSDev
-      <<: *dockerCloudDeployerUCS
+      <<: *dockerPIMDeployerUCS
       resource_class: small
       steps:
         - attach_workspace:
@@ -541,7 +541,15 @@ jobs:
         - set_gcloud_config_pim_saas_dev
         - set_common_env_vars
         - restore_persisted_env_vars
-        - install_yq_v3
+        - run:
+            name: Install yq (v3)
+            command: |
+              # Same as alias define in commamd>yml without sudo because of alpine/git docker image
+              wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
+              mv yq_linux_amd64 /usr/local/bin/yq
+              echo "2cc8897984d1ab43b6799aff5eca905d37552fdf  /usr/local/bin/yq" > /tmp/checksum
+              sha1sum -c /tmp/checksum
+              chmod +x /usr/local/bin/yq
         - run:
             name: Prepare the variables
             command: |
@@ -710,7 +718,7 @@ jobs:
                 default: ''
         environment:
             <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
+        <<: *dockerPIMDeployerUCS
         resource_class: small
         steps:
             - attach_workspace:
@@ -727,7 +735,15 @@ jobs:
             - set_common_env_vars
             - restore_persisted_env_vars
             - restore_persisted_timmy_env_vars
-            - install_yq_v3
+            - run:
+                name: Install yq (v3)
+                command: |
+                  # Same as alias define in commamd>yml without sudo because of alpine/git docker image
+                  wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
+                  mv yq_linux_amd64 /usr/local/bin/yq
+                  echo "2cc8897984d1ab43b6799aff5eca905d37552fdf  /usr/local/bin/yq" > /tmp/checksum
+                  sha1sum -c /tmp/checksum
+                  chmod +x /usr/local/bin/yq
             - run:
                   name: Define value for next steps
                   command: |
@@ -905,7 +921,7 @@ jobs:
                 default: false
         environment:
             <<: *envVarsDeployPIMSaaSDev
-        <<: *dockerCloudDeployerUCS
+        <<: *dockerPIMDeployerUCS
         resource_class: small
         steps:
             - attach_workspace:
@@ -953,7 +969,6 @@ jobs:
                         if [ "${SKIP_DEPLOY_TIMMY}" == true ]; then
                           circleci step halt
                         fi
-            - install_terrafrom
             - run:
                   name: Init and Plan terraform
                   command: |
