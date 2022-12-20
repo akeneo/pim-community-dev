@@ -19,9 +19,9 @@ type ConditionWithIdentifier = (Condition & {id: ConditionIdentifier});
 type ConditionsWithIdentifier = ConditionWithIdentifier[];
 
 type ConditionLineProps = {
-  conditionWithId: ConditionWithIdentifier,
-  handleChange: any,
-  onDelete: any,
+  conditionWithId: ConditionWithIdentifier;
+  handleChange: (conditionWithId: Condition & {id: string}) => void;
+  onDelete: () => void;
 };
 
 const ConditionLine: React.FC<ConditionLineProps> = ({conditionWithId, handleChange, onDelete}) => {
@@ -29,9 +29,9 @@ const ConditionLine: React.FC<ConditionLineProps> = ({conditionWithId, handleCha
     case CONDITION_NAMES.ENABLED:
       return <EnabledLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete} />;
     case CONDITION_NAMES.FAMILY:
-      return <FamilyLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete}/>
+      return <FamilyLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete}/>;
   }
-}
+};
 
 const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange}) => {
   const translate = useTranslate();
@@ -95,7 +95,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_identifier_generator.tabs.product_selection')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <AddConditionButton onAddCondition={onAddCondition} />
+        <AddConditionButton conditions={conditionsWithId} onAddCondition={onAddCondition} />
       </SectionTitle>
       <Table>
         <Table.Body>

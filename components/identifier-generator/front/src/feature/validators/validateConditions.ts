@@ -19,8 +19,12 @@ const validateConditions: Validator<Conditions | undefined> = (conditions, path)
     }
 
     switch (condition.type) {
-      case CONDITION_NAMES.ENABLED: violations.push(...validateEnabled(condition, subPath)); break;
-      case CONDITION_NAMES.FAMILY: violations.push(...validateFamily(condition, subPath)); break;
+      case CONDITION_NAMES.ENABLED:
+        violations.push(...validateEnabled(condition, subPath));
+        break;
+      case CONDITION_NAMES.FAMILY:
+        violations.push(...validateFamily(condition, subPath));
+        break;
     }
   });
 
