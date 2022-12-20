@@ -25,8 +25,8 @@ use Webmozart\Assert\Assert;
 final class GetAvailableConditionsController
 {
     private const DEFAULT_LIMIT_PAGINATION = 20;
-    private const FIELD_TRANSLATION_BASE = 'pim_catalog_identifier_generator.condition.fields.';
-    private const SYSTEM_GROUP_TRANSLATION_KEY = 'pim_catalog_identifier_generator.condition.field_groups.system';
+    private const FIELD_TRANSLATION_BASE = 'pim_identifier_generator.condition.fields.';
+    private const SYSTEM_GROUP_TRANSLATION_KEY = 'pim_identifier_generator.condition.field_groups.system';
 
     public function __construct(
         private readonly GetGroupedAttributes $getGroupedAttributes,

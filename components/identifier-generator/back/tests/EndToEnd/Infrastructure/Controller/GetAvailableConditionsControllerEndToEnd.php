@@ -209,9 +209,9 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
         // update French system translations
         /** @var MessageCatalogueInterface $frenchCatalogue */
         $frenchCatalogue = $this->get('translator')->getCatalogue('fr_FR');
-        $frenchCatalogue->set('pim_catalog_identifier_generator.condition.field_groups.system', 'Système');
-        $frenchCatalogue->set('pim_catalog_identifier_generator.condition.fields.family', 'Famille');
-        $frenchCatalogue->set('pim_catalog_identifier_generator.condition.fields.enabled', 'Statut');
+        $frenchCatalogue->set('pim_identifier_generator.condition.field_groups.system', 'Système');
+        $frenchCatalogue->set('pim_identifier_generator.condition.fields.family', 'Famille');
+        $frenchCatalogue->set('pim_identifier_generator.condition.fields.enabled', 'Statut');
 
         $this->loginAs('Julia');
     }
