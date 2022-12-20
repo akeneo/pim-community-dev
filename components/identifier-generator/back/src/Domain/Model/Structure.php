@@ -13,6 +13,9 @@ use Webmozart\Assert\Assert;
  * Array of properties used to define the structure of an identifier generator
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type PropertyNormalized from PropertyInterface
+ * @phpstan-type StructureNormalized list<PropertyNormalized>
  */
 final class Structure
 {
@@ -37,7 +40,7 @@ final class Structure
     }
 
     /**
-     * @return array<array<string, int|string>>
+     * @return StructureNormalized
      */
     public function normalize(): array
     {
@@ -45,7 +48,7 @@ final class Structure
     }
 
     /**
-     * @param array<array<string, int|string>> $normalizedValues
+     * @param list<array<string, mixed>> $normalizedValues
      * @return static
      */
     public static function fromNormalized(array $normalizedValues): self

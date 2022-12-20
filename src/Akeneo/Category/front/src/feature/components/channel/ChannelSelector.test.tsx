@@ -1,7 +1,7 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
-import {ChannelSelector} from 'feature/components/channel/index';
+import {ChannelSelector} from './ChannelSelector';
 import userEvent from '@testing-library/user-event';
 import {Channel} from '@akeneo-pim-community/shared';
 

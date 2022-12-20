@@ -52,7 +52,7 @@ const AttributeOptionRow = memo(
         <Table.Cell>
           <AttributeOptionQualityBadge toImprove={attributeOption.toImprove} />
         </Table.Cell>
-        <TableActionCell>
+        <Table.ActionCell>
           <IconButton
             icon={<CloseIcon />}
             onClick={handleDelete}
@@ -61,7 +61,7 @@ const AttributeOptionRow = memo(
             level="tertiary"
             data-testid="attribute-option-delete-button"
           />
-        </TableActionCell>
+        </Table.ActionCell>
       </TableRow>
     );
   }
@@ -85,10 +85,6 @@ const TableRow = styled(Table.Row)<{isDraggable: boolean} & AkeneoThemedProps>`
   td:first-child {
     color: ${({isDraggable}) => (isDraggable ? getColor('grey', 100) : getColor('grey', 40))};
   }
-`;
-
-const TableActionCell = styled(Table.ActionCell)`
-  width: 50px;
 `;
 
 export {AttributeOptionRow};

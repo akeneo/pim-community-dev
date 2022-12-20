@@ -51,6 +51,7 @@ type Props = {
     oldScopes?: Array<'email' | 'profile'> | null;
     scopesConsentGiven: boolean;
     setScopesConsent: (newValue: boolean) => void;
+    displayConsent: boolean;
 };
 
 export const Authentication: FC<Props> = ({
@@ -60,6 +61,7 @@ export const Authentication: FC<Props> = ({
     oldScopes,
     scopesConsentGiven,
     setScopesConsent,
+    displayConsent,
 }) => {
     const translate = useTranslate();
 
@@ -89,7 +91,9 @@ export const Authentication: FC<Props> = ({
                     <ConsentList scopes={oldScopes} highlightMode={'old'} />
                 </>
             )}
-            <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} />
+            {displayConsent && (
+                <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} />
+            )}
         </InfoContainer>
     );
 };

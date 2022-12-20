@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier;
 
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Connectivity\Connection\Application\Apps\Notifier\DisabledCatalogNotifierInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllUsernamesWithAclQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdentifierQueryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
@@ -27,18 +28,18 @@ final class DisabledCatalogNotifier implements DisabledCatalogNotifierInterface
 
     public function notify(Catalog $catalog): void
     {
-        $usersToNotify = $this->findAllUsernamesWithAclQuery->execute('akeneo_connectivity_connection_manage_apps');
-
-        $this->notifier->notify($this->createNotification($catalog), $usersToNotify);
-    }
-
-    private function createNotification(Catalog $catalog): NotificationInterface
-    {
         $connectedApp = $this->findOneConnectedAppByUserIdentifierQuery->execute($catalog->getOwnerUsername());
         if (null === $connectedApp) {
-            throw new \LogicException('Connected App not found.');
+            return; // do not notify if the catalog does not belong to a connected app
         }
 
+        $usersToNotify = $this->findAllUsernamesWithAclQuery->execute('akeneo_connectivity_connection_manage_apps');
+
+        $this->notifier->notify($this->createNotification($catalog, $connectedApp), $usersToNotify);
+    }
+
+    private function createNotification(Catalog $catalog, ConnectedApp $connectedApp): NotificationInterface
+    {
         $notification = new Notification();
         $notification
             ->setType('error')

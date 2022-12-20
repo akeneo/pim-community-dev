@@ -2,9 +2,9 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
-use Akeneo\Category\Application\Handler\GetPositionInterface;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
+use Akeneo\Category\Application\Query\GetDirectChildrenCategoryCodesInterface;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
@@ -30,7 +30,7 @@ class ListCategoriesController extends AbstractController
         private readonly FeatureFlags $featureFlags,
         private readonly GetCategoriesParametersBuilder $parametersBuilder,
         private readonly GetCategoriesInterface $getCategories,
-        private readonly GetPositionInterface $getPosition,
+        private readonly GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes,
         private readonly array $apiConfiguration,
     ) {
     }
@@ -74,7 +74,7 @@ class ListCategoriesController extends AbstractController
                 $offset,
                 $withEnrichedAttributes,
             );
-            $categories = $this->getCategories->execute($sqlParameters);
+            $externalCategoriesApi = $this->getCategories->execute($sqlParameters);
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
@@ -91,13 +91,13 @@ class ListCategoriesController extends AbstractController
         }
 
         $normalizedCategories = [];
-        foreach ($categories as $category) {
-            $categoryApi = ExternalApiCategory::fromDomainModel($category);
+        foreach ($externalCategoriesApi as $externalCategory) {
             $withPosition = $request->query->getBoolean('with_position');
             if ($withPosition) {
-                $categoryApi->setPosition(($this->getPosition)($category));
+                // TODO: Handle position GRF-633
+                $this->managePosition($externalCategory);
             }
-            $normalizedCategories[] = $categoryApi->normalize($withPosition, $withEnrichedAttributes);
+            $normalizedCategories[] = $externalCategory->normalize($withPosition, $withEnrichedAttributes);
         }
 
         $paginatedCategories = $this->paginator->paginate(
@@ -107,5 +107,17 @@ class ListCategoriesController extends AbstractController
         );
 
         return new JsonResponse($paginatedCategories);
+    }
+
+    // TODO : Handle position GRF-633
+    private function managePosition(ExternalApiCategory $externalCategory)
+    {
+        if ($externalCategory->getParentId() === null) {
+            $externalCategory->setPosition(1);
+        } else {
+            $children = $this->getDirectChildrenCategoryCodes->execute($externalCategory->getParentId());
+            $position = (int) ($children[$externalCategory->getCode()]['row_num'] ?? 1);
+            $externalCategory->setPosition($position);
+        }
     }
 }

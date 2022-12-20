@@ -88,13 +88,13 @@ const EditPropertiesForm = ({category, onChangeLabel}: Props) => {
       {/*    </ErrorMessage>*/}
       {/*  );*/}
       {/*})}*/}
-      <SectionTitle>
+      <SectionTitle sticky={44}>
         <SectionTitle.Title>{translate('pim_common.code')}</SectionTitle.Title>
       </SectionTitle>
       <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
         <TextInput name="code" readOnly={true} value={categoryCode} />
       </Field>
-      <SectionTitle>
+      <SectionTitle sticky={44}>
         <SectionTitle.Title>{translate('pim_common.label')}</SectionTitle.Title>
       </SectionTitle>
       {labelsFields}

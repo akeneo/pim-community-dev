@@ -13,6 +13,7 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: 루트 제품 모델 데이터 계산
     compute_data_related_to_family_sub_product_models: 하위 제품 모델 데이터 계산
     compute_data_related_to_family_products: 제품 데이터 계산
+    index_family_products_and_product_models: 패밀리 제품 및 제품 모델 인덱스 처리
     compute_family_variant_structure_changes: 패밀리 변형 구조 변경 사항 계산
     compute_completeness_of_products_family: 제품 패밀리 완성도 계산
     index_family_products: 패밀리 제품 및 제품 모델 인덱스 처리

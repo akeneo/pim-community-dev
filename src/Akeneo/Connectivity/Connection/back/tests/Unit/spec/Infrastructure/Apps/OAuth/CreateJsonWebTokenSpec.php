@@ -50,7 +50,7 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
         $this->beConstructedWith($clock, $pimUrl, $getAsymmetricKeysQuery);
     }
 
-    public function it_is_a_crate_json_web_token(): void
+    public function it_is_a_create_json_web_token(): void
     {
         $this->shouldBeAnInstanceOf(CreateJsonWebToken::class);
     }
@@ -164,29 +164,53 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
 
         $this->privateKey = <<<EOD
         -----BEGIN RSA PRIVATE KEY-----
-        MIICXAIBAAKBgQC8kGa1pSjbSYZVebtTRBLxBz5H4i2p/llLCrEeQhta5kaQu/Rn
-        vuER4W8oDH3+3iuIYW4VQAzyqFpwuzjkDI+17t5t0tyazyZ8JXw+KgXTxldMPEL9
-        5+qVhgXvwtihXC1c5oGbRlEDvDF6Sa53rcFVsYJ4ehde/zUxo6UvS7UrBQIDAQAB
-        AoGAb/MXV46XxCFRxNuB8LyAtmLDgi/xRnTAlMHjSACddwkyKem8//8eZtw9fzxz
-        bWZ/1/doQOuHBGYZU8aDzzj59FZ78dyzNFoF91hbvZKkg+6wGyd/LrGVEB+Xre0J
-        Nil0GReM2AHDNZUYRv+HYJPIOrB0CRczLQsgFJ8K6aAD6F0CQQDzbpjYdx10qgK1
-        cP59UHiHjPZYC0loEsk7s+hUmT3QHerAQJMZWC11Qrn2N+ybwwNblDKv+s5qgMQ5
-        5tNoQ9IfAkEAxkyffU6ythpg/H0Ixe1I2rd0GbF05biIzO/i77Det3n4YsJVlDck
-        ZkcvY3SK2iRIL4c9yY6hlIhs+K9wXTtGWwJBAO9Dskl48mO7woPR9uD22jDpNSwe
-        k90OMepTjzSvlhjbfuPN1IdhqvSJTDychRwn1kIJ7LQZgQ8fVz9OCFZ/6qMCQGOb
-        qaGwHmUK6xzpUbbacnYrIM6nLSkXgOAwv7XXCojvY614ILTK3iXiLBOxPu5Eu13k
-        eUz9sHyD6vkgZzjtxXECQAkp4Xerf5TGfQXGXhxIX52yH+N2LtujCdkQZjXAsGdm
-        B2zNzvrlgRmgBrklMTrMYgm1NPcW+bRLGcwgW2PTvNM=
+        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
         -----END RSA PRIVATE KEY-----
         EOD;
 
         $this->publicKey = <<<EOD
-        -----BEGIN PUBLIC KEY-----
-        MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8kGa1pSjbSYZVebtTRBLxBz5H
-        4i2p/llLCrEeQhta5kaQu/RnvuER4W8oDH3+3iuIYW4VQAzyqFpwuzjkDI+17t5t
-        0tyazyZ8JXw+KgXTxldMPEL95+qVhgXvwtihXC1c5oGbRlEDvDF6Sa53rcFVsYJ4
-        ehde/zUxo6UvS7UrBQIDAQAB
-        -----END PUBLIC KEY-----
+        -----BEGIN CERTIFICATE-----
+        MIIC7zCCAdegAwIBAgIUf9G4IrNSbjiOJW17UepkNlkh64owDQYJKoZIhvcNAQEL
+        BQAwETEPMA0GA1UECgwGQWtlbmVvMB4XDTIyMTIxMzE0NTgxN1oXDTIzMTIxMzE0
+        NTgxN1owETEPMA0GA1UECgwGQWtlbmVvMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+        MIIBCgKCAQEAxMV/ALXjkbQp50M26P9op95v1LIHs3vLvjROGxEBBnR/dEYNHVbm
+        OxKRGL8yne8xow7W4NiMVvm2VdgoDyTKF48cU679W7rsfkJqK0u1vGitlH0zwG2e
+        3AoMw+/7yLjCotG/PgRNSzXa6W2dTqduPO/2UeRBrScEpR6xnGQDrY5hXckSY1JU
+        36laadlSYHIE3sf/VLoKItHeXHjeaXRGb0xGJ5pn1t33HfyI0ASSjURzANzBjok/
+        5kHq4g2xlkH1xSRSlgRyVhx8+5Pkuhe2mxDs1tJhaibZOxEb8kP4fizfxipglLEH
+        clMdqDxoznxrI1XKTAfiAjhHlRxUa4B4dQIDAQABoz8wPTALBgNVHQ8EBAMCAQYw
+        DwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUuajENl2pPtXRJg2trCIV4u/qj1ow
+        DQYJKoZIhvcNAQELBQADggEBAGggphqPc72aqeaYOhu+oCqDmWymiiZvPAf8y+AY
+        cP1P4E4xcxc+xtqZOFfb9wtv2shjMf1Bz4XezxngssnNZr1PrmBuO+/am/4Q9KLl
+        WJV7qKEn3MZCx8Ajpw1XPkAu/ptqylm4dM8qiGBZbj94k4MpIGFhRIaPE1ii+Mz9
+        lmH84Y9kMHpg2tGW0hD9covc20BSii2TzkHlohfk6u0vXjkubXyq4VkwkRn2Rvh4
+        QqpHwbLe9lru+mlcn5HMmc4rVxE2q3BUhY8caZ73B/Vyejsfvuslu0j22xTSEjcR
+        1L/iY6KJdPVRR+6GZd4DMP+TChLM1U+jwxvfZNTSHNawBVo=
+        -----END CERTIFICATE-----
         EOD;
     }
 }

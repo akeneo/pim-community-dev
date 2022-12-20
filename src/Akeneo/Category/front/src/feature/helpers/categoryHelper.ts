@@ -12,7 +12,7 @@ import {
   File,
   Template,
 } from '../models';
-import {CategoryPermission, CategoryPermissions} from '../models/CategoryPermission';
+import {CategoryPermission, CategoryPermissions} from "../models/CategoryPermission";
 
 function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
   // maybe too strict of simplistic, to adjust

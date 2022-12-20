@@ -15,8 +15,8 @@ final class UpdateGeneratorCommand implements CommandInterface
 {
     /**
      * @param string $code
-     * @param array<mixed> $conditions
-     * @param array<mixed> $structure
+     * @param list<array<string, mixed>> $conditions
+     * @param list<array<string, mixed>> $structure
      * @param array<string, string> $labels
      * @param string $target
      * @param string|null $delimiter

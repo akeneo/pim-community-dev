@@ -56,7 +56,7 @@ const CategoryEditPage: FC = () => {
 
   // locales
   const uiLocale = userContext.get('uiLocale');
-  const [catalogLocale, setCatalogLocale] = useState(userContext.get('catalogLocale'));
+  const [catalogLocale] = useState(userContext.get('catalogLocale'));
 
   // features
   const featureFlags = useFeatureFlags();
@@ -256,7 +256,7 @@ const CategoryEditPage: FC = () => {
         <PageHeader.State>{thereAreUnsavedChanges && <UnsavedChanges />}</PageHeader.State>
       </PageHeader>
       <CategoryPageContent>
-        <TabBar moreButtonTitle={'More'}>
+        <TabBar moreButtonTitle={'More'} sticky={0}>
           {isGranted('pim_enrich_product_category_edit_attributes') && template && (
             <TabBar.Tab isActive={isCurrent(Tabs.ATTRIBUTE)} onClick={() => handleSwitchTo(Tabs.ATTRIBUTE)}>
               {translate('akeneo.category.attributes')}
