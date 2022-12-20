@@ -40,6 +40,7 @@ workflows:
           - test_deploy_ucs_tenant:
                 name: test_deploy_ucs_tenant_pr
                 DEPLOY_PR: true
+                TTL: '30d'
                 requires:
                     - deploy_pr?
                     - test_deploy_ucs_pim
@@ -131,6 +132,7 @@ workflows:
           - test_deploy_ucs_tenant:
                 name: test_deploy_ucs_tenant_pr_without_build
                 DEPLOY_PR: true
+                TTL: '30d'
                 requires:
                     - deploy_pr_without_build?
                     - test_deploy_ucs_pim_without_build

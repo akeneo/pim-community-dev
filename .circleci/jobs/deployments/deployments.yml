@@ -713,6 +713,9 @@ jobs:
             DEPLOY_PR:
                 type: boolean
                 default: false
+            TTL:
+                type: string
+                default: '60m'
             tenant_name:
                 type: string
                 default: ''
@@ -748,6 +751,7 @@ jobs:
                   name: Define value for next steps
                   command: |
                       DEPLOY_PR=$(echo << parameters.DEPLOY_PR >>)
+                      TTL=$(echo << parameters.TTL >>)
                       if [ ${DEPLOY_PR} = "false" ]; then
                         TENANT_NAME_PREFIX="ucs-ci-ee"
                         TENANT_NAME="${TENANT_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}"
@@ -765,7 +769,7 @@ jobs:
                       echo export TENANT_NAME_PREFIX=${TENANT_NAME_PREFIX} >> ${BASH_ENV}
                       echo export TENANT_NAME=${TENANT_NAME} >> ${BASH_ENV}
                       echo export TENANT_ID=${TENANT_ID} >> ${BASH_ENV}
-                      echo export TTL_TENANT=${TTL_TENANT} >> $BASH_ENV
+                      echo export TTL=${TTL} >> $BASH_ENV
                       echo export FQDN=${FQDN} >> ${BASH_ENV}
 
                       echo "Tenant name: ${TENANT_NAME}"
@@ -844,7 +848,7 @@ jobs:
                         echo "The tenant ${TENANT_ID} exits and is already SYNC, we don't need to recreate it"
                         exit 0
                       fi
-                      JSON_BODY_STRING=\''{"annotations":{"kube-janitor":"'"${TTL_TENANT}"'"},"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
+                      JSON_BODY_STRING=\''{"annotations":{"kube-janitor":"'"${TTL}"'"},"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
                       JSON_BODY_STRING=${JSON_BODY_STRING:1}
 
                       CLOUD_FUNCTION_URL=$(gcloud beta functions describe ${CLOUD_FUNCTION_CREATE_TENANT} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
