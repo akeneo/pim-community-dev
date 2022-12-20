@@ -18,12 +18,13 @@ const validateFamily: Validator<FamilyCondition> = (familyCondition, path) => {
         path: `${path}.value`,
         message: 'The value should be defined',
       });
-    }
-    if (familyCondition.value.length === 0) {
-      violations.push({
-        path: `${path}.value`,
-        message: 'You should filter with at least one family',
-      });
+    } else {
+      if (familyCondition.value.length === 0) {
+        violations.push({
+          path: `${path}.value`,
+          message: 'You should filter with at least one family',
+        });
+      }
     }
   }
 

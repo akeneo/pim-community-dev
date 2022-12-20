@@ -1,7 +1,7 @@
 import React from 'react';
-import {mockResponse, render, screen, fireEvent} from '../../tests/test-utils';
+import {fireEvent, mockResponse, render, screen} from '../../tests/test-utils';
 import {SelectionTab} from '../SelectionTab';
-import {CONDITION_NAMES} from '../../models';
+import {CONDITION_NAMES, Operator} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
@@ -33,14 +33,24 @@ describe('SelectionTab', () => {
 
     const onChange = jest.fn();
     render(
-      <SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />
+      <SelectionTab
+        target={'sku'}
+        conditions={[
+          {type: CONDITION_NAMES.ENABLED, value: true},
+          {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY, value: undefined},
+        ]}
+        onChange={onChange}
+      />
     );
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
 
     expect(screen.getByText('EnabledLineMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update value'));
-    expect(onChange).toBeCalledWith([{type: CONDITION_NAMES.ENABLED, value: false}]);
+    expect(onChange).toBeCalledWith([
+      {type: CONDITION_NAMES.ENABLED, value: false},
+      {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY, value: undefined},
+    ]);
   });
 
   it('should add a condition', async () => {

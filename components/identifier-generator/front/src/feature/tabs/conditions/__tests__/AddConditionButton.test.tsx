@@ -6,7 +6,7 @@ import {CONDITION_NAMES} from '../../../models';
 
 describe('AddConditionButton', () => {
   it('allows search', async () => {
-    render(<AddConditionButton onAddCondition={jest.fn()} />);
+    render(<AddConditionButton onAddCondition={jest.fn()} conditions={[]} />);
     const button = screen.getByRole('button');
     expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
     expect(button).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('AddConditionButton', () => {
 
   it('adds a condition', async () => {
     const onAddCondition = jest.fn();
-    render(<AddConditionButton onAddCondition={onAddCondition} />);
+    render(<AddConditionButton onAddCondition={onAddCondition} conditions={[]} />);
     const button = screen.getByRole('button');
     expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
     expect(button).toBeInTheDocument();
@@ -53,5 +53,20 @@ describe('AddConditionButton', () => {
     expect(onAddCondition).toBeCalledWith({
       type: CONDITION_NAMES.ENABLED,
     });
+  });
+
+  it('should not display limited conditions', async () => {
+    const onAddCondition = jest.fn();
+    render(
+      <AddConditionButton onAddCondition={onAddCondition} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} />
+    );
+
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(screen.getByText('pim_identifier_generator.selection.property_type.family')).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText('pim_identifier_generator.selection.property_type.enabled')).not.toBeInTheDocument();
   });
 });

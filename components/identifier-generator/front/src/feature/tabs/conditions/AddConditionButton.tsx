@@ -8,11 +8,13 @@ type ConditionsSelection = {
   items: {
     code: string;
     defaultValue: Condition;
+    limit?: number;
   }[];
 };
 
 type AddConditionButtonProps = {
   onAddCondition: (condition: Condition) => void;
+  conditions: Condition[];
 };
 
 const items: ConditionsSelection[] = [
@@ -22,16 +24,18 @@ const items: ConditionsSelection[] = [
       {
         code: CONDITION_NAMES.ENABLED,
         defaultValue: {type: CONDITION_NAMES.ENABLED},
+        limit: 1,
       },
       {
         code: CONDITION_NAMES.FAMILY,
-        defaultValue: {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []}
-      }
+        defaultValue: {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []},
+        limit: 1,
+      },
     ],
   },
 ];
 
-const AddConditionButton: React.FC<AddConditionButtonProps> = ({onAddCondition}) => {
+const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAddCondition}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -52,19 +56,19 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({onAddCondition})
   };
 
   const filterElements = useMemo((): ConditionsSelection[] => {
-    if ('' !== debouncedSearchValue) {
-      return items
-        .map(item => {
-          const filteredItems = item.items.filter(subItem =>
-            subItem.code.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+    return items
+      .map(item => {
+        const filteredItems = item.items
+          .filter(subItem => subItem.code.toLowerCase().includes(debouncedSearchValue.toLowerCase()))
+          .filter(
+            subItem =>
+              typeof subItem.limit !== 'undefined' &&
+              conditions.filter(condition => condition.type === subItem.code).length < subItem.limit
           );
-          return {...item, items: filteredItems};
-        })
-        .filter(item => item.items.length > 0);
-    } else {
-      return items;
-    }
-  }, [debouncedSearchValue]);
+        return {...item, items: filteredItems};
+      })
+      .filter(item => item.items.length > 0);
+  }, [debouncedSearchValue, conditions]);
 
   const searchInputRef = React.useRef<HTMLInputElement | null>(null);
   // We can not use the useAutoFocus here because the element is hidden when dropdown is not open
