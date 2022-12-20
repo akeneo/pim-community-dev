@@ -5,17 +5,11 @@ import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim
 import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
-import {
-  buildCompositeKey,
-  Attribute,
-  CategoryAttributeValueData,
-  EnrichCategory,
-  Template,
-} from '../models';
+import {buildCompositeKey, Attribute, CategoryAttributeValueData, EnrichCategory, Template} from '../models';
 import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
 import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
-import {CategoryPermissions} from "../models/CategoryPermission";
-import {UserGroup} from "./useFetchUserGroups";
+import {CategoryPermissions} from '../models/CategoryPermission';
+import {UserGroup} from './useFetchUserGroups';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();

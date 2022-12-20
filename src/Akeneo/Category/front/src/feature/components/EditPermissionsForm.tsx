@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {EnrichCategory} from '../models';
 import {CategoryPermission, CategoryPermissions} from '../models/CategoryPermission';
 import {useFetchUserGroups, UserGroup} from '../hooks/useFetchUserGroups';
-import {cloneDeep} from "lodash/fp";
+import {cloneDeep} from 'lodash/fp';
 
 type Props = {
   category: EnrichCategory;
@@ -34,15 +34,15 @@ const EditPermissionsForm = ({
 }: Props) => {
   const translate = useTranslate();
   const {data: fetchedUserGroups, status: userGroupStatus} = useFetchUserGroups();
-    const [userGroups, setUserGroup] = useState<UserGroup[] | null>(null);
+  const [userGroups, setUserGroup] = useState<UserGroup[] | null>(null);
 
-    useEffect(() => {
-        if (userGroupStatus === 'success') {
-            if (fetchedUserGroups) {
-                setUserGroup(fetchedUserGroups);
-            }
-        }
-    }, [fetchedUserGroups, userGroupStatus]);
+  useEffect(() => {
+    if (userGroupStatus === 'success') {
+      if (fetchedUserGroups) {
+        setUserGroup(fetchedUserGroups);
+      }
+    }
+  }, [fetchedUserGroups, userGroupStatus]);
 
   const handleChangePermissions = useCallback(
     (type: keyof CategoryPermissions) => (values: string[]) => {
