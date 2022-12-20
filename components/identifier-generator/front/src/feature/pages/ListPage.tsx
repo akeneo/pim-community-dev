@@ -12,14 +12,12 @@ import {
   Table,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useGetIdentifierGenerators, useIdentifierAttributes} from '../hooks';
-import {LabelCollection, Target} from '../models';
+import {useGetIdentifierGenerators, useIdentifierAttributes, useStructureTabs} from '../hooks';
+import {GeneratorTab, LabelCollection, Target} from '../models';
 import {Styled} from './styles';
 import {Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
-import {GeneratorTab} from '../models/generatorTab';
-import {useStructureTabs} from '../hooks/useStructureTabs';
 
 type ListPageProps = {
   onCreate: () => void;
