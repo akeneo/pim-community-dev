@@ -1,7 +1,7 @@
 external-dns:
   domainFilters: null # From parent
   extraArgs: null # From parent
-  logLevel: debug
+  logLevel: warning
   nodeSelector:
     iam.gke.io/gke-metadata-server-enabled: "true"
   policy: sync
