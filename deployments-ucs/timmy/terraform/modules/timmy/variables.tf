@@ -204,3 +204,8 @@ variable "mailgun_mailer_base_dsn" {
   type        = string
   default     = "smtp://smtp.mailgun.org:2525"
 }
+
+variable "mysql_disk_size" {
+  description = "The disk size for the MySQL tenant component"
+  type        = number
+}

@@ -35,6 +35,20 @@ const httpsAgent = new https.Agent({
 
 const DEFAULT_BRANCH_NAME = 'master';
 const DEFAULT_PIM_NAMESPACE = 'pim';
+const DEFAULT_MYSQL_SNAPSHOT_REF = '';
+const DEFAULT_TSHIRT_SIZE = 'S';
+
+const TSHIRT_SIZE_INDEX_MAPPING = {
+  S: 0,
+  M: 1,
+  L: 2,
+  XL: 3
+}
+const MYSQL_MEMORY_UNIT = "M";
+const JVM_HEAP_UNIT = "m";
+const K8S_MEMORY_UNIT = "Mi";
+const K8S_CPU_UNIT = "m"
+
 const FIRESTORE_STATUS = {
   CREATED: "created",
   CREATION_FAILED: "creation_failed",
@@ -502,6 +516,7 @@ functions.http('createTenant', (req, res) => {
       'LOG_LEVEL',
       'MAILER_API_KEY',
       'MAILER_DOMAIN',
+      'MYSQL_DISK_SIZE',
       'REGION',
       'SOURCE_PATH',
       'SOURCE_REPO_URL',
@@ -512,9 +527,23 @@ functions.http('createTenant', (req, res) => {
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
     const tenantName = body.tenant_name;
+    const tshirtSize = body.tshirt_size || DEFAULT_TSHIRT_SIZE;
+    const tshirtSizeIndex = TSHIRT_SIZE_INDEX_MAPPING[tshirtSize];
+
+    if (!body.mysql) {
+      body.mysql = {};
+    }
+
+    if (!body.mysql.disk_size) {
+      body.mysql.disk_size = process.env.MYSQL_DISK_SIZE;
+    }
+
+    if (!body.mysql.snapshot_ref) {
+      body.mysql.snapshot_ref = DEFAULT_MYSQL_SNAPSHOT_REF;
+    }
+
     const extraLabelType = 'srnt';
     const tenantId = `${extraLabelType}-${tenantName}`;
-
     // Workarround to UAT migration
     const pimNamespaceOld = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE + "-" + branchName.toLowerCase());
     const pimNamespace = (pimNamespaceOld === "pim-master-migration-step2" ? DEFAULT_PIM_NAMESPACE : pimNamespaceOld);
@@ -563,7 +592,7 @@ functions.http('createTenant', (req, res) => {
         const mysqlRootPassword = generatePassword()
         logger.debug(`mysqlRootPassword: ${mysqlRootPassword}`);
         const zones = process.env.GOOGLE_ZONES.split(",");
-        const googleZone = zones[Math.floor(Math.random()*zones.length)]
+        const googleZone = zones[Math.floor(Math.random() * zones.length)]
         logger.debug(`googleZone: ${googleZone}`);
 
         // Deep merge of the request json body and the computed json object
@@ -591,38 +620,38 @@ functions.http('createTenant', (req, res) => {
           },
           elasticsearch: {
             client: {
-              heapSize: "128m",
+              heapSize: (512 + (512 / 2 * tshirtSizeIndex)) + JVM_HEAP_UNIT,
               resources: {
                 requests: {
-                  cpu: "20m",
-                  memory: "160Mi"
+                  cpu: (20 + (20 / 2 * tshirtSizeIndex)) + K8S_CPU_UNIT,
+                  memory: (1024 + (1024 / 2 * tshirtSizeIndex)) + K8S_MEMORY_UNIT
                 },
                 limits: {
-                  memory: "1024Mi"
+                  memory: (1024 + (1024 / 2 * tshirtSizeIndex)) + K8S_MEMORY_UNIT
                 }
               }
             },
             master: {
-              heapSize: "384m",
+              heapSize: (384 + (384 / 2 * tshirtSizeIndex)) + JVM_HEAP_UNIT,
               resources: {
                 requests: {
-                  cpu: "15m",
-                  memory: "768Mi"
+                  cpu: (15 + (15 / 2 * tshirtSizeIndex)) + K8S_CPU_UNIT,
+                  memory: (768 + (768 / 2 * tshirtSizeIndex)) + K8S_MEMORY_UNIT
                 },
                 limits: {
-                  memory: "768Mi"
+                  memory: (768 + (768 / 2 * tshirtSizeIndex)) + K8S_MEMORY_UNIT
                 }
               }
             },
             data: {
-              heapSize: "1024m",
+              heapSize: (1024 + (1024 / 2 * tshirtSizeIndex)) + JVM_HEAP_UNIT,
               resources: {
                 requests: {
-                  cpu: "40m",
-                  memory: "768Mi"
+                  cpu: (40 + (40 / 2 * tshirtSizeIndex)) + K8S_CPU_UNIT,
+                  memory: (1536 + (1536 / 2 * tshirtSizeIndex)) + K8S_MEMORY_UNIT
                 },
                 limits: {
-                  memory: "1740Mi"
+                  memory: (1740 + (1740 / 2 * tshirtSizeIndex)) + K8S_MEMORY_UNIT
                 }
               }
             },
@@ -665,14 +694,16 @@ functions.http('createTenant', (req, res) => {
             mysql: {
               userPassword: mysqlUserPassword,
               rootPassword: mysqlRootPassword,
-              innodbBufferPoolSize: "2048M",
+              dataDiskSize: body.mysql.disk_size,
+              snapshotRef: body.mysql.snapshot_ref,
+              innodbBufferPoolSize: (2048 + 1024 * tshirtSizeIndex) + MYSQL_MEMORY_UNIT,
               resources: {
                 limits: {
-                  memory: "3584Mi"
+                  memory: (3584 + 1024 * tshirtSizeIndex * 130 / 100) + K8S_MEMORY_UNIT
                 },
                 requests: {
-                  cpu: "200m",
-                  memory: "768Mi"
+                  cpu: (100 + 100 / 2 * tshirtSizeIndex) + K8S_CPU_UNIT,
+                  memory: (3584 + 1024 * tshirtSizeIndex * 130 / 100) + K8S_MEMORY_UNIT
                 }
               }
             },

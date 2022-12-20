@@ -98,3 +98,9 @@ variable "cloud_scheduler_request_portal_attempt_deadline" {
   type        = string
   default     = "30s"
 }
+
+variable "mysql_disk_size" {
+  description = "The disk size for the MySQL tenant component"
+  type        = number
+  default     = 10
+}

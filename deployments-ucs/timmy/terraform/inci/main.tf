@@ -8,6 +8,7 @@ module "timmy" {
   domain                                          = var.domain
   enable_clean_firestore                          = var.enable_clean_firestore
   firestore_project_id                            = var.firestore_project_id
+  mysql_disk_size                                 = var.mysql_disk_size
   portal_hostname                                 = var.portal_hostname
   portal_login_hostname                           = var.portal_login_hostname
   portal_tenant_continent                         = var.portal_tenant_continent

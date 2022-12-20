@@ -56,6 +56,7 @@ module "cloud_function_create_tenant" {
     GOOGLE_ZONES                   = join(",", data.google_compute_zones.google_compute_zones.names)
     LOG_LEVEL                      = var.cloud_function_log_level
     MAILER_DOMAIN                  = var.mailgun_domain
+    MYSQL_DISK_SIZE                = var.mysql_disk_size
     NODE_ENV                       = "production"
     REGION                         = var.region
     SOURCE_PATH                    = "tenant"

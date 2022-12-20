@@ -4,6 +4,16 @@
   "description": "This document describes the details of the request body for tenant creation",
   "type": "object",
   "properties": {
+    "annotations": {
+      "description": "The kubernetes annotations to add to the ArgoCD tenant application",
+      "type": "object",
+      "properties": {
+        "janitor/ttl": {
+          "description": "The TTL value to auto-clean the tenant with janitor for pull-requests",
+          "type": "string"
+        }
+      }
+    },
     "branchName": {
       "description": "The branch name",
       "type": "string"
@@ -11,6 +21,20 @@
     "dnsCloudDomain": {
       "description": "The DNS zone for the tenant",
       "type": "string"
+    },
+    "mysql": {
+      "description": "MySQL configuration for the tenant",
+      "type": "object",
+      "properties": {
+        "disk_size": {
+          "description": "The MySQL disk size in GB",
+          "type": "integer"
+        },
+        "snapshot_ref": {
+          "description": "The MySQL snapshot url to use",
+          "type": "string"
+        }
+      }
     },
     "pim": {
       "description": "The PIM configuration for the tenant",
@@ -59,15 +83,14 @@
       "description": "The tenant name",
       "type": "string"
     },
-    "annotations": {
-      "description": "The kubernetes annotations to add to the ArgoCD tenant application",
-      "type": "object",
-      "properties": {
-        "janitor/ttl": {
-          "description": "The TTL value to auto-clean the tenant with janitor for pull-requests",
-          "type": "string"
+    "tshirt_size": {
+      "description": "The t-shirt size for the tenant",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["S", "M", "L", "XL"]
         }
-      }
+      ]
     }
   },
   "required": [
