@@ -155,6 +155,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         $expected = [
             new CompletenessProductMask(-1, 'product_with_prices', 'familyA', [
                 'sku-<all_channels>-<all_locales>',
+                'a_price--<all_channels>-<all_locales>',
                 'a_price-EUR-<all_channels>-<all_locales>',
                 'a_scopable_price-USD-ecommerce-<all_locales>',
             ])
@@ -182,6 +183,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
             new CompletenessProductMask(
                 -1, 'productA', 'familyA', [
                     'sku-<all_channels>-<all_locales>',
+                    'a_price--<all_channels>-<all_locales>',
                     'a_price-EUR-<all_channels>-<all_locales>',
                 ]
             )

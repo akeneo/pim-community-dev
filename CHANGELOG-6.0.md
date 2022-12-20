@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10687: Fix high memory consumption when computing completeness for prices with inactive currencies
+
 # 6.0.61 (2022-12-15)
 
 # 6.0.60 (2022-12-14)

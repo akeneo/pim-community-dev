@@ -16,14 +16,21 @@ interface FindActivatedCurrenciesInterface
      *
      * @param string $channelCode
      *
-     * @return array
+     * @return string[]
      */
     public function forChannel(string $channelCode): array;
 
     /**
      * Method that returns a list of all currencies codes activated.
      *
-     * @return array
+     * @return string[]
      */
     public function forAllChannels(): array;
+
+    /**
+     * Returns currency codes activated for each channel, indexed by channel code
+     *
+     * @return array<string, string[]>
+     */
+    public function forAllChannelsIndexedByChannelCode(): array;
 }
