@@ -37,6 +37,10 @@ module "secrets" {
         "serviceAccount:${local.main_sa}",
         "serviceAccount:main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
         "serviceAccount:main-service-account@akecld-prd-pim-saas-demo.iam.gserviceaccount.com",
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-fsan.iam.gserviceaccount.com",
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-fci.iam.gserviceaccount.com",
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-inci.iam.gserviceaccount.com",
+
       ]
       labels = {
         usage = "datadog"
@@ -48,6 +52,9 @@ module "secrets" {
         "serviceAccount:${local.main_sa}",
         "serviceAccount:main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
         "serviceAccount:main-service-account@akecld-prd-pim-saas-demo.iam.gserviceaccount.com",
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-fsan.iam.gserviceaccount.com",
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-fci.iam.gserviceaccount.com",
+        "serviceAccount:main-service-account@akecld-prd-pim-saas-inci.iam.gserviceaccount.com",
       ]
       labels = {
         usage = "datadog"
