@@ -42,17 +42,17 @@ variable "min_master_version" {
   default = "1.24"
 }
 
-variable "default_machine type" {
+variable "default_machine_type" {
   type    = string
   default = "n1-standard-4"
 }
 
-variable "mysql_machine type" {
+variable "mysql_machine_type" {
   type    = string
   default = "n1-highmem-4"
 }
 
-variable "es_machine type" {
+variable "es_machine_type" {
   type    = string
   default = "n1-highmem-4"
 }
