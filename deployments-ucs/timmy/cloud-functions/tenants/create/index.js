@@ -705,7 +705,7 @@ functions.http('createTenant', (req, res) => {
     const createTenant = async () => {
       const parameters = await prepareTenantCreation();
       await updateFirestoreDoc(firestore, tenantId, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
-        AKENEO_PIM_URL: `https://${tenantName}.${parameters.pim.dnsCloudDomain}`,
+        AKENEO_PIM_URL: `https://${tenantName}.${parameters.common.dnsCloudDomain}`,
         APP_DATABASE_HOST: `pim-mysql.${tenantId}.svc.cluster.local`,
         APP_DATABASE_PASSWORD: parameters.mysql.mysql.userPassword,
         APP_INDEX_HOSTS: `elasticsearch-client.${tenantId}.svc.cluster.local`,
