@@ -2,6 +2,7 @@ locals {
   gke_cloudbuild_filename = ".cloudbuild/infra/akecld-prd-pim-saas-terraform-gke.yaml"
   gke_cloudbuild_included_files = [
     ".cloudbuild/infra/akecld-prd-pim-saas-terraform-gke.yaml",
+    "deployments-ucs/infra/terraform/pim-saas-env/cloudbuild/gke.tf",
     "deployments-ucs/infra/terraform/${var.env}/**",
     "deployments-ucs/infra/terraform/modules/**",
     "deployments-ucs/infra/terraform/pim-saas-env/gke/**"

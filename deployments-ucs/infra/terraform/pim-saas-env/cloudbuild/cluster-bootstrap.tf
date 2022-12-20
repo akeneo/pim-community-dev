@@ -2,6 +2,7 @@ locals {
   bootstrap_cloudbuild_filename = ".cloudbuild/clusters/akecld-prd-pim-saas-apps.yaml"
   bootstrap_cloudbuild_included_files = [
     ".cloudbuild/clusters/akecld-prd-pim-saas-apps.yaml",
+    "deployments-ucs/infra/terraform/pim-saas-env/cloudbuild/cluster-bootstrap.tf",
     "deployments-ucs/infra/k8s/**",
   ]
 }
@@ -26,7 +27,7 @@ module "cloudbuild_trigger_bootstrap_plan" {
     _APPLY                   = false
     _PIM_DEPLOYER_IMAGE      = local.pim_deployer_image
     _CLUSTER_NAME            = "${var.env_shorted}-${each.value.region_shorted}-gke-${var.project_name}-${each.value.cluster_number_region}"
-    _ARGOCD_HELM_VERSION     = "5.8.2"
+    _ARGOCD_HELM_VERSION     = "5.16.7"
     _ARGOCD_APP_HELM_VERSION = "0.0.3"
   }
 }
@@ -51,7 +52,7 @@ module "cloudbuild_trigger_bootstrap_apply" {
     _APPLY                   = true
     _PIM_DEPLOYER_IMAGE      = local.pim_deployer_image
     _CLUSTER_NAME            = "${var.env_shorted}-${each.value.region_shorted}-gke-${var.project_name}-${each.value.cluster_number_region}"
-    _ARGOCD_HELM_VERSION     = "5.8.2"
+    _ARGOCD_HELM_VERSION     = "5.16.7"
     _ARGOCD_APP_HELM_VERSION = "0.0.3"
   }
 }

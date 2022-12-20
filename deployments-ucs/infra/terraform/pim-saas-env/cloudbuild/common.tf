@@ -2,6 +2,7 @@ locals {
   common_cloudbuild_filename = ".cloudbuild/infra/akecld-prd-pim-saas-terraform.yaml"
   common_cloudbuild_included_files = [
     ".cloudbuild/infra/akecld-prd-pim-saas-terraform.yaml",
+    "deployments-ucs/infra/terraform/pim-saas-env/cloudbuild/common.tf",
     "deployments-ucs/infra/terraform/${var.env}/**",
     "deployments-ucs/infra/terraform/modules/**",
     "deployments-ucs/infra/terraform/pim-saas-env/common/**"

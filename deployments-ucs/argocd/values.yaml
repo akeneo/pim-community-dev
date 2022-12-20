@@ -6,7 +6,7 @@ nameOverride: argocd
 global:
   image:
     repository: quay.io/argoproj/argocd
-    tag: "v2.5.0"
+    tag: "v2.5.5"
     imagePullPolicy: IfNotPresent
 
 ## Argo Configs
@@ -36,38 +36,23 @@ server:
 # helm-gcs plugin: https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#using-initcontainers
 # Permissions to gcs bucket are granted with workload identity
 repoServer:
-  volumes:
-    - name: helm
-      emptyDir: {}
-  volumeMounts:
-    - mountPath: /helm
-      name: helm
-  env:
-    - name: HELM_CACHE_HOME
-      value: /helm/cache
-    - name: HELM_CONFIG_HOME
-      value: /helm/config
-    - name: HELM_DATA_HOME
-      value: /helm
-    - name: HELM_PLUGINS
-      value: /helm/plugins/
   serviceAccount:
     create: true
     annotations:
       iam.gke.io/gcp-service-account: null
   initContainers:
     - name: install-helm-plugins
-      image: alpine/helm:3.10.1
+      image: alpine/helm:3.10.2
       volumeMounts:
-        - mountPath: /helm
-          name: helm
+        - mountPath: /helm-working-dir
+          name: helm-working-dir
       env:
         - name: HELM_CACHE_HOME
-          value: /helm/cache
+          value: /helm-working-dir
         - name: HELM_CONFIG_HOME
-          value: /helm/config
+          value: /helm-working-dir
         - name: HELM_DATA_HOME
-          value: /helm
+          value: /helm-working-dir  
       command: ["/bin/sh", "-c"]
       args:
         - apk --no-cache add curl;
