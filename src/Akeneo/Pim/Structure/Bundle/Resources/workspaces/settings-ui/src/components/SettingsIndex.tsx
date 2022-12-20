@@ -35,8 +35,6 @@ import {
 import styled from 'styled-components';
 import {CountEntities, useCountEntities} from '../hooks/settings';
 
-const featureFlags = require('pim/feature-flags');
-
 const SectionContent = styled.div`
   margin-top: 20px;
   margin-bottom: 30px;
