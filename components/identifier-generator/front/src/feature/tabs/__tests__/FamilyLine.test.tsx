@@ -52,7 +52,6 @@ describe('FamilyLine', () => {
       id: 69,
       operator: 'EMPTY',
       type: CONDITION_NAMES.FAMILY,
-      value: undefined,
     });
   });
 
