@@ -2,7 +2,7 @@ import {ChannelCode, LabelCollection, LocaleCode} from '@akeneo-pim-community/sh
 import {TreeNode} from './Tree';
 import {CompositeKeyWithoutLocale} from './CompositeKey';
 import {CategoryAttributeType} from './Attribute';
-import {CategoryPermissions} from "./CategoryPermission";
+import {CategoryPermissions} from './CategoryPermission';
 
 export type Category = {
   id: number;

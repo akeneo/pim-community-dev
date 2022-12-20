@@ -25,8 +25,9 @@ class StandardFormatToUserIntents implements StandardFormatToUserIntentsInterfac
     public function convert(array $standardFormat): array
     {
         $userIntents = [];
+        $categoryId = $standardFormat['id'];
         foreach ($standardFormat as $fieldName => $data) {
-            $result = $this->userIntentFactoryRegistry->fromStandardFormatField($fieldName, $data);
+            $result = $this->userIntentFactoryRegistry->fromStandardFormatField($fieldName, $categoryId, $data);
             $userIntents = \array_merge($userIntents, $result);
         }
 

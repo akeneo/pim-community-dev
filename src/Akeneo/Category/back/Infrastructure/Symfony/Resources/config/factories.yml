@@ -2,7 +2,7 @@ services:
     Akeneo\Category\Domain\UserIntent\UserIntentFactoryRegistry:
         arguments:
             - !tagged_iterator 'pim.category.user_intent_factory'
-            - ['identifier', 'code', 'created', 'updated']
+            - ['id', 'identifier', 'code', 'created', 'updated']
 
     Akeneo\Category\Domain\UserIntent\Factory\LabelUserIntentFactory:
         tags:

@@ -37,6 +37,7 @@ services:
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true

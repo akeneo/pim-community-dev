@@ -12,7 +12,7 @@ class FindCategoryAdditionalPropertiesRegistry implements FindCategoryAdditional
      * @param iterable<string, CategoryAdditionalPropertiesFinder> $additionalPropertiesFinder
      */
     public function __construct(
-        private iterable $additionalPropertiesFinder,
+        private readonly iterable $additionalPropertiesFinder,
     ) {
     }
 
