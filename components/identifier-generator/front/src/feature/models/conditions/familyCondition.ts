@@ -15,7 +15,6 @@ type FamilyCondition = {
   | {
       type: CONDITION_NAMES.FAMILY;
       operator: Operator.EMPTY | Operator.NOT_EMPTY;
-      value: undefined;
     }
 );
 
