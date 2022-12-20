@@ -1,10 +1,4 @@
 services:
-    akeneo.import_export.service.local_storage_feature_flag:
-        class: Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\FeatureFlag\LocalStorageFeatureFlag
-        arguments:
-            - '@akeneo.feature_flag.service.only_flexibility_on_premise_feature'
-            - '@pim_installer.feature_flag.install_fixture_context_feature_flag'
-
     pim_enrich.factory.mass_edit_notification:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Factory\MassEditNotificationFactory'
         arguments:

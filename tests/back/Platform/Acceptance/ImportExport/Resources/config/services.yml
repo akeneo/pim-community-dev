@@ -1,7 +1,4 @@
 services:
-  akeneo.import_export.service.local_storage_feature_flag:
-    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag
-
   Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\Local\LocalStorageClientProvider:
     class: AkeneoTest\Platform\Acceptance\ImportExport\FakeServices\FakeStorageClientProvider
     arguments:

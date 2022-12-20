@@ -16,6 +16,7 @@ services:
   Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\Local\LocalStorageValidator:
     arguments:
       - '@feature_flags'
+      - '@pim_installer.feature_flag.install_fixture_context_feature_flag'
     tags:
       - { name: validator.constraint_validator }
 

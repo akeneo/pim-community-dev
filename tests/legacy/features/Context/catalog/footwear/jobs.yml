@@ -6,7 +6,7 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: local
+                type: none
                 file_path:           '/tmp/footwear_products.csv'
             uploadAllowed:      true
             delimiter:          ;
@@ -27,7 +27,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: local
+                type: none
                 file_path: /tmp/products.csv
             filters:
                 data:

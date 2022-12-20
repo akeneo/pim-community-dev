@@ -24,6 +24,7 @@ class JobContext extends PimContext
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
+        $this->getService('feature_flags')->enable('import_export_local_storage');
         $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
         $configuration = $jobInstance->getRawParameters();
 

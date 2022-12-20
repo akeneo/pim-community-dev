@@ -22,6 +22,7 @@ class ImportProfilesContext extends ImportExportContext
      */
     public function theFollowingFileToImport($extension, PyStringNode $string)
     {
+        $this->getService('feature_flags')->enable('import_export_local_storage');
         $extension = strtolower($extension);
 
         $string = $this->replacePlaceholders($string);

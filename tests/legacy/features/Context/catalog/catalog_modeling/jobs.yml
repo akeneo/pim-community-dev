@@ -338,7 +338,7 @@ jobs:
         configuration:
             withHeader: true
             storage:
-                type: local
+                type: none
                 file_path: /tmp/product_models.xlsx
             filters:
                 data:
