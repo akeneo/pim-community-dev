@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\FindChannels;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGeneratorForAttributeType;
 use PhpSpec\ObjectBehavior;
-use PHPUnit\Framework\Assert;
 
 class PriceCollectionMaskItemGeneratorSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(FindChannels $findChannels)
     {
-        $this->beConstructedWith();
+        $this->beConstructedWith($findChannels);
     }
 
     public function it_is_a_mask_item_generator()
@@ -20,8 +22,13 @@ class PriceCollectionMaskItemGeneratorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(MaskItemGeneratorForAttributeType::class);
     }
 
-    public function it_adds_ordered_currencies_to_mask()
-    {
+    public function it_adds_ordered_currencies_to_mask(
+        FindChannels $findChannels
+    ) {
+        $findChannels->findAll()->shouldBeCalled()->willReturn([
+            new Channel('channelCode', ['localeCode'], LabelCollection::fromArray([]), ['USD', 'EUR', 'GPB'])
+        ]);
+
         $value = [
             ['amount' => 200, 'currency' => 'USD'],
             ['amount' => 100, 'currency' => 'EUR'],
@@ -39,8 +46,13 @@ class PriceCollectionMaskItemGeneratorSpec extends ObjectBehavior
             ]);
     }
 
-    public function it_does_not_add_null_amount()
-    {
+    public function it_does_not_add_null_amount(
+        FindChannels $findChannels
+    ) {
+        $findChannels->findAll()->shouldBeCalled()->willReturn([
+            new Channel('channelCode', ['localeCode'], LabelCollection::fromArray([]), ['USD', 'EUR'])
+        ]);
+
         $value = [
             ['amount' => null, 'currency' => 'USD'],
             ['amount' => 100, 'currency' => 'EUR']
@@ -51,35 +63,39 @@ class PriceCollectionMaskItemGeneratorSpec extends ObjectBehavior
             ]);
     }
 
-    public function it_adds_ordered_currencies_to_mask_with_a_lot_of_currencies()
-    {
+    public function it_filters_non_active_currencies(
+        FindChannels $findChannels
+    ) {
+        $findChannels->findAll()->shouldBeCalled()->willReturn([
+            new Channel('channelCode', ['localeCode'], LabelCollection::fromArray([]), ['USD', 'GPB'])
+        ]);
+
         $value = [
             ['amount' => 200, 'currency' => 'USD'],
             ['amount' => 100, 'currency' => 'EUR'],
             ['amount' => 50, 'currency' => 'GPB'],
-            ['amount' => 50, 'currency' => 'AZN'],
-            ['amount' => 50, 'currency' => 'AND'],
-            ['amount' => 50, 'currency' => 'BRL'],
-            ['amount' => 50, 'currency' => 'CAD'],
-            ['amount' => 50, 'currency' => 'CNY'],
-            ['amount' => 50, 'currency' => 'NZD'],
-            ['amount' => 50, 'currency' => 'CZK'],
-            ['amount' => 50, 'currency' => 'DOP'],
-            ['amount' => 50, 'currency' => 'FJD'],
-            ['amount' => 50, 'currency' => 'GEL'],
-            ['amount' => 50, 'currency' => 'GTQ'],
-            ['amount' => 50, 'currency' => 'HUF'],
-            ['amount' => 50, 'currency' => 'INR'],
-            ['amount' => 50, 'currency' => 'JMD'],
-            ['amount' => 50, 'currency' => 'LAK'],
-            ['amount' => 50, 'currency' => 'CHF'],
-            ['amount' => 50, 'currency' => 'MRU'],
-            ['amount' => 50, 'currency' => 'MAD'],
         ];
+        $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
+            ->shouldReturn([
+                'attributeCode-GPB-channelCode-localeCode',
+                'attributeCode-USD-channelCode-localeCode',
+                'attributeCode-GPB-USD-channelCode-localeCode',
+            ]);
+    }
 
-        Assert::assertCount(
-            pow(2, (int) (count($value))) - 1,
-            $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)->getWrappedObject()
-        );
+    public function it_filters_non_existing_channel(
+        FindChannels $findChannels
+    ) {
+        $findChannels->findAll()->shouldBeCalled()->willReturn([
+            new Channel('anotherChannelCode', ['localeCode'], LabelCollection::fromArray([]), ['USD', 'GPB'])
+        ]);
+
+        $value = [
+            ['amount' => 200, 'currency' => 'USD'],
+            ['amount' => 100, 'currency' => 'EUR'],
+            ['amount' => 50, 'currency' => 'GPB'],
+        ];
+        $this->forRawValue('attributeCode', 'channelCode', 'localeCode', $value)
+            ->shouldReturn([]);
     }
 }

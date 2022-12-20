@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\FindChannels;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
@@ -13,6 +15,11 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeType
 {
+    public function __construct(
+        private readonly FindChannels $findChannels
+    ) {
+    }
+
     /**
      * In the PIM, a price collection attribute value is complete if every currency of the current channel is filled.
      * It's not the same behavior of the rest of the application, so we have to do a specific generator for it.
@@ -46,12 +53,16 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
      *
      * In conclusion, we need to return each combination of filled currencies, to be able to match any channel
      * currencies.
+     *
+     * A check is done to exclude currencies that are present in the product but not active anymore (see @CPM-762).
      */
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
         $filledCurrencies = [];
+        $activeCurrencies = $this->getActiveCurrencies($channelCode);
         foreach ($value as $price) {
             if (
+                \in_array($price['currency'], $activeCurrencies) &&
                 isset($price['amount']) &&
                 '' !== $price['amount']
             ) {
@@ -82,7 +93,6 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
      */
     private function getCurrencyCombinations(array $currencies, string $header, string $footer): array
     {
-        // TODO: CPM-762 Fix memory leak with more than 20 items
         $result = [];
 
         foreach ($currencies as $currency) {
@@ -97,5 +107,21 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
         }
 
         return $result;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getActiveCurrencies(string $channelCode)
+    {
+        $channels = $this->findChannels->findAll();
+        /** @var Channel $channel */
+        foreach ($channels as $channel) {
+            if ($channel->getCode() === $channelCode) {
+                return $channel->getActiveCurrencies();
+            }
+        }
+
+        return [];
     }
 }
