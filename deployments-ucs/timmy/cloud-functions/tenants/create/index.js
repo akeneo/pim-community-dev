@@ -638,7 +638,7 @@ functions.http('createTenant', (req, res) => {
               }
             },
             snapshots: {
-              bucketName: `ucs-${tenantName}-es`
+              bucketName: `pim-${tenantName}-es`
             },
           },
           global: {
@@ -685,7 +685,7 @@ functions.http('createTenant', (req, res) => {
           },
           pim: {
             storage: {
-              bucketName: `ucs-${tenantName}`,
+              bucketName: `pim-${tenantName}`,
               location: (process.env.REGION).toUpperCase()
             },
             defaultAdminUser: {
@@ -718,7 +718,7 @@ functions.http('createTenant', (req, res) => {
         MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
         PFID: tenantId,
         PIM_EDITION: pimEdition,
-        SRNT_GOOGLE_BUCKET_NAME: tenantId
+        SRNT_GOOGLE_BUCKET_NAME: `pim-${tenantName}`
       });
 
       const manifest = templateArgoCdManifest(parameters);
