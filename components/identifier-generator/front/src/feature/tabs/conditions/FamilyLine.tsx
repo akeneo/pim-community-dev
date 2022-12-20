@@ -23,25 +23,25 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange}) => {
       case Operator.NOT_EMPTY:
         onChange({...condition, operator, value: undefined});
     }
-  }
+  };
 
   const handleFamilyCodesChange = (familyCodes: FamilyCode[]) => {
     if (condition.operator === Operator.IN) {
       onChange({...condition, value: familyCodes});
     }
-  }
+  };
 
   return (
     <Table.Row>
       <Styled.TitleCell>{translate('pim_common.family')}</Styled.TitleCell>
       <Styled.CellInputContainer>
         <Styled.InputContainer>
-          <OperatorSelector operator={condition.operator} onChange={handleOperatorChange} operators={FamilyOperators}/>
+          <OperatorSelector operator={condition.operator} onChange={handleOperatorChange} operators={FamilyOperators} />
         </Styled.InputContainer>
       </Styled.CellInputContainer>
       <Table.Cell>
         {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
-          <FamiliesSelector familyCodes={condition.value} onChange={handleFamilyCodesChange}/>
+          <FamiliesSelector familyCodes={condition.value} onChange={handleFamilyCodesChange} />
         )}
       </Table.Cell>
     </Table.Row>
