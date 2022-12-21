@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PHPUnit\Framework\Assert;
@@ -23,13 +21,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 class GetMappedProductsActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client = null;
-    private ?CommandBus $commandBus;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
@@ -84,39 +79,34 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'read_products',
         ]);
 
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi'
-        ));
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-
-        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR),
-        ));
-        $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'uuid' => [
-                'source' => 'uuid',
-                'scope' => null,
-                'locale' => null,
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            productMappingSchema: $this->getProductMappingSchemaRaw(),
+            catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'title' => [
+                    'source' => 'name',
+                    'scope' => 'print',
+                    'locale' => 'en_US',
+                ],
+                'short_description' => [
+                    'source' => 'description',
+                    'scope' => 'print',
+                    'locale' => null,
+                ],
+                'size_label' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ],
-            'title' => [
-                'source' => 'name',
-                'scope' => 'print',
-                'locale' => 'en_US',
-            ],
-            'short_description' => [
-                'source' => 'description',
-                'scope' => 'print',
-                'locale' => null,
-            ],
-            'size_label' => [
-                'source' => 'size',
-                'scope' => null,
-                'locale' => null,
-            ],
-        ]);
+        );
 
         $this->client->request(
             'GET',
@@ -186,8 +176,11 @@ class GetMappedProductsActionTest extends IntegrationTestCase
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
 
         $this->client->request(
             'GET',
@@ -211,11 +204,13 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs', 'read_products',
         ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi'
-        ));
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            isEnabled: false,
+        );
 
         $this->client->request(
             'GET',
@@ -279,12 +274,12 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs', 'read_products',
         ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi'
-        ));
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
 
         $this->client->request(
             'GET',
@@ -301,6 +296,195 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertEquals('Impossible to map products: no product mapping schema available for this catalog.', $payload['message']);
+    }
+
+    public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsEnabledAndInvalid(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+        $this->createAttribute([
+            'code' => 'description',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'size',
+            'type' => 'pim_catalog_text',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'details',
+            'type' => 'pim_catalog_text',
+        ]);
+
+        $this->createChannel('print', ['en_US', 'fr_FR']);
+
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
+            new SetTextValue('name', 'print', 'en_US', 'Blue name'),
+            new SetTextValue('name', 'print', 'fr_FR', 'Nom Bleu'),
+            new SetTextValue('description', 'print', null, 'Blue description'),
+            new SetTextValue('size', null, null, 'Blue size'),
+            new SetTextValue('details', null, null, 'product_details'),
+        ]);
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Enabled invalid catalog',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'details',
+                    'operator' => Operator::EQUALS,
+                    'value' => 'product_details',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            productMappingSchema: $this->getProductMappingSchemaRaw(),
+            catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'title' => [
+                    'source' => 'name',
+                    'scope' => 'print',
+                    'locale' => 'en_US',
+                ],
+                'short_description' => [
+                    'source' => 'description',
+                    'scope' => 'print',
+                    'locale' => null,
+                ],
+                'size_label' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        );
+
+        $catalogIdFromEvent = null;
+        $this->addSubscriberForInvalidCatalogDisabledEvent(function ($catalogId) use (&$catalogIdFromEvent): void {
+            $catalogIdFromEvent = $catalogId;
+        });
+
+        $this->removeAttribute('details');
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertArrayHasKey('message', $payload);
+        Assert::assertFalse($this->getCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c')->isEnabled());
+        Assert::assertEquals('db1079b6-f397-4a6a-bae4-8658e64ad47c', $catalogIdFromEvent);
+    }
+
+    public function testItMapsMissingAttributesWithEmptyString(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+        $this->createAttribute([
+            'code' => 'description',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'size',
+            'type' => 'pim_catalog_text',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+
+        $this->createChannel('print', ['en_US', 'fr_FR']);
+
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
+            new SetTextValue('name', 'print', 'en_US', 'Blue name'),
+            new SetTextValue('name', 'print', 'fr_FR', 'Nom Bleu'),
+            new SetTextValue('description', 'print', null, 'Blue description'),
+            new SetTextValue('size', null, null, 'Blue size'),
+        ]);
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Enabled invalid catalog',
+            ownerUsername: 'shopifi',
+            productMappingSchema: $this->getProductMappingSchemaRaw(),
+            catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'title' => [
+                    'source' => 'name',
+                    'scope' => 'print',
+                    'locale' => 'en_US',
+                ],
+                'short_description' => [
+                    'source' => 'description',
+                    'scope' => 'print',
+                    'locale' => null,
+                ],
+                'size_label' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        );
+
+        $this->removeAttribute('description');
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertCount(1, $payload['_embedded']['items']);
+        Assert::assertSame([
+            [
+                'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
+                'title' => 'Blue name',
+                'short_description' => '',
+                'size_label' => 'Blue size',
+            ]
+        ], $payload['_embedded']['items']);
     }
 
     private function getProductMappingSchemaRaw(): string

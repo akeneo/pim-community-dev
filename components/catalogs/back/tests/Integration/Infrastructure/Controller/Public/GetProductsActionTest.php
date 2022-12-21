@@ -98,7 +98,7 @@ class GetProductsActionTest extends IntegrationTestCase
         Assert::assertEquals($expectedMessage, $payload['error']);
     }
 
-    public function testItReturnsBadRequestWhenPaginationIsInvaliGetProductsQueryInterfaced(): void
+    public function testItReturnsBadRequestWhenPaginationIsInvalidGetProductsQueryInterfaced(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
