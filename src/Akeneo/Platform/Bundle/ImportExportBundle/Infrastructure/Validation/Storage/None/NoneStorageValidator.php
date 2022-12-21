@@ -24,7 +24,6 @@ class NoneStorageValidator extends ConstraintValidator
             'fields' => [
                 'type' => new EqualTo(NoneStorage::TYPE),
                 'file_path' => new Optional(new FilePath($constraint->getFilePathSupportedFileExtensions())),
-                // TODO RAB-665: These are specifically for quick export, we should investigate to find a proper way
                 'filePath' => new Optional(new FilePath($constraint->getFilePathSupportedFileExtensions())),
                 'filePathProduct' => new Optional(new FilePath($constraint->getFilePathSupportedFileExtensions())),
                 'filePathProductModel' => new Optional(new FilePath($constraint->getFilePathSupportedFileExtensions())),
