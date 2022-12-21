@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Service;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
-use Akeneo\Catalogs\Application\Service\MapProductsInterface;
+use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
@@ -18,46 +18,68 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  *
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
  * @phpstan-import-type RawProduct from GetRawProductsQueryInterface
+ * @phpstan-import-type ProductMapping from Catalog
  */
-class MapProducts implements MapProductsInterface
+class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly CatalogsMappingStorageInterface $catalogsMappingStorage,
     ) {
     }
 
-    public function __invoke(array $products, Catalog $catalog): array
+    public function getMappedProducts(array $products, Catalog $catalog): array
     {
         $productMappingSchema = $this->getProductMappingSchema($catalog->getId());
         $productMapping = $catalog->getProductMapping();
 
         return \array_map(
             /** @param RawProduct $product */
-            function (array $product) use ($productMappingSchema, $productMapping): array {
-                $mappedProduct = [];
-
-                /** @var string $target */
-                foreach (\array_keys($productMappingSchema['properties']) as $target) {
-                    $sourceValue = '';
-
-                    if ('uuid' === $target) {
-                        $sourceValue = $product['uuid']->toString();
-                    } elseif (\array_key_exists($target, $productMapping)) {
-                        $sourceValue = $this->getProductAttributeValue(
-                            $product,
-                            $productMapping[$target]['source'],
-                            $productMapping[$target]['locale'],
-                            $productMapping[$target]['scope']
-                        );
-                    }
-
-                    $mappedProduct[$target] = $sourceValue;
-                }
-
-                return $mappedProduct;
-            },
+            fn (array $product): array => $this->mapProduct($product, $productMappingSchema, $productMapping),
             $products
         );
+    }
+
+    public function getMappedProduct(array $product, Catalog $catalog): array
+    {
+        $productMappingSchema = $this->getProductMappingSchema($catalog->getId());
+        $productMapping = $catalog->getProductMapping();
+
+        return $this->mapProduct($product, $productMappingSchema, $productMapping);
+    }
+
+    /**
+     * @param RawProduct $product
+     * @param array{properties: array<array-key, mixed>} $productMappingSchema
+     * @param ProductMapping $productMapping
+     *
+     * @return MappedProduct
+     */
+    private function mapProduct(
+        array $product,
+        array $productMappingSchema,
+        array $productMapping
+    ): array {
+        $mappedProduct = [];
+
+        /** @var string $target */
+        foreach (\array_keys($productMappingSchema['properties']) as $target) {
+            $sourceValue = '';
+
+            if ('uuid' === $target) {
+                $sourceValue = $product['uuid']->toString();
+            } elseif (\array_key_exists($target, $productMapping)) {
+                $sourceValue = $this->getProductAttributeValue(
+                    $product,
+                    $productMapping[$target]['source'],
+                    $productMapping[$target]['locale'],
+                    $productMapping[$target]['scope']
+                );
+            }
+
+            $mappedProduct[$target] = $sourceValue;
+        }
+
+        return $mappedProduct;
     }
 
     /**
