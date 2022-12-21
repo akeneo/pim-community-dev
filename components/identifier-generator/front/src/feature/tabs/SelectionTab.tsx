@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
 import {SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -6,6 +6,7 @@ import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
 import {ListSkeleton} from '../components';
 import {AddConditionButton, EnabledLine} from './conditions';
+import {SimpleDeleteModal} from '../pages';
 
 type SelectionTabProps = {
   conditions: Conditions;
@@ -13,11 +14,13 @@ type SelectionTabProps = {
   onChange: (conditions: Conditions) => void;
 };
 
-type ConditionsWithIdentifier = (Condition & {id: string})[];
+type ConditionIdentifier = string;
+type ConditionsWithIdentifier = (Condition & {id: ConditionIdentifier})[];
 
 const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange}) => {
   const translate = useTranslate();
   const {data: identifiers, isLoading} = useIdentifierAttributes();
+  const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionIdentifier | undefined>();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
     conditions.map(condition => ({
       id: uuid(),
@@ -34,7 +37,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     });
   };
 
-  const handleChange = (conditionWithId: Condition & {id: string}) => {
+  const handleChange = (conditionWithId: Condition & {id: ConditionIdentifier}) => {
     const index = conditionsWithId.findIndex(condition => condition.id === conditionWithId.id);
     const newConditions = [...conditionsWithId];
     newConditions[index] = conditionWithId;
@@ -48,6 +51,28 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     setConditionsWithId(newConditions);
     onChange(removeIdentifiers(newConditions));
   };
+
+  const closeModal = useCallback(() => {
+    setConditionIdToDelete(undefined);
+  }, []);
+
+  const handleDeleteCondition = useCallback((): void => {
+    if (conditionIdToDelete) {
+      const newConditions = conditionsWithId.filter(condition => condition.id !== conditionIdToDelete);
+      setConditionsWithId(newConditions);
+      onChange(removeIdentifiers(newConditions));
+      setConditionIdToDelete(undefined);
+    }
+
+    closeModal();
+  }, [closeModal, conditionIdToDelete, conditionsWithId, onChange]);
+
+  const onDelete = useCallback(
+    (conditionId: ConditionIdentifier) => () => {
+      setConditionIdToDelete(conditionId);
+    },
+    []
+  );
 
   return (
     <>
@@ -74,7 +99,12 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
               {conditionsWithId.map(conditionWithId => (
                 <>
                   {conditionWithId.type === CONDITION_NAMES.ENABLED && (
-                    <EnabledLine condition={conditionWithId} key={conditionWithId.id} onChange={handleChange} />
+                    <EnabledLine
+                      condition={conditionWithId}
+                      key={conditionWithId.id}
+                      onChange={handleChange}
+                      onDelete={onDelete(conditionWithId.id)}
+                    />
                   )}
                 </>
               ))}
@@ -82,8 +112,10 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
           )}
         </Table.Body>
       </Table>
+      {conditionIdToDelete && <SimpleDeleteModal onClose={closeModal} onDelete={handleDeleteCondition} />}
     </>
   );
 };
 
 export {SelectionTab};
+export type {ConditionIdentifier};

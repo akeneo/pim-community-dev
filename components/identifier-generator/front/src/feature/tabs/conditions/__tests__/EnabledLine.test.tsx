@@ -8,7 +8,11 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-          <EnabledLine condition={{type: CONDITION_NAMES.ENABLED, value: true, id: 'enabledId'}} onChange={jest.fn()} />
+          <EnabledLine
+            condition={{type: CONDITION_NAMES.ENABLED, value: true, id: 'enabledId'}}
+            onChange={jest.fn()}
+            onDelete={jest.fn()}
+          />
         </tbody>
       </table>
     );
@@ -23,13 +27,39 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-          <EnabledLine condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}} onChange={onChange} />
+          <EnabledLine
+            condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}}
+            onChange={onChange}
+            onDelete={jest.fn()}
+          />
         </tbody>
       </table>
     );
 
-    fireEvent.click(screen.getByRole('button'));
+    const buttons = screen.getAllByRole('button');
+    const openButton = buttons.find(button => button.title === 'pim_common.open') as HTMLElement;
+    fireEvent.click(openButton);
     fireEvent.click(screen.getByTitle('pim_common.enabled'));
     expect(onChange).toBeCalledWith({type: CONDITION_NAMES.ENABLED, value: true, id: 'enabledId'});
+  });
+
+  it('should callback on delete', () => {
+    const onDelete = jest.fn();
+    render(
+      <table>
+        <tbody>
+          <EnabledLine
+            condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}}
+            onChange={jest.fn()}
+            onDelete={onDelete}
+          />
+        </tbody>
+      </table>
+    );
+
+    const deleteButton = screen.getByText('pim_common.delete');
+    expect(deleteButton).toBeInTheDocument();
+    fireEvent.click(deleteButton);
+    expect(onDelete).toBeCalled();
   });
 });

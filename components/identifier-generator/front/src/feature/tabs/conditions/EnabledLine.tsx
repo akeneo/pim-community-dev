@@ -1,19 +1,25 @@
 import React from 'react';
 import {Condition, Enabled} from '../../models';
-import {Table, TextInput, SelectInput} from 'akeneo-design-system';
+import {Table, TextInput, SelectInput, Button} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {ConditionIdentifier} from '../SelectionTab';
 
 type EnabledLineProps = {
-  condition: Enabled & {id: string};
-  onChange: (condition: Condition & {id: string}) => void;
+  condition: Enabled & {id: ConditionIdentifier};
+  onChange: (condition: Condition & {id: ConditionIdentifier}) => void;
+  onDelete: (conditionId: ConditionIdentifier) => void;
 };
 
-const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange}) => {
+const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
 
   const handleChange = (value: string) => {
     onChange({...condition, value: value === 'true'});
+  };
+
+  const handleDelete = (conditionId: string) => () => {
+    onDelete(conditionId);
   };
 
   return (
@@ -46,6 +52,11 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange}) => {
           </SelectInput>
         </Styled.InputContainer>
       </Table.Cell>
+      <Table.ActionCell>
+        <Button onClick={handleDelete(condition.id)} ghost level="danger">
+          {translate('pim_common.delete')}
+        </Button>
+      </Table.ActionCell>
     </Table.Row>
   );
 };
