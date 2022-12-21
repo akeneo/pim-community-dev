@@ -7,7 +7,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
-use Akeneo\Catalogs\Application\Service\MapProductsInterface;
+use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException as ServiceApiProductNotFoundException;
@@ -26,7 +26,7 @@ final class GetMappedProductHandler
     public function __construct(
         private GetCatalogQueryInterface $getCatalogQuery,
         private GetRawProductQueryInterface $getRawProductQuery,
-        private MapProductsInterface $mapProducts,
+        private ProductMapperInterface $productMapper,
     ) {
     }
 
@@ -51,6 +51,6 @@ final class GetMappedProductHandler
             throw new ServiceApiProductNotFoundException();
         }
 
-        return ($this->mapProducts)([$product], $catalog)[0];
+        return $this->productMapper->getMappedProduct($product, $catalog);
     }
 }

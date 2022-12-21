@@ -9,8 +9,8 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogQueryInterface
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
 use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
+use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
-use Akeneo\Catalogs\Application\Service\MapProductsInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
@@ -29,7 +29,7 @@ final class GetMappedProductsHandler
         private readonly DisableCatalogQueryInterface $disableCatalogQuery,
         private readonly IsCatalogValidInterface $isCatalogValid,
         private readonly DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
-        private MapProductsInterface $mapProducts,
+        private ProductMapperInterface $productMapper,
     ) {
     }
 
@@ -65,6 +65,6 @@ final class GetMappedProductsHandler
             throw $exception;
         }
 
-        return ($this->mapProducts)($products, $catalog);
+        return $this->productMapper->getMappedProducts($products, $catalog);
     }
 }
