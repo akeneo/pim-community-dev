@@ -12,7 +12,7 @@ class SetterRegistrySpec extends ObjectBehavior
 {
     function let(AttributeRepositoryInterface $attributeRepository)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($attributeRepository, []);
     }
 
     function it_gets_attribute_setter(

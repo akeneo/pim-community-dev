@@ -20,16 +20,16 @@ interface SetterRegistryInterface
      *
      * @return SetterRegistryInterface
      */
-    public function register(SetterInterface $setter);
+    public function register(SetterInterface $setter): self;
 
     /**
      * Get a setter compatible with the given property
      *
      * @param string $property
      *
-     * @return SetterInterface
+     * @return SetterInterface|null
      */
-    public function getSetter($property);
+    public function getSetter(string $property): ?SetterInterface;
 
     /**
      * Get the field setter
@@ -38,7 +38,7 @@ interface SetterRegistryInterface
      *
      * @return FieldSetterInterface|null
      */
-    public function getFieldSetter($field);
+    public function getFieldSetter(string $field): ?FieldSetterInterface;
 
     /**
      * Get the attribute setter
@@ -47,5 +47,5 @@ interface SetterRegistryInterface
      *
      * @return AttributeSetterInterface|null
      */
-    public function getAttributeSetter(AttributeInterface $attribute);
+    public function getAttributeSetter(AttributeInterface $attribute): ?AttributeSetterInterface;
 }

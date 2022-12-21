@@ -16,12 +16,6 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterProductUpdaterPass implements CompilerPassInterface
 {
     /** @staticvar */
-    const SETTER_REGISTRY = 'pim_catalog.updater.setter.registry';
-
-    /** @staticvar */
-    const SETTER_TAG = 'pim_catalog.updater.setter';
-
-    /** @staticvar */
     const COPIER_REGISTRY = 'pim_catalog.updater.copier.registry';
 
     /** @staticvar */
@@ -44,23 +38,9 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $this->registerSetters($container);
         $this->registerCopiers($container);
         $this->registerAdders($container);
         $this->registerRemovers($container);
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     */
-    protected function registerSetters(ContainerBuilder $container)
-    {
-        $registry = $container->getDefinition(self::SETTER_REGISTRY);
-        $setters = $container->findTaggedServiceIds(self::SETTER_TAG);
-
-        foreach (array_keys($setters) as $setterId) {
-            $registry->addMethodCall('register', [new Reference($setterId)]);
-        }
     }
 
     /**

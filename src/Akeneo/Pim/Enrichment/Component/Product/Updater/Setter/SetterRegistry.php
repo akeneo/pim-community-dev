@@ -15,26 +15,28 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 class SetterRegistry implements SetterRegistryInterface
 {
     /** @var AttributeSetterInterface[] priorized attribute setters */
-    protected $attributeSetters = [];
+    protected array $attributeSetters = [];
 
     /** @var FieldSetterInterface[] priorized field setters */
-    protected $fieldSetters = [];
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    protected array $fieldSetters = [];
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param iterable<SetterInterface> $propertySetters
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $repository)
-    {
-        $this->attributeRepository = $repository;
+    public function __construct(
+        protected IdentifiableObjectRepositoryInterface $attributeRepository,
+        iterable $propertySetters
+    ) {
+        foreach ($propertySetters as $propertySetter) {
+            $this->register($propertySetter);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function register(SetterInterface $setter)
+    public function register(SetterInterface $setter): self
     {
         if ($setter instanceof FieldSetterInterface) {
             $this->fieldSetters[] = $setter;
@@ -49,7 +51,7 @@ class SetterRegistry implements SetterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getSetter($property)
+    public function getSetter(string $property): ?SetterInterface
     {
         $attribute = $this->getAttribute($property);
         if (null !== $attribute) {
@@ -64,7 +66,7 @@ class SetterRegistry implements SetterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldSetter($field)
+    public function getFieldSetter(string $field): ?FieldSetterInterface
     {
         foreach ($this->fieldSetters as $setter) {
             if ($setter->supportsField($field)) {
@@ -78,7 +80,7 @@ class SetterRegistry implements SetterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeSetter(AttributeInterface $attribute)
+    public function getAttributeSetter(AttributeInterface $attribute): ?AttributeSetterInterface
     {
         foreach ($this->attributeSetters as $setter) {
             if ($setter->supportsAttribute($attribute)) {
@@ -94,7 +96,7 @@ class SetterRegistry implements SetterRegistryInterface
      *
      * @return AttributeInterface|null
      */
-    protected function getAttribute($code)
+    protected function getAttribute(string $code): ?AttributeInterface
     {
         return $this->attributeRepository->findOneByIdentifier($code);
     }

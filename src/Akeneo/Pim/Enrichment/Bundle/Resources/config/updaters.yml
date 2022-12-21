@@ -133,6 +133,7 @@ services:
         class: '%pim_catalog.updater.setter.registry.class%'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
+            - !tagged_iterator pim_catalog.updater.setter
 
     pim_catalog.updater.setter.abstract:
         class: '%pim_catalog.updater.setter.abstract.class%'
