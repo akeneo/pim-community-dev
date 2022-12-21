@@ -84,12 +84,12 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'read_products',
         ]);
 
-        $this->commandBus->execute(new CreateCatalogCommand(
+        $this->createCatalog(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            'shopifi'
-        ));
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+            'shopifi',
+            true,
+        );
 
         $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -186,8 +186,12 @@ class GetMappedProductsActionTest extends IntegrationTestCase
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->createCatalog(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            'shopifi',
+            true,
+        );
 
         $this->client->request(
             'GET',
@@ -279,12 +283,13 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs', 'read_products',
         ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
+
+        $this->createCatalog(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            'shopifi'
-        ));
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+            'shopifi',
+            true,
+        );
 
         $this->client->request(
             'GET',
