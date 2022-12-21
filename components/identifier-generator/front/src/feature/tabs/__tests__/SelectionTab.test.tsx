@@ -5,6 +5,7 @@ import {CONDITION_NAMES, Conditions, Operator} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
+jest.mock('../../pages/SimpleDeleteModal');
 
 describe('SelectionTab', () => {
   it('should render the selection tab', () => {
