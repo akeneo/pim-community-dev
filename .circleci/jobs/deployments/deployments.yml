@@ -996,14 +996,14 @@ jobs:
                     cd ${TERRAFORM_PATH}
                     terraform init -backend-config="prefix=timmy/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_REGION}" -reconfigure
                     terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
-                    terraform plan -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER} -var suffix_name=${HASH_PR_URL} -var enable_request_portal_cloud_function=false -var enable_request_portal_cloud_scheduler=false
+                    terraform plan -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER} -var suffix_name=${HASH_PR_URL} -var enable_request_portal_cloud_function=false -var enable_request_portal_cloud_scheduler=false -var enable_clean_firestore=false
             - run:
                   name: Init and Apply terraform
                   command: |
                       cd ${TERRAFORM_PATH}
                       terraform init -backend-config="prefix=timmy/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_REGION}" -reconfigure
                       terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
-                      terraform apply -auto-approve -input=false -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER} -var suffix_name=${HASH_PR_URL} -var enable_request_portal_cloud_function=false -var enable_request_portal_cloud_scheduler=false
+                      terraform apply -auto-approve -input=false -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER} -var suffix_name=${HASH_PR_URL} -var enable_request_portal_cloud_function=false -var enable_request_portal_cloud_scheduler=false -var enable_clean_firestore=false
             - run:
                   name: Persist env vars for next jobs
                   command: |
