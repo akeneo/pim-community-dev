@@ -16,6 +16,10 @@
     "generate-models": "yarn workspace @akeneo-pim-community/communication-channel generate-models",
     "packages:build": "yarn workspace pim-community-dev packages:build"
   },
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/front-packages/shared",
