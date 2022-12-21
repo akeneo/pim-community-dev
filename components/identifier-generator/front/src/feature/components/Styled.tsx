@@ -58,6 +58,16 @@ const TranslationsPlaceholderTitleConditions = styled.div`
   font-weight: bold;
 `;
 
+// Overriding to not be impacted by the global style
+const ListItems = styled.ul`
+  margin-bottom: 0;
+  margin-block-start: 0;
+  padding-inline-start: 40px;
+  li {
+    list-style: disc;
+  }
+`;
+
 const NotDraggableCell = styled(Table.Cell)`
   width: 44px;
 `;
@@ -78,6 +88,7 @@ const Styled = {
   TranslationsPlaceholderTitleConditions,
   NotDraggableCell,
   TitleCondition,
+  ListItems,
 };
 
 export {Styled};
