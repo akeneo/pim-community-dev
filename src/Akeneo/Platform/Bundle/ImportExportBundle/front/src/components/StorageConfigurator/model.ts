@@ -6,6 +6,7 @@ import {
   AmazonS3Storage,
   Storage,
   StorageType,
+  additionalStorageIsEnabled,
   localStorageIsEnabled,
   MicrosoftAzureStorage,
   GoogleCloudStorage,
@@ -33,10 +34,6 @@ type StorageConfiguratorCollection = {
 
 const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
-  sftp: SftpStorageConfigurator,
-  amazon_s3: AmazonS3StorageConfigurator,
-  microsoft_azure: MicrosoftAzureStorageConfigurator,
-  google_cloud_storage: GoogleCloudStorageConfigurator,
 };
 
 const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
@@ -44,6 +41,13 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
 
   if (localStorageIsEnabled(featureFlags)) {
     enabledStorageConfigurators['local'] = LocalStorageConfigurator;
+  }
+
+  if (additionalStorageIsEnabled(featureFlags)) {
+    enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
+    enabledStorageConfigurators['amazon_s3'] = AmazonS3StorageConfigurator;
+    enabledStorageConfigurators['microsoft_azure'] = MicrosoftAzureStorageConfigurator;
+    enabledStorageConfigurators['google_cloud_storage'] = GoogleCloudStorageConfigurator;
   }
 
   return enabledStorageConfigurators;
