@@ -300,7 +300,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
     public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsEnabledAndInvalid(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $this->logAs('admin');
 
         $this->createAttribute([
             'code' => 'name',
@@ -334,6 +334,8 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetTextValue('size', null, null, 'Blue size'),
             new SetTextValue('details', null, null, 'product_details'),
         ]);
+
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -401,7 +403,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
     public function testItMapsMissingAttributesWithEmptyString(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $this->logAs('admin');
 
         $this->createAttribute([
             'code' => 'name',
@@ -430,6 +432,8 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetTextValue('description', 'print', null, 'Blue description'),
             new SetTextValue('size', null, null, 'Blue size'),
         ]);
+
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
