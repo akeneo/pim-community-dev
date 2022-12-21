@@ -850,10 +850,25 @@ jobs:
                         echo "The tenant ${TENANT_ID} exits and is already SYNC, we don't need to recreate it"
                         exit 0
                       fi
-                      JSON_BODY_STRING=\''{"annotations":{"kube-janitor":"'"${TTL}"'"},"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","tenant_name":"'"${TENANT_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NAMESPACE}"'"},"web":{"namespace":"'"${PIM_NAMESPACE}"'"}}}'
-                      JSON_BODY_STRING=${JSON_BODY_STRING:1}
 
-                      CLOUD_FUNCTION_URL=$(gcloud beta functions describe ${CLOUD_FUNCTION_CREATE_TENANT} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
+                      JSON_BODY_FILE=body.json
+                      touch ${JSON_BODY_FILE}
+                      yq w -i -j ${JSON_BODY_FILE} annotations."janitor/ttl" ${TTL}
+                      yq w -i -j ${JSON_BODY_FILE} pim_edition <<parameters.PIM_EDITION>>
+                      yq w -i -j ${JSON_BODY_FILE} branchName "${CIRCLE_BRANCH}"
+                      yq w -i -j ${JSON_BODY_FILE} dnsCloudDomain "${GOOGLE_DOMAIN}"
+                      yq w -i -j ${JSON_BODY_FILE} tenant_name "${TENANT_NAME}"
+                      yq w -i -j ${JSON_BODY_FILE} pim.defaultAdminUser.login "${CIRCLE_BRANCH_LOWER}@akeneo.com"
+                      yq w -i -j ${JSON_BODY_FILE} pim.defaultAdminUser.firstName "${CIRCLE_BRANCH_LOWER}"
+                      yq w -i -j ${JSON_BODY_FILE} pim.defaultAdminUser.lastName "${CIRCLE_BRANCH_LOWER}"
+                      yq w -i -j ${JSON_BODY_FILE} pim.defaultAdminUser.email "${CIRCLE_BRANCH_LOWER}@akeneo.com"
+                      yq w -i -j ${JSON_BODY_FILE} pim.defaultAdminUser.uiLocale "en_US"
+                      yq w -i -j ${JSON_BODY_FILE} pim.api.namespace "${PIM_NAMESPACE}"
+                      yq w -i -j ${JSON_BODY_FILE} pim.web.namespace "${PIM_NAMESPACE}"
+                      yq w -i -j ${JSON_BODY_FILE} tshirt_size "S"
+
+                      JSON_BODY_STRING=$(cat ${JSON_BODY_FILE})
+                      CLOUD_FUNCTION_URL=$(gcloud functions describe ${CLOUD_FUNCTION_CREATE_TENANT} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
 
                       echo "Cloud function URL: ${CLOUD_FUNCTION_URL}"
                       echo "Cloud function body: ${JSON_BODY_STRING}"
@@ -913,7 +928,7 @@ jobs:
                       gcloud config unset auth/impersonate_service_account
 
                       DELETE_TENANT_STATUS_CODE=0
-                      gcloud beta functions call ${CLOUD_FUNCTION_DELETE_TENANT} --region=${GOOGLE_CLUSTER_REGION}  --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
+                      gcloud functions call ${CLOUD_FUNCTION_DELETE_TENANT} --region=${GOOGLE_CLUSTER_REGION}  --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
 
                       echo "      Timmy delete ${TENANT_ID}"
                       kubectl delete ns ${TENANT_ID}

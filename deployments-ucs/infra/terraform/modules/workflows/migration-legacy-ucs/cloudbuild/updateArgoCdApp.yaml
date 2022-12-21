@@ -63,8 +63,22 @@ updateArgoCdApp:
                                 git commit -m "Update tenant information"
                                 git push
 
-                                JSON_BODY_STRING=\''{"pim_edition":"'"$$${PIM_EDITION}"'","branchName":"'"$$${BRANCH_NAME}"'","tenant_name":"'"$${_TENANT_NAME}"'","dnsCloudDomain":"'"$${_DNS_GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"$$${LOGIN_NAME}"'@akeneo.com","firstName":"'"$$${LOGIN_NAME}"'","lastName":"'"$$${LOGIN_NAME}"'","email":"'"$$${LOGIN_NAME}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"$$${PIM_NAMESPACE}"'"},"web":{"namespace":"'"$$${PIM_NAMESPACE}"'"}}}'
-                                JSON_BODY_STRING=$$${JSON_BODY_STRING:1}
+                                JSON_BODY_FILE=body.json
+                                touch $${JSON_BODY_FILE}
+                                yq w -i -j $${JSON_BODY_FILE} pim_edition "$$${PIM_EDITION}"
+                                yq w -i -j $${JSON_BODY_FILE} branchName "$$${BRANCH_NAME}"
+                                yq w -i -j $${JSON_BODY_FILE} tenant_name "$${_TENANT_NAME}"
+                                yq w -i -j $${JSON_BODY_FILE} dnsCloudDomain "$${_DNS_GOOGLE_DOMAIN}"
+                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.login "$$${LOGIN_NAME}@akeneo.com"
+                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.firstName "$$${LOGIN_NAME}"
+                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.lastName "$$${LOGIN_NAME}"
+                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.email "$$${LOGIN_NAME}@akeneo.com"
+                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.uiLocale "en_US"
+                                yq w -i -j $${JSON_BODY_FILE} pim.api.namespace "$$${PIM_NAMESPACE}"
+                                yq w -i -j $${JSON_BODY_FILE} pim.web.namespace "$$${PIM_NAMESPACE}"
+                                yq w -i -j $${JSON_BODY_FILE} tshirt_size "S"
+                                JSON_BODY_STRING=$$(cat $${JSON_BODY_FILE})
+
                                 CLOUD_FUNCTION_URL=$(gcloud beta functions describe $${_CLOUD_FUNCTION_CREATE_TENANT} --format='value(serviceConfig.uri)' --gen2 --region=$${_DESTINATION_GOOGLE_CLUSTER_REGION})
                                 IDENTITY_TOKEN=$(gcloud --impersonate-service-account ucs-migration-uat-wip@akecld-prd-pim-saas-demo.iam.gserviceaccount.com auth print-identity-token)
                                 echo "Cloud function URL: $$${CLOUD_FUNCTION_URL}"

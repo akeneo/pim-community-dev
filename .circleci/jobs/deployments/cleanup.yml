@@ -138,7 +138,7 @@ jobs:
                       gcloud config unset auth/impersonate_service_account
 
                       DELETE_TENANT_STATUS_CODE=0
-                      gcloud beta functions call ${CLOUD_FUNCTION_DELETE_TENANT} --region=${GOOGLE_CLUSTER_REGION} --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
+                      gcloud functions call ${CLOUD_FUNCTION_DELETE_TENANT} --region=${GOOGLE_CLUSTER_REGION} --data  ${JSON_BODY_STRING} --gen2 || DELETE_TENANT_STATUS_CODE=1
                       exit ${DELETE_TENANT_STATUS_CODE}
 
     delete_timmy:

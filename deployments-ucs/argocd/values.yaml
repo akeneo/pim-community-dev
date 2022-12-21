@@ -40,6 +40,9 @@ repoServer:
     create: true
     annotations:
       iam.gke.io/gcp-service-account: null
+  env:
+    - name: HELM_PLUGINS
+      value: /helm-working-dir/plugins/
   initContainers:
     - name: install-helm-plugins
       image: alpine/helm:3.10.2
@@ -47,16 +50,10 @@ repoServer:
         - mountPath: /helm-working-dir
           name: helm-working-dir
       env:
-        - name: HELM_CACHE_HOME
-          value: /helm-working-dir
-        - name: HELM_CONFIG_HOME
-          value: /helm-working-dir
-        - name: HELM_DATA_HOME
-          value: /helm-working-dir  
+        - name: HELM_PLUGINS
+          value: /helm-working-dir/plugins
       command: ["/bin/sh", "-c"]
       args:
         - apk --no-cache add curl;
           helm plugin install https://github.com/hayorov/helm-gcs.git;
           helm repo add akeneo-charts gs://akeneo-pim-saas-charts-prod;
-          helm repo update;
-          chmod -R 777 ${HELM_DATA_HOME};
