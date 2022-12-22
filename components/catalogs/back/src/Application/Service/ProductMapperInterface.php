@@ -14,20 +14,16 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  *
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
  * @phpstan-import-type RawProduct from GetRawProductsQueryInterface
+ * @phpstan-import-type ProductMapping from Catalog
  */
 interface ProductMapperInterface
 {
     /**
-     * @param array<RawProduct> $products
-     *
-     * @return array<MappedProduct>
-     */
-    public function getMappedProducts(array $products, Catalog $catalog): array;
-
-    /**
      * @param RawProduct $product
+     * @param array{properties: array<array-key, mixed>} $productMappingSchema
+     * @param ProductMapping $productMapping
      *
      * @return MappedProduct
      */
-    public function getMappedProduct(array $product, Catalog $catalog): array;
+    public function getMappedProduct(array $product, array $productMappingSchema, array $productMapping): array;
 }
