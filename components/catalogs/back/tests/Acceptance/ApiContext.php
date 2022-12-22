@@ -133,19 +133,19 @@ class ApiContext implements Context
         // create enabled catalog with product selection criteria
         $this->upsertCatalogQuery->execute(
             new Catalog(
-                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                'Store US',
-                $connectedAppUserIdentifier,
-                true,
-                [
+                id:'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                name:'Store US',
+                ownerUsername: $connectedAppUserIdentifier,
+                enabled:  true,
+                productSelectionCriteria: [
                     [
                         'field' => 'enabled',
                         'operator' => '=',
                         'value' => true,
                     ],
                 ],
-                [],
-                [],
+                productValueFilters: [],
+                productMapping: [],
             )
         );
 
@@ -698,22 +698,33 @@ class ApiContext implements Context
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
 
-        // create enabled catalog with product selection criteria
+        // create enabled catalog with product selection criteria and product mapping
         $this->upsertCatalogQuery->execute(
             new Catalog(
-                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                'Store US',
-                $connectedAppUserIdentifier,
-                true,
-                [
+                id:'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                name:'Store US',
+                ownerUsername: $connectedAppUserIdentifier,
+                enabled:  true,
+                productSelectionCriteria: [
                     [
                         'field' => 'enabled',
                         'operator' => '=',
                         'value' => true,
                     ],
                 ],
-                [],
-                [],
+                productValueFilters: [],
+                productMapping: [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'title' => [
+                        'source' => 'name',
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                    ],
+                ],
             )
         );
 
@@ -748,20 +759,6 @@ class ApiContext implements Context
                 JSON_THROW_ON_ERROR
             ),
         ));
-
-        // add product mapping to catalog
-        $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'uuid' => [
-                'source' => 'uuid',
-                'scope' => null,
-                'locale' => null,
-            ],
-            'title' => [
-                'source' => 'name',
-                'scope' => 'ecommerce',
-                'locale' => 'en_US',
-            ],
-        ]);
 
         // create products
         $adminUser = $this->authentication->getAdminUser();
@@ -854,22 +851,6 @@ class ApiContext implements Context
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload['_embedded']['items']);
-    }
-
-    /** @todo replace by a command bus when existing */
-    private function setCatalogProductMapping(string $id, array $productMapping): void
-    {
-        $connection = $this->container->get(Connection::class);
-        $connection->executeQuery(
-            'UPDATE akeneo_catalog SET product_mapping = :productMapping WHERE id = :id',
-            [
-                'id' => Uuid::fromString($id)->getBytes(),
-                'productMapping' => $productMapping,
-            ],
-            [
-                'productMapping' => Types::JSON,
-            ]
-        );
     }
 
     /**
