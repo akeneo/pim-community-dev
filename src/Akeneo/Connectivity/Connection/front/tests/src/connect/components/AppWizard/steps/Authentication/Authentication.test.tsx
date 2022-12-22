@@ -32,6 +32,7 @@ test('it renders correctly for first connection without consent checkbox', async
             scopesConsentGiven={false}
             setScopesConsent={() => null}
             displayConsent={false}
+            displayCheckboxConsent={true}
         />
     );
 
@@ -61,6 +62,7 @@ test('it renders correctly for first connection with consent checkbox', async ()
             scopesConsentGiven={false}
             setScopesConsent={() => null}
             displayConsent={true}
+            displayCheckboxConsent={true}
         />
     );
 
@@ -90,6 +92,7 @@ test('it renders correctly with new scopes required when not already had old sco
             scopesConsentGiven={false}
             setScopesConsent={() => null}
             displayConsent={false}
+            displayCheckboxConsent={true}
         />
     );
 
@@ -119,6 +122,7 @@ test('it renders correctly with new scopes required when already accepted old sc
             scopesConsentGiven={false}
             setScopesConsent={() => null}
             displayConsent={false}
+            displayCheckboxConsent={true}
         />
     );
 

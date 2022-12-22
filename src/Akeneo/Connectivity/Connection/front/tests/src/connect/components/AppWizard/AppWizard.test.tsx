@@ -311,6 +311,7 @@ test('The wizard prevents going past the authorizations step without consent', a
                 appIsCertified: false,
                 scopeMessages: [],
                 authenticationScopes: [],
+                displayCheckboxConsent: true,
             },
         },
         'akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b':
@@ -356,6 +357,63 @@ test('The wizard prevents going past the authorizations step without consent', a
     act(() => {
         userEvent.click(screen.getByText('consent-scopes'));
     });
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
+    });
+
+    await waitFor(() => {
+        expect(notify).toHaveBeenCalledTimes(1);
+    });
+
+    expect(notify).toBeCalledWith(
+        NotificationLevel.SUCCESS,
+        'akeneo_connectivity.connection.connect.apps.wizard.flash.success'
+    );
+    expect(global.window.location.assign).toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
+});
+
+test('The wizard allows going past the authorizations step when checkbox consent is not displayed', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) =>
+            ({
+                connect_app_with_permissions: false,
+            }[feature] ?? false),
+    }));
+
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
+            json: {
+                appName: 'MyApp',
+                appLogo: 'http://example.com/logo.png',
+                appIsCertified: false,
+                scopeMessages: [],
+                authenticationScopes: [],
+                displayCheckboxConsent: false,
+            },
+        },
+        'akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b':
+            {
+                json: {
+                    userGroup: 'foo',
+                    redirectUrl: 'http://foo.example.com/oauth2/callback',
+                },
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />
+        </NotifyContext.Provider>
+    );
+    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
+
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
+
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
     });

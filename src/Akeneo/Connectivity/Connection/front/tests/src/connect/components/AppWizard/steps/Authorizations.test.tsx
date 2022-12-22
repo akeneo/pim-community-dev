@@ -27,6 +27,7 @@ test('The authorizations step without certification consent renders without erro
                 certificationConsentGiven={false}
                 setCertificationConsent={() => null}
                 displayCertificationConsent={false}
+                displayCheckboxConsent={true}
             />
         </ThemeProvider>
     );
@@ -49,6 +50,7 @@ test('The authorizations step with certification consent renders without error',
                 certificationConsentGiven={false}
                 setCertificationConsent={() => null}
                 displayCertificationConsent={true}
+                displayCheckboxConsent={true}
             />
         </ThemeProvider>
     );

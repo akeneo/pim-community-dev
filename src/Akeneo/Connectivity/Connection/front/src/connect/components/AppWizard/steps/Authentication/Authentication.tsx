@@ -52,7 +52,7 @@ type Props = {
     scopesConsentGiven: boolean;
     setScopesConsent: (newValue: boolean) => void;
     displayConsent: boolean;
-    displayCheckboxConsent: boolean
+    displayCheckboxConsent: boolean;
 };
 
 export const Authentication: FC<Props> = ({
@@ -94,7 +94,12 @@ export const Authentication: FC<Props> = ({
                 </>
             )}
             {displayConsent && (
-                <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} displayCheckbox={displayCheckboxConsent}/>
+                <ConsentCheckbox
+                    isChecked={scopesConsentGiven}
+                    onChange={setScopesConsent}
+                    appUrl={appUrl}
+                    displayCheckbox={displayCheckboxConsent}
+                />
             )}
         </InfoContainer>
     );

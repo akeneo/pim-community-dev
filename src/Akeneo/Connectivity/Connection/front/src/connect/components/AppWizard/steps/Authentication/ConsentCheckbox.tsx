@@ -54,9 +54,9 @@ export const ConsentCheckbox: FC<Props> = ({isChecked, onChange, appUrl, display
 
     return (
         <Container>
-            {displayCheckbox && (<Checkbox checked={isChecked} onChange={onChange} />)}
+            {displayCheckbox && <Checkbox checked={isChecked} onChange={onChange} />}
             <LabelContainer>
-                {displayCheckbox && (<CheckboxLabel dangerouslySetInnerHTML={{__html: label}} />)}
+                {displayCheckbox && <CheckboxLabel dangerouslySetInnerHTML={{__html: label}} />}
                 <CheckboxSubText dangerouslySetInnerHTML={{__html: subtext}} />
             </LabelContainer>
         </Container>

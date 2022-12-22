@@ -88,6 +88,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'oldScopeMessages' => null,
             'authenticationScopes' => ['email', 'profile'],
             'oldAuthenticationScopes' => null,
+            'displayCheckboxConsent' => true,
         ], \json_decode($response->getContent(), true));
     }
 
@@ -179,6 +180,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'oldScopeMessages' => null,
             'authenticationScopes' => [],
             'oldAuthenticationScopes' => null,
+            'displayCheckboxConsent' => true,
         ], \json_decode($response->getContent(), true));
     }
 
@@ -218,6 +220,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'oldScopeMessages' => null,
             'authenticationScopes' => [],
             'oldAuthenticationScopes' => null,
+            'displayCheckboxConsent' => true,
         ], \json_decode($response->getContent(), true));
     }
 
@@ -299,6 +302,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             ],
             'authenticationScopes' => ['email', 'profile'],
             'oldAuthenticationScopes' => null,
+            'displayCheckboxConsent' => false,
         ], \json_decode($response->getContent(), true));
     }
 
@@ -388,6 +392,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             ],
             'authenticationScopes' => ['profile'],
             'oldAuthenticationScopes' => ['email'],
+            'displayCheckboxConsent' => false,
         ], \json_decode($response->getContent(), true));
     }
 

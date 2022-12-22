@@ -63,7 +63,12 @@ export const Authorizations: FC<Props> = ({
             <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>
             <ScopeListContainer appName={appName} scopeMessages={scopeMessages} oldScopeMessages={oldScopeMessages} />
             <WrappedConsentCheckbox>
-                <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} displayCheckbox={displayCheckboxConsent}/>
+                <ConsentCheckbox
+                    isChecked={scopesConsentGiven}
+                    onChange={setScopesConsent}
+                    appUrl={appUrl}
+                    displayCheckbox={displayCheckboxConsent}
+                />
             </WrappedConsentCheckbox>
             {displayCertificationConsent && (
                 <WrappedCertificationConsentCheckbox>
