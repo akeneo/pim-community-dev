@@ -30,3 +30,8 @@ variable "private_zone" {
 variable "shared_zone_name" {
   type = string
 }
+
+variable "enable_migrations_workflow" {
+  type    = bool
+  default = false
+}

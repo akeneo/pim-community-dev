@@ -118,6 +118,7 @@ module "timmy_datadog" {
 }
 
 module "google_workflows" {
+  count         = var.enable_migrations_workflow ? 1 : 0
   source        = "../../modules/workflows"
   project_id    = var.project_id
   region        = element(var.regions, 0)
