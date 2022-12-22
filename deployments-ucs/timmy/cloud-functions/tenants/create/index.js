@@ -535,7 +535,7 @@ functions.http('createTenant', (req, res) => {
     }
 
     if (!body.mysql.disk_size) {
-      body.mysql.disk_size = process.env.MYSQL_DISK_SIZE;
+      body.mysql.disk_size = parseInt(process.env.MYSQL_DISK_SIZE);
     }
 
     if (!body.mysql.snapshot_ref) {
@@ -749,7 +749,7 @@ functions.http('createTenant', (req, res) => {
         MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
         PFID: tenantId,
         PIM_EDITION: pimEdition,
-        SRNT_GOOGLE_BUCKET_NAME: `pim-${tenantName}`
+        SRNT_GOOGLE_BUCKET_NAME: parameters.pim.storage.bucketName
       });
 
       const manifest = templateArgoCdManifest(parameters);

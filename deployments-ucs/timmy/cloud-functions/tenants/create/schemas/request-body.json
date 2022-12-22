@@ -28,7 +28,7 @@
       "properties": {
         "disk_size": {
           "description": "The MySQL disk size in GB",
-          "type": "string"
+          "type": "int"
         },
         "snapshot_ref": {
           "description": "The MySQL snapshot url to use",
