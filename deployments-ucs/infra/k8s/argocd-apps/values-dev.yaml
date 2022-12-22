@@ -1,4 +1,4 @@
 kube-janitor:
   enabled: true
 wiremock:
-  enabled: true
+  enabled: false
