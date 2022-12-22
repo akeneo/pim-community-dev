@@ -149,6 +149,7 @@ services:
             - ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.metric_value:
         class: '%pim_catalog.updater.setter.value.class%'
@@ -157,6 +158,7 @@ services:
             - ['pim_catalog_metric']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.boolean_value:
         class: '%pim_catalog.updater.setter.value.class%'
@@ -165,6 +167,7 @@ services:
             - ['pim_catalog_boolean']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.date_value:
         class: '%pim_catalog.updater.setter.value.class%'
@@ -173,6 +176,7 @@ services:
             - ['pim_catalog_date']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.number_value:
         class: '%pim_catalog.updater.setter.value.class%'
@@ -181,11 +185,13 @@ services:
             - ['pim_catalog_number']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.quantified_associations_field:
         class: '%pim_catalog.updater.setter.quantified_associations_field.class%'
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.association_field:
         class: '%pim_catalog.updater.setter.association_field.class%'
@@ -215,6 +221,7 @@ services:
             - ['groups']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.parent_field:
         class: '%pim_catalog.updater.setter.parent_field.class%'
@@ -231,6 +238,7 @@ services:
             - ['family']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.enabled_field:
         class: '%pim_catalog.updater.setter.enabled_field.class%'
@@ -238,6 +246,7 @@ services:
             - ['enabled']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.multiselect_value:
         class: '%pim_catalog.updater.setter.value.class%'
@@ -246,6 +255,7 @@ services:
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.price_collection_value:
         class: '%pim_catalog.updater.setter.value.class%'
@@ -254,6 +264,7 @@ services:
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.simpleselect_value:
         class: '%pim_catalog.updater.setter.value.class%'
@@ -262,6 +273,7 @@ services:
             - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     pim_catalog.updater.setter.media_value:
         class: '%pim_catalog.updater.setter.media_value.class%'
@@ -271,6 +283,7 @@ services:
             - ['pim_catalog_file', 'pim_catalog_image']
         tags:
             - { name: 'pim_catalog.updater.setter' }
+            - { name: 'pim_catalog.updater.setter.without_permission' }
 
     # Copiers
     pim_catalog.updater.copier.abstract:
