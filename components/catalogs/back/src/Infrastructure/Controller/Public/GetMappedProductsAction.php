@@ -60,7 +60,7 @@ final class GetMappedProductsAction
         } catch (CatalogDisabledException) {
             return new JsonResponse(
                 [
-                    'message' => \sprintf(
+                    'error' => \sprintf(
                         'No products to synchronize. The catalog %s has been disabled on the PIM side.' .
                         ' Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.',
                         $catalog->getId()
@@ -71,7 +71,7 @@ final class GetMappedProductsAction
         } catch (ProductSchemaMappingNotFoundException) {
             return new JsonResponse(
                 [
-                    'message' => 'Impossible to map products: no product mapping schema available for this catalog.',
+                    'error' => 'Impossible to map products: no product mapping schema available for this catalog.',
                 ],
                 Response::HTTP_OK,
             );

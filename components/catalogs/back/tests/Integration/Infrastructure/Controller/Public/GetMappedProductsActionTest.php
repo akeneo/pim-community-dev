@@ -248,7 +248,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals($expectedMessage, $payload['message']);
+        Assert::assertEquals($expectedMessage, $payload['error']);
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
@@ -315,7 +315,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals('Impossible to map products: no product mapping schema available for this catalog.', $payload['message']);
+        Assert::assertEquals('Impossible to map products: no product mapping schema available for this catalog.', $payload['error']);
     }
 
     public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsEnabledAndInvalid(): void
