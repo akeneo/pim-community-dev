@@ -2,6 +2,11 @@ variable "project_id" {
   description = "Project wich will hosts the service accounts"
   type        = string
 }
+variable "source_project_id" {
+  description = "Project wich hosts the legacy tenants. Used for migration from legacy to UCS."
+  type        = list(string)
+  default = []
+}
 
 variable "firestore_projects_id" {
   description = "List of Firestore projects id"

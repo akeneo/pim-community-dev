@@ -12,3 +12,4 @@ admins           = ["group:ucs@akeneo.com"]
 public_zone      = "demo.pim.akeneo.cloud"
 private_zone     = "pim-saas-demo.demo.local"
 shared_zone_name = "pim-akeneo-cloud"
+source_project_id = ["akecld-saas-demo"]
