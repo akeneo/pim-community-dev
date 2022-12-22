@@ -7,9 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Service;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
 use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
-use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\Domain\Catalog;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
 /**
@@ -22,31 +20,6 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  */
 class ProductMapper implements ProductMapperInterface
 {
-    public function __construct(
-        private readonly CatalogsMappingStorageInterface $catalogsMappingStorage,
-    ) {
-    }
-
-    public function getMappedProducts(array $products, Catalog $catalog): array
-    {
-        $productMappingSchema = $this->getProductMappingSchema($catalog->getId());
-        $productMapping = $catalog->getProductMapping();
-
-        return \array_map(
-            /** @param RawProduct $product */
-            fn (array $product): array => $this->mapProduct($product, $productMappingSchema, $productMapping),
-            $products
-        );
-    }
-
-    public function getMappedProduct(array $product, Catalog $catalog): array
-    {
-        $productMappingSchema = $this->getProductMappingSchema($catalog->getId());
-        $productMapping = $catalog->getProductMapping();
-
-        return $this->mapProduct($product, $productMappingSchema, $productMapping);
-    }
-
     /**
      * @param RawProduct $product
      * @param array{properties: array<array-key, mixed>} $productMappingSchema
@@ -54,7 +27,7 @@ class ProductMapper implements ProductMapperInterface
      *
      * @return MappedProduct
      */
-    private function mapProduct(
+    public function getMappedProduct(
         array $product,
         array $productMappingSchema,
         array $productMapping
@@ -80,37 +53,6 @@ class ProductMapper implements ProductMapperInterface
         }
 
         return $mappedProduct;
-    }
-
-    /**
-     * @return array{
-     *      properties: array<array-key, mixed>
-     * }
-     */
-    private function getProductMappingSchema(string $catalogId): array
-    {
-        $productMappingSchemaFile = \sprintf('%s_product.json', $catalogId);
-
-        if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
-            throw new ServiceApiProductSchemaMappingNotFoundException();
-        }
-
-        $productMappingSchemaRaw = \stream_get_contents(
-            $this->catalogsMappingStorage->read($productMappingSchemaFile)
-        );
-
-        if (false === $productMappingSchemaRaw) {
-            throw new \LogicException('Product mapping schema is unreadable.');
-        }
-
-        /**
-         * @var array{
-         *      properties: array<array-key, mixed>
-         * } $productMappingSchema
-         */
-        $productMappingSchema = \json_decode($productMappingSchemaRaw, true, 512, JSON_THROW_ON_ERROR);
-
-        return $productMappingSchema;
     }
 
     /**
