@@ -16,6 +16,7 @@ data "google_secret_manager_secret_version" "datadog_app_key" {
 module "iam" {
   source                = "../../modules/iam"
   project_id            = var.project_id
+  source_project_id     = var.source_project_id
   firestore_projects_id = [for loc, proj in var.firestore_locations : proj]
   secrets_admins        = var.admins
   cloudbuild_admins     = var.admins
@@ -118,10 +119,10 @@ module "timmy_datadog" {
 }
 
 module "google_workflows" {
-  count         = var.enable_migrations_workflow ? 1 : 0
-  source        = "../../modules/workflows"
-  project_id    = var.project_id
-  region        = element(var.regions, 0)
+  count      = var.enable_migrations_workflow ? 1 : 0
+  source     = "../../modules/workflows"
+  project_id = var.project_id
+  region     = element(var.regions, 0)
 }
 
 provider "datadog" {

@@ -1,7 +1,14 @@
 variable "project_id" {
   type = string
 }
-
+variable "project_name" {
+  type = string
+}
+variable "source_project_id" {
+  description = "Project wich hosts the legacy tenants. Used for migration from legacy to UCS."
+  type        = list(string)
+  default     = []
+}
 variable "regions" {
   type = list(string)
 }
