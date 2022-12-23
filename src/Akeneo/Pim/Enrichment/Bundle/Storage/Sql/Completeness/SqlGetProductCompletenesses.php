@@ -50,22 +50,25 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
 
         $sql = sprintf(
             <<<SQL
-SELECT 
-       BIN_TO_UUID(product.uuid) AS product_uuid,
+WITH product_completeness as (
+    SELECT DISTINCT BIN_TO_UUID(product_uuid) AS product_uuid, channel_id, locale_id, missing_count, required_count
+    FROM pim_catalog_completeness
+    WHERE product_uuid IN (:productUuids) 
+)
+SELECT product_uuid,
        JSON_ARRAYAGG(
            JSON_OBJECT(
                'channel_code', channel.code,
                'locale_code', locale.code,
-               'required_count', completeness.required_count,
-               'missing_count', completeness.missing_count
+               'required_count', product_completeness.required_count,
+               'missing_count', product_completeness.missing_count
            )
-       ) AS completenesses
-FROM pim_catalog_completeness completeness
-    INNER JOIN pim_catalog_product product ON product.uuid = completeness.product_uuid
-    INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
-    INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
-WHERE product.uuid IN (:productUuids) %s
-GROUP BY product.id
+       ) completenesses
+FROM product_completeness
+INNER JOIN pim_catalog_channel channel ON product_completeness.channel_id = channel.id
+INNER JOIN pim_catalog_locale locale ON product_completeness.locale_id = locale.id
+%s
+GROUP BY product_uuid;
 SQL,
             $andWhere
         );
