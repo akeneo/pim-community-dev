@@ -15,6 +15,7 @@ import {
   AssociateIcon,
   AttributeFileIcon,
   AttributeLinkIcon,
+  Badge,
   Breadcrumb,
   CategoryIcon,
   ComponentIcon,
@@ -27,7 +28,6 @@ import {
   MetricIcon,
   SectionTitle,
   ShopIcon,
-  Tag,
   TagIcon,
   useTheme,
   ValueIcon,
@@ -133,9 +133,8 @@ const SettingsIndex = () => {
                     label={
                       <>
                         {translate('pim_enrich.entity.category.plural_label')}
-                        &nbsp;
                         {featureFlags.isEnabled('enriched_category') && (
-                          <Tag tint="blue">{translate('akeneo.category.tag.new')}</Tag>
+                          <StyledBadge level="secondary">{translate('akeneo.category.tag.new')}</StyledBadge>
                         )}
                       </>
                     }
@@ -374,6 +373,10 @@ const LockIconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StyledBadge = styled(Badge)`
+  margin-left: 10px;
 `;
 
 export {SettingsIndex};
