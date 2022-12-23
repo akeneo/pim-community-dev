@@ -10,10 +10,6 @@ use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 /**
- * This class has a dummy implementation to check if everything works. It is unoptimized and can lead to big latency in
- * production. The feature where this query is used is not available in production.
- * @deprecated
- *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -27,22 +23,19 @@ final class SqlGetNextIdentifierQuery implements GetNextIdentifierQuery
     public function fromPrefix(Target $target, string $prefix): int
     {
         $sql = <<<SQL
-SELECT MAX(CAST(SUBSTRING(raw_data, :prefixLength) AS UNSIGNED))
-FROM pim_catalog_product_unique_data
-INNER JOIN pim_catalog_attribute ON pim_catalog_attribute.id = pim_catalog_product_unique_data.attribute_id
-WHERE pim_catalog_attribute.code=:code
-  AND pim_catalog_product_unique_data.raw_data LIKE :prefix;
+SELECT MAX(number) FROM pim_catalog_identifier_generator_prefixes p 
+INNER JOIN pim_catalog_attribute a ON a.id = p.attribute_id
+WHERE p.prefix = :prefix AND a.code = :code
 SQL;
+
         $result = $this->connection->executeQuery(
             $sql,
             [
                 'code' => $target->asString(),
-                'prefixLength' => \strlen($prefix) + 1,
-                'prefix' => $prefix . '%',
+                'prefix' => $prefix,
             ],
             [
                 'code' => \PDO::PARAM_STR,
-                'prefixLength' => \PDO::PARAM_INT,
                 'prefix' => \PDO::PARAM_STR,
             ]
         )->fetchOne();
