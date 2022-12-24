@@ -13,6 +13,7 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: ルート商品モデルデータを計算
     compute_data_related_to_family_sub_product_models: サブ商品モデルデータを計算
     compute_data_related_to_family_products: 商品データを計算
+    index_family_products_and_product_models: 製品ファミリーと商品モデルのインデックスを作成
     compute_family_variant_structure_changes: ファミリーバリエーションの変更を計算
     compute_completeness_of_products_family: 商品ファミリーの完全性を検算
     index_family_products: 製品ファミリーと商品モデルのインデックスを作成
