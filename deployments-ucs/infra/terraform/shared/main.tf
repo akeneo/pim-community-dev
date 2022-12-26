@@ -162,6 +162,51 @@ module "cloud_build_timmy_pim_saas_dev_europe_west1" {
   region                       = "europe-west1"
 }
 
+module "cloud_build_timmy_pim_saas_fci" {
+  source                       = "../modules/cloudbuild-timmy"
+  for_each                     = toset(local.regions)
+  project_id                   = local.project_id
+  trigger_name                 = "akecld-prd-pim-saas-fci-${each.key}-timmy"
+  cloudbuild_filename          = ".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml"
+  cloudbuild_included_files    = [".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml", "deployments-ucs/timmy/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
+  cloudbuild_service_account   = local.main_sa
+  target_project_id            = "akecld-prd-pim-saas-fci"
+  env                          = "fci"
+  region                       = each.key
+}
+
+module "cloud_build_timmy_pim_saas_fsan" {
+  source                       = "../modules/cloudbuild-timmy"
+  for_each                     = toset(local.regions)
+  project_id                   = local.project_id
+  trigger_name                 = "akecld-prd-pim-saas-fsan-${each.key}-timmy"
+  cloudbuild_filename          = ".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml"
+  cloudbuild_included_files    = [".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml", "deployments-ucs/timmy/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
+  cloudbuild_service_account   = local.main_sa
+  target_project_id            = "akecld-prd-pim-saas-fsan"
+  env                          = "fsan"
+  region                       = each.key
+}
+
+module "cloud_build_timmy_pim_saas_inci" {
+  source                       = "../modules/cloudbuild-timmy"
+  for_each                     = toset(local.regions)
+  project_id                   = local.project_id
+  trigger_name                 = "akecld-prd-pim-saas-inci-${each.key}-timmy"
+  cloudbuild_filename          = ".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml"
+  cloudbuild_included_files    = [".cloudbuild/timmy/akecld-prd-pim-saas-timmy.yaml", "deployments-ucs/timmy/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
+  cloudbuild_service_account   = local.main_sa
+  target_project_id            = "akecld-prd-pim-saas-inci"
+  env                          = "inci"
+  region                       = each.key
+}
+
 module "cloud_build_timmy_pim_saas_dev_europe_west3" {
   source                       = "../modules/cloudbuild-timmy"
   project_id                   = local.project_id
