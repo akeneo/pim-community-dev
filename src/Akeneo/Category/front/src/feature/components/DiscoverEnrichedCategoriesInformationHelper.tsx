@@ -31,7 +31,7 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
   return (
     <Information
       illustration={<ProductCategoryIllustration />}
-      title="Discover Enriched Categories"
+      title="Discover Enriched Categories Early Access"
       data-testid="discover-enriched-categories-information-helper"
     >
       <List>
