@@ -4,3 +4,8 @@ services:
             - '@database_connection'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelDeletionSubscriber:
+        arguments:
+            - '@akeneo.category.enriched.feature'
+            - '@database_connection'
