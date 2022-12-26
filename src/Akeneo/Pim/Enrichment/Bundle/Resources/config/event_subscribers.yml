@@ -147,6 +147,11 @@ services:
         arguments:
           - '@akeneo_batch.job.job_instance_repository'
           - '@akeneo_batch.saver.job_instance'
+          -
+            - '%akeneo.tailored_export.connector.xlsx_product.code%'
+            - '%akeneo.tailored_export.connector.csv_product.code%'
+            - '%akeneo.tailored_export.connector.xlsx_product_model.code%'
+            - '%akeneo.tailored_export.connector.csv_product_model.code%'
         tags:
           - { name: kernel.event_subscriber }
 

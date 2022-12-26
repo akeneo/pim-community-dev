@@ -34,10 +34,13 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
     /** @var array */
     private $computedRootCodes = [];
 
-    public function __construct(EntityRepository $repository, BulkSaverInterface $bulkSaver)
+    private $jobNameToExclude = [];
+
+    public function __construct(EntityRepository $repository, BulkSaverInterface $bulkSaver, array $jobNameToExclude)
     {
         $this->repository = $repository;
         $this->bulkSaver = $bulkSaver;
+        $this->jobNameToExclude = $jobNameToExclude;
     }
 
     public static function getSubscribedEvents(): array
@@ -166,7 +169,11 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
 
     protected function getJobInstances(): array
     {
-        return $this->repository->findAll();
+        $jobInstances = $this->repository->findAll();
+        return array_filter(
+            $jobInstances,
+            fn (JobInstance $jobInstance): bool => !in_array($jobInstance->getJobName(), $this->jobNameToExclude),
+        );
     }
 
     /**
