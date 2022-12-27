@@ -80,6 +80,7 @@ class NonExistentChannelLocaleValuesFilterSpec extends ObjectBehavior
         $channelsLocales->doesChannelExist('ecommerce')->willReturn(true);
         $channelsLocales->doesChannelExist('foo')->willReturn(false);
         $channelsLocales->isLocaleBoundToChannel('en_US', 'ecommerce')->willReturn(true);
+        $channelsLocales->getLocaleNameWithRightCase('en_US')->willReturn('en_US');
 
         $attributes = $this->getAttributes();
         $getAttributes->forCode('a_select')->willReturn($attributes['a_select']);
@@ -183,6 +184,9 @@ class NonExistentChannelLocaleValuesFilterSpec extends ObjectBehavior
         $channelsLocales->isLocaleActive('en_US')->willReturn(true);
         $channelsLocales->isLocaleActive('en_CA')->willReturn(false);
         $channelsLocales->isLocaleActive('fr_FR')->willReturn(true);
+        $channelsLocales->getLocaleNameWithRightCase('en_CA')->willReturn('en_CA');
+        $channelsLocales->getLocaleNameWithRightCase('fr_FR')->willReturn('fr_FR');
+        $channelsLocales->getLocaleNameWithRightCase('en_US')->willReturn('en_US');
 
         $attributes = $this->getAttributes();
         $getAttributes->forCode('a_select')->willReturn($attributes['a_select']);
@@ -225,6 +229,79 @@ class NonExistentChannelLocaleValuesFilterSpec extends ObjectBehavior
                             '<all_channels>' => [
                                 'en_US' => 'plop',
                                 'fr_FR' => 'hop',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    public function it_filters_values_with_case_insensitive_locales($channelsLocales, GetAttributes $getAttributes)
+    {
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType([
+            AttributeTypes::OPTION_SIMPLE_SELECT => [
+                'a_select' => [
+                    [
+                        'identifier' => 'product_A',
+                        'values' => [
+                            'ecommerce' => [
+                                'fr_fr' => 'option_A',
+                                'en_US' => 'option_A',
+                                'iu_cans_ca' => 'option_C',
+                            ],
+                        ],
+                    ],
+                ],
+                'another_select' => [
+                    [
+                        'identifier' => 'product_B',
+                        'values' => [
+                            'ecommerce' => [
+                                '<all_locales>' => 'option_B'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $channelsLocales->doesChannelExist('ecommerce')->willReturn(true);
+        $channelsLocales->isLocaleBoundToChannel('en_US', 'ecommerce')->willReturn(true);
+        $channelsLocales->isLocaleBoundToChannel('fr_fr', 'ecommerce')->willReturn(true);
+        $channelsLocales->isLocaleBoundToChannel('iu_cans_ca', 'ecommerce')->willReturn(true);
+        $channelsLocales->isLocaleActive('en_US')->willReturn(true);
+        $channelsLocales->isLocaleActive('fr_FR')->willReturn(true);
+        $channelsLocales->isLocaleActive('iu_Cans_CA')->willReturn(true);
+        $channelsLocales->getLocaleNameWithRightCase('fr_fr')->willReturn('fr_FR');
+        $channelsLocales->getLocaleNameWithRightCase('en_US')->willReturn('en_US');
+        $channelsLocales->getLocaleNameWithRightCase('iu_cans_ca')->willReturn('iu_Cans_CA');
+
+        $attributes = $this->getAttributes();
+        $getAttributes->forCode('a_select')->willReturn($attributes['a_select']);
+        $getAttributes->forCode('another_select')->willReturn($attributes['another_select']);
+
+        $filteredRawValues = $this->filter($ongoingFilteredRawValues)->filteredRawValuesCollectionIndexedByType();
+        $filteredRawValues->shouldBeLike([
+            AttributeTypes::OPTION_SIMPLE_SELECT => [
+                'a_select' => [
+                    [
+                        'identifier' => 'product_A',
+                        'values' => [
+                            'ecommerce' => [
+                                'en_US' => 'option_A',
+                                'fr_FR' => 'option_A',
+                                'iu_Cans_CA' => 'option_C',
+                            ],
+                        ]
+                    ],
+                ],
+                'another_select' => [
+                    [
+                        'identifier' => 'product_B',
+                        'values' => [
+                            'ecommerce' => [
+                                '<all_locales>' => 'option_B'
                             ],
                         ],
                     ],

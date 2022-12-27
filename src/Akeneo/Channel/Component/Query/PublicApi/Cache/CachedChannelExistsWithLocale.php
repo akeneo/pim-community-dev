@@ -31,8 +31,12 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
     public function doesChannelExist(string $channelCode): bool
     {
         $this->initializeCache();
+        $channelCodes = \array_map(
+            '\mb_strtolower',
+            \array_column($this->indexedChannelsWithLocales, 'channelCode')
+        );
 
-        return array_key_exists($channelCode, $this->indexedChannelsWithLocales);
+        return in_array(\mb_strtolower($channelCode), $channelCodes);
     }
 
     /**
@@ -41,14 +45,9 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
     public function isLocaleActive(string $localeCode): bool
     {
         $this->initializeCache();
+        $activeLocales = \array_merge(...\array_column($this->indexedChannelsWithLocales, 'localeCodes'));
 
-        foreach ($this->indexedChannelsWithLocales as $channelWithLocales) {
-            if (in_array($localeCode, $channelWithLocales['localeCodes'])) {
-                return true;
-            }
-        }
-
-        return false;
+        return \in_array(\mb_strtolower($localeCode), \array_map('mb_strtolower', $activeLocales));
     }
 
     /**
@@ -58,10 +57,13 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
     {
         $this->initializeCache();
 
-        return isset($this->indexedChannelsWithLocales[$channelCode])
-            ? in_array($localeCode, $this->indexedChannelsWithLocales[$channelCode]['localeCodes'])
-            : false
-            ;
+        foreach ($this->indexedChannelsWithLocales as $cache) {
+            if (\mb_strtolower($channelCode) === \mb_strtolower($cache['channelCode'])) {
+                return \in_array(\mb_strtolower($localeCode), \array_map('mb_strtolower', $cache['localeCodes']));
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -88,5 +90,15 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
                 $this->indexedChannelsWithLocales[$channelWithLocales['channelCode']] = $channelWithLocales;
             }
         }
+    }
+
+    public function getLocaleNameWithRightCase(string $locale): string | null
+    {
+        $this->initializeCache();
+
+        $activeLocales = \array_merge(...\array_column($this->indexedChannelsWithLocales, 'localeCodes'));
+
+        $array = array_filter($activeLocales, fn ($loc) => mb_strtolower($loc) === mb_strtolower($locale));
+        return reset($array) ?? null;
     }
 }

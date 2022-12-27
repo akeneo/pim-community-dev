@@ -43,7 +43,11 @@ class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
             if ($this->doesChannelExist($channel)) {
                 foreach ($localeValues as $locale => $value) {
                     if ($this->isLocaleActivatedForChannel($locale, $channel)) {
-                        $filteredProductValues[$channel][$locale] = $value;
+                        if ($locale === '<all_locales>') {
+                            $filteredProductValues[$channel][$locale] = $value;
+                        } else {
+                            $filteredProductValues[$channel][$this->channelsLocales->getLocaleNameWithRightCase($locale)] = $value;
+                        }
                     }
                 }
             }

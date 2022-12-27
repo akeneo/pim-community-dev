@@ -66,4 +66,11 @@ class CachedChannelExistsWithLocaleSpec extends ObjectBehavior
         $this->isLocaleBoundToChannel('en_US', 'unknown')->shouldReturn(false);
         $this->isLocaleBoundToChannel('unknown', 'unknown')->shouldReturn(false);
     }
+
+    function it_tests_get_locale_name_with_right_case()
+    {
+        $this->getLocaleNameWithRightCase('fr_fr')->shouldReturn('fr_FR');
+        $this->getLocaleNameWithRightCase('en_US')->shouldReturn('en_US');
+        $this->getLocaleNameWithRightCase('DE_DE')->shouldReturn('de_DE');
+    }
 }
