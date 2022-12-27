@@ -9,9 +9,9 @@ const Footer = styled.div`
 
 const List = styled.ul`
   margin: 10px 0;
-  padding-left: 8px;
+  padding: 0 0 0 20px;
   line-height: 18px;
-  list-style-position: inside;
+  list-style: none;
   color: ${getColor('grey', 140)};
 `;
 
