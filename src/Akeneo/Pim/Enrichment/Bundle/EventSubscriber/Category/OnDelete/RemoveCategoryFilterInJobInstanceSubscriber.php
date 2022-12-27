@@ -19,28 +19,25 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInterface
 {
-    private const DEFAULT_CATEGORY_FILTER_VALUE    = ['master'];
-    private const DEFAULT_CATEGORY_FILTER_OPERATOR = 'IN CHILDREN';
+    protected const DEFAULT_CATEGORY_FILTER_VALUE    = ['master'];
+    protected const DEFAULT_CATEGORY_FILTER_OPERATOR = 'IN CHILDREN';
 
     /** @var EntityRepository */
-    private $repository;
+    protected $repository;
 
     /** @var BulkSaverInterface */
-    private $bulkSaver;
+    protected $bulkSaver;
 
     /** @var array */
-    private $computedCodes = [];
+    protected $computedCodes = [];
 
     /** @var array */
-    private $computedRootCodes = [];
+    protected $computedRootCodes = [];
 
-    private $jobNameToExclude = [];
-
-    public function __construct(EntityRepository $repository, BulkSaverInterface $bulkSaver, array $jobNameToExclude)
+    public function __construct(EntityRepository $repository, BulkSaverInterface $bulkSaver)
     {
         $this->repository = $repository;
         $this->bulkSaver = $bulkSaver;
-        $this->jobNameToExclude = $jobNameToExclude;
     }
 
     public static function getSubscribedEvents(): array
@@ -151,10 +148,10 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
         return $this->getRootCategoryCode($parentCategory);
     }
 
-    private function removeCategoryCodesFilterInAllJobInstances(array $categoryCodes): int
+    protected function removeCategoryCodesFilterInAllJobInstances(array $categoryCodes): int
     {
         $jobsToUpdate = [];
-        foreach ($this->getJobInstances() as $jobInstance) {
+        foreach ($this->repository->findAll() as $jobInstance) {
             if ($this->updateCategoryCodesFilterInJobInstance($jobInstance, $categoryCodes)) {
                 $jobsToUpdate[] = $jobInstance;
             }
@@ -167,15 +164,6 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
         return count($jobsToUpdate);
     }
 
-    protected function getJobInstances(): array
-    {
-        $jobInstances = $this->repository->findAll();
-        return array_filter(
-            $jobInstances,
-            fn (JobInstance $jobInstance): bool => !in_array($jobInstance->getJobName(), $this->jobNameToExclude),
-        );
-    }
-
     /**
      * Returns true if $jobInstance object is updated, false otherwise.
      *
@@ -183,7 +171,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
      * @param array       $categoryCodes
      * @return bool
      */
-    private function updateCategoryCodesFilterInJobInstance(JobInstance $jobInstance, array $categoryCodes): bool
+    protected function updateCategoryCodesFilterInJobInstance(JobInstance $jobInstance, array $categoryCodes): bool
     {
         $rawParameters = $jobInstance->getRawParameters();
 
