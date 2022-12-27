@@ -86,7 +86,7 @@ export const PageHeader = ({
                         <div className='AknTitleContainer-buttonsContainer'>
                             {tag}
                             {userButtons}
-                            {buttons && (
+                            {buttons && buttons.length > 0 && (
                                 <ButtonCollection>
                                     {buttons.map((button, index) => (
                                         <Fragment key={index}>{button}</Fragment>

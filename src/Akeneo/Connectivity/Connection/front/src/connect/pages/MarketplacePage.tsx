@@ -1,4 +1,4 @@
-import React, {FC, useContext, useEffect, useState} from 'react';
+import React, {FC, ReactElement, useContext, useEffect, useState} from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../shared/translate';
 import {ApplyButton, PageContent, PageHeader} from '../../common';
@@ -78,19 +78,19 @@ export const MarketplacePage: FC = () => {
 
     const tag = isAppDeveloperModeEnabled ? <DeveloperModeTag /> : null;
 
-    const CreateTestAppButton = () => {
-        return isAppDeveloperModeEnabled ? (
-            <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
-                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app' />
-            </ApplyButton>
-        ) : null;
-    };
+    const buttons: ReactElement[] = [];
+
+    if (isAppDeveloperModeEnabled) {
+        buttons.push(<ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp} key={0}>
+            <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app' />
+        </ApplyButton>);
+    }
 
     return (
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[<CreateTestAppButton key={0} />]}
+                buttons={buttons}
                 userButtons={<UserButtons />}
                 tag={tag}
             >
