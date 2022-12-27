@@ -53,7 +53,15 @@ const IllustrationContainer = styled.div`
 
 const MainContainer = styled.div`
     overflow-x: hidden;
-`
+
+    /* Workaround about the impossibility to use
+     * overflow-y: visible in combination with
+     * overflow-x: hidden .
+     * link : https://stackoverflow.com/q/6421966
+     */
+    padding-bottom: 80px;
+    margin-bottom: -80px;
+`;
 
 export const PageHeader = ({
     children: title,
