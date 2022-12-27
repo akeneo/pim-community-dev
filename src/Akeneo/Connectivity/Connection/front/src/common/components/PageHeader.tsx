@@ -51,6 +51,10 @@ const IllustrationContainer = styled.div`
     }
 `;
 
+const MainContainer = styled.div`
+    overflow-x: hidden;
+`
+
 export const PageHeader = ({
     children: title,
     breadcrumb,
@@ -75,7 +79,7 @@ export const PageHeader = ({
                     {cloneElement(imageIllustration, {width: 142, height: 142})}
                 </IllustrationContainer>
             )}
-            <div className='AknTitleContainer-mainContainer'>
+            <MainContainer className='AknTitleContainer-mainContainer'>
                 <div>
                     <div className='AknTitleContainer-line'>
                         <AknTitleContainerBreadcrumbs>{breadcrumb}</AknTitleContainerBreadcrumbs>
@@ -97,7 +101,7 @@ export const PageHeader = ({
                     </div>
                     {contextContainer}
                 </div>
-            </div>
+            </MainContainer>
         </div>
     </Header>
 );
