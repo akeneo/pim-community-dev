@@ -45,7 +45,7 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
         <Item>{translate('akeneo.category.discover_enriched_categories_information.content.deactivate_template')}</Item>
       </List>
       <Footer>
-        <Link href={surveyLink} target="_blank" rel="noopener">
+        <Link href={surveyLink} target="_blank">
           {translate('akeneo.category.discover_enriched_categories_information.survey_link_label')}
         </Link>
       </Footer>
