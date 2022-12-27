@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {useFeatureFlags} from '@akeneo-pim-community/shared';
+import {useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
 import {getColor, Information, Link, ProductCategoryIllustration} from 'akeneo-design-system';
 import styled from 'styled-components';
 
@@ -20,9 +20,12 @@ const Item = styled.li`
     content: '\\2022\\00A0\\00A0';
   }
 `;
+const surveyLink =
+  'https://docs.google.com/forms/d/e/1FAIpQLSdrPJk35QxrtEc0gGwE39KJ42cMlEdH3TCygRfYTiG-zYx72A/viewform?usp=sf_link';
 
 const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
   const featureFlags = useFeatureFlags();
+  const translate = useTranslate();
 
   if (!featureFlags.isEnabled('enriched_category')) {
     return <></>;
@@ -31,20 +34,19 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
   return (
     <Information
       illustration={<ProductCategoryIllustration />}
-      title="Discover Enriched Categories Early Access"
+      title={translate('akeneo.category.discover_enriched_categories_information.title')}
       data-testid="discover-enriched-categories-information-helper"
     >
       <List>
-        <Item>Activate category enrichment through pre-configured templates</Item>
-        <Item>Enrich Text, Text Area and Image attributes in categories</Item>
-        <Item>Enrichment deactivation and custom template will be coming shortly</Item>
+        <Item>{translate('akeneo.category.discover_enriched_categories_information.content.activate_template')}</Item>
+        <Item>
+          {translate('akeneo.category.discover_enriched_categories_information.content.enrich_attribute_values')}
+        </Item>
+        <Item>{translate('akeneo.category.discover_enriched_categories_information.content.deactivate_template')}</Item>
       </List>
       <Footer>
-        <Link
-          target="_blank"
-          href="https://docs.google.com/forms/d/e/1FAIpQLSdrPJk35QxrtEc0gGwE39KJ42cMlEdH3TCygRfYTiG-zYx72A/viewform?usp=sf_link"
-        >
-          Tell us what you think
+        <Link href={surveyLink} target="_blank" rel="noopener">
+          {translate('akeneo.category.discover_enriched_categories_information.survey_link_label')}
         </Link>
       </Footer>
     </Information>
