@@ -81,19 +81,16 @@ export const MarketplacePage: FC = () => {
     const buttons: ReactElement[] = [];
 
     if (isAppDeveloperModeEnabled) {
-        buttons.push(<ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp} key={0}>
-            <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app' />
-        </ApplyButton>);
+        buttons.push(
+            <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp} key={0}>
+                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app' />
+            </ApplyButton>
+        );
     }
 
     return (
         <>
-            <PageHeader
-                breadcrumb={breadcrumb}
-                buttons={buttons}
-                userButtons={<UserButtons />}
-                tag={tag}
-            >
+            <PageHeader breadcrumb={breadcrumb} buttons={buttons} userButtons={<UserButtons />} tag={tag}>
                 {translate('pim_menu.item.marketplace')}
             </PageHeader>
 
