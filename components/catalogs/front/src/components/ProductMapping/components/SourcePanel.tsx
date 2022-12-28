@@ -1,4 +1,4 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC, ReactElement, useCallback} from 'react';
 import {SectionTitle, Tag} from 'akeneo-design-system';
 import {SourcePlaceholder} from './SourcePlaceholder';
 import {SelectAttributeDropdown} from './SelectAttributeDropdown';
@@ -34,11 +34,23 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
         [onChange]
     );
 
-    const shouldDisplayChannel = source !== null && attribute?.scopable;
-    const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
-    const shouldDisplayChannelLocale =
-        source !== null && source.scope !== null && attribute?.localizable && attribute?.scopable;
-
+    const sourceParameters: ReactElement[] = [];
+    if (null !== source) {
+        if (attribute?.scopable) {
+            sourceParameters.push(<SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} />);
+        }
+        if (attribute?.localizable) {
+            if (!attribute?.scopable) {
+                sourceParameters.push(
+                    <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                );
+            } else if (null !== source.scope) {
+                sourceParameters.push(
+                    <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                );
+            }
+        }
+    }
     return (
         <>
             {null === target && <SourcePlaceholder />}
@@ -65,15 +77,7 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                             {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
                         </SectionTitle.Title>
                     </SectionTitle>
-                    {shouldDisplayChannel && (
-                        <SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} />
-                    )}
-                    {shouldDisplayLocale && (
-                        <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
-                    )}
-                    {shouldDisplayChannelLocale && (
-                        <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
-                    )}
+                    {sourceParameters}
                 </>
             )}
         </>
