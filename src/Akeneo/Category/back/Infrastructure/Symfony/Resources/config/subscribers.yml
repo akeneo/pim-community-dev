@@ -7,5 +7,5 @@ services:
 
     Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelDeletionSubscriber:
         arguments:
+            - '@Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\CleanCategoryDataLinkedToChannel'
             - '@akeneo.category.enriched.feature'
-            - '@database_connection'
