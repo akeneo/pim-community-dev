@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
+use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\CleanCategoryDataLinkedToChannel;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-final class CleanCategoryDataAfterChannelDeletionSubscriber implements EventSubscriberInterface
+class CleanCategoryDataAfterChannelDeletionSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private FeatureFlag $enrichedCategoryFeature,
-        private Connection $dbalConnection
+        private readonly CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
+        private readonly FeatureFlag $enrichedCategoryFeature,
     )
     {
     }
@@ -34,11 +34,13 @@ final class CleanCategoryDataAfterChannelDeletionSubscriber implements EventSubs
     private function cleanCategoryData(GenericEvent $event): void
     {
         $channel = $event->getSubject();
+        $event->setArguments();
 
         if (!$channel instanceof ChannelInterface || !$this->enrichedCategoryFeature->isEnabled()) {
             return;
         }
 
-
+        $deletedChannelCode = $channel->getCode();
+        ($this->cleanCategoryDataLinkedToChannel)($deletedChannelCode);
     }
 }
