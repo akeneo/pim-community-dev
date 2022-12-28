@@ -11,6 +11,7 @@ import {SourceErrors} from '../models/SourceErrors';
 import {SelectLocaleDropdown} from './SelectLocaleDropdown';
 import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {SourceUuidPlaceholder} from './SourceUuidPlaceholder';
+import styled from 'styled-components';
 
 type Props = {
     target: string | null;
@@ -49,6 +50,14 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                     <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
                 );
             }
+        }
+        if (null !== source.source && sourceParameters.length === 0) {
+            const P = styled.p`
+                font-style: italic;
+            `;
+            sourceParameters.push(
+                <P>{translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}</P>
+            );
         }
     }
     return (
