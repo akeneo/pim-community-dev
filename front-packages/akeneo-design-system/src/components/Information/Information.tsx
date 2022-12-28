@@ -14,10 +14,10 @@ const Container = styled.div`
 `;
 
 const IconContainer = styled.span`
-  height: auto;
+  min-height: 80px;
   display: flex;
   align-items: center;
-  padding: 0px 20px;
+  padding: 10px 20px;
   margin: 10px 20px 10px 0px;
   border-right: 1px solid ${getColor('grey80')};
 `;
