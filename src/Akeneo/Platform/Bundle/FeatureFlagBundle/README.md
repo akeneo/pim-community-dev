@@ -187,6 +187,18 @@ config:
           feature: myCoolFeature
 ``` 
 
+You can easily show or hide a part of HTML code in a Twig template
+
+```html
+{# ... #}
+
+{% if feature_is_enabled('myCoolFeature') %}
+    <div>Show my cool feature</div>
+{% endif %}
+
+{# ... #}
+```
+
 ### Short living feature flags
 
 **Flags that will live from a few days to a few weeks.**
