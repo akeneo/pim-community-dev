@@ -41,16 +41,23 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
     const sourceParameters: ReactElement[] = [];
     if (null !== source) {
         if (attribute?.scopable) {
-            sourceParameters.push(<SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} />);
+            sourceParameters.push(
+                <SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} key={'scope'} />
+            );
         }
         if (attribute?.localizable) {
             if (!attribute?.scopable) {
                 sourceParameters.push(
-                    <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                    <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} key={'locale'} />
                 );
             } else if (null !== source.scope) {
                 sourceParameters.push(
-                    <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                    <SelectChannelLocaleDropdown
+                        source={source}
+                        onChange={onChange}
+                        error={errors?.locale}
+                        key={'locale'}
+                    />
                 );
             }
         }
