@@ -55,6 +55,18 @@ test('it displays a message when the selected source has no parameters', () => {
                 localizable: false,
             },
         },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            json: [
+                {
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+            ],
+        },
     ]);
     const source: Source = {
         source: 'name',
