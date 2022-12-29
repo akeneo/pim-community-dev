@@ -56,7 +56,7 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
         }
         if (null !== source.source && sourceParameters.length === 0) {
             sourceParameters.push(
-                <Information>
+                <Information key={'no_parameters'}>
                     {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
                 </Information>
             );
