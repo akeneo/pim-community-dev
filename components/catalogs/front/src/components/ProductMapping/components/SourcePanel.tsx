@@ -21,6 +21,9 @@ type Props = {
     errors: SourceErrors | null;
 };
 
+const Information = styled.p`
+    font-style: italic;
+`;
 export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, errors}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute('uuid' !== target && source?.source ? source.source : '');
@@ -52,11 +55,10 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
             }
         }
         if (null !== source.source && sourceParameters.length === 0) {
-            const P = styled.p`
-                font-style: italic;
-            `;
             sourceParameters.push(
-                <P>{translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}</P>
+                <Information>
+                    {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
+                </Information>
             );
         }
     }
