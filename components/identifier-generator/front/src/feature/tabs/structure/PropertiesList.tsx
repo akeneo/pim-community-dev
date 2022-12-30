@@ -6,6 +6,7 @@ import {PROPERTY_NAMES} from '../../models';
 import {AutoNumberLine, FreeTextLine} from './line';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {DeletePropertyModal} from '../../pages';
+import {useIdentifierGeneratorAclContext} from '../../context';
 
 type PropertiesListProps = {
   structure: StructureWithIdentifiers;
@@ -17,6 +18,7 @@ type PropertiesListProps = {
 
 const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, selectedId, onReorder, onDelete}) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const [propertyIdToDelete, setPropertyIdToDelete] = useState<PropertyId | undefined>();
 
   const openModal = (propertyId: PropertyId) => () => {
@@ -45,9 +47,11 @@ const PropertiesList: React.FC<PropertiesListProps> = ({structure, onSelect, sel
                 {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberLine property={property} />}
               </Styled.TitleCell>
               <Table.ActionCell>
-                <Button onClick={openModal(property.id)} ghost level="danger">
-                  {translate('pim_common.delete')}
-                </Button>
+                {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+                  <Button onClick={openModal(property.id)} ghost level="danger">
+                    {translate('pim_common.delete')}
+                  </Button>
+                )}
               </Table.ActionCell>
             </Table.Row>
           ))}

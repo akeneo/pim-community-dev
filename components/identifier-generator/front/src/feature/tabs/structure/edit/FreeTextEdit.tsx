@@ -3,9 +3,11 @@ import {FreeText} from '../../../models';
 import {Field, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
+import {useIdentifierGeneratorAclContext} from '../../../context';
 
 const FreeTextEdit: PropertyEditFieldsProps<FreeText> = ({selectedProperty, onChange}) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const onTextChange = useCallback(
     (text: string) => {
       onChange({...selectedProperty, string: text});
@@ -18,7 +20,13 @@ const FreeTextEdit: PropertyEditFieldsProps<FreeText> = ({selectedProperty, onCh
 
   return (
     <Field label={translate('pim_identifier_generator.structure.settings.free_text.string_label')}>
-      <TextInput value={selectedProperty.string} onChange={onTextChange} maxLength={100} ref={stringInputRef} />
+      <TextInput
+        value={selectedProperty.string}
+        onChange={onTextChange}
+        maxLength={100}
+        ref={stringInputRef}
+        readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+      />
     </Field>
   );
 };

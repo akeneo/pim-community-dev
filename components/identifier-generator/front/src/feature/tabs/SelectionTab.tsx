@@ -6,6 +6,7 @@ import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
 import {ListSkeleton} from '../components';
 import {AddConditionButton, EnabledLine} from './conditions';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type SelectionTabProps = {
   conditions: Conditions;
@@ -18,6 +19,7 @@ type ConditionsWithIdentifier = (Condition & {id: string})[];
 const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange}) => {
   const translate = useTranslate();
   const {data: identifiers, isLoading} = useIdentifierAttributes();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
     conditions.map(condition => ({
       id: uuid(),
@@ -54,7 +56,9 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_identifier_generator.tabs.product_selection')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <AddConditionButton onAddCondition={onAddCondition} />
+        {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+          <AddConditionButton onAddCondition={onAddCondition} />
+        )}
       </SectionTitle>
       <Table>
         <Table.Body>
