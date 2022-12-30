@@ -7,7 +7,7 @@ import {Violation} from '../validators';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
-import {useIdentifierGeneratorContext} from '../context';
+import {useIdentifierGeneratorAclContext, useIdentifierGeneratorContext} from '../context';
 import styled from 'styled-components';
 import {useStructureTabs} from '../hooks';
 
@@ -40,6 +40,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const changeTab = useCallback(tabName => () => setCurrentTab(tabName), [setCurrentTab]);
   const onSave = useCallback(() => mainButtonCallback(generator), [generator, mainButtonCallback]);
   const identifierGeneratorContext = useIdentifierGeneratorContext();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
@@ -104,18 +105,20 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   return (
     <>
       <Header>
-        <PageHeader.Actions>
-          {!isNew && (
-            <SecondaryActions>
-              <SecondaryActions.Item onClick={handleDeleteModal}>
-                {translate('pim_common.delete')}
-              </SecondaryActions.Item>
-            </SecondaryActions>
-          )}
-          <Button onClick={onSave} disabled={isMainButtonDisabled}>
-            {translate('pim_common.save')}
-          </Button>
-        </PageHeader.Actions>
+        {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+          <PageHeader.Actions>
+            {!isNew && (
+              <SecondaryActions>
+                <SecondaryActions.Item onClick={handleDeleteModal}>
+                  {translate('pim_common.delete')}
+                </SecondaryActions.Item>
+              </SecondaryActions>
+            )}
+            <Button onClick={onSave} disabled={isMainButtonDisabled}>
+              {translate('pim_common.save')}
+            </Button>
+          </PageHeader.Actions>
+        )}
       </Header>
       <Container>
         <TabBar moreButtonTitle={translate('pim_common.more')}>
