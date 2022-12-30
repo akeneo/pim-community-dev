@@ -17,6 +17,11 @@ class TemplateCode
         Assert::stringNotEmpty($code);
     }
 
+    public static function fromString(string $code): self
+    {
+        return new self($code);
+    }
+
     public function __toString(): string
     {
         return $this->code;
