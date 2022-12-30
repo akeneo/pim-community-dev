@@ -2,13 +2,14 @@ import React, {FC, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {
   AkeneoThemedProps,
+  Badge,
   LockIcon,
   SubNavigationItem,
   SubNavigationPanel,
   Tag,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useRouter, useTranslate} from '../../hooks';
+import {useFeatureFlags, useRouter, useTranslate} from '../../hooks';
 import {SubNavigationDropdown} from './SubNavigationDropdown';
 import {useTheme} from 'akeneo-design-system';
 
@@ -60,6 +61,7 @@ const SubNavigation: FC<Props> = ({
   const [isSubNavigationOpened, openSubNavigation, closeSubNavigation] = useBooleanState(
     subNavigationState === null || subNavigationState === '1'
   );
+  const featureFlags = useFeatureFlags();
 
   useEffect(() => {
     sessionStorage.setItem(`collapsedColumn_${stateCode}`, isSubNavigationOpened ? '1' : '0');
@@ -110,6 +112,9 @@ const SubNavigation: FC<Props> = ({
                       <Tag tint="blue">
                         <StyledLockIcon size={16} color={theme.color.blue100} />
                       </Tag>
+                    )}
+                    {subEntry.title === 'Categories' && featureFlags.isEnabled('enriched_category') && (
+                      <StyledBadge level="secondary">{translate('akeneo.category.tag.new')}</StyledBadge>
                     )}
                     {subEntry.new && <Tag tint="green">New</Tag>}
                   </StyledSubNavigationItem>
@@ -172,6 +177,11 @@ const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean; ha
 
 const StyledLockIcon = styled(LockIcon)`
   margin: 3px;
+`;
+
+const StyledBadge = styled(Badge)`
+  margin-left: 10px;
+  vertical-align: text-bottom;
 `;
 
 export {SubNavigation};
