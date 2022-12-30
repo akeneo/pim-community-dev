@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\back\tests\Integration\Infrastructure\Migration;
+namespace Akeneo\Category\tests\Integration\Infrastructure\Migration;
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Infrastructure\Migration\V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration;
