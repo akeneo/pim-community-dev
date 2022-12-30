@@ -7,6 +7,7 @@ import {Styled} from '../components/Styled';
 import {TabValidationErrors, TranslationWithLink} from '../components';
 import styled from 'styled-components';
 import {Violation} from '../validators';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type StructureTabProps = {
   initialStructure: Structure;
@@ -35,6 +36,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
   validationErrors,
 }) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const [selectedPropertyId, setSelectedPropertyId] = useState<PropertyId | undefined>();
   const [structure, setStructure] = useState<StructureWithIdentifiers>(
     initialStructure.map(property => ({
@@ -107,7 +109,9 @@ const StructureTab: React.FC<StructureTabProps> = ({
           <SectionTitle>
             <SectionTitle.Title>{translate('pim_identifier_generator.structure.title')}</SectionTitle.Title>
             <SectionTitle.Spacer />
-            {!isLimitReached && <AddPropertyButton onAddProperty={onAddProperty} />}
+            {!isLimitReached && identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+              <AddPropertyButton onAddProperty={onAddProperty} />
+            )}
           </SectionTitle>
           {structure.length > 0 && (
             <>
