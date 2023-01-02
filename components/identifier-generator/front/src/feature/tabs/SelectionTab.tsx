@@ -51,9 +51,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     return condition;
   };
 
-  const removeIdentifiers: (conditionsWithId: ConditionsWithIdentifier) => Conditions = conditionsWithId => {
-    return conditionsWithId.map(conditionWithId => removeIdentifier(conditionWithId));
-  };
+  const removeIdentifiers = conditionsWithId => conditionsWithId.map(removeIdentifier);
 
   const handleChange = (conditionWithId: Condition & {id: ConditionIdentifier}) => {
     const index = conditionsWithId.findIndex(condition => condition.id === conditionWithId.id);
@@ -114,12 +112,12 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
                   </Styled.InputContainer>
                 </Table.Cell>
               </Table.Row>
-              {conditionsWithId.map(conditionWithId => (
+              {conditionsWithId.map(({id, ...condition}) => (
                 <ConditionLine
-                  condition={removeIdentifier(conditionWithId)}
-                  onChange={condition => handleChange({...condition, id: conditionWithId.id})}
-                  onDelete={onDelete(conditionWithId.id)}
-                  key={conditionWithId.id}
+                  condition={condition}
+                  onChange={condition => handleChange({...condition, id})}
+                  onDelete={onDelete(id)}
+                  key={id}
                 />
               ))}
             </>
