@@ -7,6 +7,7 @@ enum Tabs {
     PRODUCT_SELECTION = '#catalog-product-selection',
     PRODUCT_VALUE_FILTERS = '#catalog-product-value-filters',
     PRODUCT_MAPPING = '#catalog-product-mapping',
+    PREVIEW = '#catalog-preview',
 }
 
 type Props = {
@@ -51,6 +52,12 @@ const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid, id}
                         {invalid[Tabs.PRODUCT_VALUE_FILTERS] && <Pill level='danger' />}
                     </StyledTabBar.Tab>
                 )}
+                <StyledTabBar.Tab
+                    isActive={isCurrent(Tabs.PREVIEW)}
+                    onClick={() => switchTo(Tabs.PREVIEW)}
+                >
+                    {translate('Preview')}
+                </StyledTabBar.Tab>
             </StyledTabBar>
         </>
     );

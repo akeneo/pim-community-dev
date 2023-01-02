@@ -16,6 +16,7 @@ import {ProductMapping as ProductMappingType} from '../../ProductMapping/models/
 import {useProductMappingSchema} from '../../../hooks/useProductMappingSchema';
 import {mapProductMappingSourceErrors} from '../utils/mapProductMappingSourceErrors';
 import {ProductMappingErrors} from '../../ProductMapping/models/ProductMappingErrors';
+import {CatalogPreview} from '../../CatalogPreview';
 
 type Props = {
     id: string;
@@ -99,6 +100,14 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
                     productMapping={values.product_mapping}
                     onChange={handleMappingChange}
                     errors={mapProductMappingSourceErrors(errors, Object.keys(values.product_mapping))}
+                />
+            )}
+            {isCurrent(Tabs.PREVIEW) && (
+                <CatalogPreview
+                    catalogId={id}
+                    productSelectionCriteria={values.product_selection_criteria}
+                    productValueFilters={values.product_value_filters}
+                    productMapping={values.product_mapping}
                 />
             )}
         </>

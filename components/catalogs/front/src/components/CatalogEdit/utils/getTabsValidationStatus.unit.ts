@@ -11,6 +11,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
             [Tabs.PRODUCT_SELECTION]: false,
             [Tabs.PRODUCT_VALUE_FILTERS]: false,
             [Tabs.PRODUCT_MAPPING]: false,
+            [Tabs.PREVIEW]: false,
         },
     },
     {
@@ -24,6 +25,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
             [Tabs.PRODUCT_SELECTION]: false,
             [Tabs.PRODUCT_VALUE_FILTERS]: false,
             [Tabs.PRODUCT_MAPPING]: false,
+            [Tabs.PREVIEW]: false,
         },
     },
     {
@@ -37,6 +39,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
             [Tabs.PRODUCT_SELECTION]: true,
             [Tabs.PRODUCT_VALUE_FILTERS]: false,
             [Tabs.PRODUCT_MAPPING]: false,
+            [Tabs.PREVIEW]: true,
         },
     },
     {
@@ -50,6 +53,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
             [Tabs.PRODUCT_SELECTION]: false,
             [Tabs.PRODUCT_VALUE_FILTERS]: true,
             [Tabs.PRODUCT_MAPPING]: false,
+            [Tabs.PREVIEW]: false,
         },
     },
     {
@@ -63,6 +67,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
             [Tabs.PRODUCT_SELECTION]: false,
             [Tabs.PRODUCT_VALUE_FILTERS]: false,
             [Tabs.PRODUCT_MAPPING]: true,
+            [Tabs.PREVIEW]: false,
         },
     },
 ];

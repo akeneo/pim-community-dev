@@ -21,5 +21,6 @@ export const getTabsValidationStatus = (errors: CatalogFormErrors): Status => {
         [Tabs.PRODUCT_SELECTION]: productSelectionCriteriaHasAnError(errors),
         [Tabs.PRODUCT_VALUE_FILTERS]: productValueFiltersHasAnError(errors),
         [Tabs.PRODUCT_MAPPING]: productMappingHasAnError(errors),
+        [Tabs.PREVIEW]: false,
     };
 };
