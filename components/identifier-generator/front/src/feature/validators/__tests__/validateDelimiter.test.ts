@@ -17,4 +17,34 @@ describe('validateDelimiter', () => {
       },
     ]);
   });
+
+  it('should add violation if delimiter contains comma, semicolon or leading/trailing space', () => {
+    expect(validateDelimiter(' /', 'delimiter')).toEqual([
+      {
+        path: 'delimiter',
+        message: 'The property must not contain a comma, a semicolon or any space',
+      },
+    ]);
+
+    expect(validateDelimiter('/ ', 'delimiter')).toEqual([
+      {
+        path: 'delimiter',
+        message: 'The property must not contain a comma, a semicolon or any space',
+      },
+    ]);
+
+    expect(validateDelimiter(',', 'delimiter')).toEqual([
+      {
+        path: 'delimiter',
+        message: 'The property must not contain a comma, a semicolon or any space',
+      },
+    ]);
+
+    expect(validateDelimiter(';', 'delimiter')).toEqual([
+      {
+        path: 'delimiter',
+        message: 'The property must not contain a comma, a semicolon or any space',
+      },
+    ]);
+  });
 });
