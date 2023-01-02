@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useCallback} from 'react';
+import React, {FC, useCallback} from 'react';
 import {SectionTitle, Tag} from 'akeneo-design-system';
 import {SourcePlaceholder} from './SourcePlaceholder';
 import {SelectAttributeDropdown} from './SelectAttributeDropdown';
@@ -24,6 +24,7 @@ type Props = {
 const Information = styled.p`
     font-style: italic;
 `;
+
 export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, errors}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute('uuid' !== target && source?.source ? source.source : '');
@@ -38,37 +39,16 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
         [onChange]
     );
 
-    const sourceParameters: ReactElement[] = [];
-    if (null !== source) {
-        if (attribute?.scopable) {
-            sourceParameters.push(
-                <SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} key={'scope'} />
-            );
-        }
-        if (attribute?.localizable) {
-            if (!attribute?.scopable) {
-                sourceParameters.push(
-                    <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} key={'locale'} />
-                );
-            } else if (null !== source.scope) {
-                sourceParameters.push(
-                    <SelectChannelLocaleDropdown
-                        source={source}
-                        onChange={onChange}
-                        error={errors?.locale}
-                        key={'locale'}
-                    />
-                );
-            }
-        }
-        if (null !== source.source && sourceParameters.length === 0) {
-            sourceParameters.push(
-                <Information key={'no_parameters'}>
-                    {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
-                </Information>
-            );
-        }
-    }
+    const shouldDisplayChannel = source !== null && attribute?.scopable;
+    const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
+    const shouldDisplayChannelLocale =
+        source !== null && source.scope !== null && attribute?.localizable && attribute?.scopable;
+    const shouldDisplayNoParametersMessage = !(
+        shouldDisplayLocale ||
+        shouldDisplayChannel ||
+        shouldDisplayChannelLocale
+    );
+
     return (
         <>
             {null === target && <SourcePlaceholder />}
@@ -95,7 +75,20 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                             {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
                         </SectionTitle.Title>
                     </SectionTitle>
-                    {sourceParameters}
+                    {shouldDisplayChannel && (
+                        <SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} />
+                    )}
+                    {shouldDisplayLocale && (
+                        <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                    )}
+                    {shouldDisplayChannelLocale && (
+                        <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                    )}
+                    {shouldDisplayNoParametersMessage && (
+                        <Information key={'no_parameters'}>
+                            {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
+                        </Information>
+                    )}
                 </>
             )}
         </>
