@@ -1,6 +1,6 @@
 import React from 'react';
 import {FamilyCode, FamilyCondition, FamilyOperators, Operator} from '../../models';
-import {Table} from 'akeneo-design-system';
+import {Button, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {FamiliesSelector, OperatorSelector} from '../../components';
@@ -8,9 +8,10 @@ import {FamiliesSelector, OperatorSelector} from '../../components';
 type FamilyLineProps = {
   condition: FamilyCondition & {id: string};
   onChange: (condition: FamilyCondition & {id: string}) => void;
+  onDelete: () => void;
 };
 
-const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange}) => {
+const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
 
   const handleOperatorChange = (operator: Operator) => {
@@ -43,6 +44,11 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange}) => {
           <FamiliesSelector familyCodes={condition.value} onChange={handleFamilyCodesChange} />
         )}
       </Table.Cell>
+      <Table.ActionCell>
+        <Button onClick={onDelete} ghost level="danger">
+          {translate('pim_common.delete')}
+        </Button>
+      </Table.ActionCell>
     </Table.Row>
   );
 };
