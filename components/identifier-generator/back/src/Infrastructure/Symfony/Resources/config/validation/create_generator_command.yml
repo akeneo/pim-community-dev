@@ -81,6 +81,9 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                 allowNull: true
             - Length:
                 max: 100
+            - Regex:
+                  pattern: /^[^ ,;]*$/
+                  message: delimiter must not contain a comma, a semicolon or any space
         textTransformation:
             - Choice:
                   choices: ['no', 'uppercase', 'lowercase']

@@ -298,6 +298,18 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with delimiter 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat consequat sit amet ac ex. '
     Then I should get an error on update with message 'delimiter: This value is too long. It should have 100 characters or less.'
 
+  Scenario: Cannot update an identifier generator with delimiter containing spaces
+    When I try to update an identifier generator with delimiter ' / '
+    Then I should get an error on update with message 'delimiter: delimiter must not contain a comma, a semicolon or any space'
+
+  Scenario: Cannot update an identifier generator with delimiter containing comma
+    When I try to update an identifier generator with delimiter ','
+    Then I should get an error on update with message 'delimiter: delimiter must not contain a comma, a semicolon or any space'
+
+  Scenario: Cannot update an identifier generator with delimiter containing semicolon
+    When I try to update an identifier generator with delimiter ';'
+    Then I should get an error on update with message 'delimiter: delimiter must not contain a comma, a semicolon or any space'
+
   # Text transformation
   Scenario: Cannot update an identifier generator with unknown text transformation
     When I try to update an identifier generator with text transformation unknown
