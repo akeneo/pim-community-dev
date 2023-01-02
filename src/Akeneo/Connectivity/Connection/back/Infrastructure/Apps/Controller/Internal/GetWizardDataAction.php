@@ -87,9 +87,6 @@ final class GetWizardDataAction
         $oldAuthorizationScopeMessages = $isFirstConnection ? null : $this->scopeMapperRegistry->getMessages($originalScopes);
         $newAuthorizationScopeMessages = $this->scopeMapperRegistry->getMessages($newScopes);
 
-//        dump($oldAuthorizationScopeMessages);
-//        dd($newAuthorizationScopeMessages);
-
         return [$oldAuthorizationScopeMessages, $newAuthorizationScopeMessages, $isFirstConnection];
     }
 
