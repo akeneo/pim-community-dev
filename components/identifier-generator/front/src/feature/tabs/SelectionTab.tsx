@@ -19,17 +19,17 @@ type ConditionWithIdentifier = Condition & {id: ConditionIdentifier};
 type ConditionsWithIdentifier = ConditionWithIdentifier[];
 
 type ConditionLineProps = {
-  conditionWithId: ConditionWithIdentifier;
-  handleChange: (conditionWithId: Condition & {id: string}) => void;
+  condition: Condition;
+  onChange: (condition: Condition) => void;
   onDelete: () => void;
 };
 
-const ConditionLine: React.FC<ConditionLineProps> = ({conditionWithId, handleChange, onDelete}) => {
-  switch (conditionWithId.type) {
+const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDelete}) => {
+  switch (condition.type) {
     case CONDITION_NAMES.ENABLED:
-      return <EnabledLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete} />;
+      return <EnabledLine condition={condition} onChange={onChange} onDelete={onDelete} />;
     case CONDITION_NAMES.FAMILY:
-      return <FamilyLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete} />;
+      return <FamilyLine condition={condition} onChange={onChange} onDelete={onDelete} />;
   }
 };
 
@@ -44,13 +44,15 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     }))
   );
 
-  const removeIdentifiers: (conditionsWithId: ConditionsWithIdentifier) => Conditions = conditionsWithId => {
-    return conditionsWithId.map(conditionWithId => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const {id, ...condition} = conditionWithId;
+  const removeIdentifier: (conditionWithId: ConditionWithIdentifier) => Condition = conditionWithId => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {id, ...condition} = conditionWithId;
 
-      return condition;
-    });
+    return condition;
+  };
+
+  const removeIdentifiers: (conditionsWithId: ConditionsWithIdentifier) => Conditions = conditionsWithId => {
+    return conditionsWithId.map(conditionWithId => removeIdentifier(conditionWithId));
   };
 
   const handleChange = (conditionWithId: Condition & {id: ConditionIdentifier}) => {
@@ -114,8 +116,8 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
               </Table.Row>
               {conditionsWithId.map(conditionWithId => (
                 <ConditionLine
-                  conditionWithId={conditionWithId}
-                  handleChange={handleChange}
+                  condition={removeIdentifier(conditionWithId)}
+                  onChange={condition => handleChange({...condition, id: conditionWithId.id})}
                   onDelete={onDelete(conditionWithId.id)}
                   key={conditionWithId.id}
                 />
