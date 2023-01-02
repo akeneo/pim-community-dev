@@ -31,8 +31,6 @@ initialArgocdAppCreation:
                             - |
                                 # Set cluster authentication
                                 gcloud container clusters get-credentials $${_DESTINATION_CLUSTER_NAME} --project=$${_DESTINATION_PROJECT} --region=$${_DESTINATION_GOOGLE_CLUSTER_REGION}
-                                # Test
-                                echo "It works !"
                                 BRANCH_NAME=master-migration-step1
 
                                 export GITHUB_USER=akeneo-pim-saas-argocd
@@ -40,8 +38,6 @@ initialArgocdAppCreation:
                                 export GITHUB_REPOSITORY=akeneo/pim-saas-k8s-artifacts.git
 
                                 git clone -b $$${BRANCH_NAME} https://$$${GITHUB_USER}:$$${GITHUB_TOKEN}@github.com/$$${GITHUB_REPOSITORY} pim-saas-k8s-artifacts
-
-                                ls -la
 
                                 yq d -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml metadata.labels
                                 yq w -i pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml metadata.name "$${_TENANT_ID}"

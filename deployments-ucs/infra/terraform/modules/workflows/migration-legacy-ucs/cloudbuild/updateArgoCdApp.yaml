@@ -15,12 +15,11 @@ updateArgoCdApp:
                     options:
                         logging: CLOUD_LOGGING_ONLY
                     substitutions:
-                        _SOURCE_PROJECT: $${map.get(input, "sourceProject")}
-                        _SOURCE_CLUSTER_NAME: $${map.get(input, "sourceClusterName")}
-                        _SOURCE_GOOGLE_CLUSTER_ZONE: $${map.get(input, "sourceClusterName")}
+                        _DESTINATION_PROJECT: $${map.get(input, "destinationProject")}
+                        _DESTINATION_CLUSTER_NAME: $${map.get(input, "destinationClusterName")}
+                        _DESTINATION_GOOGLE_CLUSTER_REGION: $${map.get(input, "destinationClusterRegion")}
                         _TENANT_ID: $${map.get(input, "tenantId")}
                         _TENANT_NAME: $${map.get(input, "tenantName")}
-                        _DESTINATION_GOOGLE_CLUSTER_REGION: $${map.get(input, "destinationClusterRegion")}
                         _DNS_GOOGLE_DOMAIN: $${map.get(input, "dnsGoogleDomain")}
                         _CLOUD_FUNCTION_CREATE_TENANT: $${map.get(input, "cloudFunctionCreateTenant")}
                         _SOURCE_MYSQL_SIZE: $${sourceMysqlSize}
@@ -33,7 +32,7 @@ updateArgoCdApp:
                             - -c
                             - |
                                 # Set cluster authentication
-                                gcloud container clusters get-credentials $${_SOURCE_CLUSTER_NAME} --project=$${_SOURCE_PROJECT} --zone=$${_SOURCE_GOOGLE_CLUSTER_ZONE}
+                                gcloud container clusters get-credentials $${_DESTINATION_CLUSTER_NAME} --project=$${_DESTINATION_PROJECT} --region=$${_DESTINATION_GOOGLE_CLUSTER_REGION}
 
                                 echo "Mysql Size: $${_SOURCE_MYSQL_SIZE}"
                                 echo "Mysql Snapshot URL: $${_MYSQL_URL_SNAPSHOT}"
@@ -47,37 +46,26 @@ updateArgoCdApp:
                                 export GITHUB_TOKEN=$$${SSH_KEY}
                                 export GITHUB_REPOSITORY=akeneo/pim-saas-k8s-artifacts.git
 
-                                git config --global user.email "akeneo-pim-saas-argocd@akeneo.com"
-                                git config --global user.name "akeneo-pim-saas-argocd@akeneo.com"
-
                                 git clone -b $$${BRANCH_NAME} https://$$${GITHUB_USER}:$$${GITHUB_TOKEN}@github.com/$$${GITHUB_REPOSITORY} pim-saas-k8s-artifacts
-
                                 cd pim-saas-k8s-artifacts
 
-                                yq w -i tenant/values.yaml mysql.mysql.dataDiskSize "$${_SOURCE_MYSQL_SIZE}"
-                                yq w -i tenant/values.yaml mysql.mysql.sourceSnapshot "$${_MYSQL_URL_SNAPSHOT}"
-                                yq w -i tenant/values.yaml pim.hook.addAdmin.enabled false
-                                yq w -i tenant/values.yaml pim.hook.installPim.enabled false
-
-                                git add -u
-                                git commit -m "Update tenant information"
-                                git push
-
                                 JSON_BODY_FILE=body.json
-                                touch $${JSON_BODY_FILE}
-                                yq w -i -j $${JSON_BODY_FILE} pim_edition "$$${PIM_EDITION}"
-                                yq w -i -j $${JSON_BODY_FILE} branchName "$$${BRANCH_NAME}"
-                                yq w -i -j $${JSON_BODY_FILE} tenant_name "$${_TENANT_NAME}"
-                                yq w -i -j $${JSON_BODY_FILE} dnsCloudDomain "$${_DNS_GOOGLE_DOMAIN}"
-                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.login "$$${LOGIN_NAME}@akeneo.com"
-                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.firstName "$$${LOGIN_NAME}"
-                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.lastName "$$${LOGIN_NAME}"
-                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.email "$$${LOGIN_NAME}@akeneo.com"
-                                yq w -i -j $${JSON_BODY_FILE} pim.defaultAdminUser.uiLocale "en_US"
-                                yq w -i -j $${JSON_BODY_FILE} pim.api.namespace "$$${PIM_NAMESPACE}"
-                                yq w -i -j $${JSON_BODY_FILE} pim.web.namespace "$$${PIM_NAMESPACE}"
-                                yq w -i -j $${JSON_BODY_FILE} tshirt_size "S"
-                                JSON_BODY_STRING=$$(cat $${JSON_BODY_FILE})
+                                touch $$${JSON_BODY_FILE}
+                                yq w -i -j $$${JSON_BODY_FILE} pim_edition "$$${PIM_EDITION}"
+                                yq w -i -j $$${JSON_BODY_FILE} branchName "$$${BRANCH_NAME}"
+                                yq w -i -j $$${JSON_BODY_FILE} tenant_name "$${_TENANT_NAME}"
+                                yq w -i -j $$${JSON_BODY_FILE} dnsCloudDomain "$${_DNS_GOOGLE_DOMAIN}"
+                                yq w -i -j $$${JSON_BODY_FILE} mysql.disk_size "$${_SOURCE_MYSQL_SIZE}"
+                                yq w -i -j $$${JSON_BODY_FILE} mysql.snapshot_ref "$${_MYSQL_URL_SNAPSHOT}"
+                                yq w -i -j $$${JSON_BODY_FILE} pim.defaultAdminUser.login "$$${LOGIN_NAME}@akeneo.com"
+                                yq w -i -j $$${JSON_BODY_FILE} pim.defaultAdminUser.firstName "$$${LOGIN_NAME}"
+                                yq w -i -j $$${JSON_BODY_FILE} pim.defaultAdminUser.lastName "$$${LOGIN_NAME}"
+                                yq w -i -j $$${JSON_BODY_FILE} pim.defaultAdminUser.email "$$${LOGIN_NAME}@akeneo.com"
+                                yq w -i -j $$${JSON_BODY_FILE} pim.defaultAdminUser.uiLocale "en_US"
+                                yq w -i -j $$${JSON_BODY_FILE} pim.api.namespace "$$${PIM_NAMESPACE}"
+                                yq w -i -j $$${JSON_BODY_FILE} pim.web.namespace "$$${PIM_NAMESPACE}"
+                                yq w -i -j $$${JSON_BODY_FILE} tshirt_size "S"
+                                JSON_BODY_STRING=$(cat $$${JSON_BODY_FILE})
 
                                 CLOUD_FUNCTION_URL=$(gcloud beta functions describe $${_CLOUD_FUNCTION_CREATE_TENANT} --format='value(serviceConfig.uri)' --gen2 --region=$${_DESTINATION_GOOGLE_CLUSTER_REGION})
                                 IDENTITY_TOKEN=$(gcloud --impersonate-service-account ucs-migration-uat-wip@akecld-prd-pim-saas-demo.iam.gserviceaccount.com auth print-identity-token)
@@ -86,16 +74,36 @@ updateArgoCdApp:
 
                                 curl --fail-with-body -m 3610 -X POST $$${CLOUD_FUNCTION_URL} -H "Authorization: bearer $$${IDENTITY_TOKEN}" -H "Content-Type: application/json" -d $$${JSON_BODY_STRING}
 
+                                # Wait up to 1h that application is sync
+                                echo "Wait that the resources for the tenant is created"
+                                MAX_COUNTER=120
+                                COUNTER=1
+                                SLEEP_TIME=30
+                                CONTINUE=true
+
+                                while $$${CONTINUE}; do
+                                echo "Check the tenant application health"
                                 SYNC_STATUS=$(kubectl get application $${_TENANT_ID} --no-headers --namespace=argocd | awk '{print $$2}')
                                 HEALTH_STATUS=$(kubectl get application $${_TENANT_ID} --no-headers --namespace=argocd | awk '{print $$3}')
                                 if [ "$$${SYNC_STATUS}" == "Synced" ] && [ "$$${HEALTH_STATUS}" == "Healthy" ]; then
-                                echo "Tenant creation fully synchronized"
+                                    echo "Tenant creation fully synchronized"
+                                    CONTINUE=false
                                 else
-                                echo "SYNC_STATUS: $$${SYNC_STATUS}"
-                                echo "HEALTH_STATUS: $$${HEALTH_STATUS}"
-                                echo "Tenant creation is not fully synchronized"
-                                exit 1
+                                    echo "Tenant creation still in creation"
+                                    echo "SYNC_STATUS: $$${SYNC_STATUS}"
+                                    echo "HEALTH_STATUS: $$${HEALTH_STATUS}"
+                                    sleep $$${SLEEP_TIME}
+                                    COUNTER=$(($$${COUNTER} + 1))
+                                    if [ $$${COUNTER} -gt $$${MAX_COUNTER} ]; then
+                                        TIME_WAITED=$$(( COUNTER*SLEEP_TIME ))
+                                        echo "We have been waiting the tenant creation for too long: $$${TIME_WAITED} seconds; failing."
+                                        exit 1
+                                    fi;
                                 fi
+                                done
+                                TIME_WAITED=$$(( COUNTER*SLEEP_TIME ))
+
+                                echo "We have been waiting for $$${TIME_WAITED} seconds!"
             result: build_result
         - return_build_result:
             return: $${build_result}
