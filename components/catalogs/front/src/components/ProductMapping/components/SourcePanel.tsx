@@ -23,6 +23,7 @@ type Props = {
 
 const Information = styled.p`
     font-style: italic;
+    margin-top: 10px;
 `;
 
 export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, errors}) => {
