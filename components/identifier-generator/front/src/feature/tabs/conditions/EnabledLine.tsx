@@ -8,7 +8,7 @@ import {ConditionIdentifier} from '../SelectionTab';
 type EnabledLineProps = {
   condition: EnabledCondition & {id: ConditionIdentifier};
   onChange: (condition: Condition & {id: ConditionIdentifier}) => void;
-  onDelete: (conditionId: ConditionIdentifier) => void;
+  onDelete: () => void;
 };
 
 const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}) => {
@@ -16,10 +16,6 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
 
   const handleChange = (value: string) => {
     onChange({...condition, value: value === 'true'});
-  };
-
-  const handleDelete = (conditionId: string) => () => {
-    onDelete(conditionId);
   };
 
   return (
@@ -53,7 +49,7 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
         </Styled.InputContainer>
       </Table.Cell>
       <Table.ActionCell>
-        <Button onClick={handleDelete(condition.id)} ghost level="danger">
+        <Button onClick={onDelete} ghost level="danger">
           {translate('pim_common.delete')}
         </Button>
       </Table.ActionCell>
