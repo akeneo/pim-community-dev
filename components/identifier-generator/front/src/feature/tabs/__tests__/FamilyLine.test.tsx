@@ -1,14 +1,14 @@
 import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
 import {FamilyLine} from '../conditions';
-import {CONDITION_NAMES} from '../../models';
+import {CONDITION_NAMES, Operator} from '../../models';
 
 jest.mock('../../components/FamiliesSelector');
 
 describe('FamilyLine', () => {
   it('should add values when setting operator to IN', () => {
     const onChange = jest.fn();
-    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: 'EMPTY', id: 69};
+    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY, id: 69};
     render(
       <table>
         <tbody>
@@ -25,7 +25,7 @@ describe('FamilyLine', () => {
 
     expect(onChange).toBeCalledWith({
       id: 69,
-      operator: 'IN',
+      operator: Operator.IN,
       type: CONDITION_NAMES.FAMILY,
       value: [],
     });
@@ -33,7 +33,7 @@ describe('FamilyLine', () => {
 
   it('should remove values when setting operator to EMPTY', () => {
     const onChange = jest.fn();
-    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: 'IN', value: ['shirts'], id: 69};
+    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: ['shirts'], id: 69};
     render(
       <table>
         <tbody>
@@ -50,14 +50,14 @@ describe('FamilyLine', () => {
 
     expect(onChange).toBeCalledWith({
       id: 69,
-      operator: 'EMPTY',
+      operator: Operator.EMPTY,
       type: CONDITION_NAMES.FAMILY,
     });
   });
 
   it('should update families', () => {
     const onChange = jest.fn();
-    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: 'IN', value: [], id: 69};
+    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: [], id: 69};
     render(
       <table>
         <tbody>
@@ -71,7 +71,7 @@ describe('FamilyLine', () => {
 
     expect(onChange).toBeCalledWith({
       id: 69,
-      operator: 'IN',
+      operator: Operator.IN,
       type: CONDITION_NAMES.FAMILY,
       value: ['shirts'],
     });
