@@ -6,8 +6,8 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {FamiliesSelector, OperatorSelector} from '../../components';
 
 type FamilyLineProps = {
-  condition: FamilyCondition & {id: string};
-  onChange: (condition: FamilyCondition & {id: string}) => void;
+  condition: FamilyCondition;
+  onChange: (condition: FamilyCondition) => void;
   onDelete: () => void;
 };
 
