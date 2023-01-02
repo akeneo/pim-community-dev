@@ -12,6 +12,12 @@ const validateDelimiter: Validator<Delimiter | null> = (delimiter, path) => {
     });
   }
 
+  if (delimiter !== null && /(^[ ].*)|(.*[ ]$)|(^.*[,;].*$)/.exec(delimiter)) {
+    violations.push({
+      path,
+      message: 'The property must not contain a comma, a semicolon or any space',
+    });
+  }
   return violations;
 };
 
