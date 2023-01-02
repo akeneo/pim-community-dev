@@ -15,7 +15,7 @@ type SelectionTabProps = {
 };
 
 type ConditionIdentifier = string;
-type ConditionWithIdentifier = (Condition & {id: ConditionIdentifier});
+type ConditionWithIdentifier = Condition & {id: ConditionIdentifier};
 type ConditionsWithIdentifier = ConditionWithIdentifier[];
 
 type ConditionLineProps = {
@@ -29,7 +29,7 @@ const ConditionLine: React.FC<ConditionLineProps> = ({conditionWithId, handleCha
     case CONDITION_NAMES.ENABLED:
       return <EnabledLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete} />;
     case CONDITION_NAMES.FAMILY:
-      return <FamilyLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete}/>;
+      return <FamilyLine condition={conditionWithId} onChange={handleChange} onDelete={onDelete} />;
   }
 };
 
