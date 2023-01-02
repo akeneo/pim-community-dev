@@ -27,9 +27,7 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange}) => {
   };
 
   const handleFamilyCodesChange = (familyCodes: FamilyCode[]) => {
-    if (condition.operator === Operator.IN) {
-      onChange({...condition, value: familyCodes});
-    }
+    onChange({...condition, value: familyCodes});
   };
 
   return (
