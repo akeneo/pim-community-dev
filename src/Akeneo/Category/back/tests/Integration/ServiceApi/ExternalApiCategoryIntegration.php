@@ -32,6 +32,7 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
             'lvl' => '0',
             'translations' => '',
             'value_collection' => '',
+            'position' => '5',
         ];
     }
 
@@ -84,7 +85,7 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
             'parent' => 'my_parent_category',
             'updated' => '2022-12-13T14:08:10+01:00',
             'labels' => [],
-            'position' => null,
+            'position' => 5,
         ];
 
         $normalizedExternalApiCategory = ExternalApiCategory::fromDatabase($this->categoryDatabaseData)

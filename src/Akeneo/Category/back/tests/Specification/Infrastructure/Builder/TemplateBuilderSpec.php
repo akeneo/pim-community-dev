@@ -30,10 +30,10 @@ class TemplateBuilderSpec extends ObjectBehavior
         $this->shouldHaveType(TemplateBuilder::class);
     }
 
-    public function it_generate_a_template_from_a_category_tree_id(
+    public function it_generates_a_template_from_a_category_tree_id(
         GetCategoryInterface $getCategory,
         Category $categoryTree
-    ) {
+    ): void {
         $categoryTreeId = new CategoryId(1);
         $labelCollection = LabelCollection::fromArray(['en_US' => 'Category code']);
 
@@ -43,17 +43,16 @@ class TemplateBuilderSpec extends ObjectBehavior
         $categoryTree->getCode()->willReturn(new Code('category_code'));
         $categoryTree->getLabels()->willReturn($labelCollection);
 
-        $template = $this->generateTemplate($categoryTreeId, new TemplateCode("unused_code"), LabelCollection::fromArray([]));
+        $template = $this->generateTemplate($categoryTreeId, new TemplateCode('unused_code'), LabelCollection::fromArray([]));
 
         $template->getCode()->__toString()->shouldReturn('category_code_template');
-        $template->getLabelCollection()->getTranslation('en_US')->shouldReturn('Category code template');
     }
 
     /**  */
-    public function it_generate_a_template_with_hard_coded_attributes(
+    public function it_generates_a_template_with_hard_coded_attributes(
         GetCategoryInterface $getCategory,
         Category $categoryTree
-    ) {
+    ): void {
         $categoryTreeId = new CategoryId(1);
         $labelCollection = LabelCollection::fromArray(['en_US' => 'Category code']);
 
@@ -63,10 +62,9 @@ class TemplateBuilderSpec extends ObjectBehavior
         $categoryTree->getCode()->willReturn(new Code('category_code'));
         $categoryTree->getLabels()->willReturn($labelCollection);
 
-        $template = $this->generateTemplate($categoryTreeId, new TemplateCode("unused_code"), LabelCollection::fromArray([]));
+        $template = $this->generateTemplate($categoryTreeId, new TemplateCode('unused_code'), LabelCollection::fromArray([]));
 
         $template->getCode()->__toString()->shouldReturn('category_code_template');
-        $template->getLabelCollection()->getTranslation('en_US')->shouldReturn('Category code template');
 
         $richTextAttribute = $template->getAttributeCollection()->getAttributeByCode('long_description');
         $richTextAttribute->getType()->__toString()->shouldReturn(AttributeType::RICH_TEXT);

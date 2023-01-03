@@ -53,6 +53,7 @@ class Category
     public static function fromDatabase(array $category): self
     {
         $translations = $category['translations'] ? json_decode($category['translations'], true, 512, JSON_THROW_ON_ERROR) : [];
+        $permissions = isset($category['permissions']) && $category['permissions'] ? json_decode($category['permissions'], true) : [];
 
         return new self(
             id: new CategoryId((int) $category['id']),
@@ -65,9 +66,26 @@ class Category
             updated: $category['updated'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $category['updated']) : null,
             attributes: $category['value_collection'] ?
                 ValueCollection::fromDatabase(json_decode($category['value_collection'], true)) : null,
-            permissions: isset($category['permissions']) && $category['permissions'] ?
-                PermissionCollection::fromArray(json_decode($category['permissions'], true)) : null,
+            permissions: PermissionCollection::fromArray($permissions),
             position: new Position((int) $category['lft'], (int) $category['rgt'], (int) $category['lvl']),
+        );
+    }
+
+    /**
+     * @param array<string, array<array{id: int, label: string}>> $permissions
+     */
+    public static function fromCategoryWithPermissions(Category $category, array $permissions): self
+    {
+        return new self(
+            id: $category->getId(),
+            code: $category->getCode(),
+            templateUuid: $category->getTemplateUuid(),
+            labels: $category->getLabels(),
+            parentId: $category->getParentId(),
+            rootId: $category->getRootId(),
+            updated: $category->getUpdated(),
+            attributes: $category->getAttributes(),
+            permissions: PermissionCollection::fromArray($permissions),
         );
     }
 

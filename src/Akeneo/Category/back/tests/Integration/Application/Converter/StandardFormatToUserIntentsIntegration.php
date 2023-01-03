@@ -20,6 +20,7 @@ class StandardFormatToUserIntentsIntegration extends TestCase
     public function it_convert_label_update_standard_format_to_setlabel_user_intents(): void
     {
         $standardFormat = [
+            "id" => 1,
             "labels" => [
                 "en_US" => "sausages",
                 "fr_FR" => "saucisses"
@@ -43,6 +44,7 @@ class StandardFormatToUserIntentsIntegration extends TestCase
         $nonExistentAttributeCode = 'foobar';
 
         $standardFormat = [
+            "id" => 1,
             $nonExistentAttributeCode => "foo",
             "labels" => [
                 "en_US" => "socks",

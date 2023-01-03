@@ -30,6 +30,7 @@ class GetCategoriesParametersBuilderSqlIntegration extends CategoryTestCase
             searchFilters: $searchFilters,
             limit: 10,
             offset: 3,
+            withPosition: false,
             isEnrichedAttributes: true
         );
 
@@ -39,12 +40,14 @@ class GetCategoriesParametersBuilderSqlIntegration extends CategoryTestCase
                 'code_0' => ['sock'],
                 'limit' => 10,
                 'offset' => 3,
+                'with_position' => false,
                 'with_enriched_attributes' => true,
             ],
             types: [
                 'code_0' => Connection::PARAM_STR_ARRAY,
                 'limit' => \PDO::PARAM_INT,
                 'offset' => \PDO::PARAM_INT,
+                'with_position' => \PDO::PARAM_BOOL,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT :limit OFFSET :offset',
@@ -68,6 +71,7 @@ class GetCategoriesParametersBuilderSqlIntegration extends CategoryTestCase
             searchFilters: $searchFilters,
             limit: 10,
             offset: 0,
+            withPosition: false,
             isEnrichedAttributes: true
         );
 
@@ -76,11 +80,13 @@ class GetCategoriesParametersBuilderSqlIntegration extends CategoryTestCase
             params: [
                 'code_0' => ['sock'],
                 'limit' => 10,
+                'with_position' => false,
                 'with_enriched_attributes' => true,
             ],
             types: [
                 'code_0' => Connection::PARAM_STR_ARRAY,
                 'limit' => \PDO::PARAM_INT,
+                'with_position' => \PDO::PARAM_BOOL,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT :limit',
@@ -95,6 +101,7 @@ class GetCategoriesParametersBuilderSqlIntegration extends CategoryTestCase
             searchFilters: [],
             limit: 10,
             offset: 3,
+            withPosition: false,
             isEnrichedAttributes: true
         );
 
@@ -103,11 +110,13 @@ class GetCategoriesParametersBuilderSqlIntegration extends CategoryTestCase
             params: [
                 'limit' => 10,
                 'offset' => 3,
+                'with_position' => false,
                 'with_enriched_attributes' => true,
             ],
             types: [
                 'limit' => \PDO::PARAM_INT,
                 'offset' => \PDO::PARAM_INT,
+                'with_position' => \PDO::PARAM_BOOL,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT :limit OFFSET :offset',
@@ -131,6 +140,7 @@ class GetCategoriesParametersBuilderSqlIntegration extends CategoryTestCase
             searchFilters: $searchFilters,
             limit: 10,
             offset: 3,
+            withPosition: false,
             isEnrichedAttributes: false
         );
 
@@ -140,12 +150,46 @@ class GetCategoriesParametersBuilderSqlIntegration extends CategoryTestCase
                 'code_0' => ['sock'],
                 'limit' => 10,
                 'offset' => 3,
+                'with_position' => false,
                 'with_enriched_attributes' => false,
             ],
             types: [
                 'code_0' => Connection::PARAM_STR_ARRAY,
                 'limit' => \PDO::PARAM_INT,
                 'offset' => \PDO::PARAM_INT,
+                'with_position' => \PDO::PARAM_BOOL,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT :limit OFFSET :offset',
+        );
+
+        $this->assertEqualsCanonicalizing($expectedParameters, $parameters);
+    }
+
+    public function testBuildParametersWithPosition(): void
+    {
+        $searchFilters = [];
+
+        $parameters = $this->get(GetCategoriesParametersBuilder::class)->build(
+            searchFilters: $searchFilters,
+            limit: 10,
+            offset: 3,
+            withPosition: true,
+            isEnrichedAttributes: false
+        );
+
+        $expectedParameters = new ExternalApiSqlParameters(
+            sqlWhere: '1=1',
+            params: [
+                'limit' => 10,
+                'offset' => 3,
+                'with_position' => true,
+                'with_enriched_attributes' => false,
+            ],
+            types: [
+                'limit' => \PDO::PARAM_INT,
+                'offset' => \PDO::PARAM_INT,
+                'with_position' => \PDO::PARAM_BOOL,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT :limit OFFSET :offset',
