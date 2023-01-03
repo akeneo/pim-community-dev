@@ -1,0 +1,6 @@
+services:
+    AkeneoEnterprise\Category\Domain\UserIntent\Factory\PermissionUserIntentFactory:
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\ServiceApi\Category\GetCategoryProductPermissionsByCategoryIdInterface'
+        tags:
+            - { name: 'pim.category.user_intent_factory' }

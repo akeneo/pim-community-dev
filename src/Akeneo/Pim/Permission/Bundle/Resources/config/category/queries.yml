@@ -1,0 +1,15 @@
+services:
+    Akeneo\Pim\Permission\Bundle\Category\GetCategoryProductPermissions:
+        class: Akeneo\Pim\Permission\Bundle\Persistence\Sql\Category\GetCategoryProductPermissionsSql
+        arguments:
+          - '@database_connection'
+
+    Akeneo\Pim\Permission\Bundle\Application\Query\SaveCategoryProductPermissionsInterface:
+        class: Akeneo\Pim\Permission\Bundle\Application\Query\SaveCategoryProductPermissions
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Permission\Bundle\Application\Query\RemoveCategoryProductPermissionsInterface:
+        class: Akeneo\Pim\Permission\Bundle\Application\Query\RemoveCategoryProductPermissions
+        arguments:
+            - '@database_connection'

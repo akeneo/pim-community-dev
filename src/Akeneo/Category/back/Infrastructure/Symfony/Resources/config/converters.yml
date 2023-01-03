@@ -1,0 +1,14 @@
+services:
+  Akeneo\Category\Application\Converter\ConverterInterface:
+    class: AkeneoEnterprise\Category\Infrastructure\Converter\InternalApi\InternalApiPermissionToStd
+    arguments:
+      - '@Akeneo\Category\Application\Converter\Checker\RequirementChecker'
+
+  Akeneo\Category\Application\Converter\Checker\RequirementChecker:
+    class: AkeneoEnterprise\Category\Application\Converter\Checker\InternalApiPermissionRequirementChecker
+    arguments:
+      - '@Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker'
+      - '@Akeneo\Category\Application\Converter\Checker\AttributeApiRequirementChecker'
+      - '@AkeneoEnterprise\Category\Application\Converter\Checker\PermissionRequirementChecker'
+
+  AkeneoEnterprise\Category\Application\Converter\Checker\PermissionRequirementChecker: ~

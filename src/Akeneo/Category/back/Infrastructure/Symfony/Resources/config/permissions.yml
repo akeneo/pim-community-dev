@@ -1,0 +1,18 @@
+parameters:
+    pim.category.api.user_intent.add_permission.class: AkeneoEnterprise\Category\Api\Command\UserIntents\AddPermission
+    pim.category.api.user_intent.remove_permission.class: AkeneoEnterprise\Category\Api\Command\UserIntents\RemovePermission
+
+services:
+    AkeneoEnterprise\Category\Application\Storage\Save\Saver\CategoryPermissionSaver:
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\ServiceApi\Category\SaveCategoryProductPermissionsInterface'
+            - ['%pim.category.api.user_intent.add_permission.class%']
+        tags:
+            - { name: 'pim.category.save.category_saver' }
+
+    AkeneoEnterprise\Category\Application\Storage\Save\Remover\CategoryPermissionRemover:
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\ServiceApi\Category\RemoveCategoryProductPermissionsInterface'
+            - [ '%pim.category.api.user_intent.remove_permission.class%' ]
+        tags:
+            - { name: 'pim.category.save.category_saver' }

@@ -1,0 +1,7 @@
+services:
+  AkeneoEnterprise\Category\Infrastructure\Permission\FindCategoryProductPermissions:
+    arguments:
+      - '@oro_security.security_facade'
+      - '@Akeneo\Pim\Permission\Bundle\ServiceApi\Category\GetCategoryProductPermissionsByCategoryIdInterface'
+    tags:
+      - { name: pim.category.additional_properties_finder }

@@ -1,0 +1,5 @@
+services:
+    Akeneo\Category\Application\Storage\Save\SaveCategory:
+        class: AkeneoEnterprise\Category\Application\Storage\Save\PermissionSaverProcessor
+        arguments:
+            - '@Akeneo\Category\Application\Storage\Save\CategorySaverRegistry'

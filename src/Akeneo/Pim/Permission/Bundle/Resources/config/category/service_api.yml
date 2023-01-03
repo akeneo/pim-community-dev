@@ -1,0 +1,15 @@
+services:
+    Akeneo\Pim\Permission\Bundle\ServiceApi\Category\GetCategoryProductPermissionsByCategoryIdInterface:
+        class: Akeneo\Pim\Permission\Bundle\ServiceApi\Category\GetCategoryProductPermissionsByCategoryId
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Category\GetCategoryProductPermissions'
+
+    Akeneo\Pim\Permission\Bundle\ServiceApi\Category\SaveCategoryProductPermissionsInterface:
+        class: Akeneo\Pim\Permission\Bundle\ServiceApi\Category\SaveCategoryProductPermissions
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Application\Query\SaveCategoryProductPermissionsInterface'
+
+    Akeneo\Pim\Permission\Bundle\ServiceApi\Category\RemoveCategoryProductPermissionsInterface:
+        class: Akeneo\Pim\Permission\Bundle\ServiceApi\Category\RemoveCategoryProductPermissions
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Application\Query\RemoveCategoryProductPermissionsInterface'

@@ -28,6 +28,8 @@ class AkeneoPimPermissionExtension extends Extension
         $loader->load('checkers.yml');
         $loader->load('cli_commands.yml');
         $loader->load('completeness.yml');
+        $loader->load('category/queries.yml');
+        $loader->load('category/service_api.yml');
         $loader->load('controllers.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
