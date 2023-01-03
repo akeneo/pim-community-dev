@@ -10,14 +10,14 @@ final class AkeneoContentSecurityPolicyProvider implements ContentSecurityPolicy
 {
     public function __construct(
         private readonly ScriptNonceGenerator $nonceGenerator,
-        private readonly string $trustedDomain
+        private readonly string $rootDomain
     ) {
     }
 
     public function getContentSecurityPolicy(): array
     {
         $generatedNonce = $this->nonceGenerator->getGeneratedNonce();
-        $trustedSubDomains = sprintf('*.%s', $this->trustedDomain);
+        $trustedSubDomains = sprintf('*.apps.%s', $this->rootDomain);
 
         return [
             'default-src' => ["'self'", $trustedSubDomains, "'unsafe-inline'"],

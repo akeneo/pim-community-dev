@@ -12,10 +12,14 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecuri
  */
 final class MarketplaceContentSecurityPolicy implements ContentSecurityPolicyProviderInterface
 {
+    public function __construct(private readonly string $rootDomain)
+    {
+    }
+
     public function getContentSecurityPolicy(): array
     {
         return [
-            'img-src' => ["marketplace.akeneo.com"],
+            'img-src' => [sprintf('marketplace.%s', $this->rootDomain)],
         ];
     }
 }

@@ -84,7 +84,7 @@ services:
     Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\AkeneoContentSecurityPolicyProvider:
         arguments:
             - '@security.script_nonce_generator'
-            - '%env(AKENEO_TRUSTED_DOMAIN)%'
+            - '%env(AKENEO_CSP_ROOT_DOMAIN)%'
         tags:
             - { name: akeneo.pim.security.content_security_policy_provider }
 

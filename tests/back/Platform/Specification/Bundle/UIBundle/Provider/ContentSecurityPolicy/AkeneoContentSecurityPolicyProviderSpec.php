@@ -7,6 +7,11 @@ namespace Specification\Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurity
 use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
 {
     function it_returns_the_akeneo_policy(
@@ -20,7 +25,7 @@ class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
             'default-src' =>
                 [
                     "'self'",
-                    '*.trusted-domain.com',
+                    '*.apps.trusted-domain.com',
                     "'unsafe-inline'",
                 ],
             'script-src' =>
@@ -33,7 +38,7 @@ class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
                 [
                     "'self'",
                     'data:',
-                    '*.trusted-domain.com',
+                    '*.apps.trusted-domain.com',
                 ],
             'frame-src' =>
                 [
@@ -47,7 +52,7 @@ class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
             'connect-src' =>
                 [
                     "'self'",
-                    '*.trusted-domain.com',
+                    '*.apps.trusted-domain.com',
                 ],
         ]);
     }
