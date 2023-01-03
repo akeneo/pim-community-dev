@@ -56,10 +56,8 @@ const CategoryEditPage: FC = () => {
 
   // locales
   const uiLocale = userContext.get('uiLocale');
-  const userContextLocale = userContext.get('catalogLocale');
-  const [catalogLocale, setCatalogLocale] = useState(userContextLocale);
-
-  const handleLocaleChanged = (locale: string) => {
+  const [catalogLocale, setCatalogLocale] = useState<string|null>(null);
+  const handleLocaleChanges = (locale: string) => {
     setCatalogLocale(locale);
   };
 
@@ -293,7 +291,7 @@ const CategoryEditPage: FC = () => {
               attributeValues={category.attributes}
               template={template}
               onAttributeValueChange={onChangeAttribute}
-              onLocaleChange={handleLocaleChanged}
+              onLocaleChange={handleLocaleChanges}
             />
           )}
         {isCurrent(Tabs.PROPERTY) && category && (
