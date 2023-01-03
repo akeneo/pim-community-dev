@@ -77,7 +77,6 @@ class GetProductAction
 
     /**
      * @return Product
-     * @throws CatalogDisabledException
      * @throws ViolationHttpException
      * @throws NotFoundHttpException
      */
