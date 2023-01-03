@@ -23,6 +23,13 @@ akeneo_identifier_generator_get_families:
     defaults:
         _feature: identifier_generator
 
+akeneo_identifier_generator_get_attribute_options:
+    path: '/identifier-generator/attribute-options/{attributeCode}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAttributeOptionsController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
 akeneo_identifier_generator_rest_list:
     path: '/rest/identifier-generator'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ListIdentifierGeneratorController
