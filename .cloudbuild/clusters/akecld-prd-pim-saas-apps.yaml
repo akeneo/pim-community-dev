@@ -117,7 +117,6 @@ steps:
           helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f argocd-apps/values.yaml
         fi
 
-
 logsBucket: '${_LOGS_BUCKET}'
 availableSecrets:
   secretManager:
