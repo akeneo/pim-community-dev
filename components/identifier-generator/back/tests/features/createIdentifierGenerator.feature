@@ -72,6 +72,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'structure[0][unknown]: This field was not expected.'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator if structure contains free text with invalid text
+    When I try to create an identifier generator with free text ' AKN'
+    Then I should get an error with message 'Free text must not contain a comma, a semicolon or any space'
+    And the identifier should not be created
+
   # Structure : Auto number
   Scenario: Cannot create an identifier generator with autoNumber missing required field
     When I try to create an identifier generator with autoNumber without required field

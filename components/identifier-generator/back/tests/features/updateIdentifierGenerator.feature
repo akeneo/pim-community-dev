@@ -65,6 +65,18 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with free text with unknown field
     Then I should get an error on update with message 'structure[0][unknown]: This field was not expected.'
 
+  Scenario: Cannot update and identifier generator if structure contains free text with invalid text
+    When I try to update an identifier generator with free text ' AKN'
+    Then I should get an error on update with message 'Free text must not contain a comma, a semicolon or any space'
+
+  Scenario: Cannot update and identifier generator if structure contains free text with invalid text
+    When I try to update an identifier generator with free text 'AKN,COL'
+    Then I should get an error on update with message 'Free text must not contain a comma, a semicolon or any space'
+
+  Scenario: Cannot update and identifier generator if structure contains free text with invalid text
+    When I try to update an identifier generator with free text 'AKN;COL'
+    Then I should get an error on update with message 'Free text must not contain a comma, a semicolon or any space'
+
   # Structure : Auto number
   Scenario: Cannot update an identifier generator with autoNumber missing required field
     When I try to update an identifier generator with autoNumber without required field

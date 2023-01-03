@@ -33,5 +33,11 @@ final class FreeTextShouldBeValidValidator extends ConstraintValidator
                 ->buildViolation($constraint->stringKeyRequired)
                 ->addViolation();
         }
+
+        if (array_key_exists('string', $property) && !preg_match('/^[^ ,;]*$/', $property['string'])) {
+            $this->context
+                ->buildViolation($constraint->stringIsInvalid)
+                ->addViolation();
+        }
     }
 }
