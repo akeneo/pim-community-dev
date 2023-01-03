@@ -23,7 +23,7 @@ const TabValidationErrors: React.FC<Props> = ({errors}) => {
               ))}
             </Styled.ErrorList>
           ) : (
-            <Styled.UniqueError>{displayedErrors[0]}</Styled.UniqueError>
+            <p style={{margin: 0}}>{displayedErrors[0]}</p>
           )}
         </Styled.MainErrorHelper>
       )}
