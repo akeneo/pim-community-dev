@@ -46,7 +46,7 @@ class SqlFindAttributeOptions implements FindAttributeOptions
                 )
                 {includeCodesQuery}
             GROUP BY attribute_option.code, attribute_option.sort_order, translation.value
-            ORDER BY attribute_option.sort_order
+            ORDER BY attribute_option.sort_order, attribute_option.code
             LIMIT :offset, :limit
         SQL;
 
