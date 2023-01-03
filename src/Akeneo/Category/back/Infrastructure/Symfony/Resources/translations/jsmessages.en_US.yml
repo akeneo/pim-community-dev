@@ -33,6 +33,9 @@ akeneo.category:
             code: Code
             type: Type
 
+    tag:
+        new: New
+
     discover_enriched_categories_information:
         title: Discover Enriched Categories Early Access
         content:

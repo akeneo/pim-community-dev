@@ -4,7 +4,6 @@ import {CategoryTreeModel} from '../../models';
 const createTemplate = async (categoryTree: CategoryTreeModel, catalogLocale: string, router: Router) => {
   const data = {
     code: categoryTree.code + '_template',
-    labels: {[catalogLocale]: categoryTree.label + ' template'},
   };
 
   const url = router.generate('pim_category_template_rest_create', {

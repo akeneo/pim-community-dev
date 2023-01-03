@@ -9,11 +9,13 @@ import {
   useTranslate,
   Translate,
   useAnalytics,
+  useFeatureFlags,
 } from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
   AttributeFileIcon,
   AttributeLinkIcon,
+  Badge,
   Breadcrumb,
   CategoryIcon,
   ComponentIcon,
@@ -32,8 +34,6 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {CountEntities, useCountEntities} from '../hooks/settings';
-
-const featureFlags = require('pim/feature-flags');
 
 const SectionContent = styled.div`
   margin-top: 20px;
@@ -88,6 +88,8 @@ const SettingsIndex = () => {
     router.redirect(router.generate(route));
   };
 
+  const featureFlags = useFeatureFlags();
+
   if (!canAccessCatalogSettings && !canAccessProductSettings) {
     return (
       <FullScreenError
@@ -128,7 +130,14 @@ const SettingsIndex = () => {
                   <IconCard
                     id="pim-settings-product-category"
                     icon={<CategoryIcon />}
-                    label={translate('pim_enrich.entity.category.plural_label')}
+                    label={
+                      <>
+                        {translate('pim_enrich.entity.category.plural_label')}
+                        {featureFlags.isEnabled('enriched_category') && (
+                          <StyledBadge level="secondary">{translate('akeneo.category.tag.new')}</StyledBadge>
+                        )}
+                      </>
+                    }
                     onClick={() => redirectToRoute('pim_enrich_categorytree_index')}
                     content={
                       countEntities.hasOwnProperty('count_category_trees') &&
@@ -364,6 +373,10 @@ const LockIconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StyledBadge = styled(Badge)`
+  margin-left: 10px;
 `;
 
 export {SettingsIndex};

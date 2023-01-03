@@ -17,5 +17,5 @@ interface CategorySaver
      */
     public function getSupportedUserIntents(): array;
 
-    public function save(Category $categoryModel): void;
+    public function save(Category $category): void;
 }

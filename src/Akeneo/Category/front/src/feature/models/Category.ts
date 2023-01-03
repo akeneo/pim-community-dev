@@ -1,7 +1,8 @@
-import {LabelCollection, ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
+import {ChannelCode, LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
 import {CompositeKeyWithoutLocale} from './CompositeKey';
 import {CategoryAttributeType} from './Attribute';
+import {CategoryPermissions} from './CategoryPermission';
 
 export type Category = {
   id: number;
@@ -23,12 +24,6 @@ export type EnrichCategory = {
 export type CategoryProperties = {
   code: string;
   labels: LabelCollection;
-};
-
-export type CategoryPermissions = {
-  view: number[];
-  edit: number[];
-  own: number[];
 };
 
 export interface CategoryAttributes {
@@ -81,6 +76,7 @@ export type CategoryTreeModel = {
   productsNumber?: number;
   templateLabel?: string;
   templateUuid?: string;
+  templateCode?: string;
 };
 
 export type FormField = {
