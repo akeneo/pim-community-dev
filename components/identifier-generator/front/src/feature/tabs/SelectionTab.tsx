@@ -1,10 +1,10 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
 import {NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid, Helper} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
-import {ListSkeleton} from '../components';
+import {ListSkeleton, TabValidationErrors} from '../components';
 import {AddConditionButton, EnabledLine, FamilyLine} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
@@ -58,12 +58,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     []
   );
 
-  const displayedErrors = useMemo(
-    () => validationErrors?.map(({message}) => message).filter((value, index, self) => self.indexOf(value) === index),
-    [validationErrors]
-  );
-
-  const handleChange = (conditionWithId: Condition & {id: ConditionIdentifier}) => {
+  const handleChange = (conditionWithId: Condition & {id: string}) => {
     const index = conditionsWithId.findIndex(condition => condition.id === conditionWithId.id);
     const newConditions = [...conditionsWithId];
     newConditions[index] = conditionWithId;
@@ -108,15 +103,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
 
   return (
     <>
-      {displayedErrors?.length > 0 && (
-        <Styled.MainErrorHelper level="error">
-          <Styled.ErrorList>
-            {displayedErrors.map(message => (
-              <li key={message}>{message}</li>
-            ))}
-          </Styled.ErrorList>
-        </Styled.MainErrorHelper>
-      )}
+      <TabValidationErrors errors={validationErrors} />
       {conditionsWithId.length > 0 && (
         <Helper level="info">
           {translate('pim_identifier_generator.selection.helper.title')}
