@@ -43,10 +43,16 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
-  const hasStructureErrors = useMemo(
-    () =>
-      validationErrors.filter(item => item?.path?.includes('structure') || item?.path?.includes('delimiter'))?.length >
-      0,
+  const generalValidationErrors = useMemo(
+    () => validationErrors.filter(item => item?.path?.includes('labels')),
+    [validationErrors]
+  );
+  const selectionValidationErrors = useMemo(
+    () => validationErrors.filter(item => item?.path?.includes('conditions')),
+    [validationErrors]
+  );
+  const structureValidationErrors = useMemo(
+    () => validationErrors.filter(item => item?.path?.includes('structure') || item?.path?.includes('delimiter')),
     [validationErrors]
   );
 
@@ -119,23 +125,34 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === GeneratorTab.GENERAL} onClick={changeTab(GeneratorTab.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
+            {generalValidationErrors?.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
           <TabBar.Tab
             isActive={currentTab === GeneratorTab.PRODUCT_SELECTION}
             onClick={changeTab(GeneratorTab.PRODUCT_SELECTION)}
           >
             {translate('pim_identifier_generator.tabs.product_selection')}
+            {selectionValidationErrors?.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
           <TabBar.Tab isActive={currentTab === GeneratorTab.STRUCTURE} onClick={changeTab(GeneratorTab.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
-            {hasStructureErrors && <Pill level="danger" />}
+            {structureValidationErrors?.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
         </TabBar>
         {currentTab === GeneratorTab.GENERAL && (
-          <GeneralPropertiesTab generator={generator} onGeneratorChange={onChangeGenerator} />
+          <GeneralPropertiesTab
+            generator={generator}
+            onGeneratorChange={onChangeGenerator}
+            validationErrors={generalValidationErrors}
+          />
         )}
         {currentTab === GeneratorTab.PRODUCT_SELECTION && (
-          <SelectionTab target={generator.target} conditions={generator.conditions} onChange={onConditionsChange} />
+          <SelectionTab
+            target={generator.target}
+            conditions={generator.conditions}
+            onChange={onConditionsChange}
+            validationErrors={selectionValidationErrors}
+          />
         )}
         {currentTab === GeneratorTab.STRUCTURE && (
           <StructureTab
@@ -143,7 +160,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             delimiter={generator.delimiter}
             onStructureChange={onStructureChange}
             onDelimiterChange={onDelimiterChange}
-            validationErrors={validationErrors}
+            validationErrors={structureValidationErrors}
           />
         )}
       </Container>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
 import {SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -6,16 +6,18 @@ import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
 import {ListSkeleton} from '../components';
 import {AddConditionButton, EnabledLine} from './conditions';
+import {Violation} from '../validators';
 
 type SelectionTabProps = {
   conditions: Conditions;
   target: Target;
   onChange: (conditions: Conditions) => void;
+  validationErrors: Violation[];
 };
 
 type ConditionsWithIdentifier = (Condition & {id: string})[];
 
-const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange}) => {
+const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange, validationErrors}) => {
   const translate = useTranslate();
   const {data: identifiers, isLoading} = useIdentifierAttributes();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
@@ -34,6 +36,11 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     });
   };
 
+  const displayedErrors = useMemo(
+    () => validationErrors?.map(({message}) => message).filter((value, index, self) => self.indexOf(value) === index),
+    [validationErrors]
+  );
+
   const handleChange = (conditionWithId: Condition & {id: string}) => {
     const index = conditionsWithId.findIndex(condition => condition.id === conditionWithId.id);
     const newConditions = [...conditionsWithId];
@@ -51,6 +58,15 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
 
   return (
     <>
+      {displayedErrors?.length > 0 && (
+        <Styled.MainErrorHelper level="error">
+          <Styled.ErrorList>
+            {displayedErrors.map(message => (
+              <li key={message}>{message}</li>
+            ))}
+          </Styled.ErrorList>
+        </Styled.MainErrorHelper>
+      )}
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_identifier_generator.tabs.product_selection')}</SectionTitle.Title>
         <SectionTitle.Spacer />
