@@ -64,8 +64,12 @@ const ErrorContainer = styled.div`
 `;
 
 const ErrorList = styled.ul`
-  margin: 0px;
+  margin: 0;
   padding-left: 20px;
+`;
+
+const UniqueError = styled.p`
+  margin: 0;
 `;
 
 const CellInputContainer = styled(Table.Cell)`
@@ -110,6 +114,7 @@ const Styled = {
   NotDraggableCell,
   TitleCondition,
   ListItems,
+  UniqueError,
 };
 
 export {Styled};
