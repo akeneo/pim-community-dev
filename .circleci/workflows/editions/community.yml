@@ -46,14 +46,3 @@ workflows:
                   <<: *slack-fail-post-step
                   requires:
                       - build_dev
-
-    nightly_docker:
-        when:
-            and:
-                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "nightly_docker_v7", << pipeline.schedule.name >> ]
-        jobs:
-            - checkout_ce
-            - build_docker_images:
-                requires:
-                    - checkout_ce
