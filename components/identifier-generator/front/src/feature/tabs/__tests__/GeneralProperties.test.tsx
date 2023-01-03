@@ -9,10 +9,27 @@ describe('GeneralProperties', () => {
   it('should render the code input', () => {
     const generator: IdentifierGenerator = {
       code: 'initialCode',
+      target: 'sku',
+      structure: [],
+      conditions: [],
+      labels: {},
+      delimiter: null,
+    };
+    const onGeneratorChange = jest.fn();
+    render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
+    expect(screen.getByText('pim_identifier_generator.general.title')).toBeInTheDocument();
+    expect(screen.getByText('pim_common.code')).toBeInTheDocument();
+    expect(screen.getByTitle('initialCode')).toBeInTheDocument();
+  });
+
+  it('should render the code input with simple generator', () => {
+    // @ts-ignore
+    const generator: IdentifierGenerator = {
+      code: 'initialCode',
       labels: {},
     };
     const onGeneratorChange = jest.fn();
-    render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} />);
+    render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
     expect(screen.getByText('pim_identifier_generator.general.title')).toBeInTheDocument();
     expect(screen.getByText('pim_common.code')).toBeInTheDocument();
     expect(screen.getByTitle('initialCode')).toBeInTheDocument();
@@ -21,17 +38,47 @@ describe('GeneralProperties', () => {
   it('should update labels', () => {
     const generator: IdentifierGenerator = {
       code: 'initialCode',
+      target: 'sku',
+      structure: [],
+      conditions: [],
       labels: {},
+      delimiter: null,
     };
     const onGeneratorChange = jest.fn();
-    render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} />);
+    render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
     expect(screen.getByText('LabelTranslationsMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update French Label'));
     expect(onGeneratorChange).toBeCalledWith({
       code: 'initialCode',
+      target: 'sku',
+      structure: [],
+      conditions: [],
       labels: {
         fr_FR: 'FrenchUpdated',
       },
+      delimiter: null,
     });
+  });
+
+  it('should show displayed errors', () => {
+    const generator: IdentifierGenerator = {
+      code: 'initialCode',
+      target: 'sku',
+      structure: [],
+      conditions: [],
+      labels: {},
+      delimiter: null,
+    };
+    const onGeneratorChange = jest.fn();
+    const validationErrors = [{path: 'labels', message: 'error on a label'}];
+    render(
+      <GeneralPropertiesTab
+        generator={generator}
+        onGeneratorChange={onGeneratorChange}
+        validationErrors={validationErrors}
+      />
+    );
+
+    expect(screen.getByText('error on a label')).toBeInTheDocument();
   });
 });

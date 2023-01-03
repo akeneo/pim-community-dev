@@ -9,7 +9,7 @@ jest.mock('../../pages/SimpleDeleteModal');
 
 describe('SelectionTab', () => {
   it('should render the selection tab', () => {
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={jest.fn()} />);
+    render(<SelectionTab target={'sku'} conditions={[]} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(screen.getByText('pim_identifier_generator.tabs.product_selection')).toBeInTheDocument();
   });
@@ -19,9 +19,21 @@ describe('SelectionTab', () => {
       json: [{code: 'sku', label: 'Sku'}],
     });
 
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={jest.fn()} />);
+    render(<SelectionTab target={'sku'} conditions={[]} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
+
+    expectCall();
+  });
+
+  it('should render the default identifier attribute with target as attribute', async () => {
+    const expectCall = mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [],
+    });
+
+    render(<SelectionTab target={'target'} conditions={[]} onChange={jest.fn()} validationErrors={[]} />);
+
+    expect(await screen.findByText('[target]')).toBeInTheDocument();
 
     expectCall();
   });
@@ -40,6 +52,7 @@ describe('SelectionTab', () => {
           {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
         ]}
         onChange={onChange}
+        validationErrors={[]}
       />
     );
 
@@ -59,7 +72,7 @@ describe('SelectionTab', () => {
     });
 
     const onChange = jest.fn();
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} />);
+    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} validationErrors={[]} />);
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
     expect(screen.getByText('AddConditionButtonMock')).toBeInTheDocument();
@@ -172,5 +185,17 @@ describe('SelectionTab', () => {
       {type: CONDITION_NAMES.ENABLED, value: true},
       {type: CONDITION_NAMES.ENABLED, value: false},
     ]);
+  });
+
+  it('should show displayed errors', () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+
+    const onChange = jest.fn();
+    const validationErrors = [{path: 'conditions', message: 'should contain only 1 enabled'}];
+    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} validationErrors={validationErrors} />);
+
+    expect(screen.getByText('should contain only 1 enabled')).toBeInTheDocument();
   });
 });

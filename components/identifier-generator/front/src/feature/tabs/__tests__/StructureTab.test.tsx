@@ -30,6 +30,7 @@ describe('StructureTab', () => {
       />
     );
     expect(screen.getByText('pim_identifier_generator.structure.title')).toBeInTheDocument();
+    expect(screen.queryByText('pim_identifier_generator.structure.empty.title')).not.toBeInTheDocument();
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
     expect(screen.getByText('DelimiterEditMock')).toBeInTheDocument();
     expect(screen.getAllByText('AKN')).toHaveLength(2);
@@ -47,6 +48,7 @@ describe('StructureTab', () => {
       />
     );
 
+    expect(screen.getByText('pim_identifier_generator.structure.empty.title')).toBeInTheDocument();
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Add Property'));
     expect(onStructureChange).toBeCalledWith(expect.any(Array));
