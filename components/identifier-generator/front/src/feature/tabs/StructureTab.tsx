@@ -4,7 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton, DelimiterEdit, Preview, PropertiesList, PropertyEdit} from './structure';
 import {Delimiter, Property, Structure} from '../models';
 import {Styled} from '../components/Styled';
-import {TranslationWithLink} from '../components';
+import {TabValidationErrors, TranslationWithLink} from '../components';
 import styled from 'styled-components';
 import {Violation} from '../validators';
 
@@ -56,11 +56,6 @@ const StructureTab: React.FC<StructureTabProps> = ({
       });
     };
 
-  const displayedErrors = useMemo(
-    () => validationErrors?.map(({message}) => message).filter((value, index, self) => self.indexOf(value) === index),
-    [validationErrors]
-  );
-
   const onPropertyChange = (property: Property) => {
     if (selectedProperty) {
       const updatedPropertyIndex = structure.findIndex(p => selectedProperty.id === p.id);
@@ -104,15 +99,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
           linkKey={'pim_identifier_generator.structure.helper_link'}
         />
       </Helper>
-      {displayedErrors?.length > 0 && (
-        <Styled.MainErrorHelper level="error">
-          <Styled.ErrorList>
-            {displayedErrors.map(message => (
-              <li key={message}>{message}</li>
-            ))}
-          </Styled.ErrorList>
-        </Styled.MainErrorHelper>
-      )}
+      <TabValidationErrors errors={validationErrors} />
       <Styled.TwoColumns withoutSecondColumn={!selectedProperty}>
         <div>
           <SectionTitle>
