@@ -34,7 +34,7 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
     const imageInfo = !isImageAttributeInputValue(value) ? null : value;
     const downloadFilename = imageInfo?.originalFilename;
     const downloadUrl = imageInfo ? getImageDownloadUrl(router, imageInfo) : '';
-    const previewUrl = getMediaPreviewUrl(router, {
+    const thumbnailUrl = getMediaPreviewUrl(router, {
       type: MediaPreviewType.Thumbnail,
       attributeCode: attribute.code,
       data: imageInfo ? imageInfo.filePath : '',
@@ -49,7 +49,7 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
           uploadingLabel={translate('pim_common.media_uploading')}
           uploadErrorLabel={translate('pim_common.media_upload_error')}
           clearTitle={translate('pim_common.clear_value')}
-          thumbnailUrl={previewUrl}
+          thumbnailUrl={thumbnailUrl}
           uploader={uploader}
         >
           <IconButton

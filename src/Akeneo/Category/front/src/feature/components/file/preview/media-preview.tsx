@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Image} from 'akeneo-design-system';
-import {useRouter} from '@akeneo-pim-community/shared';
-import {Attribute, File} from '../../../models';
-import {getMediaPreviewUrl} from '../../../tools/media-url-generator';
-import {MediaPreviewType} from '../../../models/MediaPreview';
 
 const PreviewImage = styled(Image)`
   border: none;
@@ -15,19 +11,11 @@ const PreviewImage = styled(Image)`
 `;
 
 type MediaPreviewProps = {
+  previewUrl: string;
   label: string;
-  data: File;
-  attribute: Attribute;
 };
 
-const MediaPreview = ({data, label, attribute}: MediaPreviewProps) => {
-  const router = useRouter();
-  const previewUrl = getMediaPreviewUrl(router, {
-    type: MediaPreviewType.Thumbnail,
-    attributeCode: attribute.code,
-    data: data && data.filePath ? data.filePath : '',
-  });
-
+const MediaPreview = ({previewUrl, label}: MediaPreviewProps) => {
   return (
     <>
       <PreviewImage fit="contain" src={previewUrl} alt={label} />
