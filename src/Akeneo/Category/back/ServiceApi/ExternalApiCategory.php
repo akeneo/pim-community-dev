@@ -26,7 +26,7 @@ class ExternalApiCategory
         private readonly ?int $parentId = null,
         private readonly ?string $parentCode = null,
         private readonly ?array $labels = null,
-        private ?int $position = null, // TODO: Handle position GRF-633
+        private ?int $position = null,
     ) {
     }
 
@@ -85,6 +85,7 @@ class ExternalApiCategory
      *     lvl: string|null,
      *     translations: string|null,
      *     value_collection: string|null,
+     *     position: string|null
      * } $category
      */
     public static function fromDatabase(array $category): self
@@ -99,7 +100,6 @@ class ExternalApiCategory
             $valueCollection = ValueCollection::fromDatabase($valueCollection)->normalize();
         }
 
-        // TODO: Handle position GRF-633
         return new self(
             code: $category['code'],
             values: $valueCollection,
@@ -107,7 +107,7 @@ class ExternalApiCategory
             parentId: isset($category['parent_id']) ? (int) $category['parent_id'] : null,
             parentCode: $category['parent_code'],
             labels: $translations,
-            position: null,
+            position: (isset($category['position']) && '' !== $category['position']) ? (int) $category['position'] : null,
         );
     }
 
@@ -154,6 +154,7 @@ class ExternalApiCategory
      *     lvl: string|null,
      *     translations: string|null,
      *     value_collection: string|null,
+     *     position: int|null,
      * } $category
      */
     private static function assertArrayFromDatabase(array $category): void
@@ -180,5 +181,7 @@ class ExternalApiCategory
         Assert::nullOrString($category['translations']);
         Assert::keyExists($category, 'value_collection');
         Assert::nullOrString($category['value_collection']);
+        Assert::keyExists($category, 'position');
+        Assert::nullOrString($category['position']);
     }
 }

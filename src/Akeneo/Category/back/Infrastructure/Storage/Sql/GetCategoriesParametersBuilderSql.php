@@ -23,6 +23,7 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         array $searchFilters,
         int $limit,
         int $offset,
+        bool $withPosition,
         bool $isEnrichedAttributes,
     ): ExternalApiSqlParameters {
         if (empty($searchFilters)) {
@@ -33,6 +34,7 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
 
         $sqlParameters = $this->buildLimitOffset($sqlParameters, $limit, $offset);
         $sqlParameters = $this->buildWithEnrichedAttributes($sqlParameters, $isEnrichedAttributes);
+        $sqlParameters = $this->buildWithPosition($sqlParameters, $withPosition);
 
         return $sqlParameters;
     }
@@ -70,8 +72,26 @@ class GetCategoriesParametersBuilderSql implements GetCategoriesParametersBuilde
         $sqlParametersParams = $sqlParameters->getParams();
         $sqlParametersTypes = $sqlParameters->getTypes();
 
-        $sqlParametersParams['with_enriched_attributes'] = $isEnrichedAttributes ?: false;
+        $sqlParametersParams['with_enriched_attributes'] = $isEnrichedAttributes;
         $sqlParametersTypes['with_enriched_attributes'] = \PDO::PARAM_BOOL;
+
+        $sqlParameters
+            ->setParams($sqlParametersParams)
+            ->setTypes($sqlParametersTypes)
+        ;
+
+        return $sqlParameters;
+    }
+
+    private function buildWithPosition(
+        ExternalApiSqlParameters $sqlParameters,
+        bool $withPosition,
+    ): ExternalApiSqlParameters {
+        $sqlParametersParams = $sqlParameters->getParams();
+        $sqlParametersTypes = $sqlParameters->getTypes();
+
+        $sqlParametersParams['with_position'] = $withPosition;
+        $sqlParametersTypes['with_position'] = \PDO::PARAM_BOOL;
 
         $sqlParameters
             ->setParams($sqlParametersParams)
