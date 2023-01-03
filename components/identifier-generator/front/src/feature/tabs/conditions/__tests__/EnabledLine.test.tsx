@@ -22,6 +22,23 @@ describe('EnabledLine', () => {
     expect(screen.getByText('pim_common.enabled')).toBeInTheDocument();
   });
 
+  it('should render with empty condition value', () => {
+    render(
+      <table>
+        <tbody>
+          <EnabledLine
+            condition={{type: CONDITION_NAMES.ENABLED, value: undefined, id: 'enabledId'}}
+            onChange={jest.fn()}
+          />
+        </tbody>
+      </table>
+    );
+
+    expect(screen.getByText('pim_common.status')).toBeInTheDocument();
+    expect(screen.getByTitle('pim_common.operators.=')).toBeInTheDocument();
+    expect(screen.queryByText('pim_common.enabled')).not.toBeInTheDocument;
+  });
+
   it('should callback on change', () => {
     const onChange = jest.fn();
     render(
