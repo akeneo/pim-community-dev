@@ -22,23 +22,23 @@ class ContentSecurityPolicyProviderSpec extends ObjectBehavior
         $this->beConstructedWith([$provider1, $provider2, $provider3]);
 
         $provider1->getContentSecurityPolicy()->willReturn([
-            'default-src' => ["'self'", "*.apps.akeneo.com", "'unsafe-inline'"],
+            'default-src' => ["'self'", "'unsafe-inline'"],
             'script-src' => ["'self'", "'unsafe-eval'", "'nonce-123456'"],
             'img-src' => ["'self'", "data:"],
             'font-src' => ["'self'", "data:"],
         ]);
 
         $provider2->getContentSecurityPolicy()->willReturn([
-            'default-src' => ["'self'", "*.mywebsite.com", "'unsafe-inline'"],
+            'default-src' => ["'self'", "mywebsite.com", "'unsafe-inline'"],
             'script-src' => ["'nonce-78910'", "'unsafe-eval'"],
             'img-src' => [],
-            'frame-src' => ["*", "*.apps.akeneo.com"],
+            'frame-src' => ["*", "mywebsite.com"],
         ]);
 
         $provider3->getContentSecurityPolicy()->willReturn([
             'connect-src'=> ["'self'"],
         ]);
 
-        $this->getPolicy()->shouldReturn("default-src 'self' *.apps.akeneo.com 'unsafe-inline' *.mywebsite.com; script-src 'self' 'unsafe-eval' 'nonce-123456' 'nonce-78910'; img-src 'self' data:; font-src 'self' data:; frame-src * *.apps.akeneo.com; connect-src 'self'");
+        $this->getPolicy()->shouldReturn("default-src 'self' 'unsafe-inline' mywebsite.com; script-src 'self' 'unsafe-eval' 'nonce-123456' 'nonce-78910'; img-src 'self' data:; font-src 'self' data:; frame-src * mywebsite.com; connect-src 'self'");
     }
 }

@@ -33,7 +33,7 @@ class ContentSecurityHeadersEndToEnd extends WebTestCase
 
         Assert::assertStringContainsString("default-src 'self' 'unsafe-inline';", $cspHeaders);
         Assert::assertStringContainsString(
-            "img-src 'self' data: *.apps.akeneo.com marketplace.akeneo.com;",
+            "img-src 'self' data: apps.akeneo.com marketplace.akeneo.com;",
             $cspHeaders
         );
         Assert::assertMatchesRegularExpression(

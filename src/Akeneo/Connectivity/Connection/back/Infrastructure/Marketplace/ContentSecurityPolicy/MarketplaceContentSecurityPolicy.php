@@ -18,7 +18,7 @@ final class MarketplaceContentSecurityPolicy implements ContentSecurityPolicyPro
     {
         return [
             'img-src' => [
-                '*.apps.akeneo.com',
+                'apps.akeneo.com',
                 'marketplace.akeneo.com'
             ],
         ];
