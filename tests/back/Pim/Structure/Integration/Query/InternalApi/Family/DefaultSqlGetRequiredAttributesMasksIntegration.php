@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Structure\Integration\Query\InternalApi\Family;
 
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\DefaultSqlGetRequiredAttributesMasks;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Webmozart\Assert\Assert;
 
 final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetRequiredAttributesMasksIntegration
