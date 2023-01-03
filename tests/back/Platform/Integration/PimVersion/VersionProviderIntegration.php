@@ -152,6 +152,22 @@ class VersionProviderIntegration extends KernelTestCase
         Assert::assertSame('Growth Edition', $versionProvider->getEdition());
     }
 
+    /**
+     * Do not change it during a pull up.
+     * It is useful to hardcode it as master, as it allows to follow who installed CE master thanks to the PIM tracker analytics.
+     *
+     * Test to remove when tagging a major version.
+     */
+    public function test_that_it_provides_the_community_version()
+    {
+        $_ENV['PIM_EDITION'] = 'community_edition_instance';
+
+        $versionProvider = static::$kernel->getContainer()->get('pim_catalog.version_provider');
+
+        Assert::assertSame('CE', $versionProvider->getEdition());
+        Assert::assertSame('master', $versionProvider->getVersion());
+    }
+
     public function tearDown(): void
     {
         parent::tearDown();
