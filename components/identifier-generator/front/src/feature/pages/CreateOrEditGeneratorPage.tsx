@@ -43,14 +43,14 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
-  const getErrorByPathname = useCallback(
+  const getErrorByPathNames = useCallback(
     (pathNames: string[]) => validationErrors.filter(item => pathNames.some(v => item?.path?.includes(v))),
     [validationErrors]
   );
 
-  const generalValidationErrors = getErrorByPathname(['labels']);
-  const selectionValidationErrors = getErrorByPathname(['conditions']);
-  const structureValidationErrors = getErrorByPathname(['structure', 'delimiter']);
+  const generalValidationErrors = getErrorByPathNames(['labels']);
+  const selectionValidationErrors = getErrorByPathNames(['conditions']);
+  const structureValidationErrors = getErrorByPathNames(['structure', 'delimiter']);
 
   useEffect(() => {
     setGenerator(initialGenerator);
@@ -121,18 +121,18 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === GeneratorTab.GENERAL} onClick={changeTab(GeneratorTab.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
-            {generalValidationErrors?.length > 0 && <Pill level="danger" />}
+            {generalValidationErrors.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
           <TabBar.Tab
             isActive={currentTab === GeneratorTab.PRODUCT_SELECTION}
             onClick={changeTab(GeneratorTab.PRODUCT_SELECTION)}
           >
             {translate('pim_identifier_generator.tabs.product_selection')}
-            {selectionValidationErrors?.length > 0 && <Pill level="danger" />}
+            {selectionValidationErrors.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
           <TabBar.Tab isActive={currentTab === GeneratorTab.STRUCTURE} onClick={changeTab(GeneratorTab.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
-            {structureValidationErrors?.length > 0 && <Pill level="danger" />}
+            {structureValidationErrors.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
         </TabBar>
         {currentTab === GeneratorTab.GENERAL && (

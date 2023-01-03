@@ -187,7 +187,7 @@ describe('SelectionTab', () => {
     ]);
   });
 
-  it('should show displayed errors', () => {
+  it('should display errors', () => {
     mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
       json: [{code: 'sku', label: 'Sku'}],
     });
