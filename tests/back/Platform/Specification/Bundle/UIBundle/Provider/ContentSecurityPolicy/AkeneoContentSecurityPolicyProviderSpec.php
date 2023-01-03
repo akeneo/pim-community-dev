@@ -25,7 +25,6 @@ class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
             'default-src' =>
                 [
                     "'self'",
-                    '*.apps.trusted-domain.com',
                     "'unsafe-inline'",
                 ],
             'script-src' =>
@@ -38,7 +37,6 @@ class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
                 [
                     "'self'",
                     'data:',
-                    '*.apps.trusted-domain.com',
                 ],
             'frame-src' =>
                 [
@@ -52,7 +50,6 @@ class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
             'connect-src' =>
                 [
                     "'self'",
-                    '*.apps.trusted-domain.com',
                 ],
         ]);
     }

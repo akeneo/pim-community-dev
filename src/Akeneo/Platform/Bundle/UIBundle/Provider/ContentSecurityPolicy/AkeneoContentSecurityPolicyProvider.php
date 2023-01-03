@@ -8,24 +8,21 @@ use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
 
 final class AkeneoContentSecurityPolicyProvider implements ContentSecurityPolicyProviderInterface
 {
-    public function __construct(
-        private readonly ScriptNonceGenerator $nonceGenerator,
-        private readonly string $rootDomain
-    ) {
+    public function __construct(private readonly ScriptNonceGenerator $nonceGenerator)
+    {
     }
 
     public function getContentSecurityPolicy(): array
     {
         $generatedNonce = $this->nonceGenerator->getGeneratedNonce();
-        $trustedSubDomains = sprintf('*.apps.%s', $this->rootDomain);
 
         return [
-            'default-src' => ["'self'", $trustedSubDomains, "'unsafe-inline'"],
+            'default-src' => ["'self'", "'unsafe-inline'"],
             'script-src' => ["'self'", "'unsafe-eval'", sprintf("'nonce-%s'", $generatedNonce)],
-            'img-src' => ["'self'", "data:", $trustedSubDomains,],
+            'img-src' => ["'self'", "data:"],
             'frame-src' => ["*"],
             'font-src' => ["'self'", "data:"],
-            'connect-src' => ["'self'", $trustedSubDomains],
+            'connect-src' => ["'self'"],
         ];
     }
 }

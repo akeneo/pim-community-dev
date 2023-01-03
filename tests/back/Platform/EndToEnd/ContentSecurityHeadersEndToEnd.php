@@ -31,7 +31,7 @@ class ContentSecurityHeadersEndToEnd extends WebTestCase
 
         $cspHeaders = $response->headers->get('content-security-policy');
 
-        Assert::assertStringContainsString("default-src 'self' *.apps.akeneo.com 'unsafe-inline';", $cspHeaders);
+        Assert::assertStringContainsString("default-src 'self' 'unsafe-inline';", $cspHeaders);
         Assert::assertStringContainsString(
             "img-src 'self' data: *.apps.akeneo.com marketplace.akeneo.com;",
             $cspHeaders
@@ -42,7 +42,7 @@ class ContentSecurityHeadersEndToEnd extends WebTestCase
         );
         Assert::assertStringContainsString("frame-src *;", $cspHeaders);
         Assert::assertStringContainsString("font-src 'self' data:;", $cspHeaders);
-        Assert::assertStringContainsString("connect-src 'self' *.apps.akeneo.com", $cspHeaders);
+        Assert::assertStringContainsString("connect-src 'self'", $cspHeaders);
     }
 
     protected function getConfiguration(): Configuration
