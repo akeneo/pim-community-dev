@@ -69,7 +69,6 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                         code={source?.source ?? ''}
                         onChange={handleSourceSelection}
                         error={errors?.source}
-                        placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.placeholder')}
                     ></SelectAttributeDropdown>
                     <SectionTitle>
                         <Tag tint='purple'>2</Tag>

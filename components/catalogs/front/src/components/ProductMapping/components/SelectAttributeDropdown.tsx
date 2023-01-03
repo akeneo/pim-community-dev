@@ -14,10 +14,9 @@ type Props = {
     code: string;
     onChange: (value: Attribute) => void;
     error: string | undefined;
-    placeholder: string | undefined;
 };
 
-export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error, placeholder}) => {
+export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
@@ -48,7 +47,7 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error, place
                         emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                         openLabel={translate('akeneo_catalogs.common.select.open')}
                         value={attribute?.label ?? (code.length > 0 ? `[${code}]` : null)}
-                        placeholder={placeholder ?? ''}
+                        placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.placeholder')}
                         onChange={() => null}
                         clearable={false}
                         data-testid='product-mapping-select-attribute'
