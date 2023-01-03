@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
 import {NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid, Helper} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -7,11 +7,13 @@ import {Styled} from '../components/Styled';
 import {ListSkeleton} from '../components';
 import {AddConditionButton, EnabledLine, FamilyLine} from './conditions';
 import {SimpleDeleteModal} from '../pages';
+import {Violation} from '../validators';
 
 type SelectionTabProps = {
   conditions: Conditions;
   target: Target;
   onChange: (conditions: Conditions) => void;
+  validationErrors: Violation[];
 };
 
 type ConditionIdentifier = string;
@@ -33,7 +35,7 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
   }
 };
 
-const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange}) => {
+const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange, validationErrors}) => {
   const translate = useTranslate();
   const {data: identifiers, isLoading} = useIdentifierAttributes();
   const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionIdentifier | undefined>();
@@ -54,6 +56,11 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
   const removeIdentifiers = useCallback(
     (conditionsWithId: ConditionWithIdentifier[]) => conditionsWithId.map(removeIdentifier),
     []
+  );
+
+  const displayedErrors = useMemo(
+    () => validationErrors?.map(({message}) => message).filter((value, index, self) => self.indexOf(value) === index),
+    [validationErrors]
   );
 
   const handleChange = (conditionWithId: Condition & {id: ConditionIdentifier}) => {
@@ -101,6 +108,15 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
 
   return (
     <>
+      {displayedErrors?.length > 0 && (
+        <Styled.MainErrorHelper level="error">
+          <Styled.ErrorList>
+            {displayedErrors.map(message => (
+              <li key={message}>{message}</li>
+            ))}
+          </Styled.ErrorList>
+        </Styled.MainErrorHelper>
+      )}
       {conditionsWithId.length > 0 && (
         <Helper level="info">
           {translate('pim_identifier_generator.selection.helper.title')}
@@ -115,7 +131,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
         <SectionTitle.Spacer />
         <AddConditionButton conditions={conditionsWithId} onAddCondition={onAddCondition} />
       </SectionTitle>
-
       <Table>
         <Table.Body>
           {isLoading && <ListSkeleton />}
