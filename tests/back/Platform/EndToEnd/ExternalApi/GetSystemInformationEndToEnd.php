@@ -34,13 +34,8 @@ class GetSystemInformationEndToEnd extends ApiTestCase
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $content = json_decode($response->getContent(), true);
         Assert::assertCount(2, $content);
-        Assert::assertSame(
-            [
-                'version' => 'master',
-                'edition' => 'ce',
-            ],
-            $content
-        );
+        Assert::assertEquals('ce', $content['edition']);
+        Assert::assertMatchesRegularExpression('/^7.0.[0-9]*$/', $content['version']);
     }
 
     protected function getConfiguration(): Configuration

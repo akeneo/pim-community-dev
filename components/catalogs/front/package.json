@@ -18,7 +18,7 @@
   },
   "proxy": "http://localhost:8080",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "lib:build": "tsc -p tsconfig.build.json",
     "eslint": "eslint --config .eslintrc.json src/**/*.{ts,tsx}",
     "prettier": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
