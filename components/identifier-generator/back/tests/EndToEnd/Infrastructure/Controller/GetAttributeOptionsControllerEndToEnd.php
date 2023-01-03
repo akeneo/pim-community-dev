@@ -80,11 +80,11 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
 
         $expectedFirstPage = [
             [
-                'code' => 'orange',
-                'labels' => ['en_US' => 'Orange'],
+                'code' => 'black',
+                'labels' => ['en_US' => 'Black'],
             ], [
-                'code' => 'green',
-                'labels' => ['en_US' => 'Green'],
+                'code' => 'blue',
+                'labels' => ['en_US' => 'Blue'],
             ],
         ];
 
@@ -98,11 +98,11 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
 
         $expectedSecondPage = [
             [
-                'code' => 'white',
-                'labels' => ['en_US' => 'White'],
+                'code' => 'brown',
+                'labels' => ['en_US' => 'Brown'],
             ], [
-                'code' => 'blue',
-                'labels' => ['en_US' => 'Blue'],
+                'code' => 'green',
+                'labels' => ['en_US' => 'Green'],
             ],
         ];
 
@@ -122,14 +122,14 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
 
         $expected = [
             [
+                'code' => 'brown',
+                'labels' => ['en_US' => 'Brown'],
+            ], [
                 'code' => 'white',
                 'labels' => ['en_US' => 'White'],
             ], [
                 'code' => 'yellow',
                 'labels' => ['en_US' => 'Yellow'],
-            ], [
-                'code' => 'brown',
-                'labels' => ['en_US' => 'Brown'],
             ]
         ];
 
