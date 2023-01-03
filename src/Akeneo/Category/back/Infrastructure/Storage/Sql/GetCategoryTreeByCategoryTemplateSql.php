@@ -40,7 +40,8 @@ class GetCategoryTreeByCategoryTemplateSql implements GetCategoryTreeByCategoryT
                 category.code AS code,
                 translation.translations AS translations,
                 BIN_TO_UUID(category_tree_template.category_template_uuid) AS template_uuid,
-                category_template.labels AS template_labels
+                category_template.labels AS template_labels,
+                category_template.code AS template_code            
             FROM pim_catalog_category category
                 JOIN pim_catalog_category_tree_template category_tree_template
                      ON category_tree_template.category_tree_id=category.id

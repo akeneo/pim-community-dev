@@ -52,7 +52,7 @@ class TemplateBuilder
         return new Template(
             $templateUuid,
             new TemplateCode($this->generateTemplateCode($categoryTree->getCode())),
-            $this->generateTemplateLabelCollection($categoryTree->getLabels()),
+            LabelCollection::fromArray([]),
             $categoryTree->getId(),
             AttributeCollection::fromArray([
                 AttributeRichText::create(
@@ -208,20 +208,5 @@ class TemplateBuilder
     private function generateTemplateCode(Code $categoryTreeCode): TemplateCode
     {
         return new TemplateCode((string) $categoryTreeCode.'_template');
-    }
-
-    /**
-     * Generate a template label by adding ' template' at the end of given category tree 'en_US' label.
-     */
-    private function generateTemplateLabelCollection(?LabelCollection $categoryTreeLabelCollection): LabelCollection
-    {
-        $translations = [];
-        if ($categoryTreeLabelCollection) {
-            $translations = [
-                'en_US' => $categoryTreeLabelCollection->getTranslation('en_US').' template',
-            ];
-        }
-
-        return LabelCollection::fromArray($translations);
     }
 }
