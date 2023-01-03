@@ -41,7 +41,7 @@ class CreateTemplateController
 
         $data = $request->toArray();
         $templateCode = new TemplateCode($data['code']);
-        $templateLabelCollection = LabelCollection::fromArray($data['labels']);
+        $templateLabelCollection = LabelCollection::fromArray($data['labels'] ?? []);
 
         $categoryTree = $this->getCategory->byId($categoryTreeId);
         $templateUuid = ($this->activateTemplate)($categoryTree->getId(), $templateCode, $templateLabelCollection);

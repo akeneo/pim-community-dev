@@ -29,9 +29,9 @@ class UserIntentFactoryRegistrySpec extends ObjectBehavior
     )
     {
         $userIntentFactory->getSupportedFieldNames()->willReturn(['field']);
-        $userIntentFactory->create('field', ['key' => 'value', 'ignored_field' => 'another_value'])->shouldBeCalled();
+        $userIntentFactory->create('field', 1, ['key' => 'value', 'ignored_field' => 'another_value'])->shouldBeCalled();
 
-        $this->fromStandardFormatField('field', ['key' => 'value', 'ignored_field' => 'another_value']);
+        $this->fromStandardFormatField('field', 1, ['key' => 'value', 'ignored_field' => 'another_value']);
     }
 
     function it_throws_an_exception_when_no_factory_is_found(
@@ -39,9 +39,9 @@ class UserIntentFactoryRegistrySpec extends ObjectBehavior
     )
     {
         $userIntentFactory->getSupportedFieldNames()->willReturn(['field']);
-        $userIntentFactory->create('unknown_field', ['key' => 'value'])->shouldNotBeCalled();
+        $userIntentFactory->create('unknown_field', 1, ['key' => 'value'])->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('fromStandardFormatField', ['unknown_field', ['key' => 'value']]);
+            ->during('fromStandardFormatField', ['unknown_field', 1, ['key' => 'value']]);
     }
 }

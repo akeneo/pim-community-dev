@@ -13,6 +13,7 @@ use Akeneo\Category\Application\Filter\CategoryEditAclFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
+use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,13 +30,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class UpdateCategoryController
 {
     public function __construct(
-        private CommandMessageBus $categoryCommandBus,
-        private SecurityFacade $securityFacade,
-        private ConverterInterface $internalApiToStandardConverter,
-        private CategoryEditAclFilter $categoryEditAclFilter,
-        private StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
-        private CategoryEditUserIntentFilter $categoryUserIntentFilter,
-        private GetCategoryInterface $getCategory,
+        private readonly CommandMessageBus $categoryCommandBus,
+        private readonly SecurityFacade $securityFacade,
+        private readonly ConverterInterface $internalApiToStandardConverter,
+        private readonly CategoryEditAclFilter $categoryEditAclFilter,
+        private readonly StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
+        private readonly CategoryEditUserIntentFilter $categoryUserIntentFilter,
+        private readonly GetCategoryInterface $getCategory,
+        private readonly FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry,
     ) {
     }
 
@@ -49,6 +51,7 @@ class UpdateCategoryController
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
+        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
 
         // Transform request to a user intent list
         $data = $request->toArray();
@@ -90,10 +93,9 @@ class UpdateCategoryController
                 Response::HTTP_BAD_REQUEST,
             );
         }
-        $category = $this->getCategory->byId($id);
-        if ($category === null) {
-            throw new NotFoundHttpException('Category not found');
-        }
+
+        $category = $this->getCategory->byId($category->getId()->getValue());
+        $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
 
         $normalizedCategory = $category->normalize();
 

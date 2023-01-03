@@ -53,6 +53,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
                 category.code,
                 category_tree_translation.translations,
                 BIN_TO_UUID(template.uuid) as template_uuid,
+                template.code as template_code,
                 template.labels as template_labels
             FROM 
                 pim_catalog_category category

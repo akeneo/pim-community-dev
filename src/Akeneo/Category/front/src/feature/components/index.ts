@@ -7,3 +7,4 @@ export * from './EditPropertiesForm';
 export * from './EditAttributesForm';
 export * from './TemplateTitle';
 export * from './CategoryPageContent';
+export * from './DiscoverEnrichedCategoriesInformationHelper';

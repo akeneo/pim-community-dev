@@ -14,7 +14,7 @@ import {
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../hooks';
-import {CategoryTree} from '../components';
+import {CategoryTree, DiscoverEnrichedCategoriesInformationHelper} from '../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
 
@@ -136,6 +136,7 @@ const CategoriesTreePage: FC = () => {
       </PageHeader>
       <PageContent>
         <section>
+          <DiscoverEnrichedCategoriesInformationHelper />
           <SectionTitle>
             <SectionTitle.Title>{translate('pim_enrich.entity.category.plural_label')}</SectionTitle.Title>
           </SectionTitle>
