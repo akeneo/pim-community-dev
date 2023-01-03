@@ -32,3 +32,6 @@ akeneo.category:
             header: Label
             code: Code
             type: Type
+
+    tag:
+        new: New
