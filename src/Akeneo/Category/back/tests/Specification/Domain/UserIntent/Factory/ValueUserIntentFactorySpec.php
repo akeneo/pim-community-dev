@@ -182,6 +182,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         ];
         $this->create(
             'values',
+            1,
             $data
         )->shouldBeLike($expectedUseIntents);
     }
@@ -228,6 +229,6 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             ->shouldBeCalledOnce()
             ->willReturn($valueCollection);
 
-        $this->create('values', $data)->shouldHaveCount(1);
+        $this->create('values', 1, $data)->shouldHaveCount(1);
     }
 }

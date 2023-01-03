@@ -37,12 +37,14 @@ services:
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
         public: true
@@ -74,6 +76,11 @@ services:
             - '@Akeneo\Category\Application\Query\GetAttribute'
             - '@pim_category.infrastructure.registry.preview_generator'
             - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UserGroupController:
+        public: true
+        arguments:
+            - '@Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface'
 
     Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
         public: true

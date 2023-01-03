@@ -19,7 +19,7 @@ class LabelUserIntentFactory implements UserIntentFactory
         return ['labels'];
     }
 
-    public function create(string $fieldName, mixed $data): array
+    public function create(string $fieldName, int $categoryId, mixed $data): array
     {
         if (false === \is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($fieldName, static::class, $data);
