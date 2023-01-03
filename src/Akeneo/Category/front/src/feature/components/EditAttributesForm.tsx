@@ -1,13 +1,13 @@
-import React, {useCallback, useMemo, useContext, useState} from 'react';
+import React, {useCallback, useContext, useMemo, useState} from 'react';
 import styled from 'styled-components';
-import {SectionTitle, Helper} from 'akeneo-design-system';
+import {Helper, SectionTitle} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ChannelSelector} from './channel';
 import {
   Attribute,
   buildCompositeKey,
-  CategoryAttributeValueData,
   CATEGORY_ATTRIBUTE_TYPE_RICHTEXT,
+  CategoryAttributeValueData,
   EnrichCategory,
   isCategoryImageAttributeValueData,
   RICH_TEXT_DEFAULT_VALUE,
@@ -31,6 +31,7 @@ interface Props {
     locale: string | null,
     attributeValue: CategoryAttributeValueData
   ) => void;
+  onLocaleChange?: (locale: string) => void;
 }
 
 const FormContainer = styled.div`
@@ -54,7 +55,7 @@ function mustChangeBeSkipped(
   );
 }
 
-export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange}: Props) => {
+export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange, onLocaleChange}: Props) => {
   const translate = useTranslate();
   const {channels} = useContext(EditCategoryContext);
   const userContext = useUserContext();
@@ -67,6 +68,9 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   const handleLocaleChange = (value: string): void => {
     setLocale(value);
     userContext.set('catalogLocale', value, {});
+    if (onLocaleChange) {
+      onLocaleChange(value);
+    }
   };
 
   const handleChannelChange = (value: string): void => {
