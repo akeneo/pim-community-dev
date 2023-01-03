@@ -5,3 +5,4 @@ export * from './LabelTranslations';
 export * from './ListSkeleton';
 export * from './TranslationWithLink';
 export * from './LabelTranslationsSkeleton';
+export * from './TabValidationErrors';

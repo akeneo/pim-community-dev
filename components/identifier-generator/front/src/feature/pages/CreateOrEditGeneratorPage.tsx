@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
@@ -43,18 +43,14 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
-  const generalValidationErrors = useMemo(
-    () => validationErrors.filter(item => item?.path?.includes('labels')),
+  const getErrorByPathname = useCallback(
+    (pathNames: string[]) => validationErrors.filter(item => pathNames.some(v => item?.path?.includes(v))),
     [validationErrors]
   );
-  const selectionValidationErrors = useMemo(
-    () => validationErrors.filter(item => item?.path?.includes('conditions')),
-    [validationErrors]
-  );
-  const structureValidationErrors = useMemo(
-    () => validationErrors.filter(item => item?.path?.includes('structure') || item?.path?.includes('delimiter')),
-    [validationErrors]
-  );
+
+  const generalValidationErrors = getErrorByPathname(['labels']);
+  const selectionValidationErrors = getErrorByPathname(['conditions']);
+  const structureValidationErrors = getErrorByPathname(['structure', 'delimiter']);
 
   useEffect(() => {
     setGenerator(initialGenerator);
