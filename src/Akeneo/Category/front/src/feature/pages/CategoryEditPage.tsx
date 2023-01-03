@@ -30,11 +30,11 @@ import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
 import {
+  CategoryPageContent,
   EditAttributesForm,
   EditPermissionsForm,
   EditPropertiesForm,
   TemplateTitle,
-  CategoryPageContent,
 } from '../components';
 
 type Params = {
@@ -56,7 +56,12 @@ const CategoryEditPage: FC = () => {
 
   // locales
   const uiLocale = userContext.get('uiLocale');
-  const [catalogLocale] = useState(userContext.get('catalogLocale'));
+  const userContextLocale = userContext.get('catalogLocale');
+  const [catalogLocale, setCatalogLocale] = useState(userContextLocale);
+
+  const handleLocaleChanged = (locale: string) => {
+    setCatalogLocale(locale);
+  };
 
   // features
   const featureFlags = useFeatureFlags();
@@ -164,7 +169,7 @@ const CategoryEditPage: FC = () => {
     ) {
       handleSwitchTo(Tabs.PROPERTY);
     }
-  }, [category, activeTab]);
+  }, [category, activeTab, isGranted, handleSwitchTo]);
 
   if (categoryFetchingStatus === 'error') {
     return (
@@ -288,6 +293,7 @@ const CategoryEditPage: FC = () => {
               attributeValues={category.attributes}
               template={template}
               onAttributeValueChange={onChangeAttribute}
+              onLocaleChange={handleLocaleChanged}
             />
           )}
         {isCurrent(Tabs.PROPERTY) && category && (
