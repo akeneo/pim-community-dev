@@ -8,10 +8,10 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\DBAL\Connection;
 
 /**
- * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class SqlFindAttributeOptions implements FindAttributeOptions
+final class SqlFindAttributeOptions implements FindAttributeOptions
 {
     public function __construct(
         private readonly Connection $connection,
