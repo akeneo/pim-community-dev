@@ -11,10 +11,13 @@ $finder->notPath('tests');
 $builder = new RuleBuilder();
 
 $rules = [
-    // Domain layer should only use classes from itself and models from the ServiceAPI
+    // Domain layer should only use classes from itself or constraints annotations
     $builder->only(
         [
             'Akeneo\Catalogs\Domain',
+
+            // Constraints as Attributes
+            'Akeneo\Catalogs\Infrastructure\Validation',
         ]
     )->in('Akeneo\Catalogs\Domain'),
 

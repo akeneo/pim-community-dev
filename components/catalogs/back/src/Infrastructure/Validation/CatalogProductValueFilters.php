@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class CatalogUpdateProductMappingPayload extends Constraint
+#[\Attribute]
+final class CatalogProductValueFilters extends Constraint
 {
 }
