@@ -32,7 +32,7 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange, onDelete}) 
   };
 
   return (
-    <Table.Row>
+    <>
       <Styled.TitleCell>{translate('pim_common.family')}</Styled.TitleCell>
       <Styled.CellInputContainer>
         <Styled.InputContainer>
@@ -49,7 +49,7 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange, onDelete}) 
           {translate('pim_common.delete')}
         </Button>
       </Table.ActionCell>
-    </Table.Row>
+    </>
   );
 };
 
