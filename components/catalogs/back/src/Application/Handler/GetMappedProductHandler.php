@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
+use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
 use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
+use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException;
@@ -31,6 +34,9 @@ final class GetMappedProductHandler
         private ProductMapperInterface $productMapper,
         private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
         private IsProductBelongingToCatalogQueryInterface $isProductBelongingToCatalogQuery,
+        private DisableCatalogQueryInterface $disableCatalogQuery,
+        private IsCatalogValidInterface $isCatalogValid,
+        private DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
     ) {
     }
 
@@ -49,11 +55,21 @@ final class GetMappedProductHandler
             throw new CatalogDisabledException();
         }
 
-        if (!$this->isProductBelongingToCatalogQuery->execute($catalog, $query->getProductUuid())) {
-            throw new ProductNotFoundException();
-        }
+        try {
+            if (!$this->isProductBelongingToCatalogQuery->execute($catalog, $query->getProductUuid())) {
+                throw new ProductNotFoundException();
+            }
 
-        $product = $this->getRawProductQuery->execute($query->getProductUuid());
+            $product = $this->getRawProductQuery->execute($query->getProductUuid());
+        } catch (\Exception $exception) {
+            if (!($this->isCatalogValid)($catalog)) {
+                $this->disableCatalogQuery->execute($catalog->getId());
+                ($this->dispatchInvalidCatalogDisabledEvent)($catalog->getId());
+                throw new CatalogDisabledException(previous: $exception);
+            }
+
+            throw $exception;
+        }
 
         if (null === $product) {
             throw new ProductNotFoundException();
