@@ -17,13 +17,13 @@ const TabValidationErrors: React.FC<Props> = ({errors}) => {
       {displayedErrors?.length > 0 && (
         <Styled.MainErrorHelper level="error">
           {displayedErrors.length > 1 ? (
-            <Styled.ErrorList>
+            <ul>
               {displayedErrors.map(message => (
                 <li key={message}>{message}</li>
               ))}
-            </Styled.ErrorList>
+            </ul>
           ) : (
-            <p style={{margin: 0}}>{displayedErrors[0]}</p>
+            <p>{displayedErrors[0]}</p>
           )}
         </Styled.MainErrorHelper>
       )}
