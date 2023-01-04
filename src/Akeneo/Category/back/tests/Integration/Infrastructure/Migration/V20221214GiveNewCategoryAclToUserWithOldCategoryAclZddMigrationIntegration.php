@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
 use Doctrine\DBAL\Connection;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
@@ -32,7 +33,7 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function testMigrationGivesACLToEditEnrichedCategoryWhenUserHasACLToEditCategory()
+    public function testMigrationGivesACLToEditEnrichedCategoryWhenUserHasACLToEditCategory(): void
     {
         $this->enableEnrichedCategoryFeature();
 
@@ -77,7 +78,7 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         ]);
     }
 
-    public function testMigrationGivesACLToEditCategoryTemplateWhenUserHasACLToCreateCategory()
+    public function testMigrationGivesACLToEditCategoryTemplateWhenUserHasACLToCreateCategory(): void
     {
         $this->enableEnrichedCategoryFeature();
 
@@ -121,7 +122,7 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         ]);
     }
 
-    public function testMigrationGivesACLOnEnrichedCategoryOnlyToRolesWithACLToCreateAndEditCategory()
+    public function testMigrationGivesACLOnEnrichedCategoryOnlyToRolesWithACLToCreateAndEditCategory(): void
     {
         $this->enableEnrichedCategoryFeature();
 
@@ -205,6 +206,9 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         ]);
     }
 
+    /**
+     * @param array<int, string> $acls
+     */
     private function createRoleWithAcls(string $roleCode, array $acls): void
     {
         /** @var AclManager $aclManager */
@@ -242,11 +246,16 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         $cacheClearer->clear();
     }
 
+    /**
+     * @param array<string, bool> $acls
+     */
     private function assertRoleAclsAreGranted(string $role, array $acls): void
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
-        $token = new UsernamePasswordToken('username', 'main', [$role]);
+        $user = new User();
+        $user->setUsername('username');
+        $token = new UsernamePasswordToken($user, 'main', [$role]);
 
         foreach ($acls as $acl => $expectedValue) {
             assert(is_bool($expectedValue));
@@ -257,6 +266,9 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         }
     }
 
+    /**
+     * @param array<string, bool> $acls
+     */
     private function assertRoleAclsAreStoredInTheDatabase(string $role, array $acls): void
     {
         $query = <<<SQL
