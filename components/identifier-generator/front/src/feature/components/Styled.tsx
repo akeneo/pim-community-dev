@@ -52,6 +52,13 @@ const TranslationsTextFieldSkeleton = styled(SkeletonPlaceholder)`
 
 const MainErrorHelper = styled(Helper)`
   margin-top: 10px;
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  p {
+    margin: 0;
+  }
 `;
 
 const ErrorContainer = styled.div`
@@ -61,11 +68,6 @@ const ErrorContainer = styled.div`
   color: ${getColor('grey', 120)};
   font-style: normal;
   margin-left: 10px;
-`;
-
-const ErrorList = styled.ul`
-  margin: 0;
-  padding-left: 20px;
 `;
 
 const CellInputContainer = styled(Table.Cell)`
@@ -97,7 +99,6 @@ const TitleCondition = styled(TitleCell)`
 const Styled = {
   CellInputContainer,
   ErrorContainer,
-  ErrorList,
   MainErrorHelper,
   FormContainer,
   FullPageCenteredContent,
