@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
 use Doctrine\DBAL\Connection;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
@@ -32,7 +33,7 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function testMigrationGivesACLToEditEnrichedCategoryWhenUserHasACLToEditCategory()
+    public function testMigrationGivesACLToEditEnrichedCategoryWhenUserHasACLToEditCategory(): void
     {
         $this->enableEnrichedCategoryFeature();
 
@@ -77,7 +78,7 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         ]);
     }
 
-    public function testMigrationGivesACLToEditCategoryTemplateWhenUserHasACLToCreateCategory()
+    public function testMigrationGivesACLToEditCategoryTemplateWhenUserHasACLToCreateCategory(): void
     {
         $this->enableEnrichedCategoryFeature();
 
@@ -121,7 +122,7 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         ]);
     }
 
-    public function testMigrationGivesACLOnEnrichedCategoryOnlyToRolesWithACLToCreateAndEditCategory()
+    public function testMigrationGivesACLOnEnrichedCategoryOnlyToRolesWithACLToCreateAndEditCategory(): void
     {
         $this->enableEnrichedCategoryFeature();
 
@@ -205,6 +206,9 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         ]);
     }
 
+    /**
+     * @param array<int, string> $acls
+     */
     private function createRoleWithAcls(string $roleCode, array $acls): void
     {
         /** @var AclManager $aclManager */
@@ -242,21 +246,33 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
         $cacheClearer->clear();
     }
 
+    /**
+     * @param array<string, bool> $acls
+     */
     private function assertRoleAclsAreGranted(string $role, array $acls): void
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
-        $token = new UsernamePasswordToken('username', 'main', [$role]);
+
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier('my_user');
+        if (empty($user)) {
+            $user = $this->createUser('my_user', []);
+        }
+        $this->assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, 'main', [$role]);
 
         foreach ($acls as $acl => $expectedValue) {
             assert(is_bool($expectedValue));
 
             $isAllowed = $decisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
             $this->assertEquals($expectedValue, $isAllowed, sprintf('Role %s should have ACL \'%s\' = %s', $role, $acl, ($isAllowed ? 'false' : 'true')));
-            //$this->assertEquals($expectedValue, $isAllowed, sprintf('%s %s', $role, $acl));
         }
     }
 
+    /**
+     * @param array<string, bool> $acls
+     */
     private function assertRoleAclsAreStoredInTheDatabase(string $role, array $acls): void
     {
         $query = <<<SQL
@@ -283,5 +299,31 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
                 sprintf('\'%s\' should be stored in database.', $acl)
             );
         }
+    }
+
+    /**
+     * @param string $username
+     * @param array<string> $groups
+     * @return User
+     */
+    private function createUser(string $username, array $groups): User
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername($username);
+        $user->setEmail(sprintf('%s@example.com', uniqid()));
+        $user->setPassword('fake');
+
+        foreach ($groups as $group) {
+            $user->addGroup($group);
+        }
+
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            $user->addRole($role);
+        }
+
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
     }
 }
