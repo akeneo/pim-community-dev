@@ -1,0 +1,8 @@
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+  "properties": {
+    "uuid": {
+      "type": "boolean"
+    }
+  }
+}

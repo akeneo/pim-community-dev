@@ -55,120 +55,24 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
 
     public function validSchemaDataProvider(): array
     {
-        return [
-            '0.0.1 with valid schema' => [
-                'schema' => <<<'JSON_WRAP'
-{
-  "$id": "https://example.com/product",
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
-  "$comment": "My first schema !",
-  "title": "Product Mapping",
-  "description": "JSON Schema describing the structure of products expected by our application",
-  "type": "object",
-  "properties": {
-    "name": {
-      "type": "string"
-    },
-    "body_html": {
-      "title": "Description",
-      "description": "Product description in raw HTML",
-      "type": "string"
-    }
-  }
-}
-JSON_WRAP,
-            ],
-            '0.0.2 with valid schema with uuid' => [
-                'schema' => <<<'JSON_WRAP'
-{
-  "$id": "https://example.com/product",
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
-  "$comment": "My first schema !",
-  "title": "Product Mapping",
-  "description": "JSON Schema describing the structure of products expected by our application",
-  "type": "object",
-  "properties": {
-    "uuid": {
-      "title": "Product uuid",
-      "type": "string"
-    },
-    "name": {
-      "type": "string"
-    },
-    "body_html": {
-      "title": "Description",
-      "description": "Product description in raw HTML",
-      "type": "string"
-    }
-  }
-}
-JSON_WRAP,
-            ],
-        ];
+        return $this->readFilesFromDirectory(__DIR__ . '/ProductSchema/valid');
     }
 
     public function invalidSchemaDataProvider(): array
     {
-        return [
-            '0.0.1 with invalid type number' => [
-                'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
-  "properties": {
-    "price": {
-      "type": "number"
+        return $this->readFilesFromDirectory(__DIR__ . '/ProductSchema/invalid');
     }
-  }
-}
-JSON_WRAP,
-            ],
-            '0.0.1 with missing target type' => [
-                'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
-  "properties": {
-    "price": {}
-  }
-}
-JSON_WRAP,
-            ],
-            '0.0.2 with missing uuid' => [
-                'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
-  "properties": {
-    "name": {
-      "type": "string"
-    }
-  }
-}
-JSON_WRAP,
-            ],
-            '0.0.2 with invalid uuid type' => [
-                'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
-  "properties": {
-    "uuid": {
-      "type": "boolean"
-    }
-  }
-}
-JSON_WRAP,
-            ],
-            '0.0.2 with invalid uuid extra fields' => [
-                'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
-  "properties": {
-    "uuid": {
-      "type": "boolean",
-      "title": "Description"
-    }
-  }
-}
-JSON_WRAP,
-            ],
-        ];
+
+    /**
+     * @return array<string, array{schema: string}>
+     */
+    private function readFilesFromDirectory(string $directory): array
+    {
+        $files = scandir($directory);
+        $files = array_filter($files, fn ($file) => !str_starts_with($file, '.'));
+
+        return array_combine($files, array_map(fn ($file) => [
+            'schema' => file_get_contents($directory . '/' . $file),
+        ], $files));
     }
 }
