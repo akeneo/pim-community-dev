@@ -41,7 +41,7 @@ class GetProductActionTest extends IntegrationTestCase
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
         $this->createProduct('red', [new SetEnabled(true)]);
         $this->createProduct('green', [new SetEnabled(false)]);
-        $productUuid = $product->getUuid()->toString();
+        $productUuid = (string) $product->getUuid();
 
         $this->client->request(
             'GET',
@@ -208,7 +208,7 @@ class GetProductActionTest extends IntegrationTestCase
         );
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
-        $productUuid = $product->getUuid()->toString();
+        $productUuid = (string) $product->getUuid();
 
         $this->client->request(
             'GET',
@@ -239,7 +239,7 @@ class GetProductActionTest extends IntegrationTestCase
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
-        $productUuid = $product->getUuid()->toString();
+        $productUuid = (string) $product->getUuid();
 
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
