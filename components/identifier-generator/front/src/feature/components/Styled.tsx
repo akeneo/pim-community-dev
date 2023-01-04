@@ -52,6 +52,13 @@ const TranslationsTextFieldSkeleton = styled(SkeletonPlaceholder)`
 
 const MainErrorHelper = styled(Helper)`
   margin-top: 10px;
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  p {
+    margin: 0;
+  }
 `;
 
 const ErrorContainer = styled.div`
@@ -63,11 +70,6 @@ const ErrorContainer = styled.div`
   margin-left: 10px;
 `;
 
-const ErrorList = styled.ul`
-  margin: 0;
-  padding-left: 20px;
-`;
-
 const CellInputContainer = styled(Table.Cell)`
   width: calc(10vw + 20px);
 `;
@@ -75,7 +77,6 @@ const CellInputContainer = styled(Table.Cell)`
 const Styled = {
   CellInputContainer,
   ErrorContainer,
-  ErrorList,
   MainErrorHelper,
   FormContainer,
   FullPageCenteredContent,
