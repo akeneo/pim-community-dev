@@ -18,12 +18,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class CatalogUpdateProductValueFiltersPayloadValidator extends ConstraintValidator
+final class CatalogProductValueFiltersValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof CatalogUpdateProductValueFiltersPayload) {
-            throw new UnexpectedTypeException($constraint, CatalogUpdateProductValueFiltersPayload::class);
+        if (!$constraint instanceof CatalogProductValueFilters) {
+            throw new UnexpectedTypeException($constraint, CatalogProductValueFilters::class);
         }
 
         $this->context

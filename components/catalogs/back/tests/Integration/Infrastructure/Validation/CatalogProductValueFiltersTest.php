@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductValueFiltersPayload;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -12,9 +12,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductValueFiltersPayloadValidator
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogProductValueFiltersValidator
  */
-class CatalogUpdateProductValueFiltersPayloadTest extends IntegrationTestCase
+class CatalogProductValueFiltersTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
 
@@ -29,11 +29,21 @@ class CatalogUpdateProductValueFiltersPayloadTest extends IntegrationTestCase
 
     public function testItValidates(): void
     {
-        $violations = $this->validator->validate([
-            'channels' => ['ecommerce'],
-            'locales' => ['en_US'],
-            'currencies' => ['EUR', 'USD'],
-        ], new CatalogUpdateProductValueFiltersPayload());
+        $violations = $this->validator->validate(
+            new Catalog(
+                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                'Store US',
+                'willy',
+                false,
+                [],
+                [
+                    'channels' => ['ecommerce'],
+                    'locales' => ['en_US'],
+                    'currencies' => ['EUR', 'USD'],
+                ],
+                [],
+            )
+        );
 
         $this->assertEmpty($violations);
     }
@@ -45,7 +55,17 @@ class CatalogUpdateProductValueFiltersPayloadTest extends IntegrationTestCase
         array $filters,
         string $expectedMessage
     ): void {
-        $violations = $this->validator->validate($filters, new CatalogUpdateProductValueFiltersPayload());
+        $violations = $this->validator->validate(
+            new Catalog(
+                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                'Store US',
+                'willy',
+                false,
+                [],
+                $filters,
+                [],
+            )
+        );
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

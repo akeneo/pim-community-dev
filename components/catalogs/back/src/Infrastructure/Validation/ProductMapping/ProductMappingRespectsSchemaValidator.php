@@ -42,30 +42,27 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ProductMappingRespectsSchema::class);
         }
 
-        if (!\is_array($value) || !\array_key_exists('product_mapping', $value) || !\array_key_exists('product_mapping_schema_file', $value)) {
-            return;
+        if (!$value instanceof Catalog) {
+            throw new UnexpectedTypeException($value, Catalog::class);
         }
 
-        $productMapping = $value['product_mapping'];
-        $productMappingSchemaFile = $value['product_mapping_schema_file'];
-
-        if (!\is_array($productMapping) || (!empty($productMapping) && \array_is_list($productMapping))) {
-            return;
-        }
-
-        if (!\is_string($productMappingSchemaFile)) {
+        if ([] === $value->getProductMapping()) {
             return;
         }
 
         /** @var ProductMappingSchema $schema */
-        $schema = \json_decode($this->fetchProductMappingSchema($productMappingSchemaFile), true, 512, JSON_THROW_ON_ERROR);
+        $schema = \json_decode(
+            $this->fetchProductMappingSchema(\sprintf('%s_product.json', $value->getId())),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
 
-        /** @var ProductMapping $productMapping */
-        if (!$this->validateTargetsList($productMapping, $schema)) {
+        if (!$this->validateTargetsList($value->getProductMapping(), $schema)) {
             return;
         }
 
-        $this->validateTargetsTypes($productMapping, $schema);
+        $this->validateTargetsTypes($value->getProductMapping(), $schema);
     }
 
     private function fetchProductMappingSchema(string $productMappingSchemaFile): string
