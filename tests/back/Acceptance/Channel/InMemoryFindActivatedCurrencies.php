@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Channel;
 
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
