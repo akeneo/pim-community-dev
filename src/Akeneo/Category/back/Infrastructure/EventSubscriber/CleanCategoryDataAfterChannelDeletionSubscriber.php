@@ -16,8 +16,7 @@ class CleanCategoryDataAfterChannelDeletionSubscriber implements EventSubscriber
     public function __construct(
         private readonly CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
         private readonly FeatureFlag $enrichedCategoryFeature,
-    )
-    {
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -27,14 +26,9 @@ class CleanCategoryDataAfterChannelDeletionSubscriber implements EventSubscriber
         ];
     }
 
-    /**
-     * @param GenericEvent $event
-     * @return void
-     */
-    private function cleanCategoryData(GenericEvent $event): void
+    public function cleanCategoryData(GenericEvent $event): void
     {
         $channel = $event->getSubject();
-        $event->setArguments();
 
         if (!$channel instanceof ChannelInterface || !$this->enrichedCategoryFeature->isEnabled()) {
             return;

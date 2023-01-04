@@ -11,15 +11,15 @@ class CleanCategoryDataLinkedToChannel
     public function __construct(
         private readonly GetAllEnrichedCategoryValuesByCategoryCode $getAllEnrichedCategoryValuesByCategoryCode,
         private readonly UpdateCategoryEnrichedValues $updateCategoryEnrichedValues,
-    )
-    {
+    ) {
     }
 
     public function __invoke(string $channelCode): void
     {
         $valuesByCode = $this->getAllEnrichedCategoryValuesByCategoryCode->execute();
+        $batch = [];
 
-        foreach($valuesByCode as $categoryCode => $json) {
+        foreach ($valuesByCode as $categoryCode => $json) {
             $enrichedValues = json_decode($json, true);
             $valueKeysToRemove = $this->getEnrichedValueKeysToRemove($enrichedValues, $channelCode);
             if (!empty($valueKeysToRemove)) {
@@ -45,16 +45,18 @@ class CleanCategoryDataLinkedToChannel
         $keysToRemove = [];
 
         // matching string is '.*\|.*\|$code\|.*'
-        $matchingString = '.*\\'.AbstractValue::SEPARATOR.'.*\\'.AbstractValue::SEPARATOR . $code . '\|.*';
-
+        $matchingString = '.*\\'.AbstractValue::SEPARATOR.'.*\\'.AbstractValue::SEPARATOR.$code.'\|.*';
         foreach ($values as $key => $value) {
+            if ($key === 'attribute_codes') {
+                continue;
+            }
             if (preg_match('/'.$matchingString.'/', $key, $matches)) {
                 $keysToRemove[] = $key;
             }
         }
+
         return $keysToRemove;
     }
-
 
     private function updateCategoriesBatch(array $batch): void
     {

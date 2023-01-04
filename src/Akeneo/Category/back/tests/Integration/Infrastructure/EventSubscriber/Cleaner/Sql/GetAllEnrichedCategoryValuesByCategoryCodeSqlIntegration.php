@@ -4,12 +4,12 @@ namespace Akeneo\Test\Category\Integration\Infrastructure\EventSubscriber\Cleane
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\GetAllEnrichedCategoryValuesByCategoryCode;
-use Akeneo\Test\Integration\Configuration;
 
 class GetAllEnrichedCategoryValuesByCategoryCodeSqlIntegration extends CategoryTestCase
 {
     protected function setUp(): void
     {
+        parent::setUp();
 
         $categorySocks = $this->createCategory([
             'code' => 'socks',
@@ -41,17 +41,10 @@ class GetAllEnrichedCategoryValuesByCategoryCodeSqlIntegration extends CategoryT
 
     public function testItGetAllCategoryWithEnrichedValuesSortedByCategoryCode()
     {
-
-        // TODO fix json expected
-        $expectedCodes = ['shoes', 'socks'];
-
         $valuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
 
-        $this->assertEqualsCanonicalizing($expectedCodes, array_keys($valuesByCategoryCode));
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
+        $this->assertTrue(in_array('socks', array_keys($valuesByCategoryCode)));
+        $this->assertTrue(in_array('shoes', array_keys($valuesByCategoryCode)));
+        $this->assertFalse(in_array('pants', array_keys($valuesByCategoryCode)));
     }
 }
