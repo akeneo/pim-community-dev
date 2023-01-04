@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
-import {SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
+import {NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid, Helper} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
@@ -101,11 +101,21 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
 
   return (
     <>
+      {conditionsWithId.length > 0 && (
+        <Helper level="info">
+          {translate('pim_identifier_generator.selection.helper.title')}
+          <Styled.ListItems>
+            <li>{translate('pim_identifier_generator.selection.helper.automate')}</li>
+            <li>{translate('pim_identifier_generator.selection.helper.multiple')}</li>
+          </Styled.ListItems>
+        </Helper>
+      )}
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_identifier_generator.tabs.product_selection')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <AddConditionButton conditions={conditionsWithId} onAddCondition={onAddCondition} />
       </SectionTitle>
+
       <Table>
         <Table.Body>
           {isLoading && <ListSkeleton />}
@@ -122,6 +132,22 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
                   </Styled.InputContainer>
                 </Table.Cell>
               </Table.Row>
+              {conditionsWithId.length === 0 && (
+                <tr>
+                  <td colSpan={3}>
+                    <Placeholder
+                      illustration={<NoResultsIllustration />}
+                      size="large"
+                      title={translate('pim_identifier_generator.selection.empty.title')}
+                    >
+                      <Styled.TranslationsPlaceholderTitleConditions>
+                        {translate('pim_identifier_generator.selection.empty.text')}
+                      </Styled.TranslationsPlaceholderTitleConditions>
+                      {translate('pim_identifier_generator.selection.empty.info')}
+                    </Placeholder>
+                  </td>
+                </tr>
+              )}
             </>
           )}
         </Table.Body>
