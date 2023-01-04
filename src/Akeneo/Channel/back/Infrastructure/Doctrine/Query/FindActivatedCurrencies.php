@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Infrastructure\Doctrine\Query;
 
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,6 +54,15 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, Cache
         }
 
         return array_unique(array_merge(...array_values($this->activatedCurrenciesForChannels)));
+    }
+
+    public function forAllChannelsIndexedByChannelCode(): array
+    {
+        if (empty($this->activatedCurrenciesForChannels)) {
+            $this->activatedCurrenciesForChannels = $this->fetchActivatedCurrenciesForAllChannels();
+        }
+
+        return $this->activatedCurrenciesForChannels;
     }
 
     public function clearCache(): void
