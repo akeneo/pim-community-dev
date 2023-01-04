@@ -253,8 +253,13 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
-        $user = new User();
-        $user->setUsername('username');
+
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier('my_user');
+        if (empty($user)) {
+            $user = $this->createUser('my_user', []);
+        }
+        $this->assertNotNull($user);
+
         $token = new UsernamePasswordToken($user, 'main', [$role]);
 
         foreach ($acls as $acl => $expectedValue) {
@@ -262,7 +267,6 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
 
             $isAllowed = $decisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
             $this->assertEquals($expectedValue, $isAllowed, sprintf('Role %s should have ACL \'%s\' = %s', $role, $acl, ($isAllowed ? 'false' : 'true')));
-            //$this->assertEquals($expectedValue, $isAllowed, sprintf('%s %s', $role, $acl));
         }
     }
 
@@ -295,5 +299,31 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
                 sprintf('\'%s\' should be stored in database.', $acl)
             );
         }
+    }
+
+    /**
+     * @param string $username
+     * @param array<string> $groups
+     * @return User
+     */
+    private function createUser(string $username, array $groups): User
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername($username);
+        $user->setEmail(sprintf('%s@example.com', uniqid()));
+        $user->setPassword('fake');
+
+        foreach ($groups as $group) {
+            $user->addGroup($group);
+        }
+
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            $user->addRole($role);
+        }
+
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
     }
 }
