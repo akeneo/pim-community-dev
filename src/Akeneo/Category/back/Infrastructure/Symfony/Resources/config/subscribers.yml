@@ -9,3 +9,5 @@ services:
         arguments:
             - '@Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\CleanCategoryDataLinkedToChannel'
             - '@akeneo.category.enriched.feature'
+        tags:
+            - { name: kernel.event_subscriber }

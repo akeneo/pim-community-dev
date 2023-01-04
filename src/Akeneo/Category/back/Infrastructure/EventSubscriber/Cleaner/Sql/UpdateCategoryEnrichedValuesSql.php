@@ -51,8 +51,8 @@ final class UpdateCategoryEnrichedValuesSql implements UpdateCategoryEnrichedVal
 
         $queryIndex = 0;
         foreach ($enrichedValuesByCode as $code => $value) {
-            $statement->bindValue(++$queryIndex, $code, \PDO::PARAM_STR);
             $statement->bindValue(++$queryIndex, (string)$value, \PDO::PARAM_STR);
+            $statement->bindValue(++$queryIndex, $code, \PDO::PARAM_STR);
         }
 
         $statement->executeQuery();
