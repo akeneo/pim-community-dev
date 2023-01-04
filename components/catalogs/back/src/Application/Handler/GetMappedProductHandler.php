@@ -7,11 +7,12 @@ namespace Akeneo\Catalogs\Application\Handler;
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException as ServiceApiProductNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
@@ -29,6 +30,7 @@ final class GetMappedProductHandler
         private GetRawProductQueryInterface $getRawProductQuery,
         private ProductMapperInterface $productMapper,
         private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
+        private IsProductBelongingToCatalogQueryInterface $isProductBelongingToCatalogQuery,
     ) {
     }
 
@@ -47,10 +49,14 @@ final class GetMappedProductHandler
             throw new CatalogDisabledException();
         }
 
+        if (!$this->isProductBelongingToCatalogQuery->execute($catalog, $query->getProductUuid())) {
+            throw new ProductNotFoundException();
+        }
+
         $product = $this->getRawProductQuery->execute($query->getProductUuid());
 
         if (null === $product) {
-            throw new ServiceApiProductNotFoundException();
+            throw new ProductNotFoundException();
         }
 
         $productMappingSchema = $this->getProductMappingSchemaQuery->execute($catalog->getId());

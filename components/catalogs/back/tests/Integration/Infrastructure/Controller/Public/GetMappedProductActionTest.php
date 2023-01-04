@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
@@ -36,7 +38,7 @@ class GetMappedProductActionTest extends IntegrationTestCase
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
     }
 
-    public function testItGetMappedProductByCatalogIdAndProductUuid(): void
+    public function testItGetsMappedProductByCatalogIdAndProductUuid(): void
     {
         $this->logAs('admin');
 
@@ -74,10 +76,9 @@ class GetMappedProductActionTest extends IntegrationTestCase
         ]);
 
         $this->createCatalog(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi',
-            true,
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
         );
 
         $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
@@ -138,10 +139,10 @@ class GetMappedProductActionTest extends IntegrationTestCase
         ]);
 
         $this->createCatalog(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi',
-            false,
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name :'Store US',
+            ownerUsername: 'shopifi',
+            isEnabled: false,
         );
 
         $this->client->request(
@@ -214,10 +215,53 @@ class GetMappedProductActionTest extends IntegrationTestCase
         ]);
 
         $this->createCatalog(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi',
-            true,
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products/8985de43-08bc-484d-aee0-4489a56ba02d',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
+            ' it, or product "8985de43-08bc-484d-aee0-4489a56ba02d" does not exist or you do not have permission to access it.';
+
+        Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['message']);
+    }
+
+    public function testItReturnsNotFoundWhenTheProductIsFilteredOut(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient([
+            'read_catalogs',
+            'read_products',
+        ]);
+
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
+            new SetEnabled(false),
+        ]);
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ]
         );
 
         $this->client->request(
@@ -278,10 +322,9 @@ class GetMappedProductActionTest extends IntegrationTestCase
         ]);
 
         $this->createCatalog(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi',
-            true,
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
         );
 
         $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
