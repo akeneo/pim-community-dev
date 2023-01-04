@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Service;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
@@ -13,7 +13,7 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
- * @phpstan-import-type RawProduct from GetRawProductsQueryInterface
+ * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  * @phpstan-import-type ProductMapping from Catalog
  */
 interface ProductMapperInterface

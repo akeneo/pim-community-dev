@@ -62,6 +62,7 @@ final class GetMappedProductHandler
         $productMappingSchema = $this->getProductMappingSchemaQuery->execute($catalog->getId());
         $productMapping = $catalog->getProductMapping();
 
+        /** @var RawProduct $product */
         return $this->productMapper->getMappedProduct($product, $productMappingSchema, $productMapping);
     }
 }
