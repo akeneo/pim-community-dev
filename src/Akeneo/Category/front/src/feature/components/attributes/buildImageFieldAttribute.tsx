@@ -52,13 +52,15 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
           thumbnailUrl={thumbnailUrl}
           uploader={uploader}
         >
-          <IconButton
-            href={downloadUrl}
-            target="_blank"
-            download={downloadFilename}
-            icon={<DownloadIcon />}
-            title="Download"
-          />
+          {downloadUrl && downloadFilename && (
+            <IconButton
+              href={downloadUrl}
+              target="_blank"
+              download={downloadFilename}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+          )}
           {!inModal && <IconButton onClick={openFullscreenModal} icon={<FullscreenIcon />} title="Fullscreen" />}
         </MediaFileInput>
         {isFullscreenModalOpen && !inModal && imageInfo && (

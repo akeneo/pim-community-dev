@@ -56,12 +56,14 @@ const FullscreenPreview = ({label, data, attribute, onClose}: FullscreenPreviewP
       <BrandedTitle>{label}</BrandedTitle>
       <Border>
         <MediaPreview previewUrl={previewUrl} label={label} />
-        <ButtonContainer>
-          <Button {...buttonProps} href={downloadUrl} download={data?.originalFilename} target="_blank">
-            <DownloadIcon />
-            Download
-          </Button>
-        </ButtonContainer>
+        {downloadUrl && data && data.originalFilename && (
+          <ButtonContainer>
+            <Button {...buttonProps} href={downloadUrl} download={data.originalFilename} target="_blank">
+              <DownloadIcon />
+              Download
+            </Button>
+          </ButtonContainer>
+        )}
       </Border>
     </Modal>
   );
