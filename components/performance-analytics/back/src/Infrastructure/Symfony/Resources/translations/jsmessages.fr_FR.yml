@@ -1,0 +1,48 @@
+pim_title.pimee_performance_analytics_dashboard: Tableau de bord Time-to-Market insights
+akeneo.performance_analytics:
+  title: Time-to-market insights
+  legend:
+    for: Pour
+    across: à travers
+    over_the: Depuis
+    channels: "{0}0 canal|{1}1 canal|]1, Inf[{{ channelsCount }} canaux"
+    all_channels: Tous les canaux
+    locales: "{0}0 locale|{1}1 locale|]1, Inf[{{ localesCount }} locales"
+    all_locales: Toutes les locales
+  graph:
+    tooltip_day_to_enrich: jours pour enrichir un produit
+    tooltip_compared_period: Comparé à la période précédente
+    tooltip_compared_period_same: Même période comparé à la période précédente
+  table:
+    header_family: Familles
+    header_category: Catégories
+    header_time_to_enrich: Temps d'enrichissement (en jours)
+  control_panel:
+    title: Configurer
+    configure: Configurer
+    open_control_panel: Ouvrir le panneau de contrôle
+    close_control_panel: Fermer le panneau de contrôle
+    metric_title: Indicateur affiché
+    period_title: Depuis
+    grouped_by: Groupé par
+    compare_title: Comparé à
+    filters_title: à travers
+    time_to_enrich_helper: est la mesure du temps passé de la création du produit dans la PIM jusqu'à une première complétude à 100%
+    select_input:
+      metrics:
+        time_to_enrich: Temps d'enrichissement (en jour)
+      aggregations:
+        families: Familles
+        categories: Catégories
+      periods:
+        last_month: Le mois dernier
+        last_12_weeks: Les 12 dernières semaines (trimestre)
+        last_12_months: Les 12 derniers mois
+      comparisons:
+        same_period_last_year: Même période que l'année dernière
+        same_period_just_before: Même période qu'auparavant
+    multi_input:
+      all_families: Toutes les familles
+      all_channels: Tous les canaux
+      all_locales: Toutes les locales
+
