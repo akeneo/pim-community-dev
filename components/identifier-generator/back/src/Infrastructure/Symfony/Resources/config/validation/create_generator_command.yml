@@ -14,6 +14,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - All:
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectShouldBeValid: ~
                 - Collection:
                     fields:
                         type:
@@ -23,6 +24,10 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                         value:
                             - Optional: ~
                         operator:
+                            - Optional: ~
+                        scope:
+                            - Optional: ~
+                        locale:
                             - Optional: ~
         structure:
             - NotBlank: ~
