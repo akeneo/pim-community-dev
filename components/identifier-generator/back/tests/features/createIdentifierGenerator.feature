@@ -27,7 +27,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier with not existing target
     When I try to create an identifier generator with target 'toto'
-    Then I should get an error with message 'target: The "toto" attribute code given as target does not exist'
+    Then I should get an error with message 'target: The "toto" attribute does not exist.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier with non identifier target
@@ -204,12 +204,17 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with unknown options
     When I try to create an identifier generator with a simple_select condition with operator IN and ["unknown1", "green", "unknown2"] as value
-    Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist: "unknown1", "unknown2".'
+    Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "unknown1", "unknown2".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with operator EMPTY and a value
     When I try to create an identifier generator with a simple_select condition with operator EMPTY and ["green"] as value
     Then I should get an error with message 'conditions[0][value]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator EMPTY and a value
+    When I try to create an identifier generator with a simple_select condition with unknown attribute
+    Then I should get an error with message 'conditions[0][attributeCode]: The "unknown" attribute does not exist.'
     And the identifier should not be created
 
   # Label
