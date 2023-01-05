@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
@@ -27,6 +28,7 @@ final class GetMappedProductsHandler
         private GetCatalogQueryInterface $getCatalogQuery,
         private CatalogsMappingStorageInterface $catalogsMappingStorage,
         private GetRawProductsQueryInterface $getRawProductsQuery,
+        private GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
     ) {
     }
 
@@ -66,9 +68,11 @@ final class GetMappedProductsHandler
         $productMappingSchema = $this->getProductMappingSchema($catalog->getId());
         $productMapping = $catalog->getProductMapping();
 
+        $attributeTypeBySource = $this->getAttributeTypeByCodesQuery->execute(\array_column($productMapping, 'source'));
+
         return \array_map(
             /** @param RawProduct $product */
-            function (array $product) use ($productMappingSchema, $productMapping): array {
+            function (array $product) use ($attributeTypeBySource, $productMappingSchema, $productMapping): array {
                 $mappedProduct = [];
 
                 /** @var string $target */
@@ -84,6 +88,11 @@ final class GetMappedProductsHandler
                             $productMapping[$target]['locale'],
                             $productMapping[$target]['scope']
                         );
+
+                        switch ($attributeTypeBySource[$productMapping[$target]['source']]) {
+                            case 'pim_catalog_simpleselect':
+                                // des trucs
+                        }
                     }
 
                     $mappedProduct[$target] = $sourceValue;
