@@ -6,6 +6,7 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@pim_catalog.repository.attribute'
+      - '@pim_catalog.repository.attribute_option'
 
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext:
     public: true

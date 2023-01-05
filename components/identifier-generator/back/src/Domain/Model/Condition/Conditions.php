@@ -49,7 +49,8 @@ final class Conditions
             $conditions[] = match ($normalizedCondition['type']) {
                 Enabled::type() => Enabled::fromNormalized($normalizedCondition),
                 Family::type() => Family::fromNormalized($normalizedCondition),
-                default => throw new \InvalidArgumentException(sprintf('The type %s does not exist', $normalizedCondition['type'])),
+                SimpleSelect::type() => SimpleSelect::fromNormalized($normalizedCondition),
+                default => throw new \InvalidArgumentException(sprintf('The Condition type "%s" does not exist', $normalizedCondition['type'])),
             };
         }
 
