@@ -60,16 +60,25 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
         $result = $validator->validate($value, $metaSchemaId);
 
         if ($result->hasError()) {
+            $formatter = new ErrorFormatter();
+            $errors = $formatter->formatOutput($result->error(), 'verbose');
+
             $this->context
                 ->buildViolation('You must provide a valid schema.')
+                ->setCause($this->findFirstRecursiveError($errors['errors']))
                 ->addViolation();
 
-            $formatter = new ErrorFormatter();
-            $this->logger->debug(
-                'A Product Mapping Schema validation failed',
-                $formatter->formatOutput($result->error(), 'verbose')
-            );
+            $this->logger->debug('A Product Mapping Schema validation failed', $errors);
         }
+    }
+
+    private function findFirstRecursiveError(array $errors): string
+    {
+        if (isset($errors[0]['errors'])) {
+            return $this->findFirstRecursiveError($errors[0]['errors']);
+        }
+
+        return \sprintf('%s at %s', $errors[0]['error'], $errors[0]['instanceLocation']);
     }
 
     private function getMetaSchemaLocalPath(string $id): ?string
