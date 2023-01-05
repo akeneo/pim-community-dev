@@ -229,6 +229,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][scope]: This field is missing.'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with scope
+    When I try to create an identifier generator with a simple_select condition with color attribute and ecommerce scope
+    Then I should get an error with message 'conditions[0][scope]: This field was not expected.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
