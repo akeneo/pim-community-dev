@@ -7,22 +7,13 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
@@ -287,13 +278,14 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with enabled condition with an unknown property
+     * @When /^I try to create an identifier generator with (?P<type>enabled|simple_select) condition with an unknown property$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty(): void
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty($type): void
     {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property'],
-        ]);
+        $defaultValue = $this->getValidCondition($type);
+        $defaultValue['unknown'] = 'unknown property';
+
+        $this->tryToCreateGenerator(conditions: [$defaultValue]);
     }
 
     /**
@@ -349,38 +341,20 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to create an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     * @When /^I try to create an identifier generator with a (?P<type>family|simple_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value): void
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($type, $operator, $value): void
     {
+        $defaultCondition = $this->getValidCondition($type, operator: $operator);
+
         if ($value === 'undefined') {
-            $this->tryToCreateGenerator(conditions: [
-                ['type' => 'family', 'operator' => $operator],
-            ]);
+            unset($defaultCondition['value']);
+            $this->tryToCreateGenerator(conditions: [$defaultCondition]);
         } else {
-            $this->tryToCreateGenerator(conditions: [
-                ['type' => 'family', 'operator' => $operator, 'value' => \json_decode($value)],
-            ]);
+            $defaultCondition['value'] = \json_decode($value);
+            $this->tryToCreateGenerator(conditions: [$defaultCondition]);
         }
     }
-
-    /**
-     * @When I try to create an identifier generator with simple select condition with an unknown property
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithSimpleSelectConditionWithAnUnknownProperty()
-    {
-        $this->tryToCreateGenerator(conditions: [
-            [
-                'type' => 'simple_select',
-                'operator' => 'IN',
-                'value' => ['green'],
-                'locale' => 'en_US',
-                'scope' => 'ecommerce',
-                'unknown' => 'foo',
-            ],
-        ]);
-    }
-
 
     private function tryToCreateGenerator(
         ?string $code = null,
@@ -406,5 +380,29 @@ final class CreateIdentifierGeneratorContext implements Context
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
         }
+    }
+
+    private function getValidCondition(string $type, ?string $operator = null): array
+    {
+        switch($type) {
+            case 'enabled': return [
+                'type' => 'enabled',
+                'value' => true
+            ];
+            case 'family': return [
+                'type' => 'family',
+                'operator' => $operator ?? 'IN',
+                'value' => ['tshirt']
+            ];
+            case 'simple_select': return [
+                'type' => 'simple_select',
+                'operator' => $operator ?? 'IN',
+                'value' => ['green'],
+                'locale' => 'en_US',
+                'scope' => 'ecommerce',
+            ];
+        }
+
+        throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
     }
 }

@@ -30,6 +30,11 @@ services:
             - '@validator'
         tags:
             - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
     Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyCodesShouldExistValidator:
         arguments:
             - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
