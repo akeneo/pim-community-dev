@@ -97,10 +97,6 @@ const ListItems = styled.ul`
   }
 `;
 
-const NotDraggableCell = styled(Table.Cell)`
-  width: 44px;
-`;
-
 const TitleCondition = styled(TitleCell)`
   width: calc(10vw + 100px);
 `;
@@ -121,7 +117,6 @@ const Styled = {
   TranslationsLabelSkeleton,
   TranslationsTextFieldSkeleton,
   TranslationsPlaceholderTitleConditions,
-  NotDraggableCell,
   TitleCondition,
   ListItems,
   ConditionLineSkeleton,

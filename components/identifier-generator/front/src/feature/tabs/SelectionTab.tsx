@@ -76,12 +76,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     onChange(removeIdentifiers(newConditions));
   };
 
-  const onReorder = (indices: number[]) => {
-    const newConditions = indices.map(i => conditionsWithId[i]);
-    setConditionsWithId(newConditions);
-    onChange(removeIdentifiers(newConditions));
-  };
-
   const closeModal = useCallback(() => {
     setConditionIdToDelete(undefined);
   }, []);
@@ -127,7 +121,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
           {!isLoading && (
             <>
               <Table.Row>
-                <Styled.NotDraggableCell />
                 <Styled.TitleCondition>
                   {identifiers && identifiers.length > 0 ? identifiers[0].label : `[${target}]`}
                 </Styled.TitleCondition>
@@ -155,10 +148,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
               )}
             </>
           )}
-        </Table.Body>
-      </Table>
-      <Table isDragAndDroppable={true} onReorder={onReorder}>
-        <Table.Body>
           {!isLoading &&
             conditionsWithId.map(({id, ...condition}) => (
               <Table.Row key={id}>

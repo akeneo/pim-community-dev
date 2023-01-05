@@ -19,7 +19,7 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
 
   return (
     <>
-      <Styled.TitleCondition>{translate('pim_common.status')}</Styled.TitleCondition>
+      <Styled.TitleCell>{translate('pim_common.status')}</Styled.TitleCell>
       <Styled.CellInputContainer>
         <Styled.InputContainer>
           <TextInput value={translate('pim_common.operators.=')} readOnly={true} />
