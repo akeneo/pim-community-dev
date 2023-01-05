@@ -28,11 +28,6 @@ const TooltipContent = styled.div<{direction: string; zIndex: number} & AkeneoTh
 
   ${({direction}) => {
     switch (direction) {
-      case 'top':
-        return `
-                bottom: calc(100% + ${TooltipMargin});
-                transform: translateX(-50%);
-              `;
       case 'bottom':
         return `
                 top: calc(100% + ${TooltipMargin});

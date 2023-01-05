@@ -8,9 +8,45 @@ test('it renders its children properly', () => {
   expect(screen.getByText('Tooltip content')).toBeInTheDocument();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
+test('it triggers tooltip mouse events', () => {
+  render(<Tooltip data-testid="my_value">Tooltip content</Tooltip>);
+  fireEvent.mouseOver(screen.getByTestId('my_value'));
+  expect(screen.getByText('Tooltip content')).toBeInTheDocument();
+
+  fireEvent.mouseLeave(screen.getByTestId('my_value'));
+  expect(screen.queryByText('Tooltip content')).not.toBeInTheDocument();
+});
+
+test('it renders the tooltip with a bottom direction', () => {
+  render(
+    <Tooltip data-testid="my_value" direction={'bottom'}>
+      Tooltip content
+    </Tooltip>
+  );
+  fireEvent.mouseOver(screen.getByTestId('my_value'));
+  expect(screen.getByText('Tooltip content')).toBeInTheDocument();
+});
+
+test('it renders the tooltip with a left direction', () => {
+  render(
+    <Tooltip data-testid="my_value" direction={'left'}>
+      Tooltip content
+    </Tooltip>
+  );
+  fireEvent.mouseOver(screen.getByTestId('my_value'));
+  expect(screen.getByText('Tooltip content')).toBeInTheDocument();
+});
+
+test('it renders the tooltip with a right direction', () => {
+  render(
+    <Tooltip data-testid="my_value" direction={'right'}>
+      Tooltip content
+    </Tooltip>
+  );
+  fireEvent.mouseOver(screen.getByTestId('my_value'));
+  expect(screen.getByText('Tooltip content')).toBeInTheDocument();
+});
+
 test('Tooltip supports forwardRef', () => {
   const ref = {current: null};
 
