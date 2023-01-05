@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ORM;
 
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindExistingAttributeCodesQuery;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindExistingAttributeCodesQuery;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use PhpSpec\ObjectBehavior;
 
 class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
 {

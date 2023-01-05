@@ -14,10 +14,10 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDra
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindExistingAttributeCodesQuery;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
- * Exclude from a product draft all unexisting attributes
+ * Exclude from a product draft all unexisting attributes.
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
@@ -32,7 +32,7 @@ class ExcludeDeletedAttributeSubscriber implements EventSubscriber
     }
 
     /**
-     * Specifies the list of events to listen
+     * Specifies the list of events to listen.
      *
      * @return array
      */
@@ -41,9 +41,6 @@ class ExcludeDeletedAttributeSubscriber implements EventSubscriber
         return ['postLoad'];
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function postLoad(LifecycleEventArgs $args)
     {
         $productDraft = $args->getObject();

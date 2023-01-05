@@ -5,9 +5,7 @@ namespace Akeneo\SharedCatalog\tests\back\Integration\EventSubscriber;
 use Akeneo\SharedCatalog\tests\back\Utils\AuthenticateAs;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class JobInstancePublisherSubscriberIntegration extends TestCase
 {
