@@ -19,7 +19,9 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
@@ -36,7 +38,8 @@ final class CreateIdentifierGeneratorContext implements Context
     public function __construct(
         private readonly CreateGeneratorHandler $createGeneratorHandler,
         private readonly IdentifierGeneratorRepository $generatorRepository,
-        private readonly SaverInterface $attributeRepository,
+        private readonly AttributeRepositoryInterface $attributeRepository,
+        private readonly AttributeOptionRepositoryInterface $attributeOptionRepository,
     ) {
     }
 
@@ -55,29 +58,32 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @Given /^the (?P<options>(('.*')(, | and )?)+) options? for '(?P<attributeCode>[^']*)' attribute$/
+     */
+    public function theAndOptionsForAttribute($optionCodes, $attributeCode)
+    {
+        $optionsCodesWithQuotes = \preg_split('/(, )|( and )/', $optionCodes);
+        $optionsCodes = \array_map(
+            static fn (string $optionWithQuotes): string => substr($optionWithQuotes, 1, -1),
+            $optionsCodesWithQuotes
+        );
+
+        foreach ($optionsCodes as $optionCode) {
+            $attributeOption = new AttributeOption();
+            $attributeOption->setCode($optionCode);
+            $attributeOption->setAttribute($this->attributeRepository->findOneByIdentifier($attributeCode));
+
+            $this->attributeOptionRepository->save($attributeOption);
+        }
+    }
+
+    /**
      * @Then The identifier generator is saved in the repository
      */
     public function identifierGeneratorIsSavedInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_CODE);
         Assert::isInstanceOf($identifierGenerator, IdentifierGenerator::class);
-    }
-
-    /**
-     * @Then the identifier generator is created
-     */
-    public function theIdentifierGeneratorIsCreated(): void
-    {
-        $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
-            IdentifierGeneratorCode::fromString(self::DEFAULT_CODE),
-            Conditions::fromArray([]),
-            Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
-            Target::fromString('sku'),
-            Delimiter::fromString('-'),
-        );
-        $this->generatorRepository->save($identifierGenerator);
     }
 
     /**
@@ -372,6 +378,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 $conditions ?? [
                     ['type' => 'enabled', 'value' => true],
                     ['type' => 'family', 'operator' => 'EMPTY'],
+                    ['type' => 'simple_select', 'operator' => 'EMPTY'],
                 ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],

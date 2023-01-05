@@ -4,6 +4,8 @@ Feature: Create Identifier Generator
   Background:
     Given the 'sku' attribute of type 'pim_catalog_identifier'
     And the 'name' attribute of type 'pim_catalog_text'
+    And the 'color' attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color' attribute
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator
@@ -12,8 +14,8 @@ Feature: Create Identifier Generator
 
   # Class
   Scenario: Cannot create an identifier generator if the limit is reached
-    Given the identifier generator is created
-    When I try to create an identifier generator with code 'another generator'
+    When I create an identifier generator
+    And I try to create an identifier generator with code 'another generator'
     Then I should get an error with message 'Limit of "1" identifier generators is reached'
 
   # Target
@@ -172,6 +174,8 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with a family without operator
     Then I should get an error with message 'conditions[0][operator]: This field is missing.'
     And the identifier should not be created
+
+  # Conditions: Simple Select
 
   # Label
   Scenario: Can create an identifier generator without label
