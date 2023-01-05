@@ -73,6 +73,8 @@ services:
 
     Akeneo\Catalogs\Infrastructure\Validation\:
         resource: '../../../Validation/**/*Validator.php'
+
+    Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductSelectionCriteriaPayloadValidator:
         arguments:
             $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
 
