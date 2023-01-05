@@ -37,14 +37,14 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given the ':attributeCode' attribute of type ':attributeType'
+     * @Given /^the '(?P<attributeCode>[^']*)'(?P<scopable> scopable)? attribute of type '(?P<attributeType>[^']*)'$/
      */
-    public function theAttribute(string $attributeCode, string $attributeType): void
+    public function theAttribute(string $attributeCode, string $attributeType, string $scopable = ''): void
     {
         $identifierAttribute = new Attribute();
         $identifierAttribute->setType($attributeType);
         $identifierAttribute->setCode($attributeCode);
-        $identifierAttribute->setScopable(false);
+        $identifierAttribute->setScopable($scopable !== '');
         $identifierAttribute->setLocalizable(false);
         $identifierAttribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXT);
         $this->attributeRepository->save($identifierAttribute);
@@ -367,12 +367,15 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with a simple_select condition with :attributeCode attribute
+     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeType>[^']*) attribute( and (?P<scope>undefined) scope)?$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(string $attributeCode): void
+    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(string $attributeCode, ?string $scope = null): void
     {
         $defaultCondition = $this->getValidCondition('simple_select');
         $defaultCondition['attributeCode'] = $attributeCode;
+        if ('undefined' === $scope) {
+            unset($defaultCondition['scope']);
+        }
         $this->tryToCreateGenerator(conditions: [$defaultCondition]);
     }
 
