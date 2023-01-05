@@ -69,13 +69,13 @@ export const useCatalogForm = (id: string): Result => {
                         break;
                     case CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA:
                         setErrors(
-                            errors.filter(error => !error.propertyPath.startsWith('[product_selection_criteria]'))
+                            errors.filter(error => !error.propertyPath.startsWith('productSelectionCriteria'))
                         );
                         setDirty(true);
                         dispatch(action);
                         break;
                     case CatalogFormActions.SET_PRODUCT_MAPPING:
-                        setErrors(errors.filter(error => !error.propertyPath.startsWith('[product_mapping]')));
+                        setErrors(errors.filter(error => !error.propertyPath.startsWith('productMapping')));
                         setDirty(true);
                         dispatch(action);
                         break;
