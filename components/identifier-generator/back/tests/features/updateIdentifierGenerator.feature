@@ -27,7 +27,7 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier with non identifier target
     When I try to update an identifier generator with target 'name'
-    Then I should get an error on update with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type identifier'
+    Then I should get an error on update with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_identifier"'
 
   # Structure
   Scenario: Cannot update an identifier generator with blank structure
