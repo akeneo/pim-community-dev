@@ -246,6 +246,29 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][locale]: This field was not expected.'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with undefined scope
+    Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
+    When I try to create an identifier generator with a simple_select condition with color_scopable attribute and unknown scope
+    Then I should get an error with message 'conditions[0][scope]: The "unknown" scope does not exist.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with undefined locale
+    Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
+    When I try to create an identifier generator with a simple_select condition with color_localizable attribute and unknown locale
+    Then I should get an error with message 'conditions[0][locale]: The "unknown" locale does not exist or is not activated.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with non activated locale
+    Given the 'color_localizable_and_scopable' scopable localizable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable_and_scopable' attribute
+    And the 'website' channel having 'en_US' as locale
+    And the 'ecommerce' channel having 'de_DE' as locale
+    When I try to create an identifier generator with a simple_select condition with color_localizable_and_scopable attribute and ecommerce scope and en_US locale
+    Then I should get an error with message 'conditions[0][locale]: The "en_US" locale is not active for the "ecommerce" channel.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
