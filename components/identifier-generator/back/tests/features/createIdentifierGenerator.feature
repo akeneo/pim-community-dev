@@ -186,6 +186,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][value]: This field is missing.'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with operator IN and no values
+    When I try to create an identifier generator with a simple_select condition with operator IN and [] as value
+    Then I should get an error with message 'conditions[0][value]: This collection should contain 1 element or more.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
