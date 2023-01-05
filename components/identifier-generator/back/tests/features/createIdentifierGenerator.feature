@@ -191,6 +191,16 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][value]: This collection should contain 1 element or more.'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with operator IN and a non array value
+    When I try to create an identifier generator with a simple_select condition with operator IN and "shirts" as value
+    Then I should get an error with message 'conditions[0][value]: This value should be of type iterable.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and a non array of string value
+    When I try to create an identifier generator with a simple_select condition with operator IN and [true] as value
+    Then I should get an error with message 'conditions[0][value][0]: This value should be of type string.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
