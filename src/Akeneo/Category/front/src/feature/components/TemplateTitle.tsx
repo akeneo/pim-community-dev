@@ -21,7 +21,7 @@ TemplateTitleLabel.displayName = 'TemplateTitleLabel';
 
 type Props = {
   template: Template;
-  locale: string|null;
+  locale: string | null;
 };
 
 const getLabelFromTemplate = (template: Template, locale: string): string => {
@@ -32,7 +32,7 @@ const TemplateTitle: FC<Props> = ({template, locale}) => {
   const translate = useTranslate();
 
   const userContext = useUserContext();
-  const catalogLocale = (locale) ? locale : userContext.get('catalogLocale');
+  const catalogLocale = locale ? locale : userContext.get('catalogLocale');
 
   return (
     <TemplateTitleContainer>
