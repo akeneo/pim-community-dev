@@ -50,5 +50,21 @@ final class ScopeAndLocaleShouldBeValidValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
+
+        if ($attribute->isLocalizable()) {
+            if (!\array_key_exists('locale', $condition)) {
+                $this->context
+                    ->buildViolation($constraint->missingField)
+                    ->atPath('[locale]')
+                    ->addViolation();
+            }
+        } else {
+            if (\array_key_exists('locale', $condition)) {
+                $this->context
+                    ->buildViolation($constraint->notExpectedField)
+                    ->atPath('[locale]')
+                    ->addViolation();
+            }
+        }
     }
 }
