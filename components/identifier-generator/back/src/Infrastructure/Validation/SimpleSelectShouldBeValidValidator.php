@@ -64,7 +64,11 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
                 choices: ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY'],
                 message: $constraint->unknownOperator
             ),
-            'attributeCode' => [new Type('string'), new AttributeShouldExist()],
+            'attributeCode' => [
+                new Type('string'),
+                new AttributeShouldExist(),
+                new AttributeShouldHaveType(['type' => 'pim_catalog_simpleselect']),
+            ],
             'scope' => [new Optional()],
             'locale' => [new Optional()],
             'value' => [new Optional()],

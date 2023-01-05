@@ -6,7 +6,8 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
             - NotBlank: ~
             - Type: string
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldExist: ~
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldHaveType:
+                type: 'pim_catalog_identifier'
         conditions:
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleCondition:
                 types: ['enabled', 'family']
