@@ -37,15 +37,19 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given /^the '(?P<attributeCode>[^']*)'(?P<scopable> scopable)? attribute of type '(?P<attributeType>[^']*)'$/
+     * @Given /^the '(?P<attributeCode>[^']*)'(?P<scopable> scopable)?(?P<localizable> localizable)? attribute of type '(?P<attributeType>[^']*)'$/
      */
-    public function theAttribute(string $attributeCode, string $attributeType, string $scopable = ''): void
-    {
+    public function theAttribute(
+        string $attributeCode,
+        string $attributeType,
+        string $scopable = '',
+        string $localizable = ''
+    ): void {
         $identifierAttribute = new Attribute();
         $identifierAttribute->setType($attributeType);
         $identifierAttribute->setCode($attributeCode);
         $identifierAttribute->setScopable($scopable !== '');
-        $identifierAttribute->setLocalizable(false);
+        $identifierAttribute->setLocalizable($localizable !== '');
         $identifierAttribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXT);
         $this->attributeRepository->save($identifierAttribute);
     }
@@ -367,16 +371,24 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeType>[^']*) attribute( and (?P<scope>.*) scope)?$/
+     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeType>[^']*) attribute( and (?P<scope>.*) scope)?( and (?P<locale>.*) locale)?$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(string $attributeCode, ?string $scope = null): void
-    {
+    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(
+        string $attributeCode,
+        ?string $scope = null,
+        ?string $locale = null
+    ): void {
         $defaultCondition = $this->getValidCondition('simple_select');
         $defaultCondition['attributeCode'] = $attributeCode;
         if ('undefined' === $scope) {
             unset($defaultCondition['scope']);
         } else if (null !== $scope) {
             $defaultCondition['scope'] = $scope;
+        }
+        if ('undefined' === $locale) {
+            unset($defaultCondition['locale']);
+        } else if (null !== $locale) {
+            $defaultCondition['locale'] = $locale;
         }
         $this->tryToCreateGenerator(conditions: [$defaultCondition]);
     }
@@ -424,7 +436,6 @@ final class CreateIdentifierGeneratorContext implements Context
                 'operator' => $operator ?? 'IN',
                 'attributeCode' => 'color',
                 'value' => ['green'],
-                'locale' => 'en_US',
             ];
         }
 
