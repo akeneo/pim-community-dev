@@ -234,6 +234,18 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][scope]: This field was not expected.'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator without locale
+    Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
+    When I try to create an identifier generator with a simple_select condition with color_localizable attribute and undefined locale
+    Then I should get an error with message 'conditions[0][locale]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with locale
+    When I try to create an identifier generator with a simple_select condition with color attribute and en_US locale
+    Then I should get an error with message 'conditions[0][locale]: This field was not expected.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
