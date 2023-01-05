@@ -176,10 +176,14 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   # Conditions: Simple Select
-
-  Scenario: Cannot create an identifier generator with simple select unknown values
-    When I try to create an identifier generator with simple select condition with an unknown property
+  Scenario: Cannot create an identifier generator with unknown values
+    When I try to create an identifier generator with simple_select condition with an unknown property
     Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and no value
+    When I try to create an identifier generator with a simple_select condition with operator IN and undefined as value
+    Then I should get an error with message 'conditions[0][value]: This field is missing.'
     And the identifier should not be created
 
   # Label
