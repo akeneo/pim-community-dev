@@ -21,6 +21,8 @@ const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyC
       };
       if (typeof parameters.queryKey[3] !== 'undefined') {
         queryParameters.codes = parameters.queryKey[3] as FamilyCode[];
+        queryParameters.page = 1;
+        queryParameters.limit = queryParameters.codes.length;
       }
       const response = await fetch(router.generate('akeneo_identifier_generator_get_families', queryParameters), {
         method: 'GET',
@@ -47,7 +49,6 @@ const usePaginatedFamilies: () => {
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [families, setFamilies] = useState<Family[] | undefined>();
   const [search, setSearch] = useState<string>('');
-  const [hasSearchChanged, setHasSearchChanged] = useState<boolean>(false);
 
   const {data, isLoading, error} = useGetFamilies({page, search});
 
@@ -56,20 +57,18 @@ const usePaginatedFamilies: () => {
       if (data.length < DEFAULT_LIMIT_PAGINATION) {
         setHasNextPage(false);
       }
-      setFamilies(formerFamilies => (hasSearchChanged ? data : [...(formerFamilies || []), ...data]));
+      setFamilies(formerFamilies => (page === 1 ? data : [...(formerFamilies || []), ...data]));
     }
-  }, [data, hasSearchChanged]);
+  }, [data, page]);
 
   const handleNextPage = () => {
     if (!isLoading && hasNextPage) {
-      setHasSearchChanged(false);
       setPage(page => page + 1);
     }
   };
 
   const handleSearchChange = (newSearch: string) => {
     if (newSearch !== search) {
-      setHasSearchChanged(true);
       setSearch(newSearch);
       setPage(1);
       setHasNextPage(true);
