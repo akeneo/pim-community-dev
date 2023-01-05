@@ -47,13 +47,13 @@ final class CatalogProductSelectionCriteriaValidator extends ConstraintValidator
         $this->context
             ->getValidator()
             ->inContext($this->context)
-            ->validate($value, $this->getConstraints($constraint));
+            ->validate($value, $this->getConstraints());
     }
 
     /**
      * @return array<array-key, Constraint>
      */
-    private function getConstraints(CatalogProductSelectionCriteria $constraint): array
+    private function getConstraints(): array
     {
         $maxCriteriaPerCatalog = $this->maxCriteriaPerCatalog;
         return [
