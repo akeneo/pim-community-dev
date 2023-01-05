@@ -45,3 +45,8 @@ services:
             - '@akeneo.pim.structure.query.get_existing_attribute_options_with_values'
         tags:
             - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ScopeAndLocaleShouldBeValidValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator }
