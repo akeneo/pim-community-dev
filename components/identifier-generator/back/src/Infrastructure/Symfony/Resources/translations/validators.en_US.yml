@@ -14,3 +14,4 @@ validation:
         conditions_limit_reached: 'should contain only {{limit}} {{type}} condition'
         unknown_operator: 'Operator {{ value }} can only be one of the following: {{ choices }}.'
         families_do_not_exist: 'The following families do not exist: {{ familyCodes }}.'
+        options_do_not_exist: 'The following attribute options do not exist: {{ optionCodes }}.'

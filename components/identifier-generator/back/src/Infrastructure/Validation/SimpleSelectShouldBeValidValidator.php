@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Family;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\SimpleSelect;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
@@ -65,6 +64,7 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
                 choices: ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY'],
                 message: $constraint->unknownOperator
             ),
+            'attributeCode' => [new Type('string')],
             'scope' => [new Optional()],
             'locale' => [new Optional()],
             'value' => [new Optional()],
@@ -79,6 +79,7 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
         $this->validator->inContext($this->context)->validate($condition, new Collection([
             'type' => null,
             'operator' => null,
+            'attributeCode' => [new Type('string')],
             'scope' => [new Optional()],
             'locale' => [new Optional()],
         ]));
@@ -89,9 +90,10 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
      */
     private function validateValueField(array $condition): void
     {
-        $this->validator->inContext($this->context)->validate($condition, new Collection([
+        $this->validator->inContext($this->context)->validate($condition, [new Collection([
             'type' => null,
             'operator' => null,
+            'attributeCode' => [new Type('string')],
             'value' => [
                 new Count(
                     min: 1
@@ -100,10 +102,9 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
                     new Type('string'),
                     new NotBlank(),
                 ]),
-                //new FamilyCodesShouldExist(),
             ],
             'scope' => [new Optional()],
             'locale' => [new Optional()],
-        ]));
+        ]), new SimpleSelectOptionCodesShouldExist()]);
     }
 }

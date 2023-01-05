@@ -29,6 +29,8 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                             - Optional: ~
                         locale:
                             - Optional: ~
+                        attributeCode:
+                            - Optional: ~
         structure:
             - NotBlank: ~
             - Count:

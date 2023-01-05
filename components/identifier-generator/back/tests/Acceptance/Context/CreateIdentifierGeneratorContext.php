@@ -14,6 +14,7 @@ use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
@@ -31,6 +32,7 @@ final class CreateIdentifierGeneratorContext implements Context
         private readonly IdentifierGeneratorRepository $generatorRepository,
         private readonly AttributeRepositoryInterface $attributeRepository,
         private readonly AttributeOptionRepositoryInterface $attributeOptionRepository,
+        private readonly FindFamilyCodes $findFamilyCodes,
     ) {
     }
 
@@ -46,6 +48,14 @@ final class CreateIdentifierGeneratorContext implements Context
         $identifierAttribute->setLocalizable(false);
         $identifierAttribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXT);
         $this->attributeRepository->save($identifierAttribute);
+    }
+
+    /**
+     * @Given the :familyCode family
+     */
+    public function theFamily(string $familyCode)
+    {
+        $this->findFamilyCodes->save($familyCode);
     }
 
     /**
@@ -368,9 +378,9 @@ final class CreateIdentifierGeneratorContext implements Context
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
                 $code ?? self::DEFAULT_CODE,
                 $conditions ?? [
-                    ['type' => 'enabled', 'value' => true],
-                    ['type' => 'family', 'operator' => 'EMPTY'],
-                    ['type' => 'simple_select', 'operator' => 'EMPTY'],
+                    $this->getValidCondition('enabled'),
+                    $this->getValidCondition('family'),
+                    $this->getValidCondition('simple_select'),
                 ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
@@ -397,6 +407,7 @@ final class CreateIdentifierGeneratorContext implements Context
             case 'simple_select': return [
                 'type' => 'simple_select',
                 'operator' => $operator ?? 'IN',
+                'attributeCode' => 'color',
                 'value' => ['green'],
                 'locale' => 'en_US',
                 'scope' => 'ecommerce',
