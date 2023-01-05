@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
@@ -33,6 +37,8 @@ final class CreateIdentifierGeneratorContext implements Context
         private readonly AttributeRepositoryInterface $attributeRepository,
         private readonly AttributeOptionRepositoryInterface $attributeOptionRepository,
         private readonly FindFamilyCodes $findFamilyCodes,
+        private readonly ChannelRepositoryInterface $channelRepository,
+        private readonly LocaleRepositoryInterface $localeRepository,
     ) {
     }
 
@@ -63,23 +69,37 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Given /^the (?P<options>(('.*')(, | and )?)+) options? for '(?P<attributeCode>[^']*)' attribute$/
+     * @Given /^the (?P<optionCodes>(('.*')(, | and )?)+) options? for '(?P<attributeCode>[^']*)' attribute$/
      */
-    public function theAndOptionsForAttribute($optionCodes, $attributeCode)
+    public function theAndOptionsForAttribute(string $optionCodes, string $attributeCode): void
     {
-        $optionsCodesWithQuotes = \preg_split('/(, )|( and )/', $optionCodes);
-        $optionsCodes = \array_map(
-            static fn (string $optionWithQuotes): string => substr($optionWithQuotes, 1, -1),
-            $optionsCodesWithQuotes
-        );
-
-        foreach ($optionsCodes as $optionCode) {
+        foreach ($this->splitList($optionCodes) as $optionCode) {
             $attributeOption = new AttributeOption();
             $attributeOption->setCode($optionCode);
             $attributeOption->setAttribute($this->attributeRepository->findOneByIdentifier($attributeCode));
 
             $this->attributeOptionRepository->save($attributeOption);
         }
+    }
+
+    /**
+     * @Given /^the '(?P<channelCode>[^']*)' channel having (?P<localeCodes>(('.*')(, | and )?)+) as locales?$/
+     */
+    public function theChannelHavingActiveLocalesAnd(string $channelCode, string $localeCodes): void
+    {
+        $channel = new Channel();
+        $channel->setCode($channelCode);
+        $locales = [];
+        foreach ($this->splitList($localeCodes) as $localeCode) {
+            $locale = new Locale();
+            $locale->setCode($localeCode);
+            $locale->addChannel($channel);
+            $this->localeRepository->save($locale);
+            $locales[] = $locale;
+        }
+        $channel->setLocales($locales);
+
+        $this->channelRepository->save($channel);
     }
 
     /**
@@ -371,23 +391,23 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeType>[^']*) attribute( and (?P<scope>.*) scope)?( and (?P<locale>.*) locale)?$/
+     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(
         string $attributeCode,
-        ?string $scope = null,
-        ?string $locale = null
+        string $scope = '',
+        string $locale = ''
     ): void {
         $defaultCondition = $this->getValidCondition('simple_select');
         $defaultCondition['attributeCode'] = $attributeCode;
         if ('undefined' === $scope) {
             unset($defaultCondition['scope']);
-        } else if (null !== $scope) {
+        } else if ('' !== $scope) {
             $defaultCondition['scope'] = $scope;
         }
         if ('undefined' === $locale) {
             unset($defaultCondition['locale']);
-        } else if (null !== $locale) {
+        } else if ('' !== $locale) {
             $defaultCondition['locale'] = $locale;
         }
         $this->tryToCreateGenerator(conditions: [$defaultCondition]);
@@ -440,5 +460,18 @@ final class CreateIdentifierGeneratorContext implements Context
         }
 
         throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
+    }
+
+    /**
+     * @return string[]
+     */
+    private function splitList(string $codesList): array
+    {
+        $codesWithQuotes = \preg_split('/(, )|( and )/', $codesList);
+
+        return \array_map(
+            static fn (string $codeWithQuotes): string => substr($codeWithQuotes, 1, -1),
+            $codesWithQuotes
+        );
     }
 }
