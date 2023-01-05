@@ -12,12 +12,7 @@ const TooltipContainer = styled.div`
   display: inline-block;
 `;
 
-const TooltipTitle = styled.div`
-  font-weight: 600;
-  margin-bottom: 5px;
-`;
-
-const TooltipContent = styled.div<{direction: string} & AkeneoThemedProps>`
+const TooltipContent = styled.div<{direction: string; zIndex: number} & AkeneoThemedProps>`
   position: absolute;
   border-radius: 4px;
   left: 50%;
@@ -27,7 +22,7 @@ const TooltipContent = styled.div<{direction: string} & AkeneoThemedProps>`
   border: 1px solid ${getColor('blue', 40)};
   font-size: ${getFontSize('default')};
   line-height: 1;
-  z-index: 100;
+  z-index: ${({zIndex}) => zIndex};
   white-space: nowrap;
   box-shadow: 0px 0px 16px rgba(89, 146, 199, 0.25);
 
@@ -68,15 +63,30 @@ const TooltipContent = styled.div<{direction: string} & AkeneoThemedProps>`
 type TooltipProps = Override<
   HTMLAttributes<HTMLDivElement>,
   {
+    /**
+     * Define the direction in which the tooltip will be rendered
+     */
     direction?: 'top' | 'right' | 'bottom' | 'left';
-    title?: string;
-    content: string;
+    /**
+     * Define the position order of the tooltip
+     */
+    zIndex?: number;
+    /**
+     * Define the icon size
+     */
     iconSize?: number;
+    /**
+     * Content of the tooltip
+     */
+    children: React.ReactNode;
   }
 >;
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  ({direction = 'top', title, content, iconSize = 24, ...rest}: TooltipProps, forwardedRef: Ref<HTMLDivElement>) => {
+  (
+    {direction = 'top', zIndex = 100, iconSize = 24, children, ...rest}: TooltipProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ) => {
     const [visible, setVisible] = useState(false);
     const showTooltip = () => setVisible(true);
     const hideTooltip = () => setVisible(false);
@@ -86,9 +96,8 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       <TooltipContainer ref={forwardedRef} {...rest} onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
         <HelpPlainIcon size={iconSize} color={theme.color.blue100} />
         {visible && (
-          <TooltipContent direction={direction}>
-            {title && <TooltipTitle>{title}</TooltipTitle>}
-            {content}
+          <TooltipContent direction={direction} zIndex={zIndex}>
+            {children}
           </TooltipContent>
         )}
       </TooltipContainer>
