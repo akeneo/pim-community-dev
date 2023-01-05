@@ -351,6 +351,17 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to create an identifier generator with a simple_select condition with unknown attribute
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithUnknownAttribute()
+    {
+        $condition = $this->getValidCondition('simple_select');
+        $condition['attributeCode'] = 'unknown';
+
+        $this->tryToCreateGenerator(conditions: [$condition]);
+    }
+
+    /**
      * @When /^I try to create an identifier generator with a (?P<type>family|simple_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($type, $operator, $value): void

@@ -108,7 +108,7 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         Assert::assertSame(
-            '[{"path":"target","message":"The \u0022unknown\u0022 attribute code given as target does not exist"}]',
+            '[{"path":"target","message":"The \u0022unknown\u0022 attribute does not exist."}]',
             $response->getContent()
         );
     }
