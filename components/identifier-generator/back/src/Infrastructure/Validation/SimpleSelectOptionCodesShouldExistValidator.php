@@ -59,6 +59,7 @@ final class SimpleSelectOptionCodesShouldExistValidator extends ConstraintValida
         if (\count($nonExistingCodes) > 0) {
             $this->context
                 ->buildViolation($constraint->optionsDoNotExist, [
+                    '{{ attributeCode }}' => $simpleSelectCondition['attributeCode'],
                     '{{ optionCodes }}' =>  \implode(', ', \array_map(fn (string $value): string => (string) \json_encode($value), $nonExistingCodes)),
                 ])
                 ->atPath('[value]')
