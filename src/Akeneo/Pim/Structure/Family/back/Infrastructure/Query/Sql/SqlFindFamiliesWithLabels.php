@@ -59,7 +59,7 @@ class SqlFindFamiliesWithLabels implements FindFamiliesWithLabels
 
         $familiesWithLabels = [];
         foreach ($labelsByFamilyCode as $familyCode => $labels) {
-            $familiesWithLabels[] = new FamilyWithLabels($familyCode, $labels);
+            $familiesWithLabels[] = new FamilyWithLabels((string) $familyCode, $labels);
         }
 
         return $familiesWithLabels;
