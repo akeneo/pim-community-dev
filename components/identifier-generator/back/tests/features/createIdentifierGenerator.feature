@@ -32,7 +32,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier with non identifier target
     When I try to create an identifier generator with target 'name'
-    Then I should get an error with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type identifier'
+    Then I should get an error with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_identifier"'
     And the identifier should not be created
 
   # Structure
@@ -215,6 +215,11 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with operator EMPTY and a value
     When I try to create an identifier generator with a simple_select condition with unknown attribute
     Then I should get an error with message 'conditions[0][attributeCode]: The "unknown" attribute does not exist.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with wrong attribute type
+    When I try to create an identifier generator with a simple_select condition with name attribute
+    Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect'
     And the identifier should not be created
 
   # Label
