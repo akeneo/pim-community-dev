@@ -137,7 +137,7 @@ class DatabaseCommand extends Command
             ->runCommand('doctrine:schema:create')
             ->runCommand(
                 'doctrine:schema:update',
-                ['--force' => true, '--no-interaction' => true]
+                ['--force' => true, '--no-interaction' => true, '--complete' => true]
             );
 
         if (false === $input->getOption('withoutIndexes')) {
