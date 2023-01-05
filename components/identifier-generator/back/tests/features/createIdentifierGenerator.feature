@@ -207,6 +207,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist: "unknown1", "unknown2".'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with operator EMPTY and a value
+    When I try to create an identifier generator with a simple_select condition with operator EMPTY and ["green"] as value
+    Then I should get an error with message 'conditions[0][value]: This field was not expected.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
