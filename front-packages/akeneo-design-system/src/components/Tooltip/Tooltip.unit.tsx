@@ -3,7 +3,7 @@ import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Tooltip} from './Tooltip';
 
 test('it renders its children properly', () => {
-  render(<Tooltip content={'Tooltip content'} data-testid="my_value" />);
+  render(<Tooltip data-testid="my_value">Tooltip content</Tooltip>);
   fireEvent.mouseOver(screen.getByTestId('my_value'));
   expect(screen.getByText('Tooltip content')).toBeInTheDocument();
 });
@@ -14,11 +14,11 @@ test('it renders its children properly', () => {
 test('Tooltip supports forwardRef', () => {
   const ref = {current: null};
 
-  render(<Tooltip content={'Tooltip content'} ref={ref} />);
+  render(<Tooltip ref={ref}>Tooltip content</Tooltip>);
   expect(ref.current).not.toBe(null);
 });
 
 test('Tooltip supports ...rest props', () => {
-  render(<Tooltip content={'Tooltip content'} data-testid="my_value" />);
+  render(<Tooltip data-testid="my_value">Tooltip content</Tooltip>);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
