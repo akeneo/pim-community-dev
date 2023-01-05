@@ -58,7 +58,7 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
      */
     private function validateConditionKeys(array $condition, SimpleSelectShouldBeValid $constraint): void
     {
-        $this->validator->inContext($this->context)->validate($condition, new Collection([
+        $this->validator->inContext($this->context)->validate($condition, [new Collection([
             'type' => null,
             'operator' => new Choice(
                 choices: ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY'],
@@ -72,7 +72,7 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
             'scope' => [new Optional()],
             'locale' => [new Optional()],
             'value' => [new Optional()],
-        ]));
+        ]), new ScopeAndLocaleShouldBeValid()]);
     }
 
     /**
