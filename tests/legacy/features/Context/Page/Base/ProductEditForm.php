@@ -474,13 +474,18 @@ class ProductEditForm extends Form
     public function findValidationTooltip(string $text)
     {
         return $this->spin(function () use ($text) {
-            return $this->find(
+            $validationErrors = $this->findAll(
                 'css',
-                sprintf(
-                    '.validation-errors .error-message:contains("%s")',
-                    $text
-                )
+                '.validation-errors .error-message'
             );
+
+            foreach ($validationErrors as $validationError) {
+                if (\str_contains($validationError->getText(), $text)) {
+                    return $validationError;
+                }
+            }
+
+            return null;
         }, sprintf('Cannot find error message "%s" in validation tooltip', $text));
     }
 
