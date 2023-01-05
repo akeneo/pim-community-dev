@@ -222,6 +222,13 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator without scope
+    Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
+    When I try to create an identifier generator with a simple_select condition with color_scopable attribute and undefined scope
+    Then I should get an error with message 'conditions[0][scope]: This field is missing.'
+    And the identifier should not be created
+
   # Label
   Scenario: Can create an identifier generator without label
     When I create an identifier generator without label
