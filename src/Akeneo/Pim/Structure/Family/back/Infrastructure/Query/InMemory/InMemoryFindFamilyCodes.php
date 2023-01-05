@@ -13,8 +13,15 @@ use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
  */
 class InMemoryFindFamilyCodes implements FindFamilyCodes
 {
+    /** @var string[] $familyCodes */
+    private array $familyCodes = [];
+
     public function fromQuery(FamilyQuery $query): array
     {
-        return [];
+        return $this->familyCodes;
+    }
+
+    public function save(string $familyCode) {
+        $this->familyCodes[] = $familyCode;
     }
 }
