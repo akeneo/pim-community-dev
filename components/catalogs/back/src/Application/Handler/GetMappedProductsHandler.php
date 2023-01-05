@@ -89,9 +89,10 @@ final class GetMappedProductsHandler
                             $productMapping[$target]['scope']
                         );
 
+                        // ?
                         switch ($attributeTypeBySource[$productMapping[$target]['source']]) {
                             case 'pim_catalog_simpleselect':
-                                // des trucs
+                                // stuff
                         }
                     }
 
