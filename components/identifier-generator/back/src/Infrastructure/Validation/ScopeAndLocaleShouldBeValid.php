@@ -15,6 +15,10 @@ final class ScopeAndLocaleShouldBeValid extends Constraint
     public string $missingField = 'This field is missing.';
     public string $notExpectedField = 'This field was not expected.';
 
+    public string $unknownScope = 'validation.identifier_generator.unknown_scope';
+    public string $unknownLocale = 'validation.identifier_generator.unknown_locale';
+    public string $inactiveLocale = 'validation.identifier_generator.inactive_locale';
+
     /**
      * @inerhitDoc
      */
