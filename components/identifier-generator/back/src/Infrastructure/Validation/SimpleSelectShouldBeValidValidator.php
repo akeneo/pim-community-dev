@@ -64,7 +64,7 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
                 choices: ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY'],
                 message: $constraint->unknownOperator
             ),
-            'attributeCode' => [new Type('string')],
+            'attributeCode' => [new Type('string'), new AttributeShouldExist()],
             'scope' => [new Optional()],
             'locale' => [new Optional()],
             'value' => [new Optional()],
@@ -79,7 +79,7 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
         $this->validator->inContext($this->context)->validate($condition, new Collection([
             'type' => null,
             'operator' => null,
-            'attributeCode' => [new Type('string')],
+            'attributeCode' => [],
             'scope' => [new Optional()],
             'locale' => [new Optional()],
         ]));
@@ -93,7 +93,7 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
         $this->validator->inContext($this->context)->validate($condition, [new Collection([
             'type' => null,
             'operator' => null,
-            'attributeCode' => [new Type('string')],
+            'attributeCode' => [],
             'value' => [
                 new Count(
                     min: 1
