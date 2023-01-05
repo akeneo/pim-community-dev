@@ -1,5 +1,5 @@
 services:
-    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExistValidator:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldExistValidator:
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
