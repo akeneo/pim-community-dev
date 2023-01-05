@@ -367,7 +367,7 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeType>[^']*) attribute( and (?P<scope>undefined) scope)?$/
+     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeType>[^']*) attribute( and (?P<scope>.*) scope)?$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(string $attributeCode, ?string $scope = null): void
     {
@@ -375,6 +375,8 @@ final class CreateIdentifierGeneratorContext implements Context
         $defaultCondition['attributeCode'] = $attributeCode;
         if ('undefined' === $scope) {
             unset($defaultCondition['scope']);
+        } else if (null !== $scope) {
+            $defaultCondition['scope'] = $scope;
         }
         $this->tryToCreateGenerator(conditions: [$defaultCondition]);
     }
@@ -423,7 +425,6 @@ final class CreateIdentifierGeneratorContext implements Context
                 'attributeCode' => 'color',
                 'value' => ['green'],
                 'locale' => 'en_US',
-                'scope' => 'ecommerce',
             ];
         }
 
