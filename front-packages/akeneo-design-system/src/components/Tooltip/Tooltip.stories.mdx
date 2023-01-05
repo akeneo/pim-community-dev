@@ -11,7 +11,7 @@ import {Tooltip} from './Tooltip.tsx';
 
 ## Usage
 
-It’s an complementary information that will help the user better understand what he sees / read (e.g. definition, explication concerning the UI / wording)
+It’s a complementary information that will help the user better understand what he sees / reads (e.g. definition, explication concerning the UI / wording)
 
 👍 **Good reasons to use the tooltip :**
 
@@ -33,9 +33,18 @@ It’s an complementary information that will help the user better understand wh
   parameters={{
       layout: 'centered',
     }}
+    decorators={[
+      (Story) => (
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px'}}>
+          <Story />
+        </div>
+      ),
+    ]}
    >
     {args => {
-      return <Tooltip {...args} />;
+      return <Tooltip {...args}>
+       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </Tooltip>;
     }}
   </Story>
 </Canvas>
