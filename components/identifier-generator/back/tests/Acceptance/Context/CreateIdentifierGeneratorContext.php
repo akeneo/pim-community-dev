@@ -364,6 +364,24 @@ final class CreateIdentifierGeneratorContext implements Context
         }
     }
 
+    /**
+     * @When I try to create an identifier generator with simple select condition with an unknown property
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithSimpleSelectConditionWithAnUnknownProperty()
+    {
+        $this->tryToCreateGenerator(conditions: [
+            [
+                'type' => 'simple_select',
+                'operator' => 'IN',
+                'value' => ['green'],
+                'locale' => 'en_US',
+                'scope' => 'ecommerce',
+                'unknown' => 'foo',
+            ],
+        ]);
+    }
+
+
     private function tryToCreateGenerator(
         ?string $code = null,
         ?array $structure = null,
