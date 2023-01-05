@@ -42,6 +42,13 @@ final class ScopeAndLocaleShouldBeValidValidator extends ConstraintValidator
                     ->atPath('[scope]')
                     ->addViolation();
             }
+        } else {
+            if (\array_key_exists('scope', $condition)) {
+                $this->context
+                    ->buildViolation($constraint->notExpectedField)
+                    ->atPath('[scope]')
+                    ->addViolation();
+            }
         }
     }
 }

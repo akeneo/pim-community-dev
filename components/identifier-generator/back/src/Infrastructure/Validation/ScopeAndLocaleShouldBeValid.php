@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraint;
 final class ScopeAndLocaleShouldBeValid extends Constraint
 {
     public string $missingField = 'This field is missing.';
+    public string $notExpectedField = 'This field was not expected.';
 
     /**
      * @inerhitDoc
