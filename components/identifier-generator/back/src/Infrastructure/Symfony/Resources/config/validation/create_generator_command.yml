@@ -6,7 +6,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
         target:
             - NotBlank: ~
             - Type: string
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldExist: ~
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
         conditions:
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleCondition:

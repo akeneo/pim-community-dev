@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class TargetAttributeShouldExist extends Constraint
+final class AttributeShouldExist extends Constraint
 {
-    public string $message = 'validation.identifier_generator.target_attribute_does_not_exist';
+    public string $message = 'validation.identifier_generator.attribute_does_not_exist';
 
     /**
      * @inerhitDoc

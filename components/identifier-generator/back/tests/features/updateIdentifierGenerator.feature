@@ -23,7 +23,7 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier with not existing target
     When I try to update an identifier generator with target 'toto'
-    Then I should get an error on update with message 'target: The "toto" attribute code given as target does not exist'
+    Then I should get an error on update with message 'target: The "toto" attribute does not exist.'
 
   Scenario: Cannot update an identifier with non identifier target
     When I try to update an identifier generator with target 'name'
