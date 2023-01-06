@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Collection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -12,6 +13,10 @@ use Symfony\Component\Validator\Constraint;
  */
 final class ScopeAndLocaleShouldBeValid extends Constraint
 {
+    /**
+     * These 2 next messages are translated through Collection Symfony validator.
+     * @see Collection
+     */
     public string $missingField = 'This field is missing.';
     public string $notExpectedField = 'This field was not expected.';
 

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
-use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -21,7 +19,6 @@ final class ScopeAndLocaleShouldBeValidValidator extends ConstraintValidator
     public function __construct(
         private readonly GetAttributes $getAttributes,
         private readonly GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes,
-        private readonly LocaleRepositoryInterface $localeRepository,
     ) {
     }
 
@@ -41,6 +38,8 @@ final class ScopeAndLocaleShouldBeValidValidator extends ConstraintValidator
             return;
         }
 
+        $validScope = null;
+        $validLocale = null;
         if ($attribute->isScopable()) {
             if (!\array_key_exists('scope', $condition)) {
                 $this->context
@@ -55,15 +54,17 @@ final class ScopeAndLocaleShouldBeValidValidator extends ConstraintValidator
                         ])
                         ->atPath('[scope]')
                         ->addViolation();
+                } else {
+                    $validScope = $condition['scope'];
                 }
             }
-        }
-
-        if (!$attribute->isScopable() && \array_key_exists('scope', $condition)) {
-            $this->context
-                ->buildViolation($constraint->notExpectedField)
-                ->atPath('[scope]')
-                ->addViolation();
+        } else {
+            if (\array_key_exists('scope', $condition)) {
+                $this->context
+                    ->buildViolation($constraint->notExpectedField)
+                    ->atPath('[scope]')
+                    ->addViolation();
+            }
         }
 
         if ($attribute->isLocalizable()) {
@@ -80,27 +81,26 @@ final class ScopeAndLocaleShouldBeValidValidator extends ConstraintValidator
                         ])
                         ->atPath('[locale]')
                         ->addViolation();
+                } else {
+                    $validLocale = $condition['locale'];
                 }
+            }
+        } else {
+            if (\array_key_exists('locale', $condition)) {
+                $this->context
+                    ->buildViolation($constraint->notExpectedField)
+                    ->atPath('[locale]')
+                    ->addViolation();
             }
         }
 
-        if (!$attribute->isLocalizable() && \array_key_exists('locale', $condition)) {
-            $this->context
-                ->buildViolation($constraint->notExpectedField)
-                ->atPath('[locale]')
-                ->addViolation();
-        }
-
-        if ($attribute->isLocalizableAndScopable()
-            && \array_key_exists('locale', $condition)
-            && \array_key_exists('scope', $condition)
-            && $this->scopeExists($condition['scope'])
-            && $this->localeExists($condition['locale'])
-            && !$this->isLocaleActivated($condition['scope'], $condition['locale'])) {
+        if ($validLocale
+            && $validScope
+            && !$this->isLocaleActivated($validScope, $validLocale)) {
             $this->context
                 ->buildViolation($constraint->inactiveLocale, [
-                    '{{ localeCode }}' => $condition['locale'],
-                    '{{ scopeCode }}' => $condition['scope'],
+                    '{{ localeCode }}' => $validLocale,
+                    '{{ scopeCode }}' => $validScope,
                 ])
                 ->atPath('[locale]')
                 ->addViolation();
@@ -120,8 +120,15 @@ final class ScopeAndLocaleShouldBeValidValidator extends ConstraintValidator
 
     private function localeExists(string $locale): bool
     {
-        $localeCodes = \array_map(fn (Locale $locale): string => $locale->getCode(), $this->localeRepository->getActivatedLocales());
-        return \in_array($locale, $localeCodes);
+        foreach ($this->getChannelCodeWithLocaleCodes->findAll() as $channelCodesWithLocaleCodes) {
+            if (\in_array($locale, $channelCodesWithLocaleCodes['localeCodes'])) {
+                return true;
+            }
+        }
+
+        return false;
+//        $localeCodes = \array_map(fn (Locale $locale): string => $locale->getCode(), $this->localeRepository->getActivatedLocales());
+//        return \in_array($locale, $localeCodes);
     }
 
     private function isLocaleActivated(string $scope, string $locale): bool
