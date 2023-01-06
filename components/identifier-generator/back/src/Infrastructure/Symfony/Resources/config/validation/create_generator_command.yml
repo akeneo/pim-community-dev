@@ -6,23 +6,31 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
         target:
             - NotBlank: ~
             - Type: string
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldExist: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldHaveType:
+                type: 'pim_catalog_identifier'
         conditions:
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleCondition:
                 types: ['enabled', 'family']
             - All:
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectShouldBeValid: ~
                 - Collection:
                     fields:
                         type:
                             - Choice:
-                                choices: ['enabled', 'family']
-                                message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                                choices: ['enabled', 'family', 'simple_select']
+                                message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         value:
                             - Optional: ~
                         operator:
+                            - Optional: ~
+                        scope:
+                            - Optional: ~
+                        locale:
+                            - Optional: ~
+                        attributeCode:
                             - Optional: ~
         structure:
             - NotBlank: ~
@@ -37,7 +45,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                         type:
                             - Choice:
                                 choices: ['free_text', 'auto_number']
-                                message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                                message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         string:
                             - Optional:
                                 - NotBlank: ~

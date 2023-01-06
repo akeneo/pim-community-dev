@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class TargetAttributeShouldExistValidator extends ConstraintValidator
+final class AttributeShouldHaveTypeValidator extends ConstraintValidator
 {
     public function __construct(private GetAttributes $getAttributes)
     {
@@ -21,15 +21,19 @@ final class TargetAttributeShouldExistValidator extends ConstraintValidator
 
     public function validate($target, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, TargetAttributeShouldExist::class);
+        Assert::isInstanceOf($constraint, AttributeShouldHaveType::class);
         if (!\is_string($target)) {
             return;
         }
 
         $attribute = $this->getAttributes->forCode($target);
-        if (null === $attribute) {
+        if (null !== $attribute && $constraint->type !== $attribute->type()) {
             $this->context
-                ->buildViolation($constraint->message, ['{{code}}' => $target])
+                ->buildViolation($constraint->message, [
+                    '{{ code }}' => $target,
+                    '{{ type }}' => $attribute->type(),
+                    '{{ expected }}' => $constraint->type,
+                ])
                 ->addViolation();
         }
     }

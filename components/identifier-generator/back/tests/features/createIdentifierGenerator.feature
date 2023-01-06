@@ -3,7 +3,10 @@ Feature: Create Identifier Generator
 
   Background:
     Given the 'sku' attribute of type 'pim_catalog_identifier'
+    And the 'tshirt' family
     And the 'name' attribute of type 'pim_catalog_text'
+    And the 'color' attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color' attribute
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator
@@ -12,8 +15,8 @@ Feature: Create Identifier Generator
 
   # Class
   Scenario: Cannot create an identifier generator if the limit is reached
-    Given the identifier generator is created
-    When I try to create an identifier generator with code 'another generator'
+    When I create an identifier generator
+    And I try to create an identifier generator with code 'another generator'
     Then I should get an error with message 'Limit of "1" identifier generators is reached'
 
   # Target
@@ -24,12 +27,12 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier with not existing target
     When I try to create an identifier generator with target 'toto'
-    Then I should get an error with message 'target: The "toto" attribute code given as target does not exist'
+    Then I should get an error with message 'target: The "toto" attribute does not exist.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier with non identifier target
     When I try to create an identifier generator with target 'name'
-    Then I should get an error with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type identifier'
+    Then I should get an error with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_identifier".'
     And the identifier should not be created
 
   # Structure
@@ -40,17 +43,12 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator if property does not exist
     When I try to create an identifier generator with an unknown property
-    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number"'
+    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator if structure contains too many properties
-    When I try to create an identifier generator with too many properties in structure
+    When I try to create an identifier generator with 21 properties in structure
     Then I should get an error with message 'structure: This collection should contain 20 elements or less.'
-    And the identifier should not be created
-
-  Scenario: Cannot create an identifier generator if structure contains multiple auto number
-    When I try to create an identifier generator with multiple auto number in structure
-    Then I should get an error with message 'structure: should contain only 1 auto number'
     And the identifier should not be created
 
   # Structure : Free text
@@ -93,6 +91,11 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with autoNumber digits min too big
     When I try to create an identifier generator with an auto number with '4' as number min and '22' as min digits
     Then I should get an error with message 'structure[0][digitsMin]: This value should be less than or equal to 15.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator if structure contains multiple auto number
+    When I try to create an identifier generator with multiple auto number in structure
+    Then I should get an error with message 'structure: should contain only 1 auto number'
     And the identifier should not be created
 
   # Conditions
@@ -171,6 +174,99 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator without operator
     When I try to create an identifier generator with a family without operator
     Then I should get an error with message 'conditions[0][operator]: This field is missing.'
+    And the identifier should not be created
+
+  # Conditions: Simple Select
+  Scenario: Cannot create an identifier generator with unknown values
+    When I try to create an identifier generator with simple_select condition with an unknown property
+    Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and no value
+    When I try to create an identifier generator with a simple_select condition with operator IN and undefined as value
+    Then I should get an error with message 'conditions[0][value]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and no values
+    When I try to create an identifier generator with a simple_select condition with operator IN and [] as value
+    Then I should get an error with message 'conditions[0][value]: This collection should contain 1 element or more.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and a non array value
+    When I try to create an identifier generator with a simple_select condition with operator IN and "green" as value
+    Then I should get an error with message 'conditions[0][value]: This value should be of type iterable.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator IN and a non array of string value
+    When I try to create an identifier generator with a simple_select condition with operator IN and [true] as value
+    Then I should get an error with message 'conditions[0][value][0]: This value should be of type string.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with unknown options
+    When I try to create an identifier generator with a simple_select condition with operator IN and ["unknown1", "green", "unknown2"] as value
+    Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "unknown1", "unknown2".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with operator EMPTY and a value
+    When I try to create an identifier generator with a simple_select condition with operator EMPTY and ["green"] as value
+    Then I should get an error with message 'conditions[0][value]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with an unknown attribute
+    When I try to create an identifier generator with a simple_select condition with unknown attribute
+    Then I should get an error with message 'conditions[0][attributeCode]: The "unknown" attribute does not exist.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with wrong attribute type
+    When I try to create an identifier generator with a simple_select condition with name attribute
+    Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator without scope
+    Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
+    When I try to create an identifier generator with a simple_select condition with color_scopable attribute and undefined scope
+    Then I should get an error with message 'conditions[0][scope]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with scope
+    When I try to create an identifier generator with a simple_select condition with color attribute and ecommerce scope
+    Then I should get an error with message 'conditions[0][scope]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator without locale
+    Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
+    When I try to create an identifier generator with a simple_select condition with color_localizable attribute and undefined locale
+    Then I should get an error with message 'conditions[0][locale]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with locale
+    When I try to create an identifier generator with a simple_select condition with color attribute and en_US locale
+    Then I should get an error with message 'conditions[0][locale]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with undefined scope
+    Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
+    When I try to create an identifier generator with a simple_select condition with color_scopable attribute and unknown scope
+    Then I should get an error with message 'conditions[0][scope]: The "unknown" scope does not exist.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with undefined locale
+    Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
+    When I try to create an identifier generator with a simple_select condition with color_localizable attribute and unknown locale
+    Then I should get an error with message 'conditions[0][locale]: The "unknown" locale does not exist or is not activated.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with non activated locale
+    Given the 'color_localizable_and_scopable' localizable and scopable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable_and_scopable' attribute
+    And the 'website' channel having 'en_US' as locale
+    And the 'ecommerce' channel having 'de_DE' as locale
+    When I try to create an identifier generator with a simple_select condition with color_localizable_and_scopable attribute and ecommerce scope and en_US locale
+    Then I should get an error with message 'conditions[0][locale]: The "en_US" locale is not active for the "ecommerce" channel.'
     And the identifier should not be created
 
   # Label

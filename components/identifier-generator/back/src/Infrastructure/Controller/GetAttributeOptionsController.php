@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\FindAttributeOptions;
@@ -36,8 +38,8 @@ final class GetAttributeOptionsController
             $this->findAttributeOptions->search(
                 attributeCode: $attributeCode,
                 search: $request->query->get('search', ''),
-                page: $request->query->get('page', 1),
-                limit: $request->query->get('limit', 20),
+                page: \intval($request->query->get('page', '1')),
+                limit: \intval($request->query->get('limit', '20')),
                 includeCodes: $request->query->get('codes') ? (array) $request->query->get('codes') : null,
             )
         );
