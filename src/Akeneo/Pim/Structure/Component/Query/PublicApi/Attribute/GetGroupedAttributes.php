@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute;
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ *
+ * @phpstan-type AttributeDetails array{'code': string, 'label': string, 'group_code': string, 'group_label': string}
  */
 interface GetGroupedAttributes
 {
@@ -24,14 +26,16 @@ interface GetGroupedAttributes
      *      {
      *          "code": "description",
      *          "label": "[description]", // Fallback if label does not exist is "[code]"
-     *          "group_code": "marketting",
-     *          "group_label": "Marketting",
+     *          "group_code": "marketing",
+     *          "group_label": "Marketing",
      *      },
      *      ...
      *  ]
      *
      *
      * @param string[] | null $attributeTypes
+     *
+     * @return list<AttributeDetails>
      */
     public function findAttributes(
         string $localeCode,
