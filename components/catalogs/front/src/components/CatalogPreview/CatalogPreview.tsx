@@ -1,9 +1,11 @@
 import React, {FC, useState} from 'react';
-import {Button, Dropdown, GroupsIllustration, Search} from 'akeneo-design-system';
+import {Search} from 'akeneo-design-system';
 import {ProductSelectionValues} from '../ProductSelection';
 import {ProductValueFiltersValues} from '../ProductValueFilters';
 import {ProductMapping as ProductMappingType} from '../ProductMapping/models/ProductMapping';
 import {useAffectedProductsQuery} from './useAffectedProducts';
+import {ErrorBoundary} from '../ErrorBoundary';
+import {PreviewContainer} from './components/PreviewContainer';
 
 type Props = {
     catalogId: string,
@@ -11,27 +13,32 @@ type Props = {
     productValueFilters: ProductValueFiltersValues,
     productMapping: ProductMappingType,
 };
-export const CatalogPreview: FC<Props> = ({productSelectionCriteria}) => {
-    return (<div>
-       <ProductSelector productSelectionCriteria={productSelectionCriteria}/>
-    </div>);
+export const CatalogPreview: FC<Props> = ({catalogId, productSelectionCriteria, productMapping}) => {
+    const [productId, setProductId] = useState<string>('');
+
+    return <>
+        <ProductSelector productSelectionCriteria={productSelectionCriteria} productId={productId} setProductId={setProductId}/>
+        <ErrorBoundary>
+            <PreviewContainer catalogId={catalogId} productId={productId} productMapping={productMapping} />
+        </ErrorBoundary>
+    </>;
 };
 
 type SelectorProps = {
-    productSelectionCriteria: ProductSelectionValues
+    productSelectionCriteria: ProductSelectionValues,
+    productId: string,
+    setProductId: React.Dispatch<React.SetStateAction<string>>
 }
-const ProductSelector: FC<SelectorProps> = ({productSelectionCriteria}) => {
-    const [search, setSearch] = useState<string>('');
-    const {data} = useAffectedProductsQuery(productSelectionCriteria, search);
-
-    console.log(data);
+const ProductSelector: FC<SelectorProps> = ({productSelectionCriteria,productId, setProductId}) => {
+    // const [search, setSearch] = useState<string>('');
+    // const {data} = useAffectedProductsQuery(productSelectionCriteria, search);
 
     return (
         <div>
             <Search
-                onSearchChange={setSearch}
+                onSearchChange={setProductId}
                 placeholder="Search"
-                searchValue={search}
+                searchValue={productId}
                 title="Search"
             />
         </div>
