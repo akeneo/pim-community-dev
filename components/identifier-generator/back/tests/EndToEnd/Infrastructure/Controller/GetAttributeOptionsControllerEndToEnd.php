@@ -22,7 +22,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
         $this->callRoute('akeneo_identifier_generator_get_attribute_options', [
             'HTTP_X-Requested-With' => 'toto',
         ], [
-            'attributeCode' => 'a_simple_select_color'
+            'attributeCode' => 'a_simple_select_color',
         ]);
         $response = $this->client->getResponse();
         Assert::AssertSame(Response::HTTP_FOUND, $response->getStatusCode());
@@ -35,7 +35,8 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
         $this->removeAclFromRole('action:pim_enrich_attribute_index');
         $this->loginAs('admin');
 
-        $this->callGetRouteWithQueryParam('akeneo_identifier_generator_get_attribute_options',
+        $this->callGetRouteWithQueryParam(
+            'akeneo_identifier_generator_get_attribute_options',
             ['attributeCode' => 'a_simple_select_color', 'codes' => 'familyA1,familyA2'],
         );
         $response = $this->client->getResponse();
@@ -130,7 +131,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
             ], [
                 'code' => 'yellow',
                 'labels' => ['en_US' => 'Yellow'],
-            ]
+            ],
         ];
 
         Assert::assertSame($expected, json_decode($response->getContent(), true));

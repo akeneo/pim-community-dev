@@ -27,13 +27,15 @@ final class SimpleSelect implements ConditionInterface
      * @param string[]|null $value
      */
     private function __construct(
+        /** @phpstan-ignore-next-line */
         private readonly string $operator,
+        /** @phpstan-ignore-next-line */
         private readonly ?array $value = null,
     ) {
     }
 
     /**
-     * @return 'family'
+     * @return 'simple_select'
      */
     public static function type(): string
     {
@@ -43,19 +45,24 @@ final class SimpleSelect implements ConditionInterface
     /**
      * @param array<string, mixed> $normalizedProperty
      */
+    /** @phpstan-ignore-next-line */
     public static function fromNormalized(array $normalizedProperty): self
     {
         // TODO: Implement normalize() method.
+        /** @phpstan-ignore-next-line */
         return new self('');
     }
 
     public function normalize(): array
     {
         // TODO: Implement normalize() method.
+        /** @phpstan-ignore-next-line */
+        return [];
     }
 
     public function match(ProductProjection $productProjection): bool
     {
         // TODO: Implement match() method.
+        return false;
     }
 }
