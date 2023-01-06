@@ -21,7 +21,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                         type:
                             - Choice:
                                 choices: ['enabled', 'family', 'simple_select']
-                                message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                                message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         value:
                             - Optional: ~
                         operator:
@@ -45,7 +45,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                         type:
                             - Choice:
                                 choices: ['free_text', 'auto_number']
-                                message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                                message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         string:
                             - Optional:
                                 - NotBlank: ~
