@@ -13,7 +13,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - restore_persisted_env_vars
             - install_yq_v3
             - run:
@@ -41,7 +41,7 @@ jobs:
                 name: Update the pim-saas-k8s-artifacts with the new values for master branch
                 command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                   git config --global user.email "pim_ci@akeneo.com"
                   git config --global user.name "pim_ci_deployment"
 
@@ -96,7 +96,7 @@ jobs:
                 name: Update the pim-saas-k8s-artifacts with the new values for master-migration-step1 branch
                 command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                   git config --global user.email "pim_ci@akeneo.com"
                   git config --global user.name "pim_ci_deployment"
 
@@ -157,7 +157,7 @@ jobs:
                 name: Update the pim-saas-k8s-artifacts with the new values for master-migration-step2 branch
                 command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                   git config --global user.email "pim_ci@akeneo.com"
                   git config --global user.name "pim_ci_deployment"
 

@@ -37,7 +37,7 @@ jobs:
                   command: |
                       ssh-keyscan github.com >> ~/.ssh/known_hosts
                       echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
-                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
@@ -96,7 +96,7 @@ jobs:
                   command: |
                       ssh-keyscan github.com >> ~/.ssh/known_hosts
                       echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
-                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
@@ -155,7 +155,7 @@ jobs:
                   command: |
                       ssh-keyscan github.com >> ~/.ssh/known_hosts
                       echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
-                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
@@ -222,7 +222,7 @@ jobs:
                   command: |
                       ssh-keyscan github.com >> ~/.ssh/known_hosts
                       echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
-                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh

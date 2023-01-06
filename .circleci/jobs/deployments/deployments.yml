@@ -25,7 +25,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - when:
                   condition:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
@@ -52,7 +52,7 @@ jobs:
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
             - get_datadog_migration_logs:
@@ -82,7 +82,7 @@ jobs:
                   name: Remove env on kubernetes
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
@@ -111,7 +111,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - when:
                   condition:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
@@ -163,7 +163,7 @@ jobs:
                   name: Deploy instance with latest release
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ deploy-instance
                       IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ commit-instance
             - get_datadog_migration_logs:
@@ -180,7 +180,7 @@ jobs:
                   name: Remove env on kubernetes
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
@@ -207,7 +207,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - restore_persisted_env_vars
             - run:
@@ -244,7 +244,7 @@ jobs:
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
             - get_datadog_migration_logs:
@@ -271,7 +271,7 @@ jobs:
                   name: Remove env on kubernetes
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
@@ -301,7 +301,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - when:
                   condition:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
@@ -359,7 +359,7 @@ jobs:
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
             - get_datadog_migration_logs:
@@ -389,7 +389,7 @@ jobs:
                   name: Remove env on kubernetes
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
@@ -419,7 +419,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - restore_persisted_env_vars
             - run:
@@ -484,7 +484,7 @@ jobs:
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
             - get_datadog_migration_logs:
@@ -512,7 +512,7 @@ jobs:
                   name: Remove env on kubernetes
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
@@ -534,7 +534,7 @@ jobs:
             at: ~/
         - add_ssh_keys:
             fingerprints:
-              - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+              - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
         - when:
               condition:
                   equal: [true, << parameters.CLUSTER_NEXT >> ]
@@ -608,7 +608,7 @@ jobs:
             name: Create K8S artifact deployement branch
             command: |
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
               git config --global user.email "pim_ci@akeneo.com"
               git config --global user.name "pim_ci_deployment"
 
@@ -730,7 +730,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                 fingerprints:
-                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                  - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - when:
                   condition:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
@@ -784,7 +784,7 @@ jobs:
                 name: Get back the deployment branch
                 command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                   git config --global user.email "pim_ci@akeneo.com"
                   git config --global user.name "pim_ci_deployment"
 
@@ -957,12 +957,12 @@ jobs:
             - restore_persisted_env_vars
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - run:
                     name: Check changes for Timmy
                     command: |
                         ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                        export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                        export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                         git config --global user.email "pim_ci@akeneo.com"
                         git config --global user.name "pim_ci_deployment"
 

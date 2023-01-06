@@ -20,14 +20,14 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - run:
                   name: Delete environments
                   no_output_timeout: 30m
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       NS=<<parameters.INSTANCE_NAME>> make -C deployments/ delete_environment_manually
 
     delete_pr_environment:
@@ -47,7 +47,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - restore_persisted_env_vars
             - run:
@@ -55,7 +55,7 @@ jobs:
                   no_output_timeout: 30m
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
@@ -184,7 +184,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - run:
                   name: Delete environments
@@ -193,7 +193,7 @@ jobs:
                       TYPE="<<parameters.PRODUCT_TYPE>>"
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
 
                       TYPE=${TYPE} make -C deployments/ delete_environments_hourly
 
