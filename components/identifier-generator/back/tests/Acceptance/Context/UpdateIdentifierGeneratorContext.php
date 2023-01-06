@@ -406,12 +406,12 @@ final class UpdateIdentifierGeneratorContext implements Context
         $defaultCondition['attributeCode'] = $attributeCode;
         if ('undefined' === $scope) {
             unset($defaultCondition['scope']);
-        } else if ('' !== $scope) {
+        } elseif ('' !== $scope) {
             $defaultCondition['scope'] = $scope;
         }
         if ('undefined' === $locale) {
             unset($defaultCondition['locale']);
-        } else if ('' !== $locale) {
+        } elseif ('' !== $locale) {
             $defaultCondition['locale'] = $locale;
         }
         $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
@@ -447,12 +447,12 @@ final class UpdateIdentifierGeneratorContext implements Context
         switch($type) {
             case 'enabled': return [
                 'type' => 'enabled',
-                'value' => true
+                'value' => true,
             ];
             case 'family': return [
                 'type' => 'family',
                 'operator' => $operator ?? 'IN',
-                'value' => ['tshirt']
+                'value' => ['tshirt'],
             ];
             case 'simple_select': return [
                 'type' => 'simple_select',
