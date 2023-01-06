@@ -24,7 +24,7 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-const ALLOWED_ATTRIBUTE_TYPES = ['text'];
+const ALLOWED_ATTRIBUTE_TYPES = ['text', 'textarea'];
 
 export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {}): Result => {
     const queryClient = useQueryClient();
