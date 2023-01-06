@@ -5,6 +5,8 @@ Feature: Update Identifier Generator
     Given the 'sku' attribute of type 'pim_catalog_identifier'
     And the 'name' attribute of type 'pim_catalog_text'
     And the 'default' identifier generator
+    And the 'color' attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color' attribute
 
   Scenario: Can update a valid identifier generator
     When I update the identifier generator
@@ -27,7 +29,7 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier with non identifier target
     When I try to update an identifier generator with target 'name'
-    Then I should get an error on update with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_identifier"'
+    Then I should get an error on update with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_identifier".'
 
   # Structure
   Scenario: Cannot update an identifier generator with blank structure
@@ -142,6 +144,83 @@ Feature: Update Identifier Generator
   Scenario: Cannot update an identifier generator without operator
     When I try to update an identifier generator with a family without operator
     Then I should get an error on update with message 'conditions[0][operator]: This field is missing.'
+
+  # Conditions: Simple Select
+  Scenario: Cannot update an identifier generator with unknown values
+    When I try to update an identifier generator with simple_select condition with an unknown property
+    Then I should get an error on update with message 'conditions[0][unknown]: This field was not expected.'
+
+  Scenario: Cannot update an identifier generator with operator IN and no value
+    When I try to update an identifier generator with a simple_select condition with operator IN and undefined as value
+    Then I should get an error on update with message 'conditions[0][value]: This field is missing.'
+
+  Scenario: Cannot update an identifier generator with operator IN and no values
+    When I try to update an identifier generator with a simple_select condition with operator IN and [] as value
+    Then I should get an error on update with message 'conditions[0][value]: This collection should contain 1 element or more.'
+
+  Scenario: Cannot update an identifier generator with operator IN and a non array value
+    When I try to update an identifier generator with a simple_select condition with operator IN and "green" as value
+    Then I should get an error on update with message 'conditions[0][value]: This value should be of type iterable.'
+
+  Scenario: Cannot update an identifier generator with operator IN and a non array of string value
+    When I try to update an identifier generator with a simple_select condition with operator IN and [true] as value
+    Then I should get an error on update with message 'conditions[0][value][0]: This value should be of type string.'
+
+  Scenario: Cannot update an identifier generator with unknown options
+    When I try to update an identifier generator with a simple_select condition with operator IN and ["unknown1", "green", "unknown2"] as value
+    Then I should get an error on update with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "unknown1", "unknown2".'
+
+  Scenario: Cannot update an identifier generator with operator EMPTY and a value
+    When I try to update an identifier generator with a simple_select condition with operator EMPTY and ["green"] as value
+    Then I should get an error on update with message 'conditions[0][value]: This field was not expected.'
+
+  Scenario: Cannot update an identifier generator with operator EMPTY and a value
+    When I try to update an identifier generator with a simple_select condition with unknown attribute
+    Then I should get an error on update with message 'conditions[0][attributeCode]: The "unknown" attribute does not exist.'
+
+  Scenario: Cannot update an identifier generator with wrong attribute type
+    When I try to update an identifier generator with a simple_select condition with name attribute
+    Then I should get an error on update with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
+
+  Scenario: Cannot update an identifier generator without scope
+    Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
+    When I try to update an identifier generator with a simple_select condition with color_scopable attribute and undefined scope
+    Then I should get an error on update with message 'conditions[0][scope]: This field is missing.'
+
+  Scenario: Cannot update an identifier generator with scope
+    When I try to update an identifier generator with a simple_select condition with color attribute and ecommerce scope
+    Then I should get an error on update with message 'conditions[0][scope]: This field was not expected.'
+
+  Scenario: Cannot update an identifier generator without locale
+    Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
+    When I try to update an identifier generator with a simple_select condition with color_localizable attribute and undefined locale
+    Then I should get an error on update with message 'conditions[0][locale]: This field is missing.'
+
+  Scenario: Cannot update an identifier generator with locale
+    When I try to update an identifier generator with a simple_select condition with color attribute and en_US locale
+    Then I should get an error on update with message 'conditions[0][locale]: This field was not expected.'
+
+  Scenario: Cannot update an identifier generator with undefined scope
+    Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
+    When I try to update an identifier generator with a simple_select condition with color_scopable attribute and unknown scope
+    Then I should get an error on update with message 'conditions[0][scope]: The "unknown" scope does not exist.'
+
+  Scenario: Cannot update an identifier generator with undefined locale
+    Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
+    When I try to update an identifier generator with a simple_select condition with color_localizable attribute and unknown locale
+    Then I should get an error on update with message 'conditions[0][locale]: The "unknown" locale does not exist or is not activated.'
+
+  Scenario: Cannot update an identifier generator with non activated locale
+    Given the 'color_localizable_and_scopable' localizable and scopable attribute of type 'pim_catalog_simpleselect'
+    And the 'red', 'green' and 'blue' options for 'color_localizable_and_scopable' attribute
+    And the 'website' channel having 'en_US' as locale
+    And the 'ecommerce' channel having 'de_DE' as locale
+    When I try to update an identifier generator with a simple_select condition with color_localizable_and_scopable attribute and ecommerce scope and en_US locale
+    Then I should get an error on update with message 'conditions[0][locale]: The "en_US" locale is not active for the "ecommerce" channel.'
 
   # Label
   Scenario: Can update an identifier generator without label

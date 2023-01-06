@@ -7,7 +7,6 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
@@ -38,12 +37,11 @@ final class CreateIdentifierGeneratorContext implements Context
         private readonly AttributeOptionRepositoryInterface $attributeOptionRepository,
         private readonly FindFamilyCodes $findFamilyCodes,
         private readonly ChannelRepositoryInterface $channelRepository,
-        private readonly LocaleRepositoryInterface $localeRepository,
     ) {
     }
 
     /**
-     * @Given /^the '(?P<attributeCode>[^']*)'(?P<scopable> scopable)?(?P<localizable> localizable)? attribute of type '(?P<attributeType>[^']*)'$/
+     * @Given /^the '(?P<attributeCode>[^']*)'(?P<localizable> localizable)?(?: and)?(?P<scopable> scopable)? attribute of type '(?P<attributeType>[^']*)'$/
      */
     public function theAttribute(
         string $attributeCode,
@@ -77,7 +75,6 @@ final class CreateIdentifierGeneratorContext implements Context
             $attributeOption = new AttributeOption();
             $attributeOption->setCode($optionCode);
             $attributeOption->setAttribute($this->attributeRepository->findOneByIdentifier($attributeCode));
-
             $this->attributeOptionRepository->save($attributeOption);
         }
     }
@@ -94,7 +91,6 @@ final class CreateIdentifierGeneratorContext implements Context
             $locale = new Locale();
             $locale->setCode($localeCode);
             $locale->addChannel($channel);
-            $this->localeRepository->save($locale);
             $locales[] = $locale;
         }
         $channel->setLocales($locales);
@@ -169,13 +165,13 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with too many properties in structure
+     * @When I try to create an identifier generator with :propertiesCount properties in structure
      */
-    public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
+    public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure(int $propertiesCount): void
     {
         $this->tryToCreateGenerator(
             structure:
-            \array_fill(0, 21, ['type' => 'free_text', 'string' => 'abcdef1'])
+            \array_fill(0, $propertiesCount, ['type' => 'free_text', 'string' => 'abcdef1'])
         );
     }
 

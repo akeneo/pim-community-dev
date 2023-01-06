@@ -9,7 +9,6 @@ services:
       - '@pim_catalog.repository.attribute_option'
       - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
       - '@pim_catalog.repository.channel'
-      - '@pim_catalog.repository.locale'
 
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext:
     public: true
