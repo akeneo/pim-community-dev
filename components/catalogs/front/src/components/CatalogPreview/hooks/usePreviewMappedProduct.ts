@@ -13,7 +13,10 @@ type Result = {
     error: ResultError;
 };
 
-export const usePreviewMappedProduct = (catalogId: string, productId: string, productMapping: ProductMappingType): Result => {
+export const usePreviewMappedProduct = (
+    catalogId: string,
+    productId: string,
+    productMapping: ProductMappingType): Result => {
     return useQuery<PreviewMappedProduct, ResultError, PreviewMappedProduct>(['mappedProduct', productId], async () => {
         if ('' === productId) {
             return null;

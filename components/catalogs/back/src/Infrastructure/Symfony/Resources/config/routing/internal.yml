@@ -10,6 +10,14 @@ akeneo_catalogs_internal_get_catalog_errors:
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 
+akeneo_catalogs_internal_get_preselected_products:
+    path: '/rest/catalogs/{catalogId}/products/preselected'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetPreselectedProductsAction
+    methods: [ POST ]
+    requirements:
+        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+
 akeneo_catalogs_internal_get_catalog:
     path: '/rest/catalogs/{catalogId}'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogAction

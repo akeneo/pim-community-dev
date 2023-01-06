@@ -1,9 +1,12 @@
 import {useQuery} from 'react-query';
 import {ProductSelectionValues} from '../ProductSelection';
 
-type Data = {
-
+export type Product = {
+    uuid: string,
+    name: string,
 };
+
+type Data = Product[];
 type Error = string | null;
 type Result = {
     isLoading: boolean;
@@ -12,18 +15,20 @@ type Result = {
     error: Error;
 };
 
-export const useAffectedProductsQuery = (productSelectionCriteria: ProductSelectionValues, search: string): Result => {
+export const useAffectedProductsQuery = (
+    catalogId: string,
+    productSelectionCriteria: ProductSelectionValues,
+    search: string
+): Result => {
     const criteria = JSON.stringify(productSelectionCriteria);
-    console.log(criteria);
-    return useQuery<Data, Error, Data>(['products-preview', search, criteria], async () => {
-        const queryParameters = new URLSearchParams({
-            productSelectionCriteria: criteria,
-            search
-        }).toString();
-        const response = await fetch('/rest/catalogs/products/' + queryParameters, {
+    return useQuery<Data, Error, Data>(['products-preselected', catalogId, search, criteria], async () => {
+        const queryParameters = new URLSearchParams({search}).toString();
+        const response = await fetch(`/rest/catalogs/${catalogId}/products/preselected?` + queryParameters, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
             },
+            method: 'POST',
+            body: criteria,
         });
 
         return await response.json();

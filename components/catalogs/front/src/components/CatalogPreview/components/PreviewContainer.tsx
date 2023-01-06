@@ -28,8 +28,10 @@ const StyledPre = styled.pre`
 
 const syntaxHighlight = function (json: string): string {
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match: string) {
-        var className = 'number';
+    return json.replace(
+        /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+        function (match: string) {
+        let className = 'number';
         if (/^"/.test(match)) {
             if (/:$/.test(match)) {
                 className = 'key';
@@ -66,6 +68,7 @@ export const PreviewContainer: FC<Props> = ({catalogId, productId, productMappin
         return <pre>No mapped data.</pre>;
     }
 
-    return <StyledPre dangerouslySetInnerHTML={{__html: syntaxHighlight(JSON.stringify(previewMappedProduct.data, null, 2))}} />;
+    return <StyledPre dangerouslySetInnerHTML={{__html: syntaxHighlight(
+        JSON.stringify(previewMappedProduct.data, null, 2))}} />;
 };
 
