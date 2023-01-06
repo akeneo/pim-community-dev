@@ -58,10 +58,10 @@ class AttributeShouldHaveTypeValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(
             'validation.identifier_generator.attribute_should_have_type',
-            ['{{code}}' => 'sku', '{{type}}' => 'pim_catalog_text']
+            ['{{ code }}' => 'sku', '{{ type }}' => 'pim_catalog_text', '{{ expected }}' => 'pim_catalog_identifier']
         )->shouldBeCalled();
 
-        $this->validate('sku', new AttributeShouldHaveType());
+        $this->validate('sku', new AttributeShouldHaveType(['type' => 'pim_catalog_identifier']));
     }
 
     public function it_should_be_valid_when_target_attribute_is_an_identifier(
@@ -86,6 +86,6 @@ class AttributeShouldHaveTypeValidatorSpec extends ObjectBehavior
 
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
-        $this->validate('sku', new AttributeShouldHaveType());
+        $this->validate('sku', new AttributeShouldHaveType(['type' => 'pim_catalog_identifier']));
     }
 }
