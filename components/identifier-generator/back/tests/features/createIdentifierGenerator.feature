@@ -32,7 +32,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier with non identifier target
     When I try to create an identifier generator with target 'name'
-    Then I should get an error with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_identifier"'
+    Then I should get an error with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_identifier".'
     And the identifier should not be created
 
   # Structure
@@ -43,17 +43,12 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator if property does not exist
     When I try to create an identifier generator with an unknown property
-    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number"'
+    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator if structure contains too many properties
-    When I try to create an identifier generator with too many properties in structure
+    When I try to create an identifier generator with 21 properties in structure
     Then I should get an error with message 'structure: This collection should contain 20 elements or less.'
-    And the identifier should not be created
-
-  Scenario: Cannot create an identifier generator if structure contains multiple auto number
-    When I try to create an identifier generator with multiple auto number in structure
-    Then I should get an error with message 'structure: should contain only 1 auto number'
     And the identifier should not be created
 
   # Structure : Free text
@@ -96,6 +91,11 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with autoNumber digits min too big
     When I try to create an identifier generator with an auto number with '4' as number min and '22' as min digits
     Then I should get an error with message 'structure[0][digitsMin]: This value should be less than or equal to 15.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator if structure contains multiple auto number
+    When I try to create an identifier generator with multiple auto number in structure
+    Then I should get an error with message 'structure: should contain only 1 auto number'
     And the identifier should not be created
 
   # Conditions
@@ -219,7 +219,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with wrong attribute type
     When I try to create an identifier generator with a simple_select condition with name attribute
-    Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect'
+    Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator without scope
@@ -261,7 +261,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with non activated locale
-    Given the 'color_localizable_and_scopable' scopable localizable attribute of type 'pim_catalog_simpleselect'
+    Given the 'color_localizable_and_scopable' localizable and scopable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_localizable_and_scopable' attribute
     And the 'website' channel having 'en_US' as locale
     And the 'ecommerce' channel having 'de_DE' as locale

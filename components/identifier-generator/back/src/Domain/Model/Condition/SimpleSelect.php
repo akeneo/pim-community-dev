@@ -11,7 +11,14 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-type SimpleSelectOperator 'IN'|'NOT IN'|'EMPTY'|'NOT EMPTY'
- * @phpstan-type SimpleSelectNormalized array{type: 'simple_select', operator: SimpleSelectOperator, value?: string[]}
+ * @phpstan-type SimpleSelectNormalized array{
+ *   type: 'simple_select',
+ *   operator: SimpleSelectOperator,
+ *   attributeCode: string,
+ *   value?: string[],
+ *   scope?: string,
+ *   locale?: string,
+ * }
  */
 final class SimpleSelect implements ConditionInterface
 {
@@ -38,6 +45,7 @@ final class SimpleSelect implements ConditionInterface
      */
     public static function fromNormalized(array $normalizedProperty): self
     {
+        // TODO: Implement normalize() method.
         return new self('');
     }
 
