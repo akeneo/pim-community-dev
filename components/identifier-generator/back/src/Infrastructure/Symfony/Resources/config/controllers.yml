@@ -44,3 +44,10 @@ services:
     arguments:
       - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\FindAttributeOptions'
       - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailableConditionsController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes'
+      - '@pim_user.context.user'
+      - '@translator'
