@@ -2,9 +2,6 @@ parameters:
     pim_installer.install_status_manager.class: Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager
 
 services:
-    pim_installer.feature_flag.install_fixture_context_feature_flag:
-        class: Akeneo\Platform\Bundle\InstallerBundle\FeatureFlag\InstallContextFeatureFlag
-
     pim_installer.install_status_manager:
         class: '%pim_installer.install_status_manager.class%'
         arguments:

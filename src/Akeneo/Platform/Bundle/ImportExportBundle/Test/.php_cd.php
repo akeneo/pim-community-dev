@@ -28,7 +28,6 @@ $rules = [
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle',
-            'Akeneo\Platform\Bundle\InstallerBundle',
             'Akeneo\Tool',
             'Akeneo\UserManagement\ServiceApi',
 

@@ -13,13 +13,6 @@ services:
     tags:
       - { name: 'akeneo.import_export.validation.storage_constraint', key: 'local' }
 
-  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\Local\LocalStorageValidator:
-    arguments:
-      - '@feature_flags'
-      - '@pim_installer.feature_flag.install_fixture_context_feature_flag'
-    tags:
-      - { name: validator.constraint_validator }
-
   Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\ManualUpload\ManualUploadStorage:
     tags:
       - { name: 'akeneo.import_export.validation.storage_constraint', key: 'manual_upload' }

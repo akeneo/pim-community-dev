@@ -8,10 +8,8 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKe
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\Platform\Bundle\InstallerBundle\FeatureFlag\InstallContextFeatureFlag;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
@@ -45,42 +43,86 @@ use Symfony\Component\Process\Process;
  */
 class FixturesLoader implements FixturesLoaderInterface
 {
+    private DatabaseSchemaHandler $databaseSchemaHandler;
+    private SystemUserAuthenticator $systemUserAuthenticator;
     private Application $cli;
+    private ReferenceDataLoader $referenceDataLoader;
+    private FilesystemOperator $archivistFilesystem;
+    private DoctrineJobRepository $doctrineJobRepository;
+    private FixtureJobLoader $fixtureJobLoader;
+    private AclManager $aclManager;
+    private ProductIndexerInterface $productIndexer;
+    private ProductModelIndexerInterface $productModelIndexer;
+    private ClientRegistry $clientRegistry;
+    private Connection $dbConnection;
+    private string $databaseHost;
+    private string $databaseName;
+    private string $databaseUser;
+    private string $databasePassword;
+    private string $sqlDumpDirectory;
     private \Elasticsearch\Client $nativeElasticsearchClient;
+    private MeasurementInstaller $measurementInstaller;
+    private TransportInterface $transport;
+    private EventDispatcherInterface $eventDispatcher;
+    private JobLauncher $jobLauncher;
+    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
+    private ExperimentalTransactionHelper $experimentalTransactionHelper;
 
     public function __construct(
         KernelInterface $kernel,
-        private DatabaseSchemaHandler $databaseSchemaHandler,
-        private SystemUserAuthenticator $systemUserAuthenticator,
-        private ReferenceDataLoader $referenceDataLoader,
-        private FilesystemOperator $archivistFilesystem,
-        private DoctrineJobRepository $doctrineJobRepository,
-        private FixtureJobLoader $fixtureJobLoader,
-        private AclManager $aclManager,
-        private ProductIndexerInterface $productIndexer,
-        private ProductModelIndexerInterface $productModelIndexer,
-        private ClientRegistry $clientRegistry,
-        private Connection $dbConnection,
-        private MeasurementInstaller $measurementInstaller,
-        private TransportInterface $transport,
-        private EventDispatcherInterface $eventDispatcher,
-        private JobLauncher $jobLauncher,
-        private string $databaseHost,
-        private string $databaseName,
-        private string $databaseUser,
-        private string $databasePassword,
-        private string $sqlDumpDirectory,
+        DatabaseSchemaHandler $databaseSchemaHandler,
+        SystemUserAuthenticator $systemUserAuthenticator,
+        ReferenceDataLoader $referenceDataLoader,
+        FilesystemOperator $archivistFilesystem,
+        DoctrineJobRepository $doctrineJobRepository,
+        FixtureJobLoader $fixtureJobLoader,
+        AclManager $aclManager,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ClientRegistry $clientRegistry,
+        Connection $dbConnection,
+        MeasurementInstaller $measurementInstaller,
+        TransportInterface $transport,
+        EventDispatcherInterface $eventDispatcher,
+        JobLauncher $jobLauncher,
+        string $databaseHost,
+        string $databaseName,
+        string $databaseUser,
+        string $databasePassword,
+        string $sqlDumpDirectory,
         string $elasticsearchHost,
-        private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler,
-        private ExperimentalTransactionHelper $experimentalTransactionHelper,
-        private FeatureFlags $featureFlags
+        GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler,
+        ExperimentalTransactionHelper $experimentalTransactionHelper,
     ) {
+        $this->databaseSchemaHandler = $databaseSchemaHandler;
+        $this->systemUserAuthenticator = $systemUserAuthenticator;
+        $this->referenceDataLoader = $referenceDataLoader;
+
         $this->cli = new Application($kernel);
         $this->cli->setAutoExit(false);
 
+        $this->archivistFilesystem = $archivistFilesystem;
+        $this->doctrineJobRepository = $doctrineJobRepository;
+        $this->fixtureJobLoader = $fixtureJobLoader;
+        $this->aclManager = $aclManager;
+        $this->productIndexer = $productIndexer;
+        $this->productModelIndexer = $productModelIndexer;
+        $this->clientRegistry = $clientRegistry;
+        $this->dbConnection = $dbConnection;
+        $this->databaseHost = $databaseHost;
+        $this->databaseName = $databaseName;
+        $this->databaseUser = $databaseUser;
+        $this->databasePassword = $databasePassword;
+        $this->sqlDumpDirectory = $sqlDumpDirectory;
         $clientBuilder = new ClientBuilder();
         $clientBuilder->setHosts([$elasticsearchHost]);
         $this->nativeElasticsearchClient = $clientBuilder->build();
+        $this->measurementInstaller = $measurementInstaller;
+        $this->transport = $transport;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobLauncher = $jobLauncher;
+        $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
+        $this->experimentalTransactionHelper = $experimentalTransactionHelper;
     }
 
     public function __destruct()
@@ -92,7 +134,6 @@ class FixturesLoader implements FixturesLoaderInterface
 
     public function load(Configuration $configuration): void
     {
-        $this->featureFlags->enable('import_export_local_storage');
         $this->deleteAllDocumentsInElasticsearch();
 
         $this->resetFilesystem();
@@ -120,7 +161,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->jobLauncher->flushJobQueue();
 
         $this->systemUserAuthenticator->createSystemUser();
-        $this->featureFlags->disable('import_export_local_storage');
     }
 
     public function purge(): void

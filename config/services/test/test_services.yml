@@ -71,7 +71,6 @@ services:
             - '%index_hosts%'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
             - '@Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper'
-            - '@feature_flags'
 
     akeneo_integration_tests.loader.category_tree_loader:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader'
