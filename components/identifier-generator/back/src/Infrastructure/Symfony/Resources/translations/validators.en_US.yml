@@ -5,7 +5,7 @@ validation:
         identifier_generator_code_not_found: 'Identifier generator "{{code}}" does not exist or you do not have permission to access it.'
     identifier_generator:
         attribute_does_not_exist: 'The "{{code}}" attribute does not exist.'
-        attribute_should_have_type: 'The "{{ code }}" attribute code is "{{ type }}" type and should be of type "{{ expected }}"'
+        attribute_should_have_type: 'The "{{ code }}" attribute code is "{{ type }}" type and should be of type "{{ expected }}".'
         free_text_string_field_required: 'Free text should contain "string" key'
         enabled_value_field_required: 'Enabled should contain "value" key'
         enabled_boolean_value: 'This value should be a boolean.'

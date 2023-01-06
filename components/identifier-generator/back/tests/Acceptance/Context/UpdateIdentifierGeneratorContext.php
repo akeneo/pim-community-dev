@@ -316,13 +316,14 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with enabled condition with an unknown property
+     * @When /^I try to update an identifier generator with (?P<type>enabled|simple_select) condition with an unknown property$/
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty(): void
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty($type): void
     {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property'],
-        ]);
+        $defaultValue = $this->getValidCondition($type);
+        $defaultValue['unknown'] = 'unknown property';
+
+        $this->tryToUpdateGenerator(conditions: [$defaultValue]);
     }
 
     /**
@@ -378,19 +379,42 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to update an identifier generator with a family condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     * @When /^I try to update an identifier generator with a (?P<type>family|simple_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($operator, $value): void
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue(string $type, string $operator, string $value): void
     {
+        $defaultCondition = $this->getValidCondition($type, operator: $operator);
+
         if ($value === 'undefined') {
-            $this->tryToUpdateGenerator(conditions: [
-                ['type' => 'family', 'operator' => $operator],
-            ]);
+            unset($defaultCondition['value']);
+            $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
         } else {
-            $this->tryToUpdateGenerator(conditions: [
-                ['type' => 'family', 'operator' => $operator, 'value' => \json_decode($value)],
-            ]);
+            $defaultCondition['value'] = \json_decode($value);
+            $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
         }
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a simple_select condition with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(
+        string $attributeCode,
+        string $scope = '',
+        string $locale = ''
+    ): void {
+        $defaultCondition = $this->getValidCondition('simple_select');
+        $defaultCondition['attributeCode'] = $attributeCode;
+        if ('undefined' === $scope) {
+            unset($defaultCondition['scope']);
+        } else if ('' !== $scope) {
+            $defaultCondition['scope'] = $scope;
+        }
+        if ('undefined' === $locale) {
+            unset($defaultCondition['locale']);
+        } else if ('' !== $locale) {
+            $defaultCondition['locale'] = $locale;
+        }
+        $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
     }
 
     private function tryToUpdateGenerator(
@@ -416,5 +440,28 @@ final class UpdateIdentifierGeneratorContext implements Context
         } catch (ViolationsException $violations) {
             $this->violations = $violations;
         }
+    }
+
+    private function getValidCondition(string $type, ?string $operator = null): array
+    {
+        switch($type) {
+            case 'enabled': return [
+                'type' => 'enabled',
+                'value' => true
+            ];
+            case 'family': return [
+                'type' => 'family',
+                'operator' => $operator ?? 'IN',
+                'value' => ['tshirt']
+            ];
+            case 'simple_select': return [
+                'type' => 'simple_select',
+                'operator' => $operator ?? 'IN',
+                'attributeCode' => 'color',
+                'value' => ['green'],
+            ];
+        }
+
+        throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
     }
 }
