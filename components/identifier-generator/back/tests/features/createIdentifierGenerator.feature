@@ -212,7 +212,7 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][value]: This field was not expected.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator EMPTY and a value
+  Scenario: Cannot create an identifier generator with an unknown attribute
     When I try to create an identifier generator with a simple_select condition with unknown attribute
     Then I should get an error with message 'conditions[0][attributeCode]: The "unknown" attribute does not exist.'
     And the identifier should not be created
