@@ -1,0 +1,7 @@
+pim_catalog_identifier_generator:
+  condition:
+    fields:
+      family: Family
+      enabled: Status
+    field_groups:
+      system: System
