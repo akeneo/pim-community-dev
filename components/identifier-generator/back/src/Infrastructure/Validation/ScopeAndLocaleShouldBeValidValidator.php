@@ -127,8 +127,6 @@ final class ScopeAndLocaleShouldBeValidValidator extends ConstraintValidator
         }
 
         return false;
-//        $localeCodes = \array_map(fn (Locale $locale): string => $locale->getCode(), $this->localeRepository->getActivatedLocales());
-//        return \in_array($locale, $localeCodes);
     }
 
     private function isLocaleActivated(string $scope, string $locale): bool
