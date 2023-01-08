@@ -193,7 +193,7 @@ class JobInstanceController
         $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
 
         if (isset($normalizedJobInstance['configuration']['storage'])) {
-            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance['configuration']['storage']);
+            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->obfuscateCredentials($normalizedJobInstance['configuration']['storage']);
         }
 
         return new JsonResponse($normalizedJobInstance);
@@ -233,6 +233,7 @@ class JobInstanceController
         }
 
         if (isset($data['configuration']['storage'])) {
+            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->mergeCredentials($jobInstance, $data['configuration']['storage']);
             $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($data['configuration']['storage']);
         }
         $this->updater->update($jobInstance, $data);
@@ -256,7 +257,7 @@ class JobInstanceController
         $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
 
         if (isset($normalizedJobInstance['configuration']['storage'])) {
-            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance['configuration']['storage']);
+            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->obfuscateCredentials($normalizedJobInstance['configuration']['storage']);
         }
 
         return new JsonResponse($normalizedJobInstance);

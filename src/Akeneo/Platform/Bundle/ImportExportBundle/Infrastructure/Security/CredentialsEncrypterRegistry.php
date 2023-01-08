@@ -2,6 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security;
 
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+
 final class CredentialsEncrypterRegistry
 {
     public function __construct(
@@ -21,11 +23,22 @@ final class CredentialsEncrypterRegistry
         return $data;
     }
 
-    public function decryptCredentials(array $data): array
+    public function obfuscateCredentials(array $data): array
     {
         foreach ($this->credentialsEncrypters as $credentialsEncrypter) {
             if ($credentialsEncrypter->support($data)) {
-                return $credentialsEncrypter->decryptCredentials($data);
+                return $credentialsEncrypter->obfuscateCredentials($data);
+            }
+        }
+
+        return $data;
+    }
+
+    public function mergeCredentials(JobInstance $initialJobInstance, array $data)
+    {
+        foreach ($this->credentialsEncrypters as $credentialsEncrypter) {
+            if ($credentialsEncrypter->support($data)) {
+                return $credentialsEncrypter->mergeCredentials($initialJobInstance, $data);
             }
         }
 

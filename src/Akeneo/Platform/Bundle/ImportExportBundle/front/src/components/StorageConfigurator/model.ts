@@ -78,28 +78,14 @@ const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   return (
     'amazon_s3' === storage.type &&
     'file_path' in storage &&
-    typeof 'file_path' === 'string' &&
     'region' in storage &&
-    typeof 'region' === 'string' &&
     'bucket' in storage &&
-    typeof 'bucket' === 'string' &&
-    'key' in storage &&
-    typeof 'key' === 'string' &&
-    'secret' in storage &&
-    typeof 'secret' === 'string'
+    'key' in storage
   );
 };
 
 const isMicrosoftAzureStorage = (storage: Storage): storage is MicrosoftAzureStorage => {
-  return (
-    'microsoft_azure' === storage.type &&
-    'file_path' in storage &&
-    typeof 'file_path' === 'string' &&
-    'connection_string' in storage &&
-    typeof 'connection_string' === 'string' &&
-    'container_name' in storage &&
-    typeof 'container_name' === 'string'
-  );
+  return 'microsoft_azure' === storage.type && 'file_path' in storage && 'container_name' in storage;
 };
 
 export type {StorageConfiguratorProps, StorageLoginType};
