@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks';
-import {useGetSelectOptions, usePaginatedOptions} from '../useGetSelectOptions';
+import {usePaginatedOptions} from '../useGetSelectOptions';
 import {mockResponse} from '../../tests/test-utils';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {act} from '@testing-library/react';
@@ -8,7 +8,10 @@ describe('useGetSelectOptions', () => {
   test('it paginates select options', async () => {
     const page1 = [...Array(20)].map((_, i) => ({code: `Option${i}`, labels: {}}));
 
-    const expectCall = mockResponse('akeneo_identifier_generator_get_attribute_options', 'GET', {ok: true, json: page1});
+    const expectCall = mockResponse('akeneo_identifier_generator_get_attribute_options', 'GET', {
+      ok: true,
+      json: page1,
+    });
     const {result, waitFor} = renderHook(() => usePaginatedOptions('brand'), {wrapper: createWrapper()});
     await waitFor(() => !result.current.isLoading);
     expectCall();
@@ -16,7 +19,10 @@ describe('useGetSelectOptions', () => {
     expect(result.current.options).toEqual(page1);
 
     const page2 = [...Array(10)].map((_, i) => ({code: `Option${i + 20}`, labels: {}}));
-    const expectCall2 = mockResponse('akeneo_identifier_generator_get_attribute_options', 'GET', {ok: true, json: page2});
+    const expectCall2 = mockResponse('akeneo_identifier_generator_get_attribute_options', 'GET', {
+      ok: true,
+      json: page2,
+    });
     act(() => {
       result.current.handleNextPage();
     });
@@ -29,7 +35,10 @@ describe('useGetSelectOptions', () => {
   test('it searches options', async () => {
     const page1 = [...Array(20)].map((_, i) => ({code: `Option${i}`, labels: {}}));
 
-    const expectCall = mockResponse('akeneo_identifier_generator_get_attribute_options', 'GET', {ok: true, json: page1});
+    const expectCall = mockResponse('akeneo_identifier_generator_get_attribute_options', 'GET', {
+      ok: true,
+      json: page1,
+    });
     const {result, waitFor} = renderHook(() => usePaginatedOptions('brand'), {wrapper: createWrapper()});
     await waitFor(() => !result.current.isLoading);
     expectCall();
