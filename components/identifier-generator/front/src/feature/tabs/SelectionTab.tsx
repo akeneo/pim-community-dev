@@ -8,6 +8,7 @@ import {ListSkeleton, TabValidationErrors} from '../components';
 import {AddConditionButton, EnabledLine, FamilyLine} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
+import {SimpleSelectLine} from './conditions/SimpleSelectLine';
 
 type SelectionTabProps = {
   conditions: Conditions;
@@ -32,6 +33,8 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
       return <EnabledLine condition={condition} onChange={onChange} onDelete={onDelete} />;
     case CONDITION_NAMES.FAMILY:
       return <FamilyLine condition={condition} onChange={onChange} onDelete={onDelete} />;
+    case CONDITION_NAMES.SELECT_OPTION:
+      return <SimpleSelectLine condition={condition} onChange={onChange} onDelete={onDelete}/>;
   }
 };
 
@@ -128,7 +131,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
                 <Styled.TitleCondition>
                   {identifiers && identifiers.length > 0 ? identifiers[0].label : `[${target}]`}
                 </Styled.TitleCondition>
-                <Table.Cell colSpan={2}>
+                <Table.Cell colSpan={3}>
                   <Styled.InputContainer>
                     <TextInput value={translate('pim_common.operators.EMPTY')} readOnly={true} />
                   </Styled.InputContainer>
