@@ -39,6 +39,7 @@ $rules = [
             'Akeneo\Pim\Structure\Bundle\Query\InternalApi',
 
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
