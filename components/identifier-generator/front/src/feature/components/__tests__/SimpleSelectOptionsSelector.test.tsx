@@ -1,9 +1,8 @@
 import React from 'react';
-import {mockResponse, render} from '../../tests/test-utils';
+import {render} from '../../tests/test-utils';
 import {SimpleSelectOptionsSelector} from '../SimpleSelectOptionsSelector';
 import {fireEvent, waitFor} from '@testing-library/react';
 import {screen} from 'akeneo-design-system/lib/storybook/test-util';
-import {FamiliesSelector} from '../FamiliesSelector';
 
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
@@ -12,10 +11,11 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   },
   useRouter: () => {
     return {
-      generate: (key: string, params) => ({key, params}),
+      generate: (key: string, params: unknown) => ({key, params}),
     };
   },
   useNotify: () => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return () => {};
   },
   useUserContext: () => {
@@ -35,39 +35,23 @@ jest.mock('@akeneo-pim-community/shared', () => ({
 }));
 
 const selectedOptionsMockResponse = [
-  {'code':'option_a', 'labels':{'en_US':'Option A'}},
-  {'code':'last_option', 'labels':{'en_US':'[last_option]'}}
+  {code: 'option_a', labels: {en_US: 'Option A'}},
+  {code: 'last_option', labels: {en_US: '[last_option]'}},
 ];
 
 const firstPaginatedResponse = [
-  {'code':'option_a', 'labels':{'en_US':'OptionA'}},
-  {'code':'option_b', 'labels':{'en_US':'OptionB'}},
-  {'code':'option_c', 'labels':{'en_US':'OptionC'}},
-  {'code':'option_d', 'labels':{'en_US':'OptionD'}},
-  {'code':'option_e', 'labels':{'en_US':'OptionE'}},
-  {'code':'option_n', 'labels':{'en_US':'OptionN'}},
-  {'code':'option_v', 'labels':{'en_US':'OptionV'}},
-  {'code':'option_x', 'labels':{'en_US':'OptionX'}},
-  {'code':'option_w', 'labels':{'en_US':'OptionW'}},
-  {'code':'option_q', 'labels':{'en_US':'OptionQ'}},
-  {'code':'option_s', 'labels':{'en_US':'OptionS'}},
-  {'code':'option_l', 'labels':{'en_US':'OptionL'}},
-  {'code':'option_m', 'labels':{'en_US':'OptionM'}},
-  {'code':'option_o', 'labels':{'en_US':'OptionO'}},
-  {'code':'option_u', 'labels':{'en_US':'OptionU'}},
-  {'code':'option_1', 'labels':{'en_US':'Option1'}},
-  {'code':'option_2', 'labels':{'en_US':'Option2'}},
-  {'code':'option_3', 'labels':{'en_US':'Option3'}},
-  {'code':'option_4', 'labels':{'en_US':'Option4'}},
-  {'code':'option_5', 'labels':{'en_US':'Option5'}},
-  {'code':'option_6', 'labels':{'en_US':'Option6'}},
+  {code: 'option_a', labels: {en_US: 'OptionA'}},
+  {code: 'option_b', labels: {en_US: 'OptionB'}},
+  {code: 'option_c', labels: {en_US: 'OptionC'}},
+  {code: 'option_d', labels: {en_US: 'OptionD'}},
+  {code: 'option_e', labels: {en_US: 'OptionE'}},
 ];
 const secondPaginatedResponse = [
-  {'code':'option_f', 'labels':{'en_US':'OptionF'}},
-  {'code':'option_g', 'labels':{'en_US':'OptionG'}},
-  {'code':'option_h', 'labels':{'en_US':'OptionH'}},
-  {'code':'option_i', 'labels':{'en_US':'OptionI'}},
-  {'code':'option_j', 'labels':{'en_US':'OptionJ'}}
+  {code: 'option_f', labels: {en_US: 'OptionF'}},
+  {code: 'option_g', labels: {en_US: 'OptionG'}},
+  {code: 'option_h', labels: {en_US: 'OptionH'}},
+  {code: 'option_i', labels: {en_US: 'OptionI'}},
+  {code: 'option_j', labels: {en_US: 'OptionJ'}},
 ];
 
 describe('SimpleSelectOptionsSelector', () => {
@@ -95,7 +79,7 @@ describe('SimpleSelectOptionsSelector', () => {
   it('should search for options by label and select them', async () => {
     const fetchImplementation = mockGetOptionCodes({
       ok: true,
-      json: []
+      json: [],
     });
     const mockedOnChange = jest.fn();
 
@@ -135,51 +119,36 @@ describe('SimpleSelectOptionsSelector', () => {
   });
 });
 
-it('should render unauthorized error', async () => {
-  mockGetOptionCodes({
-    ok: false,
-    status: 403,
-  });
-
-  render(<SimpleSelectOptionsSelector
-    attributeCode={'brand'}
-    optionCodes={['option_a', 'invalid_code', 'last_option']}
-    onChange={jest.fn()} />
-  );
-
-  expect(await screen.findByText('pim_error.unauthorized_list_families')).toBeInTheDocument();
-});
-
 it('should render default error', async () => {
   mockGetOptionCodes({
     ok: false,
     status: 500,
   });
 
-  render(<SimpleSelectOptionsSelector
-    attributeCode={'brand'}
-    optionCodes={['option_a', 'invalid_code', 'last_option']}
-    onChange={jest.fn()} />
+  render(
+    <SimpleSelectOptionsSelector
+      attributeCode={'brand'}
+      optionCodes={['option_a', 'invalid_code', 'last_option']}
+      onChange={jest.fn()}
+    />
   );
 
   expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
 });
 
-
-const mockGetOptionCodes = (
-  response: {
-    ok?: boolean;
-    json?: unknown;
-    statusText?: string;
-    status?: number;
-    body?: unknown
-  }) => {
-  const fetchImplementation = jest.fn().mockImplementation((requestArgs: { key: string, params: any }, args) => {
+const mockGetOptionCodes = (response: {
+  ok?: boolean;
+  json?: unknown;
+  statusText?: string;
+  status?: number;
+  body?: unknown;
+}) => {
+  const fetchImplementation = jest.fn().mockImplementation((requestArgs: {key: string; params: any}, args) => {
     const resolvedPromise = {
-          ok: response.ok,
-          json: () => Promise.resolve(firstPaginatedResponse),
-          statusText: response.statusText || '',
-          status: response.status ?? 200,
+      ok: response.ok,
+      json: () => Promise.resolve(firstPaginatedResponse),
+      statusText: response.statusText || '',
+      status: response.status ?? 200,
     };
     if (!response.ok) {
       jest.spyOn(console, 'error');
@@ -196,7 +165,7 @@ const mockGetOptionCodes = (
     } else if (requestArgs.params.page === 2) {
       resolvedPromise.json = () => Promise.resolve(secondPaginatedResponse);
     } else if (requestArgs.params.search === 'OptionF') {
-      resolvedPromise.json = () => Promise.resolve([{'code':'option_f', 'labels':{'en_US':'OptionF'}},]);
+      resolvedPromise.json = () => Promise.resolve([{code: 'option_f', labels: {en_US: 'OptionF'}}]);
     } else {
       resolvedPromise.json = () => Promise.resolve(firstPaginatedResponse);
     }

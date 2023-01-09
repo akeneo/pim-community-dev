@@ -1,17 +1,16 @@
 import React, {FC, useEffect, useMemo, useState} from 'react';
 import {Helper, MultiSelectInput} from 'akeneo-design-system';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {Unauthorized} from '../errors';
 import {OptionCode} from '../models/option';
 import {useGetSelectOptions, usePaginatedOptions} from '../hooks/useGetSelectOptions';
 
-type FamiliesSelectorProps = {
+type Props = {
   attributeCode: string;
   optionCodes: OptionCode[];
   onChange: (optionCodes: OptionCode[]) => void;
 };
 
-const SimpleSelectOptionsSelector: FC<FamiliesSelectorProps> = ({attributeCode, optionCodes, onChange}) => {
+const SimpleSelectOptionsSelector: FC<Props> = ({attributeCode, optionCodes, onChange}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
@@ -20,14 +19,14 @@ const SimpleSelectOptionsSelector: FC<FamiliesSelectorProps> = ({attributeCode, 
   const {
     data: selectedOptions,
     error: errorDuringGet,
-    isLoading: isGetLoading
+    isLoading: isGetLoading,
   } = useGetSelectOptions({attributeCode, codes: optionCodes});
   const {
     options: paginatedOptions,
     handleNextPage,
     handleSearchChange,
     error: errorDuringPagination,
-    isLoading: isPaginationLoading
+    isLoading: isPaginationLoading,
   } = usePaginatedOptions(attributeCode);
 
   useEffect(() => {
@@ -38,23 +37,20 @@ const SimpleSelectOptionsSelector: FC<FamiliesSelectorProps> = ({attributeCode, 
   }, [errorDuringGet, errorDuringPagination, isGetLoading, isPaginationLoading, optionCodes, selectedOptions]);
 
   const optionsList = useMemo(() => {
-    const missingSelectedOptions = selectedOptions?.filter(
-      ({code: selectedCode}) => !paginatedOptions?.some(({code}) => selectedCode  === code)
-    ) || [];
+    const missingSelectedOptions =
+      selectedOptions?.filter(({code: selectedCode}) => !paginatedOptions?.some(({code}) => selectedCode === code)) ||
+      [];
     return (paginatedOptions || []).concat(missingSelectedOptions);
   }, [paginatedOptions, selectedOptions]);
 
   if (errorDuringGet || errorDuringPagination) {
-    if (errorDuringGet instanceof Unauthorized || errorDuringPagination instanceof Unauthorized) {
-      return <Helper level={'error'}>{translate('pim_error.unauthorized_list_families')}</Helper>;
-    }
     return <Helper level={'error'}>{translate('pim_error.general')}</Helper>;
   }
 
   return (
     <MultiSelectInput
       emptyResultLabel={translate('pim_common.no_result')}
-      placeholder={translate('pim_identifier_generator.selection.settings.family.placeholder')}
+      placeholder={translate('pim_identifier_generator.selection.settings.select_option.placeholder')}
       removeLabel={translate('pim_common.remove')}
       openLabel={translate('pim_common.open')}
       onNextPage={handleNextPage}
