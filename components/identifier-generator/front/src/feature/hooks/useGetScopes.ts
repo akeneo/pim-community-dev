@@ -1,8 +1,8 @@
 import {useQuery} from 'react-query';
 import {Channel, useRouter} from '@akeneo-pim-community/shared';
-import {ServerError, Unauthorized} from '../errors';
+import {ServerError} from '../errors';
 
-const useGetScopes = (): {data?: Channel[], isLoading: boolean, error: Error | null} => {
+const useGetScopes = (): {data?: Channel[]; isLoading: boolean; error: Error | null} => {
   const router = useRouter();
 
   const {data, isLoading, error} = useQuery<Channel[], Error, Channel[]>({
@@ -14,7 +14,6 @@ const useGetScopes = (): {data?: Channel[], isLoading: boolean, error: Error | n
       });
 
       if (!response.ok) {
-        if (response.status === 403) throw new Unauthorized();
         throw new ServerError();
       }
 
