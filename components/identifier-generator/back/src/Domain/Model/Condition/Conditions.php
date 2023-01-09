@@ -12,9 +12,8 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type EnabledNormalized from Enabled
- * @phpstan-import-type FamilyNormalized from Family
- * @phpstan-type ConditionsNormalized list<EnabledNormalized|FamilyNormalized>
+ * @phpstan-import-type ConditionNormalized from ConditionInterface
+ * @phpstan-type ConditionsNormalized list<ConditionNormalized>
  */
 final class Conditions
 {
