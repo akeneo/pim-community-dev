@@ -12,11 +12,11 @@ final class CredentialsEncrypterRegistry
     ) {
     }
 
-    public function encryptCredentials(array $data): array
+    public function encryptCredentials(array $previousData, array $data): array
     {
         foreach ($this->credentialsEncrypters as $credentialsEncrypter) {
             if ($credentialsEncrypter->support($data)) {
-                return $credentialsEncrypter->encryptCredentials($data);
+                return $credentialsEncrypter->encryptCredentials($previousData, $data);
             }
         }
 
@@ -28,17 +28,6 @@ final class CredentialsEncrypterRegistry
         foreach ($this->credentialsEncrypters as $credentialsEncrypter) {
             if ($credentialsEncrypter->support($data)) {
                 return $credentialsEncrypter->obfuscateCredentials($data);
-            }
-        }
-
-        return $data;
-    }
-
-    public function mergeCredentials(JobInstance $initialJobInstance, array $data)
-    {
-        foreach ($this->credentialsEncrypters as $credentialsEncrypter) {
-            if ($credentialsEncrypter->support($data)) {
-                return $credentialsEncrypter->mergeCredentials($initialJobInstance, $data);
             }
         }
 

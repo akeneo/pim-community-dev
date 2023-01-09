@@ -74,12 +74,14 @@ const AmazonS3StorageConfigurator = ({
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.secret.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.secret.placeholder')}
-        onChange={(secret: string) => onStorageChange({...storage, secret})}
+        onChange={(secret: string) => storage.secret !== undefined && onStorageChange({...storage, secret})}
         errors={filterErrors(validationErrors, '[secret]')}
       >
-        <Button level="primary" onClick={function noRefCheck() {}}>
-          Primary
-        </Button>
+        {storage.secret === undefined && (
+          <Button level="primary" onClick={() => {onStorageChange({...storage, secret: ''})}}>
+            Edit password
+          </Button>
+        )}
       </TextField>
       <CheckStorageForm>
         <CheckStorageConnection>

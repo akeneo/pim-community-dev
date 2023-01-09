@@ -233,8 +233,8 @@ class JobInstanceController
         }
 
         if (isset($data['configuration']['storage'])) {
-            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->mergeCredentials($jobInstance, $data['configuration']['storage']);
-            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($data['configuration']['storage']);
+            $previousStorageData = $jobInstance->getRawParameters()['configuration']['storage'];
+            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($previousStorageData ?? [], $data['configuration']['storage']);
         }
         $this->updater->update($jobInstance, $data);
 
@@ -564,10 +564,6 @@ class JobInstanceController
         );
 
         $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
-
-        if (isset($normalizedJobInstance['configuration']['storage'])) {
-            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance['configuration']['storage']);
-        }
 
         return new JsonResponse($normalizedJobInstance);
     }
