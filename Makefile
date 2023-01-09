@@ -1,10 +1,13 @@
-DOCKER_COMPOSE = docker-compose
-NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
+DEV_UID ?= $(shell id -u || echo 1000)
+DEV_GID ?= $(shell id -g)
+DOCKER_COMPOSE = DEV_UID=${DEV_UID} DEV_GID=${DEV_GID} docker-compose
+NODE_RUN = $(DOCKER_COMPOSE) run --user "$(DEV_UID):$(DEV_GID)" --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
 YARN_RUN = $(NODE_RUN) yarn
-PHP_RUN = $(DOCKER_COMPOSE) run --rm php php
-PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
+PHP_RUN = $(DOCKER_COMPOSE) run --user "$(DEV_UID):$(DEV_GID)" --rm php php
+PHP_EXEC = $(DOCKER_COMPOSE) exec --user "$(DEV_UID):$(DEV_GID)" -u www-data fpm php
 
 .DEFAULT_GOAL := help
+
 
 .PHONY: help
 help:
@@ -39,12 +42,12 @@ dsm:
 
 .PHONY: assets
 assets:
-	$(DOCKER_COMPOSE) run --rm php rm -rf public/bundles public/js
+	$(DOCKER_COMPOSE) run --user "$(DEV_UID):$(DEV_GID)" --rm php rm -rf public/bundles public/js
 	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
 
 .PHONY: css
 css:
-	$(DOCKER_COMPOSE) run --rm php rm -rf public/css
+	$(DOCKER_COMPOSE) run --user "$(DEV_UID):$(DEV_GID)" --rm php rm -rf public/css
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
@@ -83,7 +86,7 @@ var/cache/dev:
 
 .PHONY: cache
 cache:
-	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
+	$(DOCKER_COMPOSE) run --user "$(DEV_UID):$(DEV_GID)" --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
 .PHONY: vendor
 vendor:

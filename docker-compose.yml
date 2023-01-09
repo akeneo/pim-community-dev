@@ -17,7 +17,6 @@ services:
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
     working_dir: '/srv/pim'
     command: 'php'
-    user: 'www-data'
     init: true
     networks:
       - 'pim'
@@ -35,20 +34,20 @@ services:
       BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
     volumes:
       - './:/srv/pim'
+      - './var/logs:/var/log'
+      - './var:/var/run/php'
     working_dir: '/srv/pim'
-    command: 'php-fpm -F'
+    command: 'php-fpm -F -g /tmp/php8.1-fpm.pid'
+    user: ${DEV_UID}:${DEV_GID}
     networks:
       - 'pim'
 
   node:
     image: 'akeneo/node:14'
     environment:
-      YARN_CACHE_FOLDER: '/home/node/.yarn'
-      CYPRESS_CACHE_FOLDER: '/home/node/.cypress'
+      HOME: './'
     volumes:
       - './:/srv/pim'
-      - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
-      - '${HOST_CYPRESS_CACHE_FOLDER:-~/.cache/Cypress}:/home/node/.cypress'
     working_dir: '/srv/pim'
     networks:
       - 'pim'
