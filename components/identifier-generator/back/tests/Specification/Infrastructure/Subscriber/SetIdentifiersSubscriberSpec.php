@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\SetIdentifiersSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -85,6 +86,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
         $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -123,6 +125,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
         $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -165,6 +168,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
         $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
