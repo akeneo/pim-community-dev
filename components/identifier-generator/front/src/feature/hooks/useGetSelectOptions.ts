@@ -1,7 +1,7 @@
 import {Option, OptionCode} from '../models/option';
 import {useQuery} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {ServerError, Unauthorized} from '../errors';
+import {ServerError} from '../errors';
 import {useEffect, useState} from 'react';
 
 const DEFAULT_LIMIT_PAGINATION = 20;
@@ -29,18 +29,14 @@ const useGetSelectOptions = ({attributeCode, page = 1, search = '', codes}: Para
         page: codes ? 1 : page,
         search,
         limit: codes ? codes.length : DEFAULT_LIMIT_PAGINATION,
-        codes: codes || []
+        codes: codes || [],
       });
-      const response = await fetch(
-        url,
-        {
-          method: 'GET',
-          headers: [['X-Requested-With', 'XMLHttpRequest']],
-        }
-      );
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: [['X-Requested-With', 'XMLHttpRequest']],
+      });
 
       if (!response.ok) {
-        if (response.status === 403) throw new Unauthorized();
         throw new ServerError();
       }
 
@@ -70,9 +66,7 @@ const usePaginatedOptions = (attributeCode: string): PaginationResult => {
     if (!data) return;
 
     setHasNextPage(data.length === DEFAULT_LIMIT_PAGINATION);
-    setOptions(formerOptions =>
-      (page === 1 ? data : [...(formerOptions || []), ...data])
-    );
+    setOptions(formerOptions => (page === 1 ? data : [...(formerOptions || []), ...data]));
   }, [data, page]);
 
   const handleNextPage = () => {
