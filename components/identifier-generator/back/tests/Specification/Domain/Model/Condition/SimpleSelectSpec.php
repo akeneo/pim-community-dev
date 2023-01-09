@@ -215,7 +215,7 @@ class SimpleSelectSpec extends ObjectBehavior
         ]]);
         $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(true);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => ['red', 'blue']]
+            'color' => ['<all_locales>_<all_channels>' => 'red']
         ]))->shouldReturn(false);
     }
 
@@ -228,7 +228,7 @@ class SimpleSelectSpec extends ObjectBehavior
         ]]);
         $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(false);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => ['red', 'blue']]
+            'color' => ['<all_locales>_<all_channels>' => 'red']
         ]))->shouldReturn(true);
     }
 
@@ -241,10 +241,10 @@ class SimpleSelectSpec extends ObjectBehavior
             'value' => ['red', 'pink']
         ]]);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => ['red', 'blue']]
+            'color' => ['<all_locales>_<all_channels>' => 'red']
         ]))->shouldReturn(true);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => ['blue', 'green']]
+            'color' => ['<all_locales>_<all_channels>' => 'blue']
         ]))->shouldReturn(false);
     }
 
@@ -257,10 +257,10 @@ class SimpleSelectSpec extends ObjectBehavior
             'value' => ['red', 'pink']
         ]]);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => ['red', 'blue']]
+            'color' => ['<all_locales>_<all_channels>' => 'red']
         ]))->shouldReturn(false);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => ['blue', 'green']]
+            'color' => ['<all_locales>_<all_channels>' => 'blue']
         ]))->shouldReturn(true);
         $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(false);
     }
