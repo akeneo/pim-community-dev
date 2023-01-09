@@ -95,3 +95,14 @@ datagrid:
                 localizable:
                     type:      boolean
                     data_name: a.localizable
+
+        mass_actions:
+            attribute_edit:
+                type: edit
+                label: pim_common.delete
+                route: pim_enrich_mass_edit_action
+                route_parameters:
+                    actionName: family-edit
+                # TODO: add a new ACL for mass edit?
+                acl_resource: pim_enrich_family_edit_attributes
+                className: 'AknButton AknButton--important AknButtonList-item'
