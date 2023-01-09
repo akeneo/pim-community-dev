@@ -51,7 +51,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     return condition;
   };
 
-  const removeIdentifiers = conditionsWithId => conditionsWithId.map(removeIdentifier);
+  const removeIdentifiers = useCallback(conditionsWithId => conditionsWithId.map(removeIdentifier), []);
 
   const handleChange = (conditionWithId: Condition & {id: ConditionIdentifier}) => {
     const index = conditionsWithId.findIndex(condition => condition.id === conditionWithId.id);
@@ -81,7 +81,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     }
 
     closeModal();
-  }, [closeModal, conditionIdToDelete, conditionsWithId, onChange]);
+  }, [closeModal, conditionIdToDelete, conditionsWithId, onChange, removeIdentifiers]);
 
   const onDelete = useCallback(
     (conditionId: ConditionIdentifier) => () => {

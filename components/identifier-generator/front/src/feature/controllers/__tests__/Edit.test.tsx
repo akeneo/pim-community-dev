@@ -1,7 +1,7 @@
 import React from 'react';
 import {mockResponse, render, screen} from '../../tests/test-utils';
 import {Edit} from '../';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../../pages/CreateOrEditGeneratorPage');
 

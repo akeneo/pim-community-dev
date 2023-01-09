@@ -1,12 +1,11 @@
 import React from 'react';
 import {Helper, SelectInput, SkeletonPlaceholder, Table} from 'akeneo-design-system';
-import {LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {useGetScopes} from '../hooks/useGetScopes';
-import {Unauthorized} from '../errors';
+import {ChannelCode, LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {useGetScopes} from '../hooks';
 
 type ScopeSelectorProps = {
-  value: string | null;
-  onChange: (code: string) => void;
+  value: ChannelCode | null;
+  onChange: (code: string | null) => void;
 };
 
 const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
@@ -17,9 +16,6 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
   const getLabel = (labels: LabelCollection, code: string) => labels[currentCatalogLocale] || `[${code}]`;
 
   if (error) {
-    if (error instanceof Unauthorized || error instanceof Unauthorized) {
-      return <Helper level={'error'}>{translate('pim_error.unauthorized_list_families')}</Helper>;
-    }
     return <Helper level={'error'}>{translate('pim_error.general')}</Helper>;
   }
 

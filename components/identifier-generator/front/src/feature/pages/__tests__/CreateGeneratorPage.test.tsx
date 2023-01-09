@@ -4,7 +4,7 @@ import {CreateGeneratorPage} from '../';
 import {Router} from 'react-router-dom';
 import {act, fireEvent, waitFor} from '@testing-library/react';
 import {createMemoryHistory} from 'history';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
 jest.mock('../CreateOrEditGeneratorPage');
