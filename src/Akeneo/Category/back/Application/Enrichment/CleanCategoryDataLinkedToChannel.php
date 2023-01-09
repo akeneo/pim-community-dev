@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Category\Infrastructure\EventSubscriber\Cleaner;
+namespace Akeneo\Category\Application\Enrichment;
 
+use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
+use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\GetAllEnrichedCategoryValuesByCategoryCode;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\UpdateCategoryEnrichedValues;
 
 class CleanCategoryDataLinkedToChannel
 {
@@ -40,6 +40,11 @@ class CleanCategoryDataLinkedToChannel
         }
     }
 
+    /**
+     * @param array<string, string> $values
+     *
+     * @return array<string>
+     */
     private function getEnrichedValueKeysToRemove(array $values, string $code): array
     {
         $keysToRemove = [];
@@ -58,6 +63,9 @@ class CleanCategoryDataLinkedToChannel
         return $keysToRemove;
     }
 
+    /**
+     * @param array<string, string> $batch
+     */
     private function updateCategoriesBatch(array $batch): void
     {
         $this->updateCategoryEnrichedValues->execute($batch);

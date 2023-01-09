@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Category\back\tests\Integration\Infrastructure\EventSubscriber\Cleaner;
+namespace Akeneo\Category\back\tests\Integration\Application\Enrichment;
 
+use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
+use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
+use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\CleanCategoryDataLinkedToChannel;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\GetAllEnrichedCategoryValuesByCategoryCode;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\UpdateCategoryEnrichedValues;
 
 class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
 {

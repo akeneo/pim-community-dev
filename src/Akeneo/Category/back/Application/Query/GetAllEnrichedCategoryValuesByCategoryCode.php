@@ -1,8 +1,11 @@
 <?php
 
-namespace Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql;
+namespace Akeneo\Category\Application\Query;
 
 interface GetAllEnrichedCategoryValuesByCategoryCode
 {
+    /**
+     * @return array<string, string>
+     */
     public function execute(): array;
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql;
+namespace Akeneo\Category\Infrastructure\Storage\Sql\Update;
 
+use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Doctrine\DBAL\Connection;
 
 final class UpdateCategoryEnrichedValuesSql implements UpdateCategoryEnrichedValues

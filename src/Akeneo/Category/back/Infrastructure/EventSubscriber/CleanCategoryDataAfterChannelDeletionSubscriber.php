@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\CleanCategoryDataLinkedToChannel;
+use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

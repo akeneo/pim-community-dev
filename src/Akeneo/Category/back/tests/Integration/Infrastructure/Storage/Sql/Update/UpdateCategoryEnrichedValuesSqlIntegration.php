@@ -1,12 +1,11 @@
 <?php
 
-namespace Akeneo\Test\Category\Integration\Infrastructure\EventSubscriber\Cleaner\Sql;
+namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Sql\Update;
 
+use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
+use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\GetAllEnrichedCategoryValuesByCategoryCode;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\UpdateCategoryEnrichedValues;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\UpdateCategoryEnrichedValuesSql;
 
 class UpdateCategoryEnrichedValuesSqlIntegration extends CategoryTestCase
 {
@@ -42,7 +41,7 @@ class UpdateCategoryEnrichedValuesSqlIntegration extends CategoryTestCase
         $this->updateCategoryWithValues($categoryShoes->getCode());
     }
 
-    public function testItUpdateCategoriesWithNewValueCollection()
+    public function testItUpdateCategoriesWithNewValueCollection(): void
     {
         $valuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
 

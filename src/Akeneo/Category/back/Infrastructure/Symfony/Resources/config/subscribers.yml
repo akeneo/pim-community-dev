@@ -7,7 +7,7 @@ services:
 
     Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelDeletionSubscriber:
         arguments:
-            - '@Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\CleanCategoryDataLinkedToChannel'
+            - '@Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel'
             - '@akeneo.category.enriched.feature'
         tags:
             - { name: kernel.event_subscriber }

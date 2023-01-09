@@ -1,15 +1,15 @@
 services:
-    Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\CleanCategoryDataLinkedToChannel:
+    Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel:
         arguments:
-            - '@Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\GetAllEnrichedCategoryValuesByCategoryCode'
-            - '@Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\UpdateCategoryEnrichedValues'
+            - '@Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode'
+            - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
 
-    Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\GetAllEnrichedCategoryValuesByCategoryCode:
-        class: Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\GetAllEnrichedCategoryValuesByCategoryCodeSql
+    Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode:
+        class: Akeneo\Category\Infrastructure\Storage\Sql\GetAllEnrichedCategoryValuesByCategoryCodeSql
         arguments:
             - '@database_connection'
 
-    Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\UpdateCategoryEnrichedValues:
-        class: Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\UpdateCategoryEnrichedValuesSql
+    Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues:
+        class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
         arguments:
             - '@database_connection'

@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
+use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelDeletionSubscriber;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\CleanCategoryDataLinkedToChannel;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;

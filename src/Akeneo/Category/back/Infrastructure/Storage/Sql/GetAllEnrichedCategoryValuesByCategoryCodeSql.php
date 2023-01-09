@@ -1,7 +1,8 @@
 <?php
 
-namespace Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql;
+namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
 use Doctrine\DBAL\Connection;
 
 final class GetAllEnrichedCategoryValuesByCategoryCodeSql implements GetAllEnrichedCategoryValuesByCategoryCode
@@ -10,6 +11,11 @@ final class GetAllEnrichedCategoryValuesByCategoryCodeSql implements GetAllEnric
     {
     }
 
+    /**
+     * @return array<string, string>
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function execute(): array
     {
         $query = <<<SQL

@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Test\Category\Integration\Infrastructure\EventSubscriber\Cleaner\Sql;
+namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Infrastructure\EventSubscriber\Cleaner\Sql\GetAllEnrichedCategoryValuesByCategoryCode;
 
 class GetAllEnrichedCategoryValuesByCategoryCodeSqlIntegration extends CategoryTestCase
 {
@@ -39,7 +39,7 @@ class GetAllEnrichedCategoryValuesByCategoryCodeSqlIntegration extends CategoryT
         $this->updateCategoryWithValues($categoryShoes->getCode());
     }
 
-    public function testItGetAllCategoryWithEnrichedValuesSortedByCategoryCode()
+    public function testItGetAllCategoryWithEnrichedValuesSortedByCategoryCode(): void
     {
         $valuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
 
