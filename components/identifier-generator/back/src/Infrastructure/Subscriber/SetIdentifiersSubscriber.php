@@ -14,6 +14,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -76,7 +77,12 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                 $identifier = $identifierValue->getData();
                 Assert::string($identifier);
             }
-            $productProjection = new ProductProjection($identifier, $product->isEnabled(), $product->getFamily()?->getCode(), []);
+            $productProjection = new ProductProjection(
+                $identifier,
+                $product->isEnabled(),
+                $product->getFamily()?->getCode(),
+                $this->flatValues($product),
+            );
             if ($identifierGenerator->match($productProjection)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $product);
@@ -197,5 +203,19 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                 \iterator_to_array($constraintViolationList)
             )
         );
+    }
+
+    private function flatValues(ProductInterface $product): array
+    {
+        $result = [];
+        foreach ($product->getValues() as $value) {
+            $key = join('_', [
+                $value->getLocaleCode() ?? '<all_locales>',
+                $value->getScopeCode() ?? '<all_channels>',
+            ]);
+            $result[$value->getAttributeCode()][$key] = $value->getData();
+        }
+
+        return $result;
     }
 }
