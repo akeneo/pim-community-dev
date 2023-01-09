@@ -76,7 +76,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                 $identifier = $identifierValue->getData();
                 Assert::string($identifier);
             }
-            $productProjection = new ProductProjection($identifier, $product->isEnabled(), $product->getFamily()?->getCode());
+            $productProjection = new ProductProjection($identifier, $product->isEnabled(), $product->getFamily()?->getCode(), []);
             if ($identifierGenerator->match($productProjection)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $product);
