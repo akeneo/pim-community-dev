@@ -4,7 +4,7 @@ import {CreateOrEditGeneratorPage} from '../';
 import {createMemoryHistory} from 'history';
 import {Router} from 'react-router';
 import {IdentifierGeneratorContext} from '../../context';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 
 jest.mock('../DeleteGeneratorModal');

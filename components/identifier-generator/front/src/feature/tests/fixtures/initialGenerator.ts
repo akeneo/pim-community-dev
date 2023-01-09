@@ -11,4 +11,4 @@ const initialGenerator: IdentifierGenerator = {
   target: 'sku',
 };
 
-export {initialGenerator};
+export default initialGenerator;
