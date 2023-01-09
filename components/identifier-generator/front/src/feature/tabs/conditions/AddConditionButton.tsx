@@ -31,6 +31,11 @@ const items: ConditionsSelection[] = [
         defaultValue: {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []},
         limit: 1,
       },
+      {
+        code: CONDITION_NAMES.SELECT_OPTION,
+        defaultValue: {type: CONDITION_NAMES.SELECT_OPTION, operator: Operator.IN, value: [], attributeCode: 'brand'},
+        limit: 1,
+      },
     ],
   },
 ];
