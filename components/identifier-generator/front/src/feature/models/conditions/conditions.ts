@@ -1,14 +1,16 @@
 import {EnabledCondition} from './enabledCondition';
 import {FamilyCondition} from './familyCondition';
+import {SimpleSelectCondition} from './simpleSelectCondition';
 
 enum CONDITION_NAMES {
   ENABLED = 'enabled',
   FAMILY = 'family',
+  SELECT_OPTION = 'select_option',
 }
 
 type Condition = {
   type: CONDITION_NAMES;
-} & (EnabledCondition | FamilyCondition);
+} & (EnabledCondition | FamilyCondition | SimpleSelectCondition);
 
 type Conditions = Condition[];
 
