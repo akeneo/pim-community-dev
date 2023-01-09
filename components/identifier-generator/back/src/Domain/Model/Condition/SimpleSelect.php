@@ -105,10 +105,13 @@ final class SimpleSelect implements ConditionInterface
     public function match(ProductProjection $productProjection): bool
     {
         $value = $productProjection->value($this->attributeCode, $this->locale, $this->scope);
+        if (null !== $value && !\is_string($value)) {
+            return false;
+        }
 
         return match ($this->operator) {
-            'IN' => null !== $value && \count(\array_intersect($value, $this->value)) > 0,
-            'NOT IN' => null !== $value && \count(\array_intersect($value, $this->value)) === 0,
+            'IN' => null !== $value && \in_array($value, $this->value),
+            'NOT IN' => null !== $value && !\in_array($value, $this->value),
             'EMPTY' => null === $value,
             default => null !== $value
         };
