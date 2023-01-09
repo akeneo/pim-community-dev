@@ -68,9 +68,7 @@ export const useCatalogForm = (id: string): Result => {
                         dispatch(action);
                         break;
                     case CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA:
-                        setErrors(
-                            errors.filter(error => !error.propertyPath.startsWith('productSelectionCriteria'))
-                        );
+                        setErrors(errors.filter(error => !error.propertyPath.startsWith('productSelectionCriteria')));
                         setDirty(true);
                         dispatch(action);
                         break;
