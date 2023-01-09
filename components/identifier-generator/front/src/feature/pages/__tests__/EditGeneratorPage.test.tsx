@@ -3,7 +3,7 @@ import {mockResponse, render, screen, waitFor} from '../../tests/test-utils';
 import {EditGeneratorPage} from '../';
 import userEvent from '@testing-library/user-event';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
 
 const mockNotify = jest.fn();
 
