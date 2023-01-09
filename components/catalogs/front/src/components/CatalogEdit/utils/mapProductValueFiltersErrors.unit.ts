@@ -7,11 +7,11 @@ import {mapProductValueFiltersErrors} from './mapProductValueFiltersErrors';
 test('it returns errors matching the property path of product value filters', () => {
     const errors: CatalogFormErrors = [
         {
-            propertyPath: '[product_value_filters][channels][0][value]',
+            propertyPath: 'productValueFilters[channels][0][value]',
             message: 'This is an error',
         },
         {
-            propertyPath: '[product_value_filters][channels][1][value]',
+            propertyPath: 'productValueFilters[channels][1][value]',
             message: 'This is a second message but it should not happen',
         },
     ];

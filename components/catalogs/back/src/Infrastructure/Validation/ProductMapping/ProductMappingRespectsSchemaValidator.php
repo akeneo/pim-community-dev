@@ -42,19 +42,27 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ProductMappingRespectsSchema::class);
         }
 
-        if (!\is_array($value) || (!empty($value) && \array_is_list($value))) {
+        if (!$value instanceof Catalog) {
+            throw new UnexpectedTypeException($value, Catalog::class);
+        }
+
+        if ([] === $value->getProductMapping()) {
             return;
         }
 
         /** @var ProductMappingSchema $schema */
-        $schema = \json_decode($this->fetchProductMappingSchema($constraint->productMappingSchemaFile), true, 512, JSON_THROW_ON_ERROR);
+        $schema = \json_decode(
+            $this->fetchProductMappingSchema(\sprintf('%s_product.json', $value->getId())),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
 
-        /** @var ProductMapping $value */
-        if (!$this->validateTargetsList($value, $schema)) {
+        if (!$this->validateTargetsList($value->getProductMapping(), $schema)) {
             return;
         }
 
-        $this->validateTargetsTypes($value, $schema);
+        $this->validateTargetsTypes($value->getProductMapping(), $schema);
     }
 
     private function fetchProductMappingSchema(string $productMappingSchemaFile): string

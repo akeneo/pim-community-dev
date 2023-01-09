@@ -6,15 +6,15 @@ type Status = {
 };
 
 const productSelectionCriteriaHasAnError = (errors: CatalogFormErrors): boolean => {
-    return errors.find(error => error.propertyPath.startsWith('[product_selection_criteria]')) !== undefined;
+    return errors.find(error => error.propertyPath.startsWith('productSelectionCriteria')) !== undefined;
 };
 
 const productValueFiltersHasAnError = (errors: CatalogFormErrors): boolean => {
-    return errors.find(error => error.propertyPath.startsWith('[product_value_filters]')) !== undefined;
+    return errors.find(error => error.propertyPath.startsWith('productValueFilters')) !== undefined;
 };
 
 const productMappingHasAnError = (errors: CatalogFormErrors): boolean => {
-    return errors.find(error => error.propertyPath.startsWith('[product_mapping]')) !== undefined;
+    return errors.find(error => error.propertyPath.startsWith('productMapping')) !== undefined;
 };
 export const getTabsValidationStatus = (errors: CatalogFormErrors): Status => {
     return {

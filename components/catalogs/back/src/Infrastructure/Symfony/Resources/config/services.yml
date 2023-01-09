@@ -74,7 +74,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Validation\:
         resource: '../../../Validation/**/*Validator.php'
 
-    Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdateProductSelectionCriteriaPayloadValidator:
+    Akeneo\Catalogs\Infrastructure\Validation\CatalogProductSelectionCriteriaValidator:
         arguments:
             $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
 
@@ -168,6 +168,7 @@ services:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
 
+    # EventSubscriber
     Akeneo\Catalogs\Infrastructure\EventSubscriber\CurrencyDeactivationSubscriber:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'

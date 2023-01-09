@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
+namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -13,10 +13,6 @@ use Symfony\Component\Validator\Constraint;
  * @psalm-suppress PropertyNotSetInConstructor
  */
 #[\Attribute]
-final class ProductMappingRespectsSchema extends Constraint
+final class CatalogProductSelectionCriteria extends Constraint
 {
-    public function getTargets()
-    {
-        return self::CLASS_CONSTRAINT;
-    }
 }

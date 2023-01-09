@@ -63,7 +63,7 @@ class GetCatalogErrorsActionTest extends IntegrationTestCase
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(1, $payload);
-        Assert::assertEquals('[product_selection_criteria][0][value]', $payload[0]['propertyPath']);
+        Assert::assertEquals('productSelectionCriteria[0][value]', $payload[0]['propertyPath']);
     }
 
     public function testItReturnsCatalogProductFilterValuesErrors(): void
@@ -96,7 +96,7 @@ class GetCatalogErrorsActionTest extends IntegrationTestCase
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(1, $payload);
-        Assert::assertEquals('[product_value_filters][channels][0]', $payload[0]['propertyPath']);
+        Assert::assertEquals('productValueFilters[channels][0]', $payload[0]['propertyPath']);
     }
 
     public function testItReturnsCatalogProductMappingErrors(): void
@@ -132,7 +132,7 @@ class GetCatalogErrorsActionTest extends IntegrationTestCase
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(1, $payload);
-        Assert::assertEquals('[product_mapping][uuid][scope]', $payload[0]['propertyPath']);
+        Assert::assertEquals('productMapping[uuid][scope]', $payload[0]['propertyPath']);
     }
 
     public function testItReturnsNoCatalogErrors(): void

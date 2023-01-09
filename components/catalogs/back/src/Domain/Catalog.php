@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Domain;
 
+use Akeneo\Catalogs\Infrastructure\Validation\CatalogProductMapping;
+use Akeneo\Catalogs\Infrastructure\Validation\CatalogProductSelectionCriteria;
+use Akeneo\Catalogs\Infrastructure\Validation\CatalogProductValueFilters;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespectsSchema;
+
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -23,11 +28,12 @@ namespace Akeneo\Catalogs\Domain;
  * }
  *
  * @phpstan-type ProductMapping array<string, array{
- *          source: string|null,
- *          locale: string|null,
- *          scope: string|null,
+ *      source: string|null,
+ *      locale: string|null,
+ *      scope: string|null,
  * }>
  */
+#[ProductMappingRespectsSchema]
 final class Catalog
 {
     /**
@@ -40,8 +46,11 @@ final class Catalog
         private string $name,
         private string $ownerUsername,
         private bool $enabled,
+        #[CatalogProductSelectionCriteria]
         private array $productSelectionCriteria,
+        #[CatalogProductValueFilters]
         private array $productValueFilters,
+        #[CatalogProductMapping]
         private array $productMapping,
     ) {
     }

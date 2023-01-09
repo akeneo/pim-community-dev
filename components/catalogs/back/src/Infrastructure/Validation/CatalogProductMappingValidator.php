@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespectsSchema;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\SystemSource\UuidSource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,7 +19,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class CatalogUpdateProductMappingPayloadValidator extends ConstraintValidator
+final class CatalogProductMappingValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
@@ -29,20 +28,20 @@ final class CatalogUpdateProductMappingPayloadValidator extends ConstraintValida
 
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof CatalogUpdateProductMappingPayload) {
-            throw new UnexpectedTypeException($constraint, CatalogUpdateProductMappingPayload::class);
+        if (!$constraint instanceof CatalogProductMapping) {
+            throw new UnexpectedTypeException($constraint, CatalogProductMapping::class);
         }
 
         $this->context
             ->getValidator()
             ->inContext($this->context)
-            ->validate($value, $this->getConstraints($constraint));
+            ->validate($value, $this->getConstraints());
     }
 
     /**
      * @return array<array-key, Constraint>
      */
-    private function getConstraints(CatalogUpdateProductMappingPayload $constraint): array
+    private function getConstraints(): array
     {
         return [
             new Assert\Sequentially([
@@ -57,7 +56,6 @@ final class CatalogUpdateProductMappingPayloadValidator extends ConstraintValida
                             ->addViolation();
                     }
                 }),
-                new ProductMappingRespectsSchema($constraint->productMappingSchemaFile),
                 new Assert\All([
                     new Assert\Callback(function (mixed $sourceAssociation, ExecutionContextInterface $context): void {
                         if (!\is_array($sourceAssociation) || null === $sourceAssociation['source']) {

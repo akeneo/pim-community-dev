@@ -7,15 +7,15 @@ import {mapProductSelectionCriteriaErrors} from './mapProductSelectionCriteriaEr
 test('it maps API errors to ProductSelection errors indexed by key', () => {
     const errors: CatalogFormErrors = [
         {
-            propertyPath: '[product_selection_criteria][0][value]',
+            propertyPath: 'productSelectionCriteria[0][value]',
             message: 'Invalid.',
         },
         {
-            propertyPath: '[product_selection_criteria][3][operator]',
+            propertyPath: 'productSelectionCriteria[3][operator]',
             message: 'Operator invalid.',
         },
         {
-            propertyPath: '[product_selection_criteria][2][value][unit]',
+            propertyPath: 'productSelectionCriteria[2][value][unit]',
             message: 'Unit invalid.',
         },
     ];

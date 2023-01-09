@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class CatalogUpdateProductSelectionCriteriaPayloadValidator extends ConstraintValidator
+final class CatalogProductSelectionCriteriaValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
@@ -40,20 +40,20 @@ final class CatalogUpdateProductSelectionCriteriaPayloadValidator extends Constr
 
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof CatalogUpdateProductSelectionCriteriaPayload) {
-            throw new UnexpectedTypeException($constraint, CatalogUpdateProductSelectionCriteriaPayload::class);
+        if (!$constraint instanceof CatalogProductSelectionCriteria) {
+            throw new UnexpectedTypeException($constraint, CatalogProductSelectionCriteria::class);
         }
 
         $this->context
             ->getValidator()
             ->inContext($this->context)
-            ->validate($value, $this->getConstraints($constraint));
+            ->validate($value, $this->getConstraints());
     }
 
     /**
      * @return array<array-key, Constraint>
      */
-    private function getConstraints(CatalogUpdateProductSelectionCriteriaPayload $constraint): array
+    private function getConstraints(): array
     {
         $maxCriteriaPerCatalog = $this->maxCriteriaPerCatalog;
         return [
