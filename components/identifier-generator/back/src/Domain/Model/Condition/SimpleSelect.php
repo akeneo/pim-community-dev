@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -27,10 +28,11 @@ final class SimpleSelect implements ConditionInterface
      * @param string[]|null $value
      */
     private function __construct(
-        /** @phpstan-ignore-next-line */
         private readonly string $operator,
-        /** @phpstan-ignore-next-line */
+        private readonly string $attributeCode,
         private readonly ?array $value = null,
+        private readonly ?string $scope = null,
+        private readonly ?string $locale = null,
     ) {
     }
 
@@ -48,21 +50,60 @@ final class SimpleSelect implements ConditionInterface
     /** @phpstan-ignore-next-line */
     public static function fromNormalized(array $normalizedProperty): self
     {
-        // TODO: Implement normalize() method.
-        /** @phpstan-ignore-next-line */
-        return new self('');
+        Assert::eq($normalizedProperty['type'], self::type());
+        Assert::keyExists($normalizedProperty, 'attributeCode');
+        Assert::stringNotEmpty($normalizedProperty['attributeCode']);
+
+        if (\array_key_exists('scope', $normalizedProperty)) {
+            Assert::stringNotEmpty($normalizedProperty['scope']);
+        }
+        if (\array_key_exists('locale', $normalizedProperty)) {
+            Assert::stringNotEmpty($normalizedProperty['locale']);
+        }
+
+        Assert::keyExists($normalizedProperty, 'operator');
+        Assert::string($normalizedProperty['operator']);
+        Assert::oneOf($normalizedProperty['operator'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
+        if (\in_array($normalizedProperty['operator'], ['IN', 'NOT IN'])) {
+            Assert::keyExists($normalizedProperty, 'value');
+            Assert::isArray($normalizedProperty['value']);
+            Assert::allStringNotEmpty($normalizedProperty['value']);
+            Assert::minCount($normalizedProperty['value'], 1);
+
+            return new self(
+                $normalizedProperty['operator'],
+                $normalizedProperty['attributeCode'],
+                $normalizedProperty['value'],
+                $normalizedProperty['scope'] ?? null,
+                $normalizedProperty['locale'] ?? null,
+            );
+        }
+
+        Assert::keyNotExists($normalizedProperty, 'value');
+
+        return new self(
+            $normalizedProperty['operator'],
+            $normalizedProperty['attributeCode'],
+            null,
+            $normalizedProperty['scope'] ?? null,
+            $normalizedProperty['locale'] ?? null,
+        );
     }
 
     public function normalize(): array
     {
-        // TODO: Implement normalize() method.
-        /** @phpstan-ignore-next-line */
-        return [];
+        return \array_filter([
+            'type' => self::type(),
+            'attributeCode' => $this->attributeCode,
+            'operator' => $this->operator,
+            'value' => $this->value,
+            'scope' => $this->scope,
+            'locale' => $this->locale,
+        ]);
     }
 
     public function match(ProductProjection $productProjection): bool
     {
-        // TODO: Implement match() method.
         return false;
     }
 }
