@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -17,8 +19,12 @@ final class ProductProjection
         private readonly ?string $identifier,
         private readonly bool $enabled,
         private readonly ?string $familyCode,
-        private readonly array $values,
+        private readonly array $productValues,
     ) {
+        Assert::isMap($productValues);
+        foreach($productValues as $_attributeCode => $attributeValues) {
+            Assert::isMap($attributeValues);
+        }
     }
 
     public function identifier(): ?string
@@ -40,6 +46,6 @@ final class ProductProjection
     {
         $key = \join('_', [$locale ?? '<all_locales>', $scope ?? '<all_channels>']);
 
-        return $this->values[$attributeCode][$key] ?? null;
+        return $this->productValues[$attributeCode][$key] ?? null;
     }
 }
