@@ -69,7 +69,7 @@ class EnabledSpec extends ObjectBehavior
     public function it_matches_only_enabled_products(): void
     {
         $this->beConstructedThrough('fromBoolean', [true]);
-        $this->match(new ProductProjection('', true, ''))->shouldReturn(true);
-        $this->match(new ProductProjection('', false, ''))->shouldReturn(false);
+        $this->match(new ProductProjection('', true, '', []))->shouldReturn(true);
+        $this->match(new ProductProjection('', false, '', []))->shouldReturn(false);
     }
 }
