@@ -10,10 +10,14 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
  */
 final class ProductProjection
 {
+    /**
+     * @param array<string, mixed> $values
+     */
     public function __construct(
         private readonly ?string $identifier,
         private readonly bool $enabled,
         private readonly ?string $familyCode,
+        private readonly array $values,
     ) {
     }
 
@@ -30,5 +34,12 @@ final class ProductProjection
     public function familyCode(): ?string
     {
         return $this->familyCode;
+    }
+
+    public function value(string $attributeCode, ?string $locale = null, ?string $scope = null): mixed
+    {
+        $key = \join('_', [$locale ?? '<all_locales>', $scope ?? '<all_channels>']);
+
+        return $this->values[$attributeCode][$key] ?? null;
     }
 }
