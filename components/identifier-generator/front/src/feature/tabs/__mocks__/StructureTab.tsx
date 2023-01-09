@@ -1,6 +1,6 @@
 import React from 'react';
 import {Delimiter, PROPERTY_NAMES, Structure} from '../../models';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
 
 type StructureTabProps = {
   onStructureChange: (structure: Structure) => void;
