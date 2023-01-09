@@ -465,6 +465,7 @@ pim_datagrid:
         mass_delete: Mass delete
         selected:
             family: "]-Inf, 1]{{ count }} family selected|]1, Inf[{{ count }} families selected"
+            attribute: "]-Inf, 1]{{ count }} attribute selected|]1, Inf[{{ count }} attributes selected"
             product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
     view_selector:
         view: Views
