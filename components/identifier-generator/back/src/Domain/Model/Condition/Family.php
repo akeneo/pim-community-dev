@@ -62,15 +62,11 @@ final class Family implements ConditionInterface
      */
     public function normalize(): array
     {
-        $result = [
+        return \array_filter([
             'type' => self::type(),
             'operator' => $this->operator,
-        ];
-        if (null !== $this->value) {
-            $result['value'] = $this->value;
-        }
-
-        return $result;
+            'value' => $this->value,
+        ]);
     }
 
     public function match(ProductProjection $productProjection): bool
