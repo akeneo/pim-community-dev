@@ -1,12 +1,31 @@
 # 6.0.x
 
+# 6.0.62 (2022-12-23)
+
+## Bug fixes
+
+- PIM-10687: Fix high memory consumption when computing completeness for prices with inactive currencies
+
+# 6.0.61 (2022-12-15)
+
+# 6.0.60 (2022-12-14)
+
+# 6.0.59 (2022-12-14)
+
+# 6.0.58 (2022-12-13)
+
+## Bug fixes
+
+- [Backport PIM-10246] PIM-10765: Fix oom in Process Tracker
+- [Backport PIM-10672] PIM-10690: Command to create/add roles with all existing permission
+
 # 6.0.57 (2022-12-07)
 
 # 6.0.56 (2022-11-28)
 
 ## Bug fixes
 
-PIM-10734: Assets export fails because of a failed warning messages
+- PIM-10734: Assets export fails because of a failed warning messages
 
 # 6.0.55 (2022-11-21)
 
@@ -43,8 +62,9 @@ PIM-10734: Assets export fails because of a failed warning messages
 # 6.0.46 (2022-10-20)
 
 ## Bug fixes
-PIM-10670: Fix memory leak on creating combinations for currencies
-PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
+
+- PIM-10670: Fix memory leak on creating combinations for currencies
+- PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
 
 # 6.0.45 (2022-10-06)
 
