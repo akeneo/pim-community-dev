@@ -25,6 +25,7 @@ use League\Flysystem\DirectoryAttributes;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -129,7 +130,10 @@ class FixturesLoader implements FixturesLoaderInterface
     {
         // close the connection created specifically for this repository
         // TODO: to remove when TIP-385 will be done
-        $this->doctrineJobRepository->getJobManager()->getConnection()->close();
+        if (!$this->doctrineJobRepository instanceof LazyLoadingInterface
+            || $this->doctrineJobRepository->isProxyInitialized()) {
+            $this->doctrineJobRepository->getJobManager()->getConnection()->close();
+        }
     }
 
     public function load(Configuration $configuration): void
