@@ -2,7 +2,7 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
 import {StructureTab} from '../StructureTab';
 import {PROPERTY_NAMES, Structure} from '../../models';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../structure/AddPropertyButton');
 jest.mock('../structure/DelimiterEdit');
