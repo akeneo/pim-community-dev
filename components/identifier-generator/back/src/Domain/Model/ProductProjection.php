@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
 final class ProductProjection
 {
     /**
-     * @param array<string, mixed> $values
+     * @param array<string, array<mixed>> $productValues
      */
     public function __construct(
         private readonly ?string $identifier,
@@ -22,7 +22,7 @@ final class ProductProjection
         private readonly array $productValues,
     ) {
         Assert::isMap($productValues);
-        foreach($productValues as $_attributeCode => $attributeValues) {
+        foreach ($productValues as $_attributeCode => $attributeValues) {
             Assert::isMap($attributeValues);
         }
     }

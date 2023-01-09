@@ -47,7 +47,6 @@ final class SimpleSelect implements ConditionInterface
     /**
      * @param array<string, mixed> $normalizedProperty
      */
-    /** @phpstan-ignore-next-line */
     public static function fromNormalized(array $normalizedProperty): self
     {
         Assert::eq($normalizedProperty['type'], self::type());
@@ -90,6 +89,9 @@ final class SimpleSelect implements ConditionInterface
         );
     }
 
+    /**
+     * @return SimpleSelectNormalized
+     */
     public function normalize(): array
     {
         return \array_filter([
@@ -99,7 +101,7 @@ final class SimpleSelect implements ConditionInterface
             'value' => $this->value,
             'scope' => $this->scope,
             'locale' => $this->locale,
-        ]);
+        ], fn (mixed $var): bool => null !== $var);
     }
 
     public function match(ProductProjection $productProjection): bool
@@ -110,8 +112,8 @@ final class SimpleSelect implements ConditionInterface
         }
 
         return match ($this->operator) {
-            'IN' => null !== $value && \in_array($value, $this->value),
-            'NOT IN' => null !== $value && !\in_array($value, $this->value),
+            'IN' => null !== $value && \in_array($value, $this->value ?? []),
+            'NOT IN' => null !== $value && !\in_array($value, $this->value ?? []),
             'EMPTY' => null === $value,
             default => null !== $value
         };
