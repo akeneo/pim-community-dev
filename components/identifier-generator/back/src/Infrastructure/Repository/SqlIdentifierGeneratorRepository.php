@@ -40,8 +40,8 @@ class SqlIdentifierGeneratorRepository implements IdentifierGeneratorRepository
     public function save(IdentifierGenerator $identifierGenerator): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN(:uuid), :code, :target, :delimiter, :labels, :conditions, :structure);
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
+VALUES (UUID_TO_BIN(:uuid), :code, (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target), :delimiter, :labels, :conditions, :structure);
 SQL;
 
         Assert::notNull($identifierGenerator->delimiter());
@@ -64,8 +64,13 @@ SQL;
     public function update(IdentifierGenerator $identifierGenerator): void
     {
         $query = <<<SQL
-UPDATE pim_catalog_identifier_generator SET target=:target, delimiter=:delimiter, labels=:labels, conditions=:conditions, structure=:structure
-WHERE code=:code;
+UPDATE pim_catalog_identifier_generator SET
+    target_id=(SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target),
+    delimiter=:delimiter,
+    labels=:labels,
+    conditions=:conditions,
+    structure=:structure
+WHERE pim_catalog_identifier_generator.code=:code;
 SQL;
 
         try {
@@ -92,9 +97,17 @@ SQL;
         }
 
         $sql = <<<SQL
-SELECT BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter
+SELECT
+    BIN_TO_UUID(uuid) AS uuid,
+    pim_catalog_identifier_generator.code,
+    conditions,
+    structure,
+    labels,
+    delimiter,
+    pim_catalog_attribute.code AS target
 FROM pim_catalog_identifier_generator
-WHERE code=:code
+INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
+WHERE pim_catalog_identifier_generator.code=:code
 SQL;
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
@@ -118,8 +131,16 @@ SQL;
     public function getAll(): array
     {
         $sql = <<<SQL
-SELECT BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter
+SELECT
+    BIN_TO_UUID(uuid) AS uuid,
+    pim_catalog_identifier_generator.code,
+    conditions,
+    structure,
+    labels,
+    delimiter,
+    pim_catalog_attribute.code AS target
 FROM pim_catalog_identifier_generator
+INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
 SQL;
         $stmt = $this->connection->prepare($sql);
 
