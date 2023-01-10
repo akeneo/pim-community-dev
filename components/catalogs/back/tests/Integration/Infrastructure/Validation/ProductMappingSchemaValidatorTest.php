@@ -104,70 +104,172 @@ JSON_WRAP,
 }
 JSON_WRAP,
             ],
-        ];
-    }
-
-    public function invalidSchemaDataProvider(): array
-    {
-        return [
-            '0.0.1 with invalid type number' => [
+            '0.0.3 with valid schema with number and boolean' => [
                 'schema' => <<<'JSON_WRAP'
 {
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+  "$id": "https://example.com/product",
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.3/schema",
+  "$comment": "My first schema !",
+  "title": "Product Mapping",
+  "description": "JSON Schema describing the structure of products expected by our application",
+  "type": "object",
   "properties": {
-    "price": {
+    "uuid": {
+      "title": "Product uuid",
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "body_html": {
+      "title": "Description",
+      "description": "Product description in raw HTML",
+      "type": "string"
+    },
+    "is_published": {
+      "type": "boolean"
+    },
+    "height": {
       "type": "number"
     }
   }
 }
 JSON_WRAP,
             ],
+        ];
+    }
+
+    public function invalidSchemaDataProvider(): array
+    {
+        return [
+            // 0.0.1
+            '0.0.1 with invalid type field' => [
+                'schema' => <<<'JSON_WRAP'
+                {
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                  "properties": {
+                    "name": {
+                      "type": "number"
+                    }
+                  }
+                }
+                JSON_WRAP,
+            ],
             '0.0.1 with missing target type' => [
                 'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
-  "properties": {
-    "price": {}
-  }
-}
-JSON_WRAP,
+                {
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                  "properties": {
+                    "name": {}
+                  }
+                }
+                JSON_WRAP,
+            ],
+            // 0.0.2
+            '0.0.2 with invalid type field' => [
+                'schema' => <<<'JSON_WRAP'
+                {
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+                  "properties": {
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "number"
+                    }
+                  }
+                }
+                JSON_WRAP,
+            ],
+            '0.0.2 with missing target type' => [
+                'schema' => <<<'JSON_WRAP'
+                    {
+                      "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                      "properties": {
+                        "uuid": {
+                          "type": "string"
+                        },
+                        "name": {}
+                      }
+                    }
+                    JSON_WRAP,
             ],
             '0.0.2 with missing uuid' => [
                 'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
-  "properties": {
-    "name": {
-      "type": "string"
-    }
-  }
-}
-JSON_WRAP,
+                {
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+                JSON_WRAP,
             ],
             '0.0.2 with invalid uuid type' => [
                 'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
-  "properties": {
-    "uuid": {
-      "type": "boolean"
-    }
-  }
-}
-JSON_WRAP,
+                {
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+                  "properties": {
+                    "uuid": {
+                      "type": "number"
+                    }
+                  }
+                }
+                JSON_WRAP,
             ],
-            '0.0.2 with invalid uuid extra fields' => [
+            // 0.0.3
+            '0.0.3 with invalid type field' => [
                 'schema' => <<<'JSON_WRAP'
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
-  "properties": {
-    "uuid": {
-      "type": "boolean",
-      "title": "Description"
-    }
-  }
-}
-JSON_WRAP,
+                {
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+                  "properties": {
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "array"
+                    }
+                  }
+                }
+                JSON_WRAP,
+            ],
+            '0.0.3 with missing target type' => [
+                'schema' => <<<'JSON_WRAP'
+                    {
+                      "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                      "properties": {
+                        "uuid": {
+                          "type": "string"
+                        },
+                        "name": {}
+                      }
+                    }
+                    JSON_WRAP,
+            ],
+            '0.0.3 with missing uuid' => [
+                'schema' => <<<'JSON_WRAP'
+                {
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+                JSON_WRAP,
+            ],
+            '0.0.3 with invalid uuid type' => [
+                'schema' => <<<'JSON_WRAP'
+                {
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+                  "properties": {
+                    "uuid": {
+                      "type": "number"
+                    }
+                  }
+                }
+                JSON_WRAP,
             ],
         ];
     }
