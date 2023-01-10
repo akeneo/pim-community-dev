@@ -1,8 +1,8 @@
 {
   "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
-  "description": "The data should match one item from enum at #/properties/price/type",
+  "description": "The data should match one item from enum at #/properties/name/type",
   "properties": {
-    "price": {
+    "name": {
       "type": "number"
     }
   }
