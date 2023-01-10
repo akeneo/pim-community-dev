@@ -25,6 +25,7 @@ use League\Flysystem\DirectoryAttributes;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -129,7 +130,18 @@ class FixturesLoader implements FixturesLoaderInterface
     {
         // close the connection created specifically for this repository
         // TODO: to remove when TIP-385 will be done
-        $this->doctrineJobRepository->getJobManager()->getConnection()->close();
+        // Note: if the service hasn't been booted yet this is still a proxy (because declared as lazy)
+        // In that case, calling getJobManager() causes the actual service to be instantiated at this moment
+        // It causes a connection leak because:
+        // - dbal 3 has a side effect in a getter, so just instantiating the service causes an actual DB connection to be opened
+        // - Under some circumstances PDO doesn't close correctly connections opened from a destructor, so this new connection is never closed
+        // That's why we must only try to close the connection if the service was instantiated
+        if (
+            !$this->doctrineJobRepository instanceof LazyLoadingInterface
+            || $this->doctrineJobRepository->isProxyInitialized()
+        ) {
+            $this->doctrineJobRepository->getJobManager()->getConnection()->close();
+        }
     }
 
     public function load(Configuration $configuration): void
