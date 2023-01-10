@@ -21,5 +21,6 @@
   },
   "moduleNameMapper": {
     "\\.(svg|css)$": "<rootDir>/src/__mocks__/fileMock.ts"
-  }
+  },
+  "workerIdleMemoryLimit": "300MB"
 }
