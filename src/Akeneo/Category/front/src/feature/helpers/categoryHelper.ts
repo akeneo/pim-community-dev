@@ -21,13 +21,9 @@ function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
 
 const sort = sortBy<number>(identity);
 
-function isEqualUnordered(permissions1: CategoryPermission[], permissions2: CategoryPermission[]): boolean {
-  if (permissions1 === undefined && permissions2 === undefined) {
-    return true;
-  }
-
-  const permissions1Ids = permissions1.map(permission => permission.id);
-  const permissions2Ids = permissions2.map(permission => permission.id);
+function isEqualUnordered(permissions1: CategoryPermission[], peremissions2: CategoryPermission[]): boolean {
+  const permissions1Ids = permissions1?.map(permission => permission.id);
+  const permissions2Ids = peremissions2?.map(permission => permission.id);
   return isEqual(sort(permissions1Ids), sort(permissions2Ids));
 }
 

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Template} from '../models';
 
 const TemplateTitleContainer = styled.div`
@@ -21,7 +21,7 @@ TemplateTitleLabel.displayName = 'TemplateTitleLabel';
 
 type Props = {
   template: Template;
-  locale: string;
+  locale: string | null;
 };
 
 const getLabelFromTemplate = (template: Template, locale: string): string => {
@@ -31,10 +31,13 @@ const getLabelFromTemplate = (template: Template, locale: string): string => {
 const TemplateTitle: FC<Props> = ({template, locale}) => {
   const translate = useTranslate();
 
+  const userContext = useUserContext();
+  const catalogLocale = locale ? locale : userContext.get('catalogLocale');
+
   return (
     <TemplateTitleContainer>
       {translate('akeneo.category.edition_form.template.title')} :{' '}
-      <TemplateTitleLabel>{getLabelFromTemplate(template, locale)}</TemplateTitleLabel>
+      <TemplateTitleLabel>{getLabelFromTemplate(template, catalogLocale)}</TemplateTitleLabel>
     </TemplateTitleContainer>
   );
 };

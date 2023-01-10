@@ -30,11 +30,11 @@ import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
 import {
+  CategoryPageContent,
   EditAttributesForm,
   EditPermissionsForm,
   EditPropertiesForm,
   TemplateTitle,
-  CategoryPageContent,
 } from '../components';
 
 type Params = {
@@ -56,7 +56,11 @@ const CategoryEditPage: FC = () => {
 
   // locales
   const uiLocale = userContext.get('uiLocale');
-  const [catalogLocale] = useState(userContext.get('catalogLocale'));
+  const [catalogLocale, setCatalogLocale] = useState<string | null>(null);
+  const handleLocaleChanges = (locale: string) => {
+    setCatalogLocale(locale);
+    setLabels(locale);
+  };
 
   // features
   const featureFlags = useFeatureFlags();
@@ -133,27 +137,31 @@ const CategoryEditPage: FC = () => {
       setTree(null);
       return;
     }
-
     const catalogLocale = userContext.get('catalogLocale');
-
-    setCategoryLabel(getLabel(category.properties.labels, catalogLocale, category.properties.code));
-
-    let {root} = category;
-    if (category.isRoot) {
-      root = category;
-    }
-    if (root) {
-      const {
-        properties: {code, labels},
-      } = root;
-      setTreeLabel(getLabel(labels, catalogLocale, code));
-      setTree(root);
-      sessionStorage.setItem(
-        'lastSelectedCategory',
-        JSON.stringify({treeId: root.id.toString(), categoryId: category.id})
-      );
-    }
+    setLabels(catalogLocale);
   }, [category, userContext]);
+
+  const setLabels = (locale: string) => {
+    if (category) {
+      setCategoryLabel(getLabel(category.properties.labels, locale, category.properties.code));
+
+      let {root} = category;
+      if (category.isRoot) {
+        root = category;
+      }
+      if (root) {
+        const {
+          properties: {code, labels},
+        } = root;
+        setTreeLabel(getLabel(labels, locale, code));
+        setTree(root);
+        sessionStorage.setItem(
+          'lastSelectedCategory',
+          JSON.stringify({treeId: root.id.toString(), categoryId: category.id})
+        );
+      }
+    }
+  };
 
   useEffect(() => {
     if (category === null) return;
@@ -288,6 +296,7 @@ const CategoryEditPage: FC = () => {
               attributeValues={category.attributes}
               template={template}
               onAttributeValueChange={onChangeAttribute}
+              onLocaleChange={handleLocaleChanges}
             />
           )}
         {isCurrent(Tabs.PROPERTY) && category && (
