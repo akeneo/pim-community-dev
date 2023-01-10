@@ -92,7 +92,7 @@ final class CreateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         Assert::assertSame(
-            '[{"path":"structure[1][type]","message":"Type \u0022unknown_type\u0022 can only be one of the following: \u0022free_text\u0022, \u0022auto_number\u0022".}]',
+            '[{"path":"structure[1][type]","message":"Type \u0022unknown_type\u0022 can only be one of the following: \u0022free_text\u0022, \u0022auto_number\u0022."}]',
             $response->getContent()
         );
     }
