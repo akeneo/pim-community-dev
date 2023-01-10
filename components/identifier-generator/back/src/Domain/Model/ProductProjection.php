@@ -13,7 +13,12 @@ use Webmozart\Assert\Assert;
 final class ProductProjection
 {
     /**
-     * @param array<string, array<mixed>> $productValues
+     * @param array<string, mixed> $productValues
+     * Example of $productValues: [
+     *   'color-<all_channels>-<all_locales>' => 'red',
+     *   'description-ecommerce-en_US' => 'My description',
+     *   'colors-ecommerce-<all_locales>' => ['blue', 'green'],
+     * ]
      */
     public function __construct(
         private readonly ?string $identifier,
@@ -22,9 +27,6 @@ final class ProductProjection
         private readonly array $productValues,
     ) {
         Assert::isMap($productValues);
-        foreach ($productValues as $_attributeCode => $attributeValues) {
-            Assert::isMap($attributeValues);
-        }
     }
 
     public function identifier(): ?string
@@ -42,10 +44,15 @@ final class ProductProjection
         return $this->familyCode;
     }
 
-    public function value(string $attributeCode, ?string $locale = null, ?string $scope = null): mixed
+    public function value(string $attributeCode, ?string $localeCode, ?string $channelCode): mixed
     {
-        $key = \join('_', [$locale ?? '<all_locales>', $scope ?? '<all_channels>']);
+        $key = \sprintf(
+            '%s-%s-%s',
+            $attributeCode,
+            $channelCode ?? '<all_channels>',
+            $localeCode ?? '<all_locales>',
+        );
 
-        return $this->productValues[$attributeCode][$key] ?? null;
+        return $this->productValues[$key] ?? null;
     }
 }
