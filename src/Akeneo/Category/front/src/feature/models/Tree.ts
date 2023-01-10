@@ -1,6 +1,7 @@
 type TreeNode<T> = {
   identifier: number;
   label: string;
+  code: string;
   parentId: number | null;
   childrenIds: number[];
   data: T;

@@ -144,6 +144,19 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     return '';
   };
 
+  const generateWarningForDeletion = (categoryTreeToDelete: CategoryTreeModel): string => {
+    if (countTreesChildren != null && countTreesChildren[categoryTreeToDelete.code]) {
+      return translate('pim_enrich.entity.category.category_tree_deletion.warning_categories_number', {
+        categoriesNumber: countTreesChildren[categoryTreeToDelete.code],
+      });
+    } else if (categoryTreeToDelete.productsNumber) {
+      return translate('pim_enrich.entity.category.category_tree_deletion.warning_products', {
+        name: categoryTreeToDelete.label,
+      });
+    }
+    return '';
+  };
+
   useEffect(() => {
     const hasRights =
       isGranted('pim_enrich_product_category_template') || isGranted('pim_enrich_product_category_edit_attributes');
@@ -250,7 +263,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               categoryLabel={categoryTreeToDelete.label}
               closeModal={closeConfirmationModal}
               deleteCategory={deleteCategoryTree}
-              message={'pim_enrich.entity.category.category_tree_deletion.confirmation'}
+              message={'pim_enrich.entity.category.category_tree_deletion.confirmation_question'}
+              warning={generateWarningForDeletion(categoryTreeToDelete)}
             />
           )}
         </>

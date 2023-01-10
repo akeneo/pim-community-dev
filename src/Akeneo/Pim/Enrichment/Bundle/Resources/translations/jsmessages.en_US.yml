@@ -247,7 +247,9 @@ pim_enrich.entity.category:
     category_tree_deletion:
         success: The tree "{{ tree }}" was successfully deleted
         error: The tree "{{ tree }}" could not be deleted
-        confirmation: Are you sure want to delete the {{ name }} tree? All the categories in that tree will be deleted, and the products will be removed from all those categories.
+        confirmation_question: Are you sure want to delete the {{ name }} tree ?
+        warning_categories_number: The {{ categoriesNumber }} categories in that tree will be deleted, and the products will be removed from all those categories.
+        warning_products: All associated products will be removed from {{ name }}
         products_limit_exceeded:
             title: This tree cannot be deleted
             message: The tree "{{ tree }}" contains more than {{ limit }} products and therefore cannot be deleted.
@@ -255,6 +257,7 @@ pim_enrich.entity.category:
         success: The category "{{ name }}" was successfully deleted
         error: The category "{{ name }}" could not be deleted
         confirmation: Are you sure you want to delete the category {{ name }}? Products in this category will not be deleted.
+        confirmation_question: Are you sure want to delete the {{ name }} tree ?
         products_limit_exceeded:
             title: This category cannot be deleted
             message: The "{{ name }}" category contains more than {{ limit }} products and therefore cannot be deleted.

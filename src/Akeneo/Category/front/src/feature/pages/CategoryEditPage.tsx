@@ -163,6 +163,15 @@ const CategoryEditPage: FC = () => {
     }
   };
 
+  const generateWarningForDeletion = (categoryToDelete: CategoryToDelete): string => {
+    if (categoryToDelete.numberOfProducts) {
+      return translate('pim_enrich.entity.category.category_tree_deletion.warning_products', {
+        name: categoryToDelete.label,
+      });
+    }
+    return '';
+  };
+
   useEffect(() => {
     if (category === null) return;
 
@@ -240,6 +249,8 @@ const CategoryEditPage: FC = () => {
                             setCategoryToDelete({
                               identifier,
                               label: category.properties.labels[uiLocale],
+                              code: category.properties.code,
+                              numberOfProducts: nbProducts,
                               onDelete: followCategoryTree,
                             });
                             openDeleteCategoryModal();
@@ -326,7 +337,8 @@ const CategoryEditPage: FC = () => {
             await handleDeleteCategory(categoryToDelete);
             handleCloseDeleteCategoryModal();
           }}
-          message={'pim_enrich.entity.category.category_deletion.confirmation'}
+          message={'pim_enrich.entity.category.category_deletion.confirmation_question'}
+          warning={generateWarningForDeletion(categoryToDelete)}
         />
       )}
     </>

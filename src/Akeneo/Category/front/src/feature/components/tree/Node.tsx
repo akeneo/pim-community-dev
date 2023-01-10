@@ -8,15 +8,16 @@ import {useCategoryTreeNode, useDragTreeNode, useDropTreeNode, useCountProductsB
 type Props = {
   id: number;
   label: string;
+  code: string;
   index?: number;
   orderable?: boolean;
   followCategory?: (category: CategoryTreeModel) => void;
   onCategoryMoved?: () => void;
   addCategory?: (parentCode: string, onCreate: () => void) => void;
-  deleteCategory?: (identifier: number, label: string, numberOfProducts: number, onDelete: () => void) => void;
+  deleteCategory?: (identifier: number, label: string, code: string, numberOfProducts: number, onDelete: () => void) => void;
 };
 
-const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, orderable = false, index = 0}) => {
+const Node: FC<Props> = ({id, label, code, followCategory, addCategory, deleteCategory, orderable = false, index = 0}) => {
   const {node, children, loadChildren, moveTo, onDeleteCategory, onCreateCategory, isOpen, open, close} =
     useCategoryTreeNode(id);
   const {isDragged, isDraggable, ...dragProps} = useDragTreeNode(node, index);
@@ -75,7 +76,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               onClick={event => {
                 event.stopPropagation();
                 countProductsBeforeDeleteCategory((nbProducts: number) =>
-                  deleteCategory(id, label, nbProducts, onDeleteCategory)
+                  deleteCategory(id, label, code, nbProducts, onDeleteCategory)
                 );
               }}
             >
@@ -89,6 +90,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
           <Node
             id={child.identifier}
             label={child.label}
+            code={child.code}
             followCategory={followCategory}
             addCategory={addCategory}
             deleteCategory={deleteCategory}
