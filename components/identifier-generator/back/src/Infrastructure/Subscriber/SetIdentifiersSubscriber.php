@@ -206,7 +206,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return array<string, mixed>
      */
     private function flatValues(ProductInterface $product): array
     {
