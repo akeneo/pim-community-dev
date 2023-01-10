@@ -4,7 +4,7 @@ DOCKER_COMPOSE = DEV_UID=${DEV_UID} DEV_GID=${DEV_GID} docker-compose
 NODE_RUN = $(DOCKER_COMPOSE) run --user "$(DEV_UID):$(DEV_GID)" --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
 YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run --user "$(DEV_UID):$(DEV_GID)" --rm php php
-PHP_EXEC = $(DOCKER_COMPOSE) exec --user "$(DEV_UID):$(DEV_GID)" -u www-data fpm php
+PHP_EXEC = $(DOCKER_COMPOSE) exec --user "$(DEV_UID):$(DEV_GID)" fpm php
 
 .DEFAULT_GOAL := help
 
