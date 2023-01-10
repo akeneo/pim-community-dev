@@ -215,7 +215,7 @@ class SimpleSelectSpec extends ObjectBehavior
         ]]);
         $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(true);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => 'red']
+            'color-<all_channels>-<all_locales>' => 'red',
         ]))->shouldReturn(false);
     }
 
@@ -228,7 +228,7 @@ class SimpleSelectSpec extends ObjectBehavior
         ]]);
         $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(false);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => 'red']
+            'color-<all_channels>-<all_locales>' => 'red',
         ]))->shouldReturn(true);
     }
 
@@ -241,10 +241,10 @@ class SimpleSelectSpec extends ObjectBehavior
             'value' => ['red', 'pink']
         ]]);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => 'red']
+            'color-<all_channels>-<all_locales>' => 'red',
         ]))->shouldReturn(true);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => 'blue']
+            'color-<all_channels>-<all_locales>' => 'blue',
         ]))->shouldReturn(false);
     }
 
@@ -257,10 +257,10 @@ class SimpleSelectSpec extends ObjectBehavior
             'value' => ['red', 'pink']
         ]]);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => 'red']
+            'color-<all_channels>-<all_locales>' => 'red',
         ]))->shouldReturn(false);
         $this->match(new ProductProjection('identifier', true, null, [
-            'color' => ['<all_locales>_<all_channels>' => 'blue']
+            'color-<all_channels>-<all_locales>' => 'blue',
         ]))->shouldReturn(true);
         $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(false);
     }

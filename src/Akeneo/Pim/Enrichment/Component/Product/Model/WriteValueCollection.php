@@ -19,8 +19,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
  */
 class WriteValueCollection implements \Countable, \IteratorAggregate
 {
-    /** @var ValueInterface[] */
-    private $values;
+    /** @var array<string, ValueInterface> */
+    private array $values;
 
     /** @var string[] */
     private $attributeCodes;
