@@ -53,12 +53,8 @@ final class SimpleSelect implements ConditionInterface
         Assert::keyExists($normalizedProperty, 'attributeCode');
         Assert::stringNotEmpty($normalizedProperty['attributeCode']);
 
-        if (\array_key_exists('scope', $normalizedProperty)) {
-            Assert::stringNotEmpty($normalizedProperty['scope']);
-        }
-        if (\array_key_exists('locale', $normalizedProperty)) {
-            Assert::stringNotEmpty($normalizedProperty['locale']);
-        }
+        Assert::nullOrString($normalizedProperty['scope'] ?? null);
+        Assert::nullOrString($normalizedProperty['locale'] ?? null);
 
         Assert::keyExists($normalizedProperty, 'operator');
         Assert::string($normalizedProperty['operator']);
