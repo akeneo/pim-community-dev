@@ -210,16 +210,9 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
      */
     private function flatValues(ProductInterface $product): array
     {
-        $result = [];
-        foreach ($product->getValues() as $value) {
-            Assert::isInstanceOf($value, ValueInterface::class);
-            $key = join('_', [
-                $value->getLocaleCode() ?? '<all_locales>',
-                $value->getScopeCode() ?? '<all_channels>',
-            ]);
-            $result[$value->getAttributeCode()][$key] = $value->getData();
-        }
-
-        return $result;
+        return \array_map(
+            static fn (ValueInterface $value) => $value->getData(),
+            $product->getValues()->toArray()
+        );
     }
 }
