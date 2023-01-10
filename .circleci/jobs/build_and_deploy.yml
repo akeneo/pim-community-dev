@@ -58,11 +58,11 @@ jobs:
         steps:
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - run:
                   name: Download EE dev with the SSH key that we added above
                   command: |
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       git clone git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
             - run:
                   name: Checkout EE branch if it exists, or 6.0 otherwise
@@ -74,7 +74,7 @@ jobs:
                   name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
                   command: |
                       mkdir -p tmp
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
                       git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
             - run:
@@ -284,7 +284,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - restore_persisted_env_vars
             - run:
@@ -346,7 +346,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - restore_persisted_env_vars
             - run:
@@ -367,7 +367,7 @@ jobs:
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
             - run:
@@ -394,7 +394,7 @@ jobs:
                   name: Remove env on kubernetes
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ uncommit-instance
                   when: always
 
@@ -408,7 +408,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - restore_persisted_env_vars
             - run:
@@ -439,7 +439,7 @@ jobs:
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ deploy-instance
                       make -C deployments/ commit-instance
             - run:
@@ -472,7 +472,7 @@ jobs:
                   at: ~/
             - add_ssh_keys:
                   fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+                      - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - set_gcloud_config_dev
             - restore_persisted_env_vars
             - run:
@@ -480,7 +480,7 @@ jobs:
                   no_output_timeout: 30m
                   command: |
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ uncommit-instance
 
     build_docker_images:
