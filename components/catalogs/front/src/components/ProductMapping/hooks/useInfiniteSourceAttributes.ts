@@ -33,7 +33,6 @@ export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: Q
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
             const _search = search || pageParam?.search || '';
-
             const queryParameters = new URLSearchParams({
                 page: _page.toString(),
                 limit: limit.toString(),

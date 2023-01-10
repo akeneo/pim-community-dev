@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeBooleanSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeIdentifierSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeSimpleSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextareaSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
@@ -108,6 +109,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
 
         return match ($attribute['type'] ?? null) {
             'pim_catalog_boolean' => new AttributeBooleanSource(),
+            'pim_catalog_identifier' => new AttributeIdentifierSource(),
             'pim_catalog_simpleselect' => new AttributeSimpleSelectSource(),
             'pim_catalog_text' => new AttributeTextSource(),
             'pim_catalog_textarea' => new AttributeTextareaSource(),
