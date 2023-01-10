@@ -11,16 +11,19 @@ import {SourceErrors} from '../models/SourceErrors';
 import {SelectLocaleDropdown} from './SelectLocaleDropdown';
 import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {SourceUuidPlaceholder} from './SourceUuidPlaceholder';
+import {TargetTypes} from '../models/TargetTypes';
 
 type Props = {
     target: string | null;
     source: Source | null;
     targetLabel: string | null;
+    targetType: TargetTypes | null;
+    targetFormat: TargetTypes | null;
     onChange: (value: Source) => void;
     errors: SourceErrors | null;
 };
 
-export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, errors}) => {
+export const SourcePanel: FC<Props> = ({target, source, targetLabel, targetType, onChange, errors}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute('uuid' !== target && source?.source ? source.source : '');
     const handleSourceSelection = useCallback(
@@ -33,6 +36,24 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
         },
         [onChange]
     );
+
+    const mapTargetTypeToCompatiblePimAttributeTypes = useCallback(
+        (targetType: TargetTypes | null | undefined) => {
+            if (null === targetType || undefined === targetType) {
+                return [];
+            }
+            const fullType = targetType.format !== null ? targetType.type + '.' + targetType.format : targetType.type;
+
+            switch (fullType) {
+                case 'string.text':
+                    return [
+                        'text',
+                    ];
+                default:
+                    return [];
+            }
+        }, []);
+    const compatibleAttributeTypes = mapTargetTypeToCompatiblePimAttributeTypes(targetType);
 
     const shouldDisplayChannel = source !== null && attribute?.scopable;
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
@@ -58,7 +79,8 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                         code={source?.source ?? ''}
                         onChange={handleSourceSelection}
                         error={errors?.source}
-                    ></SelectAttributeDropdown>
+                        types={compatibleAttributeTypes}
+                    />
                     <SectionTitle>
                         <Tag tint='purple'>2</Tag>
                         <SectionTitle.Title level='secondary'>

@@ -12,15 +12,16 @@ const SelectAttributeDropdownField = styled(Field)`
 
 type Props = {
     code: string;
+    types: string[];
     onChange: (value: Attribute) => void;
     error: string | undefined;
 };
 
-export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error}) => {
+export const SelectAttributeDropdown: FC<Props> = ({code, onChange, types, error}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
-    const {data: attributes, fetchNextPage} = useInfiniteAttributes({search});
+    const {data: attributes, fetchNextPage} = useInfiniteAttributes({search, types});
     const {data: attribute} = useAttribute(code);
 
     const handleAttributeSelection = useCallback(

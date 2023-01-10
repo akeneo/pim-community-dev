@@ -10,9 +10,11 @@ type Page = {
     data: Attribute[];
     page: PageParam;
 };
+
 type QueryParams = {
     search?: string;
     limit?: number;
+    types: string[];
 };
 type Error = string | null;
 type Result = {
@@ -24,9 +26,7 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-const ALLOWED_ATTRIBUTE_TYPES = ['text'];
-
-export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {}): Result => {
+export const useInfiniteAttributes = ({search = '', limit = 20, types}: QueryParams = {types: []}): Result => {
     const queryClient = useQueryClient();
 
     const fetchAttributes = useCallback(
@@ -38,7 +38,7 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
                 page: _page.toString(),
                 limit: limit.toString(),
                 search: _search,
-                types: ALLOWED_ATTRIBUTE_TYPES.join(','),
+                types: types.join(','),
             }).toString();
 
             const response = await fetch('/rest/catalogs/attributes?' + queryParameters, {
@@ -65,7 +65,7 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(
-        ['attributes', {search: search, limit: limit, types: ALLOWED_ATTRIBUTE_TYPES}],
+        ['attributes', {search: search, limit: limit, types: types.join(',')}],
         fetchAttributes,
         {
             keepPreviousData: true,
