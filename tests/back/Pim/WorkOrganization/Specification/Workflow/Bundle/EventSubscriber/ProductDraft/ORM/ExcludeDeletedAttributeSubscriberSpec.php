@@ -4,7 +4,8 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscri
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindExistingAttributeCodesQuery;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\PostLoadEventArgs;
 use PhpSpec\ObjectBehavior;
 
 class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
@@ -27,8 +28,10 @@ class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
     function it_excludes_unexistant_attributes(
         $query,
         EntityWithValuesDraftInterface $productDraft,
-        LifecycleEventArgs $args
+        EntityManagerInterface $entityManager
     ) {
+        $args = new PostLoadEventArgs($productDraft->getWrappedObject(), $entityManager->getWrappedObject());
+
         $dbData = [
             'values' => [
                 'name' => ['data' => 'Pipoux', 'locale' => null, 'scope' => null],
@@ -41,7 +44,6 @@ class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
             ]
         ];
 
-        $args->getObject()->willReturn($productDraft);
         $productDraft->getChanges()->willReturn($dbData);
 
         $query->execute(['name', 'description', 'something'])->willReturn(['name', 'description']);
