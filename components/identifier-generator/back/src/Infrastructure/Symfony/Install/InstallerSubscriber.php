@@ -35,9 +35,11 @@ class InstallerSubscriber implements EventSubscriberInterface
                 `conditions` JSON NOT NULL DEFAULT ('{}'),
                 `structure` JSON NOT NULL DEFAULT ('{}'),
                 `labels` JSON NOT NULL DEFAULT ('{}') ,
-                `target` VARCHAR(100) NOT NULL,
+                `target_id` INT NOT NULL,
                 `delimiter` VARCHAR(100),
-                UNIQUE INDEX unique_identifier_generator_code (code)
+                UNIQUE INDEX unique_identifier_generator_code (code),
+                KEY `target_id` (`target_id`),
+                CONSTRAINT `pim_catalog_identifier_generator_ibfk_1` FOREIGN KEY (`target_id`) REFERENCES `pim_catalog_attribute` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             SQL);
         $this->connection->executeStatement(<<<SQL
