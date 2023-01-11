@@ -31,26 +31,6 @@ const items: ConditionsSelection[] = [
         defaultValue: {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []},
         limit: 1,
       },
-      {
-        code: CONDITION_NAMES.SELECT_OPTION,
-        defaultValue: {type: CONDITION_NAMES.SELECT_OPTION, operator: Operator.IN, value: [], attributeCode: 'coucou'},
-        limit: 1,
-      },
-      {
-        code: 'bonjour',
-        defaultValue: {type: CONDITION_NAMES.SELECT_OPTION, operator: Operator.IN, value: [], attributeCode: 'coucou2'},
-        limit: 1,
-      },
-      {
-        code: 'brand',
-        defaultValue: {type: CONDITION_NAMES.SELECT_OPTION, operator: Operator.IN, value: [], attributeCode: 'brand'},
-        limit: 1,
-      },
-      {
-        code: 'unknown',
-        defaultValue: {type: CONDITION_NAMES.SELECT_OPTION, operator: Operator.IN, value: [], attributeCode: 'unknown'},
-        limit: 1,
-      },
     ],
   },
 ];
