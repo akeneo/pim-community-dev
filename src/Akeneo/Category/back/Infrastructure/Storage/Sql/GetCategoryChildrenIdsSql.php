@@ -26,7 +26,7 @@ final class GetCategoryChildrenIdsSql implements GetCategoryChildrenIdsInterface
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException|\Doctrine\DBAL\Driver\Exception
      */
-    public function execute(int $categoryId): array
+    public function __invoke(int $categoryId): array
     {
         $sqlQuery = <<<SQL
             SELECT

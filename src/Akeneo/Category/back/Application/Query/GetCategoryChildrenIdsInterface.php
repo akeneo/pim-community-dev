@@ -10,5 +10,5 @@ namespace Akeneo\Category\Application\Query;
  */
 interface GetCategoryChildrenIdsInterface
 {
-    public function execute(int $categoryId): array;
+    public function __invoke(int $categoryId): array;
 }

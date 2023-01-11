@@ -32,6 +32,7 @@ services:
         arguments:
             - '@category.command.message_bus'
             - '@oro_security.security_facade'
+            - '@event_dispatcher'
             - '@Akeneo\Category\Application\Converter\ConverterInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditAclFilter'
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
