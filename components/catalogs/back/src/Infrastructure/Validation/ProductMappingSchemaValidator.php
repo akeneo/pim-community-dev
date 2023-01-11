@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * @phpstan-type JsonSchemaErrors array<array-key, array{errors?: array<array-key, mixed>, error: string, instanceLocation: string}>
+ *
  * @psalm-suppress PropertyNotSetInConstructor
  */
 final class ProductMappingSchemaValidator extends ConstraintValidator
@@ -61,21 +63,27 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
 
         if ($result->hasError()) {
             $formatter = new ErrorFormatter();
-            $errors = $formatter->formatOutput($result->error(), 'verbose');
+            /** @var JsonSchemaErrors $errors */
+            $errors = $formatter->formatOutput($result->error(), 'verbose')['errors'];
 
             $this->context
                 ->buildViolation('You must provide a valid schema.')
-                ->setCause($this->findFirstRecursiveError($errors['errors']))
+                ->setCause($this->findFirstRecursiveError($errors))
                 ->addViolation();
 
             $this->logger->debug('A Product Mapping Schema validation failed', $errors);
         }
     }
 
+    /**
+     * @param JsonSchemaErrors $errors
+     */
     private function findFirstRecursiveError(array $errors): string
     {
         if (isset($errors[0]['errors'])) {
-            return $this->findFirstRecursiveError($errors[0]['errors']);
+            /** @var JsonSchemaErrors $childrenErrors */
+            $childrenErrors = $errors[0]['errors'];
+            return $this->findFirstRecursiveError($childrenErrors);
         }
 
         return \sprintf('%s at %s', $errors[0]['error'], $errors[0]['instanceLocation']);

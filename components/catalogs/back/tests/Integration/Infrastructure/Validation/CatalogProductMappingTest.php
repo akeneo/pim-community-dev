@@ -80,6 +80,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
                 false,
                 [],
                 [],
+                // @phpstan-ignore-next-line
                 [
                     [
                         'source' => 'uuid',

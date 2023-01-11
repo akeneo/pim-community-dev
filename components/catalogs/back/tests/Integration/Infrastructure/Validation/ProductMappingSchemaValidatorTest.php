@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMappingSchema;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -53,9 +54,12 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
 
         $this->assertCount(1, $violations);
         $this->assertEquals('You must provide a valid schema.', $violations->get(0)->getMessage());
+
+        /** @var ConstraintViolation $firstViolation */
+        $firstViolation = $violations->get(0);
         $this->assertEquals(
             $schema->description,
-            $violations->get(0)->getCause(),
+            $firstViolation->getCause(),
             'The invalid schema contains a "description" with the error that was expected.'
         );
     }
@@ -71,11 +75,13 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
     }
 
     /**
-     * @return array<string, array{schema: string}>
+     * @return array<string, array{raw: string}>
      */
     private function readFilesFromDirectory(string $directory): array
     {
         $files = \scandir($directory);
+
+        /** @var array<string> $files */
         $files = \array_filter($files, fn ($file) => !\str_starts_with($file, '.'));
 
         return \array_combine(
