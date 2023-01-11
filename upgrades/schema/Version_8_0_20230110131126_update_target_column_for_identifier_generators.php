@@ -13,6 +13,9 @@ use Doctrine\Migrations\AbstractMigration;
  * - Sets the attribute_id in this new column from previous target
  * - Adds a foreign constraint
  * - Removes target column
+ *
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class Version_8_0_20230110131126_update_target_column_for_identifier_generators extends AbstractMigration
 {
@@ -34,7 +37,7 @@ ALTER TABLE pim_catalog_identifier_generator ADD CONSTRAINT FOREIGN KEY(target_i
 ALTER TABLE pim_catalog_identifier_generator DROP COLUMN target;
 SQL;
 
-        $this->connection->executeQuery($sql);
+        $this->addSql($sql);
     }
 
     public function down(Schema $schema): void
