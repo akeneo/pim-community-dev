@@ -1,0 +1,7 @@
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+  "description": "The required properties (type) are missing at #/properties/price",
+  "properties": {
+    "price": {}
+  }
+}
