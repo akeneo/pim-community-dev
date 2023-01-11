@@ -123,7 +123,8 @@ catalogs-coverage-back:
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--log-junit var/tests/phpunit/phpunit_catalogs_global.xml \
 		--coverage-html coverage/Catalogs/Back/Global/ \
-		--coverage-filter $(CATALOGS_PATH)/back/src/
+		--coverage-filter $(CATALOGS_PATH)/back/src/ \
+		--testsuite Catalogs_Unit,Catalogs_Integration
 
 .PHONY: catalogs-mutation-back
 catalogs-mutation-back: var/infection.phar
