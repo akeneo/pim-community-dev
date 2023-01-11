@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class ProductSchemaValidator extends ConstraintValidator
+final class ProductMappingSchemaValidator extends ConstraintValidator
 {
     public function __construct(private LoggerInterface $logger)
     {
@@ -26,8 +26,8 @@ final class ProductSchemaValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof ProductSchema) {
-            throw new UnexpectedTypeException($constraint, ProductSchema::class);
+        if (!$constraint instanceof ProductMappingSchema) {
+            throw new UnexpectedTypeException($constraint, ProductMappingSchema::class);
         }
 
         if (!\is_object($value)) {

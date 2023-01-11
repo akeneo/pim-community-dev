@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogQuery;
-use Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
@@ -17,12 +16,13 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class IsCatalogValidTest extends IntegrationTestCase
 {
-    private ?IsCatalogValid $isCatalogValid;
+    private ?IsCatalogValidInterface $isCatalogValid;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->disableExperimentalTestDatabase();
-        $this->isCatalogValid = self::getContainer()->get(IsCatalogValid::class);
+        $this->isCatalogValid = self::getContainer()->get(IsCatalogValidInterface::class);
         $this->purgeDataAndLoadMinimalCatalog();
     }
 

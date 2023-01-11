@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,21 +34,12 @@ final class GetCatalogErrorsAction
         }
 
         try {
-            $catalogDomain = $this->getCatalogQuery->execute($catalogId);
+            $catalog = $this->getCatalogQuery->execute($catalogId);
         } catch (CatalogNotFoundException) {
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
-        $catalogNormalized = [
-            'enabled' => $catalogDomain->isEnabled(),
-            'product_selection_criteria' => $catalogDomain->getProductSelectionCriteria(),
-            'product_value_filters' => $catalogDomain->getProductValueFilters(),
-            'product_mapping' => $catalogDomain->getProductMapping(),
-        ];
-
-        $violations = $this->validator->validate($catalogNormalized, [
-            new CatalogUpdatePayload(),
-        ]);
+        $violations = $this->validator->validate($catalog);
 
         $normalizedViolations = $violations->count() > 0 ? $this->normalizer->normalize($violations) : [];
 

@@ -41,7 +41,6 @@ final class FilterContainsValidChannelValidator extends ConstraintValidator
                     'akeneo_catalogs.validation.product_value_filters.channel.unknown',
                     ['{{ channel_name }}' => $value]
                 )
-                ->atPath('[scope]')
                 ->addViolation();
         }
     }

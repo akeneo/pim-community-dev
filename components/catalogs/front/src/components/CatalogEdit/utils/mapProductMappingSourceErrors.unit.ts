@@ -7,11 +7,11 @@ import {CatalogFormErrors} from '../models/CatalogFormErrors';
 test('it maps API errors to ProductMapping errors indexed by key', () => {
     const errors: CatalogFormErrors = [
         {
-            propertyPath: '[product_mapping][name][locale]',
+            propertyPath: 'productMapping[name][locale]',
             message: 'Locale invalid.',
         },
         {
-            propertyPath: '[product_mapping][erp_name][source]',
+            propertyPath: 'productMapping[erp_name][source]',
             message: 'Source invalid.',
         },
     ];

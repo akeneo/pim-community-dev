@@ -402,11 +402,11 @@ test('it removes the product selection criteria errors when we update a selectio
         isError: false,
         data: [
             {
-                propertyPath: '[product_selection_criteria][0][color]',
+                propertyPath: 'productSelectionCriteria[0][color]',
                 message: 'Invalid criteria',
             },
             {
-                propertyPath: '[product_mapping][name][title]',
+                propertyPath: 'productMapping[name][title]',
                 message: 'Invalid source value',
             },
         ],
@@ -432,7 +432,7 @@ test('it removes the product selection criteria errors when we update a selectio
             },
             errors: [
                 {
-                    propertyPath: '[product_mapping][name][title]',
+                    propertyPath: 'productMapping[name][title]',
                     message: 'Invalid source value',
                 },
             ],
@@ -548,7 +548,7 @@ test('it removes the product mapping errors when we update a product mapping sou
                 message: 'Invalid criteria',
             },
             {
-                propertyPath: '[product_mapping][name][title]',
+                propertyPath: 'productMapping[name][title]',
                 message: 'Invalid source value',
             },
         ],

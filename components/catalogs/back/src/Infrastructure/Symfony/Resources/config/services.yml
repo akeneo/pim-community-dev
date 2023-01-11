@@ -18,6 +18,7 @@ services:
             - '../../../../Domain/'
             - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
+            - '../../../../Infrastructure/Validation'
 
     Akeneo\Catalogs\Application\Handler\:
         resource: '../../../../Application/Handler/'
@@ -65,6 +66,19 @@ services:
             - '@Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
 
+    # Validation
+    Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid: ~
+
+    Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface: '@Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid'
+
+    Akeneo\Catalogs\Infrastructure\Validation\:
+        resource: '../../../Validation/**/*Validator.php'
+
+    Akeneo\Catalogs\Infrastructure\Validation\CatalogProductSelectionCriteriaValidator:
+        arguments:
+            $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
+
+    # Persistence
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\IsCatalogsNumberLimitReachedQuery:
         arguments:
             $limit: '%akeneo_catalog.max_number_of_catalogs_per_user%'
@@ -149,14 +163,12 @@ services:
         arguments:
             - '@pim_catalog.repository.currency'
 
+    # Storage
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
 
-    Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayloadValidator:
-        arguments:
-            $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
-
+    # EventSubscriber
     Akeneo\Catalogs\Infrastructure\EventSubscriber\CurrencyDeactivationSubscriber:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'

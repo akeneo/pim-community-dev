@@ -8,7 +8,6 @@ use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,9 +52,17 @@ final class UpdateCatalogAction
          */
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $violations = $this->validator->validate($payload, [
-            new CatalogUpdatePayload(),
-        ]);
+        $catalog = new Catalog(
+            $catalog->getId(),
+            $catalog->getName(),
+            $catalog->getOwnerUsername(),
+            $payload['enabled'],
+            $payload['product_selection_criteria'],
+            $payload['product_value_filters'],
+            $payload['product_mapping'],
+        );
+
+        $violations = $this->validator->validate($catalog);
 
         if ($violations->count() > 0) {
             return new JsonResponse(
@@ -67,15 +74,7 @@ final class UpdateCatalogAction
             );
         }
 
-        $this->upsertCatalogQuery->execute(new Catalog(
-            $catalog->getId(),
-            $catalog->getName(),
-            $catalog->getOwnerUsername(),
-            $payload['enabled'],
-            $payload['product_selection_criteria'],
-            $payload['product_value_filters'],
-            $payload['product_mapping'],
-        ));
+        $this->upsertCatalogQuery->execute($catalog);
 
         return new JsonResponse(null, 204);
     }
