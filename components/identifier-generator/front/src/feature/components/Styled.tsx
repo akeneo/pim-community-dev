@@ -74,6 +74,11 @@ const ErrorContainer = styled.div`
   margin-left: 10px;
 `;
 
+const ConditionLineSkeleton = styled(SkeletonPlaceholder)`
+  width: 100%;
+  height: 40px;
+`;
+
 const CellInputContainer = styled(Table.Cell)`
   width: calc(10vw + 20px);
 `;
@@ -115,6 +120,7 @@ const Styled = {
   NotDraggableCell,
   TitleCondition,
   ListItems,
+  ConditionLineSkeleton,
 };
 
 export {Styled};

@@ -5,6 +5,7 @@ import {CONDITION_NAMES, Conditions, Operator} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
+jest.mock('../conditions/SimpleSelectLine');
 jest.mock('../../pages/SimpleDeleteModal');
 
 describe('SelectionTab', () => {
@@ -185,6 +186,22 @@ describe('SelectionTab', () => {
       {type: CONDITION_NAMES.ENABLED, value: true},
       {type: CONDITION_NAMES.ENABLED, value: false},
     ]);
+  });
+
+  it('should display simple select line', async () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+    const conditions = [
+      {type: CONDITION_NAMES.SELECT_OPTION, value: [], operator: Operator.IN, scope: null, locale: null, attributeCode: 'simple_select'}
+    ];
+
+    const screen = render(
+      // @ts-ignore
+      <SelectionTab target={'sku'} conditions={conditions} onChange={jest.fn()} />
+    );
+
+    expect(await screen.findByText('SimpleSelectLine')).toBeInTheDocument();
   });
 
   it('should display errors', () => {
