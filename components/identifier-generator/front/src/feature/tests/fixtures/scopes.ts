@@ -8,7 +8,12 @@ const channel = {
   locales: locales,
   category_tree: 'master',
   conversion_units: [],
-  meta: {},
+  meta: {
+    created: '01/01/2015',
+    form: '',
+    id: Math.random(),
+    updated: '02/01/2020',
+  },
 };
 const mockedScopes = [
   {
