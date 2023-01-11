@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Api\Event;
 
+use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 
 /**
@@ -12,6 +13,9 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
  */
 class CategoryEditedEvent
 {
+    /**
+     * @param array<UserIntent> $userIntents
+     */
     public function __construct(
         private readonly Category $category,
         private readonly array $userIntents
@@ -23,6 +27,9 @@ class CategoryEditedEvent
         return $this->category;
     }
 
+    /**
+     * @return array<UserIntent>
+     */
     public function getUserIntents(): array
     {
         return $this->userIntents;
