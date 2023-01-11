@@ -12,6 +12,7 @@ test('it displays a placeholder if there is no target selected', () => {
                 <SourcePanel
                     target={null}
                     targetLabel={null}
+                    targetType={null}
                     source={null}
                     onChange={jest.fn()}
                     errors={null}
@@ -30,6 +31,7 @@ test('it displays the target as a title', () => {
                 <SourcePanel
                     target='erp_name'
                     targetLabel='ERP name'
+                    targetType={null}
                     source={null}
                     onChange={jest.fn()}
                     errors={null}

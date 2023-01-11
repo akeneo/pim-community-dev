@@ -18,7 +18,6 @@ type Props = {
     source: Source | null;
     targetLabel: string | null;
     targetType: TargetTypes | null;
-    targetFormat: TargetTypes | null;
     onChange: (value: Source) => void;
     errors: SourceErrors | null;
 };
@@ -41,10 +40,9 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, targetType,
         if (null === targetType || undefined === targetType) {
             return [];
         }
-        const fullType = targetType.format !== null ? targetType.type + '.' + targetType.format : targetType.type;
 
-        switch (fullType) {
-            case 'string.text':
+        switch (targetType.type) {
+            case 'string':
                 return ['text'];
             default:
                 return [];

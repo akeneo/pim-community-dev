@@ -14,7 +14,7 @@ type Page = {
 type QueryParams = {
     search?: string;
     limit?: number;
-    types: string[];
+    types?: string[];
 };
 type Error = string | null;
 type Result = {
@@ -26,7 +26,7 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-export const useInfiniteAttributes = ({search = '', limit = 20, types}: QueryParams = {types: []}): Result => {
+export const useInfiniteAttributes = ({search = '', limit = 20, types = []}: QueryParams = {}): Result => {
     const queryClient = useQueryClient();
 
     const fetchAttributes = useCallback(
