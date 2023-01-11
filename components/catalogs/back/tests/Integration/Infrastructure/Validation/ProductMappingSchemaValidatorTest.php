@@ -30,12 +30,11 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
     /**
      * @dataProvider validSchemaDataProvider
      */
-    public function testItAcceptsTheSchema(string $schema): void
+    public function testItAcceptsTheSchema(string $raw): void
     {
-        $violations = $this->validator->validate(
-            \json_decode($schema, false, 512, JSON_THROW_ON_ERROR),
-            new ProductMappingSchema()
-        );
+        $schema = \json_decode($raw, false, 512, JSON_THROW_ON_ERROR);
+
+        $violations = $this->validator->validate($schema, new ProductMappingSchema());
 
         $this->assertEmpty($violations);
     }
@@ -50,16 +49,14 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
             throw new \LogicException('An invalid schema should have a "description" with the expected error.');
         }
 
+        /** @var array<ConstraintViolation> $violations */
         $violations = $this->validator->validate($schema, new ProductMappingSchema());
 
         $this->assertCount(1, $violations);
-        $this->assertEquals('You must provide a valid schema.', $violations->get(0)->getMessage());
-
-        /** @var ConstraintViolation $firstViolation */
-        $firstViolation = $violations->get(0);
+        $this->assertEquals('You must provide a valid schema.', $violations[0]->getMessage());
         $this->assertEquals(
             $schema->description,
-            $firstViolation->getCause(),
+            $violations[0]->getCause(),
             'The invalid schema contains a "description" with the error that was expected.'
         );
     }
@@ -80,8 +77,6 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
     private function readFilesFromDirectory(string $directory): array
     {
         $files = \scandir($directory);
-
-        /** @var array<string> $files */
         $files = \array_filter($files, fn ($file) => !\str_starts_with($file, '.'));
 
         return \array_combine(
