@@ -630,3 +630,5 @@ pim_notification:
         button_label: Open App
     disabled_catalog:
         button_label: Catalog Settings
+    attribute_removed:
+        button_label: Catalog Settings
