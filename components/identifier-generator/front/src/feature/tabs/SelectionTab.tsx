@@ -34,7 +34,7 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
     case CONDITION_NAMES.FAMILY:
       return <FamilyLine condition={condition} onChange={onChange} onDelete={onDelete} />;
     case CONDITION_NAMES.SELECT_OPTION:
-      return <SimpleSelectLine condition={condition} onChange={onChange} onDelete={onDelete}/>;
+      return <SimpleSelectLine condition={condition} onChange={onChange} onDelete={onDelete} />;
   }
 };
 
