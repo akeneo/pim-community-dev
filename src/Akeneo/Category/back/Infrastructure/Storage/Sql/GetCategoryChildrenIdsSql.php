@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
-use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoryChildrenIdsInterface;
-use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -40,11 +37,11 @@ final class GetCategoryChildrenIdsSql implements GetCategoryChildrenIdsInterface
         $results = $this->connection->executeQuery(
             $sqlQuery,
             [
-                'category_id' => $categoryId
+                'category_id' => $categoryId,
             ],
             [
-                'category_id' => \PDO::PARAM_INT
-            ]
+                'category_id' => \PDO::PARAM_INT,
+            ],
         )->fetchAllAssociative();
 
         if (!$results) {
