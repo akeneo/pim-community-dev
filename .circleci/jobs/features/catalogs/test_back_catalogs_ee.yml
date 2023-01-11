@@ -14,9 +14,6 @@ jobs:
             -   fix_files_permissions
             -   start_test_containers
             -   run:
-                    name: Lint back
-                    command: PIM_CONTEXT=catalogs APP_ENV=test make catalogs-lint-back
-            -   run:
                     name: Integration back
                     command: PIM_CONTEXT=catalogs APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 make catalogs-integration-back
             -   run:

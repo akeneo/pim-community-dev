@@ -13,13 +13,13 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespe
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ProductSelectionCriterion array{
+ * @phpstan-type ProductSelectionCriteria array<array{
  *      field: string,
  *      operator: string,
  *      value?: mixed,
  *      scope?: string,
  *      locale?: string,
- * }
+ * }>
  *
  * @phpstan-type ProductValueFilters array{
  *      channels?: array<string>,
@@ -37,7 +37,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespe
 final class Catalog
 {
     /**
-     * @param array<array-key, ProductSelectionCriterion> $productSelectionCriteria
+     * @param ProductSelectionCriteria $productSelectionCriteria
      * @param ProductValueFilters $productValueFilters
      * @param ProductMapping $productMapping
      */
@@ -76,7 +76,7 @@ final class Catalog
     }
 
     /**
-     * @return array<ProductSelectionCriterion>
+     * @return ProductSelectionCriteria
      */
     public function getProductSelectionCriteria(): array
     {
@@ -105,7 +105,7 @@ final class Catalog
      *     name: string,
      *     enabled: bool,
      *     owner_username: string,
-     *     product_selection_criteria: array<ProductSelectionCriterion>,
+     *     product_selection_criteria: ProductSelectionCriteria,
      *     product_value_filters: ProductValueFilters,
      *     product_mapping: ProductMapping
      * }

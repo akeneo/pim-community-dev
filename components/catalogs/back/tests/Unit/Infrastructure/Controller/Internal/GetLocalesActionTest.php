@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetLocalesAction;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,8 +20,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class GetLocalesActionTest extends TestCase
 {
     private ?GetLocalesAction $getLocalesAction;
-    private ?GetLocalesQueryInterface $getLocalesQuery;
-    private ?GetLocalesByCodeQueryInterface $getLocalesByCodeQuery;
+    private GetLocalesQueryInterface&MockObject $getLocalesQuery;
+    private GetLocalesByCodeQueryInterface&MockObject $getLocalesByCodeQuery;
 
     protected function setUp(): void
     {

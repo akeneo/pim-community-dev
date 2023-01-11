@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type ProductSelectionCriterion from Catalog
+ * @phpstan-import-type ProductSelectionCriteria from Catalog
  */
 final class CountProductsSelectedByCriteriaAction
 {
@@ -39,7 +39,7 @@ final class CountProductsSelectedByCriteriaAction
         }
 
         try {
-            /** @var array<array-key, ProductSelectionCriterion> $productSelectionCriteria */
+            /** @var ProductSelectionCriteria $productSelectionCriteria */
             $count = $this->getNumberOfProductsSelectedQuery->execute($productSelectionCriteria);
         } catch (InvalidProductSelectionCriteriaException) {
             throw new BadRequestHttpException('Given product selection criteria are invalid.');
