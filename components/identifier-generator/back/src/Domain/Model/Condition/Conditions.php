@@ -12,9 +12,8 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type EnabledNormalized from Enabled
- * @phpstan-import-type FamilyNormalized from Family
- * @phpstan-type ConditionsNormalized list<EnabledNormalized|FamilyNormalized>
+ * @phpstan-import-type ConditionNormalized from ConditionInterface
+ * @phpstan-type ConditionsNormalized list<ConditionNormalized>
  */
 final class Conditions
 {
@@ -49,7 +48,8 @@ final class Conditions
             $conditions[] = match ($normalizedCondition['type']) {
                 Enabled::type() => Enabled::fromNormalized($normalizedCondition),
                 Family::type() => Family::fromNormalized($normalizedCondition),
-                default => throw new \InvalidArgumentException(sprintf('The type %s does not exist', $normalizedCondition['type'])),
+                SimpleSelect::type() => SimpleSelect::fromNormalized($normalizedCondition),
+                default => throw new \InvalidArgumentException(sprintf('The Condition type "%s" does not exist', $normalizedCondition['type'])),
             };
         }
 

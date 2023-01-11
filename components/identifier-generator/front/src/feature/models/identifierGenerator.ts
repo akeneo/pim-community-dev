@@ -2,8 +2,8 @@ import {LabelCollection} from './labelCollection';
 import {IdentifierGeneratorCode} from './identifierGeneratorCode';
 import {Target} from './target';
 import {Structure} from './structure';
-import {Conditions} from './conditions';
 import {Delimiter} from './delimiter';
+import {Conditions} from './conditions/conditions';
 
 type IdentifierGenerator = {
   code: IdentifierGeneratorCode;

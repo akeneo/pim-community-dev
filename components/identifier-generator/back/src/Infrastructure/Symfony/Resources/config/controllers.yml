@@ -38,3 +38,9 @@ services:
       - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamiliesWithLabels'
       - '@pim_user.context.user'
       - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAttributeOptionsController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\FindAttributeOptions'
+      - '@oro_security.security_facade'
