@@ -13,3 +13,4 @@ export * from './structure';
 export * from './target';
 export * from './ui-locale';
 export * from './generatorTab';
+export * from './attribute';
