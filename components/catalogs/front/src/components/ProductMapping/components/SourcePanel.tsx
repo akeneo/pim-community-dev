@@ -37,22 +37,19 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, targetType,
         [onChange]
     );
 
-    const mapTargetTypeToCompatiblePimAttributeTypes = useCallback(
-        (targetType: TargetTypes | null | undefined) => {
-            if (null === targetType || undefined === targetType) {
-                return [];
-            }
-            const fullType = targetType.format !== null ? targetType.type + '.' + targetType.format : targetType.type;
+    const mapTargetTypeToCompatiblePimAttributeTypes = useCallback((targetType: TargetTypes | null | undefined) => {
+        if (null === targetType || undefined === targetType) {
+            return [];
+        }
+        const fullType = targetType.format !== null ? targetType.type + '.' + targetType.format : targetType.type;
 
-            switch (fullType) {
-                case 'string.text':
-                    return [
-                        'text',
-                    ];
-                default:
-                    return [];
-            }
-        }, []);
+        switch (fullType) {
+            case 'string.text':
+                return ['text'];
+            default:
+                return [];
+        }
+    }, []);
     const compatibleAttributeTypes = mapTargetTypeToCompatiblePimAttributeTypes(targetType);
 
     const shouldDisplayChannel = source !== null && attribute?.scopable;
