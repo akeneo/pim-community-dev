@@ -11,7 +11,7 @@ use PHPUnit\Framework\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class Version_8_0_20230110131126_update_target_column_for_identifier_generators_Integration extends TestCase
 {
