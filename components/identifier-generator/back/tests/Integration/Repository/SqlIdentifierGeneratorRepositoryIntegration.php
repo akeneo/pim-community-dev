@@ -57,8 +57,8 @@ class SqlIdentifierGeneratorRepositoryIntegration extends TestCase
     public function it_updates_an_identifier_generator(): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('d556e59e-d46c-465e-863d-f4a39d0b7485'), 'default', 'sku_default', '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
+VALUES (UUID_TO_BIN('d556e59e-d46c-465e-863d-f4a39d0b7485'), 'default', (SELECT id FROM pim_catalog_attribute), '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
 SQL;
 
         $this->connection->executeStatement($query);
@@ -100,8 +100,8 @@ SQL;
     public function it_gets_an_identifier_generator(): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', 'sku_default', '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
+VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
 SQL;
 
         $this->connection->executeStatement($query);
@@ -111,7 +111,7 @@ SQL;
         Assert::assertInstanceOf(IdentifierGenerator::class, $identifierGenerator);
         Assert::assertEquals($identifierGenerator->id()->asString(), '2038e1c9-68ff-4833-b06f-01e42d206002');
         Assert::assertEquals($identifierGenerator->code()->asString(), 'default');
-        Assert::assertEquals($identifierGenerator->target()->asString(), 'sku_default');
+        Assert::assertEquals($identifierGenerator->target()->asString(), 'sku');
         Assert::assertEquals($identifierGenerator->delimiter()->asString(), '-');
         Assert::assertEquals($identifierGenerator->labelCollection()->normalize(), ['fr' => 'Structure par defaut']);
         Assert::assertEquals($identifierGenerator->conditions()->normalize(), []);
@@ -162,8 +162,8 @@ SQL;
     public function its_gets_all_identifier_generator(): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', 'sku_default', '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
+VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
 SQL;
 
         $this->connection->executeStatement($query);
@@ -175,7 +175,7 @@ SQL;
         Assert::assertInstanceOf(IdentifierGenerator::class, $firstIdentifier);
         Assert::assertEquals($firstIdentifier->id()->asString(), '2038e1c9-68ff-4833-b06f-01e42d206002');
         Assert::assertEquals($firstIdentifier->code()->asString(), 'default');
-        Assert::assertEquals($firstIdentifier->target()->asString(), 'sku_default');
+        Assert::assertEquals($firstIdentifier->target()->asString(), 'sku');
         Assert::assertEquals($firstIdentifier->delimiter()->asString(), '-');
         Assert::assertEquals($firstIdentifier->labelCollection()->normalize(), ['fr' => 'Structure par defaut']);
         Assert::assertEquals($firstIdentifier->conditions()->normalize(), []);
@@ -189,8 +189,8 @@ SQL;
     public function it_can_delete_an_identifier_generator(): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', 'sku_default', '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
+VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
 SQL;
 
         $this->connection->executeStatement($query);
