@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {FamilyOperators, Operator, SimpleSelectCondition} from '../../models';
+import {Operator, SimpleSelectCondition, SimpleSelectOperators} from '../../models';
 import {Button, Helper, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {OperatorSelector} from '../../components';
@@ -75,7 +75,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
               <OperatorSelector
                 operator={condition.operator}
                 onChange={handleOperatorChange}
-                operators={FamilyOperators}
+                operators={SimpleSelectOperators}
               />
             </Styled.InputContainer>
           </Styled.CellInputContainer>
