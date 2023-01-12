@@ -137,7 +137,7 @@ akeneo_catalogs:
                 label_locale:
                     label: Value translation
                     placeholder: Select a translation
-                    helper: Select the language in which to send the value.
+                    helper: Select the language in which the value should be sent.
                 no_parameters_message: No parameters for this source.
             select_source:
                 label: Pim source
