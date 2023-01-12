@@ -22,19 +22,6 @@ describe('GeneralProperties', () => {
     expect(screen.getByTitle('initialCode')).toBeInTheDocument();
   });
 
-  it('should render the code input with simple generator', () => {
-    // @ts-ignore
-    const generator: IdentifierGenerator = {
-      code: 'initialCode',
-      labels: {},
-    };
-    const onGeneratorChange = jest.fn();
-    render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
-    expect(screen.getByText('pim_identifier_generator.general.title')).toBeInTheDocument();
-    expect(screen.getByText('pim_common.code')).toBeInTheDocument();
-    expect(screen.getByTitle('initialCode')).toBeInTheDocument();
-  });
-
   it('should update labels', () => {
     const generator: IdentifierGenerator = {
       code: 'initialCode',
