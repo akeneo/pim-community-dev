@@ -71,6 +71,7 @@ const CopyableIcon = styled(CopyIcon)`
 `;
 
 const SftpStorageConfigurator = ({
+  jobInstanceCode,
   storage,
   fileExtension,
   validationErrors,
@@ -82,8 +83,9 @@ const SftpStorageConfigurator = ({
 
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
-  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
+  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(jobInstanceCode, storage);
   const publicKey = useGetPublicKey();
+  const passwordIsStoredOnServer = storage.login_type === 'password' && storage.password === undefined;
 
   const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
   const copyToClipboard = (publicKey: string) => canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
@@ -168,7 +170,13 @@ const SftpStorageConfigurator = ({
       />
       {storage.login_type === 'password' ? (
         <TextField
-          value={storage.password ?? ''}
+          actions={passwordIsStoredOnServer && (
+            <Button level="secondary" ghost={true} size="small" onClick={() => onStorageChange({...storage, password: ''})}>
+              {translate('pim_common.edit')}
+            </Button>
+          )}
+          value={passwordIsStoredOnServer ? '••••••••' : storage.password ?? ''}
+          readOnly={passwordIsStoredOnServer}
           required={true}
           type="password"
           label={translate('pim_import_export.form.job_instance.storage_form.password.label')}

@@ -2,8 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security;
 
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
-
 final class CredentialsEncrypterRegistry
 {
     public function __construct(

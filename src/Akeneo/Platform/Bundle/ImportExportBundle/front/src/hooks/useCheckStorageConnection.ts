@@ -27,10 +27,10 @@ const isMicrosoftAzureConnectionFieldFulfilled = (storage: MicrosoftAzureStorage
   return '' !== storage.connection_string && '' !== storage.container_name && '' !== storage.file_path;
 };
 
-const useCheckStorageConnection = (storage: SftpStorage | AmazonS3Storage | MicrosoftAzureStorage) => {
+const useCheckStorageConnection = (jobInstanceCode: string, storage: SftpStorage | AmazonS3Storage | MicrosoftAzureStorage) => {
   const [isValid, setValid] = useState<boolean | undefined>(undefined);
   const [isChecking, setIsChecking] = useState<boolean>(false);
-  const route = useRoute('pimee_job_automation_get_storage_connection_check');
+  const route = useRoute('pimee_job_automation_get_storage_connection_check', {jobInstanceCode});
 
   const canCheckConnection =
     !isChecking &&

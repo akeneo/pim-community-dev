@@ -19,6 +19,7 @@ const CheckStorageConnection = styled.div`
 `;
 
 const MicrosoftAzureStorageConfigurator = ({
+  jobInstanceCode,
   storage,
   fileExtension,
   validationErrors,
@@ -28,8 +29,9 @@ const MicrosoftAzureStorageConfigurator = ({
     throw new Error(`Invalid storage type "${storage.type}" for microsoft azure storage configurator`);
   }
 
+  const connectionStringIsStoredOnServer = storage.connection_string === undefined;
   const translate = useTranslate();
-  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
+  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(jobInstanceCode, storage);
 
   return (
     <>
@@ -44,8 +46,14 @@ const MicrosoftAzureStorageConfigurator = ({
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
+        actions={connectionStringIsStoredOnServer && (
+          <Button level="secondary" ghost={true} size="small" onClick={() => onStorageChange({...storage, connection_string: ''})}>
+            {translate('pim_common.edit')}
+          </Button>
+        )}
         required={true}
-        value={storage.connection_string}
+        value={connectionStringIsStoredOnServer ? '••••••••' : storage.connection_string}
+        readOnly={connectionStringIsStoredOnServer}
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.connection_string.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.connection_string.placeholder')}

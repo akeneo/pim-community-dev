@@ -40,6 +40,7 @@ test('it renders the sftp storage configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -68,6 +69,7 @@ test('it allows user to fill file_path field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -100,6 +102,7 @@ test('it allows user to fill host field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -132,6 +135,7 @@ test('it allows user to fill fingerprint field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -168,6 +172,7 @@ test('it removes fingerprint from model when clearing input', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -200,6 +205,7 @@ test('it allows user to fill port field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -232,6 +238,7 @@ test('it allows user to change login type', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -265,6 +272,7 @@ test('it displays a public key field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -301,6 +309,7 @@ test('it copy to clipboard a public key', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -330,6 +339,7 @@ test('it allows user to fill username field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -362,6 +372,7 @@ test('it allows user to fill password field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -389,6 +400,7 @@ test('it throws an exception when passing a non-sftp storage', async () => {
   expect(() =>
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -460,6 +472,7 @@ test('it displays validation errors', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={validationErrors}
@@ -491,6 +504,7 @@ test('it can check connection', async () => {
 
   renderWithProviders(
     <SftpStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -537,6 +551,7 @@ test('it can check connection, display message if error', async () => {
 
   renderWithProviders(
     <SftpStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}

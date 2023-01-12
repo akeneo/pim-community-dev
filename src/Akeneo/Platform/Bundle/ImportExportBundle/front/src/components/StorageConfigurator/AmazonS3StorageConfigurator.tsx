@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Helper, Button, CheckIcon, getColor} from 'akeneo-design-system';
+import {EditIcon, Helper, Button, CheckIcon, getColor} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isAmazonS3Storage} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
+import {IconButton} from "akeneo-design-system/lib/components/IconButton/IconButton";
 
 const CheckStorageForm = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const CheckStorageConnection = styled.div`
 `;
 
 const AmazonS3StorageConfigurator = ({
+  jobInstanceCode,
   storage,
   fileExtension,
   validationErrors,
@@ -29,7 +31,8 @@ const AmazonS3StorageConfigurator = ({
   }
 
   const translate = useTranslate();
-  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
+  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(jobInstanceCode, storage);
+  const secretIsStoredOnServer = storage.secret === undefined;
 
   return (
     <>
@@ -68,21 +71,20 @@ const AmazonS3StorageConfigurator = ({
         errors={filterErrors(validationErrors, '[key]')}
       />
       <TextField
+        actions={secretIsStoredOnServer && (
+          <Button level="secondary" ghost={true} size="small" onClick={() => onStorageChange({...storage, secret: ''})}>
+            {translate('pim_common.edit')}
+          </Button>
+        )}
         required={true}
-        value={storage.secret === undefined ? '****' : storage.secret}
-        readOnly={storage.secret === undefined}
+        value={secretIsStoredOnServer ? '••••••••' : storage.secret}
+        readOnly={secretIsStoredOnServer}
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.secret.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.secret.placeholder')}
         onChange={(secret: string) => storage.secret !== undefined && onStorageChange({...storage, secret})}
         errors={filterErrors(validationErrors, '[secret]')}
-      >
-        {storage.secret === undefined && (
-          <Button level="primary" onClick={() => {onStorageChange({...storage, secret: ''})}}>
-            Edit password
-          </Button>
-        )}
-      </TextField>
+      />
       <CheckStorageForm>
         <CheckStorageConnection>
           <Button onClick={checkReliability} disabled={!canCheckConnection} level="primary">

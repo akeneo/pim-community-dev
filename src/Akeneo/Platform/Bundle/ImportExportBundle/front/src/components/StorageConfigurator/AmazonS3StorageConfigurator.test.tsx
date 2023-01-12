@@ -33,6 +33,7 @@ test('it renders the amazon s3 storage configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -61,6 +62,7 @@ test('it allows user to fill file_path field', async () => {
   await act(async () => {
     renderWithProviders(
       <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -92,6 +94,7 @@ test('it allows user to fill region field', async () => {
   await act(async () => {
     renderWithProviders(
       <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -123,6 +126,7 @@ test('it allows user to fill bucket field', async () => {
   await act(async () => {
     renderWithProviders(
       <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -157,6 +161,7 @@ test('it allows user to fill key field', async () => {
   await act(async () => {
     renderWithProviders(
       <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -188,6 +193,7 @@ test('it allows user to fill secret field', async () => {
   await act(async () => {
     renderWithProviders(
       <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -215,6 +221,7 @@ test('it throws an exception when passing a non amazon s3 storage', async () => 
   expect(() =>
     renderWithProviders(
       <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -277,6 +284,7 @@ test('it displays validation errors', async () => {
   await act(async () => {
     renderWithProviders(
       <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={validationErrors}
@@ -306,6 +314,7 @@ test('it can check connection', async () => {
 
   renderWithProviders(
     <AmazonS3StorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -346,6 +355,7 @@ test('it can check connection, display message if error', async () => {
 
   renderWithProviders(
     <AmazonS3StorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}

@@ -17,7 +17,7 @@ test('connection healthy', async () => {
     username: 'sftp',
     password: 'password',
   };
-  const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
+  const {result} = renderHookWithProviders(() => useCheckStorageConnection("csv_product_export", storage));
   const [, , checkReliability] = result.current;
 
   await act(async () => {
@@ -44,7 +44,7 @@ test('connection not healthy returns false', async () => {
     username: 'sftp',
     password: 'password',
   };
-  const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
+  const {result} = renderHookWithProviders(() => useCheckStorageConnection("csv_product_export", storage));
   const [, , checkReliability] = result.current;
 
   await act(async () => {

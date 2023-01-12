@@ -19,6 +19,7 @@ type StorageLoginType = 'password' | 'private_key';
 const STORAGE_LOGIN_TYPES = ['password', 'private_key'];
 
 type StorageConfiguratorProps = {
+  jobInstanceCode: string;
   storage: Storage;
   fileExtension: string;
   onStorageChange: (storage: Storage) => void;

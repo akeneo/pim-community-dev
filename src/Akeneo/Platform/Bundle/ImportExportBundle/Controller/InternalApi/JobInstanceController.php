@@ -213,6 +213,7 @@ class JobInstanceController
         }
 
         $jobInstance = $this->getJobInstance($identifier);
+        $previousJobInstanceParameters = $jobInstance->getRawParameters();
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.edit')) {
             throw new AccessDeniedHttpException();
         }
@@ -233,8 +234,8 @@ class JobInstanceController
         }
 
         if (isset($data['configuration']['storage'])) {
-            $previousStorageData = $jobInstance->getRawParameters()['configuration']['storage'];
-            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($previousStorageData ?? [], $data['configuration']['storage']);
+            $previousStorageData = $previousJobInstanceParameters['storage'];
+            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($previousStorageData, $data['configuration']['storage']);
         }
         $this->updater->update($jobInstance, $data);
 

@@ -31,6 +31,7 @@ test('it renders the microsoft azure storage configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -57,6 +58,7 @@ test('it allows user to fill file_path field', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -86,6 +88,7 @@ test('it allows user to fill connection string field', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -115,6 +118,7 @@ test('it allows user to fill container name field', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -147,6 +151,7 @@ test('it throws an exception when passing a non microsoft azure storage', async 
   expect(() =>
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -193,6 +198,7 @@ test('it displays validation errors', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={validationErrors}
@@ -218,6 +224,7 @@ test('it can check connection', async () => {
 
   renderWithProviders(
     <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -248,6 +255,7 @@ test('it cannot check connection if a field is empty', async () => {
 
   renderWithProviders(
     <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -283,6 +291,7 @@ test('it can check connection, display message if error', async () => {
 
   renderWithProviders(
     <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
