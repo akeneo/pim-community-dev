@@ -8,6 +8,18 @@ use PhpSpec\ObjectBehavior;
 
 class CredentialsEncrypterRegistrySpec extends ObjectBehavior
 {
+    private const PREVIOUS_DATA = [
+        'configuration' => [
+            'storage' => [
+                'type' => 'sftp',
+                'username' => 'username',
+                'host' => 'host',
+                'port' => '22',
+                'password' => 'another_secret',
+            ],
+        ],
+    ];
+
     private const CLEAR_DATA = [
         'configuration' => [
             'storage' => [
@@ -50,15 +62,15 @@ class CredentialsEncrypterRegistrySpec extends ObjectBehavior
         $encrypter->support(self::CLEAR_DATA)->willReturn(true);
         $encrypter->support(self::ENCRYPTED_DATA)->willReturn(true);
 
-        $encrypter->encryptCredentials(self::CLEAR_DATA)->willReturn(self::ENCRYPTED_DATA);
-        $encrypter->decryptCredentials(self::ENCRYPTED_DATA)->willReturn(self::CLEAR_DATA);
+        $encrypter->encryptCredentials(self::PREVIOUS_DATA, self::CLEAR_DATA)->willReturn(self::ENCRYPTED_DATA);
+        $encrypter->obfuscateCredentials(self::CLEAR_DATA)->willReturn(self::OBFUSCATED_DATA);
     }
 
     public function it_encrypts_credentials(
         CredentialsEncrypter $encrypter,
     ) {
         $this->beConstructedWith([$encrypter]);
-        $this->encryptCredentials(self::CLEAR_DATA)->shouldReturn(self::ENCRYPTED_DATA);
+        $this->encryptCredentials(self::PREVIOUS_DATA, self::CLEAR_DATA)->shouldReturn(self::ENCRYPTED_DATA);
     }
 
     public function it_obfuscates_credentials(
@@ -68,20 +80,9 @@ class CredentialsEncrypterRegistrySpec extends ObjectBehavior
         $this->obfuscateCredentials(self::CLEAR_DATA)->shouldReturn(self::OBFUSCATED_DATA);
     }
 
-//    public function it_merges_credentials(
-//        CredentialsEncrypter $encrypter,
-//    ) {
-//        $this->beConstructedWith([$encrypter]);
-//
-//        $jobInstance = new JobInstance();
-//        $jobInstance->setRawParameters();
-//
-//        $this->mergeCredentials(self::OBFUSCATED_DATA)->shouldReturn(self::CLEAR_DATA);
-//    }
-
     public function it_returns_data_as_it_is_if_no_encrypter_supports_it()
     {
-        $this->encryptCredentials(self::CLEAR_DATA)->shouldReturn(self::CLEAR_DATA);
-        $this->decryptCredentials(self::ENCRYPTED_DATA)->shouldReturn(self::ENCRYPTED_DATA);
+        $this->encryptCredentials(self::PREVIOUS_DATA, self::CLEAR_DATA)->shouldReturn(self::CLEAR_DATA);
+        $this->obfuscateCredentials(self::CLEAR_DATA)->shouldReturn(self::CLEAR_DATA);
     }
 }

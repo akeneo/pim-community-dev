@@ -210,6 +210,61 @@ test('it allows user to fill secret field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, secret: 'my_s3cr3t'});
 });
 
+test('it hide secret field if the secret is obfuscated', () => {
+  const storage: AmazonS3Storage = {
+    type: 'amazon_s3',
+    file_path: '/tmp/file.xlsx',
+    region: 'eu-west-1',
+    bucket: '',
+    key: 'a_key',
+  };
+
+  act(() => {
+    renderWithProviders(
+      <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
+    );
+  });
+
+  const secretInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.secret.label pim_common.required_label'
+  );
+
+  expect(secretInput).toBeDisabled();
+  expect(secretInput).toHaveValue('••••••••');
+});
+
+test('it can edit the secret field if the secret is obfuscated', () => {
+  const storage: AmazonS3Storage = {
+    type: 'amazon_s3',
+    file_path: '/tmp/file.xlsx',
+    region: 'eu-west-1',
+    bucket: '',
+    key: 'a_key',
+  };
+
+  const onStorageChange = jest.fn();
+  act(() => {
+    renderWithProviders(
+      <AmazonS3StorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
+    );
+  });
+
+  userEvent.click(screen.getByText('pim_common.edit'));
+  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, secret: ''});
+});
+
 test('it throws an exception when passing a non amazon s3 storage', async () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 

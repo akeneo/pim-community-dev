@@ -2,8 +2,9 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {LocalStorage, MicrosoftAzureStorage} from '../model';
+import {AmazonS3Storage, LocalStorage, MicrosoftAzureStorage} from '../model';
 import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
+import {AmazonS3StorageConfigurator} from "./AmazonS3StorageConfigurator";
 
 beforeEach(() => {
   global.fetch = mockFetch;
@@ -138,6 +139,57 @@ test('it allows user to fill container name field', async () => {
     ...storage,
     container_name: 'container_name',
   });
+});
+
+test('it hide connection string field if the connection string is obfuscated', () => {
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
+    file_path: '/tmp/file.xlsx',
+    container_name: 'container_',
+  };
+
+  act(() => {
+    renderWithProviders(
+      <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
+    );
+  });
+
+  const connectionStringInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.connection_string.label pim_common.required_label'
+  );
+
+  expect(connectionStringInput).toBeDisabled();
+  expect(connectionStringInput).toHaveValue('••••••••');
+});
+
+test('it can edit the connection string field if the connection string is obfuscated', () => {
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
+    file_path: '/tmp/file.xlsx',
+    container_name: 'container_',
+  };
+
+  const onStorageChange = jest.fn();
+  act(() => {
+    renderWithProviders(
+      <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
+    );
+  });
+
+  userEvent.click(screen.getByText('pim_common.edit'));
+  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, connection_string: ''});
 });
 
 test('it throws an exception when passing a non microsoft azure storage', async () => {
