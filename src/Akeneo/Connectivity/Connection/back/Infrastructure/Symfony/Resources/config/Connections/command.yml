@@ -14,3 +14,8 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Command\ClearAccessTokenCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
