@@ -8,6 +8,7 @@ describe('validateConditions', () => {
         [
           {type: CONDITION_NAMES.ENABLED, value: true},
           {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
+          {type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.EMPTY, attributeCode: 'code'},
         ],
         'conditions'
       )
@@ -26,7 +27,9 @@ describe('validateConditions', () => {
   it('should add violation for an unknown type', () => {
     expect(validateConditions([{type: 'unknown'}], 'conditions')).toEqual([
       {
-        message: 'The condition type "unknown" is unknown. Please choose one of the following: enabled, family',
+        message:
+          'The condition type "unknown" is unknown. ' +
+          'Please choose one of the following: enabled, family, simple_select',
         path: 'conditions[0]',
       },
     ]);
