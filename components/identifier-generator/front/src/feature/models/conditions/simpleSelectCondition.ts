@@ -36,4 +36,7 @@ type SimpleSelectCondition = {
     }
 );
 
+const SimpleSelectOperators: Operator[] = [Operator.IN, Operator.NOT_IN, Operator.EMPTY, Operator.NOT_EMPTY];
+
+export {SimpleSelectOperators};
 export type {SimpleSelectCondition};
