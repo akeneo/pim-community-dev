@@ -1,1 +1,4 @@
-export type TargetTypes = {type: 'string'};
+export type TargetTypes = {
+    type: string;
+    format?: string;
+};

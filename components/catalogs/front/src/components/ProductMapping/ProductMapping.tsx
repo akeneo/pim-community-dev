@@ -9,6 +9,7 @@ import {TargetSourceAssociation} from './components/TargetSourceAssociation';
 import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
+import {TargetTypes} from './models/TargetTypes';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -37,11 +38,14 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
     const [selectedTargetLabel, setSelectedTargetLabel] = useState<string | null>(null);
     const [selectedSource, setSelectedSource] = useState<Source | null>(null);
 
-    const getTargetType = useCallback(() => {
+    const getTargetType = useCallback((): TargetTypes | null => {
         if (undefined === productMappingSchema || null === selectedTarget) {
             return null;
         }
-        return productMappingSchema.properties[selectedTarget].type;
+        return {
+            type: productMappingSchema.properties[selectedTarget].type,
+            format: productMappingSchema.properties[selectedTarget].format,
+        };
     }, [productMappingSchema, selectedTarget]);
 
     const handleClick = useCallback(

@@ -36,7 +36,7 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, targetType,
         [onChange]
     );
 
-    const mapTargetTypeToCompatiblePimAttributeTypes = useCallback((targetType: TargetTypes | null | undefined) => {
+    const mapTargetTypeToCompatiblePimAttributeTypes = useCallback((targetType: TargetTypes | null) => {
         if (null === targetType || undefined === targetType) {
             return [];
         }
@@ -48,7 +48,6 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, targetType,
                 return [];
         }
     }, []);
-    const compatibleAttributeTypes = mapTargetTypeToCompatiblePimAttributeTypes(targetType);
 
     const shouldDisplayChannel = source !== null && attribute?.scopable;
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
@@ -74,7 +73,7 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, targetType,
                         code={source?.source ?? ''}
                         onChange={handleSourceSelection}
                         error={errors?.source}
-                        types={compatibleAttributeTypes}
+                        types={mapTargetTypeToCompatiblePimAttributeTypes(targetType)}
                     />
                     <SectionTitle>
                         <Tag tint='purple'>2</Tag>

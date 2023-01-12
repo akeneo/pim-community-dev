@@ -61,7 +61,7 @@ export const useInfiniteAttributes = ({search = '', limit = 20, types = []}: Que
                 },
             };
         },
-        [search, limit, queryClient]
+        [search, limit, types, queryClient]
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(
