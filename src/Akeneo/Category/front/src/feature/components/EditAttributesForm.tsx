@@ -13,12 +13,17 @@ import {
   RICH_TEXT_DEFAULT_VALUE,
   Template,
 } from '../models';
-import {attributeFieldFactory} from './attributes/templateAttributesFactory';
-import {AttributeInputValue, buildDefaultAttributeInputValue, isImageAttributeInputValue} from './attributes/types';
+import {
+  attributeFieldFactory,
+  AttributeInputValue,
+  buildDefaultAttributeInputValue,
+  isImageAttributeInputValue,
+} from './attributes';
 import {
   convertCategoryImageAttributeValueDataToFileInfo,
   convertFileInfoToCategoryImageAttributeValueData,
   getAttributeValue,
+  getChannelTranslation,
 } from '../helpers';
 import {EditCategoryContext} from './providers';
 
@@ -141,7 +146,10 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
 
     return (
       <AttributeField
-        channel={channel}
+        channel={{
+          code: channel,
+          label: getChannelTranslation(channelList, effectiveChannelCode, locale) ?? `[${channel}]`,
+        }}
         locale={locale}
         value={dataForInput}
         onChange={handlers[attribute.code]}

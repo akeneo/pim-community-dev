@@ -16,7 +16,7 @@ const unMemoizedBuildTextAreaFieldAttribute: AttributeFieldBuilder<AttributeInpu
     }
 
     return (
-      <Field label={getLabelFromAttribute(attribute, locale)} channel={channel} locale={locale}>
+      <Field label={getLabelFromAttribute(attribute, locale)} channel={channel.label} locale={locale}>
         <TextAreaInput name={attribute.code} value={value} onChange={onChange} />
       </Field>
     );
