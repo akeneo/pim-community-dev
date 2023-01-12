@@ -56,8 +56,12 @@ const MainErrorHelper = styled(Helper)`
     margin: 0;
     padding-left: 20px;
   }
-  p {
+  ul:has(li:only-child) {
+    padding: 0;
+  }
+  li:only-child {
     margin: 0;
+    list-style-type: none;
   }
 `;
 
