@@ -24,11 +24,14 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   const handleOperatorChange = useCallback(
     (operator: Operator) => {
       const {value, ...conditionWithoutValue} = condition;
-
-      if ([Operator.IN, Operator.NOT_IN].includes(operator)) {
-        onChange({...conditionWithoutValue, operator, value: value ?? []});
-      } else {
-        onChange({...conditionWithoutValue, operator});
+      switch (operator) {
+        case Operator.IN:
+        case Operator.NOT_IN:
+          onChange({...conditionWithoutValue, operator, value: value ?? []});
+          break;
+        case Operator.EMPTY:
+        case Operator.NOT_EMPTY:
+          onChange({...conditionWithoutValue, operator});
       }
     },
     [condition, onChange]
@@ -43,7 +46,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   };
 
   return (
-    <Table.Row aria-colspan={6}>
+    <>
       {error ? (
         <Table.Cell colSpan={6}>
           <Helper level="error">
@@ -68,7 +71,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
               />
             </Styled.InputContainer>
           </Styled.CellInputContainer>
-          <Table.Cell colSpan={1}>
+          <Table.Cell>
             {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
               <SimpleSelectOptionsSelector
                 attributeCode={condition.attributeCode}
@@ -90,7 +93,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
           </Table.ActionCell>
         </>
       )}
-    </Table.Row>
+    </>
   );
 };
 
