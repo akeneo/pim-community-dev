@@ -5,7 +5,8 @@ import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {MediaPreview} from './media-preview';
 import {Attribute} from '../../../models';
 import {File} from '../../../models';
-import {getImageDownloadUrl} from '../../../tools/media-url-generator';
+import {getImageDownloadUrl, getMediaPreviewUrl} from '../../../tools/media-url-generator';
+import {MediaPreviewType} from '../../../models/MediaPreview';
 
 const Border = styled.div`
   display: flex;
@@ -43,20 +44,26 @@ const FullscreenPreview = ({label, data, attribute, onClose}: FullscreenPreviewP
   const translate = useTranslate();
   const router = useRouter();
 
-  const url = data ? getImageDownloadUrl(router, data) : '';
-  const fileName = data?.originalFilename;
+  const downloadUrl = data ? getImageDownloadUrl(router, data) : '';
+  const previewUrl = getMediaPreviewUrl(router, {
+    type: MediaPreviewType.Preview,
+    attributeCode: attribute.code,
+    data: data && data.filePath ? data.filePath : '',
+  });
 
   return (
     <Modal onClose={onClose} closeTitle={translate('pim_common.close')}>
       <BrandedTitle>{label}</BrandedTitle>
       <Border>
-        <MediaPreview label={label} data={data} attribute={attribute} />
-        <ButtonContainer>
-          <Button {...buttonProps} href={url} download={fileName} target="_blank">
-            <DownloadIcon />
-            Download
-          </Button>
-        </ButtonContainer>
+        <MediaPreview previewUrl={previewUrl} label={label} />
+        {downloadUrl && data && data.originalFilename && (
+          <ButtonContainer>
+            <Button {...buttonProps} href={downloadUrl} download={data.originalFilename} target="_blank">
+              <DownloadIcon />
+              Download
+            </Button>
+          </ButtonContainer>
+        )}
       </Border>
     </Modal>
   );
