@@ -11,6 +11,7 @@ import {SourceErrors} from '../models/SourceErrors';
 import {SelectLocaleDropdown} from './SelectLocaleDropdown';
 import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {SourceUuidPlaceholder} from './SourceUuidPlaceholder';
+import {SelectLabelLocaleDropdown} from './SelectLabelLocaleDropdown';
 
 type Props = {
     target: string | null;
@@ -25,19 +26,43 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
     const {data: attribute} = useAttribute('uuid' !== target && source?.source ? source.source : '');
     const handleSourceSelection = useCallback(
         (value: Attribute) => {
-            onChange({
-                source: value.code,
-                locale: null,
-                scope: null,
-            });
+            onChange(initSource(value));
         },
         [onChange]
     );
 
+    const initSource = function (attribute: Attribute): Source {
+        let source: Source = {
+            source: attribute.code,
+            locale: null,
+            scope: null,
+        };
+        switch (attribute.type) {
+            case 'pim_catalog_simpleselect':
+                source = {...source, parameters: {...source.parameters, label_locale: null}};
+                break;
+        }
+
+        return source;
+    };
+
+    const onChangeMiddleware = useCallback(
+        source => {
+            if (
+                attribute?.type === 'pim_catalog_simpleselect' &&
+                (source.parameters.label_locale === undefined || source.parameters.label_locale === null)
+            ) {
+                source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
+            }
+            onChange(source);
+        },
+        [onChange, attribute]
+    );
+
     const shouldDisplayChannel = source !== null && attribute?.scopable;
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
-    const shouldDisplayChannelLocale =
-        source !== null && source.scope !== null && attribute?.localizable && attribute?.scopable;
+    const shouldDisplayChannelLocale = source !== null && attribute?.localizable && attribute?.scopable;
+    const shouldDisplayTranslationValue = source !== null && attribute?.type === 'pim_catalog_simpleselect';
 
     return (
         <>
@@ -66,13 +91,26 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                         </SectionTitle.Title>
                     </SectionTitle>
                     {shouldDisplayChannel && (
-                        <SelectChannelDropdown source={source} onChange={onChange} error={errors?.scope} />
+                        <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
                     )}
                     {shouldDisplayLocale && (
-                        <SelectLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                        <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
                     )}
                     {shouldDisplayChannelLocale && (
-                        <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                        <SelectChannelLocaleDropdown
+                            source={source}
+                            onChange={onChangeMiddleware}
+                            error={errors?.locale}
+                            disabled={attribute && source ? attribute.scopable && source.scope === null : false}
+                        />
+                    )}
+                    {shouldDisplayTranslationValue && (
+                        <SelectLabelLocaleDropdown
+                            source={source}
+                            onChange={onChange}
+                            error={errors?.parameters?.label_locale}
+                            disabled={attribute && source ? attribute.scopable && source.scope === null : false}
+                        />
                     )}
                 </>
             )}

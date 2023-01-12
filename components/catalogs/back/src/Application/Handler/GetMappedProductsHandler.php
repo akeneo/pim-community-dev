@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Attribute\GetAttributeOptionsByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
@@ -27,6 +29,8 @@ final class GetMappedProductsHandler
         private GetCatalogQueryInterface $getCatalogQuery,
         private CatalogsMappingStorageInterface $catalogsMappingStorage,
         private GetRawProductsQueryInterface $getRawProductsQuery,
+        private GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
+        private GetAttributeOptionsByCodeQueryInterface $getAttributeOptionsByCodeQuery,
     ) {
     }
 
@@ -66,27 +70,38 @@ final class GetMappedProductsHandler
         $productMappingSchema = $this->getProductMappingSchema($catalog->getId());
         $productMapping = $catalog->getProductMapping();
 
+        $attributeTypeBySource = $this->getAttributeTypeByCodesQuery->execute(\array_column($productMapping, 'source'));
+
         return \array_map(
             /** @param RawProduct $product */
-            function (array $product) use ($productMappingSchema, $productMapping): array {
+            function (array $product) use ($attributeTypeBySource, $productMappingSchema, $productMapping): array {
                 $mappedProduct = [];
 
                 /** @var string $target */
                 foreach (\array_keys($productMappingSchema['properties']) as $target) {
-                    $sourceValue = '';
+                    $sourceValue = null;
 
                     if ('uuid' === $target) {
                         $sourceValue = $product['uuid']->toString();
                     } elseif (\array_key_exists($target, $productMapping)) {
-                        $sourceValue = $this->getProductAttributeValue(
-                            $product,
-                            $productMapping[$target]['source'],
-                            $productMapping[$target]['locale'],
-                            $productMapping[$target]['scope']
-                        );
+                        if ($productMapping[$target]['source'] !== null) {
+                            $sourceValue = $this->getProductAttributeValue(
+                                $product,
+                                $productMapping[$target]['source'],
+                                $productMapping[$target]['locale'],
+                                $productMapping[$target]['scope']
+                            );
+
+                            if ($attributeTypeBySource[$productMapping[$target]['source']] === 'pim_catalog_simpleselect' && $sourceValue !== '') {
+                                $locale = $productMapping[$target]['locale'] ?? 'en_US';
+                                $sourceValue = $this->getSimpleSelectLabel($productMapping[$target]['source'], $sourceValue, $locale);
+                            }
+                        }
                     }
 
-                    $mappedProduct[$target] = $sourceValue;
+                    if ($sourceValue !== null) {
+                        $mappedProduct[$target] = $sourceValue;
+                    }
                 }
 
                 return $mappedProduct;
@@ -129,11 +144,22 @@ final class GetMappedProductsHandler
     /**
      * @param RawProduct $product
      */
-    private function getProductAttributeValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string
+    private function getProductAttributeValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string | null
     {
         $scope ??= '<all_channels>';
         $locale ??= '<all_locales>';
 
-        return $product['raw_values'][$attributeCode][$scope][$locale] ?? '';
+        return $product['raw_values'][$attributeCode][$scope][$locale] ?? null;
+    }
+
+    private function getSimpleSelectLabel(string $attributeCode, $optionCode, string $locale): string | null
+    {
+        $options = $this->getAttributeOptionsByCodeQuery->execute($attributeCode, [$optionCode], $locale);
+
+        if (!empty($options)) {
+            return $options[0]['label'];
+        } else {
+            return null;
+        }
     }
 }

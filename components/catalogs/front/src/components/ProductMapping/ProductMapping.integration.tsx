@@ -30,7 +30,7 @@ const selectSourceLocale = async (locale: string) => {
         await screen.findByText('akeneo_catalogs.product_mapping.source.parameters.locale.label')
     ).toBeInTheDocument();
     openDropdown('source-parameter-locale-dropdown');
-    fireEvent.click(await screen.findByText(locale));
+    fireEvent.click(await screen.findByTestId(locale));
 };
 
 const selectSourceChannel = async (channel: string) => {
@@ -39,6 +39,14 @@ const selectSourceChannel = async (channel: string) => {
     ).toBeInTheDocument();
     openDropdown('source-parameter-channel-dropdown');
     fireEvent.click(await screen.findByText(channel));
+};
+
+const selectSourceLabelLocale = async (locale: string) => {
+    expect(
+        await screen.findByText('akeneo_catalogs.product_mapping.source.parameters.label_locale.label')
+    ).toBeInTheDocument();
+    openDropdown('source-parameter-label_locale-dropdown');
+    fireEvent.click(await screen.findByTestId(locale));
 };
 
 const assertLocaleSourceParameterIsNotDisplayed = () => {
@@ -51,10 +59,34 @@ const assertLocaleSourceParameterIsDisplayed = () => {
     expect(screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.locale.label')).toBeInTheDocument();
 };
 
+const assertLocaleSourceParameterIsDisabled = () => {
+    expect(screen.getByTestId('source-parameter-locale-dropdown').getAttribute('readonly')).toBeDefined();
+};
+const assertLocaleSourceParameterIsEnabled = () => {
+    expect(screen.getByTestId('source-parameter-locale-dropdown').getAttribute('readonly')).toBeNull();
+};
+
 const assertChannelSourceParameterIsNotDisplayed = () => {
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.channel.label')
     ).not.toBeInTheDocument();
+};
+
+const assertLabelLocaleSourceParameterIsNotDisplayed = () => {
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.label_locale.label')
+    ).not.toBeInTheDocument();
+};
+const assertLabelLocaleSourceParameterIsDisplayed = () => {
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.parameters.label_locale.label')
+    ).toBeInTheDocument();
+};
+const assertLabelLocaleSourceParameterIsDisabled = () => {
+    expect(screen.getByTestId('source-parameter-label_locale-dropdown').getAttribute('readonly')).toBeDefined();
+};
+const assertLabelLocaleSourceParameterIsEnabled = () => {
+    expect(screen.getByTestId('source-parameter-label_locale-dropdown').getAttribute('readonly')).toBeNull();
 };
 
 const localesPayload = {
@@ -71,6 +103,15 @@ const localesPayload = {
         {
             code: 'fr_FR',
             label: 'French (France)',
+        },
+    ],
+};
+const localeEnUSPayload = {
+    url: '/rest/catalogs/locales?codes=en_US',
+    json: [
+        {
+            code: 'en_US',
+            label: 'English (United States)',
         },
     ],
 };
@@ -313,6 +354,7 @@ test('it displays a placeholder when uuid target is clicked', async () => {
     expect(screen.queryByText('akeneo_catalogs.product_mapping.source.select_source.search')).not.toBeInTheDocument();
     assertChannelSourceParameterIsNotDisplayed();
     assertLocaleSourceParameterIsNotDisplayed();
+    assertLabelLocaleSourceParameterIsNotDisplayed();
 });
 
 test('it updates the state when a source is selected', async () => {
@@ -350,7 +392,7 @@ test('it updates the state when a source is selected', async () => {
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'name',
@@ -437,6 +479,7 @@ test('it updates the state when a source is selected', async () => {
 
     assertChannelSourceParameterIsNotDisplayed();
     assertLocaleSourceParameterIsNotDisplayed();
+    assertLabelLocaleSourceParameterIsNotDisplayed();
 
     expect(onChange).toHaveBeenCalledWith({
         uuid: {
@@ -492,14 +535,14 @@ test('it updates the state when a channel is selected for an attribute with valu
             url: '/rest/catalogs/attributes/variation_name',
             json: {
                 code: 'variation_name',
-                label: 'Variation name',
+                label: 'Variant name',
                 type: 'pim_catalog_text',
                 scopable: true,
                 localizable: false,
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'name',
@@ -592,6 +635,7 @@ test('it updates the state when a channel is selected for an attribute with valu
     await selectAttributeAsSource('Variant Name');
 
     assertLocaleSourceParameterIsNotDisplayed();
+    assertLabelLocaleSourceParameterIsNotDisplayed();
     await selectSourceChannel('Ecommerce');
 
     expect(onChange).toHaveBeenCalledWith({
@@ -623,6 +667,7 @@ test('it updates the state when a locale is selected for an attribute with value
 
     mockFetchResponses([
         localesPayload,
+        localeEnUSPayload,
         {
             url: '/rest/catalogs/attributes/title',
             json: {
@@ -647,14 +692,14 @@ test('it updates the state when a locale is selected for an attribute with value
             url: '/rest/catalogs/attributes/variation_name',
             json: {
                 code: 'variation_name',
-                label: 'Variation name',
+                label: 'Variant name',
                 type: 'pim_catalog_text',
                 scopable: false,
                 localizable: true,
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'name',
@@ -749,7 +794,8 @@ test('it updates the state when a locale is selected for an attribute with value
     await selectAttributeAsSource('Variant Name');
 
     assertChannelSourceParameterIsNotDisplayed();
-    await selectSourceLocale('English (United States)');
+    assertLabelLocaleSourceParameterIsNotDisplayed();
+    await selectSourceLocale('en_US');
 
     expect(onChange).toHaveBeenCalledWith({
         uuid: {
@@ -780,6 +826,7 @@ test('it updates the state when a locale and channel is selected for an attribut
 
     mockFetchResponses([
         localesPayload,
+        localeEnUSPayload,
         channelsPayload,
         {
             url: '/rest/catalogs/attributes/title',
@@ -805,14 +852,14 @@ test('it updates the state when a locale and channel is selected for an attribut
             url: '/rest/catalogs/attributes/variation_name',
             json: {
                 code: 'variation_name',
-                label: 'Variation name',
+                label: 'Variant name',
                 type: 'pim_catalog_text',
                 scopable: true,
                 localizable: true,
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'name',
@@ -917,10 +964,10 @@ test('it updates the state when a locale and channel is selected for an attribut
     await clickOnMappingTarget('pim erp name');
     await selectAttributeAsSource('Variant Name');
 
-    assertLocaleSourceParameterIsNotDisplayed();
     await selectSourceChannel('Ecommerce');
     assertLocaleSourceParameterIsDisplayed();
-    await selectSourceLocale('English (United States)');
+    assertLabelLocaleSourceParameterIsNotDisplayed();
+    await selectSourceLocale('en_US');
 
     expect(onChange).toHaveBeenCalledWith({
         uuid: {
@@ -946,11 +993,267 @@ test('it updates the state when a locale and channel is selected for an attribut
     });
 });
 
+test('it updates the state when a label locale is selected', async () => {
+    const onChange = jest.fn();
+
+    mockFetchResponses([
+        localesPayload,
+        localeEnUSPayload,
+        {
+            url: '/rest/catalogs/attributes/color',
+            json: {
+                code: 'color',
+                label: 'Color',
+                type: 'pim_catalog_simpleselect',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
+            json: [
+                {
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'color',
+                    label: 'Color',
+                    type: 'pim_catalog_simpleselect',
+                    scopable: false,
+                    localizable: false,
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        color: {
+            source: null,
+            locale: null,
+            scope: null,
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            color: {
+                title: 'Source color',
+                type: 'string',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                    onChange={onChange}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('Source color');
+    await selectAttributeAsSource('Color');
+
+    assertLabelLocaleSourceParameterIsDisplayed();
+    await selectSourceLabelLocale('en_US');
+
+    expect(onChange).toHaveBeenCalledWith({
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        color: {
+            source: 'color',
+            locale: null,
+            scope: null,
+            parameters: {
+                label_locale: 'en_US',
+            },
+        },
+    });
+});
+
+test('it updates the state when a label locale is selected for an attribute with value per locale and per channel', async () => {
+    const onChange = jest.fn();
+
+    mockFetchResponses([
+        localesPayload,
+        localeEnUSPayload,
+        channelsPayload,
+        {
+            url: '/rest/catalogs/attributes/attribute_color',
+            json: {
+                code: 'attribute_color',
+                label: 'Attribute color',
+                type: 'pim_catalog_simpleselect',
+                scopable: true,
+                localizable: true,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
+            json: [
+                {
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'attribute_color',
+                    label: 'Attribute color',
+                    type: 'pim_catalog_simpleselect',
+                    scopable: true,
+                    localizable: true,
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce',
+            json: {
+                code: 'ecommerce',
+                label: 'Ecommerce',
+            },
+        },
+        {
+            url: '/rest/catalogs/channels/ecommerce/locales',
+            json: [
+                {
+                    code: 'fr_FR',
+                    label: 'French (France)',
+                },
+                {
+                    code: 'en_US',
+                    label: 'English (United States)',
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/locales?codes=fr_FR',
+            json: [
+                {
+                    code: 'fr_FR',
+                    label: 'French (France)',
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        color: {
+            source: null,
+            locale: null,
+            scope: null,
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            color: {
+                title: 'Source color',
+                type: 'string',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                    onChange={onChange}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('Source color');
+    await selectAttributeAsSource('Attribute color');
+
+    assertLocaleSourceParameterIsDisplayed();
+    assertLocaleSourceParameterIsDisabled();
+    assertLabelLocaleSourceParameterIsDisplayed();
+    assertLabelLocaleSourceParameterIsDisabled();
+
+    await selectSourceChannel('Ecommerce');
+
+    assertLocaleSourceParameterIsEnabled();
+    assertLabelLocaleSourceParameterIsEnabled();
+
+    await selectSourceLocale('en_US');
+
+    expect(screen.getByTestId('source-parameter-label_locale-dropdown').getAttribute('value')).toEqual('en_US');
+
+    expect(onChange).toHaveBeenCalledWith({
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        color: {
+            source: 'attribute_color',
+            locale: 'en_US',
+            scope: 'ecommerce',
+            parameters: {
+                label_locale: 'en_US',
+            },
+        },
+    });
+
+    await selectSourceLabelLocale('fr_FR');
+
+    expect(onChange).toHaveBeenCalledWith({
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        color: {
+            source: 'attribute_color',
+            locale: 'en_US',
+            scope: 'ecommerce',
+            parameters: {
+                label_locale: 'fr_FR',
+            },
+        },
+    });
+});
+
 test('it resets source locale when channel changes for an attribute with value per channel and per locale', async () => {
     const onChange = jest.fn();
 
     mockFetchResponses([
         localesPayload,
+        localeEnUSPayload,
         channelsPayload,
         {
             url: '/rest/catalogs/attributes/title',
@@ -976,14 +1279,14 @@ test('it resets source locale when channel changes for an attribute with value p
             url: '/rest/catalogs/attributes/variation_name',
             json: {
                 code: 'variation_name',
-                label: 'Variation name',
+                label: 'Variant name',
                 type: 'pim_catalog_text',
                 scopable: true,
                 localizable: true,
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'name',
@@ -1104,7 +1407,7 @@ test('it resets source locale when channel changes for an attribute with value p
     await clickOnMappingTarget('pim erp name');
     await selectAttributeAsSource('Variant Name');
     await selectSourceChannel('Ecommerce');
-    await selectSourceLocale('English (United States)');
+    await selectSourceLocale('en_US');
 
     expect(onChange).toHaveBeenCalledWith({
         uuid: {
@@ -1168,7 +1471,7 @@ test('it displays error message when source attribute is incorrect', async () =>
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'title',
@@ -1208,6 +1511,8 @@ test('it displays error message when source attribute is incorrect', async () =>
     const mappingErrors = {
         name: {
             source: 'Source error',
+            locale: undefined,
+            scope: undefined,
         },
     };
 
@@ -1242,7 +1547,7 @@ test('it displays error message when source scope is incorrect', async () => {
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'title',
@@ -1288,6 +1593,8 @@ test('it displays error message when source scope is incorrect', async () => {
 
     const mappingErrors = {
         name: {
+            source: undefined,
+            locale: undefined,
             scope: 'Scope error',
         },
     };
@@ -1308,6 +1615,7 @@ test('it displays error message when source scope is incorrect', async () => {
     await clickOnMappingTarget('name');
     expect(await screen.findByText('Scope error')).toBeInTheDocument();
 });
+
 test('it displays error message when source local but not scopable is incorrect', async () => {
     mockFetchResponses([
         localesPayload,
@@ -1322,7 +1630,7 @@ test('it displays error message when source local but not scopable is incorrect'
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'title',
@@ -1370,7 +1678,9 @@ test('it displays error message when source local but not scopable is incorrect'
 
     const mappingErrors = {
         name: {
+            source: undefined,
             locale: 'Locale error',
+            scope: undefined,
         },
     };
 
@@ -1406,7 +1716,7 @@ test('it displays error message when source local and scopable is incorrect', as
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
             json: [
                 {
                     code: 'title',
@@ -1474,7 +1784,9 @@ test('it displays error message when source local and scopable is incorrect', as
 
     const mappingErrors = {
         name: {
+            source: undefined,
             locale: 'Locale error',
+            scope: undefined,
         },
     };
 
@@ -1492,5 +1804,92 @@ test('it displays error message when source local and scopable is incorrect', as
     );
 
     await clickOnMappingTarget('name');
+    expect(await screen.findByText('Locale error')).toBeInTheDocument();
+});
+
+test('it displays error message when source label local is incorrect', async () => {
+    mockFetchResponses([
+        localesPayload,
+        {
+            url: '/rest/catalogs/attributes/color',
+            json: {
+                code: 'color',
+                label: 'Color',
+                type: 'pim_catalog_simpleselect',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
+            json: [
+                {
+                    code: 'color',
+                    label: 'Color',
+                    type: 'pim_catalog_simpleselect',
+                    scopable: false,
+                    localizable: false,
+                },
+            ],
+        },
+        {
+            url: '/rest/catalogs/locales?codes=de_DE',
+            json: [],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        color: {
+            source: 'color',
+            locale: null,
+            scope: null,
+            parameters: {
+                label_locale: 'de_DE',
+            },
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            color: {
+                title: 'Source color',
+                type: 'string',
+            },
+        },
+    };
+
+    const mappingErrors = {
+        color: {
+            source: undefined,
+            locale: undefined,
+            scope: undefined,
+            parameters: {
+                label_locale: 'Locale error',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={mappingErrors}
+                    onChange={() => null}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('Source color');
     expect(await screen.findByText('Locale error')).toBeInTheDocument();
 });

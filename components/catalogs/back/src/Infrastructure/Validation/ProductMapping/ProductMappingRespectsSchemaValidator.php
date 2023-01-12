@@ -27,6 +27,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
     private const ALLOWED_TYPE_ASSOCIATIONS = [
         'string' => [
             'pim_catalog_text',
+            'pim_catalog_simpleselect'
         ],
     ];
 
