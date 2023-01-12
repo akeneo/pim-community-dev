@@ -11,18 +11,12 @@ type Props = {
   attributeCode: string;
   locale?: LocaleCode | null;
   scope?: ChannelCode | null;
-  onChange: ({scope, locale}: {scope?: string | null; locale?: string | null}) => void;
+  onChange: ({scope, locale}: {scope?: ChannelCode; locale?: LocaleCode}) => void;
 };
 
 const ScopeAndLocaleSelector: React.FC<Props> = ({attributeCode, locale = null, scope = null, onChange}) => {
   const translate = useTranslate();
   const {data, isLoading, error} = useGetAttributeByCode(attributeCode);
-  const handleScopeChange = useCallback(
-    (scope: ChannelCode | null) => {
-      onChange({scope});
-    },
-    [onChange]
-  );
   const {data: scopes} = useGetScopes();
 
   const selectedScope = useMemo(
@@ -30,28 +24,41 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({attributeCode, locale = null, 
     [data, scope, scopes]
   );
 
+  const handleScopeChange = useCallback(
+    (scope: ChannelCode) => {
+      onChange({scope});
+    },
+    [onChange]
+  );
+
   const handleLocaleChange = useCallback(
-    (locale: LocaleCode | null) => {
+    (locale: LocaleCode) => {
       onChange({locale});
     },
     [onChange]
   );
 
   if (error) {
-    return <Helper level={'error'}>{translate('pim_error.general')}</Helper>;
+    return (
+      <Table.Cell colSpan={2}>
+        <Helper level={'error'}>{translate('pim_error.general')}</Helper>
+      </Table.Cell>
+    );
   }
 
   return isLoading ? (
-    <Styled.ConditionLineSkeleton>This is Loading</Styled.ConditionLineSkeleton>
+    <Table.Cell colSpan={2}>
+      <Styled.ConditionLineSkeleton>This is Loading</Styled.ConditionLineSkeleton>
+    </Table.Cell>
   ) : (
     <>
       {data?.scopable && (
-        <Table.Cell colSpan={data?.localizable ? 1 : 2}>
+        <Table.Cell>
           <ScopeSelector value={scope} onChange={handleScopeChange} />
         </Table.Cell>
       )}
       {data?.localizable && (
-        <Table.Cell colSpan={data?.scopable ? 1 : 2}>
+        <Table.Cell>
           <LocaleSelector
             value={locale}
             onChange={handleLocaleChange}
@@ -60,6 +67,7 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({attributeCode, locale = null, 
           />
         </Table.Cell>
       )}
+      {((data?.localizable && !data?.scopable) || (data?.scopable && !data?.localizable)) && <Table.Cell />}
       {!data?.localizable && !data?.scopable && <Table.Cell colSpan={2} />}
     </>
   );

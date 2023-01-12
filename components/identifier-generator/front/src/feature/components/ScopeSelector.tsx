@@ -5,7 +5,7 @@ import {useGetScopes} from '../hooks';
 
 type ScopeSelectorProps = {
   value: ChannelCode | null;
-  onChange: (code: string | null) => void;
+  onChange: (code: ChannelCode) => void;
 };
 
 const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
@@ -32,6 +32,7 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
       openLabel={translate('pim_common.channel')}
       onChange={onChange}
       placeholder={translate('pim_common.channel')}
+      clearable={false}
     >
       {options?.map(({code, labels}) => (
         <SelectInput.Option value={code} key={code}>
