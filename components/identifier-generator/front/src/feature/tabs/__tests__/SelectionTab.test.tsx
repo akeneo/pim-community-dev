@@ -193,7 +193,14 @@ describe('SelectionTab', () => {
       json: [{code: 'sku', label: 'Sku'}],
     });
     const conditions = [
-      {type: CONDITION_NAMES.SELECT_OPTION, value: [], operator: Operator.IN, scope: null, locale: null, attributeCode: 'simple_select'}
+      {
+        type: CONDITION_NAMES.SIMPLE_SELECT,
+        value: [],
+        operator: Operator.IN,
+        scope: null,
+        locale: null,
+        attributeCode: 'simple_select',
+      },
     ];
 
     const screen = render(
@@ -201,7 +208,7 @@ describe('SelectionTab', () => {
       <SelectionTab target={'sku'} conditions={conditions} onChange={jest.fn()} />
     );
 
-    expect(await screen.findByText('SimpleSelectLine')).toBeInTheDocument();
+    expect(await screen.findByText('SimpleSelectLineMock')).toBeInTheDocument();
   });
 
   it('should display errors', () => {

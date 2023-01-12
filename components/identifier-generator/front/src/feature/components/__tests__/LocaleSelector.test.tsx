@@ -1,15 +1,14 @@
 import React from 'react';
 import {mockResponse, render} from '../../tests/test-utils';
 import {LocaleSelector} from '../LocaleSelector';
-import uiLocales from '../../tests/fixtures/uiLocales';
 import {fireEvent, waitFor} from '@testing-library/react';
 import mockedScopes from '../../tests/fixtures/scopes';
 
 describe('LocaleSelector', () => {
   beforeEach(() => {
-    mockResponse('pim_localization_locale_index', 'GET', {
+    mockResponse('pim_enrich_channel_rest_index', 'GET', {
       ok: true,
-      json: uiLocales,
+      json: mockedScopes,
     });
   });
 
@@ -21,9 +20,9 @@ describe('LocaleSelector', () => {
       expect(screen.getByTitle('pim_common.locale')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByTitle('pim_common.locale'));
-    expect(screen.getByText('Catalan (Spain)')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Catalan (Spain)'));
-    expect(mockedOnChange).toHaveBeenCalledWith('ca_ES');
+    expect(screen.getByText('French (France)')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('French (France)'));
+    expect(mockedOnChange).toHaveBeenCalledWith('fr_FR');
   });
 
   it('should display scope locales if scopable', async () => {
@@ -36,7 +35,6 @@ describe('LocaleSelector', () => {
       expect(screen.getByTitle('pim_common.locale')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByTitle('pim_common.locale'));
-    expect(screen.queryByText('Catalan (Spain)')).not.toBeInTheDocument();
     expect(screen.getByText('French (France)')).toBeInTheDocument();
     fireEvent.click(screen.getByText('French (France)'));
     expect(mockedOnChange).toHaveBeenCalledWith('fr_FR');
@@ -51,7 +49,7 @@ describe('LocaleSelector', () => {
     });
     fireEvent.click(screen.getByTitle('pim_common.locale'));
     expect(screen.getByText('pim_common.no_result')).toBeInTheDocument();
-    expect(screen.queryByText('Catalan (Spain)')).not.toBeInTheDocument();
+    expect(screen.queryByText('French (France)')).not.toBeInTheDocument();
   });
 
   it('should display an error when getUiLocales fails', async () => {

@@ -7,9 +7,11 @@ describe('ScopeAndLocaleSelector', () => {
     mockResponse('pim_enrich_attribute_rest_get', 'GET', {
       ok: false,
       json: () => null,
-      status: 500
+      status: 500,
     });
-    const screen = render(<ScopeAndLocaleSelector attributeCode={'brand'} onChange={jest.fn()} locale={null} scope={null} />);
+    const screen = render(
+      <ScopeAndLocaleSelector attributeCode={'brand'} onChange={jest.fn()} locale={null} scope={null} />
+    );
 
     await waitFor(() => {
       expect(screen.getByText('This is Loading')).toBeInTheDocument();

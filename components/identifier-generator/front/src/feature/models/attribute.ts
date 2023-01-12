@@ -1,7 +1,9 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
 
+type AttributeCode = string;
+
 type Attribute = {
-  code: string;
+  code: AttributeCode;
   labels: LabelCollection;
   localizable: boolean;
   scopable: boolean;
