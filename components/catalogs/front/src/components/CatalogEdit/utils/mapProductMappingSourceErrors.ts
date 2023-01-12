@@ -10,6 +10,9 @@ export const mapProductMappingSourceErrors = (errors: CatalogFormErrors, keys: s
             source: findFirstError(errors, `productMapping[${key}][source]`),
             locale: findFirstError(errors, `productMapping[${key}][locale]`),
             scope: findFirstError(errors, `productMapping[${key}][scope]`),
+            parameters: {
+                label_locale: findFirstError(errors, `productMapping[${key}][parameters][label_locale]`),
+            },
         };
     });
 

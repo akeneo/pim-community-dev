@@ -10,6 +10,7 @@ import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
 import {Target} from './models/Target';
+import {SourceParameterErrors} from './models/SourceParameterErrors';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -84,8 +85,18 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
     const targetsWithErrors = Object.keys(
         Object.fromEntries(
             Object.entries(errors).filter(([, value]) => {
-                const properties = Object.entries(value ?? {});
-                const propertiesWithErrors = properties.filter(([, value]) => typeof value === 'string');
+                const properties = Object.entries<string | undefined | SourceParameterErrors>(value ?? {});
+                const propertiesWithErrors = properties.filter(([, value]) => {
+                    if (typeof value === 'object') {
+                        const parameterProperties = Object.entries(value);
+                        return (
+                            parameterProperties.filter(([, parameterPropertyValue]) => {
+                                return typeof parameterPropertyValue === 'string';
+                            }).length > 0
+                        );
+                    }
+                    return typeof value === 'string';
+                });
 
                 return propertiesWithErrors.length > 0;
             })
