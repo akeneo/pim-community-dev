@@ -4,7 +4,7 @@ import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 
 const Container = styled.div`
-  align-items: center;
+  align-items: stretch;
   display: flex;
   font-weight: 400;
   padding-right: 15px;
@@ -14,9 +14,11 @@ const Container = styled.div`
 `;
 
 const IconContainer = styled.span`
-  height: 80px;
-  padding: 0px 20px 0px 20px;
-  margin: 20px 15px 20px 0px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 10px 20px 10px 0px;
   border-right: 1px solid ${getColor('grey80')};
 `;
 
@@ -27,7 +29,7 @@ const HelperTitle = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  padding: 10px 0px 10px 0px;
+  padding: 20px 0px;
 `;
 
 type InformationProps = {
