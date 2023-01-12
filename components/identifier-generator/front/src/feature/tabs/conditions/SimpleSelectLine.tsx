@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {FamilyOperators, Operator, SimpleSelectCondition} from '../../models';
 import {Button, Helper, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
@@ -20,6 +20,16 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   const translate = useTranslate();
   const locale = useUserContext().get('catalogLocale');
   const {data, isLoading, error} = useGetAttributeByCode(condition.attributeCode);
+  const label = useMemo(
+    () => (isLoading || error ? undefined : getLabel(data?.labels || {}, locale, condition.attributeCode)),
+    [condition.attributeCode, data, error, isLoading, locale]
+  );
+
+  useEffect(() => {
+    if (!condition.label && data && !error && !isLoading) {
+      onChange({...condition, label, localizable: data?.localizable, scopable: data?.scopable});
+    }
+  }, [condition, data, error, isLoading, label, onChange]);
 
   const handleOperatorChange = useCallback(
     (operator: Operator) => {
@@ -59,9 +69,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
         </Table.Cell>
       ) : (
         <>
-          <Styled.TitleCell colSpan={1}>
-            {getLabel(data?.labels || {}, locale, condition.attributeCode)}
-          </Styled.TitleCell>
+          <Styled.TitleCell colSpan={1}>{label}</Styled.TitleCell>
           <Styled.CellInputContainer colSpan={1}>
             <Styled.InputContainer>
               <OperatorSelector
@@ -71,15 +79,17 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
               />
             </Styled.InputContainer>
           </Styled.CellInputContainer>
-          <Table.Cell>
-            {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
+
+          {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
+            <Table.Cell>
               <SimpleSelectOptionsSelector
                 attributeCode={condition.attributeCode}
                 optionCodes={condition.value || []}
                 onChange={handleSelectCodesChange}
               />
-            )}
-          </Table.Cell>
+            </Table.Cell>
+          )}
+
           <ScopeAndLocaleSelector
             locale={condition.locale}
             scope={condition.scope}
