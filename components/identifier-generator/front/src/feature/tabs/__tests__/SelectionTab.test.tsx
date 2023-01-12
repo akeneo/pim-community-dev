@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, mockResponse, render, screen} from '../../tests/test-utils';
 import {SelectionTab} from '../SelectionTab';
-import {CONDITION_NAMES, Conditions, Operator} from '../../models';
+import {CONDITION_NAMES, Conditions, Operator, SimpleSelectCondition} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
@@ -88,7 +88,7 @@ describe('SelectionTab', () => {
     });
     const onChange = jest.fn();
 
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} />);
+    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} validationErrors={[]} />);
     expect(await screen.findByText('Sku')).toBeInTheDocument();
     expect(screen.queryByText('pim_identifier_generator.selection.empty.title')).toBeInTheDocument();
   });
@@ -99,7 +99,12 @@ describe('SelectionTab', () => {
     });
     const onChange = jest.fn();
     render(
-      <SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />
+      <SelectionTab
+        target={'sku'}
+        conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]}
+        onChange={onChange}
+        validationErrors={[]}
+      />
     );
     expect(await screen.findByText('Sku')).toBeInTheDocument();
     expect(screen.queryByText('pim_identifier_generator.selection.empty.title')).not.toBeInTheDocument();
@@ -112,7 +117,12 @@ describe('SelectionTab', () => {
 
     const onChange = jest.fn();
     render(
-      <SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />
+      <SelectionTab
+        target={'sku'}
+        conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]}
+        onChange={onChange}
+        validationErrors={[]}
+      />
     );
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
@@ -133,7 +143,12 @@ describe('SelectionTab', () => {
 
     const onChange = jest.fn();
     render(
-      <SelectionTab target={'sku'} conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]} onChange={onChange} />
+      <SelectionTab
+        target={'sku'}
+        conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]}
+        onChange={onChange}
+        validationErrors={[]}
+      />
     );
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
@@ -157,7 +172,7 @@ describe('SelectionTab', () => {
       {type: CONDITION_NAMES.ENABLED, value: true},
       {type: CONDITION_NAMES.ENABLED, value: false},
     ];
-    render(<SelectionTab target={'sku'} conditions={conditions} onChange={onChange} />);
+    render(<SelectionTab target={'sku'} conditions={conditions} onChange={onChange} validationErrors={[]} />);
 
     let dataTransferred = '';
     const dataTransfer = {
@@ -200,12 +215,11 @@ describe('SelectionTab', () => {
         scope: null,
         locale: null,
         attributeCode: 'simple_select',
-      },
+      } as SimpleSelectCondition,
     ];
 
     const screen = render(
-      // @ts-ignore
-      <SelectionTab target={'sku'} conditions={conditions} onChange={jest.fn()} />
+      <SelectionTab target={'sku'} conditions={conditions} onChange={jest.fn()} validationErrors={[]} />
     );
 
     expect(await screen.findByText('SimpleSelectLineMock')).toBeInTheDocument();

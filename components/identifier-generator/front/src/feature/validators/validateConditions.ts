@@ -3,6 +3,7 @@ import {ALLOWED_CONDITION_NAMES, CONDITION_NAMES, Conditions} from '../models';
 import {Violation} from './Violation';
 import {validateEnabled} from './validateEnabled';
 import {validateFamily} from './validateFamily';
+import {validateSimpleSelect} from './validateSimpleSelect';
 
 const validateConditions: Validator<Conditions | undefined> = (conditions, path) => {
   const violations: Violation[] = [];
@@ -24,6 +25,9 @@ const validateConditions: Validator<Conditions | undefined> = (conditions, path)
         break;
       case CONDITION_NAMES.FAMILY:
         violations.push(...validateFamily(condition, subPath));
+        break;
+      case CONDITION_NAMES.SIMPLE_SELECT:
+        violations.push(...validateSimpleSelect(condition, subPath));
         break;
     }
   });
