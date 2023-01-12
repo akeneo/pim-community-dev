@@ -5,7 +5,7 @@ import {SimpleSelectCondition} from './simpleSelectCondition';
 enum CONDITION_NAMES {
   ENABLED = 'enabled',
   FAMILY = 'family',
-  SELECT_OPTION = 'select_option',
+  SIMPLE_SELECT = 'simple_select',
 }
 
 type Condition = {
