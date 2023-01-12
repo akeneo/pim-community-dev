@@ -109,7 +109,7 @@
         "opis/json-schema": "^2.3",
         "phpseclib/phpseclib": "^3.0",
         "psr/event-dispatcher": "^1.0.0",
-        "ramsey/uuid": "^4.5.1",
+        "ramsey/uuid": "4.7.1",
         "ramsey/uuid-doctrine": "^1.8",
         "symfony/acl-bundle": "^2.1.0",
         "symfony/asset": "^5.4.0",
