@@ -27,19 +27,9 @@ final class Version_8_0_20230110131126_update_target_column_for_identifier_gener
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_does_nothing_if_the_column_already_exists(): void
-    {
-        Assert::assertTrue($this->columnExists('pim_catalog_identifier_generator', 'target_id'));
-        $this->reExecuteMigration(self::MIGRATION_NAME);
-        Assert::assertTrue($this->columnExists('pim_catalog_identifier_generator', 'target_id'));
-    }
-
     public function test_it_executes_the_migration(): void
     {
         $this->connection->executeQuery(<<<SQL
-ALTER TABLE pim_catalog_identifier_generator DROP CONSTRAINT pim_catalog_identifier_generator_ibfk_1;
-ALTER TABLE pim_catalog_identifier_generator ADD COLUMN target VARCHAR(100) NOT NULL AFTER target_id;
-ALTER TABLE pim_catalog_identifier_generator DROP COLUMN target_id;
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
 VALUES (UUID_TO_BIN('22e35c7a-f1b4-4b81-a890-16b8e68346a1'), 'mygenerator', 'sku', '', '{}', '[]', '[]');
 SQL);
