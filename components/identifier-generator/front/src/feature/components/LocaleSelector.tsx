@@ -1,18 +1,28 @@
 import React, {useMemo} from 'react';
 import {Channel, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
-import {useUiLocales} from '../hooks';
+import {useGetScopes} from '../hooks';
 import {Helper, Locale, SelectInput, SkeletonPlaceholder, Table} from 'akeneo-design-system';
 
 type Props = {
   value: LocaleCode | null;
-  onChange: (code: string | null) => void;
+  onChange: (code: LocaleCode) => void;
   scopable: boolean;
   scope?: Channel;
 };
 
 const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => {
   const translate = useTranslate();
-  const {data: uiLocales, isLoading, error} = useUiLocales();
+  const {data, isLoading, error} = useGetScopes();
+
+  const catalogLocales = useMemo(() => {
+    if (!data || isLoading || error) return [];
+    return data
+      ?.map(({locales}) => locales)
+      ?.reduce((previousValue, currentValue) => {
+        const nonAddedLocales = currentValue.filter(locale => !previousValue.find(({code}) => code === locale.code));
+        return [...previousValue, ...nonAddedLocales];
+      });
+  }, [data, error, isLoading]);
 
   const locales = useMemo(() => {
     if (scopable && !scope) {
@@ -20,8 +30,8 @@ const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => 
     } else if (scopable && scope) {
       return scope.locales;
     }
-    return uiLocales || [];
-  }, [scopable, scope, uiLocales]);
+    return catalogLocales || [];
+  }, [catalogLocales, scopable, scope]);
 
   if (error) {
     return <Helper level={'error'}>{translate('pim_error.general')}</Helper>;
@@ -38,6 +48,7 @@ const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => 
       openLabel={translate('pim_common.locale')}
       onChange={onChange}
       placeholder={translate('pim_common.locale')}
+      clearable={false}
     >
       {locales?.map(locale => (
         <SelectInput.Option value={locale.code} key={locale.code}>

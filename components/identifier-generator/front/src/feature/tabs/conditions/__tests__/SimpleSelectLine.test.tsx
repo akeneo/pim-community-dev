@@ -4,14 +4,13 @@ import {SimpleSelectLine} from '../SimpleSelectLine';
 import {CONDITION_NAMES, Operator, SimpleSelectCondition} from '../../../models';
 import {fireEvent} from '@testing-library/react';
 import mockedScopes from '../../../tests/fixtures/scopes';
-import uiLocales from '../../../tests/fixtures/uiLocales';
 
 describe('SimpleSelectLine', () => {
   it('displays select options for IN and NOT_IN operator', async () => {
     //GIVEN a simple select WIth IN condition
     const condition: SimpleSelectCondition = {
       attributeCode: 'simple_select',
-      type: CONDITION_NAMES.SELECT_OPTION,
+      type: CONDITION_NAMES.SIMPLE_SELECT,
       value: [],
       operator: Operator.IN,
       scope: null,
@@ -57,7 +56,7 @@ describe('SimpleSelectLine', () => {
     //GIVEN a simple select WIth IN condition
     const condition: SimpleSelectCondition = {
       attributeCode: 'simple_select',
-      type: CONDITION_NAMES.SELECT_OPTION,
+      type: CONDITION_NAMES.SIMPLE_SELECT,
       value: [],
       operator: Operator.EMPTY,
       scope: null,
@@ -97,7 +96,7 @@ describe('SimpleSelectLine', () => {
 
     const condition: SimpleSelectCondition = {
       attributeCode: 'simple_select',
-      type: CONDITION_NAMES.SELECT_OPTION,
+      type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
       operator: Operator.IN,
       scope: null,
@@ -114,11 +113,11 @@ describe('SimpleSelectLine', () => {
     expect(screen.queryByPlaceholderText('pim_common.channel')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByTitle('pim_common.locale'));
-    expect(screen.getByText('Catalan (Spain)')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Catalan (Spain)'));
+    expect(screen.getByText('French (France)')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('French (France)'));
     expect(mockedOnChange).toHaveBeenCalledWith({
       ...condition,
-      locale: 'ca_ES',
+      locale: 'fr_FR',
     });
   });
 
@@ -128,7 +127,7 @@ describe('SimpleSelectLine', () => {
 
     const condition: SimpleSelectCondition = {
       attributeCode: 'simple_select',
-      type: CONDITION_NAMES.SELECT_OPTION,
+      type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
       operator: Operator.IN,
       scope: null,
@@ -158,7 +157,7 @@ describe('SimpleSelectLine', () => {
 
     const condition: SimpleSelectCondition = {
       attributeCode: 'unknown_simple_select',
-      type: CONDITION_NAMES.SELECT_OPTION,
+      type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
       operator: Operator.IN,
       scope: null,
@@ -177,7 +176,7 @@ describe('SimpleSelectLine', () => {
 
     const condition: SimpleSelectCondition = {
       attributeCode: 'unknown_simple_select',
-      type: CONDITION_NAMES.SELECT_OPTION,
+      type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
       operator: Operator.IN,
       scope: null,
@@ -240,13 +239,6 @@ const mockSimpleSelectCalls = ({localizable = false, scopable = false, inError =
           status: 200,
         } as Response);
       }
-    } else if (requestUrl === 'pim_localization_locale_index') {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(uiLocales),
-        statusText: '',
-        status: 200,
-      } as Response);
     }
 
     throw new Error(`Unmocked url "${requestUrl}" [${args.method}]`);
