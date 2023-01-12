@@ -133,6 +133,10 @@ akeneo_catalogs:
                 locale:
                     label: Locale
                     placeholder: Select a locale
+                label_locale:
+                    label: Value translation
+                    placeholder: Select a translation
+                    helper: Select the language in which to send the value.
             select_source:
                 label: Pim source
                 search: Search criterion

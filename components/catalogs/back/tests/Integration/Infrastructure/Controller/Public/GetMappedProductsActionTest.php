@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PHPUnit\Framework\Assert;
@@ -54,9 +52,10 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         ]);
         $this->createAttribute([
             'code' => 'size',
-            'type' => 'pim_catalog_text',
-            'scopable' => false,
-            'localizable' => false,
+            'type' => 'pim_catalog_simpleselect',
+            'options' => ['XS', 'S', 'M', 'L', 'XL'],
+            'scopable' => true,
+            'localizable' => true,
         ]);
 
         $this->createChannel('print', ['en_US', 'fr_FR']);
@@ -66,13 +65,13 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetTextValue('name', 'print', 'en_US', 'Blue name'),
             new SetTextValue('name', 'print', 'fr_FR', 'Nom Bleu'),
             new SetTextValue('description', 'print', null, 'Blue description'),
-            new SetTextValue('size', null, null, 'Blue size'),
+            new SetSimpleSelectValue('size', 'ecommerce', 'en_US', 'm'),
         ]);
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
             new SetEnabled(true),
             new SetTextValue('name', 'print', 'en_US', 'Green name'),
             new SetTextValue('description', 'print', null, 'Green description'),
-            new SetTextValue('size', null, null, 'Green size'),
+            new SetSimpleSelectValue('size', 'print', 'en_US', 'l'),
         ]);
         $this->createProduct(Uuid::fromString('9fe842c4-6185-470b-b9a8-abc2306b0e4b'), [
             new SetEnabled(true),
@@ -84,7 +83,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetEnabled(false),
             new SetTextValue('name', 'print', 'en_US', 'Red name'),
             new SetTextValue('description', 'print', null, 'Red description'),
-            new SetTextValue('size', null, null, 'Red size'),
+            new SetSimpleSelectValue('size', 'print', 'en_US', 'xl'),
         ]);
 
         $this->client = $this->getAuthenticatedPublicApiClient([
@@ -122,8 +121,8 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 ],
                 'size_label' => [
                     'source' => 'size',
-                    'scope' => null,
-                    'locale' => null,
+                    'scope' => 'print',
+                    'locale' => 'en_US',
                 ],
             ],
         );
@@ -147,13 +146,12 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 'uuid' => '00380587-3893-46e6-a8c2-8fee6404cc9e',
                 'title' => 'Green name',
                 'short_description' => 'Green description',
-                'size_label' => 'Green size',
+                'size_label' => 'L',
             ],
             [
                 'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
                 'title' => 'Blue name',
                 'short_description' => 'Blue description',
-                'size_label' => 'Blue size',
             ],
         ];
 
@@ -184,7 +182,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 'uuid' => '9fe842c4-6185-470b-b9a8-abc2306b0e4b',
                 'title' => 'Red name',
                 'short_description' => 'Red description',
-                'size_label' => 'Red size',
+                'size_label' => 'XL',
             ],
         ];
 

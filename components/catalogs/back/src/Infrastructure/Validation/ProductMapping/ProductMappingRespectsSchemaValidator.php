@@ -28,6 +28,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         'string' => [
             'pim_catalog_text',
             'pim_catalog_textarea',
+            'pim_catalog_simpleselect'
         ],
     ];
 
