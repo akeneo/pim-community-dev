@@ -20,7 +20,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->sets([
         SetList::CODE_QUALITY,
-        SetList::TYPE_DECLARATION_STRICT,
+        SetList::TYPE_DECLARATION,
         LevelSetList::UP_TO_PHP_80,
     ]);
 
