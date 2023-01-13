@@ -9,6 +9,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Service\MappedProductCollector;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
@@ -27,6 +28,7 @@ final class GetMappedProductsHandler
         private GetCatalogQueryInterface $getCatalogQuery,
         private CatalogsMappingStorageInterface $catalogsMappingStorage,
         private GetRawProductsQueryInterface $getRawProductsQuery,
+        private MappedProductCollector $mappedProductCollector,
     ) {
     }
 
@@ -68,7 +70,7 @@ final class GetMappedProductsHandler
 
         return \array_map(
             /** @param RawProduct $product */
-            function (array $product) use ($productMappingSchema, $productMapping): array {
+            function (array $product) use ($catalog, $productMappingSchema, $productMapping): array {
                 $mappedProduct = [];
 
                 /** @var string $target */
@@ -88,6 +90,8 @@ final class GetMappedProductsHandler
 
                     $mappedProduct[$target] = $sourceValue;
                 }
+
+                $this->mappedProductCollector->collect($catalog->getId(), $mappedProduct);
 
                 return $mappedProduct;
             },
