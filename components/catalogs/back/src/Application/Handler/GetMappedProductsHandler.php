@@ -9,6 +9,7 @@ use Akeneo\Catalogs\Application\Persistence\Attribute\GetAttributeOptionsByCodeQ
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
+use Akeneo\Catalogs\Application\Service\MapAttributeServiceInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
@@ -31,6 +32,7 @@ final class GetMappedProductsHandler
         private GetRawProductsQueryInterface $getRawProductsQuery,
         private GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
         private GetAttributeOptionsByCodeQueryInterface $getAttributeOptionsByCodeQuery,
+        private MapAttributeServiceInterface $mapAttributeService,
     ) {
     }
 
@@ -85,17 +87,11 @@ final class GetMappedProductsHandler
                         $sourceValue = $product['uuid']->toString();
                     } elseif (\array_key_exists($target, $productMapping)) {
                         if ($productMapping[$target]['source'] !== null) {
-                            $sourceValue = $this->getProductAttributeValue(
+                            $sourceValue = $this->mapAttributeService->execute(
+                                $attributeTypeBySource[$productMapping[$target]['source']],
                                 $product,
-                                $productMapping[$target]['source'],
-                                $productMapping[$target]['locale'],
-                                $productMapping[$target]['scope']
+                                $productMapping[$target],
                             );
-
-                            if ($attributeTypeBySource[$productMapping[$target]['source']] === 'pim_catalog_simpleselect' && $sourceValue !== '') {
-                                $locale = $productMapping[$target]['locale'] ?? 'en_US';
-                                $sourceValue = $this->getSimpleSelectLabel($productMapping[$target]['source'], $sourceValue, $locale);
-                            }
                         }
                     }
 
@@ -139,27 +135,5 @@ final class GetMappedProductsHandler
         $productMappingSchema = \json_decode($productMappingSchemaRaw, true, 512, JSON_THROW_ON_ERROR);
 
         return $productMappingSchema;
-    }
-
-    /**
-     * @param RawProduct $product
-     */
-    private function getProductAttributeValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string | null
-    {
-        $scope ??= '<all_channels>';
-        $locale ??= '<all_locales>';
-
-        return $product['raw_values'][$attributeCode][$scope][$locale] ?? null;
-    }
-
-    private function getSimpleSelectLabel(string $attributeCode, $optionCode, string $locale): string | null
-    {
-        $options = $this->getAttributeOptionsByCodeQuery->execute($attributeCode, [$optionCode], $locale);
-
-        if (!empty($options)) {
-            return $options[0]['label'];
-        } else {
-            return null;
-        }
     }
 }
