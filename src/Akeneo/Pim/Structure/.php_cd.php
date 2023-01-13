@@ -18,6 +18,7 @@ $rules = [
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
+        'Oro\Bundle\SecurityBundle\Exception\AccessDeniedException',
         'FOS\RestBundle\View',
         'Oro\Bundle\DataGridBundle\Event\BuildBefore',
         'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',

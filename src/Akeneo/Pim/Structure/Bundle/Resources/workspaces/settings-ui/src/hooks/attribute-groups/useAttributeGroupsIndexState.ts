@@ -40,7 +40,7 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
 
     setAttributeGroups(groups);
     setIsPending(false);
-  }, [router]);
+  }, [refresh, router]);
 
   const saveOrder = useCallback(async (reorderedGroups: AttributeGroup[]) => {
     const order: {[code: string]: number} = {};

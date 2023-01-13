@@ -5,6 +5,7 @@ import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredA
 import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
 import {getLabel} from 'pimui/js/i18n';
+const FeatureFlags = require('pim/feature-flags');
 
 type Props = {
   groups: AttributeGroup[];
@@ -57,7 +58,11 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
       ) : (
-        <Table isDragAndDroppable={sortGranted} isSelectable={false} onReorder={order => onReorder(order)}>
+        <Table
+          isDragAndDroppable={sortGranted}
+          isSelectable={true}
+          onReorder={order => refreshOrder(order.map(index => groups[index]))}
+        >
           <Table.Header>
             <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
             {featureFlags.isEnabled('data_quality_insights') && (
