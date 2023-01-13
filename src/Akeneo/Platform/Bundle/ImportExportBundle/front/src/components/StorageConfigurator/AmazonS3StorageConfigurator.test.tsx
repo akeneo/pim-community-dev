@@ -210,7 +210,7 @@ test('it allows user to fill secret field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, secret: 'my_s3cr3t'});
 });
 
-test('it hide secret field if the secret is obfuscated', () => {
+test('it hides secret field if the secret is obfuscated', () => {
   const storage: AmazonS3Storage = {
     type: 'amazon_s3',
     file_path: '/tmp/file.xlsx',

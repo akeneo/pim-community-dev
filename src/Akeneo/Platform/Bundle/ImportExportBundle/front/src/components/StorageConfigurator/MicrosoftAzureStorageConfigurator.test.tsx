@@ -2,9 +2,8 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, LocalStorage, MicrosoftAzureStorage} from '../model';
+import {LocalStorage, MicrosoftAzureStorage} from '../model';
 import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
-import {AmazonS3StorageConfigurator} from "./AmazonS3StorageConfigurator";
 
 beforeEach(() => {
   global.fetch = mockFetch;
@@ -141,7 +140,7 @@ test('it allows user to fill container name field', async () => {
   });
 });
 
-test('it hide connection string field if the connection string is obfuscated', () => {
+test('it hides connection string field if the connection string is obfuscated', () => {
   const storage: MicrosoftAzureStorage = {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',

@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import {EditIcon, Helper, Button, CheckIcon, getColor} from 'akeneo-design-system';
+import {Helper, Button, CheckIcon, getColor} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isAmazonS3Storage} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
-import {IconButton} from "akeneo-design-system/lib/components/IconButton/IconButton";
 
 const CheckStorageForm = styled.div`
   display: flex;
@@ -71,18 +70,25 @@ const AmazonS3StorageConfigurator = ({
         errors={filterErrors(validationErrors, '[key]')}
       />
       <TextField
-        actions={secretIsStoredOnServer && (
-          <Button level="secondary" ghost={true} size="small" onClick={() => onStorageChange({...storage, secret: ''})}>
-            {translate('pim_common.edit')}
-          </Button>
-        )}
+        actions={
+          secretIsStoredOnServer && (
+            <Button
+              level="secondary"
+              ghost={true}
+              size="small"
+              onClick={() => onStorageChange({...storage, secret: ''})}
+            >
+              {translate('pim_common.edit')}
+            </Button>
+          )
+        }
         required={true}
         value={secretIsStoredOnServer ? '••••••••' : storage.secret}
         readOnly={secretIsStoredOnServer}
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.secret.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.secret.placeholder')}
-        onChange={(secret: string) => storage.secret !== undefined && onStorageChange({...storage, secret})}
+        onChange={(secret: string) => onStorageChange({...storage, secret})}
         errors={filterErrors(validationErrors, '[secret]')}
       />
       <CheckStorageForm>

@@ -170,11 +170,18 @@ const SftpStorageConfigurator = ({
       />
       {storage.login_type === 'password' ? (
         <TextField
-          actions={passwordIsStoredOnServer && (
-            <Button level="secondary" ghost={true} size="small" onClick={() => onStorageChange({...storage, password: ''})}>
-              {translate('pim_common.edit')}
-            </Button>
-          )}
+          actions={
+            passwordIsStoredOnServer && (
+              <Button
+                level="secondary"
+                ghost={true}
+                size="small"
+                onClick={() => onStorageChange({...storage, password: ''})}
+              >
+                {translate('pim_common.edit')}
+              </Button>
+            )
+          }
           value={passwordIsStoredOnServer ? '••••••••' : storage.password ?? ''}
           readOnly={passwordIsStoredOnServer}
           required={true}

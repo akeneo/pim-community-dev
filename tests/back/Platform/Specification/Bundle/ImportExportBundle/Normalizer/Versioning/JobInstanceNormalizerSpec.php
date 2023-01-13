@@ -77,7 +77,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
         );
     }
 
-    function it_obfuscate_credentials_on_job_instance(JobInstance $jobinstance)
+    function it_obfuscates_credentials_on_job_instance(JobInstance $jobinstance)
     {
         $jobinstance->getCode()->willReturn('product_export');
         $jobinstance->getLabel()->willReturn('Product export');

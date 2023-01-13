@@ -13,7 +13,14 @@ type StorageFormProps = {
   onStorageChange: (storage: Storage) => void;
 };
 
-const StorageForm = ({jobInstanceCode, jobType, fileExtension, storage, validationErrors, onStorageChange}: StorageFormProps) => {
+const StorageForm = ({
+  jobInstanceCode,
+  jobType,
+  fileExtension,
+  storage,
+  validationErrors,
+  onStorageChange,
+}: StorageFormProps) => {
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 

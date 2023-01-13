@@ -46,11 +46,18 @@ const MicrosoftAzureStorageConfigurator = ({
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
-        actions={connectionStringIsStoredOnServer && (
-          <Button level="secondary" ghost={true} size="small" onClick={() => onStorageChange({...storage, connection_string: ''})}>
-            {translate('pim_common.edit')}
-          </Button>
-        )}
+        actions={
+          connectionStringIsStoredOnServer && (
+            <Button
+              level="secondary"
+              ghost={true}
+              size="small"
+              onClick={() => onStorageChange({...storage, connection_string: ''})}
+            >
+              {translate('pim_common.edit')}
+            </Button>
+          )
+        }
         required={true}
         value={connectionStringIsStoredOnServer ? '••••••••' : storage.connection_string}
         readOnly={connectionStringIsStoredOnServer}

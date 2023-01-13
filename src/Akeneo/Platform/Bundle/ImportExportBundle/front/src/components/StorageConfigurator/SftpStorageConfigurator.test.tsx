@@ -2,9 +2,8 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {LocalStorage, MicrosoftAzureStorage, SftpStorage} from '../model';
+import {LocalStorage, SftpStorage} from '../model';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
-import {MicrosoftAzureStorageConfigurator} from "./MicrosoftAzureStorageConfigurator";
 
 beforeEach(() => {
   global.fetch = mockFetch;
@@ -390,7 +389,7 @@ test('it allows user to fill password field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, password: 'root'});
 });
 
-test('it hide password field if the password is obfuscated', async() => {
+test('it hides password field if the password is obfuscated', async () => {
   const storage: SftpStorage = {
     type: 'sftp',
     file_path: '',
@@ -420,7 +419,7 @@ test('it hide password field if the password is obfuscated', async() => {
   expect(connectionStringInput).toHaveValue('••••••••');
 });
 
-test('it can edit the password field if the password is obfuscated', async() => {
+test('it can edit the password field if the password is obfuscated', async () => {
   const storage: SftpStorage = {
     type: 'sftp',
     file_path: '',

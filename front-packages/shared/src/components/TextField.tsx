@@ -12,7 +12,17 @@ type TextFieldProps = FieldProps &
 
 const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   (
-    {actions, required = false, errors = [], label, incomplete, locale, channel, children, ...inputProps}: TextFieldProps,
+    {
+      actions,
+      required = false,
+      errors = [],
+      label,
+      incomplete,
+      locale,
+      channel,
+      children,
+      ...inputProps
+    }: TextFieldProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
     const translate = useTranslate();
