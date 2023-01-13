@@ -49,6 +49,12 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'release_date',
+            'type' => 'pim_catalog_date',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
 
         $violations = $this->validator->validate(
             new Catalog(
@@ -71,6 +77,11 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                     ],
                     'simple_description' => [
                         'source' => 'description',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'release_date' => [
+                        'source' => 'release_date',
                         'scope' => null,
                         'locale' => null,
                     ],
@@ -101,7 +112,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             )
         );
 
-        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description".');
+        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "release_date".');
     }
 
     public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
@@ -115,6 +126,12 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'description',
             'type' => 'pim_catalog_text',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'release_date',
+            'type' => 'pim_catalog_date',
             'scopable' => false,
             'localizable' => false,
         ]);
@@ -140,6 +157,11 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                     ],
                     'simple_description' => [
                         'source' => 'description',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'release_date' => [
+                        'source' => 'release_date',
                         'scope' => null,
                         'locale' => null,
                     ],
@@ -174,6 +196,10 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             },
             "simple_description": {
               "type": "string"
+            },
+            "release_date": {
+              "type": "string",
+              "format": "date-time"
             }
           }
         }
