@@ -9,6 +9,7 @@ import {TargetSourceAssociation} from './components/TargetSourceAssociation';
 import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
+import {Target} from './models/Target';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -33,14 +34,17 @@ type Props = {
 export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema, errors, onChange}) => {
     const translate = useTranslate();
 
-    const [selectedTarget, setSelectedTarget] = useState<string | null>(null);
-    const [selectedTargetLabel, setSelectedTargetLabel] = useState<string | null>(null);
+    const [selectedTarget, setSelectedTarget] = useState<Target | null>(null);
     const [selectedSource, setSelectedSource] = useState<Source | null>(null);
 
     const handleClick = useCallback(
         (targetCode, source) => {
-            setSelectedTarget(targetCode);
-            setSelectedTargetLabel(productMappingSchema?.properties[targetCode]?.title ?? targetCode);
+            setSelectedTarget({
+                code: targetCode,
+                label: productMappingSchema?.properties[targetCode]?.title ?? targetCode,
+                type: productMappingSchema?.properties[targetCode].type ?? null,
+                format: productMappingSchema?.properties[targetCode].format ?? null,
+            });
             setSelectedSource(source);
         },
         [productMappingSchema]
@@ -51,7 +55,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (selectedTarget !== null) {
                 onChange({
                     ...productMapping,
-                    [selectedTarget]: source,
+                    [selectedTarget.code]: source,
                 });
                 setSelectedSource(source);
             }
@@ -111,7 +115,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                                 {targets.map(([targetCode, source]) => {
                                     return (
                                         <TargetSourceAssociation
-                                            isSelected={selectedTarget === targetCode}
+                                            isSelected={selectedTarget?.code === targetCode}
                                             key={targetCode}
                                             onClick={handleClick}
                                             targetCode={targetCode}
@@ -129,11 +133,10 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             <SourceContainer>
                 <SourcePanel
                     target={selectedTarget}
-                    targetLabel={selectedTargetLabel}
                     source={selectedSource}
                     onChange={handleSourceUpdate}
-                    errors={selectedTarget === null ? null : errors[selectedTarget]}
-                ></SourcePanel>
+                    errors={selectedTarget === null ? null : errors[selectedTarget?.code]}
+                />
             </SourceContainer>
         </MappingContainer>
     );

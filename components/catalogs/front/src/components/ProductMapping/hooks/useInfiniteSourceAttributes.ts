@@ -1,6 +1,7 @@
 import {useCallback} from 'react';
 import {useInfiniteQuery, useQueryClient} from 'react-query';
 import {Attribute} from '../../../models/Attribute';
+import {Target} from '../models/Target';
 
 type PageParam = {
     number: number;
@@ -13,6 +14,7 @@ type Page = {
 type QueryParams = {
     search?: string;
     limit?: number;
+    target: Target;
 };
 type Error = string | null;
 type Result = {
@@ -24,9 +26,7 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-const ALLOWED_ATTRIBUTE_TYPES = ['text'];
-
-export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {}): Result => {
+export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: QueryParams): Result => {
     const queryClient = useQueryClient();
 
     const fetchAttributes = useCallback(
@@ -38,7 +38,8 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
                 page: _page.toString(),
                 limit: limit.toString(),
                 search: _search,
-                types: ALLOWED_ATTRIBUTE_TYPES.join(','),
+                targetType: target.type ?? '',
+                targetFormat: target.format ?? '',
             }).toString();
 
             const response = await fetch('/rest/catalogs/attributes?' + queryParameters, {
@@ -65,7 +66,7 @@ export const useInfiniteAttributes = ({search = '', limit = 20}: QueryParams = {
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(
-        ['attributes', {search: search, limit: limit, types: ALLOWED_ATTRIBUTE_TYPES}],
+        ['attributes', {search: search, limit: limit, type: target.type ?? '', targetFormat: target.format ?? ''}],
         fetchAttributes,
         {
             keepPreviousData: true,

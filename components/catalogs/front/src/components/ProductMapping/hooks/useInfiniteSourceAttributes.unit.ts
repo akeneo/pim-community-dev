@@ -1,15 +1,20 @@
-import {useInfiniteAttributes} from './useInfiniteAttributes';
+import {useInfiniteSourceAttributes} from './useInfiniteSourceAttributes';
 
-jest.unmock('./useInfiniteAttributes');
+jest.unmock('./useInfiniteSourceAttributes');
 
 import {act, renderHook} from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
 import {Attribute} from '../../../models/Attribute';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
-
-const ALLOWED_ATTRIBUTE_TYPES = ['text'];
+import {Target} from '../models/Target';
 
 test('it fetches attributes & paginates', async () => {
+    const selectedTarget: Target = {
+        code: 'blog_url',
+        label: 'Url of the blog',
+        type: 'string',
+        format: 'uri',
+    };
     const attributes: Attribute[] = [
         {
             code: 'name',
@@ -42,12 +47,15 @@ test('it fetches attributes & paginates', async () => {
 
     fetchMock.mockResponseOnce(JSON.stringify(attributes.slice(0, 2)));
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributes({limit: 2}), {
-        wrapper: ReactQueryWrapper,
-    });
+    const {result, waitForNextUpdate} = renderHook(
+        () => useInfiniteSourceAttributes({target: selectedTarget, limit: 2}),
+        {
+            wrapper: ReactQueryWrapper,
+        }
+    );
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes?page=1&limit=2&search=&types=' + ALLOWED_ATTRIBUTE_TYPES.join(','),
+        '/rest/catalogs/attributes?page=1&limit=2&search=&targetType=string&targetFormat=uri',
         expect.any(Object)
     );
     expect(result.current).toMatchObject({
@@ -147,15 +155,24 @@ test('it searches with a string', async () => {
             },
         ])
     );
+    const selectedTarget: Target = {
+        code: 'blog_url',
+        label: 'Url of the blog',
+        type: 'string',
+        format: 'uri',
+    };
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributes({search: 'Description', limit: 2}), {
-        wrapper: ReactQueryWrapper,
-    });
+    const {result, waitForNextUpdate} = renderHook(
+        () => useInfiniteSourceAttributes({target: selectedTarget, search: 'Description', limit: 2}),
+        {
+            wrapper: ReactQueryWrapper,
+        }
+    );
 
     await waitForNextUpdate();
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes?page=1&limit=2&search=Description&types=' + ALLOWED_ATTRIBUTE_TYPES.join(','),
+        '/rest/catalogs/attributes?page=1&limit=2&search=Description&targetType=string&targetFormat=uri',
         expect.any(Object)
     );
     expect(result.current).toMatchObject({
@@ -180,8 +197,14 @@ test('it searches with a string', async () => {
 
 test('it stops fetching if there is no more pages', async () => {
     fetchMock.mockResponseOnce(JSON.stringify([]));
+    const selectedTarget: Target = {
+        code: 'blog_url',
+        label: 'Url of the blog',
+        type: 'string',
+        format: 'uri',
+    };
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteAttributes(), {
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteSourceAttributes({target: selectedTarget}), {
         wrapper: ReactQueryWrapper,
     });
 

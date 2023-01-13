@@ -1,7 +1,7 @@
 import React, {FC, useCallback} from 'react';
 import {SectionTitle, Tag} from 'akeneo-design-system';
 import {SourcePlaceholder} from './SourcePlaceholder';
-import {SelectAttributeDropdown} from './SelectAttributeDropdown';
+import {SelectSourceAttributeDropdown} from './SelectSourceAttributeDropdown';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Source} from '../models/Source';
 import {Attribute} from '../../../models/Attribute';
@@ -11,18 +11,18 @@ import {SourceErrors} from '../models/SourceErrors';
 import {SelectLocaleDropdown} from './SelectLocaleDropdown';
 import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {SourceUuidPlaceholder} from './SourceUuidPlaceholder';
+import {Target} from '../models/Target';
 
 type Props = {
-    target: string | null;
+    target: Target | null;
     source: Source | null;
-    targetLabel: string | null;
     onChange: (value: Source) => void;
     errors: SourceErrors | null;
 };
 
-export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, errors}) => {
+export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
     const translate = useTranslate();
-    const {data: attribute} = useAttribute('uuid' !== target && source?.source ? source.source : '');
+    const {data: attribute} = useAttribute('uuid' !== target?.code && source?.source ? source.source : '');
     const handleSourceSelection = useCallback(
         (value: Attribute) => {
             onChange({
@@ -42,11 +42,11 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
     return (
         <>
             {null === target && <SourcePlaceholder />}
-            {'uuid' === target && <SourceUuidPlaceholder targetLabel={targetLabel} />}
-            {target && 'uuid' !== target && (
+            {null !== target && 'uuid' === target.code && <SourceUuidPlaceholder targetLabel={target.label} />}
+            {null !== target && 'uuid' !== target.code && (
                 <>
                     <SectionTitle>
-                        <SectionTitle.Title>{targetLabel}</SectionTitle.Title>
+                        <SectionTitle.Title>{target.label}</SectionTitle.Title>
                     </SectionTitle>
                     <SectionTitle>
                         <Tag tint='purple'>1</Tag>
@@ -54,11 +54,12 @@ export const SourcePanel: FC<Props> = ({target, source, targetLabel, onChange, e
                             {translate('akeneo_catalogs.product_mapping.source.title')}
                         </SectionTitle.Title>
                     </SectionTitle>
-                    <SelectAttributeDropdown
-                        code={source?.source ?? ''}
+                    <SelectSourceAttributeDropdown
+                        selectedCode={source?.source ?? ''}
+                        target={target}
                         onChange={handleSourceSelection}
                         error={errors?.source}
-                    ></SelectAttributeDropdown>
+                    />
                     <SectionTitle>
                         <Tag tint='purple'>2</Tag>
                         <SectionTitle.Title level='secondary'>
