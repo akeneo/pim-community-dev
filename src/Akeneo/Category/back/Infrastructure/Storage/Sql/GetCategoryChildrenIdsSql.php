@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\GetCategoryChildrenIdsInterface;
+use Akeneo\Category\Application\Query\GetCategoryChildrenIds;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetCategoryChildrenIdsSql implements GetCategoryChildrenIdsInterface
+final class GetCategoryChildrenIdsSql implements GetCategoryChildrenIds
 {
     public function __construct(private readonly Connection $connection)
     {

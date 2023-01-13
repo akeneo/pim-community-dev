@@ -53,7 +53,7 @@ services:
     arguments:
       - '@Akeneo\Category\Application\Handler\SearchFilters'
 
-  Akeneo\Category\Application\Query\GetCategoryChildrenIdsInterface:
+  Akeneo\Category\Application\Query\GetCategoryChildrenIds:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryChildrenIdsSql
     arguments:
       - '@database_connection'

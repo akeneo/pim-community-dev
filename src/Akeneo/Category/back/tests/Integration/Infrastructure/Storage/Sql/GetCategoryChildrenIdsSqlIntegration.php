@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\GetCategoryChildrenIdsInterface;
+use Akeneo\Category\Application\Query\GetCategoryChildrenIds;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 
 /**
@@ -24,7 +24,7 @@ class GetCategoryChildrenIdsSqlIntegration extends CategoryTestCase
         $categoryPants = $this->createCategory(['code' => 'pants', 'parent' => 'clothes']);
         $categoryJeans = $this->createCategory(['code' => 'jeans', 'parent' => 'pants']);
 
-        $categoryChildrenIds = ($this->get(GetCategoryChildrenIdsInterface::class))($categoryClothes->getId());
+        $categoryChildrenIds = ($this->get(GetCategoryChildrenIds::class))($categoryClothes->getId());
 
         $this->assertSame([
             0 => $categoryPants->getId(),
@@ -36,7 +36,7 @@ class GetCategoryChildrenIdsSqlIntegration extends CategoryTestCase
     {
         $categoryAccessories = $this->createCategory(['code' => 'accessories']);
 
-        $categoryChildrenIds = ($this->get(GetCategoryChildrenIdsInterface::class))($categoryAccessories->getId());
+        $categoryChildrenIds = ($this->get(GetCategoryChildrenIds::class))($categoryAccessories->getId());
 
         $this->assertEmpty($categoryChildrenIds);
     }
