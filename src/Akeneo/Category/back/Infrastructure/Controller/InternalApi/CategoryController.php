@@ -2,6 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
+use Akeneo\Category\Application\Query\GetCategoryChildrenIdsInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Twig\CategoryExtension;
@@ -22,6 +23,7 @@ class CategoryController
         protected CategoryExtension $twigExtension,
         protected NormalizerInterface $normalizer,
         protected CollectionFilterInterface $collectionFilter,
+        protected GetCategoryChildrenIdsInterface $categoryChildrenIds,
     ) {
     }
 
@@ -85,5 +87,14 @@ class CategoryController
         $normalizedCategory = $this->normalizer->normalize($category, 'internal_api');
 
         return new JsonResponse($normalizedCategory);
+    }
+
+    public function listChildrens(int $id): JsonResponse
+    {
+        $categories = $this->categoryChildrenIds->__invoke($id);
+
+        $normalizedCategories = $this->normalizer->normalize($categories, 'internal_api');
+
+        return new JsonResponse($normalizedCategories);
     }
 }

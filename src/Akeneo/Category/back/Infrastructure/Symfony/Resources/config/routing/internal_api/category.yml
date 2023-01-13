@@ -12,3 +12,8 @@ pim_enrich_category_rest_get:
     path: /rest/{identifier}
     defaults: { _controller: pim_enrich.controller.rest.category:getAction }
     methods: [GET]
+
+pim_enrich_category_rest_list_childrens:
+    path: /rest/{id}/childrens
+    defaults: { _controller: pim_enrich.controller.rest.category:listChildrens }
+    methods: [GET]
