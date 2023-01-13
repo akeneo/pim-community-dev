@@ -53,7 +53,7 @@ class UpdateCategoryController
         }
         $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
 
-        // Transform request to a user intent list
+        // Transform request to a user intent lis
         $data = $request->toArray();
         /** @var StandardInternalApi $formattedData */
         $formattedData = $this->internalApiToStandardConverter->convert($data);
