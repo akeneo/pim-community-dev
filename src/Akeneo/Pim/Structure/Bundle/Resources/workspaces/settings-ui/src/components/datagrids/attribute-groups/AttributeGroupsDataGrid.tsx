@@ -59,7 +59,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
               subtitle={translate('pim_datagrid.no_results_subtitle')}
           />
       ) : (
-        <Table isDragAndDroppable={true} onReorder={() => {"pouet"}}>
+        <Table isDragAndDroppable={sortGranted} isSelectable={true} onReorder={(order) => refreshOrder(order.map((index) => groups[index]))}>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
             {FeatureFlags.isEnabled('data_quality_insights') && (
@@ -68,7 +68,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
           </Table.Header>
           <Table.Body>
             {filteredGroups.map(group => (
-                <Table.Row key={group.code}>
+                <Table.Row key={group.code} isSelected={false} onSelectToggle={() => {}}>
                   <Table.Cell>{getLabel(group)}</Table.Cell>
                   {FeatureFlags.isEnabled('data_quality_insights') && (
                       <Table.Cell>
