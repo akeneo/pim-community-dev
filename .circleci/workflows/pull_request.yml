@@ -12,7 +12,7 @@ workflows:
                   filters:
                       branches:
                           ignore:
-                              - master
+                              - "7.0"
             - checkout_ee:
                   requires:
                       - ready_to_build?
@@ -56,7 +56,7 @@ workflows:
                   filters:
                       branches:
                           ignore:
-                              - master
+                              - "7.0"
             - checkout_ce:
                   requires:
                       - ready_to_build_only_ce?

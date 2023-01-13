@@ -39,7 +39,7 @@ jobs:
                   name: Clone EE branch if it exists, or 7.0 otherwise with the SSH key that we added above
                   command: |
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                      ENTERPRISE_BRANCH=$(if [[ -z $(git ls-remote --exit-code --heads git@github.com:akeneo/pim-enterprise-dev.git ${CIRCLE_BRANCH}) ]]; then echo "master"; else echo ${CIRCLE_BRANCH}; fi)
+                      ENTERPRISE_BRANCH=$(if [[ -z $(git ls-remote --exit-code --heads git@github.com:akeneo/pim-enterprise-dev.git ${CIRCLE_BRANCH}) ]]; then echo "7.0"; else echo ${CIRCLE_BRANCH}; fi)
                       git clone --depth=1 --single-branch --branch $ENTERPRISE_BRANCH git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
                       cd /home/circleci/project
                       echo "Current commit: $(git rev-parse --short HEAD)"
