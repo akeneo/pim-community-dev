@@ -8,6 +8,11 @@ pim_enrich_attributegroup_rest_search:
     defaults: { _controller: pim_enrich.controller.rest.attribute_group:searchAction }
     methods: [POST]
 
+pim_structure_attributegroup_rest_index:
+    path: '/list'
+    defaults: { _controller: Akeneo\Pim\Structure\Bundle\Infrastructure\controller\GetAttributeGroupController }
+    methods: [GET]
+
 pim_enrich_attributegroup_rest_create:
     path: '/'
     defaults: { _controller: pim_enrich.controller.rest.attribute_group:createAction }

@@ -211,3 +211,8 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetGroupedAttributes
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups:
+        arguments:
+            - '@database_connection'
+            - '@feature_flags'
