@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: 抱歉，获取已连接应用的列表时出现错误。
       edit:
+        header:
+          open_app_button:
+            label: 转到应用
+            icon_alt: 转到应用图标
         not_found: 未找到应用
         tabs:
           settings: 设置 
@@ -243,6 +247,9 @@ akeneo_connectivity.connection:
           helper: 要了解更多关于应用授权的信息，
           helper_link: 请查看我们的“帮助中心”文章。
           is_allowed_to: '已允许：'
+          certification_consent:
+            label: '我已阅读并接受以下关于证书的免责声明。'
+            subtext: 'Akeneo 对客户使用本应用及其功能不担负任何责任。本证书不能保证应用的互操作性，也不能保证其在客户环境中正常工作。'
         flash:
           success: 应用配置成功。
           error: 抱歉，连接应用时出现错误。

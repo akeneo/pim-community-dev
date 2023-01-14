@@ -175,7 +175,6 @@ pim_enrich.entity.attribute:
     max_file_size: Maximale Dateigröße (MB)
     metric_family:
       label: Messfamilie
-      choose: Wählen Sie eine Produktfamilie
     minimum_input_length: Mindestlänge für Auto-Vervollständigung
     name: Name
     negative_allowed: Negativwerte erlaubt
