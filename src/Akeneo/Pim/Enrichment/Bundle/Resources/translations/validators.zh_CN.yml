@@ -38,6 +38,7 @@ product_model.family_variant.not_blank.message: 产品模型品类变型不能�
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": 属性 {{ attribute_code }} 必须为 {{ limit }} 或更晚的日期。
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": 属性 {{ attribute_code }} 必须为 {{ limit }} 或更早的日期。
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": 属性 {{ attribute }} 必须为数字，而提交的值 {{ value }} 不是。
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": 属性 {{ attribute }} 的值必须不含空格，而提交的值"{{ value }}"至少含有一个空格。
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": 属性 %attribute% 不能超过 %limit% 个字符。提交的值太长。
 "The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": 属性 %attribute% 不允许使用 %type% 文件扩展名。允许的扩展名为 %extensions%。
 "The %attribute% attribute requires a url link.": 属性 %attribute% 需要 URL 链接。

@@ -163,6 +163,9 @@ pim_import_export:
           label: 유형
           local: 로컬
           sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
           none: 구성된 스토리지가 없습니다
         file_path:
           label: 파일 경로
@@ -189,6 +192,30 @@ pim_import_export:
           label: 인증 방법
           password: 로그인 및 암호
           private_key: 개인 키
+        region:
+          label: 지역
+          placeholder: 지역 입력
+        bucket:
+          label: 버킷 이름
+          placeholder: 지역 이름 입력
+        key:
+          label: 키
+          placeholder: 키 입력
+        secret:
+          label: 비밀번호
+          placeholder: 비밀번호 입력
+        connection_string:
+          label: 연결 문자열
+          placeholder: 연결 문자열 입력
+        container_name:
+          label: 컨테이너 이름
+          placeholder: 컨테이너 이름 입력
+        project_id:
+          label: 프로젝트 ID
+          placeholder: 프로젝트 ID 입력
+        service_account:
+          label: 서비스 계정
+          placeholder: 서비스 계정 입력
       validation:
         storage:
           unavailable_type: 이 스토리지는 사용할 수 없습니다. {{ available_types }}만 사용 가능합니다.

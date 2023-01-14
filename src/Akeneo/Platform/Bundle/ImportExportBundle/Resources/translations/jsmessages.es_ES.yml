@@ -163,6 +163,9 @@ pim_import_export:
           label: Tipo
           local: Local
           sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
           none: No hay almacenamiento configurado
         file_path:
           label: Camino del fichero
@@ -189,6 +192,30 @@ pim_import_export:
           label: Método de autenticación
           password: Usuario y contraseña
           private_key: Clave privada
+        region:
+          label: Región
+          placeholder: Introduzca su región
+        bucket:
+          label: Nombre del bucket
+          placeholder: Introduzca el nombre de su región
+        key:
+          label: Clave
+          placeholder: Introduzca su clave
+        secret:
+          label: Secreto
+          placeholder: Introduzca su secreto
+        connection_string:
+          label: Cadena de conexión
+          placeholder: Introduzca su cadena de conexión
+        container_name:
+          label: Nombre del contenedor
+          placeholder: Introduzca el nombre del contenedor
+        project_id:
+          label: ID del proyecto
+          placeholder: Introduzca su ID de proyecto
+        service_account:
+          label: Cuentas de servicio
+          placeholder: Introduzca su cuenta de servicio
       validation:
         storage:
           unavailable_type: Este almacenamiento no está disponible, solo lo está {{ available_types }}.
