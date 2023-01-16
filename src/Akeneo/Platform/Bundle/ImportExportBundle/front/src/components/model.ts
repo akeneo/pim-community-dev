@@ -80,7 +80,7 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
     case 'local':
       return {
         type: 'local',
-        file_path: getDefaultFilePath(jobType, fileExtension),
+        file_path: `/tmp/${getDefaultFilePath(jobType, fileExtension)}`,
       };
     case 'sftp':
       return {

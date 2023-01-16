@@ -32,7 +32,7 @@ test('it says if a storage type is valid', () => {
 test('it returns the default local storage', () => {
   expect(getDefaultStorage('export', 'local', 'xlsx')).toEqual({
     type: 'local',
-    file_path: 'export_%job_label%_%datetime%.xlsx',
+    file_path: '/tmp/export_%job_label%_%datetime%.xlsx',
   });
 
   expect(getDefaultStorage('import', 'sftp', 'csv')).toEqual({
