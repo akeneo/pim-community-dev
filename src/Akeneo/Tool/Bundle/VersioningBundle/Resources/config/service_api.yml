@@ -1,0 +1,6 @@
+services:
+  Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder:
+    public: true
+    arguments:
+      - '@pim_versioning.factory.version'
+      - '@pim_versioning.repository.version'
