@@ -25,6 +25,7 @@ import Evaluation, {ProductEvaluation, AxisEvaluation, CriterionEvaluationResult
 export * from './QualityScoreModel';
 export * from './KeyIndicator';
 export * from './IntegerPercent';
+export * from './AttributeGroup.interface'
 
 export {
   Family,

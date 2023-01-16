@@ -1,11 +1,9 @@
 import {useCallback, useContext, useState} from 'react';
-import {AttributeGroup, AttributeGroupCollection, toSortedAttributeGroupsArray} from '../../models';
+import {useRouter} from '@akeneo-pim-community/shared';
 import {useRedirectToAttributeGroup} from './useRedirectToAttributeGroup';
-import {fetchAllAttributeGroups, fetchAllAttributeGroupsDqiStatus} from '../../infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '../../infrastructure/savers';
-import {AttributeGroupsIndexContext, AttributeGroupsIndexState} from '../../components/providers';
-
-const FeatureFlags = require('pim/feature-flags');
+import {AttributeGroupsIndexContext, AttributeGroupsIndexState} from '../../components';
+import {AttributeGroup} from '../../models';
 
 const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   const context = useContext(AttributeGroupsIndexContext);
@@ -17,31 +15,31 @@ const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   return context;
 };
 
+const ATTRIBUTE_GROUP_INDEX_ROUTE = 'pim_enrich_attributegroup_rest_index';
+
 const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
-  const [groups, setGroups] = useState<AttributeGroup[]>([]);
+  const [groups, setAttributeGroups] = useState<AttributeGroup[]>([]);
   const [isPending, setIsPending] = useState(true);
+  const router = useRouter();
 
   const redirect = useRedirectToAttributeGroup();
 
   const refresh = useCallback(
     (list: AttributeGroup[]) => {
-      setGroups(list);
+      setAttributeGroups(list);
     },
-    [setGroups]
+    [setAttributeGroups]
   );
 
   const load = useCallback(async () => {
     setIsPending(true);
-    return fetchAllAttributeGroups().then(async (collection: AttributeGroupCollection) => {
-      if (FeatureFlags.isEnabled('data_quality_insights')) {
-        const groupDqiStatuses = await fetchAllAttributeGroupsDqiStatus();
-        Object.entries(groupDqiStatuses).forEach(([groupCode, status]) => {
-          collection[groupCode].isDqiActivated = status as boolean;
-        });
-      }
-      setGroups(toSortedAttributeGroupsArray(collection));
-      setIsPending(false);
-    });
+
+    const route = router.generate(ATTRIBUTE_GROUP_INDEX_ROUTE);
+    const response = await fetch(route);
+    const groups = await response.json();
+
+    setAttributeGroups(groups);
+    setIsPending(false);
   }, [refresh]);
 
   const saveOrder = useCallback(async () => {
