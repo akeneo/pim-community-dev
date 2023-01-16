@@ -20,6 +20,9 @@ const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyC
         search: parameters.queryKey[2],
       };
       if (typeof parameters.queryKey[3] !== 'undefined') {
+        if ((parameters.queryKey[3] as FamilyCode[]).length === 0) {
+          return [];
+        }
         queryParameters.codes = parameters.queryKey[3] as FamilyCode[];
         queryParameters.page = 1;
         queryParameters.limit = queryParameters.codes.length;
