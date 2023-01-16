@@ -8,8 +8,7 @@ import {
   useGetAttributeGroupLabel,
 } from '../../../hooks';
 import {AttributeGroup} from '../../../models';
-import {DataGrid, NoResults} from '../../shared';
-import {StatusBadge} from './StatusBadge';
+import {NoResults} from '../../shared';
 
 const FeatureFlags = require('pim/feature-flags');
 
@@ -72,7 +71,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
                   <Table.Cell>{getLabel(group)}</Table.Cell>
                   {FeatureFlags.isEnabled('data_quality_insights') && (
                       <Table.Cell>
-                        <Badge level={group.isDqiActivated ? 'primary' : 'danger'}></Badge>
+                        <Badge level={group.isDqiActivated ? 'primary' : 'danger'}>
+                          {translate(`akeneo_data_quality_insights.attribute_group.${group.isDqiActivated ? 'activated' : 'disabled'}`)}
+                        </Badge>
                       </Table.Cell>
                   )}
                 </Table.Row>
@@ -80,64 +81,6 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
           </Table.Body>
         </Table>
       )}
-      {/*
-      <Search
-        sticky={0}
-        placeholder={translate('pim_common.search')}
-        searchValue={searchString}
-        onSearchChange={onSearch}
-        inputRef={inputRef}
-      >
-        <Search.ResultCount>
-          {translate('pim_common.result_count', {itemsCount: filteredGroups.length}, filteredGroups.length)}
-        </Search.ResultCount>
-      </Search>
-      {searchString !== '' && filteredGroups.length === 0 ? (
-        <NoResults
-          title={translate('pim_enrich.entity.attribute_group.grid.no_search_result')}
-          subtitle={translate('pim_datagrid.no_results_subtitle')}
-        />
-      ) : (
-        <DataGrid
-          isReorderAllowed={sortGranted}
-          isReorderActive={filteredGroups.length === groups.length}
-          dataSource={filteredGroups}
-          handleAfterMove={refreshOrder}
-          compareData={compare}
-          isFilterable={true}
-        >
-          <DataGrid.HeaderRow>
-            <DataGrid.Cell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Cell>
-            {FeatureFlags.isEnabled('data_quality_insights') && (
-              <DataGrid.Cell>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</DataGrid.Cell>
-            )}
-          </DataGrid.HeaderRow>
-          <DataGrid.Body
-            onRowClick={(group: AttributeGroup) => {
-              if (editGranted) {
-                redirect(group);
-              }
-            }}
-            onRowMoveEnd={() => {
-              (async () => saveOrder())();
-            }}
-          >
-            {filteredGroups.map(group => (
-              <DataGrid.Row key={group.code} data={group}>
-                <DataGrid.Cell rowTitle style={{width: 71}}>
-                  {getLabel(group)}
-                </DataGrid.Cell>
-                {FeatureFlags.isEnabled('data_quality_insights') && (
-                  <DataGrid.Cell>
-                    <StatusBadge isActivated={group.isDqiActivated ? true : false} />
-                  </DataGrid.Cell>
-                )}
-              </DataGrid.Row>
-            ))}
-          </DataGrid.Body>
-        </DataGrid>
-      )}
-      */}
     </>
   );
 };
