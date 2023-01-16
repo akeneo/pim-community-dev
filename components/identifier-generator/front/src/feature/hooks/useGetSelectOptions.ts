@@ -23,7 +23,7 @@ const useGetSelectOptions = ({attributeCode, page = 1, search = '', codes}: Para
   const router = useRouter();
 
   const {data, isLoading, error} = useQuery<Option[], Error, Option[]>({
-    queryKey: ['getSelectOptions', page, search, codes],
+    queryKey: ['getSelectOptions', attributeCode, page, search, codes],
     queryFn: async () => {
       const url = router.generate('akeneo_identifier_generator_get_attribute_options', {
         attributeCode,
