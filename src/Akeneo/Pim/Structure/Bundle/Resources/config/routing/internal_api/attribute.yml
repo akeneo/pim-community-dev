@@ -33,3 +33,12 @@ pim_enrich_attribute_axes_index:
     path: /axes
     defaults: { _controller: pim_enrich.controller.rest.attribute:listAxesAction }
     methods: [GET]
+
+### POC only - change main identifier
+pim_enrich_main_identifier:
+    path: /main-identifier/{newIdentifierId}
+    defaults:
+        _controller: Akeneo\Pim\Structure\Bundle\Controller\InternalApi\UpdateMainIdentifierAction
+    requirements:
+        newIdentifierId: '[0-9]+'
+    methods: [GET]

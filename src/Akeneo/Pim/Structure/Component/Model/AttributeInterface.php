@@ -674,4 +674,6 @@ interface AttributeInterface extends
     public function getRawTableConfiguration(): ?array;
 
     public function setRawTableConfiguration(?array $rawTableConfiguration): void;
+
+    public function isMainIdentifier(): bool;
 }

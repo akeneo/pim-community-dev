@@ -254,7 +254,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getIdentifier()
     {
-        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
+        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER, 'mainIdentifier' => true]);
     }
 
     /**
@@ -267,6 +267,7 @@ class AttributeRepository extends EntityRepository implements
                 ->select('a.code')
                 ->andWhere('a.type = :type')
                 ->setParameter('type', AttributeTypes::IDENTIFIER)
+                ->andWhere('a.mainIdentifier IS TRUE')
                 ->setMaxResults(1)
                 ->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
 

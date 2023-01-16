@@ -134,6 +134,12 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
         guidelines:
             type: json
             columnDefinition: JSON NOT NULL DEFAULT (JSON_OBJECT())
+        mainIdentifier:
+            type: boolean
+            nullable: false
+            insertable: false
+            updatable: false
+            column: main_identifier
     oneToMany:
         options:
             targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface

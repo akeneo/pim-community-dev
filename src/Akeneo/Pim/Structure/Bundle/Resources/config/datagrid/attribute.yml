@@ -24,6 +24,9 @@ datagrid:
             localizable:
                 label:         Localizable
                 frontend_type: boolean-status
+            main_identifier:
+                label: 'Main identifier'
+                frontend_type: boolean-status
         properties:
             id: ~
             code: ~

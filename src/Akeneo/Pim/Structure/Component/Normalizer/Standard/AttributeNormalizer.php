@@ -67,6 +67,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
             'guidelines' => $attribute->getGuidelines(),
             'auto_option_sorting' => $attribute->getProperty('auto_option_sorting'),
             'default_value' => $attribute->getProperty('default_value'),
+            'is_main_identifier' => $attribute->isMainIdentifier(),
         ];
 
         if ($this->isReadOnlyFeatureAvailableAndEnabled()) {

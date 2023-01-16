@@ -231,3 +231,13 @@ services:
         arguments:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'
+
+### POC change main identifier
+    Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@database_connection'
+
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\UpdateMainIdentifierAction:
+        arguments:
+            - '@Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler'
