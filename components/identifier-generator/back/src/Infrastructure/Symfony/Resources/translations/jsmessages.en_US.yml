@@ -53,12 +53,15 @@ pim_identifier_generator:
                 system: 'System'
             enabled: 'Status'
             family: 'Family'
+            select_option: 'Select Option'
         settings:
             enabled:
                 disabled: 'Disabled'
                 placeholder: 'Choose a status'
             family:
                 placeholder: 'Please select at least one family'
+            select_option:
+                placeholder: 'Please select at least one option'
     structure:
         helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at {{link}}.'
         helper_link: 'this article'
