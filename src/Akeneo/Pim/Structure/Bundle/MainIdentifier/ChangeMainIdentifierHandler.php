@@ -36,22 +36,22 @@ final class ChangeMainIdentifierHandler
 
     private function updateMainIdentifier(AttributeInterface $attribute): void
     {
-        $this->connection->beginTransaction();
+        // TOFO: wrap this into a transaction
         $this->connection->executeStatement(
             'UPDATE pim_catalog_attribute SET main_identifier = FALSE WHERE main_identifier IS TRUE'
         );
         $this->connection->executeStatement(
-            'UPDATE pim_catalog_attribute SET main_identifier = TRUE where id = :id',
+            'UPDATE pim_catalog_attribute SET main_identifier = TRUE WHERE id = :id',
             ['id' => $attribute->getId()]
         );
-//        $this->connection->executeStatement(
-//            \sprintf(<<<SQL
-//                ALTER TABLE pim_catalog_product
-//                    MODIFY COLUMN identifier VARCHAR(255) GENERATED ALWAYS AS (raw_values->>'$.%s."<all_channels>"."<all_locales>"') VIRTUAL;
-//                SQL,
-//                $attribute->getCode()
-//            )
-//        );
-        $this->connection->commit();
+        $this->connection->executeStatement(
+            \sprintf(
+                <<<SQL
+                ALTER TABLE pim_catalog_product 
+                    MODIFY COLUMN identifier VARCHAR(255) GENERATED ALWAYS AS (raw_values->>'$.%s."<all_channels>"."<all_locales>"') VIRTUAL;
+                SQL,
+                $attribute->getCode()
+            )
+        );
     }
 }
