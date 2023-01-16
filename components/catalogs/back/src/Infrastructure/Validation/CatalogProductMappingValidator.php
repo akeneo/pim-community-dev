@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextareaSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\SystemSource\UuidSource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -105,6 +106,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
 
         return match ($attribute['type'] ?? null) {
             'pim_catalog_text' => new AttributeTextSource(),
+            'pim_catalog_textarea' => new AttributeTextareaSource(),
             default => null,
         };
     }
