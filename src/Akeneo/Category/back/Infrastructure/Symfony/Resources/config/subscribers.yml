@@ -7,7 +7,6 @@ services:
 
     Akeneo\Category\Infrastructure\EventSubscriber\UpdateCategoryVersionSubscriber:
         arguments:
-            - '@pim_versioning.repository.version'
-            - '@pim_versioning.builder.version'
+            - '@Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder'
         tags:
             - { name: 'kernel.event_subscriber' }

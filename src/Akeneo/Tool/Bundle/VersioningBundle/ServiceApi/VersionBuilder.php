@@ -46,7 +46,7 @@ class VersionBuilder
         return $this->filterChangeset($this->mergeSnapshots($oldSnapshot, $newSnapshot));
     }
 
-    private function filterChangeset(array $changeset)
+    private function filterChangeset(array $changeset): array
     {
         return array_filter(
             $changeset,
@@ -88,10 +88,10 @@ class VersionBuilder
         return $oldDateTime->format('U') !== $newDateTime->format('U');
     }
 
-    protected function mergeSnapshots(array $oldSnapshot, array $newSnapshot)
+    private function mergeSnapshots(array $oldSnapshot, array $newSnapshot): array
     {
         $localNewSnapshot = array_map(
-            static function ($newItem) {
+            static function ($newItem): array {
                 return ['new' => $newItem];
             },
             $newSnapshot
