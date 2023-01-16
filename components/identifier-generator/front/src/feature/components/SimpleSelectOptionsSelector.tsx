@@ -3,9 +3,10 @@ import {Helper, MultiSelectInput} from 'akeneo-design-system';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {OptionCode} from '../models/option';
 import {useGetSelectOptions, usePaginatedOptions} from '../hooks/useGetSelectOptions';
+import {AttributeCode} from '../models';
 
 type Props = {
-  attributeCode: string;
+  attributeCode: AttributeCode;
   optionCodes: OptionCode[];
   onChange: (optionCodes: OptionCode[]) => void;
 };
