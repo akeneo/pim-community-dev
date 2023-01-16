@@ -15,6 +15,28 @@ extensions:
                 sectionTitle: pim_enrich.entity.attribute.module.edit.type_specific
                 dropZone: content
 
+    pim-attribute-create-form-properties-common-scopable:
+        module: pim/attribute-edit-form/properties/scopable
+        parent: pim-attribute-create-form-properties-common
+        targetZone: content
+        position: 130
+        config:
+            fieldName: scopable
+            label: pim_enrich.entity.attribute.property.scopable
+            readOnly: true
+            defaultValue: false
+
+    pim-attribute-create-form-properties-common-localizable:
+        module: pim/attribute-edit-form/properties/localizable
+        parent: pim-attribute-create-form-properties-common
+        targetZone: content
+        position: 140
+        config:
+            fieldName: localizable
+            label: pim_enrich.entity.attribute.property.localizable
+            readOnly: true
+            defaultValue: false
+
     pim-attribute-identifier-form-properties-common-usable-as-grid-filter:
         module: pim/form/common/fields/boolean
         parent: pim-attribute-identifier-form-type-specific-params
