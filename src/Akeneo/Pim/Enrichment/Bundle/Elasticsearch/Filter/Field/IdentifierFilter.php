@@ -3,6 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -77,15 +80,60 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
      */
     protected function applyFilter($field, $operator, $value)
     {
+        $product = str_replace('\\', '\\\\', ProductInterface::class);
+        $productModel = str_replace('\\', '\\\\', ProductModelInterface::class);
+        $skuField = 'values.sku-text.<all_channels>.<all_locales>';
+        $productModelField = 'identifier';
+
         switch ($operator) {
             case Operators::STARTS_WITH:
-                $clause = [
-                    'query_string' => [
-                        'default_field' => $field,
-                        'query'         => QueryString::escapeValue($value) . '*',
+                $clause1 = [
+                    'bool' => [
+                        'should' => [
+                            [
+                                'query_string' => [
+                                    'default_field' => $skuField,
+                                    'query'         => QueryString::escapeValue($value) . '*',
+                                ],
+                            ],
+                            [
+                                'query_string' => [
+                                    'default_field' => 'document_type',
+                                    'query'         => $product,
+                                ],
+                            ],
+                        ],
+                        'minimum_should_match' => 2,
                     ],
                 ];
-                $this->searchQueryBuilder->addFilter($clause);
+                $clause2 = [
+                    'bool' => [
+                        'should' => [
+                            [
+                                'query_string' => [
+                                    'default_field' => $productModelField,
+                                    'query'         => QueryString::escapeValue($value) . '*',
+                                ],
+                            ],
+                            [
+                                'query_string' => [
+                                    'default_field' => 'document_type',
+                                    'query'         => $productModel,
+                                ],
+                            ],
+                        ],
+                        'minimum_should_match' => 2,
+                    ],
+                ];
+
+                $this->searchQueryBuilder->addFilter(
+                    [
+                        'bool' => [
+                            'should' => [$clause1, $clause2],
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                );
                 break;
 
             case Operators::CONTAINS:
