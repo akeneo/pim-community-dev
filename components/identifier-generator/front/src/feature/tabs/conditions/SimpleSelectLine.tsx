@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Operator, SimpleSelectCondition, SimpleSelectOperators} from '../../models';
 import {Button, Helper, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
@@ -24,12 +24,6 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
     () => (isLoading || error ? undefined : getLabel(data?.labels || {}, locale, condition.attributeCode)),
     [condition.attributeCode, data, error, isLoading, locale]
   );
-
-  useEffect(() => {
-    if (!condition.label && data && !error && !isLoading) {
-      onChange({...condition, label, localizable: data?.localizable, scopable: data?.scopable});
-    }
-  }, [condition, data, error, isLoading, label, onChange]);
 
   const handleOperatorChange = useCallback(
     (operator: Operator) => {
