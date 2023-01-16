@@ -3,6 +3,7 @@ import {useQuery} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
 import {ServerError} from '../errors';
 import {useEffect, useState} from 'react';
+import {AttributeCode} from '../models';
 
 const DEFAULT_LIMIT_PAGINATION = 20;
 
@@ -13,7 +14,7 @@ type Props = {
 };
 
 type Params = {
-  attributeCode: string;
+  attributeCode: AttributeCode;
   page?: number;
   search?: string;
   codes?: OptionCode[];
@@ -55,7 +56,7 @@ type PaginationResult = {
   error: Error | null;
 };
 
-const usePaginatedOptions = (attributeCode: string): PaginationResult => {
+const usePaginatedOptions = (attributeCode: AttributeCode): PaginationResult => {
   const [page, setPage] = useState<number>(1);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [options, setOptions] = useState<Option[]>([]);
