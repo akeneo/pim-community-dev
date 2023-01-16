@@ -187,5 +187,5 @@ services:
     Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorRegistry:
         arguments:
             -
-                - Akeneo\Catalogs\Application\Service\AttributeValueExtractor\TextExtractor
-                - Akeneo\Catalogs\Application\Service\AttributeValueExtractor\SelectExtractor
+                - '@Akeneo\Catalogs\Application\Service\AttributeValueExtractor\TextExtractor'
+                - '@Akeneo\Catalogs\Application\Service\AttributeValueExtractor\SelectExtractor'
