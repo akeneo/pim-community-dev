@@ -358,7 +358,7 @@ class AttributeController
 
         $attribute = $this->getAttributeOr404($code);
 
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getType() && $attribute->isMainIdentifier()) {
             $message = $this->translator->trans('flash.attribute.identifier_not_removable');
 
             return new JsonResponse(
