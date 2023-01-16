@@ -27,7 +27,6 @@ describe('validateSimpleSelect', () => {
     ).toEqual([{message: 'A value is required for the my_attribute attribute', path: 'path'}]);
   });
 
-
   it('should not add a violation when attribute is correct', () => {
     expect(
       validateSimpleSelect(

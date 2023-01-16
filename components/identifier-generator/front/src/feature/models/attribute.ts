@@ -9,4 +9,4 @@ type Attribute = {
   scopable: boolean;
 };
 
-export type {Attribute};
+export type {Attribute, AttributeCode};
