@@ -267,7 +267,7 @@ class AttributeRepository extends EntityRepository implements
                 ->select('a.code')
                 ->andWhere('a.type = :type')
                 ->setParameter('type', AttributeTypes::IDENTIFIER)
-                ->andWhere('a.mainIdentifier IS TRUE')
+                ->andWhere('a.mainIdentifier = TRUE')
                 ->setMaxResults(1)
                 ->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
 

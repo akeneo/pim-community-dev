@@ -140,6 +140,8 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             insertable: false
             updatable: false
             column: main_identifier
+            options:
+                default: false
     oneToMany:
         options:
             targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface

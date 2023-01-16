@@ -83,3 +83,11 @@ services:
             - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    ### POC main identifier
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\Install\InitMainIdentifierSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler'
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
