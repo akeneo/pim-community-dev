@@ -53,22 +53,28 @@ class PopulateAccessTokenCommand extends Command
                 mode: InputOption::VALUE_OPTIONAL,
                 default: self::DEFAULT_BATCH_SIZE
             )
+            ->addOption(
+                name: 'refreshtoken',
+                mode: InputOption::VALUE_OPTIONAL,
+            )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $truncate = (bool) $input->getOption('truncate');
+        $populateRefreshToken = (bool) $input->getOption('refreshtoken');
         $rowCount = (int) $input->getArgument('rows');
         $batchSize = (int) $input->getOption('batchsize');
 
         $clientId = $this->getClientId();
         $userId = $this->getUserId();
         $timestamp = \time();
+        $tableName = $populateRefreshToken ? 'pim_api_refresh_token' : 'pim_api_access_token';
 
         if ($truncate) {
             $output->writeln('Truncating table');
-            $this->connection->executeQuery("TRUNCATE pim_api_access_token;");
+            $this->connection->executeQuery("TRUNCATE $tableName;");
         }
 
         $output->writeln(\sprintf('Creating %s access token rows', $rowCount));
@@ -94,7 +100,7 @@ class PopulateAccessTokenCommand extends Command
                 }
             }
 
-            $sqlQuery = "INSERT INTO pim_api_access_token  (`client`, `user`, `token`, `expires_at`) VALUES $values;";
+            $sqlQuery = "INSERT INTO $tableName (`client`, `user`, `token`, `expires_at`) VALUES $values;";
 
             $this->connection->executeStatement($sqlQuery);
 
@@ -103,6 +109,8 @@ class PopulateAccessTokenCommand extends Command
         }
 
         $progressBar->finish();
+        $output->writeln('');
+        $output->writeln('Done');
 
         return Command::SUCCESS;
     }

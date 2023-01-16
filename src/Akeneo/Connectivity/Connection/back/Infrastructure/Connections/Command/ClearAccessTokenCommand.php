@@ -43,6 +43,10 @@ class ClearAccessTokenCommand extends Command
                 mode: InputOption::VALUE_OPTIONAL,
                 default: 0
             )
+            ->addOption(
+                name: 'refreshtoken',
+                mode: InputOption::VALUE_OPTIONAL,
+            )
         ;
     }
 
@@ -50,11 +54,14 @@ class ClearAccessTokenCommand extends Command
     {
         $max = (int) $input->getOption('max');
         $batchSize = (int) $input->getOption('batch');
+        $populateRefreshToken = (bool) $input->getOption('refreshtoken');
         $stopwatch = new Stopwatch();
         $stopwatch->start('accesstoken');
 
+        $tableName = $populateRefreshToken ? 'pim_api_refresh_token' : 'pim_api_access_token';
+
         $sqlQuery = <<<SQL
-            DELETE FROM pim_api_access_token
+            DELETE FROM $tableName
             WHERE expires_at < now()
             LIMIT :row_count;
             SQL;
