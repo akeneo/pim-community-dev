@@ -16,14 +16,7 @@ final class Version_8_0_20230116175236_update_product_identifier_column extends 
 
     public function up(Schema $schema): void
     {
-        $this->addSql(<<<SQL
-            ALTER TABLE pim_catalog_product 
-                ADD identifier2 VARCHAR(255) GENERATED ALWAYS AS (raw_values->>'$.sku."<all_channels>"."<all_locales>"') VIRTUAL;
-            ALTER TABLE pim_catalog_product DROP INDEX UNIQ_91CD19C0772E836A, DROP COLUMN identifier;
-            ALTER TABLE pim_catalog_product RENAME COLUMN identifier2 TO identifier;
-            ALTER TABLE pim_catalog_product ADD UNIQUE INDEX UNIQ_91CD19C0772E836A (identifier);
-            SQL
-        );
+        $this->addSql('SELECT 1;');
     }
 
     public function down(Schema $schema): void
