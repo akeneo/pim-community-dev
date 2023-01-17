@@ -56,7 +56,6 @@ const useGetConditionItems: (conditions: Conditions) => {
     const response = await fetch(router.generate('akeneo_identifier_generator_get_conditions', parameters), {
       method: 'GET',
       headers: [
-        ['Content-type', 'application/json'],
         ['X-Requested-With', 'XMLHttpRequest'],
       ],
     });
