@@ -80,28 +80,32 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         return targets;
     };
 
+    const getTargetsWithErrors = function (errors: ProductMappingErrors): string[] {
+        return Object.keys(
+            Object.fromEntries(
+                Object.entries(errors).filter(([, value]) => {
+                    const properties = Object.entries<string | undefined | SourceParameterErrors>(value ?? {});
+                    const propertiesWithErrors = properties.filter(([, value]) => {
+                        if (typeof value === 'object') {
+                            const parameterProperties = Object.entries(value);
+                            return (
+                                parameterProperties.filter(([, parameterPropertyValue]) => {
+                                    return typeof parameterPropertyValue === 'string';
+                                }).length > 0
+                            );
+                        }
+                        return typeof value === 'string';
+                    });
+
+                    return propertiesWithErrors.length > 0;
+                })
+            )
+        );
+    };
+
     const targets = buildTargetsWithUuidFirst(productMapping ?? {});
 
-    const targetsWithErrors = Object.keys(
-        Object.fromEntries(
-            Object.entries(errors).filter(([, value]) => {
-                const properties = Object.entries<string | undefined | SourceParameterErrors>(value ?? {});
-                const propertiesWithErrors = properties.filter(([, value]) => {
-                    if (typeof value === 'object') {
-                        const parameterProperties = Object.entries(value);
-                        return (
-                            parameterProperties.filter(([, parameterPropertyValue]) => {
-                                return typeof parameterPropertyValue === 'string';
-                            }).length > 0
-                        );
-                    }
-                    return typeof value === 'string';
-                });
-
-                return propertiesWithErrors.length > 0;
-            })
-        )
-    );
+    const targetsWithErrors = getTargetsWithErrors(errors);
 
     return (
         <MappingContainer data-testid={'product-mapping'}>

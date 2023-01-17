@@ -6,9 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSour
 
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidLocale;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidScope;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\IsValidLocale;
-use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\CollectApiError;
-use Akeneo\Test\IntegrationTestsBundle\Assertion\Collection;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\IsActivatedLocale;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
@@ -48,7 +46,7 @@ final class AttributeSimpleSelectSource extends Compound
                                     'label_locale' => [
                                         new Assert\Type('string'),
                                         new Assert\NotBlank(),
-                                        new IsValidLocale(),
+                                        new IsActivatedLocale(),
                                     ],
                                 ],
                                 'allowMissingFields' => false,
