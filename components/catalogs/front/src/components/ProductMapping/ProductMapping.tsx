@@ -10,7 +10,6 @@ import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
 import {Target} from './models/Target';
-import {SourceParameterErrors} from './models/SourceParameterErrors';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -24,6 +23,32 @@ const TargetContainer = styled.div`
 const SourceContainer = styled.div`
     flex-basis: 50%;
 `;
+
+const createTargetsFromProductMapping = (mapping: ProductMappingType): [string, Source][] => {
+    const targets = Object.entries(mapping);
+
+    // move UUID to the top
+    const index = targets.findIndex(([target]) => target === 'uuid');
+    const uuid = targets.splice(index, 1)[0];
+    targets.unshift(uuid);
+
+    return targets;
+};
+
+const hasError = (errors: object | undefined): boolean => {
+    if (errors === undefined) {
+        return false;
+    }
+
+    return (
+        Object.entries(errors).filter(([, value]) => {
+            if (typeof value === 'object' && hasError(value)) {
+                return true;
+            }
+            return typeof value === 'string';
+        }).length > 0
+    );
+};
 
 type Props = {
     productMapping: ProductMappingType;
@@ -77,45 +102,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         [selectedTarget, onChange, productMapping]
     );
 
-    const buildTargetsWithUuidFirst = function (productMapping: {(key: string): Source} | {}): [string, Source][] {
-        const targets = Object.entries(productMapping);
-
-        targets.forEach(function (target, i) {
-            if ('uuid' === target[0]) {
-                targets.splice(i, 1);
-                targets.unshift(target);
-            }
-        });
-
-        return targets;
-    };
-
-    const getTargetsWithErrors = function (errors: ProductMappingErrors): string[] {
-        return Object.keys(
-            Object.fromEntries(
-                Object.entries(errors).filter(([, value]) => {
-                    const properties = Object.entries<string | undefined | SourceParameterErrors>(value ?? {});
-                    const propertiesWithErrors = properties.filter(([, value]) => {
-                        if (typeof value === 'object') {
-                            const parameterProperties = Object.entries(value);
-                            return (
-                                parameterProperties.filter(([, parameterPropertyValue]) => {
-                                    return typeof parameterPropertyValue === 'string';
-                                }).length > 0
-                            );
-                        }
-                        return typeof value === 'string';
-                    });
-
-                    return propertiesWithErrors.length > 0;
-                })
-            )
-        );
-    };
-
-    const targets = buildTargetsWithUuidFirst(productMapping ?? {});
-
-    const targetsWithErrors = getTargetsWithErrors(errors);
+    const targets = createTargetsFromProductMapping(productMapping);
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
@@ -149,7 +136,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                                             targetCode={targetCode}
                                             targetLabel={productMappingSchema.properties[targetCode]?.title}
                                             source={source}
-                                            hasError={targetsWithErrors.includes(targetCode)}
+                                            hasError={hasError(errors[targetCode])}
                                         />
                                     );
                                 })}
