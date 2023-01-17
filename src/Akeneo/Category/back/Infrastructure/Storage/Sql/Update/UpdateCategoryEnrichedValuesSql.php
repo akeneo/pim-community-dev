@@ -13,22 +13,26 @@ final class UpdateCategoryEnrichedValuesSql implements UpdateCategoryEnrichedVal
     }
 
     /**
+     * ex of value for $enrichedValuesByCode.
+     *  [
+     *    'socks' => '{
+     *         "attribute_codes": [
+     *              "title|87939c45-1d85-4134-9579-d594fff65030",
+     *              "photo|8587cda6-58c8-47fa-9278-033e1d8c735c"
+     *         ],
+     *         "photo|8587cda6-58c8-47fa-9278-033e1d8c735c": {
+     *              "data": {
+     *                   "size": 168107,
+     *                   "extension": "jpg",
+     *                   {...}
+     *              }
+     *         }',
+     *         {...},
+     *    },
+     *    'shoes' => '{...}',
+     * ].
+     *
      * @param array<string, string> $enrichedValuesByCode
-     *                                                    ex. [
-     *                                                    'socks' => '{
-     *                                                    "attribute_codes": [
-     *                                                    "title|87939c45-1d85-4134-9579-d594fff65030",
-     *                                                    "photo|8587cda6-58c8-47fa-9278-033e1d8c735c"
-     *                                                    ],
-     *                                                    "photo|8587cda6-58c8-47fa-9278-033e1d8c735c": {
-     *                                                    "data": {
-     *                                                    "size": 168107,
-     *                                                    "extension": "jpg",
-     *                                                    {...}
-     *                                                    }
-     *                                                    }',
-     *                                                    'shoes' => '{...}',
-     *                                                    ]
      *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
