@@ -19,10 +19,10 @@ final class AttributeValueExtractorRegistry
      * @param AttributeValueExtractorInterface[] $extractors
      */
     public function __construct(
-        private array $extractors,
+        private readonly array $extractors,
     ) {
         foreach ($this->extractors as $extractor) {
-            if ($extractor instanceof AttributeValueExtractorInterface) {
+            if (!$extractor instanceof AttributeValueExtractorInterface) {
                 throw new \LogicException(
                     static::class . ' accepts only array of ' .
                     AttributeValueExtractorInterface::class . ' as argument.'
