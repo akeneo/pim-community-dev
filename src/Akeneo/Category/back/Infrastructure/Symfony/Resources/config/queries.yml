@@ -57,3 +57,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryChildrenIdsSql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateSql
+    arguments:
+      - '@database_connection'
