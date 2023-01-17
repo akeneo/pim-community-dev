@@ -105,6 +105,7 @@ services:
     Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\GetAttributeGroups:
         arguments:
             - '@database_connection'
+            - '@feature_flags'
 
     akeneo.pim.structure.query.get_association_type_translations:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlGetAssociationTypeTranslations
