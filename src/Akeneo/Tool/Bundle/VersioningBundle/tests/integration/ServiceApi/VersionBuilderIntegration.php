@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\ServiceApi;
 
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder as LegacyVersionBuilder;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
@@ -22,12 +23,15 @@ class VersionBuilderIntegration extends TestCase
 {
     private VersionFactory $versionFactory;
     private ObjectManager $objectManager;
+    private LegacyVersionBuilder $legacyVersionBuilder;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->versionFactory = $this->get('pim_versioning.factory.version');
         $this->objectManager = $this->get('doctrine.orm.default_entity_manager');
+        $this->legacyVersionBuilder = $this->get('pim_versioning.builder.version');
+
     }
 
     public function testBuildVersionOnCategoryCreation(): void
@@ -48,7 +52,8 @@ class VersionBuilderIntegration extends TestCase
             $this->versionFactory,
             $versionRepositoryMock,
             $eventDispatcherMock,
-            $this->objectManager
+            $this->objectManager,
+            $this->legacyVersionBuilder
         );
 
         $givenSnapshot = [

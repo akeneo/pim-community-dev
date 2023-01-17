@@ -15,15 +15,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class UpdateCategoryVersionSubscriber implements EventSubscriberInterface
 {
-    public const CATEGORY_VERSION_RESOURCE_NAME = "Akeneo\Category\Infrastructure\Component\Model\Category";
-
     public function __construct(
         private readonly VersionBuilder $versionBuilder,
         private readonly CategoryVersionBuilder $categoryVersionBuilder,
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             CategoryUpdatedEvent::class => 'UpdateCategoryVersion',
@@ -32,31 +30,12 @@ class UpdateCategoryVersionSubscriber implements EventSubscriberInterface
 
     public function UpdateCategoryVersion(CategoryUpdatedEvent $event): void
     {
-        $categorySnapshot = $this->categoryVersionBuilder->create($event->getCategory());
+        $categoryVersion = $this->categoryVersionBuilder->create($event->getCategory());
 
         $this->versionBuilder->buildVersionWithId(
-            resourceId: strval($event->getCategory()->getId()->getValue()),
-            resourceName: self::CATEGORY_VERSION_RESOURCE_NAME,
-            snapshot: $categorySnapshot,
+            resourceId: $categoryVersion->getResourceId(),
+            resourceName: $categoryVersion->getResourceName(),
+            snapshot: $categoryVersion->getSnapshot(),
         );
-
-        // TODO: Solution after design meeting
-        //  - Create an external service in BC PimVersion
-        //  - this service can build a version depending a snapshop (data brut), a resource identifier and a resource name
-        //  - This service reproduce the build version logic from the legacy one (changeSet creation).
-        //  /!\ Manage to get the previous version ()
-        //  /!\ Manage the Uuid
-        //      BuildVersionFromID(array snapshot, string resourceName, string resourceId, string author)
-
-        // TODO:
-        //  - Test subscriber
-        //  - Author management
-        //  - Uuid management
-        //  - version saving in db
-
-        //  - context management
-        //  - pending status management
-        //  - version management event generation
-        //  - Update existing Category
     }
 }

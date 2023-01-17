@@ -11,6 +11,7 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Akeneo\Category\Domain\ValueObject\Version\CategoryVersion;
 use Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder;
 use Ramsey\Uuid\Uuid;
 
@@ -46,17 +47,20 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             position: null,
         );
 
-        $categorySnapshot = $builder->create($givenCategory);
+        $categoryVersion = $builder->create($givenCategory);
 
-        $expectedCategorySnapshot = [
-            'code' => 'category_test',
-            'parent' => 'master',
-            'updated' => $updated->format('c'),
-            'label-en_US' => 'test category',
-            'label-fr_FR' => 'catégorie de test'
-        ];
+        $expectedCategoryVersion = CategoryVersion::fromBuilder(
+            resourceId: '2',
+            snapshot: [
+                'code' => 'category_test',
+                'parent' => 'master',
+                'updated' => $updated->format('c'),
+                'label-en_US' => 'test category',
+                'label-fr_FR' => 'catégorie de test'
+            ]
+        );
 
-        $this->assertEquals($expectedCategorySnapshot, $categorySnapshot);
+        $this->assertEquals($expectedCategoryVersion, $categoryVersion);
     }
 
     public function testCreateACategoryVersionWithoutParent(): void
@@ -74,16 +78,20 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             updated: $updated
         );
 
-        $categorySnapshot = $builder->create($givenCategory);
+        $categoryVersion = $builder->create($givenCategory);
 
-        $expectedCategorySnapshot = [
-            'code' => 'category_test',
-            'parent' => '',
-            'updated' => $updated->format('c'),
-            'label-en_US' => 'test category',
-            'label-fr_FR' => 'catégorie de test'
-        ];
 
-        $this->assertEquals($expectedCategorySnapshot, $categorySnapshot);
+        $expectedCategoryVersion = CategoryVersion::fromBuilder(
+            resourceId: '2',
+            snapshot: [
+                'code' => 'category_test',
+                'parent' => '',
+                'updated' => $updated->format('c'),
+                'label-en_US' => 'test category',
+                'label-fr_FR' => 'catégorie de test'
+            ]
+        );
+
+        $this->assertEquals($expectedCategoryVersion, $categoryVersion);
     }
 }
