@@ -37,12 +37,12 @@ function mergeItems(items: Response[], newPage: Response[]) {
   return mergedItems;
 }
 
-const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
+const useGetConditionItems: (isOpen: boolean, conditions: Conditions, limit?: number) => {
   conditionItems: Response[],
   handleNextPage: () => void,
   searchValue: string,
   setSearchValue: (searchValue: string) => void,
-} = (isOpen, conditions) => {
+} = (isOpen, conditions, limit = 20) => {
 
   const router = useRouter();
   const [items, setItems] = useState<Response[] | undefined>(undefined);
@@ -61,7 +61,7 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
       const parameters = {
         search: debouncedSearchValue,
         page: state === STATE.USER_CHANGED_SEARCH ? 1 : page,
-        limit: DEFAULT_LIMIT,
+        limit: limit ?? DEFAULT_LIMIT,
         systemFields: ['family', 'enabled'].filter(value => !conditionTypes.includes(value)),
       };
       fetch(router.generate('akeneo_identifier_generator_get_conditions', parameters), {
@@ -71,7 +71,7 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
         ],
       }).then(response => {
         response.json().then((result: Response[]) => {
-          if (result.reduce((prev, group) => prev + group.children.length, 0) < DEFAULT_LIMIT) {
+          if (result.reduce((prev, group) => prev + group.children.length, 0) < (limit ?? DEFAULT_LIMIT)) {
             setAreRemainingElements(false);
           }
           setItems(i => state === STATE.USER_CHANGED_SEARCH ? result : mergeItems(i || [], result));
@@ -100,6 +100,7 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
       setState(STATE.USER_CHANGED_SEARCH);
     }, 200));
 
+    /* istanbul ignore next Unable to test this behavior */
     return () => {
       if (debounceTimer) clearTimeout(debounceTimer);
     };
