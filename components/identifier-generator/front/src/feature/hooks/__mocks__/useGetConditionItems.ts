@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Conditions} from '../../models';
 
-type Response = {
+type ItemsGroup = {
   id: string;
   text: string;
   children: {
@@ -11,7 +11,7 @@ type Response = {
 };
 
 const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
-  conditionItems: Response[],
+  conditionItems: ItemsGroup[],
   handleNextPage: () => void,
   searchValue: string,
   setSearchValue: (searchValue: string) => void,
