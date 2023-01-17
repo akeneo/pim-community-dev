@@ -41,6 +41,9 @@ implements ContainerAwareInterface
         );
 
         $client = new Client($builder, $configurationLoader, $hosts, $index);
+
+        $this->skipIf($client->hasIndexForAlias(), 'index already exists');
+
         $client->createIndex();
     }
 

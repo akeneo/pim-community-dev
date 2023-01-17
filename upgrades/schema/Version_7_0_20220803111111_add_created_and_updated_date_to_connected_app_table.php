@@ -11,10 +11,13 @@ final class Version_7_0_20220803111111_add_created_and_updated_date_to_connected
 {
     public function up(Schema $schema): void
     {
-        $this->addSql(<<<SQL
+        $this->skipIf($schema->getTable('akeneo_connectivity_connected_app')->hasColumn('updated'), 'nothing to do');
+
+        $this->addSql(
+            <<<SQL
             ALTER TABLE akeneo_connectivity_connected_app
                 ADD updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER has_outdated_scopes,
-                ADD created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER has_outdated_scopes                
+                ADD created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER has_outdated_scopes
             SQL
         );
     }

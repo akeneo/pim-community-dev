@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
@@ -10,12 +12,14 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version_6_0_20210211141311_add_attribute_guidelines extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
+        $this->skipIf($schema->getTable('pim_catalog_attribute')->hasColumn('guidelines'), 'nothing to do');
+
         $this->addSql('ALTER TABLE pim_catalog_attribute ADD guidelines JSON NOT NULL DEFAULT (JSON_OBJECT());');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

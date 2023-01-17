@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
@@ -7,12 +9,14 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version_6_0_20210524121906_add_profile_to_user extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
+        $this->skipIf($schema->getTable('oro_user')->hasColumn('profile'), 'nothing to do');
+
         $this->addSql('ALTER TABLE oro_user ADD profile VARCHAR(255) NULL');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
@@ -11,12 +13,14 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version_6_0_20210818084017_add_marketplace_public_app_id extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
+        $this->skipIf($schema->getTable('pim_api_client')->hasColumn('marketplace_public_app_id'), 'nothing to do');
+
         $this->addSql('ALTER TABLE pim_api_client ADD marketplace_public_app_id VARCHAR(255) NULL DEFAULT NULL');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
@@ -7,15 +9,19 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version_6_0_20210819080024_add_warning_count_in_step_execution extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
-        $this->addSql(<<<SQL
-ALTER TABLE akeneo_batch_step_execution 
+        $this->skipIf($schema->getTable('akeneo_batch_step_execution')->hasColumn('warning_count'), 'nothing to do');
+
+        $this->addSql(
+            <<<SQL
+ALTER TABLE akeneo_batch_step_execution
 ADD COLUMN warning_count INT NOT NULL DEFAULT 0;
 SQL
         );
 
-        $this->addSql(<<<SQL
+        $this->addSql(
+            <<<SQL
 CREATE TABLE IF NOT EXISTS pim_one_time_task (
     `code` VARCHAR(100) PRIMARY KEY,
     `status` VARCHAR(100) NOT NULL,
@@ -27,7 +33,7 @@ SQL
         );
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }
