@@ -101,6 +101,6 @@ class GetProductAction
 
     private function getNotFoundMessage(string $catalogId, string $productUuid): string
     {
-        return \sprintf('Either catalog "{%s}" does not exist or you can\'t access it, or product "%s" does not exist or you do not have permission to access it.', $catalogId, $productUuid);
+        return \sprintf('Either catalog "%s" does not exist or you can\'t access it, or product "%s" does not exist or you do not have permission to access it.', $catalogId, $productUuid);
     }
 }

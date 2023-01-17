@@ -854,6 +854,39 @@ class ApiContext implements Context
     }
 
     /**
+     * @When the external application gets mapped product using the API
+     */
+    public function theExternalApplicationGetsMappedProductUsingTheApi(): void
+    {
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
+
+        $this->getConnectedAppClient()->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products/21a28f70-9cc8-4470-904f-aeda52764f73',
+        );
+
+        $this->response = $this->getConnectedAppClient()->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should contain the mapped product
+     */
+    public function theResponseShouldContainTheMappedProduct(): void
+    {
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMappedProducts = [
+            'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
+            'title' => 'T-shirt blue',
+            'description' => '',
+        ];
+
+        Assert::assertSame($expectedMappedProducts, $payload);
+    }
+
+    /**
      * @param array{
      *     code: string,
      *     type: string,

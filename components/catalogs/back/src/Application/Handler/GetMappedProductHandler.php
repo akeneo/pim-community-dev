@@ -8,13 +8,15 @@ use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
 use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
 /**
@@ -24,23 +26,24 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
-final class GetMappedProductsHandler
+final class GetMappedProductHandler
 {
     public function __construct(
-        private readonly GetCatalogQueryInterface $getCatalogQuery,
-        private readonly GetRawProductsQueryInterface $getRawProductsQuery,
-        private readonly DisableCatalogQueryInterface $disableCatalogQuery,
-        private readonly IsCatalogValidInterface $isCatalogValid,
-        private readonly DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
+        private GetCatalogQueryInterface $getCatalogQuery,
+        private GetRawProductQueryInterface $getRawProductQuery,
         private ProductMapperInterface $productMapper,
         private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
+        private IsProductBelongingToCatalogQueryInterface $isProductBelongingToCatalogQuery,
+        private DisableCatalogQueryInterface $disableCatalogQuery,
+        private IsCatalogValidInterface $isCatalogValid,
+        private DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
     ) {
     }
 
     /**
-     * @return array<array-key, MappedProduct>
+     * @return MappedProduct
      */
-    public function __invoke(GetMappedProductsQuery $query): array
+    public function __invoke(GetMappedProductQuery $query): array
     {
         try {
             $catalog = $this->getCatalogQuery->execute($query->getCatalogId());
@@ -53,29 +56,29 @@ final class GetMappedProductsHandler
         }
 
         try {
-            $products = $this->getRawProductsQuery->execute(
-                $catalog,
-                $query->getSearchAfter(),
-                $query->getLimit(),
-                $query->getUpdatedAfter(),
-                $query->getUpdatedBefore(),
-            );
+            if (!$this->isProductBelongingToCatalogQuery->execute($catalog, $query->getProductUuid())) {
+                throw new ProductNotFoundException();
+            }
+
+            $product = $this->getRawProductQuery->execute($query->getProductUuid());
         } catch (\Exception $exception) {
             if (!($this->isCatalogValid)($catalog)) {
                 $this->disableCatalogQuery->execute($catalog->getId());
                 ($this->dispatchInvalidCatalogDisabledEvent)($catalog->getId());
                 throw new CatalogDisabledException(previous: $exception);
             }
+
             throw $exception;
+        }
+
+        if (null === $product) {
+            throw new ProductNotFoundException();
         }
 
         $productMappingSchema = $this->getProductMappingSchemaQuery->execute($catalog->getId());
         $productMapping = $catalog->getProductMapping();
 
-        return \array_map(
-            /** @param RawProduct $product */
-            fn (array $product): array => $this->productMapper->getMappedProduct($product, $productMappingSchema, $productMapping),
-            $products
-        );
+        /** @var RawProduct $product */
+        return $this->productMapper->getMappedProduct($product, $productMappingSchema, $productMapping);
     }
 }
