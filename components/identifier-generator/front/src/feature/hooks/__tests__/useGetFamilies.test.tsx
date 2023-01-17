@@ -1,7 +1,7 @@
 import {renderHook, act} from '@testing-library/react-hooks';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {mockResponse} from '../../tests/test-utils';
-import {usePaginatedFamilies} from '../useGetFamilies';
+import {useGetFamilies, usePaginatedFamilies} from '../useGetFamilies';
 
 describe('usePaginatedFamilies', () => {
   test('it paginates families', async () => {
@@ -47,5 +47,11 @@ describe('usePaginatedFamilies', () => {
     expectCall2();
     expect(result.current.families).toBeDefined();
     expect(result.current.families).toEqual(pageSearch);
+  });
+
+  test('it returns nothing on initialization', async () => {
+    const {result, waitFor} = renderHook(() => useGetFamilies({page: 1, search: '', codes: []}), {wrapper: createWrapper()});
+    await waitFor(() => !!result.current.data);
+    expect(result.current.data).toEqual([]);
   });
 });
