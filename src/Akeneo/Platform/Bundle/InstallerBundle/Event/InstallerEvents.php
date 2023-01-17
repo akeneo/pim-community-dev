@@ -12,11 +12,18 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Event;
 final class InstallerEvents
 {
     /**
-     * This event is dispatched after having installed the database
+     * This event is dispatched after having installed the database from the doctrine schema
      *
      * You can use it to create new tables that are not managed with doctrine.
      */
     const POST_DB_CREATE = 'pim_installer.post_db_create';
+
+    /**
+     * This event is dispatched after having installed the database from an empty dump and executed migrations on it
+     *
+     * You can use it to populate some tables with default values
+     */
+    const POST_DB_CREATE_FROM_DUMP = 'pim_installer.post_db_create_from_dump';
 
     /**
      * This event is dispatched before launching any assets dump command

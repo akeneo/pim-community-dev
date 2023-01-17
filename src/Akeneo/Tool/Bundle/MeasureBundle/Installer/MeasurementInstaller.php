@@ -29,6 +29,7 @@ class MeasurementInstaller implements EventSubscriberInterface
     {
         return [
             InstallerEvents::POST_DB_CREATE => ['createMeasurementTableAndStandardMeasurementFamilies'],
+            InstallerEvents::POST_DB_CREATE_FROM_DUMP => ['createMeasurementTableAndStandardMeasurementFamilies'],
         ];
     }
 

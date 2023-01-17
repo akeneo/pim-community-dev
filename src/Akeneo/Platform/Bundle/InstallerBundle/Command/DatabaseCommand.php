@@ -90,7 +90,12 @@ class DatabaseCommand extends Command
                 InputOption::VALUE_NONE,
                 'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
             )
-        ;
+            ->addOption(
+                'dump',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Load database from an empty sql dump and then run migrations on it'
+            );
     }
 
     /**
@@ -133,15 +138,15 @@ class DatabaseCommand extends Command
             $this->connection->close();
         }
 
-        $this->commandExecutor
-            ->runCommand('doctrine:schema:create')
-            ->runCommand(
-                'doctrine:schema:update',
-                ['--force' => true, '--no-interaction' => true]
-            );
+        $resetEsIndex = ($input->getOption('withoutIndexes') === false);
+        $postCreateEvent = InstallerEvents::POST_DB_CREATE;
 
-        if (false === $input->getOption('withoutIndexes')) {
-            $this->resetElasticsearchIndex($output);
+        $dump = $input->getOption('dump');
+        if (!empty($dump)) {
+            $postCreateEvent = InstallerEvents::POST_DB_CREATE_FROM_DUMP;
+            $this->installDatabaseFromDump($output, $dump, $resetEsIndex);
+        } else {
+            $this->installDatabaseFromSchema($output, $resetEsIndex);
         }
 
         $entityManager = $this->entityManager;
@@ -151,7 +156,7 @@ class DatabaseCommand extends Command
             new InstallerEvent($this->commandExecutor, null, [
                 'catalog' => $input->getOption('catalog')
             ]),
-            InstallerEvents::POST_DB_CREATE
+            $postCreateEvent
         );
 
         $this->setLatestKnownMigration($input);
@@ -177,6 +182,37 @@ class DatabaseCommand extends Command
         $this->installTimeQuery->withDatetime(new \DateTimeImmutable());
 
         return Command::SUCCESS;
+    }
+
+    private function installDatabaseFromSchema(OutputInterface $output, bool $resetEsIndex)
+    {
+        $output->writeln('<info>installing DB from doctrine shema</info>');
+
+        $this->commandExecutor
+            ->runCommand('doctrine:schema:create')
+            ->runCommand(
+                'doctrine:schema:update',
+                ['--force' => true, '--no-interaction' => true]
+            );
+
+        if ($resetEsIndex) {
+            $this->resetElasticsearchIndex($output);
+        }
+    }
+
+    private function installDatabaseFromDump(OutputInterface $output, string $dumpFile, bool $resetEsIndex)
+    {
+        $output->writeln('<info>installing DB from an sql dump</info>');
+
+        $this->commandExecutor
+            ->runCommand('doctrine:database:import', ['file' => $dumpFile]);
+
+        if ($resetEsIndex) {
+            $this->resetElasticsearchIndex($output);
+        }
+
+        $this->commandExecutor
+            ->runCommand('doctrine:migrations:migrate', ['--no-interaction' => true]);
     }
 
     /**
