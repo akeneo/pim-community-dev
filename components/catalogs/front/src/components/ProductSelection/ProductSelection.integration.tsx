@@ -15,18 +15,20 @@ jest.mock('./utils/generateRandomId');
 
 const MAX_CRITERIA_PER_CATALOG = 25;
 
-test('it displays an empty message if there is no criteria', () => {
+beforeEach(() => {
     mockFetchResponses([
-        {
-            url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
-        },
         {
             url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
             json: {},
         },
+        {
+            url: '/rest/catalogs/product-selection-criteria/product/count',
+            json: 0,
+        },
     ]);
+});
 
+test('it displays an empty message if there is no criteria', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
@@ -39,17 +41,6 @@ test('it displays an empty message if there is no criteria', () => {
 });
 
 test('it renders a list of criteria', async () => {
-    mockFetchResponses([
-        {
-            url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
-        },
-        {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
-            json: {},
-        },
-    ]);
-
     const criteria = {
         qxgJvh: {
             field: 'enabled',
@@ -76,17 +67,6 @@ test('it renders a list of criteria', async () => {
 });
 
 test('it renders a list of criteria with validation errors', async () => {
-    mockFetchResponses([
-        {
-            url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
-        },
-        {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
-            json: {},
-        },
-    ]);
-
     const criteria = {
         qxgJvh: {
             field: 'enabled',
@@ -129,17 +109,6 @@ test('it renders a list of criteria with validation errors', async () => {
 });
 
 test('it updates the state when a criterion is added', async () => {
-    mockFetchResponses([
-        {
-            url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
-        },
-        {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
-            json: {},
-        },
-    ]);
-
     mocked(generateRandomId).mockReturnValue('qxgJvh');
 
     const onChange = jest.fn();
@@ -166,17 +135,6 @@ test('it updates the state when a criterion is added', async () => {
 });
 
 test('it updates the state when a criterion changes', async () => {
-    mockFetchResponses([
-        {
-            url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
-        },
-        {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
-            json: {},
-        },
-    ]);
-
     const criteria = {
         qxgJvh: {
             field: 'enabled',
@@ -209,17 +167,6 @@ test('it updates the state when a criterion changes', async () => {
 });
 
 test('it updates the state when a criterion is removed', async () => {
-    mockFetchResponses([
-        {
-            url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
-        },
-        {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
-            json: {},
-        },
-    ]);
-
     const criteria = {
         qxgJvh: {
             field: 'enabled',
@@ -243,17 +190,6 @@ test('it updates the state when a criterion is removed', async () => {
 });
 
 test('it shows a warning and lock the add button when the criteria limit is reached', async () => {
-    mockFetchResponses([
-        {
-            url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
-        },
-        {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
-            json: {},
-        },
-    ]);
-
     const criteria = [];
     for (let criterionIndex = 0; criterionIndex < MAX_CRITERIA_PER_CATALOG; criterionIndex++) {
         criteria[criterionIndex] = {
