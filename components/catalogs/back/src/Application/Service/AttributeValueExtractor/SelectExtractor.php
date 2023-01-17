@@ -31,7 +31,7 @@ final class SelectExtractor implements AttributeValueExtractorInterface
         {
             $value = $this->getTranslations(
                 $attributeCode,
-                is_array($value) ? $value : [$value],
+                \is_array($value) ? $value : [$value],
                 $parameters['label_locale'],
             );
         }
