@@ -36,9 +36,22 @@ class GetProductsActionTest extends IntegrationTestCase
         $this->logAs('admin'); // Creating products requires an authenticated user with higher permissions
         $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('9fe842c4-6185-470b-b9a8-abc2306b0e4b'), [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('2fe842c4-6185-470b-b9a8-abc230678910'), [new SetEnabled(false)]);
 
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ],
+        );
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $this->client->request(
@@ -63,6 +76,27 @@ class GetProductsActionTest extends IntegrationTestCase
         Assert::assertEquals([
             '00380587-3893-46e6-a8c2-8fee6404cc9e',
             '8985de43-08bc-484d-aee0-4489a56ba02d'
+        ], $uuids);
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products?search_after=8985de43-08bc-484d-aee0-4489a56ba02d&limit=2',
+            [
+                'limit' => 2,
+            ],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $page2Response = $this->client->getResponse();
+        $payloadPage2 = \json_decode($page2Response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        Assert::assertEquals(200, $page2Response->getStatusCode());
+        Assert::assertCount(1, $payloadPage2['_embedded']['items']);
+        $uuids = \array_map(static fn (array $item): string => $item['uuid'], $payloadPage2['_embedded']['items']);
+        Assert::assertEquals([
+            '9fe842c4-6185-470b-b9a8-abc2306b0e4b',
         ], $uuids);
     }
 
@@ -98,7 +132,7 @@ class GetProductsActionTest extends IntegrationTestCase
         Assert::assertEquals($expectedMessage, $payload['error']);
     }
 
-    public function testItReturnsBadRequestWhenPaginationIsInvaliGetProductsQueryInterfaced(): void
+    public function testItReturnsBadRequestWhenPaginationIsInvalidGetProductsQueryInterfaced(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');

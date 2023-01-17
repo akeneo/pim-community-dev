@@ -5,7 +5,6 @@ import {pimTheme} from 'akeneo-design-system';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {mockFetchResponses} from '../../../tests/mockFetchResponses';
 import {ProductMapping} from './ProductMapping';
-import fetchMock from 'jest-fetch-mock';
 
 const openDropdown = (selector: string): void => {
     const container = screen.getByTestId(selector);

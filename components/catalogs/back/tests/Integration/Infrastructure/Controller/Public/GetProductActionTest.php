@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 /**
@@ -109,8 +111,13 @@ class GetProductActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
+            ' it, or product "c335c87e-ec23-4c5b-abfa-0638f141933a" does not exist or you do not have permission to access it.';
 
         Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['message']);
     }
 
     public function testItReturnsNotFoundWhenProductDoesNotExistForTheCatalog(): void
@@ -131,9 +138,59 @@ class GetProductActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
+            ' it, or product "c335c87e-ec23-4c5b-abfa-0638f141933a" does not exist or you do not have permission to access it.';
 
         Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['message']);
     }
+
+    public function testItReturnsNotFoundWhenTheProductIsFilteredOut(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient([
+            'read_catalogs',
+            'read_products',
+        ]);
+
+        $this->createProduct(Uuid::fromString('c335c87e-ec23-4c5b-abfa-0638f141933a'), [
+            new SetEnabled(false),
+        ]);
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ]
+        );
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
+            ' it, or product "c335c87e-ec23-4c5b-abfa-0638f141933a" does not exist or you do not have permission to access it.';
+
+        Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['message']);
+    }
+
 
     public function testItReturnsAnErrorWhenCatalogIsDisabled(): void
     {

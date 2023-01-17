@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Events\InvalidCatalogDisabledEvent;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
@@ -41,6 +42,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException as DependencyInjectionInvalidArgumentException;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -491,6 +493,14 @@ abstract class IntegrationTestCase extends WebTestCase
          */
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
+    protected function removeAttribute(string $code): void
+    {
+        $attribute = self::getContainer()->get('pim_catalog.repository.attribute')
+            ->findOneByIdentifier($code);
+
+        self::getContainer()->get('pim_catalog.remover.attribute')->remove($attribute);
+        $this->waitForQueuedJobs();
+    }
 
     private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
     {
@@ -650,5 +660,26 @@ abstract class IntegrationTestCase extends WebTestCase
     protected function waitForQueuedJobs(): void
     {
         self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
+    }
+
+    protected function addSubscriberForInvalidCatalogDisabledEvent(\Closure $onEventCallback): void
+    {
+        $subscriber = new class($onEventCallback) implements EventSubscriberInterface {
+            public function __construct(private readonly \Closure $closure)
+            {
+            }
+
+            public static function getSubscribedEvents(): array
+            {
+                return [InvalidCatalogDisabledEvent::class => 'onEvent'];
+            }
+
+            public function onEvent(InvalidCatalogDisabledEvent $event): void
+            {
+                ($this->closure)($event->getCatalogId());
+            }
+        };
+
+        self::getContainer()->get('event_dispatcher')->addSubscriber($subscriber);
     }
 }
