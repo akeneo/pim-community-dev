@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,28 +15,33 @@ class GetAttributeGroups
 {
     public function __construct(
         private readonly Connection $connection,
+        private readonly FeatureFlags $featureFlags,
     ) {
     }
 
     public function all(): array
     {
         $sql = <<<SQL
-WITH attribute_groups AS (
-    SELECT code, sort_order, locale, label FROM pim_catalog_attribute_group attribute_group
-    JOIN pim_catalog_attribute_group_translation attribute_group_translations ON attribute_group.id = attribute_group_translations.foreign_key
+WITH attribute_group_labels AS (
+    SELECT foreign_key as attribute_group_id, JSON_OBJECTAGG(locale, label) as labels
+    FROM pim_catalog_attribute_group_translation
+    GROUP BY foreign_key
 )
-SELECT code, sort_order, JSON_OBJECTAGG(attribute_groups.locale, attribute_groups.label) as labels FROM attribute_groups
-GROUP BY code, sort_order
+SELECT code, sort_order, COALESCE(labels, JSON_OBJECT()) as labels FROM pim_catalog_attribute_group
+LEFT JOIN attribute_group_labels ON attribute_group_id = id
 ORDER BY sort_order;
 SQL;
 
         $attributeGroups = $this->connection->executeQuery($sql)->fetchAllAssociative();
+        $dqiFeatureIsEnabled = $this->featureFlags->isEnabled('data_quality_insights');
 
-        return array_map(function (array $attributeGroup) {
+        return array_map(function (array $attributeGroup) use ($dqiFeatureIsEnabled) {
             $attributeGroup['sort_order'] = (int) $attributeGroup['sort_order'];
             $attributeGroup['labels'] = json_decode($attributeGroup['labels'], true);
-            // TODO: check FT and call ServiceAPI
-            $attributeGroup['is_dqi_activated'] = true;
+            if ($dqiFeatureIsEnabled) {
+                // @TODO RAB-1274 call ServiceAPI
+                $attributeGroup['is_dqi_activated'] = true;
+            }
             return $attributeGroup;
         }, $attributeGroups);
     }
