@@ -39,11 +39,14 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
 
     const handleClick = useCallback(
         (targetCode, source) => {
+            if (productMappingSchema === undefined) {
+                return;
+            }
             setSelectedTarget({
                 code: targetCode,
-                label: productMappingSchema?.properties[targetCode]?.title ?? targetCode,
-                type: productMappingSchema?.properties[targetCode].type ?? null,
-                format: productMappingSchema?.properties[targetCode].format ?? null,
+                label: productMappingSchema.properties[targetCode]?.title ?? targetCode,
+                type: productMappingSchema.properties[targetCode].type,
+                format: productMappingSchema.properties[targetCode].format ?? null,
             });
             setSelectedSource(source);
         },

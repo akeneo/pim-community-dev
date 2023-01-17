@@ -38,15 +38,18 @@ export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: Q
                 page: _page.toString(),
                 limit: limit.toString(),
                 search: _search,
-                targetType: target.type ?? '',
-                targetFormat: target.format ?? '',
+                targetType: target.type,
+                targetFormat: target.format || '',
             }).toString();
 
-            const response = await fetch('/rest/catalogs/attributes?' + queryParameters, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-            });
+            const response = await fetch(
+                '/rest/catalogs/attributes_by_target_type_and_target_format?' + queryParameters,
+                {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                }
+            );
 
             const attributes: Attribute[] = await response.json();
 
@@ -66,7 +69,7 @@ export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: Q
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(
-        ['attributes', {search: search, limit: limit, type: target.type ?? '', targetFormat: target.format ?? ''}],
+        ['attributes', {search: search, limit: limit, type: target.type, targetFormat: target.format || ''}],
         fetchAttributes,
         {
             keepPreviousData: true,

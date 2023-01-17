@@ -1,6 +1,6 @@
 export type Target = {
     code: string;
     label: string;
-    type: string | null;
+    type: string;
     format: string | null;
 };

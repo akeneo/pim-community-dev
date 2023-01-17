@@ -55,7 +55,7 @@ test('it fetches attributes & paginates', async () => {
     );
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes?page=1&limit=2&search=&targetType=string&targetFormat=uri',
+        '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=2&search=&targetType=string&targetFormat=uri',
         expect.any(Object)
     );
     expect(result.current).toMatchObject({
@@ -159,7 +159,7 @@ test('it searches with a string', async () => {
         code: 'blog_url',
         label: 'Url of the blog',
         type: 'string',
-        format: 'uri',
+        format: null,
     };
 
     const {result, waitForNextUpdate} = renderHook(
@@ -172,7 +172,7 @@ test('it searches with a string', async () => {
     await waitForNextUpdate();
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes?page=1&limit=2&search=Description&targetType=string&targetFormat=uri',
+        '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=2&search=Description&targetType=string&targetFormat=',
         expect.any(Object)
     );
     expect(result.current).toMatchObject({

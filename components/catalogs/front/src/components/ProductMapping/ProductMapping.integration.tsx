@@ -351,7 +351,7 @@ test('it updates the state when a source is selected', async () => {
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'name',
@@ -500,7 +500,7 @@ test('it updates the state when a channel is selected for an attribute with valu
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'name',
@@ -655,7 +655,7 @@ test('it updates the state when a locale is selected for an attribute with value
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'name',
@@ -813,7 +813,7 @@ test('it updates the state when a locale and channel is selected for an attribut
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'name',
@@ -984,7 +984,7 @@ test('it resets source locale when channel changes for an attribute with value p
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'name',
@@ -1169,7 +1169,7 @@ test('it displays error message when source attribute is incorrect', async () =>
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'title',
@@ -1243,7 +1243,7 @@ test('it displays error message when source scope is incorrect', async () => {
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'title',
@@ -1323,7 +1323,7 @@ test('it displays error message when source local but not scopable is incorrect'
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'title',
@@ -1407,7 +1407,7 @@ test('it displays error message when source local and scopable is incorrect', as
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'title',
