@@ -1,8 +1,9 @@
 import React from 'react';
-import {fireEvent, mockResponse, render, screen, waitFor} from '../../../tests/test-utils';
+import {fireEvent, render, screen, waitFor} from '../../../tests/test-utils';
 import {AddConditionButton} from '../AddConditionButton';
 import userEvent from '@testing-library/user-event';
 import {CONDITION_NAMES, Operator} from '../../../models';
+
 jest.mock('../../../hooks/useGetConditionItems');
 
 describe('AddConditionButton', () => {

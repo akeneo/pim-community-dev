@@ -10,20 +10,24 @@ type ItemsGroup = {
   }[];
 };
 
-const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
-  conditionItems: ItemsGroup[],
-  handleNextPage: () => void,
-  searchValue: string,
-  setSearchValue: (searchValue: string) => void,
+const useGetConditionItems: (
+  isOpen: boolean,
+  conditions: Conditions
+) => {
+  conditionItems: ItemsGroup[];
+  handleNextPage: () => void;
+  searchValue: string;
+  setSearchValue: (searchValue: string) => void;
 } = (isOpen, conditions) => {
   const [searchValue, setSearchValue] = useState<string>('');
   if (searchValue === 'toto') {
     return {
       conditionItems: [],
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       handleNextPage: () => {},
       searchValue,
       setSearchValue,
-    }
+    };
   }
 
   if (searchValue === 'enabled') {
@@ -32,23 +36,21 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
         {
           id: 'system',
           text: 'System',
-          children: [
-            { id: 'enabled', text: 'Enabled' },
-          ],
+          children: [{id: 'enabled', text: 'Enabled'}],
         },
       ],
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       handleNextPage: () => {},
       searchValue,
       setSearchValue,
-    }
+    };
   }
 
   const conditionIds = conditions.map(condition => condition.type as string);
   const filteredItems = [
-    { id: 'family', text: 'Family' },
-    { id: 'enabled', text: 'Enabled' },
+    {id: 'family', text: 'Family'},
+    {id: 'enabled', text: 'Enabled'},
   ].filter(item => !conditionIds.includes(item.id));
-
 
   return {
     conditionItems: [
@@ -56,18 +58,18 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
         id: 'system',
         text: 'System',
         children: filteredItems,
-      }, {
+      },
+      {
         id: 'marketing',
         text: 'Marketing',
-        children: [
-          { id: 'color', text: 'Color' },
-        ],
-      }
+        children: [{id: 'color', text: 'Color'}],
+      },
     ],
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     handleNextPage: () => {},
     searchValue,
     setSearchValue,
-  }
+  };
 };
 
 export {useGetConditionItems};
