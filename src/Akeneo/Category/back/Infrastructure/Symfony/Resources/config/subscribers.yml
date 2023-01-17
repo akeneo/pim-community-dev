@@ -11,3 +11,12 @@ services:
             - '@akeneo.category.enriched.feature'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\RemoveCategoryTreeTemplateSubscriber:
+        arguments:
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
+            - '@Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate'
+            - '@akeneo.category.enriched.feature'
+        tags:
+            - { name: kernel.event_subscriber }
