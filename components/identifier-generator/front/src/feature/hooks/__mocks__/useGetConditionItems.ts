@@ -10,12 +10,12 @@ type Response = {
   }[];
 };
 
-const useGetConditionItems: (conditions: Conditions) => {
+const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
   conditionItems: Response[],
   handleNextPage: () => void,
   searchValue: string,
   setSearchValue: (searchValue: string) => void,
-} = conditions => {
+} = (isOpen, conditions) => {
   const [searchValue, setSearchValue] = useState<string>('');
   if (searchValue === 'toto') {
     return {

@@ -13,6 +13,14 @@ type Response = {
   }[];
 };
 
+enum STATE {
+  FIRST_DISPLAY,
+  USER_CHANGED_PAGE,
+  WAITING,
+  FETCHING_IN_PROGRESS,
+  USER_CHANGED_SEARCH,
+}
+
 function mergeItems(items: Response[], newPage: Response[]) {
   const mergedItems: Response[] = [];
   (items || []).forEach(item => mergedItems.push(item));
@@ -29,80 +37,80 @@ function mergeItems(items: Response[], newPage: Response[]) {
   return mergedItems;
 }
 
-const useGetConditionItems: (conditions: Conditions) => {
+const useGetConditionItems: (isOpen: boolean, conditions: Conditions) => {
   conditionItems: Response[],
   handleNextPage: () => void,
   searchValue: string,
   setSearchValue: (searchValue: string) => void,
-} = conditions => {
+} = (isOpen, conditions) => {
+
   const router = useRouter();
-  const [page, setPage] = useState<number>(1);
-  const [isFetching, setIsFetching] = useState<boolean>(false);
   const [items, setItems] = useState<Response[] | undefined>(undefined);
-  const [isAtLastPage, setIsAtLastPage] = useState<boolean>(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+  const [page, setPage] = useState<number>(1);
+  const [areRemainingElements, setAreRemainingElements] = useState<boolean>(true);
+  const [state, setState] = useState<STATE>(STATE.FIRST_DISPLAY);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState<string>('');
+  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined);
 
-  const fetchConditionItems = async () => {
-    setIsFetching(true);
-    const conditionTypes = conditions.map(condition => condition.type as string);
-    const parameters = {
-      search: searchValue,
-      page: page,
-      limit: DEFAULT_LIMIT,
-      systemFields: ['family', 'enabled'].filter(value => !conditionTypes.includes(value)),
-    };
-
-    const response = await fetch(router.generate('akeneo_identifier_generator_get_conditions', parameters), {
-      method: 'GET',
-      headers: [
-        ['X-Requested-With', 'XMLHttpRequest'],
-      ],
-    });
-    const result = await response.json();
-    setIsFetching(false);
-
-    return result;
-  };
+  useEffect(() => {
+    if (isOpen && areRemainingElements &&
+      (state === STATE.FIRST_DISPLAY || state === STATE.USER_CHANGED_PAGE || state === STATE.USER_CHANGED_SEARCH)) {
+      setState(STATE.FETCHING_IN_PROGRESS);
+      const conditionTypes = conditions.map(condition => condition.type as string);
+      const parameters = {
+        search: debouncedSearchValue,
+        page: state === STATE.USER_CHANGED_SEARCH ? 1 : page,
+        limit: DEFAULT_LIMIT,
+        systemFields: ['family', 'enabled'].filter(value => !conditionTypes.includes(value)),
+      };
+      fetch(router.generate('akeneo_identifier_generator_get_conditions', parameters), {
+        method: 'GET',
+        headers: [
+          ['X-Requested-With', 'XMLHttpRequest'],
+        ],
+      }).then(response => {
+        response.json().then((result: Response[]) => {
+          if (result.reduce((prev, group) => prev + group.children.length, 0) < DEFAULT_LIMIT) {
+            setAreRemainingElements(false);
+          }
+          setItems(i => state === STATE.USER_CHANGED_SEARCH ? result : mergeItems(i || [], result));
+          setState(STATE.WAITING);
+        });
+      });
+    }
+  }, [isOpen, conditions, router, page, state, debouncedSearchValue, areRemainingElements]);
 
   const handleNextPage = () => {
-    if (!isFetching && !isAtLastPage) {
+    if (state === STATE.WAITING) {
       setPage(page => page + 1);
+      setState(STATE.USER_CHANGED_PAGE);
     }
   };
 
   const innerSetSearchValue = (value: string) => {
     setSearchValue(value);
 
-    const timer = setTimeout(() => {
-      setPage(1);
-      setIsAtLastPage(false);
+    if (debounceTimer) clearTimeout(debounceTimer);
+
+    setDebounceTimer(setTimeout(() => {
       setDebouncedSearchValue(value);
-    }, 200);
+      setPage(1);
+      setAreRemainingElements(true);
+      setState(STATE.USER_CHANGED_SEARCH);
+    }, 200));
 
     return () => {
-      clearTimeout(timer);
+      if (debounceTimer) clearTimeout(debounceTimer);
     };
   };
 
-  useEffect(() => {
-    if (isFetching) return;
-
-    fetchConditionItems().then((newPage: Response[]) => {
-      if (newPage.reduce((prev, group) => prev + group.children.length, 0) < DEFAULT_LIMIT) {
-        setIsAtLastPage(true);
-      }
-
-      if (page === 1) {
-        setItems(newPage);
-      } else {
-        setItems(mergeItems(items || [], newPage));
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, debouncedSearchValue, router]);
-
-  return {conditionItems: items || [], handleNextPage, searchValue, setSearchValue: innerSetSearchValue};
+  return {
+    conditionItems: items || [],
+    handleNextPage,
+    searchValue,
+    setSearchValue: innerSetSearchValue,
+  };
 };
 
 export {useGetConditionItems};

@@ -13,7 +13,7 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
 
-  const {conditionItems, handleNextPage, searchValue, setSearchValue} = useGetConditionItems(conditions);
+  const {conditionItems, handleNextPage, searchValue, setSearchValue} = useGetConditionItems(isOpen, conditions);
 
   const addElement = () => {
     open();
