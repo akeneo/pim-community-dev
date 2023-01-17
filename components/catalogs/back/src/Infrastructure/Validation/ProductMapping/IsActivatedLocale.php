@@ -12,6 +12,6 @@ use Symfony\Component\Validator\Constraint;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class IsValidLocale extends Constraint
+final class IsActivatedLocale extends Constraint
 {
 }
