@@ -241,3 +241,5 @@ services:
     Akeneo\Pim\Structure\Bundle\Controller\InternalApi\UpdateMainIdentifierAction:
         arguments:
             - '@Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler'
+        tags:
+            - { name: controller.service_arguments }
