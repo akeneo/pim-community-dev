@@ -53,7 +53,7 @@ test('it can enable a catalog', async () => {
         const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
         useLayoutEffect(() => {
             setHeaderContextContainer(ref.current);
-        });
+        }, [ref]);
 
         return (
             <ThemeProvider theme={pimTheme}>
