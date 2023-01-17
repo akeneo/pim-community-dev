@@ -37,13 +37,16 @@ function mergeItems(items: ItemsGroup[], newPage: ItemsGroup[]) {
   return mergedItems;
 }
 
-const useGetConditionItems: (isOpen: boolean, conditions: Conditions, limit?: number) => {
-  conditionItems: ItemsGroup[],
-  handleNextPage: () => void,
-  searchValue: string,
-  setSearchValue: (searchValue: string) => void,
+const useGetConditionItems: (
+  isOpen: boolean,
+  conditions: Conditions,
+  limit?: number
+) => {
+  conditionItems: ItemsGroup[];
+  handleNextPage: () => void;
+  searchValue: string;
+  setSearchValue: (searchValue: string) => void;
 } = (isOpen, conditions, limit = 20) => {
-
   const router = useRouter();
   const [items, setItems] = useState<ItemsGroup[] | undefined>(undefined);
   const [page, setPage] = useState<number>(1);
@@ -54,8 +57,11 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions, limit?: nu
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
-    if (isOpen && areRemainingElements &&
-      (state === STATE.FIRST_DISPLAY || state === STATE.USER_CHANGED_PAGE || state === STATE.USER_CHANGED_SEARCH)) {
+    if (
+      isOpen &&
+      areRemainingElements &&
+      (state === STATE.FIRST_DISPLAY || state === STATE.USER_CHANGED_PAGE || state === STATE.USER_CHANGED_SEARCH)
+    ) {
       setState(STATE.FETCHING_IN_PROGRESS);
       const conditionTypes = conditions.map(condition => condition.type as string);
       const parameters = {
@@ -66,20 +72,18 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions, limit?: nu
       };
       fetch(router.generate('akeneo_identifier_generator_get_conditions', parameters), {
         method: 'GET',
-        headers: [
-          ['X-Requested-With', 'XMLHttpRequest'],
-        ],
+        headers: [['X-Requested-With', 'XMLHttpRequest']],
       }).then(response => {
         response.json().then((result: ItemsGroup[]) => {
           if (result.reduce((prev, group) => prev + group.children.length, 0) < (limit ?? DEFAULT_LIMIT)) {
             setAreRemainingElements(false);
           }
-          setItems(i => state === STATE.USER_CHANGED_SEARCH ? result : mergeItems(i || [], result));
+          setItems(i => (state === STATE.USER_CHANGED_SEARCH ? result : mergeItems(i || [], result)));
           setState(STATE.WAITING);
         });
       });
     }
-  }, [isOpen, conditions, router, page, state, debouncedSearchValue, areRemainingElements]);
+  }, [isOpen, conditions, router, page, state, debouncedSearchValue, areRemainingElements, limit]);
 
   const handleNextPage = () => {
     if (state === STATE.WAITING) {
@@ -93,12 +97,14 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions, limit?: nu
 
     if (debounceTimer) clearTimeout(debounceTimer);
 
-    setDebounceTimer(setTimeout(() => {
-      setDebouncedSearchValue(value);
-      setPage(1);
-      setAreRemainingElements(true);
-      setState(STATE.USER_CHANGED_SEARCH);
-    }, 200));
+    setDebounceTimer(
+      setTimeout(() => {
+        setDebouncedSearchValue(value);
+        setPage(1);
+        setAreRemainingElements(true);
+        setState(STATE.USER_CHANGED_SEARCH);
+      }, 200)
+    );
 
     /* istanbul ignore next Unable to test this behavior */
     return () => {

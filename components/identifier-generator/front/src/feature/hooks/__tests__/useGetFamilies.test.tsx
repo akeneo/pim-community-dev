@@ -50,7 +50,9 @@ describe('usePaginatedFamilies', () => {
   });
 
   test('it returns nothing on initialization', async () => {
-    const {result, waitFor} = renderHook(() => useGetFamilies({page: 1, search: '', codes: []}), {wrapper: createWrapper()});
+    const {result, waitFor} = renderHook(() => useGetFamilies({page: 1, search: '', codes: []}), {
+      wrapper: createWrapper(),
+    });
     await waitFor(() => !!result.current.data);
     expect(result.current.data).toEqual([]);
   });

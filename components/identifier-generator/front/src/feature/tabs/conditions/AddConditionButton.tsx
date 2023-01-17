@@ -49,7 +49,7 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
 
   React.useEffect(focusCallback, [isOpen, focusCallback]);
 
-  const flatItems: {id: string, text: string, onClick: (() => void) | undefined}[] = [];
+  const flatItems: {id: string; text: string; onClick: (() => void) | undefined}[] = [];
   (conditionItems || []).forEach(({id, text, children}) => {
     flatItems.push({id: `section-${id}`, text, onClick: undefined});
     children.forEach(({id, text}) => {
@@ -78,9 +78,12 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
             noResultTitle={translate('pim_common.no_search_result')}
             onNextPage={handleNextPage}
           >
-            {flatItems.map(({id, text, onClick}) => (
-              onClick ?
-                <Dropdown.Item key={id} onClick={onClick}>{text}</Dropdown.Item> :
+            {flatItems.map(({id, text, onClick}) =>
+              onClick ? (
+                <Dropdown.Item key={id} onClick={onClick}>
+                  {text}
+                </Dropdown.Item>
+              ) : (
                 <Dropdown.Section key={id}>{text}</Dropdown.Section>
               )
             )}
