@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
 use Akeneo\Category\Api\Event\CategoryUpdatedEvent;
+use Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder;
 use Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,10 +15,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class UpdateCategoryVersionSubscriber implements EventSubscriberInterface
 {
-    const CATEGORY_VERSION_RESOURCE_NAME = "Akeneo\Category\Infrastructure\Component\Model\Category";
+    public const CATEGORY_VERSION_RESOURCE_NAME = "Akeneo\Category\Infrastructure\Component\Model\Category";
 
     public function __construct(
-        private readonly VersionBuilder $versionBuilder
+        private readonly VersionBuilder $versionBuilder,
+        private readonly CategoryVersionBuilder $categoryVersionBuilder,
     ) {
     }
 
@@ -28,14 +30,14 @@ class UpdateCategoryVersionSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function UpdateCategoryVersion(CategoryUpdatedEvent $event): CategoryUpdatedEvent
+    public function UpdateCategoryVersion(CategoryUpdatedEvent $event): void
     {
+        $categorySnapshot = $this->categoryVersionBuilder->create($event->getCategory());
 
-
-        $newVersion = $this->versionBuilder->buildVersionWithId(
-            $event->getCategory(),
-            'admin',
-            $previousVersion
+        $this->versionBuilder->buildVersionWithId(
+            resourceId: strval($event->getCategory()->getId()->getValue()),
+            resourceName: self::CATEGORY_VERSION_RESOURCE_NAME,
+            snapshot: $categorySnapshot,
         );
 
         // TODO: Solution after design meeting
@@ -56,7 +58,5 @@ class UpdateCategoryVersionSubscriber implements EventSubscriberInterface
         //  - pending status management
         //  - version management event generation
         //  - Update existing Category
-
-        return $event;
     }
 }

@@ -1,0 +1,89 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Category\back\tests\Integration\Infrastructure\Builder;
+
+use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\CategoryId;
+use Akeneo\Category\Domain\ValueObject\Code;
+use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder;
+use Ramsey\Uuid\Uuid;
+
+/**
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+class CategoryVersionBuilderIntegration extends CategoryTestCase
+{
+    public function testCreateACategoryVersion(): void
+    {
+        $givenParent = new Category(
+            id: new CategoryId(1),
+            code: new Code('master'),
+            templateUuid: null,
+        );
+        $getCategoryMock = $this->createMock(GetCategoryInterface::class);
+        $getCategoryMock->method('byId')->willReturn($givenParent);
+        $builder = new CategoryVersionBuilder($getCategoryMock);
+
+        $updated = new \DateTimeImmutable();
+        $givenCategory = new Category(
+            id: new CategoryId(2),
+            code: new Code('category_test'),
+            templateUuid: TemplateUuid::fromUuid(Uuid::uuid4()),
+            labels: LabelCollection::fromArray(['en_US' => 'test category', 'fr_FR' => 'catégorie de test']),
+            parentId: $givenParent->getId(),
+            parentCode: $givenParent->getCode(),
+            rootId: $givenParent->getId(),
+            updated: $updated,
+            attributes: null,
+            permissions: null,
+            position: null,
+        );
+
+        $categorySnapshot = $builder->create($givenCategory);
+
+        $expectedCategorySnapshot = [
+            'code' => 'category_test',
+            'parent' => 'master',
+            'updated' => $updated->format('c'),
+            'label-en_US' => 'test category',
+            'label-fr_FR' => 'catégorie de test'
+        ];
+
+        $this->assertEquals($expectedCategorySnapshot, $categorySnapshot);
+    }
+
+    public function testCreateACategoryVersionWithoutParent(): void
+    {
+        $getCategoryMock = $this->createMock(GetCategoryInterface::class);
+        $getCategoryMock->expects($this->never())->method('byId');
+        $builder = new CategoryVersionBuilder($getCategoryMock);
+
+        $updated = new \DateTimeImmutable();
+        $givenCategory = new Category(
+            id: new CategoryId(2),
+            code: new Code('category_test'),
+            templateUuid: TemplateUuid::fromUuid(Uuid::uuid4()),
+            labels: LabelCollection::fromArray(['en_US' => 'test category', 'fr_FR' => 'catégorie de test']),
+            updated: $updated
+        );
+
+        $categorySnapshot = $builder->create($givenCategory);
+
+        $expectedCategorySnapshot = [
+            'code' => 'category_test',
+            'parent' => '',
+            'updated' => $updated->format('c'),
+            'label-en_US' => 'test category',
+            'label-fr_FR' => 'catégorie de test'
+        ];
+
+        $this->assertEquals($expectedCategorySnapshot, $categorySnapshot);
+    }
+}

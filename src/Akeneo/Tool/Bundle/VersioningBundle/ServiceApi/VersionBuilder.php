@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -21,7 +22,8 @@ class VersionBuilder
     public function __construct(
         private readonly VersionFactory $versionFactory,
         private readonly VersionRepository $versionRepository,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ObjectManager $objectManager,
     )
     {
     }
@@ -45,7 +47,19 @@ class VersionBuilder
             ->setSnapshot($snapshot)
             ->setChangeset($changeset);
 
+        $this->computeChangeSet($version);
+
         return $version;
+    }
+
+    private function computeChangeSet(Version $version): void
+    {
+        if ($version->getChangeset()) {
+            $this->objectManager->persist($version);
+        } else {
+            $this->objectManager->remove($version);
+        }
+        $this->objectManager->flush();
     }
 
     private function buildChangeset(array $oldSnapshot, array $newSnapshot)

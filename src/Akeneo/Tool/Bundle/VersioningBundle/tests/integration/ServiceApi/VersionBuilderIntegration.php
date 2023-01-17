@@ -11,6 +11,7 @@ use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder;
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -20,11 +21,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class VersionBuilderIntegration extends TestCase
 {
     private VersionFactory $versionFactory;
+    private ObjectManager $objectManager;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->versionFactory = $this->get('pim_versioning.factory.version');
+        $this->objectManager = $this->get('doctrine.orm.default_entity_manager');
     }
 
     public function testBuildVersionOnCategoryCreation(): void
@@ -44,7 +47,8 @@ class VersionBuilderIntegration extends TestCase
         $versionBuilder = new VersionBuilder(
             $this->versionFactory,
             $versionRepositoryMock,
-            $eventDispatcherMock
+            $eventDispatcherMock,
+            $this->objectManager
         );
 
         $givenSnapshot = [
@@ -52,6 +56,7 @@ class VersionBuilderIntegration extends TestCase
             'parent' => 'master',
             'updated' => '2023-01-16T14:30:30+00:00',
             'label-en_US' => 'photo',
+            'label-fr_FR' => 'image',
         ];
 
         $givenChangeSet = [
@@ -70,6 +75,10 @@ class VersionBuilderIntegration extends TestCase
             'label-en_US' => [
                 'old' => '',
                 'new' => 'photo'
+            ],
+            'label-fr_FR' => [
+                'old' => '',
+                'new' => 'image'
             ]
         ];
 
