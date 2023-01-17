@@ -75,7 +75,10 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
         $client->request(
             'GET',
             '/rest/catalogs/attributes_by_target_type_and_target_format',
-            ['search' => 'name'],
+            [
+                'search' => 'name',
+                'targetType' => 'string'
+            ],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
