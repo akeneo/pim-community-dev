@@ -1,4 +1,3 @@
-//import {renderHook} from '@testing-library/react-hooks';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {mockResponse} from '../../tests/test-utils';
 import {useGetConditionItems} from '../useGetConditionItems';

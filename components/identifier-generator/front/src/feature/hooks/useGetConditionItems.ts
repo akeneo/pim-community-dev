@@ -4,7 +4,7 @@ import {Conditions} from '../models';
 
 const DEFAULT_LIMIT = 20;
 
-type Response = {
+type ItemsGroup = {
   id: string;
   text: string;
   children: {
@@ -21,8 +21,8 @@ enum STATE {
   USER_CHANGED_SEARCH,
 }
 
-function mergeItems(items: Response[], newPage: Response[]) {
-  const mergedItems: Response[] = [];
+function mergeItems(items: ItemsGroup[], newPage: ItemsGroup[]) {
+  const mergedItems: ItemsGroup[] = [];
   (items || []).forEach(item => mergedItems.push(item));
 
   newPage.forEach(({id, text, children}) => {
@@ -38,14 +38,14 @@ function mergeItems(items: Response[], newPage: Response[]) {
 }
 
 const useGetConditionItems: (isOpen: boolean, conditions: Conditions, limit?: number) => {
-  conditionItems: Response[],
+  conditionItems: ItemsGroup[],
   handleNextPage: () => void,
   searchValue: string,
   setSearchValue: (searchValue: string) => void,
 } = (isOpen, conditions, limit = 20) => {
 
   const router = useRouter();
-  const [items, setItems] = useState<Response[] | undefined>(undefined);
+  const [items, setItems] = useState<ItemsGroup[] | undefined>(undefined);
   const [page, setPage] = useState<number>(1);
   const [areRemainingElements, setAreRemainingElements] = useState<boolean>(true);
   const [state, setState] = useState<STATE>(STATE.FIRST_DISPLAY);
@@ -70,7 +70,7 @@ const useGetConditionItems: (isOpen: boolean, conditions: Conditions, limit?: nu
           ['X-Requested-With', 'XMLHttpRequest'],
         ],
       }).then(response => {
-        response.json().then((result: Response[]) => {
+        response.json().then((result: ItemsGroup[]) => {
           if (result.reduce((prev, group) => prev + group.children.length, 0) < (limit ?? DEFAULT_LIMIT)) {
             setAreRemainingElements(false);
           }

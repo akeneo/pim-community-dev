@@ -48,11 +48,6 @@ pim_identifier_generator:
             title: 'Create your product selection'
             text: 'All your products with an empty identifier will be impacted.'
             info: 'If you want to target specific products, add new conditions.'
-        property_type:
-            sections:
-                system: 'System'
-            enabled: 'Status'
-            family: 'Family'
         settings:
             enabled:
                 disabled: 'Disabled'
