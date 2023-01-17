@@ -1,11 +1,11 @@
 services:
     Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel:
         arguments:
-            - '@Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode'
+            - '@Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode'
             - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
 
-    Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode:
-        class: Akeneo\Category\Infrastructure\Storage\Sql\GetAllEnrichedCategoryValuesByCategoryCodeSql
+    Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode:
+        class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedCategoryValuesOrderedByCategoryCodeSql
         arguments:
             - '@database_connection'
 

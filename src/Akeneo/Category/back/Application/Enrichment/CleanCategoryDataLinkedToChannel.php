@@ -2,42 +2,50 @@
 
 namespace Akeneo\Category\Application\Enrichment;
 
-use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
+use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 
 class CleanCategoryDataLinkedToChannel
 {
+    private const CATEGORY_BATCH_SIZE = 100;
+
     public function __construct(
-        private readonly GetAllEnrichedCategoryValuesByCategoryCode $getAllEnrichedCategoryValuesByCategoryCode,
+        private readonly GetEnrichedCategoryValuesOrderedByCategoryCode $getEnrichedCategoryValuesOrderedByCategoryCode,
         private readonly UpdateCategoryEnrichedValues $updateCategoryEnrichedValues,
     ) {
     }
 
     public function __invoke(string $channelCode): void
     {
-        $valuesByCode = $this->getAllEnrichedCategoryValuesByCategoryCode->execute();
-        $batch = [];
+        $offset = 0;
+        $cleanedBatch = [];
 
-        foreach ($valuesByCode as $categoryCode => $json) {
-            $enrichedValues = json_decode($json, true);
-            $valueKeysToRemove = $this->getEnrichedValueKeysToRemove($enrichedValues, $channelCode);
-            if (!empty($valueKeysToRemove)) {
-                foreach ($valueKeysToRemove as $key) {
-                    unset($enrichedValues[$key]);
+        do {
+            $valuesByCode = $this->getEnrichedCategoryValuesOrderedByCategoryCode->byLimitAndOffset(self::CATEGORY_BATCH_SIZE, $offset);
+            $offset += self::CATEGORY_BATCH_SIZE;
+
+            foreach ($valuesByCode as $categoryCode => $json) {
+                $enrichedValues = json_decode($json, true);
+                $valueKeysToRemove = $this->getEnrichedValueKeysToRemove($enrichedValues, $channelCode);
+                if (!empty($valueKeysToRemove)) {
+                    foreach ($valueKeysToRemove as $key) {
+                        unset($enrichedValues[$key]);
+                    }
+                    $cleanedBatch[$categoryCode] = json_encode($enrichedValues);
                 }
-                $batch[$categoryCode] = json_encode($enrichedValues);
+
+                if (\count($cleanedBatch) >= self::CATEGORY_BATCH_SIZE) {
+                    $this->updateCategoriesBatch($cleanedBatch);
+                    $cleanedBatch = [];
+                }
             }
 
-            if (\count($batch) >= 100) {
-                $this->updateCategoriesBatch($batch);
-                $batch = [];
+            // no new enriched values are found in database and there are still cleaned values to update
+            if (empty($valuesByCode) && !empty($cleanedBatch)) {
+                $this->updateCategoriesBatch($cleanedBatch);
             }
-        }
-
-        if (!empty($batch)) {
-            $this->updateCategoriesBatch($batch);
-        }
+        } while (!empty($valuesByCode));
     }
 
     /**

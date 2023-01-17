@@ -2,10 +2,10 @@
 
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
+use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 
-class GetAllEnrichedCategoryValuesByCategoryCodeSqlIntegration extends CategoryTestCase
+class GetEnrichedCategoryValuesOrderedByCategoryCodeSqlIntegration extends CategoryTestCase
 {
     protected function setUp(): void
     {
@@ -41,7 +41,7 @@ class GetAllEnrichedCategoryValuesByCategoryCodeSqlIntegration extends CategoryT
 
     public function testItGetAllCategoryWithEnrichedValuesSortedByCategoryCode(): void
     {
-        $valuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
+        $valuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100,0);
 
         $this->assertTrue(in_array('socks', array_keys($valuesByCategoryCode)));
         $this->assertTrue(in_array('shoes', array_keys($valuesByCategoryCode)));

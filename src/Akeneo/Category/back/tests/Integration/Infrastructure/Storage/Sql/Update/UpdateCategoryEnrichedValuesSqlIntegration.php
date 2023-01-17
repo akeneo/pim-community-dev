@@ -2,7 +2,7 @@
 
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Sql\Update;
 
-use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
+use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
@@ -43,7 +43,7 @@ class UpdateCategoryEnrichedValuesSqlIntegration extends CategoryTestCase
 
     public function testItUpdateCategoriesWithNewValueCollection(): void
     {
-        $valuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
+        $valuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
 
         $socksValueCollection = json_decode($valuesByCategoryCode['socks'], true);
         $shoesValueCollection = json_decode($valuesByCategoryCode['shoes'], true);
@@ -73,7 +73,7 @@ class UpdateCategoryEnrichedValuesSqlIntegration extends CategoryTestCase
 
         $this->get(UpdateCategoryEnrichedValues::class)->execute($updatedBatch);
 
-        $updatedValuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
+        $updatedValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
 
         $updatedSocksValueCollection = json_decode($updatedValuesByCategoryCode['socks'], true);
         $this->assertEquals(

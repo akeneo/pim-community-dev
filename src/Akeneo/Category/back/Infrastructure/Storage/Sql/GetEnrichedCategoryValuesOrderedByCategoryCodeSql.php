@@ -2,10 +2,10 @@
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
+use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Doctrine\DBAL\Connection;
 
-final class GetAllEnrichedCategoryValuesByCategoryCodeSql implements GetAllEnrichedCategoryValuesByCategoryCode
+final class GetEnrichedCategoryValuesOrderedByCategoryCodeSql implements GetEnrichedCategoryValuesOrderedByCategoryCode
 {
     public function __construct(private readonly Connection $dbalConnection)
     {
@@ -16,15 +16,26 @@ final class GetAllEnrichedCategoryValuesByCategoryCodeSql implements GetAllEnric
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    public function execute(): array
+    public function byLimitAndOffset(int $limit, int $offset): array
     {
         $query = <<<SQL
             SELECT code, value_collection
             FROM pim_catalog_category category
             WHERE category.value_collection IS NOT NULL
+            LIMIT :limit OFFSET :offset
         SQL;
 
-        $data = $this->dbalConnection->fetchAllAssociative($query);
+        $data = $this->dbalConnection->fetchAllAssociative(
+            $query,
+            [
+                'limit' => $limit,
+                'offset' => $offset,
+            ],
+            [
+                'limit' => \PDO::PARAM_INT,
+                'offset' => \PDO::PARAM_INT,
+            ],
+        );
 
         $results = [];
         foreach ($data as $key => $value) {

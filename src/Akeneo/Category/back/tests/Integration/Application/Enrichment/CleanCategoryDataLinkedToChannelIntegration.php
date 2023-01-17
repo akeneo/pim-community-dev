@@ -3,7 +3,7 @@
 namespace Akeneo\Category\back\tests\Integration\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
-use Akeneo\Category\Application\Query\GetAllEnrichedCategoryValuesByCategoryCode;
+use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
@@ -37,13 +37,13 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
 
     public function testItCleanEnrichedValuesLinkedToDeletedChannel(): void
     {
-        $currentValuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
+        $currentValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
         $this->assertTrue(array_key_exists($this->getMobileTitleKey(), json_decode($currentValuesByCategoryCode['socks'], true)));
         $this->assertTrue(array_key_exists($this->getMobileTitleKey(), json_decode($currentValuesByCategoryCode['pants'], true)));
 
         // clean enriched categories data linked to 'mobile' channel
         $this->get(CleanCategoryDataLinkedToChannel::class)->__invoke('mobile');
-        $cleanedValuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
+        $cleanedValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
 
         $cleanedSocksValueCollection = json_decode($cleanedValuesByCategoryCode['socks'], true);
         $cleanedPantsValueCollection = json_decode($cleanedValuesByCategoryCode['pants'], true);
@@ -65,7 +65,7 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
 
     private function addMobileChannelToAlreadyEnrichedCategories(): void
     {
-        $valuesByCategoryCode = $this->get(GetAllEnrichedCategoryValuesByCategoryCode::class)->execute();
+        $valuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
 
         $socksValueCollection = json_decode($valuesByCategoryCode['socks'], true);
         $pantsValueCollection = json_decode($valuesByCategoryCode['pants'], true);
