@@ -130,9 +130,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController'
         arguments:
             - '@pim_catalog.repository.attribute_group'
-            - '@pim_enrich.repository.attribute_group.search'
             - '@pim_internal_api_serializer'
-            - '@pim_catalog.filter.chained'
             - '@pim_catalog.updater.attribute_group'
             - '@validator'
             - '@pim_catalog.saver.attribute_group'
@@ -145,6 +143,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups'
+            - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\GetAttributeGroups'
 
     pim_enrich.controller.rest.family:
         public: true
