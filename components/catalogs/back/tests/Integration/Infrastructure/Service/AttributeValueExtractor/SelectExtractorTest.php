@@ -13,7 +13,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  *
  * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Attribute\FindOneAttributeByCodeQuery
  */
-class TextExtractorTest extends IntegrationTestCase
+class SelectExtractorTest extends IntegrationTestCase
 {
     private ?AttributeValueExtractorRegistry $registry;
 
@@ -28,11 +28,19 @@ class TextExtractorTest extends IntegrationTestCase
 
     public function testItReturnsTheAttributeValue(): void
     {
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_simpleselect',
+            'options' => ['Red', 'Blue'],
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
         $product = [
             'raw_values' => [
-                'name' => [
+                'color' => [
                     'ecommerce' => [
-                        'en_US' => 'Product name'
+                        'en_US' => 'red'
                     ]
                 ]
             ]
@@ -40,14 +48,14 @@ class TextExtractorTest extends IntegrationTestCase
 
         $result = $this->registry->extract(
             product: $product,
-            attributeCode: 'name',
-            attributeType: 'pim_catalog_text',
+            attributeCode: 'color',
+            attributeType: 'pim_catalog_simpleselect',
             locale: 'en_US',
             scope: 'ecommerce',
-            parameters: [],
+            parameters: ['label_locale' => 'en_US'],
         );
 
-        $this->assertEquals('Product name', $result);
+        $this->assertEquals('Red', $result);
     }
 
     public function testItReturnsNullIfNotFound(): void
@@ -56,7 +64,7 @@ class TextExtractorTest extends IntegrationTestCase
             'raw_values' => [
                 'name' => [
                     'ecommerce' => [
-                        'en_US' => 'Product name'
+                        'en_US' => 'red'
                     ]
                 ]
             ]
@@ -65,12 +73,44 @@ class TextExtractorTest extends IntegrationTestCase
         $result = $this->registry->extract(
             product: $product,
             attributeCode: 'name',
-            attributeType: 'pim_catalog_text',
+            attributeType: 'pim_catalog_simpleselect',
             locale: '<all_locales>',
             scope: '<all_channels>',
-            parameters: [],
+            parameters: ['label_locale' => 'en_US'],
         );
 
         $this->assertEquals(null, $result);
+    }
+
+    public function testItReturnsTheSelectValueCodeIfNoTranslation(): void
+    {
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_simpleselect',
+            'options' => ['Red', 'Blue'],
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
+        $product = [
+            'raw_values' => [
+                'color' => [
+                    'ecommerce' => [
+                        'en_US' => 'red'
+                    ]
+                ]
+            ]
+        ];
+
+        $result = $this->registry->extract(
+            product: $product,
+            attributeCode: 'color',
+            attributeType: 'pim_catalog_simpleselect',
+            locale: 'en_US',
+            scope: 'ecommerce',
+            parameters: ['label_locale' => 'en_GB'],
+        );
+
+        $this->assertEquals('[red]', $result);
     }
 }
