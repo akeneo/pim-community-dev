@@ -80,11 +80,12 @@ const CategoriesTreePage: FC = () => {
   const confirmDeleteCategory = async (
     identifier: number,
     label: string,
+    code: string,
     numberOfProducts: number,
     onDelete: () => void
   ) => {
     if (isCategoryDeletionPossible(label, numberOfProducts)) {
-      setCategoryToDelete({identifier, label, onDelete});
+      setCategoryToDelete({identifier, label, code, numberOfProducts, onDelete});
       openDeleteCategoryModal();
     }
   };
@@ -94,6 +95,14 @@ const CategoriesTreePage: FC = () => {
     closeDeleteCategoryModal();
   };
 
+  const generateWarningForDeletion = (categoryToDelete: CategoryToDelete): string => {
+    if (categoryToDelete.numberOfProducts) {
+      return translate('pim_enrich.entity.category.category_tree_deletion.warning_products', {
+        name: categoryToDelete.label,
+      });
+    }
+    return '';
+  };
   useEffect(() => {
     loadTree();
   }, [loadTree, treeId]);
@@ -169,7 +178,8 @@ const CategoriesTreePage: FC = () => {
               await handleDeleteCategory(categoryToDelete);
               handleCloseDeleteCategoryModal();
             }}
-            message={'pim_enrich.entity.category.category_deletion.confirmation'}
+            message={'pim_enrich.entity.category.category_deletion.confirmation_question'}
+            warning={generateWarningForDeletion(categoryToDelete)}
           />
         )}
       </PageContent>

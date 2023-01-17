@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Api\Event;
+namespace Akeneo\Category\Domain\Event;
 
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
