@@ -7,45 +7,55 @@ import {CONDITION_NAMES, Operator} from '../../models';
 describe('useGetConditionItems', () => {
   test('it paginate items', async () => {
     const resultsPage1 = [
-      {id: 'system', text: 'System', children: [
+      {
+        id: 'system',
+        text: 'System',
+        children: [
           {id: 'family', text: 'Family'},
           {id: 'enabled', text: 'Enabled'},
-        ]},
-      {id: 'marketing', text: 'Marketing', children: [
-          {id: 'brand', text: 'Brand'},
-        ]}
+        ],
+      },
+      {id: 'marketing', text: 'Marketing', children: [{id: 'brand', text: 'Brand'}]},
     ];
 
     const resultsPage2 = [
-      {id: 'marketing', text: 'Marketing', children: [
-          {id: 'color', text: 'Color'},
-        ]},
-      {id: 'design', text: 'Design', children: [
-          {id: 'main_color', text: 'Main Color'}
-        ]},
+      {id: 'marketing', text: 'Marketing', children: [{id: 'color', text: 'Color'}]},
+      {id: 'design', text: 'Design', children: [{id: 'main_color', text: 'Main Color'}]},
     ];
 
     const mergedResults = [
-      {id: 'system', text: 'System', children: [
+      {
+        id: 'system',
+        text: 'System',
+        children: [
           {id: 'family', text: 'Family'},
           {id: 'enabled', text: 'Enabled'},
-        ]},
-      {id: 'marketing', text: 'Marketing', children: [
+        ],
+      },
+      {
+        id: 'marketing',
+        text: 'Marketing',
+        children: [
           {id: 'brand', text: 'Brand'},
           {id: 'color', text: 'Color'},
-        ]},
-      {id: 'design', text: 'Design', children: [
-          {id: 'main_color', text: 'Main Color'}
-        ]},
-    ]
+        ],
+      },
+      {id: 'design', text: 'Design', children: [{id: 'main_color', text: 'Main Color'}]},
+    ];
 
-    const expectCallPage1 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {ok: true, json: resultsPage1});
+    const expectCallPage1 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {
+      ok: true,
+      json: resultsPage1,
+    });
     const {result, waitFor} = renderHook(() => useGetConditionItems(true, [], 3), {wrapper: createWrapper()});
     await waitFor(() => result.current?.conditionItems?.length > 0);
     expectCallPage1();
     expect(result.current.conditionItems).toEqual(resultsPage1);
 
-    const expectCallPage2 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {ok: true, json: resultsPage2});
+    const expectCallPage2 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {
+      ok: true,
+      json: resultsPage2,
+    });
     act(() => {
       result.current.handleNextPage();
     });
@@ -56,28 +66,32 @@ describe('useGetConditionItems', () => {
 
   test('it resets items on search', async () => {
     const resultsPage1 = [
-      {id: 'system', text: 'System', children: [
+      {
+        id: 'system',
+        text: 'System',
+        children: [
           {id: 'family', text: 'Family'},
           {id: 'enabled', text: 'Enabled'},
-        ]},
-      {id: 'marketing', text: 'Marketing', children: [
-          {id: 'brand', text: 'Brand'},
-        ]}
+        ],
+      },
+      {id: 'marketing', text: 'Marketing', children: [{id: 'brand', text: 'Brand'}]},
     ];
 
-    const resultsWithSearch = [
-      {id: 'system', text: 'System', children: [
-          {id: 'family', text: 'Family'},
-        ]},
-    ];
+    const resultsWithSearch = [{id: 'system', text: 'System', children: [{id: 'family', text: 'Family'}]}];
 
-    const expectCallPage1 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {ok: true, json: resultsPage1});
+    const expectCallPage1 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {
+      ok: true,
+      json: resultsPage1,
+    });
     const {result, waitFor} = renderHook(() => useGetConditionItems(true, [], 3), {wrapper: createWrapper()});
     await waitFor(() => result.current?.conditionItems?.length > 0);
     expectCallPage1();
     expect(result.current.conditionItems).toEqual(resultsPage1);
 
-    const expectCallPage2 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {ok: true, json: resultsWithSearch});
+    const expectCallPage2 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {
+      ok: true,
+      json: resultsWithSearch,
+    });
     act(() => {
       result.current.setSearchValue('fam');
     });
@@ -91,18 +105,18 @@ describe('useGetConditionItems', () => {
 
   test('it filters system items', async () => {
     const resultsPage1 = [
-      {id: 'system', text: 'System', children: [
-          {id: 'enabled', text: 'Enabled'},
-        ]},
-      {id: 'marketing', text: 'Marketing', children: [
-          {id: 'brand', text: 'Brand'},
-        ]}
+      {id: 'system', text: 'System', children: [{id: 'enabled', text: 'Enabled'}]},
+      {id: 'marketing', text: 'Marketing', children: [{id: 'brand', text: 'Brand'}]},
     ];
 
-    const expectCallPage1 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {ok: true, json: resultsPage1});
-    const {result, waitFor} = renderHook(() => useGetConditionItems(true, [
-      {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
-    ], 3), {wrapper: createWrapper()});
+    const expectCallPage1 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {
+      ok: true,
+      json: resultsPage1,
+    });
+    const {result, waitFor} = renderHook(
+      () => useGetConditionItems(true, [{type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY}], 3),
+      {wrapper: createWrapper()}
+    );
     await waitFor(() => result.current?.conditionItems?.length > 0);
     expectCallPage1();
     expect(result.current.conditionItems).toEqual(resultsPage1);
