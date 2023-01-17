@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
@@ -74,12 +73,12 @@ class GetMappedProductActionTest extends IntegrationTestCase
             'read_products',
         ]);
 
-        $this->commandBus->execute(new CreateCatalogCommand(
+        $this->createCatalog(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            'shopifi'
-        ));
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+            'shopifi',
+            true,
+        );
 
         $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -137,11 +136,13 @@ class GetMappedProductActionTest extends IntegrationTestCase
         $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs', 'read_products',
         ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
+
+        $this->createCatalog(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            'shopifi'
-        ));
+            'shopifi',
+            false,
+        );
 
         $this->client->request(
             'GET',
@@ -211,12 +212,13 @@ class GetMappedProductActionTest extends IntegrationTestCase
             'read_catalogs',
             'read_products',
         ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
+
+        $this->createCatalog(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            'shopifi'
-        ));
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+            'shopifi',
+            true,
+        );
 
         $this->client->request(
             'GET',
@@ -274,12 +276,13 @@ class GetMappedProductActionTest extends IntegrationTestCase
             'read_catalogs',
             'read_products',
         ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
+
+        $this->createCatalog(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            'shopifi'
-        ));
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+            'shopifi',
+            true,
+        );
 
         $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
             'uuid' => [
