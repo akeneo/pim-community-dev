@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\VersioningBundle\ServiceApi;
 
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository;
+use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
+use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -17,12 +21,15 @@ class VersionBuilder
     public function __construct(
         private readonly VersionFactory $versionFactory,
         private readonly VersionRepository $versionRepository,
+        private readonly EventDispatcherInterface $eventDispatcher
     )
     {
     }
 
-    public function buildVersionWithId(?string $resourceId, string $resourceName, array $snapshot, string $author): Version
+    public function buildVersionWithId(?string $resourceId, string $resourceName, array $snapshot): Version
     {
+        $username = $this->getUsername();
+
         $previousVersion = $this->versionRepository->getNewestLogEntry(
             resourceName: $resourceName,
             resourceId: $resourceId,
@@ -33,7 +40,7 @@ class VersionBuilder
 
         $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
-        $version = $this->versionFactory->create($resourceName, $resourceId, null, 'admin');
+        $version = $this->versionFactory->create($resourceName, $resourceId, null, $username);
         $version->setVersion($versionNumber)
             ->setSnapshot($snapshot)
             ->setChangeset($changeset);
@@ -98,7 +105,7 @@ class VersionBuilder
         );
 
         $localOldSnapshot = array_map(
-            static function ($oldItem) {
+            static function ($oldItem): array {
                 return ['old' => $oldItem];
             },
             $oldSnapshot
@@ -107,7 +114,7 @@ class VersionBuilder
         $mergedSnapshot = array_replace_recursive($localNewSnapshot, $localOldSnapshot);
 
         return array_map(
-            static function ($mergedItem) {
+            static function ($mergedItem): array {
                 return [
                     'old' => array_key_exists('old', $mergedItem) ? $mergedItem['old'] : '',
                     'new' => array_key_exists('new', $mergedItem) ? $mergedItem['new'] : ''
@@ -115,6 +122,17 @@ class VersionBuilder
             },
             $mergedSnapshot
         );
+    }
+
+    private function getUsername(): string
+    {
+        $username = VersionManager::DEFAULT_SYSTEM_USER;
+        $event = $this->eventDispatcher->dispatch(new BuildVersionEvent(), BuildVersionEvents::PRE_BUILD);
+
+        if (null !== $event->getUsername()) {
+            $username = $event->getUsername();
+        }
+        return $username;
     }
 
 }

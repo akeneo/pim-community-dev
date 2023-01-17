@@ -6,9 +6,12 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\ServiceApi;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository;
+use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
+use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder;
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -26,11 +29,22 @@ class VersionBuilderIntegration extends TestCase
 
     public function testBuildVersionOnCategoryCreation(): void
     {
-        $versionRepositoryMock = $this->createStub(VersionRepository::class);
+        $versionRepositoryMock = $this->createMock(VersionRepository::class);
         $versionRepositoryMock->method('getNewestLogEntry')->willReturn(null);
+
+        $givenAuthor = 'julia';
+        $givenPreBuildVersionEvent = (new BuildVersionEvent())->setUsername($givenAuthor);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcherMock
+            ->method('dispatch')
+            ->with(new BuildVersionEvent(), BuildVersionEvents::PRE_BUILD)
+            ->willReturn($givenPreBuildVersionEvent)
+        ;
+
         $versionBuilder = new VersionBuilder(
             $this->versionFactory,
-            $versionRepositoryMock
+            $versionRepositoryMock,
+            $eventDispatcherMock
         );
 
         $givenSnapshot = [
@@ -60,13 +74,11 @@ class VersionBuilderIntegration extends TestCase
         ];
 
         $givenResourceName = 'Akeneo\Category\Infrastructure\Component\Model\Category';
-        $givenAuthor = 'admin';
 
         $version = $versionBuilder->buildVersionWithId(
             resourceId: null,
             resourceName: $givenResourceName,
             snapshot: $givenSnapshot,
-            author: 'admin'
         );
 
         $expectedVersion = $this->versionFactory->create($givenResourceName, null, null, $givenAuthor, null);

@@ -4,3 +4,4 @@ services:
     arguments:
       - '@pim_versioning.factory.version'
       - '@pim_versioning.repository.version'
+      - '@event_dispatcher'
