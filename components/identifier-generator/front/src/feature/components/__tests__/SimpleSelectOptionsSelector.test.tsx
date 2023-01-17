@@ -3,6 +3,7 @@ import {render} from '../../tests/test-utils';
 import {SimpleSelectOptionsSelector} from '../SimpleSelectOptionsSelector';
 import {fireEvent, waitFor} from '@testing-library/react';
 import {screen} from 'akeneo-design-system/lib/storybook/test-util';
+import {OptionCode} from '../../models/option';
 
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
@@ -143,35 +144,47 @@ const mockGetOptionCodes = (response: {
   status?: number;
   body?: unknown;
 }) => {
-  const fetchImplementation = jest.fn().mockImplementation((requestArgs: {key: string; params: any}, args) => {
-    const resolvedPromise = {
-      ok: response.ok,
-      json: () => Promise.resolve(firstPaginatedResponse),
-      statusText: response.statusText || '',
-      status: response.status ?? 200,
-    };
-    if (!response.ok) {
-      jest.spyOn(console, 'error');
-      // eslint-disable-next-line no-console
-      (console.error as jest.Mock).mockImplementation(() => null);
-    }
+  const fetchImplementation = jest.fn().mockImplementation(
+    (
+      requestArgs: {
+        key: string;
+        params: {
+          codes: OptionCode[];
+          page: number;
+          search: string;
+        };
+      },
+      args
+    ) => {
+      const resolvedPromise = {
+        ok: response.ok,
+        json: () => Promise.resolve(firstPaginatedResponse),
+        statusText: response.statusText || '',
+        status: response.status ?? 200,
+      };
+      if (!response.ok) {
+        jest.spyOn(console, 'error');
+        // eslint-disable-next-line no-console
+        (console.error as jest.Mock).mockImplementation(() => null);
+      }
 
-    if (requestArgs.key !== 'akeneo_identifier_generator_get_attribute_options') {
-      throw new Error(`Unmocked url "${requestArgs.key}" [${args.method}]`);
-    }
+      if (requestArgs.key !== 'akeneo_identifier_generator_get_attribute_options') {
+        throw new Error(`Unmocked url "${requestArgs.key}" [${args.method}]`);
+      }
 
-    if (requestArgs.params.codes.length === 3 && requestArgs.params.limit === 3) {
-      resolvedPromise.json = () => Promise.resolve(selectedOptionsMockResponse);
-    } else if (requestArgs.params.page === 2) {
-      resolvedPromise.json = () => Promise.resolve(secondPaginatedResponse);
-    } else if (requestArgs.params.search === 'OptionF') {
-      resolvedPromise.json = () => Promise.resolve([{code: 'option_f', labels: {en_US: 'OptionF'}}]);
-    } else {
-      resolvedPromise.json = () => Promise.resolve(firstPaginatedResponse);
-    }
+      if (requestArgs.params.codes.length === 3 && requestArgs.params.limit === 3) {
+        resolvedPromise.json = () => Promise.resolve(selectedOptionsMockResponse);
+      } else if (requestArgs.params.page === 2) {
+        resolvedPromise.json = () => Promise.resolve(secondPaginatedResponse);
+      } else if (requestArgs.params.search === 'OptionF') {
+        resolvedPromise.json = () => Promise.resolve([{code: 'option_f', labels: {en_US: 'OptionF'}}]);
+      } else {
+        resolvedPromise.json = () => Promise.resolve(firstPaginatedResponse);
+      }
 
-    return Promise.resolve(resolvedPromise);
-  });
+      return Promise.resolve(resolvedPromise);
+    }
+  );
   jest.spyOn(global, 'fetch').mockImplementation(fetchImplementation);
 
   return fetchImplementation;
