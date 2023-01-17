@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {Search, useAutoFocus, Table, Badge} from 'akeneo-design-system';
-import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
+import {useDebounceCallback, useTranslate, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {
   useAttributeGroupPermissions,
   useAttributeGroupsIndexState,
@@ -9,8 +9,6 @@ import {
 } from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
-
-const FeatureFlags = require('pim/feature-flags');
 
 type Props = {
   groups: AttributeGroup[];
@@ -25,6 +23,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const featureFlags = useFeatureFlags();
 
   useAutoFocus(inputRef);
 
@@ -61,7 +60,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
         <Table isDragAndDroppable={sortGranted} isSelectable={true} onReorder={(order) => refreshOrder(order.map((index) => groups[index]))}>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
-            {FeatureFlags.isEnabled('data_quality_insights') && (
+            {featureFlags.isEnabled('data_quality_insights') && (
                 <Table.HeaderCell>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</Table.HeaderCell>
             )}
           </Table.Header>
@@ -69,10 +68,10 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
             {filteredGroups.map(group => (
                 <Table.Row key={group.code} isSelected={false} onSelectToggle={() => {}}>
                   <Table.Cell>{getLabel(group)}</Table.Cell>
-                  {FeatureFlags.isEnabled('data_quality_insights') && (
+                  {featureFlags.isEnabled('data_quality_insights') && (
                       <Table.Cell>
-                        <Badge level={group.isDqiActivated ? 'primary' : 'danger'}>
-                          {translate(`akeneo_data_quality_insights.attribute_group.${group.isDqiActivated ? 'activated' : 'disabled'}`)}
+                        <Badge level={group.is_dqi_activated ? 'primary' : 'danger'}>
+                          {translate(`akeneo_data_quality_insights.attribute_group.${group.is_dqi_activated ? 'activated' : 'disabled'}`)}
                         </Badge>
                       </Table.Cell>
                   )}
