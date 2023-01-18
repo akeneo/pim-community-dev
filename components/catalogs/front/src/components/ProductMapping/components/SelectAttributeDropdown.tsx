@@ -46,7 +46,8 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error}) => {
                         onMouseDown={openDropdown}
                         emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                         openLabel={translate('akeneo_catalogs.common.select.open')}
-                        value={attribute?.label ?? (code.length > 0 ? `[${code}]` : '')}
+                        value={attribute?.label ?? (code.length > 0 ? `[${code}]` : null)}
+                        placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.placeholder')}
                         onChange={() => null}
                         clearable={false}
                         data-testid='product-mapping-select-attribute'

@@ -126,6 +126,7 @@ akeneo_catalogs:
         source:
             title: Select source
             parameters:
+                placeholder: Select an attribute
                 title: Source parameters
                 channel:
                     label: Channel
