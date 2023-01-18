@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\AttributeGroup\Query;
 
-use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\GetAttributeGroups;
+use Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;

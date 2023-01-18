@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
-use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\GetAttributeGroups;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -15,7 +14,6 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -38,34 +36,142 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeGroupController
 {
+    /** @var AttributeGroupRepositoryInterface */
+    protected $attributeGroupRepo;
+
+    /** @var SearchableRepositoryInterface */
+    protected $attributeGroupSearchableRepository;
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
+
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var RemoverInterface */
+    protected $remover;
+
+    /** @var EntityRepository */
+    protected $attributeRepository;
+
+    /** @var ObjectUpdaterInterface */
+    protected $attributeUpdater;
+
+    /** @var SaverInterface */
+    protected $attributeSaver;
+
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    /** @var SimpleFactoryInterface */
+    protected $attributeGroupFactory;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var CollectionFilterInterface */
+    protected $inputFilter;
+
+    /** @var FindAttributeCodesForAttributeGroup */
+    private $findAttributeCodesForAttributeGroup;
+
     public function __construct(
-        private AttributeGroupRepositoryInterface $attributeGroupRepo,
-        private NormalizerInterface $normalizer,
-        private ObjectUpdaterInterface $updater,
-        private ValidatorInterface $validator,
-        private SaverInterface $saver,
-        private RemoverInterface $remover,
-        private EntityRepository $attributeRepository,
-        private ObjectUpdaterInterface $attributeUpdater,
-        private SaverInterface $attributeSaver,
-        private SecurityFacade $securityFacade,
-        private SimpleFactoryInterface $attributeGroupFactory,
-        private EventDispatcherInterface $eventDispatcher,
-        private CollectionFilterInterface $inputFilter,
-        private FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup,
-        private GetAttributeGroups $getAttributeGroups,
+        AttributeGroupRepositoryInterface $attributeGroupRepo,
+        SearchableRepositoryInterface $attributeGroupSearchableRepository,
+        NormalizerInterface $normalizer,
+        CollectionFilterInterface $collectionFilter,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        SaverInterface $saver,
+        RemoverInterface $remover,
+        EntityRepository $attributeRepository,
+        ObjectUpdaterInterface $attributeUpdater,
+        SaverInterface $attributeSaver,
+        SecurityFacade $securityFacade,
+        SimpleFactoryInterface $attributeGroupFactory,
+        EventDispatcherInterface $eventDispatcher,
+        CollectionFilterInterface $inputFilter,
+        FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup
     ) {
+        $this->attributeGroupRepo                 = $attributeGroupRepo;
+        $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
+        $this->normalizer                         = $normalizer;
+        $this->collectionFilter                   = $collectionFilter;
+        $this->updater                            = $updater;
+        $this->validator                          = $validator;
+        $this->saver                              = $saver;
+        $this->remover                            = $remover;
+        $this->attributeRepository                = $attributeRepository;
+        $this->attributeUpdater                   = $attributeUpdater;
+        $this->attributeSaver                     = $attributeSaver;
+        $this->securityFacade                     = $securityFacade;
+        $this->attributeGroupFactory              = $attributeGroupFactory;
+        $this->eventDispatcher                    = $eventDispatcher;
+        $this->inputFilter                        = $inputFilter;
+        $this->findAttributeCodesForAttributeGroup = $findAttributeCodesForAttributeGroup;
     }
 
-    public function indexAction(): JsonResponse
+    /**
+     * Search attribute group collection
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function searchAction(Request $request)
     {
-        if (!$this->securityFacade->isGranted('pim_api_attribute_group_list')) {
-            throw AccessDeniedException::create(__CLASS__, __METHOD__);
+        $applyFilters = $request->request->getBoolean('apply_filters', true);
+
+        $attributeGroups = $this->attributeGroupSearchableRepository
+            ->findBySearch(
+                $request->request->get('search'),
+                $this->parseOptions($request)
+            );
+
+        if ($applyFilters) {
+            $attributeGroups = $this->collectionFilter->filterCollection(
+                $attributeGroups,
+                'pim.internal_api.attribute_group.view'
+            );
         }
 
-        $attributeGroups = $this->getAttributeGroups->all();
+        $normalizedAttributeGroups = [];
 
-        return new JsonResponse($attributeGroups);
+        foreach ($attributeGroups as $attributeGroup) {
+            $normalizedAttributeGroups[$attributeGroup->getCode()] = $this->normalizer
+                ->normalize($attributeGroup, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedAttributeGroups);
+    }
+
+    /**
+     * Get attribute group collection.
+     * We should spilt the search and index action in two controllers to handle rights properly.
+     *
+     * @return JsonResponse
+     */
+    public function indexAction()
+    {
+        $attributeGroups = $this->attributeGroupRepo->findAll();
+
+        $normalizedAttributeGroups = [];
+
+        foreach ($attributeGroups as $attributeGroup) {
+            $normalizedAttributeGroups[$attributeGroup->getCode()] = $this->normalizer
+                ->normalize($attributeGroup, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedAttributeGroups);
     }
 
     /**
