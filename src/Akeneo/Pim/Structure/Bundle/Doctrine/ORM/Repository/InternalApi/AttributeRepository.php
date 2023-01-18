@@ -2,14 +2,11 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
-use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -92,13 +89,4 @@ class AttributeRepository extends EntityRepository implements
 
         return $qb;
     }
-
-//    /**
-//     * {@inheritdoc}
-//     *
-//     * @param QueryBuilder|ProductQueryBuilderInterface $qb
-//     */
-//    public function applyMassActionParameters($qb, $inset, array $values)
-//    {
-//    }
 }
