@@ -41,41 +41,51 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
   return (
     <>
       <Search
-          sticky={0}
-          placeholder={translate('pim_common.search')}
-          searchValue={searchString}
-          onSearchChange={onSearch}
-          inputRef={inputRef}
+        sticky={0}
+        placeholder={translate('pim_common.search')}
+        searchValue={searchString}
+        onSearchChange={onSearch}
+        inputRef={inputRef}
       >
         <Search.ResultCount>
           {translate('pim_common.result_count', {itemsCount: filteredGroups.length}, filteredGroups.length)}
         </Search.ResultCount>
       </Search>
       {searchString !== '' && filteredGroups.length === 0 ? (
-          <NoResults
-              title={translate('pim_enrich.entity.attribute_group.grid.no_search_result')}
-              subtitle={translate('pim_datagrid.no_results_subtitle')}
-          />
+        <NoResults
+          title={translate('pim_enrich.entity.attribute_group.grid.no_search_result')}
+          subtitle={translate('pim_datagrid.no_results_subtitle')}
+        />
       ) : (
-        <Table isDragAndDroppable={sortGranted} isSelectable={true} onReorder={(order) => refreshOrder(order.map((index) => groups[index]))}>
+        <Table
+          isDragAndDroppable={sortGranted}
+          isSelectable={true}
+          onReorder={order => refreshOrder(order.map(index => groups[index]))}
+        >
           <Table.Header>
             <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
             {featureFlags.isEnabled('data_quality_insights') && (
-                <Table.HeaderCell>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</Table.HeaderCell>
+              <Table.HeaderCell>
+                {translate('akeneo_data_quality_insights.attribute_group.dqi_status')}
+              </Table.HeaderCell>
             )}
           </Table.Header>
           <Table.Body>
             {filteredGroups.map(group => (
-                <Table.Row key={group.code} isSelected={false} onSelectToggle={() => {}}>
-                  <Table.Cell>{getLabel(group)}</Table.Cell>
-                  {featureFlags.isEnabled('data_quality_insights') && (
-                      <Table.Cell>
-                        <Badge level={group.is_dqi_activated ? 'primary' : 'danger'}>
-                          {translate(`akeneo_data_quality_insights.attribute_group.${group.is_dqi_activated ? 'activated' : 'disabled'}`)}
-                        </Badge>
-                      </Table.Cell>
-                  )}
-                </Table.Row>
+              <Table.Row key={group.code} isSelected={false} onSelectToggle={() => {}}>
+                <Table.Cell>{getLabel(group)}</Table.Cell>
+                {featureFlags.isEnabled('data_quality_insights') && (
+                  <Table.Cell>
+                    <Badge level={group.is_dqi_activated ? 'primary' : 'danger'}>
+                      {translate(
+                        `akeneo_data_quality_insights.attribute_group.${
+                          group.is_dqi_activated ? 'activated' : 'disabled'
+                        }`
+                      )}
+                    </Badge>
+                  </Table.Cell>
+                )}
+              </Table.Row>
             ))}
           </Table.Body>
         </Table>
