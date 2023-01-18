@@ -1,5 +1,6 @@
 export * from './useCreateIdentifierGenerator';
 export * from './useDeleteIdentifierGenerator';
+export * from './useGetConditionItems';
 export * from './useGetIdentifierGenerator';
 export * from './useGetIdentifierGenerators';
 export * from './useIdentifierAttributes';

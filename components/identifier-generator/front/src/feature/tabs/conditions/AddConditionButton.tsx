@@ -1,65 +1,19 @@
-import React, {useMemo, useState} from 'react';
-import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
+import React from 'react';
+import {Button, Dropdown, GroupsIllustration, Search, useBooleanState} from 'akeneo-design-system';
 import {Condition, CONDITION_NAMES, Operator} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
-
-type ConditionsSelection = {
-  code: string;
-  items: {
-    code: string;
-    defaultValue: Condition;
-    limit?: number;
-  }[];
-};
+import {useGetConditionItems} from '../../hooks';
 
 type AddConditionButtonProps = {
   onAddCondition: (condition: Condition) => void;
   conditions: Condition[];
 };
 
-const items: ConditionsSelection[] = [
-  {
-    code: 'system',
-    items: [
-      {
-        code: CONDITION_NAMES.ENABLED,
-        defaultValue: {type: CONDITION_NAMES.ENABLED},
-        limit: 1,
-      },
-      {
-        code: CONDITION_NAMES.FAMILY,
-        defaultValue: {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []},
-        limit: 1,
-      },
-      {
-        code: CONDITION_NAMES.SIMPLE_SELECT,
-        defaultValue: {type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.IN, value: [], attributeCode: 'coucou'},
-        limit: 1,
-      },
-      {
-        code: 'bonjour',
-        defaultValue: {type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.IN, value: [], attributeCode: 'coucou2'},
-        limit: 1,
-      },
-      {
-        code: 'brand',
-        defaultValue: {type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.IN, value: [], attributeCode: 'brand'},
-        limit: 1,
-      },
-      {
-        code: 'unknown',
-        defaultValue: {type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.IN, value: [], attributeCode: 'unknown'},
-        limit: 1,
-      },
-    ],
-  },
-];
-
 const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAddCondition}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const debouncedSearchValue = useDebounce(searchValue);
+
+  const {conditionItems, handleNextPage, searchValue, setSearchValue} = useGetConditionItems(isOpen, conditions);
 
   const addElement = () => {
     open();
@@ -70,25 +24,18 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
     setSearchValue('');
   };
 
-  const addCondition = (defaultValue: Condition) => {
-    onAddCondition(defaultValue);
-    close();
+  const addCondition = (id: string) => {
+    if (id === 'family') {
+      onAddCondition({type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []});
+      close();
+    } else if (id === 'enabled') {
+      onAddCondition({type: CONDITION_NAMES.ENABLED});
+      close();
+    } else {
+      onAddCondition({type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.IN, value: [], attributeCode: id});
+      close();
+    }
   };
-
-  const filterElements = useMemo((): ConditionsSelection[] => {
-    return items
-      .map(item => {
-        const filteredItems = item.items
-          .filter(subItem => subItem.code.toLowerCase().includes(debouncedSearchValue.toLowerCase()))
-          .filter(
-            subItem =>
-              typeof subItem.limit !== 'undefined' &&
-              conditions.filter(condition => condition.type === subItem.code).length < subItem.limit
-          );
-        return {...item, items: filteredItems};
-      })
-      .filter(item => item.items.length > 0);
-  }, [debouncedSearchValue, conditions]);
 
   const searchInputRef = React.useRef<HTMLInputElement | null>(null);
   // We can not use the useAutoFocus here because the element is hidden when dropdown is not open
@@ -101,6 +48,14 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
   }, [searchInputRef, isOpen]);
 
   React.useEffect(focusCallback, [isOpen, focusCallback]);
+
+  const flatItems: {id: string; text: string; onClick: (() => void) | undefined}[] = [];
+  (conditionItems || []).forEach(({id, text, children}) => {
+    flatItems.push({id: `section-${id}`, text, onClick: undefined});
+    children.forEach(({id, text}) => {
+      flatItems.push({id: `item-${id}`, text, onClick: () => addCondition(id)});
+    });
+  });
 
   return (
     <Dropdown>
@@ -121,19 +76,17 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
           <Dropdown.ItemCollection
             noResultIllustration={React.createElement(GroupsIllustration)}
             noResultTitle={translate('pim_common.no_search_result')}
+            onNextPage={handleNextPage}
           >
-            {filterElements.map(({code, items}) => (
-              <React.Fragment key={code}>
-                <Dropdown.Section>
-                  {translate(`pim_identifier_generator.selection.property_type.sections.${code}`)}
-                </Dropdown.Section>
-                {items.map(({code, defaultValue}) => (
-                  <Dropdown.Item key={code} onClick={() => addCondition(defaultValue)}>
-                    {translate(`pim_identifier_generator.selection.property_type.${code}`)}
-                  </Dropdown.Item>
-                ))}
-              </React.Fragment>
-            ))}
+            {flatItems.map(({id, text, onClick}) =>
+              onClick ? (
+                <Dropdown.Item key={id} onClick={onClick}>
+                  {text}
+                </Dropdown.Item>
+              ) : (
+                <Dropdown.Section key={id}>{text}</Dropdown.Section>
+              )
+            )}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}
