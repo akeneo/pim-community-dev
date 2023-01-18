@@ -18,19 +18,13 @@ final class GetCatalogIdsUsingAttributesInProductMappingQuery implements GetCata
     ) {
     }
 
-    /**
-     * {@inheritdoc}
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \JsonException
-     */
     public function execute(array $attributeCodes): array
     {
         $query = <<<SQL
-        SELECT DISTINCT BIN_TO_UUID(id)
-        FROM akeneo_catalog
-        WHERE JSON_OVERLAPS(JSON_EXTRACT(product_mapping, '$.*.source'), :attributeCodes)
-            AND is_enabled IS TRUE
+            SELECT DISTINCT BIN_TO_UUID(id)
+            FROM akeneo_catalog
+            WHERE JSON_OVERLAPS(JSON_EXTRACT(product_mapping, '$.*.source'), :attributeCodes)
+                AND is_enabled IS TRUE
         SQL;
 
         /** @var string[] $catalogIds */

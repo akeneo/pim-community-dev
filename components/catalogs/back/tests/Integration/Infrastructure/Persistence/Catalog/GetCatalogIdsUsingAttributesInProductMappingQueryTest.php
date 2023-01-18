@@ -30,9 +30,9 @@ final class GetCatalogIdsUsingAttributesInProductMappingQueryTest extends Integr
     }
 
     /**
-     * @dataProvider catalogsByCurrenciesDataProvider
+     * @dataProvider catalogsUsingAttributesInProductMappingDataProvider
      */
-    public function testItGetsCatalogsByCurrency(
+    public function testItGetsCatalogsUsingAttributesInProductMapping(
         array $attributesFirstCatalog,
         array $attributesSecondCatalog,
         array $attributesQueried,
@@ -63,7 +63,7 @@ final class GetCatalogIdsUsingAttributesInProductMappingQueryTest extends Integr
         $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
     }
 
-    public function catalogsByCurrenciesDataProvider(): array
+    public function catalogsUsingAttributesInProductMappingDataProvider(): array
     {
         return [
             'gets two catalogs with two attributes' => [

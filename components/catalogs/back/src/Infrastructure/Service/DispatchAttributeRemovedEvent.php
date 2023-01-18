@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Akeneo\Catalogs\Infrastructure\Service;
 
 use Akeneo\Catalogs\Application\Service\DispatchAttributeRemovedEventInterface;
