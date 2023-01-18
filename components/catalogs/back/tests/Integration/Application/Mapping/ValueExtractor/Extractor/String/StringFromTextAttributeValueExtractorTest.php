@@ -39,10 +39,10 @@ class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
             'raw_values' => [
                 'name' => [
                     'ecommerce' => [
-                        'en_US' => 'Product name'
-                    ]
-                ]
-            ]
+                        'en_US' => 'Product name',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(
@@ -63,10 +63,10 @@ class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
             'raw_values' => [
                 'name' => [
                     'ecommerce' => [
-                        'en_US' => 'Product name'
-                    ]
-                ]
-            ]
+                        'en_US' => 'Product name',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(

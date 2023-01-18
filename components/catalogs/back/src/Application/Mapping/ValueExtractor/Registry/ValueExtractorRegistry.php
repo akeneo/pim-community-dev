@@ -23,7 +23,7 @@ final class ValueExtractorRegistry
             if (!$extractor instanceof ValueExtractorInterface) {
                 throw new \LogicException(
                     static::class . ' accepts only array of ' .
-                    ValueExtractorInterface::class . ' as argument.'
+                    ValueExtractorInterface::class . ' as argument.',
                 );
             }
         }

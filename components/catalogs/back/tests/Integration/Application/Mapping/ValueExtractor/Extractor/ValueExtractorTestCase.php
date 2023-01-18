@@ -29,7 +29,7 @@ abstract class ValueExtractorTestCase extends IntegrationTestCase
         // check implemented interface
         $this->assertInstanceOf(
             self::TARGET_TYPES_INTERFACES_MAPPING[$extractor->getSupportedTargetType()],
-            $extractor
+            $extractor,
         );
 
         // or check the return type (more complicated but prevent covriance)
@@ -40,7 +40,7 @@ abstract class ValueExtractorTestCase extends IntegrationTestCase
 
         $this->assertEqualsCanonicalizing(
             self::TARGET_TYPES_RETURN_TYPES_MAPPING[$extractor->getSupportedTargetType()],
-            $this->flattenReturnTypes($returnType)
+            $this->flattenReturnTypes($returnType),
         );
     }
 
@@ -49,7 +49,7 @@ abstract class ValueExtractorTestCase extends IntegrationTestCase
      */
     private function flattenReturnTypes(\ReflectionType $type): array
     {
-        $returnTypes =[];
+        $returnTypes = [];
 
         if ($type instanceof \ReflectionIntersectionType) {
             foreach ($type->getTypes() as $innerType) {
@@ -69,11 +69,10 @@ abstract class ValueExtractorTestCase extends IntegrationTestCase
             throw new \LogicException('Unknown Reflection type');
         }
 
-        if (true === $type->allowsNull()) {
+        if ($type->allowsNull()) {
             $returnTypes[] = 'null';
         }
 
         return $returnTypes;
     }
-
 }
