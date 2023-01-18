@@ -9,6 +9,10 @@ namespace Akeneo\Catalogs\Application\Persistence\Catalog;
  */
 interface GetAttributeTypeByCodesQueryInterface
 {
+    /**
+     * @param array<string> $codes
+     * @return array<string, string>
+     */
     public function execute(
         array $codes,
     ): array;

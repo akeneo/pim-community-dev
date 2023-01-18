@@ -5,8 +5,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Service;
 
-use Akeneo\Catalogs\Application\Persistence\Attribute\GetAttributeOptionsByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
+use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetAttributeTypeByCodesQuery;
@@ -24,7 +25,7 @@ class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly GetAttributeTypeByCodesQuery $getAttributeTypeByCodesQuery,
-        private readonly GetAttributeOptionsByCodeQueryInterface $getAttributeOptionsByCodeQuery,
+        private readonly AttributeValueExtractorRegistry $attributeValueExtractorRegistry,
     ) {
     }
 
@@ -42,57 +43,37 @@ class ProductMapper implements ProductMapperInterface
     ): array {
         $mappedProduct = [];
 
-        $attributeTypeBySource = $this->getAttributeTypeByCodesQuery->execute(\array_column($productMapping, 'source'));
+        /** @var array<string> $sourceAttributeCodes */
+        $sourceAttributeCodes = \array_filter(\array_column($productMapping, 'source'));
+        $attributeTypeBySource = $this->getAttributeTypeByCodesQuery->execute($sourceAttributeCodes);
 
-        /** @var string $target */
-        foreach (\array_keys($productMappingSchema['properties']) as $target) {
-            $sourceValue = '';
+        /** @var string $targetCode */
+        foreach (\array_keys($productMappingSchema['properties']) as $targetCode) {
+            $sourceValue = null;
 
-            if ('uuid' === $target) {
+            if ('uuid' === $targetCode) {
                 $sourceValue = $product['uuid']->toString();
-            } elseif (\array_key_exists($target, $productMapping)) {
-                $sourceValue = $this->getProductAttributeValue(
-                    $product,
-                    $productMapping[$target]['source'],
-                    $productMapping[$target]['locale'],
-                    $productMapping[$target]['scope']
-                );
-
-                if (isset($attributeTypeBySource[$productMapping[$target]['source']]) &&
-                    $attributeTypeBySource[$productMapping[$target]['source']] === 'pim_catalog_simpleselect' &&
-                    $sourceValue !== '') {
-                    $locale = $productMapping[$target]['locale'] ?? 'en_US';
-                    $sourceValue = $this->getSimpleSelectLabel($productMapping[$target]['source'], $sourceValue, $locale);
+            } elseif (\array_key_exists($targetCode, $productMapping) &&
+                $productMapping[$targetCode]['source'] !== null &&
+                \array_key_exists($productMapping[$targetCode]['source'],$attributeTypeBySource)) {
+                try {
+                    $sourceValue = $this->attributeValueExtractorRegistry->extract(
+                        $product,
+                        $productMapping[$targetCode]['source'],
+                        $attributeTypeBySource[$productMapping[$targetCode]['source']],
+                        $productMapping[$targetCode]['locale'] ?? '<all_locales>',
+                        $productMapping[$targetCode]['scope'] ?? '<all_channels>',
+                        $productMapping[$targetCode]['parameters'] ?? null,
+                    );
+                } catch (AttributeValueExtractorNotFoundException) {
                 }
             }
 
             if ($sourceValue !== null) {
-                $mappedProduct[$target] = $sourceValue;
+                $mappedProduct[$targetCode] = $sourceValue;
             }
         }
 
         return $mappedProduct;
-    }
-
-    /**
-     * @param RawProduct $product
-     */
-    private function getProductAttributeValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string | null
-    {
-        $scope ??= '<all_channels>';
-        $locale ??= '<all_locales>';
-
-        return $product['raw_values'][$attributeCode][$scope][$locale] ?? null;
-    }
-
-    private function getSimpleSelectLabel(string $attributeCode, $optionCode, string $locale): string | null
-    {
-        $options = $this->getAttributeOptionsByCodeQuery->execute($attributeCode, [$optionCode], $locale);
-
-        if (!empty($options)) {
-            return $options[0]['label'];
-        } else {
-            return null;
-        }
     }
 }

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Service\AttributeValueExtractor;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type RawProduct from GetRawProductsQueryInterface
+ * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
 final class AttributeValueExtractorRegistry
 {
@@ -33,6 +33,7 @@ final class AttributeValueExtractorRegistry
 
     /**
      * @param RawProduct $product
+     * @param array<string, mixed>|null $parameters
      */
     public function extract(
         array $product,
@@ -43,7 +44,7 @@ final class AttributeValueExtractorRegistry
         ?array $parameters,
     ): null | string {
         foreach ($this->extractors as $extractor) {
-            if ($extractor->support($attributeType)) {
+            if ($extractor->supports($attributeType)) {
                 return $extractor->extract(
                     $product,
                     $attributeCode,

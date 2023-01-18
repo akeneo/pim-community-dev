@@ -46,7 +46,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         ]);
         $this->createAttribute([
             'code' => 'description',
-            'type' => 'pim_catalog_text',
+            'type' => 'pim_catalog_textarea',
             'scopable' => true,
             'localizable' => false,
         ]);
@@ -123,6 +123,9 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                     'source' => 'size',
                     'scope' => 'print',
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'label_locale' => 'en_US'
+                    ]
                 ],
             ],
         );
