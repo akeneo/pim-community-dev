@@ -121,6 +121,7 @@
 - BH-1159: Refactor BatchCommand to use execution ID without batch code
 - BH-1159: Add tenant ID for batch processing
 - BH-1159: Use available JobMessage class for denormalization
+- PIM-10782: Optimize get completeness SQL query
 
 ## New features
 
