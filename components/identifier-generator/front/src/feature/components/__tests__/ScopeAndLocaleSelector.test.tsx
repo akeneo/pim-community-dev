@@ -14,7 +14,7 @@ describe('ScopeAndLocaleSelector', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('This is Loading')).toBeInTheDocument();
+      expect(screen.getByText('pim_error.general')).toBeInTheDocument();
     });
   });
 });
