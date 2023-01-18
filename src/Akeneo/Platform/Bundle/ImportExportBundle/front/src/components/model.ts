@@ -52,16 +52,23 @@ type Storage = LocalStorage | SftpStorage | AmazonS3Storage | MicrosoftAzureStor
 
 type StorageType = 'none' | 'local' | 'sftp' | 'amazon_s3' | 'microsoft_azure' | 'google_cloud_storage';
 
-const STORAGE_TYPES = ['none', 'sftp', 'amazon_s3', 'microsoft_azure', 'google_cloud_storage'];
+const STORAGE_TYPES = ['none'];
 
 const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
   featureFlags.isEnabled('import_export_local_storage');
+
+const additionalStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
+  featureFlags.isEnabled('import_export_additional_storage');
 
 const getEnabledStorageTypes = (featureFlags: FeatureFlags): string[] => {
   const enabledStorageTypes = [...STORAGE_TYPES];
 
   if (localStorageIsEnabled(featureFlags)) {
     enabledStorageTypes.push('local');
+  }
+
+  if (additionalStorageIsEnabled(featureFlags)) {
+    enabledStorageTypes.push('sftp', 'amazon_s3', 'microsoft_azure', 'google_cloud_storage');
   }
 
   return enabledStorageTypes;
@@ -143,5 +150,6 @@ export {
   isExport,
   getDefaultFilePath,
   getEnabledStorageTypes,
+  additionalStorageIsEnabled,
   localStorageIsEnabled,
 };
