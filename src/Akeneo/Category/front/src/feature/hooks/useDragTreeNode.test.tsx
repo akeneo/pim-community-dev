@@ -33,9 +33,9 @@ describe('useDragTreeNode', () => {
   });
 
   test('it tests the node is draggable when reorder is active', () => {
-    const root = aTreeNode('a_root', 1111, [2222], 'a_root', null, 'root');
-    const node = aTreeNode('a_node', 2222, [3333], 'a_node', 1111, 'node');
-    const leaf = aTreeNode('a_leaf', 3333, [], 'a_leaf', 2222, 'leaf');
+    const root = aTreeNode('a_root', 1111, [2222], 'a_root', '', null, 'root');
+    const node = aTreeNode('a_node', 2222, [3333], 'a_node', '', 1111, 'node');
+    const leaf = aTreeNode('a_leaf', 3333, [], 'a_leaf', '', 2222, 'leaf');
 
     const {result, rerender} = renderUseDragTreeNode(root, 0, true);
 
@@ -49,9 +49,9 @@ describe('useDragTreeNode', () => {
   });
 
   test('it tests the node is draggable when reorder is not active', () => {
-    const root = aTreeNode('a_root', 1111, [2222], 'a_root', null, 'root');
-    const node = aTreeNode('a_node', 2222, [3333], 'a_node', 1111, 'node');
-    const leaf = aTreeNode('a_leaf', 3333, [], 'a_leaf', 2222, 'leaf');
+    const root = aTreeNode('a_root', 1111, [2222], 'a_root', '', null, 'root');
+    const node = aTreeNode('a_node', 2222, [3333], 'a_node', '', 1111, 'node');
+    const leaf = aTreeNode('a_leaf', 3333, [], 'a_leaf', '', 2222, 'leaf');
 
     const {result, rerender} = renderUseDragTreeNode(root, 0, false);
 
@@ -65,7 +65,7 @@ describe('useDragTreeNode', () => {
   });
 
   test('it drags the node', () => {
-    const node = aTreeNode('a_node', 1234, [], 'a_node', 1, 'node');
+    const node = aTreeNode('a_node', 1234, [], 'a_node', '', 1, 'node');
 
     const {result} = renderUseDragTreeNode(node, 0, true);
 
