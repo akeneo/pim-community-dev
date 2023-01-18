@@ -31,6 +31,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespe
  *      source: string|null,
  *      locale: string|null,
  *      scope: string|null,
+ *      parameters?: array<string, mixed>
  * }>
  */
 #[ProductMappingRespectsSchema]

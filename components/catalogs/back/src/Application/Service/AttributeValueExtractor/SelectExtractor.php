@@ -10,6 +10,7 @@ use Akeneo\Catalogs\Application\Persistence\Attribute\GetAttributeOptionsByCodeQ
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  */
 final class SelectExtractor implements AttributeValueExtractorInterface
 {
@@ -26,29 +27,35 @@ final class SelectExtractor implements AttributeValueExtractorInterface
         ?string $scope,
         ?array $parameters,
     ): null | string {
+
+        /** @var string|array<string>|null $value */
         $value = $product['raw_values'][$attributeCode][$scope][$locale] ?? null;
-        if ($value !== null)
-        {
+        if ($value !== null) {
+            /** @var string $labelLocale */
+            $labelLocale = $parameters['label_locale'] ?? '';
             $value = $this->getTranslations(
-                $attributeCode,
-                \is_array($value) ? $value : [$value],
-                $parameters['label_locale'],
+                attributeCode: $attributeCode,
+                optionCode: \is_array($value) ? $value : [$value],
+                locale: $labelLocale,
             );
         }
 
         return $value;
     }
 
-    public function support(string $attributeType): bool
+    public function supports(string $attributeType): bool
     {
         return $attributeType === 'pim_catalog_simpleselect';
     }
 
-    private function getTranslations(string $attributeCode, array $optionCode, string $locale): string | null
+    /**
+     * @param array<string> $optionCode
+     */
+    private function getTranslations(string $attributeCode, array $optionCode, string $locale): string
     {
         $options = $this->getAttributeOptionsByCodeQuery->execute($attributeCode, $optionCode, $locale);
         $optionsLabel = \array_column($options, 'label');
 
-        return implode(', ', $optionsLabel);
+        return \implode(', ', $optionsLabel);
     }
 }

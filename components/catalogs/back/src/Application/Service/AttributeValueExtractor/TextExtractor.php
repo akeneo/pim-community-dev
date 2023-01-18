@@ -11,6 +11,9 @@ namespace Akeneo\Catalogs\Application\Service\AttributeValueExtractor;
  */
 final class TextExtractor implements AttributeValueExtractorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function extract(
         array $product,
         string $attributeCode,
@@ -19,12 +22,14 @@ final class TextExtractor implements AttributeValueExtractorInterface
         ?string $scope,
         ?array $parameters,
     ): null | string {
-
         return $product['raw_values'][$attributeCode][$scope][$locale] ?? null;
     }
 
-    public function support(string $attributeType): bool
+    public function supports(string $attributeType): bool
     {
-        return $attributeType === 'pim_catalog_text';
+        return \in_array($attributeType, [
+            'pim_catalog_text',
+            'pim_catalog_textarea',
+        ]);
     }
 }
