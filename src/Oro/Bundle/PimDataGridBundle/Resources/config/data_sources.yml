@@ -19,6 +19,7 @@ services:
 
     pim_datagrid.datasource.attribute:
         class: '%pim_datagrid.datasource.repository.class%'
+#        class: 'Oro\Bundle\PimDataGridBundle\Datasource\AttributeDatasource'
         arguments:
             - '@pim_enrich.repository.attribute'
             - '@pim_datagrid.datasource.result_record.hydrator.default'
