@@ -15,7 +15,7 @@ const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   return context;
 };
 
-const ATTRIBUTE_GROUP_INDEX_ROUTE = 'pim_enrich_attributegroup_rest_index';
+const ATTRIBUTE_GROUP_INDEX_ROUTE = 'pim_structure_attributegroup_rest_index';
 
 const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   const [groups, setAttributeGroups] = useState<AttributeGroup[]>([]);

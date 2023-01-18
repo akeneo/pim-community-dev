@@ -27,29 +27,30 @@ class AkeneoPimStructureExtension extends Extension
         $container->setParameter('pim_reference_data.configurations', $configs['reference_data']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('array_converters.yml');
+        $loader->load('attribute_types.yml');
+        $loader->load('commands.yml');
+        $loader->load('controllers.yml');
+        $loader->load('datagrid/actions.yml');
+        $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
-        $loader->load('updaters.yml');
-        $loader->load('normalizers.yml');
-        $loader->load('repositories.yml');
-        $loader->load('removers.yml');
-        $loader->load('services.yml');
-        $loader->load('controllers.yml');
-        $loader->load('attribute_types.yml');
-        $loader->load('savers.yml');
-        $loader->load('array_converters.yml');
-        $loader->load('readers.yml');
-        $loader->load('writers.yml');
-        $loader->load('entities.yml');
-        $loader->load('managers.yml');
-        $loader->load('validators.yml');
+        $loader->load('handler.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
-        $loader->load('steps.yml');
-        $loader->load('commands.yml');
-        $loader->load('queries.yml');
+        $loader->load('managers.yml');
+        $loader->load('normalizers.yml');
         $loader->load('processors.yml');
-        $loader->load('datagrid/actions.yml');
+        $loader->load('queries.yml');
+        $loader->load('readers.yml');
+        $loader->load('removers.yml');
+        $loader->load('repositories.yml');
+        $loader->load('savers.yml');
+        $loader->load('services.yml');
+        $loader->load('steps.yml');
+        $loader->load('updaters.yml');
+        $loader->load('validators.yml');
+        $loader->load('writers.yml');
     }
 }

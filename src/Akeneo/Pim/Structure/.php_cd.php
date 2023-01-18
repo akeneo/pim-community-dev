@@ -15,8 +15,10 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Akeneo\Tool',
         'Akeneo\Pim\Structure\Component',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
+        'Oro\Bundle\SecurityBundle\Exception\AccessDeniedException',
         'FOS\RestBundle\View',
         'Oro\Bundle\DataGridBundle\Event\BuildBefore',
         'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',
@@ -49,6 +51,7 @@ $rules = [
 
         // I don't think we should add install subscriber in platform instead of structure (discussed with Arnaud L.)
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+
     ])->in('Akeneo\Pim\Structure\Bundle'),
     $builder->only([
         'Symfony\Component',
