@@ -266,7 +266,7 @@ SQL;
     private function isPreviousDatabaseVersion(): bool
     {
         $rows = $this->connection->fetchAllAssociative(<<<SQL
-SHOW COLUMNS FROM pim_catalog_identifier_generator LIKE target
+SHOW COLUMNS FROM pim_catalog_identifier_generator LIKE 'target'
 SQL);
 
         return count($rows) >= 1;
