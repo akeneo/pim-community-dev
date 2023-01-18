@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\AttributeGroup\Query;
+namespace AkeneoTest\Pim\Structure\Integration\AttributeGroup\Infrastructure\Query\Sql;
 
 use Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups;
 use Akeneo\Test\Integration\Configuration;
@@ -79,7 +79,7 @@ class SqlGetAttributeGroupsIntegration extends TestCase
 
     private function getQuery(): GetAttributeGroups
     {
-        return $this->get('Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\GetAttributeGroups');
+        return $this->get('Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups');
     }
 
     private function createAttributeGroup(string $code, int $sortOrder, array $labels): void
