@@ -10,6 +10,7 @@ use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\PermissionCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\Version\CategoryVersion;
 use Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder;
@@ -89,6 +90,46 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
                 'updated' => $updated->format('c'),
                 'label-en_US' => 'test category',
                 'label-fr_FR' => 'catégorie de test'
+            ]
+        );
+
+        $this->assertEquals($expectedCategoryVersion, $categoryVersion);
+    }
+
+    public function testCreateACategoryVersionWithPermissions(): void
+    {
+        $getCategoryMock = $this->createMock(GetCategoryInterface::class);
+        $getCategoryMock->expects($this->never())->method('byId');
+        $builder = new CategoryVersionBuilder($getCategoryMock);
+
+        $updated = new \DateTimeImmutable();
+        $givenCategory = new Category(
+            id: new CategoryId(2),
+            code: new Code('category_test'),
+            templateUuid: TemplateUuid::fromUuid(Uuid::uuid4()),
+            labels: LabelCollection::fromArray(['en_US' => 'test category', 'fr_FR' => 'catégorie de test']),
+            updated: $updated,
+            permissions: PermissionCollection::fromArray([
+                'view'=> [['id' => 1, 'label'=> 'Manager'], ['id' => 1, 'label'=> 'Redactor']],
+                'edit'=> [['id' => 1, 'label'=> 'All']],
+                'own'=> [['id' => 1, 'label'=> 'All']],
+            ]),
+        );
+
+        $categoryVersion = $builder->create($givenCategory);
+
+
+        $expectedCategoryVersion = CategoryVersion::fromBuilder(
+            resourceId: '2',
+            snapshot: [
+                'code' => 'category_test',
+                'parent' => '',
+                'updated' => $updated->format('c'),
+                'label-en_US' => 'test category',
+                'label-fr_FR' => 'catégorie de test',
+                'view_permission' => 'Manager,Redactor',
+                'edit_permission' => 'All',
+                'own_permission' => 'All',
             ]
         );
 

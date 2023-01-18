@@ -19,13 +19,17 @@ class CategoryVersion
     public const CATEGORY_VERSION_RESOURCE_NAME = "Akeneo\Category\Infrastructure\Component\Model\Category";
 
     /**
-     * snapshot example : [
-     *    code: string,
-     *    parent: string,
-     *    updated: string,
-     *    label-en_US: string,
-     *    label-fr_FR: string
-     * ]
+     * snapshot full example : [
+     *    'code': 'print',
+     *    'parent': 'categories',
+     *    'updated': '2023-01-17T13:03:43+00:00',
+     *    'label-en_US': 'print',
+     *    'label-fr_FR': 'impression',
+     *    'view_permission': 'All',
+     *    'edit_permission': 'Redactor, Manager'
+     *    'own_permission': 'Redactor, Manager'
+     * ].
+     *
      * @param Snapshot $snapshot
      */
     private function __construct(

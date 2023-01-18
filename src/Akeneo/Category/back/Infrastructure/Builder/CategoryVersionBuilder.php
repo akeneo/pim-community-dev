@@ -6,11 +6,15 @@ namespace Akeneo\Category\Infrastructure\Builder;
 
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\PermissionCollection;
 use Akeneo\Category\Domain\ValueObject\Version\CategoryVersion;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type Snapshot from CategoryVersion
+ * @phpstan-import-type Permission from PermissionCollection
  */
 class CategoryVersionBuilder
 {
@@ -20,33 +24,60 @@ class CategoryVersionBuilder
 
     public function create(Category $category): CategoryVersion
     {
-        $categorySnapshot = $category->normalize();
+        $categoryId = $category->getId() ? (string) $category->getId()->getValue() : null;
 
-        $categoryId = (string) $categorySnapshot['id'] ?? null;
-        $categorySnapshot['code'] = $categorySnapshot['properties']['code'];
-        if (!empty($categorySnapshot['parent'])) {
-            $parent = $this->getCategory->byId($categorySnapshot['parent']);
-        }
-        $categorySnapshot['parent'] = !empty($parent) ? (string) $parent->getCode() : '';
-        $categorySnapshot['updated'] = $category->getUpdated()?->format('c') ?? '';
-
-        foreach ($categorySnapshot['properties']['labels'] as $locale => $label) {
-            $key = "label-$locale";
-            $categorySnapshot[$key] = $label;
-        }
-
-        unset(
-            $categorySnapshot['id'],
-            $categorySnapshot['root_id'],
-            $categorySnapshot['template_uuid'],
-            $categorySnapshot['properties'],
-            $categorySnapshot['attributes'],
-            $categorySnapshot['permissions'],
-        );
+        $categorySnapshot = $this->buildSnapshot($category);
 
         return CategoryVersion::fromBuilder(
             resourceId: $categoryId,
             snapshot: $categorySnapshot,
         );
+    }
+
+    /**
+     * @return Snapshot
+     */
+    public function buildSnapshot(Category $category): array
+    {
+        if (null !== $category->getParentId()) {
+            $parent = $this->getCategory->byId($category->getParentId()->getValue());
+        }
+        $parent = !empty($parent) ? (string) $parent->getCode() : '';
+
+        $snapshotLabels = [];
+        foreach ($category->getLabels()?->normalize() as $locale => $label) {
+            $key = "label-$locale";
+            $snapshotLabels[$key] = $label;
+        }
+
+        $snapshotPermissions = [];
+        if (null !== $category->getPermissions()) {
+            $snapshotPermissions['view_permission'] = $this->buildSnapshotPermission($category->getPermissions()->getViewUserGroups());
+            $snapshotPermissions['edit_permission'] = $this->buildSnapshotPermission($category->getPermissions()->getEditUserGroups());
+            $snapshotPermissions['own_permission'] = $this->buildSnapshotPermission($category->getPermissions()->getOwnUserGroups());
+        }
+
+        $snapshot = [
+            'code' => (string) $category->getCode(),
+            'parent' => $parent,
+            'updated' => $category->getUpdated()?->format('c') ?? '',
+        ];
+
+        return array_merge($snapshot, $snapshotLabels, $snapshotPermissions);
+    }
+
+    /**
+     * @param array<Permission> $permissionTypeItems
+     *
+     * @return string the list of the permissions label
+     */
+    private function buildSnapshotPermission(array $permissionTypeItems): string
+    {
+        $permissions = [];
+        foreach ($permissionTypeItems as $item) {
+            $permissions[] = $item['label'];
+        }
+
+        return implode(',', $permissions);
     }
 }
