@@ -17,6 +17,8 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 
     const PRODUCT_GRID_NAME = 'product-grid';
 
+    const ATTRIBUTE_GRID_NAME = 'attribute-grid';
+
     /** @var MassActionDispatcher */
     protected $massActionDispatcher;
 
@@ -35,6 +37,8 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
     {
         if (self::PRODUCT_GRID_NAME === $parameters['gridName']) {
             $filters = $this->massActionDispatcher->getRawFilters($parameters);
+        } elseif (self::ATTRIBUTE_GRID_NAME === $parameters['gridName']) {
+            $filters = ['attribute_ids' => $parameters['values']];
         } else {
             $filters = $this->adaptDefaultGrid($parameters);
         }
