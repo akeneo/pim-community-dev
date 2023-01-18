@@ -70,8 +70,7 @@ test('it displays a message when the selected source has no parameters', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <SourcePanel
-                    target='name'
-                    targetLabel='Name'
+                    target={{code: 'name', label: 'Name', type: 'string', format: null}}
                     source={source}
                     onChange={jest.fn()}
                     errors={null}
