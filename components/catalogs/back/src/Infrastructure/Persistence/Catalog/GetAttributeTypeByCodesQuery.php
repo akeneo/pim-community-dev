@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -17,6 +18,11 @@ final class GetAttributeTypeByCodesQuery implements GetAttributeTypeByCodesQuery
     {
     }
 
+    /**
+     * {@inheritdoc}
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
+     */
     public function execute(array $codes): array
     {
         $query = <<<SQL
@@ -27,10 +33,12 @@ final class GetAttributeTypeByCodesQuery implements GetAttributeTypeByCodesQuery
         WHERE code in (:codes)
         SQL;
 
-        return $this->connection->executeQuery(
+        /** @var array<string, string> $attributeTypeByCodes */
+        $attributeTypeByCodes = $this->connection->executeQuery(
             $query,
             ['codes' => $codes],
             ['codes' => Connection::PARAM_STR_ARRAY],
         )->fetchAllKeyValue();
+        return $attributeTypeByCodes;
     }
 }
