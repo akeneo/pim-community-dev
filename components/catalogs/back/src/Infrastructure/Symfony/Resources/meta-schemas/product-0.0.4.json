@@ -67,7 +67,6 @@
         },
         "format": {
           "enum": [
-            "date-time"
           ]
         }
       },

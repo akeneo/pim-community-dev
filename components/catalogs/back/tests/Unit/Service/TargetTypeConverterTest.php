@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Application\Service;
 
-use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeException;
+use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
 use Akeneo\Catalogs\Application\Service\TargetTypeConverter;
 use PHPUnit\Framework\TestCase;
 
@@ -50,7 +50,7 @@ class TargetTypeConverterTest extends TestCase
 
     public function testItThrowsANoCompatibleAttributeTypeException(): void
     {
-        $this->expectException(NoCompatibleAttributeTypeException::class);
+        $this->expectException(NoCompatibleAttributeTypeFoundException::class);
         $this->targetTypeConverter->toAttributeTypes('unexpected_type');
     }
 }

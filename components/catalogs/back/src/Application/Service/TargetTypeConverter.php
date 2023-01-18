@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Service;
 
-use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeException;
+use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -30,7 +30,7 @@ final class TargetTypeConverter
         }
 
         if (!isset(self::PIM_ATTRIBUTE_TYPES[$key])) {
-            throw new NoCompatibleAttributeTypeException();
+            throw new NoCompatibleAttributeTypeFoundException();
         }
 
         return self::PIM_ATTRIBUTE_TYPES[$key];

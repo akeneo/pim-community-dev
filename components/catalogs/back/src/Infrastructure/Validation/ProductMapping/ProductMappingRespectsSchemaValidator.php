@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 
-use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeException;
+use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Service\TargetTypeConverter;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
@@ -124,7 +124,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     $schema['properties'][$targetCode]['type'],
                     $schema['properties'][$targetCode]['format'] ?? '',
                 );
-            } catch (NoCompatibleAttributeTypeException $exception) {
+            } catch (NoCompatibleAttributeTypeFoundException $exception) {
                 throw new \LogicException(
                     \sprintf(
                         'The combination type "%s" and format "%s" are not supported.',

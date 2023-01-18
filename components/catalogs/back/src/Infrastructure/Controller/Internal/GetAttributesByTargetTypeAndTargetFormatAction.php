@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeException;
+use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
 use Akeneo\Catalogs\Application\Persistence\Attribute\SearchAttributesQueryInterface;
 use Akeneo\Catalogs\Application\Service\TargetTypeConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,7 +57,7 @@ class GetAttributesByTargetTypeAndTargetFormatAction
 
         try {
             $attributeTypes = $this->targetTypeConverter->toAttributeTypes($targetType, $targetFormat ?? '');
-        } catch (NoCompatibleAttributeTypeException $exception) {
+        } catch (NoCompatibleAttributeTypeFoundException $exception) {
             throw new BadRequestHttpException(
                 \sprintf(
                     'The combination of type "%s" and format "%s" does not match any type in the PIM.',
