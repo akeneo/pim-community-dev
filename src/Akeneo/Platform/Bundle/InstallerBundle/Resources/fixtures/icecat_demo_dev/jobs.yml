@@ -977,3 +977,8 @@ jobs:
         alias:     disable_catalogs_on_locale_deactivation
         label:     Disable catalogs on locale deactivation
         type:      disable_catalogs_on_locale_deactivation
+    delete_attributes:
+        connector: Akeneo Mass Edit Connector
+        alias: delete_attributes
+        label: Mass delete attributes
+        type: attribute_mass_delete
