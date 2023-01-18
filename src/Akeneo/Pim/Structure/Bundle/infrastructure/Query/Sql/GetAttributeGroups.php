@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql;
+namespace Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql;
 
+use Akeneo\Pim\Structure\Bundle\Domain\Query\Sql\GetAttributeGroupsInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Doctrine\DBAL\Connection;
 
@@ -11,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetAttributeGroups
+class GetAttributeGroups implements GetAttributeGroupsInterface
 {
     public function __construct(
         private readonly Connection $connection,

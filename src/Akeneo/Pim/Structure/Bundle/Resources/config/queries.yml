@@ -102,11 +102,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\GetAttributeGroups:
-        arguments:
-            - '@database_connection'
-            - '@feature_flags'
-
     akeneo.pim.structure.query.get_association_type_translations:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlGetAssociationTypeTranslations
         arguments:
@@ -205,3 +200,8 @@ services:
     Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsNotUsedByProductsQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups:
+        arguments:
+            - '@database_connection'
+            - '@feature_flags'

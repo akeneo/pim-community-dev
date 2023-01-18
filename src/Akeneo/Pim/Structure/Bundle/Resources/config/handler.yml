@@ -1,0 +1,5 @@
+services:
+
+  Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup\GetAttributeGroupHandler:
+    arguments:
+      - '@Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups'
