@@ -1,0 +1,16 @@
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.4/schema",
+  "description": "The data should match one item from enum at #/properties/name/type",
+  "properties": {
+    "uuid": {
+      "type": "string"
+    },
+    "name": {
+      "type": "array"
+    },
+    "release_date": {
+      "type": "number",
+      "format": "date-time"
+    }
+  }
+}

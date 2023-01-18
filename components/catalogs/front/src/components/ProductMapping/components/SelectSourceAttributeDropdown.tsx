@@ -1,27 +1,29 @@
 import React, {FC, useCallback, useState} from 'react';
 import {Dropdown, Field, GroupsIllustration, Helper, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useInfiniteAttributes} from '../hooks/useInfiniteAttributes';
+import {useInfiniteSourceAttributes} from '../hooks/useInfiniteSourceAttributes';
 import {Attribute} from '../../../models/Attribute';
 import {useAttribute} from '../../../hooks/useAttribute';
 import styled from 'styled-components';
+import {Target} from '../models/Target';
 
 const SelectAttributeDropdownField = styled(Field)`
     margin-top: 10px;
 `;
 
 type Props = {
-    code: string;
+    selectedCode: string;
+    target: Target;
     onChange: (value: Attribute) => void;
     error: string | undefined;
 };
 
-export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error}) => {
+export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, onChange, error}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
-    const {data: attributes, fetchNextPage} = useInfiniteAttributes({search});
-    const {data: attribute} = useAttribute(code);
+    const {data: attributes, fetchNextPage} = useInfiniteSourceAttributes({target: target, search});
+    const {data: attribute} = useAttribute(selectedCode);
 
     const handleAttributeSelection = useCallback(
         (attribute: Attribute) => {
@@ -46,7 +48,7 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error}) => {
                         onMouseDown={openDropdown}
                         emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                         openLabel={translate('akeneo_catalogs.common.select.open')}
-                        value={attribute?.label ?? (code.length > 0 ? `[${code}]` : null)}
+                        value={attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '')}
                         placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.placeholder')}
                         onChange={() => null}
                         clearable={false}
@@ -89,7 +91,7 @@ export const SelectAttributeDropdown: FC<Props> = ({code, onChange, error}) => {
                                     <Dropdown.Item
                                         key={attribute.code}
                                         onClick={() => handleAttributeSelection(attribute)}
-                                        isActive={attribute.code === code}
+                                        isActive={attribute.code === selectedCode}
                                     >
                                         {attribute.label}
                                     </Dropdown.Item>

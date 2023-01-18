@@ -11,13 +11,7 @@ test('it displays a placeholder if there is no target selected', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
-                <SourcePanel
-                    target={null}
-                    targetLabel={null}
-                    source={null}
-                    onChange={jest.fn()}
-                    errors={null}
-                ></SourcePanel>
+                <SourcePanel target={null} source={null} onChange={jest.fn()} errors={null}></SourcePanel>
             </QueryClientProvider>
         </ThemeProvider>
     );
@@ -30,8 +24,7 @@ test('it displays the target as a title', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <SourcePanel
-                    target='erp_name'
-                    targetLabel='ERP name'
+                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
                     source={null}
                     onChange={jest.fn()}
                     errors={null}
@@ -77,8 +70,7 @@ test('it displays a message when the selected source has no parameters', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <SourcePanel
-                    target='name'
-                    targetLabel='Name'
+                    target={{code: 'name', label: 'Name', type: 'string', format: null}}
                     source={source}
                     onChange={jest.fn()}
                     errors={null}

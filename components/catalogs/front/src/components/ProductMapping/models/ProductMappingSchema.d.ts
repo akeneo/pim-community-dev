@@ -3,6 +3,7 @@ export type ProductMappingSchema = {
         [target: string]: {
             title?: string;
             type: string;
+            format?: string;
         };
     };
 };
