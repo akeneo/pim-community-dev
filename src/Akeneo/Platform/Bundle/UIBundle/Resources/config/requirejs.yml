@@ -758,8 +758,8 @@ config:
     pim/job/product/edit/content/data:                           pimui/js/job/product/edit/content/data
     pim/job/product/edit/field/date-format:                      pimui/js/job/product/edit/field/date-format
     pim/job/product/edit/field/with-label:                       pimui/js/job/product/edit/field/with-label
-    pim/job/product/edit/field/header-with-label:                       pimui/js/job/product/edit/field/header-with-label
-    pim/job/product/edit/field/file-locale:                       pimui/js/job/product/edit/field/file-locale
+    pim/job/product/edit/field/header-with-label:                pimui/js/job/product/edit/field/header-with-label
+    pim/job/product/edit/field/file-locale:                      pimui/js/job/product/edit/field/file-locale
     pim/job/common/edit/field/decimal-separator:                 pimui/js/job/common/edit/field/decimal-separator
     pim/job/common/edit/properties:                              pimui/js/job/common/edit/properties
     pim/job/common/edit/field/field:                             pimui/js/job/common/edit/field/field
@@ -778,7 +778,7 @@ config:
     pim/job/common/edit/upload-launch:                           pimui/js/job/common/edit/upload-launch
     pim/job/common/file-path:                                    pimui/js/job/common/file-path
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
-    pim/job/common/edit-button:                                 pimui/js/job/common/edit-button
+    pim/job/common/edit-button:                                  pimui/js/job/common/edit-button
 
     # Filters
     pim/filter/filter:                     pimui/js/filter/filter

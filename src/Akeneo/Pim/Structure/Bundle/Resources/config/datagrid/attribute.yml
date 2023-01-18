@@ -97,12 +97,18 @@ datagrid:
                     data_name: a.localizable
 
         mass_actions:
-            attribute_edit:
-                type: edit
+            attribute_delete:
+                type: mass_delete
                 label: pim_common.delete
-                route: pim_enrich_mass_edit_action
-                route_parameters:
-                    actionName: family-edit
-                # TODO: add a new ACL for mass edit?
+                entity_name: attribute
+                # TODO: add a new ACL for mass delete
                 acl_resource: pim_enrich_family_edit_attributes
+                handler: attribute_mass_delete
                 className: 'AknButton AknButton--important AknButtonList-item'
+                messages:
+                    confirm_title: pim_common.confirm_deletion
+                    confirm_content: pim_datagrid.mass_action.delete.confirm_content
+                    confirm_ok: pim_common.ok
+                    success: pim_datagrid.mass_action.delete.success
+                    error: pim_datagrid.mass_action.delete.error
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
