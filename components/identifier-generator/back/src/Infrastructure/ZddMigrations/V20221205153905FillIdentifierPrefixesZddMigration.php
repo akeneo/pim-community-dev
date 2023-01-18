@@ -37,7 +37,10 @@ class V20221205153905FillIdentifierPrefixesZddMigration implements ZddMigration
     {
         foreach ($this->getProductsByBatch() as $products) {
             $this->logger->notice(\sprintf('%d products found to fill prefixes', \count($products)));
-            $this->updateIdentifierPrefixesQuery->updateFromProducts($products);
+            $isSuccessfull = $this->updateIdentifierPrefixesQuery->updateFromProducts($products);
+            if (!$isSuccessfull) {
+                throw new \LogicException('Migration can not be executed as the database is not ready');
+            }
         }
     }
 
