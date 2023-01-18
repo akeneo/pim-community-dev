@@ -1010,7 +1010,7 @@ test('it updates the state when a label locale is selected', async () => {
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Ctextarea%2Csimpleselect',
             json: [
                 {
                     code: 'name',
@@ -1109,7 +1109,7 @@ test('it updates the state when a label locale is selected for an attribute with
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Ctextarea%2Csimpleselect',
             json: [
                 {
                     code: 'name',
@@ -1821,7 +1821,7 @@ test('it displays error message when source label local is incorrect', async () 
             },
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Csimpleselect',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=text%2Ctextarea%2Csimpleselect',
             json: [
                 {
                     code: 'color',
