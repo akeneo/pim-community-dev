@@ -61,6 +61,12 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'height',
+            'type' => 'pim_catalog_number',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
 
         $violations = $this->validator->validate(
             new Catalog(
@@ -96,6 +102,11 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'size' => [
+                        'source' => 'height',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
                 ],
             ),
         );
@@ -123,7 +134,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             ),
         );
 
-        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released".');
+        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size".');
     }
 
     public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
@@ -166,11 +177,16 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                     'released_at' => [
-                        'source' => 'release_date',
+                        'source' => null,
                         'scope' => true,
                         'locale' => null,
                     ],
                     'released' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'size' => [
                         'source' => null,
                         'scope' => null,
                         'locale' => null,
@@ -213,6 +229,9 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             },
             "released": {
               "type": "boolean"
+            },
+            "size": {
+              "type": "number"
             }
           }
         }

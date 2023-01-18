@@ -61,6 +61,11 @@ class TargetTypeConverterTest extends TestCase
                 [
                     'pim_catalog_date',
                 ],
+                'number',
+                '',
+                [
+                    'pim_catalog_number',
+                ],
             ],
         ];
     }
