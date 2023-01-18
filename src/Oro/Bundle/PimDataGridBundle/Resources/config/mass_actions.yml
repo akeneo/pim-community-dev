@@ -1,7 +1,7 @@
 parameters:
     pim_datagrid.extension.mass_action.type.export.class:                 Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
     pim_datagrid.extension.mass_action.type.delete.class:                 Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction
-    pim_datagrid.extension.mass_action.handler.edit.class:     Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
+    pim_datagrid.extension.mass_action.handler.edit.class:                Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
     pim_datagrid.extension.mass_action.dispatcher.class:                  Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.handler.registry.class:            Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionHandlerRegistry
     pim_datagrid.extension.mass_action.handler.delete.class:              Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
@@ -56,6 +56,13 @@ services:
             - { name: oro_datagrid.extension.mass_action.type, type: delete }
 
     pim_datagrid.extension.mass_action.type.product_mass_delete:
+        public: true
+        class: '%pim_datagrid.extension.mass_action.type.delete.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: mass_delete }
+
+    pim_datagrid.extension.mass_action.type.attribute_mass_delete:
         public: true
         class: '%pim_datagrid.extension.mass_action.type.delete.class%'
         shared: false
