@@ -297,3 +297,12 @@ pim_enrich.mass_edit.family:
             label: Set attributes requirements
             description: The following attributes requirements will be applied to the selected families
             label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|]1, Inf[Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+
+batch_jobs:
+    delete_attributes:
+        delete_attributes:
+            label: Delete attributes
+
+job_execution:
+    summary:
+        deleted_attributes: Deleted attributes
