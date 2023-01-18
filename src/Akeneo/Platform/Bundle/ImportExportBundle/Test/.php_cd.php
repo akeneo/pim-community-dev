@@ -19,6 +19,7 @@ $rules = [
     )->in('Akeneo\Platform\Bundle\ImportExportBundle\Domain'),
     $builder->only(
         [
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
         ],
     )->in('Akeneo\Platform\Bundle\ImportExportBundle\Application'),
@@ -27,7 +28,6 @@ $rules = [
             'Akeneo\Platform\Bundle\ImportExportBundle\Application',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
 
-            'Akeneo\Platform\Bundle\FeatureFlagBundle',
             'Akeneo\Tool',
             'Akeneo\UserManagement\ServiceApi',
 
