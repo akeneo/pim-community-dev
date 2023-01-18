@@ -46,7 +46,7 @@ const useGetConditionItems: (
   handleNextPage: () => void;
   searchValue: string;
   setSearchValue: (searchValue: string) => void;
-} = (isOpen, conditions, limit = 20) => {
+} = (isOpen, conditions, limit = DEFAULT_LIMIT) => {
   const router = useRouter();
   const [items, setItems] = useState<ItemsGroup[] | undefined>(undefined);
   const [page, setPage] = useState<number>(1);
@@ -67,7 +67,7 @@ const useGetConditionItems: (
       const parameters = {
         search: debouncedSearchValue,
         page: state === STATE.USER_CHANGED_SEARCH ? 1 : page,
-        limit: limit ?? DEFAULT_LIMIT,
+        limit,
         systemFields: ['family', 'enabled'].filter(value => !conditionTypes.includes(value)),
       };
       fetch(router.generate('akeneo_identifier_generator_get_conditions', parameters), {
@@ -75,7 +75,7 @@ const useGetConditionItems: (
         headers: [['X-Requested-With', 'XMLHttpRequest']],
       }).then(response => {
         response.json().then((result: ItemsGroup[]) => {
-          if (result.reduce((prev, group) => prev + group.children.length, 0) < (limit ?? DEFAULT_LIMIT)) {
+          if (result.reduce((prev, group) => prev + group.children.length, 0) < limit) {
             setAreRemainingElements(false);
           }
           setItems(i => (state === STATE.USER_CHANGED_SEARCH ? result : mergeItems(i || [], result)));
