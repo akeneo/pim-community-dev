@@ -6,8 +6,8 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
@@ -77,12 +77,12 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetEnabled(true),
             new SetTextValue('name', 'print', 'en_US', 'Red name'),
             new SetTextValue('description', 'print', null, 'Red description'),
-            new SetTextValue('size', null, null, 'Red size'),
+            new SetSimpleSelectValue('size', 'print', 'en_US', 'xl'),
         ]);
         $this->createProduct(Uuid::fromString('2fe842c4-6185-470b-b9a8-abc230678910'), [
             new SetEnabled(false),
-            new SetTextValue('name', 'print', 'en_US', 'Red name'),
-            new SetTextValue('description', 'print', null, 'Red description'),
+            new SetTextValue('name', 'print', 'en_US', 'Yellow name'),
+            new SetTextValue('description', 'print', null, 'Yellow description'),
             new SetSimpleSelectValue('size', 'print', 'en_US', 'xl'),
         ]);
 
@@ -422,7 +422,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         Assert::assertEquals('db1079b6-f397-4a6a-bae4-8658e64ad47c', $catalogIdFromEvent);
     }
 
-    public function testItMapsMissingAttributesWithEmptyString(): void
+    public function testItReturnsNothingWhenAnAttributeIsMissing(): void
     {
         $this->logAs('admin');
 
@@ -506,7 +506,6 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             [
                 'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
                 'title' => 'Blue name',
-                'short_description' => '',
                 'size_label' => 'Blue size',
             ]
         ], $payload['_embedded']['items']);
