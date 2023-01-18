@@ -7,6 +7,10 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
   }
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
   * {
     box-sizing: border-box;
   }

@@ -25,15 +25,18 @@ class GetProductActionTest extends IntegrationTestCase
     {
         parent::setUp();
 
+        $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItGetsProductByCatalogIdAndUuid(): void
     {
-        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog($catalogId, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogId);
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
         $this->createProduct('red', [new SetEnabled(true)]);
@@ -42,7 +45,7 @@ class GetProductActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            "/api/rest/v1/catalogs/$catalogId/products/$productUuid",
+            "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
             [],
             [],
             [
@@ -123,13 +126,15 @@ class GetProductActionTest extends IntegrationTestCase
     public function testItReturnsNotFoundWhenProductDoesNotExistForTheCatalog(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->createCatalog($catalogId, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogId);
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
 
         $this->client->request(
             'GET',
-            "/api/rest/v1/catalogs/$catalogId/products/c335c87e-ec23-4c5b-abfa-0638f141933a",
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
             [],
             [],
             [
@@ -194,16 +199,20 @@ class GetProductActionTest extends IntegrationTestCase
 
     public function testItReturnsAnErrorWhenCatalogIsDisabled(): void
     {
-        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog($catalogId, 'Store US', 'shopifi', isEnabled: false);
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            isEnabled: false,
+        );
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
         $productUuid = (string) $product->getUuid();
 
         $this->client->request(
             'GET',
-            "/api/rest/v1/catalogs/$catalogId/products/$productUuid",
+            "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
             [],
             [],
             [
@@ -217,5 +226,54 @@ class GetProductActionTest extends IntegrationTestCase
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertArrayHasKey('error', $result);
         Assert::assertIsString($result['error']);
+    }
+
+    public function testItReturnsAnErrorWhenCatalogIsInvalid(): void
+    {
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_multiselect',
+            'options' => ['red', 'blue'],
+        ]);
+
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+
+        $product = $this->createProduct('blue', [new SetEnabled(true)]);
+        $productUuid = (string) $product->getUuid();
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'color',
+                    'operator' => Operator::IN_LIST,
+                    'value' => ['red'],
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        );
+
+        $this->removeAttributeOption('color.red');
+
+        $this->client->request(
+            'GET',
+            "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertArrayHasKey('error', $result);
+        Assert::assertIsString($result['error']);
+        Assert::assertFalse($this->getCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c')->isEnabled());
     }
 }

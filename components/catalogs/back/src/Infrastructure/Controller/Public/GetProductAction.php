@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
@@ -48,15 +49,15 @@ class GetProductAction
 
         $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
 
-        if (!$catalog->isEnabled()) {
+        try {
+            $product = $this->getProduct($catalog->getId(), $uuid);
+        } catch (CatalogDisabledException) {
             return new JsonResponse([
                 'error' => \sprintf('No products to synchronize. The catalog "%s" has been disabled on PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.', $id),
-            ]);
+            ], Response::HTTP_OK);
         }
 
-        $product = $this->getProduct($catalog->getId(), $uuid);
-
-        return new JsonResponse($product);
+        return new JsonResponse($product, Response::HTTP_OK);
     }
 
     private function getCatalog(string $id, string $productUuid): Catalog
@@ -76,6 +77,8 @@ class GetProductAction
 
     /**
      * @return Product
+     * @throws ViolationHttpException
+     * @throws NotFoundHttpException
      */
     private function getProduct(string $catalogId, string $productUuid): array
     {

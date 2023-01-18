@@ -49,6 +49,7 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                         emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                         openLabel={translate('akeneo_catalogs.common.select.open')}
                         value={attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '')}
+                        placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.placeholder')}
                         onChange={() => null}
                         clearable={false}
                         data-testid='product-mapping-select-attribute'

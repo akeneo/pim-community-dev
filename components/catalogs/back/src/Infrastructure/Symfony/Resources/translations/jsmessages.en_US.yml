@@ -126,6 +126,7 @@ akeneo_catalogs:
         source:
             title: Select source
             parameters:
+                placeholder: Select an attribute
                 title: Source parameters
                 channel:
                     label: Channel
@@ -133,6 +134,7 @@ akeneo_catalogs:
                 locale:
                     label: Locale
                     placeholder: Select a locale
+                no_parameters_message: No parameters for this source.
             select_source:
                 label: Pim source
                 search: Search criterion

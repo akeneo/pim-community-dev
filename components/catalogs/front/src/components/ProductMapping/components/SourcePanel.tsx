@@ -11,6 +11,7 @@ import {SourceErrors} from '../models/SourceErrors';
 import {SelectLocaleDropdown} from './SelectLocaleDropdown';
 import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {SourceUuidPlaceholder} from './SourceUuidPlaceholder';
+import styled from 'styled-components';
 import {Target} from '../models/Target';
 
 type Props = {
@@ -19,6 +20,11 @@ type Props = {
     onChange: (value: Source) => void;
     errors: SourceErrors | null;
 };
+
+const Information = styled.p`
+    font-style: italic;
+    margin-top: 10px;
+`;
 
 export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
     const translate = useTranslate();
@@ -38,6 +44,11 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
     const shouldDisplayChannelLocale =
         source !== null && source.scope !== null && attribute?.localizable && attribute?.scopable;
+    const shouldDisplayNoParametersMessage = !(
+        shouldDisplayLocale ||
+        shouldDisplayChannel ||
+        shouldDisplayChannelLocale
+    );
 
     return (
         <>
@@ -74,6 +85,11 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
                     )}
                     {shouldDisplayChannelLocale && (
                         <SelectChannelLocaleDropdown source={source} onChange={onChange} error={errors?.locale} />
+                    )}
+                    {shouldDisplayNoParametersMessage && (
+                        <Information key={'no_parameters'}>
+                            {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
+                        </Information>
                     )}
                 </>
             )}
