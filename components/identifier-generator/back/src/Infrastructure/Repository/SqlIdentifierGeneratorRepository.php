@@ -44,6 +44,13 @@ INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, 
 VALUES (UUID_TO_BIN(:uuid), :code, (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target), :delimiter, :labels, :conditions, :structure);
 SQL;
 
+        if ($this->isPreviousDatabaseVersion()) {
+            $query = <<<SQL
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
+VALUES (UUID_TO_BIN(:uuid), :code, :target, :delimiter, :labels, :conditions, :structure);
+SQL;
+        }
+
         Assert::notNull($identifierGenerator->delimiter());
 
         try {
@@ -72,6 +79,18 @@ UPDATE pim_catalog_identifier_generator SET
     structure=:structure
 WHERE pim_catalog_identifier_generator.code=:code;
 SQL;
+
+        if ($this->isPreviousDatabaseVersion()) {
+            $query = <<<SQL
+UPDATE pim_catalog_identifier_generator SET
+    target=:target,
+    delimiter=:delimiter,
+    labels=:labels,
+    conditions=:conditions,
+    structure=:structure
+WHERE pim_catalog_identifier_generator.code=:code;
+SQL;
+        }
 
         try {
             $this->connection->executeStatement($query, [
@@ -109,6 +128,22 @@ FROM pim_catalog_identifier_generator
 INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
 WHERE pim_catalog_identifier_generator.code=:code
 SQL;
+
+        if ($this->isPreviousDatabaseVersion()) {
+            $sql = <<<SQL
+SELECT
+    BIN_TO_UUID(uuid) AS uuid,
+    code,
+    conditions,
+    structure,
+    labels,
+    delimiter,
+    target
+FROM pim_catalog_identifier_generator
+WHERE code=:code
+SQL;
+        }
+
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
 
@@ -142,6 +177,21 @@ SELECT
 FROM pim_catalog_identifier_generator
 INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
 SQL;
+
+        if ($this->isPreviousDatabaseVersion()) {
+            $sql = <<<SQL
+SELECT
+    BIN_TO_UUID(uuid) AS uuid,
+    code,
+    conditions,
+    structure,
+    labels,
+    delimiter,
+    target
+FROM pim_catalog_identifier_generator
+SQL;
+        }
+
         $stmt = $this->connection->prepare($sql);
 
         try {
@@ -211,5 +261,14 @@ SQL;
         } catch (DriverException) {
             throw new UnableToDeleteIdentifierGeneratorException(sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
         }
+    }
+
+    private function isPreviousDatabaseVersion(): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(<<<SQL
+SHOW COLUMNS FROM pim_catalog_identifier_generator LIKE target
+SQL);
+
+        return count($rows) >= 1;
     }
 }
