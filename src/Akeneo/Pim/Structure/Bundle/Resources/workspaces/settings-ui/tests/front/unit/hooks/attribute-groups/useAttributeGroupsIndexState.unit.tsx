@@ -13,7 +13,6 @@ import fetchMock from 'jest-fetch-mock';
 
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/attributeGroupsSaver');
 
-
 describe('useInitialAttributeGroupsIndexState', () => {
   const renderUseInitialAttributeGroupsIndexState = () => {
     return renderHookWithProviders(useInitialAttributeGroupsIndexState);
@@ -57,16 +56,9 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
     const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
 
-    fetchMock.mockResponseOnce(
-        JSON.stringify([
-            groupB,
-            groupC,
-            groupA
-          ]
-        ), {
-          status: 200,
-        }
-    );
+    fetchMock.mockResponseOnce(JSON.stringify([groupB, groupC, groupA]), {
+      status: 200,
+    });
 
     const {result} = renderUseInitialAttributeGroupsIndexState();
 
@@ -82,16 +74,9 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1, false);
     const groupC = anAttributeGroup('groupC', 4321, undefined, 2, true);
 
-    fetchMock.mockResponseOnce(
-        JSON.stringify([
-              groupB,
-              groupC,
-              groupA
-            ]
-        ), {
-          status: 200,
-        }
-    );
+    fetchMock.mockResponseOnce(JSON.stringify([groupB, groupC, groupA]), {
+      status: 200,
+    });
 
     const {result} = renderUseInitialAttributeGroupsIndexState();
 
@@ -107,16 +92,9 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
     const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
 
-    fetchMock.mockResponseOnce(
-        JSON.stringify([
-              groupA,
-              groupB,
-              groupC
-            ]
-        ), {
-          status: 200,
-        }
-    );
+    fetchMock.mockResponseOnce(JSON.stringify([groupA, groupB, groupC]), {
+      status: 200,
+    });
 
     const {result} = renderUseInitialAttributeGroupsIndexState();
 
@@ -140,16 +118,9 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
     const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
 
-    fetchMock.mockResponseOnce(
-        JSON.stringify([
-              groupA,
-              groupB,
-              groupC
-            ]
-        ), {
-          status: 200,
-        }
-    );
+    fetchMock.mockResponseOnce(JSON.stringify([groupA, groupB, groupC]), {
+      status: 200,
+    });
 
     const {result} = renderUseInitialAttributeGroupsIndexState();
 
@@ -180,16 +151,9 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupBBis = anAttributeGroup('groupB', 4321, undefined, 2);
     const groupCBis = anAttributeGroup('groupC', 4321, undefined, 0);
 
-    fetchMock.mockResponseOnce(
-        JSON.stringify([
-              groupA,
-              groupB,
-              groupC
-            ]
-        ), {
-          status: 200,
-        }
-    );
+    fetchMock.mockResponseOnce(JSON.stringify([groupA, groupB, groupC]), {
+      status: 200,
+    });
 
     // @ts-ignore
     saveAttributeGroupsOrder.mockResolvedValue({
