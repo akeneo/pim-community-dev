@@ -15,5 +15,5 @@ interface UpdateIdentifierPrefixesQuery
     /**
      * @param ProductInterface[] $products
      */
-    public function updateFromProducts(array $products): void;
+    public function updateFromProducts(array $products): bool;
 }
