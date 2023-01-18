@@ -98,7 +98,7 @@ datagrid:
 
         mass_actions:
             attribute_delete:
-                type: mass_delete
+                type: attribute_mass_delete
                 label: pim_common.delete
                 entity_name: attribute
                 # TODO: add a new ACL for mass delete

@@ -8,6 +8,14 @@ config:
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             confirmLabel: pim_enrich.entity.product_model.module.delete.confirm_for_products_and_product_models
             buttonText: pim_common.delete
+        oro/datagrid/attribute_mass_delete-action:
+            jobInstanceCode: delete_attributes
+            route: pim_enrich_mass_edit_rest_launch
+            backRoute: pim_enrich_attribute_index
+            launchErrorLabel: pim_enrich.entity.attribute.module.mass_delete.cannot_be_launched
+            launchedLabel: pim_enrich.entity.attribute.module.mass_delete.launched
+            confirmLabel: pim_enrich.entity.attribute.module.mass_delete.confirm
+            buttonText: pim_common.delete
         pim/fetcher-registry:
             fetchers:
                 datagrid-view:
@@ -54,6 +62,7 @@ config:
         oro/datagrid/delete-confirm:            pimdatagrid/js/datagrid/action/delete-confirm.ts
         oro/datagrid/sequential_edit-action:    pimdatagrid/js/datagrid/action/sequential-edit-action
         oro/datagrid/mass_delete-action:        pimdatagrid/js/datagrid/action/mass-delete-action
+        oro/datagrid/attribute_mass_delete-action: pimdatagrid/js/datagrid/action/mass-delete-action
         oro/datagrid/revoke-action:             pimdatagrid/js/datagrid/action/revoke-action
         oro/datagrid/ajax-action:               pimdatagrid/js/datagrid/action/ajax-action
         oro/datagrid/mass-action:               pimdatagrid/js/datagrid/action/mass-action
