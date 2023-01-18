@@ -5,24 +5,15 @@ const anAttributeGroup = (
   id?: number,
   labels?: AttributeGroupLabels,
   order?: number,
-  isDqiActivated?: boolean
+  is_dqi_activated?: boolean
 ): AttributeGroup => {
-  let group: AttributeGroup = {
+  const group: AttributeGroup = {
     code: code || 'a_code',
     labels: labels || {},
     sort_order: order !== undefined ? order : 1,
-    attributes: [],
-    attributes_sort_order: {},
-    permissions: {
-      view: [],
-      edit: [],
-    },
-    meta: {
-      id: id || 1234,
-    },
   };
-  if (isDqiActivated !== undefined) {
-    group.isDqiActivated = isDqiActivated;
+  if (is_dqi_activated !== undefined) {
+    group.is_dqi_activated = is_dqi_activated;
   }
 
   return group;
