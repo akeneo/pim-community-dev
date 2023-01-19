@@ -7,7 +7,9 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -16,6 +18,11 @@ use Webmozart\Assert\Assert;
  */
 final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
 {
+    public function __construct(
+        private readonly ValidatorInterface $validator,
+    ) {
+    }
+
     public function validate($property, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, FamilyPropertyShouldBeValid::class);
@@ -38,26 +45,22 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
             return;
         }
 
-        $processKeys = [
-            Process::PROCESS_TYPE_NO,
-            Process::PROCESS_TYPE_TRUNCATE,
-            Process::PROCESS_TYPE_NOMENCLATURE
-        ];
-        if (!in_array($property['process'], $processKeys)) {
-            $this->context
-                ->buildViolation($constraint->processTypeUnknown, [
-                    '{{ choices }}' => implode(',', $processKeys),
-                ])
-                ->addViolation();
-        }
-
         if (!\array_key_exists('type', $property['process'])) {
             return;
         }
-        if (Process::PROCESS_TYPE_NO === $property['process']['type'] && count($property['process']) > 1) {
-            $this->context
-                ->buildViolation($constraint->processTypeNoOtherProperties)
-                ->addViolation();
+
+        if (Process::PROCESS_TYPE_NO === $property['process']['type']) {
+            $this->validateProcessTypeNo($property, $constraint);
         }
+    }
+
+    public function validateProcessTypeNo(array $property, FamilyPropertyShouldBeValid $constraint): void
+    {
+        $this->validator->inContext($this->context)->validate($property, new Collection([
+            'fields' => [
+                'type' => null,
+            ],
+            'extraFieldsMessage' => $constraint->processTypeNoOtherProperties
+        ]));
     }
 }
