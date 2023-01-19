@@ -14,7 +14,5 @@ final class FamilyPropertyShouldBeValid extends Constraint
 {
     public string $fieldsRequired = 'validation.identifier_generator.family_property_fields_required';
 
-    public string $processTypeUnknown = 'validation.identifier_generator.process_type_unknown';
-
     public string $processTypeNoOtherProperties = 'validation.identifier_generator.process_type_no_other_properties';
 }
