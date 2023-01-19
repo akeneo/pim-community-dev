@@ -37,7 +37,7 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
         const groupDqiStatuses = await fetchAllAttributeGroupsDqiStatus();
         Object.entries(groupDqiStatuses).forEach(([groupCode, status]) => {
           for (const attributeGroupCode in collection) {
-            if (attributeGroupCode.toLowerCase() === groupCode) {
+            if (attributeGroupCode.toLowerCase() === groupCode.toLowerCase()) {
               collection[attributeGroupCode].isDqiActivated = status as boolean;
             }
           }

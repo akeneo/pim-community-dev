@@ -33,7 +33,7 @@ SQL;
 
         $groups = [];
         foreach ($result as $row) {
-            $groups[strtolower($row['attribute_group_code'])] = (bool) $row['activated'];
+            $groups[$row['attribute_group_code']] = (bool) $row['activated'];
         }
 
         return $groups;
