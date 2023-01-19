@@ -9,6 +9,8 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -86,7 +88,15 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
                     choices: [Process::PROCESS_OPERATOR_EQ, Process::PROCESS_OPERATOR_LTE],
                     message: $constraint->processUnknownOperator
                 ),
-                'value' => null,
+                'value' => [
+                    new Type([
+                        'type' => 'digit',
+                    ]),
+                    new Range([
+                        'min' => 1,
+                        'max' => 5,
+                    ]),
+                ],
             ],
         ]));
     }

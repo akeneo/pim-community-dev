@@ -140,6 +140,26 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'structure[0][operator]: Operator "ope" can only be one of the following: "EQUALS", "LOWER_OR_EQUAL_THAN".'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with a family containing truncate process and bad value type
+    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and bad as value
+    Then I should get an error with message 'structure[0][value]: This value should be of type digit.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with a family containing truncate process and value not in range
+    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and 0 as value
+    Then I should get an error with message 'structure[0][value]: This value should be between 1 and 5.'
+    And the identifier should not be created
+
+  Scenario: Can create an identifier generator with a no family process
+    When I try to create an identifier generator with a family process with type no and operator undefined and undefined as value
+    Then The identifier generator is saved in the repository
+    And I should not get any error
+
+  Scenario: Can create an identifier generator with a truncate family process
+    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and 1 as value
+    Then The identifier generator is saved in the repository
+    And I should not get any error
+
   # Conditions
   Scenario: Cannot create another condition type than defined ones
     When I try to create an identifier generator with unknown condition type
