@@ -124,6 +124,17 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'structure[0][process]: There can be no other properties than "type".'
     And the identifier should not be created
 
+  Scenario: Cannot create an identifier generator with a family containing invalid truncate process
+    When I try to create an identifier generator with a family containing invalid truncate process
+    Then I should get an error with message 'structure[0][process][unknown]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with a family containing truncate process missing fields
+    When I try to create an identifier generator with a family process with type truncate and operator undefined and undefined as value
+    Then I should get an error with message 'structure[0][operator]: This field is missing.'
+    Then I should get an error with message 'structure[0][value]: This field is missing.'
+    And the identifier should not be created
+
   # Conditions
   Scenario: Cannot create another condition type than defined ones
     When I try to create an identifier generator with unknown condition type
