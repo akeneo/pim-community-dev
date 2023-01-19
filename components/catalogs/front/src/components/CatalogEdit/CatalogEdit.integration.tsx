@@ -27,7 +27,11 @@ test('it can enable a catalog', async () => {
             json: {},
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/product-selection-criteria/product/count',
             json: {},
         },
     ]);
@@ -83,7 +87,11 @@ test('it can change criteria in the product selection', async () => {
             json: {},
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/product-selection-criteria/product/count',
             json: {},
         },
     ]);
@@ -165,7 +173,11 @@ test('it can add a product value filter on the channel', async () => {
             json: {},
         },
         {
-            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=identifier%2Ctext%2Ctextarea%2Csimpleselect%2Cmultiselect%2Cnumber%2Cmetric%2Cboolean%2Cdate',
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/product-selection-criteria/product/count',
             json: {},
         },
     ]);
