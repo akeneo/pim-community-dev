@@ -168,12 +168,8 @@ describe('useInitialAttributeGroupsIndexState', () => {
       result.current.load();
     });
 
-    act(() => {
+    await act(() => {
       result.current.refreshOrder([groupC, groupA, groupB]);
-    });
-
-    await act(async () => {
-      result.current.saveOrder();
     });
 
     expect(saveAttributeGroupsOrder).toBeCalledWith({

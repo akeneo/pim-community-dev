@@ -30,6 +30,10 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
     debouncedSearch(searchValue);
   };
 
+  const onReorder = async (order: number[]) => {
+    await refreshOrder(order.map(index => groups[index]));
+  };
+
   useEffect(() => {
     onGroupCountChange(filteredGroups.length);
   }, [filteredGroups.length]);
@@ -53,11 +57,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
       ) : (
-        <Table
-          isDragAndDroppable={sortGranted}
-          isSelectable={false}
-          onReorder={order => refreshOrder(order.map(index => groups[index]))}
-        >
+        <Table isDragAndDroppable={sortGranted} isSelectable={false} onReorder={order => onReorder(order)}>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
             {featureFlags.isEnabled('data_quality_insights') && (

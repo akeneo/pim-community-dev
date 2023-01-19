@@ -5,7 +5,7 @@ import {AfterMoveRowHandler, CompareRowDataHandler} from '../shared/providers';
 
 type AttributeGroupsIndexState = {
   groups: AttributeGroup[];
-  saveOrder: () => Promise<void>;
+  saveOrder: (reorderedGroups: AttributeGroup[]) => Promise<void>;
   load: () => Promise<void>;
   redirect: (group: AttributeGroup) => void;
   refresh: (refreshedGroups: AttributeGroup[]) => void;

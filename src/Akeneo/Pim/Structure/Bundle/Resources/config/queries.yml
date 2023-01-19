@@ -220,3 +220,4 @@ services:
         arguments:
             - '@database_connection'
             - '@feature_flags'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\AttributeGroup\GetAttributeGroupsActivationQuery'

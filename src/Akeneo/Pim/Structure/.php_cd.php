@@ -26,6 +26,7 @@ $rules = [
         'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
         'Psr\Log\LoggerInterface',
         'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi',
 
         // TIP-906: Functional problem to query products before removing AttributeOption
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory',
