@@ -33,6 +33,7 @@ $rules = [
             'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
+            'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Structure\Family\ServiceAPI',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
@@ -40,10 +41,16 @@ $rules = [
 
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\Product',
             'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
+            'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi',
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
             'Akeneo\Pim\Structure\Family\ServiceAPI',
+            'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
@@ -73,8 +80,19 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Webmozart\Assert\Assert',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+
+            'Psr\Log\LoggerInterface',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+
+            'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent',
+            'Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToSetIdentifierException',
+        ]
+    )->in('Akeneo\Pim\Automation\IdentifierGenerator\API'),
 ];
 
 $config = new Configuration($rules, $finder);

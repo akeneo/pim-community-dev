@@ -7,14 +7,7 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
@@ -24,27 +17,14 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
+use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\EndToEndTestCase;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SetIdentifiersSubscriberEndToEnd extends TestCase
+class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
 {
-    private UserInterface $admin;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->admin = $this->createAdminUser();
-    }
-
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog(['identifier_generator']);
@@ -80,7 +60,7 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
     {
         $this->createIdentifierGenerator();
         $product = $this->createProduct('originalIdentifier');
-        $productFromDatabase = $this->setIdentifier($product, null);
+        $productFromDatabase = $this->updateProductIdentifier($product, null);
 
         Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
         Assert::assertSame('AKN-050', $productFromDatabase->getValue('sku')->getData());
@@ -167,40 +147,6 @@ class SetIdentifiersSubscriberEndToEnd extends TestCase
         Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
     }
 
-    private function createProduct(?string $identifier = null): ProductInterface
-    {
-        $uuid = Uuid::uuid4();
-        $this->getAuthenticator()->logIn('admin');
-
-        $userIntents = [];
-        if (null !== $identifier) {
-            $userIntents = [new SetIdentifierValue('sku', $identifier)];
-        }
-
-        $command = UpsertProductCommand::createWithUuid(
-            $this->admin->getId(),
-            ProductUuid::fromUuid($uuid),
-            $userIntents
-        );
-        ($this->getUpsertProductHandler())($command);
-
-        return $this->getProductRepository()->find($uuid);
-    }
-
-    private function setIdentifier(ProductInterface $product, ?string $identifier = null): ProductInterface
-    {
-        $command = UpsertProductCommand::createWithUuid(
-            $this->admin->getId(),
-            ProductUuid::fromUuid($product->getUuid()),
-            [
-                new SetIdentifierValue('sku', $identifier),
-            ]
-        );
-        ($this->getUpsertProductHandler())($command);
-
-        return $this->getProductRepository()->find($product->getUuid());
-    }
-
     private function addRestrictionsOnIdentifierAttribute(): void
     {
         $this->getConnection()->executeQuery(<<<SQL
@@ -223,16 +169,6 @@ SQL);
         ));
     }
 
-    private function setProductFamily(UuidInterface $uuid, string $familyCode): void
-    {
-        $command = UpsertProductCommand::createWithUuid(
-            $this->admin->getId(),
-            ProductUuid::fromUuid($uuid),
-            [new SetFamily($familyCode)]
-        );
-        ($this->getUpsertProductHandler())($command);
-    }
-
     private function createFamily(string $familyCode): FamilyInterface
     {
         $family = $this->getFamilyFactory()->create();
@@ -242,16 +178,6 @@ SQL);
         $this->getFamilySaver()->save($family);
 
         return $family;
-    }
-
-    private function setSimpleSelectProductValue(UuidInterface $uuid): void
-    {
-        $command = UpsertProductCommand::createWithUuid(
-            $this->admin->getId(),
-            ProductUuid::fromUuid($uuid),
-            [new SetSimpleSelectValue('color', null, null, 'red')]
-        );
-        ($this->getUpsertProductHandler())($command);
     }
 
     private function createSimpleSelectAttributeWithOption(string $attributeCode): void
@@ -282,16 +208,6 @@ SQL);
     private function getCreateGeneratorHandler(): CreateGeneratorHandler
     {
         return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler');
-    }
-
-    private function getUpsertProductHandler(): UpsertProductHandler
-    {
-        return $this->get('Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler');
-    }
-
-    private function getAuthenticator(): AuthenticatorHelper
-    {
-        return $this->get('akeneo_integration_tests.helper.authenticator');
     }
 
     private function getConnection(): Connection
