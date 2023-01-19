@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\ServiceApi;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository;
 use Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder as LegacyVersionBuilder;
+use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
@@ -26,8 +26,7 @@ class VersionBuilder
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ObjectManager $objectManager,
         private readonly LegacyVersionBuilder $versionBuilder
-    )
-    {
+    ) {
     }
 
     public function buildVersionWithId(?string $resourceId, string $resourceName, array $snapshot): Version

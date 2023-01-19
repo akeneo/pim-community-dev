@@ -31,7 +31,6 @@ class VersionBuilderIntegration extends TestCase
         $this->versionFactory = $this->get('pim_versioning.factory.version');
         $this->objectManager = $this->get('doctrine.orm.default_entity_manager');
         $this->legacyVersionBuilder = $this->get('pim_versioning.builder.version');
-
     }
 
     public function testBuildVersionOnCategoryCreation(): void
