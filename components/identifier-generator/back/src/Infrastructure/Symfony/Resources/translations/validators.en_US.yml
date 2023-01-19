@@ -18,3 +18,5 @@ validation:
         unknown_scope: 'The "{{ scopeCode }}" scope does not exist.'
         unknown_locale: 'The "{{ localeCode }}" locale does not exist or is not activated.'
         inactive_locale: 'The "{{ localeCode }}" locale is not active for the "{{ scopeCode }}" channel.'
+        family_property_fields_required: '"{{field}}" fields are required for "family" type'
+        family_process_fields_required: '{{field}}" fields are required for "family[process]" type'

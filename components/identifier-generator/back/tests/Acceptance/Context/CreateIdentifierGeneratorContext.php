@@ -227,6 +227,14 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When /^I try to create an identifier generator with family property without required field$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithFamilyPropertyWithoutRequiredField(): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family']]);
+    }
+
+    /**
      * @When I create an identifier generator without label
      */
     public function iCreateAnIdentifierGeneratorWithoutLabel(): void
