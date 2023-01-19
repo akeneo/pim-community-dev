@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup;
 
 use Akeneo\Pim\Structure\Bundle\Domain\Query\Sql\GetAttributeGroupsInterface;
-use Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups;
+use Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups;
 
 final class GetAttributeGroupHandler
 {

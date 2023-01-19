@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Pim\Structure\Bundle\infrastructure\controller;
+namespace Akeneo\Pim\Structure\Bundle\Infrastructure\controller;
 
 use Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup\GetAttributeGroupHandler;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
