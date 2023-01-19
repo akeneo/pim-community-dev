@@ -26,8 +26,7 @@ final class Process
         private string $type,
         private ?string $operator,
         private ?int $value
-    )
-    {
+    ) {
     }
 
     public function type(): string
@@ -61,8 +60,11 @@ final class Process
 
             Assert::keyExists($normalizedProperty, 'value');
             Assert::numeric($normalizedProperty['value']);
+            $normalizedProperty['value'] = intval($normalizedProperty['value']);
         }
+        $operator = array_key_exists('operator', $normalizedProperty) ? $normalizedProperty['operator'] : null;
+        $value = array_key_exists('value', $normalizedProperty) ? $normalizedProperty['value'] : null;
 
-        return new self($normalizedProperty['type'], $normalizedProperty['operator'], $normalizedProperty['value']);
+        return new self($normalizedProperty['type'], $operator, $value);
     }
 }
