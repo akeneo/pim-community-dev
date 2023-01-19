@@ -49,18 +49,41 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
             return;
         }
 
-        if (Process::PROCESS_TYPE_NO === $property['process']['type']) {
-            $this->validateProcessTypeNo($property, $constraint);
+        switch ($property['process']['type']) {
+            case Process::PROCESS_TYPE_NO:
+                $this->validateProcessTypeNo($property, $constraint);
+                break;
+            case Process::PROCESS_TYPE_TRUNCATE:
+                $this->validateProcessTypeTruncate($property, $constraint);
+                break;
+            case Process::PROCESS_TYPE_NOMENCLATURE:
+                $this->validateProcessTypeNomenclature($property, $constraint);
+                break;
         }
     }
 
-    public function validateProcessTypeNo(array $property, FamilyPropertyShouldBeValid $constraint): void
+    private function validateProcessTypeNo(array $property, FamilyPropertyShouldBeValid $constraint): void
     {
         $this->validator->inContext($this->context)->validate($property, new Collection([
             'fields' => [
                 'type' => null,
             ],
-            'extraFieldsMessage' => $constraint->processTypeNoOtherProperties
+            'extraFieldsMessage' => $constraint->processTypeNoOtherProperties,
         ]));
+    }
+
+    private function validateProcessTypeTruncate(array $property, FamilyPropertyShouldBeValid $constraint): void
+    {
+        $this->validator->inContext($this->context)->validate($property, new Collection([
+            'fields' => [
+                'type' => null,
+                'operator' => null,
+                'value' => null
+            ],
+        ]));
+    }
+
+    private function validateProcessTypeNomenclature(array $property, FamilyPropertyShouldBeValid $constraint): void
+    {
     }
 }
