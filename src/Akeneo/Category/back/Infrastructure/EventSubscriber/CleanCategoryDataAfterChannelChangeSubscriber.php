@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class CleanCategoryDataAfterChannelDeletionSubscriber implements EventSubscriberInterface
+class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
@@ -22,11 +22,12 @@ class CleanCategoryDataAfterChannelDeletionSubscriber implements EventSubscriber
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_REMOVE => 'cleanCategoryData',
+            StorageEvents::POST_SAVE => 'cleanCategoryDataForChannelLocale',
+            StorageEvents::POST_REMOVE => 'cleanCategoryDataForChannel',
         ];
     }
 
-    public function cleanCategoryData(GenericEvent $event): void
+    public function cleanCategoryDataForChannel(GenericEvent $event): void
     {
         $channel = $event->getSubject();
 
@@ -34,7 +35,17 @@ class CleanCategoryDataAfterChannelDeletionSubscriber implements EventSubscriber
             return;
         }
 
-        $deletedChannelCode = $channel->getCode();
-        ($this->cleanCategoryDataLinkedToChannel)($deletedChannelCode);
+        ($this->cleanCategoryDataLinkedToChannel)($channel, CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_ACTION);
+    }
+
+    public function cleanCategoryDataForChannelLocale(GenericEvent $event): void
+    {
+        $channel = $event->getSubject();
+
+        if (!$channel instanceof ChannelInterface || !$this->enrichedCategoryFeature->isEnabled()) {
+            return;
+        }
+
+        ($this->cleanCategoryDataLinkedToChannel)($channel, CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_LOCALE_ACTION);
     }
 }

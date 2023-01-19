@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
 use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
-use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelDeletionSubscriber;
+use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +25,7 @@ class CleanCategoryDataAfterChannelDeletionSubscriberSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldImplement(EventSubscriberInterface::class);
-        $this->shouldHaveType(CleanCategoryDataAfterChannelDeletionSubscriber::class);
+        $this->shouldHaveType(CleanCategoryDataAfterChannelChangeSubscriber::class);
     }
 
     function it_triggers_the_cleaning_of_category_after_channel_removal(
