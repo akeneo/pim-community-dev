@@ -51,3 +51,8 @@ services:
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
         tags:
             - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyPropertyShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
