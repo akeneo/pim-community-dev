@@ -99,9 +99,29 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   # Structure : Family
-  Scenario: Can create an identifier generator with family property missing required field
+  Scenario: Cannot create an identifier generator with family property without required field
     When I try to create an identifier generator with family property without required field
     Then I should get an error with message 'structure[0]: "process" fields are required for "family" type'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with invalid family property
+    When I try to create an identifier generator with invalid family property
+    Then I should get an error with message 'structure[0][unknown]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with empty family property
+    When I try to create an identifier generator with empty family process property
+    Then I should get an error with message 'structure[0][process][type]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with family process type unknown
+    When I try to create an identifier generator with a family process with type unknown and operator undefined and undefined as value
+    Then I should get an error with message 'structure[0]: Process type can only be one of the following: "no,truncate,nomenclature"'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with family process type no and operator EQUALS and undefined as value
+    When I try to create an identifier generator with a family process with type no and operator EQUALS and undefined as value
+    Then I should get an error with message 'structure[0]: There can be no other properties than "type".'
     And the identifier should not be created
 
   # Conditions
