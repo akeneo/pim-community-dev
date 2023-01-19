@@ -18,5 +18,6 @@ validation:
         unknown_scope: 'The "{{ scopeCode }}" scope does not exist.'
         unknown_locale: 'The "{{ localeCode }}" locale does not exist or is not activated.'
         inactive_locale: 'The "{{ localeCode }}" locale is not active for the "{{ scopeCode }}" channel.'
-        family_property_fields_required: '"{{field}}" fields are required for "family" type'
-        family_process_fields_required: '{{field}}" fields are required for "family[process]" type'
+        family_property_fields_required: '"{{field}}" fields are required for "family" type.'
+        process_type_unknown: 'Process type can only be one of the following: "{{ choices }}".'
+        process_type_no_other_properties: 'There can be no other properties than "type".'

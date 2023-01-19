@@ -62,7 +62,16 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                                 - LessThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MAX
                         process:
                             - Optional:
-                                  - NotBlank: ~
+                                - Collection:
+                                    fields:
+                                        type:
+                                            - Choice:
+                                                choices: ['no', 'truncate', 'nomenclature']
+                                                message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
+                                        value:
+                                            - Optional: ~
+                                        operator:
+                                            - Optional: ~
         labels:
             - All:
                 - Length:

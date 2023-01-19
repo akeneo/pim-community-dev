@@ -45,9 +45,18 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
         ];
         if (!in_array($property['process'], $processKeys)) {
             $this->context
-                ->buildViolation($constraint->processFieldsRequired, [
-                    '{{field}}' => implode(',', $processKeys),
+                ->buildViolation($constraint->processTypeUnknown, [
+                    '{{ choices }}' => implode(',', $processKeys),
                 ])
+                ->addViolation();
+        }
+
+        if (!\array_key_exists('type', $property['process'])) {
+            return;
+        }
+        if (Process::PROCESS_TYPE_NO === $property['process']['type'] && count($property['process']) > 1) {
+            $this->context
+                ->buildViolation($constraint->processTypeNoOtherProperties)
                 ->addViolation();
         }
     }
