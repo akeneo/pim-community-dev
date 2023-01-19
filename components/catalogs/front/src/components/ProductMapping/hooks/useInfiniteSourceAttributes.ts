@@ -2,7 +2,6 @@ import {useCallback} from 'react';
 import {useInfiniteQuery, useQueryClient} from 'react-query';
 import {Attribute} from '../../../models/Attribute';
 import {Target} from '../models/Target';
-import attribute from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Recommendation/Attribute';
 
 type PageParam = {
     number: number;
