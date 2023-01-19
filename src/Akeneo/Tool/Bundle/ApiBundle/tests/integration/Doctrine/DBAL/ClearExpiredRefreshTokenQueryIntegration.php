@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Doctrine\DBAL;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\ClearExpiredAccessTokenQuery;
+use Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\ClearExpiredRefreshTokenQuery;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
@@ -16,18 +16,18 @@ use FOS\OAuthServerBundle\Model\ClientManagerInterface;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ClearExpiredAccessTokenQueryIntegration extends ApiTestCase
+class ClearExpiredRefreshTokenQueryIntegration extends ApiTestCase
 {
     private readonly ?ClientManagerInterface $clientManager;
     private readonly ?Connection $connection;
-    private readonly ?ClearExpiredAccessTokenQuery $clearExpiredAccessTokenQuery;
+    private readonly ?ClearExpiredRefreshTokenQuery $clearExpiredRefreshTokenQuery;
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
         $this->connection = $this->get('database_connection');
-        $this->clearExpiredAccessTokenQuery = $this->get(ClearExpiredAccessTokenQuery::class);
+        $this->clearExpiredRefreshTokenQuery = $this->get(ClearExpiredRefreshTokenQuery::class);
 
     }
 
@@ -36,28 +36,28 @@ class ClearExpiredAccessTokenQueryIntegration extends ApiTestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    public function testDeletesExpiredAccessToken(): void
+    public function testDeletesExpiredRefreshToken(): void
     {
-        $this->create5ExpiredAccessTokens();
-        $this->create5ValidAccessTokens();
+        $this->create5ExpiredRefreshTokens();
+        $this->create5ValidRefreshTokens();
 
-        $this->assertValidAccessTokenCount(5);
-        $this->assertExpiredAccessTokenCount(5);
+        $this->assertValidRefreshTokenCount(5);
+        $this->assertExpiredRefreshTokenCount(5);
 
-        $this->clearExpiredAccessTokenQuery->execute();
+        $this->clearExpiredRefreshTokenQuery->execute();
 
-        $this->assertValidAccessTokenCount(5);
-        $this->assertExpiredAccessTokenCount(0);
+        $this->assertValidRefreshTokenCount(5);
+        $this->assertExpiredRefreshTokenCount(0);
     }
 
-    private function create5ExpiredAccessTokens(): void
+    private function create5ExpiredRefreshTokens(): void
     {
         $userId = $this->createUser('user_for_expired_tokens');
         $clientId = $this->createFosAuthClient();
         $expiredTimestamp = \time() - 100;
 
         $this->connection->executeStatement(<<<SQL
-            INSERT INTO pim_api_access_token (`client`, `user`, `token`, `expires_at`) VALUES
+            INSERT INTO pim_api_refresh_token (`client`, `user`, `token`, `expires_at`) VALUES
                 ($clientId, $userId, 'invalid_token_1', $expiredTimestamp),
                 ($clientId, $userId, 'invalid_token_2', $expiredTimestamp),
                 ($clientId, $userId, 'invalid_token_3', $expiredTimestamp),
@@ -66,14 +66,14 @@ class ClearExpiredAccessTokenQueryIntegration extends ApiTestCase
         SQL);
     }
 
-    private function create5ValidAccessTokens(): void
+    private function create5ValidRefreshTokens(): void
     {
         $userId = $this->createUser('user_for_valid_tokens');
         $clientId = $this->createFosAuthClient();
         $validTimestamp = \time() + 100;
 
         $this->connection->executeStatement(<<<SQL
-            INSERT INTO pim_api_access_token (`client`, `user`, `token`, `expires_at`) VALUES
+            INSERT INTO pim_api_refresh_token (`client`, `user`, `token`, `expires_at`) VALUES
                 ($clientId, $userId, 'valid_token_1', $validTimestamp),
                 ($clientId, $userId, 'valid_token_2', $validTimestamp),
                 ($clientId, $userId, 'valid_token_3', $validTimestamp),
@@ -110,25 +110,25 @@ class ClearExpiredAccessTokenQueryIntegration extends ApiTestCase
         return $user->getId();
     }
 
-    private function assertValidAccessTokenCount(int $expected): void
+    private function assertValidRefreshTokenCount(int $expected): void
     {
-        $validAccessTokenCount = (int) $this->connection->executeQuery(
-            'SELECT COUNT(*) FROM pim_api_access_token WHERE expires_at >= :now_timestamp',
+        $validRefreshTokenCount = (int) $this->connection->executeQuery(
+            'SELECT COUNT(*) FROM pim_api_refresh_token WHERE expires_at >= :now_timestamp',
             ['now_timestamp' =>  \time()],
             ['now_timestamp' =>  ParameterType::INTEGER]
         )->fetchOne();
 
-        $this->assertEquals($expected, $validAccessTokenCount, 'Valid access token count should match');
+        $this->assertEquals($expected, $validRefreshTokenCount, 'Valid refresh token count should match');
     }
 
-    private function assertExpiredAccessTokenCount(int $expected): void
+    private function assertExpiredRefreshTokenCount(int $expected): void
     {
-        $expiredAccessTokenCount = (int) $this->connection->executeQuery(
-            'SELECT COUNT(*) FROM pim_api_access_token WHERE expires_at < :now_timestamp',
+        $expiredRefreshTokenCount = (int) $this->connection->executeQuery(
+            'SELECT COUNT(*) FROM pim_api_refresh_token WHERE expires_at < :now_timestamp',
             ['now_timestamp' =>  \time()],
             ['now_timestamp' =>  ParameterType::INTEGER]
         )->fetchOne();
 
-        $this->assertEquals($expected, $expiredAccessTokenCount, 'Expired access token count should match');
+        $this->assertEquals($expected, $expiredRefreshTokenCount, 'Expired refresh token count should match');
     }
 }
