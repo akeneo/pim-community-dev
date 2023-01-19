@@ -25,7 +25,9 @@ final class Process
     public function __construct(
         private string $type,
         private ?string $operator,
-        private ?int $value) {
+        private ?int $value
+    )
+    {
     }
 
     public function type(): string

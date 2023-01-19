@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,6 +43,7 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
                     '{{field}}' => 'process',
                 ])
                 ->addViolation();
+
             return;
         }
 
@@ -51,13 +53,16 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
 
         switch ($property['process']['type']) {
             case Process::PROCESS_TYPE_NO:
-                $this->validateProcessTypeNo($property, $constraint);
+                $this->validateProcessTypeNo($property['process'], $constraint);
+
                 break;
             case Process::PROCESS_TYPE_TRUNCATE:
-                $this->validateProcessTypeTruncate($property, $constraint);
+                $this->validateProcessTypeTruncate($property['process'], $constraint);
+
                 break;
             case Process::PROCESS_TYPE_NOMENCLATURE:
-                $this->validateProcessTypeNomenclature($property, $constraint);
+                $this->validateProcessTypeNomenclature($property['process'], $constraint);
+
                 break;
         }
     }
@@ -77,8 +82,11 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
         $this->validator->inContext($this->context)->validate($property, new Collection([
             'fields' => [
                 'type' => null,
-                'operator' => null,
-                'value' => null
+                'operator' => new Choice(
+                    choices: [Process::PROCESS_OPERATOR_EQ, Process::PROCESS_OPERATOR_LTE],
+                    message: $constraint->processUnknownOperator
+                ),
+                'value' => null,
             ],
         ]));
     }
