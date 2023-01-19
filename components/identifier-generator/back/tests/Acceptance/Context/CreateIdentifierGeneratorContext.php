@@ -259,6 +259,14 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When /^I try to create an identifier generator with a family containing invalid truncate process$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithFamilyContainingInvalidTruncateProcess(): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => 'EQUALS', 'value' => '1', 'unknown' => '']]]);
+    }
+
+    /**
      * @When I create an identifier generator without label
      */
     public function iCreateAnIdentifierGeneratorWithoutLabel(): void
