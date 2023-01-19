@@ -62,7 +62,7 @@ config:
         oro/datagrid/delete-confirm:            pimdatagrid/js/datagrid/action/delete-confirm.ts
         oro/datagrid/sequential_edit-action:    pimdatagrid/js/datagrid/action/sequential-edit-action
         oro/datagrid/mass_delete-action:        pimdatagrid/js/datagrid/action/mass-delete-action
-        oro/datagrid/attribute_mass_delete-action: pimdatagrid/js/datagrid/action/mass-delete-action
+        oro/datagrid/attribute_mass_delete-action: pimdatagrid/js/datagrid/action/attribute-mass-delete-action
         oro/datagrid/revoke-action:             pimdatagrid/js/datagrid/action/revoke-action
         oro/datagrid/ajax-action:               pimdatagrid/js/datagrid/action/ajax-action
         oro/datagrid/mass-action:               pimdatagrid/js/datagrid/action/mass-action
