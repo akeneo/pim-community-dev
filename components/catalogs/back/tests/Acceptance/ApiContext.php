@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Acceptance;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
@@ -17,8 +18,13 @@ use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Behat\Behat\Context\Context;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -724,6 +730,19 @@ class ApiContext implements Context
                         'scope' => 'ecommerce',
                         'locale' => 'en_US',
                     ],
+                    'description' => [
+                        'source' => 'description',
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                    ],
+                    'size' => [
+                        'source' => 'size',
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ]
+                    ],
                 ],
             )
         );
@@ -750,6 +769,9 @@ class ApiContext implements Context
                     },
                     "description": {
                       "type": "string"
+                    },
+                    "size": {
+                      "type": "string"
                     }
                   }
                 }
@@ -771,18 +793,24 @@ class ApiContext implements Context
                 'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
                 'identifier' => 't-shirt blue',
                 'name' => 'T-shirt blue',
+                'description' => 'Description blue',
+                'size' => 'l',
                 'enabled' => true,
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
                 'identifier' => 't-shirt green',
                 'name' => 'T-shirt green',
+                'description' => 'Description green',
+                'size' => 'm',
                 'enabled' => false,
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
                 'identifier' => 't-shirt red',
                 'name' => 'T-shirt red',
+                'description' => 'Description red',
+                'size' => 'xl',
                 'enabled' => true,
             ],
         ];
@@ -793,6 +821,19 @@ class ApiContext implements Context
             'scopable' => true,
             'localizable' => true,
         ]);
+        $this->createAttribute([
+            'code' => 'description',
+            'type' => 'pim_catalog_textarea',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+        $this->createAttribute([
+            'code' => 'size',
+            'type' => 'pim_catalog_simpleselect',
+            'scopable' => true,
+            'localizable' => true,
+            'options' => ['XS', 'S', 'M', 'L', 'XL'],
+        ]);
 
         foreach ($products as $product) {
             $command = UpsertProductCommand::createWithUuid(
@@ -802,6 +843,8 @@ class ApiContext implements Context
                     new SetIdentifierValue('sku', $product['identifier']),
                     new SetEnabled((bool) $product['enabled']),
                     new SetTextValue('name', 'ecommerce', 'en_US', $product['name']),
+                    new SetTextareaValue('description', 'ecommerce', 'en_US', $product['description']),
+                    new SetSimpleSelectValue('size', 'ecommerce', 'en_US', $product['size']),
                 ]
             );
 
@@ -841,12 +884,14 @@ class ApiContext implements Context
             [
                 'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
                 'title' => 'T-shirt blue',
-                'description' => '',
+                'description' => 'Description blue',
+                'size' => 'L',
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
                 'title' => 'T-shirt red',
-                'description' => '',
+                'description' => 'Description red',
+                'size' => 'XL',
             ],
         ];
 
@@ -880,7 +925,8 @@ class ApiContext implements Context
         $expectedMappedProducts = [
             'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
             'title' => 'T-shirt blue',
-            'description' => '',
+            'description' => 'Description blue',
+            'size' => 'L',
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);
@@ -894,6 +940,7 @@ class ApiContext implements Context
      *     group?: string,
      *     scopable: bool,
      *     localizable: bool,
+     *     options?: array<string>
      * } $data
      */
     private function createAttribute(array $data): void
@@ -902,8 +949,48 @@ class ApiContext implements Context
             'group' => 'other',
         ], $data);
 
+        $options = $data['options'] ?? [];
+        unset($data['options']);
+
         $attribute = $this->container->get('pim_catalog.factory.attribute')->create();
         $this->container->get('pim_catalog.updater.attribute')->update($attribute, $data);
         $this->container->get('pim_catalog.saver.attribute')->save($attribute);
+
+        if ([] !== $options) {
+            $this->createAttributeOptions($attribute, $options);
+            $this->container->get('pim_connector.doctrine.cache_clearer')->clear();
+        }
+    }
+
+    private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
+    {
+        $factory = $this->container->get('pim_catalog.factory.attribute_option');
+        $locales = \array_map(
+            static fn ($locale) => $locale['code'],
+            $this->container->get(GetLocalesQueryInterface::class)->execute()
+        );
+
+        $options = [];
+
+        foreach ($codes as $i => $code) {
+            /** @var AttributeOptionInterface $option */
+            $option = $factory->create();
+            $option->setCode(\strtolower(\trim(\preg_replace('/[^A-Za-z0-9-]+/', '_', $code))));
+            $option->setAttribute($attribute);
+            $option->setSortOrder($i);
+
+            foreach ($locales as $locale) {
+                $value = new AttributeOptionValue();
+                $value->setOption($option);
+                $value->setLocale($locale);
+                $value->setLabel($code);
+
+                $option->addOptionValue($value);
+            }
+
+            $options[] = $option;
+        }
+
+        $this->container->get('pim_catalog.saver.attribute_option')->saveAll($options);
     }
 }
