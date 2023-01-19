@@ -142,6 +142,9 @@ WHERE TABLE_SCHEMA='%s'
   AND COLUMN_NAME='number';
 SQL;
 
-        return \strtolower($this->connection->fetchOne(\sprintf($sql, $this->connection->getDatabase()))) === 'int';
+        $type = $this->connection->fetchOne(\sprintf($sql, $this->connection->getDatabase()));
+        Assert::string($type);
+
+        return \strtolower($type) === 'int';
     }
 }
