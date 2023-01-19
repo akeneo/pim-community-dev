@@ -235,6 +235,30 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When /^I try to create an identifier generator with invalid family property$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithInvalidFamilyProperty(): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'no'], 'unknown' => '']]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with empty family process property$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithEmptyFamilyProcessProperty(): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => []]]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => $type, 'operator' => $operator, 'value' => $value]]]);
+    }
+
+    /**
      * @When I create an identifier generator without label
      */
     public function iCreateAnIdentifierGeneratorWithoutLabel(): void
