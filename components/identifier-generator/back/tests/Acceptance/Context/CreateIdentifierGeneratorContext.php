@@ -255,7 +255,14 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
     {
-        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => $type, 'operator' => $operator, 'value' => $value]]]);
+        $defaultStructure = ['type' => 'family', 'process' => ['type' => $type, 'operator' => $operator, 'value' => $value]];
+        if ($operator === 'undefined') {
+            unset($defaultStructure['process']['operator']);
+        }
+        if ($value === 'undefined') {
+            unset($defaultStructure['process']['value']);
+        }
+        $this->tryToCreateGenerator(structure: [$defaultStructure]);
     }
 
     /**
