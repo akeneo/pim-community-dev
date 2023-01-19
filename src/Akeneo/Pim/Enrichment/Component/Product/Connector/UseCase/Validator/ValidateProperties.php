@@ -47,9 +47,10 @@ final class ValidateProperties
         foreach ($search as $propertyCode => $filters) {
             $propertyCode = (string) $propertyCode;
             foreach ($filters as $filter) {
+                $isExistingAttribute = $this->isExistingAttribute($propertyCode);
                 if (!(
                     $this->isProductField($propertyCode) ||
-                    $this->isExistingAttribute($propertyCode) ||
+                    $isExistingAttribute ||
                     $this->hasWrongOperatorForParentProperty($propertyCode, $filter['operator'])
                 )) {
                     throw new InvalidQueryException(
@@ -58,6 +59,14 @@ final class ValidateProperties
                             $propertyCode,
                             $filter['operator']
                         )
+                    );
+                } elseif (!$isExistingAttribute) {
+                    throw new InvalidQueryException(
+                        sprintf(
+                            '"%s" does not exist or you do not have permission to access it.',
+                            $propertyCode
+                        ),
+                        404
                     );
                 }
             }
