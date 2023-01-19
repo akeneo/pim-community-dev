@@ -28,7 +28,7 @@ class UpdateCategoryVersionSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function UpdateCategoryVersion(CategoryUpdatedEvent $event): void
+    public function updateCategoryVersion(CategoryUpdatedEvent $event): void
     {
         $categoryVersion = $this->categoryVersionBuilder->create($event->getCategory());
 
