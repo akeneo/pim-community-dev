@@ -35,6 +35,7 @@ class PimApiExtension extends Extension
         $loader->load('negotiators.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
+        $loader->load('queries.yml');
         $loader->load('security.yml');
         $loader->load('serializers.yml');
         $loader->load('stream.yml');
