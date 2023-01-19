@@ -43,7 +43,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator if property does not exist
     When I try to create an identifier generator with an unknown property
-    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number".'
+    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number", "family".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator if structure contains too many properties
@@ -96,6 +96,12 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator if structure contains multiple auto number
     When I try to create an identifier generator with multiple auto number in structure
     Then I should get an error with message 'structure: should contain only 1 auto number'
+    And the identifier should not be created
+
+  # Structure : Family
+  Scenario: Can create an identifier generator with family property missing required field
+    When I try to create an identifier generator with family property without required field
+    Then I should get an error with message 'structure[0]: "process" fields are required for "family" type'
     And the identifier should not be created
 
   # Conditions
