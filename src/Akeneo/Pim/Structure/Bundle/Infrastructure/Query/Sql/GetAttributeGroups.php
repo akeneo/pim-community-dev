@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql;
+namespace Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql;
 
 use Akeneo\Pim\Structure\Bundle\Domain\Query\Sql\GetAttributeGroupsInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
