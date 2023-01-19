@@ -2,6 +2,7 @@ import {useCallback} from 'react';
 import {useInfiniteQuery, useQueryClient} from 'react-query';
 import {Attribute} from '../../../models/Attribute';
 import {Target} from '../models/Target';
+import attribute from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Recommendation/Attribute';
 
 type PageParam = {
     number: number;
@@ -65,7 +66,7 @@ export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: Q
                 },
             };
         },
-        [search, limit, queryClient]
+        [search, limit, queryClient, target.format, target.type]
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(

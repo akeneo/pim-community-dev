@@ -67,14 +67,14 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
 
     const shouldDisplayChannel = source !== null && attribute?.scopable;
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
-    const shouldDisplayChannelLocale =
-        source !== null && source.scope !== null && attribute?.localizable && attribute?.scopable;
+    const shouldDisplayChannelLocale = source !== null && attribute?.localizable && attribute?.scopable;
+    const shouldDisplayTranslationValue = source !== null && attribute?.type === 'pim_catalog_simpleselect';
     const shouldDisplayNoParametersMessage = !(
         shouldDisplayLocale ||
         shouldDisplayChannel ||
-        shouldDisplayChannelLocale
+        shouldDisplayChannelLocale ||
+        shouldDisplayTranslationValue
     );
-    const shouldDisplayTranslationValue = source !== null && attribute?.type === 'pim_catalog_simpleselect';
 
     return (
         <>

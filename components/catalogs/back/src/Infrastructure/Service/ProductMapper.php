@@ -55,7 +55,7 @@ class ProductMapper implements ProductMapperInterface
                 $sourceValue = $product['uuid']->toString();
             } elseif (\array_key_exists($targetCode, $productMapping) &&
                 $productMapping[$targetCode]['source'] !== null &&
-                \array_key_exists($productMapping[$targetCode]['source'],$attributeTypeBySource)) {
+                \array_key_exists($productMapping[$targetCode]['source'], $attributeTypeBySource)) {
                 try {
                     $sourceValue = $this->attributeValueExtractorRegistry->extract(
                         $product,

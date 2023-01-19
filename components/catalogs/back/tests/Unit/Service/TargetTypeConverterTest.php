@@ -43,6 +43,8 @@ class TargetTypeConverterTest extends TestCase
                 '',
                 [
                     'pim_catalog_text',
+                    'pim_catalog_textarea',
+                    'pim_catalog_simpleselect',
                 ]
             ],
         ];

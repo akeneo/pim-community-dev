@@ -27,7 +27,6 @@ final class SelectExtractor implements AttributeValueExtractorInterface
         ?string $scope,
         ?array $parameters,
     ): null | string {
-
         /** @var string|array<string>|null $value */
         $value = $product['raw_values'][$attributeCode][$scope][$locale] ?? null;
         if ($value !== null) {
