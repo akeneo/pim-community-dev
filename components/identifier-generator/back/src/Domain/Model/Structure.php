@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Webmozart\Assert\Assert;
@@ -60,6 +61,7 @@ final class Structure
             $properties[] = match ($normalizedValue['type']) {
                 FreeText::type() => FreeText::fromNormalized($normalizedValue),
                 AutoNumber::type() => AutoNumber::fromNormalized($normalizedValue),
+                FamilyProperty::type() => FamilyProperty::fromNormalized($normalizedValue),
                 default => throw new \InvalidArgumentException(sprintf('The Structure type "%s" does not exist', $normalizedValue['type'])),
             };
         }
