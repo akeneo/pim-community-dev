@@ -40,11 +40,12 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - All:
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyPropertyShouldBeValid: ~
                 - Collection:
                     fields:
                         type:
                             - Choice:
-                                choices: ['free_text', 'auto_number']
+                                choices: ['free_text', 'auto_number', 'family']
                                 message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         string:
                             - Optional:
@@ -59,6 +60,9 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                             - Optional:
                                 - GreaterThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MIN
                                 - LessThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MAX
+                        process:
+                            - Optional:
+                                  - NotBlank: ~
         labels:
             - All:
                 - Length:
