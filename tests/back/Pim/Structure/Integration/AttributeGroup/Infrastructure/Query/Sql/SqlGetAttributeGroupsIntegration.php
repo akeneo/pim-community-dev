@@ -8,13 +8,15 @@ use Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SqlGetAttributeGroupsIntegration extends TestCase
 {
     public function testItReturnsAttributeGroups()
     {
-        $this->createAttributeGroup('an_attribute_group', 1, []);
-        $this->createAttributeGroup('another_attribute_group', 2, ['en_US' => 'Another attribute group']);
+        $this->createAttributeGroup('an_attribute_group', 1, [], true);
+        $this->createAttributeGroup('another_attribute_group', 2, ['en_US' => 'Another attribute group'], false);
 
         $this->assertSame([
             [
@@ -44,8 +46,8 @@ class SqlGetAttributeGroupsIntegration extends TestCase
     {
         $this->get('feature_flags')->enable('data_quality_insights');
 
-        $this->createAttributeGroup('an_attribute_group', 1, []);
-        $this->createAttributeGroup('another_attribute_group', 2, ['en_US' => 'Another attribute group']);
+        $this->createAttributeGroup('an_attribute_group', 1, [], true);
+        $this->createAttributeGroup('another_attribute_group', 2, ['en_US' => 'Another attribute group'], false);
 
         $this->assertSame([
             [
@@ -60,7 +62,7 @@ class SqlGetAttributeGroupsIntegration extends TestCase
                 'labels' => [
                     'en_US' => 'Another attribute group',
                 ],
-                'is_dqi_activated' => true,
+                'is_dqi_activated' => false,
             ],
             [
                 'code' => 'other',
@@ -84,7 +86,7 @@ class SqlGetAttributeGroupsIntegration extends TestCase
         return $this->get('Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups');
     }
 
-    private function createAttributeGroup(string $code, int $sortOrder, array $labels): void
+    private function createAttributeGroup(string $code, int $sortOrder, array $labels, ?bool $isDqiActivated): void
     {
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
@@ -102,6 +104,13 @@ SQL;
 
         foreach ($labels as $locale => $label) {
             $connection->executeQuery($attributeGroupTranslationSql, ['attribute_group_id' => $attributeGroupId, 'label' => $label, 'locale' => $locale]);
+        }
+
+        if (null !== $isDqiActivated) {
+            $attributeGroupActivationSql = <<<SQL
+INSERT INTO pim_data_quality_insights_attribute_group_activation (attribute_group_code, activated, updated_at) VALUES (:attribute_group_code, :is_dqi_activated, NOW());
+SQL;
+            $connection->executeQuery($attributeGroupActivationSql, ['attribute_group_code' => $code, 'is_dqi_activated' => $isDqiActivated], ['is_dqi_activated' => Types::BOOLEAN]);
         }
     }
 }
