@@ -57,12 +57,12 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
             $attribute = explode('-', $matches['attribute']);
             $attributeCode = $attribute[0];
 
-            // TODO: TIP-722 - to revert once the identifier product value is dropped.
-            if ($attributeCode === $this->attributeRepository->getIdentifierCode() &&
-                $violation->getConstraint() instanceof UniqueValue
-            ) {
-                return [];
-            }
+//            // TODO: TIP-722 - to revert once the identifier product value is dropped.
+//            if ($attributeCode === $this->attributeRepository->getIdentifierCode() &&
+//                $violation->getConstraint() instanceof UniqueValue
+//            ) {
+//                return [];
+//            }
 
             $channel = $attribute[1] ?? null;
             $locale = $attribute[2] ?? null;

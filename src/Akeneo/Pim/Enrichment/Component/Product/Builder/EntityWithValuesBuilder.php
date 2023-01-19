@@ -52,23 +52,23 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         ?string $channelCode,
         $data
     ): ?ValueInterface {
-        $attribute = $this->getAttributesQuery->forCode($attribute->getCode());
-        $data = $this->filterEmptyPricesAndMeasurements($attribute->type(), $data);
+        $readAttribute = $this->getAttributesQuery->forCode($attribute->getCode());
+        $data = $this->filterEmptyPricesAndMeasurements($readAttribute->type(), $data);
 
-        $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
+        $formerValue = $entityWithValues->getValue($readAttribute->code(), $localeCode, $channelCode);
         $isFormerValueFilled = null !== $formerValue && '' !== $formerValue && [] !== $formerValue;
         $isNewValueFilled = null !== $data && !$this->isEmptyStringValue($data) && [] !== $data;
 
         if (!$isFormerValueFilled && $isNewValueFilled) {
-            return $this->createValue($entityWithValues, $attribute, $localeCode, $channelCode, $data);
+            return $this->createValue($entityWithValues, $readAttribute, $localeCode, $channelCode, $data, $attribute->isMainIdentifier());
         }
 
         if ($isFormerValueFilled && $isNewValueFilled) {
-            return $this->updateValue($entityWithValues, $attribute, $localeCode, $channelCode, $data);
+            return $this->updateValue($entityWithValues, $readAttribute, $localeCode, $channelCode, $data, $attribute->isMainIdentifier());
         }
 
         if ($isFormerValueFilled && !$isNewValueFilled) {
-            return $this->removeValue($entityWithValues, $attribute, $localeCode, $channelCode, $data);
+            return $this->removeValue($entityWithValues, $readAttribute, $localeCode, $channelCode, $data, $attribute->isMainIdentifier());
         }
 
         return null;
@@ -113,11 +113,14 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         Attribute $attribute,
         ?string $localeCode,
         ?string $channelCode,
-        $data
+        $data,
+        bool $updateIdentifierValue
     ): ValueInterface {
         $newValue = $this->productValueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
         $entityWithValues->addValue($newValue);
-        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+        if ($updateIdentifierValue) {
+            $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+        }
 
         return $newValue;
     }
@@ -127,14 +130,17 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         Attribute $attribute,
         ?string $localeCode,
         ?string $channelCode,
-        $data
+        $data,
+        bool $updateIdentifierValue
     ): ValueInterface {
         $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
         $updatedValue = $this->productValueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
         if (!$formerValue->isEqual($updatedValue)) {
             $entityWithValues->removeValue($formerValue)->addValue($updatedValue);
         }
-        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+        if ($updateIdentifierValue) {
+            $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+        }
 
         return $updatedValue;
     }
@@ -144,11 +150,14 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         Attribute $attribute,
         ?string $localeCode,
         ?string $channelCode,
-        $data
+        $data,
+        bool $updateIdentifierValue
     ): ?ValueInterface {
         $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
         $entityWithValues->removeValue($formerValue);
-        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+        if ($updateIdentifierValue) {
+            $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+        }
 
         return null;
     }

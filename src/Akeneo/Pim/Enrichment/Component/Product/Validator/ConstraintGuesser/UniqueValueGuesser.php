@@ -38,9 +38,7 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
     {
         $constraints = [];
 
-        // We don't apply the unique value constraint on identifier because it is done
-        // by `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity`
-        if ($attribute->isUnique() && AttributeTypes::IDENTIFIER !== $attribute->getType()) {
+        if ($attribute->isUnique()) {
             $constraints[] = new UniqueValue();
         }
 

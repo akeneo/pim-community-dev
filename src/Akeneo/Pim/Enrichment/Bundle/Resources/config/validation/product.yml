@@ -5,7 +5,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         - UniqueAxis
         - api
     constraints:
-        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity: ~
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamily:
             groups:
               - api
