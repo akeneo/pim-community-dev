@@ -259,6 +259,53 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to update an identifier generator with family property without required field
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithFamilyPropertyWithoutRequiredField()
+    {
+        $this->tryToUpdateGenerator(structure: [['type' => 'family']]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with invalid family property$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithInvalidFamilyProperty(): void
+    {
+        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'no'], 'unknown' => '']]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with empty family process property
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithEmptyFamilyProcessProperty()
+    {
+        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => []]]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
+    {
+        $defaultStructure = ['type' => 'family', 'process' => ['type' => $type, 'operator' => $operator, 'value' => $value]];
+        if ($operator === 'undefined') {
+            unset($defaultStructure['process']['operator']);
+        }
+        if ($value === 'undefined') {
+            unset($defaultStructure['process']['value']);
+        }
+        $this->tryToUpdateGenerator(structure: [$defaultStructure]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with a family containing invalid truncate process
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyContainingInvalidTruncateProcess()
+    {
+        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => 'EQUALS', 'value' => '1', 'unknown' => '']]]);
+    }
+
+    /**
      * @When /^I try to update an identifier generator with delimiter '(?P<delimiter>[^']*)'$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
