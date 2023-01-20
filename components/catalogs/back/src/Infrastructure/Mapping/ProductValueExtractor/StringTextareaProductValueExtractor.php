@@ -2,22 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Service\AttributeValueExtractor;
+namespace Akeneo\Catalogs\Infrastructure\Mapping\ProductValueExtractor;
+
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorInterface;
 
 /**
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class TextExtractor implements AttributeValueExtractorInterface
+final class StringTextareaProductValueExtractor implements ProductValueExtractorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function extract(
         array $product,
         string $attributeCode,
-        string $attributeType,
         ?string $locale,
         ?string $scope,
         ?array $parameters,
@@ -25,11 +22,10 @@ final class TextExtractor implements AttributeValueExtractorInterface
         return $product['raw_values'][$attributeCode][$scope][$locale] ?? null;
     }
 
-    public function supports(string $attributeType): bool
+    public function supports(string $attributeType, string $targetType, ?string $targetFormat): bool
     {
-        return \in_array($attributeType, [
-            'pim_catalog_text',
-            'pim_catalog_textarea',
-        ]);
+        return 'pim_catalog_textarea' === $attributeType
+            && 'string' === $targetType
+            && null === $targetFormat;
     }
 }

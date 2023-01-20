@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Service\AttributeValueExtractor;
+namespace Akeneo\Catalogs\Infrastructure\Mapping;
 
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 
 /**
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
-final class AttributeValueExtractorRegistry
+final class ProductValueExtractorRegistry
 {
     /**
-     * @param AttributeValueExtractorInterface[] $extractors
+     * @param ProductValueExtractorInterface[] $extractors
      */
     public function __construct(
         private readonly array $extractors,
     ) {
         foreach ($this->extractors as $extractor) {
-            if (!$extractor instanceof AttributeValueExtractorInterface) {
+            if (!$extractor instanceof ProductValueExtractorInterface) {
                 throw new \LogicException(
                     static::class . ' accepts only array of ' .
-                    AttributeValueExtractorInterface::class . ' as argument.'
+                    ProductValueExtractorInterface::class . ' as argument.'
                 );
             }
         }
@@ -39,16 +39,17 @@ final class AttributeValueExtractorRegistry
         array $product,
         string $attributeCode,
         string $attributeType,
+        string $targetType,
+        ?string $targetFormat,
         ?string $locale,
         ?string $scope,
         ?array $parameters,
     ): null | string {
         foreach ($this->extractors as $extractor) {
-            if ($extractor->supports($attributeType)) {
+            if ($extractor->supports($attributeType, $targetType, $targetFormat)) {
                 return $extractor->extract(
                     $product,
                     $attributeCode,
-                    $attributeType,
                     $locale,
                     $scope,
                     $parameters,
@@ -56,6 +57,6 @@ final class AttributeValueExtractorRegistry
             }
         }
 
-        throw new AttributeValueExtractorNotFoundException();
+        throw new ProductValueExtractorNotFoundException();
     }
 }

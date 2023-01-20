@@ -3,12 +3,10 @@
 declare(strict_types=1);
 
 
-namespace Akeneo\Catalogs\Infrastructure\Service;
+namespace Akeneo\Catalogs\Infrastructure\Mapping;
 
+use Akeneo\Catalogs\Application\Mapping\ProductMapperInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
-use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorRegistry;
-use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetAttributeTypeByCodesQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
@@ -25,7 +23,7 @@ class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly GetAttributeTypeByCodesQuery $getAttributeTypeByCodesQuery,
-        private readonly AttributeValueExtractorRegistry $attributeValueExtractorRegistry,
+        private readonly ProductValueExtractorRegistry $productValueExtractorRegistry,
     ) {
     }
 
@@ -48,7 +46,7 @@ class ProductMapper implements ProductMapperInterface
         $attributeTypeBySource = $this->getAttributeTypeByCodesQuery->execute($sourceAttributeCodes);
 
         /** @var string $targetCode */
-        foreach (\array_keys($productMappingSchema['properties']) as $targetCode) {
+        foreach ($productMappingSchema['properties'] as $targetCode => $target) {
             $sourceValue = null;
 
             if ('uuid' === $targetCode) {
@@ -57,15 +55,17 @@ class ProductMapper implements ProductMapperInterface
                 $productMapping[$targetCode]['source'] !== null &&
                 \array_key_exists($productMapping[$targetCode]['source'], $attributeTypeBySource)) {
                 try {
-                    $sourceValue = $this->attributeValueExtractorRegistry->extract(
+                    $sourceValue = $this->productValueExtractorRegistry->extract(
                         $product,
                         $productMapping[$targetCode]['source'],
                         $attributeTypeBySource[$productMapping[$targetCode]['source']],
+                        $target['type'],
+                        $target['format'] ?? null,
                         $productMapping[$targetCode]['locale'] ?? '<all_locales>',
                         $productMapping[$targetCode]['scope'] ?? '<all_channels>',
                         $productMapping[$targetCode]['parameters'] ?? null,
                     );
-                } catch (AttributeValueExtractorNotFoundException) {
+                } catch (ProductValueExtractorNotFoundException) {
                 }
             }
 

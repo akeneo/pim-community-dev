@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Service\AttributeValueExtractor;
+namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
-interface AttributeValueExtractorInterface
+interface ProductValueExtractorInterface
 {
     /**
      * @param RawProduct $product
@@ -21,11 +21,10 @@ interface AttributeValueExtractorInterface
     public function extract(
         array $product,
         string $attributeCode,
-        string $attributeType,
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | string;
+    ): null | string | float;
 
-    public function supports(string $attributeType): bool;
+    public function supports(string $attributeType, string $targetType, ?string $targetFormat): bool;
 }
