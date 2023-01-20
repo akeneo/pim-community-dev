@@ -29,31 +29,31 @@ class DisableCatalogsOnChannelRemovalTaskletTest extends IntegrationTestCase
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['channels' => ['print', 'ecommerce']]
+            catalogProductValueFilters: ['channels' => ['print', 'ecommerce']],
         );
         $this->createCatalog(
             id: 'b79b09a3-cb4c-45f8-a086-4f70cc17f521',
             name: 'Store FR',
             ownerUsername: 'magenta',
-            catalogProductValueFilters: ['channels' => ['ecommerce']]
+            catalogProductValueFilters: ['channels' => ['ecommerce']],
         );
         $this->createCatalog(
             id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             name: 'Store UK',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['channels' => ['print']]
+            catalogProductValueFilters: ['channels' => ['print']],
         );
         $this->createCatalog(
             id: '97bdda65-8131-4c3b-a52d-25c5fe75462a',
             name: 'Store Ecommerce',
             ownerUsername: 'magenta',
-            catalogProductMapping: ['custom_field' => ['scope' => 'ecommerce', 'source' => 'meta_title']]
+            catalogProductMapping: ['custom_field' => ['scope' => 'ecommerce', 'source' => 'meta_title']],
         );
         $this->createCatalog(
             id: 'c58de220-1fac-4914-9c3c-eebb8444b6c1',
             name: 'Store Print',
             ownerUsername: 'magenta',
-            catalogProductMapping: ['custom_field' => ['scope' => 'print', 'source' => 'meta_title']]
+            catalogProductMapping: ['custom_field' => ['scope' => 'print', 'source' => 'meta_title']],
         );
 
         $this->removeChannel('print');

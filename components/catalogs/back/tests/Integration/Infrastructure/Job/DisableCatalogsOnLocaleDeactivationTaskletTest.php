@@ -26,25 +26,25 @@ class DisableCatalogsOnLocaleDeactivationTaskletTest extends IntegrationTestCase
             id: '975fef57-aa2c-42ad-a0ba-003af694ce11',
             name: 'Store US',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['locales' => ['fr_FR', 'en_US']]
+            catalogProductValueFilters: ['locales' => ['fr_FR', 'en_US']],
         );
         $this->createCatalog(
             id: '29655723-2b78-4ae0-9ac2-2d00799db8df',
             name: 'Store FR',
             ownerUsername: 'magenta',
-            catalogProductValueFilters: ['locales' => ['en_US']]
+            catalogProductValueFilters: ['locales' => ['en_US']],
         );
         $this->createCatalog(
             id: 'ab594b66-146b-4e35-9676-6b582a73f3de',
             name: 'Store BE',
             ownerUsername: 'magenta',
-            catalogProductMapping: ['meta_title' => ['scope' => null, 'locale' => 'en_US', 'source' => 'meta_title']]
+            catalogProductMapping: ['meta_title' => ['scope' => null, 'locale' => 'en_US', 'source' => 'meta_title']],
         );
         $this->createCatalog(
             id: 'af80cdbe-3e5b-4f47-acef-8878bee72dfb',
             name: 'Store BE',
             ownerUsername: 'magenta',
-            catalogProductMapping: ['meta_title' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title']]
+            catalogProductMapping: ['meta_title' => ['scope' => null, 'locale' => 'fr_FR', 'source' => 'meta_title']],
         );
 
         $this->disableLocale('fr_FR');

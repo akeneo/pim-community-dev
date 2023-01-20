@@ -62,9 +62,9 @@ class GetAttributesByTargetTypeAndTargetFormatAction
                 \sprintf(
                     'The combination of type "%s" and format "%s" does not match any type in the PIM.',
                     $targetType,
-                    $targetFormat ?? ''
+                    $targetFormat ?? '',
                 ),
-                $exception
+                $exception,
             );
         }
 

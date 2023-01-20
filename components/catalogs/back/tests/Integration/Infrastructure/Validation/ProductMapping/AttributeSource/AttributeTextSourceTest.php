@@ -104,7 +104,7 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
     public function testItReturnsViolationsWhenInvalid(
         array $attribute,
         array $source,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
 

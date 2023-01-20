@@ -54,7 +54,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
             ],
             'scopable attribute' => [
@@ -71,7 +71,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
             ],
             'localizable attribute' => [
@@ -89,7 +89,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
             ],
             'non localizable and non scopable attribute' => [
@@ -106,7 +106,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
             ],
         ];
@@ -118,7 +118,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
     public function testItReturnsViolationsWhenInvalid(
         array $attribute,
         array $source,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
 
@@ -145,7 +145,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -164,7 +164,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -183,7 +183,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 42,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -202,7 +202,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
@@ -220,7 +220,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
             ],
@@ -239,7 +239,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
             ],
@@ -273,7 +273,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'scope' => null,
                     'locale' => 'kz_KZ',
                     'parameters' => [
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -292,7 +292,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 42,
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -311,7 +311,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 'kz_KZ',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
             ],

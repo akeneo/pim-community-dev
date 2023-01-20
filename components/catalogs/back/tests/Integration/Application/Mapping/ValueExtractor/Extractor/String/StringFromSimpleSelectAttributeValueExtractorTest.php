@@ -49,10 +49,10 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             'raw_values' => [
                 'color' => [
                     'ecommerce' => [
-                        'en_US' => 'red'
-                    ]
-                ]
-            ]
+                        'en_US' => 'red',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(
@@ -73,10 +73,10 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             'raw_values' => [
                 'name' => [
                     'ecommerce' => [
-                        'en_US' => 'red'
-                    ]
-                ]
-            ]
+                        'en_US' => 'red',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(
@@ -105,10 +105,10 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             'raw_values' => [
                 'color' => [
                     'ecommerce' => [
-                        'en_US' => 'red'
-                    ]
-                ]
-            ]
+                        'en_US' => 'red',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(

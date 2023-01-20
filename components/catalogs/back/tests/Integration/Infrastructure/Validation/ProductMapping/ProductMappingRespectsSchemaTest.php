@@ -75,7 +75,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                 ],
-            )
+            ),
         );
 
         $this->assertEquals(0, $violations->count());
@@ -98,7 +98,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                 ],
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description".');
@@ -149,7 +149,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                 ],
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'The mapping is incorrect, following targets don\'t exist: "additional".');

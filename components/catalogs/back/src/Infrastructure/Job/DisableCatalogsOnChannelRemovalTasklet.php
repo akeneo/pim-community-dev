@@ -40,8 +40,8 @@ class DisableCatalogsOnChannelRemovalTasklet implements TaskletInterface
         $catalogsIds = \array_unique(
             \array_merge(
                 $this->getCatalogIdsUsingChannelsAsFilterQuery->execute($channelCodes),
-                $this->getCatalogIdsUsingChannelsInMappingQuery->execute($channelCodes)
-            )
+                $this->getCatalogIdsUsingChannelsInMappingQuery->execute($channelCodes),
+            ),
         );
 
         foreach ($catalogsIds as $catalogId) {

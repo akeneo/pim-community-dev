@@ -144,7 +144,7 @@ class GetMappedProductsPerformance extends PerformanceTestCase
             'properties' => [
                 'uuid' => ['type' => 'string'],
                 ...$productMappingSchemaTargets,
-            ]
+            ],
         ], JSON_THROW_ON_ERROR);
     }
 }

@@ -85,7 +85,7 @@ class GetProductAction
         try {
             $product = $this->queryBus->execute(new GetProductQuery(
                 $catalogId,
-                $productUuid
+                $productUuid,
             ));
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException(

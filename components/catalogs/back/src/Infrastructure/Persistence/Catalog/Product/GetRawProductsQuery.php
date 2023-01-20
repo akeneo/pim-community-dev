@@ -40,7 +40,7 @@ class GetRawProductsQuery implements GetRawProductsQueryInterface
 
         /** @var array<RawProduct> $rawProducts */
         $rawProducts = $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids(
-            \array_map(static fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids)
+            \array_map(static fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids),
         );
 
         return \array_values($rawProducts);

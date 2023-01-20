@@ -49,7 +49,7 @@ class CreateCatalogHandlerTest extends TestCase
                     ],
                     [],
                     [],
-                )
+                ),
             );
 
         $command = new CreateCatalogCommand(

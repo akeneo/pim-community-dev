@@ -41,18 +41,18 @@ final class GetCatalogIdsUsingCurrenciesAsFilterQueryTest extends IntegrationTes
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['currencies' => $currenciesFirstCatalog]
+            catalogProductValueFilters: ['currencies' => $currenciesFirstCatalog],
         );
         $this->createCatalog(
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store FR',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['currencies' => $currenciesSecondCatalog]
+            catalogProductValueFilters: ['currencies' => $currenciesSecondCatalog],
         );
         $this->createCatalog(
             id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             name: 'Store UK',
-            ownerUsername: 'shopifi'
+            ownerUsername: 'shopifi',
         );
 
         $resultBothCatalogs = $this->query->execute($currenciesQueried);
@@ -66,25 +66,25 @@ final class GetCatalogIdsUsingCurrenciesAsFilterQueryTest extends IntegrationTes
                 'currencies_first_catalog' => ['USD'],
                 'currencies_second_catalog' => ['EUR'],
                 'currencies_queried' => ['USD', 'EUR'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07'],
             ],
             'gets two catalogs with one currency' => [
                 'currencies_first_catalog' => ['USD', 'EUR'],
                 'currencies_second_catalog' => ['EUR'],
                 'currencies_queried' => ['EUR'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07'],
             ],
             'gets only one catalog with one currency' => [
                 'currencies_first_catalog' => ['USD', 'EUR'],
                 'currencies_second_catalog' => ['EUR'],
                 'currencies_queried' => ['USD'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c'],
             ],
             'gets no catalogs with one currency' => [
                 'currencies_first_catalog' => ['USD', 'EUR'],
                 'currencies_second_catalog' => ['EUR'],
                 'currencies_queried' => ['GBP'],
-                'expected_catalog' => []
+                'expected_catalog' => [],
             ],
         ];
     }

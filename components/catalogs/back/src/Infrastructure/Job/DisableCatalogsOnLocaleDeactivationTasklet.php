@@ -40,8 +40,8 @@ class DisableCatalogsOnLocaleDeactivationTasklet implements TaskletInterface
         $catalogsIds = \array_unique(
             \array_merge(
                 $this->getCatalogIdsUsingLocalesAsFilterQuery->execute($localeCodes),
-                $this->getCatalogIdsUsingLocalesInMappingQuery->execute($localeCodes)
-            )
+                $this->getCatalogIdsUsingLocalesInMappingQuery->execute($localeCodes),
+            ),
         );
 
         foreach ($catalogsIds as $catalogId) {

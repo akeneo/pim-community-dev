@@ -40,7 +40,7 @@ class ProductMapper implements ProductMapperInterface
     public function getMappedProduct(
         array $product,
         array $productMappingSchema,
-        array $productMapping
+        array $productMapping,
     ): array {
         $mappedProduct = [];
 

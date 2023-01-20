@@ -52,7 +52,7 @@ final class AttributeSimpleSelectSource extends Compound
                                 'allowMissingFields' => false,
                                 'allowExtraFields' => false,
                             ]),
-                        ]
+                        ],
                     ],
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,

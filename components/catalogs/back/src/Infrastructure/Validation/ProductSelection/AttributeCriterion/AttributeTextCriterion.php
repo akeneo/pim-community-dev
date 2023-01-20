@@ -45,7 +45,7 @@ final class AttributeTextCriterion extends Compound
                                 Operator::DOES_NOT_CONTAIN,
                                 Operator::STARTS_WITH,
                                 Operator::IS_EMPTY,
-                                Operator::IS_NOT_EMPTY
+                                Operator::IS_NOT_EMPTY,
                             ]),
                         ],
                         'value' => [

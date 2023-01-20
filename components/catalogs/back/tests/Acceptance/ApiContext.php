@@ -152,7 +152,7 @@ class ApiContext implements Context
                 ],
                 productValueFilters: [],
                 productMapping: [],
-            )
+            ),
         );
 
         // create products
@@ -186,7 +186,7 @@ class ApiContext implements Context
                 [
                     new SetIdentifierValue('sku', $product['identifier']),
                     new SetEnabled((bool) $product['enabled']),
-                ]
+                ],
             );
 
             $bus->dispatch($command);
@@ -531,7 +531,7 @@ class ApiContext implements Context
                 JSON_WRAP,
                 false,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
         ));
     }
@@ -603,7 +603,7 @@ class ApiContext implements Context
     {
         $productMappingSchema = \json_encode(
             $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')),
-            JSON_THROW_ON_ERROR
+            JSON_THROW_ON_ERROR,
         );
 
         Assert::assertJsonStringEqualsJsonString(
@@ -741,10 +741,10 @@ class ApiContext implements Context
                         'locale' => 'en_US',
                         'parameters' => [
                             'label_locale' => 'en_US',
-                        ]
+                        ],
                     ],
                 ],
-            )
+            ),
         );
 
         // add product mapping schema
@@ -778,7 +778,7 @@ class ApiContext implements Context
                 JSON_WRAP,
                 false,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
         ));
 
@@ -845,7 +845,7 @@ class ApiContext implements Context
                     new SetTextValue('name', 'ecommerce', 'en_US', $product['name']),
                     new SetTextareaValue('description', 'ecommerce', 'en_US', $product['description']),
                     new SetSimpleSelectValue('size', 'ecommerce', 'en_US', $product['size']),
-                ]
+                ],
             );
 
             $bus->dispatch($command);
@@ -967,7 +967,7 @@ class ApiContext implements Context
         $factory = $this->container->get('pim_catalog.factory.attribute_option');
         $locales = \array_map(
             static fn ($locale) => $locale['code'],
-            $this->container->get(GetLocalesQueryInterface::class)->execute()
+            $this->container->get(GetLocalesQueryInterface::class)->execute(),
         );
 
         $options = [];

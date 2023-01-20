@@ -43,7 +43,7 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
         if (!\preg_match(
             '/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/',
             $esId,
-            $matches
+            $matches,
         )) {
             throw new \LogicException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
         }

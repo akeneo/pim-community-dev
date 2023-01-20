@@ -54,7 +54,7 @@ class GetCategoriesActionTest extends IntegrationTestCase
                 'code' => 'tshirt',
                 'label' => 'T-shirt',
                 'isLeaf' => true,
-            ]
+            ],
         ], $categories);
     }
 
@@ -91,6 +91,6 @@ class GetCategoriesActionTest extends IntegrationTestCase
                 'code' => 'tshirt',
                 'label' => 'T-shirt',
                 'isLeaf' => false,
-            ]], $categories);
+            ], ], $categories);
     }
 }
