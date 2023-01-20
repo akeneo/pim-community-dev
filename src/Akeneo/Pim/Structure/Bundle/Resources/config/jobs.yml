@@ -424,8 +424,8 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
-    pim_enrich.job.delete_attributes:
-        class: '%pim_connector.job.simple_job.class%'
+    pim_connector.job.delete_attributes:
+        class: 'Akeneo\Tool\Component\Batch\Job\Job'
         arguments:
             - 'delete_attributes'
             - '@event_dispatcher'
