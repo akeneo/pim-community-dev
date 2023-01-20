@@ -75,11 +75,11 @@ define([
      */
     getConfirmDialog: function (data) {
       this.confirmModal = Dialog.confirmDelete(
-          __('pim_enrich.entity.attribute.module.mass_delete.confirm'),
-          __('pim_common.confirm_deletion'),
-          this.doMassDelete.bind(this, data),
-          this.getEntityHint(true),
-          'pim_common.delete'
+        __('pim_enrich.entity.attribute.module.mass_delete.confirm'),
+        __('pim_common.confirm_deletion'),
+        this.doMassDelete.bind(this, data),
+        this.getEntityHint(true),
+        'pim_common.delete'
       );
 
       return this.confirmModal;
@@ -100,23 +100,23 @@ define([
         url: Routing.generate('pim_enrich_mass_edit_rest_launch'),
         data: JSON.stringify(data),
       })
-          .then(() => {
-            router.redirectToRoute('pim_enrich_attribute_index');
+        .then(() => {
+          router.redirectToRoute('pim_enrich_attribute_index');
 
-            const translatedAction = __('pim_datagrid.mass_action.mass_delete');
-            messenger.notify(
-                'success',
-                __('pim_enrich.entity.attribute.module.mass_delete.launched', {
-                  operation: translatedAction,
-                })
-            );
-          })
-          .fail(() => {
-            messenger.notify('error', __('pim_enrich.entity.attribute.module.mass_delete.cannot_be_launched'));
-          })
-          .always(() => {
-            loadingMask.hide().$el.remove();
-          });
+          const translatedAction = __('pim_datagrid.mass_action.mass_delete');
+          messenger.notify(
+            'success',
+            __('pim_enrich.entity.attribute.module.mass_delete.launched', {
+              operation: translatedAction,
+            })
+          );
+        })
+        .fail(() => {
+          messenger.notify('error', __('pim_enrich.entity.attribute.module.mass_delete.cannot_be_launched'));
+        })
+        .always(() => {
+          loadingMask.hide().$el.remove();
+        });
     },
   });
 });
