@@ -3,6 +3,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\ClearExpiredRefreshTokenQuery:
+    Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\DeleteExpiredRefreshTokenQuery:
         arguments:
             - '@database_connection'

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Doctrine\DBAL;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\ClearExpiredRefreshTokenQuery;
+use Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\DeleteExpiredRefreshTokenQuery;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
@@ -16,18 +16,18 @@ use FOS\OAuthServerBundle\Model\ClientManagerInterface;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ClearExpiredRefreshTokenQueryIntegration extends ApiTestCase
+class DeleteExpiredRefreshTokenQueryIntegration extends ApiTestCase
 {
     private readonly ?ClientManagerInterface $clientManager;
     private readonly ?Connection $connection;
-    private readonly ?ClearExpiredRefreshTokenQuery $clearExpiredRefreshTokenQuery;
+    private readonly ?DeleteExpiredRefreshTokenQuery $deleteExpiredRefreshTokenQuery;
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
         $this->connection = $this->get('database_connection');
-        $this->clearExpiredRefreshTokenQuery = $this->get(ClearExpiredRefreshTokenQuery::class);
+        $this->deleteExpiredRefreshTokenQuery = $this->get(DeleteExpiredRefreshTokenQuery::class);
 
     }
 
@@ -44,7 +44,7 @@ class ClearExpiredRefreshTokenQueryIntegration extends ApiTestCase
         $this->assertValidRefreshTokenCount(5);
         $this->assertExpiredRefreshTokenCount(5);
 
-        $this->clearExpiredRefreshTokenQuery->execute();
+        $this->deleteExpiredRefreshTokenQuery->execute();
 
         $this->assertValidRefreshTokenCount(5);
         $this->assertExpiredRefreshTokenCount(0);
