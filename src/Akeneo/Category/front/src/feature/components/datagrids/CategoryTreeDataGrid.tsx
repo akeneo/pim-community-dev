@@ -104,7 +104,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
       notify(
-        NotificationLevel.INFO,
+        NotificationLevel.ERROR,
         translate('pim_enrich.entity.category.category_tree_deletion.products_limit_exceeded.title'),
         translate('pim_enrich.entity.category.category_tree_deletion.products_limit_exceeded.message', {
           tree: categoryTree.label,
