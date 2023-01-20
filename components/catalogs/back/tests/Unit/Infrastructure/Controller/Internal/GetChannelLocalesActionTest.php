@@ -81,7 +81,7 @@ class GetChannelLocalesActionTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['en_US', 'fr_FR'], JSON_THROW_ON_ERROR),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 }

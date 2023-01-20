@@ -75,7 +75,7 @@ final class GetMappedProductsHandler
         return \array_map(
             /** @param RawProduct $product */
             fn (array $product): array => $this->productMapper->getMappedProduct($product, $productMappingSchema, $productMapping),
-            $products
+            $products,
         );
     }
 }

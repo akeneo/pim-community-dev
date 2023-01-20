@@ -39,7 +39,7 @@ final class FilterContainsActivatedCurrencyValidator extends ConstraintValidator
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_value_filters.currencies.unknown',
-                    ['{{ currency_name }}' => $value]
+                    ['{{ currency_name }}' => $value],
                 )
                 ->addViolation();
         }

@@ -52,7 +52,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             $this->fetchProductMappingSchema(\sprintf('%s_product.json', $value->getId())),
             true,
             512,
-            JSON_THROW_ON_ERROR
+            JSON_THROW_ON_ERROR,
         );
 
         if (!$this->validateTargetsList($value->getProductMapping(), $schema)) {
@@ -65,7 +65,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
     private function fetchProductMappingSchema(string $productMappingSchemaFile): string
     {
         $productMappingSchema = \stream_get_contents(
-            $this->catalogsMappingStorage->read($productMappingSchemaFile)
+            $this->catalogsMappingStorage->read($productMappingSchemaFile),
         );
 
         if (false === $productMappingSchema) {
@@ -86,7 +86,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_mapping.schema.missing_targets',
-                    ['{{ targets }}' => \sprintf('"%s"', \implode('", "', \array_keys($missingTargets)))]
+                    ['{{ targets }}' => \sprintf('"%s"', \implode('", "', \array_keys($missingTargets)))],
                 )
                 ->addViolation();
 
@@ -98,7 +98,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_mapping.schema.additional_targets',
-                    ['{{ targets }}' => \sprintf('"%s"', \implode('", "', \array_keys($additionalTargets)))]
+                    ['{{ targets }}' => \sprintf('"%s"', \implode('", "', \array_keys($additionalTargets)))],
                 )
                 ->addViolation();
 
@@ -129,10 +129,10 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     \sprintf(
                         'The combination type "%s" and format "%s" are not supported.',
                         $schema['properties'][$targetCode]['type'],
-                        $schema['properties'][$targetCode]['format']
+                        $schema['properties'][$targetCode]['format'],
                     ),
                     0,
-                    $exception
+                    $exception,
                 );
             }
 
@@ -147,7 +147,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                 $this->context
                     ->buildViolation(
                         'akeneo_catalogs.validation.product_mapping.schema.incorrect_type',
-                        ['{{ expected_type }}' => $schema['properties'][$targetCode]['type']]
+                        ['{{ expected_type }}' => $schema['properties'][$targetCode]['type']],
                     )
                     ->atPath("[$targetCode][source]")
                     ->addViolation();

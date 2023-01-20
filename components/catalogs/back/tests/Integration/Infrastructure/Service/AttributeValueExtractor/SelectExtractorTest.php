@@ -44,10 +44,10 @@ class SelectExtractorTest extends IntegrationTestCase
             'raw_values' => [
                 'color' => [
                     'ecommerce' => [
-                        'en_US' => 'red'
-                    ]
-                ]
-            ]
+                        'en_US' => 'red',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->registry->extract(
@@ -69,10 +69,10 @@ class SelectExtractorTest extends IntegrationTestCase
             'raw_values' => [
                 'name' => [
                     'ecommerce' => [
-                        'en_US' => 'red'
-                    ]
-                ]
-            ]
+                        'en_US' => 'red',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->registry->extract(
@@ -102,10 +102,10 @@ class SelectExtractorTest extends IntegrationTestCase
             'raw_values' => [
                 'color' => [
                     'ecommerce' => [
-                        'en_US' => 'red'
-                    ]
-                ]
-            ]
+                        'en_US' => 'red',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->registry->extract(

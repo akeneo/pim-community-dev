@@ -42,7 +42,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
 
         $this->setCatalogProductValueFilters(
             $id,
-            ['channels' => ['ecommerce', 'print']]
+            ['channels' => ['ecommerce', 'print']],
         );
 
         $result = $this->query->execute($id);
@@ -60,7 +60,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
                 ],
             ],
             ['channels' => ['ecommerce', 'print']],
-            []
+            [],
         );
 
         $this->assertEquals($expected, $result);
@@ -83,7 +83,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
 
         $this->setCatalogProductValueFilters(
             $id,
-            ['channels' => ['ecommerce', 'print']]
+            ['channels' => ['ecommerce', 'print']],
         );
 
         $this->expectException(\LogicException::class);
@@ -116,7 +116,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
             ],
             [
                 'criteria' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -130,7 +130,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
             ],
             [
                 'filters' => Types::JSON,
-            ]
+            ],
         );
     }
 }

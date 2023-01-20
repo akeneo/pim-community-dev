@@ -26,7 +26,7 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_text',
-            'group' => 'marketing'
+            'group' => 'marketing',
         ]);
         $this->createAttribute([
             'code' => 'release_date',
@@ -77,7 +77,7 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
             '/rest/catalogs/attributes_by_target_type_and_target_format',
             [
                 'search' => 'name',
-                'targetType' => 'string'
+                'targetType' => 'string',
             ],
             [],
             [

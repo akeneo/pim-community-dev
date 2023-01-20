@@ -40,7 +40,7 @@ final class FilterContainsActivatedLocaleValidator extends ConstraintValidator
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_value_filters.locale.unknown',
-                    ['{{ locale_name }}' => $value]
+                    ['{{ locale_name }}' => $value],
                 )
                 ->addViolation();
         }

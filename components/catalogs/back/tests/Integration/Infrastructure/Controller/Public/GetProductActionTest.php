@@ -173,7 +173,7 @@ class GetProductActionTest extends IntegrationTestCase
                     'operator' => Operator::EQUALS,
                     'value' => true,
                 ],
-            ]
+            ],
         );
 
         $this->client->request(

@@ -25,7 +25,7 @@ final class AttributeValueExtractorRegistry
             if (!$extractor instanceof AttributeValueExtractorInterface) {
                 throw new \LogicException(
                     static::class . ' accepts only array of ' .
-                    AttributeValueExtractorInterface::class . ' as argument.'
+                    AttributeValueExtractorInterface::class . ' as argument.',
                 );
             }
         }

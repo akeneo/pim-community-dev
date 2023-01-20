@@ -75,7 +75,7 @@ class GetProductsActionTest extends IntegrationTestCase
         $uuids = \array_map(static fn (array $item): string => $item['uuid'], $payload['_embedded']['items']);
         Assert::assertEquals([
             '00380587-3893-46e6-a8c2-8fee6404cc9e',
-            '8985de43-08bc-484d-aee0-4489a56ba02d'
+            '8985de43-08bc-484d-aee0-4489a56ba02d',
         ], $uuids);
 
         $this->client->request(

@@ -42,7 +42,7 @@ class CatalogProductValueFiltersTest extends IntegrationTestCase
                     'currencies' => ['EUR', 'USD'],
                 ],
                 [],
-            )
+            ),
         );
 
         $this->assertEmpty($violations);
@@ -53,7 +53,7 @@ class CatalogProductValueFiltersTest extends IntegrationTestCase
      */
     public function testItReturnsViolationsWhenProductValueFiltersAreInvalid(
         array $filters,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         $violations = $this->validator->validate(
             new Catalog(
@@ -64,7 +64,7 @@ class CatalogProductValueFiltersTest extends IntegrationTestCase
                 [],
                 $filters,
                 [],
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, $expectedMessage);

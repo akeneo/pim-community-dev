@@ -113,7 +113,7 @@ final class CatalogProductSelectionCriteriaValidator extends ConstraintValidator
             'completeness' => new CompletenessCriterion(),
             'enabled' => new EnabledCriterion(),
             'family' => new FamilyCriterion(),
-            default => null
+            default => null,
         };
 
         if (null !== $constraint) {

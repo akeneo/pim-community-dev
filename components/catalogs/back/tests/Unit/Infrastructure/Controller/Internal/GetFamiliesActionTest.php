@@ -56,7 +56,7 @@ class GetFamiliesActionTest extends TestCase
         ($this->getFamiliesAction)(
             new Request(
                 query: [
-                    'codes' => 'foo,bar'
+                    'codes' => 'foo,bar',
                 ],
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -69,7 +69,7 @@ class GetFamiliesActionTest extends TestCase
     {
         $this->assertInstanceOf(
             RedirectResponse::class,
-            ($this->getFamiliesAction)(new Request())
+            ($this->getFamiliesAction)(new Request()),
         );
     }
 

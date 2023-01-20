@@ -88,7 +88,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
                             ->validate($sourceAssociation, $constraint);
                     }),
                 ]),
-            ])
+            ]),
         ];
     }
 
@@ -96,7 +96,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
     {
         $constraint = match ($source) {
             'uuid' => new UuidSource(),
-            default => null
+            default => null,
         };
 
         if (null !== $constraint) {

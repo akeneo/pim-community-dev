@@ -124,8 +124,8 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                     'scope' => 'print',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'label_locale' => 'en_US'
-                    ]
+                        'label_locale' => 'en_US',
+                    ],
                 ],
             ],
         );
@@ -163,7 +163,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         Assert::assertSame($expectedMappedProducts, $payload['_embedded']['items']);
         Assert::assertEquals(
             'http://localhost/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products?search_after=8985de43-08bc-484d-aee0-4489a56ba02d&limit=2',
-            $payload['_links']['next']['href']
+            $payload['_links']['next']['href'],
         );
 
         $this->client->request(
@@ -510,7 +510,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
                 'title' => 'Blue name',
                 'size_label' => 'Blue size',
-            ]
+            ],
         ], $payload['_embedded']['items']);
     }
 

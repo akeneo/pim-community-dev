@@ -98,8 +98,8 @@ class GetMappedProductActionTest extends IntegrationTestCase
                     'scope' => 'print',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'label_locale' => 'en_US'
-                    ]
+                        'label_locale' => 'en_US',
+                    ],
                 ],
             ],
         );
@@ -257,7 +257,7 @@ class GetMappedProductActionTest extends IntegrationTestCase
                     'operator' => Operator::EQUALS,
                     'value' => true,
                 ],
-            ]
+            ],
         );
 
         $this->client->request(
@@ -342,7 +342,7 @@ class GetMappedProductActionTest extends IntegrationTestCase
                     'scope' => null,
                     'locale' => null,
                 ],
-            ]
+            ],
         );
 
         $this->client->request(

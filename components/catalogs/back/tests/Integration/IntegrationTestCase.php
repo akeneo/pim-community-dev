@@ -87,11 +87,11 @@ abstract class IntegrationTestCase extends WebTestCase
     {
         self::getContainer()->set(
             'pim_catalog.event_subscriber.timestampable',
-            new TimestampableSubscriber($this->clock)
+            new TimestampableSubscriber($this->clock),
         );
         self::getContainer()->set(
             'pim_versioning.event_subscriber.timestampable',
-            new TimestampableSubscriber($this->clock)
+            new TimestampableSubscriber($this->clock),
         );
     }
 
@@ -108,9 +108,9 @@ abstract class IntegrationTestCase extends WebTestCase
         $catalogMappingFilesystem = self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem');
 
         $paths = $catalogMappingFilesystem->listContents('/')->filter(
-            fn (StorageAttributes $attributes): bool => $attributes instanceof FileAttributes
+            fn (StorageAttributes $attributes): bool => $attributes instanceof FileAttributes,
         )->map(
-            fn (FileAttributes $attributes): string => $attributes->path()
+            fn (FileAttributes $attributes): string => $attributes->path(),
         );
 
         foreach ($paths as $path) {
@@ -212,7 +212,7 @@ abstract class IntegrationTestCase extends WebTestCase
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
         $this->callPermissionsSaver(
             /** @noRector StringClassNameToClassConstantRector */
@@ -227,7 +227,7 @@ abstract class IntegrationTestCase extends WebTestCase
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
         $this->callPermissionsSaver(
             /** @noRector StringClassNameToClassConstantRector */
@@ -246,7 +246,7 @@ abstract class IntegrationTestCase extends WebTestCase
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
     }
 
@@ -282,10 +282,10 @@ abstract class IntegrationTestCase extends WebTestCase
                     '","',
                     \array_map(
                         fn (ConstraintViolationInterface $violation) => $violation->getMessage(),
-                        \iterator_to_array($violations)
-                    )
-                )
-            )
+                        \iterator_to_array($violations),
+                    ),
+                ),
+            ),
         );
     }
 
@@ -344,7 +344,7 @@ abstract class IntegrationTestCase extends WebTestCase
                 ProductUuid::fromUuid($identifier),
                 \array_merge(
                     [
-                        new SetIdentifierValue('sku', $identifier->toString())
+                        new SetIdentifierValue('sku', $identifier->toString()),
                     ],
                     $intents,
                 ),
@@ -397,7 +397,7 @@ abstract class IntegrationTestCase extends WebTestCase
             'UPDATE akeneo_catalog SET is_enabled = 1 WHERE id = :id',
             [
                 'id' => Uuid::fromString($id)->getBytes(),
-            ]
+            ],
         );
     }
 
@@ -421,7 +421,7 @@ abstract class IntegrationTestCase extends WebTestCase
             ],
             [
                 'criteria' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -436,7 +436,7 @@ abstract class IntegrationTestCase extends WebTestCase
             ],
             [
                 'filters' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -451,7 +451,7 @@ abstract class IntegrationTestCase extends WebTestCase
             ],
             [
                 'productMapping' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -507,7 +507,7 @@ abstract class IntegrationTestCase extends WebTestCase
         $factory = self::getContainer()->get('pim_catalog.factory.attribute_option');
         $locales = \array_map(
             static fn ($locale) => $locale['code'],
-            self::getContainer()->get(GetLocalesQueryInterface::class)->execute()
+            self::getContainer()->get(GetLocalesQueryInterface::class)->execute(),
         );
 
         $options = [];

@@ -64,7 +64,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                 ],
-            )
+            ),
         );
 
         $this->assertEquals(0, $violations->count());
@@ -88,7 +88,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                 ],
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
@@ -121,9 +121,9 @@ class CatalogProductMappingTest extends IntegrationTestCase
                         'source' => 'name',
                         'scope' => null,
                         'locale' => null,
-                    ]
+                    ],
                 ],
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'This attribute has been deleted.');
@@ -158,7 +158,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                 ],
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'The selected source type does not match the requirements: string expected.');

@@ -91,7 +91,7 @@ abstract class AbstractSystemCriterionTest extends IntegrationTestCase
             ->willReturnCallback(function (array $codes, int $page = 1, int $limit = 20): array {
                 $filteredFamilies = \array_filter(
                     $this->families,
-                    static fn (array $family) => \in_array($family['code'], $codes, true)
+                    static fn (array $family) => \in_array($family['code'], $codes, true),
                 );
                 return \array_slice($filteredFamilies, ($page - 1) * $limit, $limit);
             });
@@ -107,7 +107,7 @@ abstract class AbstractSystemCriterionTest extends IntegrationTestCase
             ->method('execute')
             ->willReturnCallback(fn (array $codes): array => \array_filter(
                 $this->categories,
-                static fn (array $category) => \in_array($category['code'], $codes, true)
+                static fn (array $category) => \in_array($category['code'], $codes, true),
             ));
         self::getContainer()->set(GetCategoriesByCodeQuery::class, $this->getCategoriesByCodeQuery);
     }
