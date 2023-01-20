@@ -12,7 +12,7 @@ define([
 ], function ($, _, __, Routing, MassAction, router, messenger, LoadingMask, Dialog) {
   'use strict';
 
-  // @TODO @RAB-1259: Adapt (and maybe rewrite in TS) this component to use the double-check modal
+  // @TODO RAB-1259: Adapt (and maybe rewrite in TS) this component to use the double-check modal
 
   /**
    * Mass attribute delete action

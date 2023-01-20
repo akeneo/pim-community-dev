@@ -28,9 +28,6 @@ class DeleteAttributesTasklet implements TaskletInterface
             );
         }
 
-        $filters = $this->stepExecution->getJobParameters()->get('filters');
-        $attributesCount = count($filters['attribute_ids']);
-
-        $this->stepExecution->addSummaryInfo('deleted_attributes', $attributesCount);
+        // @TODO RAB-1261: Implement job
     }
 }
