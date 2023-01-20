@@ -46,3 +46,14 @@ pim_enrich_attribute_form:
     locale_specific: Locale specific
     group: Attribute group
     useableAsGridFilter: Usable in grid
+
+pim_mass_edit:
+    notification:
+        attribute_mass_delete:
+            error: Mass delete <strong>%label%</strong> failed
+            warning: Mass delete <strong>%label%</strong> finished with some warnings
+            success: Mass delete <strong>%label%</strong> finished
+
+job_execution:
+    summary:
+        deleted_attributes: Deleted attributes
