@@ -53,5 +53,16 @@ class InstallerSubscriber implements EventSubscriberInterface
                 INDEX index_identifier_generator_prefixes (`attribute_id`, `prefix`, `number`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             SQL);
+        $this->connection->executeStatement(<<<SQL
+            CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator_sequence (
+                `attribute_id` INT NOT NULL,
+                `identifier_generator_uuid` binary(16) NOT NULL,
+                `prefix` VARCHAR(255) NOT NULL,
+                `last_allocated_number` BIGINT UNSIGNED NOT NULL,
+                CONSTRAINT `FK_SEQ_ATTRIBUTEID` FOREIGN KEY (`attribute_id`) REFERENCES `pim_catalog_attribute` (`id`) ON DELETE CASCADE,
+                CONSTRAINT `FK_SEQ_IDENTIFIERGENERATORUUID` FOREIGN KEY (`identifier_generator_uuid`) REFERENCES `pim_catalog_identifier_generator` (`uuid`) ON DELETE CASCADE,
+                INDEX index_identifier_generator_sequence (`attribute_id`, `identifier_generator_uuid`, `prefix`, `last_allocated_number`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            SQL);
     }
 }
