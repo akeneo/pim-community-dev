@@ -435,7 +435,7 @@ services:
 
     Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet: ~
     pim_connector.step.delete_attributes:
-        class: '%pim_connector.step.tasklet.class%'
+        class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
         arguments:
             - 'delete_attributes'
             - '@event_dispatcher'
