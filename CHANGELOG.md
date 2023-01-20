@@ -113,6 +113,7 @@
 - PIM:10744: Fix product import with a quantified association column is missing
 - PIM-10750: Fix category code validation to allow '0'
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
+- PIM-10779: Fix lowercase on get attribute group code for dqi activation
 
 ## Improvements
 
@@ -122,6 +123,7 @@
 - BH-1159: Refactor BatchCommand to use execution ID without batch code
 - BH-1159: Add tenant ID for batch processing
 - BH-1159: Use available JobMessage class for denormalization
+- PIM-10782: Optimize get completeness SQL query
 
 ## New features
 
