@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GeneratePropertyHandlerInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Webmozart\Assert\Assert;
 
 /**
@@ -33,24 +33,25 @@ final class GenerateIdentifierHandler
     public function __invoke(
         GenerateIdentifierCommand $command,
     ): string {
-        $delimiter = $command->getDelimiter();
-        $properties = $command->getProperties();
-        $target = $command->getTarget();
+        $identifierGenerator = $command->getIdentifierGenerator();
 
         $result = '';
-        foreach ($properties as $property) {
+        foreach ($identifierGenerator->structure()->getProperties() as $property) {
             if ($result !== '') {
-                $result .= $delimiter?->asString() ?? '';
+                $result .= $identifierGenerator->delimiter()?->asString() ?? '';
             }
 
-            $result .= $this->generateProperty($property, $target, $result);
+            $result .= $this->generateProperty($property, $identifierGenerator, $result);
         }
 
         return $result;
     }
 
-    private function generateProperty(PropertyInterface $property, Target $target, string $prefix): string
-    {
+    private function generateProperty(
+        PropertyInterface $property,
+        IdentifierGenerator $identifierGenerator,
+        string $prefix
+    ): string {
         if (!isset($this->generateProperties[\get_class($property)])) {
             throw new \InvalidArgumentException(\sprintf(
                 'No generator found for property %s',
@@ -58,6 +59,6 @@ final class GenerateIdentifierHandler
             ));
         }
 
-        return ($this->generateProperties[\get_class($property)])($property, $target, $prefix);
+        return ($this->generateProperties[\get_class($property)])($property, $identifierGenerator, $prefix);
     }
 }

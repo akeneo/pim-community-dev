@@ -5,6 +5,12 @@ services:
       - '@database_connection'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlGetSequencedNextIdentifierQuery'
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\SqlGetNextIdentifierQuery'
+      - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\SqlGetNextIdentifierQuery:
     class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlGetNextIdentifierQuery'
     arguments:
       - '@database_connection'

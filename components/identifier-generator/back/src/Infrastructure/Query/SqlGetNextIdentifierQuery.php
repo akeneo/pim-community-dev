@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery;
 use Doctrine\DBAL\Connection;
@@ -20,7 +21,7 @@ final class SqlGetNextIdentifierQuery implements GetNextIdentifierQuery
     ) {
     }
 
-    public function fromPrefix(Target $target, string $prefix): int
+    public function fromPrefix(IdentifierGenerator $identifierGenerator, string $prefix): int
     {
         $sql = <<<SQL
 SELECT MAX(number) FROM pim_catalog_identifier_generator_prefixes p 
@@ -31,7 +32,7 @@ SQL;
         $result = $this->connection->executeQuery(
             $sql,
             [
-                'code' => $target->asString(),
+                'code' => $identifierGenerator->target()->asString(),
                 'prefix' => $prefix,
             ],
             [
