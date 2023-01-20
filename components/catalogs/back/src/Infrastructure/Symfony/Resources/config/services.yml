@@ -184,12 +184,20 @@ services:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
             $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
 
-    Akeneo\Catalogs\Infrastructure\Mapping\ProductValueExtractorRegistry:
+    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringProductValueExtractorRegistry:
         arguments:
             -
-                - '@Akeneo\Catalogs\Infrastructure\Mapping\ProductValueExtractor\StringTextProductValueExtractor'
-                - '@Akeneo\Catalogs\Infrastructure\Mapping\ProductValueExtractor\StringTextareaProductValueExtractor'
-                - '@Akeneo\Catalogs\Infrastructure\Mapping\ProductValueExtractor\StringNumberProductValueExtractor'
-                - '@Akeneo\Catalogs\Infrastructure\Mapping\ProductValueExtractor\StringSimpleSelectProductValueExtractor'
-                - '@Akeneo\Catalogs\Infrastructure\Mapping\ProductValueExtractor\StringDateTimeDateProductValueExtractor'
-                - '@Akeneo\Catalogs\Infrastructure\Mapping\ProductValueExtractor\NumberNumberProductValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringTextProductValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringTextareaProductValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringNumberProductValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringSimpleSelectProductValueExtractor'
+
+    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringDateTimeProductValueExtractorRegistry:
+        arguments:
+            -
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringDateTime\StringDateTimeDateProductValueExtractor'
+
+    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\NumberProductValueExtractorRegistry:
+        arguments:
+            -
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\Number\NumberNumberProductValueExtractor'

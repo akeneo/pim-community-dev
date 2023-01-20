@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping;
+namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 
@@ -20,11 +20,11 @@ interface ProductValueExtractorInterface
      */
     public function extract(
         array $product,
-        string $attributeCode,
+        string $code,
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | string | float;
+    ): null | string | float | int;
 
-    public function supports(string $attributeType, string $targetType, ?string $targetFormat): bool;
+    public function supports(string $sourceType): bool;
 }

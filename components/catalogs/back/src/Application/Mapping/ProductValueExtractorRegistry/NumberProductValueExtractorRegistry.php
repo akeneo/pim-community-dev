@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Mapping;
+namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry;
 
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\Exception\ProductValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\ProductValueExtractorInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 
 /**
@@ -13,7 +14,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
-final class ProductValueExtractorRegistry
+final class NumberProductValueExtractorRegistry
 {
     /**
      * @param ProductValueExtractorInterface[] $extractors
@@ -37,19 +38,17 @@ final class ProductValueExtractorRegistry
      */
     public function extract(
         array $product,
-        string $attributeCode,
+        string $code,
         string $attributeType,
-        string $targetType,
-        ?string $targetFormat,
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | string {
+    ): null | float | int {
         foreach ($this->extractors as $extractor) {
-            if ($extractor->supports($attributeType, $targetType, $targetFormat)) {
+            if ($extractor->supports($attributeType)) {
                 return $extractor->extract(
                     $product,
-                    $attributeCode,
+                    $code,
                     $locale,
                     $scope,
                     $parameters,
