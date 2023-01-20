@@ -12,11 +12,13 @@ define([
 ], function ($, _, __, Routing, MassAction, router, messenger, LoadingMask, Dialog) {
   'use strict';
 
+  // @TODO @RAB-1259: Adapt (and maybe rewrite in TS) this component to use the double-check modal
+
   /**
-   * Mass delete action
+   * Mass attribute delete action
    *
-   * @export  oro/datagrid/mass-delete-action
-   * @class   oro.datagrid.MassDeleteAction
+   * @export  oro/datagrid/attribute-mass-delete-action
+   * @class   oro.datagrid.AttributeMassDeleteAction
    *
    * @extends oro.datagrid.MassAction
    */
@@ -27,12 +29,7 @@ define([
     /** @type oro.Modal */
     confirmModal: undefined,
 
-    /** @type {Object} */
-    config: undefined,
-
     initialize: function (options) {
-      this.config = __moduleConfig;
-
       MassAction.prototype.initialize.apply(this, arguments);
     },
 
@@ -62,7 +59,7 @@ define([
       }).then(response => {
         return {
           filters: response.filters,
-          jobInstanceCode: this.config.jobInstanceCode,
+          jobInstanceCode: 'delete_attributes',
           actions: [this.route_parameters['actionName']],
           itemsCount: response.itemsCount,
         };
@@ -78,18 +75,18 @@ define([
      */
     getConfirmDialog: function (data) {
       this.confirmModal = Dialog.confirmDelete(
-          __(this.config.confirmLabel),
+          __('pim_enrich.entity.attribute.module.mass_delete.confirm'),
           __('pim_common.confirm_deletion'),
           this.doMassDelete.bind(this, data),
           this.getEntityHint(true),
-          this.config.buttonText
+          'pim_common.delete'
       );
 
       return this.confirmModal;
     },
 
     /**
-     * Sends request to mass delete items.
+     * Sends request to mass delete attributes.
      *
      * @param {Object} data
      */
@@ -100,22 +97,22 @@ define([
       $.ajax({
         method: 'POST',
         contentType: 'application/json',
-        url: Routing.generate(this.config.route),
+        url: Routing.generate('pim_enrich_mass_edit_rest_launch'),
         data: JSON.stringify(data),
       })
           .then(() => {
-            router.redirectToRoute(this.config.backRoute);
+            router.redirectToRoute('pim_enrich_attribute_index');
 
             const translatedAction = __('pim_datagrid.mass_action.mass_delete');
             messenger.notify(
                 'success',
-                __(this.config.launchedLabel, {
+                __('pim_enrich.entity.attribute.module.mass_delete.launched', {
                   operation: translatedAction,
                 })
             );
           })
           .fail(() => {
-            messenger.notify('error', __(this.config.launchErrorLabel));
+            messenger.notify('error', __('pim_enrich.entity.attribute.module.mass_delete.cannot_be_launched'));
           })
           .always(() => {
             loadingMask.hide().$el.remove();
