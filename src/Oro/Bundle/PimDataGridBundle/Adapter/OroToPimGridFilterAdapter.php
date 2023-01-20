@@ -35,15 +35,11 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
      */
     public function adapt(array $parameters)
     {
-        if (self::PRODUCT_GRID_NAME === $parameters['gridName']) {
-            $filters = $this->massActionDispatcher->getRawFilters($parameters);
-        } elseif (self::ATTRIBUTE_GRID_NAME === $parameters['gridName']) {
-            $filters = ['attribute_ids' => $parameters['values']];
-        } else {
-            $filters = $this->adaptDefaultGrid($parameters);
-        }
-
-        return $filters;
+        return match($parameters['gridName']) {
+            self::PRODUCT_GRID_NAME => $this->massActionDispatcher->getRawFilters($parameters),
+            self::ATTRIBUTE_GRID_NAME => $this->adaptAttributeGrid($parameters),
+            default => $this->adaptDefaultGrid($parameters)
+        };
     }
 
     /**
@@ -75,6 +71,15 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 
         return [
             ['field' => 'id', 'operator' => 'IN', 'value' => $itemIds]
+        ];
+    }
+
+    private function adaptAttributeGrid(array $parameters): array
+    {
+        return [
+            'field' => 'id',
+            'operator' => $parameters['inset'] ? 'IN' : 'NOT IN',
+            'values' => $parameters['values']
         ];
     }
 }

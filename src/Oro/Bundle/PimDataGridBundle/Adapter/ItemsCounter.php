@@ -35,7 +35,8 @@ class ItemsCounter
         }
 
         if ($gridName === OroToPimGridFilterAdapter::ATTRIBUTE_GRID_NAME) {
-            return count($filters['attribute_ids']);
+            // @TODO RAB-1260: Use a query to count attribute group
+            return 0;
         }
 
         if (!isset($filters[0]['value'])) {
