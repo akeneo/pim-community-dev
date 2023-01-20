@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Akeneo\Catalogs\Application\Mapping;
 
-namespace Akeneo\Catalogs\Infrastructure\Service;
-
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
-use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorRegistry;
-use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetAttributeTypeByCodesQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
@@ -25,7 +23,7 @@ class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly GetAttributeTypeByCodesQuery $getAttributeTypeByCodesQuery,
-        private readonly AttributeValueExtractorRegistry $attributeValueExtractorRegistry,
+        private readonly ValueExtractorRegistry $valueExtractorRegistry,
     ) {
     }
 
@@ -35,6 +33,8 @@ class ProductMapper implements ProductMapperInterface
      * @param ProductMapping $productMapping
      *
      * @return MappedProduct
+     *
+     * @psalm-suppress MixedAssignment
      */
     public function getMappedProduct(
         array $product,
@@ -47,25 +47,33 @@ class ProductMapper implements ProductMapperInterface
         $sourceAttributeCodes = \array_filter(\array_column($productMapping, 'source'));
         $attributeTypeBySource = $this->getAttributeTypeByCodesQuery->execute($sourceAttributeCodes);
 
-        /** @var string $targetCode */
-        foreach (\array_keys($productMappingSchema['properties']) as $targetCode) {
+        /**
+         * @var string $targetCode
+         * @var array{type: string, format?: string} $target
+         */
+        foreach ($productMappingSchema['properties'] as $targetCode => $target) {
             $sourceValue = null;
 
             if ('uuid' === $targetCode) {
                 $sourceValue = $product['uuid']->toString();
             } elseif (\array_key_exists($targetCode, $productMapping) &&
-                $productMapping[$targetCode]['source'] !== null &&
-                \array_key_exists($productMapping[$targetCode]['source'], $attributeTypeBySource)) {
+                $productMapping[$targetCode]['source'] !== null
+            ) {
                 try {
-                    $sourceValue = $this->attributeValueExtractorRegistry->extract(
+                    $productValueExtractor = $this->valueExtractorRegistry->find(
+                        $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'],
+                        $target['type'],
+                        $target['format'] ?? null,
+                    );
+
+                    $sourceValue = $productValueExtractor->extract(
                         $product,
                         $productMapping[$targetCode]['source'],
-                        $attributeTypeBySource[$productMapping[$targetCode]['source']],
                         $productMapping[$targetCode]['locale'] ?? '<all_locales>',
                         $productMapping[$targetCode]['scope'] ?? '<all_channels>',
                         $productMapping[$targetCode]['parameters'] ?? null,
                     );
-                } catch (AttributeValueExtractorNotFoundException) {
+                } catch (ValueExtractorNotFoundException) {
                 }
             }
 

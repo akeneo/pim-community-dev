@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Service;
+namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;

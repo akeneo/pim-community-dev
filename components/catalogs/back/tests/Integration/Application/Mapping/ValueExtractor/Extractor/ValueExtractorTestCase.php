@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor;
+
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\NumberValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ValueExtractorInterface;
+use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+
+/**
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+abstract class ValueExtractorTestCase extends IntegrationTestCase
+{
+    protected const TARGET_TYPES_INTERFACES_MAPPING = [
+        ValueExtractorInterface::SUPPORTED_TARGET_TYPE_NUMBER => NumberValueExtractorInterface::class,
+        ValueExtractorInterface::SUPPORTED_TARGET_TYPE_STRING => StringValueExtractorInterface::class,
+    ];
+}

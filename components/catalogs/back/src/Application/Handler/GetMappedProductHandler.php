@@ -11,7 +11,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
-use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
+use Akeneo\Catalogs\Application\Mapping\ProductMapperInterface;
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
