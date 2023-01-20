@@ -553,10 +553,6 @@ pim_mass_edit:
             error:   Mass delete <strong>%label%</strong> failed
             warning: Mass delete <strong>%label%</strong> finished with some warnings
             success: Mass delete <strong>%label%</strong> finished
-        attribute_mass_delete:
-            error: Mass delete <strong>%label%</strong> failed
-            warning: Mass delete <strong>%label%</strong> finished with some warnings
-            success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
     mass_edited: Mass edited
     skipped_products: Skipped products
@@ -564,7 +560,6 @@ job_execution.summary:
     skipped_families: Skipped families
     deleted_products: Deleted products
     deleted_product_models: Deleted product models
-    deleted_attributes: Deleted attributes
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
 
