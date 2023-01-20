@@ -8,14 +8,6 @@ config:
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             confirmLabel: pim_enrich.entity.product_model.module.delete.confirm_for_products_and_product_models
             buttonText: pim_common.delete
-        oro/datagrid/attribute_mass_delete-action:
-            jobInstanceCode: delete_attributes
-            route: pim_enrich_mass_edit_rest_launch
-            backRoute: pim_enrich_attribute_index
-            launchErrorLabel: pim_enrich.entity.attribute.module.mass_delete.cannot_be_launched
-            launchedLabel: pim_enrich.entity.attribute.module.mass_delete.launched
-            confirmLabel: pim_enrich.entity.attribute.module.mass_delete.confirm
-            buttonText: pim_common.delete
         pim/fetcher-registry:
             fetchers:
                 datagrid-view:
