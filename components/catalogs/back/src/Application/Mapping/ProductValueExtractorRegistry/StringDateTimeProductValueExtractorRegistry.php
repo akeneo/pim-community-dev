@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry;
 
 use Akeneo\Catalogs\Application\Mapping\Exception\ProductValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\ProductValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringProductValueExtractorInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 
 /**
@@ -17,16 +17,16 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
 final class StringDateTimeProductValueExtractorRegistry
 {
     /**
-     * @param ProductValueExtractorInterface[] $extractors
+     * @param StringProductValueExtractorInterface[] $extractors
      */
     public function __construct(
         private readonly array $extractors,
     ) {
         foreach ($this->extractors as $extractor) {
-            if (!$extractor instanceof ProductValueExtractorInterface) {
+            if (!$extractor instanceof StringProductValueExtractorInterface) {
                 throw new \LogicException(
                     static::class . ' accepts only array of ' .
-                    ProductValueExtractorInterface::class . ' as argument.'
+                    StringProductValueExtractorInterface::class . ' as argument.'
                 );
             }
         }
