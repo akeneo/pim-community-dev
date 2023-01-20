@@ -54,3 +54,10 @@ services:
                 - 'xlsx_group_type_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_pim_structure.job.job_parameters.default_values_provider.simple_mass_edit:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\SimpleMassEdit'
+        arguments:
+            - ['delete_attributes']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
