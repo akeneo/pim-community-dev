@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {Button, DeleteIllustration, getFontSize, Helper, Modal} from 'akeneo-design-system';
 import {useFeatureFlags, useIsMounted, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
@@ -44,7 +44,7 @@ const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({
     <Modal closeTitle="Close" onClose={closeModal} illustration={<DeleteIllustration />}>
       <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.category.plural_label')}</Modal.SectionTitle>
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
-      <Message>{translate(message, {name: categoryLabel})}</Message>
+      <MessageContainer>{translate(message, {name: categoryLabel})}</MessageContainer>
       {warning && <Helper level="error">{warning}</Helper>}
       <ActionButtons>
         <Button onClick={closeModal} level="tertiary">
@@ -63,11 +63,15 @@ const Message = styled.p`
 `;
 
 const ActionButtons = styled.p`
-  margin-top: 15px;
+  margin-top: 20px;
 
   button:first-child {
     margin-right: 10px;
   }
+`;
+
+const MessageContainer = styled(Message)`
+  margin-bottom: 20px;
 `;
 
 export {DeleteCategoryModal};
