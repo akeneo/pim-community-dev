@@ -261,7 +261,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When I try to update an identifier generator with family property without required field
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithFamilyPropertyWithoutRequiredField()
+    public function iTryToUpdateAnIdentifierGeneratorWithFamilyPropertyWithoutRequiredField(): void
     {
         $this->tryToUpdateGenerator(structure: [['type' => 'family']]);
     }
@@ -277,7 +277,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When I try to update an identifier generator with empty family process property
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithEmptyFamilyProcessProperty()
+    public function iTryToUpdateAnIdentifierGeneratorWithEmptyFamilyProcessProperty(): void
     {
         $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => []]]);
     }
@@ -300,7 +300,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     /**
      * @When I try to update an identifier generator with a family containing invalid truncate process
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyContainingInvalidTruncateProcess()
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyContainingInvalidTruncateProcess(): void
     {
         $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => 'EQUALS', 'value' => '1', 'unknown' => '']]]);
     }
