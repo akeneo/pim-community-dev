@@ -65,7 +65,7 @@ export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: Q
                 },
             };
         },
-        [search, limit, queryClient]
+        [search, limit, queryClient, target.format, target.type]
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(

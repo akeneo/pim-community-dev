@@ -6,8 +6,11 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Service;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
+use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Service\ProductMapperInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetAttributeTypeByCodesQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
 /**
@@ -20,6 +23,12 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  */
 class ProductMapper implements ProductMapperInterface
 {
+    public function __construct(
+        private readonly GetAttributeTypeByCodesQuery $getAttributeTypeByCodesQuery,
+        private readonly AttributeValueExtractorRegistry $attributeValueExtractorRegistry,
+    ) {
+    }
+
     /**
      * @param RawProduct $product
      * @param array{properties: array<array-key, mixed>} $productMappingSchema
@@ -34,35 +43,37 @@ class ProductMapper implements ProductMapperInterface
     ): array {
         $mappedProduct = [];
 
-        /** @var string $target */
-        foreach (\array_keys($productMappingSchema['properties']) as $target) {
-            $sourceValue = '';
+        /** @var array<string> $sourceAttributeCodes */
+        $sourceAttributeCodes = \array_filter(\array_column($productMapping, 'source'));
+        $attributeTypeBySource = $this->getAttributeTypeByCodesQuery->execute($sourceAttributeCodes);
 
-            if ('uuid' === $target) {
+        /** @var string $targetCode */
+        foreach (\array_keys($productMappingSchema['properties']) as $targetCode) {
+            $sourceValue = null;
+
+            if ('uuid' === $targetCode) {
                 $sourceValue = $product['uuid']->toString();
-            } elseif (\array_key_exists($target, $productMapping)) {
-                $sourceValue = $this->getProductAttributeValue(
-                    $product,
-                    $productMapping[$target]['source'],
-                    $productMapping[$target]['locale'],
-                    $productMapping[$target]['scope']
-                );
+            } elseif (\array_key_exists($targetCode, $productMapping) &&
+                $productMapping[$targetCode]['source'] !== null &&
+                \array_key_exists($productMapping[$targetCode]['source'], $attributeTypeBySource)) {
+                try {
+                    $sourceValue = $this->attributeValueExtractorRegistry->extract(
+                        $product,
+                        $productMapping[$targetCode]['source'],
+                        $attributeTypeBySource[$productMapping[$targetCode]['source']],
+                        $productMapping[$targetCode]['locale'] ?? '<all_locales>',
+                        $productMapping[$targetCode]['scope'] ?? '<all_channels>',
+                        $productMapping[$targetCode]['parameters'] ?? null,
+                    );
+                } catch (AttributeValueExtractorNotFoundException) {
+                }
             }
 
-            $mappedProduct[$target] = $sourceValue;
+            if ($sourceValue !== null) {
+                $mappedProduct[$targetCode] = $sourceValue;
+            }
         }
 
         return $mappedProduct;
-    }
-
-    /**
-     * @param RawProduct $product
-     */
-    private function getProductAttributeValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string
-    {
-        $scope ??= '<all_channels>';
-        $locale ??= '<all_locales>';
-
-        return $product['raw_values'][$attributeCode][$scope][$locale] ?? '';
     }
 }

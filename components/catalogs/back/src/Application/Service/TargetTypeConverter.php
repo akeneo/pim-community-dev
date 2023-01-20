@@ -15,6 +15,8 @@ final class TargetTypeConverter
     private const PIM_ATTRIBUTE_TYPES = [
         'string' => [
             'pim_catalog_text',
+            'pim_catalog_textarea',
+            'pim_catalog_simpleselect',
         ],
     ];
 
