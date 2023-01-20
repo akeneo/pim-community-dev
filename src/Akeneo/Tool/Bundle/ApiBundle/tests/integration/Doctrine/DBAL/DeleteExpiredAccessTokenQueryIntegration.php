@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Doctrine\DBAL;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\ClearExpiredAccessTokenQuery;
+use Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\DeleteExpiredAccessTokenQuery;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
@@ -16,18 +16,18 @@ use FOS\OAuthServerBundle\Model\ClientManagerInterface;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ClearExpiredAccessTokenQueryIntegration extends ApiTestCase
+class DeleteExpiredAccessTokenQueryIntegration extends ApiTestCase
 {
     private readonly ?ClientManagerInterface $clientManager;
     private readonly ?Connection $connection;
-    private readonly ?ClearExpiredAccessTokenQuery $clearExpiredAccessTokenQuery;
+    private readonly ?DeleteExpiredAccessTokenQuery $deleteExpiredAccessTokenQuery;
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
         $this->connection = $this->get('database_connection');
-        $this->clearExpiredAccessTokenQuery = $this->get(ClearExpiredAccessTokenQuery::class);
+        $this->deleteExpiredAccessTokenQuery = $this->get(DeleteExpiredAccessTokenQuery::class);
 
     }
 
@@ -36,7 +36,7 @@ class ClearExpiredAccessTokenQueryIntegration extends ApiTestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    public function testDeletesExpiredAccessToken(): void
+    public function testItDeletesExpiredAccessToken(): void
     {
         $this->create5ExpiredAccessTokens();
         $this->create5ValidAccessTokens();
@@ -44,7 +44,7 @@ class ClearExpiredAccessTokenQueryIntegration extends ApiTestCase
         $this->assertValidAccessTokenCount(5);
         $this->assertExpiredAccessTokenCount(5);
 
-        $this->clearExpiredAccessTokenQuery->execute();
+        $this->deleteExpiredAccessTokenQuery->execute();
 
         $this->assertValidAccessTokenCount(5);
         $this->assertExpiredAccessTokenCount(0);

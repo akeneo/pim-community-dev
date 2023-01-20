@@ -11,7 +11,7 @@ use Doctrine\DBAL\ParameterType;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ClearExpiredAccessTokenQuery
+class DeleteExpiredAccessTokenQuery
 {
     private const DEFAULT_BATCH_SIZE = 100_000;
     public function __construct(private readonly Connection $connection)

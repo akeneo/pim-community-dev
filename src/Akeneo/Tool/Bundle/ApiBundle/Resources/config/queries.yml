@@ -1,5 +1,5 @@
 services:
-    Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\ClearExpiredAccessTokenQuery:
+    Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\DeleteExpiredAccessTokenQuery:
         arguments:
             - '@database_connection'
 
