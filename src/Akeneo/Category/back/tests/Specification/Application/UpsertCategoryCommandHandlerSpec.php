@@ -10,6 +10,7 @@ use Akeneo\Category\Api\Command\UserIntents\SetLabel;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Api\Event\CategoryCreatedEvent;
 use Akeneo\Category\Api\Event\CategoryUpdatedEvent;
+use Akeneo\Category\Application\Applier\SetLabelApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
@@ -58,11 +59,46 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(UpsertCategoryCommandHandler::class);
     }
 
-    function it_creates_and_saves_a_category(
+    function it_update_and_save_category(
         GetCategoryInterface $getCategory,
         ValidatorInterface $validator,
         CategorySaverProcessor $saver,
-        FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry
+        FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry,
+        UserIntentApplierRegistry $applierRegistry,
+        EventDispatcherInterface $eventDispatcher,
+    ) {
+        $setLabel = new SetLabel('fr_FR', 'Accessoires');
+        $command = new UpsertCategoryCommand('accessories', [$setLabel]);
+        $existingCategory = new Category(
+            id: new CategoryId(1),
+            code: new Code('accessories'),
+            templateUuid: null,
+            labels: LabelCollection::fromArray(['en_US' => 'Accessories']),
+            parentId: null
+        );
+
+        $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
+        $getCategory->byCode('accessories')->shouldBeCalledOnce()->willReturn($existingCategory);
+        $findCategoryAdditionalPropertiesRegistry
+            ->forCategory($existingCategory)
+            ->shouldBeCalled()
+            ->willReturn($existingCategory);
+        $applierRegistry->getApplier($setLabel)->willReturn(new SetLabelApplier());
+
+        $saver->save($existingCategory, $command->userIntents())->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::type(CategoryUpdatedEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(CategoryCreatedEvent::class))->shouldNotBeCalled();
+
+        $this->__invoke($command);
+    }
+
+    function it_throws_an_exception_when_create_a_category(
+        GetCategoryInterface $getCategory,
+        ValidatorInterface $validator,
+        CategorySaverProcessor $saver,
+        FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry,
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $command = new UpsertCategoryCommand('code');
         $category = new Category(
@@ -76,7 +112,6 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         $getCategory->byCode('code')->shouldBeCalledOnce()->willReturn(null);
         $findCategoryAdditionalPropertiesRegistry->forCategory(Argument::type(Category::class))->shouldNotBeCalled();
         $saver->save($category, $command->userIntents())->shouldNotBeCalled();
-
         $this->shouldThrow(new Exception("Command to create a category is in progress."))->during('__invoke', [$command]);
     }
 
