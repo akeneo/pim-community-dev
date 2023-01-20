@@ -206,48 +206,4 @@ class Category
             'permissions' => $this->getPermissions()?->normalize(),
         ];
     }
-
-    public function __clone(): void
-    {
-        if (null !== $this->id) {
-            $this->id = clone $this->id;
-        }
-        $this->code = clone $this->code;
-
-        if (null !== $this->templateUuid) {
-            $this->templateUuid = clone $this->templateUuid;
-        }
-
-        if (null !== $this->labels) {
-            $this->labels = clone $this->labels;
-        }
-
-        if (null !== $this->parentId) {
-            $this->parentId = clone $this->parentId;
-        }
-
-        if (null !== $this->parentCode) {
-            $this->parentCode= clone $this->parentCode;
-        }
-
-        if (null !== $this->rootId) {
-            $this->rootId = clone $this->rootId;
-        }
-
-        if (null !== $this->updated) {
-            $this->updated = clone $this->updated;
-        }
-
-        if (null !== $this->attributes) {
-            $this->attributes = clone $this->attributes;
-        }
-
-        if (null !== $this->permissions) {
-            $this->permissions = clone $this->permissions;
-        }
-
-        if (null !== $this->position) {
-            $this->position = clone $this->position;
-        }
-    }
 }

@@ -12,23 +12,12 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
  */
 class CategoryUpdatedEvent
 {
-    /**
-     * @param Category $category The category updated
-     * @param Category $previousCategory The original category
-     */
-    public function __construct(
-        private readonly Category $category,
-        private readonly Category $previousCategory
-    ) {
+    public function __construct(private readonly Category $category)
+    {
     }
 
     public function getCategory(): Category
     {
         return $this->category;
-    }
-
-    public function getPreviousCategory(): Category
-    {
-        return $this->previousCategory;
     }
 }

@@ -132,11 +132,6 @@ final class ValueCollection implements \IteratorAggregate, \Countable
         return count($this->values);
     }
 
-    public function __clone(): void
-    {
-        $this->values = array_map(fn($value) => clone $value, $this->values);
-    }
-
     /**
      * @param Value[] $values
      */

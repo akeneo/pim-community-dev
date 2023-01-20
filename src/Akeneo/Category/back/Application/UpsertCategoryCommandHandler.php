@@ -50,13 +50,11 @@ class UpsertCategoryCommandHandler
             throw new \Exception('Command to create a category is in progress.');
         }
 
-        $previousCategory = clone $category;
-
         $this->updateCategory($category, $command);
 
         $this->saver->save($category, $command->userIntents());
 
-        $this->eventDispatcher->dispatch(new CategoryUpdatedEvent($category, $previousCategory));
+        $this->eventDispatcher->dispatch(new CategoryUpdatedEvent($category));
     }
 
     private function updateCategory(Category $category, UpsertCategoryCommand $command): void
