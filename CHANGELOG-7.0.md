@@ -5,6 +5,7 @@
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
 - PIM-10791: Fix product and product model completeness compute on attribute removal
 - PIM-10768: Fix update list status_code response
+- PIM-10779: Fix lowercase on get attribute group code for dqi activation
 
 # 7.0.7 (2023-02-13)
 
