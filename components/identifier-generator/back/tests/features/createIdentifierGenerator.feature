@@ -101,7 +101,7 @@ Feature: Create Identifier Generator
   # Structure : Family
   Scenario: Cannot create an identifier generator with family property without required field
     When I try to create an identifier generator with family property without required field
-    Then I should get an error with message 'structure[0]: "process" fields are required for "family" type'
+    Then I should get an error with message 'structure[0]: "process" field is required for "family" type'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with invalid family property
