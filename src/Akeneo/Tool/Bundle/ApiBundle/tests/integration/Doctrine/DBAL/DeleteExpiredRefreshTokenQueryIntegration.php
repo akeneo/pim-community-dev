@@ -36,7 +36,7 @@ class DeleteExpiredRefreshTokenQueryIntegration extends ApiTestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    public function testDeletesExpiredRefreshToken(): void
+    public function testItDeletesExpiredRefreshToken(): void
     {
         $this->create5ExpiredRefreshTokens();
         $this->create5ValidRefreshTokens();

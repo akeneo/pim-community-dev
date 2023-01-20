@@ -1,0 +1,6 @@
+services:
+    Akeneo\Tool\Bundle\ApiBundle\Handler\DeleteExpiredTokensHandler:
+        arguments:
+            - '@Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\DeleteExpiredAccessTokenQuery'
+            - '@Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\DeleteExpiredRefreshTokenQuery'
+            - '@logger'
