@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: Spiacenti, si è verificato un errore durante il recupero dell'elenco delle app connesse.
       edit:
+        header:
+          open_app_button:
+            label: Vai all’app
+            icon_alt: Icona Vai all'app
         not_found: App non trovata
         tabs:
           settings: Impostazioni
@@ -243,6 +247,9 @@ akeneo_connectivity.connection:
           helper: Per scoprire di più sull'autorizzazione dell'app,
           helper_link: consulta il nostro articolo dell'Help Center.
           is_allowed_to: 'Già consentito:'
+          certification_consent:
+            label: 'Ho letto e accetto la seguente dichiarazione di esclusione di responsabilità riguardo al certificato.'
+            subtext: 'Akeneo non assume alcuna responsabilità rispetto all''uso dell''app da parte del cliente, né per le sue funzionalità. Il certificato non garantisce l’interoperabilità dell''app né che essa funzioni correttamente nell''ambiente del cliente.'
         flash:
           success: App configurata con successo.
           error: Spiacenti, si è verificato un errore durante la connessione dell'app.
