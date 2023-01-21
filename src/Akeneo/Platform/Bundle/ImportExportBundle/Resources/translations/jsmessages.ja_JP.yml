@@ -163,6 +163,9 @@ pim_import_export:
           label: タイプ
           local: ローカル
           sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
           none: ストレージが構成されていません
         file_path:
           label: ファイルパス
@@ -189,6 +192,30 @@ pim_import_export:
           label: 認証方法
           password: ログインとパスワード
           private_key: 秘密キー
+        region:
+          label: リージョン
+          placeholder: リージョンを入力してください
+        bucket:
+          label: バケット名
+          placeholder: リージョン名を入力してください
+        key:
+          label: キー
+          placeholder: キーを入力してください
+        secret:
+          label: シークレット
+          placeholder: シークレットを入力してください
+        connection_string:
+          label: 接続文字列
+          placeholder: 接続文字列を入力してください
+        container_name:
+          label: コンテナ名
+          placeholder: コンテナ名を入力してください
+        project_id:
+          label: プロジェクト ID
+          placeholder: プロジェクト ID を入力してください
+        service_account:
+          label: サービスアカウント
+          placeholder: サービスアカウントを入力してください
       validation:
         storage:
           unavailable_type: このストレージは使用できません。{{ available_types }}のみを使用できます。

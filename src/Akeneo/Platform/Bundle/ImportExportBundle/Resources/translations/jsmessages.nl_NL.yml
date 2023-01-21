@@ -163,6 +163,9 @@ pim_import_export:
           label: Type
           local: Lokaal
           sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google cloupdopslag
           none: Geen opslag geconfigureerd
         file_path:
           label: Bestandspad
@@ -189,6 +192,30 @@ pim_import_export:
           label: Authenticatiemethode
           password: 'Inlognaam / wachtwoord:'
           private_key: Privésleutel
+        region:
+          label: Regio
+          placeholder: Voer uw regio in
+        bucket:
+          label: Naam van bucket
+          placeholder: Voer de naam van uw regio in
+        key:
+          label: Sleutel
+          placeholder: Voer uw sleutel in
+        secret:
+          label: Geheim
+          placeholder: Voer uw geheim in
+        connection_string:
+          label: Verbindingsreeks
+          placeholder: Voer uw verbindingsreeks in
+        container_name:
+          label: Containernaam
+          placeholder: Voer uw containernaam in
+        project_id:
+          label: Project-ID
+          placeholder: Voer uw project-ID in
+        service_account:
+          label: Service-account
+          placeholder: Voer uw service-account in
       validation:
         storage:
           unavailable_type: Deze opslag is niet beschikbaar, alleen {{ available_types }} zijn beschikbaar.
