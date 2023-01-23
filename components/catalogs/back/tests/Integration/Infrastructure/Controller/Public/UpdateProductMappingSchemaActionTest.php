@@ -64,11 +64,11 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         Assert::assertEquals(204, $response->getStatusCode());
 
         $productMappingSchema = $this->queryBus->execute(
-            new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')
+            new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'),
         );
         Assert::assertJsonStringEqualsJsonString(
             $this->getProductMappingSchemaV002(),
-            \json_encode($productMappingSchema, JSON_THROW_ON_ERROR)
+            \json_encode($productMappingSchema, JSON_THROW_ON_ERROR),
         );
     }
 

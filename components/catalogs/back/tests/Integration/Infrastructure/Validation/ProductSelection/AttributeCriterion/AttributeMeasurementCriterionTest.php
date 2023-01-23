@@ -63,7 +63,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
@@ -83,7 +83,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => 'ecommerce',
                     'locale' => null,
@@ -103,10 +103,10 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
-                    'locale' => 'en_US'
+                    'locale' => 'en_US',
                 ],
             ],
             'non localizable and non scopable attribute' => [
@@ -123,7 +123,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
                     'locale' => null,
@@ -149,7 +149,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
                     'locale' => null,
@@ -169,7 +169,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::NOT_EQUAL,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
                     'locale' => null,
@@ -189,7 +189,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::LOWER_THAN,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
                     'locale' => null,
@@ -209,7 +209,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::LOWER_OR_EQUAL_THAN,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
                     'locale' => null,
@@ -229,7 +229,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::GREATER_THAN,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
                     'locale' => null,
@@ -249,7 +249,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::GREATER_OR_EQUAL_THAN,
                     'value' => [
                         'amount' => 12.3,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
                     'locale' => null,
@@ -298,7 +298,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
     public function testItReturnsViolationsWhenInvalid(
         array $attribute,
         array $criterion,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
 
@@ -399,7 +399,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => 42,
                     'locale' => 'en_US',
@@ -420,7 +420,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => 'ecommerce',
                     'locale' => 42,
@@ -441,7 +441,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => 'ecommerce',
                     'locale' => 'kz_KZ',
@@ -462,7 +462,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => 'unknown_scope',
                     'locale' => null,
@@ -483,7 +483,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => null,
                     'locale' => 'kz_KZ',
@@ -504,7 +504,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'operator' => Operator::IS_EMPTY,
                     'value' => [
                         'amount' => 42,
-                        'unit' => 'GRAM'
+                        'unit' => 'GRAM',
                     ],
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
@@ -583,7 +583,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
     public function testItThrowsExceptionWhenInvalid(
         array $attribute,
         array $criterion,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
 

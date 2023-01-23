@@ -42,7 +42,7 @@ final class GetProductMappingSchemaHandler
         }
 
         $productMappingSchema = \stream_get_contents(
-            $this->catalogsMappingStorage->read($productMappingSchemaFile)
+            $this->catalogsMappingStorage->read($productMappingSchemaFile),
         );
 
         if (false === $productMappingSchema) {

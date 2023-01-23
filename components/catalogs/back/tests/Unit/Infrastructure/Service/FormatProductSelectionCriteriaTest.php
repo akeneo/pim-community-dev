@@ -62,7 +62,7 @@ class FormatProductSelectionCriteriaTest extends TestCase
                         'field' => 'description',
                         'operator' => Operator::EQUALS,
                         'value' => 'une description',
-                        'scope' => 'ecommerce'
+                        'scope' => 'ecommerce',
                     ],
                 ],
                 [
@@ -82,7 +82,7 @@ class FormatProductSelectionCriteriaTest extends TestCase
                         'field' => 'description',
                         'operator' => Operator::EQUALS,
                         'value' => 'une description',
-                        'locale' => 'fr_FR'
+                        'locale' => 'fr_FR',
                     ],
                 ],
                 [
@@ -103,7 +103,7 @@ class FormatProductSelectionCriteriaTest extends TestCase
                         'operator' => Operator::EQUALS,
                         'value' => 'une description',
                         'locale' => 'fr_FR',
-                        'scope' => 'ecommerce'
+                        'scope' => 'ecommerce',
                     ],
                 ],
                 [
@@ -151,13 +151,13 @@ class FormatProductSelectionCriteriaTest extends TestCase
                         'field' => 'description',
                         'operator' => Operator::EQUALS,
                         'value' => 'une description',
-                        'scope' => 'ecommerce'
+                        'scope' => 'ecommerce',
                     ],
                     [
                         'field' => 'description',
                         'operator' => Operator::EQUALS,
                         'value' => 'une description',
-                        'locale' => 'fr_FR'
+                        'locale' => 'fr_FR',
                     ],
                     [
                         'field' => 'description',
@@ -171,7 +171,7 @@ class FormatProductSelectionCriteriaTest extends TestCase
                         'operator' => Operator::EQUALS,
                         'value' => 'une description',
                         'locale' => 'fr_FR',
-                        'scope' => 'ecommerce'
+                        'scope' => 'ecommerce',
                     ],
                 ],
                 [

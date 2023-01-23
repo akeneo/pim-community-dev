@@ -75,14 +75,14 @@ class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
 
         $this->expectException(ServiceApiProductSchemaMappingNotFoundException::class);
         $this->queryBus->execute(
-            new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')
+            new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'),
         );
 
         /** @var Catalog $catalog */
         $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
         Assert::assertJsonStringEqualsJsonString(
             '[]',
-            \json_encode($catalog->getProductMapping(), JSON_THROW_ON_ERROR)
+            \json_encode($catalog->getProductMapping(), JSON_THROW_ON_ERROR),
         );
     }
 

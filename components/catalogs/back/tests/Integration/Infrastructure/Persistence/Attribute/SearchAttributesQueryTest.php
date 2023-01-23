@@ -45,8 +45,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'pim_catalog_number',
                 'pim_catalog_metric',
                 'pim_catalog_boolean',
-                'pim_catalog_date'
-            ]
+                'pim_catalog_date',
+            ],
         );
 
         $this->assertEquals([
@@ -159,7 +159,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
                 'attribute_group_code' => 'marketing',
                 'attribute_group_label' => '[marketing]',
-            ]
+            ],
         ], $result);
     }
 
@@ -245,7 +245,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'notice',
             'type' => 'pim_catalog_file',
-            'group' => 'technical'
+            'group' => 'technical',
         ]);
         $this->createAttribute([
             'code' => 'picture',

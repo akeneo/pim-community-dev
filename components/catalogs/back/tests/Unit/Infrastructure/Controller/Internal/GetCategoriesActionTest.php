@@ -103,7 +103,7 @@ class GetCategoriesActionTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['categoryA', 'categoryB', 'categoryC'], JSON_THROW_ON_ERROR),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 
@@ -126,7 +126,7 @@ class GetCategoriesActionTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['categoryA', 'categoryB', 'categoryC'], JSON_THROW_ON_ERROR),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 }

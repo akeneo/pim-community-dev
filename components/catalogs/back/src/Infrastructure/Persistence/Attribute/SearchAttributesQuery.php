@@ -52,7 +52,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
 
                 return $normalizedAttribute;
             },
-            $attributes
+            $attributes,
         );
     }
 }

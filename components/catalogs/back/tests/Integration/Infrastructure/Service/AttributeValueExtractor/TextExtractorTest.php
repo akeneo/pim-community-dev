@@ -36,10 +36,10 @@ class TextExtractorTest extends IntegrationTestCase
             'raw_values' => [
                 'name' => [
                     'ecommerce' => [
-                        'en_US' => 'Product name'
-                    ]
-                ]
-            ]
+                        'en_US' => 'Product name',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->registry->extract(
@@ -61,10 +61,10 @@ class TextExtractorTest extends IntegrationTestCase
             'raw_values' => [
                 'description' => [
                     'ecommerce' => [
-                        'en_US' => 'Product description'
-                    ]
-                ]
-            ]
+                        'en_US' => 'Product description',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->registry->extract(
@@ -86,10 +86,10 @@ class TextExtractorTest extends IntegrationTestCase
             'raw_values' => [
                 'name' => [
                     'ecommerce' => [
-                        'en_US' => 'Product name'
-                    ]
-                ]
-            ]
+                        'en_US' => 'Product name',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->registry->extract(

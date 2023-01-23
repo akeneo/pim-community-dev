@@ -89,14 +89,14 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
                 function ($code, $options): array {
                     $intersection = \array_filter(
                         $this->attributeOptions[$code] ?? [],
-                        static fn ($option) => \in_array($option, $options)
+                        static fn ($option) => \in_array($option, $options),
                     );
 
                     return \array_map(static fn ($option) => [
                         'code' => $option,
                         'label' => '['.$option.']',
                     ], $intersection);
-                }
+                },
             );
         self::getContainer()->set(GetAttributeOptionsByCodeQuery::class, $this->getAttributeOptionsByCodeQuery);
 

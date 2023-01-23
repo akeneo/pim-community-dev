@@ -57,7 +57,7 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
         $this->assertEquals(
             $schema->description,
             $violations[0]->getCause(),
-            'The invalid schema contains a "description" with the error that was expected.'
+            'The invalid schema contains a "description" with the error that was expected.',
         );
     }
 
@@ -83,7 +83,7 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
             $files,
             \array_map(fn ($file) => [
                 'raw' => \file_get_contents($directory . '/' . $file),
-            ], $files)
+            ], $files),
         );
     }
 }

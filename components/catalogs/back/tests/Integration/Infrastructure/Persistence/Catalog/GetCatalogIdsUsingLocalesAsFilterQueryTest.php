@@ -41,18 +41,18 @@ final class GetCatalogIdsUsingLocalesAsFilterQueryTest extends IntegrationTestCa
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['locales' => $localesFirstCatalog]
+            catalogProductValueFilters: ['locales' => $localesFirstCatalog],
         );
         $this->createCatalog(
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store FR',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['locales' => $localesSecondCatalog]
+            catalogProductValueFilters: ['locales' => $localesSecondCatalog],
         );
         $this->createCatalog(
             id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             name: 'Store UK',
-            ownerUsername: 'shopifi'
+            ownerUsername: 'shopifi',
         );
 
         $resultBothCatalogs = $this->query->execute($localesQueried);
@@ -66,25 +66,25 @@ final class GetCatalogIdsUsingLocalesAsFilterQueryTest extends IntegrationTestCa
                 'locales_first_catalog' => ['en_US'],
                 'locales_second_catalog' => ['fr_FR'],
                 'locales_queried' => ['en_US', 'fr_FR'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07'],
             ],
             'gets two catalogs with one locale' => [
                 'locales_first_catalog' => ['en_US', 'fr_FR'],
                 'locales_second_catalog' => ['fr_FR'],
                 'locales_queried' => ['fr_FR'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07'],
             ],
             'gets only one catalog with one locale' => [
                 'locales_first_catalog' => ['en_US', 'fr_FR'],
                 'locales_second_catalog' => ['fr_FR'],
                 'locales_queried' => ['en_US'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c'],
             ],
             'gets no catalogs with one locale' => [
                 'locales_first_catalog' => ['en_US', 'fr_FR'],
                 'locales_second_catalog' => ['fr_FR'],
                 'locales_queried' => ['GBP'],
-                'expected_catalog' => []
+                'expected_catalog' => [],
             ],
         ];
     }

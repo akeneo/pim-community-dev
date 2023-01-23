@@ -69,12 +69,12 @@ class SearchAfterSizeUuidResultCursorFactory implements CursorFactoryInterface
             [
                 'search_after',
                 'limit',
-            ]
+            ],
         );
         $resolver->setDefaults(
             [
                 'search_after' => [],
-            ]
+            ],
         );
         $resolver->setAllowedTypes('search_after', 'array');
         $resolver->setAllowedTypes('limit', 'int');

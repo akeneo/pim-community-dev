@@ -70,7 +70,7 @@ final class UpdateCatalogAction
                     'errors' => $this->normalizer->normalize($violations),
                     'message' => 'Catalog is not valid.',
                 ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
+                Response::HTTP_UNPROCESSABLE_ENTITY,
             );
         }
 

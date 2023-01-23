@@ -30,7 +30,7 @@ final class GetChannelsByCodeQuery implements GetChannelsByCodeQueryInterface
             ['code' => $codes],
             [],
             $limit,
-            ($page - 1) * $limit
+            ($page - 1) * $limit,
         );
 
         return \array_map(
@@ -38,7 +38,7 @@ final class GetChannelsByCodeQuery implements GetChannelsByCodeQueryInterface
                 'code' => $channel->getCode(),
                 'label' => $channel->getLabel(),
             ],
-            $channels
+            $channels,
         );
     }
 }

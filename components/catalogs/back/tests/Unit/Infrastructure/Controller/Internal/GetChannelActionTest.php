@@ -73,7 +73,7 @@ class GetChannelActionTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['label' => 'channelA'], JSON_THROW_ON_ERROR),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 }

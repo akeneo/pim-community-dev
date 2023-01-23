@@ -61,7 +61,7 @@ class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
                 ],
                 [],
                 [],
-            )
+            ),
         );
 
         $this->assertEmpty($violations);
@@ -92,11 +92,11 @@ class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
                         'value' => 80,
                         'scope' => 'ecommerce',
                         'locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 [],
                 [],
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
@@ -119,7 +119,7 @@ class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
                 ],
                 [],
                 [],
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'Invalid field value');
@@ -142,11 +142,11 @@ class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
                         'operator' => '=',
                         'value' => true,
                     ],
-                    \range(1, $number)
+                    \range(1, $number),
                 ),
                 [],
                 [],
-            )
+            ),
         );
 
         if ($allowed) {

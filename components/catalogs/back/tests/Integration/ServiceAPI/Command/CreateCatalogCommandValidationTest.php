@@ -91,7 +91,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
                 id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
                 name: 'Store US',
                 ownerUsername: 'shopifi',
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'You can create up to 15 catalogs');

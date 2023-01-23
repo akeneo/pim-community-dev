@@ -107,7 +107,7 @@ class AuthenticationContext implements Context
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
         $this->callPermissionsSaver(
             /** @noRector StringClassNameToClassConstantRector */
@@ -122,7 +122,7 @@ class AuthenticationContext implements Context
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
         $this->callPermissionsSaver(
             /** @noRector StringClassNameToClassConstantRector */
@@ -141,7 +141,7 @@ class AuthenticationContext implements Context
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
     }
 
