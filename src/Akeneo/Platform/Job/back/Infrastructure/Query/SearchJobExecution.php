@@ -105,38 +105,36 @@ SQL;
     private function buildSqlWherePart(SearchJobExecutionQuery $query): string
     {
         $sqlWhereParts = [];
-        $automation = $query->automation;
-        $type = $query->type;
-        $status = $query->status;
-        $user = $query->user;
-        $search = $query->search;
-        $code = $query->code;
 
-        if (null !== $automation) {
-            $sqlWhereParts[] = $automation ? 'job_execution.user LIKE "job_automated%"' : 'job_execution.user NOT LIKE "job_automated%"';
+        if (null !== $query->automation) {
+            $sqlWhereParts[] = $query->automation ? 'job_execution.user LIKE "job_automated%"' : 'job_execution.user NOT LIKE "job_automated%"';
         }
 
-        if (!empty($type)) {
+        if (!empty($query->type)) {
             $sqlWhereParts[] = 'job_instance.type IN (:type)';
         }
 
-        if (!empty($code)) {
+        if (!empty($query->code)) {
             $sqlWhereParts[] = 'job_instance.code IN (:code)';
         }
 
-        if (!empty($status)) {
+        if (!empty($query->status)) {
             $sqlWhereParts[] = $this->buildStatusSubQuery().' IN (:status)';
         }
 
-        if (!empty($user)) {
+        if (!empty($query->user)) {
             $sqlWhereParts[] = 'job_execution.user IN (:user)';
         }
 
-        if (!empty($search)) {
-            $searchParts = explode(' ', $search);
+        if (!empty($query->search)) {
+            $searchParts = explode(' ', $query->search);
             foreach (array_keys($searchParts) as $index) {
                 $sqlWhereParts[] = sprintf('job_instance.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             }
+        }
+
+        if (!empty($query->excludeJobNames)) {
+            $sqlWhereParts[] = 'job_instance.job_name NOT IN (:exclude_job_names)';
         }
 
         return empty($sqlWhereParts) ? '' : 'AND '.implode(' AND ', $sqlWhereParts);
@@ -209,6 +207,7 @@ SQL;
             'in_progress_status_code' => Status::IN_PROGRESS,
             'stopping_status_code' => Status::STOPPING,
             'failed_status_code' => Status::FAILED,
+            'exclude_job_names' => $query->excludeJobNames,
         ];
 
         $searchParts = explode(' ', $query->search);
@@ -227,6 +226,7 @@ SQL;
             'status' => Connection::PARAM_STR_ARRAY,
             'user' => Connection::PARAM_STR_ARRAY,
             'code' => Connection::PARAM_STR_ARRAY,
+            'exclude_job_names' => Connection::PARAM_STR_ARRAY,
         ];
     }
 }

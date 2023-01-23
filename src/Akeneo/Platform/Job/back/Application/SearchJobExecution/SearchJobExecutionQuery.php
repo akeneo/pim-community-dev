@@ -30,10 +30,16 @@ class SearchJobExecutionQuery
     public int $size = 25;
     public string $sortColumn = 'started_at';
     public string $sortDirection = 'DESC';
+    /** @var array<string>  */
     public array $user = [];
     public ?bool $automation = null;
+    /** @var array<string>  */
     public array $type = [];
+    /** @var array<string>  */
     public array $status = [];
+    /** @var array<string>  */
     public array $code = [];
     public string $search = '';
+    /** @var array<string>  */
+    public array $excludeJobNames = [];
 }
