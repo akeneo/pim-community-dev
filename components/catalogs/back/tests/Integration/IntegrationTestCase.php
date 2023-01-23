@@ -203,7 +203,6 @@ abstract class IntegrationTestCase extends WebTestCase
     private function addAllPermissionsUserGroup(string $group): void
     {
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
             group: $group,
             permissions: [
@@ -218,7 +217,6 @@ abstract class IntegrationTestCase extends WebTestCase
             ]
         );
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
             group: $group,
             permissions: [
@@ -233,7 +231,6 @@ abstract class IntegrationTestCase extends WebTestCase
             ]
         );
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
             group: $group,
             permissions: [
@@ -284,7 +281,7 @@ abstract class IntegrationTestCase extends WebTestCase
                 \implode(
                     '","',
                     \array_map(
-                        fn (ConstraintViolationInterface $violation) => $violation->getMessage(),
+                        fn (ConstraintViolationInterface $violation): string|\Stringable => $violation->getMessage(),
                         \iterator_to_array($violations)
                     )
                 )

@@ -22,7 +22,7 @@ class CatalogScopeMapperTest extends TestCase
     {
         $this->featureFlagIsEnabled = true;
         $this->featureFlags = $this->createMock(FeatureFlags::class);
-        $this->featureFlags->method('isEnabled')->will($this->returnCallback(fn () => $this->featureFlagIsEnabled));
+        $this->featureFlags->method('isEnabled')->will($this->returnCallback(fn (): bool => $this->featureFlagIsEnabled));
 
         $this->mapper = new CatalogScopeMapper($this->featureFlags);
     }
@@ -46,7 +46,7 @@ class CatalogScopeMapperTest extends TestCase
     /**
      * @dataProvider acls
      */
-    public function testItReturnsAclsForOneScope(string $scope, $expected): void
+    public function testItReturnsAclsForOneScope(string $scope, array $expected): void
     {
         $this->assertEquals($expected, $this->mapper->getAcls($scope));
     }
@@ -76,7 +76,7 @@ class CatalogScopeMapperTest extends TestCase
     /**
      * @dataProvider messages
      */
-    public function testItReturnsMessagesForOneScope(string $scope, $expected): void
+    public function testItReturnsMessagesForOneScope(string $scope, ?array $expected): void
     {
         $this->assertEquals($expected, $this->mapper->getMessage($scope));
     }
@@ -118,7 +118,7 @@ class CatalogScopeMapperTest extends TestCase
     /**
      * @dataProvider hierarchy
      */
-    public function testItReturnsLowerHierarchyScopesForOneScope(string $scope, $expected): void
+    public function testItReturnsLowerHierarchyScopesForOneScope(string $scope, array $expected): void
     {
         $this->assertEquals($expected, $this->mapper->getLowerHierarchyScopes($scope));
     }
