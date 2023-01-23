@@ -21,7 +21,11 @@ final class SqlGetNextIdentifierQuery implements GetNextIdentifierQuery
     ) {
     }
 
-    public function fromPrefix(IdentifierGenerator $identifierGenerator, string $prefix): int
+    public function fromPrefix(
+        IdentifierGenerator $identifierGenerator,
+        string $prefix,
+        int $numberMin,
+    ): int
     {
         $sql = <<<SQL
 SELECT MAX(number) FROM pim_catalog_identifier_generator_prefixes p 
@@ -43,9 +47,11 @@ SQL;
 
         Assert::nullOrString($result);
         if (null === $result || $result === '') {
-            return 1;
+            return $numberMin;
         }
 
-        return ((int) $result) + 1;
+        $result = ((int) $result) + 1;
+
+        return ($result < $numberMin) ? $numberMin : $result;
     }
 }
