@@ -24,7 +24,7 @@ interface ProductValueExtractorInterface
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | string | float | int;
+    ): mixed;
 
     public function supports(string $sourceType): bool;
 }

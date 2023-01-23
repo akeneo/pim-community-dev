@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor;
+namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 
@@ -12,7 +12,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
-interface StringProductValueExtractorInterface extends ProductValueExtractorInterface
+interface ProductValueExtractorRegistryInterface
 {
     /**
      * @param RawProduct $product
@@ -21,10 +21,9 @@ interface StringProductValueExtractorInterface extends ProductValueExtractorInte
     public function extract(
         array $product,
         string $code,
+        string $attributeType,
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | string;
-
-    public function supports(string $sourceType): bool;
+    ): mixed;
 }

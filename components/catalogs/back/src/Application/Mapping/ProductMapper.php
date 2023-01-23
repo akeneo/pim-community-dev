@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Mapping\Exception\ProductValueExtractorNotFoundException;
 use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\NumberProductValueExtractorRegistry;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\ProductValueExtractorRegistryInterface;
 use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringDateTimeProductValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringProductValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
@@ -51,7 +52,10 @@ class ProductMapper implements ProductMapperInterface
         // @todo rework when we will use system attributes (family, categories, ...)
         $attributeTypeBySource = $this->getAttributeTypeByCodesQuery->execute($sourceAttributeCodes);
 
-        /** @var string $targetCode */
+        /**
+         * @var string $targetCode
+         * @var array{type: string, format?: string} $target
+         */
         foreach ($productMappingSchema['properties'] as $targetCode => $target) {
             $sourceValue = null;
 
@@ -83,7 +87,7 @@ class ProductMapper implements ProductMapperInterface
         return $mappedProduct;
     }
 
-    private function getProductValueExtractorRegistry(string $targetType, ?string $targetFormat)
+    private function getProductValueExtractorRegistry(string $targetType, ?string $targetFormat): ProductValueExtractorRegistryInterface
     {
         $registry = match($targetType) {
             'number' => $this->numberProductValueExtractorRegistry,

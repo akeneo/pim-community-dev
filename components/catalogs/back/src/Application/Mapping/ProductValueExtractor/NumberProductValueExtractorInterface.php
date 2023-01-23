@@ -12,7 +12,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
-interface NumberProductValueExtractorInterface
+interface NumberProductValueExtractorInterface extends ProductValueExtractorInterface
 {
     /**
      * @param RawProduct $product
