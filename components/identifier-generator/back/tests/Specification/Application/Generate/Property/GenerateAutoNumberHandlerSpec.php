@@ -4,8 +4,16 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery;
 use PhpSpec\ObjectBehavior;
@@ -25,78 +33,82 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
 
     public function it_should_throw_exception_when_invoked_with_something_else_than_auto_number(): void
     {
-        $target = Target::fromString('sku');
         $freeText = FreeText::fromNormalized([
             'type' => FreeText::type(),
             'string' => 'AKN-',
         ]);
 
+        $identifierGenerator = $this->getIdentifierGenerator($freeText);
+
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$freeText, $target, 'AKN-']);
+            ->during('__invoke', [$freeText, $identifierGenerator, 'AKN-']);
     }
 
     public function it_should_return_next_number(
         GetNextIdentifierQuery $getNextIdentifierQuery
     ): void {
-        $target = Target::fromString('sku');
-        $autoNumber = AutoNumber::fromNormalized([
-            'type' => AutoNumber::type(),
-            'numberMin' => 0,
-            'digitsMin' => 1,
-        ]);
-        $getNextIdentifierQuery->fromPrefix($target, 'AKN-')
-            ->shouldBeCalled()
-            ->willReturn(42);
-
-        $this->__invoke($autoNumber, $target, 'AKN-')->shouldReturn('42');
-    }
-
-    public function it_should_set_min_number(
-        GetNextIdentifierQuery $getNextIdentifierQuery
-    ): void {
-        $target = Target::fromString('sku');
         $autoNumber = AutoNumber::fromNormalized([
             'type' => AutoNumber::type(),
             'numberMin' => 50,
             'digitsMin' => 1,
         ]);
-        $getNextIdentifierQuery->fromPrefix($target, 'AKN-')
-            ->shouldBeCalled()
-            ->willReturn(42);
 
-        $this->__invoke($autoNumber, $target, 'AKN-')->shouldReturn('50');
+        $identifierGenerator = $this->getIdentifierGenerator($autoNumber);
+
+        $getNextIdentifierQuery->fromPrefix($identifierGenerator, 'AKN-', 50)
+            ->shouldBeCalled()
+            ->willReturn(69);
+
+        $this->__invoke($autoNumber, $identifierGenerator, 'AKN-')->shouldReturn('69');
     }
 
     public function it_should_add_digits_when_number_is_too_low(
         GetNextIdentifierQuery $getNextIdentifierQuery
     ): void {
-        $target = Target::fromString('sku');
         $autoNumber = AutoNumber::fromNormalized([
             'type' => AutoNumber::type(),
             'numberMin' => 0,
             'digitsMin' => 5,
         ]);
-        $getNextIdentifierQuery->fromPrefix($target, 'AKN-')
+
+        $identifierGenerator = $this->getIdentifierGenerator($autoNumber);
+
+        $getNextIdentifierQuery->fromPrefix($identifierGenerator, 'AKN-', 0)
             ->shouldBeCalled()
             ->willReturn(42);
 
-        $this->__invoke($autoNumber, $target, 'AKN-')->shouldReturn('00042');
+        $this->__invoke($autoNumber, $identifierGenerator, 'AKN-')->shouldReturn('00042');
     }
 
     public function it_should_not_add_digits_when_number_is_too_high(
         GetNextIdentifierQuery $getNextIdentifierQuery
     ): void {
-        $target = Target::fromString('sku');
         $autoNumber = AutoNumber::fromNormalized([
             'type' => AutoNumber::type(),
             'numberMin' => 0,
             'digitsMin' => 5,
         ]);
-        $getNextIdentifierQuery->fromPrefix($target, 'AKN-')
+
+        $identifierGenerator = $this->getIdentifierGenerator($autoNumber);
+
+        $getNextIdentifierQuery->fromPrefix($identifierGenerator, 'AKN-', 0)
             ->shouldBeCalled()
             ->willReturn(426942);
 
-        $this->__invoke($autoNumber, $target, 'AKN-')->shouldReturn('426942');
+        $this->__invoke($autoNumber, $identifierGenerator, 'AKN-')->shouldReturn('426942');
+    }
+
+    private function getIdentifierGenerator(PropertyInterface $property): IdentifierGenerator
+    {
+        return new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('d556e59e-d46c-465e-863d-f4a39d0b7485'),
+            IdentifierGeneratorCode::fromString('my_generator'),
+            Conditions::fromArray([]),
+            Structure::fromArray([$property]),
+            LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
+            Target::fromString('sku'),
+            Delimiter::fromString(null),
+        );
     }
 }

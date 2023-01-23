@@ -54,7 +54,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
 
         $getNextIdentifierQuery
-            ->fromPrefix($target, 'AKN-')
+            ->fromPrefix($identifierGenerator, 'AKN-', 0)
             ->shouldBeCalled()
             ->willReturn(43);
 
@@ -84,7 +84,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
 
         $getNextIdentifierQuery
-            ->fromPrefix($target, 'AKN-')
+            ->fromPrefix($identifierGenerator, 'AKN-', 0)
             ->shouldBeCalled()
             ->willReturn(43);
 
