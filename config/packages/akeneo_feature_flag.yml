@@ -11,3 +11,4 @@ akeneo_feature_flag:
         - { feature: 'job_automation_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
         - { feature: 'enriched_category', service: 'akeneo.feature_flag.service.only_saas_feature'}
         - { feature: 'identifier_generator', service: 'akeneo.feature_flag.service.only_saas_feature' }
+        - { feature: 'import_export_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }

@@ -190,7 +190,7 @@ test('it can select a local storage', async () => {
 
   expect(onStorageChange).toBeCalledWith({
     type: 'local',
-    file_path: 'export_%job_label%_%datetime%.xlsx',
+    file_path: '/tmp/export_%job_label%_%datetime%.xlsx',
   });
 });
 

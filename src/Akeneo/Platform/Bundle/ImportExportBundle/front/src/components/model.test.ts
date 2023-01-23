@@ -1,8 +1,16 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
-import {isValidStorageType, getDefaultStorage, isExport, getDefaultFilePath, localStorageIsEnabled} from './model';
+import {
+  isValidStorageType,
+  getDefaultStorage,
+  isExport,
+  getDefaultFilePath,
+  localStorageIsEnabled,
+  additionalStorageIsEnabled,
+} from './model';
 
 const featureFlagCollection = {
-  job_automation_local_storage: false,
+  import_export_local_storage: false,
+  import_export_additional_storage: false,
 };
 
 const enableFeatureFlag = (featureFlag: string) => (featureFlagCollection[featureFlag] = true);
@@ -12,14 +20,24 @@ const featureFlags: FeatureFlags = {
 };
 
 beforeEach(() => {
-  featureFlagCollection.job_automation_local_storage = false;
+  featureFlagCollection.import_export_local_storage = false;
+  featureFlagCollection.import_export_additional_storage = false;
 });
 
 test('it says if a storage type is valid', () => {
   expect(isValidStorageType('local', featureFlags)).toBe(false);
+  expect(isValidStorageType('sftp', featureFlags)).toBe(false);
+  expect(isValidStorageType('amazon_s3', featureFlags)).toBe(false);
+  expect(isValidStorageType('microsoft_azure', featureFlags)).toBe(false);
 
-  enableFeatureFlag('job_automation_local_storage');
+  enableFeatureFlag('import_export_local_storage');
+  expect(isValidStorageType('local', featureFlags)).toBe(true);
+  expect(isValidStorageType('sftp', featureFlags)).toBe(false);
+  expect(isValidStorageType('amazon_s3', featureFlags)).toBe(false);
+  expect(isValidStorageType('microsoft_azure', featureFlags)).toBe(false);
+  expect(isValidStorageType('google_cloud_storage', featureFlags)).toBe(false);
 
+  enableFeatureFlag('import_export_additional_storage');
   expect(isValidStorageType('none', featureFlags)).toBe(true);
   expect(isValidStorageType('local', featureFlags)).toBe(true);
   expect(isValidStorageType('sftp', featureFlags)).toBe(true);
@@ -32,7 +50,7 @@ test('it says if a storage type is valid', () => {
 test('it returns the default local storage', () => {
   expect(getDefaultStorage('export', 'local', 'xlsx')).toEqual({
     type: 'local',
-    file_path: 'export_%job_label%_%datetime%.xlsx',
+    file_path: '/tmp/export_%job_label%_%datetime%.xlsx',
   });
 
   expect(getDefaultStorage('import', 'sftp', 'csv')).toEqual({
@@ -92,6 +110,12 @@ test('it returns the default file path', () => {
 
 test('it check if local storage is enabled', () => {
   expect(localStorageIsEnabled(featureFlags)).toBe(false);
-  enableFeatureFlag('job_automation_local_storage');
+  enableFeatureFlag('import_export_local_storage');
   expect(localStorageIsEnabled(featureFlags)).toBe(true);
+});
+
+test('it check if additionnal storage is enabled', () => {
+  expect(additionalStorageIsEnabled(featureFlags)).toBe(false);
+  enableFeatureFlag('import_export_additional_storage');
+  expect(additionalStorageIsEnabled(featureFlags)).toBe(true);
 });
