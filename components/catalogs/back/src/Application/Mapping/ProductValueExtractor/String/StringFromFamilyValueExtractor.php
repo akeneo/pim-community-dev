@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String;
 
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringProductValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringNumberProductValueExtractor implements StringProductValueExtractorInterface
+final class StringFromFamilyValueExtractor implements StringValueExtractorInterface
 {
     public function extract(
         array $product,
@@ -19,13 +19,12 @@ final class StringNumberProductValueExtractor implements StringProductValueExtra
         ?string $scope,
         ?array $parameters,
     ): null | string {
-        $value = $product['raw_values'][$code][$scope][$locale] ?? null;
-
-        return null !== $value ? (string) $value : null;
+        // @todo fetch family label
+        return $product['family_code'] ?? null;
     }
 
     public function supports(string $sourceType): bool
     {
-        return 'pim_catalog_number' === $sourceType;
+        return 'family' === $sourceType;
     }
 }

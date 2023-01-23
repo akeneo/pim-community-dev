@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String;
 
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringProductValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringValueExtractorInterface;
 use Akeneo\Catalogs\Application\Persistence\Attribute\GetAttributeOptionsByCodeQueryInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringSimpleSelectProductValueExtractor implements StringProductValueExtractorInterface
+final class StringFromSimpleSelectAttributeValueExtractor implements StringValueExtractorInterface
 {
     public function __construct(
         private GetAttributeOptionsByCodeQueryInterface $getAttributeOptionsByCodeQuery,

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String;
 
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringProductValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringTextProductValueExtractor implements StringProductValueExtractorInterface
+final class StringFromTextAttributeValueExtractor implements StringValueExtractorInterface
 {
     public function extract(
         array $product,
@@ -19,7 +19,10 @@ final class StringTextProductValueExtractor implements StringProductValueExtract
         ?string $scope,
         ?array $parameters,
     ): null | string {
-        return $product['raw_values'][$code][$scope][$locale] ?? null;
+        /** @var mixed $value */
+        $value = $product['raw_values'][$code][$scope][$locale] ?? null;
+
+        return null !== $value ? (string) $value : null;
     }
 
     public function supports(string $sourceType): bool

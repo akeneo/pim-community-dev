@@ -5,25 +5,25 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry;
 
 use Akeneo\Catalogs\Application\Mapping\Exception\ProductValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringProductValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringDateTimeProductValueExtractorRegistry implements ProductValueExtractorRegistryInterface
+final class StringValueExtractorRegistry implements ValueExtractorRegistryInterface
 {
     /**
-     * @param StringProductValueExtractorInterface[] $extractors
+     * @param StringValueExtractorInterface[] $extractors
      */
     public function __construct(
         private readonly array $extractors,
     ) {
         foreach ($this->extractors as $extractor) {
-            if (!$extractor instanceof StringProductValueExtractorInterface) {
+            if (!$extractor instanceof StringValueExtractorInterface) {
                 throw new \LogicException(
                     static::class . ' accepts only array of ' .
-                    StringProductValueExtractorInterface::class . ' as argument.'
+                    StringValueExtractorInterface::class . ' as argument.'
                 );
             }
         }

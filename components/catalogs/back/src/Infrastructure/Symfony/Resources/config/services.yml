@@ -184,20 +184,21 @@ services:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
             $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
 
-    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringProductValueExtractorRegistry:
+    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringValueExtractorRegistry:
         arguments:
             -
-                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringTextProductValueExtractor'
-                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringTextareaProductValueExtractor'
-                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringNumberProductValueExtractor'
-                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringSimpleSelectProductValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringFromFamilyValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringFromNumberAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringFromSimpleSelectAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringFromTextareaAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String\StringFromTextAttributeValueExtractor'
 
-    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringDateTimeProductValueExtractorRegistry:
+    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringDateTimeValueExtractorRegistry:
         arguments:
             -
-                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringDateTime\StringDateTimeDateProductValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor'
 
-    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\NumberProductValueExtractorRegistry:
+    Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\NumberValueExtractorRegistry:
         arguments:
             -
-                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\Number\NumberNumberProductValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\Number\NumberFromNumberAttributeValueExtractor'

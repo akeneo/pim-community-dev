@@ -6,10 +6,10 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Mapping\Exception\ProductValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\NumberProductValueExtractorRegistry;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\ProductValueExtractorRegistryInterface;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringDateTimeProductValueExtractorRegistry;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringProductValueExtractorRegistry;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\NumberValueExtractorRegistry;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\ValueExtractorRegistryInterface;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringDateTimeValueExtractorRegistry;
+use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetAttributeTypeByCodesQuery;
@@ -27,9 +27,9 @@ class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly GetAttributeTypeByCodesQuery $getAttributeTypeByCodesQuery,
-        private readonly NumberProductValueExtractorRegistry $numberProductValueExtractorRegistry,
-        private readonly StringProductValueExtractorRegistry $stringProductValueExtractorRegistry,
-        private readonly StringDateTimeProductValueExtractorRegistry $stringDateTimeProductValueExtractorRegistry,
+        private readonly NumberValueExtractorRegistry $numberProductValueExtractorRegistry,
+        private readonly StringValueExtractorRegistry $stringProductValueExtractorRegistry,
+        private readonly StringDateTimeValueExtractorRegistry $stringDateTimeProductValueExtractorRegistry,
     ) {
     }
 
@@ -89,7 +89,7 @@ class ProductMapper implements ProductMapperInterface
         return $mappedProduct;
     }
 
-    private function getProductValueExtractorRegistry(string $targetType, ?string $targetFormat): ProductValueExtractorRegistryInterface
+    private function getProductValueExtractorRegistry(string $targetType, ?string $targetFormat): ValueExtractorRegistryInterface
     {
         $registry = match($targetType) {
             'number' => $this->numberProductValueExtractorRegistry,
