@@ -24,11 +24,7 @@ final class GenerateAutoNumberHandler implements GeneratePropertyHandlerInterfac
     public function __invoke(PropertyInterface $autoNumber, IdentifierGenerator $identifierGenerator, string $prefix): string
     {
         Assert::isInstanceOf($autoNumber, AutoNumber::class);
-        $nextIdentifier = $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix);
-
-        if ($nextIdentifier < $autoNumber->numberMin()) {
-            $nextIdentifier = $autoNumber->numberMin();
-        }
+        $nextIdentifier = $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix, $autoNumber->numberMin());
 
         return str_pad('' . $nextIdentifier, $autoNumber->digitsMin(), '0', STR_PAD_LEFT);
     }

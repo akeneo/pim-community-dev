@@ -22,17 +22,25 @@ final class SqlGetSequencedNextIdentifierQuery implements GetNextIdentifierQuery
     ) {
     }
 
-    public function fromPrefix(IdentifierGenerator $identifierGenerator, string $prefix): int
+    public function fromPrefix(
+        IdentifierGenerator $identifierGenerator,
+        string $prefix,
+        int $numberMin,
+    ): int
     {
+        if ($this->isPreviousDatabaseVersion()) {
+            return $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix, $numberMin);
+        };
+
         $lastAllocatedNumber = $this->getLastAllocatedNumber($identifierGenerator, $prefix);
         if (null === $lastAllocatedNumber) {
-            $nextIdentifier = $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix);
+            $nextIdentifier = $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix, $numberMin);
             $this->insertLastAllocatedNumber($identifierGenerator, $prefix, $nextIdentifier);
 
             return $nextIdentifier;
         }
 
-        $newAllocatedNumber = $lastAllocatedNumber + 1;
+        $newAllocatedNumber = ($lastAllocatedNumber < $numberMin) ? $numberMin : $lastAllocatedNumber + 1;
         $remainingRetries = 10;
         $isSuccessful = false;
         while (!$isSuccessful && $remainingRetries > 0) {
@@ -109,4 +117,20 @@ SQL;
             'last_allocated_number' => $newAllocatedNumber - 1,
         ]);
     }
+
+    private function isPreviousDatabaseVersion(): bool
+    {
+        return !$this->tableExists();
+    }
+
+    private function tableExists(): bool
+    {
+        return $this->connection->executeQuery(
+                'SHOW TABLES LIKE :tableName',
+                [
+                    'tableName' => 'pim_catalog_identifier_generator_sequence',
+                ]
+            )->rowCount() >= 1;
+    }
 }
+
