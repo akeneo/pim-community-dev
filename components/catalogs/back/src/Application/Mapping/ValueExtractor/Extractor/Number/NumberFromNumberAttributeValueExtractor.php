@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringDateTime;
+namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number;
 
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\NumberValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringDateTimeFromDateAttributeValueExtractor implements StringValueExtractorInterface
+final class NumberFromNumberAttributeValueExtractor implements NumberValueExtractorInterface
 {
     public function extract(
         array $product,
@@ -18,17 +18,16 @@ final class StringDateTimeFromDateAttributeValueExtractor implements StringValue
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | string {
+    ): null | float | int {
         /** @var mixed $value */
         $value = $product['raw_values'][$code][$scope][$locale] ?? null;
 
-        // @todo transform date in ISO 8601
-
-        return null !== $value ? (string) $value : null;
+        // @todo check if value is "floatable" or "intable" (i.e if it's a string that can be parsed)
+        return null !== $value ? (float) $value : null;
     }
 
     public function supports(string $sourceType): bool
     {
-        return 'pim_catalog_date' === $sourceType;
+        return 'pim_catalog_number' === $sourceType;
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry;
+namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 

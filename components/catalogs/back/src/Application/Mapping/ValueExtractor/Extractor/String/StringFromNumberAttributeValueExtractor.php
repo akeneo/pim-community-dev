@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\Number;
+namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String;
 
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\NumberValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class NumberFromNumberAttributeValueExtractor implements NumberValueExtractorInterface
+final class StringFromNumberAttributeValueExtractor implements StringValueExtractorInterface
 {
     public function extract(
         array $product,
@@ -18,12 +18,11 @@ final class NumberFromNumberAttributeValueExtractor implements NumberValueExtrac
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | float | int {
+    ): null | string {
         /** @var mixed $value */
         $value = $product['raw_values'][$code][$scope][$locale] ?? null;
 
-        // @todo check if value is "floatable" or "intable" (i.e if it's a string that can be parsed)
-        return null !== $value ? (float) $value : null;
+        return null !== $value ? (string) $value : null;
     }
 
     public function supports(string $sourceType): bool

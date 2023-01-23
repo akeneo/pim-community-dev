@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String;
+namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String;
 
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringFromNumberAttributeValueExtractor implements StringValueExtractorInterface
+final class StringFromTextAttributeValueExtractor implements StringValueExtractorInterface
 {
     public function extract(
         array $product,
@@ -27,6 +27,6 @@ final class StringFromNumberAttributeValueExtractor implements StringValueExtrac
 
     public function supports(string $sourceType): bool
     {
-        return 'pim_catalog_number' === $sourceType;
+        return 'pim_catalog_text' === $sourceType;
     }
 }

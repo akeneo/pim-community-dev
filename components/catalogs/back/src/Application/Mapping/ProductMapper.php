@@ -5,11 +5,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping;
 
-use Akeneo\Catalogs\Application\Mapping\Exception\ProductValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\NumberValueExtractorRegistry;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\ValueExtractorRegistryInterface;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringDateTimeValueExtractorRegistry;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry\StringValueExtractorRegistry;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistryFactory;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetAttributeTypeByCodesQuery;
@@ -27,9 +24,7 @@ class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly GetAttributeTypeByCodesQuery $getAttributeTypeByCodesQuery,
-        private readonly NumberValueExtractorRegistry $numberProductValueExtractorRegistry,
-        private readonly StringValueExtractorRegistry $stringProductValueExtractorRegistry,
-        private readonly StringDateTimeValueExtractorRegistry $stringDateTimeProductValueExtractorRegistry,
+        private readonly ValueExtractorRegistryFactory $valueExtractorRegistry,
     ) {
     }
 
@@ -67,7 +62,7 @@ class ProductMapper implements ProductMapperInterface
                 $productMapping[$targetCode]['source'] !== null &&
                 \array_key_exists($productMapping[$targetCode]['source'], $attributeTypeBySource)) {
                 try {
-                    $productValueExtractorRegistry = $this->getProductValueExtractorRegistry($target['type'], $target['format'] ?? null);
+                    $productValueExtractorRegistry = $this->valueExtractorRegistry->build($target['type'], $target['format'] ?? null);
 
                     $sourceValue = $productValueExtractorRegistry->extract(
                         $product,
@@ -77,7 +72,7 @@ class ProductMapper implements ProductMapperInterface
                         $productMapping[$targetCode]['scope'] ?? '<all_channels>',
                         $productMapping[$targetCode]['parameters'] ?? null,
                     );
-                } catch (ProductValueExtractorNotFoundException) {
+                } catch (ValueExtractorNotFoundException) {
                 }
             }
 
@@ -87,23 +82,5 @@ class ProductMapper implements ProductMapperInterface
         }
 
         return $mappedProduct;
-    }
-
-    private function getProductValueExtractorRegistry(string $targetType, ?string $targetFormat): ValueExtractorRegistryInterface
-    {
-        $registry = match($targetType) {
-            'number' => $this->numberProductValueExtractorRegistry,
-            'string' => match($targetFormat) {
-                'date-time' => $this->stringDateTimeProductValueExtractorRegistry,
-                default => $this->stringProductValueExtractorRegistry,
-            },
-            default => null,
-        };
-
-        if (null === $registry) {
-            throw new \LogicException(\sprintf('no registry to extract value for target type "%s"', $targetType));
-        }
-
-        return $registry;
     }
 }

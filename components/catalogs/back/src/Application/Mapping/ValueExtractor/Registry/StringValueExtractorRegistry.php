@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry;
+namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry;
 
-use Akeneo\Catalogs\Application\Mapping\Exception\ProductValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\NumberValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class NumberValueExtractorRegistry implements ValueExtractorRegistryInterface
+final class StringValueExtractorRegistry implements ValueExtractorRegistryInterface
 {
     /**
-     * @param NumberValueExtractorInterface[] $extractors
+     * @param StringValueExtractorInterface[] $extractors
      */
     public function __construct(
         private readonly array $extractors,
     ) {
         foreach ($this->extractors as $extractor) {
-            if (!$extractor instanceof NumberValueExtractorInterface) {
+            if (!$extractor instanceof StringValueExtractorInterface) {
                 throw new \LogicException(
                     static::class . ' accepts only array of ' .
-                    NumberValueExtractorInterface::class . ' as argument.'
+                    StringValueExtractorInterface::class . ' as argument.'
                 );
             }
         }
@@ -36,7 +36,7 @@ final class NumberValueExtractorRegistry implements ValueExtractorRegistryInterf
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | float | int {
+    ): null | string {
         foreach ($this->extractors as $extractor) {
             if ($extractor->supports($attributeType)) {
                 return $extractor->extract(
@@ -49,6 +49,6 @@ final class NumberValueExtractorRegistry implements ValueExtractorRegistryInterf
             }
         }
 
-        throw new ProductValueExtractorNotFoundException();
+        throw new ValueExtractorNotFoundException();
     }
 }

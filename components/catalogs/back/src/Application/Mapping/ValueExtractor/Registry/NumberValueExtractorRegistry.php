@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractorRegistry;
+namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry;
 
-use Akeneo\Catalogs\Application\Mapping\Exception\ProductValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\NumberValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringDateTimeValueExtractorRegistry implements ValueExtractorRegistryInterface
+final class NumberValueExtractorRegistry implements ValueExtractorRegistryInterface
 {
     /**
-     * @param StringValueExtractorInterface[] $extractors
+     * @param NumberValueExtractorInterface[] $extractors
      */
     public function __construct(
         private readonly array $extractors,
     ) {
         foreach ($this->extractors as $extractor) {
-            if (!$extractor instanceof StringValueExtractorInterface) {
+            if (!$extractor instanceof NumberValueExtractorInterface) {
                 throw new \LogicException(
                     static::class . ' accepts only array of ' .
-                    StringValueExtractorInterface::class . ' as argument.'
+                    NumberValueExtractorInterface::class . ' as argument.'
                 );
             }
         }
@@ -36,7 +36,7 @@ final class StringDateTimeValueExtractorRegistry implements ValueExtractorRegist
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | string {
+    ): null | float | int {
         foreach ($this->extractors as $extractor) {
             if ($extractor->supports($attributeType)) {
                 return $extractor->extract(
@@ -49,6 +49,6 @@ final class StringDateTimeValueExtractorRegistry implements ValueExtractorRegist
             }
         }
 
-        throw new ProductValueExtractorNotFoundException();
+        throw new ValueExtractorNotFoundException();
     }
 }

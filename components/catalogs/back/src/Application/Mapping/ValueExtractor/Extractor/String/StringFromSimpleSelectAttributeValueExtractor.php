@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\String;
+namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String;
 
-use Akeneo\Catalogs\Application\Mapping\ProductValueExtractor\StringValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
 use Akeneo\Catalogs\Application\Persistence\Attribute\GetAttributeOptionsByCodeQueryInterface;
 
 /**
