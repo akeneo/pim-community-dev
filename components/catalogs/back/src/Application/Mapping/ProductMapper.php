@@ -39,6 +39,8 @@ class ProductMapper implements ProductMapperInterface
      * @param ProductMapping $productMapping
      *
      * @return MappedProduct
+     *
+     * @psalm-suppress MixedAssignment
      */
     public function getMappedProduct(
         array $product,
