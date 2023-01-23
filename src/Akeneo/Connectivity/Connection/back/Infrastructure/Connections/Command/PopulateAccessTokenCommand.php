@@ -57,19 +57,24 @@ class PopulateAccessTokenCommand extends Command
                 name: 'refreshtoken',
                 mode: InputOption::VALUE_OPTIONAL,
             )
+            ->addOption(
+                name: 'validtimestamp',
+                mode: InputOption::VALUE_OPTIONAL,
+            )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $truncate = (bool) $input->getOption('truncate');
+        $validTimestamp = (bool) $input->getOption('validtimestamp');
         $populateRefreshToken = (bool) $input->getOption('refreshtoken');
         $rowCount = (int) $input->getArgument('rows');
         $batchSize = (int) $input->getOption('batchsize');
 
         $clientId = $this->getClientId();
         $userId = $this->getUserId();
-        $timestamp = \time();
+        $timestamp = \time() + ($validTimestamp ? 100 : -123);
         $tableName = $populateRefreshToken ? 'pim_api_refresh_token' : 'pim_api_access_token';
 
         if ($truncate) {
