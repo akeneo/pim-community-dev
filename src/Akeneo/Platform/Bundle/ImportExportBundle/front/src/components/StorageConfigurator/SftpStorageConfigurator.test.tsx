@@ -40,6 +40,7 @@ test('it renders the sftp storage configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -68,6 +69,7 @@ test('it allows user to fill file_path field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -100,6 +102,7 @@ test('it allows user to fill host field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -132,6 +135,7 @@ test('it allows user to fill fingerprint field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -168,6 +172,7 @@ test('it removes fingerprint from model when clearing input', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -200,6 +205,7 @@ test('it allows user to fill port field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -232,6 +238,7 @@ test('it allows user to change login type', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -265,6 +272,7 @@ test('it displays a public key field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -301,6 +309,7 @@ test('it copy to clipboard a public key', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -330,6 +339,7 @@ test('it allows user to fill username field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -362,6 +372,7 @@ test('it allows user to fill password field', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -378,6 +389,63 @@ test('it allows user to fill password field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, password: 'root'});
 });
 
+test('it hides password field if the password is obfuscated', async () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: '',
+    port: 22,
+    login_type: 'password',
+    username: '',
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
+    );
+  });
+
+  const connectionStringInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.password.label pim_common.required_label'
+  );
+
+  expect(connectionStringInput).toBeDisabled();
+  expect(connectionStringInput).toHaveValue('••••••••');
+});
+
+test('it can edit the password field if the password is obfuscated', async () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: '',
+    port: 22,
+    login_type: 'password',
+    username: '',
+  };
+
+  const onStorageChange = jest.fn();
+  await act(async () => {
+    renderWithProviders(
+      <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
+    );
+  });
+
+  userEvent.click(screen.getByText('pim_common.edit'));
+  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, password: ''});
+});
+
 test('it throws an exception when passing a non-sftp storage', async () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
@@ -389,6 +457,7 @@ test('it throws an exception when passing a non-sftp storage', async () => {
   expect(() =>
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -460,6 +529,7 @@ test('it displays validation errors', async () => {
   await act(async () => {
     renderWithProviders(
       <SftpStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={validationErrors}
@@ -491,6 +561,7 @@ test('it can check connection', async () => {
 
   renderWithProviders(
     <SftpStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -537,6 +608,7 @@ test('it can check connection, display message if error', async () => {
 
   renderWithProviders(
     <SftpStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
