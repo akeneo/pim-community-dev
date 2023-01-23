@@ -14,6 +14,7 @@ interface GetNextIdentifierQuery
 {
     public function fromPrefix(
         IdentifierGenerator $identifierGenerator,
-        string $prefix
+        string $prefix,
+        int $numberMin,
     ): int;
 }
