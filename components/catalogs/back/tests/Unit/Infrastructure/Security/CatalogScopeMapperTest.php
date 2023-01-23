@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Security;
 
 use Akeneo\Catalogs\Infrastructure\Security\CatalogScopeMapper;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,11 +14,24 @@ use PHPUnit\Framework\TestCase;
  */
 class CatalogScopeMapperTest extends TestCase
 {
+    private ?FeatureFlags $featureFlags;
+    private bool $featureFlagIsEnabled = true;
     private ?CatalogScopeMapper $mapper;
 
     protected function setUp(): void
     {
-        $this->mapper = new CatalogScopeMapper();
+        $this->featureFlagIsEnabled = true;
+        $this->featureFlags = $this->createMock(FeatureFlags::class);
+        $this->featureFlags->method('isEnabled')->will($this->returnCallback(fn () => $this->featureFlagIsEnabled));
+
+        $this->mapper = new CatalogScopeMapper($this->featureFlags);
+    }
+
+    public function testItReturnsNothingWhenTheFeatureIsDisabled(): void
+    {
+        $this->featureFlagIsEnabled = false;
+
+        $this->assertEquals([], $this->mapper->getScopes());
     }
 
     public function testItReturnsScopes(): void

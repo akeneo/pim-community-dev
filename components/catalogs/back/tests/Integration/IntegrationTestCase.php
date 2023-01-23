@@ -28,6 +28,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -81,6 +82,8 @@ abstract class IntegrationTestCase extends WebTestCase
 
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
         self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
+
+        self::getContainer()->get(FeatureFlags::class)->enable('catalogs');
     }
 
     protected function overrideServices(): void
