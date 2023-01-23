@@ -10,7 +10,7 @@ namespace Akeneo\Pim\Structure\Bundle\MainIdentifier;
  */
 final class ChangeMainIdentifier
 {
-    public function __construct(public readonly  int $mainIdentifierId)
+    public function __construct(public readonly  string $mainIdentifierCode)
     {
     }
 }

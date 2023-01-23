@@ -135,6 +135,12 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitIdentifiersIndexSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
     pim_catalog.event_subscriber.attribute_option_set_sort_order:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber'
         arguments:

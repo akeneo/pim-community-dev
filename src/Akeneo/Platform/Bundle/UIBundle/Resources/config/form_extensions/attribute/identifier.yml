@@ -15,6 +15,17 @@ extensions:
                 sectionTitle: pim_enrich.entity.attribute.module.edit.type_specific
                 dropZone: content
 
+    pim-attribute-edit-form-properties-common-unique:
+        module: pim/attribute-edit-form/properties/unique
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 120
+        config:
+            fieldName: unique
+            label: pim_enrich.entity.attribute.property.unique
+            readOnly: true
+            defaultValue: true
+
     pim-attribute-create-form-properties-common-scopable:
         module: pim/attribute-edit-form/properties/scopable
         parent: pim-attribute-create-form-properties-common

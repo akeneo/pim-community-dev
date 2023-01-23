@@ -36,9 +36,9 @@ pim_enrich_attribute_axes_index:
 
 ### POC only - change main identifier
 pim_enrich_main_identifier:
-    path: /main-identifier/{newIdentifierId}
+    path: /main-identifier/{newIdentifierCode}
     defaults:
         _controller: Akeneo\Pim\Structure\Bundle\Controller\InternalApi\UpdateMainIdentifierAction
     requirements:
-        newIdentifierId: '[0-9]+'
+        newIdentifierCode: '\w+'
     methods: [GET]

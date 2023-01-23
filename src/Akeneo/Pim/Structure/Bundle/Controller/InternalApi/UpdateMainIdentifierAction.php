@@ -20,10 +20,20 @@ final class UpdateMainIdentifierAction
     {
     }
 
-    public function __invoke(Request $request, int $newIdentifierId): Response
+    public function __invoke(Request $request, string $newIdentifierCode): Response
     {
-        ($this->handler)(new ChangeMainIdentifier($newIdentifierId));
+        try {
+            ($this->handler)(new ChangeMainIdentifier($newIdentifierCode));
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                [
+                    'ok' => false,
+                    'message' => $e->getMessage(),
+                ],
+                400
+            );
+        }
 
-        return new JsonResponse();
+        return new JsonResponse(['ok' => true]);
     }
 }

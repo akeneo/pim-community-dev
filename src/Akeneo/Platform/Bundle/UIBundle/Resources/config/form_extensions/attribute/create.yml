@@ -133,6 +133,7 @@ extensions:
             fieldName: unique
             label: pim_enrich.entity.attribute.property.unique
             activeForTypes: [pim_catalog_number, pim_catalog_text]
+            defaultValue: false
 
     pim-attribute-create-form-properties-common-scopable:
         module: pim/attribute-edit-form/properties/scopable

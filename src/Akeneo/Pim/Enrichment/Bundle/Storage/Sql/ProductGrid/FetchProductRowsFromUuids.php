@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -47,6 +47,7 @@ final class FetchProductRowsFromUuids
                 Uuid::fromString(preg_replace('/^product_/', '', $uuid)),
             $uuids
         );
+        $attributeCodes[] = $this->attributeRepository->getIdentifierCode();
 
         $valueCollections = $this->getValueCollection($uuids, $attributeCodes, $channelCode, $localeCode);
 
@@ -168,6 +169,11 @@ SQL;
         $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($products);
 
         foreach ($valueCollections as $productUuid => $valueCollection) {
+            $identifierValue = $valueCollection->filter(
+                static fn (ValueInterface $value): bool => $value instanceof IdentifierValue && $value->isMainIdentifier()
+            )->first();
+            $result[$productUuid]['identifier'] = $identifierValue ? $identifierValue->getData() : null;
+
             $result[$productUuid]['value_collection'] = $valueCollection->filter(
                 function (ValueInterface $value) use ($channelCode, $localeCode) {
                     return ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)

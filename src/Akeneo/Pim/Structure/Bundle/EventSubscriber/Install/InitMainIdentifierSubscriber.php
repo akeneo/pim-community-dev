@@ -48,7 +48,8 @@ final class InitMainIdentifierSubscriber implements EventSubscriberInterface
             return;
         }
 
-        ($this->handler)(new ChangeMainIdentifier((int) $attribute->getId()));
+        ($this->handler)(new ChangeMainIdentifier((string) $attribute->getCode()));
+        $this->mainIdentifierSet = true;
     }
 
     private function thereAlreadyIsAMainIdentifier(): bool
@@ -56,7 +57,7 @@ final class InitMainIdentifierSubscriber implements EventSubscriberInterface
         if (null === $this->mainIdentifierSet) {
             $this->mainIdentifierSet = (bool) $this->connection->fetchOne(<<<SQL
                 SELECT EXISTS(
-                    SELECT * FROM pim_catalog_attribute WHERE main_identifier = TRUE
+                    SELECT * FROM pim_catalog_attribute WHERE main_identifier IS TRUE
                 )
                 SQL
             );
