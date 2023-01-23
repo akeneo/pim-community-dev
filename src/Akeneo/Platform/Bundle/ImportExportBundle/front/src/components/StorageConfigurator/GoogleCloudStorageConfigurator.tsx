@@ -19,6 +19,7 @@ const CheckStorageConnection = styled.div`
 `;
 
 const GoogleCloudStorageConfigurator = ({
+  jobInstanceCode,
   storage,
   fileExtension,
   validationErrors,
@@ -29,7 +30,7 @@ const GoogleCloudStorageConfigurator = ({
   }
 
   const translate = useTranslate();
-  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
+  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(jobInstanceCode, storage);
 
   return (
     <>

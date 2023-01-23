@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
+
 # 7.0.7 (2023-02-13)
 
 # 7.0.6 (2023-02-07)
