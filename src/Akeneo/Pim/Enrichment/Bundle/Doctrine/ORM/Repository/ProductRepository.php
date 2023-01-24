@@ -39,7 +39,7 @@ class ProductRepository extends EntityRepository implements
         $uuids = $this->_em->getConnection()->fetchFirstColumn(
             <<<SQL
             SELECT BIN_TO_UUID(uuid) 
-            FROM pim_catalog_product
+            FROM pim_catalog_product_identifiers
             WHERE JSON_OVERLAPS(JSON_ARRAY(:identifiers), identifiers)
             SQL,
             ['identifiers' => $identifiers],
@@ -87,7 +87,7 @@ class ProductRepository extends EntityRepository implements
             return null;
         }
         $uuid = $this->_em->getConnection()->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE :identifier MEMBER OF(identifiers)',
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product_identifiers WHERE :identifier MEMBER OF(identifiers)',
             ['identifier' => \sprintf('%s#%s', $this->getMaindIdentifier(), $identifier)]
         );
 

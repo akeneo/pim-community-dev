@@ -69,8 +69,6 @@ abstract class AbstractProduct implements ProductInterface
 
     protected ?FamilyVariantInterface $familyVariant = null;
 
-    protected array $identifiers = [];
-
     protected bool $dirty = false;
 
     public function __construct(?string $uuid = null)
@@ -142,11 +140,8 @@ abstract class AbstractProduct implements ProductInterface
     public function addValue(ValueInterface $value)
     {
         if (true === $this->values->add($value)) {
-            if ($value instanceof IdentifierValue) {
-                $this->identifiers[] = \sprintf('%s#%s', $value->getAttributeCode(), $value->getData());
-                if ($value->isMainIdentifier()) {
-                    $this->identifier = $value->getData();
-                }
+            if ($value instanceof IdentifierValue && $value->isMainIdentifier()) {
+                $this->identifier = $value->getData();
             }
             $this->dirty = true;
         }
@@ -160,12 +155,8 @@ abstract class AbstractProduct implements ProductInterface
     public function removeValue(ValueInterface $value)
     {
         if (true === $this->values->remove($value)) {
-            if ($value instanceof IdentifierValue) {
-                $key = \sprintf('%s#%s', $value->getAttributeCode(), $value->getData());
-                $this->identifiers = \array_values(\array_diff($this->identifiers, [$key]));
-                if ($value->isMainIdentifier()) {
-                    $this->identifier = null;
-                }
+            if ($value instanceof IdentifierValue && $value->isMainIdentifier()) {
+                $this->identifier = null;
             }
             $this->dirty = true;
         }
@@ -308,16 +299,8 @@ abstract class AbstractProduct implements ProductInterface
         }
         $this->values = $values;
 
-        $identifiersValues = $this->values->filter(
-            static fn (ValueInterface $value): bool => $value instanceof IdentifierValue
-        );
-        $this->identifiers = \array_map(
-            static fn (IdentifierValue $value): string => \sprintf('%s#%s', $value->getAttributeCode(), $value->getData()),
-            $identifiersValues->getValues()
-        );
-
-        $mainIdentifiersValue = $identifiersValues->filter(
-            static fn (IdentifierValue $value): bool => $value->isMainIdentifier()
+        $mainIdentifiersValue = $this->values->filter(
+            static fn (ValueInterface $value): bool => $value instanceof IdentifierValue && $value->isMainIdentifier()
         )->first();
         $this->identifier = $mainIdentifiersValue ? $mainIdentifiersValue->getData() : null;
 

@@ -90,6 +90,13 @@ services:
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
 
+    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20230124090000FillProductIdentifiersColumn:
+        arguments:
+            - '@database_connection'
+            - '@logger'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
+
     Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns:
         arguments:
             - '@database_connection'
@@ -104,4 +111,3 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
-

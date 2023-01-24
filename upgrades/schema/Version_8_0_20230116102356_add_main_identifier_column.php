@@ -16,7 +16,7 @@ final class Version_8_0_20230116102356_add_main_identifier_column extends Abstra
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE pim_catalog_attribute ADD main_identifier TINYINT(1) NOT NULL;');
+        $this->addSql('ALTER TABLE pim_catalog_attribute ADD main_identifier TINYINT(1) NOT NULL DEFAULT FALSE;');
         $this->addSql(
             'UPDATE pim_catalog_attribute SET main_identifier = TRUE WHERE code = \'sku\';'
         );

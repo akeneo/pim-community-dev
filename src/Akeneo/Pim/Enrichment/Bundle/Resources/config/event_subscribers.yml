@@ -79,6 +79,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ComputeProductIdentifiersSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.compute_completeness_on_family_update_subscriber:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber'
         arguments:
@@ -135,7 +141,7 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitIdentifiersIndexSubscriber:
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\CreateIdentifiersTableSubscriber:
         arguments:
             - '@database_connection'
         tags:

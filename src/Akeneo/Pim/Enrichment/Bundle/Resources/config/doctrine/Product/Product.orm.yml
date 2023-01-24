@@ -32,10 +32,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             type: uuid_binary
             id: true
             unique: true
-        identifiers:
-            type: json_array
-            column: identifiers
-            nullable: true
     manyToOne:
         family:
             targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
