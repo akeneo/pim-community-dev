@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DeleteExpiredApiTokens extends Command
 {
     protected static $defaultName = 'pim:oauth-server:delete-expired-tokens';
-    protected static $defaultDescription = 'Deletes expired tokens (access token, refresh token)';
+    protected static $defaultDescription = 'Deletes all expired tokens (access token, refresh token)';
 
     public function __construct(
         private readonly DeleteExpiredTokensHandler $deleteExpiredTokensHandler
