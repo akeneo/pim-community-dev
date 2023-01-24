@@ -6,6 +6,8 @@ const MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE = 100;
 type CategoryToDelete = {
   identifier: number;
   label: string;
+  code: string;
+  numberOfProducts: number;
   onDelete: () => void;
 };
 

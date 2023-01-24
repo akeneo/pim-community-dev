@@ -240,6 +240,8 @@ const CategoryEditPage: FC = () => {
                             setCategoryToDelete({
                               identifier,
                               label: category.properties.labels[uiLocale],
+                              code: category.properties.code,
+                              numberOfProducts: nbProducts,
                               onDelete: followCategoryTree,
                             });
                             openDeleteCategoryModal();
@@ -326,7 +328,13 @@ const CategoryEditPage: FC = () => {
             await handleDeleteCategory(categoryToDelete);
             handleCloseDeleteCategoryModal();
           }}
-          message={'pim_enrich.entity.category.category_deletion.confirmation'}
+          message={
+            featureFlags.isEnabled('enriched_category')
+              ? 'pim_enrich.entity.category.category_deletion.confirmation_question'
+              : 'pim_enrich.entity.category.category_deletion.confirmation'
+          }
+          categoryId={categoryToDelete.identifier}
+          numberOfProducts={categoryToDelete.numberOfProducts}
         />
       )}
     </>
