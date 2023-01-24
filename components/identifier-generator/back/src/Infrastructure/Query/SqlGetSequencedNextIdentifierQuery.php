@@ -8,7 +8,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGene
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ForwardCompatibility\Result;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -26,8 +25,7 @@ final class SqlGetSequencedNextIdentifierQuery implements GetNextIdentifierQuery
         IdentifierGenerator $identifierGenerator,
         string $prefix,
         int $numberMin,
-    ): int
-    {
+    ): int {
         if ($this->isPreviousDatabaseVersion()) {
             return $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix, $numberMin);
         };
@@ -126,11 +124,10 @@ SQL;
     private function tableExists(): bool
     {
         return $this->connection->executeQuery(
-                'SHOW TABLES LIKE :tableName',
-                [
-                    'tableName' => 'pim_catalog_identifier_generator_sequence',
-                ]
-            )->rowCount() >= 1;
+            'SHOW TABLES LIKE :tableName',
+            [
+                'tableName' => 'pim_catalog_identifier_generator_sequence',
+            ]
+        )->rowCount() >= 1;
     }
 }
-
