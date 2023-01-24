@@ -27,6 +27,8 @@ interface ValueExtractorInterface
     ): mixed;
 
     public function getSupportedType(): string;
+
     public function getSupportedTargetType(): string;
+
     public function getSupportedTargetFormat(): ?string;
 }

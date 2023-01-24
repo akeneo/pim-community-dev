@@ -29,10 +29,10 @@ final class ValueExtractorRegistry
         }
     }
 
-    public function find(string $attributeType, string $targetType, ?string $targetFormat): ValueExtractorInterface
+    public function find(string $sourceType, string $targetType, ?string $targetFormat): ValueExtractorInterface
     {
         foreach ($this->extractors as $extractor) {
-            if ($attributeType === $extractor->getSupportedType()
+            if ($sourceType === $extractor->getSupportedType()
                 && $targetType === $extractor->getSupportedTargetType()
                 && $targetFormat === $extractor->getSupportedTargetFormat()
             ) {
