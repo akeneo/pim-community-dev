@@ -30,6 +30,11 @@ final class Version_8_0_20230110131126_update_target_column_for_identifier_gener
     public function test_it_executes_the_migration(): void
     {
         $this->connection->executeQuery(<<<SQL
+ALTER TABLE pim_catalog_identifier_generator DROP FOREIGN KEY `pim_catalog_identifier_generator_ibfk_1`;
+ALTER TABLE pim_catalog_identifier_generator ADD COLUMN target VARCHAR(255) NOT NULL AFTER target_id;
+ALTER TABLE pim_catalog_identifier_generator DROP COLUMN target_id;
+SQL);
+        $this->connection->executeQuery(<<<SQL
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
 VALUES (UUID_TO_BIN('22e35c7a-f1b4-4b81-a890-16b8e68346a1'), 'mygenerator', 'sku', '', '{}', '[]', '[]');
 SQL);
