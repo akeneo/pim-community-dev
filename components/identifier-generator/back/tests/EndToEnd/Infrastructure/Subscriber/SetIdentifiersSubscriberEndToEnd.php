@@ -60,7 +60,6 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
     {
         $this->createIdentifierGenerator();
         $productsFromDatabase = $this->createProducts(5);
-        ;
 
         Assert::assertSame(
             ['AKN-050', 'AKN-051', 'AKN-052', 'AKN-053', 'AKN-054'],
