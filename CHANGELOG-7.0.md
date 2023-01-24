@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
+- PIM-10791: Fix product and product model completeness compute on attribute removal
 
 # 7.0.7 (2023-02-13)
 
