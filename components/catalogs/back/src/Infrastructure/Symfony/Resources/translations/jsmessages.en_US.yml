@@ -154,3 +154,6 @@ akeneo_catalogs:
                 illustration_title: The UUID is a technical product identifier.
                 subtitle: All apps must require it as a target. You have nothing to configure for this target as we automatically map it with the Akeneo product UUID.
                 link: More information about the UUID.
+            requirements:
+                title: App requirements
+                help: Help

@@ -48,6 +48,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                 label: productMappingSchema.properties[targetCode]?.title ?? targetCode,
                 type: productMappingSchema.properties[targetCode].type,
                 format: productMappingSchema.properties[targetCode].format ?? null,
+                description: productMappingSchema.properties[targetCode].description ?? null,
             });
             setSelectedSource(source);
         },

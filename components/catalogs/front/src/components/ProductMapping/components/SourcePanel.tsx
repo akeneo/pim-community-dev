@@ -14,6 +14,7 @@ import {SourceUuidPlaceholder} from './SourceUuidPlaceholder';
 import styled from 'styled-components';
 import {Target} from '../models/Target';
 import {SelectLabelLocaleDropdown} from './SelectLabelLocaleDropdown';
+import {RequirementsCollapse} from './RequirementsCollapse';
 
 type Props = {
     target: Target | null;
@@ -85,6 +86,7 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
                     <SectionTitle>
                         <SectionTitle.Title>{target.label}</SectionTitle.Title>
                     </SectionTitle>
+                    <RequirementsCollapse target={target} />
                     <SectionTitle>
                         <Tag tint='purple'>1</Tag>
                         <SectionTitle.Title level='secondary'>

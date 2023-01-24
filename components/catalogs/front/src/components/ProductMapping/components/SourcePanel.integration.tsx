@@ -24,7 +24,7 @@ test('it displays the target as a title', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <SourcePanel
-                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
+                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null, description: null}}
                     source={null}
                     onChange={jest.fn()}
                     errors={null}
@@ -70,7 +70,7 @@ test('it displays a message when the selected source has no parameters', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <SourcePanel
-                    target={{code: 'name', label: 'Name', type: 'string', format: null}}
+                    target={{code: 'name', label: 'Name', type: 'string', format: null, description: null}}
                     source={source}
                     onChange={jest.fn()}
                     errors={null}

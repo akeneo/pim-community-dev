@@ -4,6 +4,7 @@ export type ProductMappingSchema = {
             title?: string;
             type: string;
             format?: string;
+            description?: string;
         };
     };
 };

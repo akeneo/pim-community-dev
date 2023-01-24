@@ -14,6 +14,7 @@ test('it fetches attributes & paginates', async () => {
         label: 'Url of the blog',
         type: 'string',
         format: 'uri',
+        description: null,
     };
     const attributes: Attribute[] = [
         {
@@ -160,6 +161,7 @@ test('it searches with a string', async () => {
         label: 'Url of the blog',
         type: 'string',
         format: null,
+        description: null,
     };
 
     const {result, waitForNextUpdate} = renderHook(
@@ -202,6 +204,7 @@ test('it stops fetching if there is no more pages', async () => {
         label: 'Url of the blog',
         type: 'string',
         format: 'uri',
+        description: null,
     };
 
     const {result, waitForNextUpdate} = renderHook(() => useInfiniteSourceAttributes({target: selectedTarget}), {
