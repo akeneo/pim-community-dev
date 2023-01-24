@@ -27,7 +27,7 @@ class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
         $this->extractor = self::getContainer()->get(StringFromTextAttributeValueExtractor::class);
     }
 
-    public function testItReturnsTheGoodType(): void
+    public function testItReturnsTheCorrectType(): void
     {
         $this->assertExtractorReturnTypeIsConsistent($this->extractor);
     }

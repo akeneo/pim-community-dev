@@ -29,7 +29,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
         $this->extractor = self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class);
     }
 
-    public function testItReturnsTheGoodType(): void
+    public function testItReturnsTheCorrectType(): void
     {
         $this->assertExtractorReturnTypeIsConsistent($this->extractor);
     }
