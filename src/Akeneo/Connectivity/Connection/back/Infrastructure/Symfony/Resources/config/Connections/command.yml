@@ -5,17 +5,3 @@ services:
             - '@translator'
         tags:
             - { name: 'console.command' }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Connections\Command\PopulateAccessTokenCommand:
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
-            - '@database_connection'
-        tags:
-            - { name: 'console.command' }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Connections\Command\ClearAccessTokenCommand:
-        arguments:
-            - '@database_connection'
-        tags:
-            - { name: 'console.command' }
