@@ -59,7 +59,8 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
     public function it_should_generate_several_identifiers_on_create(): void
     {
         $this->createIdentifierGenerator();
-        $productsFromDatabase = $this->createProducts(5);;
+        $productsFromDatabase = $this->createProducts(5);
+        ;
 
         Assert::assertSame(
             ['AKN-050', 'AKN-051', 'AKN-052', 'AKN-053', 'AKN-054'],
