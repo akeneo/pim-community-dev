@@ -15,12 +15,14 @@ use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\DeleteExpiredAccessTokenQuery
  */
 class DeleteExpiredAccessTokenQueryIntegration extends ApiTestCase
 {
-    private readonly ?ClientManagerInterface $clientManager;
-    private readonly ?Connection $connection;
-    private readonly ?DeleteExpiredAccessTokenQuery $deleteExpiredAccessTokenQuery;
+    private ?ClientManagerInterface $clientManager;
+    private ?Connection $connection;
+    private ?DeleteExpiredAccessTokenQuery $deleteExpiredAccessTokenQuery;
     protected function setUp(): void
     {
         parent::setUp();
