@@ -96,8 +96,11 @@ SQL;
         ]);
     }
 
-    private function updateLastAllocatedNumber(IdentifierGenerator $identifierGenerator, $prefix, int $newAllocatedNumber): int
-    {
+    private function updateLastAllocatedNumber(
+        IdentifierGenerator $identifierGenerator,
+        string $prefix,
+        int $newAllocatedNumber
+    ): int {
         $sql = <<<SQL
 UPDATE pim_catalog_identifier_generator_sequence 
 SET last_allocated_number=:number
@@ -107,13 +110,13 @@ WHERE attribute_id=(SELECT id FROM pim_catalog_attribute WHERE code=:attribute_c
     AND last_allocated_number=:last_allocated_number
 SQL;
 
-        return $this->connection->executeStatement($sql, [
+        return \intval($this->connection->executeStatement($sql, [
             'attribute_code' => $identifierGenerator->target()->asString(),
             'identifier_generator_uuid' => $identifierGenerator->id()->asString(),
             'prefix' => $prefix,
             'number' => $newAllocatedNumber,
             'last_allocated_number' => $newAllocatedNumber - 1,
-        ]);
+        ]));
     }
 
     private function isPreviousDatabaseVersion(): bool
