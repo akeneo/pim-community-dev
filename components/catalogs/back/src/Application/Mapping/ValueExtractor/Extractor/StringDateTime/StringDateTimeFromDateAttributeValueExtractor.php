@@ -27,8 +27,18 @@ final class StringDateTimeFromDateAttributeValueExtractor implements StringValue
         return null !== $value ? (string) $value : null;
     }
 
-    public function supports(string $sourceType): bool
+    public function getSupportedType(): string
     {
-        return 'pim_catalog_date' === $sourceType;
+        return 'pim_catalog_date';
+    }
+
+    public function getSupportedTargetType(): string
+    {
+        return 'string';
+    }
+
+    public function getSupportedTargetFormat(): ?string
+    {
+        return 'date-time';
     }
 }

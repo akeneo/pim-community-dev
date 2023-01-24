@@ -25,8 +25,18 @@ final class StringFromTextAttributeValueExtractor implements StringValueExtracto
         return null !== $value ? (string) $value : null;
     }
 
-    public function supports(string $sourceType): bool
+    public function getSupportedType(): string
     {
-        return 'pim_catalog_text' === $sourceType;
+        return 'pim_catalog_text';
+    }
+
+    public function getSupportedTargetType(): string
+    {
+        return 'string';
+    }
+
+    public function getSupportedTargetFormat(): ?string
+    {
+        return null;
     }
 }

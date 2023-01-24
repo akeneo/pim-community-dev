@@ -23,8 +23,18 @@ final class StringFromFamilyValueExtractor implements StringValueExtractorInterf
         return $product['family_code'] ?? null;
     }
 
-    public function supports(string $sourceType): bool
+    public function getSupportedType(): string
     {
-        return 'family' === $sourceType;
+        return 'family';
+    }
+
+    public function getSupportedTargetType(): string
+    {
+        return 'string';
+    }
+
+    public function getSupportedTargetFormat(): ?string
+    {
+        return null;
     }
 }

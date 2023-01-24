@@ -25,6 +25,4 @@ interface NumberValueExtractorInterface extends ValueExtractorInterface
         ?string $scope,
         ?array $parameters,
     ): null | float | int;
-
-    public function supports(string $sourceType): bool;
 }

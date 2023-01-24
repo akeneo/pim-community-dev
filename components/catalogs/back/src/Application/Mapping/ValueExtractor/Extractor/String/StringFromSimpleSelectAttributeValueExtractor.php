@@ -41,8 +41,18 @@ final class StringFromSimpleSelectAttributeValueExtractor implements StringValue
         return $value;
     }
 
-    public function supports(string $sourceType): bool
+    public function getSupportedType(): string
     {
-        return 'pim_catalog_simpleselect' === $sourceType;
+        return 'pim_catalog_simpleselect';
+    }
+
+    public function getSupportedTargetType(): string
+    {
+        return 'string';
+    }
+
+    public function getSupportedTargetFormat(): ?string
+    {
+        return null;
     }
 }

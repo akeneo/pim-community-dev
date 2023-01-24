@@ -184,7 +184,7 @@ services:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
             $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
 
-    Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\StringValueExtractorRegistry:
+    Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
         arguments:
             -
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor'
@@ -192,13 +192,5 @@ services:
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromSimpleSelectAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextareaAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextAttributeValueExtractor'
-
-    Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\StringDateTimeValueExtractorRegistry:
-        arguments:
-            -
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor'
-
-    Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\NumberValueExtractorRegistry:
-        arguments:
-            -
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor'

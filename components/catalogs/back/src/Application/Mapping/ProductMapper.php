@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistryFactory;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetAttributeTypeByCodesQuery;
@@ -24,7 +24,7 @@ class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly GetAttributeTypeByCodesQuery $getAttributeTypeByCodesQuery,
-        private readonly ValueExtractorRegistryFactory $valueExtractorRegistry,
+        private readonly ValueExtractorRegistry $valueExtractorRegistry,
     ) {
     }
 
@@ -62,12 +62,15 @@ class ProductMapper implements ProductMapperInterface
                 $productMapping[$targetCode]['source'] !== null &&
                 \array_key_exists($productMapping[$targetCode]['source'], $attributeTypeBySource)) {
                 try {
-                    $productValueExtractorRegistry = $this->valueExtractorRegistry->build($target['type'], $target['format'] ?? null);
+                    $productValueExtractor = $this->valueExtractorRegistry->find(
+                        $attributeTypeBySource[$productMapping[$targetCode]['source']],
+                        $target['type'],
+                        $target['format'] ?? null,
+                    );
 
-                    $sourceValue = $productValueExtractorRegistry->extract(
+                    $sourceValue = $productValueExtractor->extract(
                         $product,
                         $productMapping[$targetCode]['source'],
-                        $attributeTypeBySource[$productMapping[$targetCode]['source']],
                         $productMapping[$targetCode]['locale'] ?? '<all_locales>',
                         $productMapping[$targetCode]['scope'] ?? '<all_channels>',
                         $productMapping[$targetCode]['parameters'] ?? null,

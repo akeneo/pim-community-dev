@@ -26,5 +26,7 @@ interface ValueExtractorInterface
         ?array $parameters,
     ): mixed;
 
-    public function supports(string $sourceType): bool;
+    public function getSupportedType(): string;
+    public function getSupportedTargetType(): string;
+    public function getSupportedTargetFormat(): ?string;
 }

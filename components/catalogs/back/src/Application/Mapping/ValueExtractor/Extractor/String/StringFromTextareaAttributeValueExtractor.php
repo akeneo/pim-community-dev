@@ -25,8 +25,18 @@ final class StringFromTextareaAttributeValueExtractor implements StringValueExtr
         return null !== $value ? (string) $value : null;
     }
 
-    public function supports(string $sourceType): bool
+    public function getSupportedType(): string
     {
-        return 'pim_catalog_textarea' === $sourceType;
+        return 'pim_catalog_textarea';
+    }
+
+    public function getSupportedTargetType(): string
+    {
+        return 'string';
+    }
+
+    public function getSupportedTargetFormat(): ?string
+    {
+        return null;
     }
 }

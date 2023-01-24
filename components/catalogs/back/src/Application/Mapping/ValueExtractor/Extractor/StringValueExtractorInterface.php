@@ -25,6 +25,4 @@ interface StringValueExtractorInterface extends ValueExtractorInterface
         ?string $scope,
         ?array $parameters,
     ): null | string;
-
-    public function supports(string $sourceType): bool;
 }

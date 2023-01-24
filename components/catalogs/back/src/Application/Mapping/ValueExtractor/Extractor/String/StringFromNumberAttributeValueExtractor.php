@@ -25,8 +25,18 @@ final class StringFromNumberAttributeValueExtractor implements StringValueExtrac
         return null !== $value ? (string) $value : null;
     }
 
-    public function supports(string $sourceType): bool
+    public function getSupportedType(): string
     {
-        return 'pim_catalog_number' === $sourceType;
+        return 'pim_catalog_number';
+    }
+
+    public function getSupportedTargetType(): string
+    {
+        return 'string';
+    }
+
+    public function getSupportedTargetFormat(): ?string
+    {
+        return null;
     }
 }
