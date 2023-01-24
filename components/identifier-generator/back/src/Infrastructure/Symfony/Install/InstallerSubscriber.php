@@ -65,6 +65,5 @@ class InstallerSubscriber implements EventSubscriberInterface
                 INDEX index_identifier_generator_sequence (`attribute_id`, `identifier_generator_uuid`, `prefix`, `last_allocated_number`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             SQL);
-        // TODO: should we add a unique index on `attribute_id`, `identifier_generator_uuid`, `prefix` ?
     }
 }
