@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -61,5 +62,10 @@ final class FreeText implements PropertyInterface
     public function asString(): string
     {
         return $this->value;
+    }
+
+    public function match(ProductProjection $productProjection): bool
+    {
+        return true;
     }
 }

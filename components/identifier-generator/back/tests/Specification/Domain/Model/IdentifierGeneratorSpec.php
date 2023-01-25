@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
@@ -212,6 +213,37 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             null,
             false,
             '',
+            [],
+        ))->shouldReturn(false);
+    }
+
+    public function it_should_not_match_if_no_family_and_family_property(): void
+    {
+        $identifierGeneratorId = IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002');
+        $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
+
+        $familyProperty = FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'no']]);
+        $structure = Structure::fromArray([$familyProperty]);
+        $conditions = Conditions::fromArray([]);
+
+        $label = LabelCollection::fromNormalized([]);
+        $delimiter = Delimiter::fromString('-');
+        $target = Target::fromString('sku');
+
+        $this->beConstructedWith(
+            $identifierGeneratorId,
+            $identifierGeneratorCode,
+            $conditions,
+            $structure,
+            $label,
+            $target,
+            $delimiter,
+        );
+
+        $this->match(new ProductProjection(
+            null,
+            true,
+            null,
             [],
         ))->shouldReturn(false);
     }

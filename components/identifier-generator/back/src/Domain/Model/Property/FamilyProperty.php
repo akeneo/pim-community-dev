@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -47,5 +48,10 @@ final class FamilyProperty implements PropertyInterface
         Assert::keyExists($normalizedProperty, 'process');
 
         return new self(Process::fromNormalized($normalizedProperty['process']));
+    }
+
+    public function match(ProductProjection $productProjection): bool
+    {
+        return null !== $productProjection->familyCode();
     }
 }

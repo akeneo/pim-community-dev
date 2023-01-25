@@ -76,4 +76,13 @@ final class Structure
     {
         return $this->properties;
     }
+
+    public function match(ProductProjection $productProjection): bool
+    {
+        return \array_reduce(
+            $this->properties,
+            fn (bool $prev, PropertyInterface $property): bool => $prev && $property->match($productProjection),
+            true
+        );
+    }
 }

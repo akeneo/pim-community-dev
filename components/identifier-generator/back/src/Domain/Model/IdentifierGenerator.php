@@ -115,6 +115,8 @@ final class IdentifierGenerator
     {
         $identifierValue = $productProjection->identifier();
 
-        return (null === $identifierValue || '' === $identifierValue) && $this->conditions->match($productProjection);
+        return (null === $identifierValue || '' === $identifierValue) &&
+            $this->conditions->match($productProjection) &&
+            $this->structure->match($productProjection);
     }
 }
