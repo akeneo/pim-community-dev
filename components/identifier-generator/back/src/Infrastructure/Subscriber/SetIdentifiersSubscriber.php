@@ -85,9 +85,8 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
             );
             if ($identifierGenerator->match($productProjection)) {
                 try {
-                    $this->setGeneratedIdentifier($identifierGenerator, $product);
+                    $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
                 } catch (UnableToSetIdentifierException $e) {
-                    // TODO CPM-808: A warning should be displayed as flash message when saving from PEF
                     $this->eventDispatcher->dispatch(new UnableToSetIdentifierEvent($e));
                 }
             }
@@ -96,9 +95,10 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
     private function setGeneratedIdentifier(
         IdentifierGenerator $identifierGenerator,
+        ProductProjection $productProjection,
         ProductInterface $product
     ): void {
-        $command = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
+        $command = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator, $productProjection);
         $newIdentifier = ($this->generateIdentifierCommandHandler)($command);
 
         $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);

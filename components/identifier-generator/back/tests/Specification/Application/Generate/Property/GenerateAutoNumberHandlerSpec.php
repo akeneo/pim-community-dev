@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
@@ -42,12 +43,41 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$freeText, $identifierGenerator, 'AKN-']);
+            ->during('__invoke', [
+                $freeText,
+                $identifierGenerator,
+                new ProductProjection(null, true, null, []),
+                'AKN-'
+            ]);
     }
 
     public function it_should_return_next_number(
         GetNextIdentifierQuery $getNextIdentifierQuery
     ): void {
+        $target = Target::fromString('sku');
+        $autoNumber = AutoNumber::fromNormalized([
+            'type' => AutoNumber::type(),
+            'numberMin' => 0,
+            'digitsMin' => 1,
+        ]);
+        $getNextIdentifierQuery->fromPrefix($target, 'AKN-')
+            ->shouldBeCalled()
+            ->willReturn(42);
+
+        $identifierGenerator = $this->getIdentifierGenerator($autoNumber);
+
+        $this->__invoke(
+            $autoNumber,
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+            'AKN-'
+        )->shouldReturn('42');
+    }
+
+    public function it_should_set_min_number(
+        GetNextIdentifierQuery $getNextIdentifierQuery
+    ): void {
+        $target = Target::fromString('sku');
         $autoNumber = AutoNumber::fromNormalized([
             'type' => AutoNumber::type(),
             'numberMin' => 50,
@@ -60,7 +90,12 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(69);
 
-        $this->__invoke($autoNumber, $identifierGenerator, 'AKN-')->shouldReturn('69');
+        $this->__invoke(
+            $autoNumber,
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+            'AKN-'
+        )->shouldReturn('50');
     }
 
     public function it_should_add_digits_when_number_is_too_low(
@@ -78,7 +113,12 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(42);
 
-        $this->__invoke($autoNumber, $identifierGenerator, 'AKN-')->shouldReturn('00042');
+        $this->__invoke(
+            $autoNumber,
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+            'AKN-'
+        )->shouldReturn('00042');
     }
 
     public function it_should_not_add_digits_when_number_is_too_high(
@@ -96,6 +136,12 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(426942);
 
+        $this->__invoke(
+            $autoNumber,
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+            'AKN-'
+        )->shouldReturn('426942');
         $this->__invoke($autoNumber, $identifierGenerator, 'AKN-')->shouldReturn('426942');
     }
 
