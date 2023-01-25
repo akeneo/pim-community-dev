@@ -283,10 +283,11 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to update an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     * @When /^I try to update an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
     {
+        $value = \json_decode($value);
         $defaultStructure = ['type' => 'family', 'process' => ['type' => $type, 'operator' => $operator, 'value' => $value]];
         if ($operator === 'undefined') {
             unset($defaultStructure['process']['operator']);
