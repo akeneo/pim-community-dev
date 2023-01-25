@@ -4,6 +4,7 @@ import {Edit, List} from './controllers';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
+import {IdentifierGeneratorAclContextProvider} from './context/IdentifierGeneratorAclContextProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,16 +23,18 @@ const ContainerApp = styled.div`
 const IdentifierGeneratorApp: React.FC = () => (
   <ContainerApp>
     <QueryClientProvider client={queryClient}>
-      <Router basename="/configuration/identifier-generator">
-        <Switch>
-          <Route path="/:identifierGeneratorCode">
-            <Edit />
-          </Route>
-          <Route path="/">
-            <List />
-          </Route>
-        </Switch>
-      </Router>
+      <IdentifierGeneratorAclContextProvider>
+        <Router basename="/configuration/identifier-generator">
+          <Switch>
+            <Route path="/:identifierGeneratorCode">
+              <Edit/>
+            </Route>
+            <Route path="/">
+              <List/>
+            </Route>
+          </Switch>
+        </Router>
+      </IdentifierGeneratorAclContextProvider>
     </QueryClientProvider>
   </ContainerApp>
 );
