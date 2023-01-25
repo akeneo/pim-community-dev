@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GeneratePropertyHandlerInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Webmozart\Assert\Assert;
 
@@ -41,7 +42,7 @@ final class GenerateIdentifierHandler
                 $result .= $identifierGenerator->delimiter()?->asString() ?? '';
             }
 
-            $result .= $this->generateProperty($property, $identifierGenerator, $result);
+            $result .= $this->generateProperty($property, $identifierGenerator, $command->getProductProjection(), $result);
         }
 
         return $result;
@@ -50,6 +51,7 @@ final class GenerateIdentifierHandler
     private function generateProperty(
         PropertyInterface $property,
         IdentifierGenerator $identifierGenerator,
+        ProductProjection $productProjection,
         string $prefix
     ): string {
         if (!isset($this->generateProperties[\get_class($property)])) {
@@ -59,6 +61,6 @@ final class GenerateIdentifierHandler
             ));
         }
 
-        return ($this->generateProperties[\get_class($property)])($property, $identifierGenerator, $prefix);
+        return ($this->generateProperties[\get_class($property)])($property, $identifierGenerator, $productProjection, $prefix);
     }
 }
