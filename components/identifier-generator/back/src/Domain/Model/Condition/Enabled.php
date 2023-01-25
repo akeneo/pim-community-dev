@@ -61,4 +61,9 @@ final class Enabled implements ConditionInterface
     {
         return $productProjection->enabled() === $this->value;
     }
+
+    public function isAuto(): bool
+    {
+        return false;
+    }
 }

@@ -10,6 +10,7 @@ type SimpleSelectCondition = {
   locale?: LocaleCode | null;
   scope?: ChannelCode | null;
   value?: OptionCode[];
+  auto: boolean;
 } & (
   | {
       type: CONDITION_NAMES.SIMPLE_SELECT;

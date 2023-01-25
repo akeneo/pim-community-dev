@@ -23,6 +23,7 @@ final class Family implements ConditionInterface
     private function __construct(
         private readonly string $operator,
         private readonly ?array $value = null,
+        private readonly bool $isAuto,
     ) {
     }
 
@@ -37,7 +38,7 @@ final class Family implements ConditionInterface
     /**
      * @param array<string, mixed> $normalizedProperty
      */
-    public static function fromNormalized(array $normalizedProperty): self
+    public static function fromNormalized(array $normalizedProperty, bool $isAuto): self
     {
         Assert::eq($normalizedProperty['type'], self::type());
         Assert::keyExists($normalizedProperty, 'operator');
@@ -49,12 +50,12 @@ final class Family implements ConditionInterface
             Assert::allStringNotEmpty($normalizedProperty['value']);
             Assert::minCount($normalizedProperty['value'], 1);
 
-            return new self($normalizedProperty['operator'], $normalizedProperty['value']);
+            return new self($normalizedProperty['operator'], $normalizedProperty['value'], $isAuto);
         }
 
         Assert::keyNotExists($normalizedProperty, 'value');
 
-        return new self($normalizedProperty['operator']);
+        return new self($normalizedProperty['operator'], null, $isAuto);
     }
 
     /**
@@ -78,5 +79,10 @@ final class Family implements ConditionInterface
             'EMPTY' => null === $productProjection->familyCode(),
             default => null !== $productProjection->familyCode(),
         };
+    }
+
+    public function isAuto(): bool
+    {
+        return $this->isAuto;
     }
 }

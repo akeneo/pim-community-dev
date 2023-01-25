@@ -6,6 +6,7 @@ type FamilyCondition = {
   type: CONDITION_NAMES.FAMILY;
   operator: Operator.IN | Operator.NOT_IN | Operator.EMPTY | Operator.NOT_EMPTY;
   value?: FamilyCode[];
+  auto: boolean;
 } & (
   | {
       type: CONDITION_NAMES.FAMILY;

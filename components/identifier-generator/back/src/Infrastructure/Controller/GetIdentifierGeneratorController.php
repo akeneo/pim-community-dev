@@ -32,6 +32,6 @@ final class GetIdentifierGeneratorController
             return new JsonResponse(sprintf("Identifier generator \"%s\" does not exist or you do not have permission to access it.", $code), Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse($identifierGenerator->normalize());
+        return new JsonResponse($identifierGenerator->normalizeForFront());
     }
 }

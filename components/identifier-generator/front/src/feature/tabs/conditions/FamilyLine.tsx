@@ -36,18 +36,25 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange, onDelete}) 
       <Styled.TitleCell>{translate('pim_common.family')}</Styled.TitleCell>
       <Styled.CellInputContainer>
         <Styled.InputContainer>
-          <OperatorSelector operator={condition.operator} onChange={handleOperatorChange} operators={FamilyOperators} />
+          <OperatorSelector
+            operator={condition.operator}
+            onChange={handleOperatorChange}
+            operators={FamilyOperators}
+            readonly={condition.auto}
+          />
         </Styled.InputContainer>
       </Styled.CellInputContainer>
       <Table.Cell>
         {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
-          <FamiliesSelector familyCodes={condition.value} onChange={handleFamilyCodesChange} />
+          <FamiliesSelector familyCodes={condition.value} onChange={handleFamilyCodesChange} readonly={condition.auto}/>
         )}
       </Table.Cell>
       <Table.ActionCell>
-        <Button onClick={onDelete} ghost level="danger">
-          {translate('pim_common.delete')}
-        </Button>
+        {!condition.auto && (
+          <Button onClick={onDelete} ghost level="danger">
+            {translate('pim_common.delete')}
+          </Button>
+        )}
       </Table.ActionCell>
     </>
   );

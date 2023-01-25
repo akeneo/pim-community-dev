@@ -14,13 +14,15 @@ const useSaveGenerator = (): HookResponse => {
   const router = useRouter();
 
   const callSave = async (generator: IdentifierGenerator) => {
-    const res = await fetch(router.generate('akeneo_identifier_generator_rest_update', {code: generator.code}), {
+    const generatorWithoutAuto = {...generator, conditions: generator.conditions.filter(condition => !condition.auto)}
+
+    const res = await fetch(router.generate('akeneo_identifier_generator_rest_update', {code: generatorWithoutAuto.code}), {
       method: 'PATCH',
       headers: [
         ['Content-type', 'application/json'],
         ['X-Requested-With', 'XMLHttpRequest'],
       ],
-      body: JSON.stringify(generator),
+      body: JSON.stringify(generatorWithoutAuto),
     });
     const data = await res.json();
 

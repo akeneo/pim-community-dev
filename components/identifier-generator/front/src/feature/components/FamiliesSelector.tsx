@@ -8,9 +8,10 @@ import {Unauthorized} from '../errors';
 type FamiliesSelectorProps = {
   familyCodes: FamilyCode[];
   onChange: (familyCodes: FamilyCode[]) => void;
+  readonly: boolean;
 };
 
-const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) => {
+const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange, readonly}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
@@ -64,6 +65,7 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
       onChange={onChange}
       value={familyCodes}
       invalidValue={debouncedInvalidFamilyCodes}
+      readOnly={readonly}
     >
       {familiesList.map(family => (
         <MultiSelectInput.Option value={family.code} key={family.code}>

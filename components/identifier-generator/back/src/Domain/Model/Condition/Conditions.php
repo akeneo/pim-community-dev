@@ -59,9 +59,17 @@ final class Conditions
     /**
      * @return ConditionsNormalized
      */
-    public function normalize(): array
+    public function normalize(bool $withAuto): array
     {
-        return \array_map(static fn (ConditionInterface $condition) => $condition->normalize(), $this->conditions);
+        return \array_map(
+            function (ConditionInterface $condition) use ($withAuto) {
+                $normalizedCondition = $condition->normalize();
+                if ($withAuto) {
+                    $normalizedCondition['auto'] = $condition->isAuto();
+                }
+            },
+            $this->conditions
+        );
     }
 
     public function match(ProductProjection $productProjection): bool
@@ -70,6 +78,32 @@ final class Conditions
             $this->conditions,
             fn (bool $prev, $condition): bool => $prev && $condition->match($productProjection),
             true
+        );
+    }
+
+    public function push(ConditionInterface $autoCondition): self
+    {
+        $conditions = $this->conditions;
+        $conditions[] = $autoCondition;
+
+        return new self($conditions);
+    }
+
+    public function normalizeForDatabase()
+    {
+        return \array_map(
+            static fn (ConditionInterface $condition) => $condition->normalize(),
+            $this->nonAuto()->conditions,
+        );
+    }
+
+    public function nonAuto(): self
+    {
+        return new self(
+            \array_filter(
+                $this->conditions,
+                static fn (ConditionInterface $condition) => !$condition->isAuto()
+            )
         );
     }
 }

@@ -114,4 +114,9 @@ final class SimpleSelect implements ConditionInterface
             default => null !== $value
         };
     }
+
+    public function isAuto(): bool
+    {
+        return false;
+    }
 }

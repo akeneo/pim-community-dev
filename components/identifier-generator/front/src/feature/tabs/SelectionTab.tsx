@@ -9,6 +9,7 @@ import {AddConditionButton, EnabledLine, FamilyLine} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
 import {SimpleSelectLine} from './conditions/SimpleSelectLine';
+import {IdentifierLine} from './conditions/IdentifierLine';
 
 type SelectionTabProps = {
   conditions: Conditions;
@@ -35,12 +36,13 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
       return <FamilyLine condition={condition} onChange={onChange} onDelete={onDelete} />;
     case CONDITION_NAMES.SIMPLE_SELECT:
       return <SimpleSelectLine condition={condition} onChange={onChange} onDelete={onDelete} />;
+    case CONDITION_NAMES.IDENTIFIER:
+      return <IdentifierLine condition={condition} onChange={onChange} onDelete={onDelete} />;
   }
 };
 
 const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange, validationErrors}) => {
   const translate = useTranslate();
-  const {data: identifiers, isLoading} = useIdentifierAttributes();
   const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionIdentifier | undefined>();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
     conditions.map(condition => ({
@@ -123,52 +125,35 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
       </SectionTitle>
       <Table>
         <Table.Body>
-          {isLoading && <ListSkeleton />}
-          {!isLoading && (
-            <>
-              <Table.Row>
-                <Styled.NotDraggableCell />
-                <Styled.TitleCondition>
-                  {identifiers && identifiers.length > 0 ? identifiers[0].label : `[${target}]`}
-                </Styled.TitleCondition>
-                <Table.Cell colSpan={3}>
-                  <Styled.InputContainer>
-                    <TextInput value={translate('pim_common.operators.EMPTY')} readOnly={true} />
-                  </Styled.InputContainer>
-                </Table.Cell>
-              </Table.Row>
-              {conditionsWithId.length === 0 && (
-                <tr>
-                  <td colSpan={3}>
-                    <Placeholder
-                      illustration={<NoResultsIllustration />}
-                      size="large"
-                      title={translate('pim_identifier_generator.selection.empty.title')}
-                    >
-                      <Styled.TranslationsPlaceholderTitleConditions>
-                        {translate('pim_identifier_generator.selection.empty.text')}
-                      </Styled.TranslationsPlaceholderTitleConditions>
-                      {translate('pim_identifier_generator.selection.empty.info')}
-                    </Placeholder>
-                  </td>
-                </tr>
-              )}
-            </>
+          {conditionsWithId.length === 0 && (
+            <tr>
+              <td colSpan={3}>
+                <Placeholder
+                  illustration={<NoResultsIllustration />}
+                  size="large"
+                  title={translate('pim_identifier_generator.selection.empty.title')}
+                >
+                  <Styled.TranslationsPlaceholderTitleConditions>
+                    {translate('pim_identifier_generator.selection.empty.text')}
+                  </Styled.TranslationsPlaceholderTitleConditions>
+                  {translate('pim_identifier_generator.selection.empty.info')}
+                </Placeholder>
+              </td>
+            </tr>
           )}
         </Table.Body>
       </Table>
       <Table isDragAndDroppable={true} onReorder={onReorder}>
         <Table.Body>
-          {!isLoading &&
-            conditionsWithId.map(({id, ...condition}) => (
-              <Table.Row key={id}>
-                <ConditionLine
-                  condition={condition}
-                  onChange={condition => handleChange({...condition, id})}
-                  onDelete={onDelete(id)}
-                />
-              </Table.Row>
-            ))}
+          {conditionsWithId.map(({id, ...condition}) => (
+            <Table.Row key={id}>
+              <ConditionLine
+                condition={condition}
+                onChange={condition => handleChange({...condition, id})}
+                onDelete={onDelete(id)}
+              />
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
       {conditionIdToDelete && <SimpleDeleteModal onClose={closeModal} onDelete={handleDeleteCondition} />}

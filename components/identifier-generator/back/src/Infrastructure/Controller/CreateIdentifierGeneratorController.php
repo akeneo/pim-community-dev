@@ -45,7 +45,7 @@ class CreateIdentifierGeneratorController
         $identifierGenerator = $this->identifierGeneratorRepository->get($content['code']);
         Assert::notNull($identifierGenerator);
 
-        return new JsonResponse($identifierGenerator->normalize(), Response::HTTP_CREATED);
+        return new JsonResponse($identifierGenerator->normalizeForFront(), Response::HTTP_CREATED);
     }
 
     /**

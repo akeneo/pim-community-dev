@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Identifier;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -25,6 +26,14 @@ final class IdentifierGenerator
         private Target $target,
         private ?Delimiter $delimiter,
     ) {
+        foreach ($this->structure->getProperties() as $property) {
+            $autoCondition = $property->getAutoCondition();
+            if (null !== $autoCondition) {
+                $this->conditions = $this->conditions->push($autoCondition);
+            }
+        }
+
+        $this->conditions = $this->conditions->push(new Identifier());
     }
 
     public function id(): IdentifierGeneratorId
@@ -98,12 +107,12 @@ final class IdentifierGenerator
      *     delimiter: string | null,
      * }
      */
-    public function normalize(): array
+    public function normalizeForFront(): array
     {
         return [
             'uuid' => $this->id->asString(),
             'code' => $this->code->asString(),
-            'conditions' => $this->conditions->normalize(),
+            'conditions' => $this->conditions->normalize(true),
             'structure' => $this->structure->normalize(),
             'labels' => $this->labelCollection->normalize(),
             'target' => $this->target->asString(),
@@ -113,8 +122,11 @@ final class IdentifierGenerator
 
     public function match(ProductProjection $productProjection): bool
     {
-        $identifierValue = $productProjection->identifier();
+        return $this->conditions->match($productProjection);
+    }
 
-        return (null === $identifierValue || '' === $identifierValue) && $this->conditions->match($productProjection);
+    public function nonAutoConditions(): Conditions
+    {
+        return $this->conditions->nonAuto();
     }
 }

@@ -23,4 +23,6 @@ interface ConditionInterface
     public function normalize(): array;
 
     public function match(ProductProjection $productProjection): bool;
+
+    public function isAuto(): bool;
 }

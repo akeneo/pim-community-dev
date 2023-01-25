@@ -7,9 +7,10 @@ type OperatorSelectorProps = {
   operator: Operator;
   onChange: (operator: Operator) => void;
   operators: Operator[];
+  readonly: boolean;
 };
 
-const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operators}) => {
+const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operators, readonly}) => {
   const translate = useTranslate();
 
   return (
@@ -19,6 +20,7 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operat
       openLabel={translate('pim_common.open')}
       onChange={(operator: string) => onChange(operator as Operator)}
       clearable={false}
+      readOnly={readonly}
     >
       {operators.map(operator => (
         <SelectInput.Option key={operator} value={operator}>

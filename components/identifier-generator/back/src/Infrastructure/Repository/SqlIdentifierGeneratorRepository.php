@@ -60,7 +60,7 @@ SQL;
                 'target' => $identifierGenerator->target()->asString(),
                 'delimiter' => $identifierGenerator->delimiter()->asString(),
                 'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-                'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
+                'conditions' => json_encode($identifierGenerator->nonAutoConditions()->normalize()),
                 'structure' => json_encode($identifierGenerator->structure()->normalize()),
             ]);
         } catch (Exception $e) {
@@ -98,7 +98,7 @@ SQL;
                 'target' => $identifierGenerator->target()->asString(),
                 'delimiter' => $identifierGenerator->delimiter()?->asString(),
                 'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-                'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
+                'conditions' => json_encode($identifierGenerator->nonAutoConditions()->normalize()),
                 'structure' => json_encode($identifierGenerator->structure()->normalize()),
             ]);
         } catch (Exception $e) {

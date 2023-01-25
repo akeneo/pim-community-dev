@@ -51,7 +51,7 @@ final class UpdateIdentifierGeneratorController
         $identifierGeneratorUpdated = $this->identifierGeneratorRepository->get($code);
         Assert::notNull($identifierGeneratorUpdated);
 
-        return new JsonResponse($identifierGeneratorUpdated->normalize(), Response::HTTP_OK);
+        return new JsonResponse($identifierGeneratorUpdated->normalizeForFront(), Response::HTTP_OK);
     }
 
     /**

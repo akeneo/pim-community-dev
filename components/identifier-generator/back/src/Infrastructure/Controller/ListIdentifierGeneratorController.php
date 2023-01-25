@@ -28,7 +28,7 @@ final class ListIdentifierGeneratorController
         }
 
         $identifiersGenerators = $this->identifierGeneratorRepository->getAll();
-        $result = array_map(fn ($identifierGenerator) => $identifierGenerator->normalize(), $identifiersGenerators);
+        $result = array_map(fn ($identifierGenerator) => $identifierGenerator->normalizeForFront(), $identifiersGenerators);
 
         return new JsonResponse($result, Response::HTTP_OK);
     }
