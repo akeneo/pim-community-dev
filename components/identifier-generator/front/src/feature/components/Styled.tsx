@@ -105,6 +105,10 @@ const TitleCondition = styled(TitleCell)`
   width: calc(10vw + 100px);
 `;
 
+const CheckboxContainer = styled.div`
+  margin: 10px 0;
+`;
+
 const Styled = {
   CellInputContainer,
   ErrorContainer,
@@ -121,6 +125,7 @@ const Styled = {
   TitleCondition,
   ListItems,
   ConditionLineSkeleton,
+  CheckboxContainer,
 };
 
 export {Styled};
