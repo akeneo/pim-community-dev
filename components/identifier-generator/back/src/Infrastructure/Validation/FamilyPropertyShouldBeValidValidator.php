@@ -91,7 +91,7 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
                 ),
                 'value' => [
                     new Type([
-                        'type' => 'digit',
+                        'type' => 'integer',
                     ]),
                     new Range([
                         'min' => 1,

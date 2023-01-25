@@ -97,35 +97,35 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier generator with family process type unknown
     When I try to update an identifier generator with a family process with type unknown and operator undefined and undefined as value
-    Then I should get an error on update with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate", "nomenclature".'
+    Then I should get an error on update with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate".'
 
   Scenario: Cannot update an identifier generator with family process type no and operator EQUALS and undefined as value
     When I try to update an identifier generator with a family process with type no and operator EQUALS and undefined as value
-    Then I should get an error on update with message 'There can be no other properties than "type".'
+    Then I should get an error on update with message 'structure[0][operator]: This field was not expected.'
 
   Scenario: Cannot update an identifier generator with a family containing invalid truncate process
     When I try to update an identifier generator with a family containing invalid truncate process
     Then I should get an error on update with message 'structure[0][process][unknown]: This field was not expected.'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process missing fields
-    When I try to update an identifier generator with a family process with type truncate and operator undefined and undefined as value
+    When I try to update an identifier generator with a family process with type truncate and operator undefined and "undefined" as value
     Then I should get an error on update with message 'structure[0][operator]: This field is missing.'
     Then I should get an error on update with message 'structure[0][value]: This field is missing.'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and unknown operator
-    When I try to update an identifier generator with a family process with type truncate and operator ope and "1" as value
+    When I try to update an identifier generator with a family process with type truncate and operator ope and 1 as value
     Then I should get an error on update with message 'structure[0][operator]: Operator "ope" can only be one of the following: "EQUALS", "LOWER_OR_EQUAL_THAN".'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and bad value type
-    When I try to update an identifier generator with a family process with type truncate and operator EQUALS and bad as value
-    Then I should get an error on update with message 'structure[0][value]: This value should be of type digit.'
+    When I try to update an identifier generator with a family process with type truncate and operator EQUALS and "bad" as value
+    Then I should get an error on update with message 'structure[0][value]: This value should be of type integer.'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and value not in range
     When I try to update an identifier generator with a family process with type truncate and operator EQUALS and 0 as value
     Then I should get an error on update with message 'structure[0][value]: This value should be between 1 and 5.'
 
   Scenario: Can update an identifier generator with a family property and no process
-    When I try to update an identifier generator with a family process with type no and operator undefined and undefined as value
+    When I try to update an identifier generator with a family process with type no and operator undefined and "undefined" as value
     Then The identifier generator is updated in the repository
     And I should not get any update error
 
