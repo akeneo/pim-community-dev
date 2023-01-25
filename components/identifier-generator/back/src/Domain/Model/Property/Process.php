@@ -11,18 +11,17 @@ use Webmozart\Assert\Assert;
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-type ProcessOperator 'EQUALS'|'LOWER_OR_EQUAL_THAN'
- * @phpstan-type ProcessNormalized array{type: 'no'|'truncate'|'nomenclature', operator?: string, value?: int}
+ * @phpstan-type ProcessNormalized array{type: 'no'}|array{type: 'truncate', operator: string, value: int}
  */
 final class Process
 {
     public const PROCESS_TYPE_NO = 'no';
     public const PROCESS_TYPE_TRUNCATE = 'truncate';
-    public const PROCESS_TYPE_NOMENCLATURE = 'nomenclature';
 
     public const PROCESS_OPERATOR_EQ = 'EQUALS';
     public const PROCESS_OPERATOR_LTE = 'LOWER_OR_EQUAL_THAN';
 
-    public function __construct(
+    private function __construct(
         private string $type,
         private ?string $operator,
         private ?int $value
@@ -39,31 +38,43 @@ final class Process
      */
     public function normalize(): array
     {
-        return \array_filter([
-            'type' => $this->type,
+        if ($this->type === self::PROCESS_TYPE_NO) {
+            return [
+                'type' => self::PROCESS_TYPE_NO,
+            ];
+        }
+
+        Assert::stringNotEmpty($this->operator);
+        Assert::integer($this->value);
+
+        return [
+            'type' => self::PROCESS_TYPE_TRUNCATE,
             'operator' => $this->operator,
             'value' => $this->value,
-        ]);
+        ];
     }
 
     /**
-     * @inerhitdoc
+     * @param array<string, mixed> $normalizedProperty
      */
     public static function fromNormalized(array $normalizedProperty): Process
     {
         Assert::keyExists($normalizedProperty, 'type');
-        Assert::oneOf($normalizedProperty['type'], [self::PROCESS_TYPE_NO, self::PROCESS_TYPE_TRUNCATE, self::PROCESS_TYPE_NOMENCLATURE]);
+        Assert::oneOf($normalizedProperty['type'], [self::PROCESS_TYPE_NO, self::PROCESS_TYPE_TRUNCATE]);
+        $operator = null;
+        $value = null;
         if ('truncate' === $normalizedProperty['type']) {
             Assert::keyExists($normalizedProperty, 'operator');
             Assert::notEmpty($normalizedProperty['operator']);
             Assert::oneOf($normalizedProperty['operator'], [self::PROCESS_OPERATOR_EQ, self::PROCESS_OPERATOR_LTE]);
+            $operator = $normalizedProperty['operator'];
 
             Assert::keyExists($normalizedProperty, 'value');
-            Assert::numeric($normalizedProperty['value']);
-            $normalizedProperty['value'] = intval($normalizedProperty['value']);
+            Assert::integer($normalizedProperty['value']);
+            Assert::greaterThanEq($normalizedProperty['value'], 1);
+            Assert::lessThanEq($normalizedProperty['value'], 5);
+            $value = $normalizedProperty['value'];
         }
-        $operator = array_key_exists('operator', $normalizedProperty) ? $normalizedProperty['operator'] : null;
-        $value = array_key_exists('value', $normalizedProperty) ? $normalizedProperty['value'] : null;
 
         return new self($normalizedProperty['type'], $operator, $value);
     }

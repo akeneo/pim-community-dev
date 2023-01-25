@@ -116,7 +116,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with family process type unknown
     When I try to create an identifier generator with a family process with type unknown and operator undefined and undefined as value
-    Then I should get an error with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate", "nomenclature".'
+    Then I should get an error with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with family process type no and operator EQUALS and undefined as value
@@ -150,12 +150,12 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'structure[0][value]: This value should be between 1 and 5.'
     And the identifier should not be created
 
-  Scenario: Can create an identifier generator with a no family process
+  Scenario: Can create an identifier generator with a family property and no process
     When I try to create an identifier generator with a family process with type no and operator undefined and undefined as value
     Then The identifier generator is saved in the repository
     And I should not get any error
 
-  Scenario: Can create an identifier generator with a truncate family process
+  Scenario: Can create an identifier generator with a family property and a truncate process
     When I try to create an identifier generator with a family process with type truncate and operator EQUALS and 1 as value
     Then The identifier generator is saved in the repository
     And I should not get any error

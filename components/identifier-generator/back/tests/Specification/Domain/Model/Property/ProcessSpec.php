@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use PhpSpec\ObjectBehavior;
 
@@ -42,5 +41,59 @@ class ProcessSpec extends ObjectBehavior
             'operator' => 'EQUALS',
             'value' => 3
         ]);
+    }
+
+    public function it_should_throw_an_exception_when_no_type(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [[]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_invalid_type(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'unknown']]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_no_operator(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'value' => 3]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_empty_operator(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => null, 'value' => 3]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_unknown_operator(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'unknown', 'value' => 3]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_no_value(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'EQUALS']]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_not_numeric_value(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 'bar']]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_too_high_value(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 6]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_too_low_value(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 0]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }
