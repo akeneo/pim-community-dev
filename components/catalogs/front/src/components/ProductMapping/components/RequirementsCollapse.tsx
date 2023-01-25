@@ -30,6 +30,11 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                 isOpen={isOpen}
                 onCollapse={setIsOpen}
             >
+                {true && (
+                    <Helper inline level='warning'>
+                        coucou
+                    </Helper>
+                )}
                 {target.description && (
                     <Helper inline level='info'>
                         {target.description}

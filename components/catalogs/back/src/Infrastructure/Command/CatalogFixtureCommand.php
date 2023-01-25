@@ -120,6 +120,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => 'en_US',
                 ],
+                'ean13' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
@@ -167,7 +172,7 @@ class CatalogFixtureCommand extends Command
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.4/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.5/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -190,6 +195,11 @@ class CatalogFixtureCommand extends Command
             "meta_title": {
               "type": "string",
               "title": "Meta title"
+            },
+            "ean13": {
+              "type": "string",
+              "minLength": 13,
+              "maxLength": 13
             }
           }
         }
