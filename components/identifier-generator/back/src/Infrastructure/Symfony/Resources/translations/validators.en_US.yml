@@ -13,7 +13,7 @@ validation:
         structure_auto_number_limit_reached: 'should contain only {{limit}} auto number'
         conditions_limit_reached: 'should contain only {{limit}} {{type}} condition'
         unknown_operator: 'Operator {{ value }} can only be one of the following: {{ choices }}.'
-        families_do_not_exist: 'The following families do not exist: {{ familyCodes }}.'
+        families_do_not_exist: 'The following families have been deleted from your catalog: {{ familyCodes }}. You can remove them from your product selection.'
         options_do_not_exist: 'The following attribute options do not exist for the attribute "{{ attributeCode }}": {{ optionCodes }}.'
         unknown_scope: 'The "{{ scopeCode }}" scope does not exist.'
         unknown_locale: 'The "{{ localeCode }}" locale does not exist or is not activated.'
