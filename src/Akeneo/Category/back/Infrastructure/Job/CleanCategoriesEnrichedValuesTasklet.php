@@ -18,8 +18,7 @@ class CleanCategoriesEnrichedValuesTasklet implements TaskletInterface
 
     public function __construct(
         private readonly CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
-    )
-    {
+    ) {
     }
 
     public function setStepExecution(StepExecution $stepExecution): self

@@ -31,7 +31,7 @@ class CleanCategoryEnrichedValuesProvider implements ConstraintCollectionProvide
     }
 
     /**
-     * channel_code: deleted channel's code to be cleaned from category enriched values
+     * channel_code: deleted channel's code to be cleaned from category enriched values.
      */
     public function getConstraintCollection(): Collection
     {
@@ -40,7 +40,7 @@ class CleanCategoryEnrichedValuesProvider implements ConstraintCollectionProvide
                 'fields' => [
                     'channel_code' => new Type('string'),
                 ],
-            ]
+            ],
         );
     }
 }
