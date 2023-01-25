@@ -4,9 +4,9 @@ pim_identifier_generator:
         manage: 'Manage identifier generators'
     acl_group:
         identifier_generator: 'Identifier Generators'
-  condition:
-    fields:
-      family: Family
-      enabled: Status
-    field_groups:
-      system: System
+    condition:
+        fields:
+            family: Family
+            enabled: Status
+        field_groups:
+            system: System

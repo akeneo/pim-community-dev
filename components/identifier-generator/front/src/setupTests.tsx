@@ -48,8 +48,8 @@ beforeEach(() => {
   mockedUseSecurity.mockImplementation(() => {
     return {
       isGranted: () => true,
-    }
-  })
+    };
+  });
 });
 
 jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
