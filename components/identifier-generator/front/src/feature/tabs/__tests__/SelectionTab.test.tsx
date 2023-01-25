@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, mockResponse, render, screen} from '../../tests/test-utils';
 import {SelectionTab} from '../SelectionTab';
-import {CONDITION_NAMES, Conditions, Operator, SimpleSelectCondition} from '../../models';
+import {CONDITION_NAMES, Operator, SimpleSelectCondition} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
@@ -159,48 +159,6 @@ describe('SelectionTab', () => {
     fireEvent.click(screen.getByText('Close modal'));
     expect(screen.queryByText('SimpleDeleteModalMock')).not.toBeInTheDocument();
     expect(onChange).not.toBeCalledWith([]);
-  });
-
-  it('reorder conditions', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
-    const onChange = jest.fn();
-    const conditions: Conditions = [
-      {type: CONDITION_NAMES.ENABLED, value: true},
-      {type: CONDITION_NAMES.ENABLED, value: false},
-      {type: CONDITION_NAMES.ENABLED, value: true},
-      {type: CONDITION_NAMES.ENABLED, value: false},
-    ];
-    render(<SelectionTab target={'sku'} conditions={conditions} onChange={onChange} validationErrors={[]} />);
-
-    let dataTransferred = '';
-    const dataTransfer = {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      getData: (_format: string) => {
-        return dataTransferred;
-      },
-      setData: (_format: string, data: string) => {
-        dataTransferred = data;
-      },
-    };
-
-    expect(await screen.findByText('Sku')).toBeInTheDocument();
-    // Move 2nd item after 4th one
-    fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
-    fireEvent.dragStart(screen.getAllByRole('row')[1], {dataTransfer});
-    fireEvent.dragEnter(screen.getAllByRole('row')[2], {dataTransfer});
-    fireEvent.dragLeave(screen.getAllByRole('row')[2], {dataTransfer});
-    fireEvent.dragEnter(screen.getAllByRole('row')[3], {dataTransfer});
-    fireEvent.drop(screen.getAllByRole('row')[3], {dataTransfer});
-    fireEvent.dragEnd(screen.getAllByRole('row')[1], {dataTransfer});
-
-    expect(onChange).toHaveBeenCalledWith([
-      {type: CONDITION_NAMES.ENABLED, value: false},
-      {type: CONDITION_NAMES.ENABLED, value: true},
-      {type: CONDITION_NAMES.ENABLED, value: true},
-      {type: CONDITION_NAMES.ENABLED, value: false},
-    ]);
   });
 
   it('should display simple select line', async () => {

@@ -1,12 +1,12 @@
 import React from 'react';
-import {Condition, EnabledCondition} from '../../models';
+import {EnabledCondition} from '../../models';
 import {Button, SelectInput, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type EnabledLineProps = {
   condition: EnabledCondition;
-  onChange: (condition: Condition) => void;
+  onChange: (condition: EnabledCondition) => void;
   onDelete: () => void;
 };
 
