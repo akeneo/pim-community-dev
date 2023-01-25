@@ -57,8 +57,8 @@ pim_identifier_generator:
             select_option:
                 placeholder: 'Please select at least one option'
     structure:
-        helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at {{link}}.'
-        helper_link: 'this article'
+        helper: 'Define the structure of the product identifiers you want to generate. If you need any help setting up the property settings, {{link}}.'
+        helper_link: 'check our help center for more information'
         title: 'Identifier Structure'
         add_element: 'Add new property'
         limit_reached: 'You have reached the limit of 20 properties'
