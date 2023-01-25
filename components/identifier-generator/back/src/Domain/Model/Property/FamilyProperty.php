@@ -11,10 +11,12 @@ use Webmozart\Assert\Assert;
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type ProcessNormalized from Process
- * @phpstan-type FamilyPropertyNormalized array{type: string, process: ProcessNormalized}
+ * @phpstan-type FamilyPropertyNormalized array{type: 'family', process: ProcessNormalized}
  */
 final class FamilyProperty implements PropertyInterface
 {
+    private const TYPE = 'family';
+
     private function __construct(
         private readonly Process $process,
     ) {
@@ -22,7 +24,7 @@ final class FamilyProperty implements PropertyInterface
 
     public static function type(): string
     {
-        return 'family';
+        return self::TYPE;
     }
 
     public function process(): Process
@@ -36,7 +38,7 @@ final class FamilyProperty implements PropertyInterface
     public function normalize(): array
     {
         return [
-            'type' => $this->type(),
+            'type' => self::TYPE,
             'process' => $this->process->normalize(),
         ];
     }
