@@ -10,7 +10,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
  *
  * @phpstan-import-type AutoNumberNormalized from AutoNumber
  * @phpstan-import-type FreeTextNormalized from FreeText
- * @phpstan-type PropertyNormalized AutoNumberNormalized | FreeTextNormalized
+ * @phpstan-import-type FamilyPropertyNormalized from FamilyProperty
+ * @phpstan-type PropertyNormalized AutoNumberNormalized | FreeTextNormalized | FamilyPropertyNormalized
  */
 interface PropertyInterface
 {

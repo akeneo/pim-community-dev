@@ -124,12 +124,12 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with a family process with type truncate and operator EQUALS and 0 as value
     Then I should get an error on update with message 'structure[0][value]: This value should be between 1 and 5.'
 
-  Scenario: Can update an identifier generator with a no family process
+  Scenario: Can update an identifier generator with a family property and no process
     When I try to update an identifier generator with a family process with type no and operator undefined and undefined as value
     Then The identifier generator is updated in the repository
     And I should not get any update error
 
-  Scenario: Can update an identifier generator with a truncate family process
+  Scenario: Can update an identifier generator with a family property and a truncate process
     When I try to update an identifier generator with a family process with type truncate and operator EQUALS and 1 as value
     Then The identifier generator is updated in the repository
     And I should not get any update error
