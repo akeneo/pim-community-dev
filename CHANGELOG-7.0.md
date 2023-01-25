@@ -7,6 +7,7 @@
 - PIM-10768: Fix update list status_code response
 - PIM-10779: Fix lowercase on get attribute group code for dqi activation
 - PIM-10784: Fix API error 500 when filtering for identifier with null value
+- PIM-10785: Fix case-insensitive patch product model
 
 # 7.0.7 (2023-02-13)
 
