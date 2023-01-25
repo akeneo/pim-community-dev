@@ -1,7 +1,8 @@
 import React, {useMemo} from 'react';
 import {Channel, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {useGetScopes} from '../hooks';
-import {Helper, Locale, SelectInput, SkeletonPlaceholder, Table} from 'akeneo-design-system';
+import {Helper, Locale, SelectInput, SkeletonPlaceholder} from 'akeneo-design-system';
+import {Styled} from './Styled';
 
 type Props = {
   value: LocaleCode | null;
@@ -38,11 +39,9 @@ const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => 
   }
 
   return isLoading ? (
-    <Table.Cell>
-      <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
-    </Table.Cell>
+    <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
   ) : (
-    <SelectInput
+    <Styled.SelectCondition
       value={value}
       emptyResultLabel={translate('pim_common.no_result')}
       openLabel={translate('pim_common.locale')}
@@ -55,7 +54,7 @@ const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => 
           <Locale code={locale.code} languageLabel={locale.label} />
         </SelectInput.Option>
       ))}
-    </SelectInput>
+    </Styled.SelectCondition>
   );
 };
 

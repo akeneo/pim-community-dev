@@ -1,9 +1,10 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Helper, MultiSelectInput} from 'akeneo-design-system';
 import {useGetFamilies, usePaginatedFamilies} from '../hooks/useGetFamilies';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Family, FamilyCode} from '../models';
 import {Unauthorized} from '../errors';
+import {Styled} from './Styled';
 
 type FamiliesSelectorProps = {
   familyCodes: FamilyCode[];
@@ -54,7 +55,7 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
   }
 
   return (
-    <MultiSelectInput
+    <Styled.MultiSelectCondition
       emptyResultLabel={translate('pim_common.no_result')}
       placeholder={translate('pim_identifier_generator.selection.settings.family.placeholder')}
       removeLabel={translate('pim_common.remove')}
@@ -70,7 +71,7 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
           {getLabel(family.labels, catalogLocale, family.code)}
         </MultiSelectInput.Option>
       ))}
-    </MultiSelectInput>
+    </Styled.MultiSelectCondition>
   );
 };
 

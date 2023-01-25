@@ -52,44 +52,40 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   return (
     <>
       {error ? (
-        <Table.Cell colSpan={6}>
+        <Table.Cell colSpan={3}>
           <Helper level="error">
             {translate(error instanceof Unauthorized ? 'pim_error.unauthorized_list_attributes' : 'pim_error.general')}
           </Helper>
         </Table.Cell>
       ) : isLoading ? (
-        <Table.Cell colSpan={6}>
-          <Styled.ConditionLineSkeleton aria-colspan={6}>This is loading</Styled.ConditionLineSkeleton>
+        <Table.Cell colSpan={3}>
+          <Styled.ConditionLineSkeleton aria-colspan={3}>This is loading</Styled.ConditionLineSkeleton>
         </Table.Cell>
       ) : (
         <>
-          <Styled.TitleCell colSpan={1}>{label}</Styled.TitleCell>
-          <Styled.CellInputContainer colSpan={1}>
-            <Styled.InputContainer>
-              <OperatorSelector
-                operator={condition.operator}
-                onChange={handleOperatorChange}
-                operators={SimpleSelectOperators}
-              />
-            </Styled.InputContainer>
-          </Styled.CellInputContainer>
+          <Styled.TitleCell>{label}</Styled.TitleCell>
+          <Styled.SelectionInputsContainer>
+            <OperatorSelector
+              operator={condition.operator}
+              onChange={handleOperatorChange}
+              operators={SimpleSelectOperators}
+            />
 
-          {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
-            <Table.Cell>
+            {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
               <SimpleSelectOptionsSelector
                 attributeCode={condition.attributeCode}
                 optionCodes={condition.value || []}
                 onChange={handleSelectCodesChange}
               />
-            </Table.Cell>
-          )}
+            )}
 
-          <ScopeAndLocaleSelector
-            locale={condition.locale}
-            scope={condition.scope}
-            attributeCode={condition.attributeCode}
-            onChange={handleScopeAndLocaleChange}
-          />
+            <ScopeAndLocaleSelector
+              locale={condition.locale}
+              scope={condition.scope}
+              attributeCode={condition.attributeCode}
+              onChange={handleScopeAndLocaleChange}
+            />
+          </Styled.SelectionInputsContainer>
           <Table.ActionCell colSpan={1}>
             <Button onClick={onDelete} ghost level="danger">
               {translate('pim_common.delete')}

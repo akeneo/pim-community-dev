@@ -1,7 +1,8 @@
 import React from 'react';
-import {Helper, SelectInput, SkeletonPlaceholder, Table} from 'akeneo-design-system';
+import {Helper, SelectInput, SkeletonPlaceholder} from 'akeneo-design-system';
 import {ChannelCode, LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useGetScopes} from '../hooks';
+import {Styled} from './Styled';
 
 type ScopeSelectorProps = {
   value: ChannelCode | null;
@@ -20,13 +21,9 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
   }
 
   return isLoading ? (
-    <Table.Row>
-      <Table.Cell>
-        <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
-      </Table.Cell>
-    </Table.Row>
+    <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
   ) : (
-    <SelectInput
+    <Styled.SelectCondition
       value={value}
       emptyResultLabel={translate('pim_common.no_result')}
       openLabel={translate('pim_common.channel')}
@@ -39,7 +36,7 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
           {getLabel(labels, code)}
         </SelectInput.Option>
       ))}
-    </SelectInput>
+    </Styled.SelectCondition>
   );
 };
 

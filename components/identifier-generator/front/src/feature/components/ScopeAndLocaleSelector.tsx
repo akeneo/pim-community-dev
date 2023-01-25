@@ -2,7 +2,7 @@ import React, {useCallback, useMemo} from 'react';
 import {Channel, ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {ScopeSelector} from './ScopeSelector';
 import {useGetAttributeByCode} from '../hooks/useGetAttributeByCode';
-import {Helper, Table} from 'akeneo-design-system';
+import {Helper} from 'akeneo-design-system';
 import {LocaleSelector} from './LocaleSelector';
 import {useGetScopes} from '../hooks';
 import {Styled} from './Styled';
@@ -39,36 +39,17 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({attributeCode, locale = null, 
   );
 
   if (error) {
-    return (
-      <Table.Cell colSpan={2}>
-        <Helper level={'error'}>{translate('pim_error.general')}</Helper>
-      </Table.Cell>
-    );
+    return <Helper level={'error'}>{translate('pim_error.general')}</Helper>;
   }
 
   return isLoading ? (
-    <Table.Cell colSpan={2}>
-      <Styled.ConditionLineSkeleton>This is Loading</Styled.ConditionLineSkeleton>
-    </Table.Cell>
+    <Styled.ConditionLineSkeleton>This is Loading</Styled.ConditionLineSkeleton>
   ) : (
     <>
-      {data?.scopable && (
-        <Table.Cell>
-          <ScopeSelector value={scope} onChange={handleScopeChange} />
-        </Table.Cell>
-      )}
+      {data?.scopable && <ScopeSelector value={scope} onChange={handleScopeChange} />}
       {data?.localizable && (
-        <Table.Cell>
-          <LocaleSelector
-            value={locale}
-            onChange={handleLocaleChange}
-            scopable={data?.scopable}
-            scope={selectedScope}
-          />
-        </Table.Cell>
+        <LocaleSelector value={locale} onChange={handleLocaleChange} scopable={data?.scopable} scope={selectedScope} />
       )}
-      {((data?.localizable && !data?.scopable) || (data?.scopable && !data?.localizable)) && <Table.Cell />}
-      {!data?.localizable && !data?.scopable && <Table.Cell colSpan={2} />}
     </>
   );
 };

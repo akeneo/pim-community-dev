@@ -4,6 +4,7 @@ import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shar
 import {OptionCode} from '../models/option';
 import {useGetSelectOptions, usePaginatedOptions} from '../hooks/useGetSelectOptions';
 import {AttributeCode} from '../models';
+import {Styled} from './Styled';
 
 type Props = {
   attributeCode: AttributeCode;
@@ -49,7 +50,7 @@ const SimpleSelectOptionsSelector: FC<Props> = ({attributeCode, optionCodes, onC
   }
 
   return (
-    <MultiSelectInput
+    <Styled.MultiSelectCondition
       emptyResultLabel={translate('pim_common.no_result')}
       placeholder={translate('pim_identifier_generator.selection.settings.select_option.placeholder')}
       removeLabel={translate('pim_common.remove')}
@@ -65,7 +66,7 @@ const SimpleSelectOptionsSelector: FC<Props> = ({attributeCode, optionCodes, onC
           {getLabel(option.labels, catalogLocale, option.code)}
         </MultiSelectInput.Option>
       ))}
-    </MultiSelectInput>
+    </Styled.MultiSelectCondition>
   );
 };
 
