@@ -36,7 +36,7 @@ class FamilyPropertySpec extends ObjectBehavior
 
     public function it_returns_a_process(): void
     {
-        $process = new Process('truncate', 'EQUALS', 3);
+        $process = Process::fromNormalized(['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 3]);
         $this->process()->shouldBeAnInstanceOf(Process::class);
         $this->process()->shouldBeLike($process);
     }

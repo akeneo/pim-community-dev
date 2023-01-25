@@ -67,7 +67,7 @@ class FamilyPropertyShouldBeValidValidatorSpec extends ObjectBehavior
         $context
             ->buildViolation(
                 'validation.identifier_generator.family_property_fields_required',
-                ['{{field}}' => 'process']
+                ['{{ field }}' => 'process']
             )
             ->shouldBeCalledOnce();
 

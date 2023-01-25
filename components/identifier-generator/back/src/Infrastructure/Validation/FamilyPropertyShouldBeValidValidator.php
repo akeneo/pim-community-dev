@@ -42,7 +42,7 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
         if (!\array_key_exists('process', $property)) {
             $this->context
                 ->buildViolation($constraint->fieldsRequired, [
-                    '{{field}}' => 'process',
+                    '{{ field }}' => 'process',
                 ])
                 ->addViolation();
 
@@ -55,30 +55,31 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
 
         switch ($property['process']['type']) {
             case Process::PROCESS_TYPE_NO:
-                $this->validateProcessTypeNo($property['process'], $constraint);
+                $this->validateProcessTypeNo($property['process']);
 
                 break;
             case Process::PROCESS_TYPE_TRUNCATE:
                 $this->validateProcessTypeTruncate($property['process'], $constraint);
 
                 break;
-            case Process::PROCESS_TYPE_NOMENCLATURE:
-                $this->validateProcessTypeNomenclature($property['process'], $constraint);
-
-                break;
         }
     }
 
-    private function validateProcessTypeNo(array $property, FamilyPropertyShouldBeValid $constraint): void
+    /**
+     * @param array<string, mixed> $property
+     */
+    private function validateProcessTypeNo(array $property): void
     {
         $this->validator->inContext($this->context)->validate($property, new Collection([
             'fields' => [
                 'type' => null,
             ],
-            'extraFieldsMessage' => $constraint->processTypeNoOtherProperties,
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $property
+     */
     private function validateProcessTypeTruncate(array $property, FamilyPropertyShouldBeValid $constraint): void
     {
         $this->validator->inContext($this->context)->validate($property, new Collection([
@@ -99,9 +100,5 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
                 ],
             ],
         ]));
-    }
-
-    private function validateProcessTypeNomenclature(array $property, FamilyPropertyShouldBeValid $constraint): void
-    {
     }
 }

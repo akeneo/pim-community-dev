@@ -10,11 +10,12 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type FamilyPropertyNormalized array{type: 'family', process: ProcessNormalized}
+ * @phpstan-import-type ProcessNormalized from Process
+ * @phpstan-type FamilyPropertyNormalized array{type: string, process: ProcessNormalized}
  */
 final class FamilyProperty implements PropertyInterface
 {
-    public function __construct(
+    private function __construct(
         private readonly Process $process,
     ) {
     }
@@ -45,6 +46,7 @@ final class FamilyProperty implements PropertyInterface
         Assert::keyExists($normalizedProperty, 'type');
         Assert::same($normalizedProperty['type'], self::type());
         Assert::keyExists($normalizedProperty, 'process');
+        Assert::isArray($normalizedProperty['process']);
 
         return new self(Process::fromNormalized($normalizedProperty['process']));
     }
