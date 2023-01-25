@@ -34,16 +34,12 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange, onDelete}) 
   return (
     <>
       <Styled.TitleCell>{translate('pim_common.family')}</Styled.TitleCell>
-      <Styled.CellInputContainer>
-        <Styled.InputContainer>
-          <OperatorSelector operator={condition.operator} onChange={handleOperatorChange} operators={FamilyOperators} />
-        </Styled.InputContainer>
-      </Styled.CellInputContainer>
-      <Table.Cell>
+      <Styled.SelectionInputsContainer>
+        <OperatorSelector operator={condition.operator} onChange={handleOperatorChange} operators={FamilyOperators} />
         {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
           <FamiliesSelector familyCodes={condition.value} onChange={handleFamilyCodesChange} />
         )}
-      </Table.Cell>
+      </Styled.SelectionInputsContainer>
       <Table.ActionCell>
         <Button onClick={onDelete} ghost level="danger">
           {translate('pim_common.delete')}
