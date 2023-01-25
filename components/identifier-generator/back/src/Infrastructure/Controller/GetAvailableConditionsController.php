@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -26,14 +27,14 @@ use Webmozart\Assert\Assert;
 final class GetAvailableConditionsController
 {
     private const DEFAULT_LIMIT_PAGINATION = 20;
-    private const FIELD_TRANSLATION_BASE = 'pim_identifier_generator.condition.fields.';
-    private const SYSTEM_GROUP_TRANSLATION_KEY = 'pim_identifier_generator.condition.field_groups.system';
+    private const FIELD_TRANSLATION_BASE = 'pim_catalog_identifier_generator.condition.fields.';
+    private const SYSTEM_GROUP_TRANSLATION_KEY = 'pim_catalog_identifier_generator.condition.field_groups.system';
 
     public function __construct(
         private readonly GetGroupedAttributes $getGroupedAttributes,
         private readonly UserContext $userContext,
         private readonly TranslatorInterface $translator,
-        private readonly SecurityFacadeInterface $securityFacade,
+        private readonly SecurityFacadeInterface $security,
     ) {
     }
 
@@ -41,6 +42,9 @@ final class GetAvailableConditionsController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->security->isGranted('pim_identifier_generator_manage')) {
+            throw new AccessDeniedException();
         }
 
         $search = $request->query->getAlpha('search');
@@ -55,7 +59,7 @@ final class GetAvailableConditionsController
         $filteredFields = $this->filterSystemFieldByText($fields, $search);
         $paginatedFields = \array_slice($filteredFields, $offset, $limit);
 
-        $canListAttributes = $this->securityFacade->isGranted('pim_enrich_attribute_index');
+        $canListAttributes = $this->security->isGranted('pim_enrich_attribute_index');
         $paginatedAttributes = [];
         if ($limit > \count($paginatedFields) && $canListAttributes) {
             $offset -= \count($filteredFields);
