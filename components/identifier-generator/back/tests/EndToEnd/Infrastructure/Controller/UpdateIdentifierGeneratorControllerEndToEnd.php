@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -175,9 +174,18 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         );
     }
 
-    protected function getConfiguration(): Configuration
+    /** @test */
+    public function it_should_return_http_forbidden_without_manage_permission(): void
     {
-        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
+        $this->loginAs('mary');
+        $this->callUpdateRoute(
+            'akeneo_identifier_generator_rest_update',
+            ['code' => 'my_new_generator'],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest'],
+            \json_encode([]),
+        );
+        $response = $this->client->getResponse();
+        Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     private function insertDefaultIdentifierGenerator(): void
