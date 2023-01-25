@@ -117,6 +117,7 @@
 - PIM-10791: Fix product and product model completeness compute on attribute removal
 - PIM-10768: Fix update list status_code response
 - PIM-10784: Fix API error 500 when filtering for identifier with null value
+- PIM-10785: Fix case-insensitive patch product model
 
 ## Improvements
 
