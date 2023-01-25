@@ -158,7 +158,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with non existing families
     When I try to create an identifier generator with a family condition with operator IN and ["non_existing1", "non_existing_2"] as value
-    Then I should get an error with message 'conditions[0][value]: The following families do not exist: "non_existing1", "non_existing_2".'
+    Then I should get an error with message 'conditions[0][value]: The following families have been deleted from your catalog: "non_existing1", "non_existing_2". You can remove them from your product selection.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with non existing field
