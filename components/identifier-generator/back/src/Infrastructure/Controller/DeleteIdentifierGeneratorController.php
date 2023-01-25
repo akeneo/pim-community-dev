@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -18,7 +22,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class DeleteIdentifierGeneratorController
 {
     public function __construct(
-        private IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly SecurityFacadeInterface $security,
     ) {
     }
 
@@ -26,6 +31,9 @@ final class DeleteIdentifierGeneratorController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->security->isGranted('pim_identifier_generator_manage')) {
+            throw new AccessDeniedException();
         }
 
         $identifierGenerator = $this->identifierGeneratorRepository->get($code);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,11 +29,23 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
     }
 
     /** @test */
-    public function it_returns_http_forbidden_without_acl(): void
+    public function it_returns_http_forbidden_without_the_list_attributes_acl(): void
     {
-        $this->removeAclFromRole('action:pim_enrich_attribute_index');
-        $this->loginAs('admin');
+        $this->setAcls('ROLE_USER', ['action:pim_enrich_attribute_index' => false]);
+        $this->loginAs('mary');
+        $this->callGetRouteWithQueryParam(
+            'akeneo_identifier_generator_get_attribute_options',
+            ['attributeCode' => 'a_simple_select_color', 'codes' => 'familyA1,familyA2'],
+        );
+        $response = $this->client->getResponse();
 
+        Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    /** @test */
+    public function it_returns_http_forbidden_without_the_view_generator_acl(): void
+    {
+        $this->loginAs('kevin');
         $this->callGetRouteWithQueryParam(
             'akeneo_identifier_generator_get_attribute_options',
             ['attributeCode' => 'a_simple_select_color', 'codes' => 'familyA1,familyA2'],
@@ -135,10 +146,5 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
         ];
 
         Assert::assertSame($expected, json_decode($response->getContent(), true));
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 }
