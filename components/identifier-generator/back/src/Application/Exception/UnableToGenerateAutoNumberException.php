@@ -14,7 +14,7 @@ class UnableToGenerateAutoNumberException extends UnableToSetIdentifierException
         string $target,
     ) {
         parent::__construct($identifier, $target, new ErrorList([
-            new Error('The Auto number can not be generated.'),
+            new Error('The Auto number could not be generated.'),
         ]));
     }
 }
