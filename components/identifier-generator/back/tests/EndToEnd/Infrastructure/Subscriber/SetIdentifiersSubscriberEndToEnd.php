@@ -7,7 +7,7 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
@@ -53,6 +53,18 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
 
         Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
         Assert::assertSame('AKN-050', $productFromDatabase->getValue('sku')->getData());
+    }
+
+    /** @test */
+    public function it_should_generate_several_identifiers_on_create(): void
+    {
+        $this->createIdentifierGenerator();
+        $productsFromDatabase = $this->createProducts(5);
+
+        Assert::assertSame(
+            ['AKN-050', 'AKN-051', 'AKN-052', 'AKN-053', 'AKN-054'],
+            \array_map(fn (ProductInterface $product): ?string => $product->getIdentifier(), $productsFromDatabase)
+        );
     }
 
     /** @test */
@@ -198,11 +210,6 @@ SQL);
         $attributeOptionViolations = $this->getValidator()->validate($attributeOption);
         $this->assertCount(0, $attributeOptionViolations);
         $this->getAttributeOptionSaver()->save($attributeOption);
-    }
-
-    private function getProductRepository(): ProductRepositoryInterface
-    {
-        return $this->get('pim_catalog.repository.product');
     }
 
     private function getCreateGeneratorHandler(): CreateGeneratorHandler

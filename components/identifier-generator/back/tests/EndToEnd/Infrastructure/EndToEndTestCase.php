@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -27,6 +29,27 @@ abstract class EndToEndTestCase extends TestCase
         parent::setUp();
 
         $this->admin = $this->createAdminUser();
+    }
+
+    /**
+     * @return ProductInterface[]
+     */
+    protected function createProducts(int $count): array
+    {
+        $uuids = [];
+        $products = [];
+        for ($i = 0; $i < $count; $i++) {
+            $uuid = Uuid::uuid4();
+            $uuids[] = $uuid;
+            $products[] = new Product($uuid->toString());
+        }
+
+        $this->getProductSaver()->saveAll($products);
+
+        return \array_map(
+            fn (UuidInterface $uuid): ProductInterface => $this->getProductRepository()->find($uuid),
+            $uuids
+        );
     }
 
     protected function createProduct(?string $identifier = null): ProductInterface
@@ -86,6 +109,11 @@ abstract class EndToEndTestCase extends TestCase
     private function getProductRepository(): ProductRepositoryInterface
     {
         return $this->get('pim_catalog.repository.product');
+    }
+
+    private function getProductSaver(): ProductSaver
+    {
+        return $this->get('pim_catalog.saver.product');
     }
 
     private function getAuthenticator(): AuthenticatorHelper

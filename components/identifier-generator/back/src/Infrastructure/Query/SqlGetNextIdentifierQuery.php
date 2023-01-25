@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
@@ -20,8 +20,11 @@ final class SqlGetNextIdentifierQuery implements GetNextIdentifierQuery
     ) {
     }
 
-    public function fromPrefix(Target $target, string $prefix): int
-    {
+    public function fromPrefix(
+        IdentifierGenerator $identifierGenerator,
+        string $prefix,
+        int $numberMin,
+    ): int {
         $sql = <<<SQL
 SELECT MAX(number) FROM pim_catalog_identifier_generator_prefixes p 
 INNER JOIN pim_catalog_attribute a ON a.id = p.attribute_id
@@ -31,7 +34,7 @@ SQL;
         $result = $this->connection->executeQuery(
             $sql,
             [
-                'code' => $target->asString(),
+                'code' => $identifierGenerator->target()->asString(),
                 'prefix' => $prefix,
             ],
             [
@@ -42,9 +45,11 @@ SQL;
 
         Assert::nullOrString($result);
         if (null === $result || $result === '') {
-            return 1;
+            return $numberMin;
         }
 
-        return ((int) $result) + 1;
+        $result = ((int) $result) + 1;
+
+        return ($result < $numberMin) ? $numberMin : $result;
     }
 }

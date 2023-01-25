@@ -33,7 +33,7 @@ final class Version_8_0_20230110131126_update_target_column_for_identifier_gener
         $sql = <<<SQL
 ALTER TABLE pim_catalog_identifier_generator ADD COLUMN target_id INT NOT NULL AFTER target;
 UPDATE pim_catalog_identifier_generator SET target_id=(SELECT id FROM pim_catalog_attribute WHERE code=target);
-ALTER TABLE pim_catalog_identifier_generator ADD CONSTRAINT FOREIGN KEY(target_id) REFERENCES pim_catalog_attribute(id) ON DELETE CASCADE;
+ALTER TABLE pim_catalog_identifier_generator ADD CONSTRAINT `pim_catalog_identifier_generator_ibfk_1` FOREIGN KEY(target_id) REFERENCES pim_catalog_attribute(id) ON DELETE CASCADE;
 ALTER TABLE pim_catalog_identifier_generator DROP COLUMN target;
 SQL;
 
