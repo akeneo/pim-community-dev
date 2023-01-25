@@ -6,11 +6,13 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -31,7 +33,8 @@ final class GetAvailableConditionsController
     public function __construct(
         private readonly GetGroupedAttributes $getGroupedAttributes,
         private readonly UserContext $userContext,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly SecurityFacadeInterface $security,
     ) {
     }
 
@@ -39,6 +42,9 @@ final class GetAvailableConditionsController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->security->isGranted('pim_identifier_generator_manage')) {
+            throw new AccessDeniedException();
         }
 
         $search = $request->query->getAlpha('search');

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +25,16 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
         $response = $this->client->getResponse();
         Assert::AssertSame(Response::HTTP_FOUND, $response->getStatusCode());
         Assert::assertTrue($response->isRedirect('/'));
+    }
+
+    /** @test */
+    public function it_returns_http_forbidden_without_the_manage_generator_acl(): void
+    {
+        $this->loginAs('mary');
+        $this->callRoute('akeneo_identifier_generator_get_conditions');
+        $response = $this->client->getResponse();
+
+        Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /** @test */
@@ -214,14 +223,6 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
         $frenchCatalogue->set('pim_identifier_generator.condition.fields.enabled', 'Statut');
 
         $this->loginAs('Julia');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 
     private function updateAttributeLabels(string $attributeCode, array $labels): void

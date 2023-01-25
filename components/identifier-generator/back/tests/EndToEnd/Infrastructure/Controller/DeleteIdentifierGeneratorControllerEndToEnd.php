@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +31,20 @@ final class DeleteIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $response = $this->client->getResponse();
         Assert::AssertSame(Response::HTTP_FOUND, $response->getStatusCode());
         Assert::assertTrue($response->isRedirect('/'));
+    }
+
+    /** @test */
+    public function it_should_return_http_forbidden_without_manage_permission(): void
+    {
+        $this->loginAs('mary');
+        $this->callDeleteRoute(
+            'akeneo_identifier_generator_rest_delete',
+            [
+                'code' => 'unknown_identifier',
+            ]
+        );
+        $response = $this->client->getResponse();
+        Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /** @test */
@@ -84,10 +97,5 @@ final class DeleteIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
         Assert::assertSame(0, $identifierRepository->count());
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 }
