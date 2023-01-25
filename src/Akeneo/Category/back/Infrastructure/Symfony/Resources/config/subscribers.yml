@@ -20,3 +20,9 @@ services:
             - '@akeneo.category.enriched.feature'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber:
+        arguments:
+            - '@akeneo.category.enriched.feature'
+        tags:
+            - { name: kernel.event_subscriber }
