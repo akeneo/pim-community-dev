@@ -251,11 +251,15 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to create an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     * @When /^I try to create an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
     {
-        $defaultStructure = ['type' => 'family', 'process' => ['type' => $type, 'operator' => $operator, 'value' => $value]];
+        $value = \json_decode($value);
+        $defaultStructure = [
+            'type' => 'family',
+            'process' => ['type' => $type, 'operator' => $operator, 'value' => $value],
+        ];
         if ($operator === 'undefined') {
             unset($defaultStructure['process']['operator']);
         }
