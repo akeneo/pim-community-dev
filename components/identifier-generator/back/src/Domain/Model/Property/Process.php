@@ -33,6 +33,16 @@ final class Process
         return $this->type;
     }
 
+    public function operator(): ?string
+    {
+        return $this->operator;
+    }
+
+    public function value(): ?int
+    {
+        return $this->value;
+    }
+
     /**
      * @return ProcessNormalized
      */
