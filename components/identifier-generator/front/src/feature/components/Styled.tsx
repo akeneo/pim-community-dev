@@ -1,5 +1,13 @@
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, Helper, SkeletonPlaceholder, Table} from 'akeneo-design-system';
+import {
+  AkeneoThemedProps,
+  getColor,
+  Helper,
+  MultiSelectInput,
+  SelectInput,
+  SkeletonPlaceholder,
+  Table,
+} from 'akeneo-design-system';
 
 const FormContainer = styled.div`
   display: flex;
@@ -23,6 +31,7 @@ const FullPageCenteredContent = styled.div`
 const TitleCell = styled(Table.Cell)`
   font-style: italic;
   color: ${getColor('brand', 100)};
+  width: 120px;
 `;
 
 const InputContainer = styled.div`
@@ -83,7 +92,7 @@ const CellInputContainer = styled(Table.Cell)`
   width: calc(10vw + 20px);
 `;
 
-const TranslationsPlaceholderTitleConditions = styled.div`
+const BoldContainer = styled.div`
   font-weight: bold;
 `;
 
@@ -97,12 +106,27 @@ const ListItems = styled.ul`
   }
 `;
 
-const NotDraggableCell = styled(Table.Cell)`
-  width: 44px;
+const SelectionInputsContainer = styled(Table.Cell)`
+  > div:first-child {
+    display: flex;
+    gap: 20px;
+  }
 `;
 
-const TitleCondition = styled(TitleCell)`
-  width: calc(10vw + 100px);
+const MultiSelectCondition = styled(MultiSelectInput)`
+  flex-basis: 300px;
+`;
+
+const OperatorSelectCondition = styled(SelectInput)`
+  flex-basis: 160px;
+`;
+
+const SelectCondition = styled(SelectInput)`
+  flex-basis: 120px;
+`;
+
+const SingleSelectCondition = styled(SelectInput)`
+  flex-basis: 300px;
 `;
 
 const CheckboxContainer = styled.div`
@@ -110,6 +134,11 @@ const CheckboxContainer = styled.div`
 `;
 
 const Styled = {
+  SingleSelectCondition,
+  OperatorSelectCondition,
+  SelectCondition,
+  MultiSelectCondition,
+  SelectionInputsContainer,
   CellInputContainer,
   ErrorContainer,
   MainErrorHelper,
@@ -120,9 +149,7 @@ const Styled = {
   TwoColumns,
   TranslationsLabelSkeleton,
   TranslationsTextFieldSkeleton,
-  TranslationsPlaceholderTitleConditions,
-  NotDraggableCell,
-  TitleCondition,
+  BoldContainer,
   ListItems,
   ConditionLineSkeleton,
   CheckboxContainer,
