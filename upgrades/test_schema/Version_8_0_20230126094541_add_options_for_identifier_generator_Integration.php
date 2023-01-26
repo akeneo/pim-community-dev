@@ -44,9 +44,9 @@ SQL);
         $this->reExecuteMigration(self::MIGRATION_NAME);
         Assert::assertTrue($this->columnExists('pim_catalog_identifier_generator', 'options'));
         Assert::assertEqualsCanonicalizing([
-            ['generator' => '-'],
-            ['generator' => '='],
-            ['generator' => null],
+            ['generator' => '-', 'text_transformation' => 'no'],
+            ['generator' => '=', 'text_transformation' => 'no'],
+            ['generator' => null, 'text_transformation' => 'no'],
         ], $this->getOptions());
     }
 

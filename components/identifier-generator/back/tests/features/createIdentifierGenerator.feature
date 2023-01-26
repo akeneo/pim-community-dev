@@ -359,6 +359,12 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'delimiter: This value is too long. It should have 100 characters or less.'
     And the identifier should not be created
 
+  # Text transformation
+  Scenario: Cannot create an identifier generator with unknown text transformation
+    When I try to create an identifier generator with text transformation unknown
+    Then I should get an error with message 'textTransformation: Text transformation "unknown" can only be one of the following: "no", "uppercase", "downcase".'
+    And the identifier should not be created
+
   # Code
   Scenario: Cannot create an identifier generator with blank code
     When I try to create an identifier generator with code ''

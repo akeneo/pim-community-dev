@@ -41,7 +41,8 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
             ],
             ['en_US' => 'My Generator'],
             'sku',
-            '-'
+            '-',
+            'no',
         ));
     }
 
@@ -177,7 +178,8 @@ SQL);
             ],
             ['en_US' => 'My Generator'],
             'sku',
-            '-'
+            '-',
+            'no',
         ));
     }
 
