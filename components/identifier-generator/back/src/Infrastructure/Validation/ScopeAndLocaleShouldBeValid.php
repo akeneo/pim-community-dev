@@ -17,12 +17,13 @@ final class ScopeAndLocaleShouldBeValid extends Constraint
      * These 2 next messages are translated through Collection Symfony validator.
      * @see Collection
      */
-    public string $missingField = 'This field is missing.';
     public string $notExpectedField = 'This field was not expected.';
 
     public string $unknownScope = 'validation.identifier_generator.unknown_scope';
     public string $unknownLocale = 'validation.identifier_generator.unknown_locale';
     public string $inactiveLocale = 'validation.identifier_generator.inactive_locale';
+    public string $localeRequired = 'validation.identifier_generator.locale_required';
+    public string $scopeRequired = 'validation.identifier_generator.scope_required';
 
     /**
      * @inerhitDoc
