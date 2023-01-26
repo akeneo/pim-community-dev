@@ -324,7 +324,7 @@ class CategoryTreeController extends AbstractController
         $category = $this->findCategory($id);
 
         $templateUuid = $this->getTemplateUuid($category);
-        $options = $templateUuid ? ['templateUuid' => $templateUuid->getValue()] : [];
+        $options = $templateUuid ? ['templateUuid' => $templateUuid] : [];
 
         try {
             $this->categoryRemover->remove($category, $options);

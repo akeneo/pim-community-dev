@@ -57,3 +57,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateSql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\DeleteTemplateAndAttributes:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteTemplateAndAttributesSql
+    arguments:
+      - '@database_connection'

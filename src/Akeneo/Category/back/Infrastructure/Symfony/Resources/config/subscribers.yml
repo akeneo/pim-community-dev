@@ -24,5 +24,6 @@ services:
     Akeneo\Category\Infrastructure\EventSubscriber\RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber:
         arguments:
             - '@akeneo.category.enriched.feature'
+            - '@Akeneo\Category\Application\Query\DeleteTemplateAndAttributes'
         tags:
             - { name: kernel.event_subscriber }

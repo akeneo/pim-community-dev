@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Application\Query\DeleteTemplateAndAttributes;
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -19,6 +19,7 @@ class RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber implements 
 {
     public function __construct(
         private readonly FeatureFlag $enrichedCategoryFeature,
+        private readonly DeleteTemplateAndAttributes $deleteTemplateAndAttributes
     ) {
     }
 
@@ -41,5 +42,6 @@ class RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber implements 
         }
 
         $templateUuid = $event->getArguments()['templateUuid'];
+        ($this->deleteTemplateAndAttributes)($templateUuid);
     }
 }
