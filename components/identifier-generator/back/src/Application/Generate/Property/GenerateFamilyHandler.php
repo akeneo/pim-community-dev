@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Webmozart\Assert\Assert;
 
 /**
@@ -20,21 +20,23 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
 {
     public function __invoke(
         PropertyInterface $familyProperty,
-        Target $target,
+        IdentifierGenerator $identifierGenerator,
         ProductProjection $productProjection,
         string $prefix
     ): string {
         Assert::isInstanceOf($familyProperty, FamilyProperty::class);
+        Assert::string($productProjection->familyCode());
 
         switch ($familyProperty->process()->type()) {
             case Process::PROCESS_TYPE_TRUNCATE:
+                Assert::integer($familyProperty->process()->value());
                 if ($familyProperty->process()->operator() === Process::PROCESS_OPERATOR_EQ) {
                     try {
                         Assert::minLength($productProjection->familyCode(), $familyProperty->process()->value());
                     } catch (\InvalidArgumentException) {
                         throw new UnableToTruncateException(
                             sprintf('%s%s', $prefix, $productProjection->familyCode()),
-                            $target->asString(),
+                            $identifierGenerator->target()->asString(),
                             $productProjection->familyCode()
                         );
                     }

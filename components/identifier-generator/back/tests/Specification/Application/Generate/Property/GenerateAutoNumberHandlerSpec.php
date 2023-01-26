@@ -60,11 +60,12 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
             'numberMin' => 0,
             'digitsMin' => 1,
         ]);
-        $getNextIdentifierQuery->fromPrefix($target, 'AKN-')
-            ->shouldBeCalled()
-            ->willReturn(42);
 
         $identifierGenerator = $this->getIdentifierGenerator($autoNumber);
+
+        $getNextIdentifierQuery->fromPrefix($identifierGenerator, 'AKN-', 0)
+            ->shouldBeCalled()
+            ->willReturn(42);
 
         $this->__invoke(
             $autoNumber,
@@ -88,7 +89,7 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
 
         $getNextIdentifierQuery->fromPrefix($identifierGenerator, 'AKN-', 50)
             ->shouldBeCalled()
-            ->willReturn(69);
+            ->willReturn(50);
 
         $this->__invoke(
             $autoNumber,
@@ -142,7 +143,6 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
             new ProductProjection(null, true, null, []),
             'AKN-'
         )->shouldReturn('426942');
-        $this->__invoke($autoNumber, $identifierGenerator, 'AKN-')->shouldReturn('426942');
     }
 
     private function getIdentifierGenerator(PropertyInterface $property): IdentifierGenerator
