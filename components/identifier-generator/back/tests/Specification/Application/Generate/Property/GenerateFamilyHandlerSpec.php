@@ -80,6 +80,26 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         )->shouldReturn('fam');
     }
 
+    public function it_should_return_family_code_with_truncate_and_smaller_family_code(): void
+    {
+        $target = Target::fromString('sku');
+        $family = FamilyProperty::fromNormalized([
+            'type' => FamilyProperty::type(),
+            'process' => [
+                'type' => 'truncate',
+                'operator' => Process::PROCESS_OPERATOR_LTE,
+                'value' => 3,
+            ]
+        ]);
+
+        $this->__invoke(
+            $family,
+            $target,
+            $this->getProductProjection('fa'),
+            'AKN-'
+        )->shouldReturn('fa');
+    }
+
     public function it_should_throw_an_error_if_family_code_is_too_small(): void
     {
         $target = Target::fromString('sku');
@@ -114,14 +134,12 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
             ]
         ]);
 
-        $this->shouldNotThrow(UnableToTruncateException::class)->during(
-            '__invoke', [
-                $family,
-                $target,
-                $this->getProductProjection('fam'),
-                'AKN-'
-            ]
-        );
+        $this->__invoke(
+            $family,
+            $target,
+            $this->getProductProjection('fam'),
+            'AKN-'
+        )->shouldReturn('fam');
     }
 
     private function getProductProjection(string $familyCode): ProductProjection
