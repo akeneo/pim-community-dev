@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -51,7 +52,10 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
             $target,
             Delimiter::fromString(null),
         );
-        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
+        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
+            $identifierGenerator,
+            new ProductProjection(null, true, null, [])
+        );
 
         $getNextIdentifierQuery
             ->fromPrefix($identifierGenerator, 'AKN-', 0)
@@ -81,7 +85,10 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
             $target,
             Delimiter::fromString('-'),
         );
-        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
+        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
+            $identifierGenerator,
+            new ProductProjection(null, true, null, [])
+        );
 
         $getNextIdentifierQuery
             ->fromPrefix($identifierGenerator, 'AKN-', 0)

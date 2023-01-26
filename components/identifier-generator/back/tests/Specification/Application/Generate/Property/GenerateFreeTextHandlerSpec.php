@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -52,7 +53,12 @@ class GenerateFreeTextHandlerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$autoNumber, $identifierGenerator, 'AKN-']);
+            ->during('__invoke', [
+                $autoNumber,
+                $identifierGenerator,
+                new ProductProjection(null, true, null, []),
+                'AKN-'
+            ]);
     }
 
     public function it_should_return_string(): void
@@ -72,6 +78,11 @@ class GenerateFreeTextHandlerSpec extends ObjectBehavior
             Delimiter::fromString(null),
         );
 
-        $this->__invoke($freeText, $identifierGenerator, 'AKN-')->shouldReturn('AKN-');
+        $this->__invoke(
+            $freeText,
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+            'AKN-'
+        )->shouldReturn('AKN-');
     }
 }
