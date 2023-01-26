@@ -120,7 +120,7 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => 'en_US',
                 ],
-                'ean13' => [
+                'meta_description' => [
                     'source' => null,
                     'scope' => null,
                     'locale' => null,
@@ -198,10 +198,10 @@ class CatalogFixtureCommand extends Command
               "type": "string",
               "title": "Meta title"
             },
-            "ean13": {
+            "meta_description": {
               "type": "string",
-              "minLength": 13,
-              "maxLength": 13
+              "minLength": 50,
+              "maxLength": 160
             }
           }
         }
