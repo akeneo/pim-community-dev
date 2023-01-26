@@ -2,7 +2,7 @@ import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {mockResponse} from '../../tests/test-utils';
 import {useGetConditionItems} from '../useGetConditionItems';
 import {act, renderHook} from '@testing-library/react-hooks';
-import {CONDITION_NAMES, Operator} from '../../models';
+import {CONDITION_NAMES, Conditions, Operator} from '../../models';
 
 describe('useGetConditionItems', () => {
   test('it paginate items', async () => {
@@ -47,21 +47,29 @@ describe('useGetConditionItems', () => {
       ok: true,
       json: resultsPage1,
     });
-    const {result, waitFor} = renderHook(() => useGetConditionItems(true, [], 3), {wrapper: createWrapper()});
-    await waitFor(() => result.current?.conditionItems?.length > 0);
+
+    const conditions: Conditions = [];
+    let hookResult = undefined;
+    let hookWaitFor = undefined;
+    await act(async () => {
+      const {result, waitFor} = renderHook(() => useGetConditionItems(true, conditions, 3), {wrapper: createWrapper()});
+      await waitFor(() => result.current?.conditionItems?.length > 0);
+      hookResult = result;
+      hookWaitFor = waitFor;
+    });
     expectCallPage1();
-    expect(result.current.conditionItems).toEqual(resultsPage1);
+    expect(hookResult.current.conditionItems).toEqual(resultsPage1);
 
     const expectCallPage2 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {
       ok: true,
       json: resultsPage2,
     });
     act(() => {
-      result.current.handleNextPage();
+      hookResult.current.handleNextPage();
     });
-    await waitFor(() => result.current?.conditionItems?.length > 2);
+    await hookWaitFor(() => hookResult.current?.conditionItems?.length > 2);
     expectCallPage2();
-    expect(result.current.conditionItems).toEqual(mergedResults);
+    expect(hookResult.current.conditionItems).toEqual(mergedResults);
   });
 
   test('it resets items on search', async () => {
@@ -83,24 +91,32 @@ describe('useGetConditionItems', () => {
       ok: true,
       json: resultsPage1,
     });
-    const {result, waitFor} = renderHook(() => useGetConditionItems(true, [], 3), {wrapper: createWrapper()});
-    await waitFor(() => result.current?.conditionItems?.length > 0);
+
+    const conditions: Conditions = [];
+    let hookResult = undefined;
+    let hookWaitFor = undefined;
+    await act(async () => {
+      const {result, waitFor} = renderHook(() => useGetConditionItems(true, conditions, 3), {wrapper: createWrapper()});
+      await waitFor(() => result.current?.conditionItems?.length > 0);
+      hookResult = result;
+      hookWaitFor = waitFor;
+    });
     expectCallPage1();
-    expect(result.current.conditionItems).toEqual(resultsPage1);
+    expect(hookResult.current.conditionItems).toEqual(resultsPage1);
 
     const expectCallPage2 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {
       ok: true,
       json: resultsWithSearch,
     });
     act(() => {
-      result.current.setSearchValue('fam');
+      hookResult.current.setSearchValue('fam');
     });
     act(() => {
-      result.current.setSearchValue('family');
+      hookResult.current.setSearchValue('family');
     });
-    await waitFor(() => result.current?.conditionItems?.length === 1);
+    await hookWaitFor(() => hookResult.current?.conditionItems?.length === 1);
     expectCallPage2();
-    expect(result.current.conditionItems).toEqual(resultsWithSearch);
+    expect(hookResult.current.conditionItems).toEqual(resultsWithSearch);
   });
 
   test('it filters system items', async () => {
@@ -113,12 +129,16 @@ describe('useGetConditionItems', () => {
       ok: true,
       json: resultsPage1,
     });
-    const {result, waitFor} = renderHook(
-      () => useGetConditionItems(true, [{type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY}], 3),
-      {wrapper: createWrapper()}
-    );
-    await waitFor(() => result.current?.conditionItems?.length > 0);
+
+    let hookResult = undefined;
+    const conditions: Conditions = [{type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY}];
+    await act(async () => {
+      const {result, waitFor} = renderHook(() => useGetConditionItems(true, conditions, 3), {wrapper: createWrapper()});
+      hookResult = result;
+      await waitFor(() => result.current?.conditionItems?.length > 0);
+    });
+
     expectCallPage1();
-    expect(result.current.conditionItems).toEqual(resultsPage1);
+    expect(hookResult.current.conditionItems).toEqual(resultsPage1);
   });
 });
