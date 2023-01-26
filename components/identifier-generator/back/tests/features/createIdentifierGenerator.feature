@@ -289,7 +289,7 @@ Feature: Create Identifier Generator
     Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
     When I try to create an identifier generator with a simple_select condition with color_scopable attribute and undefined scope
-    Then I should get an error with message 'conditions[0][scope]: This field is missing.'
+    Then I should get an error with message 'conditions[0][scope]: A channel is required for the "color_scopable" attribute.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with scope
@@ -301,7 +301,7 @@ Feature: Create Identifier Generator
     Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
     When I try to create an identifier generator with a simple_select condition with color_localizable attribute and undefined locale
-    Then I should get an error with message 'conditions[0][locale]: This field is missing.'
+    Then I should get an error with message 'conditions[0][locale]: A locale is required for the "color_localizable" attribute.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with locale
