@@ -6,6 +6,7 @@ type Props = {
 }
 
 const FamilyCodeLine: React.FC<Props> = ({property}) => {
+  // eslint-disable-next-line no-console
   console.log({property});
 
   return <div>coucou</div>;

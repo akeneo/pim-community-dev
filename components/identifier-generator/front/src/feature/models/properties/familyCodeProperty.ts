@@ -5,10 +5,11 @@ import {Operator} from '../conditions/operator';
 type FamilyCodeProperty = {
   type: PROPERTY_NAMES.FAMILY_CODE,
   abbreviation_type: AbbreviationType | null,
-  operator: Operator | null
+  operator: Operator | null,
+  charsNumber: number | null
 };
 
-const FamilyCodeOperators: Operator[] = [Operator.IN, Operator.NOT_IN, Operator.EMPTY, Operator.NOT_EMPTY];
+const FamilyCodeOperators: Operator[] = [Operator.EQUAL, Operator.EQUAL_OR_LESS];
 
 export {FamilyCodeOperators};
 export type {FamilyCodeProperty};
