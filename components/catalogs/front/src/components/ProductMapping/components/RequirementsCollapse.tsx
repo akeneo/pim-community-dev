@@ -11,7 +11,7 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState(true);
     const constraintKeys: string[] = ['minLength', 'maxLength'];
-    const targetKeys = Object.keys(target);
+    const targetKeys = Object.keys(target) as Array<keyof Target>;
     if (undefined === target.description || null === target.description) {
         return null;
     }
