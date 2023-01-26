@@ -16,6 +16,7 @@ import {OptionCode} from '../../models/option';
 import {ScopeAndLocaleSelector} from '../../components/ScopeAndLocaleSelector';
 import {useGetAttributeByCode} from '../../hooks/useGetAttributeByCode';
 import {Unauthorized} from '../../errors';
+import {useIdentifierGeneratorAclContext} from '../../context';
 
 type SimpleSelectLineProps = {
   condition: SimpleSelectCondition;
@@ -27,6 +28,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const locale = useUserContext().get('catalogLocale');
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const {data, isLoading, error} = useGetAttributeByCode(condition.attributeCode);
   const canAccessAttributes = isGranted('pim_enrich_attribute_index');
 
@@ -109,9 +111,11 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
             />
           </Styled.SelectionInputsContainer>
           <Table.ActionCell colSpan={1}>
-            <Button onClick={onDelete} ghost level="danger">
-              {translate('pim_common.delete')}
-            </Button>
+            {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+              <Button onClick={onDelete} ghost level="danger">
+                {translate('pim_common.delete')}
+              </Button>
+            )}
           </Table.ActionCell>
         </>
       )}
