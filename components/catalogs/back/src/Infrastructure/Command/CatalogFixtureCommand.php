@@ -120,6 +120,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => 'en_US',
                 ],
+                'release_date' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
                 'is_released' => [
                     'source' => null,
                     'scope' => null,
@@ -195,6 +200,10 @@ class CatalogFixtureCommand extends Command
             "meta_title": {
               "type": "string",
               "title": "Meta title"
+            },
+            "release_date": {
+              "type": "string",
+              "format": "date-time"
             },
             "is_released": {
               "type": "boolean"

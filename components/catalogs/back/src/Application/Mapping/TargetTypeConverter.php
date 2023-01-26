@@ -22,6 +22,9 @@ final class TargetTypeConverter
             'pim_catalog_text',
             'pim_catalog_textarea',
         ],
+        'string+date-time' => [
+            'pim_catalog_date',
+        ],
     ];
 
     /**
