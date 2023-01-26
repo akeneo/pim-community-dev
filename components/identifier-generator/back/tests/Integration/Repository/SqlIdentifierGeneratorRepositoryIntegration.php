@@ -57,8 +57,8 @@ class SqlIdentifierGeneratorRepositoryIntegration extends TestCase
     public function it_updates_an_identifier_generator(): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('d556e59e-d46c-465e-863d-f4a39d0b7485'), 'default', (SELECT id FROM pim_catalog_attribute), '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
+VALUES (UUID_TO_BIN('d556e59e-d46c-465e-863d-f4a39d0b7485'), 'default', (SELECT id FROM pim_catalog_attribute), JSON_OBJECT('delimiter', '-'), '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
 SQL;
 
         $this->connection->executeStatement($query);
@@ -100,8 +100,8 @@ SQL;
     public function it_gets_an_identifier_generator(): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
+VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), JSON_OBJECT('delimiter', '-'), '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
 SQL;
 
         $this->connection->executeStatement($query);
@@ -162,8 +162,8 @@ SQL;
     public function its_gets_all_identifier_generator(): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
+VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), JSON_OBJECT('delimiter', '-'), '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
 SQL;
 
         $this->connection->executeStatement($query);
@@ -189,8 +189,8 @@ SQL;
     public function it_can_delete_an_identifier_generator(): void
     {
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
+VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), JSON_OBJECT('delimiter', '-'), '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
 SQL;
 
         $this->connection->executeStatement($query);
