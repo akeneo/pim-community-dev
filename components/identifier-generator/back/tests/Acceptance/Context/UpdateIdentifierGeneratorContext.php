@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
@@ -49,6 +50,7 @@ final class UpdateIdentifierGeneratorContext implements Context
             LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $this->generatorRepository->save($identifierGenerator);
     }

@@ -103,7 +103,7 @@ sku: The identifier attribute must not contain more than 255 characters. The sub
             ]),
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
-            Delimiter::fromString('-'),TextTransformation::fromString('no'),
+            Delimiter::fromString('-'),
             TextTransformation::fromString('no'),
         );
 
