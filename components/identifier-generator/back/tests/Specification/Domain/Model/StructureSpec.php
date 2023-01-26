@@ -28,7 +28,7 @@ class StructureSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(Structure::class);
     }
 
-    public function it_throws_an_exception_when_en_empty_array(): void
+    public function it_throws_an_exception_when_an_empty_array(): void
     {
         $this->beConstructedThrough('fromArray', [[]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
