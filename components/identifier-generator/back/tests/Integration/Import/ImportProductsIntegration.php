@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -80,6 +81,7 @@ sku: The identifier attribute must not contain more than 255 characters. The sub
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
 
         $this->getIdentifierGeneratorRepository()->save($identifierGenerator);
@@ -101,7 +103,8 @@ sku: The identifier attribute must not contain more than 255 characters. The sub
             ]),
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
-            Delimiter::fromString('-'),
+            Delimiter::fromString('-'),TextTransformation::fromString('no'),
+            TextTransformation::fromString('no'),
         );
 
         $this->getIdentifierGeneratorRepository()->save($identifierGenerator);

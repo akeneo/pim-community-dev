@@ -15,6 +15,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use PhpSpec\ObjectBehavior;
 
 class GenerateFreeTextHandlerSpec extends ObjectBehavior
@@ -43,6 +44,7 @@ class GenerateFreeTextHandlerSpec extends ObjectBehavior
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
             Target::fromString('sku'),
             Delimiter::fromString(null),
+            TextTransformation::fromString('no'),
         );
 
         $autoNumber = AutoNumber::fromNormalized([
@@ -76,6 +78,7 @@ class GenerateFreeTextHandlerSpec extends ObjectBehavior
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
             Target::fromString('sku'),
             Delimiter::fromString(null),
+            TextTransformation::fromString('no'),
         );
 
         $this->__invoke(

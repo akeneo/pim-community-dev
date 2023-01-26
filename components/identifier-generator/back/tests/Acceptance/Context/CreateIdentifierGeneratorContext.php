@@ -314,10 +314,19 @@ final class CreateIdentifierGeneratorContext implements Context
                 [],
                 'sku',
                 null,
+                'no',
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
         }
+    }
+
+    /**
+     * @When I try to create an identifier generator with text transformation :textTransformation
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithTextTransformation(string $textTransformation): void
+    {
+        $this->tryToCreateGenerator(textTransformation: $textTransformation);
     }
 
     /**
@@ -467,6 +476,7 @@ final class CreateIdentifierGeneratorContext implements Context
         ?array $labels = null,
         ?string $target = null,
         ?string $delimiter = null,
+        ?string $textTransformation = null,
     ): void {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
@@ -479,7 +489,8 @@ final class CreateIdentifierGeneratorContext implements Context
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
                 $target ?? 'sku',
-                $delimiter ?? '-'
+                $delimiter ?? '-',
+                $textTransformation ?? 'no',
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
