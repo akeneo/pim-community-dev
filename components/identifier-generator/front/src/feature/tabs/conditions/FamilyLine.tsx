@@ -4,6 +4,7 @@ import {Button, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {FamiliesSelector, OperatorSelector} from '../../components';
+import {useIdentifierGeneratorAclContext} from '../../context';
 
 type FamilyLineProps = {
   condition: FamilyCondition;
@@ -13,6 +14,7 @@ type FamilyLineProps = {
 
 const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const handleOperatorChange = (operator: Operator) => {
     const {value, ...conditionWithoutValue} = condition;
@@ -45,9 +47,11 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange, onDelete}) 
         )}
       </Table.Cell>
       <Table.ActionCell>
-        <Button onClick={onDelete} ghost level="danger">
-          {translate('pim_common.delete')}
-        </Button>
+        {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+          <Button onClick={onDelete} ghost level="danger">
+            {translate('pim_common.delete')}
+          </Button>
+        )}
       </Table.ActionCell>
     </>
   );

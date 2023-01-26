@@ -9,6 +9,7 @@ import {OptionCode} from '../../models/option';
 import {ScopeAndLocaleSelector} from '../../components/ScopeAndLocaleSelector';
 import {useGetAttributeByCode} from '../../hooks/useGetAttributeByCode';
 import {Unauthorized} from '../../errors';
+import {useIdentifierGeneratorAclContext} from '../../context';
 
 type SimpleSelectLineProps = {
   condition: SimpleSelectCondition;
@@ -19,6 +20,7 @@ type SimpleSelectLineProps = {
 const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
   const locale = useUserContext().get('catalogLocale');
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const {data, isLoading, error} = useGetAttributeByCode(condition.attributeCode);
   const label = useMemo(
     () => (isLoading || error ? undefined : getLabel(data?.labels || {}, locale, condition.attributeCode)),
@@ -91,9 +93,11 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
             onChange={handleScopeAndLocaleChange}
           />
           <Table.ActionCell colSpan={1}>
-            <Button onClick={onDelete} ghost level="danger">
-              {translate('pim_common.delete')}
-            </Button>
+            {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+              <Button onClick={onDelete} ghost level="danger">
+                {translate('pim_common.delete')}
+              </Button>
+            )}
           </Table.ActionCell>
         </>
       )}

@@ -3,6 +3,7 @@ import {Condition, EnabledCondition} from '../../models';
 import {Button, SelectInput, Table, TextInput} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {useIdentifierGeneratorAclContext} from '../../context';
 
 type EnabledLineProps = {
   condition: EnabledCondition;
@@ -12,6 +13,7 @@ type EnabledLineProps = {
 
 const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const handleChange = (value: string) => {
     onChange({...condition, value: value === 'true'});
@@ -34,6 +36,7 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
             placeholder={translate('pim_identifier_generator.selection.settings.enabled.placeholder')}
             onChange={handleChange}
             clearable={false}
+            readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
           >
             <SelectInput.Option value="true" title={translate('pim_common.enabled')}>
               {translate('pim_common.enabled')}
@@ -48,9 +51,11 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
         </Styled.InputContainer>
       </Table.Cell>
       <Table.ActionCell>
-        <Button onClick={onDelete} ghost level="danger">
-          {translate('pim_common.delete')}
-        </Button>
+        {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+          <Button onClick={onDelete} ghost level="danger">
+            {translate('pim_common.delete')}
+          </Button>
+        )}
       </Table.ActionCell>
     </>
   );
