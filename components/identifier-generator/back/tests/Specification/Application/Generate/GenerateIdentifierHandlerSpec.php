@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery;
 use PhpSpec\ObjectBehavior;
 
@@ -51,6 +52,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
             $target,
             Delimiter::fromString(null),
+            TextTransformation::fromString('no'),
         );
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
             $identifierGenerator,
@@ -84,6 +86,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
             $target,
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
             $identifierGenerator,

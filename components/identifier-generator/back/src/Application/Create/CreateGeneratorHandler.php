@@ -12,6 +12,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCo
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 
 /**
@@ -38,6 +39,7 @@ final class CreateGeneratorHandler
             LabelCollection::fromNormalized($command->labels),
             Target::fromString($command->target),
             Delimiter::fromString($command->delimiter),
+            TextTransformation::fromString($command->textTransformation),
         );
 
         $this->identifierGeneratorRepository->save($identifierGenerator);

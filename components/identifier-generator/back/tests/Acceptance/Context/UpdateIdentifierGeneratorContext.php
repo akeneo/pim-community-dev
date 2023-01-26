@@ -315,6 +315,14 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to update an identifier generator with text transformation :textTransformation
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithTextTransformation(string $textTransformation): void
+    {
+        $this->tryToUpdateGenerator(textTransformation: $textTransformation);
+    }
+
+    /**
      * @When I update the identifier generator with delimiter null
      */
     public function iUpdateTheIdentifierGeneratorWithDelimiterNull(): void
@@ -327,6 +335,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 ['fr_FR' => 'Générateur'],
                 'sku',
                 null,
+                'no',
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
@@ -472,6 +481,7 @@ final class UpdateIdentifierGeneratorContext implements Context
         ?array $labels = null,
         ?string $target = null,
         ?string $delimiter = null,
+        ?string $textTransformation = null,
     ): void {
         try {
             ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
@@ -483,7 +493,8 @@ final class UpdateIdentifierGeneratorContext implements Context
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_IDENTIFIER_GENERATOR_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
                 $target ?? 'sku',
-                $delimiter ?? 'updatedGenerator'
+                $delimiter ?? 'updatedGenerator',
+                $textTransformation ?? 'no',
             ));
         } catch (ViolationsException $violations) {
             $this->violations = $violations;

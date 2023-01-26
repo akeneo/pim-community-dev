@@ -16,6 +16,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery;
 use PhpSpec\ObjectBehavior;
 
@@ -155,6 +156,7 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
             Target::fromString('sku'),
             Delimiter::fromString(null),
+            TextTransformation::fromString('no'),
         );
     }
 }

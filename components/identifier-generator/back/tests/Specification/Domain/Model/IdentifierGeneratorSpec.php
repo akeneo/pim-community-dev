@@ -16,6 +16,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -37,6 +38,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
         $delimiter = Delimiter::fromString('-');
         $target = Target::fromString('sku');
+        $textTransformation = TextTransformation::fromString('no');
 
         $this->beConstructedWith(
             $identifierGeneratorId,
@@ -46,6 +48,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             $label,
             $target,
             $delimiter,
+            $textTransformation,
         );
     }
 
@@ -63,6 +66,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $structure = Structure::fromArray([$freeText]);
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
         $target = Target::fromString('sku');
+        $textTransformation = TextTransformation::fromString('no');
 
         $this->beConstructedWith(
             $identifierGeneratorId,
@@ -72,6 +76,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             $label,
             $target,
             null,
+            $textTransformation,
         );
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
@@ -173,6 +178,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             ],
             'target' => 'sku',
             'delimiter' => '-',
+            'text_transformation' => 'no',
         ]);
     }
 
