@@ -3,8 +3,8 @@ enum Operator {
   NOT_IN = 'NOT IN',
   EMPTY = 'EMPTY',
   NOT_EMPTY = 'NOT EMPTY',
-  EQUAL = '=',
-  EQUAL_OR_LESS = '<='
+  EQUAL = 'EQUALS',
+  EQUAL_OR_LESS = 'LOWER_OR_EQUAL_THAN'
 }
 
 export {Operator};

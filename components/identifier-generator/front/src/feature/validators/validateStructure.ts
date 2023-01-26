@@ -3,6 +3,7 @@ import {ALLOWED_PROPERTY_NAMES, PROPERTY_NAMES, Structure} from '../models';
 import {Violation} from './Violation';
 import {validateFreeText} from './validateFreeText';
 import {validateAutoNumber} from './validateAutoNumber';
+import {validateFamilyProperty} from './validateFamilyProperty';
 
 const validateStructure: Validator<Structure | undefined> = (structure, path) => {
   const violations: Violation[] = [];
@@ -30,6 +31,9 @@ const validateStructure: Validator<Structure | undefined> = (structure, path) =>
     }
     if (property.type === PROPERTY_NAMES.AUTO_NUMBER) {
       violations.push(...validateAutoNumber(property, subPath));
+    }
+    if (property.type === PROPERTY_NAMES.FAMILY) {
+      violations.push(...validateFamilyProperty(property, subPath));
     }
   });
 

@@ -17,7 +17,7 @@ export type PropertyEditFieldsProps<T extends Property> = React.FC<{
 const components = {
   [PROPERTY_NAMES.FREE_TEXT]: FreeTextEdit,
   [PROPERTY_NAMES.AUTO_NUMBER]: AutoNumberEdit,
-  [PROPERTY_NAMES.FAMILY_CODE]: FamilyCodeEdit,
+  [PROPERTY_NAMES.FAMILY]: FamilyCodeEdit,
 };
 
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {

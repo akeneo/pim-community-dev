@@ -17,7 +17,7 @@ const Preview: React.FC<PreviewProps> = ({structure, delimiter, textTransformati
           {i > 0 && delimiter && <DelimiterPreview delimiter={delimiter} />}
           {property.type === PROPERTY_NAMES.FREE_TEXT && <FreeTextPreview property={property} />}
           {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberPreview property={property} />}
-          {property.type === PROPERTY_NAMES.FAMILY_CODE && <FamilyCodePreview property={property} />}
+          {property.type === PROPERTY_NAMES.FAMILY && <FamilyCodePreview property={property} />}
         </React.Fragment>
       ))}
     </Styled.PreviewWithTextTransformation>
