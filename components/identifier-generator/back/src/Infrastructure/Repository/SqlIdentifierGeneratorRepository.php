@@ -269,6 +269,7 @@ SQL;
         Assert::string($result['target']);
         Assert::string($result['options']);
         $options = \json_decode($result['options'], true);
+        Assert::isArray($options);
         Assert::keyExists($options, 'delimiter');
         Assert::nullOrString($options['delimiter']);
 
