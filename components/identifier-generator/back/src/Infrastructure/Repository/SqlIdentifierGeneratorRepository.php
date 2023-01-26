@@ -16,6 +16,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -39,9 +40,30 @@ class SqlIdentifierGeneratorRepository implements IdentifierGeneratorRepository
      */
     public function save(IdentifierGenerator $identifierGenerator): void
     {
+        Assert::notNull($identifierGenerator->delimiter());
+
+        $parameters = [
+            'uuid' => $identifierGenerator->id()->asString(),
+            'code' => $identifierGenerator->code()->asString(),
+            'target' => $identifierGenerator->target()->asString(),
+            'delimiter' => $identifierGenerator->delimiter()->asString(),
+            'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
+            'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
+            'structure' => json_encode($identifierGenerator->structure()->normalize()),
+            'text_transformation' => $identifierGenerator->textTransformation()->normalize(),
+        ];
+
         $query = <<<SQL
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
-VALUES (UUID_TO_BIN(:uuid), :code, (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target), JSON_OBJECT('delimiter', :delimiter), :labels, :conditions, :structure);
+VALUES (
+    UUID_TO_BIN(:uuid),
+    :code,
+    (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target),
+    JSON_OBJECT('delimiter', :delimiter, 'text_transformation', :text_transformation),
+    :labels,
+    :conditions,
+    :structure
+);
 SQL;
 
         if ($this->isPreviousDatabaseVersionForTarget()) {
@@ -49,6 +71,7 @@ SQL;
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
 VALUES (UUID_TO_BIN(:uuid), :code, :target, :delimiter, :labels, :conditions, :structure);
 SQL;
+            unset($parameters['text_transformation']);
         }
 
         if ($this->isPreviousDatabaseVersionForDelimiter()) {
@@ -56,20 +79,11 @@ SQL;
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
 VALUES (UUID_TO_BIN(:uuid), :code, (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target), :delimiter, :labels, :conditions, :structure);
 SQL;
+            unset($parameters['text_transformation']);
         }
 
-        Assert::notNull($identifierGenerator->delimiter());
-
         try {
-            $this->connection->executeStatement($query, [
-                'uuid' => $identifierGenerator->id()->asString(),
-                'code' => $identifierGenerator->code()->asString(),
-                'target' => $identifierGenerator->target()->asString(),
-                'delimiter' => $identifierGenerator->delimiter()->asString(),
-                'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-                'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
-                'structure' => json_encode($identifierGenerator->structure()->normalize()),
-            ]);
+            $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
             throw new UnableToSaveIdentifierGeneratorException(sprintf('Cannot save the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
         }
@@ -77,10 +91,20 @@ SQL;
 
     public function update(IdentifierGenerator $identifierGenerator): void
     {
+        $parameters = [
+            'code' => $identifierGenerator->code()->asString(),
+            'target' => $identifierGenerator->target()->asString(),
+            'delimiter' => $identifierGenerator->delimiter()?->asString(),
+            'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
+            'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
+            'structure' => json_encode($identifierGenerator->structure()->normalize()),
+            'text_transformation' => $identifierGenerator->textTransformation()->normalize(),
+        ];
+
         $query = <<<SQL
 UPDATE pim_catalog_identifier_generator SET
     target_id=(SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target),
-    options=JSON_OBJECT('delimiter', :delimiter),
+    options=JSON_OBJECT('delimiter', :delimiter, 'text_transformation', :text_transformation),
     labels=:labels,
     conditions=:conditions,
     structure=:structure
@@ -97,6 +121,7 @@ UPDATE pim_catalog_identifier_generator SET
     structure=:structure
 WHERE pim_catalog_identifier_generator.code=:code;
 SQL;
+            unset($parameters['text_transformation']);
         }
 
         if ($this->isPreviousDatabaseVersionForDelimiter()) {
@@ -109,17 +134,11 @@ UPDATE pim_catalog_identifier_generator SET
     structure=:structure
 WHERE pim_catalog_identifier_generator.code=:code;
 SQL;
+            unset($parameters['text_transformation']);
         }
 
         try {
-            $this->connection->executeStatement($query, [
-                'code' => $identifierGenerator->code()->asString(),
-                'target' => $identifierGenerator->target()->asString(),
-                'delimiter' => $identifierGenerator->delimiter()?->asString(),
-                'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-                'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
-                'structure' => json_encode($identifierGenerator->structure()->normalize()),
-            ]);
+            $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
             throw new UnableToUpdateIdentifierGeneratorException(sprintf('Cannot update the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
         }
@@ -156,7 +175,7 @@ SELECT
     conditions,
     structure,
     labels,
-    JSON_OBJECT('delimiter', delimiter) AS options,
+    JSON_OBJECT('delimiter', delimiter, 'text_transformation', 'no') AS options,
     target
 FROM pim_catalog_identifier_generator
 WHERE code=:code
@@ -171,7 +190,7 @@ SELECT
     conditions,
     structure,
     labels,
-    JSON_OBJECT('delimiter', delimiter) AS options,
+    JSON_OBJECT('delimiter', delimiter, 'text_transformation', 'no') AS options,
     pim_catalog_attribute.code AS target
 FROM pim_catalog_identifier_generator
 INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
@@ -221,7 +240,7 @@ SELECT
     conditions,
     structure,
     labels,
-    JSON_OBJECT('delimiter', delimiter) AS options,
+    JSON_OBJECT('delimiter', delimiter, 'text_transformation', 'no') AS options,
     target
 FROM pim_catalog_identifier_generator
 SQL;
@@ -235,7 +254,7 @@ SELECT
     conditions,
     structure,
     labels,
-    JSON_OBJECT('delimiter', delimiter) AS options,
+    JSON_OBJECT('delimiter', delimiter, 'text_transformation', 'no') AS options,
     pim_catalog_attribute.code AS target
 FROM pim_catalog_identifier_generator
 INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
@@ -272,6 +291,8 @@ SQL;
         Assert::isArray($options);
         Assert::keyExists($options, 'delimiter');
         Assert::nullOrString($options['delimiter']);
+        Assert::keyExists($options, 'text_transformation');
+        Assert::string($options['text_transformation']);
 
         return new IdentifierGenerator(
             IdentifierGeneratorId::fromString($result['uuid']),
@@ -281,6 +302,7 @@ SQL;
             LabelCollection::fromNormalized(json_decode($result['labels'], true)),
             Target::fromString($result['target']),
             Delimiter::fromString($options['delimiter']),
+            TextTransformation::fromString($options['text_transformation'])
         );
     }
 

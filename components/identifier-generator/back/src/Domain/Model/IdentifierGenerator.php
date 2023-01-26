@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
  * @phpstan-import-type ConditionsNormalized from Conditions
  * @phpstan-import-type StructureNormalized from Structure
  * @phpstan-import-type LabelsNormalized from LabelCollection
+ * @phpstan-import-type TextTransformationNormalized from TextTransformation
  */
 final class IdentifierGenerator
 {
@@ -24,6 +25,7 @@ final class IdentifierGenerator
         private LabelCollection $labelCollection,
         private Target $target,
         private ?Delimiter $delimiter,
+        private TextTransformation $textTransformation,
     ) {
     }
 
@@ -96,6 +98,7 @@ final class IdentifierGenerator
      *     labels: LabelsNormalized,
      *     target: string,
      *     delimiter: string | null,
+     *     text_transformation: TextTransformationNormalized
      * }
      */
     public function normalize(): array
@@ -108,6 +111,7 @@ final class IdentifierGenerator
             'labels' => $this->labelCollection->normalize(),
             'target' => $this->target->asString(),
             'delimiter' => $this->delimiter?->asString(),
+            'text_transformation' => $this->textTransformation->normalize(),
         ];
     }
 
@@ -116,5 +120,10 @@ final class IdentifierGenerator
         $identifierValue = $productProjection->identifier();
 
         return (null === $identifierValue || '' === $identifierValue) && $this->conditions->match($productProjection);
+    }
+
+    public function textTransformation(): TextTransformation
+    {
+        return $this->textTransformation;
     }
 }

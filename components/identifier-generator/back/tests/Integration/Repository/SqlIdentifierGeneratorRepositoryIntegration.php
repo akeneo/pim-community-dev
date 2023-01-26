@@ -15,6 +15,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -48,6 +49,7 @@ class SqlIdentifierGeneratorRepositoryIntegration extends TestCase
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
 
         $this->identifierGeneratorRepository->save($identifierGenerator);
@@ -71,6 +73,7 @@ SQL;
             LabelCollection::fromNormalized(['fr' => 'Générateur mis à jour']),
             Target::fromString('sku'),
             Delimiter::fromString('='),
+            TextTransformation::fromString('no'),
         );
 
         $this->identifierGeneratorRepository->update($identifierGenerator);
@@ -101,7 +104,15 @@ SQL;
     {
         $query = <<<SQL
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), JSON_OBJECT('delimiter', '-'), '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+VALUES (
+    UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 
+    'default', 
+    (SELECT id FROM pim_catalog_attribute),
+    JSON_OBJECT('delimiter', '-', 'text_transformation', 'no'), 
+    '{"fr": "Structure par defaut"}', 
+    '{}', 
+    '[{"type": "free_text", "string": "default_structure"}]'
+);
 SQL;
 
         $this->connection->executeStatement($query);
@@ -132,6 +143,7 @@ SQL;
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $this->identifierGeneratorRepository->save($identifierGenerator);
 
@@ -143,6 +155,7 @@ SQL;
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
 
         $this->expectException(UnableToSaveIdentifierGeneratorException::class);
@@ -163,7 +176,15 @@ SQL;
     {
         $query = <<<SQL
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), JSON_OBJECT('delimiter', '-'), '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+VALUES (
+    UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 
+    'default',
+    (SELECT id FROM pim_catalog_attribute),
+    JSON_OBJECT('delimiter', '-', 'text_transformation', 'no'), 
+    '{"fr": "Structure par defaut"}', 
+    '{}', 
+    '[{"type": "free_text", "string": "default_structure"}]'
+);
 SQL;
 
         $this->connection->executeStatement($query);

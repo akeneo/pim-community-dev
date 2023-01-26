@@ -39,7 +39,8 @@ class CreateGeneratorHandlerSpec extends ObjectBehavior
             [['type' => 'free_text', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
             'sku',
-            '-'
+            '-',
+            'no',
         );
         $validator->validate($command)
             ->shouldBeCalledOnce()
