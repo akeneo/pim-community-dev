@@ -433,7 +433,12 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.tasklet.mass_edit_family.index_family_products_and_product_models'
 
-    Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet: ~
+    Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.remover.attribute'
+            - '@pim_connector.doctrine.cache_clearer'
+
     pim_connector.step.delete_attributes:
         class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
         arguments:
