@@ -67,7 +67,7 @@ class CatalogFixtureCommand extends Command
                     'write_catalogs',
                     'delete_catalogs',
                     'read_products',
-                ],
+                ]
             );
 
             /** @var UserInterface|null $user */
@@ -120,6 +120,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => 'en_US',
                 ],
+                'release_date' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
@@ -158,7 +163,7 @@ class CatalogFixtureCommand extends Command
             ],
             [
                 'productMapping' => Types::JSON,
-            ],
+            ]
         );
     }
 
@@ -189,6 +194,10 @@ class CatalogFixtureCommand extends Command
             "meta_title": {
               "type": "string",
               "title": "Meta title"
+            },
+            "release_date": {
+              "type": "string",
+              "format": "date-time"
             }
           }
         }

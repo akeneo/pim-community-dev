@@ -55,6 +55,12 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'release_date',
+            'type' => 'pim_catalog_date',
+            'scopable' => true,
+            'localizable' => false,
+        ]);
 
         $violations = $this->validator->validate(
             new Catalog(
@@ -85,10 +91,14 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'release' => [
+                        'source' => 'release_date',
+                        'scope' => 'ecommerce',
+                        'locale' => null,
+                    ],
                 ],
             ),
         );
-
         $this->assertEquals(0, $violations->count());
     }
 
@@ -112,7 +122,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             ),
         );
 
-        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "size".');
+        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "size", "release".');
     }
 
     public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
@@ -159,6 +169,11 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'release' => [
+                        'source' => 'release_date',
+                        'scope' => true,
+                        'locale' => null,
+                    ],
                     'additional' => [
                         'source' => 'uuid',
                         'scope' => null,
@@ -193,6 +208,10 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             },
             "size": {
               "type": "number"
+            },
+            "release": {
+              "type": "string",
+              "format": "date-time"
             }
           }
         }
