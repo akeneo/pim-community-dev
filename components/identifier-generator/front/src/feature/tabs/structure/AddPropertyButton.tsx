@@ -32,7 +32,8 @@ const items: PropertiesSelection[] = [
         defaultValue: {
           type: PROPERTY_NAMES.FAMILY_CODE,
           abbreviation_type: null,
-          operator: null
+          operator: null,
+          charsNumber: null
         }
       }
     ],

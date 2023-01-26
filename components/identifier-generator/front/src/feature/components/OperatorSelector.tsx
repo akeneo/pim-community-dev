@@ -5,7 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {Styled} from './Styled';
 
 type OperatorSelectorProps = {
-  operator: Operator;
+  operator: Operator | null;
   onChange: (operator: Operator) => void;
   operators: Operator[];
 };
@@ -16,6 +16,7 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operat
   return (
     <Styled.OperatorSelectCondition
       value={operator}
+      placeholder={translate('pim_identifier_generator.structure.settings.operator.placeholder')}
       emptyResultLabel={translate('pim_common.no_result')}
       openLabel={translate('pim_common.open')}
       onChange={(operator: string) => onChange(operator as Operator)}
