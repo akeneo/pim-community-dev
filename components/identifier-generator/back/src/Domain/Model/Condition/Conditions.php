@@ -72,4 +72,12 @@ final class Conditions
             true
         );
     }
+
+    /**
+     * @param ConditionInterface[] $otherConditions
+     */
+    public function and(array $otherConditions): Conditions
+    {
+        return new self(\array_merge($this->conditions, $otherConditions));
+    }
 }
