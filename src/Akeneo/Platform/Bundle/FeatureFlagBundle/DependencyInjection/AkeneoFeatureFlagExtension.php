@@ -4,7 +4,6 @@ namespace Akeneo\Platform\Bundle\FeatureFlagBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -31,9 +30,9 @@ class AkeneoFeatureFlagExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $registry = $container->getDefinition('akeneo.feature_flag.service.registry');
-        foreach ($config['feature_flags'] as $item) {
-            $reference = new Reference($item['service']);
-            $registry->addMethodCall('add', [$item['feature'], $reference]);
+        foreach ($config['feature_flags'] as $key => $service) {
+            $reference = new Reference($service);
+            $registry->addMethodCall('add', [$key, $reference]);
         }
     }
 }
