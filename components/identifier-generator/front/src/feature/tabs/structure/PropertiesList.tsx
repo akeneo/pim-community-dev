@@ -55,7 +55,10 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
 
   return (
     <>
-      <Table isDragAndDroppable={true} onReorder={onReorder}>
+      <Table
+        isDragAndDroppable={identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+        onReorder={onReorder}
+      >
         <Table.Body>
           {structureWithErrors.map(property => (
             <Table.Row key={property.id} onClick={() => onSelect(property.id)} isSelected={property.id === selectedId}>
