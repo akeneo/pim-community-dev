@@ -80,11 +80,12 @@ const CategoriesTreePage: FC = () => {
   const confirmDeleteCategory = async (
     identifier: number,
     label: string,
+    code: string,
     numberOfProducts: number,
     onDelete: () => void
   ) => {
     if (isCategoryDeletionPossible(label, numberOfProducts)) {
-      setCategoryToDelete({identifier, label, onDelete});
+      setCategoryToDelete({identifier, label, code, numberOfProducts, onDelete});
       openDeleteCategoryModal();
     }
   };
@@ -169,7 +170,13 @@ const CategoriesTreePage: FC = () => {
               await handleDeleteCategory(categoryToDelete);
               handleCloseDeleteCategoryModal();
             }}
-            message={'pim_enrich.entity.category.category_deletion.confirmation'}
+            message={
+              featureFlags.isEnabled('enriched_category')
+                ? 'pim_enrich.entity.category.category_deletion.confirmation_question'
+                : 'pim_enrich.entity.category.category_deletion.confirmation'
+            }
+            categoryId={categoryToDelete.identifier}
+            numberOfProducts={categoryToDelete.numberOfProducts}
           />
         )}
       </PageContent>

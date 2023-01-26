@@ -11,10 +11,12 @@ use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditAclFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
+use Akeneo\Category\Domain\Event\CategoryEditedEvent;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +34,7 @@ class UpdateCategoryController
     public function __construct(
         private readonly CommandMessageBus $categoryCommandBus,
         private readonly SecurityFacade $securityFacade,
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ConverterInterface $internalApiToStandardConverter,
         private readonly CategoryEditAclFilter $categoryEditAclFilter,
         private readonly StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
@@ -67,6 +70,7 @@ class UpdateCategoryController
                 $filteredUserIntents,
             );
             $this->categoryCommandBus->dispatch($command);
+            $this->eventDispatcher->dispatch(new CategoryEditedEvent($category, $filteredUserIntents));
         } catch (ViolationsException $e) {
             // Todo: Handle violations exceptions when all stubbed services have been replaced by real ones
             // The data structure to be returned to the UI must allow to display the violation messages

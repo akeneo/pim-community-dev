@@ -10,7 +10,13 @@ type Props = {
   orderable?: boolean;
   followCategory?: (category: CategoryTreeModel) => void;
   addCategory?: (parentCode: string, onCreate: () => void) => void;
-  deleteCategory?: (identifier: number, label: string, numberOfProducts: number, onDelete: () => void) => void;
+  deleteCategory?: (
+    identifier: number,
+    label: string,
+    code: string,
+    numberOfProducts: number,
+    onDelete: () => void
+  ) => void;
 };
 
 const CategoryTree: FC<Props> = ({root, orderable = false, ...rest}) => {
@@ -21,7 +27,7 @@ const CategoryTree: FC<Props> = ({root, orderable = false, ...rest}) => {
   return (
     <CategoryTreeProvider root={root}>
       <OrderableTreeProvider isActive={orderable}>
-        <Node id={root.id} label={root.label} orderable={orderable} {...rest} />
+        <Node id={root.id} label={root.label} code={root.code} orderable={orderable} {...rest} />
       </OrderableTreeProvider>
     </CategoryTreeProvider>
   );
