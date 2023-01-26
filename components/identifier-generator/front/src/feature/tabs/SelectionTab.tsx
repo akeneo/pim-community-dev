@@ -147,7 +147,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
               </Table.Row>
               {conditionsWithId.length === 0 && (
                 <tr aria-colspan={3}>
-                  <td>
+                  <td colSpan={3}>
                     <Placeholder
                       illustration={<NoResultsIllustration />}
                       size="large"
