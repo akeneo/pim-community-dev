@@ -86,7 +86,7 @@ const useGetConditionItems: (
   }, [isOpen, conditions, router, page, state, debouncedSearchValue, areRemainingElements, limit]);
 
   const handleNextPage = () => {
-    if (state === STATE.WAITING) {
+    if (state === STATE.WAITING && areRemainingElements) {
       setPage(page => page + 1);
       setState(STATE.USER_CHANGED_PAGE);
     }
