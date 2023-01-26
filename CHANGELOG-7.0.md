@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-10811: [PullUp PIM-10794] Fix error message on search attributes for product and product models GET
+
 # 7.0.2 (2023-01-13)
 
 # 7.0.1 (2023-01-12)

@@ -47,29 +47,30 @@ final class ValidateProperties
     {
         foreach ($search as $propertyCode => $filters) {
             $propertyCode = (string) $propertyCode;
-            foreach ($filters as $filter) {
-                $isExistingAttribute = $this->isExistingAttribute($propertyCode);
-                if (!(
-                    $this->isProductField($propertyCode) ||
-                    $isExistingAttribute ||
-                    $this->hasWrongOperatorForParentProperty($propertyCode, $filter['operator'])
-                )) {
-                    throw new InvalidQueryException(
-                        sprintf(
-                            'Filter on property "%s" is not supported or does not support operator "%s"',
-                            $propertyCode,
-                            $filter['operator']
-                        )
-                    );
-                } elseif (!$isExistingAttribute) {
-                    throw new InvalidQueryException(
-                        sprintf(
-                            '"%s" does not exist or you do not have permission to access it.',
-                            $propertyCode
-                        ),
-                        404
-                    );
+            $isExistingAttribute = $this->isExistingAttribute($propertyCode);
+
+            if ($this->isProductField($propertyCode)) {
+                if ('parent' === $propertyCode) {
+                    foreach ($filters as $filter) {
+                        if (Operators::EQUALS === $filter['operator']) {
+                            throw new InvalidQueryException(
+                                sprintf(
+                                    'Filter on property "%s" is not supported or does not support operator "%s"',
+                                    $propertyCode,
+                                    $filter['operator']
+                                )
+                            );
+                        }
+                    }
                 }
+            } elseif (!$isExistingAttribute) {
+                throw new InvalidQueryException(
+                    sprintf(
+                        '"%s" does not exist or you do not have permission to access it.',
+                        $propertyCode
+                    ),
+                    404
+                );
             }
         }
     }
@@ -82,10 +83,5 @@ final class ValidateProperties
     private function isExistingAttribute(string $propertyCode): bool
     {
         return null !== $this->attributeRepository->findOneByIdentifier($propertyCode);
-    }
-
-    private function hasWrongOperatorForParentProperty(string $propertyCode, string $operator): bool
-    {
-        return ($propertyCode === 'parent' && $operator !== Operators::EQUALS);
     }
 }

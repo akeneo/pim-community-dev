@@ -855,7 +855,6 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
 
         $searchFilters = [
-            '{"parent":[{"operator":"=","value":"prod_mod_optA"}]}',
             '{"parent":[{"operator":"NOT EMPTY","value":null}]}',
             '{"parent":[{"operator":"IN","value":["prod_mod_optA"]}]}',
         ];

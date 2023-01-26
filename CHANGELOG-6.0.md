@@ -1,5 +1,19 @@
 # 6.0.x
 
+# 6.0.65 (2023-01-26)
+
+## Bug fixes
+
+- PIM-10794: Fix error message on search attributes for product and product models GET
+
+# 6.0.64 (2023-01-23)
+
+# 6.0.63 (2023-01-12)
+
+## Bug fixes
+
+- [Backport PIM-10516] PIM-10787: Do not run the remove completeness job when there is no need
+
 # 6.0.62 (2022-12-23)
 
 ## Bug fixes
@@ -414,6 +428,7 @@
 - PIM-10217: Fix cannot quick export product model when id is not present in grid context
 - PIM-10212: Prevent spaces in locale codes
 - PIM-10218: Remove previous scope filter before moving the new one
+- PIM-10787 [Backport PIM-10516]: Do not run the remove completeness job when there is no need
 
 ## New features
 
