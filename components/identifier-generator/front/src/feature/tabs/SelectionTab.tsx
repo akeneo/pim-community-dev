@@ -1,19 +1,18 @@
 import React, {useCallback, useState} from 'react';
-import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
+import {Condition, CONDITION_NAMES, Conditions, IdentifierGenerator, PROPERTY_NAMES, Target} from '../models';
 import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
 import {ListSkeleton, TabValidationErrors} from '../components';
-import {AddConditionButton, EnabledLine, FamilyLine} from './conditions';
+import {AddConditionButton, EnabledLine, FamilyLine, UserAddedConditionsList} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
 import {SimpleSelectLine} from './conditions/SimpleSelectLine';
 import styled from 'styled-components';
 
 type SelectionTabProps = {
-  conditions: Conditions;
-  target: Target;
+  generator: IdentifierGenerator;
   onChange: (conditions: Conditions) => void;
   validationErrors: Violation[];
 };
@@ -43,9 +42,11 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
   }
 };
 
-const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange, validationErrors}) => {
+const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validationErrors}) => {
+  const {conditions} = generator;
+  // TODO: the skeleton does not seem to be linked to the right isLoading
+  const {isLoading} = useIdentifierAttributes();
   const translate = useTranslate();
-  const {data: identifiers, isLoading} = useIdentifierAttributes();
   const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionIdentifier | undefined>();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
     conditions.map(condition => ({
@@ -125,6 +126,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
           {isLoading && <ListSkeleton />}
           {!isLoading && (
             <>
+              <UserAddedConditionsList generator={generator} />
               {conditionsWithId.map(({id, ...condition}) => (
                 <Table.Row key={id} aria-colspan={3}>
                   <ConditionLine

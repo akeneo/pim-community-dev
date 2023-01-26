@@ -1,6 +1,6 @@
 enum AbbreviationType {
-  FIRST_CHAR = 'first_characters',
-  CODE = 'code',
+  TRUNCATE = 'truncate',
+  NO = 'no',
 }
 
 export {AbbreviationType};

@@ -28,12 +28,14 @@ const items: PropertiesSelection[] = [
         defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
       },
       {
-        code: PROPERTY_NAMES.FAMILY_CODE,
+        code: PROPERTY_NAMES.FAMILY,
         defaultValue: {
-          type: PROPERTY_NAMES.FAMILY_CODE,
-          abbreviation_type: null,
-          operator: null,
-          charsNumber: null
+          type: PROPERTY_NAMES.FAMILY,
+          process: {
+            type: null,
+            operator: null,
+            value: null
+          },
         }
       }
     ],

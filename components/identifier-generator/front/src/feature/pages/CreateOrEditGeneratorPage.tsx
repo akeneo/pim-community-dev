@@ -1,8 +1,16 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Button, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
 import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
-import {Conditions, Delimiter, GeneratorTab, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
+import {
+  Conditions,
+  Delimiter,
+  GeneratorTab,
+  IdentifierGenerator,
+  IdentifierGeneratorCode,
+  PROPERTY_NAMES,
+  Structure
+} from '../models';
 import {Violation} from '../validators';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
@@ -144,8 +152,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         )}
         {currentTab === GeneratorTab.PRODUCT_SELECTION && (
           <SelectionTab
-            target={generator.target}
-            conditions={generator.conditions}
+            generator={generator}
             onChange={onConditionsChange}
             validationErrors={selectionValidationErrors}
           />
