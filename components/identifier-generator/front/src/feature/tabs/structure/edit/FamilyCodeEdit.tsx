@@ -28,21 +28,21 @@ const FamilyCodeEdit: PropertyEditFieldsProps<FamilyCodeProperty> = ({selectedPr
         process: {
           type: type as AbbreviationType,
           value: 3,
-          operator: null
-        }
+          operator: null,
+        },
       });
     } else {
       onChange({
         type: selectedProperty.type,
         process: {
-          type: type as AbbreviationType
-        }
+          type: type as AbbreviationType,
+        },
       });
     }
   };
 
   const onChangeOperator = (operator: Operator) => {
-    onChange({...selectedProperty, process: {... selectedProperty.process, operator}});
+    onChange({...selectedProperty, process: {...selectedProperty.process, operator}});
   };
 
   const onChangeCharsNumber = (charsNumber: string) => {
@@ -61,7 +61,7 @@ const FamilyCodeEdit: PropertyEditFieldsProps<FamilyCodeProperty> = ({selectedPr
           openLabel={translate('pim_common.open')}
           onChange={onChangeProcessType}
           clearable={false}
-          >
+        >
           {options.map(({value, label}) => (
             <SelectInput.Option value={value} title={translate(label)} key={value}>
               {translate(label)}
@@ -79,7 +79,7 @@ const FamilyCodeEdit: PropertyEditFieldsProps<FamilyCodeProperty> = ({selectedPr
               operator={selectedProperty.process.operator || null}
               onChange={onChangeOperator}
               operators={FamilyCodeOperators}
-              />
+            />
           </Field>
           <Field
             label={translate('pim_identifier_generator.structure.settings.family.chars_number')}

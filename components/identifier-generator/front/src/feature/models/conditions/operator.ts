@@ -4,7 +4,7 @@ enum Operator {
   EMPTY = 'EMPTY',
   NOT_EMPTY = 'NOT EMPTY',
   EQUAL = 'EQUALS',
-  EQUAL_OR_LESS = 'LOWER_OR_EQUAL_THAN'
+  EQUAL_OR_LESS = 'LOWER_OR_EQUAL_THAN',
 }
 
 export {Operator};
