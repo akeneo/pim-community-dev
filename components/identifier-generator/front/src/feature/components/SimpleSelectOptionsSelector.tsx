@@ -4,6 +4,7 @@ import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shar
 import {OptionCode} from '../models/option';
 import {useGetSelectOptions, usePaginatedOptions} from '../hooks/useGetSelectOptions';
 import {AttributeCode} from '../models';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type Props = {
   attributeCode: AttributeCode;
@@ -16,6 +17,7 @@ const SimpleSelectOptionsSelector: FC<Props> = ({attributeCode, optionCodes, onC
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
   const [invalidOptionCodes, setInvalidOptionCodes] = useState<OptionCode[]>([]);
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const {
     data: selectedOptions,
@@ -59,6 +61,7 @@ const SimpleSelectOptionsSelector: FC<Props> = ({attributeCode, optionCodes, onC
       onChange={onChange}
       value={optionCodes}
       invalidValue={invalidOptionCodes}
+      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
     >
       {optionsList?.map(option => (
         <MultiSelectInput.Option value={option.code} key={option.code}>
