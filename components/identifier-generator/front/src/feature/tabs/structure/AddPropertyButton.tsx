@@ -34,10 +34,10 @@ const items: PropertiesSelection[] = [
           process: {
             type: null,
             operator: null,
-            value: null
+            value: null,
           },
-        }
-      }
+        },
+      },
     ],
   },
 ];

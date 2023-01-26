@@ -9,7 +9,7 @@ import {
   IdentifierGenerator,
   IdentifierGeneratorCode,
   PROPERTY_NAMES,
-  Structure
+  Structure,
 } from '../models';
 import {Violation} from '../validators';
 import {Header} from '../components';

@@ -10,15 +10,17 @@ const validateFamilyProperty: Validator<FamilyCodeProperty> = (familyCode, path)
   if (!familyCode.process.type) {
     violations.push({
       path,
-      message: 'Family code abbreviation type must be filled'
+      message: 'Family code abbreviation type must be filled',
     });
   }
 
-  if (familyCode.process.type === AbbreviationType.TRUNCATE
-    && (!familyCode.process.operator || !familyCode.process.value)) {
+  if (
+    familyCode.process.type === AbbreviationType.TRUNCATE &&
+    (!familyCode.process.operator || !familyCode.process.value)
+  ) {
     violations.push({
       path: path,
-      message: 'cé pas bieng'
+      message: 'cé pas bieng',
     });
   }
 

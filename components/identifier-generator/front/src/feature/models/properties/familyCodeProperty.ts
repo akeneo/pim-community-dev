@@ -3,13 +3,13 @@ import {PROPERTY_NAMES} from '../structure';
 import {Operator} from '../conditions/operator';
 
 type FamilyCodeProperty = {
-  type: PROPERTY_NAMES.FAMILY,
+  type: PROPERTY_NAMES.FAMILY;
   process: {
-    type: AbbreviationType | null,
+    type: AbbreviationType | null;
 
-    operator?: Operator | null,
-    value?: number | null
-  },
+    operator?: Operator | null;
+    value?: number | null;
+  };
 };
 
 const FamilyCodeOperators: Operator[] = [Operator.EQUAL, Operator.EQUAL_OR_LESS];

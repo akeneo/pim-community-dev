@@ -3,14 +3,10 @@ import {AutoNumber, FamilyCodeProperty, FreeText} from './properties';
 enum PROPERTY_NAMES {
   AUTO_NUMBER = 'auto_number',
   FREE_TEXT = 'free_text',
-  FAMILY = 'family'
+  FAMILY = 'family',
 }
 
-const ALLOWED_PROPERTY_NAMES = [
-  PROPERTY_NAMES.FREE_TEXT,
-  PROPERTY_NAMES.AUTO_NUMBER,
-  PROPERTY_NAMES.FAMILY,
-];
+const ALLOWED_PROPERTY_NAMES = [PROPERTY_NAMES.FREE_TEXT, PROPERTY_NAMES.AUTO_NUMBER, PROPERTY_NAMES.FAMILY];
 
 type Property = {type: PROPERTY_NAMES} & (AutoNumber | FreeText | FamilyCodeProperty);
 
