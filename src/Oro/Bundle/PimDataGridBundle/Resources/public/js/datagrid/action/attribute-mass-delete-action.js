@@ -23,6 +23,9 @@ define([
    * @extends oro.datagrid.MassAction
    */
   return MassAction.extend({
+    /** @property {string} */
+    identifierFieldName: 'code',
+
     /** @type oro.Modal */
     errorModal: undefined,
 

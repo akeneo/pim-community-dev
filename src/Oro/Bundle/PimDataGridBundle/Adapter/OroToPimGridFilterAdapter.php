@@ -77,7 +77,7 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
     private function adaptAttributeGrid(array $parameters): array
     {
         return [
-            'field' => 'id',
+            'field' => 'code',
             'operator' => $parameters['inset'] ? 'IN' : 'NOT IN',
             'values' => $parameters['values']
         ];
