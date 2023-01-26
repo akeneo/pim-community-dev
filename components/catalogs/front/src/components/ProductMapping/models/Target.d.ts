@@ -4,4 +4,6 @@ export type Target = {
     type: string;
     format: string | null;
     description?: string | null;
+    minLength?: number;
+    maxLength?: number;
 };

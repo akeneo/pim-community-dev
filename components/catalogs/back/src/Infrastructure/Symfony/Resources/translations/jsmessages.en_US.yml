@@ -157,3 +157,6 @@ akeneo_catalogs:
             requirements:
                 title: App requirements
                 help: Help
+            requirements_contraints:
+                minLength: This target must have at least {{ value }} characters.
+                maxLength: This target must not exceed {{ value }} characters.

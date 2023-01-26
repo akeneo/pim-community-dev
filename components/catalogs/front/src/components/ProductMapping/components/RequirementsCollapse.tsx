@@ -10,7 +10,8 @@ type Props = {
 export const RequirementsCollapse: FC<Props> = ({target}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState(true);
-
+    const constraintKeys: string[] = ['minLength', 'maxLength'];
+    const targetKeys = Object.keys(target);
     if (undefined === target.description || null === target.description) {
         return null;
     }
@@ -30,11 +31,24 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                 isOpen={isOpen}
                 onCollapse={setIsOpen}
             >
-                {true && (
+                {
                     <Helper inline level='warning'>
-                        coucou
+                        <ul>
+                            {targetKeys.map((targetKey, i) => {
+                                if (constraintKeys.includes(targetKey)) {
+                                    return (
+                                        <li key={i}>
+                                            {translate(
+                            `akeneo_catalogs.product_mapping.source.requirements_contraints.${targetKey}`,
+                                                {value: target[targetKey] || 0}
+                                            )}
+                                        </li>
+                                    );
+                                }
+                            })}
+                        </ul>
                     </Helper>
-                )}
+                }
                 {target.description && (
                     <Helper inline level='info'>
                         {target.description}

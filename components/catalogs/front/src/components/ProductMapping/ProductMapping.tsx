@@ -52,6 +52,12 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (undefined !== productMappingSchema.properties[targetCode].description) {
                 target.description = productMappingSchema.properties[targetCode].description;
             }
+            if (undefined !== productMappingSchema.properties[targetCode].minLength) {
+                target.minLength = productMappingSchema.properties[targetCode].minLength;
+            }
+            if (undefined !== productMappingSchema.properties[targetCode].maxLength) {
+                target.maxLength = productMappingSchema.properties[targetCode].maxLength;
+            }
             setSelectedTarget(target);
             setSelectedSource(source);
         },
