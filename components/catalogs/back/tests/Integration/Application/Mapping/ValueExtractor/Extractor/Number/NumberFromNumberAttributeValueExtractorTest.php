@@ -31,7 +31,7 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
     {
         $this->assertInstanceOf(
             self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor
+            $this->extractor,
         );
     }
 
@@ -42,10 +42,10 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             'raw_values' => [
                 'optical_zoom' => [
                     'ecommerce' => [
-                        'en_US' => 3.7
-                    ]
-                ]
-            ]
+                        'en_US' => 3.7,
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(
@@ -66,10 +66,10 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             'raw_values' => [
                 'optical_zoom' => [
                     'ecommerce' => [
-                        'en_US' => 3.7
-                    ]
-                ]
-            ]
+                        'en_US' => 3.7,
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(

@@ -31,7 +31,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
     {
         $this->assertInstanceOf(
             self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor
+            $this->extractor,
         );
     }
 
@@ -42,10 +42,10 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
             'raw_values' => [
                 'release_date' => [
                     'ecommerce' => [
-                        'en_US' => '2023-01-31'
-                    ]
-                ]
-            ]
+                        'en_US' => '2023-01-31',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(
@@ -66,15 +66,15 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
             'raw_values' => [
                 'release_date' => [
                     'ecommerce' => [
-                        'en_US' => 3.7
-                    ]
-                ]
-            ]
+                        'en_US' => '2023-01-31',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(
             product: $product,
-            code: 'optical_zoom',
+            code: 'release_date',
             locale: '<all_locales>',
             scope: '<all_channels>',
             parameters: [],

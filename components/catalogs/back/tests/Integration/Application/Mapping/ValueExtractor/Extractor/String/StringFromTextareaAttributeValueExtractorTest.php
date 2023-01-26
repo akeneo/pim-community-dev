@@ -31,7 +31,7 @@ class StringFromTextareaAttributeValueExtractorTest extends ValueExtractorTestCa
     {
         $this->assertInstanceOf(
             self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor
+            $this->extractor,
         );
     }
 
@@ -42,10 +42,10 @@ class StringFromTextareaAttributeValueExtractorTest extends ValueExtractorTestCa
             'raw_values' => [
                 'description' => [
                     'ecommerce' => [
-                        'en_US' => 'Product description'
-                    ]
-                ]
-            ]
+                        'en_US' => 'Product description',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(
@@ -66,10 +66,10 @@ class StringFromTextareaAttributeValueExtractorTest extends ValueExtractorTestCa
             'raw_values' => [
                 'description' => [
                     'ecommerce' => [
-                        'en_US' => 'Product name'
-                    ]
-                ]
-            ]
+                        'en_US' => 'Product description',
+                    ],
+                ],
+            ],
         ];
 
         $result = $this->extractor->extract(

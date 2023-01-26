@@ -39,7 +39,7 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
         string $sourceType,
         string $targetType,
         ?string $targetFormat,
-        string $extractorClassName
+        string $extractorClassName,
     ): void {
         $extractor = $this->registry->find($sourceType, $targetType, $targetFormat);
 

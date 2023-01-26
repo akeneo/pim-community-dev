@@ -33,7 +33,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
     {
         $this->assertInstanceOf(
             self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor
+            $this->extractor,
         );
     }
 
@@ -74,7 +74,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'name' => [
+                'color' => [
                     'ecommerce' => [
                         'en_US' => 'red',
                     ],
@@ -84,7 +84,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
 
         $result = $this->extractor->extract(
             product: $product,
-            code: 'name',
+            code: 'color',
             locale: '<all_locales>',
             scope: '<all_channels>',
             parameters: ['label_locale' => 'en_US'],

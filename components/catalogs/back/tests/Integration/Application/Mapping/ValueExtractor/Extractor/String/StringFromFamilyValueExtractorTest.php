@@ -31,7 +31,7 @@ class StringFromFamilyValueExtractorTest extends ValueExtractorTestCase
     {
         $this->assertInstanceOf(
             self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor
+            $this->extractor,
         );
     }
 
@@ -39,7 +39,7 @@ class StringFromFamilyValueExtractorTest extends ValueExtractorTestCase
     {
         /** @var RawProduct $product */
         $product = [
-            'family_code' => 'shoes'
+            'family_code' => 'shoes',
         ];
 
         $result = $this->extractor->extract(
