@@ -68,3 +68,9 @@ services:
             - '%env(bool:FLAG_IS_SERENITY_SANDBOX_INSTANCE)%'
             - '%env(bool:FLAG_IS_GROWTH_EDITION_SANDBOX_INSTANCE)%'
         public: true
+
+    akeneo.feature_flag.service.always_enabled_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag
+        arguments:
+            - 'true'
+        public: true
