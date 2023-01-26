@@ -14,17 +14,18 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
  */
 interface ValueExtractorInterface
 {
-    public const SUPPORTED_SOURCE_TYPE_DATE = 'pim_catalog_date';
-    public const SUPPORTED_SOURCE_TYPE_FAMILY = 'family';
-    public const SUPPORTED_SOURCE_TYPE_NUMBER = 'pim_catalog_number';
-    public const SUPPORTED_SOURCE_TYPE_SIMPLE_SELECT = 'pim_catalog_simpleselect';
-    public const SUPPORTED_SOURCE_TYPE_TEXT = 'pim_catalog_text';
-    public const SUPPORTED_SOURCE_TYPE_TEXTAREA = 'pim_catalog_textarea';
+    public const SOURCE_TYPE_ATTRIBUTE_DATE = 'pim_catalog_date';
+    public const SOURCE_TYPE_ATTRIBUTE_NUMBER = 'pim_catalog_number';
+    public const SOURCE_TYPE_ATTRIBUTE_SIMPLE_SELECT = 'pim_catalog_simpleselect';
+    public const SOURCE_TYPE_ATTRIBUTE_TEXT = 'pim_catalog_text';
+    public const SOURCE_TYPE_ATTRIBUTE_TEXTAREA = 'pim_catalog_textarea';
 
-    public const SUPPORTED_TARGET_TYPE_NUMBER = 'number';
-    public const SUPPORTED_TARGET_TYPE_STRING = 'string';
+    public const SOURCE_TYPE_FAMILY = 'family';
 
-    public const SUPPORTED_TARGET_FORMAT_DATETIME = 'date-time';
+    public const TARGET_TYPE_NUMBER = 'number';
+    public const TARGET_TYPE_STRING = 'string';
+
+    public const TARGET_FORMAT_DATETIME = 'date-time';
 
     /**
      * @param RawProduct $product

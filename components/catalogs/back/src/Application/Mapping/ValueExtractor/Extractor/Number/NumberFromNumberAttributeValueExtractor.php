@@ -28,12 +28,12 @@ final class NumberFromNumberAttributeValueExtractor implements NumberValueExtrac
 
     public function getSupportedSourceType(): string
     {
-        return self::SUPPORTED_SOURCE_TYPE_NUMBER;
+        return self::SOURCE_TYPE_ATTRIBUTE_NUMBER;
     }
 
     public function getSupportedTargetType(): string
     {
-        return self::SUPPORTED_TARGET_TYPE_NUMBER;
+        return self::TARGET_TYPE_NUMBER;
     }
 
     public function getSupportedTargetFormat(): ?string

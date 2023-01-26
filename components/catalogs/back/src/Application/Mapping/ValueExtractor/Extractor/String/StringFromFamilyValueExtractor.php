@@ -25,12 +25,12 @@ final class StringFromFamilyValueExtractor implements StringValueExtractorInterf
 
     public function getSupportedSourceType(): string
     {
-        return self::SUPPORTED_SOURCE_TYPE_FAMILY;
+        return self::SOURCE_TYPE_FAMILY;
     }
 
     public function getSupportedTargetType(): string
     {
-        return self::SUPPORTED_TARGET_TYPE_STRING;
+        return self::TARGET_TYPE_STRING;
     }
 
     public function getSupportedTargetFormat(): ?string

@@ -6,9 +6,9 @@ namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
-use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetAttributeTypeByCodesQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
 /**
@@ -22,7 +22,7 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
-        private readonly GetAttributeTypeByCodesQuery $getAttributeTypeByCodesQuery,
+        private readonly GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
         private readonly ValueExtractorRegistry $valueExtractorRegistry,
     ) {
     }

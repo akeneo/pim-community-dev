@@ -27,12 +27,12 @@ final class StringFromTextAttributeValueExtractor implements StringValueExtracto
 
     public function getSupportedSourceType(): string
     {
-        return self::SUPPORTED_SOURCE_TYPE_TEXT;
+        return self::SOURCE_TYPE_ATTRIBUTE_TEXT;
     }
 
     public function getSupportedTargetType(): string
     {
-        return self::SUPPORTED_TARGET_TYPE_STRING;
+        return self::TARGET_TYPE_STRING;
     }
 
     public function getSupportedTargetFormat(): ?string

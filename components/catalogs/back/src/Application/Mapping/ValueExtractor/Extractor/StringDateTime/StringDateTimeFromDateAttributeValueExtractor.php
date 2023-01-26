@@ -29,16 +29,16 @@ final class StringDateTimeFromDateAttributeValueExtractor implements StringValue
 
     public function getSupportedSourceType(): string
     {
-        return self::SUPPORTED_SOURCE_TYPE_DATE;
+        return self::SOURCE_TYPE_ATTRIBUTE_DATE;
     }
 
     public function getSupportedTargetType(): string
     {
-        return self::SUPPORTED_TARGET_TYPE_STRING;
+        return self::TARGET_TYPE_STRING;
     }
 
     public function getSupportedTargetFormat(): ?string
     {
-        return self::SUPPORTED_TARGET_FORMAT_DATETIME;
+        return self::TARGET_FORMAT_DATETIME;
     }
 }

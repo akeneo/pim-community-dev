@@ -16,7 +16,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 abstract class ValueExtractorTestCase extends IntegrationTestCase
 {
     protected const TARGET_TYPES_INTERFACES_MAPPING = [
-        ValueExtractorInterface::SUPPORTED_TARGET_TYPE_NUMBER => NumberValueExtractorInterface::class,
-        ValueExtractorInterface::SUPPORTED_TARGET_TYPE_STRING => StringValueExtractorInterface::class,
+        ValueExtractorInterface::TARGET_TYPE_NUMBER => NumberValueExtractorInterface::class,
+        ValueExtractorInterface::TARGET_TYPE_STRING => StringValueExtractorInterface::class,
     ];
 }

@@ -43,12 +43,12 @@ final class StringFromSimpleSelectAttributeValueExtractor implements StringValue
 
     public function getSupportedSourceType(): string
     {
-        return self::SUPPORTED_SOURCE_TYPE_SIMPLE_SELECT;
+        return self::SOURCE_TYPE_ATTRIBUTE_SIMPLE_SELECT;
     }
 
     public function getSupportedTargetType(): string
     {
-        return self::SUPPORTED_TARGET_TYPE_STRING;
+        return self::TARGET_TYPE_STRING;
     }
 
     public function getSupportedTargetFormat(): ?string

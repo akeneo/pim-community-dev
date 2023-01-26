@@ -27,12 +27,12 @@ final class StringFromTextareaAttributeValueExtractor implements StringValueExtr
 
     public function getSupportedSourceType(): string
     {
-        return self::SUPPORTED_SOURCE_TYPE_TEXTAREA;
+        return self::SOURCE_TYPE_ATTRIBUTE_TEXTAREA;
     }
 
     public function getSupportedTargetType(): string
     {
-        return self::SUPPORTED_TARGET_TYPE_STRING;
+        return self::TARGET_TYPE_STRING;
     }
 
     public function getSupportedTargetFormat(): ?string
