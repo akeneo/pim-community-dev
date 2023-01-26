@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -73,5 +74,10 @@ final class AutoNumber implements PropertyInterface
     public function digitsMin(): int
     {
         return $this->digitsMin;
+    }
+
+    public function getImplicitCondition(): ?ConditionInterface
+    {
+        return null;
     }
 }

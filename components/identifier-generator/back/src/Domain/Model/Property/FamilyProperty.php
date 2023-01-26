@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Family;
 use Webmozart\Assert\Assert;
 
 /**
@@ -51,5 +53,13 @@ final class FamilyProperty implements PropertyInterface
         Assert::isArray($normalizedProperty['process']);
 
         return new self(Process::fromNormalized($normalizedProperty['process']));
+    }
+
+    public function getImplicitCondition(): ?ConditionInterface
+    {
+        return Family::fromNormalized([
+            'type' => Family::type(),
+            'operator' => 'NOT EMPTY',
+        ]);
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\EmptyIdentifier;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -117,9 +119,19 @@ final class IdentifierGenerator
 
     public function match(ProductProjection $productProjection): bool
     {
-        $identifierValue = $productProjection->identifier();
+        $conditionsWithImplicitOnes = $this->conditions->and($this->getImplicitConditions());
 
-        return (null === $identifierValue || '' === $identifierValue) && $this->conditions->match($productProjection);
+        return $conditionsWithImplicitOnes->match($productProjection);
+    }
+
+    /**
+     * @return ConditionInterface[]
+     */
+    private function getImplicitConditions(): array
+    {
+        $conditions = [new EmptyIdentifier()];
+
+        return \array_merge($conditions, $this->structure->getImplicitConditions());
     }
 
     public function textTransformation(): TextTransformation
