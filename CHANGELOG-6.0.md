@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.65 (2023-01-26)
+
 ## Bug fixes
 
 - PIM-10794: Fix error message on search attributes for product and product models GET
