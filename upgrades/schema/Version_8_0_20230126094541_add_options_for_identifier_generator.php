@@ -25,7 +25,7 @@ final class Version_8_0_20230126094541_add_options_for_identifier_generator exte
 
         $sql = <<<SQL
 ALTER TABLE pim_catalog_identifier_generator ADD COLUMN options JSON NOT NULL AFTER delimiter;
-UPDATE pim_catalog_identifier_generator SET options=JSON_OBJECT('delimiter', delimiter);
+UPDATE pim_catalog_identifier_generator SET options=JSON_OBJECT('delimiter', delimiter, 'text_transformation', 'no');
 ALTER TABLE pim_catalog_identifier_generator DROP COLUMN delimiter;
 SQL;
 
