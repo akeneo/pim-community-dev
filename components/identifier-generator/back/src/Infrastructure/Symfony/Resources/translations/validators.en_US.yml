@@ -18,3 +18,7 @@ validation:
         unknown_scope: 'The "{{ scopeCode }}" scope does not exist.'
         unknown_locale: 'The "{{ localeCode }}" locale does not exist or is not activated.'
         inactive_locale: 'The "{{ localeCode }}" locale is not active for the "{{ scopeCode }}" channel.'
+        family_property_fields_required: '"{{ field }}" field is required for "family" type.'
+        process_unknown_operator: 'Operator {{ value }} can only be one of the following: {{ choices }}.'
+        locale_required: 'A locale is required for the "{{ attributeCode }}" attribute.'
+        scope_required: 'A channel is required for the "{{ attributeCode }}" attribute.'

@@ -82,6 +82,58 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with an auto number with '4' as number min and '22' as min digits
     Then I should get an error on update with message 'structure[0][digitsMin]: This value should be less than or equal to 15.'
 
+  # Structure : Family
+  Scenario: Cannot update an identifier generator with family property without required field
+    When I try to update an identifier generator with family property without required field
+    Then I should get an error on update with message 'structure[0]: "process" field is required for "family" type'
+
+  Scenario: Cannot update an identifier generator with invalid family property
+    When I try to update an identifier generator with invalid family property
+    Then I should get an error on update with message 'structure[0][unknown]: This field was not expected.'
+
+  Scenario: Cannot update an identifier generator with empty family property
+    When I try to update an identifier generator with empty family process property
+    Then I should get an error on update with message 'structure[0][process][type]: This field is missing.'
+
+  Scenario: Cannot update an identifier generator with family process type unknown
+    When I try to update an identifier generator with a family process with type unknown and operator undefined and undefined as value
+    Then I should get an error on update with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate".'
+
+  Scenario: Cannot update an identifier generator with family process type no and operator EQUALS and undefined as value
+    When I try to update an identifier generator with a family process with type no and operator EQUALS and undefined as value
+    Then I should get an error on update with message 'structure[0][operator]: This field was not expected.'
+
+  Scenario: Cannot update an identifier generator with a family containing invalid truncate process
+    When I try to update an identifier generator with a family containing invalid truncate process
+    Then I should get an error on update with message 'structure[0][process][unknown]: This field was not expected.'
+
+  Scenario: Cannot update an identifier generator with a family containing truncate process missing fields
+    When I try to update an identifier generator with a family process with type truncate and operator undefined and "undefined" as value
+    Then I should get an error on update with message 'structure[0][operator]: This field is missing.'
+    Then I should get an error on update with message 'structure[0][value]: This field is missing.'
+
+  Scenario: Cannot update an identifier generator with a family containing truncate process and unknown operator
+    When I try to update an identifier generator with a family process with type truncate and operator ope and 1 as value
+    Then I should get an error on update with message 'structure[0][operator]: Operator "ope" can only be one of the following: "EQUALS", "LOWER_OR_EQUAL_THAN".'
+
+  Scenario: Cannot update an identifier generator with a family containing truncate process and bad value type
+    When I try to update an identifier generator with a family process with type truncate and operator EQUALS and "bad" as value
+    Then I should get an error on update with message 'structure[0][value]: This value should be of type integer.'
+
+  Scenario: Cannot update an identifier generator with a family containing truncate process and value not in range
+    When I try to update an identifier generator with a family process with type truncate and operator EQUALS and 0 as value
+    Then I should get an error on update with message 'structure[0][value]: This value should be between 1 and 5.'
+
+  Scenario: Can update an identifier generator with a family property and no process
+    When I try to update an identifier generator with a family process with type no and operator undefined and "undefined" as value
+    Then The identifier generator is updated in the repository
+    And I should not get any update error
+
+  Scenario: Can update an identifier generator with a family property and a truncate process
+    When I try to update an identifier generator with a family process with type truncate and operator EQUALS and 1 as value
+    Then The identifier generator is updated in the repository
+    And I should not get any update error
+
   # Conditions
   Scenario: Cannot update another condition type than defined ones
     When I try to update an identifier generator with unknown condition type
@@ -186,7 +238,7 @@ Feature: Update Identifier Generator
     Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
     When I try to update an identifier generator with a simple_select condition with color_scopable attribute and undefined scope
-    Then I should get an error on update with message 'conditions[0][scope]: This field is missing.'
+    Then I should get an error on update with message 'conditions[0][scope]: A channel is required for the "color_scopable" attribute.'
 
   Scenario: Cannot update an identifier generator with scope
     When I try to update an identifier generator with a simple_select condition with color attribute and ecommerce scope
@@ -196,7 +248,7 @@ Feature: Update Identifier Generator
     Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
     When I try to update an identifier generator with a simple_select condition with color_localizable attribute and undefined locale
-    Then I should get an error on update with message 'conditions[0][locale]: This field is missing.'
+    Then I should get an error on update with message 'conditions[0][locale]: A locale is required for the "color_localizable" attribute.'
 
   Scenario: Cannot update an identifier generator with locale
     When I try to update an identifier generator with a simple_select condition with color attribute and en_US locale

@@ -43,7 +43,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator if property does not exist
     When I try to create an identifier generator with an unknown property
-    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number".'
+    Then I should get an error with message 'structure[0][type]: Type "unknown" can only be one of the following: "free_text", "auto_number", "family".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator if structure contains too many properties
@@ -97,6 +97,69 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with multiple auto number in structure
     Then I should get an error with message 'structure: should contain only 1 auto number'
     And the identifier should not be created
+
+  # Structure : Family
+  Scenario: Cannot create an identifier generator with family property without required field
+    When I try to create an identifier generator with family property without required field
+    Then I should get an error with message 'structure[0]: "process" field is required for "family" type'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with invalid family property
+    When I try to create an identifier generator with invalid family property
+    Then I should get an error with message 'structure[0][unknown]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with empty family property
+    When I try to create an identifier generator with empty family process property
+    Then I should get an error with message 'structure[0][process][type]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with family process type unknown
+    When I try to create an identifier generator with a family process with type unknown and operator undefined and undefined as value
+    Then I should get an error with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with family process type no and operator EQUALS and undefined as value
+    When I try to create an identifier generator with a family process with type no and operator EQUALS and undefined as value
+    Then I should get an error with message 'structure[0][operator]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with a family containing invalid truncate process
+    When I try to create an identifier generator with a family containing invalid truncate process
+    Then I should get an error with message 'structure[0][process][unknown]: This field was not expected.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with a family containing truncate process missing fields
+    When I try to create an identifier generator with a family process with type truncate and operator undefined and "undefined" as value
+    Then I should get an error with message 'structure[0][operator]: This field is missing.'
+    Then I should get an error with message 'structure[0][value]: This field is missing.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with a family containing truncate process and unknown operator
+    When I try to create an identifier generator with a family process with type truncate and operator ope and 1 as value
+    Then I should get an error with message 'structure[0][operator]: Operator "ope" can only be one of the following: "EQUALS", "LOWER_OR_EQUAL_THAN".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with a family containing truncate process and bad value type
+    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and "bad" as value
+    Then I should get an error with message 'structure[0][value]: This value should be of type integer.'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator with a family containing truncate process and value not in range
+    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and 0 as value
+    Then I should get an error with message 'structure[0][value]: This value should be between 1 and 5.'
+    And the identifier should not be created
+
+  Scenario: Can create an identifier generator with a family property and no process
+    When I try to create an identifier generator with a family process with type no and operator undefined and "undefined" as value
+    Then The identifier generator is saved in the repository
+    And I should not get any error
+
+  Scenario: Can create an identifier generator with a family property and a truncate process
+    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and 1 as value
+    Then I should not get any error
+    Then The identifier generator is saved in the repository
+    And I should not get any error
 
   # Conditions
   Scenario: Cannot create another condition type than defined ones
@@ -226,7 +289,7 @@ Feature: Create Identifier Generator
     Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
     When I try to create an identifier generator with a simple_select condition with color_scopable attribute and undefined scope
-    Then I should get an error with message 'conditions[0][scope]: This field is missing.'
+    Then I should get an error with message 'conditions[0][scope]: A channel is required for the "color_scopable" attribute.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with scope
@@ -238,7 +301,7 @@ Feature: Create Identifier Generator
     Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
     When I try to create an identifier generator with a simple_select condition with color_localizable attribute and undefined locale
-    Then I should get an error with message 'conditions[0][locale]: This field is missing.'
+    Then I should get an error with message 'conditions[0][locale]: A locale is required for the "color_localizable" attribute.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with locale
