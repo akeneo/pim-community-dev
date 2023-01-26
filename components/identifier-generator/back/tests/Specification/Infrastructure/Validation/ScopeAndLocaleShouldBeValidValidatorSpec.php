@@ -82,7 +82,7 @@ class ScopeAndLocaleShouldBeValidValidatorSpec extends ObjectBehavior
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ): void {
-        $context->buildViolation('This field is missing.')->shouldBeCalled()->willReturn($constraintViolationBuilder);
+        $context->buildViolation(Argument::any(), ['{{ attributeCode }}' => 'color'])->shouldBeCalled()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('[scope]')->shouldBeCalled()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
@@ -136,7 +136,7 @@ class ScopeAndLocaleShouldBeValidValidatorSpec extends ObjectBehavior
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ): void {
-        $context->buildViolation('This field is missing.')->shouldBeCalled()->willReturn($constraintViolationBuilder);
+        $context->buildViolation(Argument::any(), ['{{ attributeCode }}' => 'color'])->shouldBeCalled()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('[locale]')->shouldBeCalled()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
