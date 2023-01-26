@@ -50,7 +50,7 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
   React.useEffect(focusCallback, [isOpen, focusCallback]);
 
   const flatItems: {id: string; text: string; onClick: (() => void) | undefined}[] = [];
-  (conditionItems || []).forEach(({id, text, children}) => {
+  conditionItems.forEach(({id, text, children}) => {
     flatItems.push({id: `section-${id}`, text, onClick: undefined});
     children.forEach(({id, text}) => {
       flatItems.push({id: `item-${id}`, text, onClick: () => addCondition(id)});
