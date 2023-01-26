@@ -19,11 +19,12 @@ enum STATE {
   WAITING,
   FETCHING_IN_PROGRESS,
   USER_CHANGED_SEARCH,
+  CONDITIONS_CHANGED,
 }
 
 function mergeItems(items: ItemsGroup[], newPage: ItemsGroup[]) {
   const mergedItems: ItemsGroup[] = [];
-  (items || []).forEach(item => mergedItems.push(item));
+  items.forEach(item => mergedItems.push(item));
 
   newPage.forEach(({id, text, children}) => {
     const existingGroupIndex = mergedItems.findIndex(item => item.id === id);
@@ -48,7 +49,7 @@ const useGetConditionItems: (
   setSearchValue: (searchValue: string) => void;
 } = (isOpen, conditions, limit = DEFAULT_LIMIT) => {
   const router = useRouter();
-  const [items, setItems] = useState<ItemsGroup[] | undefined>(undefined);
+  const [items, setItems] = useState<ItemsGroup[]>([]);
   const [page, setPage] = useState<number>(1);
   const [areRemainingElements, setAreRemainingElements] = useState<boolean>(true);
   const [state, setState] = useState<STATE>(STATE.FIRST_DISPLAY);
@@ -57,10 +58,19 @@ const useGetConditionItems: (
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
+    setState(STATE.CONDITIONS_CHANGED);
+    setItems([]);
+    setAreRemainingElements(true);
+  }, [conditions]);
+
+  useEffect(() => {
     if (
       isOpen &&
       areRemainingElements &&
-      (state === STATE.FIRST_DISPLAY || state === STATE.USER_CHANGED_PAGE || state === STATE.USER_CHANGED_SEARCH)
+      (state === STATE.FIRST_DISPLAY ||
+        state === STATE.USER_CHANGED_PAGE ||
+        state === STATE.USER_CHANGED_SEARCH ||
+        state === STATE.CONDITIONS_CHANGED)
     ) {
       setState(STATE.FETCHING_IN_PROGRESS);
       const conditionTypes = conditions.map(condition => condition.type as string);
@@ -113,7 +123,7 @@ const useGetConditionItems: (
   };
 
   return {
-    conditionItems: items || [],
+    conditionItems: items,
     handleNextPage,
     searchValue,
     setSearchValue: innerSetSearchValue,
