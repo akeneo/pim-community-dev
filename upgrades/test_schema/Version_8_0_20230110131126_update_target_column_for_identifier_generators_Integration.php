@@ -35,8 +35,8 @@ ALTER TABLE pim_catalog_identifier_generator ADD COLUMN target VARCHAR(255) NOT 
 ALTER TABLE pim_catalog_identifier_generator DROP COLUMN target_id;
 SQL);
         $this->connection->executeQuery(<<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('22e35c7a-f1b4-4b81-a890-16b8e68346a1'), 'mygenerator', 'sku', '', '{}', '[]', '[]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target, labels, conditions, structure)
+VALUES (UUID_TO_BIN('22e35c7a-f1b4-4b81-a890-16b8e68346a1'), 'mygenerator', 'sku', '{}', '[]', '[]');
 SQL);
 
         Assert::assertFalse($this->columnExists('pim_catalog_identifier_generator', 'target_id'));
