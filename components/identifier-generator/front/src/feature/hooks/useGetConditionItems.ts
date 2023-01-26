@@ -14,12 +14,12 @@ type ItemsGroup = {
 };
 
 enum STATE {
-  FIRST_DISPLAY,
-  USER_CHANGED_PAGE,
-  WAITING,
-  FETCHING_IN_PROGRESS,
-  USER_CHANGED_SEARCH,
-  CONDITIONS_CHANGED,
+  FIRST_DISPLAY = 'first_display',
+  USER_CHANGED_PAGE = 'user_changed_page',
+  WAITING = 'waiting',
+  FETCHING_IN_PROGRESS = 'fetching_in_progress',
+  USER_CHANGED_SEARCH = 'user_changed_search',
+  CONDITIONS_CHANGED = 'condition_changed',
 }
 
 function mergeItems(items: ItemsGroup[], newPage: ItemsGroup[]) {
@@ -93,7 +93,7 @@ const useGetConditionItems: (
         });
       });
     }
-  }, [isOpen, conditions, router, page, state, debouncedSearchValue, areRemainingElements, limit]);
+  }, [isOpen, conditions, page, state, debouncedSearchValue, areRemainingElements, limit]);
 
   const handleNextPage = () => {
     if (state === STATE.WAITING && areRemainingElements) {
