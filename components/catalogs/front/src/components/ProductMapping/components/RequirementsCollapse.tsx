@@ -18,9 +18,9 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
     const constraintKeys: string[] = ['minLength', 'maxLength'];
     const targetKeys = Object.keys(target) as Array<keyof Target>;
     const translationKey = 'akeneo_catalogs.product_mapping.source.requirements.constraints';
-    const hasWarning = constraintKeys.filter(value => (targetKeys as string[]).includes(value));
+    const hasWarning = (constraintKeys.filter(value => (targetKeys as string[]).includes(value))).length > 0;
 
-    if (undefined === target.description || null === target.description) {
+    if ((undefined === target.description || null === target.description) && !hasWarning) {
         return null;
     }
 

@@ -1987,7 +1987,7 @@ test('it displays requirements', async () => {
     ).toBeInTheDocument();
 });
 
-test('it doesnt displays requirements when there is no description', async () => {
+test('it does not displays requirements', async () => {
     const onChange = jest.fn();
 
     mockFetchResponses([
