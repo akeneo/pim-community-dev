@@ -28,7 +28,7 @@ WITH attribute_group_labels AS (
     FROM pim_catalog_attribute_group_translation
     GROUP BY foreign_key
 )
-SELECT code, sort_order, COALESCE(labels, JSON_OBJECT()) as labels FROM pim_catalog_attribute_group
+SELECT code, sort_order, labels FROM pim_catalog_attribute_group
 LEFT JOIN attribute_group_labels ON attribute_group_id = id
 ORDER BY sort_order;
 SQL;
