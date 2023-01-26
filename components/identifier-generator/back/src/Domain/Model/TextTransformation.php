@@ -18,17 +18,24 @@ final class TextTransformation
     public const UPPERCASE = 'uppercase';
     public const DOWNCASE = 'downcase';
 
+    /**
+     * @param TextTransformationNormalized $value
+     */
     private function __construct(
-        private string $value
+        private readonly string $value
     ) {
-        Assert::oneOf($this->value, [self::NO, self::UPPERCASE, self::DOWNCASE]);
     }
 
-    public static function fromString(string $value)
+    public static function fromString(string $value): self
     {
+        Assert::oneOf($value, [self::NO, self::UPPERCASE, self::DOWNCASE]);
+
         return new self($value);
     }
 
+    /**
+     * @return TextTransformationNormalized
+     */
     public function normalize(): string
     {
         return $this->value;
