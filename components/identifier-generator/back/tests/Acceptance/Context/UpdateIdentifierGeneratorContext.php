@@ -100,6 +100,15 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @Then The identifier generator is updated in the repository and text transformation is lowercase
+     */
+    public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndTextTransformationIsLowercase()
+    {
+        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        Assert::eq(TextTransformation::LOWERCASE, $identifierGenerator->textTransformation()->normalize());
+    }
+
+    /**
      * @When I update the identifier generator
      */
     public function iUpdateTheIdentifierGenerator(): void
@@ -317,7 +326,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with text transformation :textTransformation
+     * @When /^I (?:try to )?update an identifier generator with text transformation (?P<textTransformation>.+)$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithTextTransformation(string $textTransformation): void
     {
