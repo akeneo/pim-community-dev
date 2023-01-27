@@ -20,6 +20,7 @@ class DeleteTemplateAndAttributesSql implements DeleteTemplateAndAttributes
 
     public function __invoke(TemplateUuid $templateUuid): void
     {
+        // pim_catalog_category_attributes table is cleared subsequently thanks to on delete cascade
         $query = <<< SQL
             DELETE FROM pim_catalog_category_template
             WHERE uuid = :template_uuid
