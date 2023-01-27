@@ -52,30 +52,7 @@ class ProductMapper implements ProductMapperInterface
          * @var array{type: string, format?: string} $target
          */
         foreach ($productMappingSchema['properties'] as $targetCode => $target) {
-            $sourceValue = null;
-
-            if ('uuid' === $targetCode) {
-                $sourceValue = $product['uuid']->toString();
-            } elseif (\array_key_exists($targetCode, $productMapping) &&
-                $productMapping[$targetCode]['source'] !== null
-            ) {
-                try {
-                    $productValueExtractor = $this->valueExtractorRegistry->find(
-                        $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'],
-                        $target['type'],
-                        $target['format'] ?? null,
-                    );
-
-                    $sourceValue = $productValueExtractor->extract(
-                        $product,
-                        $productMapping[$targetCode]['source'],
-                        $productMapping[$targetCode]['locale'] ?? '<all_locales>',
-                        $productMapping[$targetCode]['scope'] ?? '<all_channels>',
-                        $productMapping[$targetCode]['parameters'] ?? null,
-                    );
-                } catch (ValueExtractorNotFoundException) {
-                }
-            }
+            $sourceValue = $this->extractSourceValue($product, $productMapping, $targetCode, $target, $attributeTypeBySource);
 
             if ($sourceValue !== null) {
                 $mappedProduct[$targetCode] = $sourceValue;
@@ -83,5 +60,47 @@ class ProductMapper implements ProductMapperInterface
         }
 
         return $mappedProduct;
+    }
+
+    /**
+     * @param RawProduct $product
+     * @param ProductMapping $productMapping
+     * @param array{type: string, format?: string} $target
+     * @param array<string, string> $attributeTypeBySource
+     */
+    private function extractSourceValue(
+        array $product,
+        array $productMapping,
+        string $targetCode,
+        array $target,
+        array $attributeTypeBySource,
+    ): mixed {
+        if ('uuid' === $targetCode) {
+            return $product['uuid']->toString();
+        }
+
+        if (!\array_key_exists($targetCode, $productMapping)
+            || $productMapping[$targetCode]['source'] === null
+        ) {
+            return null;
+        }
+
+        try {
+            $productValueExtractor = $this->valueExtractorRegistry->find(
+                $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'],
+                $target['type'],
+                $target['format'] ?? null,
+            );
+
+            return $productValueExtractor->extract(
+                $product,
+                $productMapping[$targetCode]['source'],
+                $productMapping[$targetCode]['locale'] ?? '<all_locales>',
+                $productMapping[$targetCode]['scope'] ?? '<all_channels>',
+                $productMapping[$targetCode]['parameters'] ?? null,
+            );
+        } catch (ValueExtractorNotFoundException) {
+            return null;
+        }
     }
 }

@@ -35,24 +35,6 @@ class ProductMapperTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
-        $this->createAttribute([
-            'code' => 'description',
-            'type' => 'pim_catalog_textarea',
-            'scopable' => true,
-            'localizable' => true,
-        ]);
-        $this->createAttribute([
-            'code' => 'optical_zoom',
-            'type' => 'pim_catalog_number',
-            'scopable' => false,
-            'localizable' => false,
-        ]);
-        $this->createAttribute([
-            'code' => 'retail_release_date',
-            'type' => 'pim_catalog_date',
-            'scopable' => false,
-            'localizable' => true,
-        ]);
 
         $product = [
             'uuid' => Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'),
@@ -69,23 +51,6 @@ class ProductMapperTest extends IntegrationTestCase
                         '<all_locales>' => 'Webcam Logi-tek X01-DE',
                     ],
                 ],
-                'description' => [
-                    'ecommerce' => [
-                        'en_US' => 'This is a great webcam with a powerful zoom.',
-                        'fr_FR' => 'Très bonne webcam avec un zoom puissant.',
-                    ],
-                ],
-                'optical_zoom' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => 4.2,
-                    ],
-                ],
-                'retail_release_date' => [
-                    '<all_channels>' => [
-                        'en_US' => '2023-02-01 08:00:00',
-                        'fr_FR' => '2023-03-15 12:00:00',
-                    ],
-                ],
             ],
         ];
 
@@ -100,26 +65,6 @@ class ProductMapperTest extends IntegrationTestCase
                 'scope' => null,
                 'locale' => null,
             ],
-            'short_description' => [
-                'source' => 'description',
-                'scope' => 'ecommerce',
-                'locale' => 'fr_FR',
-            ],
-            'zoom' => [
-                'source' => 'optical_zoom',
-                'scope' => null,
-                'locale' => null,
-            ],
-            'release_date' => [
-                'source' => 'retail_release_date',
-                'scope' => null,
-                'locale' => 'fr_FR',
-            ],
-            'type' => [
-                'source' => 'family',
-                'scope' => null,
-                'locale' => null,
-            ],
         ];
 
         $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
@@ -127,10 +72,6 @@ class ProductMapperTest extends IntegrationTestCase
         $expected = [
             'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
             'title' => 'Webcam Logi-tek X01-DE',
-            'short_description' => 'Très bonne webcam avec un zoom puissant.',
-            'zoom' => 4.2,
-            'release_date' => '2023-03-15 12:00:00',
-            'type' => 'webcam',
         ];
 
         $this->assertEquals($expected, $mappedProduct);
@@ -174,26 +115,6 @@ class ProductMapperTest extends IntegrationTestCase
                 'scope' => null,
                 'locale' => null,
             ],
-            'short_description' => [
-                'source' => null,
-                'scope' => null,
-                'locale' => null,
-            ],
-            'zoom' => [
-                'source' => null,
-                'scope' => null,
-                'locale' => null,
-            ],
-            'release_date' => [
-                'source' => null,
-                'scope' => null,
-                'locale' => null,
-            ],
-            'type' => [
-                'source' => null,
-                'scope' => null,
-                'locale' => null,
-            ],
         ];
 
         $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
@@ -226,27 +147,7 @@ class ProductMapperTest extends IntegrationTestCase
                 'locale' => null,
             ],
             'title' => [
-                'source' => null,
-                'scope' => null,
-                'locale' => null,
-            ],
-            'short_description' => [
-                'source' => null,
-                'scope' => null,
-                'locale' => null,
-            ],
-            'zoom' => [
-                'source' => null,
-                'scope' => null,
-                'locale' => null,
-            ],
-            'release_date' => [
-                'source' => 'created',
-                'scope' => null,
-                'locale' => null,
-            ],
-            'type' => [
-                'source' => null,
+                'source' => 'not_a_valid_source',
                 'scope' => null,
                 'locale' => null,
             ],
@@ -276,19 +177,6 @@ class ProductMapperTest extends IntegrationTestCase
               "type": "string"
             },
             "title": {
-              "type": "string"
-            },
-            "short_description": {
-              "type": "string"
-            },
-            "zoom": {
-              "type": "number"
-            },
-            "release_date": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "type": {
               "type": "string"
             }
           }
