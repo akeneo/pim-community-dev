@@ -303,7 +303,7 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with text transformation unknown
     Then I should get an error on update with message 'textTransformation: Text transformation "unknown" can only be one of the following: "no", "uppercase", "lowercase".'
 
-  Scenario: Cannot update an identifier generator with unknown text transformation
+  Scenario: Being able to update the text transformation property of an identifier generator
     When I update an identifier generator with text transformation lowercase
     Then The identifier generator is updated in the repository and text transformation is lowercase
     And I should not get any error
