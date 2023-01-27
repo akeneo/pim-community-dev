@@ -11,7 +11,8 @@
             "type": "string"
         },
         "name": {
-            "type": "string"
+            "type": "string",
+            "pattern": ".*"
         },
         "body_html": {
             "title": "Description",

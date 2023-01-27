@@ -18,6 +18,9 @@ const PRODUCT_MAPPING_SCHEMA = {
             type: 'string',
             title: 'Product name',
             description: 'This is the name of the product shown on the ecommerce',
+            minLength: 3,
+            maxLength: 50,
+            pattern: '[a-zA-Z].',
         },
     },
 };
@@ -238,6 +241,21 @@ test('it displays the target description and requirements in the source panel', 
             source: 'title',
             locale: 'en_US',
             scope: 'ecommerce',
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+                description: 'Name description',
+                minLength: 3,
+                maxLength: 50,
+                pattern: '[a-zA-Z].',
+            },
         },
     };
 

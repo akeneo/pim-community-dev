@@ -164,3 +164,4 @@ akeneo_catalogs:
                 constraints:
                     minLength: '{0,1} This target must have at least {{ value }} character.|[2,Inf[ This target must have at least {{ value }} characters.'
                     maxLength: '{0,1} This target must not exceed {{ value }} character.|[2,Inf[ This target must not exceed {{ value }} characters.'
+                    pattern: 'Pattern: This target must match the following regular expression: "{{ value }}".'
