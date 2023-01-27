@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Unit\Application\Service;
 
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
-use Akeneo\Catalogs\Application\Service\TargetTypeConverter;
+use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\StringDateTime;
+namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\Boolean;
 
-use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\ValueExtractorTestCase;
 
@@ -14,17 +14,17 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  *
- * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor
+ * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor
  */
-class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTestCase
+class BooleanFromBooleanAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringDateTimeFromDateAttributeValueExtractor $extractor;
+    private ?BooleanFromBooleanAttributeValueExtractor $extractor;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->extractor = self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class);
+        $this->extractor = self::getContainer()->get(BooleanFromBooleanAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
@@ -35,14 +35,14 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
         );
     }
 
-    public function testItReturnsTheValueForNumberAttribute(): void
+    public function testItReturnsTheValueForBooleanAttribute(): void
     {
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'release_date' => [
+                'is_released' => [
                     'ecommerce' => [
-                        'en_US' => '2023-01-31',
+                        'en_US' => true,
                     ],
                 ],
             ],
@@ -50,13 +50,13 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
 
         $result = $this->extractor->extract(
             product: $product,
-            code: 'release_date',
+            code: 'is_released',
             locale: 'en_US',
             scope: 'ecommerce',
             parameters: [],
         );
 
-        $this->assertEquals('2023-01-31', $result);
+        $this->assertTrue($result);
     }
 
     public function testItReturnsNullIfNotFound(): void
@@ -64,9 +64,9 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'release_date' => [
+                'is_released' => [
                     'ecommerce' => [
-                        'en_US' => '2023-01-31',
+                        'en_US' => true,
                     ],
                 ],
             ],
@@ -74,7 +74,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
 
         $result = $this->extractor->extract(
             product: $product,
-            code: 'release_date',
+            code: 'is_released',
             locale: '<all_locales>',
             scope: '<all_channels>',
             parameters: [],
@@ -88,9 +88,9 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'release_date' => [
+                'is_released' => [
                     'ecommerce' => [
-                        'en_US' => 20230131,
+                        'en_US' => 'true',
                     ],
                 ],
             ],
@@ -98,7 +98,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
 
         $result = $this->extractor->extract(
             product: $product,
-            code: 'release_date',
+            code: 'is_released',
             locale: 'en_US',
             scope: 'ecommerce',
             parameters: [],

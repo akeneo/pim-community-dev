@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Service;
+namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
 
@@ -13,6 +13,9 @@ use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundExceptio
 final class TargetTypeConverter
 {
     private const PIM_ATTRIBUTE_TYPES = [
+        'boolean' => [
+            'pim_catalog_boolean',
+        ],
         'string' => [
             'pim_catalog_text',
             'pim_catalog_textarea',
