@@ -36,10 +36,14 @@ final class GenerateIdentifierHandler
         GenerateIdentifierCommand $command,
     ): string {
         $identifierGenerator = $command->getIdentifierGenerator();
-        $transformedDelimiter = $identifierGenerator->delimiter()->asString() ?? '';
+        $transformedDelimiter = $identifierGenerator->delimiter()?->asString() ?? '';
         switch ($identifierGenerator->textTransformation()->normalize()) {
-            case TextTransformation::UPPERCASE: $transformedDelimiter = \strtoupper($transformedDelimiter); break;
-            case TextTransformation::LOWERCASE: $transformedDelimiter = \strtolower($transformedDelimiter); break;
+            case TextTransformation::UPPERCASE: $transformedDelimiter = \strtoupper($transformedDelimiter);
+
+            break;
+            case TextTransformation::LOWERCASE: $transformedDelimiter = \strtolower($transformedDelimiter);
+
+            break;
         }
 
         $result = '';
@@ -50,8 +54,12 @@ final class GenerateIdentifierHandler
 
             $generatedProperty = $this->generateProperty($property, $identifierGenerator, $command->getProductProjection(), $result);
             switch ($identifierGenerator->textTransformation()->normalize()) {
-                case TextTransformation::UPPERCASE: $generatedProperty = \strtoupper($generatedProperty); break;
-                case TextTransformation::LOWERCASE: $generatedProperty = \strtolower($generatedProperty); break;
+                case TextTransformation::UPPERCASE: $generatedProperty = \strtoupper($generatedProperty);
+
+                break;
+                case TextTransformation::LOWERCASE: $generatedProperty = \strtolower($generatedProperty);
+
+                break;
             }
 
             $result .= $generatedProperty;
