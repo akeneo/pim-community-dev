@@ -37,7 +37,10 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         GetNextIdentifierQuery $getNextIdentifierQuery,
     ): void {
         $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString(null));
-        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
+        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+        );
 
         $getNextIdentifierQuery
             ->fromPrefix($identifierGenerator, 'aKn-', 0)
@@ -51,7 +54,10 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         GetNextIdentifierQuery $getNextIdentifierQuery,
     ): void {
         $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString('a'));
-        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
+        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+        );
 
         $getNextIdentifierQuery
             ->fromPrefix($identifierGenerator, 'aKn-a', 0)
@@ -65,7 +71,10 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         GetNextIdentifierQuery $getNextIdentifierQuery,
     ): void {
         $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString('x'), 'uppercase');
-        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
+        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+        );
 
         $getNextIdentifierQuery
             ->fromPrefix($identifierGenerator, 'AKN-X', 0)
