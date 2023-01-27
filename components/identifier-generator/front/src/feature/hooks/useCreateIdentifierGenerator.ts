@@ -24,7 +24,8 @@ const useCreateIdentifierGenerator = (): HookResponse => {
       const response = await fetch(router.generate('akeneo_identifier_generator_rest_create'), {
         method: 'POST',
         headers: {'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest'},
-        body: JSON.stringify(generator),
+        // TODO CPM-915
+        body: JSON.stringify({...generator, text_transformation: 'no'}),
       });
 
       if (response.status === 400) {
