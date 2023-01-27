@@ -10,13 +10,13 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type TextTransformationNormalized 'no'|'uppercase'|'downcase'
+ * @phpstan-type TextTransformationNormalized 'no'|'uppercase'|'lowercase'
  */
 final class TextTransformation
 {
     public const NO = 'no';
     public const UPPERCASE = 'uppercase';
-    public const DOWNCASE = 'downcase';
+    public const LOWERCASE = 'lowercase';
 
     /**
      * @param TextTransformationNormalized $value
@@ -28,7 +28,7 @@ final class TextTransformation
 
     public static function fromString(string $value): self
     {
-        Assert::oneOf($value, [self::NO, self::UPPERCASE, self::DOWNCASE]);
+        Assert::oneOf($value, [self::NO, self::UPPERCASE, self::LOWERCASE]);
 
         return new self($value);
     }
