@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use PhpSpec\ObjectBehavior;
 
 class GenerateFamilyHandlerSpec extends ObjectBehavior
@@ -171,6 +172,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
             Target::fromString('sku'),
             Delimiter::fromString(null),
+            TextTransformation::fromString('no'),
         );
     }
 }

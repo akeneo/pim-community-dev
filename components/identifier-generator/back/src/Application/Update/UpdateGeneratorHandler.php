@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Webmozart\Assert\Assert;
 
@@ -37,6 +38,7 @@ final class UpdateGeneratorHandler
         $identifierGenerator->setTarget(Target::fromString($command->target));
         $identifierGenerator->setStructure(Structure::fromNormalized($command->structure));
         $identifierGenerator->setConditions(Conditions::fromNormalized($command->conditions));
+        $identifierGenerator->setTextTransformation(TextTransformation::fromString($command->textTransformation));
 
         $this->identifierGeneratorRepository->update($identifierGenerator);
     }
