@@ -40,10 +40,10 @@ final class GenerateIdentifierHandler
         switch ($identifierGenerator->textTransformation()->normalize()) {
             case TextTransformation::UPPERCASE: $transformedDelimiter = \strtoupper($transformedDelimiter);
 
-            break;
+                break;
             case TextTransformation::LOWERCASE: $transformedDelimiter = \strtolower($transformedDelimiter);
 
-            break;
+                break;
         }
 
         $result = '';
@@ -56,10 +56,10 @@ final class GenerateIdentifierHandler
             switch ($identifierGenerator->textTransformation()->normalize()) {
                 case TextTransformation::UPPERCASE: $generatedProperty = \strtoupper($generatedProperty);
 
-                break;
+                    break;
                 case TextTransformation::LOWERCASE: $generatedProperty = \strtolower($generatedProperty);
 
-                break;
+                    break;
             }
 
             $result .= $generatedProperty;
