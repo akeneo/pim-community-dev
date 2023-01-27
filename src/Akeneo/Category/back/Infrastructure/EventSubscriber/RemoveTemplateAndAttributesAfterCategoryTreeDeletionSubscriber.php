@@ -19,7 +19,7 @@ class RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber implements 
 {
     public function __construct(
         private readonly FeatureFlag $enrichedCategoryFeature,
-        private readonly DeleteTemplateAndAttributes $deleteTemplateAndAttributes
+        private readonly DeleteTemplateAndAttributes $deleteTemplateAndAttributes,
     ) {
     }
 
