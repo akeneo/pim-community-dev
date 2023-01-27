@@ -68,7 +68,7 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
             'attribute_options' => [$attributeOption->getCode()],
         ];
 
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser();
         $jobInstance = $this->getOrCreateJobInstance();
         $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }
