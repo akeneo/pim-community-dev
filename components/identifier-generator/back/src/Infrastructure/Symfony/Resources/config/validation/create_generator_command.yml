@@ -83,7 +83,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                 max: 100
         textTransformation:
             - Choice:
-                  choices: ['no', 'uppercase', 'downcase']
+                  choices: ['no', 'uppercase', 'lowercase']
                   message: 'Text transformation {{ value }} can only be one of the following: {{ choices }}.'
         code:
             - NotBlank: ~
