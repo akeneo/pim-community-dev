@@ -9,7 +9,7 @@ workflows:
                     filters:
                         branches:
                             only:
-                                - /^(CXP|OCT)-.*/
+                                - /^(?i)(CXP|OCT)-.*/
 
             # CE
             -   checkout_ce:

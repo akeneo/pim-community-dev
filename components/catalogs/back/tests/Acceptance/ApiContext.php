@@ -16,8 +16,11 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -730,7 +733,7 @@ class ApiContext implements Context
                         'scope' => 'ecommerce',
                         'locale' => 'en_US',
                     ],
-                    'description' => [
+                    'short_description' => [
                         'source' => 'description',
                         'scope' => 'ecommerce',
                         'locale' => 'en_US',
@@ -742,6 +745,26 @@ class ApiContext implements Context
                         'parameters' => [
                             'label_locale' => 'en_US',
                         ],
+                    ],
+                    'customization_drawings_count' => [
+                        'source' => 'drawings_customization_count',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'customization_artists_count' => [
+                        'source' => 'artists_customization_count',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'release_date' => [
+                        'source' => 'released_at',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'type' => [
+                        'source' => 'family',
+                        'scope' => null,
+                        'locale' => null,
                     ],
                 ],
             ),
@@ -755,7 +778,7 @@ class ApiContext implements Context
                 <<<'JSON_WRAP'
                 {
                   "$id": "https://example.com/product",
-                  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.4/schema",
                   "$comment": "My first schema !",
                   "title": "Product Mapping",
                   "description": "JSON Schema describing the structure of products expected by our application",
@@ -767,10 +790,23 @@ class ApiContext implements Context
                     "title": {
                       "type": "string"
                     },
-                    "description": {
+                    "short_description": {
                       "type": "string"
                     },
                     "size": {
+                      "type": "string"
+                    },
+                    "customization_drawings_count": {
+                      "type": "number"
+                    },
+                    "customization_artists_count": {
+                      "type": "string"
+                    },
+                    "release_date": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "type": {
                       "type": "string"
                     }
                   }
@@ -795,6 +831,9 @@ class ApiContext implements Context
                 'name' => 'T-shirt blue',
                 'description' => 'Description blue',
                 'size' => 'l',
+                'drawings_customization_count' => '12',
+                'artists_customization_count' => '7',
+                'released_at' => new \DateTimeImmutable('2023-01-12T00:00:00+00:00'),
                 'enabled' => true,
             ],
             [
@@ -803,6 +842,9 @@ class ApiContext implements Context
                 'name' => 'T-shirt green',
                 'description' => 'Description green',
                 'size' => 'm',
+                'drawings_customization_count' => '8',
+                'artists_customization_count' => '5',
+                'released_at' => new \DateTimeImmutable('2023-01-10T00:00:00+00:00'),
                 'enabled' => false,
             ],
             [
@@ -811,6 +853,9 @@ class ApiContext implements Context
                 'name' => 'T-shirt red',
                 'description' => 'Description red',
                 'size' => 'xl',
+                'drawings_customization_count' => '4',
+                'artists_customization_count' => '2',
+                'released_at' => new \DateTimeImmutable('2023-01-01T00:00:00+00:00'),
                 'enabled' => true,
             ],
         ];
@@ -834,6 +879,34 @@ class ApiContext implements Context
             'localizable' => true,
             'options' => ['XS', 'S', 'M', 'L', 'XL'],
         ]);
+        $this->createAttribute([
+            'code' => 'drawings_customization_count',
+            'type' => 'pim_catalog_number',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'artists_customization_count',
+            'type' => 'pim_catalog_number',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'released_at',
+            'type' => 'pim_catalog_date',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+
+        $this->createFamily('t-shirt', [
+            'sku',
+            'name',
+            'description',
+            'size',
+            'drawings_customization_count',
+            'artists_customization_count',
+            'released_at',
+        ]);
 
         foreach ($products as $product) {
             $command = UpsertProductCommand::createWithUuid(
@@ -841,10 +914,14 @@ class ApiContext implements Context
                 ProductUuid::fromUuid(Uuid::fromString($product['uuid'])),
                 [
                     new SetIdentifierValue('sku', $product['identifier']),
+                    new SetFamily('t-shirt'),
                     new SetEnabled((bool) $product['enabled']),
                     new SetTextValue('name', 'ecommerce', 'en_US', $product['name']),
                     new SetTextareaValue('description', 'ecommerce', 'en_US', $product['description']),
                     new SetSimpleSelectValue('size', 'ecommerce', 'en_US', $product['size']),
+                    new SetNumberValue('drawings_customization_count', null, null, $product['drawings_customization_count']),
+                    new SetNumberValue('artists_customization_count', null, null, $product['artists_customization_count']),
+                    new SetDateValue('released_at', null, null, $product['released_at']),
                 ],
             );
 
@@ -884,14 +961,22 @@ class ApiContext implements Context
             [
                 'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
                 'title' => 'T-shirt blue',
-                'description' => 'Description blue',
+                'short_description' => 'Description blue',
                 'size' => 'L',
+                'customization_drawings_count' => 12,
+                'customization_artists_count' => '7',
+                'release_date' => '2023-01-12T00:00:00+00:00',
+                'type' => 't-shirt',
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
                 'title' => 'T-shirt red',
-                'description' => 'Description red',
+                'short_description' => 'Description red',
                 'size' => 'XL',
+                'customization_drawings_count' => 4,
+                'customization_artists_count' => '2',
+                'release_date' => '2023-01-01T00:00:00+00:00',
+                'type' => 't-shirt',
             ],
         ];
 
@@ -925,8 +1010,12 @@ class ApiContext implements Context
         $expectedMappedProducts = [
             'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
             'title' => 'T-shirt blue',
-            'description' => 'Description blue',
+            'short_description' => 'Description blue',
             'size' => 'L',
+            'customization_drawings_count' => 12,
+            'customization_artists_count' => '7',
+            'release_date' => '2023-01-12T00:00:00+00:00',
+            'type' => 't-shirt',
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);
@@ -992,5 +1081,18 @@ class ApiContext implements Context
         }
 
         $this->container->get('pim_catalog.saver.attribute_option')->saveAll($options);
+    }
+
+    /**
+     * @param array<string> $attributes
+     */
+    private function createFamily(string $code, array $attributes): void
+    {
+        $family = $this->container->get('pim_catalog.factory.family')->create();
+        $this->container->get('pim_catalog.updater.family')->update($family, [
+            'code' => $code,
+            'attributes' => $attributes,
+        ]);
+        $this->container->get('pim_catalog.saver.family')->save($family);
     }
 }
