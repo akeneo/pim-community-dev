@@ -24,7 +24,7 @@ final class StringDateTimeFromDateAttributeValueExtractor implements StringValue
 
         // @todo transform date in ISO 8601
 
-        return null !== $value ? (string) $value : null;
+        return \is_string($value) ? $value : null;
     }
 
     public function getSupportedSourceType(): string

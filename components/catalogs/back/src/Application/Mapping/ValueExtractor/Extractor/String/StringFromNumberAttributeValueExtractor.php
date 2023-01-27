@@ -22,7 +22,7 @@ final class StringFromNumberAttributeValueExtractor implements StringValueExtrac
         /** @var mixed $value */
         $value = $product['raw_values'][$code][$scope][$locale] ?? null;
 
-        return null !== $value ? (string) $value : null;
+        return \is_numeric($value) ? (string) $value : null;
     }
 
     public function getSupportedSourceType(): string

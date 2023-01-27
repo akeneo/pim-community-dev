@@ -23,7 +23,7 @@ final class NumberFromNumberAttributeValueExtractor implements NumberValueExtrac
         $value = $product['raw_values'][$code][$scope][$locale] ?? null;
 
         // @todo check if value is "floatable" or "intable" (i.e if it's a string that can be parsed)
-        return null !== $value ? (float) $value : null;
+        return \is_numeric($value) ? (float) $value : null;
     }
 
     public function getSupportedSourceType(): string

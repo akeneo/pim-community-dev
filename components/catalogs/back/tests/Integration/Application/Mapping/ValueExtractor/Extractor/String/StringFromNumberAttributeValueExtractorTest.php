@@ -82,4 +82,28 @@ class StringFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
 
         $this->assertEquals(null, $result);
     }
+
+    public function testItReturnsNullIfInconsistentRawValue(): void
+    {
+        /** @var RawProduct $product */
+        $product = [
+            'raw_values' => [
+                'optical_zoom' => [
+                    'ecommerce' => [
+                        'en_US' => 'trois',
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->extractor->extract(
+            product: $product,
+            code: 'optical_zoom',
+            locale: 'en_US',
+            scope: 'ecommerce',
+            parameters: [],
+        );
+
+        $this->assertEquals(null, $result);
+    }
 }

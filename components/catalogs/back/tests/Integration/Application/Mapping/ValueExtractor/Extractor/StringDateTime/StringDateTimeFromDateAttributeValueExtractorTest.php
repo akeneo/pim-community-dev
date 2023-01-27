@@ -82,4 +82,28 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
 
         $this->assertEquals(null, $result);
     }
+
+    public function testItReturnsNullIfInconsistentRawValue(): void
+    {
+        /** @var RawProduct $product */
+        $product = [
+            'raw_values' => [
+                'release_date' => [
+                    'ecommerce' => [
+                        'en_US' => 20230131,
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->extractor->extract(
+            product: $product,
+            code: 'release_date',
+            locale: 'en_US',
+            scope: 'ecommerce',
+            parameters: [],
+        );
+
+        $this->assertEquals(null, $result);
+    }
 }

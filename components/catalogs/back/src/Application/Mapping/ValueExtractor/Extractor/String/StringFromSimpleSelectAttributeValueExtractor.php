@@ -25,8 +25,9 @@ final class StringFromSimpleSelectAttributeValueExtractor implements StringValue
         ?string $scope,
         ?array $parameters,
     ): null | string {
-        /** @var string|null $value */
+        /** @var mixed $value */
         $value = $product['raw_values'][$code][$scope][$locale] ?? null;
+        $value = \is_string($value) ? $value : null;
 
         if (null !== $value) {
             /** @var string $labelLocale */

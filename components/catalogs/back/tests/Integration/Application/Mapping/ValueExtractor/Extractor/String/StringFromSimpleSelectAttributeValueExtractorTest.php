@@ -93,6 +93,38 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
         $this->assertEquals(null, $result);
     }
 
+    public function testItReturnsNullIfInconsistentRawValue(): void
+    {
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_simpleselect',
+            'options' => ['Red', 'Blue'],
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
+        /** @var RawProduct $product */
+        $product = [
+            'raw_values' => [
+                'color' => [
+                    'ecommerce' => [
+                        'en_US' => 10,
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->extractor->extract(
+            product: $product,
+            code: 'color',
+            locale: 'en_US',
+            scope: 'ecommerce',
+            parameters: ['label_locale' => 'en_US'],
+        );
+
+        $this->assertEquals(null, $result);
+    }
+
     public function testItReturnsTheSelectValueCodeIfNoTranslation(): void
     {
         $this->createAttribute([

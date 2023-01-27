@@ -22,7 +22,7 @@ final class StringFromTextAttributeValueExtractor implements StringValueExtracto
         /** @var mixed $value */
         $value = $product['raw_values'][$code][$scope][$locale] ?? null;
 
-        return null !== $value ? (string) $value : null;
+        return \is_scalar($value) ? (string) $value : null;
     }
 
     public function getSupportedSourceType(): string
