@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\Gene
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Webmozart\Assert\Assert;
 
 /**
@@ -35,14 +36,25 @@ final class GenerateIdentifierHandler
         GenerateIdentifierCommand $command,
     ): string {
         $identifierGenerator = $command->getIdentifierGenerator();
+        $transformedDelimiter = $identifierGenerator->delimiter()->asString() ?? '';
+        switch ($identifierGenerator->textTransformation()->normalize()) {
+            case TextTransformation::UPPERCASE: $transformedDelimiter = \strtoupper($transformedDelimiter); break;
+            case TextTransformation::LOWERCASE: $transformedDelimiter = \strtolower($transformedDelimiter); break;
+        }
 
         $result = '';
         foreach ($identifierGenerator->structure()->getProperties() as $property) {
             if ($result !== '') {
-                $result .= $identifierGenerator->delimiter()?->asString() ?? '';
+                $result .= $transformedDelimiter;
             }
 
-            $result .= $this->generateProperty($property, $identifierGenerator, $command->getProductProjection(), $result);
+            $generatedProperty = $this->generateProperty($property, $identifierGenerator, $command->getProductProjection(), $result);
+            switch ($identifierGenerator->textTransformation()->normalize()) {
+                case TextTransformation::UPPERCASE: $generatedProperty = \strtoupper($generatedProperty); break;
+                case TextTransformation::LOWERCASE: $generatedProperty = \strtolower($generatedProperty); break;
+            }
+
+            $result .= $generatedProperty;
         }
 
         return $result;
