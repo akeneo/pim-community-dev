@@ -9,7 +9,7 @@ workflows:
                     filters:
                         branches:
                             only:
-                                - /^(CXP|cxp|OCT|oct)-.*/
+                                - /^(?i)(CXP|OCT)-.*/
             -   checkout_ee:
                     name: checkout_deploy
                     requires:
