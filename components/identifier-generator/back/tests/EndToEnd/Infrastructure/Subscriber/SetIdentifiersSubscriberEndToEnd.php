@@ -42,7 +42,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
             ['en_US' => 'My Generator'],
             'sku',
             '-',
-            'no',
+            'lowercase',
         ));
     }
 
@@ -52,8 +52,8 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $this->createIdentifierGenerator();
         $productFromDatabase = $this->createProduct();
 
-        Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
-        Assert::assertSame('AKN-050', $productFromDatabase->getValue('sku')->getData());
+        Assert::assertSame('akn-050', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-050', $productFromDatabase->getValue('sku')->getData());
     }
 
     /** @test */
@@ -63,7 +63,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $productsFromDatabase = $this->createProducts(5);
 
         Assert::assertSame(
-            ['AKN-050', 'AKN-051', 'AKN-052', 'AKN-053', 'AKN-054'],
+            ['akn-050', 'akn-051', 'akn-052', 'akn-053', 'akn-054'],
             \array_map(fn (ProductInterface $product): ?string => $product->getIdentifier(), $productsFromDatabase)
         );
     }
@@ -75,8 +75,8 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $product = $this->createProduct('originalIdentifier');
         $productFromDatabase = $this->updateProductIdentifier($product, null);
 
-        Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
-        Assert::assertSame('AKN-050', $productFromDatabase->getValue('sku')->getData());
+        Assert::assertSame('akn-050', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-050', $productFromDatabase->getValue('sku')->getData());
     }
 
     /** @test */
@@ -86,8 +86,8 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $this->createProduct('AKN-050');
 
         $productFromDatabase = $this->createProduct();
-        Assert::assertSame('AKN-051', $productFromDatabase->getIdentifier());
-        Assert::assertSame('AKN-051', $productFromDatabase->getValue('sku')->getData());
+        Assert::assertSame('akn-051', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-051', $productFromDatabase->getValue('sku')->getData());
     }
 
     /** @test */
@@ -141,7 +141,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
 
         $this->createFamily('tshirt');
         $this->setProductFamily($productFromDatabase->getUuid(), 'tshirt');
-        Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-050', $productFromDatabase->getIdentifier());
     }
 
     /** @test */
@@ -157,7 +157,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
 
         $this->setSimpleSelectProductValue($productFromDatabase->getUuid());
-        Assert::assertSame('AKN-050', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-050', $productFromDatabase->getIdentifier());
     }
 
     private function addRestrictionsOnIdentifierAttribute(): void
