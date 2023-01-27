@@ -301,4 +301,4 @@ Feature: Update Identifier Generator
   # Text transformation
   Scenario: Cannot update an identifier generator with unknown text transformation
     When I try to update an identifier generator with text transformation unknown
-    Then I should get an error on update with message 'textTransformation: Text transformation "unknown" can only be one of the following: "no", "uppercase", "downcase".'
+    Then I should get an error on update with message 'textTransformation: Text transformation "unknown" can only be one of the following: "no", "uppercase", "lowercase".'
