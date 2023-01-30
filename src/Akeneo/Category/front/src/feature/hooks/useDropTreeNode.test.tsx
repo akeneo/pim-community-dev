@@ -55,7 +55,7 @@ describe('useDropTreeNode', () => {
 
   test('it drags over the node', () => {
     const reorder = jest.fn();
-    const node = aTreeNode('node', 1111, [], 'a_node', 1, 'node');
+    const node = aTreeNode('node', 1111, [], 'a_node', '', 1, 'node');
     const draggedNode = aDraggedNode(9999);
     const {result} = renderUseDropTreeNode(node, reorder, draggedNode);
     const anElement = document.createElement('div');
@@ -120,7 +120,7 @@ describe('useDropTreeNode', () => {
 
   test('it drops on the node', () => {
     const reorder = jest.fn();
-    const node = aTreeNode('node', 1111, [], 'a_node', 1, 'node');
+    const node = aTreeNode('node', 1111, [], 'a_node', '', 1, 'node');
     const draggedNode = aDraggedNode(9999);
     const {result} = renderUseDropTreeNode(node, reorder, draggedNode);
     const anElement = document.createElement('div');

@@ -26,12 +26,14 @@ services:
             - '@pim_enrich.twig.category_extension'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
+            - '@Akeneo\Category\Application\Query\GetCategoryChildrenIds'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateCategoryController:
         public: true
         arguments:
             - '@category.command.message_bus'
             - '@oro_security.security_facade'
+            - '@event_dispatcher'
             - '@Akeneo\Category\Application\Converter\ConverterInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditAclFilter'
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
