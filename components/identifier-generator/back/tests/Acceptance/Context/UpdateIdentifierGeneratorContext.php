@@ -314,7 +314,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAFamilyContainingInvalidTruncateProcess(): void
     {
-        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => 'EQUALS', 'value' => '1', 'unknown' => '']]]);
+        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => '1', 'unknown' => '']]]);
     }
 
     /**
