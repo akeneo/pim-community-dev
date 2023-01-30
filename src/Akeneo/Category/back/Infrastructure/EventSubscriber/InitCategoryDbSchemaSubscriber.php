@@ -86,7 +86,7 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
                 `is_scopable` TINYINT(1) NOT NULL,
                 `is_localizable` TINYINT(1) NOT NULL,
                 `additional_properties` JSON NOT NULL,
-                CONSTRAINT `FK_ATTRIBUTE_template_uiid` 
+                CONSTRAINT `FK_ATTRIBUTE_template_uuid` 
                     FOREIGN KEY (`category_template_uuid`) 
                     REFERENCES `pim_catalog_category_template` (`uuid`)
                     ON DELETE CASCADE

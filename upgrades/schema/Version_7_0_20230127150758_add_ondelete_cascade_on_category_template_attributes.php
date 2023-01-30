@@ -16,7 +16,7 @@ final class Version_7_0_20230127150758_add_ondelete_cascade_on_category_template
             ALTER TABLE pim_catalog_category_attribute
             drop CONSTRAINT FK_ATTRIBUTE_template_uiid;
             ALTER TABLE pim_catalog_category_attribute
-            ADD CONSTRAINT FK_ATTRIBUTE_template_uiid
+            ADD CONSTRAINT FK_ATTRIBUTE_template_uuid
                 FOREIGN KEY (`category_template_uuid`) 
                 REFERENCES `pim_catalog_category_template` (`uuid`)
                 ON DELETE CASCADE;
