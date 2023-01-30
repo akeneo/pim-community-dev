@@ -5,7 +5,7 @@ import {
   IdentifierAttributeSelector,
   LabelTranslations,
   TabValidationErrors,
-  TextTransformationSelector
+  TextTransformationSelector,
 } from '../components';
 import {Styled} from '../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -42,7 +42,7 @@ const GeneralPropertiesTab: React.FC<GeneralPropertiesProps> = ({generator, onGe
         </Field>
         <IdentifierAttributeSelector code={generator.target || ''} />
         <Field label={translate('pim_identifier_generator.general.text_transformation.label')}>
-          <TextTransformationSelector value={generator.text_transformation} onChange={onTextTransformationChange}/>
+          <TextTransformationSelector value={generator.text_transformation} onChange={onTextTransformationChange} />
         </Field>
       </Styled.FormContainer>
       <LabelTranslations labelCollection={generator.labels} onLabelsChange={onLabelChange} />

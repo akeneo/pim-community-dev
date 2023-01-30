@@ -18,7 +18,7 @@ describe('useGetSelectOptions', () => {
       await waitFor(() => result.current?.options?.length > 0);
       hookResult = result;
       hookWaitFor = waitFor;
-    })
+    });
 
     expectCall();
     expect(hookResult.current.options).toBeDefined();
@@ -52,7 +52,7 @@ describe('useGetSelectOptions', () => {
       await waitFor(() => !result.current.isLoading);
       hookResult = result;
       hookWaitFor = waitFor;
-    })
+    });
 
     expectCall();
     expect(hookResult.current.options).toBeDefined();
