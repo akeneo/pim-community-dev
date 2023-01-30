@@ -1,15 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, IdentifierGenerator} from '../models';
-import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
+import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
 import {ListSkeleton, TabValidationErrors} from '../components';
-import {AddConditionButton, EnabledLine, FamilyLine, UserAddedConditionsList} from './conditions';
+import {AddConditionButton, EnabledLine, FamilyLine, AutoInsertedConditionsList} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
 import {SimpleSelectLine} from './conditions/SimpleSelectLine';
-import styled from 'styled-components';
 
 type SelectionTabProps = {
   generator: IdentifierGenerator;
@@ -26,10 +25,6 @@ type ConditionLineProps = {
   onChange: (condition: Condition) => void;
   onDelete: () => void;
 };
-
-const IsEmpty = styled.div`
-  max-width: 160px;
-`;
 
 const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDelete}) => {
   switch (condition.type) {
@@ -125,7 +120,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
           {isLoading && <ListSkeleton />}
           {!isLoading && (
             <>
-              <UserAddedConditionsList generator={generator} />
               {conditionsWithId.map(({id, ...condition}) => (
                 <Table.Row key={id} aria-colspan={3}>
                   <ConditionLine
@@ -135,17 +129,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
                   />
                 </Table.Row>
               ))}
-              <Table.Row aria-colspan={3}>
-                <Styled.TitleCell>
-                  {identifiers && identifiers.length > 0 ? identifiers[0].label : `[${target}]`}
-                </Styled.TitleCell>
-                <Styled.SelectionInputsContainer>
-                  <IsEmpty>
-                    <TextInput value={translate('pim_common.operators.EMPTY')} readOnly={true} />
-                  </IsEmpty>
-                </Styled.SelectionInputsContainer>
-                <Table.Cell />
-              </Table.Row>
+              <AutoInsertedConditionsList generator={generator} />
               {conditionsWithId.length === 0 && (
                 <tr aria-colspan={3}>
                   <td colSpan={3}>

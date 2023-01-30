@@ -119,8 +119,8 @@ const MultiSelectCondition = styled(MultiSelectInput)`
   flex-basis: 300px;
 `;
 
-const OperatorSelectCondition = styled(SelectInput)`
-  flex-basis: 160px;
+const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
+  ${props => props.isInSelection && 'flex-basis: 160px;'}
 `;
 
 const SelectCondition = styled(SelectInput)`

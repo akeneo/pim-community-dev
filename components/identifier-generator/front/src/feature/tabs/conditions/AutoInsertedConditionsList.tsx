@@ -5,12 +5,17 @@ import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 import {useIdentifierAttributes} from '../../hooks';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ListSkeleton} from '../../components';
+import styled from 'styled-components';
 
 type Props = {
   generator: IdentifierGenerator;
 };
 
-const UserAddedConditionsList: React.FC<Props> = ({generator}) => {
+const IsEmpty = styled.div`
+  max-width: 160px;
+`;
+
+const AutoInsertedConditionsList: React.FC<Props> = ({generator}) => {
   const translate = useTranslate();
   const {target} = generator;
   const {data: identifiers, isLoading} = useIdentifierAttributes();
@@ -22,30 +27,31 @@ const UserAddedConditionsList: React.FC<Props> = ({generator}) => {
       {isLoading ? (
         <ListSkeleton />
       ) : (
-        <Table.Row>
-          <Styled.NotDraggableCell />
-          <Styled.TitleCondition>
+        <Table.Row aria-colspan={3}>
+          <Styled.TitleCell>
             {identifiers && identifiers.length > 0 ? identifiers[0].label : `[${target}]`}
-          </Styled.TitleCondition>
-          <Table.Cell colSpan={3}>
-            <Styled.InputContainer>
+          </Styled.TitleCell>
+          <Styled.SelectionInputsContainer>
+            <IsEmpty>
               <TextInput value={translate('pim_common.operators.EMPTY')} readOnly={true} />
-            </Styled.InputContainer>
-          </Table.Cell>
+            </IsEmpty>
+          </Styled.SelectionInputsContainer>
+          <Table.Cell />
         </Table.Row>
       )}
       {hasFamilyStructureProperty && (
-        <Table.Row>
-          <Styled.TitleCondition>{translate('Family')}</Styled.TitleCondition>
-          <Table.Cell colSpan={3}>
-            <Styled.InputContainer>
-              <TextInput value={translate('pim_common.operators.NOT_EMPTY')} readOnly={true} />
-            </Styled.InputContainer>
+        <Table.Row aria-colspan={3}>
+          <Styled.TitleCell>{translate('Family')}</Styled.TitleCell>
+          <Table.Cell>
+            <IsEmpty>
+              <TextInput value={translate('pim_common.operators.NOT EMPTY')} readOnly={true} />
+            </IsEmpty>
           </Table.Cell>
+          <Table.Cell />
         </Table.Row>
       )}
     </>
   );
 };
 
-export {UserAddedConditionsList};
+export {AutoInsertedConditionsList};
