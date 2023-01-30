@@ -20,6 +20,11 @@ pim_identifier_generator:
     general:
         title: "General properties"
         label_translations_in_ui_locale: "Label translations in UI locale"
+        text_transformation:
+            label: 'Text transformation'
+            no: 'No text transformation'
+            lowercase: 'Lowercase'
+            uppercase: 'Uppercase'
     flash:
         create:
             success: 'The identifier generator "{{ code }}" was successfully created'

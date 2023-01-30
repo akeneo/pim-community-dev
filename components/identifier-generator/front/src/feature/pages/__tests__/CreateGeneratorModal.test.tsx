@@ -39,6 +39,7 @@ describe('CreateGeneratorModal', () => {
       labels: {en_US: 'Other label'},
       structure: [],
       target: 'sku',
+      text_transformation: 'no',
     });
   });
 
@@ -101,6 +102,7 @@ describe('CreateGeneratorModal', () => {
       labels: {en_US: 'New label 123'},
       structure: [],
       target: 'sku',
+      text_transformation: 'no',
     });
   });
 });

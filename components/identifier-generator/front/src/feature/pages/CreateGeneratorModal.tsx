@@ -56,6 +56,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
         conditions: [],
         structure: [],
         delimiter: null,
+        text_transformation: 'no',
       });
     }
   }, [target, isFormInvalid, onSave, code, uiLocale, label]);
