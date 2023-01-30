@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Family;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use PhpSpec\ObjectBehavior;
@@ -51,5 +52,12 @@ class FamilyPropertySpec extends ObjectBehavior
                 'value' => 3
             ]
         ]);
+    }
+
+    public function it_should_return_an_implicit_condition(): void
+    {
+        $this->getImplicitCondition()->shouldBeLike(
+            Family::fromNormalized(['type' => 'family', 'operator' => 'NOT EMPTY']),
+        );
     }
 }
