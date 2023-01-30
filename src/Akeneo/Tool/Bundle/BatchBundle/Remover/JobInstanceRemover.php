@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\RemovableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
@@ -19,6 +20,7 @@ class JobInstanceRemover implements RemoverInterface, BulkRemoverInterface
         private RemovableObjectRepositoryInterface $jobInstanceRepository,
         private EventDispatcherInterface $eventDispatcher,
         private DeleteRunningUser $deleteRunningUser,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -81,7 +83,11 @@ class JobInstanceRemover implements RemoverInterface, BulkRemoverInterface
     {
         try {
             $this->deleteRunningUser->execute($jobInstance->getCode());
-        } catch (UserNotFoundException $e) {
+        } catch (\Exception $e) {
+            $this->logger->warning('Error occurred trying to remove running user.', [
+                'error_message' => $e->getMessage(),
+                'error_trace' => $e->getTraceAsString()
+            ]);
         }
     }
 

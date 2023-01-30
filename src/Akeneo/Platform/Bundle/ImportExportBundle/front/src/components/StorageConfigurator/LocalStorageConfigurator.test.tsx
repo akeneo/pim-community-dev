@@ -13,6 +13,7 @@ test('it renders the local storage configurator', () => {
 
   renderWithProviders(
     <LocalStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -32,6 +33,7 @@ test('it allows user to fill local storage file_path field', () => {
 
   renderWithProviders(
     <LocalStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -66,6 +68,7 @@ test('it throws an exception when passing a non-local storage', () => {
   expect(() =>
     renderWithProviders(
       <LocalStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -95,6 +98,7 @@ test('it displays validation errors', () => {
 
   renderWithProviders(
     <LocalStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={validationErrors}
