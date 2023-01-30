@@ -19,7 +19,7 @@ describe('FamilyLine', () => {
     const familyCondition: FamilyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY};
     render(
       <TableMock>
-        <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()}/>
+        <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()} />
       </TableMock>
     );
 
