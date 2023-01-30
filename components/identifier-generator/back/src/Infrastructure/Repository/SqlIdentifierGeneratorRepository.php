@@ -66,15 +66,7 @@ VALUES (
 );
 SQL;
 
-        if ($this->isPreviousDatabaseVersionForTarget()) {
-            $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN(:uuid), :code, :target, :delimiter, :labels, :conditions, :structure);
-SQL;
-            unset($parameters['text_transformation']);
-        }
-
-        if ($this->isPreviousDatabaseVersionForDelimiter()) {
+        if ($this->isPreviousDatabaseVersion()) {
             $query = <<<SQL
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
 VALUES (UUID_TO_BIN(:uuid), :code, (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target), :delimiter, :labels, :conditions, :structure);
@@ -111,20 +103,7 @@ UPDATE pim_catalog_identifier_generator SET
 WHERE pim_catalog_identifier_generator.code=:code;
 SQL;
 
-        if ($this->isPreviousDatabaseVersionForTarget()) {
-            $query = <<<SQL
-UPDATE pim_catalog_identifier_generator SET
-    target=:target,
-    delimiter=:delimiter,
-    labels=:labels,
-    conditions=:conditions,
-    structure=:structure
-WHERE pim_catalog_identifier_generator.code=:code;
-SQL;
-            unset($parameters['text_transformation']);
-        }
-
-        if ($this->isPreviousDatabaseVersionForDelimiter()) {
+        if ($this->isPreviousDatabaseVersion()) {
             $query = <<<SQL
 UPDATE pim_catalog_identifier_generator SET
     target_id=(SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target),
@@ -167,22 +146,7 @@ INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=p
 WHERE pim_catalog_identifier_generator.code=:code
 SQL;
 
-        if ($this->isPreviousDatabaseVersionForTarget()) {
-            $sql = <<<SQL
-SELECT
-    BIN_TO_UUID(uuid) AS uuid,
-    code,
-    conditions,
-    structure,
-    labels,
-    JSON_OBJECT('delimiter', delimiter, 'text_transformation', 'no') AS options,
-    target
-FROM pim_catalog_identifier_generator
-WHERE code=:code
-SQL;
-        }
-
-        if ($this->isPreviousDatabaseVersionForDelimiter()) {
+        if ($this->isPreviousDatabaseVersion()) {
             $sql = <<<SQL
 SELECT
     BIN_TO_UUID(uuid) AS uuid,
@@ -232,21 +196,7 @@ FROM pim_catalog_identifier_generator
 INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
 SQL;
 
-        if ($this->isPreviousDatabaseVersionForTarget()) {
-            $sql = <<<SQL
-SELECT
-    BIN_TO_UUID(uuid) AS uuid,
-    code,
-    conditions,
-    structure,
-    labels,
-    JSON_OBJECT('delimiter', delimiter, 'text_transformation', 'no') AS options,
-    target
-FROM pim_catalog_identifier_generator
-SQL;
-        }
-
-        if ($this->isPreviousDatabaseVersionForDelimiter()) {
+        if ($this->isPreviousDatabaseVersion()) {
             $sql = <<<SQL
 SELECT
     BIN_TO_UUID(uuid) AS uuid,
@@ -339,12 +289,7 @@ SQL;
         }
     }
 
-    private function isPreviousDatabaseVersionForTarget(): bool
-    {
-        return $this->columnExists('target');
-    }
-
-    private function isPreviousDatabaseVersionForDelimiter(): bool
+    private function isPreviousDatabaseVersion(): bool
     {
         return $this->columnExists('delimiter');
     }
