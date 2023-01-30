@@ -62,6 +62,12 @@
         "pattern": {
           "type": "string",
           "format": "regex"
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
         }
       },
       "additionalProperties": false,

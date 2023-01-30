@@ -237,7 +237,9 @@ class CatalogFixtureCommand extends Command
             },
             "phone_number": {
               "type": "string",
-              "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$"
+              "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$",
+              "minimum": 5,
+              "maximum": 15
             }
           }
         }
