@@ -20,6 +20,11 @@ require dirname(__DIR__).'/vendor/autoload.php';
 require dirname(__DIR__).'/config/bootstrap.php';
 
 $tableToKeep = [
+    "acl_classes",
+    "acl_entries",
+    "acl_object_identities",
+    "acl_object_identity_ancestors",
+    "acl_security_identities",
     "oro_access_group",
     "oro_access_role",
     "oro_config",
@@ -59,6 +64,8 @@ foreach ($response->fetchFirstColumn() as $table) {
 timing("set_foreign_key_check_and_truncate", fn() => $connection->exec($sql));
 timing("re-enabled_foreign_key_check", fn() => $connection->exec('SET FOREIGN_KEY_CHECKS = 1'));
 timing("load fixture", fn() => $catalogLoader->execute("src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"));
+timing("change channel", fn() => $connection->exec("DELETE FROM oro_user WHERE oro_user.user_type != 'user'"));
+timing("change channel", fn() => $connection->exec('UPDATE oro_user SET catalogScope_id = 1, defaultTree_id = 1'));
 
 function timing(string $step, $callback)
 {
@@ -120,6 +127,17 @@ class CatalogLoader
 
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
+            if (in_array($jobInstance->getCode(), [
+                "fixtures_attribute_group_access_csv",
+                "fixtures_product_category_access_csv",
+                "fixtures_locale_access_csv",
+                "fixtures_user_group_csv",
+                "fixtures_user_role_csv",
+                "fixtures_user_csv"
+            ])) {
+                continue;
+            }
+
             $params = [
                 'code'       => $jobInstance->getCode(),
                 '--no-debug' => true,
