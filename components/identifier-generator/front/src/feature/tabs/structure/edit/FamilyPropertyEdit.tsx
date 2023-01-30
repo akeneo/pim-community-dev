@@ -1,32 +1,26 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
-import {AbbreviationType, FamilyCodeOperators, FamilyCodeProperty, Operator} from '../../../models';
+import {AbbreviationType, FamilyProperty, FamilyPropertyOperators, Operator} from '../../../models';
 import {Field, NumberInput, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {OperatorSelector} from '../../../components';
-import styled from 'styled-components';
+import {Styled} from '../../../components/Styled';
 
 const options = [
-  {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.first_chars'},
+  {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
   {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
 ];
 
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
 
-const FamilyCodeEdit: PropertyEditFieldsProps<FamilyCodeProperty> = ({selectedProperty, onChange}) => {
+const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedProperty, onChange}) => {
   const translate = useTranslate();
 
-  const onChangeProcessType = (type: string) => {
-    //const charsNumber = value === AbbreviationType.TRUNCATE ? 3 : null;
+  const onChangeProcessType = useCallback((type: string) => {
     if (type === AbbreviationType.TRUNCATE) {
       onChange({
         type: selectedProperty.type,
         process: {
-          type: type as AbbreviationType,
+          type: AbbreviationType.TRUNCATE,
           value: 3,
           operator: null,
         },
@@ -35,22 +29,26 @@ const FamilyCodeEdit: PropertyEditFieldsProps<FamilyCodeProperty> = ({selectedPr
       onChange({
         type: selectedProperty.type,
         process: {
-          type: type as AbbreviationType,
+          type: AbbreviationType.NO,
         },
       });
     }
-  };
+  }, [onChange, selectedProperty.type]);
 
-  const onChangeOperator = (operator: Operator) => {
-    onChange({...selectedProperty, process: {...selectedProperty.process, operator}});
-  };
+  const onChangeOperator = useCallback((operator: Operator) => {
+    if (selectedProperty.process.type === AbbreviationType.TRUNCATE) {
+      onChange({...selectedProperty, process: {...selectedProperty.process, operator}});
+    }
+  }, [onChange, selectedProperty]);
 
-  const onChangeCharsNumber = (charsNumber: string) => {
-    onChange({...selectedProperty, process: {...selectedProperty.process, value: parseInt(charsNumber)}});
-  };
+  const onChangeCharsNumber = useCallback((charsNumber: string) => {
+    if (selectedProperty.process.type === AbbreviationType.TRUNCATE) {
+      onChange({...selectedProperty, process: {...selectedProperty.process, value: parseInt(charsNumber)}});
+    }
+  }, [onChange, selectedProperty]);
 
   return (
-    <StyledContainer>
+    <Styled.EditionContainer>
       <Field
         label={translate('pim_identifier_generator.structure.settings.family.abbrev_type')}
         requiredLabel={translate('pim_common.required_label')}
@@ -78,7 +76,7 @@ const FamilyCodeEdit: PropertyEditFieldsProps<FamilyCodeProperty> = ({selectedPr
             <OperatorSelector
               operator={selectedProperty.process.operator || null}
               onChange={onChangeOperator}
-              operators={FamilyCodeOperators}
+              operators={FamilyPropertyOperators}
             />
           </Field>
           <Field
@@ -94,8 +92,8 @@ const FamilyCodeEdit: PropertyEditFieldsProps<FamilyCodeProperty> = ({selectedPr
           </Field>
         </>
       )}
-    </StyledContainer>
+    </Styled.EditionContainer>
   );
 };
 
-export {FamilyCodeEdit};
+export {FamilyPropertyEdit};

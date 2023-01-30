@@ -1,17 +1,12 @@
 import React from 'react';
-import {mockResponse, render} from '../../../../tests/test-utils';
+import {render} from '../../../../tests/test-utils';
 import {FamilyCodePreview} from '../FamilyCodePreview';
-import {AbbreviationType, FamilyCodeProperty, Operator, PROPERTY_NAMES} from '../../../../models';
+import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES} from '../../../../models';
 import {waitFor} from '@testing-library/react';
 
 describe('FamilyCodePreview', () => {
-  beforeEach(() => {
-    const page1 = [...Array(20)].map((_, i) => ({code: `Family${i}`, labels: {}}));
-    mockResponse('akeneo_identifier_generator_get_families', 'GET', {ok: true, json: page1});
-  });
-
   it('should display the first retrieved family code when process is code', async () => {
-    const familyProperty: FamilyCodeProperty = {
+    const familyProperty: FamilyProperty = {
       type: PROPERTY_NAMES.FAMILY,
       process: {
         type: AbbreviationType.NO,
@@ -20,12 +15,12 @@ describe('FamilyCodePreview', () => {
     const screen = render(<FamilyCodePreview property={familyProperty} />);
 
     await waitFor(() => {
-      expect(screen.getByText('Family0')).toBeInTheDocument();
+      expect(screen.getByText('family')).toBeInTheDocument();
     });
   });
 
   it('should display the first retrieved family code truncated when process is truncate', async () => {
-    const familyProperty: FamilyCodeProperty = {
+    const familyProperty: FamilyProperty = {
       type: PROPERTY_NAMES.FAMILY,
       process: {
         type: AbbreviationType.TRUNCATE,
@@ -36,7 +31,7 @@ describe('FamilyCodePreview', () => {
     const screen = render(<FamilyCodePreview property={familyProperty} />);
 
     await waitFor(() => {
-      expect(screen.getByText('Fam')).toBeInTheDocument();
+      expect(screen.getByText('fam')).toBeInTheDocument();
     });
   });
 });

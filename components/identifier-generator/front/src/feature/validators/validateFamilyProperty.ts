@@ -1,8 +1,8 @@
 import {Validator} from './Validator';
-import {AbbreviationType, FamilyCodeProperty} from '../models';
+import {AbbreviationType, FamilyProperty} from '../models';
 import {Violation} from './Violation';
 
-const validateFamilyProperty: Validator<FamilyCodeProperty> = (familyCode, path) => {
+const validateFamilyProperty: Validator<FamilyProperty> = (familyCode, path) => {
   const violations: Violation[] = [];
 
   if (!familyCode.process.type) {

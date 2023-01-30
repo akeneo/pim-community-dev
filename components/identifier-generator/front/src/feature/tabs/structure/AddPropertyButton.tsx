@@ -33,8 +33,6 @@ const items: PropertiesSelection[] = [
           type: PROPERTY_NAMES.FAMILY,
           process: {
             type: null,
-            operator: null,
-            value: null,
           },
         },
       },

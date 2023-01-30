@@ -2,10 +2,9 @@ import React, {useCallback, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, IdentifierGenerator} from '../models';
 import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
-import {ListSkeleton, TabValidationErrors} from '../components';
-import {AddConditionButton, EnabledLine, FamilyLine, AutoInsertedConditionsList} from './conditions';
+import {TabValidationErrors} from '../components';
+import {AddConditionButton, EnabledLine, FamilyLine, ImplicitConditionsList} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
 import {SimpleSelectLine} from './conditions/SimpleSelectLine';
@@ -38,12 +37,10 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
 };
 
 const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validationErrors}) => {
-  // TODO: the skeleton does not seem to be linked to the right isLoading
-  const {isLoading} = useIdentifierAttributes();
   const translate = useTranslate();
   const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionIdentifier | undefined>();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
-    generator?.conditions?.map(condition => ({
+    generator.conditions?.map(condition => ({
       id: uuid(),
       ...condition,
     }))
@@ -117,9 +114,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
       </SectionTitle>
       <Table>
         <Table.Body>
-          {isLoading && <ListSkeleton />}
-          {!isLoading && (
-            <>
               {conditionsWithId.map(({id, ...condition}) => (
                 <Table.Row key={id} aria-colspan={3}>
                   <ConditionLine
@@ -129,7 +123,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
                   />
                 </Table.Row>
               ))}
-              <AutoInsertedConditionsList generator={generator} />
+              <ImplicitConditionsList generator={generator} />
               {conditionsWithId.length === 0 && (
                 <tr aria-colspan={3}>
                   <td colSpan={3}>
@@ -146,8 +140,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
                   </td>
                 </tr>
               )}
-            </>
-          )}
         </Table.Body>
       </Table>
       {conditionIdToDelete && <SimpleDeleteModal onClose={closeModal} onDelete={handleDeleteCondition} />}
