@@ -18,7 +18,7 @@ class ProcessSpec extends ObjectBehavior
         $this->beConstructedThrough('fromNormalized', [
             [
                 'type' => 'truncate',
-                'operator' => 'EQUALS',
+                'operator' => '=',
                 'value' => 3
             ]
         ]);
@@ -38,7 +38,7 @@ class ProcessSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             'type' => 'truncate',
-            'operator' => 'EQUALS',
+            'operator' => '=',
             'value' => 3
         ]);
     }
@@ -75,25 +75,25 @@ class ProcessSpec extends ObjectBehavior
 
     public function it_should_throw_an_exception_when_no_value(): void
     {
-        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'EQUALS']]);
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => '=']]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     public function it_should_throw_an_exception_when_not_numeric_value(): void
     {
-        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 'bar']]);
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => '=', 'value' => 'bar']]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     public function it_should_throw_an_exception_when_too_high_value(): void
     {
-        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 6]]);
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => '=', 'value' => 6]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     public function it_should_throw_an_exception_when_too_low_value(): void
     {
-        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 0]]);
+        $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => '=', 'value' => 0]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

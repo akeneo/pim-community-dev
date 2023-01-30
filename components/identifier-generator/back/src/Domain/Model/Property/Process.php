@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ProcessOperator 'EQUALS'|'LOWER_OR_EQUAL_THAN'
+ * @phpstan-type ProcessOperator '='|'<='
  * @phpstan-type ProcessNormalized array{type: 'no'}|array{type: 'truncate', operator: string, value: int}
  */
 final class Process
@@ -18,8 +18,8 @@ final class Process
     public const PROCESS_TYPE_NO = 'no';
     public const PROCESS_TYPE_TRUNCATE = 'truncate';
 
-    public const PROCESS_OPERATOR_EQ = 'EQUALS';
-    public const PROCESS_OPERATOR_LTE = 'LOWER_OR_EQUAL_THAN';
+    public const PROCESS_OPERATOR_EQ = '=';
+    public const PROCESS_OPERATOR_LTE = '<=';
 
     private function __construct(
         private string $type,

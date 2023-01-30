@@ -274,7 +274,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithFamilyContainingInvalidTruncateProcess(): void
     {
-        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => 'EQUALS', 'value' => '1', 'unknown' => '']]]);
+        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => '1', 'unknown' => '']]]);
     }
 
     /**

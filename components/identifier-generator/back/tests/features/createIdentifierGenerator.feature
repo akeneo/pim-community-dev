@@ -119,8 +119,8 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate".'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with family process type no and operator EQUALS and undefined as value
-    When I try to create an identifier generator with a family process with type no and operator EQUALS and undefined as value
+  Scenario: Cannot create an identifier generator with family process type no and operator = and undefined as value
+    When I try to create an identifier generator with a family process with type no and operator = and undefined as value
     Then I should get an error with message 'structure[0][operator]: This field was not expected.'
     And the identifier should not be created
 
@@ -137,16 +137,16 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with a family containing truncate process and unknown operator
     When I try to create an identifier generator with a family process with type truncate and operator ope and 1 as value
-    Then I should get an error with message 'structure[0][operator]: Operator "ope" can only be one of the following: "EQUALS", "LOWER_OR_EQUAL_THAN".'
+    Then I should get an error with message 'structure[0][operator]: Operator "ope" can only be one of the following: "=", "<=".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with a family containing truncate process and bad value type
-    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and "bad" as value
+    When I try to create an identifier generator with a family process with type truncate and operator = and "bad" as value
     Then I should get an error with message 'structure[0][value]: This value should be of type integer.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with a family containing truncate process and value not in range
-    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and 0 as value
+    When I try to create an identifier generator with a family process with type truncate and operator = and 0 as value
     Then I should get an error with message 'structure[0][value]: This value should be between 1 and 5.'
     And the identifier should not be created
 
@@ -156,7 +156,7 @@ Feature: Create Identifier Generator
     And I should not get any error
 
   Scenario: Can create an identifier generator with a family property and a truncate process
-    When I try to create an identifier generator with a family process with type truncate and operator EQUALS and 1 as value
+    When I try to create an identifier generator with a family process with type truncate and operator = and 1 as value
     Then I should not get any error
     Then The identifier generator is saved in the repository
     And I should not get any error

@@ -94,7 +94,7 @@ class FamilyPropertyShouldBeValidValidatorSpec extends ObjectBehavior
 
     public function it_should_validate_a_property_with_truncate_process(ExecutionContext $context, ValidatorInterface $validator): void
     {
-        $process = ['type' => 'truncate', 'operator' => 'EQUALS', 'value' => '1'];
+        $process = ['type' => 'truncate', 'operator' => '=', 'value' => '1'];
         $structure = ['type' => 'family', 'process' => $process];
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
         $validator->validate($process, Argument::any())->shouldBeCalledTimes(1);
