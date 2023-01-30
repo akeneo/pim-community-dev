@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
 import {FamilyLine} from '../conditions';
-import {CONDITION_NAMES, Operator} from '../../models';
+import {CONDITION_NAMES, FamilyCondition, Operator} from '../../models';
 
 jest.mock('../../components/FamiliesSelector');
 
@@ -16,10 +16,10 @@ const TableMock = ({children}: {children: ReactNode}) => (
 describe('FamilyLine', () => {
   it('should add values when setting operator to IN', () => {
     const onChange = jest.fn();
-    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY, id: '69'};
+    const familyCondition: FamilyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY};
     render(
       <TableMock>
-        <FamilyLine condition={familyCondition} onChange={onChange} />
+        <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()}/>
       </TableMock>
     );
 
@@ -30,7 +30,6 @@ describe('FamilyLine', () => {
     fireEvent.click(screen.getByText('pim_common.operators.IN'));
 
     expect(onChange).toBeCalledWith({
-      id: '69',
       operator: Operator.IN,
       type: CONDITION_NAMES.FAMILY,
       value: [],
@@ -39,10 +38,10 @@ describe('FamilyLine', () => {
 
   it('should remove values when setting operator to EMPTY', () => {
     const onChange = jest.fn();
-    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: ['shirts'], id: '69'};
+    const familyCondition: FamilyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: ['shirts']};
     render(
       <TableMock>
-        <FamilyLine condition={familyCondition} onChange={onChange} />
+        <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()} />
       </TableMock>
     );
 
@@ -53,7 +52,6 @@ describe('FamilyLine', () => {
     fireEvent.click(screen.getByText('pim_common.operators.EMPTY'));
 
     expect(onChange).toBeCalledWith({
-      id: '69',
       operator: Operator.EMPTY,
       type: CONDITION_NAMES.FAMILY,
     });
@@ -61,10 +59,10 @@ describe('FamilyLine', () => {
 
   it('should update families', () => {
     const onChange = jest.fn();
-    const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: [], id: '69'};
+    const familyCondition: FamilyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []};
     render(
       <TableMock>
-        <FamilyLine condition={familyCondition} onChange={onChange} />
+        <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()} />
       </TableMock>
     );
 
@@ -72,7 +70,6 @@ describe('FamilyLine', () => {
     fireEvent.click(screen.getByText('Set shirts'));
 
     expect(onChange).toBeCalledWith({
-      id: '69',
       operator: Operator.IN,
       type: CONDITION_NAMES.FAMILY,
       value: ['shirts'],
