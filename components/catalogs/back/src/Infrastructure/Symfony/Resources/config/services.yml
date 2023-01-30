@@ -187,6 +187,7 @@ services:
     Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
         arguments:
             -
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromNumberAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromSimpleSelectAttributeValueExtractor'

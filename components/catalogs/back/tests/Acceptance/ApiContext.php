@@ -16,6 +16,7 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
@@ -761,6 +762,11 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'is_released' => [
+                        'source' => 'is_released',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
                     'type' => [
                         'source' => 'family',
                         'scope' => null,
@@ -806,6 +812,9 @@ class ApiContext implements Context
                       "type": "string",
                       "format": "date-time"
                     },
+                    "is_released": {
+                      "type": "boolean"
+                    },
                     "type": {
                       "type": "string"
                     }
@@ -834,6 +843,7 @@ class ApiContext implements Context
                 'drawings_customization_count' => '12',
                 'artists_customization_count' => '7',
                 'released_at' => new \DateTimeImmutable('2023-01-12T00:00:00+00:00'),
+                'is_released' => true,
                 'enabled' => true,
             ],
             [
@@ -845,6 +855,7 @@ class ApiContext implements Context
                 'drawings_customization_count' => '8',
                 'artists_customization_count' => '5',
                 'released_at' => new \DateTimeImmutable('2023-01-10T00:00:00+00:00'),
+                'is_released' => true,
                 'enabled' => false,
             ],
             [
@@ -855,7 +866,8 @@ class ApiContext implements Context
                 'size' => 'xl',
                 'drawings_customization_count' => '4',
                 'artists_customization_count' => '2',
-                'released_at' => new \DateTimeImmutable('2023-01-01T00:00:00+00:00'),
+                'released_at' => new \DateTimeImmutable('2042-01-01T00:00:00+00:00'),
+                'is_released' => false,
                 'enabled' => true,
             ],
         ];
@@ -897,6 +909,12 @@ class ApiContext implements Context
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'is_released',
+            'type' => 'pim_catalog_boolean',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
 
         $this->createFamily('t-shirt', [
             'sku',
@@ -906,6 +924,7 @@ class ApiContext implements Context
             'drawings_customization_count',
             'artists_customization_count',
             'released_at',
+            'is_released',
         ]);
 
         foreach ($products as $product) {
@@ -922,6 +941,7 @@ class ApiContext implements Context
                     new SetNumberValue('drawings_customization_count', null, null, $product['drawings_customization_count']),
                     new SetNumberValue('artists_customization_count', null, null, $product['artists_customization_count']),
                     new SetDateValue('released_at', null, null, $product['released_at']),
+                    new SetBooleanValue('is_released', null, null, $product['is_released']),
                 ],
             );
 
@@ -966,6 +986,7 @@ class ApiContext implements Context
                 'customization_drawings_count' => 12,
                 'customization_artists_count' => '7',
                 'release_date' => '2023-01-12T00:00:00+00:00',
+                'is_released' => true,
                 'type' => 't-shirt',
             ],
             [
@@ -975,7 +996,8 @@ class ApiContext implements Context
                 'size' => 'XL',
                 'customization_drawings_count' => 4,
                 'customization_artists_count' => '2',
-                'release_date' => '2023-01-01T00:00:00+00:00',
+                'release_date' => '2042-01-01T00:00:00+00:00',
+                'is_released' => false,
                 'type' => 't-shirt',
             ],
         ];
@@ -1015,6 +1037,7 @@ class ApiContext implements Context
             'customization_drawings_count' => 12,
             'customization_artists_count' => '7',
             'release_date' => '2023-01-12T00:00:00+00:00',
+            'is_released' => true,
             'type' => 't-shirt',
         ];
 
