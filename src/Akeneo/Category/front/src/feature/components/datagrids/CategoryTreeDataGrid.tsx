@@ -250,7 +250,13 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               categoryLabel={categoryTreeToDelete.label}
               closeModal={closeConfirmationModal}
               deleteCategory={deleteCategoryTree}
-              message={'pim_enrich.entity.category.category_tree_deletion.confirmation'}
+              message={
+                featureFlags.isEnabled('enriched_category')
+                  ? 'pim_enrich.entity.category.category_tree_deletion.confirmation_question'
+                  : 'pim_enrich.entity.category.category_tree_deletion.confirmation'
+              }
+              categoryId={categoryTreeToDelete.id}
+              numberOfProducts={categoryTreeToDelete.productsNumber}
             />
           )}
         </>

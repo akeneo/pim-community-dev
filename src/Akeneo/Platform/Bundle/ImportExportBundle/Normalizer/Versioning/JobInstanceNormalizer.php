@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\Versioning;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -16,7 +17,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
-    protected $supportedFormats = ['flat'];
+    protected array $supportedFormats = ['flat'];
+
+    public function __construct(
+        private CredentialsEncrypterRegistry $credentialsEncrypterRegistry
+    ) {
+    }
 
     /**
      * {@inheritdoc}
@@ -27,16 +33,19 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
      */
     public function normalize($jobInstance, $format = null, array $context = [])
     {
-        $results = [
+        $parameters = $jobInstance->getRawParameters();
+        if (isset($parameters['storage'])) {
+            $parameters['storage'] = $this->credentialsEncrypterRegistry->obfuscateCredentials($parameters['storage']);
+        }
+
+        return [
             'code' => $jobInstance->getCode(),
             'job_name' => $jobInstance->getJobName(),
             'label' => $jobInstance->getLabel(),
             'connector' => $jobInstance->getConnector(),
             'type' => $jobInstance->getType(),
-            'configuration' => json_encode($jobInstance->getRawParameters()),
+            'configuration' => json_encode($parameters),
         ];
-
-        return $results;
     }
 
     /**

@@ -31,6 +31,7 @@ test('it renders the microsoft azure storage configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -57,6 +58,7 @@ test('it allows user to fill file_path field', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -86,6 +88,7 @@ test('it allows user to fill connection string field', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -115,6 +118,7 @@ test('it allows user to fill container name field', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -136,6 +140,57 @@ test('it allows user to fill container name field', async () => {
   });
 });
 
+test('it hides connection string field if the connection string is obfuscated', () => {
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
+    file_path: '/tmp/file.xlsx',
+    container_name: 'container_',
+  };
+
+  act(() => {
+    renderWithProviders(
+      <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
+    );
+  });
+
+  const connectionStringInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.connection_string.label pim_common.required_label'
+  );
+
+  expect(connectionStringInput).toBeDisabled();
+  expect(connectionStringInput).toHaveValue('••••••••');
+});
+
+test('it can edit the connection string field if the connection string is obfuscated', () => {
+  const storage: MicrosoftAzureStorage = {
+    type: 'microsoft_azure',
+    file_path: '/tmp/file.xlsx',
+    container_name: 'container_',
+  };
+
+  const onStorageChange = jest.fn();
+  act(() => {
+    renderWithProviders(
+      <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
+    );
+  });
+
+  userEvent.click(screen.getByText('pim_common.edit'));
+  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, connection_string: ''});
+});
+
 test('it throws an exception when passing a non microsoft azure storage', async () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
@@ -147,6 +202,7 @@ test('it throws an exception when passing a non microsoft azure storage', async 
   expect(() =>
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -193,6 +249,7 @@ test('it displays validation errors', async () => {
   await act(async () => {
     renderWithProviders(
       <MicrosoftAzureStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={validationErrors}
@@ -218,6 +275,7 @@ test('it can check connection', async () => {
 
   renderWithProviders(
     <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -248,6 +306,7 @@ test('it cannot check connection if a field is empty', async () => {
 
   renderWithProviders(
     <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -283,6 +342,7 @@ test('it can check connection, display message if error', async () => {
 
   renderWithProviders(
     <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
