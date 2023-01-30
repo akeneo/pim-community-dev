@@ -13,7 +13,7 @@ describe('FamilyLine', () => {
       <table>
         <tbody>
           <tr>
-            <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()}/>
+            <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()} />
           </tr>
         </tbody>
       </table>
@@ -39,7 +39,7 @@ describe('FamilyLine', () => {
       <table>
         <tbody>
           <tr>
-            <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()}/>
+            <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()} />
           </tr>
         </tbody>
       </table>
@@ -64,7 +64,7 @@ describe('FamilyLine', () => {
       <table>
         <tbody>
           <tr>
-            <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()}/>
+            <FamilyLine condition={familyCondition} onChange={onChange} onDelete={jest.fn()} />
           </tr>
         </tbody>
       </table>

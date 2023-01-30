@@ -1,5 +1,5 @@
 import React from 'react';
-import {Helper, SelectInput, SkeletonPlaceholder, Table} from 'akeneo-design-system';
+import {Helper, SelectInput, SkeletonPlaceholder} from 'akeneo-design-system';
 import {ChannelCode, LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useGetScopes} from '../hooks';
 
