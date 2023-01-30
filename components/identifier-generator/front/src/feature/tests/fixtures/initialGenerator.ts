@@ -9,6 +9,7 @@ const initialGenerator: IdentifierGenerator = {
   structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
   delimiter: '-',
   target: 'sku',
+  text_transformation: 'no',
 };
 
 export default initialGenerator;

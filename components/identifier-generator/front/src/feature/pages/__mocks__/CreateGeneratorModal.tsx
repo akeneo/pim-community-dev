@@ -16,6 +16,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
     delimiter: null,
     structure: [],
     conditions: [],
+    text_transformation: 'no',
   };
 
   return (
