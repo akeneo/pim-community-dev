@@ -50,7 +50,7 @@ describe('GeneralProperties', () => {
     });
   });
 
-  it('should update delimiter', () => {
+  it('should update text transformation', () => {
     const generator: IdentifierGenerator = {
       code: 'initialCode',
       target: 'sku',
