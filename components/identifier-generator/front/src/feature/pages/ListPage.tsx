@@ -72,7 +72,10 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
         </Button>
       </Header>
       <PageContent>
-        <Information illustration={<AttributesIllustration />} title={translate('pim_identifier_generator.list.helper.title')}>
+        <Information
+          illustration={<AttributesIllustration />}
+          title={translate('pim_identifier_generator.list.helper.title')}
+        >
           {translate('pim_identifier_generator.list.helper.info')}
           <br />
           <Link href="https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html" target="_blank">
