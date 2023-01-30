@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
-import {NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid, Helper} from 'akeneo-design-system';
+import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
@@ -9,6 +9,7 @@ import {AddConditionButton, EnabledLine, FamilyLine} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
 import {SimpleSelectLine} from './conditions/SimpleSelectLine';
+import styled from 'styled-components';
 
 type SelectionTabProps = {
   conditions: Conditions;
@@ -26,6 +27,10 @@ type ConditionLineProps = {
   onChange: (condition: Condition) => void;
   onDelete: () => void;
 };
+
+const IsEmpty = styled.div`
+  max-width: 160px;
+`;
 
 const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDelete}) => {
   switch (condition.type) {
@@ -76,12 +81,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
     onChange(removeIdentifiers(newConditions));
   };
 
-  const onReorder = (indices: number[]) => {
-    const newConditions = indices.map(i => conditionsWithId[i]);
-    setConditionsWithId(newConditions);
-    onChange(removeIdentifiers(newConditions));
-  };
-
   const closeModal = useCallback(() => {
     setConditionIdToDelete(undefined);
   }, []);
@@ -126,28 +125,37 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
           {isLoading && <ListSkeleton />}
           {!isLoading && (
             <>
-              <Table.Row>
-                <Styled.NotDraggableCell />
-                <Styled.TitleCondition>
+              {conditionsWithId.map(({id, ...condition}) => (
+                <Table.Row key={id} aria-colspan={3}>
+                  <ConditionLine
+                    condition={condition}
+                    onChange={condition => handleChange({...condition, id})}
+                    onDelete={onDelete(id)}
+                  />
+                </Table.Row>
+              ))}
+              <Table.Row aria-colspan={3}>
+                <Styled.TitleCell>
                   {identifiers && identifiers.length > 0 ? identifiers[0].label : `[${target}]`}
-                </Styled.TitleCondition>
-                <Table.Cell colSpan={3}>
-                  <Styled.InputContainer>
+                </Styled.TitleCell>
+                <Styled.SelectionInputsContainer>
+                  <IsEmpty>
                     <TextInput value={translate('pim_common.operators.EMPTY')} readOnly={true} />
-                  </Styled.InputContainer>
-                </Table.Cell>
+                  </IsEmpty>
+                </Styled.SelectionInputsContainer>
+                <Table.Cell />
               </Table.Row>
               {conditionsWithId.length === 0 && (
-                <tr>
+                <tr aria-colspan={3}>
                   <td colSpan={3}>
                     <Placeholder
                       illustration={<NoResultsIllustration />}
                       size="large"
                       title={translate('pim_identifier_generator.selection.empty.title')}
                     >
-                      <Styled.TranslationsPlaceholderTitleConditions>
+                      <Styled.BoldContainer>
                         {translate('pim_identifier_generator.selection.empty.text')}
-                      </Styled.TranslationsPlaceholderTitleConditions>
+                      </Styled.BoldContainer>
                       {translate('pim_identifier_generator.selection.empty.info')}
                     </Placeholder>
                   </td>
@@ -155,20 +163,6 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
               )}
             </>
           )}
-        </Table.Body>
-      </Table>
-      <Table isDragAndDroppable={true} onReorder={onReorder}>
-        <Table.Body>
-          {!isLoading &&
-            conditionsWithId.map(({id, ...condition}) => (
-              <Table.Row key={id}>
-                <ConditionLine
-                  condition={condition}
-                  onChange={condition => handleChange({...condition, id})}
-                  onDelete={onDelete(id)}
-                />
-              </Table.Row>
-            ))}
         </Table.Body>
       </Table>
       {conditionIdToDelete && <SimpleDeleteModal onClose={closeModal} onDelete={handleDeleteCondition} />}

@@ -1,20 +1,26 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
 import {FamilyLine} from '../conditions';
 import {CONDITION_NAMES, Operator} from '../../models';
 
 jest.mock('../../components/FamiliesSelector');
 
+const TableMock = ({children}: {children: ReactNode}) => (
+  <table>
+    <tbody>
+      <tr>{children}</tr>
+    </tbody>
+  </table>
+);
+
 describe('FamilyLine', () => {
   it('should add values when setting operator to IN', () => {
     const onChange = jest.fn();
     const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY, id: '69'};
     render(
-      <table>
-        <tbody>
-          <FamilyLine condition={familyCondition} onChange={onChange} />
-        </tbody>
-      </table>
+      <TableMock>
+        <FamilyLine condition={familyCondition} onChange={onChange} />
+      </TableMock>
     );
 
     expect(screen.getByText('pim_common.family')).toBeInTheDocument();
@@ -35,11 +41,9 @@ describe('FamilyLine', () => {
     const onChange = jest.fn();
     const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: ['shirts'], id: '69'};
     render(
-      <table>
-        <tbody>
-          <FamilyLine condition={familyCondition} onChange={onChange} />
-        </tbody>
-      </table>
+      <TableMock>
+        <FamilyLine condition={familyCondition} onChange={onChange} />
+      </TableMock>
     );
 
     expect(screen.getByText('FamiliesSelectorMock')).toBeInTheDocument();
@@ -59,11 +63,9 @@ describe('FamilyLine', () => {
     const onChange = jest.fn();
     const familyCondition = {type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: [], id: '69'};
     render(
-      <table>
-        <tbody>
-          <FamilyLine condition={familyCondition} onChange={onChange} />
-        </tbody>
-      </table>
+      <TableMock>
+        <FamilyLine condition={familyCondition} onChange={onChange} />
+      </TableMock>
     );
 
     expect(screen.getByText('FamiliesSelectorMock')).toBeInTheDocument();

@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {Operator} from '../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {Styled} from './Styled';
 
 type OperatorSelectorProps = {
   operator: Operator;
@@ -13,7 +14,7 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operat
   const translate = useTranslate();
 
   return (
-    <SelectInput
+    <Styled.OperatorSelectCondition
       value={operator}
       emptyResultLabel={translate('pim_common.no_result')}
       openLabel={translate('pim_common.open')}
@@ -25,7 +26,7 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operat
           {translate(`pim_common.operators.${operator}`)}
         </SelectInput.Option>
       ))}
-    </SelectInput>
+    </Styled.OperatorSelectCondition>
   );
 };
 
