@@ -19,6 +19,12 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+const EditionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 const FullPageCenteredContent = styled.div`
   display: flex;
   align-items: center;
@@ -131,6 +137,10 @@ const SingleSelectCondition = styled(SelectInput)`
   flex-basis: 300px;
 `;
 
+const OperatorContainer = styled.div`
+  max-width: 160px;
+`;
+
 const CheckboxContainer = styled.div`
   margin: 10px 0;
 `;
@@ -143,25 +153,27 @@ const PreviewWithTextTransformation = styled(PreviewComponent)<
 `;
 
 const Styled = {
-  SingleSelectCondition,
-  OperatorSelectCondition,
-  SelectCondition,
-  MultiSelectCondition,
-  SelectionInputsContainer,
+  BoldContainer,
   CellInputContainer,
+  CheckboxContainer,
+  ConditionLineSkeleton,
+  EditionContainer,
   ErrorContainer,
-  MainErrorHelper,
   FormContainer,
   FullPageCenteredContent,
   InputContainer,
+  ListItems,
+  MainErrorHelper,
+  MultiSelectCondition,
+  OperatorContainer,
+  OperatorSelectCondition,
+  SelectCondition,
+  SelectionInputsContainer,
+  SingleSelectCondition,
   TitleCell,
-  TwoColumns,
   TranslationsLabelSkeleton,
   TranslationsTextFieldSkeleton,
-  BoldContainer,
-  ListItems,
-  ConditionLineSkeleton,
-  CheckboxContainer,
+  TwoColumns,
   PreviewWithTextTransformation,
 };
 

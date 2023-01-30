@@ -1,21 +1,19 @@
 import React from 'react';
 import {render} from '../../../../tests/test-utils';
-import {FamilyCodeEdit} from '../FamilyCodeEdit';
-import {AbbreviationType, FamilyCodeProperty, Operator, PROPERTY_NAMES} from '../../../../models';
+import {FamilyPropertyEdit} from '../FamilyPropertyEdit';
+import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES} from '../../../../models';
 import {fireEvent} from '@testing-library/react';
 
-describe('FamilyCodeEdit', () => {
+describe('FamilyPropertyEdit', () => {
   it('should update the family property', () => {
-    const familyProperty: FamilyCodeProperty = {
+    const familyProperty: FamilyProperty = {
       type: PROPERTY_NAMES.FAMILY,
       process: {
         type: null,
-        operator: null,
-        value: null,
       },
     };
     const mockedOnChange = jest.fn();
-    const screen = render(<FamilyCodeEdit selectedProperty={familyProperty} onChange={mockedOnChange} />);
+    const screen = render(<FamilyPropertyEdit selectedProperty={familyProperty} onChange={mockedOnChange} />);
 
     expect(screen.getByText('pim_identifier_generator.structure.settings.family.abbrev_type')).toBeInTheDocument();
     expect(screen.queryByText('pim_identifier_generator.structure.settings.family.operator')).not.toBeInTheDocument();
@@ -38,7 +36,7 @@ describe('FamilyCodeEdit', () => {
     // With truncate option
     fireEvent.click(input);
 
-    const truncateOption = screen.getByText('pim_identifier_generator.structure.settings.code_format.type.first_chars');
+    const truncateOption = screen.getByText('pim_identifier_generator.structure.settings.code_format.type.truncate');
     expect(truncateOption).toBeInTheDocument();
     fireEvent.click(truncateOption);
 
@@ -53,7 +51,7 @@ describe('FamilyCodeEdit', () => {
   });
 
   it('should display the operator and value for truncate option', () => {
-    const familyProperty: FamilyCodeProperty = {
+    const familyProperty: FamilyProperty = {
       type: PROPERTY_NAMES.FAMILY,
       process: {
         type: AbbreviationType.TRUNCATE,
@@ -62,7 +60,7 @@ describe('FamilyCodeEdit', () => {
       },
     };
     const mockedOnChange = jest.fn();
-    const screen = render(<FamilyCodeEdit selectedProperty={familyProperty} onChange={mockedOnChange} />);
+    const screen = render(<FamilyPropertyEdit selectedProperty={familyProperty} onChange={mockedOnChange} />);
 
     expect(screen.getByText('pim_identifier_generator.structure.settings.family.abbrev_type')).toBeInTheDocument();
     expect(screen.getByText('pim_identifier_generator.structure.settings.family.operator')).toBeInTheDocument();

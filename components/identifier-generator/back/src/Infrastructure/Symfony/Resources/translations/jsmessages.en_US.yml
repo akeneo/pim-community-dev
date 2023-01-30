@@ -84,13 +84,14 @@ pim_identifier_generator:
                 digitsMin_label: 'Min digits'
                 numberMin_label: 'Min number'
             family:
+                title: 'Family'
                 abbrev_type: 'Choose your abbr'
                 abbrev_type_empty_label: 'Select the format'
                 operator: 'Operator'
                 chars_number: 'Characters number'
             code_format:
                 type:
-                    first_chars: 'Use first characters'
+                    truncate: 'Use first characters'
                     code: 'Use the code'
                     nomenclature: 'Use nomenclature'
             operator:

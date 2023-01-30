@@ -1,9 +1,9 @@
 import {validateFamilyProperty} from '../validateFamilyProperty';
-import {AbbreviationType, FamilyCodeProperty, Operator, PROPERTY_NAMES} from '../../models';
+import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES} from '../../models';
 
 describe('validateFamilyProperty', () => {
   it('should add a violation when no process type is filled', () => {
-    const familyProperty: FamilyCodeProperty = {
+    const familyProperty: FamilyProperty = {
       type: PROPERTY_NAMES.FAMILY,
       process: {type: null},
     };
@@ -17,7 +17,7 @@ describe('validateFamilyProperty', () => {
   });
 
   it('should add a violation when process is truncate but no operator nor value is given', () => {
-    const familyProperty: FamilyCodeProperty = {
+    const familyProperty: FamilyProperty = {
       type: PROPERTY_NAMES.FAMILY,
       process: {type: AbbreviationType.TRUNCATE},
     };

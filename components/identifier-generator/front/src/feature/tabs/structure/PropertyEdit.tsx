@@ -1,6 +1,6 @@
 import React from 'react';
 import {Property, PROPERTY_NAMES} from '../../models';
-import {AutoNumberEdit, FamilyCodeEdit, FreeTextEdit} from './edit/';
+import {AutoNumberEdit, FamilyPropertyEdit, FreeTextEdit} from './edit/';
 import {SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
@@ -17,7 +17,7 @@ export type PropertyEditFieldsProps<T extends Property> = React.FC<{
 const components = {
   [PROPERTY_NAMES.FREE_TEXT]: FreeTextEdit,
   [PROPERTY_NAMES.AUTO_NUMBER]: AutoNumberEdit,
-  [PROPERTY_NAMES.FAMILY]: FamilyCodeEdit,
+  [PROPERTY_NAMES.FAMILY]: FamilyPropertyEdit,
 };
 
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {

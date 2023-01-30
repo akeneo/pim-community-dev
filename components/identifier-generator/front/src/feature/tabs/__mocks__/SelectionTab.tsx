@@ -15,7 +15,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange}) => {
   return (
     <>
       SelectionTabMock
-      <div>{JSON.stringify(generator?.conditions)}</div>
+      <div>{JSON.stringify(generator.conditions)}</div>
       <button onClick={handleChange}>Update selection</button>
     </>
   );
