@@ -17,10 +17,9 @@ class GetSystemInformationController
 
     public function __invoke(Request $request): JsonResponse
     {
-        $edition = $this->versionProvider->getEdition();
         $response = [
             'version' => strtolower($this->versionProvider->getVersion()),
-            'edition' => $edition === 'CE' ? strtolower($edition) : 'ee',
+            'edition' => $this->versionProvider->getEdition(),
         ];
 
         return new JsonResponse($response);
