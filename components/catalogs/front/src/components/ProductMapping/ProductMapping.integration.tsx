@@ -2061,4 +2061,3 @@ test('it doesnt displays requirements when there is no description', async () =>
     await clickOnMappingTarget('name');
     expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).not.toBeInTheDocument();
 });
-

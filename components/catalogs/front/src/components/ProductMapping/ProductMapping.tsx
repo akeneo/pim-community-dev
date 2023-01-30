@@ -43,13 +43,16 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (productMappingSchema === undefined) {
                 return;
             }
-            setSelectedTarget({
+            const target: Target = {
                 code: targetCode,
                 label: productMappingSchema.properties[targetCode]?.title ?? targetCode,
                 type: productMappingSchema.properties[targetCode].type,
                 format: productMappingSchema.properties[targetCode].format ?? null,
-                description: productMappingSchema.properties[targetCode].description ?? null,
-            });
+            };
+            if (undefined !== productMappingSchema.properties[targetCode].description) {
+                target.description = productMappingSchema.properties[targetCode].description;
+            }
+            setSelectedTarget(target);
             setSelectedSource(source);
         },
         [productMappingSchema]

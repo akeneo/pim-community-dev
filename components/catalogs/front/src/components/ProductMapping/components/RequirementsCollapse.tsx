@@ -11,7 +11,7 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState(true);
 
-    if (null === target.description) {
+    if (undefined === target.description || null === target.description) {
         return null;
     }
 
