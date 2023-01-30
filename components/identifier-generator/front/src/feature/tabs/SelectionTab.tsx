@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Condition, CONDITION_NAMES, Conditions, IdentifierGenerator, PROPERTY_NAMES, Target} from '../models';
+import {Condition, CONDITION_NAMES, Conditions, IdentifierGenerator} from '../models';
 import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierAttributes} from '../hooks';

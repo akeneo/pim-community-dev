@@ -74,7 +74,7 @@ pim_identifier_generator:
                 system: 'System'
             free_text: 'Free text'
             auto_number: 'Auto Number'
-            family_code: 'Family code'
+            family: 'Family'
         settings:
             free_text:
                 title: 'Free text settings'

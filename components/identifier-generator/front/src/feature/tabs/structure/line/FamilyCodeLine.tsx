@@ -1,15 +1,11 @@
 import React from 'react';
-import {FamilyCodeProperty} from '../../../models';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
-type Props = {
-  property: FamilyCodeProperty;
-};
 
-const FamilyCodeLine: React.FC<Props> = ({property}) => {
-  // eslint-disable-next-line no-console
-  console.log({property});
+const FamilyCodeLine: React.FC = () => {
+  const translate = useTranslate();
 
-  return <div>coucou</div>;
+  return <div>{translate('pim_identifier_generator.structure.property_type.family')}</div>;
 };
 
 export {FamilyCodeLine};

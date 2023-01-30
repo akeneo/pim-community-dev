@@ -3,8 +3,8 @@ import {AbbreviationType, FamilyCodeProperty} from '../models';
 import {Violation} from './Violation';
 
 const validateFamilyProperty: Validator<FamilyCodeProperty> = (familyCode, path) => {
+  // eslint-disable-next-line no-console
   console.log({familyCode});
-  console.log({path});
   const violations: Violation[] = [];
 
   if (!familyCode.process.type) {
