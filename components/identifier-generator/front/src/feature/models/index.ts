@@ -12,6 +12,7 @@ export * from './identifierGeneratorCode';
 export * from './labelCollection';
 export * from './structure';
 export * from './target';
+export * from './text-transformation';
 export * from './ui-locale';
 export * from './generatorTab';
 export * from './attribute';

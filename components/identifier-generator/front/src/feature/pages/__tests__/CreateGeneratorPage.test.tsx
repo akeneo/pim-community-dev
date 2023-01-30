@@ -13,9 +13,8 @@ describe('CreateGeneratorPage', () => {
   it('should create a generator', async () => {
     const expectCall = mockResponse('akeneo_identifier_generator_rest_create', 'POST', {
       status: 201,
-      // TODO CPM-915
-      body: {...initialGenerator, text_transformation: 'no'},
-      json: {...initialGenerator, text_transformation: 'no'},
+      body: {...initialGenerator},
+      json: {...initialGenerator},
     });
 
     const history = createMemoryHistory();
@@ -60,8 +59,7 @@ describe('CreateGeneratorPage', () => {
     const expectCall = mockResponse('akeneo_identifier_generator_rest_create', 'POST', {
       ok: false,
       status: 500,
-      // TODO CPM-915
-      body: {...initialGenerator, text_transformation: 'no'},
+      body: {...initialGenerator},
     });
 
     render(<CreateGeneratorPage initialGenerator={initialGenerator} />);
