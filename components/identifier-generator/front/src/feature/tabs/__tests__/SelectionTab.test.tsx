@@ -1,16 +1,25 @@
 import React from 'react';
 import {fireEvent, mockResponse, render, screen} from '../../tests/test-utils';
 import {SelectionTab} from '../SelectionTab';
-import {CONDITION_NAMES, Operator, SimpleSelectCondition} from '../../models';
+import {CONDITION_NAMES, IdentifierGenerator, Operator, SimpleSelectCondition} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
 jest.mock('../conditions/SimpleSelectLine');
 jest.mock('../../pages/SimpleDeleteModal');
 
+const mockedGenerator: IdentifierGenerator = {
+  target: 'sku',
+  conditions: [],
+  structure: [],
+  code: 'identifier-generator',
+  delimiter: null,
+  labels: {},
+};
+
 describe('SelectionTab', () => {
   it('should render the selection tab', () => {
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={jest.fn()} validationErrors={[]} />);
+    render(<SelectionTab generator={mockedGenerator} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(screen.getByText('pim_identifier_generator.tabs.product_selection')).toBeInTheDocument();
   });
@@ -20,7 +29,7 @@ describe('SelectionTab', () => {
       json: [{code: 'sku', label: 'Sku'}],
     });
 
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={jest.fn()} validationErrors={[]} />);
+    render(<SelectionTab generator={mockedGenerator} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
 
@@ -32,9 +41,9 @@ describe('SelectionTab', () => {
       json: [],
     });
 
-    render(<SelectionTab target={'target'} conditions={[]} onChange={jest.fn()} validationErrors={[]} />);
+    render(<SelectionTab generator={mockedGenerator} onChange={jest.fn()} validationErrors={[]} />);
 
-    expect(await screen.findByText('[target]')).toBeInTheDocument();
+    expect(await screen.findByText('[sku]')).toBeInTheDocument();
 
     expectCall();
   });
@@ -45,17 +54,14 @@ describe('SelectionTab', () => {
     });
 
     const onChange = jest.fn();
-    render(
-      <SelectionTab
-        target={'sku'}
-        conditions={[
-          {type: CONDITION_NAMES.ENABLED, value: true},
-          {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
-        ]}
-        onChange={onChange}
-        validationErrors={[]}
-      />
-    );
+    const generator: IdentifierGenerator = {
+      ...mockedGenerator,
+      conditions: [
+        {type: CONDITION_NAMES.ENABLED, value: true},
+        {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
+      ],
+    };
+    render(<SelectionTab generator={generator} onChange={onChange} validationErrors={[]} />);
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
 
@@ -73,7 +79,7 @@ describe('SelectionTab', () => {
     });
 
     const onChange = jest.fn();
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} validationErrors={[]} />);
+    render(<SelectionTab generator={mockedGenerator} onChange={onChange} validationErrors={[]} />);
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
     expect(screen.getByText('AddConditionButtonMock')).toBeInTheDocument();
@@ -88,7 +94,7 @@ describe('SelectionTab', () => {
     });
     const onChange = jest.fn();
 
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} validationErrors={[]} />);
+    render(<SelectionTab generator={mockedGenerator} onChange={onChange} validationErrors={[]} />);
     expect(await screen.findByText('Sku')).toBeInTheDocument();
     expect(screen.queryByText('pim_identifier_generator.selection.empty.title')).toBeInTheDocument();
   });
@@ -98,14 +104,11 @@ describe('SelectionTab', () => {
       json: [{code: 'sku', label: 'Sku'}],
     });
     const onChange = jest.fn();
-    render(
-      <SelectionTab
-        target={'sku'}
-        conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]}
-        onChange={onChange}
-        validationErrors={[]}
-      />
-    );
+    const generator: IdentifierGenerator = {
+      ...mockedGenerator,
+      conditions: [{type: CONDITION_NAMES.ENABLED, value: true}],
+    };
+    render(<SelectionTab generator={generator} onChange={onChange} validationErrors={[]} />);
     expect(await screen.findByText('Sku')).toBeInTheDocument();
     expect(screen.queryByText('pim_identifier_generator.selection.empty.title')).not.toBeInTheDocument();
   });
@@ -116,14 +119,11 @@ describe('SelectionTab', () => {
     });
 
     const onChange = jest.fn();
-    render(
-      <SelectionTab
-        target={'sku'}
-        conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]}
-        onChange={onChange}
-        validationErrors={[]}
-      />
-    );
+    const generator: IdentifierGenerator = {
+      ...mockedGenerator,
+      conditions: [{type: CONDITION_NAMES.ENABLED, value: true}],
+    };
+    render(<SelectionTab generator={generator} onChange={onChange} validationErrors={[]} />);
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
 
@@ -140,16 +140,12 @@ describe('SelectionTab', () => {
     mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
       json: [{code: 'sku', label: 'Sku'}],
     });
-
+    const generator: IdentifierGenerator = {
+      ...mockedGenerator,
+      conditions: [{type: CONDITION_NAMES.ENABLED, value: true}],
+    };
     const onChange = jest.fn();
-    render(
-      <SelectionTab
-        target={'sku'}
-        conditions={[{type: CONDITION_NAMES.ENABLED, value: true}]}
-        onChange={onChange}
-        validationErrors={[]}
-      />
-    );
+    render(<SelectionTab generator={generator} onChange={onChange} validationErrors={[]} />);
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
 
@@ -175,10 +171,9 @@ describe('SelectionTab', () => {
         attributeCode: 'simple_select',
       } as SimpleSelectCondition,
     ];
+    const generator: IdentifierGenerator = {...mockedGenerator, conditions};
 
-    const screen = render(
-      <SelectionTab target={'sku'} conditions={conditions} onChange={jest.fn()} validationErrors={[]} />
-    );
+    const screen = render(<SelectionTab generator={generator} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(await screen.findByText('SimpleSelectLineMock')).toBeInTheDocument();
   });
@@ -190,7 +185,7 @@ describe('SelectionTab', () => {
 
     const onChange = jest.fn();
     const validationErrors = [{path: 'conditions', message: 'should contain only 1 enabled'}];
-    render(<SelectionTab target={'sku'} conditions={[]} onChange={onChange} validationErrors={validationErrors} />);
+    render(<SelectionTab generator={mockedGenerator} onChange={onChange} validationErrors={validationErrors} />);
 
     expect(screen.getByText('should contain only 1 enabled')).toBeInTheDocument();
   });

@@ -3,8 +3,6 @@ import {AbbreviationType, FamilyCodeProperty} from '../models';
 import {Violation} from './Violation';
 
 const validateFamilyProperty: Validator<FamilyCodeProperty> = (familyCode, path) => {
-  // eslint-disable-next-line no-console
-  console.log({familyCode});
   const violations: Violation[] = [];
 
   if (!familyCode.process.type) {
@@ -20,7 +18,7 @@ const validateFamilyProperty: Validator<FamilyCodeProperty> = (familyCode, path)
   ) {
     violations.push({
       path: path,
-      message: 'cé pas bieng',
+      message: 'The values must be filled',
     });
   }
 

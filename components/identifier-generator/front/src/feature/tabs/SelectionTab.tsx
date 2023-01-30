@@ -43,13 +43,12 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
 };
 
 const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validationErrors}) => {
-  const {conditions} = generator;
   // TODO: the skeleton does not seem to be linked to the right isLoading
   const {isLoading} = useIdentifierAttributes();
   const translate = useTranslate();
   const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionIdentifier | undefined>();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
-    conditions.map(condition => ({
+    generator?.conditions?.map(condition => ({
       id: uuid(),
       ...condition,
     }))
