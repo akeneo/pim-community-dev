@@ -100,7 +100,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     $webhookRequestLog->setResponse($response);
 
                     $pimEvents = \array_map(
-                        fn (WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
+                        static fn (WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents()
                     );
 
@@ -112,7 +112,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     $this->debugLogger->logEventsApiRequestSucceed(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents(),
-                        \strval($webhookRequestLog->getWebhookRequest()->url()),
+                        $webhookRequestLog->getWebhookRequest()->url(),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     );
@@ -139,11 +139,11 @@ class GuzzleWebhookClient implements WebhookClientInterface
                         $webhookRequestLog->getResponse()
                     );
 
-                    if ($reason instanceof RequestException) {
+                    if ($reason instanceof RequestException && $reason->hasResponse()) {
                         $this->debugLogger->logEventsApiRequestFailed(
                             $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                             $webhookRequestLog->getWebhookRequest()->apiEvents(),
-                            \strval($reason->getRequest()->getUri()),
+                            (string) $reason->getRequest()->getUri(),
                             $reason->getResponse()->getStatusCode(),
                             $reason->getRequest()->getHeaders(),
                         );
@@ -151,7 +151,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                         $this->debugLogger->logEventsApiRequestTimedOut(
                             $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                             $webhookRequestLog->getWebhookRequest()->apiEvents(),
-                            \strval($reason->getRequest()->getUri()),
+                            (string) $reason->getRequest()->getUri(),
                             $this->config['timeout']
                         );
                     }

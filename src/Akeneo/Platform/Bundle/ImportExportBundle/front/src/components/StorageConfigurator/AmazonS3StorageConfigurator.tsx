@@ -19,6 +19,7 @@ const CheckStorageConnection = styled.div`
 `;
 
 const AmazonS3StorageConfigurator = ({
+  jobInstanceCode,
   storage,
   fileExtension,
   validationErrors,
@@ -29,7 +30,8 @@ const AmazonS3StorageConfigurator = ({
   }
 
   const translate = useTranslate();
-  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
+  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(jobInstanceCode, storage);
+  const secretIsStoredOnServer = storage.secret === undefined;
 
   return (
     <>
@@ -68,8 +70,21 @@ const AmazonS3StorageConfigurator = ({
         errors={filterErrors(validationErrors, '[key]')}
       />
       <TextField
+        actions={
+          secretIsStoredOnServer && (
+            <Button
+              level="secondary"
+              ghost={true}
+              size="small"
+              onClick={() => onStorageChange({...storage, secret: ''})}
+            >
+              {translate('pim_common.edit')}
+            </Button>
+          )
+        }
         required={true}
-        value={storage.secret}
+        value={secretIsStoredOnServer ? '••••••••' : storage.secret}
+        readOnly={secretIsStoredOnServer}
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.secret.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.secret.placeholder')}
