@@ -1,3 +1,3 @@
-type TextTransformation = 'no'|'lowercase'|'uppercase';
+type TextTransformation = 'no' | 'lowercase' | 'uppercase';
 
 export type {TextTransformation};

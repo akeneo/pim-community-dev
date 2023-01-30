@@ -127,7 +127,7 @@ final class IdentifierGenerator
         return $this->textTransformation;
     }
 
-    public function setTextTransformation(TextTransformation $textTransformation)
+    public function setTextTransformation(TextTransformation $textTransformation): void
     {
         $this->textTransformation = $textTransformation;
     }
