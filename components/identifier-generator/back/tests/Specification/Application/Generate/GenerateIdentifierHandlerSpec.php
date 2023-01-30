@@ -36,47 +36,65 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
     public function it_should_generate_an_identifier_without_delimiter(
         GetNextIdentifierQuery $getNextIdentifierQuery,
     ): void {
-        $target = Target::fromString('sku');
-        $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('d556e59e-d46c-465e-863d-f4a39d0b7485'),
-            IdentifierGeneratorCode::fromString('my_generator'),
-            Conditions::fromArray([]),
-            Structure::fromArray([
-                FreeText::fromString('AKN-'),
-                AutoNumber::fromNormalized([
-                    'type' => AutoNumber::type(),
-                    'numberMin' => 0,
-                    'digitsMin' => 1,
-                ]),
-            ]),
-            LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
-            $target,
-            Delimiter::fromString(null),
-            TextTransformation::fromString('no'),
-        );
+        $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString(null));
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
             $identifierGenerator,
-            new ProductProjection(null, true, null, [])
+            new ProductProjection(null, true, null, []),
         );
 
         $getNextIdentifierQuery
-            ->fromPrefix($identifierGenerator, 'AKN-', 0)
+            ->fromPrefix($identifierGenerator, 'aKn-', 0)
             ->shouldBeCalled()
             ->willReturn(43);
 
-        $this->__invoke($generateIdentifierCommand)->shouldReturn('AKN-43');
+        $this->__invoke($generateIdentifierCommand)->shouldReturn('aKn-43');
     }
 
     public function it_should_generate_an_identifier_with_delimiter(
         GetNextIdentifierQuery $getNextIdentifierQuery,
     ): void {
-        $target = Target::fromString('sku');
-        $identifierGenerator = new IdentifierGenerator(
+        $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString('a'));
+        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+        );
+
+        $getNextIdentifierQuery
+            ->fromPrefix($identifierGenerator, 'aKn-a', 0)
+            ->shouldBeCalled()
+            ->willReturn(43);
+
+        $this->__invoke($generateIdentifierCommand)->shouldReturn('aKn-a43');
+    }
+
+    public function it_should_generate_an_identifier_with_delimiter_and_uppercase(
+        GetNextIdentifierQuery $getNextIdentifierQuery,
+    ): void {
+        $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString('x'), 'uppercase');
+        $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
+            $identifierGenerator,
+            new ProductProjection(null, true, null, []),
+        );
+
+        $getNextIdentifierQuery
+            ->fromPrefix($identifierGenerator, 'AKN-X', 0)
+            ->shouldBeCalled()
+            ->willReturn(43);
+
+        $this->__invoke($generateIdentifierCommand)->shouldReturn('AKN-X43');
+    }
+
+    private function getIdentifierGenerator(
+        Delimiter $delimiter,
+        string $textTransformation = 'no',
+    ): IdentifierGenerator
+    {
+        return new IdentifierGenerator(
             IdentifierGeneratorId::fromString('d556e59e-d46c-465e-863d-f4a39d0b7485'),
             IdentifierGeneratorCode::fromString('my_generator'),
             Conditions::fromArray([]),
             Structure::fromArray([
-                FreeText::fromString('AKN'),
+                FreeText::fromString('aKn-'),
                 AutoNumber::fromNormalized([
                     'type' => AutoNumber::type(),
                     'numberMin' => 0,
@@ -84,9 +102,9 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
                 ]),
             ]),
             LabelCollection::fromNormalized(['en_US' => 'MyGenerator']),
-            $target,
-            Delimiter::fromString('-'),
-            TextTransformation::fromString('no'),
+            Target::fromString('sku'),
+            $delimiter,
+            TextTransformation::fromString($textTransformation),
         );
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
             $identifierGenerator,

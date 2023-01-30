@@ -14,6 +14,7 @@ describe('GeneralProperties', () => {
       conditions: [],
       labels: {},
       delimiter: null,
+      text_transformation: 'no',
     };
     const onGeneratorChange = jest.fn();
     render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
@@ -30,6 +31,7 @@ describe('GeneralProperties', () => {
       conditions: [],
       labels: {},
       delimiter: null,
+      text_transformation: 'no',
     };
     const onGeneratorChange = jest.fn();
     render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
@@ -44,6 +46,36 @@ describe('GeneralProperties', () => {
         fr_FR: 'FrenchUpdated',
       },
       delimiter: null,
+      text_transformation: 'no',
+    });
+  });
+
+  it('should update text transformation', () => {
+    const generator: IdentifierGenerator = {
+      code: 'initialCode',
+      target: 'sku',
+      structure: [],
+      conditions: [],
+      labels: {},
+      delimiter: null,
+      text_transformation: 'no',
+    };
+    const onGeneratorChange = jest.fn();
+    render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
+    expect(screen.getByText('pim_identifier_generator.general.text_transformation.label')).toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.general.text_transformation.no')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('pim_common.open'));
+    expect(screen.getByText('pim_identifier_generator.general.text_transformation.uppercase')).toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.general.text_transformation.lowercase')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_identifier_generator.general.text_transformation.uppercase'));
+    expect(onGeneratorChange).toBeCalledWith({
+      code: 'initialCode',
+      target: 'sku',
+      structure: [],
+      conditions: [],
+      labels: {},
+      delimiter: null,
+      text_transformation: 'uppercase',
     });
   });
 
@@ -55,6 +87,7 @@ describe('GeneralProperties', () => {
       conditions: [],
       labels: {},
       delimiter: null,
+      text_transformation: 'no',
     };
     const onGeneratorChange = jest.fn();
     const validationErrors = [{path: 'labels', message: 'error on a label'}];

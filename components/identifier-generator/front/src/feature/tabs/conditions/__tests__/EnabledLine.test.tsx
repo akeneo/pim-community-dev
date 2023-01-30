@@ -8,11 +8,13 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-          <EnabledLine
-            condition={{type: CONDITION_NAMES.ENABLED, value: true, id: 'enabledId'}}
-            onChange={jest.fn()}
-            onDelete={jest.fn()}
-          />
+          <tr>
+            <EnabledLine
+              condition={{type: CONDITION_NAMES.ENABLED, value: true, id: 'enabledId'}}
+              onChange={jest.fn()}
+              onDelete={jest.fn()}
+            />
+          </tr>
         </tbody>
       </table>
     );
@@ -26,10 +28,12 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-          <EnabledLine
-            condition={{type: CONDITION_NAMES.ENABLED, value: undefined, id: 'enabledId'}}
-            onChange={jest.fn()}
-          />
+          <tr>
+            <EnabledLine
+              condition={{type: CONDITION_NAMES.ENABLED, value: undefined, id: 'enabledId'}}
+              onChange={jest.fn()}
+            />
+          </tr>
         </tbody>
       </table>
     );
@@ -44,11 +48,13 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-          <EnabledLine
-            condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}}
-            onChange={onChange}
-            onDelete={jest.fn()}
-          />
+          <tr>
+            <EnabledLine
+              condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}}
+              onChange={onChange}
+              onDelete={jest.fn()}
+            />
+          </tr>
         </tbody>
       </table>
     );
@@ -65,11 +71,13 @@ describe('EnabledLine', () => {
     render(
       <table>
         <tbody>
-          <EnabledLine
-            condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}}
-            onChange={jest.fn()}
-            onDelete={onDelete}
-          />
+          <tr>
+            <EnabledLine
+              condition={{type: CONDITION_NAMES.ENABLED, value: false, id: 'enabledId'}}
+              onChange={jest.fn()}
+              onDelete={onDelete}
+            />
+          </tr>
         </tbody>
       </table>
     );

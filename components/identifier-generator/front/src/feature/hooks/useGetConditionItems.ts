@@ -93,6 +93,7 @@ const useGetConditionItems: (
         });
       });
     }
+    // eslint-disable-next-line
   }, [isOpen, conditions, page, state, debouncedSearchValue, areRemainingElements, limit]);
 
   const handleNextPage = () => {
