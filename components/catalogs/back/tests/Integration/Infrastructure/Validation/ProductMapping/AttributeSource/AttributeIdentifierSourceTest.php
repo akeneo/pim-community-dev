@@ -28,7 +28,7 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
         $source = [
             'source' => 'sku',
             'scope' => null,
-            'locale' => null
+            'locale' => null,
         ];
         $violations = $this->validator->validate($source, new AttributeIdentifierSource());
         $this->assertEmpty($violations);
@@ -39,7 +39,7 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
      */
     public function testItReturnsViolationsWhenInvalid(
         array $source,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         $violations = $this->validator->validate($source, new AttributeIdentifierSource());
         $this->assertViolationsListContains($violations, $expectedMessage);
@@ -52,25 +52,25 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'sku',
                     'scope' => 'ecommerce',
-                    'locale' => null
+                    'locale' => null,
                 ],
-                'expected_message' => 'This value should be null.'
+                'expected_message' => 'This value should be null.',
             ],
             'with a locale' => [
                 'source' => [
                     'source' => 'sku',
                     'scope' => null,
-                    'locale' => 'en_US'
+                    'locale' => 'en_US',
                 ],
-                'expected_message' => 'This value should be null.'
+                'expected_message' => 'This value should be null.',
             ],
             'with a locale and a scope' => [
                 'source' => [
                     'source' => 'sku',
                     'scope' => 'ecommerce',
-                    'locale' => 'en_US'
+                    'locale' => 'en_US',
                 ],
-                'expected_message' => 'This value should be null.'
+                'expected_message' => 'This value should be null.',
             ],
         ];
     }

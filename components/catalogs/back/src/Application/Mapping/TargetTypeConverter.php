@@ -17,9 +17,10 @@ final class TargetTypeConverter
             'pim_catalog_boolean',
         ],
         'string' => [
+            'pim_catalog_identifier',
+            'pim_catalog_simpleselect',
             'pim_catalog_text',
             'pim_catalog_textarea',
-            'pim_catalog_simpleselect',
         ],
     ];
 
