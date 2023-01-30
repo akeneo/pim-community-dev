@@ -8,6 +8,7 @@ const mockedList: IdentifierGenerator[] = [
     labels: {ca_ES: 'azeaze', en_US: 'Sku generator'},
     target: 'sku',
     delimiter: null,
+    text_transformation: 'no',
   },
 ];
 

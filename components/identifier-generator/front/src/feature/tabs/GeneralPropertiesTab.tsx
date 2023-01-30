@@ -1,7 +1,12 @@
 import React, {useCallback} from 'react';
-import {IdentifierGenerator, LabelCollection} from '../models';
+import {IdentifierGenerator, LabelCollection, TextTransformation} from '../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
-import {IdentifierAttributeSelector, LabelTranslations, TabValidationErrors} from '../components';
+import {
+  IdentifierAttributeSelector,
+  LabelTranslations,
+  TabValidationErrors,
+  TextTransformationSelector,
+} from '../components';
 import {Styled} from '../components/Styled';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Violation} from '../validators';
@@ -20,6 +25,11 @@ const GeneralPropertiesTab: React.FC<GeneralPropertiesProps> = ({generator, onGe
     [onGeneratorChange, generator]
   );
 
+  const onTextTransformationChange = useCallback(
+    (text_transformation: TextTransformation) => onGeneratorChange({...generator, text_transformation}),
+    [onGeneratorChange, generator]
+  );
+
   return (
     <>
       <TabValidationErrors errors={validationErrors} />
@@ -31,6 +41,9 @@ const GeneralPropertiesTab: React.FC<GeneralPropertiesProps> = ({generator, onGe
           <TextInput value={generator.code} readOnly={true} />
         </Field>
         <IdentifierAttributeSelector code={generator.target || ''} />
+        <Field label={translate('pim_identifier_generator.general.text_transformation.label')}>
+          <TextTransformationSelector value={generator.text_transformation} onChange={onTextTransformationChange} />
+        </Field>
       </Styled.FormContainer>
       <LabelTranslations labelCollection={generator.labels} onLabelsChange={onLabelChange} />
     </>

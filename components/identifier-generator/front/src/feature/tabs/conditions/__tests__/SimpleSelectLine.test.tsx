@@ -20,7 +20,15 @@ describe('SimpleSelectLine', () => {
     mockSimpleSelectCalls();
 
     const mockedOnChange = jest.fn();
-    const screen = render(<SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />);
+    const screen = render(
+      <table>
+        <tbody>
+          <tr>
+            <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+          </tr>
+        </tbody>
+      </table>
+    );
 
     //THEN I can see the list of all available options,
     await waitFor(() => {
@@ -66,7 +74,15 @@ describe('SimpleSelectLine', () => {
     mockSimpleSelectCalls();
 
     const mockedOnChange = jest.fn();
-    const screen = render(<SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />);
+    const screen = render(
+      <table>
+        <tbody>
+          <tr>
+            <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+          </tr>
+        </tbody>
+      </table>
+    );
 
     //THEN I can not see the list of all available options,
     await waitFor(() => {
@@ -103,7 +119,15 @@ describe('SimpleSelectLine', () => {
       locale: null,
     };
     const mockedOnChange = jest.fn();
-    const screen = render(<SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />);
+    const screen = render(
+      <table>
+        <tbody>
+          <tr>
+            <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+          </tr>
+        </tbody>
+      </table>
+    );
 
     //THEN I am invited to choose the locale
     await waitFor(() => {
@@ -134,7 +158,15 @@ describe('SimpleSelectLine', () => {
       locale: null,
     };
     const mockedOnChange = jest.fn();
-    const screen = render(<SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />);
+    const screen = render(
+      <table>
+        <tbody>
+          <tr>
+            <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+          </tr>
+        </tbody>
+      </table>
+    );
 
     //THEN I am invited to choose the channel
     await waitFor(() => {
@@ -164,7 +196,15 @@ describe('SimpleSelectLine', () => {
       locale: null,
     };
     const mockedOnChange = jest.fn();
-    const screen = render(<SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />);
+    const screen = render(
+      <table>
+        <tbody>
+          <tr>
+            <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+          </tr>
+        </tbody>
+      </table>
+    );
 
     await waitFor(() => {
       expect(screen.getByText('pim_error.unauthorized_list_attributes')).toBeInTheDocument();
@@ -183,7 +223,15 @@ describe('SimpleSelectLine', () => {
       locale: null,
     };
     const mockedOnChange = jest.fn();
-    const screen = render(<SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />);
+    const screen = render(
+      <table>
+        <tbody>
+          <tr>
+            <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+          </tr>
+        </tbody>
+      </table>
+    );
 
     await waitFor(() => {
       expect(screen.getByText('pim_error.general')).toBeInTheDocument();

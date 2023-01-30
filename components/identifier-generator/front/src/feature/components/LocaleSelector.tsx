@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {Channel, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {useGetScopes} from '../hooks';
-import {Helper, Locale, SelectInput, SkeletonPlaceholder, Table} from 'akeneo-design-system';
+import {Helper, Locale, SelectInput, SkeletonPlaceholder} from 'akeneo-design-system';
 
 type Props = {
   value: LocaleCode | null;
@@ -38,9 +38,7 @@ const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => 
   }
 
   return isLoading ? (
-    <Table.Cell>
-      <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
-    </Table.Cell>
+    <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
   ) : (
     <SelectInput
       value={value}
