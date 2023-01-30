@@ -38,9 +38,7 @@ const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => 
   }
 
   return isLoading ? (
-    <Table.Cell>
-      <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
-    </Table.Cell>
+    <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
   ) : (
     <SelectInput
       value={value}

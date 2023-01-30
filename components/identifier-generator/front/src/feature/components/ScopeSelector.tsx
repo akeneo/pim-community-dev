@@ -20,11 +20,7 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
   }
 
   return isLoading ? (
-    <Table.Row>
-      <Table.Cell>
-        <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
-      </Table.Cell>
-    </Table.Row>
+    <SkeletonPlaceholder>This is a loading channel</SkeletonPlaceholder>
   ) : (
     <SelectInput
       value={value}
