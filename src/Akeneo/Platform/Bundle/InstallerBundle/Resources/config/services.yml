@@ -20,3 +20,4 @@ services:
     Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData:
         arguments:
             - '@database_connection'
+        public: true
