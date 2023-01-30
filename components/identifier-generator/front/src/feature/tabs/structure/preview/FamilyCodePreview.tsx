@@ -8,7 +8,7 @@ type Props = {
 };
 
 const FamilyCodePreview: React.FC<Props> = ({property}) => {
-  const {data, isLoading} = useGetFamilies({page:1, search: ''});
+  const {data, isLoading} = useGetFamilies({page: 1, search: ''});
   const firstFamily: string = useMemo(() => {
     if (isLoading) {
       return '';

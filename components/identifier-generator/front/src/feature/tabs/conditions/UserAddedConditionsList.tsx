@@ -34,16 +34,16 @@ const UserAddedConditionsList: React.FC<Props> = ({generator}) => {
           </Table.Cell>
         </Table.Row>
       )}
-      {hasFamilyStructureProperty &&
+      {hasFamilyStructureProperty && (
         <Table.Row>
-        <Styled.TitleCondition>{translate('Family')}</Styled.TitleCondition>
-        <Table.Cell colSpan={3}>
-          <Styled.InputContainer>
-            <TextInput value={translate('pim_common.operators.NOT_EMPTY')} readOnly={true}/>
-          </Styled.InputContainer>
-        </Table.Cell>
-      </Table.Row>
-      }
+          <Styled.TitleCondition>{translate('Family')}</Styled.TitleCondition>
+          <Table.Cell colSpan={3}>
+            <Styled.InputContainer>
+              <TextInput value={translate('pim_common.operators.NOT_EMPTY')} readOnly={true} />
+            </Styled.InputContainer>
+          </Table.Cell>
+        </Table.Row>
+      )}
     </>
   );
 };

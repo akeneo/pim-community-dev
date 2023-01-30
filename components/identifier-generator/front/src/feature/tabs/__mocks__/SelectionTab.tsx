@@ -1,13 +1,13 @@
 import React from 'react';
-import {CONDITION_NAMES, Conditions, Target} from '../../models';
+import {CONDITION_NAMES, Conditions, IdentifierGenerator, Target} from '../../models';
 
 type SelectionTabProps = {
-  conditions: Conditions;
+  generator: IdentifierGenerator;
   target: Target;
   onChange: (conditions: Conditions) => void;
 };
 
-const SelectionTab: React.FC<SelectionTabProps> = ({conditions, onChange}) => {
+const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange}) => {
   const handleChange = () => {
     onChange([{type: CONDITION_NAMES.ENABLED, value: false}]);
   };
@@ -15,7 +15,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({conditions, onChange}) => {
   return (
     <>
       SelectionTabMock
-      <div>{JSON.stringify(conditions)}</div>
+      <div>{JSON.stringify(generator?.conditions)}</div>
       <button onClick={handleChange}>Update selection</button>
     </>
   );
