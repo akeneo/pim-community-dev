@@ -1,6 +1,6 @@
 import React from 'react';
 import {mockResponse, render} from '../../../tests/test-utils';
-import {UserAddedConditionsList} from '../UserAddedConditionsList';
+import {AutoInsertedConditionsList} from '../AutoInsertedConditionsList';
 import {AbbreviationType, IdentifierGenerator, PROPERTY_NAMES} from '../../../models';
 import initialGenerator from '../../../tests/fixtures/initialGenerator';
 import {waitFor} from '@testing-library/react';
@@ -16,7 +16,7 @@ describe('UserAddedConditionsList', () => {
     });
   });
   it('should display sku as default user added condition', async () => {
-    const screen = render(<UserAddedConditionsList generator={mockedGenerator} />);
+    const screen = render(<AutoInsertedConditionsList generator={mockedGenerator} />);
 
     expect(screen.getAllByText('This is a loading label')).toHaveLength(3);
     await waitFor(() => {
@@ -29,7 +29,7 @@ describe('UserAddedConditionsList', () => {
       ...initialGenerator,
       structure: [{type: PROPERTY_NAMES.FAMILY, process: {type: AbbreviationType.NO}}],
     };
-    const screen = render(<UserAddedConditionsList generator={generator} />);
+    const screen = render(<AutoInsertedConditionsList generator={generator} />);
 
     await waitFor(() => {
       expect(screen.getByText('Family')).toBeInTheDocument();

@@ -69,6 +69,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
               operator={condition.operator}
               onChange={handleOperatorChange}
               operators={SimpleSelectOperators}
+              isInSelection={true}
             />
 
             {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (

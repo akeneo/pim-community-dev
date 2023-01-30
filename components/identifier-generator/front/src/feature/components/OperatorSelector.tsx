@@ -8,9 +8,10 @@ type OperatorSelectorProps = {
   operator: Operator | null;
   onChange: (operator: Operator) => void;
   operators: Operator[];
+  isInSelection?: boolean;
 };
 
-const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operators}) => {
+const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operators, isInSelection = false}) => {
   const translate = useTranslate();
 
   return (
@@ -21,6 +22,7 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operat
       openLabel={translate('pim_common.open')}
       onChange={(operator: string) => onChange(operator as Operator)}
       clearable={false}
+      isInSelection={isInSelection}
     >
       {operators.map(operator => (
         <SelectInput.Option key={operator} value={operator}>

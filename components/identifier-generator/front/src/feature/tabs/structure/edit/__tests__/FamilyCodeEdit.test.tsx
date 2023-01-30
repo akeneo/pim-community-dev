@@ -69,8 +69,8 @@ describe('FamilyCodeEdit', () => {
     expect(screen.getByText('pim_identifier_generator.structure.settings.family.chars_number')).toBeInTheDocument();
 
     fireEvent.click(screen.getByPlaceholderText('pim_identifier_generator.structure.settings.operator.placeholder'));
-    expect(screen.getByText('pim_common.operators.EQUALS')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_common.operators.EQUALS'));
+    expect(screen.getByText('pim_common.operators.=')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_common.operators.='));
     expect(mockedOnChange).toHaveBeenCalledWith({
       ...familyProperty,
       process: {
