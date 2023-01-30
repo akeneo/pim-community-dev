@@ -8,6 +8,11 @@ type Props = {
     target: Target;
 };
 
+type Constraint = {
+    key: string;
+    value: string | number;
+};
+
 const WarningHelper = styled(Helper)`
     margin-bottom: 10px;
 `;
@@ -16,11 +21,22 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState(true);
     const constraintKeys: string[] = ['minLength', 'maxLength'];
-    const targetKeys = Object.keys(target) as Array<keyof Target>;
     const translationKey = 'akeneo_catalogs.product_mapping.source.requirements.constraints';
-    const hasWarning = (constraintKeys.filter(value => (targetKeys as string[]).includes(value))).length > 0;
 
-    if ((undefined === target.description || null === target.description) && !hasWarning) {
+    const constraints: Constraint[] = [];
+
+    (Object.keys(target) as Array<keyof Target>).map(targetKey => {
+        if (constraintKeys.includes(targetKey) && undefined !== target[targetKey]) {
+            constraints.push({
+                key: targetKey,
+                value: target[targetKey],
+            } as Constraint);
+        }
+    });
+
+    const shouldDisplayWarning = constraints.length > 0;
+
+    if ((undefined === target.description || null === target.description) && !shouldDisplayWarning) {
         return null;
     }
 
@@ -39,19 +55,19 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                 isOpen={isOpen}
                 onCollapse={setIsOpen}
             >
-                {hasWarning && (
+                {shouldDisplayWarning && (
                     <WarningHelper inline level='warning'>
-                        {targetKeys.map((targetKey, i) => {
-                            if (constraintKeys.includes(targetKey)) {
-                                return (
-                                    <p key={i}>
-                                        {translate(`${translationKey}.${targetKey}`, {
-                                            value: target[targetKey] || '',
-                                        })}
-                                    </p>
-                                );
-                            }
-                        })}
+                        {constraints.map((constraint, i) => (
+                            <p key={i}>
+                                {translate(
+                                    `${translationKey}.${constraint.key}`,
+                                    {
+                                        value: constraint.value,
+                                    },
+                                    parseInt(constraint.value.toString())
+                                )}
+                            </p>
+                        ))}
                     </WarningHelper>
                 )}
                 {target.description && (

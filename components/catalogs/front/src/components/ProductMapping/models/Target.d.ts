@@ -3,7 +3,7 @@ export type Target = {
     label: string;
     type: string;
     format: string | null;
-    description?: string | null;
+    description?: string;
     minLength?: number;
     maxLength?: number;
 };
