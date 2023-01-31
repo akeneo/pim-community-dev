@@ -11,41 +11,49 @@ const options = [
   {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
 ];
 
-
 const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedProperty, onChange}) => {
   const translate = useTranslate();
 
-  const onChangeProcessType = useCallback((type: string) => {
-    if (type === AbbreviationType.TRUNCATE) {
-      onChange({
-        type: selectedProperty.type,
-        process: {
-          type: AbbreviationType.TRUNCATE,
-          value: 3,
-          operator: null,
-        },
-      });
-    } else {
-      onChange({
-        type: selectedProperty.type,
-        process: {
-          type: AbbreviationType.NO,
-        },
-      });
-    }
-  }, [onChange, selectedProperty.type]);
+  const onChangeProcessType = useCallback(
+    (type: string) => {
+      if (type === AbbreviationType.TRUNCATE) {
+        onChange({
+          type: selectedProperty.type,
+          process: {
+            type: AbbreviationType.TRUNCATE,
+            value: 3,
+            operator: null,
+          },
+        });
+      } else {
+        onChange({
+          type: selectedProperty.type,
+          process: {
+            type: AbbreviationType.NO,
+          },
+        });
+      }
+    },
+    [onChange, selectedProperty.type]
+  );
 
-  const onChangeOperator = useCallback((operator: Operator) => {
-    if (selectedProperty.process.type === AbbreviationType.TRUNCATE) {
-      onChange({...selectedProperty, process: {...selectedProperty.process, operator}});
-    }
-  }, [onChange, selectedProperty]);
+  const onChangeOperator = useCallback(
+    (operator: Operator) => {
+      if (selectedProperty.process.type === AbbreviationType.TRUNCATE) {
+        onChange({...selectedProperty, process: {...selectedProperty.process, operator}});
+      }
+    },
+    [onChange, selectedProperty]
+  );
 
-  const onChangeCharsNumber = useCallback((charsNumber: string) => {
-    if (selectedProperty.process.type === AbbreviationType.TRUNCATE) {
-      onChange({...selectedProperty, process: {...selectedProperty.process, value: parseInt(charsNumber)}});
-    }
-  }, [onChange, selectedProperty]);
+  const onChangeCharsNumber = useCallback(
+    (charsNumber: string) => {
+      if (selectedProperty.process.type === AbbreviationType.TRUNCATE) {
+        onChange({...selectedProperty, process: {...selectedProperty.process, value: parseInt(charsNumber)}});
+      }
+    },
+    [onChange, selectedProperty]
+  );
 
   return (
     <Styled.EditionContainer>
