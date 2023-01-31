@@ -14,9 +14,9 @@ Feature: Update Family Nomenclature
     And The value for family3 should be Baz
 
   Scenario: Can update an existing value in family nomenclature
-    When I update family3 value to Baz
+    When I update family2 value to Baz
     Then The value for family1 should be Foo
-    And The value for family2 should be Bar
+    And The value for family2 should be Baz
 
   Scenario: Can remove an existing value in family nomenclature
     When I remove the family1 value
