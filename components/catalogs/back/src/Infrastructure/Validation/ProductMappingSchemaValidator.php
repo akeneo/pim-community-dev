@@ -110,15 +110,15 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
 
     private function containsInvalidRegexes(object $schema): bool
     {
-        /** @var array{properties: array<string, array{pattern: string}>} $schema */
-        $schema = \json_decode(json_encode($schema) ?: '{}', true);
-        
-        foreach ($schema['properties'] ?? [] as $property) {
+        /** @var array{properties: array<string, array<string, string>>} $schema */
+        $schema = \json_decode(\json_encode($schema, JSON_THROW_ON_ERROR) ?: '{}', true, 512, JSON_THROW_ON_ERROR);
+
+        foreach ($schema['properties'] as $property) {
             if (!isset($property['pattern'])) {
                 continue;
             }
 
-            if (@preg_match(\sprintf('/%s/', preg_quote($property['pattern'], '/')), '') === false) {
+            if (@\preg_match(\sprintf('/%s/', \preg_quote($property['pattern'], '/')), '') === false) {
                 return true;
             }
         }

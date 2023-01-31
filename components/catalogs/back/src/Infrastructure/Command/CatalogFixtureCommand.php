@@ -144,7 +144,7 @@ class CatalogFixtureCommand extends Command
                     'source' => null,
                     'scope' => null,
                     'locale' => null,
-                ]
+                ],
             ];
 
             /** @var object $productMappingSchema */
