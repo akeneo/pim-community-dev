@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\RemovableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JobInstanceRemoverSpec extends ObjectBehavior
@@ -17,12 +18,14 @@ class JobInstanceRemoverSpec extends ObjectBehavior
         RemovableObjectRepositoryInterface $jobInstanceRepository,
         EventDispatcherInterface $eventDispatcher,
         DeleteRunningUser $deleteRunningUser,
+        LoggerInterface $logger,
     ): void {
         $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $jobInstanceRepository,
             $eventDispatcher,
             $deleteRunningUser,
+            $logger,
         );
     }
 

@@ -112,6 +112,12 @@
 - PIM-10753: Fix HTTP 500 in the API when patching product metric with a mathematical notation
 - PIM:10744: Fix product import with a quantified association column is missing
 - PIM-10750: Fix category code validation to allow '0'
+- PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
+- PIM-10779: Fix lowercase on get attribute group code for dqi activation
+- PIM-10791: Fix product and product model completeness compute on attribute removal
+- PIM-10768: Fix update list status_code response
+- PIM-10784: Fix API error 500 when filtering for identifier with null value
+- PIM-10785: Fix case-insensitive patch product model
 
 ## Improvements
 

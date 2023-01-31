@@ -26,7 +26,7 @@ final class SetTableValue implements ValueUserIntent
         private array $tableValue
     ) {
         Assert::isList($tableValue);
-        Assert::allIsMap($tableValue);
+        Assert::allIsArray($tableValue);
     }
 
     public function attributeCode(): string
