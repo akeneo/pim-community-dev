@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- Pim 10810: Optimize completeness saving
+
 # 6.0.67 (2023-02-06)
 
 # 6.0.66 (2023-02-02)

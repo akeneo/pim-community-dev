@@ -108,13 +108,13 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
 
         $this->createProduct('blue_jean', 'jeans',
             [
-            'values' => [
-                'a_scopable_localizable_text' => [
-                    ['data' => 'blue', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'bleu', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                'values' => [
+                    'a_scopable_localizable_text' => [
+                        ['data' => 'blue', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                        ['data' => 'bleu', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ]
                 ]
-            ]
-        ]);
+            ]);
 
 
         $this->createProduct('yellow_jean', 'jeans', [
