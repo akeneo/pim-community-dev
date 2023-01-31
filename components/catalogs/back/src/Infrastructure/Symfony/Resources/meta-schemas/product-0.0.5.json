@@ -95,6 +95,12 @@
         "maxLength": {
           "type": "integer",
           "minimum": 0
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
         }
       },
       "additionalProperties": false,
