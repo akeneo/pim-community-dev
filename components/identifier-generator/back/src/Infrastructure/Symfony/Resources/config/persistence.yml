@@ -22,4 +22,10 @@ services:
 
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository:
     class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlNomenclatureValueRepository'
-    arguments: ~
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlNomenclatureDefinitionRepository'
+    arguments:
+      - '@database_connection'
