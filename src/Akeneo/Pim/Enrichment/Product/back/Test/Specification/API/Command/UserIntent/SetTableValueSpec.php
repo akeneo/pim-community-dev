@@ -77,4 +77,21 @@ class SetTableValueSpec extends ObjectBehavior
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    function it_can_be_instantiated_with_integer_column_codes()
+    {
+        $this->beConstructedWith('nutrition',
+            'ecommerce',
+            'en_US',
+            [
+                ['ingredient' => 'egg', 42 => 'michel', 420 => 12],
+            ]
+        );
+
+        $this->tableValue()->shouldBeLike(
+            [
+                ['ingredient' => 'egg', 42 => 'michel', 420 => 12],
+            ]
+        );
+    }
 }

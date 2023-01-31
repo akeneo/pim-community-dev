@@ -76,6 +76,10 @@ SQL;
                 \array_filter(
                     $rows,
                     function (array $row) use ($updatedById): bool {
+                        if (!isset($updatedById[$row['_id']])) {
+                            // the product is not indexed at all
+                            return true;
+                        }
                         $updateDateInIndex = new \DateTimeImmutable($updatedById[$row['_id']]);
                         $updateDateInDb = new \DateTimeImmutable($row['updated']);
 

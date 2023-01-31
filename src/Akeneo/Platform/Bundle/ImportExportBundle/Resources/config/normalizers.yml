@@ -27,6 +27,8 @@ services:
 
     pim_versioning.serializer.normalizer.flat.job_instance:
         class: '%pim_serializer.normalizer.flat.job_instance.class%'
+        arguments:
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
