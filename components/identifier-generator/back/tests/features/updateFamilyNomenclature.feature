@@ -23,9 +23,19 @@ Feature: Update Family Nomenclature
     Then The value for family1 should be undefined
     And The value for family2 should be Bar
 
-#  Scenario: Can update the nomenclature operator
-#
-#  Scenario: Can update the nomenclature value
+  Scenario: Can update the nomenclature operator
+    When I update the family nomenclature operator to <=
+    Then the family nomenclature operator should be <=
+
+  Scenario: Can update an existing nomenclature operator
+    Given a family nomenclature definition
+    When I update the family nomenclature operator to <=
+    Then the family nomenclature operator should be <=
+
+  Scenario: Can update the nomenclature value
+    Given a family nomenclature definition
+    When I update the family nomenclature value to 3
+    Then the family nomenclature value should be 3
 #
 #  Scenario: Can update the family nomenclature to generate if empty
 #
