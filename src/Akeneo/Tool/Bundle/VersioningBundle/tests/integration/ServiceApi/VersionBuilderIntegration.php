@@ -88,18 +88,152 @@ class VersionBuilderIntegration extends TestCase
 
         $givenResourceName = 'Akeneo\Category\Infrastructure\Component\Model\Category';
 
-        $version = $versionBuilder->buildVersionWithId(
+        $versionBuilder->buildVersionWithId(
             resourceId: null,
             resourceName: $givenResourceName,
             snapshot: $givenSnapshot,
         );
 
-        $expectedVersion = $this->versionFactory->create($givenResourceName, null, null, $givenAuthor, null);
+        $version = $this->get('pim_versioning.repository.version')->getNewestLogEntry(
+            resourceName: $givenResourceName,
+            resourceId: null,
+            resourceUuid: null
+        );
+
+        $expectedVersion = $this->versionFactory->create($givenResourceName, null, null, $givenAuthor);
         $expectedVersion->setVersion(1)
             ->setSnapshot($givenSnapshot)
             ->setChangeset($givenChangeSet);
 
         $this->assertVersion($expectedVersion, $version);
+    }
+
+    public function testBuildVersionWithPermissionWhenCategoryUpdated(): void
+    {
+        $versionRepositoryMock = $this->createMock(VersionRepository::class);
+        $versionRepositoryMock->method('getNewestLogEntry')->willReturn(null);
+
+        $givenAuthor = 'julia';
+        $givenPreBuildVersionEvent = (new BuildVersionEvent())->setUsername($givenAuthor);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcherMock
+            ->method('dispatch')
+            ->with(new BuildVersionEvent(), BuildVersionEvents::PRE_BUILD)
+            ->willReturn($givenPreBuildVersionEvent)
+        ;
+
+        $versionBuilder = new VersionBuilder(
+            $this->versionFactory,
+            $versionRepositoryMock,
+            $eventDispatcherMock,
+            $this->objectManager,
+            $this->legacyVersionBuilder
+        );
+
+        $givenSnapshot = [
+            'code' => 'photo',
+            'parent' => 'master',
+            'updated' => '2023-01-16T14:30:30+00:00',
+            'label-en_US' => 'photo',
+            'label-fr_FR' => 'image',
+            'view_permission' => 'All',
+        ];
+
+        $givenSpecificChangeSet = [
+            'updated' => [
+                'old' => '',
+                'new' => '2023-01-16T14:30:30+00:00',
+            ]
+        ];
+
+        $givenResourceName = 'Akeneo\Category\Infrastructure\Component\Model\Category';
+
+        $versionBuilder->buildVersionWithId(
+            resourceId: '169',
+            resourceName: $givenResourceName,
+            snapshot: $givenSnapshot,
+        );
+
+        $expectedSpecificVersion = $this->versionFactory->create($givenResourceName, '169', null, $givenAuthor, null);
+        $expectedSpecificVersion->setVersion(2)
+            ->setSnapshot($givenSnapshot)
+            ->setChangeset($givenSpecificChangeSet);
+
+        /** @var Version[] $versions */
+        $versions = $this->get('pim_versioning.repository.version')->getLogEntries($givenResourceName, '169', null);
+        $this->assertCount(2, $versions);
+
+        $newestVersion = $versions[0];
+        $this->assertVersion($expectedSpecificVersion, $newestVersion);
+
+        $oldestVersion = $versions[1];
+        $expectedChangeset = [
+            'code' => [
+                'old' => '',
+                'new' => 'photo',
+            ],
+            'parent' => [
+                'old' => '',
+                'new' => 'master',
+            ],
+            'label-en_US' => [
+                'old' => '',
+                'new' => 'photo'
+            ],
+            'label-fr_FR' => [
+                'old' => '',
+                'new' => 'image'
+            ],
+            'view_permission' => [
+                'old' => '',
+                'new' => 'All'
+            ]
+        ];
+        $this->assertEquals($expectedChangeset, $oldestVersion->getChangeset());
+    }
+
+    public function testDoesNotBuildPermissionVersionOnCategoryCreation(): void
+    {
+        $versionRepositoryMock = $this->createMock(VersionRepository::class);
+        $versionRepositoryMock->method('getNewestLogEntry')->willReturn(null);
+
+        $givenAuthor = 'julia';
+        $givenPreBuildVersionEvent = (new BuildVersionEvent())->setUsername($givenAuthor);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcherMock
+            ->method('dispatch')
+            ->with(new BuildVersionEvent(), BuildVersionEvents::PRE_BUILD)
+            ->willReturn($givenPreBuildVersionEvent)
+        ;
+
+        $versionBuilder = new VersionBuilder(
+            $this->versionFactory,
+            $versionRepositoryMock,
+            $eventDispatcherMock,
+            $this->objectManager,
+            $this->legacyVersionBuilder
+        );
+
+        $givenSnapshot = [
+            'code' => 'photo',
+            'parent' => 'master',
+            'updated' => '2023-01-16T14:30:30+00:00',
+            'label-en_US' => 'photo',
+            'label-fr_FR' => 'image',
+            'view_permission' => 'All',
+        ];
+
+        $givenResourceName = 'Akeneo\Category\Infrastructure\Component\Model\Category';
+
+        $versionBuilder->buildVersionWithId(
+            resourceId: null,
+            resourceName: $givenResourceName,
+            snapshot: $givenSnapshot,
+        );
+
+        /** @var Version[] $versions */
+        $versions = $this->get('pim_versioning.repository.version')->getLogEntries($givenResourceName, null, null);
+        $this->assertCount(1, $versions);
     }
 
     /**
