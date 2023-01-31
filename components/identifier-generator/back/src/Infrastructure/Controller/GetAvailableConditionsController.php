@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,7 +32,8 @@ final class GetAvailableConditionsController
     public function __construct(
         private readonly GetGroupedAttributes $getGroupedAttributes,
         private readonly UserContext $userContext,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly SecurityFacadeInterface $securityFacade,
     ) {
     }
 
@@ -53,8 +55,9 @@ final class GetAvailableConditionsController
         $filteredFields = $this->filterSystemFieldByText($fields, $search);
         $paginatedFields = \array_slice($filteredFields, $offset, $limit);
 
+        $canListAttributes = $this->securityFacade->isGranted('pim_enrich_attribute_index');
         $paginatedAttributes = [];
-        if ($limit > \count($paginatedFields)) {
+        if ($limit > \count($paginatedFields) && $canListAttributes) {
             $offset -= \count($filteredFields);
             $limit -= \count($paginatedFields);
             $localeCode = $this->userContext->getCurrentLocaleCode();
