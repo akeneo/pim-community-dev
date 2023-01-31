@@ -17,7 +17,7 @@ namespace Akeneo\Catalogs\Application\Persistence\Catalog\Product;
  *      updated: \DateTimeImmutable,
  *      family_code: string|null,
  *      group_codes: array<string>,
- *      raw_values: array<string, array<string, array<string, string>>>,
+ *      raw_values: array<string, array<string, array<string, mixed>>>,
  * }
  */
 interface GetRawProductQueryInterface
