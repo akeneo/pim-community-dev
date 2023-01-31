@@ -157,6 +157,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             onStructureChange={onStructureChange}
             onDelimiterChange={onDelimiterChange}
             validationErrors={structureValidationErrors}
+            textTransformation={generator.text_transformation}
           />
         )}
       </Container>

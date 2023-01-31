@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, render, screen, waitFor} from '../../tests/test-utils';
 import {ListPage} from '../ListPage';
-import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
+import {IdentifierGenerator, PROPERTY_NAMES, TEXT_TRANSFORMATION} from '../../models';
 import {useGetIdentifierGenerators} from '../../hooks';
 import {mocked} from 'ts-jest/utils';
 import {Router} from 'react-router';
@@ -21,7 +21,7 @@ const mockedList: IdentifierGenerator[] = [
     labels: {ca_ES: 'azeaze', en_US: 'Sku generator'},
     target: 'sku',
     delimiter: null,
-    text_transformation: 'no',
+    text_transformation: TEXT_TRANSFORMATION.NO,
   },
 ];
 
