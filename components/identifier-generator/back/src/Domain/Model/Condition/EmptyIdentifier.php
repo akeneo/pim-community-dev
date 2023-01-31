@@ -19,7 +19,7 @@ final class EmptyIdentifier implements ConditionInterface
 
     public function normalize(): array
     {
-        return [];
+        throw new \LogicException('This component should not be normalized');
     }
 
     public function match(ProductProjection $productProjection): bool
