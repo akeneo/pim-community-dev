@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Attribute;
+namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\String;
 
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromSimpleSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
-use Akeneo\Catalogs\Application\Service\AttributeValueExtractor\AttributeValueExtractorRegistry;
-use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\ValueExtractorTestCase;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Attribute\FindOneAttributeByCodeQuery
+ * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromSimpleSelectAttributeValueExtractor
  */
-class SelectExtractorTest extends IntegrationTestCase
+class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?AttributeValueExtractorRegistry $registry;
+    private ?StringFromSimpleSelectAttributeValueExtractor $extractor;
 
     protected function setUp(): void
     {
@@ -26,7 +26,15 @@ class SelectExtractorTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->registry = self::getContainer()->get(AttributeValueExtractorRegistry::class);
+        $this->extractor = self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class);
+    }
+
+    public function testItReturnsTheCorrectType(): void
+    {
+        $this->assertInstanceOf(
+            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
+            $this->extractor,
+        );
     }
 
     public function testItReturnsTheAttributeValue(): void
@@ -50,10 +58,9 @@ class SelectExtractorTest extends IntegrationTestCase
             ],
         ];
 
-        $result = $this->registry->extract(
+        $result = $this->extractor->extract(
             product: $product,
-            attributeCode: 'color',
-            attributeType: 'pim_catalog_simpleselect',
+            code: 'color',
             locale: 'en_US',
             scope: 'ecommerce',
             parameters: ['label_locale' => 'en_US'],
@@ -67,7 +74,7 @@ class SelectExtractorTest extends IntegrationTestCase
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'name' => [
+                'color' => [
                     'ecommerce' => [
                         'en_US' => 'red',
                     ],
@@ -75,12 +82,43 @@ class SelectExtractorTest extends IntegrationTestCase
             ],
         ];
 
-        $result = $this->registry->extract(
+        $result = $this->extractor->extract(
             product: $product,
-            attributeCode: 'name',
-            attributeType: 'pim_catalog_simpleselect',
+            code: 'color',
             locale: '<all_locales>',
             scope: '<all_channels>',
+            parameters: ['label_locale' => 'en_US'],
+        );
+
+        $this->assertEquals(null, $result);
+    }
+
+    public function testItReturnsNullIfInconsistentRawValue(): void
+    {
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_simpleselect',
+            'options' => ['Red', 'Blue'],
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
+        /** @var RawProduct $product */
+        $product = [
+            'raw_values' => [
+                'color' => [
+                    'ecommerce' => [
+                        'en_US' => 10,
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->extractor->extract(
+            product: $product,
+            code: 'color',
+            locale: 'en_US',
+            scope: 'ecommerce',
             parameters: ['label_locale' => 'en_US'],
         );
 
@@ -108,10 +146,9 @@ class SelectExtractorTest extends IntegrationTestCase
             ],
         ];
 
-        $result = $this->registry->extract(
+        $result = $this->extractor->extract(
             product: $product,
-            attributeCode: 'color',
-            attributeType: 'pim_catalog_simpleselect',
+            code: 'color',
             locale: 'en_US',
             scope: 'ecommerce',
             parameters: ['label_locale' => 'en_GB'],

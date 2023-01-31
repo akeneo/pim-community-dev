@@ -11,9 +11,8 @@ interface GetAttributeTypeByCodesQueryInterface
 {
     /**
      * @param array<string> $codes
+     *
      * @return array<string, string>
      */
-    public function execute(
-        array $codes,
-    ): array;
+    public function execute(array $codes): array;
 }
