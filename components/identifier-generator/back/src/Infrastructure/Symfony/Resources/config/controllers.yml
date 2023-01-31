@@ -51,3 +51,4 @@ services:
       - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes'
       - '@pim_user.context.user'
       - '@translator'
+      - '@oro_security.security_facade'
