@@ -21,11 +21,11 @@ describe('Preview', () => {
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'AkN'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: '42'},
     ];
-    render(<Preview structure={structure} delimiter={'fOo'} textTransformation={TEXT_TRANSFORMATION.LOWERCASE} />);
+    const {container} = render(
+      <Preview structure={structure} delimiter={'fOo'} textTransformation={TEXT_TRANSFORMATION.LOWERCASE} />
+    );
 
-    expect(screen.getByText('akn')).toBeInTheDocument();
-    expect(screen.getByText('foo')).toBeInTheDocument();
-    expect(screen.getByText('42')).toBeInTheDocument();
+    expect(container.children[0]).toHaveStyle({'text-transform': 'lowercase'});
   });
 
   it('displays the uppercase preview', () => {
@@ -33,10 +33,10 @@ describe('Preview', () => {
       {type: PROPERTY_NAMES.FREE_TEXT, string: 'AkN'},
       {type: PROPERTY_NAMES.FREE_TEXT, string: '42'},
     ];
-    render(<Preview structure={structure} delimiter={'fOo'} textTransformation={TEXT_TRANSFORMATION.UPPERCASE} />);
+    const {container} = render(
+      <Preview structure={structure} delimiter={'fOo'} textTransformation={TEXT_TRANSFORMATION.UPPERCASE} />
+    );
 
-    expect(screen.getByText('AKN')).toBeInTheDocument();
-    expect(screen.getByText('FOO')).toBeInTheDocument();
-    expect(screen.getByText('42')).toBeInTheDocument();
+    expect(container.children[0]).toHaveStyle({'text-transform': 'uppercase'});
   });
 });
