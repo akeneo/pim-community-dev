@@ -20,6 +20,7 @@ services:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureValuesHandler'
 
   # Persistence
@@ -28,3 +29,6 @@ services:
 
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository:
     class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryNomenclatureValueRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryNomenclatureDefinitionRepository'
