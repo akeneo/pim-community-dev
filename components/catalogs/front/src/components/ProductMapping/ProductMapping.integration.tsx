@@ -1893,3 +1893,171 @@ test('it displays error message when source label local is incorrect', async () 
     await clickOnMappingTarget('Source color');
     expect(await screen.findByText('Locale error')).toBeInTheDocument();
 });
+
+test('it displays requirements', async () => {
+    const onChange = jest.fn();
+
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
+            json: [
+                {
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'variation_name',
+                    label: 'Variant Name',
+                    type: 'pim_catalog_text',
+                    scopable: true,
+                    localizable: false,
+                },
+                {
+                    code: 'ean',
+                    label: 'EAN',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+                description: 'Name description',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                    onChange={onChange}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('name');
+    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).toBeInTheDocument();
+    expect(screen.queryByText('Name description')).toBeInTheDocument();
+});
+
+test('it doesnt displays requirements when there is no description', async () => {
+    const onChange = jest.fn();
+
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/attributes/title',
+            json: {
+                code: 'title',
+                label: 'Title',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
+            json: [
+                {
+                    code: 'name',
+                    label: 'Name',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'variation_name',
+                    label: 'Variant Name',
+                    type: 'pim_catalog_text',
+                    scopable: true,
+                    localizable: false,
+                },
+                {
+                    code: 'ean',
+                    label: 'EAN',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+            ],
+        },
+    ]);
+
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+    };
+
+    const productMappingSchema = {
+        properties: {
+            uuid: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMapping={productMapping}
+                    productMappingSchema={productMappingSchema}
+                    errors={{}}
+                    onChange={onChange}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    await clickOnMappingTarget('name');
+    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).not.toBeInTheDocument();
+});
