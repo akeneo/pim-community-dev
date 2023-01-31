@@ -20,7 +20,7 @@ class InMemoryNomenclatureDefinitionRepository implements NomenclatureDefinition
     {
         $result = $this->nomenclatureDefinitions[$propertyCode] ?? null;
         if (null === $result && $propertyCode === 'family') {
-            return new NomenclatureDefinition('=', 5);
+            return NomenclatureDefinition::default();
         }
 
         return $result;

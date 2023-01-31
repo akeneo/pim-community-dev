@@ -60,3 +60,8 @@ services:
       - '@pim_user.context.user'
       - '@translator'
       - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateNomenclatureController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler'
