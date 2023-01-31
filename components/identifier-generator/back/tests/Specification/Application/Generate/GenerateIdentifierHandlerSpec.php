@@ -39,7 +39,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString(null));
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
             $identifierGenerator,
-            new ProductProjection(null, true, null, []),
+            new ProductProjection(true, null, []),
         );
 
         $getNextIdentifierQuery
@@ -56,7 +56,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString('a'));
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
             $identifierGenerator,
-            new ProductProjection(null, true, null, []),
+            new ProductProjection(true, null, []),
         );
 
         $getNextIdentifierQuery
@@ -73,7 +73,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator(Delimiter::fromString('x'), 'uppercase');
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
             $identifierGenerator,
-            new ProductProjection(null, true, null, []),
+            new ProductProjection(true, null, []),
         );
 
         $getNextIdentifierQuery
@@ -108,7 +108,7 @@ class GenerateIdentifierHandlerSpec extends ObjectBehavior
         );
         $generateIdentifierCommand = GenerateIdentifierCommand::fromIdentifierGenerator(
             $identifierGenerator,
-            new ProductProjection(null, true, null, [])
+            new ProductProjection(true, null, [])
         );
 
         $getNextIdentifierQuery

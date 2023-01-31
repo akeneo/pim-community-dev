@@ -58,7 +58,7 @@ class GenerateFreeTextHandlerSpec extends ObjectBehavior
             ->during('__invoke', [
                 $autoNumber,
                 $identifierGenerator,
-                new ProductProjection(null, true, null, []),
+                new ProductProjection(true, null, []),
                 'AKN-'
             ]);
     }
@@ -84,7 +84,7 @@ class GenerateFreeTextHandlerSpec extends ObjectBehavior
         $this->__invoke(
             $freeText,
             $identifierGenerator,
-            new ProductProjection(null, true, null, []),
+            new ProductProjection(true, null, []),
             'AKN-'
         )->shouldReturn('AKN-');
     }

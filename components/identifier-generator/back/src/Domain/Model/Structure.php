@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
@@ -75,5 +76,21 @@ final class Structure
     public function getProperties(): array
     {
         return $this->properties;
+    }
+
+    /**
+     * @return ConditionInterface[]
+     */
+    public function getImplicitConditions(): array
+    {
+        $result = [];
+        foreach ($this->properties as $property) {
+            $implicitCondition = $property->getImplicitCondition();
+            if (null !== $implicitCondition) {
+                $result[] = $implicitCondition;
+            }
+        }
+
+        return $result;
     }
 }

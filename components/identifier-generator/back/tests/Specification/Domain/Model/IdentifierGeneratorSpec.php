@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
@@ -31,8 +32,9 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
 
         $freeText = FreeText::fromString('abc');
+        $family = FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'no']]);
         $enabled = Enabled::fromBoolean(true);
-        $structure = Structure::fromArray([$freeText]);
+        $structure = Structure::fromArray([$freeText, $family]);
         $conditions = Conditions::fromArray([$enabled]);
 
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
@@ -122,12 +124,14 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_returns_a_structure(): void
     {
-        $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
+        $this->structure()->shouldBeLike(Structure::fromArray([
+            FreeText::fromString('abc'),
+            FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'no']]),
+        ]));
     }
 
     public function it_sets_a_structure(): void
     {
-        $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
         $this->setStructure(Structure::fromArray([
             FreeText::fromString('cba'),
             AutoNumber::fromValues(3, 2),
@@ -171,6 +175,11 @@ class IdentifierGeneratorSpec extends ObjectBehavior
                 [
                     'type' => 'free_text',
                     'string' => 'abc',
+                ], [
+                    'type' => 'family',
+                    'process' => [
+                        'type' => 'no',
+                    ],
                 ],
             ],
             'labels' => [
@@ -182,42 +191,18 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_should_match_empty_identifier(): void
+    public function it_should_add_conditions_from_structure(): void
     {
+        // Structure contains Family property, which imply family should not be empty.
         $this->match(new ProductProjection(
-            '',
             true,
-            '',
+            'a_family',
             [],
         ))->shouldReturn(true);
-    }
 
-    public function it_should_match_null_identifier(): void
-    {
         $this->match(new ProductProjection(
-            null,
             true,
-            '',
-            [],
-        ))->shouldReturn(true);
-    }
-
-    public function it_should_not_match_filled_identifier(): void
-    {
-        $this->match(new ProductProjection(
-            'a_product_identifier',
-            true,
-            '',
-            [],
-        ))->shouldReturn(false);
-    }
-
-    public function it_should_not_match_disabled_product(): void
-    {
-        $this->match(new ProductProjection(
             null,
-            false,
-            '',
             [],
         ))->shouldReturn(false);
     }
