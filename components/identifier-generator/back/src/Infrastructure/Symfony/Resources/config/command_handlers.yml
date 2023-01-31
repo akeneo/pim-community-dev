@@ -26,3 +26,7 @@ services:
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler:
     arguments:
       - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureValuesHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository'
