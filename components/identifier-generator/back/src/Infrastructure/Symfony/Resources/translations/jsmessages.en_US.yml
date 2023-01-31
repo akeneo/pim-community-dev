@@ -38,8 +38,10 @@ pim_identifier_generator:
     list:
         identifier: 'Identifier'
         first_generator: 'Create your first identifier generator!'
+        helper:
+            title: 'Automate the generation of identifiers.'
+            info: 'Once an identifier generator is created, an identifier will be assigned automatically to every new product you create.'
         check_help_center: 'Check out our help center for more information.'
-        helper: 'Here, you will be able to build an identifier generator profile for your products. Please note that new and existing references will be impacted by this change. A unique profile is available for the moment, you will be able to create multiple identifier generators soon.'
         max_generator:
             title: 'It is only possible to create one Identifier Generator for the moment.'
             info: 'You will soon be able to configure multiple generators matching all your usecases.'
