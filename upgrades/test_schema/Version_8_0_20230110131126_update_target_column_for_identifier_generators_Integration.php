@@ -38,10 +38,10 @@ ALTER TABLE pim_catalog_identifier_generator ADD COLUMN delimiter VARCHAR(100) A
 ALTER TABLE pim_catalog_identifier_generator DROP COLUMN options;
 SQL);
         $this->connection->executeQuery(<<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN('22e35c7a-f1b4-4b81-a890-16b8e68346a1'), 'mygenerator1', (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code='sku'), '-', '{}', '[]', '[]'),
-       (UUID_TO_BIN('d4d21fcd-37cf-4c8a-937d-a7dee0e61ec1'), 'mygenerator2', (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code='sku'), '=', '{}', '[]', '[]'),
-       (UUID_TO_BIN('1113c7f8-70cc-45d3-b911-54caac0e12e5'), 'mygenerator3', (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code='sku'), null, '{}', '[]', '[]');
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
+VALUES (UUID_TO_BIN('22e35c7a-f1b4-4b81-a890-16b8e68346a1'), 'mygenerator1', 'sku', '-', '{}', '[]', '[]'),
+       (UUID_TO_BIN('d4d21fcd-37cf-4c8a-937d-a7dee0e61ec1'), 'mygenerator2', 'sku', '=', '{}', '[]', '[]'),
+       (UUID_TO_BIN('1113c7f8-70cc-45d3-b911-54caac0e12e5'), 'mygenerator3', 'sku', null, '{}', '[]', '[]');
 SQL);
 
         Assert::assertFalse($this->columnExists('pim_catalog_identifier_generator', 'target_id'));
