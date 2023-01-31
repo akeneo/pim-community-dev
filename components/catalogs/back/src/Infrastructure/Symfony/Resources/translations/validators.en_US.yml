@@ -53,3 +53,5 @@ akeneo_catalogs:
                     empty: 'This locale must not be empty.'
                     unknown: 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.'
                     disabled: 'This locale is disabled. Please check your channels and locales settings or update this value.'
+                currency:
+                    disabled: 'This currency is not activated. Please check your channels and currency settings or update this value.'
