@@ -7,4 +7,5 @@ export * from './useIdentifierAttributes';
 export * from './useUiLocales';
 export * from './useValidateFormWithEnter';
 export * from './useStructureTabs';
+export * from './useTextTransformation';
 export * from './useGetScopes';
