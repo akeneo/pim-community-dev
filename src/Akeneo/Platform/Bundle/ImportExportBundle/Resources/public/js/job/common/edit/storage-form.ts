@@ -70,6 +70,7 @@ class StorageFormController extends BaseView {
     const formData = this.getFormData();
 
     const props: StorageFormProps = {
+      jobInstanceCode: formData.code,
       storage: formData.configuration.storage ?? this.getDefaultStorage(),
       jobType: this.config.jobType,
       fileExtension: this.config.fileExtension,
