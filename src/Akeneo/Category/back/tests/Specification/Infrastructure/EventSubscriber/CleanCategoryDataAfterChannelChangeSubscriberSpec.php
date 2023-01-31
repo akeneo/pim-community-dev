@@ -2,24 +2,35 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
 {
     function let(
-        CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
-        FeatureFlag $enrichedCategoryFeature
+        FeatureFlag $enrichedCategoryFeature,
+        JobInstanceRepository $jobInstanceRepository,
+        JobLauncherInterface $jobLauncher,
+        TokenStorageInterface $tokenStorage,
     )
     {
-        $this->beConstructedWith($cleanCategoryDataLinkedToChannel, $enrichedCategoryFeature);
+        $this->beConstructedWith(
+            $enrichedCategoryFeature,
+            $jobInstanceRepository,
+            $jobLauncher,
+            $tokenStorage,
+        );
     }
 
     function it_is_initializable()
@@ -28,32 +39,56 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
         $this->shouldHaveType(CleanCategoryDataAfterChannelChangeSubscriber::class);
     }
 
-    function it_triggers_the_cleaning_of_category_after_channel_removal(
+    function it_puts_in_queue_the_job_cleaning_category_after_channel_removal(
         GenericEvent $event,
         Channel $channel,
-        CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
-        FeatureFlag $enrichedCategoryFeature
+        FeatureFlag $enrichedCategoryFeature,
+        JobInstanceRepository $jobInstanceRepository,
+        JobInstance $cleanCategoriesJobInstance,
+        JobLauncherInterface $jobLauncher,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user,
     )
     {
         $event->getSubject()->willReturn($channel);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
         $channel->getCode()->willReturn('deleted_channel_code');
-
-        $cleanCategoryDataLinkedToChannel->__invoke('deleted_channel_code')->shouldBeCalled();
+        $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->willReturn($cleanCategoriesJobInstance);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+        $jobLauncher->launch(
+            $cleanCategoriesJobInstance,
+            $user,
+            ['channel_code' => 'deleted_channel_code']
+        )->shouldBeCalled();
 
         $this->cleanCategoryData($event);
     }
 
-    function it_does_not_trigger_the_cleaning_of_category_if_subject_is_not_a_channel(
+    function it_does_not_puts_in_queue_the_job_cleaning_category_if_subject_is_not_a_channel(
         GenericEvent $event,
         Category $eventSubject,
-        CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
-        FeatureFlag $enrichedCategoryFeature
+        FeatureFlag $enrichedCategoryFeature,
+        JobInstanceRepository $jobInstanceRepository,
     )
     {
         $event->getSubject()->willReturn($eventSubject);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
 
-        $cleanCategoryDataLinkedToChannel->__invoke(Argument::any())->shouldNotBeCalled();
+        $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->shouldNotBeCalled();
+    }
+
+    function it_does_not_puts_in_queue_the_job_cleaning_category_if_feature_flag_is_deactivated(
+        GenericEvent $event,
+        Channel $eventSubject,
+        FeatureFlag $enrichedCategoryFeature,
+        JobInstanceRepository $jobInstanceRepository,
+    )
+    {
+        $event->getSubject()->willReturn($eventSubject);
+        $enrichedCategoryFeature->isEnabled()->willReturn(false);
+
+        $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->shouldNotBeCalled();
     }
 }
