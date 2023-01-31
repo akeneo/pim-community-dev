@@ -195,14 +195,12 @@ class IdentifierGeneratorSpec extends ObjectBehavior
     {
         // Structure contains Family property, which imply family should not be empty.
         $this->match(new ProductProjection(
-            '',
             true,
             'a_family',
             [],
         ))->shouldReturn(true);
 
         $this->match(new ProductProjection(
-            '',
             true,
             null,
             [],

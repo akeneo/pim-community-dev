@@ -15,6 +15,11 @@ use PhpSpec\ObjectBehavior;
  */
 class EmptyIdentifierSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedWith('sku');
+    }
+
     public function it_is_a_condition()
     {
         $this->shouldBeAnInstanceOf(EmptyIdentifier::class);
@@ -23,16 +28,20 @@ class EmptyIdentifierSpec extends ObjectBehavior
 
     public function it_should_match_product_without_identifier()
     {
-        $this->match(new ProductProjection(null, true, null, []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, null, []))->shouldReturn(true);
     }
 
     public function it_should_match_product_with_empty_identifier()
     {
-        $this->match(new ProductProjection('', true, null, []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, null, [
+            'sku-<all_channels>-<all_locales>' => ''
+        ]))->shouldReturn(true);
     }
 
     public function it_should_not_match_product_with_filled_identifier()
     {
-        $this->match(new ProductProjection('productidentifier', true, null, []))->shouldReturn(false);
+        $this->match(new ProductProjection(true, null, [
+            'sku-<all_channels>-<all_locales>' => 'productidentifier'
+        ]))->shouldReturn(false);
     }
 }

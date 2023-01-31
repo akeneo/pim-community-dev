@@ -21,17 +21,11 @@ final class ProductProjection
      * ]
      */
     public function __construct(
-        private readonly ?string $identifier,
         private readonly bool $enabled,
         private readonly ?string $familyCode,
         private readonly array $productValues,
     ) {
         Assert::isMap($productValues);
-    }
-
-    public function identifier(): ?string
-    {
-        return $this->identifier;
     }
 
     public function enabled(): bool
@@ -44,7 +38,7 @@ final class ProductProjection
         return $this->familyCode;
     }
 
-    public function value(string $attributeCode, ?string $localeCode, ?string $channelCode): mixed
+    public function value(string $attributeCode, ?string $localeCode = null, ?string $channelCode = null): mixed
     {
         $key = \sprintf(
             '%s-%s-%s',

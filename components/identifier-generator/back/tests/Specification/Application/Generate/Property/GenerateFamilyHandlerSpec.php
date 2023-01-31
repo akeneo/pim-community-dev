@@ -47,7 +47,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
             ->during('__invoke', [
                 $autoNumber,
                 $identifierGenerator,
-                new ProductProjection(null, true, null, []),
+                new ProductProjection(true, null, []),
                 'AKN-'
             ]);
     }
@@ -159,7 +159,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
 
     private function getProductProjection(string $familyCode): ProductProjection
     {
-        return new ProductProjection(null, true, $familyCode, []);
+        return new ProductProjection(true, $familyCode, []);
     }
 
     private function getIdentifierGenerator(PropertyInterface $property): IdentifierGenerator
