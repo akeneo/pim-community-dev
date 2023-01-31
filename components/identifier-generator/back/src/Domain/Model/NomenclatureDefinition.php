@@ -7,7 +7,16 @@ class NomenclatureDefinition
     public function __construct(
         private readonly string $operator,
         private readonly int $value,
+        // TODO Add checkbox
     ) {
+    }
+
+    public static function default(): self
+    {
+        return new self(
+            '=', // TODO Check
+            3, // TODO Check
+        );
     }
 
     public function operator(): string
@@ -28,5 +37,13 @@ class NomenclatureDefinition
     public function withValue(int $value): self
     {
         return new NomenclatureDefinition($this->operator, $value);
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'operator' => $this->operator,
+            'value' => $this->value,
+        ];
     }
 }
