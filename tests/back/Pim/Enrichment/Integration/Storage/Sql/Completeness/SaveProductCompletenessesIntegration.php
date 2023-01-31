@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Completeness;
 
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Test\Integration\TestCase;
@@ -17,13 +18,24 @@ use Ramsey\Uuid\UuidInterface;
  */
 class SaveProductCompletenessesIntegration extends TestCase
 {
-    public function test_that_it_clears_existing_completenesses_and_missing_attributes_if_provided_completenesses_are_empty()
+    public function test_that_it_does_not_clear_existing_completenesses_and_missing_attributes_if_provided_completenesses_are_empty()
     {
         $productUuid = $this->createProduct('a_great_product');
-        Assert::assertNotEmpty($this->getCompletenessesFromDB($productUuid));
+        Assert::assertCount(6, $this->getCompletenessesFromDB($productUuid));
 
         $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productUuid->toString(), []));
-        Assert::assertEmpty($this->getCompletenessesFromDB($productUuid));
+        Assert::assertCount(6, $this->getCompletenessesFromDB($productUuid));
+    }
+
+    public function test_that_it_clears_non_existing_locales_channels()
+    {
+        $this->createChannel('my_channel', ['locales' => ['en_US', 'fr_FR']]);
+        $productUuid = $this->createProduct('a_great_product');
+        Assert::assertCount(8, $this->getCompletenessesFromDB($productUuid));
+
+        $this->removeChannel('my_channel');
+        $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productUuid->toString(), []));
+        Assert::assertCount(6, $this->getCompletenessesFromDB($productUuid));
     }
 
     public function test_that_it_saves_completenesses_given_a_product_id()
@@ -35,7 +47,7 @@ class SaveProductCompletenessesIntegration extends TestCase
         $this->executeSave($collection);
 
         $dbCompletenesses = $this->getCompletenessesFromDB($productUuid);
-        Assert::assertCount(1, $dbCompletenesses);
+        Assert::assertCount(6, $dbCompletenesses);
         Assert::assertEquals(
             [
                 'channel_code' => 'ecommerce',
@@ -71,7 +83,7 @@ class SaveProductCompletenessesIntegration extends TestCase
         $this->executeSave($collection);
 
         $dbCompletenesses = $this->getCompletenessesFromDB($productUuid);
-        Assert::assertCount(2, $dbCompletenesses);
+        Assert::assertCount(6, $dbCompletenesses);
         Assert::assertEquals(
             [
                 'channel_code' => 'ecommerce',
@@ -127,5 +139,35 @@ SQL;
         }
 
         return $results;
+    }
+
+    private function createChannel(string $code, array $data = []): Channel
+    {
+        $defaultData = [
+            'code' => $code,
+            'locales' => ['en_US'],
+            'currencies' => ['USD'],
+            'category_tree' => 'master',
+        ];
+        $data = array_merge($defaultData, $data);
+
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($code);
+        if (null === $channel) {
+            $channel = $this->get('pim_catalog.factory.channel')->create();
+        }
+
+        $this->get('pim_catalog.updater.channel')->update($channel, $data);
+        $errors = $this->get('validator')->validate($channel);
+        Assert::assertCount(0, $errors);
+
+        $this->get('pim_catalog.saver.channel')->saveAll([$channel]);
+
+        return $channel;
+    }
+
+    private function removeChannel(string $code): void
+    {
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($code);
+        $this->get('pim_catalog.remover.channel')->remove($channel);
     }
 }
