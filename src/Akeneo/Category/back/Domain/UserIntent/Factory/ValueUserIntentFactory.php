@@ -25,7 +25,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 final class ValueUserIntentFactory implements UserIntentFactory
 {
-    public function __construct(private GetAttribute $getAttribute)
+    public function __construct(private readonly GetAttribute $getAttribute)
     {
     }
 
@@ -59,11 +59,24 @@ final class ValueUserIntentFactory implements UserIntentFactory
                     continue;
                 }
 
+                if (is_string($value['data']) && $this->isDataStringEmpty($value['data'])) {
+                    continue;
+                }
+
                 $userIntents[] = $this->addValueUserIntent($attributeType, $value);
             }
         }
 
         return $userIntents;
+    }
+
+    /**
+     * Sanitize data from html tags and special characters.
+     * (i.e <p>data</p>\n will return "data").
+     */
+    private function isDataStringEmpty(string $data): bool
+    {
+        return empty(trim(strip_tags($data)));
     }
 
     /**

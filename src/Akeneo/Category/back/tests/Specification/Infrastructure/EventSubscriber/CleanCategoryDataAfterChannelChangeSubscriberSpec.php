@@ -12,7 +12,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class CleanCategoryDataAfterChannelDeletionSubscriberSpec extends ObjectBehavior
+class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
 {
     function let(
         CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
