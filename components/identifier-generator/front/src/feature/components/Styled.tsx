@@ -4,10 +4,12 @@ import {
   getColor,
   Helper,
   MultiSelectInput,
+  Preview as PreviewComponent,
   SelectInput,
   SkeletonPlaceholder,
   Table,
 } from 'akeneo-design-system';
+import {TEXT_TRANSFORMATION, TextTransformation} from '../models';
 
 const FormContainer = styled.div`
   display: flex;
@@ -133,6 +135,13 @@ const CheckboxContainer = styled.div`
   margin: 10px 0;
 `;
 
+const PreviewWithTextTransformation = styled(PreviewComponent)<
+  {textTransformation: TextTransformation} & AkeneoThemedProps
+>`
+  ${({textTransformation}) => (textTransformation === TEXT_TRANSFORMATION.LOWERCASE ? 'text-transform: lowercase' : '')}
+  ${({textTransformation}) => (textTransformation === TEXT_TRANSFORMATION.UPPERCASE ? 'text-transform: uppercase' : '')}
+`;
+
 const Styled = {
   SingleSelectCondition,
   OperatorSelectCondition,
@@ -153,6 +162,7 @@ const Styled = {
   ListItems,
   ConditionLineSkeleton,
   CheckboxContainer,
+  PreviewWithTextTransformation,
 };
 
 export {Styled};

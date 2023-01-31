@@ -1,7 +1,7 @@
 import React from 'react';
 import {Delimiter, PROPERTY_NAMES, Structure, TextTransformation} from '../../models';
-import {Preview as PreviewComponent} from 'akeneo-design-system';
 import {AutoNumberPreview, DelimiterPreview, FreeTextPreview} from './preview/index';
+import {Styled} from '../../components/Styled';
 
 type PreviewProps = {
   structure: Structure;
@@ -11,17 +11,15 @@ type PreviewProps = {
 
 const Preview: React.FC<PreviewProps> = ({structure, delimiter, textTransformation}) => {
   return (
-    <PreviewComponent title={'Preview'}>
+    <Styled.PreviewWithTextTransformation title={'Preview'} textTransformation={textTransformation}>
       {structure.map((property, i) => (
         <React.Fragment key={JSON.stringify(property)}>
-          {i > 0 && delimiter && <DelimiterPreview delimiter={delimiter} textTransformation={textTransformation} />}
-          {property.type === PROPERTY_NAMES.FREE_TEXT && (
-            <FreeTextPreview property={property} textTransformation={textTransformation} />
-          )}
+          {i > 0 && delimiter && <DelimiterPreview delimiter={delimiter} />}
+          {property.type === PROPERTY_NAMES.FREE_TEXT && <FreeTextPreview property={property} />}
           {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberPreview property={property} />}
         </React.Fragment>
       ))}
-    </PreviewComponent>
+    </Styled.PreviewWithTextTransformation>
   );
 };
 
