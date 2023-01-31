@@ -1,5 +1,5 @@
 import React from 'react';
-import {IdentifierGenerator} from '../../models';
+import {IdentifierGenerator, TEXT_TRANSFORMATION} from '../../models';
 
 type CreateGeneratorModalProps = {
   onClose: () => void;
@@ -16,7 +16,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
     delimiter: null,
     structure: [],
     conditions: [],
-    text_transformation: 'no',
+    text_transformation: TEXT_TRANSFORMATION.NO,
   };
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
-import {IdentifierGenerator} from '../../models';
+import {IdentifierGenerator, TEXT_TRANSFORMATION} from '../../models';
 import {GeneralPropertiesTab} from '../GeneralPropertiesTab';
 
 jest.mock('../../components/LabelTranslations');
@@ -14,7 +14,7 @@ describe('GeneralProperties', () => {
       conditions: [],
       labels: {},
       delimiter: null,
-      text_transformation: 'no',
+      text_transformation: TEXT_TRANSFORMATION.NO,
     };
     const onGeneratorChange = jest.fn();
     render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
@@ -31,7 +31,7 @@ describe('GeneralProperties', () => {
       conditions: [],
       labels: {},
       delimiter: null,
-      text_transformation: 'no',
+      text_transformation: TEXT_TRANSFORMATION.NO,
     };
     const onGeneratorChange = jest.fn();
     render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
@@ -46,7 +46,7 @@ describe('GeneralProperties', () => {
         fr_FR: 'FrenchUpdated',
       },
       delimiter: null,
-      text_transformation: 'no',
+      text_transformation: TEXT_TRANSFORMATION.NO,
     });
   });
 
@@ -58,7 +58,7 @@ describe('GeneralProperties', () => {
       conditions: [],
       labels: {},
       delimiter: null,
-      text_transformation: 'no',
+      text_transformation: TEXT_TRANSFORMATION.NO,
     };
     const onGeneratorChange = jest.fn();
     render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
@@ -87,7 +87,7 @@ describe('GeneralProperties', () => {
       conditions: [],
       labels: {},
       delimiter: null,
-      text_transformation: 'no',
+      text_transformation: TEXT_TRANSFORMATION.NO,
     };
     const onGeneratorChange = jest.fn();
     const validationErrors = [{path: 'labels', message: 'error on a label'}];
