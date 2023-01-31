@@ -2,7 +2,7 @@ import React, {useMemo, useState} from 'react';
 import {AttributesIllustration, Helper, Link, Placeholder, SectionTitle, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton, DelimiterEdit, Preview, PropertiesList, PropertyEdit} from './structure';
-import {Delimiter, Property, Structure} from '../models';
+import {Delimiter, Property, Structure, TextTransformation} from '../models';
 import {Styled} from '../components/Styled';
 import {TabValidationErrors, TranslationWithLink} from '../components';
 import styled from 'styled-components';
@@ -11,6 +11,7 @@ import {Violation} from '../validators';
 type StructureTabProps = {
   initialStructure: Structure;
   delimiter: Delimiter | null;
+  textTransformation: TextTransformation;
   onStructureChange: (structure: Structure) => void;
   onDelimiterChange: (delimiter: Delimiter | null) => void;
   validationErrors: Violation[];
@@ -28,6 +29,7 @@ const StructureDataContainer = styled.div`
 const StructureTab: React.FC<StructureTabProps> = ({
   initialStructure,
   delimiter,
+  textTransformation,
   onStructureChange,
   onDelimiterChange,
   validationErrors,
@@ -110,7 +112,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
           {structure.length > 0 && (
             <>
               {isLimitReached && <Helper>{translate('pim_identifier_generator.structure.limit_reached')}</Helper>}
-              <Preview structure={structure} delimiter={delimiter} />
+              <Preview structure={structure} delimiter={delimiter} textTransformation={textTransformation} />
               <StructureDataContainer>
                 <PropertiesList
                   structure={structure}
