@@ -114,32 +114,32 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
       </SectionTitle>
       <Table>
         <Table.Body>
-              {conditionsWithId.map(({id, ...condition}) => (
-                <Table.Row key={id} aria-colspan={3}>
-                  <ConditionLine
-                    condition={condition}
-                    onChange={condition => handleChange({...condition, id})}
-                    onDelete={onDelete(id)}
-                  />
-                </Table.Row>
-              ))}
-              <ImplicitConditionsList generator={generator} />
-              {conditionsWithId.length === 0 && (
-                <tr aria-colspan={3}>
-                  <td colSpan={3}>
-                    <Placeholder
-                      illustration={<NoResultsIllustration />}
-                      size="large"
-                      title={translate('pim_identifier_generator.selection.empty.title')}
-                    >
-                      <Styled.BoldContainer>
-                        {translate('pim_identifier_generator.selection.empty.text')}
-                      </Styled.BoldContainer>
-                      {translate('pim_identifier_generator.selection.empty.info')}
-                    </Placeholder>
-                  </td>
-                </tr>
-              )}
+          {conditionsWithId.map(({id, ...condition}) => (
+            <Table.Row key={id} aria-colspan={3}>
+              <ConditionLine
+                condition={condition}
+                onChange={condition => handleChange({...condition, id})}
+                onDelete={onDelete(id)}
+              />
+            </Table.Row>
+          ))}
+          <ImplicitConditionsList generator={generator} />
+          {conditionsWithId.length === 0 && (
+            <tr aria-colspan={3}>
+              <td colSpan={3}>
+                <Placeholder
+                  illustration={<NoResultsIllustration />}
+                  size="large"
+                  title={translate('pim_identifier_generator.selection.empty.title')}
+                >
+                  <Styled.BoldContainer>
+                    {translate('pim_identifier_generator.selection.empty.text')}
+                  </Styled.BoldContainer>
+                  {translate('pim_identifier_generator.selection.empty.info')}
+                </Placeholder>
+              </td>
+            </tr>
+          )}
         </Table.Body>
       </Table>
       {conditionIdToDelete && <SimpleDeleteModal onClose={closeModal} onDelete={handleDeleteCondition} />}
