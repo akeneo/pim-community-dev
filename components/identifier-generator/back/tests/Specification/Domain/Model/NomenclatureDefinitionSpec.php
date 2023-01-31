@@ -9,7 +9,7 @@ class NomenclatureDefinitionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('<=');
+        $this->beConstructedWith('<=', 3);
     }
 
     function it_is_initializable()
@@ -24,6 +24,16 @@ class NomenclatureDefinitionSpec extends ObjectBehavior
 
     function it_clones_with_operator()
     {
-        $this->withOperator('=')->shouldBeLike(new NomenclatureDefinition('='));
+        $this->withOperator('=')->shouldBeLike(new NomenclatureDefinition('=', 3));
+    }
+
+    function it_has_a_value()
+    {
+        $this->value()->shouldReturn(3);
+    }
+
+    function it_clones_with_value()
+    {
+        $this->withValue(5)->shouldBeLike(new NomenclatureDefinition('<=', 5));
     }
 }

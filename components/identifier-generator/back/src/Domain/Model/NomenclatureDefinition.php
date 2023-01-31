@@ -24,4 +24,9 @@ class NomenclatureDefinition
     {
         return $this->value;
     }
+
+    public function withValue(int $value): self
+    {
+        return new NomenclatureDefinition($this->operator, $value);
+    }
 }
