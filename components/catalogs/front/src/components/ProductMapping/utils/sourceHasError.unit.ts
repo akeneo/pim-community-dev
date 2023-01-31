@@ -3,7 +3,7 @@ import {sourceHasError} from './sourceHasError';
 
 jest.unmock('./sourceHasError');
 
-const tests: { errors: SourceErrors | undefined; result: boolean }[] = [
+const tests: {errors: SourceErrors | undefined; result: boolean}[] = [
     {
         errors: undefined,
         result: false,
