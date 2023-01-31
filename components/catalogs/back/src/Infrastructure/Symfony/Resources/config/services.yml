@@ -163,6 +163,10 @@ services:
         arguments:
             - '@pim_catalog.repository.currency'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetChannelCurrenciesQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
     # Storage
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
