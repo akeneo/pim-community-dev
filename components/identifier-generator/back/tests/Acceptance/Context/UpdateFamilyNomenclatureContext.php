@@ -2,21 +2,24 @@
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureValuesCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureValuesHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use PHPUnit\Framework\Assert;
+use Webmozart\Assert\Assert;
 
 class UpdateFamilyNomenclatureContext implements Context
 {
+    private ?ViolationsException $violations = null;
+
     public function __construct(
         private readonly NomenclatureValueRepository $nomenclatureValueRepository,
         private readonly NomenclatureDefinitionRepository $nomenclatureDefinitionRepository,
-        private readonly UpdateNomenclatureValuesHandler $updateNomenclatureValuesHandler,
+        private readonly UpdateNomenclatureHandler $updateNomenclatureValuesHandler,
     ) {
     }
 
@@ -35,7 +38,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function iAddTheValueForFamily(string $value, string $familyCode)
     {
-        $command = new UpdateNomenclatureValuesCommand(values:[$familyCode => $value]);
+        $command = new UpdateNomenclatureCommand(values:[$familyCode => $value]);
         ($this->updateNomenclatureValuesHandler)($command);
     }
 
@@ -44,7 +47,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function iUpdateFamilyValueTo(string $familyCode, string $value)
     {
-        $command = new UpdateNomenclatureValuesCommand(values:[$familyCode => $value]);
+        $command = new UpdateNomenclatureCommand(values:[$familyCode => $value]);
         ($this->updateNomenclatureValuesHandler)($command);
     }
 
@@ -53,7 +56,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function iRemoveTheFamilyValue(string $familyCode)
     {
-        $command = new UpdateNomenclatureValuesCommand(values:[$familyCode => null]);
+        $command = new UpdateNomenclatureCommand(values:[$familyCode => null]);
         ($this->updateNomenclatureValuesHandler)($command);
     }
 
@@ -62,7 +65,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function theValueForFamilyShouldBe(string $familyCode, string $value)
     {
-        Assert::assertEquals($this->nomenclatureValueRepository->get($familyCode), 'undefined' === $value ? null : $value);
+        Assert::eq($this->nomenclatureValueRepository->get($familyCode), 'undefined' === $value ? null : $value);
     }
 
     /**
@@ -70,8 +73,13 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function iUpdateTheFamilyNomenclatureOperatorTo(string $operator)
     {
-        $command = new UpdateNomenclatureValuesCommand(operator: $operator);
-        ($this->updateNomenclatureValuesHandler)($command);
+
+        $command = new UpdateNomenclatureCommand(operator: $operator);
+        try {
+            ($this->updateNomenclatureValuesHandler)($command);
+        } catch (ViolationsException $e) {
+            $this->violations = $e;
+        }
     }
 
     /**
@@ -79,7 +87,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function theFamilyNomenclatureOperatorShouldBe(string $operator)
     {
-        Assert::assertEquals($this->nomenclatureDefinitionRepository->get('family')->operator(), $operator);
+        Assert::eq($this->nomenclatureDefinitionRepository->get('family')->operator(), $operator);
     }
 
     /**
@@ -95,8 +103,12 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function iUpdateTheFamilyNomenclatureValueTo(string $value)
     {
-        $command = new UpdateNomenclatureValuesCommand(value: \intval($value));
-        ($this->updateNomenclatureValuesHandler)($command);
+        $command = new UpdateNomenclatureCommand(value: \intval($value));
+        try {
+            ($this->updateNomenclatureValuesHandler)($command);
+        } catch (ViolationsException $e) {
+            $this->violations = $e;
+        }
     }
 
     /**
@@ -104,6 +116,15 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function theFamilyNomenclatureValueShouldBe(string $value)
     {
-        Assert::assertEquals($this->nomenclatureDefinitionRepository->get('family')->value(), \intval($value));
+        Assert::eq($this->nomenclatureDefinitionRepository->get('family')->value(), \intval($value));
+    }
+
+    /**
+     * @Then I should have an error :message
+     */
+    public function iShouldHaveAnError($message)
+    {
+        Assert::notNull($this->violations, 'No error were raised.');
+        Assert::contains($this->violations->getMessage(), $message);
     }
 }

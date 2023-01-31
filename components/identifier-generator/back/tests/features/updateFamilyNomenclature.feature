@@ -33,16 +33,18 @@ Feature: Update Family Nomenclature
     Then the family nomenclature operator should be <=
 
   Scenario: Can update the nomenclature value
+    When I update the family nomenclature value to 3
+    Then the family nomenclature value should be 3
+
+  Scenario: Can update an existing nomenclature value
     Given a family nomenclature definition
     When I update the family nomenclature value to 3
     Then the family nomenclature value should be 3
-#
-#  Scenario: Can update the family nomenclature to generate if empty
-#
-#  Scenario: Can not update the nomenclature process if value is undefined
-#
-#  Scenario: Can not update the nomenclature process if operator is undefined
 
+  Scenario: Cannot update the nomenclature value
+    When I update the family nomenclature value to 6
+    Then I should have an error 'value: This value should be less than or equal to 5.'
 
-
-
+  Scenario: Cannot update the nomenclature operator
+    When I update the family nomenclature operator to foo
+    Then I should have an error 'operator: The value you selected is not a valid choice.'
