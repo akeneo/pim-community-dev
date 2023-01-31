@@ -129,7 +129,7 @@ final class IdentifierGenerator
      */
     private function getImplicitConditions(): array
     {
-        $conditions = [new EmptyIdentifier()];
+        $conditions = [new EmptyIdentifier($this->target()->asString())];
 
         return \array_merge($conditions, $this->structure->getImplicitConditions());
     }

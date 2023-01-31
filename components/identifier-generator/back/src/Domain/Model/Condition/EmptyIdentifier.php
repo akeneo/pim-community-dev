@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 final class EmptyIdentifier implements ConditionInterface
 {
     public function __construct(
+        private readonly string $identifierCode
     ) {
     }
 
@@ -23,7 +24,7 @@ final class EmptyIdentifier implements ConditionInterface
 
     public function match(ProductProjection $productProjection): bool
     {
-        $identifierValue = $productProjection->identifier();
+        $identifierValue = $productProjection->value($this->identifierCode);
 
         return (null === $identifierValue || '' === $identifierValue);
     }
