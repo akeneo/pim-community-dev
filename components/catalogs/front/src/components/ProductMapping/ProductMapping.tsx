@@ -68,6 +68,9 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (undefined !== productMappingSchema.properties[targetCode].maximum) {
                 target.maximum = productMappingSchema.properties[targetCode].maximum;
             }
+            if (undefined !== productMappingSchema.properties[targetCode].enum) {
+                target.enum = productMappingSchema.properties[targetCode].enum;
+            }
             setSelectedTarget(target);
             setSelectedSource(source);
         },

@@ -373,4 +373,9 @@ test('it displays requirements', async () => {
             'akeneo_catalogs.product_mapping.source.requirements.constraints.maximum'
         )
     ).toBeInTheDocument();
+
+
+    // expect(
+    //     screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
+    // ).toBeInTheDocument();
 });

@@ -167,3 +167,4 @@ akeneo_catalogs:
                     pattern: '[0,Inf[ Pattern: This target must match the following regular expression: "{{ value }}".'
                     minimum: '[0,Inf[ This target must be greater than or equal to {{ value }}.'
                     maximum: '[0,Inf[ This target must be lower than or equal to {{ value }}.'
+                    enum: '[0,Inf[ Enum: This target only accepts the following values: {{ value }}.'

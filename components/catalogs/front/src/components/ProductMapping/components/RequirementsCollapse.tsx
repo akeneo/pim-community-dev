@@ -4,7 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {Target} from '../models/Target';
 import styled from 'styled-components';
 
-const ACCEPTED_CONSTRAINTS = ['minLength', 'maxLength', 'pattern', 'minimum', 'maximum'] as const;
+const ACCEPTED_CONSTRAINTS = ['minLength', 'maxLength', 'pattern', 'minimum', 'maximum', 'enum'] as const;
 
 type Props = {
     target: Target;

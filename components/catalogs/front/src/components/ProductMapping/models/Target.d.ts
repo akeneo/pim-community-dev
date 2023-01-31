@@ -9,4 +9,5 @@ export type Target = {
     pattern?: string;
     minimum?: number;
     maximum?: number;
+    enum?: string[] | number[];
 };

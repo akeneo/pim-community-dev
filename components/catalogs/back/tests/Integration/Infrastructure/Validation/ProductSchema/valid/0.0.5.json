@@ -29,6 +29,10 @@
             "type": "string",
             "minLength": 50,
             "maxLength": 160
+        },
+        "size": {
+            "type": "string",
+            "enum": ["S", "M", "L"]
         }
     }
 }
