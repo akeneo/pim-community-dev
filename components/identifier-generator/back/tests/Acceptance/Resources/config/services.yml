@@ -16,6 +16,14 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
 
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository'
+
   # Persistence
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository:
     class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryIdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryNomenclatureValueRepository'
