@@ -30,3 +30,4 @@ services:
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureValuesHandler:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository'

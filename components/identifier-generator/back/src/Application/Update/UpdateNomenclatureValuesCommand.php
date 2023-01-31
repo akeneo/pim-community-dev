@@ -8,7 +8,9 @@ class UpdateNomenclatureValuesCommand
      * @param array<string, ?string> $values
      */
     public function __construct(
-        private array $values
+        private ?string $operator = null,
+        private ?int $value = null,
+        private ?array $values = [],
     ) {
     }
 
@@ -18,5 +20,14 @@ class UpdateNomenclatureValuesCommand
     public function getValues()
     {
         return $this->values;
+    }
+
+    public function getOperator()
+    {
+        return $this->operator;
+    }
+
+    public function getValue()
+    {
     }
 }
