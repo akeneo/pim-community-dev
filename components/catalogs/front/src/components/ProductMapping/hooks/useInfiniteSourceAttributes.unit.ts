@@ -55,7 +55,7 @@ test('it fetches attributes & paginates', async () => {
     );
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=2&search=&targetType=string&targetFormat=uri',
+        '/rest/catalogs/attributes-by-target-type-and-target-format?page=1&limit=2&search=&targetType=string&targetFormat=uri',
         expect.any(Object)
     );
     expect(result.current).toMatchObject({
@@ -172,7 +172,7 @@ test('it searches with a string', async () => {
     await waitForNextUpdate();
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=2&search=Description&targetType=string&targetFormat=',
+        '/rest/catalogs/attributes-by-target-type-and-target-format?page=1&limit=2&search=Description&targetType=string&targetFormat=',
         expect.any(Object)
     );
     expect(result.current).toMatchObject({

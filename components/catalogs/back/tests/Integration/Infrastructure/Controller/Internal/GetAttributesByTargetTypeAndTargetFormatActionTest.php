@@ -35,7 +35,7 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
 
         $client->request(
             'GET',
-            '/rest/catalogs/attributes_by_target_type_and_target_format',
+            '/rest/catalogs/attributes-by-target-type-and-target-format',
             [
                 'targetType' => 'string',
                 'targetFormat' => null,
@@ -74,7 +74,7 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
 
         $client->request(
             'GET',
-            '/rest/catalogs/attributes_by_target_type_and_target_format',
+            '/rest/catalogs/attributes-by-target-type-and-target-format',
             [
                 'search' => 'name',
                 'targetType' => 'string',
@@ -109,7 +109,7 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
 
         $client->request(
             'GET',
-            '/rest/catalogs/attributes_by_target_type_and_target_format',
+            '/rest/catalogs/attributes-by-target-type-and-target-format',
             ['targetType' => 'unexpected_type'],
             [],
             [

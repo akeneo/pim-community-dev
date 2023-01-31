@@ -49,7 +49,7 @@ test('it displays a message when the selected source has no parameters', () => {
             },
         },
         {
-            url: '/rest/catalogs/attributes_by_target_type_and_target_format?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes-by-target-type-and-target-format?page=1&limit=20&search=&targetType=string&targetFormat=',
             json: [
                 {
                     code: 'name',

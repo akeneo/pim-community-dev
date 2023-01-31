@@ -45,7 +45,7 @@ akeneo_catalogs_internal_get_attributes:
     methods: [ GET ]
 
 akeneo_catalogs_internal_get_attributes_by_target_type_and_target_format:
-    path: '/rest/catalogs/attributes_by_target_type_and_target_format'
+    path: '/rest/catalogs/attributes-by-target-type-and-target-format'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesByTargetTypeAndTargetFormatAction
 
 akeneo_catalogs_internal_get_channel_locales:
