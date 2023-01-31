@@ -14,7 +14,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version_7_0_20230127150758_add_ondelete_cascade_on_category_template_attributes_Integration extends TestCase
+class Version_8_0_20230127150758_add_ondelete_cascade_on_category_template_attributes_Integration extends TestCase
 {
     private const ATTRIBUTE_TABLE_NAME = 'pim_catalog_category_attribute';
     private const FOREIGN_ATTRIBUTE_OLD_KEY_NAME = 'FK_ATTRIBUTE_template_uiid';

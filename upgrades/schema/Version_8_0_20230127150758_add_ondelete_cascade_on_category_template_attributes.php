@@ -7,7 +7,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_7_0_20230127150758_add_ondelete_cascade_on_category_template_attributes extends AbstractMigration
+final class Version_8_0_20230127150758_add_ondelete_cascade_on_category_template_attributes extends AbstractMigration
 {
     public function up(Schema $schema): void
     {

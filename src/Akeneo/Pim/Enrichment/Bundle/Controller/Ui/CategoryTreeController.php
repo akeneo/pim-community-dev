@@ -432,9 +432,9 @@ class CategoryTreeController extends AbstractController
         return $this->rawConfiguration['acl'] . '_' . $name;
     }
 
-    public function getTemplateUuid(CategoryInterface $OrmCategory): ?TemplateUuid
+    public function getTemplateUuid(CategoryInterface $ormCategory): ?TemplateUuid
     {
-        return $this->getCategory->byId($OrmCategory->getId())?->getTemplateUuid();
+        return $this->getCategory->byId($ormCategory->getId())?->getTemplateUuid();
     }
 
     /**
