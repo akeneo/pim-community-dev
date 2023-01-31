@@ -70,15 +70,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         }
 
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
-            $identifier = null;
-            $identifierValue = $product->getValue($identifierGenerator->target()->asString());
-            if (null !== $identifierValue) {
-                Assert::isInstanceOf($identifierValue, ScalarValue::class);
-                $identifier = $identifierValue->getData();
-                Assert::string($identifier);
-            }
             $productProjection = new ProductProjection(
-                $identifier,
                 $product->isEnabled(),
                 $product->getFamily()?->getCode(),
                 $this->flatValues($product),

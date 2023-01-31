@@ -123,7 +123,7 @@ class FamilySpec extends ObjectBehavior
             'type' => 'family',
             'operator' => 'EMPTY',
         ]]);
-        $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, null, []))->shouldReturn(true);
     }
 
     public function it_should_not_match_empty()
@@ -132,7 +132,7 @@ class FamilySpec extends ObjectBehavior
             'type' => 'family',
             'operator' => 'EMPTY',
         ]]);
-        $this->match(new ProductProjection('identifier', true, 'familyCode', []))->shouldReturn(false);
+        $this->match(new ProductProjection(true, 'familyCode', []))->shouldReturn(false);
     }
 
     public function it_should_match_not_empty()
@@ -141,7 +141,7 @@ class FamilySpec extends ObjectBehavior
             'type' => 'family',
             'operator' => 'NOT EMPTY',
         ]]);
-        $this->match(new ProductProjection('identifier', true, 'familyCode', []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, 'familyCode', []))->shouldReturn(true);
     }
 
     public function it_should_not_match_not_empty()
@@ -150,7 +150,7 @@ class FamilySpec extends ObjectBehavior
             'type' => 'family',
             'operator' => 'NOT EMPTY',
         ]]);
-        $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(false);
+        $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
     }
 
     public function it_should_match_in()
@@ -160,7 +160,7 @@ class FamilySpec extends ObjectBehavior
             'operator' => 'IN',
             'value' => ['shirts', 'jeans'],
         ]]);
-        $this->match(new ProductProjection('identifier', true, 'shirts', []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, 'shirts', []))->shouldReturn(true);
     }
 
     public function it_should_not_match_in()
@@ -170,7 +170,7 @@ class FamilySpec extends ObjectBehavior
             'operator' => 'IN',
             'value' => ['shirts', 'jeans'],
         ]]);
-        $this->match(new ProductProjection('identifier', true, 'jackets', []))->shouldReturn(false);
+        $this->match(new ProductProjection(true, 'jackets', []))->shouldReturn(false);
     }
 
     public function it_should_match_not_in()
@@ -180,7 +180,7 @@ class FamilySpec extends ObjectBehavior
             'operator' => 'NOT IN',
             'value' => ['shirts', 'jeans'],
         ]]);
-        $this->match(new ProductProjection('identifier', true, 'jackets', []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, 'jackets', []))->shouldReturn(true);
     }
 
     public function it_should_not_match_not_in()
@@ -190,7 +190,7 @@ class FamilySpec extends ObjectBehavior
             'operator' => 'NOT IN',
             'value' => ['shirts', 'jeans'],
         ]]);
-        $this->match(new ProductProjection('identifier', true, 'shirts', []))->shouldReturn(false);
+        $this->match(new ProductProjection(true, 'shirts', []))->shouldReturn(false);
     }
 
     public function it_should_not_match_not_in_when_product_has_no_family()
@@ -200,6 +200,6 @@ class FamilySpec extends ObjectBehavior
             'operator' => 'NOT IN',
             'value' => ['shirts', 'jeans'],
         ]]);
-        $this->match(new ProductProjection('identifier', true, null, []))->shouldReturn(false);
+        $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
     }
 }

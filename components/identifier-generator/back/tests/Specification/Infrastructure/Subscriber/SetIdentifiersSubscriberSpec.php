@@ -80,7 +80,6 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ClassMetadataInterface $productMetadata,
         PropertyMetadataInterface $productPropertyMetadata,
     ): void {
-        $product->getValue('sku')->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
@@ -119,7 +118,6 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ClassMetadataInterface $valueMetadata,
         PropertyMetadataInterface $valuePropertyMetadata,
     ): void {
-        $product->getValue('sku')->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
@@ -162,7 +160,6 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ClassMetadataInterface $productMetadata,
         PropertyMetadataInterface $productPropertyMetadata,
     ): void {
-        $product->getValue('sku')->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
