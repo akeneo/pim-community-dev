@@ -154,7 +154,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
-                    'release' => [
+                    'released' => [
                         'source' => null,
                         'scope' => null,
                         'locale' => null,
@@ -190,7 +190,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             },
             "simple_description": {
               "type": "string"
-            }
+            },
             "released": {
               "type": "boolean"
             }
