@@ -32,9 +32,10 @@ final class UpdateIdentifierGeneratorContext implements Context
     public const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'default';
 
     public function __construct(
-        private UpdateGeneratorHandler $updateGeneratorHandler,
+        private UpdateGeneratorHandler        $updateGeneratorHandler,
         private IdentifierGeneratorRepository $generatorRepository,
-    ) {
+    )
+    {
     }
 
     /**
@@ -70,7 +71,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function identifierGeneratorIsUpdatedWithoutLabelInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq((object) [], $identifierGenerator->labelCollection()->normalize());
+        Assert::eq((object)[], $identifierGenerator->labelCollection()->normalize());
     }
 
     /**
@@ -178,28 +179,28 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
     {
         $this->tryToUpdateGenerator(structure: [
-                    ['type' => 'free_text', 'string' => 'abcdef1'],
-                    ['type' => 'free_text', 'string' => 'abcdef2'],
-                    ['type' => 'free_text', 'string' => 'abcdef3'],
-                    ['type' => 'free_text', 'string' => 'abcdef4'],
-                    ['type' => 'free_text', 'string' => 'abcdef5'],
-                    ['type' => 'free_text', 'string' => 'abcdef6'],
-                    ['type' => 'free_text', 'string' => 'abcdef7'],
-                    ['type' => 'free_text', 'string' => 'abcdef8'],
-                    ['type' => 'free_text', 'string' => 'abcdef9'],
-                    ['type' => 'free_text', 'string' => 'abcdef10'],
-                    ['type' => 'free_text', 'string' => 'abcdef11'],
-                    ['type' => 'free_text', 'string' => 'abcdef12'],
-                    ['type' => 'free_text', 'string' => 'abcdef13'],
-                    ['type' => 'free_text', 'string' => 'abcdef14'],
-                    ['type' => 'free_text', 'string' => 'abcdef15'],
-                    ['type' => 'free_text', 'string' => 'abcdef16'],
-                    ['type' => 'free_text', 'string' => 'abcdef17'],
-                    ['type' => 'free_text', 'string' => 'abcdef18'],
-                    ['type' => 'free_text', 'string' => 'abcdef19'],
-                    ['type' => 'free_text', 'string' => 'abcdef20'],
-                    ['type' => 'free_text', 'string' => 'abcdef21'],
-                ]);
+            ['type' => 'free_text', 'string' => 'abcdef1'],
+            ['type' => 'free_text', 'string' => 'abcdef2'],
+            ['type' => 'free_text', 'string' => 'abcdef3'],
+            ['type' => 'free_text', 'string' => 'abcdef4'],
+            ['type' => 'free_text', 'string' => 'abcdef5'],
+            ['type' => 'free_text', 'string' => 'abcdef6'],
+            ['type' => 'free_text', 'string' => 'abcdef7'],
+            ['type' => 'free_text', 'string' => 'abcdef8'],
+            ['type' => 'free_text', 'string' => 'abcdef9'],
+            ['type' => 'free_text', 'string' => 'abcdef10'],
+            ['type' => 'free_text', 'string' => 'abcdef11'],
+            ['type' => 'free_text', 'string' => 'abcdef12'],
+            ['type' => 'free_text', 'string' => 'abcdef13'],
+            ['type' => 'free_text', 'string' => 'abcdef14'],
+            ['type' => 'free_text', 'string' => 'abcdef15'],
+            ['type' => 'free_text', 'string' => 'abcdef16'],
+            ['type' => 'free_text', 'string' => 'abcdef17'],
+            ['type' => 'free_text', 'string' => 'abcdef18'],
+            ['type' => 'free_text', 'string' => 'abcdef19'],
+            ['type' => 'free_text', 'string' => 'abcdef20'],
+            ['type' => 'free_text', 'string' => 'abcdef21'],
+        ]);
     }
 
     /**
@@ -208,9 +209,9 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithMultipleAutoNumberInStructure(): void
     {
         $this->tryToUpdateGenerator(structure: [
-                    ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
-                    ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
-                ]);
+            ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
+            ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
+        ]);
     }
 
     /**
@@ -469,7 +470,8 @@ final class UpdateIdentifierGeneratorContext implements Context
         string $attributeCode,
         string $scope = '',
         string $locale = ''
-    ): void {
+    ): void
+    {
         $defaultCondition = $this->getValidCondition('simple_select');
         $defaultCondition['attributeCode'] = $attributeCode;
         if ('undefined' === $scope) {
@@ -487,17 +489,18 @@ final class UpdateIdentifierGeneratorContext implements Context
 
     private function tryToUpdateGenerator(
         ?string $code = null,
-        ?array $structure = null,
-        ?array $conditions = null,
-        ?array $labels = null,
+        ?array  $structure = null,
+        ?array  $conditions = null,
+        ?array  $labels = null,
         ?string $target = null,
         ?string $delimiter = null,
         ?string $textTransformation = null,
-    ): void {
+    ): void
+    {
         try {
             ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
                 $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                    $conditions ?? [
+                $conditions ?? [
                     $this->getValidCondition('enabled'),
                     $this->getValidCondition('simple_select'),
                     $this->getValidCondition('multi_select'),
@@ -515,28 +518,32 @@ final class UpdateIdentifierGeneratorContext implements Context
 
     private function getValidCondition(string $type, ?string $operator = null): array
     {
-        switch($type) {
-            case 'enabled': return [
-                'type' => 'enabled',
-                'value' => true,
-            ];
-            case 'family': return [
-                'type' => 'family',
-                'operator' => $operator ?? 'IN',
-                'value' => ['tshirt'],
-            ];
-            case 'simple_select': return [
-                'type' => 'simple_select',
-                'operator' => $operator ?? 'IN',
-                'attributeCode' => 'color',
-                'value' => ['green'],
-            ];
-            case 'multi_select': return [
-                'type' => 'multi_select',
-                'operator' => $operator ?? 'IN',
-                'attributeCode' => 'color',
-                'value' => ['green', 'blue'],
-            ];
+        switch ($type) {
+            case 'enabled':
+                return [
+                    'type' => 'enabled',
+                    'value' => true,
+                ];
+            case 'family':
+                return [
+                    'type' => 'family',
+                    'operator' => $operator ?? 'IN',
+                    'value' => ['tshirt'],
+                ];
+            case 'simple_select':
+                return [
+                    'type' => 'simple_select',
+                    'operator' => $operator ?? 'IN',
+                    'attributeCode' => 'color',
+                    'value' => ['green'],
+                ];
+            case 'multi_select':
+                return [
+                    'type' => 'multi_select',
+                    'operator' => $operator ?? 'IN',
+                    'attributeCode' => 'color',
+                    'value' => ['green', 'blue'],
+                ];
         }
 
         throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
