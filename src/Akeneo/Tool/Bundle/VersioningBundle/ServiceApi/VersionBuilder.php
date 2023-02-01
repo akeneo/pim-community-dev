@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\ServiceApi;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository;
 use Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder as LegacyVersionBuilder;
+use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
@@ -26,11 +26,10 @@ class VersionBuilder
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ObjectManager $objectManager,
         private readonly LegacyVersionBuilder $versionBuilder
-    )
-    {
+    ) {
     }
 
-    public function buildVersionWithId(?string $resourceId, string $resourceName, array $snapshot): Version
+    public function buildVersionWithId(?string $resourceId, string $resourceName, array $snapshot): void
     {
         $username = $this->getUsername();
 
@@ -44,14 +43,26 @@ class VersionBuilder
 
         $changeset = $this->versionBuilder->buildChangeset($oldSnapshot, $snapshot);
 
+        $versions = [];
         $version = $this->versionFactory->create($resourceName, $resourceId, null, $username);
         $version->setVersion($versionNumber)
             ->setSnapshot($snapshot)
             ->setChangeset($changeset);
+        $versions[] = $version;
 
-        $this->computeChangeSet($version);
+        // To be compliant with legacy history versioning,
+        // Only when updating entity, if changeset has any permission : create a dedicated version with only updated value as a changeset (GRF-671)
+        // This logic Will be moved to each BC when Changeset will be manage (GRF-695))
+        if ($this->hasPermission($changeset) && null !== $resourceId) {
+            $dedicatedVersion = $this->buildPermissionVersion($version);
+            unset($changeset['updated']);
+            $version->setChangeset($changeset);
+            $versions[] = $dedicatedVersion;
+        }
 
-        return $version;
+        foreach ($versions as $versionToSave) {
+            $this->computeChangeSet($versionToSave);
+        }
     }
 
     private function computeChangeSet(Version $version): void
@@ -73,5 +84,41 @@ class VersionBuilder
             $username = $event->getUsername();
         }
         return $username;
+    }
+
+    /**
+     * Check if a changeset has any permissions.
+     *
+     * @param array $changeset The changeset to check
+     * @return bool true if a changeset contains any permissions
+     */
+    private function hasPermission(array $changeset): bool
+    {
+        $changesetPermissions = array_filter($changeset, function ($key) {
+            return str_ends_with($key, '_permission');
+        }, ARRAY_FILTER_USE_KEY);
+
+        return count($changesetPermissions) > 0;
+    }
+
+    /**
+     * Add a dedicated version when original version contains any changeset permission
+     *
+     * @param Version $version
+     * @return Version
+     */
+    private function buildPermissionVersion(Version $version): Version
+    {
+        $updatedVersion = $this->versionFactory->create(
+            $version->getResourceName(),
+            $version->getResourceId(),
+            null,
+            $version->getAuthor()
+        );
+        $updatedVersion->setVersion($version->getVersion() + 1)
+            ->setSnapshot($version->getSnapshot())
+            ->setChangeset(['updated' => $version->getChangeset()['updated']]);
+
+        return $updatedVersion;
     }
 }

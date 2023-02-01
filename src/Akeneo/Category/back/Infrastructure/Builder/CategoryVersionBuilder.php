@@ -60,7 +60,7 @@ class CategoryVersionBuilder
         $snapshot = [
             'code' => (string) $category->getCode(),
             'parent' => $parent,
-            'updated' => $category->getUpdated()?->format('c') ?? '',
+            'updated' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('c') ?? '',
         ];
 
         return array_merge($snapshot, $snapshotLabels, $snapshotPermissions);

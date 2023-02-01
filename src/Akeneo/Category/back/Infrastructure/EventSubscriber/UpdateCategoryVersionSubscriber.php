@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Api\Event\CategoryUpdatedEvent;
+use Akeneo\Category\Domain\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder;
 use Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

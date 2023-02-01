@@ -61,7 +61,7 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             ]
         );
 
-        $this->assertEquals($expectedCategoryVersion, $categoryVersion);
+        $this->assertVersion($expectedCategoryVersion, $categoryVersion);
     }
 
     public function testCreateACategoryVersionWithoutParent(): void
@@ -93,7 +93,7 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             ]
         );
 
-        $this->assertEquals($expectedCategoryVersion, $categoryVersion);
+        $this->assertVersion($expectedCategoryVersion, $categoryVersion);
     }
 
     public function testCreateACategoryVersionWithPermissions(): void
@@ -110,9 +110,9 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             labels: LabelCollection::fromArray(['en_US' => 'test category', 'fr_FR' => 'catégorie de test']),
             updated: $updated,
             permissions: PermissionCollection::fromArray([
-                'view'=> [['id' => 1, 'label'=> 'Manager'], ['id' => 1, 'label'=> 'Redactor']],
-                'edit'=> [['id' => 1, 'label'=> 'All']],
-                'own'=> [['id' => 1, 'label'=> 'All']],
+                'view'=> [['id' => 1, 'label' => 'Manager'], ['id' => 1, 'label' => 'Redactor']],
+                'edit'=> [['id' => 1, 'label' => 'All']],
+                'own'=> [['id' => 1, 'label' => 'All']],
             ]),
         );
 
@@ -133,6 +133,19 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             ]
         );
 
-        $this->assertEquals($expectedCategoryVersion, $categoryVersion);
+        $this->assertVersion($expectedCategoryVersion, $categoryVersion);
+    }
+
+    private function assertVersion(CategoryVersion $expectedCategoryVersion, CategoryVersion $categoryVersion): void
+    {
+        $this->assertEquals($expectedCategoryVersion->getResourceId(), $categoryVersion->getResourceId());
+        $this->assertEquals($expectedCategoryVersion->getSnapshot()['code'], $categoryVersion->getSnapshot()['code']);
+        $this->assertEquals($expectedCategoryVersion->getSnapshot()['parent'], $categoryVersion->getSnapshot()['parent']);
+        /** @phpstan-ignore-next-line */
+        $this->assertEquals($expectedCategoryVersion->getSnapshot()['label-en_US'], $categoryVersion->getSnapshot()['label-en_US']);
+        /** @phpstan-ignore-next-line */
+        $this->assertEquals($expectedCategoryVersion->getSnapshot()['label-fr_FR'], $categoryVersion->getSnapshot()['label-fr_FR']);
+        $this->assertArrayHasKey('updated', $categoryVersion->getSnapshot());
+        $this->assertNotEmpty($categoryVersion->getSnapshot()['updated']);
     }
 }

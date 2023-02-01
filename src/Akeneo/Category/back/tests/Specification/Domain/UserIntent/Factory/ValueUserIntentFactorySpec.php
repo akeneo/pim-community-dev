@@ -231,4 +231,116 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
 
         $this->create('values', 1, $data)->shouldHaveCount(1);
     }
+
+    function it_does_not_add_value_user_intent_when_text_field_data_is_empty(
+        GetCategoryTemplateAttributeSql $getAttribute
+    ): void {
+        $data = [
+            'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
+                'data' => "",
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'attribute_code' => 'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ],
+            'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
+                'data' => "<p></p>\n",
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'attribute_code' => 'description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+            ],
+            'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
+                'data' => "red",
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'attribute_code' => 'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
+            ],
+            'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
+                'data' => null,
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'attribute_code' => 'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
+            ]
+        ];
+
+        $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+        $attributes = AttributeCollection::fromArray([
+            AttributeTextArea::create(
+                AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
+                new AttributeCode('seo_meta_description'),
+                AttributeOrder::fromInteger(4),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
+            ),
+            AttributeRichText::create(
+                AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
+                new AttributeCode('description'),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'Description']),
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
+            ),
+            AttributeText::create(
+                AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
+                new AttributeCode('color'),
+                AttributeOrder::fromInteger(2),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'red']),
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
+            ),
+            AttributeImage::create(
+                AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc'),
+                new AttributeCode('banner'),
+                AttributeOrder::fromInteger(3),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg']),
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
+            ),
+        ]);
+
+        $uuids = [
+            AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
+            AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
+            AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
+            AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc')
+        ];
+
+        $getAttribute->byUuids($uuids)
+            ->shouldBeCalledOnce()
+            ->willReturn($attributes);
+
+        $expectedUseIntents = [
+            new SetText(
+                '38439aaf-66a2-4b24-854e-29d7a467c7af',
+                'color',
+                'ecommerce',
+                'en_US',
+                'red'
+            ),
+            new SetImage(
+                'e0326684-0dff-44be-8283-9262deb9e4bc',
+                'banner',
+                'ecommerce',
+                'en_US',
+                null
+            ),
+        ];
+        $this->create(
+            'values',
+            1,
+            $data
+        )->shouldBeLike($expectedUseIntents);
+    }
 }
