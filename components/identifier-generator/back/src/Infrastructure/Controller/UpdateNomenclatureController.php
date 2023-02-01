@@ -38,7 +38,7 @@ final class UpdateNomenclatureController
             operator: $content['operator'] ?? null,
             value: $content['value'] ?? null,
             generateIfEmpty: $content['generate_if_empty'] ?? null,
-            values: $content['families'] ?? [],
+            values: $content['values'] ?? [],
         );
 
         try {
@@ -55,7 +55,7 @@ final class UpdateNomenclatureController
      *     operator?: string,
      *     value?: int,
      *     generate_if_empty?: bool,
-     *     families?: array<string, ?string>,
+     *     values?: array<string, ?string>,
      * }
      */
     private function getContent(Request $request): array
