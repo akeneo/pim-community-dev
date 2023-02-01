@@ -11,9 +11,15 @@ class InMemoryNomenclatureValueRepository implements NomenclatureValueRepository
      */
     private array $values = [];
 
-    public function set(string $familyCode, ?string $value): void
+    public function update(array $values): void
     {
-        $this->values[$familyCode] = $value;
+        foreach ($values as $familyCode => $value) {
+            if (null === $value) {
+                unset($this->values[$familyCode]);
+            } else {
+                $this->values[$familyCode] = $value;
+            }
+        }
     }
 
     public function get(string $familyCode): ?string
