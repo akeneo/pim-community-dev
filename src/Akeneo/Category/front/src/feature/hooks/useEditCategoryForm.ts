@@ -111,8 +111,6 @@ const useEditCategoryForm = (categoryId: number) => {
         };
       }
 
-      console.log(categoryEdited);
-
       setCategoryEdited(set(['properties', 'labels', localeCode], label, categoryEdited));
     },
     [categoryEdited]
