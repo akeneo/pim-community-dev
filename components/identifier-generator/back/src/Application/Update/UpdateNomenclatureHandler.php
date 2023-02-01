@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Update;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository;
 
@@ -20,6 +21,9 @@ final class UpdateNomenclatureHandler
         $this->validator->validate($command);
 
         $nomenclatureDefinition = $this->nomenclatureDefinitionRepository->get('family');
+        if (null === $nomenclatureDefinition) {
+            $nomenclatureDefinition = new NomenclatureDefinition();
+        }
         if (null !== $command->getOperator()) {
             $nomenclatureDefinition = $nomenclatureDefinition->withOperator($command->getOperator());
         }

@@ -33,6 +33,7 @@ final class UpdateNomenclatureController
         $content = $this->getContent($request);
 
         $command = new UpdateNomenclatureCommand(
+            propertyType: 'family',
             operator: $content['operator'],
             value: $content['value'],
             values: $content['families'],

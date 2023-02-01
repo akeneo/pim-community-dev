@@ -1,11 +1,13 @@
 Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand:
     properties:
         value:
+            - Optional: false
             - Type: numeric
             - GreaterThanOrEqual:
                   value: 1
             - LessThanOrEqual:
                   value: 5
         operator:
+            - Optional: false
             - Choice:
                 choices: ['<=', '=']
