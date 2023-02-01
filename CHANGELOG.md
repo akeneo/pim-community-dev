@@ -118,6 +118,7 @@
 - PIM-10768: Fix update list status_code response
 - PIM-10784: Fix API error 500 when filtering for identifier with null value
 - PIM-10785: Fix case-insensitive patch product model
+- PIM-10808: Fix Error message on the family modification when an attribute is as required=0
 
 ## Improvements
 
