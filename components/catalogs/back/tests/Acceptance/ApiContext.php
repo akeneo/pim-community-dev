@@ -729,6 +729,11 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'identifier' => [
+                        'source' => 'sku',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
                     'title' => [
                         'source' => 'name',
                         'scope' => 'ecommerce',
@@ -793,6 +798,9 @@ class ApiContext implements Context
                     "uuid": {
                       "type": "string"
                     },
+                    "identifier": {
+                      "type": "string"
+                    },
                     "title": {
                       "type": "string"
                     },
@@ -836,7 +844,7 @@ class ApiContext implements Context
         $products = [
             [
                 'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
-                'identifier' => 't-shirt blue',
+                'sku' => 't-shirt blue',
                 'name' => 'T-shirt blue',
                 'description' => 'Description blue',
                 'size' => 'l',
@@ -848,7 +856,7 @@ class ApiContext implements Context
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
-                'identifier' => 't-shirt green',
+                'sku' => 't-shirt green',
                 'name' => 'T-shirt green',
                 'description' => 'Description green',
                 'size' => 'm',
@@ -860,7 +868,7 @@ class ApiContext implements Context
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
-                'identifier' => 't-shirt red',
+                'sku' => 't-shirt red',
                 'name' => 'T-shirt red',
                 'description' => 'Description red',
                 'size' => 'xl',
@@ -932,7 +940,7 @@ class ApiContext implements Context
                 $adminUser->getId(),
                 ProductUuid::fromUuid(Uuid::fromString($product['uuid'])),
                 [
-                    new SetIdentifierValue('sku', $product['identifier']),
+                    new SetIdentifierValue('sku', $product['sku']),
                     new SetFamily('t-shirt'),
                     new SetEnabled((bool) $product['enabled']),
                     new SetTextValue('name', 'ecommerce', 'en_US', $product['name']),
@@ -980,6 +988,7 @@ class ApiContext implements Context
         $expectedMappedProducts = [
             [
                 'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
+                'identifier' => 't-shirt blue',
                 'title' => 'T-shirt blue',
                 'short_description' => 'Description blue',
                 'size' => 'L',
@@ -991,6 +1000,7 @@ class ApiContext implements Context
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
+                'identifier' => 't-shirt red',
                 'title' => 'T-shirt red',
                 'short_description' => 'Description red',
                 'size' => 'XL',
@@ -1031,6 +1041,7 @@ class ApiContext implements Context
 
         $expectedMappedProducts = [
             'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
+            'identifier' => 't-shirt blue',
             'title' => 'T-shirt blue',
             'short_description' => 'Description blue',
             'size' => 'L',
