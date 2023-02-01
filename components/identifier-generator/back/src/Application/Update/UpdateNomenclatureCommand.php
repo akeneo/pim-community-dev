@@ -10,8 +10,9 @@ class UpdateNomenclatureCommand implements CommandInterface
      * @param array<string, ?string> $values
      */
     public function __construct(
-        private readonly ?string $operator = null,
-        private readonly ?int $value = null,
+        private readonly string $propertyType,
+        private readonly string $operator,
+        private readonly string $value,
         private readonly ?array $values = [],
     ) {
     }
@@ -24,12 +25,12 @@ class UpdateNomenclatureCommand implements CommandInterface
         return $this->values;
     }
 
-    public function getOperator(): ?string
+    public function getOperator(): string
     {
         return $this->operator;
     }
 
-    public function getValue(): ?int
+    public function getValue(): string
     {
         return $this->value;
     }

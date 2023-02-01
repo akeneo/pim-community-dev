@@ -5,21 +5,13 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 class NomenclatureDefinition
 {
     public function __construct(
-        private readonly string $operator,
-        private readonly int $value,
+        private readonly ?string $operator = null,
+        private readonly ?int $value = null,
         // TODO Add checkbox
     ) {
     }
 
-    public static function default(): self
-    {
-        return new self(
-            '=', // TODO Check
-            3, // TODO Check
-        );
-    }
-
-    public function operator(): string
+    public function operator(): ?string
     {
         return $this->operator;
     }
@@ -29,7 +21,7 @@ class NomenclatureDefinition
         return new NomenclatureDefinition($operator, $this->value);
     }
 
-    public function value(): int
+    public function value(): ?int
     {
         return $this->value;
     }
